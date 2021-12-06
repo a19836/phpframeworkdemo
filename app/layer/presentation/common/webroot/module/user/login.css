@@ -1,0 +1,98 @@
+.module_login {
+	width:320px;
+	margin:0 auto;
+	float:none;
+	clear:both;
+	text-align:center;
+}
+.module_login a {
+	color:#999;
+	text-decoration:none;
+}
+.module_login a:hover {
+	text-decoration:underline;
+}
+.module_login .info {
+	width:100%;
+	text-align:center;
+	font-weight:bold;
+}
+.module_login .form_fields {
+
+}
+.module_login .form_fields .form_field {
+	float:none;
+	clear:left;
+	height:20px;
+	margin-bottom:5px;
+}
+.module_login .form_fields .form_field label {
+	width:70px;
+	display:block;
+	float:left;
+	font-weight:normal;
+}
+.module_login .form_fields .form_field input {
+	width:130px;
+	background-color:#FFF;
+}
+
+.module_login .form_fields .captcha {
+	
+}
+.module_login .form_fields .captcha .captcha_image {
+	display:block;
+	width:100%;
+	text-align:center;
+}
+.module_login .form_fields .captcha .captcha_image img {
+	
+}
+.module_login .form_fields .captcha .captcha_refresh {
+	display:block;
+	width:100%;
+	text-align:center;
+	margin-bottom:5px;
+}
+.module_login .form_fields .captcha .form_field {
+	
+}
+.module_login .form_fields .captcha .form_field label {
+	width:65px;
+	color:#CCC;
+	text-align:right;
+	margin-right:5px;
+}
+
+.module_login .buttons {
+	padding-top:5px;
+	margin-bottom:10px;
+}
+.module_login .buttons .submit_button {
+	text-align:center;
+}
+.module_login .buttons .submit_button input {
+	background-color:#F7F7F7;
+}
+
+.module_login .register {
+	width:60px;
+	float:left;
+	text-align:left;
+	font-size:10px;
+}
+.module_login .forgot_credentials {
+	width:140px;
+	float:right;
+	text-align:right;
+	font-size:10px;
+}
+.module_login .single_sign_on {
+	width:110px;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+	font-size:10px;
+}
+
+

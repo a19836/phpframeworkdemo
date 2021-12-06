@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sql_mapping>
+	<insert id="insert_worker">
+		insert into mwp_worker (class, args, status, thread_id, begin_time, end_time, failed_attempts, description, created_date, modified_date) values ('#class#', '#args#', #status#, '#thread_id#', #begin_time#, #end_time#, #failed_attempts#, '#description#', '#created_date#', '#modified_date#')
+	</insert>
+	
+	<update id="update_worker">
+		update mwp_worker set class='#class#', args='#args#', status=#status#, thread_id='#thread_id#', begin_time=#begin_time#, end_time=#end_time#, failed_attempts=#failed_attempts#, description='#description#', modified_date='#modified_date#' where worker_id=#worker_id#
+	</update>
+	
+	<update id="update_failed_and_to_parse_workers"><![CDATA[
+		update mwp_worker set status=3, modified_date='#modified_date#' where status=0 and failed_attempts>=#maximum_failed_attempts#
+	]]></update>
+	
+	<update id="update_failed_and_expired_workers"><![CDATA[
+		update mwp_worker set status=3, failed_attempts=failed_attempts+1, modified_date='#modified_date#' where status=1 and begin_time<#expiration_time# and failed_attempts+1>=#maximum_failed_attempts#
+	]]></update>
+	
+	<update id="reset_expired_workers"><![CDATA[
+		update mwp_worker set status=0, thread_id='', begin_time=0, end_time=0, failed_attempts=failed_attempts+1, modified_date='#modified_date#' where status=1 and begin_time<#expiration_time#
+	]]></update>
+	
+	<update id="update_thread_worker"><![CDATA[
+		update mwp_worker set status=1, thread_id='#thread_id#', begin_time=#begin_time#, modified_date='#modified_date#' where worker_id=#worker_id# and status=0 and thread_id=''
+	]]></update>
+	
+	<update id="update_closed_worker"><![CDATA[
+		update mwp_worker set status=2, end_time=#end_time#, modified_date='#modified_date#' where worker_id=#worker_id#
+	]]></update>
+	
+	<update id="update_failed_worker"><![CDATA[
+		update mwp_worker set status=3, failed_attempts=failed_attempts+1, modified_date='#modified_date#' where worker_id=#worker_id#
+	]]></update>
+	
+	<update id="reset_failed_worker"><![CDATA[
+		update mwp_worker set status=0, thread_id='', begin_time=0, end_time=0, failed_attempts=failed_attempts+1, modified_date='#modified_date#' where worker_id=#worker_id#
+	]]></update>
+	
+	<delete id="delete_worker">
+		delete from mwp_worker where worker_id=#worker_id#
+	</delete>
+	
+	<select id="get_worker">
+		select * from mwp_worker where worker_id=#worker_id#
+	</select>
+	
+	<select id="get_all_workers">
+		select * from mwp_worker
+	</select>
+	
+	<select id="count_all_workers">
+		select count(worker_id) total from mwp_worker
+	</select>
+	
+	<select id="get_workers_by_ids">
+		select * from mwp_worker where worker_id in (#worker_ids#)
+	</select>
+	
+	<select id="get_workers_by_conditions">
+		select * from mwp_worker where #conditions#
+	</select>
+	
+	<select id="count_workers_by_conditions">
+		select count(worker_id) total from mwp_worker where #conditions#
+	</select>
+</sql_mapping>

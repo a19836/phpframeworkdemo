@@ -1,0 +1,289 @@
+.manage_records .title {
+	width: 100%;
+	color: #000;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 10px 0 5px;
+	text-align: center;
+}
+.manage_records .title .back {
+	float:left;
+	background: url(../../common/img/icon/left_icon.gif) no-repeat scroll center center;
+}
+.manage_records .title .refresh {
+	float:right;
+}
+.manage_records .db_type {
+	margin:0 auto;
+	display:block;
+}
+
+/* TABLE */
+.manage_records .responsive_table {
+	margin:0;
+	/*background: #d5e3e4;*/
+	border:1px inset #CCC;
+	overflow:auto;
+}
+.manage_records table {
+	border:0;
+	width:100%;
+	background-color:#FFF;
+}
+.manage_records table th {
+	font-weight:bold;
+	font-size:10px;
+	height:20px;
+	line-height:20px;
+	color:#999;
+	padding:0 5px;
+}
+.manage_records table th .icon.sort,
+  .manage_records table th .icon.unsort {
+	height:10px;
+	margin:0;
+	display:inline-block;
+	float:none;
+	vertical-align:middle;
+}
+.manage_records table th .icon.sort:not(.loading) {
+	background: url(../../common/img/tablesorter/bg.gif) no-repeat scroll center center;
+}
+.manage_records table th .icon.sort.sort_asc {
+	background: url(../../common/img/tablesorter/asc.gif) no-repeat scroll center center;
+}
+.manage_records table th .icon.sort.sort_desc {
+	background: url(../../common/img/tablesorter/desc.gif) no-repeat scroll center center;
+}
+.manage_records table th .icon.unsort {
+	background: url(../../common/img/tablesorter/unsort.gif) no-repeat scroll right center;
+}
+.manage_records table th.fks {
+	background:transparent;
+	border:0;
+}
+.manage_records table td {
+	border:1px solid #CCC;
+	height:20px;
+	line-height:20px;
+	color:#333;
+	padding:0 5px;
+}
+.manage_records table .editable td {
+	background:#f4f4f4;
+}
+.manage_records table .empty {
+	text-align:center;
+	font-weight:bold;
+}
+.manage_records table .select_item {
+	text-align:center;
+	width:40px;
+}
+.manage_records table td.fks {
+	text-align:center;
+	background:transparent;
+}
+.manage_records table td.fks a {
+	margin:0 5px;
+}
+.manage_records table .actions {
+	text-align:center;
+	width:110px;
+}
+.manage_records table .actions .icon {
+	margin:3px 3px 0;
+	display:inline-block;
+	float:none;
+	vertical-align:middle;
+}
+.manage_records table .actions .icon.toggle {
+	background: url(../../common/img/icon/rename_icon.gif) no-repeat scroll 0 0;
+}
+.manage_records table .actions .icon.save {
+	background: url(../../common/img/icon/save_icon.gif) no-repeat scroll 0 0;
+	display:none;
+}
+.manage_records table .actions .icon.undo_toggle {
+	background: url(../../common/img/icon/undo_icon.png) no-repeat scroll 0 0;
+	display:none;
+}
+.manage_records table .editable .actions .icon.save,
+  .manage_records table .editable .actions .icon.undo_toggle {
+	display:inline-block;
+}
+.manage_records table .editable .actions .icon.toggle {
+	display:none;
+}
+.manage_records table input:not([type=checkbox]):not([type=radio]),
+  .manage_records table textarea,
+  .manage_records table select {
+	width:100%;
+	height:100%;
+	padding:0;
+	box-sizing:border-box;
+	background:transparent;
+	border-color:transparent;
+	font-size:100%;
+	font-family:inherit;
+	text-align:inherit;
+}
+
+/* TABLE - dataTables */
+.manage_records .dataTables_length, .manage_records .dataTables_filter, .manage_records .dataTables_info, .manage_records .dataTables_paginate {
+	height:20px;
+	line-height:20px;
+	color:#555;
+	font-size:10px;
+	margin-left:5px;
+	margin-right:5px;
+}
+.manage_records .dataTables_length label, .manage_records .dataTables_filter label {
+	color:#555;
+	font-weight:normal;
+}
+.manage_records .dataTables_length select, .manage_records .dataTables_filter input {
+	background-color:#FFF;
+	color:#555;
+	font-size:10px;
+}
+.manage_records .dataTables_length select {
+	text-align:center;
+}
+.manage_records .dataTables_filter input {
+	width:200px;
+}
+.manage_records table.dataTable.compact thead th, .manage_records table.dataTable.compact thead td {
+	padding-top:0;
+	padding-bottom:0;
+	padding-right:20px;
+}
+.manage_records table.dataTable thead .sorting {
+	background:url("../../common/vendor/jquerydatatables/media/images/sort_both_dark.png") no-repeat scroll right center;
+}
+.manage_records .dataTables_wrapper .dataTables_info {
+	padding-top:4px;
+}
+.manage_records .dataTables_scrollBody {
+	/*overflow-x:hidden !important;*/
+}
+.manage_records table.dataTable.compact tbody {
+	font-size:10px;
+}
+.manage_records table.dataTable.compact tbody th, .manage_records table.dataTable.compact tbody td {
+	padding-top:0;
+	padding-bottom:0;
+}
+.manage_records .dataTables_wrapper .dataTables_paginate .paginate_button {
+	padding:0px 2px;
+}
+.manage_records .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+	background:linear-gradient(to bottom, #fff 0%, #dcdcdc 100%) repeat scroll 0 0;
+	border:1px solid #cacaca;
+	color:#333 !important;
+}
+
+/* CONDITIONS */
+.manage_records .conditions {
+	margin:20px 10px;
+	border:1px solid #ccc;
+	border-radius:5px;
+}
+.manage_records .conditions > label {
+	padding:10px;
+	display:block;
+	float:none;
+	background:#d5e3e4;
+	font-weight:normal;
+}
+.manage_records .conditions .icon {
+	float:none;
+	display:inline-block;
+	vertical-align:middle;
+}
+.manage_records .conditions input,
+  .manage_records .conditions select {
+	background:transparent;
+	border:1px solid #ccc;
+	border-radius:3px;
+}
+.manage_records .conditions > label select {
+	margin-left:5px;
+}
+.manage_records .conditions > label input {
+	margin:0 5px;
+	float:right;
+	background:#eee;
+}
+.manage_records .conditions > ul {
+	
+}
+.manage_records .conditions > ul li {
+	display:inline-block;
+	padding:10px;
+	/*border-left:1px solid #ccc;*/
+}
+.manage_records .conditions > ul li:first-child {
+	border-left:0;
+}
+.manage_records .conditions > ul li label {
+	margin-right:10px;
+	display:inline-block;
+	font-weight:normal;
+}
+
+/* TOTAL */
+.manage_records .total {
+	margin:5px 10px 0 0;
+	float:right;
+	color:#999;
+}
+
+/* BUTTONS */
+.manage_records .buttons {
+	width:100%;
+	height:25px;
+	text-align:center;
+	margin:10px 0 0 0;
+	clear:both;
+}
+.manage_records .buttons input {
+	border:1px outset;
+	border-radius:0.5em;
+	height:25px !important;
+	line-height:15px !important;
+	padding:3px 5px !important;
+}
+.manage_records .buttons input.delete {
+	background:red;
+	color:white;
+}
+
+/* ERROR */
+.manage_records .error {
+	margin:20px 0;
+	color:red;
+	text-align:center;
+}
+
+/* POPUP */
+.manage_record_popup {
+	top:10px;
+	left:10px;
+	right:10px;
+	bottom:10px;
+}
+.manage_record_popup iframe {
+	width:100% !important;
+	height:100% !important;
+}
+
+/* PAGINATION */
+.top_pagination, .bottom_pagination {
+	margin:1rem;
+}
+.top_pagination:empty, .bottom_pagination:empty {
+	display:none;
+}
+
+

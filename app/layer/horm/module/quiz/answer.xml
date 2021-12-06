@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<sql_mapping>
+	<class name="Answer" table="mq_answer">
+		<id column="answer_id"></id>
+	
+		<relationships>
+			<one_to_many name="user_answers">
+				<attribute column="*" table="mq_user_answer" />
+				
+				<key pcolumn="answer_id" fcolumn="answer_id" ftable="mq_user_answer" />
+			</one_to_many>
+		</relationships>
+		
+		<queries>
+			<select id="get_answers_stats_by_question_ids">
+				select a.*, z.total_answers
+				from mq_answer a 
+				inner join (
+					select a.answer_id, count(user_id) total_answers
+					from mq_answer a
+					left join mq_user_answer ua on ua.answer_id=a.answer_id
+					where a.question_id in (#question_ids#)
+					group by a.answer_id
+				) z on z.answer_id=a.answer_id
+			</select>
+		</queries>
+	</class>
+</sql_mapping>

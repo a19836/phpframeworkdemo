@@ -1,0 +1,84 @@
+.jsplumbtaskmenu .task.task_usertask4 {
+	background-image:url('../img/bg.gif');
+	line-height:10px;
+}
+.jsplumbtaskmenu .task.task_usertask4 span {
+	/*display:none;*/
+	margin-top: 1rem;
+    display: block;
+}
+.jsplumbtaskworkflow .task.task_usertask4 {
+	/*background-image:url('../img/bg.gif');
+	-o-background-size:100% 100%;
+	-webkit-background-size:100% 100%;
+	-moz-background-size:100% 100%;
+	background-size:100% 100%; */
+	
+	/* in IE */
+	-ms-background-size:100% 100%;
+	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
+	
+	border:none;
+	box-shadow:none;
+	-o-box-shadow:none;
+	-webkit-box-shadow:none;
+	-moz-box-shadow:none;
+    	
+	/* For IE */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
+	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+}
+.jsplumbtaskworkflow .task.task_usertask4:before {
+	content:" ";
+	display:block;
+	width:100%;
+	height:100%;
+	min-height:50px;
+	background:#990000;
+	opacity:.8;
+	
+	-webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+	clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+}
+.jsplumbtaskworkflow .task.task_usertask4:hover {
+	box-shadow:none;
+}
+.jsplumbtaskworkflow .task.task_usertask4:hover:before {
+	opacity:.6;
+}
+.jsplumbtaskworkflow .task.task_usertask4 .info {
+	margin-top:12px;
+	/*margin-top:27px;
+	color:#000;*/
+}
+.jsplumbtaskworkflow .task.task_usertask4 .info span {
+	color:#fff;
+}
+.jsplumbtaskworkflow .task.task_usertask4 .eps {
+	display:none;
+}
+
+.usertask4_task_html {
+	width:295px;
+}
+
+.usertask4_task_html .value {
+	margin-top:15px;
+}
+
+.usertask4_task_html .value,
+   .usertask4_task_html .type {
+	width:100%;
+	height:20px;
+	margin-bottom:5px;
+}
+.usertask4_task_html .value label,
+   .usertask4_task_html .type label {
+	width:60px;
+}
+.usertask4_task_html .value input {
+	width:200px;   
+}
+
+

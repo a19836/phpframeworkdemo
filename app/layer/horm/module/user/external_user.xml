@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<sql_mapping>
+	<class name="ExternalUser" table="mu_external_user">
+		<id column="external_user_id"></id>
+	
+		<relationships>
+			<one_to_many name="user">
+				<attribute column="*" table="mu_user" />
+				
+				<key pcolumn="user_id" fcolumn="user_id" ftable="mu_user" />
+			</one_to_many>
+		</relationships>
+	</class>
+</sql_mapping>

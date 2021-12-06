@@ -1,0 +1,68 @@
+.taskflowchart .tasks_menu {
+	width:0px !important;
+	display:none;
+	overflow:hidden;
+}
+.taskflowchart .tasks_flow {
+	left:0px !important;
+}
+
+.taskflowchart .tasks_menu_hide {
+	display:none;
+}
+
+.taskflowchart .workflow_menu ul.dropdown li {
+	height:17px;
+	border-left:1px inset #FFF;
+}
+.taskflowchart .workflow_menu ul.dropdown li a {
+	height:20px;
+	line-height:20px;
+	padding-left:22px;
+	display:block;
+}
+.taskflowchart .workflow_menu ul.dropdown li.save a {
+	background:url("../../common/img/icon/save_icon.gif") no-repeat scroll 0px 1px;	
+}
+.taskflowchart .workflow_menu ul.dropdown li.flush_cache a {
+	background:url("../../common/img/icon/recycle_icon.png") no-repeat scroll 0px 1px;	
+}
+.taskflowchart .workflow_menu ul.dropdown li.update_db_diagram_automatically a {
+	background:url("../../common/img/icon/update_icon.gif") no-repeat scroll 0px 1px;	
+}
+.taskflowchart .workflow_menu ul.dropdown li.add_new_table a {
+	background:url("../../common/img/icon/add_icon.gif") no-repeat scroll 0px 1px;	
+}
+.taskflowchart .workflow_menu ul.dropdown li.empty_diagram a {
+	background:url("../../common/img/icon/delete_icon.gif") no-repeat scroll 0px 1px;	
+}
+.taskflowchart .workflow_menu ul.dropdown li.create_diagram_sql a {
+	background:url("../../common/img/icon/edit_icon.gif") no-repeat scroll 0px 1px;	
+}
+
+.task_context_menu .start_task a {
+	background:url("../../common/img/icon/refresh_icon.png") no-repeat scroll 4px 4px !important;
+}
+
+.loading_panel {
+	position:fixed;
+	top:0px;
+	left:0px;
+	right:0px;
+	bottom:0px;
+	background-color:#333;
+	opacity:0.6;
+	filter: alpha(opacity=60);/* For IE */
+	z-index:9000;
+}
+
+.create_diagram_sql_popup {
+	left:10px;
+	top:10px;
+	bottom:10px;
+	right:10px;
+}
+.create_diagram_sql_popup iframe {
+	width:100%;
+	height:100%;
+}

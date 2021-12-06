@@ -1,0 +1,23 @@
+.module_send_email {
+	float:none;
+	clear:both;
+}
+
+.module_send_email .form_fields .form_field {
+	margin-top:10px;
+}
+.module_send_email .form_fields .form_field > label {
+	width:100px;
+	display:inline-block;
+}
+.module_send_email .form_fields .form_field > input,
+  .module_send_email .form_fields .form_field > textarea  {
+	width:100%;
+	width:calc(100% - 120px);
+}
+.module_send_email .form_fields .buttons {
+	margin-top:20px;
+}
+.module_send_email .form_fields .buttons .button_save {
+	text-align:center;
+}

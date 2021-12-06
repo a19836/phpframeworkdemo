@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<sql_mapping>
+	<class name="Worker" table="mwp_worker">
+		<id column="worker_id"></id>
+		
+		<queries>
+			<update id="update_failed_and_to_parse_workers"><![CDATA[
+				update mwp_worker set status=3, modified_date='#modified_date#' where status=0 and failed_attempts>=#maximum_failed_attempts#
+			]]></update>
+	
+			<update id="update_failed_and_expired_workers"><![CDATA[
+				update mwp_worker set status=3, failed_attempts=failed_attempts+1, modified_date='#modified_date#' where status=1 and begin_time<#expiration_time# and failed_attempts+1>=#maximum_failed_attempts#
+			]]></update>
+	
+			<update id="reset_expired_workers"><![CDATA[
+				update mwp_worker set status=0, thread_id='', begin_time=0, end_time=0, failed_attempts=failed_attempts+1, modified_date='#modified_date#' where status=1 and begin_time<#begin_time#
+			]]></update>
+	
+			<update id="update_thread_worker"><![CDATA[
+				update mwp_worker set status=1, thread_id='#thread_id#', begin_time=#begin_time#, modified_date='#modified_date#' where worker_id=#worker_id# and status=0 and thread_id=''
+			]]></update>
+	
+			<update id="update_closed_worker"><![CDATA[
+				update mwp_worker set status=2, end_time=#end_time#, modified_date='#modified_date#' where worker_id=#worker_id#
+			]]></update>
+	
+			<update id="update_failed_worker"><![CDATA[
+				update mwp_worker set status=3, failed_attempts=failed_attempts+1, modified_date='#modified_date#' where worker_id=#worker_id#
+			]]></update>
+	
+			<update id="reset_failed_worker"><![CDATA[
+				update mwp_worker set status=0, thread_id='', begin_time=0, end_time=0, failed_attempts=failed_attempts+1, modified_date='#modified_date#' where worker_id=#worker_id#
+			]]></update>
+		</queries>
+	</class>
+</sql_mapping>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sql_mapping>
+	<insert id="insert_user_session">
+		insert into mu_user_session (username, environment_id, session_id, user_id, logged_status, login_time, login_ip, failed_login_attempts, failed_login_time, failed_login_ip, created_date, modified_date) values ('#username#', '#environment_id#', '#session_id#', #user_id#, #logged_status#, #login_time#, '#login_ip#', #failed_login_attempts#, #failed_login_time#, '#failed_login_ip#', '#created_date#', '#modified_date#')
+	</insert>
+	
+	<update id="update_user_session">
+		update mu_user_session set session_id='#session_id#', user_id=#user_id#, logged_status=#logged_status#, login_time=#login_time#, login_ip='#login_ip#', failed_login_attempts=#failed_login_attempts#, failed_login_time=#failed_login_time#, failed_login_ip='#failed_login_ip#', modified_date='#modified_date#' where username='#username#' and environment_id='#environment_id#'
+	</update>
+	
+	<update id="update_user_session_captcha_by_session_id">
+		update mu_user_session set captcha='#captcha#', modified_date='#modified_date#' where session_id='#session_id#'
+	</update>
+	
+	<update id="logout_by_session_id">
+		update mu_user_session set logged_status=#logged_status#, logout_time=#logout_time#, logout_ip='#logout_ip#', modified_date='#modified_date#' where session_id='#session_id#'
+	</update>
+	
+	<delete id="delete_user_session">
+		delete from mu_user_session where username='#username#' and environment_id='#environment_id#'
+	</delete>
+	
+	<delete id="delete_user_session_by_session_id">
+		delete from mu_user_session where session_id='#session_id#'
+	</delete>
+	
+	<delete id="delete_user_session_by_user_id">
+		delete from mu_user_session where user_id=#user_id#
+	</delete>
+	
+	<select id="get_user_session">
+		select * from mu_user_session where username='#username#' and environment_id='#environment_id#'
+	</select>
+	
+	<select id="get_all_user_sessions">
+		select * from mu_user_session
+	</select>
+	
+	<select id="count_all_user_sessions">
+		select count(*) total from mu_user_session
+	</select>
+	
+	<select id="get_user_sessions_by_conditions">
+		select * from mu_user_session where #conditions#
+	</select>
+	
+	<select id="count_user_sessions_by_conditions">
+		select count(*) total from mu_user_session where #conditions#
+	</select>
+</sql_mapping>

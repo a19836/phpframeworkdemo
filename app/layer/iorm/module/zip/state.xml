@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sql_mapping>
+	<insert id="insert_state">
+		insert into mz_state (country_id, name, created_date, modified_date) values (#country_id#, '#name#', '#created_date#', '#modified_date#')
+	</insert>
+	<insert id="insert_state_with_ai_pk" hard_coded_ai_pk="1">
+		insert into mz_state (state_id, country_id, name, created_date, modified_date) values (#state_id#, #country_id#, '#name#', '#created_date#', '#modified_date#')
+	</insert>
+	
+	<update id="update_state">
+		update mz_state set country_id=#country_id#, name='#name#', modified_date='#modified_date#' where state_id=#state_id#
+	</update>
+	
+	<delete id="delete_state">
+		delete from mz_state where state_id=#state_id#
+	</delete>
+	
+	<delete id="delete_states_by_conditions">
+		delete from mz_state where #conditions#
+	</delete>
+	
+	<select id="get_state">
+		select st.*, co.country_id, co.name as 'country'
+		from mz_state st
+		inner join mz_country co on co.country_id=st.country_id
+		where st.state_id=#state_id#
+	</select>
+	
+	<select id="get_all_states">
+		select * from mz_state
+	</select>
+	
+	<select id="count_all_states">
+		select count(state_id) total from mz_state
+	</select>
+	
+	<select id="get_states_by_conditions">
+		select * from mz_state where #conditions#
+	</select>
+	
+	<select id="count_states_by_conditions">
+		select count(state_id) total from mz_state where #conditions#
+	</select>
+	
+	<select id="get_full_states">
+		select st.*, co.country_id, co.name as 'country'
+		from mz_state st
+		inner join mz_country co on co.country_id=st.country_id
+	</select>
+</sql_mapping>

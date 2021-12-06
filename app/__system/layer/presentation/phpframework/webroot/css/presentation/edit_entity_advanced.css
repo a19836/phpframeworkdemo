@@ -1,0 +1,54 @@
+.title {
+	margin-bottom:0;
+}
+.title .view {
+	float:none;
+	display:inline-block;
+	vertical-align:middle;
+}
+
+.entity_obj {
+	width:99%;
+	width:calc(100% - 10px); /* bc of tabs */
+	overflow:hidden;
+	margin:0 auto;
+}
+.entity_obj #view_tab,
+  .entity_obj #add_view_tab {
+	float:right;
+}
+.entity_obj #add_view_tab .icon.add {
+	height:16px;
+	margin:0 5px 0 0;
+}
+
+.entity_obj .code_layout_ui_editor {
+	height:calc(100vh - 110px);
+	min-height:300px;
+	padding:0 !important;
+	position:relative;
+}
+.minimized .entity_obj .code_layout_ui_editor {
+	height:calc(100vh - 45px);
+}
+
+#view {
+	width:100%;
+	padding:0;
+	margin:0;
+}
+
+#view iframe {
+	width:100%;
+	border:0;
+	padding:0;
+	margin:0;
+}
+
+/* To print the workflow */
+@media print {
+	.entity_obj {
+		overflow:visible !important;
+		border:0 !important;
+	}
+}

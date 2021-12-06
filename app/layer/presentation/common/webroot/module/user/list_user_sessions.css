@@ -1,0 +1,21 @@
+.module_list_user_sessions td {
+	text-align:center;
+}
+.module_list_user_sessions td.username {
+	width:100px;
+}
+.module_list_user_sessions td.session_id {
+	width:100px;
+}
+.module_list_user_sessions td.logged_status {
+	width:80px;
+}
+.module_list_user_sessions td.login_time {
+	width:150px;
+}
+.module_list_user_sessions td.failed_login_attempts {
+	width:150px;
+}
+.module_list_user_sessions td.failed_login_time {
+	width:150px;
+}

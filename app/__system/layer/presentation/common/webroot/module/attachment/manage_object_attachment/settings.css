@@ -1,0 +1,55 @@
+.manage_object_attachment_settings {
+	text-align:left;
+}
+.manage_object_attachment_settings .clear {
+	float:none;
+	clear:both;
+}
+.manage_object_attachment_settings .action,
+   .manage_object_attachment_settings .object_type_id,
+   .manage_object_attachment_settings .object_id,
+   .manage_object_attachment_settings .group,
+   .manage_object_attachment_settings .file_variable,
+   .manage_object_attachment_settings .resize_width,
+   .manage_object_attachment_settings .resize_height,
+   .manage_object_attachment_settings .ok_response,
+   .manage_object_attachment_settings .error_response {
+	width:100%;
+	min-height:20px;
+	margin-bottom:10px;
+	float:none;
+	clear:left;
+}
+.manage_object_attachment_settings .ok_response,
+  .manage_object_attachment_settings .file_variable {
+	margin-top:15px;
+}
+
+.manage_object_attachment_settings .action label,
+   .manage_object_attachment_settings .object_type_id label,
+   .manage_object_attachment_settings .object_id label,
+   .manage_object_attachment_settings .group label,
+   .manage_object_attachment_settings .file_variable label,
+   .manage_object_attachment_settings .resize_width label,
+   .manage_object_attachment_settings .resize_height label,
+   .manage_object_attachment_settings .ok_response label,
+   .manage_object_attachment_settings .error_response label {
+	width:130px;
+   	display:block;
+	float:left;
+}
+.manage_object_attachment_settings .action select,
+   .manage_object_attachment_settings .object_type_id select,
+   .manage_object_attachment_settings .object_id input,
+   .manage_object_attachment_settings .group input,
+   .manage_object_attachment_settings .file_variable input,
+   .manage_object_attachment_settings .resize_width input,
+   .manage_object_attachment_settings .resize_height input {
+	width:170px;
+	font-size:11px;
+}
+.manage_object_attachment_settings .ok_response input,
+   .manage_object_attachment_settings .error_response input {
+	width:300px;
+	font-size:11px;
+}

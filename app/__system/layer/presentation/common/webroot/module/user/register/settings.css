@@ -1,0 +1,40 @@
+.edit_settings .user_type_id,
+   .edit_settings .redirect_page_url {
+	width:100%;
+	height:20px;
+	margin-bottom:10px;
+	float:none;
+	clear:left;
+}
+.edit_settings .redirect_page_url {
+	margin-bottom:25px;
+}
+
+.edit_settings .user_type_id label,
+   .edit_settings .redirect_page_url label {
+	width:150px;
+   	display:block;
+	float:left;
+}
+
+.edit_settings .redirect_page_url input {
+	width:497px;
+	padding-right:20px;
+}
+
+.edit_settings .settings_props {
+	border:0;
+}
+.edit_settings .settings_props .settings_prop.prop_user_attachments .label_settings {
+	padding:0;
+}
+.edit_settings .settings_props .settings_prop.prop_password .selected_task_properties .form_containers .fields .field .other_settings .password_generator {
+	width:100%;
+	height:20px;
+	margin-bottom:5px;
+	margin-left:20px;
+}
+.edit_settings .settings_props .settings_prop.prop_password .selected_task_properties .form_containers .fields .field .other_settings .password_generator label {
+	width:130px;
+	font-size:90%;
+}

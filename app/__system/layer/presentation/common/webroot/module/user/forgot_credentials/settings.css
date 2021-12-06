@@ -1,0 +1,64 @@
+.forgot_credentials_settings {
+	width:645px;
+	text-align:left;
+}
+.forgot_credentials_settings .show_recover_username_through_email,
+   .forgot_credentials_settings .show_recover_username_through_security_questions,
+   .forgot_credentials_settings .show_recover_password_through_email,
+   .forgot_credentials_settings .show_recover_password_through_security_questions,
+   .forgot_credentials_settings .admin_email,
+   .forgot_credentials_settings .smtp_host,
+   .forgot_credentials_settings .smtp_port,
+   .forgot_credentials_settings .smtp_secure,
+   .forgot_credentials_settings .smtp_user,
+   .forgot_credentials_settings .smtp_pass,
+   .forgot_credentials_settings .redirect_page_url,
+   .forgot_credentials_settings .username_attribute_label,
+   .forgot_credentials_settings .password_attribute_label {
+	width:100%;
+	float:none;
+	clear:left;
+	margin-bottom:5px;
+}
+.forgot_credentials_settings .admin_email {
+	margin-top:15px;   
+}
+.forgot_credentials_settings .password_attribute_label {
+	margin-bottom:15px;
+}
+
+.forgot_credentials_settings .show_recover_username_through_email .info,
+   .forgot_credentials_settings .show_recover_username_through_security_questions .info,
+   .forgot_credentials_settings .show_recover_password_through_email .info,
+   .forgot_credentials_settings .show_recover_password_through_security_questions .info {
+	width:100%;
+	font-size:10px;
+	color:#999;
+	float:none;
+	clear:left;
+}
+.forgot_credentials_settings .admin_email label,
+   .forgot_credentials_settings .smtp_host label,
+   .forgot_credentials_settings .smtp_port label,
+   .forgot_credentials_settings .smtp_secure label,
+   .forgot_credentials_settings .smtp_user label,
+   .forgot_credentials_settings .smtp_pass label,
+   .forgot_credentials_settings .redirect_page_url label,
+   .forgot_credentials_settings .username_attribute_label label,
+   .forgot_credentials_settings .password_attribute_label label {
+	width:220px;
+   	display:block;
+	float:left;
+}
+.forgot_credentials_settings .admin_email input,
+   .forgot_credentials_settings .smtp_host input,
+   .forgot_credentials_settings .smtp_port input,
+   .forgot_credentials_settings .smtp_secure input,
+   .forgot_credentials_settings .smtp_user input,
+   .forgot_credentials_settings .smtp_pass input {
+	width:400px;
+}
+.forgot_credentials_settings .redirect_page_url input {
+	width:382px;
+	padding-right:20px;
+}

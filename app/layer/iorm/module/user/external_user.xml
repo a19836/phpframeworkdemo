@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sql_mapping>
+	<insert id="insert_external_user">
+		insert into mu_external_user (user_id, external_type_id, social_network_type, social_network_user_id, token_1, token_2, token_3, data, created_date, modified_date) values (#user_id#, #external_type_id#, '#social_network_type#', '#social_network_user_id#', '#token_1#', '#token_2#', '#token_3#', '#data#', '#created_date#', '#modified_date#')
+	</insert>
+	
+	<update id="update_external_user">
+		update mu_external_user set user_id=#user_id#, external_type_id=#external_type_id#, social_network_type='#social_network_type#', social_network_user_id='#social_network_user_id#', token_1='#token_1#', token_2='#token_2#', token_3='#token_3#', data='#data#', modified_date='#modified_date#' where external_user_id=#external_user_id#
+	</update>
+	
+	<delete id="delete_external_user">
+		delete from mu_external_user where external_user_id=#external_user_id#
+	</delete>
+	
+	<delete id="delete_external_users_by_conditions">
+		delete from mu_external_user where #conditions#
+	</delete>
+	
+	<select id="get_external_user">
+		select * from mu_external_user where external_user_id=#external_user_id#
+	</select>
+	
+	<select id="get_external_users_by_conditions">
+		select * from mu_external_user where #conditions#
+	</select>
+	
+	<select id="count_external_users_by_conditions">
+		select count(user_id) total from mu_external_user where #conditions#
+	</select>
+	
+	<select id="get_all_external_users">
+		select * from mu_external_user
+	</select>
+	
+	<select id="count_all_external_users">
+		select count(external_user_id) total from mu_external_user
+	</select>
+</sql_mapping>

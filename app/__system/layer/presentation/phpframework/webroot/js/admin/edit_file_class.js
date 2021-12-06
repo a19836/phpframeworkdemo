@@ -1,0 +1,197 @@
+var classesTree = null;
+
+$(function () {
+	classesTree = new MyTree({
+		multiple_selection : false,
+		ajax_callback_before : prepareLayerNodes1,
+		ajax_callback_after : removeNonPHPClassFilesFromTree,
+	});
+	classesTree.init("choose_php_class_from_file_manager");
+});
+
+function removeNonPHPClassFilesFromTree(ul, data) {
+	ul = $(ul);
+	
+	ul.find("i.function, i.entity_file, i.view_file, i.template_file, i.controller_file, i.config_file, i.undefined_file, i.js_file, i.css_file, i.img_file, i.block_file, i.cache_file, .entities_folder, .views_folder, .templates_folder, .template_folder, .webroot_folder, .blocks_folder, .configs_folder, .controllers_folder, .caches_folder").each(function(idx, elm){
+		$(elm).parent().parent().remove();
+	});
+	
+	ul.find("i.file").each(function(idx, elm){
+		elm = $(elm);
+		var a = elm.parent();
+		var li = a.parent();
+		var file_path = a.attr("file_path");
+		
+		if (!file_path || !("" + file_path).match(/\.php([0-9]*)$/i)) //is not a php file
+			li.remove();
+		else 
+			li.find(" > ul > li > a > i").not("i.service, i.class, i.test_unit_obj").parent().parent().remove();
+	});
+	
+	ul.find("i.service, i.class, i.test_unit_obj").each(function(idx, elm){
+		$(elm).parent().parent().children("ul").remove();
+	});
+}
+
+function getClassFromFileManager(elm, selector) {
+	MyFancyPopup.init({
+		elementToShow: $("#choose_php_class_from_file_manager"),
+		parentElement: document,
+		
+		targetField: $(elm).parent().find(selector)[0],
+		updateFunction: updateClassFieldFromFileManager
+		
+	});
+	
+	MyFancyPopup.showPopup();
+}
+
+function updateClassFieldFromFileManager(elm) {
+	var node = classesTree.getSelectedNodes();
+	node = node[0];
+	
+	var file_path = null, is_php_file = false, is_php_file = false, file_name = false;
+	
+	if (node) {
+		var a = $(node).children("a");
+		
+		if (a) {
+			file_path = a.attr("file_path");
+			is_php_obj = a.children("i").is(".service, .class");
+			is_php_file = file_path && file_path.substr(file_path.length - 4) == ".php";
+			file_name = a.children("label").text();
+			
+			if (is_php_file && file_name) {
+				if (!is_php_obj && confirm("We couldn't detect if this php file contains the class '" + file_name + "'. Do you still wish to proceed?")) {
+					is_php_obj = true;
+					file_name = file_name.substr(0, file_name.length - 4); //remove the php extension
+				}
+			}
+			else
+				is_php_obj = false;
+		}
+	}
+	
+	if (is_php_obj) {
+		$(MyFancyPopup.settings.targetField).val(file_name ? file_name.trim() : "");
+		$(MyFancyPopup.settings.targetField).parent().children("select").val("string");
+		
+		//prepare include file
+		var exists_include = false;
+		var include_paths = $(".file_class_obj .includes .include .include_path");
+		for (var i = 0, l = include_paths.length; i < l; i++)
+			if ($(include_paths[i]).val() == file_path) {
+				exists_include = true;
+				break;
+			}
+		
+		if (!exists_include) {
+			var inc = addNewInclude( $(".file_class_obj .includes .add")[0] );
+			if (inc) {
+				var bean_name = a.attr("bean_name");
+				file_path = getNodeIncludePath(node, file_path, bean_name);
+				
+				inc.children(".include_path").val(file_path);
+				inc.children(".include_type").val("");
+				inc.children(".include_once").attr("checked", "checked").prop("checked", true);
+			}
+		}
+		
+		MyFancyPopup.hidePopup();
+	}
+	else
+		alert("Invalid File selection.\nPlease choose a php file and then click the button.");
+}
+
+function addNewProperty(elm) {
+	var html_obj = $(new_property_html);
+	$(elm).parent().parent().parent().parent().find(".fields").append(html_obj);
+	
+	return html_obj;
+}
+
+function saveFileClass() {
+	var class_elm = $(".file_class_obj");
+	
+	var extends_value = class_elm.children(".extend").children("input").val();
+	extends_value = extends_value ? extends_value.split(",") : [];
+	
+	var implements_value = class_elm.children(".implement").children("input").val();
+	implements_value = implements_value ? implements_value.split(",") : [];
+	
+	var properties = [];
+	var items = class_elm.children(".properties").find(".fields .property");
+	for (var i = 0; i < items.length; i++) {
+		var item = $(items[i]);
+		
+		var name = item.find(".name input").val();
+		var value = item.find(".value input").val();
+		var type = item.find(".type select").val();
+		var is_static = item.find(".static input").prop("checked") ? 1 : 0;
+		var var_type = item.find(".var_type select").val();
+		var comments = item.find(".comments input").val();
+		
+		properties.push({
+			"name": name,
+			"value": value,
+			"type": type,
+			"static": is_static,
+			"var_type": var_type,
+			"comments": comments,
+		});
+	}
+	
+	var object = getIncludesObj();
+	var obj = {
+		"name": class_elm.children(".name").children("input").val(),
+		"extends": extends_value,
+		"implements": implements_value,
+		"abstract": class_elm.children(".abstract").children("input").prop("checked") ? 1 : 0,
+		"namespace": object["namespaces"] && object["namespaces"].length > 0 ? object["namespaces"][0] : "",
+		"uses": object["uses"],
+		"includes": object["includes"],
+		"properties": properties,
+		"comments": class_elm.children(".comments").children("textarea").val(),
+	};
+	
+	var url = save_object_url.replace("#class_id#", original_class_id);
+	
+	$.ajax({
+		type : "post",
+		url : url,
+		data : {"object" : obj},
+		dataType : "json",
+		success : function(data, textStatus, jqXHR) {
+			if (data == 1 || ($.isPlainObject(data) && data["status"] == 1)) {
+				var namespace = obj["namespace"] ? obj["namespace"].replace(/^[ \n\r]+/g, "").replace(/[ \n\r]+$/g, "") : "";
+				var new_class_id = (namespace ? (namespace.substr(0, 1) == "\\" ? "" : "\\") + namespace + "\\" : "") + obj["name"];
+				
+				if (original_class_id != new_class_id) {
+					//prepare file name if namespace exists
+					var original_obj_name = original_class_id.indexOf("\\") != -1 ? original_class_id.substr(original_class_id.lastIndexOf("\\") + 1) : original_class_id;
+					
+					save_object_url = save_object_url.replace("/" + original_obj_name + ".php", "/" + obj["name"] + ".php");
+					original_class_id = new_class_id;
+					
+					if (window.parent && typeof window.parent.refreshLastNodeParentChilds == "function")
+						window.parent.refreshLastNodeParentChilds();
+				}
+				
+				StatusMessageHandler.showMessage("Saved successfully.");
+			}
+			else
+				StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + (data && !$.isPlainObject(data) ? "\n" + data : ""));
+		},
+		error : function(jqXHR, textStatus, errorThrown) { 
+			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
+					StatusMessageHandler.removeLastShownMessage("error");
+					saveFileClass();
+				});
+			else {
+				var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+				StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + msg);
+			}
+		},
+	});
+}

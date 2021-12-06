@@ -1,0 +1,54 @@
+.send_email_settings .settings_props {
+	border-bottom:0;
+	margin-top:15px;
+}
+
+.send_email_settings .reset_after_send {
+	margin-top:10px;
+}
+
+.send_email_settings .email_template_settings {
+	margin-top:15px;
+	padding:15px 10px 0;
+	border-top:1px solid #ccc;
+}
+.send_email_settings .email_template_settings > label {
+	width:100% !important;
+	margin-bottom:10px;
+}
+.send_email_settings .email_template_settings > div {
+	margin-top:5px;
+}
+.send_email_settings .email_template_settings label {
+	width:100px;
+	display: inline-block;
+}
+.send_email_settings .email_template_settings input,
+   .send_email_settings .email_template_settings textarea {
+	width:100%;
+	width:calc(100% - 110px);
+	background:white;
+}
+
+.send_email_settings .smtp_settings {
+	margin-top:15px;
+	padding:15px 10px 0;
+	border-top:1px solid #ccc;
+}
+.send_email_settings .smtp_settings > label {
+	width:100% !important;
+	margin-bottom:10px;
+}
+.send_email_settings .smtp_settings > div {
+	margin-top:5px;
+}
+.send_email_settings .smtp_settings label {
+	width:150px;
+	display: inline-block;
+}
+.send_email_settings .smtp_settings input,
+   .send_email_settings .smtp_settings select {
+	width:100%;
+	width:calc(100% - 160px);
+	box-sizing:border-box;
+}

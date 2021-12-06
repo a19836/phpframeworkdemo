@@ -1,0 +1,21 @@
+<?php
+/*
+ * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
+ * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * 
+ * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
+ * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
+ * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
+ * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
+ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+include_once get_lib("org.phpframework.compression.IFileCompressionHandler"); class GzipstreamFileCompressionHandler implements IFileCompressionHandler { protected $file_pointer = null; protected $deflate_context; public function __construct() { if (!function_exists("deflate_init")) throw new Exception("Gzipstream lib is not installed or deflate_init function does NOT exists!"); } public function open($pf3dc0762) { $this->file_pointer = fopen($pf3dc0762, "wb"); if ($this->file_pointer === false) throw new Exception("Could not open file! Please check if the '" . basename($pf3dc0762) . "' file is writeable..."); $this->deflate_context = deflate_init(ZLIB_ENCODING_GZIP, array('level' => 9)); return true; } public function write($v327f72fb62) { $v8d6672117e = fwrite($this->file_pointer, deflate_add($this->deflate_context, $v327f72fb62, ZLIB_NO_FLUSH)); if ($v8d6672117e === false) throw new Exception("Could not write to file! Please check if you have enough free space..."); return $v8d6672117e; } public function close() { fwrite($this->file_pointer, deflate_add($this->deflate_context, '', ZLIB_FINISH)); return fclose($this->file_pointer); } } ?>

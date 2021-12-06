@@ -1,0 +1,11 @@
+.export_form {
+	text-align:center;
+}
+.export_form select,
+  .export_form input {
+  	margin-right:5px;
+	clear:both;
+	float:none;
+	display:inline-block;
+	text-align:center;
+}

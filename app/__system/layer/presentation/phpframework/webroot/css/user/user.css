@@ -1,0 +1,160 @@
+#menu {
+	position:fixed;
+	left:0;
+	top:0;
+	bottom:0;
+	width:220px;
+	background-color:#b3c8cc;
+	padding-top:0px;
+	overflow:auto;
+	z-index:1;
+}
+#menu ul {
+	/*border-top:1px dashed #FFF;*/
+}
+#menu ul li {
+	height:20px;
+	border-bottom:1px dashed #FFF;
+	padding:3px 10px;
+}
+#menu ul li:hover {
+	background-color:#d5e3e4;
+}
+#menu ul li a {
+	font-weight:bold;
+	font-size:12px;
+	font-style:italic;
+	color:#666;
+}
+#menu li.current_user {
+	padding-top:10px;
+	border-bottom:0;
+	font-style:italic;
+	text-align:center;
+	color:#FFF;
+}
+#menu li.current_user:hover {
+	background-color:#b3c8cc;
+}
+#menu li.manage_menu_item {
+	margin-top:20px;
+	border-top:1px dashed #FFF;
+}
+#menu li.change_db_keys {
+	margin-top:20px;
+	border-top:1px dashed #FFF;
+	background-color:#b0c0e0;
+}
+#menu li.change_auth_settings {
+	margin-top:20px;
+	border-top:1px dashed #FFF;
+	background-color:#b0c0e0;
+}
+
+#content {
+	position:absolute;
+	left:220px;
+	top:0;
+	bottom:0;
+	right:0px;
+}
+
+#content .title, #content h1 {
+	color: #000;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 10px 0 20px 0px;
+	text-align: center;
+	width: 100%;
+	height:25px;
+}
+
+#content .users_list {}
+#content .user_types_list {}
+#content .object_types_list {}
+#content .permissions_list {}
+#content .login_controls_list {}
+#content .edit_user_type {}
+#content .object_user_type {}
+#content .edit_user {}
+#content .edit_permission {}
+#content .change_db_keys {}
+#content .change_auth_settings {}
+
+#content table { border:1px solid #CCC; margin:0 auto; }
+#content th { text-transform:uppercase; font-weight:bold; font-size:10px; color:#666; }
+#content td { border:1px solid #CCC; padding:0px 2px 0px 2px; text-align:center; }
+#content table .user_id { width:50px; }
+#content table .permission_id { width:50px; }
+#content table .user_type_id { width:50px; }
+#content table .object_type_id { width:50px; }
+#content table .user_type { width:100px; }
+#content table .username { width:150px; }
+#content table .name { width:150px; }
+#content table .created_date { width:150px; }
+#content table .modified_date { width:150px; }
+#content table td.object_id { text-align:left; padding-left:5px; padding-right:5px; }
+#content table .user_type_permission { min-width:100px; }
+#content table .buttons { width:20px; padding:0; }
+#content table .buttons .add {}
+#content table .buttons .update {}
+
+#content div.user_type { width:310px; margin:0 auto 20px auto; float:none; clear:left;}
+#content div.user_type label { display:block; float:left; width:100px; }
+#content div.user_type select { width:200px; text-align:center; }
+
+#content .form_fields { width:310px; margin:0 auto; }
+#content .form_fields .form_field { float:none; clear:left; height:20px; margin-bottom:7px; }
+#content .form_fields .form_field label { width:80px; display:block; float:left; font-weight:normal; }
+#content .form_fields .form_field input { width:200px; }
+#content .form_fields .form_field select { width:205px; }
+#content .buttons { width:150px; height:20px; margin:15px auto 20px auto; float:none; clear:left; }
+#content .buttons .submit_button { float:left; width:70px; text-align:center; }
+#content .buttons .submit_button input { font-size:10px; font-weight:bold; height:20px; line-height:15px; }
+
+#content .change_db_keys .form_fields { width:560px; }
+#content .change_db_keys .form_fields .form_field_login { width:300px; margin-left:auto; margin-right:auto; }
+#content .change_db_keys .form_fields .form_field_login.password { margin-bottom:20px; }
+#content .change_db_keys .form_fields .form_field_key label { width:235px; }
+#content .change_db_keys .form_fields .form_field_key input { width:300px; }
+#content .change_db_keys .label { width:560px; margin:0 auto 10px auto; font-weight:bold; }
+#content .change_db_keys .info { width:100%; text-align:center; margin:-10px 0 20px 0; }
+#content .change_db_keys .buttons { width:120px; }
+
+#content .change_auth_settings .form_fields { width:460px; }
+#content .change_auth_settings .form_fields .form_field label { width:240px; }
+#content .change_auth_settings .form_fields .form_field input { width:60px; }
+#content .change_auth_settings .form_fields .form_field_db { margin-left:90px; }
+#content .change_auth_settings .form_fields .form_field_db label { width:150px; }
+#content .change_auth_settings .form_fields .form_field_db input { width:170px; }
+#content .change_auth_settings .form_fields .form_field_db input[type=checkbox] { width:auto; }
+#content .change_auth_settings .form_fields .form_field_db.db_port input {width:60px;}
+#content .change_auth_settings .form_fields .form_field_db select { width:175px; }
+#content .change_auth_settings .form_fields .auth_db_path input { width:200px; }
+#content .change_auth_settings .form_fields .remote_db_credentials { height:20px; margin-bottom:5px; font-weight:bold; }
+#content .change_auth_settings .form_fields .show_advanced_db_options span { display:block; text-align:right; padding-right:45px; }
+#content .change_auth_settings .form_fields .form_field .toggle_password {
+	width:16px;
+	height:16px;
+	display:inline-block;
+	background:url("../../common/img/icon/rename_icon.gif") no-repeat center center;
+	vertical-align:middle;
+	margin-left: 5px;
+	cursor:pointer;
+}
+#content .change_auth_settings .label { width:100%; margin:0 auto 20px auto; font-weight:bold; text-align:center; }
+#content .change_auth_settings .buttons { width:80px; }
+
+#content .edit_user .error { width:100%; text-align:center; font-weight:bold; color:red; }
+
+#content .user_type_permissions_list table {min-width:350px;}
+#content .user_type_permissions_list table .user_type_permission {width:50px;}
+#content .user_type_permissions_list table .user_type_permission.new:after {content:"new"; color:red; font-weight:bold; margin-left:10px; position:absolute; opacity:0.6;}
+#content .user_type_permissions_list table .user_type_permission .toggle {
+	background:url("../../../common/img/icon/view_icon.gif") no-repeat scroll 0 0;
+	float:none;
+	clear:both;
+	display:inline-block;
+	position:absolute;
+	margin-left:50px;
+}

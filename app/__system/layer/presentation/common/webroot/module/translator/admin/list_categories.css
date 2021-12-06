@@ -1,0 +1,22 @@
+.module_list .main_title {
+	width:600px;
+	margin:0 auto;
+	border-bottom:1px solid #000;
+}
+.module_list #file_tree {
+	width:600px;
+	margin:0 auto;
+}
+.module_list #file_tree i.default {
+	background-position:-260px -34px;
+}
+.module_list #file_tree .icon {
+	display:inline-block;
+	float:none;
+	margin:0;
+	margin-left:1px;
+	vertical-align:middle;
+}
+.module_list #file_tree .icon.view {
+	background:url("../../../img/icon/view_icon.gif") no-repeat scroll 0px 1px;
+}

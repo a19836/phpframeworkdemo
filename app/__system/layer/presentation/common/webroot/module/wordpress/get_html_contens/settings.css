@@ -1,0 +1,214 @@
+.block_obj {
+	width:800px;
+}
+
+.module_get_html_contents_settings > div {
+	margin-bottom:10px;
+}
+.module_get_html_contents_settings > div > label {
+	width:180px;
+	display:inline-block;
+}
+.module_get_html_contents_settings > .myfancypopup.wordpress_functions > iframe,
+  .module_get_html_contents_settings > .myfancypopup.wordpress_permalinks_settings > iframe {
+	width:90vw !important;
+	height:90vh !important;
+}
+.module_get_html_contents_settings > .block_class {
+	margin-top:20px;
+	padding-top:20px !important;
+ 	border-top:1px solid #ccc;
+ 	float:none !important;
+}
+.module_get_html_contents_settings > .block_type > .add {
+ 	float: none;
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0 0 0 5px;
+}
+.module_get_html_contents_settings > .page_type_section input,
+  .module_get_html_contents_settings > .page_type_section select,
+  .module_get_html_contents_settings > .block_type > select {
+ 	background:#fff;
+}
+.module_get_html_contents_settings > .path {
+	margin-bottom:20px;
+}
+.module_get_html_contents_settings > .path input {
+	width:200px;
+	border:0;
+	font-size:inherit;
+	color:#000;
+}
+.module_get_html_contents_settings > .path .wordpress_installation_url {
+	color:#000;
+	vertical-align:middle;
+}
+.module_get_html_contents_settings > .path .info {
+	margin-top:5px;
+	margin-left:183px;
+}
+.module_get_html_contents_settings > .wordpress_blocks {
+ 	margin:0;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li {
+ 	margin:10px 5px;
+ 	border:1px solid #999;
+ 	background:#eee;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li.no_wordpress_blocks {
+	text-align:center;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_header {
+	background:#ddd;
+	padding:5px;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_header > .icon {
+	float: none;
+	display: inline-block;
+	vertical-align: middle;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body {
+	padding:5px;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div {
+	margin:10px 0;
+	float:none;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div > label {
+	margin-right:10px;
+	display:inline-block;
+}
+.module_get_html_contents_settings > .previous_html textarea,
+  .module_get_html_contents_settings > .next_html textarea {
+	width: 100%;
+	height:150px;
+	display:block;
+	box-sizing: border-box;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.previous_html textarea,
+  .module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.next_html textarea {
+	width: 100%;
+	height:70px;
+	display:block;
+	box-sizing: border-box;
+}
+.module_get_html_contents_settings > .previous_html textarea.module_settings_property,
+  .module_get_html_contents_settings > .next_html textarea.module_settings_property,
+  .module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.previous_html textarea.module_settings_property,
+  .module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.next_html textarea.module_settings_property,
+  .module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.code textarea.module_settings_property {
+	display:none;
+}
+.module_get_html_contents_settings > .previous_html .ace_editor,
+  .module_get_html_contents_settings > .next_html .ace_editor {
+	height:150px;
+	border:1px solid #ccc;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.previous_html .ace_editor,
+  .module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.next_html .ace_editor {
+	height:70px;
+	border:1px solid #ccc;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.code {
+	margin:0;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.code > .code_header {
+	margin-top:-2.5em;
+	margin-left:170px;
+	float:right;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.code > .code_header select {
+	max-width:400px;
+	background:transparent;
+	text-align:right;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.code > .code_header .icon {
+	margin:0;
+	display:inline-block;
+	float:none;
+	vertical-align:middle;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.code textarea.php,
+  .module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.code .ace_editor {
+	height:150px;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.code > .code_footer {
+	padding:10px 5px 0;
+	text-align:right;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.widget_args {
+	padding:10px;
+	border:1px solid #ccc;
+	background:#fff;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.widget_args > div {
+	margin-bottom:5px;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.widget_args > label:first-child {
+	color:#ccc;
+	margin-bottom:10px;
+	display:block;
+	font-weight:normal;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.widget_args > div label {
+	width:160px;
+	margin:0;
+	display:inline-block;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.widget_args > div input {
+	width:calc(100% - 170px);
+	display:inline-block;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.widget_options {
+	padding:10px;
+	border:1px solid #ccc;
+	background:#fff;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.widget_options > label:first-child {
+	color:#ccc;
+	margin-bottom:10px;
+	display:block;
+	font-weight:normal;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.widget_options p {
+	margin-bottom:5px;
+}
+.module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.widget_options label {
+	margin-right:10px;
+}
+
+.module_get_html_contents_settings > .wordpress_options {
+	margin:0;
+	padding:20px 10px;
+	border:1px solid #ccc;
+	background:#eee;
+}
+.module_get_html_contents_settings > .wordpress_options > label {
+	width:auto;
+	display:block;
+	margin-bottom:10px;
+}
+.module_get_html_contents_settings > .wordpress_options > div {
+	margin-left:20px;
+	margin-bottom:10px;
+}
+.module_get_html_contents_settings > .wordpress_options > div > label {
+	display:inline-block;
+}
+.module_get_html_contents_settings > .wordpress_options > .allowed_wordpress_urls {
+	margin-top:20px;
+}
+.module_get_html_contents_settings > .wordpress_options > .allowed_wordpress_urls .icon {
+	margin:0 0 0 5px;
+	display:inline-block;
+	float:none;
+	vertical-align:middle;
+}
+.module_get_html_contents_settings > .wordpress_options > .allowed_wordpress_urls > ul > li {
+	margin-top:5px;
+}
+.module_get_html_contents_settings > .wordpress_options > .allowed_wordpress_urls > ul > li input {
+	width:80%;
+	width:calc(100% - 50px);
+}

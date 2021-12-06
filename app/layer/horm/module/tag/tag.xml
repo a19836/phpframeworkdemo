@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<sql_mapping>
+	<class name="Tag" table="mt_tag">
+		<id column="tag_id"></id>
+		
+		<queries>
+			<select id="get_tags_by_objects">
+				select t.*, ot.object_type_id, ot.object_id, ot.`group`, ot.`order` 
+				from mt_tag t
+				inner join mt_object_tag ot on ot.tag_id=t.tag_id and ot.object_type_id=#object_type_id# and ot.object_id in (#object_ids#)
+			</select>
+		</queries>
+	</class>
+</sql_mapping>

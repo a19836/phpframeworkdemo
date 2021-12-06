@@ -1,0 +1,45 @@
+.jsplumbtaskmenu .task.task_createclassobject {
+	background-image:url('../img/bg.gif');
+}
+.jsplumbtaskmenu .task.task_createclassobject span {
+	color:#000;
+	background-color:#FFF;
+	
+	opacity:0.7;
+	-ms-filter: alpha(opacity=70);
+	filter: alpha(opacity=70);
+}
+.jsplumbtaskworkflow .task.task_createclassobject {
+	/*background-image:url('../img/bg.gif');
+	-o-background-size:contain;
+	-webkit-background-size:contain;
+	-moz-background-size:contain;
+	background-size:contain; */
+	
+	/* in IE */
+	-ms-background-size:contain;
+	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='contain')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='contain');*/
+}
+.jsplumbtaskworkflow .task.task_createclassobject .info span {
+	color:#4f6f89;
+}
+
+.create_class_object_task_html {
+	width:390px;
+}
+
+.create_class_object_task_html .class_name {
+	width:100%;
+	height:20px;
+	margin-top:15px;
+	margin-bottom:5px;
+}
+.create_class_object_task_html .class_name label {
+	width:135px;
+}
+.create_class_object_task_html .class_name input {
+	width:200px;   
+}
+
+

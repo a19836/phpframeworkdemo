@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget>
+	<label>Iframe</label>
+	<tag>iframe</tag>
+	<settings>
+		<resizable>1</resizable>
+		<template_node_name>iframe</template_node_name>
+		<create_widget_class>IframeWidget</create_widget_class>
+	</settings>
+	<menu_widget><![CDATA[
+		<i class="zmdi zmdi-window-restore"></i>
+	]]></menu_widget>
+	<template_widget></template_widget>
+	<properties><![CDATA[
+		<div class="form-group row settings-property src">
+			<label class="col-md-4 col-sm-5 col-form-label">Source: </label>
+			<input class="col-md-8 col-sm-7 form-control" name="src" />
+		</div>
+	]]></properties>
+	<menu_css><![CDATA[
+		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-iframe,
+		  body > .menu-widget.menu-widget-iframe.ui-draggable-dragging {
+			height:auto;
+			display:inline-block;
+			border:0;
+			color:#fff;
+			overflow:hidden;
+		}
+		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-iframe i,
+		  body > .menu-widget.menu-widget-iframe.ui-draggable-dragging i {
+			font-size:300%;
+		}
+		
+		.layout_ui_editor > .template-widgets .widget-header.widget-header-iframe .options .option.toggle {
+			display:none;
+		}
+		
+		.layout_ui_editor > .menu-settings.menu-settings-iframe > .settings-properties .src.with-search-icon input {
+			padding-right:20px;
+		}
+		.layout_ui_editor > .menu-settings.menu-settings-iframe > .settings-properties .src .search {
+			display:inline-block;
+			float:none;
+			clear:both;
+			position:absolute;
+			right:15px;
+			margin:8px 0 0;
+			background:none;
+			cursor:pointer;
+		}
+	]]></menu_css>
+	<template_css><![CDATA[
+		.template-widget.template-widget-iframe.widget-active {
+			border: 10px solid #f7f7f7; /* bc of the resize, otherwise will be very dificult to resize the iframe bc the iframe html takes precendent and the resize event for the iframe won't fire. */
+		}
+	]]></template_css>
+	<menu_js><![CDATA[
+		function IframeWidget(ui_creator, menu_widget) {
+			var me = this;
+			
+			me.init = function() {
+				menu_widget.attr({
+					"data-on-parse-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.iframe.parseHtml",
+				});
+				
+				menu_widget.children(".properties").attr({
+					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.iframe.saveSettingsField",
+					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.iframe.parseSettings",
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.iframe.openSettings",
+				});
+			};
+			
+			me.parseHtml = function(html_element) {
+				return html_element && html_element.nodeName.toLowerCase() == "iframe";
+			};
+			
+			me.openSettings = function(widget, menu_settings) {
+				if (typeof ui_creator.options.on_choose_page_url_func == "function") {
+					var icon = $('<span class="zmdi zmdi-search-in-file search"></span>');
+					icon.on("click", function() {
+						ui_creator.options.on_choose_page_url_func(this);
+					});
+					menu_settings.find(" > .settings-properties .settings-property.src").addClass("with-search-icon").append(icon);
+				}
+			};
+			
+			me.parseSettings = function(widget, widget_settings) {
+				widget_settings["src"] = widget.attr("src");
+			};
+			
+			me.saveSettingsField = function(field, widget, status) {
+				if (status) {
+					field = $(field);
+					var field_value = field.val();
+					var sprop = field.parent();
+					
+					if (sprop.hasClass("src")) {
+						if (field_value != "") 
+							widget.attr("src", field_value);
+						else 
+							widget.removeAttr("src");
+					}
+				}
+				
+				return status;
+			};
+		}
+	]]></menu_js>
+</widget>

@@ -1,0 +1,28 @@
+#error_message {
+	position:fixed;
+	bottom:0px;
+	width:100%;
+	min-height:25px;
+	line-height:17px;
+	padding-top:5px;
+	background-color:#FF0000;
+	color:#FFF;
+	font-size:12px;
+	font-weight:bold;
+	text-align:center;
+	z-index:2000;
+}
+#status_message {
+	position:fixed;
+	bottom:0px;
+	width:100%;
+	min-height:25px;
+	line-height:17px;
+	padding-top:5px;
+	background-color:#CCFF99;
+	color:#000;
+	font-size:12px;
+	font-weight:bold;
+	text-align:center;
+	z-index:2000;
+}

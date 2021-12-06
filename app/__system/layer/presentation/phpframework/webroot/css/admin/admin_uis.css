@@ -1,0 +1,75 @@
+#title {
+	color:#666;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 10px 0 0px 0px;
+	text-align: center;
+	width: 100%;
+	height:25px;
+}
+
+ul {
+	margin:20px;
+	text-align:center;
+}
+li {
+	width:220px;
+	height:160px;
+	margin:10px !important;
+	display:inline-block;
+	position:relative;
+	border:1px solid #d5e3e4;
+	border-radius:5px;
+	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 20%);
+	cursor:pointer;
+	overflow:hidden;
+}
+li:hover {
+	box-shadow:0px 0px 10px 10px rgb(200 200 200 / 20%);
+}
+li > label {
+	margin-top:10px;
+	display:block;
+	text-align:center;
+	color:#999;
+	cursor:pointer;
+}
+li > .description {
+	height:0;
+	padding:10px;
+	position:absolute;
+	top:auto;
+	bottom:-10px;
+	left:0;
+	right:0;
+	box-sizing:border-box;
+	background-color:#b3c8cced;
+	color:#fff;
+	vertical-align:middle;
+	cursor:pointer;
+	transition:all 1s;
+}
+li:hover > .description {
+	height:60px;
+	bottom:0;
+}
+li > .photo {
+	width:70px;
+	height:100px;
+	margin:10px auto 0;
+	background-size:100% 100% !important;
+	cursor:pointer;
+}
+li.simple_admin_ui > .photo {
+	background:url(../../img/simple_admin_ui.png) no-repeat center;
+}
+li.citizen_admin_ui > .photo {
+	width:120px;
+	background:url(../../img/citizen_admin_ui.png) no-repeat center;
+}
+li.advanced_admin_ui > .photo {
+	background:url(../../img/advanced_admin_ui.png) no-repeat center;
+}
+li.expert_admin_ui > .photo {
+	background:url(../../img/expert_admin_ui.png) no-repeat center;
+}

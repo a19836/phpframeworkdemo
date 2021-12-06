@@ -1,0 +1,166 @@
+.choose_from_file_manager {
+	width:300px;
+	margin:0 auto;
+}
+.choose_from_file_manager div {
+	float:none;
+	clear:left;
+}
+.choose_from_file_manager .title, .statuses .title {
+	color: #000;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 10px 0 20px 0px;
+	text-align: center;
+	width: 100%;
+	height:25px;
+}
+.choose_from_file_manager .broker,
+   .choose_from_file_manager .db_driver,
+   .choose_from_file_manager .type,
+   .choose_from_file_manager .include_db_driver {
+	height:20px;
+}
+.choose_from_file_manager .tables {
+	min-height:20px;
+}
+.choose_from_file_manager .include_db_driver {
+	margin-top:10px;
+	padding-left:80px;
+	box-sizing:border-box;
+}
+.choose_from_file_manager .broker label,
+   .choose_from_file_manager .db_driver label,
+   .choose_from_file_manager .type label,
+   .choose_from_file_manager .tables > label {
+	display:block;
+	float:left;
+	width:80px;
+	height:20px;
+	line-height:20px;
+}
+.choose_from_file_manager .tables > label {
+	float:none;
+}
+.choose_from_file_manager .include_db_driver label {
+	font-weight:normal;
+}
+.choose_from_file_manager .broker select,
+   .choose_from_file_manager .db_driver select,
+   .choose_from_file_manager .type select {
+	display:block;
+	float:left;
+	width:200px;
+	height:20px;
+	line-height:20px;
+	margin-bottom:5px;
+}
+.choose_from_file_manager .tables ul {
+	width:600px;
+	display:block;
+	margin-top:5px;
+	padding-left:20px;
+	float: none;
+	clear: both;
+}
+.choose_from_file_manager .tables li label {
+	margin-left:5px;
+	font-weight:normal;
+}
+
+.choose_from_file_manager .buttons {
+	height:20px;
+	padding-top:10px;
+	text-align:center;
+	width:100%;
+	clear:left;
+	float:none;
+}
+.choose_from_file_manager .buttons input {
+	height:25px !important;
+	line-height:15px !important;
+	padding:3px 5px !important;
+	border:1px outset;
+	background: #d5e3e4;
+	display:inline !important;
+	float:none !important;
+	
+	-moz-border-radius:0.5em; 
+	-webkit-border-radius:0.5em;
+	border-radius:0.5em;
+}
+
+.namespace {
+	margin-top:20px;
+}
+.namespace label {
+	font-weight:normal;
+}
+.namespace input {
+	width:200px;
+}
+
+.options {
+	margin:0 auto;
+	padding-top:20px;
+	width:370px;
+	clear:left;
+	float:none;
+}
+.overwrite {
+	float:none;
+	clear:left;
+	width:100%;
+}
+.overwrite input {
+	
+}
+.overwrite label {
+	font-size:9px;
+	font-weight:normal;
+}
+
+.statuses table {
+	border:1px solid #CCC;
+	width:600px;
+	margin:20px auto;
+}
+.statuses th {
+	color:#999;
+	font-weight:bold;
+	font-size:10px;
+	height:20px;
+	line-height:20px;
+}
+.statuses td {
+	border:1px solid #CCC;
+	color:#999;
+	height:20px;
+	line-height:20px;
+}
+.statuses td.object_name {
+	text-align:center;
+}
+.statuses td.status {
+	font-weight:bold;
+	text-align:center;
+}
+.statuses td.status_ok {
+	color:#009900;
+}
+.statuses td.status_error {
+	color:#990000;
+}
+
+/* TREE */
+.mytree {
+	float:none;
+	clear:left;
+	min-width:300px;
+	min-height:200px;
+	margin:10px auto;
+}
+.mytree li > a > span {
+	color:blue;
+	cursor:pointer;
+}

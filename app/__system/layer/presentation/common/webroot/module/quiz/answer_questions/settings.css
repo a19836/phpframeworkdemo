@@ -1,0 +1,99 @@
+.edit_settings {
+	text-align:left;
+}
+.edit_settings .clear {
+	float:none;
+	clear:both;
+}
+.edit_settings .user_id,
+   .edit_settings .session_id {
+	width:310px;
+	height:20px;
+	margin-bottom:10px;
+	float:left;
+}
+.edit_settings .questions_type {
+	min-height:20px;
+	margin-bottom:10px;
+}
+.edit_settings .get_by_parent,
+   .edit_settings .allow_multiple_answers {
+	min-height:20px;
+	margin-bottom:10px;
+}
+.edit_settings .questions_type label,
+   .edit_settings .session_id label {
+	width:120px;
+   	display:block;
+	float:left;
+}
+.edit_settings .user_id label {
+	width:90px;
+}
+.edit_settings .allow_multiple_answers label {
+	width:180px;
+   	display:block;
+	float:left;
+}
+.edit_settings .user_id input,
+   .edit_settings .session_id input {
+	width:170px;
+	font-size:11px;
+}
+.edit_settings .questions_type select {
+	font-size:11px;
+}
+
+.edit_settings .allow_deletion .icon {
+	display:none;
+}
+
+/* Get By Parent */
+.edit_settings .get_by_parent {
+	margin-left:20px;
+	float:none;
+	clear:left;
+	display:none;
+}
+.edit_settings .get_by_parent .questions_parent_object_type_id {
+	width:240px;
+	float:left;
+	clear:none;
+}
+.edit_settings .get_by_parent .questions_parent_object_id {
+	width:260px;
+	float:left;
+	clear:none;
+}
+.edit_settings .get_by_parent .questions_parent_group {
+	width:150px;
+	float:left;
+	clear:none;
+}
+.edit_settings .get_by_parent .questions_parent_object_type_id label {
+	width:100px;
+   	display:block;
+	float:left;
+}
+.edit_settings .get_by_parent .questions_parent_object_id label {
+	width:90px;
+   	display:block;
+	float:left;
+}
+.edit_settings .get_by_parent .questions_parent_group label {
+	width:60px;
+   	display:block;
+	float:left;
+}
+.edit_settings .get_by_parent .questions_parent_object_type_id select {
+	width:130px;
+	font-size:11px;
+}
+.edit_settings .get_by_parent .questions_parent_object_id input {
+	width:150px;
+	font-size:11px;
+}
+.edit_settings .get_by_parent .questions_parent_group input {
+	width:70px;
+	font-size:11px;
+}

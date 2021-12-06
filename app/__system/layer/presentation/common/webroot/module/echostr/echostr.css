@@ -1,0 +1,97 @@
+.block_obj,
+  .block_obj .module_settings,
+  .block_obj .module_settings .settings {
+	width:auto;
+	margin:0;
+	padding:0;
+	border:0;
+}
+
+.echostr_settings {
+	text-align:left;
+}
+.echostr_settings > .editor {
+	width:100%;
+	height:350px;
+	padding:0;
+}
+.echostr_settings textarea {
+	width:100%;
+	height:100%;
+}
+.echostr_settings textarea.module_settings_property {
+	display:none;
+}
+
+/* layout_ui_editor */
+.echostr_settings .layout_ui_editor {
+	height:315px;
+}
+.echostr_settings .layout_ui_editor {
+	z-index:101;
+}
+.echostr_settings .layout_ui_editor .tabs {
+	background:#fff;
+}
+.echostr_settings .layout_ui_editor > .menu-settings table {
+	border-collapse:separate;
+	border-spacing:2px;
+}
+.echostr_settings .layout_ui_editor > .menu-settings table th {
+	font-weight:bold;
+}
+.echostr_settings .layout_ui_editor > .menu-settings label {
+	display:inline;
+}
+
+.echostr_settings .layout_ui_editor > .menu-layers label {
+	display:inline;
+}
+
+.echostr_settings .layout_ui_editor > .options .options-left,
+  .echostr_settings .layout_ui_editor > .options .options-center,
+  .echostr_settings .layout_ui_editor > .options .options-right,
+  .echostr_settings .layout_ui_editor > .options .options-right-2 {
+	padding-top:7px;
+}
+.echostr_settings .layout_ui_editor > .options .option {
+	height:20px;
+}
+.echostr_settings .layout_ui_editor > .options .option.option-screen-width, 
+  .echostr_settings .layout_ui_editor > .options .option.option-screen-height {
+	height:auto;
+	font-size:70%;
+	vertical-align:middle;
+}
+.echostr_settings .layout_ui_editor > .options .option.option-screen-width {
+	margin-left:0;
+}
+.echostr_settings .layout_ui_editor > .options .option.option-px {
+	margin-top:0;
+}
+.echostr_settings .layout_ui_editor > .options .option.option-x {
+	font-size:70%;
+}
+.echostr_settings .layout_ui_editor > .options .option.show-full-source {
+	display:none !important;
+}
+.echostr_settings .layout_ui_editor .option,
+  .echostr_settings .layout_ui_editor .move,
+  .echostr_settings .layout_ui_editor .add,
+  .echostr_settings .layout_ui_editor .delete {
+	background-image:none;
+}
+.echostr_settings .layout_ui_editor label {
+	font-style:inherit;
+	font-weight:inherit;
+	color:inherit;
+	font-family:inherit;
+}
+.echostr_settings .layout_ui_editor .template-source textarea,
+   .echostr_settings .layout_ui_editor .template-source .ace_editor {
+	height:100%;
+}
+.echostr_settings .layout_ui_editor .tabs .tab.view-page {
+	opacity:.4;
+	float:left;
+}

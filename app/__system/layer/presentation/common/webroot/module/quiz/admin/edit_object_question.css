@@ -1,0 +1,9 @@
+.module_edit {
+	width:340px;
+}
+.module_edit .form_fields .form_field label {
+	width:120px;
+}
+.module_edit .buttons .submit_button_save {
+	display:none;
+}

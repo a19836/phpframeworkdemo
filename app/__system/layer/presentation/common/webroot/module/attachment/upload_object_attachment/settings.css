@@ -1,0 +1,47 @@
+.upload_object_attachment_settings {
+	text-align:left;
+}
+.upload_object_attachment_settings .clear {
+	float:none;
+	clear:both;
+}
+.upload_object_attachment_settings .object_type_id,
+   .upload_object_attachment_settings .object_id,
+   .upload_object_attachment_settings .group,
+   .upload_object_attachment_settings .template,
+   .upload_object_attachment_settings .main_label,
+   .upload_object_attachment_settings .item_label {
+	width:100%;
+	height:20px;
+	margin-bottom:10px;
+	float:none;
+	clear:left;
+}
+.upload_object_attachment_settings .template {
+	margin-top:20px;
+}
+.upload_object_attachment_settings .item_label {
+	margin-bottom:15px;
+}
+
+
+.upload_object_attachment_settings .object_type_id label,
+   .upload_object_attachment_settings .object_id label,
+   .upload_object_attachment_settings .group label,
+   .upload_object_attachment_settings .template label,
+   .upload_object_attachment_settings .main_label label,
+   .upload_object_attachment_settings .item_label label {
+	width:180px;
+   	display:block;
+	float:left;
+}
+.upload_object_attachment_settings .object_id input {
+	width:150px;
+}
+.upload_object_attachment_settings .group input {
+	width:150px;
+}
+.upload_object_attachment_settings .main_label input,
+   .upload_object_attachment_settings .item_label input {
+	width:300px;
+}

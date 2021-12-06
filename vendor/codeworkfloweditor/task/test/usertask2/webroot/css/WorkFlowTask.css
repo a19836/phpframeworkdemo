@@ -1,0 +1,79 @@
+.jsplumbtaskmenu .task.task_usertask2 {
+	/*background-image:url('../img/bg.gif');*/
+	background-color:#ccc;
+	border:1px solid #ddd;
+	border-radius:100%;
+}
+.jsplumbtaskmenu .task.task_usertask2 span {
+	line-height:13px;
+	display:block;
+	margin-top:.5rem;
+	color:#000;
+}
+.jsplumbtaskworkflow .task.task_usertask2 {
+	/*background-image:url('../img/bg.gif');
+	background-color:#FF0F0F;
+	-o-background-size:100% 100%;
+	-webkit-background-size:100% 100%;
+	-moz-background-size:100% 100%;
+	background-size:100% 100%; */
+	
+	/* in IE */
+	-ms-background-size:100% 100%;
+	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
+	
+	/*border:none;*/
+	box-shadow:none;
+	-o-box-shadow:none;
+	-webkit-box-shadow:none;
+	-moz-box-shadow:none;
+    	
+	/* For IE */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
+	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+}
+.jsplumbtaskworkflow .task.task_usertask2 .info span {
+	/*color:#000;*/
+	color:#b70608;
+}
+
+
+.add_template_region_block_task_html {
+	width:425px;
+}
+
+.add_template_region_block_task_html .region, 
+   .add_template_region_block_task_html .block {
+	margin-bottom:5px;
+}
+.add_template_region_block_task_html .region,
+   .add_template_region_block_task_html .block {
+	width:100%;
+	height:20px;
+}
+.add_template_region_block_task_html .region label,
+   .add_template_region_block_task_html .block label,
+   .add_template_region_block_task_html .broker_method_obj label {
+	width:100px;
+}
+.add_template_region_block_task_html .region input,
+   .add_template_region_block_task_html .block input {
+	width:230px;
+}
+.add_template_region_block_task_html .broker_method_obj {
+	margin-left:0;
+}
+.add_template_region_block_task_html .broker_method_obj input {
+	margin-left:100px;
+}
+.add_template_region_block_task_html .region select,
+   .add_template_region_block_task_html .block select {
+	background-color:#FFF;
+	color:#AAA;
+	border:1px solid #ECECEC;
+	text-align:center;
+	font-size:9px;
+	width:60px;
+	margin-left:5px;
+}

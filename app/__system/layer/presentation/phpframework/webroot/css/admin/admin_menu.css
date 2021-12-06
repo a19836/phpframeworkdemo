@@ -1,0 +1,80 @@
+.jqcontextmenu {background-color:#d5e3e4; border:1px solid #ccc; border-radius:5px;}
+.jqcontextmenu li {background-color:#d5e3e4;}
+.jqcontextmenu li:first-child {border-top-left-radius:5px; border-top-right-radius:5px;}
+.jqcontextmenu li:last-child {border-bottom-left-radius:5px; border-bottom-right-radius:5px;}
+.jqcontextmenu li:hover {background-color:#eff4f5 !important;}
+.jqcontextmenu li a {margin-left:25px; padding:4px 5px 4px 2px; cursor:pointer; background-color:#d5e3e4; color:#666;}
+.jqcontextmenu li:first-child a {border-top-left-radius:5px; border-top-right-radius:5px;}
+.jqcontextmenu li:last-child a {border-bottom-left-radius:5px; border-bottom-right-radius:5px;}
+.jqcontextmenu li a:hover {text-decoration:none;}
+.jqcontextmenu li:hover a {background-color:#eff4f5;}
+.jqcontextmenu .line_break {height:0px; border:1px inset #CCC; margin:3px; padding:0;}
+.jqcontextmenu .edit {background:url("../../common/img/icon/update_icon.gif") 5px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .edit_new {background:url("../../common/img/icon/update_icon.gif") 5px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .properties {background:url("../../common/img/icon/view_properties_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .create_folder {background:url("../../common/vendor/jquerymytree/css/32px.png") -260px -4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .create_file {background:url("../../common/vendor/jquerymytree/css/32px.png") -100px -68px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .upload {background:url("../../img/icons.png") -114px -197px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .download {background:url("../../img/icons.png") -202px -4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .remove {background:url("../../common/img/icon/delete_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .rename {background:url("../../common/img/icon/rename_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .refresh {background:url("../../common/img/icon/refresh_icon.png") 4px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .copy {background:url("../../common/img/icon/copy_icon.png") 4px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .cut {background:url("../../common/img/icon/cut_icon.png") 4px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .paste {background:url("../../common/img/icon/paste_icon.png") 4px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .zip {background:url("../../common/img/icon/zip_icon.png") 4px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .unzip {background:url("../../common/img/icon/zip_icon.png") 4px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .diff_file {background: url("../../img/icons.png") -115px -114px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .add_table {background:url("../../img/db_icons.png") -21px -21px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .db_dump {background:url("../../img/icons.png") -202px -4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .execute_sql {background:url("../../common/img/icon/edit_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .manage_records {background:url("../../img/db_icons.png") -43px -0px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .edit_diagram {background:url("../../common/img/icon/update_icon.gif") 5px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .create_diagram_sql {background:url("../../common/img/icon/edit_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .create_sql {background:url("../../common/img/icon/edit_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .import_data {background:url("../../img/icons.png") -201px -92px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .export_data {background:url("../../img/icons.png") -5px -114px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .obj {background:url("../../common/img/icon/add_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .create_automatically {background:url("../../img/icons.png") -49px -91px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .create_uis_diagram {background:url("../../img/db_icons.png") -200px -21px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .manage_includes {background:url("../../img/icons.png") -203px -5px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .edit_raw_file {background:url("../../common/img/icon/edit_icon.gif") 6px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .edit_raw_file_new {background:url("../../common/img/icon/edit_icon.gif") 6px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .query {background:url("../../img/icons.png") -158px -47px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .relationship {background:url("../../img/icons.png") -158px -69px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .result_map {background:url("../../img/icons.png") -203px -134px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .parameter_map {background:url("../../img/icons.png") -203px -134px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .service_obj {background:url("../../img/icons.png") -71px -202px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .service_method {background:url("../../img/icons.png") -71px -69px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .service_function {background:url("../../img/icons.png") -180px -69px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .hbnt_obj {background:url("../../img/icons.png") -71px -46px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .objt_obj {background:url("../../img/icons.png") -115px -4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .edit_project_global_variables {background:url("../../common/img/icon/update_icon.gif") 5px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .edit_config {background:url("../../common/img/icon/settings_icon.png") 5px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .edit_init {background:url("../../common/img/icon/edit_icon.gif") 5px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .view_project {background:url("../../common/img/icon/view_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .test_project {background:url("../../common/img/icon/view_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .add_project {background:url("../../img/icons.png") -202px -46px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .manage_modules {background: url("../../img/db_icons.png") -245px -156px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .manage_wordpress {background:url("../../img/wordpress_icon.png") 5px 4px/15px no-repeat #d5e3e4 !important;} /*position: 4px; size:15px*/
+.jqcontextmenu .install_program {background:url("../../img/icons.png") -138px -222px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .install_template {background: url("../../common/img/icon/html_icon.png") 5px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .convert_template {background: url("../../common/img/icon/html_icon.png") 5px 4px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .test_unit_obj {background:url("../../img/db_icons.png") -21px -178px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .manage_test_units {background:url("../../img/db_icons.png") 0px -178px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .class_obj {background:url("../../img/icons.png") -71px -202px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .class_method {background:url("../../img/icons.png") -71px -69px no-repeat #d5e3e4 !important;}
+.jqcontextmenu .class_function {background:url("../../img/icons.png") -180px -69px no-repeat #d5e3e4 !important;}
+
+.choose_available_tool_popup,
+  .choose_available_project_popup {
+	top:10px;
+	left:10px;
+	right:10px;
+	bottom:10px;
+}
+.choose_available_tool_popup iframe,
+  .choose_available_project_popup iframe {
+	width:100%;
+	height:100%;
+}

@@ -1,0 +1,929 @@
+.title {
+	width:100%;
+	font-size:16px;
+	text-align:center;
+	margin:10px 0px 5px 0px;
+	font-weight:bold;
+	color:#000;
+}
+.data_access_obj {
+	margin:10px auto;
+}
+
+/* GENERIC */
+.data_access_obj div {
+	float:none;
+	clear:left;
+}
+.data_access_obj div label {
+	float:left;
+	display:block;
+	font-weight:bold;
+	height:20px;
+}
+.data_access_obj div div label {
+	font-weight:normal;
+	font-style:normal;
+}
+.data_access_obj input, .data_access_obj select, .data_access_obj textarea {
+	display:block;
+	float:left;
+	font-size:11px;
+}
+.data_access_obj input {
+	height:17px;
+	line-height:17px;
+	padding-left:3px;
+}
+.data_access_obj select {
+	height:20px;
+}
+
+.data_access_obj .description {
+	margin:0px 15px 20px 15px;
+	padding:5px 5px;
+	background-color:#F2F2F2;
+	border:1px solid #D7D7D7;
+	font-size:12px;
+	font-style:italic;
+}
+
+.data_access_obj table {
+	float:none;
+	clear:left;
+	margin-left:10px;
+	margin-bottom:5px;
+	margin-top:10px;
+}
+.data_access_obj thead {
+	margin-top:10px;
+	margin-left:10px;
+}
+.data_access_obj thead th {
+	height:18px;
+	line-height:18px;
+	text-align:center;
+	font-size:9px;
+}
+.data_access_obj tbody td {
+	text-align:center;
+	height:20px;
+	background-color:#FFF;
+	border:1px solid #CCC;
+}
+.data_access_obj tbody input, .data_access_obj tbody select {
+	background-color:#FFF;
+	border:none;
+}
+.data_access_obj tbody .icon {
+	float:left;
+	margin-right:0px;
+	margin-left:0px;
+}
+.data_access_obj tbody .icon_cell {
+	border:0;
+}
+
+.data_access_obj ul.ui-tabs-nav li a {
+	font-size:12px;
+}
+
+.data_access_obj .relationships_tabs {
+	display:none;
+}
+
+/* SAVE BUTTON */
+.save_button {
+	width:100%;
+	height:20px;
+	padding-top:20px;
+	text-align:center;
+}
+.save_button input {
+	height:25px !important;
+	line-height:15px !important;
+	display:inline !important;
+	float:none !important;
+	padding:3px 5px !important;
+	border:1px outset;
+	background: #d5e3e4;
+	
+	-moz-border-radius:0.5em; 
+	-webkit-border-radius:0.5em;
+	border-radius:0.5em;
+}
+
+/* ERROR */
+.error {
+	width:100%;
+	height:20px;
+	text-align:center;
+	font-weight:bold;
+	font-size:16px;
+	color:red;
+}
+
+/* INCLUDES */
+.data_access_obj .includes {
+	
+}
+.data_access_obj .includes .add {
+	float:right;    
+	margin-right: -10px;
+	margin-top: -45px;
+}
+.data_access_obj .includes .fields {
+	margin-left:20px;
+	width:670px;
+}
+.data_access_obj .includes .include {
+	margin-top:2px;
+	height:20px;
+}
+.data_access_obj .includes .include label.include_path {
+	margin-right:10px;
+	margin-bottom:0px;
+}
+.data_access_obj .includes .include input.include_path {
+	width:420px;
+	margin-top:2px;
+}
+.data_access_obj .includes .include label.is_include_relative {
+	margin:0px 0px 0px 30px;
+	margin-bottom:0px;
+}
+.data_access_obj .includes .include input.is_include_relative {
+	margin:3px 30px 0px 0px;
+}
+.data_access_obj .includes .include .search {
+	margin-top:2px;
+	height:16px;
+}
+.data_access_obj .includes .include .delete {
+	margin:3px 0 0;
+	height:16px;
+}
+
+/* MAPS */
+.data_access_obj .map .type, .data_access_obj .map .class {
+	width:625px;
+	height:20px;
+	margin:5px auto;
+}
+.data_access_obj .class input {
+	width:355px;
+}
+.data_access_obj .class .search {
+	margin-top:3px;
+	float:left !important;
+}
+.data_access_obj .map .map {
+	width:625px;
+	margin:0 auto;
+}
+.data_access_obj .map .map label {
+	margin-bottom:7px;
+}
+.data_access_obj .map .map div label {
+	margin-bottom:0px;
+}
+.data_access_obj .map .icon {
+	float:right;
+	margin-right:0px;
+	margin-left:5px;
+}
+.data_access_obj .map thead .icon {
+	float:left;
+	margin-top:0px;
+	margin-left:1px;
+	height:15px;
+}
+.data_access_obj .map tbody .delete {
+	margin-left:0px;
+	margin-top:3px;
+	height:15px;
+}
+.data_access_obj .map tbody .search {
+	margin-left:0px;
+	margin-top:2px;
+	height:15px;
+}
+.data_access_obj .map .update, .data_access_obj .map .delete {
+	margin-left:10px;
+}
+
+/* PARAMETERS MAP */
+.data_access_obj .parameters .type label, .data_access_obj .parameters .class label, .data_access_obj .parameters .map label {
+	width:140px;
+	height:20px;
+}
+.data_access_obj .parameters .type select, .data_access_obj .parameters .class input {
+	margin-top:3px;
+}
+
+.data_access_obj .parameters .map_id, .data_access_obj .parameters .map_class {
+	height:20px;
+	margin-left:50px;
+	float:none;
+	clear:left;
+}
+.data_access_obj .parameters .map_class {
+	margin-top:3px;
+}
+.data_access_obj .parameters .map_id label, .data_access_obj .parameters .map_class label {
+	width:50px;
+	font-weight:bold;
+	font-size:10px;
+	color: #666;
+}
+.data_access_obj .parameters .map_id input, .data_access_obj .parameters .map_class input {
+	width:200px;
+}
+
+.data_access_obj .parameters .input_name {
+	width:120px;
+}
+.data_access_obj .parameters .input_name input {
+	width:117px;
+}
+.data_access_obj .parameters .input_type {
+	width:142px;
+}
+.data_access_obj .parameters .input_type select {
+	width:120px;
+}
+.data_access_obj .parameters .output_name {
+	width:146px;
+}
+.data_access_obj .parameters .output_name input {
+	width:122px;
+}
+.data_access_obj .parameters .output_type {
+	width:120px;
+	margin-right:0px !important;
+}
+.data_access_obj .parameters .output_type select {
+	width:120px;
+}
+.data_access_obj .parameters .mandatory {
+	width:55px;
+	margin-right:0px !important;
+}
+.data_access_obj .parameters .mandatory input {
+	margin-left:20px;
+}
+
+/* RESULTS MAP */
+.data_access_obj .results .type label, .data_access_obj .results .class label, .data_access_obj .results .map label {
+	width:100px;
+	height:20px;
+}
+.data_access_obj .results .type select, .data_access_obj .results .class input {
+	margin-top:3px;
+}
+
+.data_access_obj .results .map_id, .data_access_obj .results .map_class {
+	height:20px;
+	margin-left:50px;
+	float:none;
+	clear:left;
+}
+.data_access_obj .results .map_class {
+	margin-top:3px;
+}
+.data_access_obj .results .map_id label, .data_access_obj .results .map_class label {
+	width:50px;
+	font-weight:bold;
+	font-size:10px;
+	color: #666;
+}
+.data_access_obj .results .map_id input, .data_access_obj .results .map_class input {
+	width:200px;
+}
+
+.data_access_obj .results .input_name {
+	width:140px;
+}
+.data_access_obj .results .input_name input {
+	width:115px;
+}
+.data_access_obj .results .input_type {
+	width:125px;
+}
+.data_access_obj .results .input_type select {
+	width:125px;
+}
+.data_access_obj .results .output_name {
+	width:127px;
+}
+.data_access_obj .results .output_name input {
+	width:122px;
+}
+.data_access_obj .results .output_type {
+	width:137px;
+	margin-right:0px !important;
+}
+.data_access_obj .results .output_type select {
+	width:115px;
+}
+.data_access_obj .results .mandatory {
+	width:55px;
+	text-align:center;
+	margin-right:0px !important;
+}
+.data_access_obj .results .mandatory input {
+	margin-left:20px;
+}
+
+/* RELATIONSHIPS */
+.data_access_obj .relationships {
+	float:none;
+	clear:left;
+	width:100%;
+}
+.data_access_obj .relationships .update {
+	float:right;
+	margin-right:-10px;
+	margin-top:-45px;
+}
+.data_access_obj .relationships .map .update {
+	margin-right:0px;
+	margin-top:2px;
+}
+.data_access_obj .relationships div label {
+	font-size:13px;
+}
+.data_access_obj .relationships .map label {
+	margin-bottom:7px;
+}
+.data_access_obj .relationships .map div label {
+	margin-bottom:0px;
+}
+
+.data_access_obj .relationships .results_maps .results, 
+   .data_access_obj .relationships .parameters_maps .parameters {
+	margin-top:10px;
+}
+.data_access_obj .relationships .parameters_maps .delete, .data_access_obj .relationships .results_maps .delete {
+	margin-top:3px;
+	height:16px;
+}
+.data_access_obj .relationships .results_maps .map, 
+   .data_access_obj .relationships .parameters_maps .map {
+   	border:1px solid #D7D7D7;
+	padding:5px 5px 5px 5px;
+	width:625px;
+	margin:10px auto;
+}
+
+.data_access_obj .relationships .results_maps .add, 
+   .data_access_obj .relationships .parameters_maps .add {
+	float:right;
+	margin-right:-10px;
+	margin-top:-45px;
+}
+
+.data_access_obj .relationships .results_maps .map .add, 
+   .data_access_obj .relationships .parameters_maps .map .add {
+  	float:left;
+  	margin-right:0px;
+	margin-top:0px;
+}
+
+/* RELATIONSHIPS RELS */
+.relationship .header_buttons {
+	width: 100%;
+	height: 25px;
+	line-height: 25px;
+	margin-bottom: 10px;
+	background-color:#d5e3e4;
+}
+.relationships .header_buttons .delete {
+	float:right;
+	margin-top:5px;
+	height:16px;
+}
+.relationships .header_buttons .minimize,
+  .relationships .header_buttons .maximize {
+	float:right;
+	margin-top:4px;
+	height:16px;
+}
+.relationships .add_relationship {
+	float:right;
+	margin-top:-45px;
+	margin-right:-10px;
+}
+
+.relationship {
+	width:100%;
+	border:1px solid #CCC;
+	padding:5px 5px 5px 5px;
+	margin-bottom:10px;
+}
+
+/* RELATIONSHIPS RELS: GENERIC */
+.relationship thead td {
+	margin-bottom:0px;
+}
+.relationship thead .add {
+	height:15px;
+	margin-top:-2px;
+}
+.relationship tbody .delete {
+	height:15px;
+	margin-left:5px;
+	margin-top:4px;
+}
+.relationship .table {
+	margin-bottom:0px;
+}
+.relationship .query table {
+	margin:2px 2px 2px 2px;
+	border:2px inset #CCC;
+}
+.relationship .query tbody .icon_cell {
+	border:1px outset #999999;
+}
+.relationship .query {
+	margin-top:20px;
+	background:#F2F2F2;
+	border:2px inset #fff;
+}
+.relationship .query .ui-widget-content {
+	background:none;
+	padding:0;
+}
+.relationship .query ul.ui-widget-header {
+	background:none;
+	border:0; 
+	border-bottom: 1px solid #aaaaaa;
+}
+.relationship .query .ui-tabs-nav li.ui-tabs-selected, 
+   .relationship .query .ui-tabs-nav li.ui-tabs-active, 
+   .relationship .query .ui-tabs-nav li.ui-state-active { 
+	top:2px; 
+}
+.relationship .query .query_tabs_overlay {
+	position:absolute;
+	width:500px;
+	height:35px;
+	z-index:1;
+}
+.relationship .query li a .loading {
+	position:absolute;
+	left:0;
+	top:0;
+	margin:5px 0px 0px 12px;
+}
+
+/** RELATIONSHIPS RELS: MAIN FIELDS **/
+.relationship .rel_type, .relationship .rel_name, 
+  .relationship .parameter_class_id, .relationship .parameter_map_id,
+  .relationship .result_class_id, .relationship .result_map_id {
+	width:345px;
+	height:20px;
+	margin-bottom:0px;
+	float:left;
+	clear:none;
+}
+.relationship .parameter_class_id, .relationship .parameter_map_id,
+  .relationship .result_class_id, .relationship .result_map_id {
+	margin-top:3px;
+}
+.relationship .rel_type label, .relationship .rel_name label,
+  .relationship .parameter_class_id label, .relationship .parameter_map_id label,
+  .relationship .result_class_id label, .relationship .result_map_id label {
+	width:150px;
+}
+.relationship .rel_type select {
+	width:160px;
+}
+.relationship .rel_name input,
+  .relationship .parameter_class_id input, .relationship .parameter_map_id input,
+  .relationship .result_class_id input, .relationship .result_map_id input {
+	width:155px;
+}
+
+/** RELATIONSHIPS RELS: SQL EDITOR **/
+.relationship .query .sql_text_area {
+	height:275px;
+}
+.relationship .query .sql_text_area textarea, .relationship .query .ace_editor {
+	width:680px;
+	height:275px;
+	border-top:1px inset #CCC;
+	margin:0;
+}
+
+/** RELATIONSHIPS RELS: DESIGN VIEW **/
+#taskflowchart_global {
+	display:none;
+}
+.relationship .query .taskflowchart {
+	width:680px;
+	height:275px;
+	margin:0px auto 5px auto;
+	display:block;
+}
+.relationship .query .taskflowchart .workflow_menu {
+	width:680px;
+	height:22px;
+	left:auto;
+	top:auto;
+	right:auto;
+	bottom:auto;
+	margin-left:-2px;
+	border-top:1px solid #CCC;
+}
+.relationship .query .taskflowchart .workflow_menu ul.dropdown li {
+	height:15px;
+	border-left:1px inset #FFF;
+	padding-top:2px;
+}
+.relationship .query .taskflowchart .workflow_menu ul.dropdown li a {
+	height:20px;
+	font-size:10px;
+	font-weight:normal;
+	line-height:20px;
+	padding-left:22px;
+	display:block;
+}
+.relationship .query .taskflowchart .workflow_menu ul.dropdown li.add_new_table a {
+	background:url("../../common/img/icon/add_icon.gif") no-repeat scroll 0px 1px;	
+}
+.relationship .query .taskflowchart .workflow_menu ul.dropdown li.update_tables_attributes a {
+	background:url("../../common/img/icon/update_icon.gif") no-repeat scroll 0px 2px;	
+}
+.relationship .query .taskflowchart .workflow_menu ul.dropdown li.toggle_settings a {
+	background:url("../../common/img/icon/minimize_icon.png") no-repeat scroll 0px 1px;	
+}
+.relationship .query .taskflowchart .workflow_menu ul.dropdown li.toggle_ui a {
+	background:url("../../common/img/icon/minimize_icon.png") no-repeat scroll 0px 1px;	
+}
+
+.relationship .query .taskflowchart .tasks_flow {
+	width:680px;
+	height:250px;
+	left:auto;
+	top:auto;
+	right:auto;
+	bottom:auto;
+	border:0;
+	margin-top:25px;
+}
+.relationship .query .taskflowchart .tasks_flow .task .info .delete {
+	float:right;
+	margin:0 5px 0 0;
+	cursor:pointer;
+}
+.relationship .query .query_select .query_ui .taskflowchart .tasks_flow .popup_overlay {
+	top:5px;
+}
+
+.task_context_menu li:hover, .connection_context_menu li:hover {
+	background: #b3c8cc;
+}
+
+/** RELATIONSHIPS RELS: DESIGN SETTINGS **/
+.relationship .query .query_settings {
+	position: relative; 
+	padding-bottom: 3em; 
+	border:0;
+	
+	display:none;
+}
+.relationship .query .query_settings .query_settings_tab {
+	padding:0 0;
+	height:180px;
+	overflow-y:scroll;
+}
+.relationship .query .query_settings .advanced_query_settings {
+	position:absolute;
+	right:0;
+	margin:195px 0 0 0;
+	color:#666;
+	
+	text-indent:0;
+	font-size:10px;
+	width:123px;
+	background-position: 103px 0px;
+}
+.relationship .query .query_settings ul.ui-widget-header {
+	border:0; 
+	border-top: 1px solid #aaaaaa;
+}
+.relationship .query .query_settings .ui-tabs-nav { 
+	position: absolute; 
+	left: 0.25em; 
+	right: 0.25em; 
+	bottom: 0.25em; 
+	padding: 0em 0.2em 0.2em; 
+} 
+.relationship .query .query_settings .ui-tabs-nav li { 
+	border-top: none; 
+	border-bottom: 1px solid #ccc !important; 
+	-moz-border-radius: 0px 0px 4px 4px; 
+	-webkit-border-radius: 0px 0px 4px 4px; 
+	border-radius: 0px 0px 4px 4px; 
+} 
+.relationship .query .query_settings .ui-tabs-nav li.ui-tabs-selected, 
+   .relationship .query .query_settings .ui-tabs-nav li.ui-tabs-active, 
+   .relationship .query .query_settings .ui-tabs-nav li.ui-state-active { 
+	top: -1px; 
+}
+
+/** RELATIONSHIPS RELS: ATTRIBUTES **/
+.relationship .attributes .table, .relationship .attributes .column, .relationship .attributes .name {
+	width:210px;
+}
+.relationship .attributes thead .name {
+	height:18px;
+}
+.relationship .attributes .table input, .relationship .attributes .column input {
+	width:182px;/*do NOT change this because of IE*/
+}
+.relationship .attributes .name input {
+	width:203px;
+}
+
+/** RELATIONSHIPS RELS: KEYS **/
+.relationship .keys .ptable, .relationship .keys .ftable, 
+   .relationship .keys .pcolumn, .relationship .keys .fcolumn {
+	width:113px;
+}
+.relationship .keys .value {
+	width:57px;
+}
+.relationship .keys .join {
+	width:60px;
+}
+.relationship .keys .operator {
+	width:60px;
+}
+.relationship .keys .ptable input, .relationship .keys .ftable input,
+   .relationship .keys .pcolumn input, .relationship .keys .fcolumn input {
+	width:85px;/*do NOT change this because of IE*/
+}
+.relationship .keys .value input {
+	width:50px;
+}
+.relationship .keys .join select {
+	width:60px;
+	text-align:center;
+}
+.relationship .keys .operator select {
+	width:60px;
+	text-align:center;
+	font-size:10px;
+}
+
+/** RELATIONSHIPS RELS: CONDITIONS **/
+.relationship .conditions .table, .relationship .conditions .column, .relationship .conditions .value {
+	width:188px;
+}
+.relationship .conditions .operator {
+	width:65px;
+}
+.relationship .conditions .table input, .relationship .conditions .column input {
+	width:158px;/*do NOT change this because of IE*/
+}
+.relationship .conditions .value input {
+	width:182px;
+}
+.relationship .conditions .operator select {
+	width:65px;
+	text-align:center;
+}
+
+/** RELATIONSHIPS RELS: GROUPS-BY **/
+.relationship .groups_by .table, .relationship .groups_by .column {
+	width:315px;
+}
+.relationship .groups_by .table input, .relationship .groups_by .column input {
+	width:288px;/*do NOT change this because of IE*/
+}
+
+/** RELATIONSHIPS RELS: SORTS **/
+.relationship .sorts .table, .relationship .sorts .column {
+	width:285px;
+}
+.relationship .sorts .order {
+	width:55px;
+}
+.relationship .sorts .table input, .relationship .sorts .column input {
+	width:256px;/*do NOT change this because of IE*/
+}
+.relationship .sorts .order select {
+	width:55px;
+	text-align:center;
+}
+
+/** RELATIONSHIPS RELS: LIMIT/START **/
+.relationship .limit_start {
+	overflow:auto;
+}
+.relationship .sub_limit_start {
+	width:220px;
+	height:90px;
+	margin:60px auto 0 auto;
+	padding:0 0;
+	overflow:auto;
+}
+.relationship .limit_start .limit, .relationship .limit_start .start {
+	width:110px;
+	height:20px;
+	float:left;
+	clear:none;
+	margin-top:3px;
+}
+.relationship .limit_start .limit label, .relationship .limit_start .start label {
+	margin-right:5px;
+	font-weight:bold;
+}
+.relationship .limit_start .limit input, .relationship .limit_start .start input {
+	width:30px;
+}
+
+/** RELATIONSHIPS RELS: INSERT/UPDATE/DELETE **/
+.relationship .query_insert_update_delete {
+	height:250px;
+}
+.relationship .query_insert_update_delete .query_insert_update_delete_tab {
+	height:165px;
+	overflow-y:scroll;
+	overflow-x:hidden;
+}
+
+.relationship .query_insert_update_delete ul.query_insert_update_delete_tabs.ui-widget-header {
+	border:0; 
+	border-top: 1px solid #aaaaaa;
+}
+.relationship .query_insert_update_delete .query_insert_update_delete_tabs.ui-tabs-nav { 
+	position: absolute; 
+	left: 0.25em; 
+	right: 0.25em; 
+	bottom: 0.25em; 
+	padding: 0em 0.2em 0.2em;
+	text-align: center; 
+} 
+.relationship .query_insert_update_delete .query_insert_update_delete_tabs.ui-tabs-nav li { 
+	float: none !important;
+	display: inline-block;
+	
+	border-top: none; 
+	border-bottom: 1px solid #ccc !important; 
+	-moz-border-radius: 0px 0px 4px 4px; 
+	-webkit-border-radius: 0px 0px 4px 4px; 
+	border-radius: 0px 0px 4px 4px; 
+} 
+.relationship .query_insert_update_delete .query_insert_update_delete_tabs.ui-tabs-nav li.ui-tabs-selected, 
+   .relationship .query_insert_update_delete .query_insert_update_delete_tabs.ui-tabs-nav li.ui-tabs-active, 
+   .relationship .query_insert_update_delete .query_insert_update_delete_tabs.ui-tabs-nav li.ui-state-active { 
+	top: -1px; 
+}
+
+.relationship .query_insert_update_delete .query_table {
+	width:250px;
+	height:20px;
+	margin:10px auto;
+	float:none;
+	clear:both;
+}
+.relationship .query_insert_update_delete .query_table input {
+	text-align:center;
+	margin-left:10px;
+}
+
+.relationship .query_insert_update_delete .attributes .column,
+  .relationship .query_insert_update_delete .attributes .value {
+	width:315px;
+}
+.relationship .query_insert_update_delete .attributes .column input {
+	width:283px;
+}
+.relationship .query_insert_update_delete .attributes .value input {
+	width:308px;
+}
+
+.relationship .query_insert_update_delete .conditions .column,
+  .relationship .query_insert_update_delete .conditions .value {
+	width:280px;
+}
+.relationship .query_insert_update_delete .conditions .column input {
+	width:248px;
+}
+.relationship .query_insert_update_delete .conditions .value input {
+	width:273px;
+}
+/** RELATIONSHIPS RELS: REL_TYPE **/
+.relationship.query_insert .result_class_id,
+  .relationship.query_insert .result_map_id,
+  .relationship.query_insert .query .query_insert_update_delete .query_insert_update_delete_tabs .query_insert_update_delete_tabs_conditions,
+  .relationship.query_insert .query .query_insert_update_delete .conditions,
+  .relationship.query_insert .query .query_select,
+  .relationship.query_update .result_class_id,
+  .relationship.query_update .result_map_id,
+  .relationship.query_update .query .query_select,
+  .relationship.query_delete .result_class_id,
+  .relationship.query_delete .result_map_id,
+  .relationship.query_delete .query .query_insert_update_delete .query_insert_update_delete_tabs .query_insert_update_delete_tabs_attributes,
+  .relationship.query_delete .query .query_insert_update_delete .attributes,
+  .relationship.query_delete .query .query_select,
+  .relationship.query_select .query .query_insert_update_delete,
+  .relationship.query_procedure .query .query_insert_update_delete,
+  .relationship.query_procedure .query .query_select,
+  .relationship.query_procedure .query .query_tabs .query_design_tab {
+	display:none !important;    
+}
+.relationship.query_insert .query_insert_update_delete,
+  .relationship.query_update .query_insert_update_delete,
+  .relationship.query_delete .query_insert_update_delete,
+  .relationship.query_select .query_select {
+  	display:block !important;
+}
+
+/* POPUP */
+.choose_table_or_attribute {
+	width:340px;
+}
+.choose_table_or_attribute .contents div {
+	width:100%;
+	height:100%;
+	float:none;
+	clear:left;
+}
+.choose_table_or_attribute .contents div label {
+	display:block;
+	width:100px;
+	float:left;
+}
+.choose_table_or_attribute .contents div.db_broker, 
+   .choose_table_or_attribute .contents div.db_driver, 
+   .choose_table_or_attribute .contents div.type, 
+   .choose_table_or_attribute .contents div.db_table, 
+   .choose_table_or_attribute .contents div.db_attribute, 
+   .choose_table_or_attribute .contents div.map_option {
+	width:320px;
+	height:20px;
+	text-align:left;
+	margin:3px auto;
+	float:none;
+	clear:left;
+}
+.choose_table_or_attribute .db_broker label, 
+   .choose_table_or_attribute .db_driver label, 
+   .choose_table_or_attribute .type label, 
+   .choose_table_or_attribute .db_table label, 
+   .choose_table_or_attribute .db_attribute label, 
+   .choose_table_or_attribute .map_option label {
+	width:100px;
+	margin-right:10px;
+	display:block;
+	float:left;
+}
+.choose_table_or_attribute .contents .db_broker select,
+   .choose_table_or_attribute .contents .db_driver select,
+   .choose_table_or_attribute .contents .type select,
+   .choose_table_or_attribute .contents .db_table select,
+   .choose_table_or_attribute .contents .db_attribute select {
+	width:200px;
+}
+
+#choose_map_id .contents .map .refresh {
+	float:right;
+	margin-left:5px;
+}
+
+.myfancypopup .button {
+	text-align:center;
+	margin-top:10px;
+}
+.myfancypopup .button input {
+	font-size:12px;
+	height:20px;
+	display:inline;
+	float:none;
+	
+	-moz-border-radius:0.5em; 
+	-webkit-border-radius:0.5em;
+	border-radius:0.5em;
+}
+
+/* TREE */
+.mytree {
+	min-width:300px;
+	min-height:200px;
+	max-width:450px;
+	max-height:350px;
+	overflow:auto;
+}
+
+/* CONNECTION */
+.jsplumbtaskworkflow .selected_connection_properties {
+	background:#eee;
+}
+.jsplumbtaskworkflow .selected_connection_properties .db_table_connection_html {
+	margin-top:20px;
+}
+

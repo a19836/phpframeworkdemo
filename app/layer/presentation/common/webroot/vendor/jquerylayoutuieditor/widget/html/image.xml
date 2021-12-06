@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget>
+	<label>Image</label>
+	<tag>image</tag>
+	<settings>
+		<resizable>1</resizable>
+		<template_node_name>img</template_node_name>
+		<create_widget_class>ImageWidget</create_widget_class>
+	</settings>
+	<menu_widget><![CDATA[
+		<i class="zmdi zmdi-image"></i>
+	]]></menu_widget>
+	<template_widget></template_widget>
+	<properties><![CDATA[
+		<div class="form-group row settings-property src">
+			<label class="col-md-4 col-sm-5 col-form-label">Source: </label>
+			<input class="col-md-8 col-sm-7 form-control" name="src" />
+		</div>
+		<div class="form-group row settings-property alt">
+			<label class="col-md-4 col-sm-5 col-form-label">Alt: </label>
+			<input class="col-md-8 col-sm-7 form-control" name="alt" value="No Image" />
+		</div>
+	]]></properties>
+	<menu_css><![CDATA[
+		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-image,
+		  body > .menu-widget.menu-widget-image.ui-draggable-dragging {
+			height:auto;
+			display:inline-block;
+			border-radius:5px;
+			border:0;
+			color:#fff;
+			overflow:hidden;
+		}
+		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-image i,
+		  body > .menu-widget.menu-widget-image.ui-draggable-dragging i {
+			font-size:300%;
+		}
+		
+		.layout_ui_editor > .template-widgets .widget-header.widget-header-image {
+			border-radius:0 5px 5px 0;
+		}
+		.layout_ui_editor > .template-widgets .widget-header.widget-header-image .options .option.toggle {
+			display:none;
+		}
+		
+		.layout_ui_editor > .menu-settings.menu-settings-image > .settings-properties .src.with-search-icon input {
+			padding-right:20px;
+		}
+		.layout_ui_editor > .menu-settings.menu-settings-image > .settings-properties .src .search {
+			display:inline-block;
+			float:none;
+			clear:both;
+			position:absolute;
+			right:15px;
+			margin:8px 0 0;
+			background:none;
+			cursor:pointer;
+		}
+	]]></menu_css>
+	<menu_js><![CDATA[
+		function ImageWidget(ui_creator, menu_widget) {
+			var me = this;
+			var default_src = ui_creator.getLayoutUIEditorFolderPath() + "widget/html/img/default_image.gif";
+			
+			me.init = function() {
+				menu_widget.attr({
+					"data-on-parse-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.image.parseHtml",
+					"data-on-create-template-widget-func": ui_creator.obj_var_name + ".menu_widgets_objs.image.onCreateTemplateWidget",
+				});
+				
+				menu_widget.children(".properties").attr({
+					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.image.saveSettingsField",
+					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.image.parseSettings",
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.image.openSettings",
+				});
+			};
+			
+			me.parseHtml = function(html_element) {
+				return html_element && html_element.nodeName.toLowerCase() == "img";
+			};
+			
+			me.openSettings = function(widget, menu_settings) {
+				if (typeof ui_creator.options.on_choose_image_url_func == "function") {
+					var icon = $('<span class="zmdi zmdi-search-in-file search"></span>');
+					icon.on("click", function() {
+						ui_creator.options.on_choose_image_url_func(this);
+					});
+					menu_settings.find(" > .settings-properties .settings-property.src").addClass("with-search-icon").append(icon);
+				}
+			};
+			
+			me.onCreateTemplateWidget = function(widget, html_element) {
+				if (!html_element) 
+					widget.attr("src", default_src);
+			};
+			
+			me.parseSettings = function(widget, widget_settings) {
+				widget_settings["src"] = widget.attr("src");
+				widget_settings["alt"] = widget.attr("alt");
+			};
+			
+			me.saveSettingsField = function(field, widget, status) {
+				if (status) {
+					field = $(field);
+					var field_value = field.val();
+					var sprop = field.parent();
+					
+					if (sprop.hasClass("alt")) {
+						if (field_value != "")
+							widget.attr("alt", field_value);
+						else
+							widget.removeAttr("alt");
+					}
+					else if (sprop.hasClass("src")) {
+						field_value = field_value.replace(/^\s+/g, "").replace(/\s+$/g, "");//trim url
+						
+						if (field_value != "")
+							widget.attr("src", field_value);
+						else {
+							alert("Image src cannot be empty!");
+							field.val( widget.attr("src") );
+						}
+					}
+				}
+				
+				return status;
+			};
+		}
+	]]></menu_js>
+</widget>

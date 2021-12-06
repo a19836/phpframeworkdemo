@@ -1,0 +1,109 @@
+/* TASKS FLOW CHART */
+
+.taskflowchart .tasks_menu {
+	width:0px !important;
+	display:none;
+	overflow:hidden;
+}
+.taskflowchart .tasks_flow {
+	left:0px !important;
+}
+
+.taskflowchart .tasks_menu_hide {
+	display:none;
+}
+
+.taskflowchart .workflow_menu ul.dropdown li {
+	height:17px;
+	border-left:1px inset #FFF;
+}
+.taskflowchart .workflow_menu ul.dropdown li a {
+	height:20px;
+	line-height:20px;
+	padding-left:22px;
+	display:block;
+}
+.taskflowchart .workflow_menu ul.dropdown li.save a {
+	background:url("../../common/img/icon/save_icon.gif") no-repeat scroll 0px 1px;	
+}
+.taskflowchart .workflow_menu ul.dropdown li.flush_cache a {
+	background:url("../../common/img/icon/recycle_icon.png") no-repeat scroll 0px 1px;	
+}
+.taskflowchart .workflow_menu ul.dropdown li.add_new_server a {
+	background:url("../../common/img/icon/add_icon.gif") no-repeat scroll 0px 1px;	
+}
+.taskflowchart .workflow_menu ul.dropdown li.empty_diagram a {
+	background:url("../../common/img/icon/delete_icon.gif") no-repeat scroll 0px 1px;	
+}
+.taskflowchart .workflow_menu ul.dropdown li.set_global_vars a { /* used in template workflow */
+	background:url("../../common/img/icon/update_icon.gif") no-repeat scroll 0px 1px;	
+}
+.taskflowchart .workflow_menu ul.dropdown li.set_project_settings a { /* used in template workflow */
+	background:url("../../common/img/icon/update_icon.gif") no-repeat scroll 0px 1px;	
+}
+
+.taskflowchart .tasks_flow .task.task_server {
+	opacity:1;
+}
+.taskflowchart .tasks_flow .task.task_server:hover {
+	opacity:.8 !important;
+}
+.taskflowchart .tasks_flow .selected_task_properties {
+	width:auto !important;
+	height:auto !important;
+}
+
+/* CHOOSE FROM FILE MANAGER */
+
+.choose_from_file_manager {
+	min-width:400px;
+	height:auto !important;
+}
+.choose_from_file_manager div {
+	float:none;
+	clear:left;
+}
+.choose_from_file_manager .button {
+	height:20px;
+	padding-top:5px;
+	text-align:center;
+	width:100%;
+	clear:left;
+	float:none;
+}
+.choose_from_file_manager .button input {
+	height:20px;
+	line-height:15px;
+	border:1px outset;
+	background: #d5e3e4;
+	display:inline;
+	float:none;
+	
+	-moz-border-radius:0.5em; 
+	-webkit-border-radius:0.5em;
+	border-radius:0.5em;
+}
+.choose_from_file_manager .mytree {
+	border:1px inset #CCC;
+	min-width:300px;
+	min-height:200px;
+	max-width:450px;
+	max-height:300px;
+	overflow:auto;
+	margin-bottom:10px;
+	margin-top:10px;
+}
+
+/* LOADING PANEL */
+
+.loading_panel {
+	position:fixed;
+	top:0px;
+	left:0px;
+	right:0px;
+	bottom:0px;
+	background-color:#333;
+	opacity:0.6;
+	filter: alpha(opacity=60);/* For IE */
+	z-index:9000;
+}

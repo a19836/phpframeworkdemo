@@ -1,0 +1,87 @@
+.jsplumbtaskmenu .task.task_settemplateparam {
+	background-image:url('../img/bg.gif');
+	/*background-color:#999;
+	border:1px solid #999;
+	-moz-border-radius:0.5em; 
+	-webkit-border-radius:0.5em;
+	border-radius:0.5em;*/
+}
+.jsplumbtaskmenu .task.task_settemplateparam span {
+	line-height:13px;
+	display:block;
+	margin-top:.5rem;
+	color:#000;
+	background-color: rgba(255, 255, 255,.5);
+}
+.jsplumbtaskworkflow .task.task_settemplateparam {
+	/*background-image:url('../img/bg.gif');
+	background-color:#FF0F0F;
+	-o-background-size:100% 100%;
+	-webkit-background-size:100% 100%;
+	-moz-background-size:100% 100%;
+	background-size:100% 100%; */
+	
+	/* in IE */
+	-ms-background-size:100% 100%;
+	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
+	
+	/*border:none;
+	box-shadow:none;
+	-o-box-shadow:none;
+	-webkit-box-shadow:none;
+	-moz-box-shadow:none;*/
+    	
+	/* For IE */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
+	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+}
+.jsplumbtaskworkflow .task.task_settemplateparam .info span {
+	color:#999;
+}
+
+
+.set_template_param_task_html {
+	width:430px;
+}
+
+.set_template_param_task_html .name, 
+   .set_template_param_task_html .value {
+	margin-bottom:5px;
+}
+.set_template_param_task_html .name,
+   .set_template_param_task_html .value {
+	width:100%;
+	height:20px;
+}
+.set_template_param_task_html .name label,
+   .set_template_param_task_html .value label,
+   .set_template_param_task_html .broker_method_obj label {
+	width:100px;
+}
+.set_template_param_task_html .name input,
+   .set_template_param_task_html .value input {
+	width:230px;
+}
+.set_template_param_task_html .value .search {
+	display:none;
+}
+.set_template_param_task_html .name select,
+   .set_template_param_task_html .value select {
+	background-color:#FFF;
+	color:#AAA;
+	border:1px solid #ECECEC;
+	text-align:center;
+	font-size:9px;
+	width:60px;
+	margin-left:5px;
+}
+.set_template_param_task_html .broker_method_obj {
+	margin-left:0;
+}
+.set_template_param_task_html .broker_method_obj input {
+	margin-left:100px;
+}
+.set_template_param_task_html .broker_method_obj > .add_variable {
+	margin-top:29px;
+}

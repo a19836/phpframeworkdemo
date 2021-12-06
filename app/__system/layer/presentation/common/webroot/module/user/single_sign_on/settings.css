@@ -1,0 +1,156 @@
+.block_obj {
+    width: 750px;
+}
+.edit_settings {
+	border:0;
+}
+.edit_settings .tab_container {
+	padding-left:0;
+	padding-right:0;
+}
+.edit_settings .other_user_settings {
+	border:0;
+}
+.edit_settings > .block_css {
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+}
+.edit_settings > .block_js {
+	margin-bottom:0 !important;
+	padding-bottom:0 !important;
+	border-bottom:0 !important;
+}
+.edit_settings .user_environments_settings {
+	padding-top:20px !important;
+}
+.edit_settings .object_to_objects_settings {
+	padding-top:25px !important;
+}
+.edit_settings .object_to_objects_settings .add {
+	margin:-25px 0 0 235px !important;
+}
+
+
+.edit_settings .auth0_settings > div {
+	margin-bottom:5px;
+	padding-left:10px;
+}
+.edit_settings .auth0_settings > div > label {
+	display:inline-block;
+	width:80px;
+}
+.edit_settings .auth0_settings > div > input {
+	width:300px;
+}
+.edit_settings .auth0_settings .notes {
+	margin-top:20px;
+}
+.edit_settings .auth0_settings .notes ul {
+	margin-left:20px;
+}
+.edit_settings .auth0_settings .notes li {
+	list-style:disc;
+}
+.edit_settings .auth0_settings .notes a {
+	color:#33AADD;
+}
+
+.edit_settings .actions_settings {
+	padding-bottom:0;
+}
+.edit_settings .actions_settings > div {
+	margin-bottom:5px;
+	padding-left:10px;
+}
+.edit_settings .actions_settings .actions_style_type {
+	margin-bottom:15px;
+}
+.edit_settings .actions_settings .actions_style_type label,
+   .edit_settings .actions_settings .validation_action label,
+   .edit_settings .actions_settings .non_validation_action label {
+	width:180px;
+}
+.edit_settings .actions_settings .validation_message label,
+   .edit_settings .actions_settings .validation_class label,
+   .edit_settings .actions_settings .validation_redirect label,
+   .edit_settings .actions_settings .validation_ttl label,
+   .edit_settings .actions_settings .validation_blocks_execution label,
+   .edit_settings .actions_settings .non_validation_message label,
+   .edit_settings .actions_settings .non_validation_class label,
+   .edit_settings .actions_settings .non_validation_redirect label,
+   .edit_settings .actions_settings .non_validation_ttl label,
+   .edit_settings .actions_settings .non_validation_blocks_execution label {
+	width:230px;
+}
+.edit_settings .actions_settings .validation_message input,
+   .edit_settings .actions_settings .validation_class input,
+   .edit_settings .actions_settings .validation_redirect input,
+   .edit_settings .actions_settings .validation_ttl input,
+   .edit_settings .actions_settings .validation_blocks_execution input,
+   .edit_settings .actions_settings .non_validation_message input,
+   .edit_settings .actions_settings .non_validation_class input,
+   .edit_settings .actions_settings .non_validation_redirect input,
+   .edit_settings .actions_settings .non_validation_ttl input,
+   .edit_settings .actions_settings .non_validation_blocks_execution input {
+	font-size:inherit;
+}
+
+.edit_settings .user_settings > div {
+	margin-bottom:5px;
+	padding-left:10px;
+}
+.edit_settings .user_settings > div > label {
+	display:inline-block;
+	width:60px;
+}
+.edit_settings .user_settings > .user_settings_type {
+	display:inline-block;
+}
+.edit_settings .user_settings > .user_id {
+	margin-left:20px;
+	display:inline-block;
+}
+.edit_settings .user_settings .other_user_settings {
+	margin:20px 0 0 0;
+}
+.edit_settings .user_settings .other_user_settings .user_relation_settings > div {
+	margin-bottom:5px;
+}
+.edit_settings .user_settings .other_user_settings .user_creation_settings .user_type_id > label {
+	width:80px;
+}
+.edit_settings .user_settings .other_user_settings .user_creation_settings .do_not_encrypt_password {
+	margin-bottom:10px;
+}
+
+
+.edit_settings .settings_props {
+	border:0;
+}
+.edit_settings .settings_props .settings_prop.prop_user_attachments .label_settings {
+	padding:0;
+}
+.edit_settings .settings_props .settings_prop.prop_password .selected_task_properties .form_containers .fields .field .other_settings .password_generator {
+	width:100%;
+	height:20px;
+	margin-bottom:5px;
+	margin-left:20px;
+}
+.edit_settings .settings_props .settings_prop.prop_password .selected_task_properties .form_containers .fields .field .other_settings .password_generator label {
+	width:130px;
+	font-size:90%;
+}
+
+.edit_settings .user_type_id {
+	width:100%;
+	height:20px;
+	margin-bottom:10px;
+	float:none;
+	clear:left;
+}
+
+.edit_settings .user_type_id label {
+	width:150px;
+   	display:block;
+	float:left;
+}

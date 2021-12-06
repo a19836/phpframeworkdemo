@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sql_mapping>
+	<insert id="insert_object_question">
+		insert into mq_object_question (question_id, object_type_id, object_id, `group`, `order`, created_date, modified_date) values (#question_id#, #object_type_id#, #object_id#, #group#, #order#, '#created_date#', '#modified_date#')
+	</insert>
+	
+	<update id="update_object_question">
+		update mq_object_question set question_id=#new_question_id#, object_type_id=#new_object_type_id#, object_id=#new_object_id#, `group`=#group#, `order`=#order#, modified_date='#modified_date#' where question_id=#old_question_id# and object_type_id=#old_object_type_id# and object_id=#old_object_id#
+	</update>
+	
+	<update id="update_object_question_ids">
+		update mq_object_question set question_id=#new_question_id#, object_type_id=#new_object_type_id#, object_id=#new_object_id#, modified_date='#modified_date#' where question_id=#old_question_id# and object_type_id=#old_object_type_id# and object_id=#old_object_id#
+	</update>
+	
+	<update id="change_object_questions_object_ids">
+		update mq_object_question set object_type_id=#new_object_type_id#, object_id=#new_object_id#, modified_date='#modified_date#' where object_type_id=#old_object_type_id# and object_id=#old_object_id#
+	</update>
+	
+	<delete id="delete_object_question">
+		delete from mq_object_question where question_id=#question_id# and object_type_id=#object_type_id# and object_id=#object_id#
+	</delete>
+	
+	<delete id="delete_object_questions_by_question_id">
+		delete from mq_object_question where question_id=#question_id#
+	</delete>
+	
+	<delete id="delete_object_questions_by_object">
+		delete from mq_object_question where object_type_id=#object_type_id and object_id=#object_id#
+	</delete>
+	
+	<delete id="delete_object_questions_by_conditions">
+		delete from mq_object_question where #conditions#
+	</delete>
+	
+	<select id="get_object_question">
+		select * from mq_object_question where question_id=#question_id# and object_type_id=#object_type_id# and object_id=#object_id#
+	</select>
+	
+	<select id="get_all_object_questions">
+		select * from mq_object_question
+	</select>
+	
+	<select id="count_all_object_questions">
+		select count(*) total from mq_object_question
+	</select>
+	
+	<select id="get_object_questions_by_question_id">
+		select * from mq_object_question where question_id=#question_id#
+	</select>
+	
+	<select id="count_object_questions_by_question_id">
+		select count(*) total from mq_object_question where question_id=#question_id#
+	</select>
+	
+	<select id="get_object_questions_by_object">
+		select * from mq_object_question where object_type_id=#object_type_id# and object_id=#object_id#
+	</select>
+	
+	<select id="get_object_questions_by_conditions">
+		select * from mq_object_question where #conditions#
+	</select>
+	
+	<select id="count_object_questions_by_conditions">
+		select count(*) total from mq_object_question where #conditions#
+	</select>
+</sql_mapping>

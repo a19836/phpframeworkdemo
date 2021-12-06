@@ -1,0 +1,143 @@
+.choose_available_tool > .title {
+	height:25px;
+	color:#666;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 10px 0 0px 0px;
+	text-align: center;
+}
+.choose_available_tool > ul {
+	height:calc(100% - 50px);
+	margin-bottom:50px;
+	overflow-y:auto;
+	text-align:center;
+}
+.choose_available_tool li {
+	width:220px;
+	height:120px;
+	margin:10px !important;
+	display:inline-block;
+	position:relative;
+	border:1px solid #d5e3e4;
+	border-radius:5px;
+	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 20%);
+	cursor:pointer;
+	overflow:hidden;
+}
+.choose_available_tool li:hover {
+	box-shadow:0px 0px 10px 10px rgb(200 200 200 / 20%);
+	opacity:.9;
+}
+.choose_available_tool li.delimiter {
+	width:auto;
+	height:0;
+	margin:20px !important;
+	display:block;
+	border:0;
+	border-top:1px solid #ccc;
+	box-shadow:none;
+	cursor:default;
+}
+.choose_available_tool li > label {
+	margin-top:10px;
+	display:block;
+	text-align:center;
+	color:#999;
+	cursor:pointer;
+}
+.choose_available_tool li > .description {
+	height:0;
+	padding:10px;
+	position:absolute;
+	top:auto;
+	bottom:-10px;
+	left:0;
+	right:0;
+	box-sizing:border-box;
+	background-color:#b3c8cced;
+	color:#fff;
+	vertical-align:middle;
+	cursor:pointer;
+	transition:all 1s;
+}
+.choose_available_tool li:hover > .description {
+	height:60px;
+	bottom:0;
+}
+.choose_available_tool li > .photo {
+	width:50px;
+	height:50px;
+	margin:10px auto 0;
+	background-size:100% 100% !important;
+	cursor:pointer;
+}
+.choose_available_tool li.switch_admin_ui > .photo {
+	background:url(../../img/switch_admin_ui.png) no-repeat center;
+}
+.choose_available_tool li.switch_project > .photo {
+	background:url(../../img/project.png) no-repeat center;
+}
+.choose_available_tool li.manage_projects > .photo {
+	background:url(../../img/manage_projects.png) no-repeat center;
+}
+.choose_available_tool li.manage_layers > .photo {
+	background:url(../../img/manage_layers.png) no-repeat center;
+}
+.choose_available_tool li.manage_modules > .photo {
+	background:url(../../img/manage_modules.png) no-repeat center;
+}
+.choose_available_tool li.manage_users > .photo {
+	background:url(../../img/manage_users.png) no-repeat center;
+}
+.choose_available_tool li.manage_test_units > .photo {
+	background:url(../../img/manage_test_units.png) no-repeat center;
+}
+.choose_available_tool li.manage_deployments > .photo {
+	background:url(../../img/manage_deployments.png) no-repeat center;
+}
+.choose_available_tool li.install_program > .photo {
+	background:url(../../img/install_program.png) no-repeat center;
+}
+.choose_available_tool li.diff_files > .photo {
+	background:url(../../img/diff_files.png) no-repeat center;
+}
+.choose_available_tool li.flush_cache > .photo {
+	background:url(../../img/flush_cache.png) no-repeat center;
+}
+.choose_available_tool li.about > .photo {
+	width:70px;
+	background:url(../../img/about.png) no-repeat center;
+}
+.choose_available_tool li.doc_book > .photo {
+	width:70px;
+	background:url(../../img/doc_book.png) no-repeat center;
+}
+.choose_available_tool li.other_files > .photo {
+	width:70px;
+	background:url(../../img/other_files.png) no-repeat center;
+}
+.choose_available_tool li.vendor_files > .photo {
+	background:url(../../img/vendor_files.png) no-repeat center;
+}
+.choose_available_tool li.dao_files > .photo {
+	width:100px;
+	height:70px;
+	background:url(../../img/dao_files.png) no-repeat center;
+}
+.choose_available_tool li.db_layers > .photo {
+	width:80px;
+	background:url(../../img/db_layers.png) no-repeat center;
+}
+.choose_available_tool li.data_access_layers_hibernate > .photo {
+	width:150px;
+	background:url(../../img/data_access_layers_hibernate.png) no-repeat center;
+}
+.choose_available_tool li.data_access_layers_ibatis > .photo {
+	width:150px;
+	background:url(../../img/data_access_layers_ibatis.png) no-repeat center;
+}
+.choose_available_tool li.business_logic_layers > .photo {
+	width:80px;
+	background:url(../../img/business_logic_layers.png) no-repeat center;
+}
+

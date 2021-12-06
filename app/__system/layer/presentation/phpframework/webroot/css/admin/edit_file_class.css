@@ -1,0 +1,121 @@
+
+.file_class_obj div .add {
+	margin:3px 0 0 0;
+}
+.file_class_obj .name {
+	width:100%;
+	height:25px;
+	margin-bottom:5px;
+}
+.file_class_obj .name input {
+	width:230px;
+}
+.file_class_obj .abstract {
+	width:100%;
+	height:25px;
+}
+.file_class_obj .abstract input {
+	margin-left:0;
+}
+.file_class_obj .extend, .file_class_obj .implement {
+	width:100%;
+	height:25px;
+	margin-bottom:5px;
+}
+.file_class_obj .extend input, .file_class_obj .implement input {
+	width:525px;
+}
+
+.file_class_obj .properties {
+	width:100%;
+	padding-top:20px;
+}
+.file_class_obj .properties label {
+	clear:left;
+	float:none;
+}
+.file_class_obj .properties table {
+	width:810px;
+	margin-top:5px;
+	border:1px solid #CCC;
+}
+.file_class_obj .properties thead th {
+	text-transform:uppercase;
+	font-style:italic;
+	font-weight:bold;
+	font-size:10px;
+}
+.file_class_obj .properties thead .add {
+	margin-left:5px;
+}
+.file_class_obj .properties tbody .delete {
+	margin-top:3px;
+	height:16px;
+}
+.file_class_obj .properties tbody td {
+	border:1px inset #CCC;
+}
+.file_class_obj .properties tbody .icon_cell {
+	border:1px outset;
+}
+.file_class_obj .properties tbody input, .file_class_obj .properties tbody select {
+	border:0;
+	background-color:#FFF;
+	float:none;
+	clear:left;
+}
+.file_class_obj .properties table .name {
+	width:150px;
+}
+.file_class_obj .properties table .name input {
+	width:145px;
+}
+.file_class_obj .properties table .value {
+	width:250px;
+}
+.file_class_obj .properties table .value input {
+	width:245px;
+}
+.file_class_obj .properties table .type {
+	width:100px;
+}
+.file_class_obj .properties table .type select {
+	width:100px;
+	text-align:center;
+}
+.file_class_obj .properties table .static {
+	width:50px;
+	text-align:center;
+}
+.file_class_obj .properties table .static input {
+	display:inline;
+}
+.file_class_obj .properties table .var_type {
+	width:80px;
+}
+.file_class_obj .properties table .var_type select {
+	width:80px;
+	text-align:center;
+}
+.file_class_obj .properties table .comments {
+	width:150px;
+}
+.file_class_obj .properties table .comments input {
+	width:145px;
+}
+
+.file_class_obj .comments {
+	width:100%;
+	margin-top:20px;
+}
+.file_class_obj .comments label {
+	width:100%;
+	clear:left;
+	float:none;
+}
+.file_class_obj .comments textarea {
+	width:665px;
+	height:60px;
+	margin-top:5px;
+	font-size:1em;
+}

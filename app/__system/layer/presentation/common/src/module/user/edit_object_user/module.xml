@@ -1,0 +1,7 @@
+<module>
+	<label>Edit Object User</label>
+	<description>Module "Edit Object User" allows the user to edit an object user.</description>
+	<image>logo.png</image>
+	<load_module_settings_js_function>loadEditObjectUserSettingsBlockSettings</load_module_settings_js_function>
+	<is_reserved_module>1</is_reserved_module>
+</module>

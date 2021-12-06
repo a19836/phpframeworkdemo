@@ -1,0 +1,20 @@
+.module_edit_menu_item {
+	width:400px;
+}
+.module_edit_menu_item .form_fields .form_field label {
+	width:110px;
+}
+.module_edit_menu_item .form_fields .form_field input {
+	width:255px;
+}
+.module_edit_menu_item .form_fields .form_field.parent_id input {
+	width:30px;
+}
+.module_edit_menu_item .form_fields .form_field.order input {
+	width:30px;
+}
+.module_edit_menu_item .form_fields .form_field.previous_html textarea,
+  .module_edit_menu_item .form_fields .form_field.next_html textarea {
+	width:200px;
+	height:45px;
+}

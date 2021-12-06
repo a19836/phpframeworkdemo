@@ -1,0 +1,91 @@
+.module_list table th {
+	padding:0;
+	font-size:70%;
+}
+.module_list table td {
+	padding:0;
+	font-size:80%;
+}
+.module_list .worker_id,
+   .module_list .status,
+   .module_list .thread_id,
+   .module_list .begin_time,
+   .module_list .end_time,
+   .module_list .begin_date,
+   .module_list .end_date,
+   .module_list .failed_attempts {
+	text-align:center;
+}
+.module_list .worker_id {
+	min-width:40px;
+	max-width:40px;
+}
+.module_list .status {
+	min-width:60px;
+	max-width:60px;
+	font-weight:bold;
+}
+.module_list .thread_id {
+	min-width:190px;
+	max-width:190px;
+}
+.module_list .class {
+	min-width:300px;
+	max-width:300px;
+	white-space:nowrap; 
+	overflow:hidden;
+	text-overflow:ellipsis; 
+	direction:rtl;
+}
+.module_list .begin_time,
+  .module_list .end_time,
+  .module_list .begin_date,
+  .module_list .end_date,
+  .module_list .created_date,
+  .module_list .modified_date {
+	min-width:60px;
+	max-width:60px;
+}
+.module_list .failed_attempts {
+	min-width:50px;
+	max-width:50px;
+}
+
+.module_list thead th.edit_action {
+	min-width:22px;
+	position:relative;
+}
+.module_list thead th.edit_action .add {
+	margin-left:15px;
+	position:absolute;
+	top:2px;
+}
+.module_list thead th.delete_action {
+	min-width:22px;
+}
+
+.module_list tbody .status_0 {
+	background:#ffff005c;
+}
+.module_list tbody .status_1 {
+	background:#ffa50052;
+}
+.module_list tbody .status_2 {
+	background:#9bcc9b61;
+}
+.module_list tbody .status_3 {
+	background:#ff52526b;
+}
+
+.module_list tbody .status_0 td.status {
+	color:#e8b00b;
+}
+.module_list tbody .status_1 td.status {
+	color:orange;
+}
+.module_list tbody .status_2 td.status {
+	color:green;
+}
+.module_list tbody .status_3 td.status {
+	color:red;
+}

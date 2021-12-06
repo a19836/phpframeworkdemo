@@ -1,0 +1,79 @@
+.title {
+	color: #000;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 10px 0 20px 0px;
+	text-align: center;
+	width: 100%;
+	height:25px;
+}
+
+.projects_list {
+	width:550px;
+	margin:0 auto;
+	margin-bottom:20px;
+}
+.projects_list .layer {
+	width:100%;
+	margin-bottom:20px;
+	float:left;
+}
+
+.projects_list table {
+	width:100%;
+	border:1px solid #CCC;
+	clear:left;
+	float:none;
+}
+.projects_list table th {
+	font-weight:bold;
+	text-transform:uppercase;
+	font-size:10px;
+	height:20px;
+	line-height:15px;
+}
+.projects_list table td {
+	border:1px solid #CCC;
+}
+.projects_list table .project {
+	width:200px;
+	text-align:center;
+}
+.projects_list table .path {
+	width:200px;
+	padding:0 3px 0px 3px;
+	text-align:center;
+}
+.projects_list table .buttons {
+	width:115px;
+	text-align:center;
+}
+.projects_list table .buttons .add {
+	margin:0 auto;
+	float:none;
+}
+.projects_list table .buttons .delete {
+	background-position:0 0;
+	margin-left:0;
+	margin-right:0;
+}
+.projects_list table .buttons .settings {
+	background:url("../../common/img/icon/settings_icon.png") 0 -1px no-repeat;
+	margin-left:0;
+}
+.projects_list table .buttons .view {
+	margin-left:0;
+}
+.projects_list table .buttons .global_vars {
+	background: url("../../img/icons.png") -28px -183px no-repeat;
+	margin-left:0;
+	width:23px;
+}
+.projects_list table .buttons .init {
+	background:url("../../common/img/icon/edit_icon.gif") 2px -1px no-repeat;
+	margin-left:0;
+}
+
+.projects_list .default_project {
+	margin-top:20px;
+}

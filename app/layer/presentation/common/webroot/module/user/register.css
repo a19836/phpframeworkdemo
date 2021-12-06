@@ -1,0 +1,55 @@
+.module_register {
+	width:580px;
+	margin:0 auto;
+	float:none;
+	clear:both;
+}
+.module_register a {
+	color:#999;
+	text-decoration:none;
+}
+.module_register a:hover {
+	text-decoration:underline;
+}
+.module_register .info {
+	width:100%;
+	text-align:center;
+	font-weight:bold;
+}
+.module_register .form_fields {
+
+}
+.module_register .form_fields .form_field {
+	float:none;
+	clear:left;
+	height:20px;
+	margin-bottom:10px;
+}
+.module_register .form_fields .form_field.password .password_generator {
+	margin-left:10px;
+}
+.module_register .form_fields .form_field label {
+	width:135px;
+	display:block;
+	float:left;
+	font-weight:normal;
+}
+.module_register .form_fields .form_field input {
+	width:200px;
+	background-color:#FFF;
+}
+.module_register .form_fields .form_field select {
+	width:430px;
+	background-color:#FFF;
+}
+
+.module_register .buttons {
+	padding-top:5px;
+	margin-bottom:5px;
+}
+.module_register .buttons .submit_button {
+	text-align:center;
+}
+.module_register .buttons .submit_button input {
+	background-color:#F7F7F7;
+}

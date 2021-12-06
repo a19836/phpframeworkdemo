@@ -1,0 +1,116 @@
+.jsplumbtaskmenu .task.task_callibatisquery {
+	background-image:url('../img/bg.gif');
+}
+.jsplumbtaskmenu .task.task_callibatisquery span {
+	display:block;
+	line-height:13px;
+	margin-top:5px;
+	background-color:rgba(255, 255, 255,.5);
+}
+.jsplumbtaskworkflow .task.task_callibatisquery {
+	/*background-image:url('../img/bg.gif');
+	-o-background-size:contain;
+	-webkit-background-size:contain;
+	-moz-background-size:contain;
+	background-size:contain;*/ 
+	
+	/* in IE */
+	-ms-background-size:contain;
+	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='contain')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='contain');*/
+}
+.jsplumbtaskworkflow .task.task_callibatisquery .info span {
+	color:#2dccff;
+}
+
+.call_ibatis_query_task_html {
+	min-width:420px;
+}
+
+.call_ibatis_query_task_html .get_automatically,
+   .call_ibatis_query_task_html .query_type,
+   .call_ibatis_query_task_html .module_id,
+   .call_ibatis_query_task_html .service_type,
+   .call_ibatis_query_task_html .service_id {
+	width:420px;
+	height:20px;
+	margin:0 auto;
+}
+.call_ibatis_query_task_html .module_id, 
+  .call_ibatis_query_task_html .service_type, 
+  .call_ibatis_query_task_html .service_id, 
+  .call_ibatis_query_task_html .params,
+  .call_ibatis_query_task_html .opts {
+	margin-bottom:5px;
+}
+.call_ibatis_query_task_html .get_automatically {
+	margin-top:15px;
+	margin-bottom:5px;
+}
+.call_ibatis_query_task_html .query_type {
+	margin-top:15px;
+}
+.call_ibatis_query_task_html .params {
+   	width:420px;
+   	min-height:20px;
+	margin:0 auto 5px;
+}
+.call_ibatis_query_task_html .params .array_items .items {
+	position:absolute;
+	margin-top:-25px;
+	margin-left:175px;
+}
+.call_ibatis_query_task_html .params .array_items ul .items {
+	position:static;
+	margin-top:0;
+	margin-left:0;
+}
+
+.call_ibatis_query_task_html .get_automatically label {
+	width:200px;
+}
+.call_ibatis_query_task_html .query_type label,
+   .call_ibatis_query_task_html .module_id label,
+   .call_ibatis_query_task_html .service_type label,
+   .call_ibatis_query_task_html .service_id label,
+   .call_ibatis_query_task_html .params .main_label {
+	width:110px;
+}
+.call_ibatis_query_task_html .query_type select {
+	width:235px;
+}
+.call_ibatis_query_task_html .module_id input,
+   .call_ibatis_query_task_html .service_type input,
+   .call_ibatis_query_task_html .service_id input,
+   .call_ibatis_query_task_html .params .parameters_code {
+	width:210px;
+	margin-right:5px;
+	padding-right:20px;
+}
+.call_ibatis_query_task_html .service_type select.service_type_string {
+	width:235px;
+	margin-right:5px;
+}
+.call_ibatis_query_task_html .module_id select,
+   .call_ibatis_query_task_html .service_type select.service_type_type,
+   .call_ibatis_query_task_html .service_id select,
+   .call_ibatis_query_task_html .params .parameters_type,
+   .call_ibatis_query_task_html .opts .options_type {
+	background-color:#FFF;
+	color:#AAA;
+	border:1px solid #ECECEC;
+	text-align:center;
+	font-size:9px;
+	width:60px;
+	float:none;
+	display:inline-block;
+	margin-bottom:0;
+}
+.call_ibatis_query_task_html > div:not(.broker_method_obj) > .add_variable {
+	margin-left:-23px;
+}
+.call_ibatis_query_task_html > div.broker_method_obj > .add_variable {
+	margin-top:29px;
+}
+
+

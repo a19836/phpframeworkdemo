@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+	<import relative="1">app.xml</import>
+
+	<!-- DRIVER -->
+	<var name="mysql_options">
+		<list>
+			<item name="extension">mysqli</item>
+			<item name="host">127.0.0.1</item>
+			<item name="port"></item>
+			<item name="db_name">&lt;?php echo $GLOBALS['default_db_name']; ?></item>
+			<item name="username">&lt;?php echo $GLOBALS['default_db_user']; ?></item>
+			<item name="password">&lt;?php echo $GLOBALS['default_db_pass']; ?></item>
+			<item name="persistent">1</item>
+			<item name="new_link">0</item>
+			<item name="encoding">utf8</item>
+			<item name="schema"></item>
+			<item name="odbc_data_source"></item>
+			<item name="odbc_driver"></item>
+			<item name="extra_dsn"></item>
+		</list>
+	</var>
+	<bean name="Mysql" path="lib.org.phpframework.db.driver.MySqlDB" bean_group="dbdriver">
+		<function name="setOptions">
+			<parameter reference="mysql_options" />
+		</function>
+	</bean>
+</beans>

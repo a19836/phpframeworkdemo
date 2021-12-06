@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sql_mapping>
+	<insert id="insert_user_environment">
+		insert into mu_user_environment (user_id, environment_id, created_date, modified_date) values (#user_id#, #environment_id#, '#created_date#', '#modified_date#')
+	</insert>
+	
+	<update id="update_user_environment">
+		update mu_user_environment set user_id=#new_user_id#, environment_id=#new_environment_id#, modified_date='#modified_date#' where user_id=#old_user_id# and environment_id=#old_environment_id#
+	</update>
+	
+	<delete id="delete_user_environment">
+		delete from mu_user_environment where user_id=#user_id# and environment_id=#environment_id#
+	</delete>
+	
+	<delete id="delete_user_environments_by_conditions">
+		delete from mu_user_environment where #conditions#
+	</delete>
+	
+	<select id="get_user_environment">
+		select * from mu_user_environment where user_id=#user_id# and environment_id=#environment_id#
+	</select>
+	
+	<select id="get_all_user_environments">
+		select * from mu_user_environment
+	</select>
+	
+	<select id="count_all_user_environments">
+		select count(*) total from mu_user_environment
+	</select>
+	
+	<select id="get_user_environments_by_conditions">
+		select * from mu_user_environment where #conditions#
+	</select>
+	
+	<select id="count_user_environments_by_conditions">
+		select count(*) total from mu_user_environment where #conditions#
+	</select>
+</sql_mapping>

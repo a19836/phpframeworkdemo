@@ -1,0 +1,34 @@
+.module_edit {
+	width:auto;
+}
+.module_list table {
+	width:90%;
+}
+.module_list .text, .module_list .translation {
+	width:50%;
+}
+.module_list .text .form-group.text, 
+   .module_list .text .form-input,
+   .module_list .translation .form-group.translation, 
+   .module_list .translation .form-input {
+	width:auto;
+	display:block;
+}
+.module_list .text input, .module_list .translation input {
+	position:relative;
+	display:inline-block;
+	width:100%;
+	padding:0;
+	background:transparent;
+	border:0;
+	text-align:center;
+	font-size:80%;
+}
+.module_list td.other_action .icon {
+	background:url("../../../img/icon/delete_icon.gif") no-repeat scroll 0px 1px;
+}
+.view_category_languages {
+	display:block;
+	margin-top:10px;
+	text-align:center;
+}

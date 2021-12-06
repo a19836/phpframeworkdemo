@@ -1,0 +1,76 @@
+/* OBJECT TO OBJECTS FIELDS */
+.module_settings .settings div .object_to_objects_settings {
+	width:100%;
+	float:none;
+	clear:left;
+	border-top:1px solid #CCC;
+	margin-top:10px;
+	padding-top:15px;
+}
+.module_settings .settings div .object_to_objects_settings .object_to_objects_main_label {
+	width:100%;
+	height:auto;
+	float:none;
+	clear:left;
+	display:block;
+	margin-bottom:10px;
+	font-weight:normal;
+}
+.module_settings .settings div .object_to_objects_settings .add {
+	margin:-28px 0 0 325px;
+}
+.module_settings .settings div .object_to_objects_settings .object_to_object {
+	width:auto;
+	margin-bottom:5px;
+	float:none;
+	clear:both;
+}
+.module_settings .settings div .object_to_objects_settings .object_type_id {
+	width:240px;
+	float:left;
+	clear:none;
+}
+.module_settings .settings div .object_to_objects_settings .object_id {
+	width:260px;
+	float:left;
+	clear:none;
+}
+.module_settings .settings div .object_to_objects_settings .object_group {
+	width:150px;
+	float:left;
+	clear:none;
+	opacity:.7;
+}
+.module_settings .settings div .object_to_objects_settings .delete {
+	margin:0;
+	background-position:0 2px;
+}
+.module_settings .settings div .object_to_objects_settings .object_type_id label {
+	width:100px;
+   	display:block;
+	float:left;
+}
+.module_settings .settings div .object_to_objects_settings .object_id label {
+	width:90px;
+   	display:block;
+	float:left;
+}
+.module_settings .settings div .object_to_objects_settings .object_group label {
+	width:60px;
+   	display:block;
+	float:left;
+	font-weight:normal;
+}
+.module_settings .settings div .object_to_objects_settings .object_type_id select {
+	width:130px;
+	font-size:12px;
+}
+.module_settings .settings div .object_to_objects_settings .object_id input {
+	width:150px;
+	font-size:11px;
+}
+.module_settings .settings div .object_to_objects_settings .object_group input {
+	width:70px;
+	font-size:11px;
+	background:white;
+}

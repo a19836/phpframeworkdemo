@@ -1,0 +1,265 @@
+.file_class_method_obj {
+	width:99%;
+	overflow:auto;
+	margin:0 auto;
+}
+
+.file_class_method_obj #settings {
+	width:auto;
+	min-width:850px;
+	margin:0 auto;
+}
+
+.file_class_method_obj #settings div {
+	float:none;
+	clear:left;
+}
+.file_class_method_obj #settings label {
+	width:80px;
+	height:20px;
+	padding-top:3px;
+	display:block;
+	float:left;
+}
+.file_class_method_obj #settings input {
+	height:20px;
+	line-height:20px;
+	display:block;
+	float:left;
+	font-size:12px;
+}
+.file_class_method_obj #settings select {
+	height:25px;
+	line-height:25px;
+	display:block;
+	float:left;
+	font-size:12px;
+}
+
+.file_class_method_obj #settings div .add {
+	margin:3px 0 0 0;
+}
+.file_class_method_obj #settings .name {
+	margin-top:10px;
+}
+.file_class_method_obj #settings .name, .file_class_method_obj .type {
+	width:100%;
+	height:25px;
+	margin-bottom:5px;
+}
+.file_class_method_obj #settings .name input {
+	width:230px;
+}
+.file_class_method_obj #settings .abstract, .file_class_method_obj .static {
+	width:100%;
+	height:25px;
+}
+.file_class_method_obj #settings .abstract input, .file_class_method_obj .static input {
+	margin-left:0;
+}
+
+/* ARGUMENTS */
+.file_class_method_obj #settings .arguments {
+	width:100%;
+	padding-top:10px;
+}
+.file_class_method_obj #settings .arguments label {
+	clear:left;
+	float:none;
+}
+.file_class_method_obj #settings .arguments table {
+	margin-top:5px;
+	border:1px solid #CCC;
+}
+.file_class_method_obj #settings .arguments thead th {
+	text-transform:uppercase;
+	font-style:italic;
+	font-weight:bold;
+	font-size:10px;
+}
+.file_class_method_obj #settings .arguments thead .add {
+	margin-left:5px;
+}
+.file_class_method_obj #settings .arguments tbody .delete {
+	margin-top:3px;
+	height:16px;
+}
+.file_class_method_obj #settings .arguments tbody td {
+	border:1px inset #CCC;
+}
+.file_class_method_obj #settings .arguments tbody .icon_cell {
+	border:1px outset;
+}
+.file_class_method_obj #settings .arguments tbody input, .file_class_method_obj .arguments tbody select {
+	border:0;
+	background-color:#FFF;
+	float:none;
+	clear:left;
+}
+.file_class_method_obj #settings .arguments table .name {
+	width:150px;
+}
+.file_class_method_obj #settings .arguments table .name input {
+	width:145px;
+}
+.file_class_method_obj #settings .arguments table .value {
+	width:250px;
+}
+.file_class_method_obj #settings .arguments table .value input {
+	width:245px;
+}
+.file_class_method_obj #settings .arguments table .var_type {
+	width:80px;
+}
+.file_class_method_obj #settings .arguments table .var_type select {
+	width:80px;
+	text-align:center;
+}
+
+/* ANNOTATIONS */
+.file_class_method_obj #settings .annotations {
+	margin-top:10px;
+} 
+.file_class_method_obj #settings .annotations label {
+	width:100%;
+	clear:left;
+	float:none;
+}
+.file_class_method_obj #settings .annotations table {
+	width:975px;
+	margin-top:5px;
+	border:1px solid #CCC;
+}
+.file_class_method_obj #settings .annotations thead th {
+	text-transform:uppercase;
+	font-style:italic;
+	font-weight:bold;
+	font-size:10px;
+}
+.file_class_method_obj #settings .annotations thead .add {
+	margin-left:5px;
+}
+.file_class_method_obj #settings .annotations tbody .delete {
+	margin-top:3px;
+	height:16px;
+}
+.file_class_method_obj #settings .annotations tbody td {
+	border:1px inset #CCC;
+}
+.file_class_method_obj #settings .annotations tbody .icon_cell {
+	border:1px outset;
+}
+.file_class_method_obj #settings .annotations tbody input, .file_class_method_obj .annotations tbody select {
+	border:0;
+	background-color:#FFF;
+	float:none;
+	clear:left;
+}
+
+.file_class_method_obj #settings .annotations table .name {
+	width:200px;
+}
+.file_class_method_obj #settings .annotations table .default {
+	width:100px;
+}
+.file_class_method_obj #settings .annotations table .annotation_type {
+	width:80px;
+}
+.file_class_method_obj #settings .annotations table .type {
+	width:130px;
+}
+.file_class_method_obj #settings .annotations table .not_null {
+	width:70px;
+}
+.file_class_method_obj #settings .annotations table .description {
+	width:150px;
+}
+.file_class_method_obj #settings .annotations table .others {
+	width:200px;
+}
+.file_class_method_obj #settings .annotations table .name input {
+	width:195px;
+	text-align:center;
+}
+.file_class_method_obj #settings .annotations table .default input {
+	width:95px;
+	text-align:center;
+}
+.file_class_method_obj #settings .annotations table .annotation_type select {
+	width:80px;
+	text-align:center;
+}
+.file_class_method_obj #settings .annotations table .type select {
+	width:110px;
+}
+.file_class_method_obj #settings .annotations table .type input {
+	width:105px;
+	display:inline;
+}
+.file_class_method_obj #settings .annotations table .type select optgroup {
+	margin-left:10px;
+}
+.file_class_method_obj #settings .annotations table .type select optgroup.main_optgroup {
+	margin-left:0px;
+}
+.file_class_method_obj #settings .annotations table .not_null input {
+	margin:0 auto;
+}
+.file_class_method_obj #settings .annotations table .description input {
+	width:145px;
+}
+.file_class_method_obj #settings .annotations table .others input {
+	width:195px;
+}
+
+.file_class_method_obj #settings .annotations table .type .textfield {
+	background:url("../../common/img/icon/rename_icon.gif") no-repeat scroll 0 0;
+	float:right;
+	margin:3px 2px 0 0;
+}
+
+/* COMMENTS */
+.file_class_method_obj #settings .comments {
+	width:100%;
+	margin-top:20px;
+}
+.file_class_method_obj #settings .comments label {
+	width:100%;
+	clear:left;
+	float:none;
+}
+.file_class_method_obj #settings .comments textarea {
+	width:100%;
+	height:60px;
+	margin-top:5px;
+}
+
+.buttons {
+	height:20px;
+	padding-top:20px;
+	text-align:center;
+	width:100%;
+	clear:left;
+	float:none;
+}
+.buttons input {
+	height:25px !important;
+	line-height:15px !important;
+	padding:3px 5px !important;
+	border:1px outset;
+	background: #d5e3e4;
+	display:inline !important;
+	float:none !important;
+	
+	-moz-border-radius:0.5em; 
+	-webkit-border-radius:0.5em;
+	border-radius:0.5em;
+}
+
+/* To print the workflow */
+@media print {
+	.file_class_method_obj {
+		overflow:visible !important;
+		border:0 !important;
+	}
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<sql_mapping>
+	<class name="ObjectObjectsGroup" table="mog_object_objects_group">
+		<id column="objects_group_id"></id>
+		<id column="object_type_id"></id>
+		<id column="object_id"></id>
+		
+		<relationships>
+			<one_to_many name="object_objects_group">
+				<attribute column="*" table="mog_objects_group" />
+				
+				<key pcolumn="objects_group_id" fcolumn="objects_group_id" ftable="mog_objects_group" />
+			</one_to_many>
+		</relationships>
+		
+		<queries>
+			<update id="change_object_objects_groups_object_ids_of_parent_object">
+				update mog_object_objects_group oog
+				inner join mog_object_objects_group oog2 on oog.objects_group_id=oog2.objects_group_id and oog2.object_type_id=#parent_object_type_id# and oog2.object_id=#parent_object_id#
+				set oog.object_type_id=#new_object_type_id#, oog.object_id=#new_object_id#, oog.modified_date='#modified_date#' 
+				where oog.object_type_id=#old_object_type_id# and oog.object_id=#old_object_id#
+			</update>
+		</queries>
+	</class>
+</sql_mapping>

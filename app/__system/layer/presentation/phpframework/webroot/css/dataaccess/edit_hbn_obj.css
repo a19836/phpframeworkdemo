@@ -1,0 +1,102 @@
+.sub_title {
+	width:100%;
+	font-size:12px;
+	text-align:center;
+	margin:-7px 0px 20px 0px;
+	color:#999;
+	cursor:pointer;
+}
+.sub_title:hover {
+	color:#666;
+}
+.advanced_settings, .simple_settings {
+	display:none;
+}
+.data_access_obj {
+	width:790px;
+}
+
+/* GENERIC */
+.data_access_obj #tabs {
+	margin-top:40px;
+	display:none;
+}
+
+/* MAIN ATTRIBUTES */
+.data_access_obj .create_automatically {
+	width:100%;
+	height:0px;
+}
+.data_access_obj .create_automatically label {
+	float:right;
+	margin-top:0px;
+	font-weight:normal;
+	font-size:9px;
+	color:#999;
+	cursor:pointer;
+}
+.data_access_obj .create_automatically .update {
+	float:right;
+	margin-top:-1px;
+}
+
+.data_access_obj .name, .data_access_obj .table, .data_access_obj .extends {
+	width:100%;
+	margin-bottom:3px;
+	height:20px;
+	float:none;
+	clear:left;
+}
+.data_access_obj .name label, .data_access_obj .table label, .data_access_obj .extends label {
+	width:100px;
+}
+.data_access_obj .name input, .data_access_obj .table input {
+	width:155px;
+}
+.data_access_obj .extends select {
+	width:270px;
+}
+
+/* IDS */
+.data_access_obj .ids {
+	margin-top:20px;
+}
+.data_access_obj .ids label {
+	margin-bottom:10px;
+}
+.data_access_obj .id {
+	margin-top:3px;
+}
+.data_access_obj .ids .id {
+	margin-left:20px;
+}
+.data_access_obj .ids .id label.attr_name {
+	margin-bottom:0px;
+	width:120px;
+}
+.data_access_obj .ids .id input.attr_name {
+	width:155px;
+}
+.data_access_obj .ids .id label.generator {
+	width:120px;
+	margin:0px 0px 0px 30px;
+}
+.data_access_obj .ids .id select.generator {
+	margin:0px 20px 0px 0px;
+}
+
+/* RELATIONSHIPS */
+.hbn_obj_relationships .relationship .query .query_tabs {
+	display:none;
+}
+.hbn_obj_relationships .relationship .query .query_insert,
+   .hbn_obj_relationships .relationship .query .query_update,
+   .hbn_obj_relationships .relationship .query .query_delete {
+	display:none;
+}
+.hbn_obj_relationships .relationship .query .query_ui {
+	display:none;
+}
+.hbn_obj_relationships .relationship .query .query_settings {
+	display:block;
+}

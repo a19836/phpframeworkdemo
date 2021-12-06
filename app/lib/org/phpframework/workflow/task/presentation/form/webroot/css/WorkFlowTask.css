@@ -1,0 +1,96 @@
+.jsplumbtaskmenu .task.task_form {
+	background-image:url('../img/bg.gif');
+}
+.jsplumbtaskworkflow .task.task_form {
+	background-image:url('../img/bg.gif');
+	-o-background-size:100% 100%;
+	-webkit-background-size:100% 100%;
+	-moz-background-size:100% 100%;
+	background-size:100% 100%; 
+	
+	/* in IE */
+	-ms-background-size:100% 100%;
+	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');
+	
+	/*border:none;*/
+	box-shadow:none;
+	-o-box-shadow:none;
+	-webkit-box-shadow:none;
+	-moz-box-shadow:none;
+    	
+	/* For IE */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
+	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+}
+.jsplumbtaskworkflow .task.task_form > .info span {
+	color:#3c963c;
+	white-space:nowrap;
+}
+.jsplumbtaskworkflow .task.task_form > .task_droppable {
+	min-height:100px;
+	position:absolute;
+	top:30px;
+	left:0;
+	right:0;
+	bottom:0;
+	box-sizing:border-box;
+	border-top:1px solid #3c963c;
+}
+.jsplumbtaskworkflow .task.task_form > .task_droppable.task_droppable_over {
+	background:#bfecbf;
+	background:#3c963ca3;
+}
+
+/* task properties */
+.form_task_html .settings .choose_db_table .db_table_conditions {
+	display:none;
+}
+
+.form_task_html .ui table .ui_table_attribute_value:before {
+	display:block;
+	padding:5px;
+	color:#555;
+}
+.form_task_html .ui table .ui_table_attribute_value.input:before {
+	content:"...";
+	width:100%;
+	min-width:100px;
+	box-sizing:border-box;
+	border:1px solid #f7f7f7;
+	border-radius:3px;
+}
+.form_task_html .ui table .ui_table_attribute_value.number:before {
+	content:"nn...";
+	border:1px solid #f7f7f7;
+	border-radius:3px;
+}
+.form_task_html .ui table .ui_table_attribute_value.date:before {
+	content:"yyyy-mm-dd";
+	border:1px solid #f7f7f7;
+	border-radius:3px;
+}
+.form_task_html .ui table .ui_table_attribute_value.datetime:before {
+	content:"yyyy-mm-dd hh:ii";
+	border:1px solid #f7f7f7;
+	border-radius:3px;
+}
+.form_task_html .ui table .ui_table_attribute_value.time:before {
+	content:"hh:ii";
+	border:1px solid #f7f7f7;
+	border-radius:3px;
+}
+.form_task_html .ui table .ui_table_attribute_value.checkbox:before {
+	content:"Yes/No";
+}
+.form_task_html .ui table .ui_table_attribute_value.textarea:before {
+	content:"...";
+	width:100%;
+	min-width:100px;
+	height:50px;
+	box-sizing:border-box;
+	border:1px solid #f7f7f7;
+	border-radius:3px;
+}
+
+

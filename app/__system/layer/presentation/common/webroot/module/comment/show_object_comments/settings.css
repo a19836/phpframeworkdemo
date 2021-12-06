@@ -1,0 +1,119 @@
+.show_object_comments_settings {
+	text-align:left;
+}
+.show_object_comments_settings .clear {
+	float:none;
+	clear:both;
+}
+.show_object_comments_settings .object_type_id,
+   .show_object_comments_settings .object_id,
+   .show_object_comments_settings .object_group,
+   .show_object_comments_settings .filter,
+   .show_object_comments_settings .show_add_comment,
+   .show_object_comments_settings .add_comment_url,
+   .show_object_comments_settings .show_comments,
+   .show_object_comments_settings .filter_by_parent,
+   .show_object_comments_settings .user_label {
+	width:auto;
+	min-height:20px;
+	margin-bottom:10px;
+	float:none;
+	clear:left;
+}
+.show_object_comments_settings .filter,
+   .show_object_comments_settings .show_add_comment {
+	margin-top:10px;
+	padding-top:10px;
+	border-top:1px solid #CCC;
+}
+.show_object_comments_settings .add_comment_url {
+	margin-left:20px;
+}
+
+.show_object_comments_settings .object_type_id label,
+   .show_object_comments_settings .object_id label,
+   .show_object_comments_settings .object_group label,
+   .show_object_comments_settings .filter label,
+   .show_object_comments_settings .show_add_comment label,
+   .show_object_comments_settings .show_comments label,
+   .show_object_comments_settings .user_label label {
+	width:160px;
+   	display:block;
+	float:left;
+}
+.show_object_comments_settings .add_comment_url label {
+	width:140px;
+   	display:block;
+	float:left;
+}
+.show_object_comments_settings .object_type_id select,
+   .show_object_comments_settings .object_id input,
+   .show_object_comments_settings .object_group input,
+   .show_object_comments_settings .user_label input {
+	width:170px;
+	font-size:11px;
+}
+.show_object_comments_settings .filter select {
+	font-size:11px;
+}
+.show_object_comments_settings .add_comment_url input {
+	width:382px;
+	padding-right:20px;
+	font-size:11px;
+}
+.show_object_comments_settings .add_comment_url .info,
+   .show_object_comments_settings .user_label .info {
+	margin-left:160px;
+	color:#999;
+	font-size:10px;
+	text-align:left;
+}
+
+/* Filter By Parent */
+.show_object_comments_settings .filter_by_parent {
+	margin-left:20px;
+	float:none;
+	clear:left;
+}
+.show_object_comments_settings .filter_by_parent .filter_object_type_id {
+	width:240px;
+	float:left;
+	clear:none;
+}
+.show_object_comments_settings .filter_by_parent .filter_object_id {
+	width:260px;
+	float:left;
+	clear:none;
+}
+.show_object_comments_settings .filter_by_parent .filter_group {
+	width:150px;
+	float:left;
+	clear:none;
+}
+.show_object_comments_settings .filter_by_parent .filter_object_type_id label {
+	width:100px;
+   	display:block;
+	float:left;
+}
+.show_object_comments_settings .filter_by_parent .filter_object_id label {
+	width:90px;
+   	display:block;
+	float:left;
+}
+.show_object_comments_settings .filter_by_parent .filter_group label {
+	width:60px;
+   	display:block;
+	float:left;
+}
+.show_object_comments_settings .filter_by_parent .filter_object_type_id select {
+	width:130px;
+	font-size:11px;
+}
+.show_object_comments_settings .filter_by_parent .filter_object_id input {
+	width:150px;
+	font-size:11px;
+}
+.show_object_comments_settings .filter_by_parent .filter_group input {
+	width:70px;
+	font-size:11px;
+}

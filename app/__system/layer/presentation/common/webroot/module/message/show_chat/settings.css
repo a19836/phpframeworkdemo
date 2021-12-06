@@ -1,0 +1,72 @@
+.show_chat_settings {
+	width:100%;
+	text-align:left;
+}
+.show_chat_settings .session_id,
+   .show_chat_settings .logged_user_id,
+   .show_chat_settings .to_user_id,
+   .show_chat_settings .to_user_label,
+   .show_chat_settings .maximum_number_of_loaded_messages,
+   .show_chat_settings .load_messages_url,
+   .show_chat_settings .on_load_error_message,
+   .show_chat_settings .send_message_url,
+   .show_chat_settings .on_send_error_message {
+	margin-bottom:5px;
+}
+.show_chat_settings .session_id,
+   .show_chat_settings .logged_user_id {
+	width:50%;
+	float:left;
+}
+.show_chat_settings .maximum_number_of_loaded_messages {
+	margin-top:20px;
+}
+.show_chat_settings .session_id label,
+   .show_chat_settings .to_user_id label,
+   .show_chat_settings .to_user_label label {
+   	width:120px;
+	display:inline-block;
+}
+.show_chat_settings .logged_user_id label {
+   	width:140px;
+	display:inline-block;
+}
+.show_chat_settings .maximum_number_of_loaded_messages input {
+	width:20px;
+	margin-left:5px;
+}
+.show_chat_settings .load_messages_url,
+   .show_chat_settings .send_message_url {
+	margin-top:20px;
+}
+.show_chat_settings .load_messages_url label,
+   .show_chat_settings .on_load_error_message label,
+   .show_chat_settings .send_message_url label,
+   .show_chat_settings .on_send_error_message label {
+   	width:180px;
+	display:inline-block;
+}
+.show_chat_settings .on_load_error_message input,
+   .show_chat_settings .on_send_error_message input {
+	width:500px;
+}
+.show_chat_settings .load_messages_url input,
+   .show_chat_settings .send_message_url input {
+	width:482px;
+	padding-right:20px;
+}
+.show_chat_settings .load_messages_url .info, 
+   .show_chat_settings .send_message_url .info, 
+   .show_chat_settings .to_user_label .info {
+	margin-left:185px;
+	display:block;
+	font-size:85%;
+	color:#555;
+}
+.show_chat_settings .to_user_label .info {
+	margin-left:10px;
+	display:inline;
+}
+.show_chat_settings .to_user_label .add_variable {
+	margin-left:-21px !important;
+}

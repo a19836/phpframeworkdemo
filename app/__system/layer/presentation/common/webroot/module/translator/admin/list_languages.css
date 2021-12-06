@@ -1,0 +1,16 @@
+.module_list .language {
+	text-align:center;
+}
+.module_list .modified_date {
+	text-align:center;
+}
+.module_list .delete_action .icon {
+	margin-right:0;
+}
+.module_list .delete_action .icon.add {
+	margin-right:5px;
+}
+.module_list .other_action .icon {
+	background:url("../../../img/icon/view_icon.gif") no-repeat scroll 0px 1px;
+	margin-left:0;
+}

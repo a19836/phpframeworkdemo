@@ -1,0 +1,55 @@
+.jsplumbtaskmenu .task.task_if {
+	background-image:url('../img/bg.gif');
+}
+.jsplumbtaskmenu .task.task_if span {
+	padding:3px;
+	/*color:#FFF;*/
+	background-color:rgba(255, 255, 255,.5);
+}
+.jsplumbtaskworkflow .task.task_if {
+	/*background-image:url('../img/bg.gif');
+	-o-background-size:100% 100%;
+	-webkit-background-size:100% 100%;
+	-moz-background-size:100% 100%;
+	background-size:100% 100%; */
+	
+	/* in IE */
+	-ms-background-size:100% 100%;
+	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
+	
+	border:none;
+	box-shadow:none;
+	-o-box-shadow:none;
+	-webkit-box-shadow:none;
+	-moz-box-shadow:none;
+    	
+	/* For IE */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
+	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+}
+.jsplumbtaskworkflow .task.task_if:before {
+	content:" ";
+	display:block;
+	width:100%;
+	height:100%;
+	background:rgba(255, 0, 0, .7);
+	
+	-webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+	clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+.jsplumbtaskworkflow .task.task_if:hover {
+	box-shadow:none !important;
+}
+.jsplumbtaskworkflow .task.task_if:hover:before {
+	opacity:.6;
+}
+.jsplumbtaskworkflow .task.task_if .info span {
+	color:#009900;
+}
+
+.if_task_html {
+	min-width:665px;
+}
+
+

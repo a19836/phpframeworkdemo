@@ -1,0 +1,46 @@
+.jsplumbtaskmenu .task.task_formitemsingle {
+	background-image:url('../img/bg.gif');
+	line-height:2em;
+}
+.jsplumbtaskworkflow .task.task_formitemsingle {
+	background-image:url('../img/bg.gif');
+	-o-background-size:100% 100%;
+	-webkit-background-size:100% 100%;
+	-moz-background-size:100% 100%;
+	background-size:100% 100%;
+	
+	/* in IE */
+	-ms-background-size:100% 100%;
+	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');
+	
+	border:none;
+	box-shadow:none;
+	-o-box-shadow:none;
+	-webkit-box-shadow:none;
+	-moz-box-shadow:none;
+    	
+	/* For IE */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
+	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+}
+.jsplumbtaskworkflow .task.task_formitemsingle .info span {
+	white-space:nowrap;
+}
+.jsplumbtaskworkflow .task.task_formitemsingle .tag_info {
+	display:block;
+}
+.jsplumbtaskworkflow .task.task_formitemsingle .eps {
+	margin-top:15px;
+}
+.jsplumbtaskworkflow .task.task_formitemsingle .ep {
+	width:20px;
+	border-radius:100%;
+	margin:0 auto;
+	float:none;
+}
+
+/* task properties */
+.module_form_settings .formitemsingle_task_html {
+	
+}

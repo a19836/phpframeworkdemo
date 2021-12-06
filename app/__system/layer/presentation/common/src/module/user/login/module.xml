@@ -1,0 +1,6 @@
+<module>
+	<label>User Login</label>
+	<description>Module "User Login" allows the user to login with the correspondent credentials.</description>
+	<image>logo.png</image>
+	<load_module_settings_js_function>loadLoginBlockSettings</load_module_settings_js_function>
+</module>

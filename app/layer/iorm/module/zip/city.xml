@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sql_mapping>
+	<insert id="insert_city">
+		insert into mz_city (state_id, name, created_date, modified_date) values (#state_id#, '#name#', '#created_date#', '#modified_date#')
+	</insert>
+	<insert id="insert_city_with_ai_pk" hard_coded_ai_pk="1">
+		insert into mz_city (city_id, state_id, name, created_date, modified_date) values (#city_id#, #state_id#, '#name#', '#created_date#', '#modified_date#')
+	</insert>
+	
+	<update id="update_city">
+		update mz_city set state_id=#state_id#, name='#name#', modified_date='#modified_date#' where city_id=#city_id#
+	</update>
+	
+	<delete id="delete_city">
+		delete from mz_city where city_id=#city_id#
+	</delete>
+	
+	<delete id="delete_cities_by_conditions">
+		delete from mz_city where #conditions#
+	</delete>
+	
+	<delete id="delete_cities_by_country_id">
+		delete ci.*
+		from mz_state st on st.country_id=#country_id#
+		inner join mz_city ci on ci.state_id=st.state_id
+	</delete>
+	
+	<select id="get_city">
+		select ci.*, st.state_id, st.name as 'state', co.country_id, co.name as 'country'
+		from mz_city ci
+		inner join mz_state st on st.state_id=ci.state_id
+		inner join mz_country co on co.country_id=st.country_id
+		where ci.city_id=#city_id#
+	</select>
+	
+	<select id="get_all_cities">
+		select * from mz_city
+	</select>
+	
+	<select id="count_all_cities">
+		select count(city_id) total from mz_city
+	</select>
+	
+	<select id="get_cities_by_conditions">
+		select * from mz_city where #conditions#
+	</select>
+	
+	<select id="count_cities_by_conditions">
+		select count(city_id) total from mz_city where #conditions#
+	</select>
+	
+	<select id="get_full_cities">
+		select ci.*, st.state_id, st.name as 'state', co.country_id, co.name as 'country'
+		from mz_city ci
+		inner join mz_state st on st.state_id=ci.state_id
+		inner join mz_country co on co.country_id=st.country_id
+	</select>
+</sql_mapping>

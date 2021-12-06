@@ -1,0 +1,13 @@
+.module_list .group_id {
+	text-align:center;
+}
+.module_list .delete_action .icon {
+	margin-right:0;
+}
+.module_list .other_action.list_menu_items .icon {
+	background:url("../../../img/icon/table_icon.gif") no-repeat scroll 0px 0px;
+	margin-right:2px;
+}
+.module_list .other_action.manage_menu_group .icon {
+	background:url("../../../img/icon/update_icon.gif") no-repeat scroll 0px 0px;
+}

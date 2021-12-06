@@ -1,0 +1,4 @@
+.list_settings .prop_object_type_id .selected_task_properties .form_containers .fields .field .input_name,
+   .list_settings .prop_object_type_id .selected_task_properties .form_containers .fields .field .input_value {
+	display:none;
+}

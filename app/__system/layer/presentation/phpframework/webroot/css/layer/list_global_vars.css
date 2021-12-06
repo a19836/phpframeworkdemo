@@ -1,0 +1,8 @@
+.global_vars {width:500px; min-height:230px; text-align:center; padding-top:20px; margin:0px auto;}
+.global_vars h1 {width:100%; font-weight:bold; font-size:20px; text-align:center; line-height:30px; margin:10px 0px; padding:0px 0px;}
+.global_vars .vars {text-align:left; margin:0px auto;}
+.global_vars .vars th {text-align:center; font-weight:bold;}
+.global_vars .vars .buttons {text-align:left; font-weight:bold; font-size:10px;}
+.global_vars .vars input {width:205px; margin-bottom:3px; margin-right:5px;}
+.global_vars .save {position:fixed; left:10px; top:0px; -moz-border-radius:0.5em; -webkit-border-radius:0.5em; border-radius:0.5em;}
+.global_vars .add_new {position:fixed; right:10px; top:0px; -moz-border-radius:0.5em; -webkit-border-radius:0.5em; border-radius:0.5em;}

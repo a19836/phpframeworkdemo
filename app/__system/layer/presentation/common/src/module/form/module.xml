@@ -1,0 +1,7 @@
+<module>
+	<label>Form</label>
+	<description>Module Form allows you to execute actions to DB or to get Rules or Services from other Layers, create a form or a table, execute code, much more... Basically this is used to create back-office and interfaces to interact with the DB.</description>
+	<image>logo.gif</image>
+	<load_module_settings_js_function>loadFormBlockSettings</load_module_settings_js_function>
+	<is_reserved_module>1</is_reserved_module>
+</module>

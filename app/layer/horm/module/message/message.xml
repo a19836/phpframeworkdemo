@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<sql_mapping>
+	<class name="Message" table="mmsg_message">
+		<id column="message_id"></id>
+		<id column="from_user_id"></id>
+		<id column="to_user_id"></id>
+		
+		<queries>
+			<select id="get_chat_messages">
+				select * from mmsg_message where from_user_id=#from_user_id# and to_user_id=#to_user_id# and from_user_status=1
+				union
+				select * from mmsg_message where from_user_id=#to_user_id# and to_user_id=#from_user_id# and to_user_status=1
+			</select>
+	
+			<select id="count_chat_messages">
+				select count(message_id) as total from (
+					select * from mmsg_message where from_user_id=#from_user_id# and to_user_id=#to_user_id# and from_user_status=1
+					union
+					select * from mmsg_message where from_user_id=#to_user_id# and to_user_id=#from_user_id# and to_user_status=1
+				) m
+			</select>
+	
+			<select id="get_previous_chat_messages_from_message">
+				select * from mmsg_message where from_user_id=#from_user_id# and to_user_id=#to_user_id# and from_user_status=1 and message_id &lt; #message_id#
+				union
+				select * from mmsg_message where from_user_id=#to_user_id# and to_user_id=#from_user_id# and to_user_status=1 and message_id &lt; #message_id#
+			</select>
+	
+			<select id="count_previous_chat_messages_from_message">
+				select count(message_id) as total from (
+					select * from mmsg_message where from_user_id=#from_user_id# and to_user_id=#to_user_id# and from_user_status=1 and message_id &lt; #message_id#
+					union
+					select * from mmsg_message where from_user_id=#to_user_id# and to_user_id=#from_user_id# and to_user_status=1 and message_id &lt; #message_id#
+				) m
+			</select>
+	
+			<select id="get_next_chat_messages_from_message">
+				select * from mmsg_message where from_user_id=#from_user_id# and to_user_id=#to_user_id# and from_user_status=1 and message_id > #message_id#
+				union
+				select * from mmsg_message where from_user_id=#to_user_id# and to_user_id=#from_user_id# and to_user_status=1 and message_id > #message_id#
+			</select>
+	
+			<select id="count_next_chat_messages_from_message">
+				select count(message_id) as total from (
+					select * from mmsg_message where from_user_id=#from_user_id# and to_user_id=#to_user_id# and from_user_status=1 and message_id > #message_id#
+					union
+					select * from mmsg_message where from_user_id=#to_user_id# and to_user_id=#from_user_id# and to_user_status=1 and message_id > #message_id#
+				) m
+			</select>
+	
+			<select id="get_user_chat_users">
+				select u.*, cu.created_date last_chat_date 
+				from (
+					select user_id, max(created_date) created_date from (
+						select to_user_id as user_id, created_date from mmsg_message where from_user_id=#user_id# and from_user_status=1
+						union
+						select from_user_id as user_id, created_date from mmsg_message where to_user_id=#user_id# and to_user_status=1
+					) m
+					group by user_id
+				) cu 
+				inner join mu_user u on u.user_id=cu.user_id
+				order by last_chat_date desc
+			</select>
+	
+			<select id="get_user_last_unique_chats">
+				select mu.user_id, m.*
+				from (
+					select user_id, max(message_id) message_id from (
+						select to_user_id as user_id, message_id from mmsg_message where from_user_id=#user_id# and from_user_status=1
+						union
+						select from_user_id as user_id, message_id from mmsg_message where to_user_id=#user_id# and to_user_status=1
+					) m
+					group by user_id
+					order by message_id desc
+				) mu
+				inner join mmsg_message m on m.message_id=mu.message_id 
+				order by created_date desc
+			</select>
+		</queries>
+	</class>
+</sql_mapping>

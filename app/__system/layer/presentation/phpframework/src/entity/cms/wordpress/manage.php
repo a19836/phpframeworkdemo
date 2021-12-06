@@ -1,0 +1,21 @@
+<?php
+/*
+ * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
+ * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * 
+ * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
+ * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
+ * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
+ * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
+ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+include_once $EVC->getUtilPath("CMSPresentationLayerHandler"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $bean_name = $_GET["bean_name"]; $bean_file_name = $_GET["bean_file_name"]; $path = $_GET["path"]; if ($bean_name && $bean_file_name) { $WorkFlowBeansFileHandler = new WorkFlowBeansFileHandler($user_beans_folder_path . $bean_file_name, $user_global_variables_file_path); $PEVC = $WorkFlowBeansFileHandler->getEVCBeanObject($bean_name, $path); if ($PEVC) { $P = $PEVC->getPresentationLayer(); $selected_project_id = $P->getSelectedPresentationId(); $common_project_name = $PEVC->getCommonProjectName(); $show_projects = $selected_project_id == $common_project_name || !$selected_project_id; $PHPVariablesFileHandler = new PHPVariablesFileHandler(array($user_global_variables_file_path, $PEVC->getConfigPath("pre_init_config"))); $PHPVariablesFileHandler->startUserGlobalVariables(); $layer_db_drivers = WorkFlowBeansFileHandler::getLayerDBDrivers($user_global_variables_file_path, $user_beans_folder_path, $P, true); $default_db_driver = $GLOBALS["default_db_driver"]; $PHPVariablesFileHandler->endUserGlobalVariables(); $selected_db_driver = $default_db_driver; if ($path && dirname($path) == "$common_project_name/webroot/" . WordPressUrlsParser::WORDPRESS_FOLDER_PREFIX) $selected_db_driver = basename($path); if ($show_projects) { $projects = CMSPresentationLayerHandler::getPresentationLayerProjectsFiles($user_global_variables_file_path, $user_beans_folder_path, $bean_file_name, $bean_name); unset($projects[$common_project_name]); $projects = array_keys($projects); } $installed_wordpress_folders_name = CMSPresentationLayerHandler::getWordPressInstallationsFoldersName($PEVC); if ($_POST) { $db_driver = $_POST["db_driver"]; if ($db_driver) { if ($show_projects && $_POST["project"]) $path = $_POST["project"] . "/"; $page = $_POST["install_wordpress"] ? "install" : "admin_login"; $url = $project_url_prefix . "phpframework/cms/wordpress/$page?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path&db_driver=$db_driver"; header("Location: $url"); echo "<script>document.location='$url';</script>"; } else $error_message = "You must select a DB Driver. Please try again..."; } } else { launch_exception(new Exception("PEVC doesn't exists!")); die(); } } else { launch_exception(new Exception("Undefined bean!")); die(); } ?>

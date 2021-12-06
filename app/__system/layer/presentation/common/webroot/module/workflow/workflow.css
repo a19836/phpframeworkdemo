@@ -1,0 +1,59 @@
+.title {
+	margin-bottom:0;
+}
+.block_obj {
+	width:100%;
+}
+.block_obj .module_settings {
+	width:auto;
+}
+.block_obj .module_settings > label {
+	display:block;
+	text-align:center;
+}
+.block_obj .module_settings .settings {
+	border:0;
+	padding:0;
+	text-align:left;
+}
+
+.module_workflow_settings {
+	overflow:hidden; /* bc of the workflow menu drag&drop */
+}
+
+.module_workflow_settings #external_vars {
+	text-align:center;
+}
+.module_workflow_settings #external_vars table {
+	width:300px;
+	margin:0 auto;
+}
+.module_workflow_settings #external_vars table th,
+   .module_workflow_settings #external_vars table td {
+	text-align:center;
+}
+.module_workflow_settings #external_vars table th.variable_name,
+   .module_workflow_settings #external_vars table th.variable_value {
+	width:140px;
+}
+.module_workflow_settings #external_vars table .add_variable {
+	background:url(../../img/icon/sort_icon.png) no-repeat scroll 0 0;
+}
+.module_workflow_settings #external_vars table .add_variable.inline {
+	margin:2px 0 0 -18px;
+	position:absolute;
+	float:none;
+	clear:both;
+	display:inline-block;
+	vertical-align:middle;
+	opacity:.8;
+}
+
+/* WORKFLOW */
+.module_workflow_settings .jsplumbtaskworkflow .workflow_message {
+	position:absolute;
+}
+.module_workflow_settings .jsplumbtaskworkflow .error {
+	height:auto;
+	font-size:100%;
+}

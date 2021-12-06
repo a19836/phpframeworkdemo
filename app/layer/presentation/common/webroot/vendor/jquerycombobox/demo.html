@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+  <script type="text/javascript" src="js/jquery.js"></script>	
+  <script type="text/javascript" src="js/jquery.dimensions.js"></script>
+  <script type="text/javascript" src="js/jquery.combobox.js"></script>
+</head>
+
+<body>
+<!--style>
+.liveexample li
+{
+ list-style-image: none;
+ list-style-position : inherit;
+ list-style-type: none;
+ margin-left: 0;
+}
+
+.liveexample ul
+{
+ padding-bottom: 0;
+}
+</style-->
+<style>
+.liveexample li
+{
+ list-style-image: none;
+ list-style-position : inherit;
+ list-style-type: none;
+ margin-left: 0;
+}
+
+.liveexample ul
+{
+ padding-bottom: 0;
+}
+
+.comboboxContainer
+{
+	border-left: solid 2px #777;
+	border-top: solid 2px #777;
+	border-right: solid 1px #ccc;
+	border-bottom: solid 1px #ccc;
+}
+
+.comboboxValueContainer
+{
+	background: url(images/bluegradient_content.gif) repeat-x left top;
+}
+
+.comboboxValueContent
+{
+	padding-left: 3px;
+	text-transform: uppercase;
+}
+
+.comboboxDropDownContainer
+{
+	border-right: solid 1px #000;
+	border-bottom: solid 1px #000;
+	border-left: solid 1px #aaa;
+	border-top: solid 1px #aaa;
+	background: #fff;
+	overflow: hidden;
+	padding-left: 3px;
+}
+
+.comboboxDropDownButton
+{
+	width: 16px;
+	height: 18px;
+	background-image: url(images/trigger.gif);
+}
+
+.comboboxGroupItemHeader
+{
+	display: block;
+	background: #99cccc;
+	color: #000;
+	font-family: Impact;
+}
+
+.comboboxGroupItemContainer
+{
+	padding-left: 10px;
+}
+
+.comboboxItem
+{
+	background: #fff;
+	color: #000;
+	text-transform: lowercase;
+	font-weight: normal;
+	font-style: normal;
+}
+
+.comboboxItemHover
+{
+	background-color: #999;
+	color: #fff;
+	text-transform: uppercase;
+	padding-left: 4px;
+}
+</style>
+<select id="officeItemList">
+		<option value="1">eraser</option>
+		<option value="3">pencil</option>
+		<option value="4">ruler</option>
+		<option value="5">ink</option>
+		<optgroup label="paper types">
+			<option value="7">A4 paper</option>
+			<option value="8">A3 paper</option>
+			<option value="9">letter-sized paper</option>
+		</optgroup>
+		<optgroup label="chair types">
+			<option value="10">executive</option>
+			<option value="11">janitor</option>
+			<option value="12">developer</option>
+		</optgroup>		
+</select>
+<script type="text/javascript">
+$(function(){
+	//$('#officeItemList').combobox();
+
+	$('#officeItemList').combobox({
+		comboboxContainerClass: "comboboxContainer",
+		comboboxValueContainerClass: "comboboxValueContainer",
+		comboboxValueContentClass: "comboboxValueContent",
+		comboboxDropDownClass: "comboboxDropDownContainer",
+		comboboxDropDownButtonClass: "comboboxDropDownButton",
+		comboboxDropDownItemClass: "comboboxItem",
+		comboboxDropDownItemHoverClass: "comboboxItemHover",
+		comboboxDropDownGroupItemHeaderClass: "comboboxGroupItemHeader",
+		comboboxDropDownGroupItemContainerClass: "comboboxGroupItemContainer",
+		animationType: "slide",
+		width: "100px"
+	});
+});
+
+</script>    
+</form>   
+</body>
+</html>

@@ -1,0 +1,109 @@
+.test_units {
+	padding:20px;
+}
+.test_units > label {
+	margin-bottom:20px;
+	display:block;
+	text-align:center;
+}
+.test_units > .buttons {
+	margin-top:20px;
+	text-align:center;
+}
+.test_units .test_units_tree .icon {
+	float:none;
+	clear:both;
+	display:inline-block;
+	vertical-align:middle;
+}
+.test_units .test_units_tree .icon.edit {
+	margin-left:10px;
+	background:url("../../common/img/icon/update_icon.gif") no-repeat scroll 0 0;
+}
+.test_units .test_units_tree .icon.remove {
+	background:url("../../common/img/icon/recycle_icon.png") no-repeat scroll 0 0;
+}
+.test_units .test_units_tree .icon.rename {
+	background:url("../../common/img/icon/rename_icon.gif") no-repeat scroll 0 0;
+}
+.test_units .test_units_tree .icon.add_folder {
+	background:url(../../common/vendor/jquerymytree/css/32px.png) -265px -8px no-repeat;
+}
+.test_units .test_units_tree .icon.add_test {
+	background:url("../../common/img/icon/item_add_icon.png") no-repeat scroll 0 0;
+}
+.test_units .test_units_tree .icon.execute {
+	background:url("../../common/img/icon/right_icon.gif") no-repeat scroll 0 0;
+}
+.test_units .test_units_tree .icon.info {
+	background:url("../../common/img/icon/info_icon.png") no-repeat scroll 0 0;
+}
+
+.test_units .test_units_tree .edit_test_unit_file {
+	width:100%;
+	height:500px;
+	max-height:80vh;
+	display:block;
+	border:1px solid #ccc;
+	background:#fff;
+}
+.test_units .test_units_tree .edit_test_unit_file .refresh {
+	margin:10px 0 0 10px;
+	position:absolute;
+}
+.test_units .test_units_tree .edit_test_unit_file iframe {
+	width:100%;
+	height:100%;
+	padding:0;
+}
+
+.test_units .test_units_tree .select_test_unit {
+	position:absolute;
+	left:0;
+}
+
+.test_units .test_units_tree li:before {
+	content:"";
+	display:block;
+	position:absolute;
+	left:0;
+	width:100%;
+	height:24px;
+	z-index:-1;
+}
+.test_units .test_units_tree li.success:before {
+	background:green;
+	background:rgba(0, 255, 0, .2);
+}
+.test_units .test_units_tree li.warning:before {
+	background:orange;
+	background:rgba(255, 165, 0, .4);
+}
+.test_units .test_units_tree li.error:before {
+	background:red;
+	background:rgba(255, 0, 0, .2);
+}
+
+.test_units .test_units_tree .executed_test_response {
+	padding:10px;
+	background:#eee;
+	background:rgba(0, 0, 0, .05);
+	color:#000;
+	text-align:center;
+	display:none;
+}
+.test_units .test_units_tree li.success > .executed_test_response {
+	background:rgba(0, 255, 0, .35);
+}
+.test_units .test_units_tree li.warning > .executed_test_response {
+	background:rgba(255, 165, 0, .55);
+}
+.test_units .test_units_tree li.error > .executed_test_response {
+	background:rgba(255, 0, 0, .35);
+}
+
+.test_units .test_units_tree .jstree-clicked, 
+  .test_units .test_units_tree .jstree-clicked.jstree-hovered {
+	background:unset !important;
+	box-shadow:unset !important;
+}

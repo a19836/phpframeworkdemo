@@ -1,0 +1,36 @@
+.convert_url_to_template {
+	text-align:center;
+}
+.convert_url_to_template .title {
+	color: #000;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 10px 0 20px 0px;
+	text-align: center;
+	width: 100%;
+	height:25px;
+}
+.convert_url_to_template .page_url input {
+	width:400px;
+}
+.convert_url_to_template .page_html {
+	width:100%;
+	height:300px;
+	height:calc(100vh - 230px);
+	margin-top:20px;
+}
+.convert_url_to_template .page_html iframe {
+	width:100%;
+	height:100%;
+	border:1px inset #ccc;
+	box-sizing: border-box;
+}
+.convert_url_to_template .buttons {
+	margin-top:20px;
+}
+.convert_url_to_template .template {
+	margin-top:20px;
+	padding-top:20px;
+	border-top:1px solid #ccc;
+}
+

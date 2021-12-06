@@ -1,0 +1,28 @@
+.title {
+	margin-bottom:0;
+}
+
+.view_obj {
+	width:99%;
+	width:calc(100% - 10px); /* bc of tabs */
+	overflow:hidden;
+	margin:0 auto;
+}
+
+.view_obj .code_layout_ui_editor {
+	height:calc(100vh - 80px);
+	min-height:300px;
+	padding:0 !important;
+	position:relative;
+}
+.minimized .view_obj .code_layout_ui_editor {
+	height:calc(100vh - 45px);
+}
+
+/* To print the workflow */
+@media print {
+	.view_obj {
+		overflow:visible !important;
+		border:0 !important;
+	}
+}

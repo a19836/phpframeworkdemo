@@ -1,0 +1,83 @@
+.jsplumbtaskmenu .task.task_dataaccess {
+	line-height:76px !important;
+	margin-left:10px;
+}
+.jsplumbtaskmenu .task.task_dataaccess span {
+	display:block;
+	line-height:13px;
+	margin-top:25px;
+}
+.jsplumbtaskworkflow .task.task_dataaccess, .jsplumbtaskmenu .task.task_dataaccess {
+	min-width:80px !important;
+	min-height:76px !important;
+	
+	background-image:url('../img/bg.gif');
+	-o-background-size:100% 100%;
+	-webkit-background-size:100% 100%;
+	-moz-background-size:100% 100%;
+	background-size:100% 100%; 
+	
+	/* in IE */
+	-ms-background-size:100% 100%;
+	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
+	
+	border:0 !important;
+	
+	-moz-border-radius:0 !important; 
+	-webkit-border-radius:0 !important;
+	border-radius:0 !important;
+	
+	box-shadow:none !important;
+	-o-box-shadow:none !important;
+	-webkit-box-shadow:none !important;
+	-moz-box-shadow:none !important;
+	
+	/* For IE */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)" !important;
+	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false) !important;
+}
+.jsplumbtaskworkflow .task.task_dataaccess .info {
+	width:100% !important;
+}
+.jsplumbtaskworkflow .task.task_dataaccess .info span, .jsplumbtaskmenu .task.task_dataaccess span {
+	background-color:#91ccee;
+	background-color:rgba(145, 204, 238, 0.5);
+}
+
+.jsplumbtaskworkflow .task.task_dataaccess .eps {
+	width:20px;
+}
+.jsplumbtaskworkflow .task.task_dataaccess .ep {
+	border:0 !important;
+	-moz-border-radius:4em !important; 
+	-webkit-border-radius:4em !important;
+	border-radius:4em !important;
+	
+	width:40px;
+	height:40px;
+	background:url('../../common/img/link_icon_3.png') no-repeat scroll 3px 5px #33adff !important;
+	
+	position:absolute;
+	left:0;
+	top:0;
+	margin-left:35%;
+	margin-top:-15px;
+	z-index:100 !important;
+}
+
+.data_access_layer_task_html .type {
+	float:none;
+	clear:left;
+	margin-bottom:20px;
+}
+.data_access_layer_task_html .type label {
+	width:50px;
+	height:20px;
+	line-height:20px;
+	display:block;
+	float:left;
+}
+.data_access_layer_task_html .type select {
+	width:120px;
+}

@@ -1,0 +1,6 @@
+<module>
+	<label>List Zones</label>
+	<description>Module "List Zones" allows to manage the zones.</description>
+	<image>logo.png</image>
+	<load_module_settings_js_function>loadListSettingsBlockSettings</load_module_settings_js_function>
+</module>

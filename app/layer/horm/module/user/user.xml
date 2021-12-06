@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<sql_mapping>
+	<class name="User" table="mu_user">
+		<id column="user_id"></id>
+		
+		<queries>
+			<select id="get_users_with_user_types_by_conditions">
+				select u.*, z.user_type_ids
+				from mu_user u 
+				inner join (
+					select u.user_id, group_concat(uut.user_type_id) user_type_ids
+					from mu_user u 
+					left join mu_user_user_type uut on uut.user_id=u.user_id
+					where #conditions#
+					group by u.user_id
+				) z on z.user_id=u.user_id
+			</select>
+			
+			<select id="count_users_with_user_types_by_conditions">
+				select count(user_id) total 
+				from mu_user 
+				where #conditions#
+			</select>
+			
+			<select id="get_users_with_environments_and_conditions">
+				select u.*, z.environment_ids, z.user_type_ids
+				from mu_user u 
+				inner join (
+					select u.user_id, group_concat(ue.environment_id) environment_ids, group_concat(uut.user_type_id) user_type_ids
+					from mu_user u 
+					inner join mu_user_environment ue on ue.user_id=u.user_id and ue.environment_id in (#environment_ids#)
+					left join mu_user_user_type uut on uut.user_id=u.user_id
+					where #conditions#
+					group by u.user_id
+				) z on z.user_id=u.user_id
+			</select>
+	
+			<select id="get_users_without_environments_and_with_conditions">
+				select u.*
+				from mu_user u 
+				inner join (
+					select u.user_id 
+					from mu_user u 
+					left join mu_user_environment ue on ue.user_id=u.user_id
+					where ue.environment_id is NULL and #conditions#
+					group by u.user_id
+				) z on z.user_id=u.user_id
+			</select>
+	
+			<select id="get_users_by_user_types_and_conditions">
+				select u.*, z.user_type_ids
+				from mu_user u 
+				inner join (
+					select u.user_id, group_concat(uut.user_type_id) user_type_ids
+					from mu_user u 
+					inner join mu_user_user_type uut on uut.user_id=u.user_id and uut.user_type_id in (#user_type_ids#)
+					where #conditions#
+					group by u.user_id
+				) z on z.user_id=u.user_id
+			</select>
+	
+			<select id="count_users_by_user_types_and_conditions">
+				select count(distinct(u.user_id)) total
+				from mu_user  u
+				inner join mu_user_user_type uut on uut.user_id=u.user_id and uut.user_type_id in (#user_type_ids#)
+				where #conditions#
+			</select>
+	
+			<select id="get_users_by_object_and_conditions">
+				select u.*, z.`group`, z.`order`, z.user_type_ids
+				from mu_user u 
+				inner join (
+					select u.user_id, ou.`group` `group`, ou.`order` `order`, group_concat(uut.user_type_id) user_type_ids
+					from mu_user u 
+					inner join mu_object_user ou on ou.user_id=u.user_id and ou.object_type_id=#object_type_id# and ou.object_id=#object_id#
+					left join mu_user_user_type uut on uut.user_id=u.user_id
+					where #conditions#
+					group by u.user_id, ou.`group`, ou.`order`
+				) z on z.user_id=u.user_id
+			</select>
+	
+			<select id="count_users_by_object_and_conditions">
+				select count(distinct(u.user_id)) total
+				from mu_user  u
+				inner join mu_object_user ou on ou.user_id=u.user_id and ou.object_type_id=#object_type_id# and ou.object_id=#object_id#
+				where #conditions#
+			</select>
+	
+			<select id="get_users_by_object_group_and_conditions">
+				select u.*, z.`group`, z.`order`, z.user_type_ids
+				from mu_user u 
+				inner join (
+					select u.user_id, ou.`group` `group`, ou.`order` `order`, group_concat(uut.user_type_id) user_type_ids
+					from mu_user u 
+					inner join mu_object_user ou on ou.user_id=u.user_id and ou.object_type_id=#object_type_id# and ou.object_id=#object_id# and ou.`group`=#group#
+					left join mu_user_user_type uut on uut.user_id=u.user_id
+					where #conditions#
+					group by u.user_id, ou.`group`, ou.`order`
+				) z on z.user_id=u.user_id
+			</select>
+	
+			<select id="count_users_by_object_group_and_conditions">
+				select count(distinct(u.user_id)) total
+				from mu_user  u
+				inner join mu_object_user ou on ou.user_id=u.user_id and ou.object_type_id=#object_type_id# and ou.object_id=#object_id# and ou.`group`=#group#
+				where #conditions#
+			</select>
+	
+			<select id="get_users_by_object_and_user_types_and_conditions">
+				select u.*, z.`group`, z.`order`, z.user_type_ids
+				from mu_user u 
+				inner join (
+					select u.user_id, ou.`group` `group`, ou.`order` `order`, group_concat(uut.user_type_id) user_type_ids
+					from mu_user u 
+					inner join mu_object_user ou on ou.user_id=u.user_id and ou.object_type_id=#object_type_id# and ou.object_id=#object_id#
+					inner join mu_user_user_type uut on uut.user_id=u.user_id and uut.user_type_id in (#user_type_ids#)
+					where #conditions#
+					group by u.user_id, ou.`group`, ou.`order`
+				) z on z.user_id=u.user_id
+			</select>
+	
+			<select id="count_users_by_object_and_user_types_and_conditions">
+				select count(distinct(u.user_id)) total
+				from mu_user  u
+				inner join mu_object_user ou on ou.user_id=u.user_id and ou.object_type_id=#object_type_id# and ou.object_id=#object_id#
+				inner join mu_user_user_type uut on uut.user_id=u.user_id and uut.user_type_id in (#user_type_ids#)
+				where #conditions#
+			</select>
+	
+			<select id="get_users_by_object_group_and_user_types_and_conditions">
+				select u.*, z.`group`, z.`order`, z.user_type_ids
+				from mu_user u 
+				inner join (
+					select u.user_id, ou.`group` `group`, ou.`order` `order`, group_concat(uut.user_type_id) user_type_ids
+					from mu_user u 
+					inner join mu_object_user ou on ou.user_id=u.user_id and ou.object_type_id=#object_type_id# and ou.object_id=#object_id# and ou.`group`=#group#
+					inner join mu_user_user_type uut on uut.user_id=u.user_id and uut.user_type_id in (#user_type_ids#)
+					where #conditions#
+					group by u.user_id, ou.`group`, ou.`order`
+				) z on z.user_id=u.user_id
+			</select>
+	
+			<select id="count_users_by_object_group_and_user_types_and_conditions">
+				select count(distinct(u.user_id)) total
+				from mu_user  u
+				inner join mu_object_user ou on ou.user_id=u.user_id and ou.object_type_id=#object_type_id# and ou.object_id=#object_id# and ou.`group`=#group#
+				inner join mu_user_user_type uut on uut.user_id=u.user_id and uut.user_type_id in (#user_type_ids#)
+				where #conditions#
+			</select>
+		</queries>
+	</class>
+</sql_mapping>

@@ -1,0 +1,6 @@
+<module>
+	<label>Single Sign On</label>
+	<description>Module "Single Sign On" allows to login or register with multiple users from social networks, google and other platforms...</description>
+	<image>logo.png</image>
+	<load_module_settings_js_function>loadSingleSignOnBlockSettings</load_module_settings_js_function>
+</module>

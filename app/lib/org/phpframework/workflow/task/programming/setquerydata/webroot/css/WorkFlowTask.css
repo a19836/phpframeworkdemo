@@ -1,0 +1,74 @@
+.jsplumbtaskmenu .task.task_setquerydata {
+	background-image:url('../img/bg.gif');
+}
+.jsplumbtaskworkflow .task.task_setquerydata {
+	/*background-image:url('../img/bg.gif');
+	-o-background-size:contain;
+	-webkit-background-size:contain;
+	-moz-background-size:contain;
+	background-size:contain; */
+	
+	/* in IE */
+	-ms-background-size:contain;
+	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='contain')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='contain');*/
+}
+.jsplumbtaskworkflow .task.task_setquerydata .info span {
+	color:#a6abac;
+}
+
+.set_query_data_task_html {
+	min-width:420px;
+}
+
+.set_query_data_task_html .sql {
+	width:420px;
+	min-height:20px;
+	margin:0 auto;
+}
+.set_query_data_task_html .sql label {
+	width:110px;
+}
+.set_query_data_task_html .sql .sql_variable {
+	width:210px;
+	margin-right:5px;
+	padding-right:20px;
+}
+.set_query_data_task_html .sql textarea.sql_value {
+	display:none;
+}
+.set_query_data_task_html .sql textarea.sql_editor, .set_query_data_task_html .sql .ace_editor {
+	width:405px;
+	height:100px;
+	float:none;
+	clear:left;
+	margin-bottom:5px;
+	background-color:#FFF;
+	border:1px inset #CCC;
+}
+.set_query_data_task_html .sql select {
+	background-color:#FFF;
+	color:#AAA;
+	border:1px solid #ECECEC;
+	text-align:center;
+	font-size:9px;
+	width:60px;
+	margin-bottom:5px;
+}
+.set_query_data_task_html .opts {
+	margin-bottom:5px;
+}
+.set_query_data_task_html .opts .options_type {
+	float:none;
+	display:inline-block;
+	margin-bottom:0;
+}
+.set_query_data_task_html > div:not(.broker_method_obj) > .add_variable {
+	margin-left:-23px;
+}
+.set_query_data_task_html > div.broker_method_obj > .add_variable {
+	margin-top:29px;
+}
+
+
+

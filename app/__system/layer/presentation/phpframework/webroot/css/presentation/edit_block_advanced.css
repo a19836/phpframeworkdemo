@@ -1,0 +1,17 @@
+.block_obj {
+	width:99%;
+	overflow:hidden;
+	margin:0 auto;
+}
+
+.title {
+	margin-bottom:0;
+}
+
+/* To print the workflow */
+@media print {
+	.block_obj {
+		overflow:visible !important;
+		border:0 !important;
+	}
+}

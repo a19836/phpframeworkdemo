@@ -1,0 +1,153 @@
+.list_settings {
+	width:720px;
+}
+
+.list_settings .articles_type,
+   .list_settings .catalog_by_tags,
+   .list_settings .catalog_by_selected_articles,
+   .list_settings .catalog_sort_column,
+   .list_settings .catalog_sort_order,
+   .list_settings .catalog_by_parent {
+   	width:100%;
+	text-align:left;
+	margin-bottom:5px;
+	float:none;
+	clear:left;
+}
+.list_settings .articles_type div,
+   .list_settings .catalog_by_tags div,
+   .list_settings .catalog_by_selected_articles div,
+   .list_settings .catalog_sort_column div,
+   .list_settings .catalog_sort_order div {
+	width:100%;
+	text-align:left;
+	margin-bottom:5px;
+	float:none;
+	clear:left;
+}
+.list_settings .articles_type label,
+   .list_settings .catalog_by_tags label,
+   .list_settings .catalog_by_selected_articles label,
+   .list_settings .catalog_sort_column label,
+   .list_settings .catalog_sort_order label, 
+   .list_settings .catalog_by_parent .catalog_parent_object_type_id label, 
+   .list_settings .catalog_by_parent .catalog_parent_object_id label, 
+   .list_settings .catalog_by_parent .catalog_parent_group label {
+	margin-bottom:5px;
+	display:block;
+	float:left;
+	clear:none;
+}
+.list_settings .catalog_sort_column {
+	width:300px;
+	float:left;
+	clear:none;
+}
+.list_settings .catalog_sort_order {
+	width:230px;
+	float:left;
+	clear:none;
+}
+.list_settings .catalog_by_parent .catalog_parent_object_type_id {
+	width:39%;
+	float:left;
+	clear:none;
+}
+.list_settings .catalog_by_parent {
+	min-height:22px;
+}
+.list_settings .catalog_by_parent .catalog_parent_object_id,
+   .list_settings .catalog_by_parent .catalog_parent_group {
+	width:30%;
+	float:left;
+	clear:none;
+}
+.list_settings .articles_type label, 
+   .list_settings .catalog_by_tags label, 
+   .list_settings .catalog_by_selected_articles label, 
+   .list_settings .catalog_sort_column label, 
+   .list_settings .catalog_sort_order label, 
+   .list_settings .catalog_by_parent .catalog_parent_object_type_id label {
+	width:110px;
+}
+.list_settings .catalog_by_parent .catalog_parent_object_id label, 
+   .list_settings .catalog_by_parent .catalog_parent_group label {
+	width:90px;
+}
+.list_settings .catalog_by_tags input {
+	width:540px;
+}
+.list_settings .catalog_by_parent .catalog_parent_object_type_id select {
+	width:150px;
+}
+.list_settings .catalog_by_parent .catalog_parent_object_id input, 
+   .list_settings .catalog_by_parent .catalog_parent_group input {
+	width:100px;
+}
+.list_settings .catalog_by_selected_articles select {
+	max-width:410px;
+	display:block;
+	float:left;
+}
+.list_settings .catalog_sort_column select {
+	width:180px;
+}
+.list_settings .catalog_sort_order label {
+	display:none;
+}
+
+.list_settings .catalog_by_selected_articles .icon.add {
+	background-position:0 1px;
+}
+.list_settings .catalog_by_selected_articles .icon.up {
+	background:url("../../../img/icon/up_icon.gif") no-repeat scroll 0 0px;
+}
+.list_settings .catalog_by_selected_articles .icon.down {
+	background:url("../../../img/icon/down_icon.gif") no-repeat scroll 0 0px;
+}
+.list_settings .catalog_by_selected_articles .selected_articles {
+	padding-top:3px;
+}
+.list_settings .catalog_by_selected_articles .selected_articles table {
+	border:1px solid #CCC;
+	margin:0 auto;
+}
+.list_settings .catalog_by_selected_articles .selected_articles .article_id {
+	width:80px;
+}
+.list_settings .catalog_by_selected_articles .selected_articles td.article_id {
+	text-align:center;
+	font-weight:bold;
+}
+.list_settings .catalog_by_selected_articles .selected_articles .article_title {
+	width:490px;
+}
+.list_settings .catalog_by_selected_articles .selected_articles .buttons {
+	width:80px;
+}
+.list_settings .catalog_by_selected_articles .selected_articles .no_articles td {
+	text-align:center;
+	font-style:italic;
+	padding-top:5px;
+}
+
+.list_settings .catalog_by_parent, 
+   .list_settings .catalog_parent_group, 
+   .list_settings .catalog_by_tags, 
+   .list_settings .catalog_by_selected_articles {
+	display:none;
+}
+
+.list_settings .list_articles_fields_label {
+	font-family:verdana,arial,courier;
+	font-style:italic;
+	font-weight:bold;
+	color:#333;
+	margin-top:10px;
+	margin-bottom:5px;
+	padding-top:10px;
+	border-top:1px solid #CCC;
+}
+.list_settings .prop_photo .settings_prop_search_value {
+	display:none;
+}

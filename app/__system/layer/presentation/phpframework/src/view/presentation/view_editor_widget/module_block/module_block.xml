@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget>
+	<label>Call Module or Block</label>
+	<tag>call-module-or-block</tag>
+	<settings>
+		<create_widget_class>TemplateCallModuleOrBlockWidget</create_widget_class>
+	</settings>
+	<menu_widget></menu_widget>
+	<template_widget><![CDATA[
+		<pre></pre>
+	]]></template_widget>
+	<properties></properties>
+	<menu_css><![CDATA[
+		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-call-module-or-block,
+		  body > .menu-widget.menu-widget-call-module-or-block.ui-draggable-dragging {
+			height:auto;
+			background:#333;
+			border-radius:5px;
+			border:1px solid #20b727;
+			color:#20b727;
+			overflow:hidden;
+			font-size:16px;
+		}
+		
+		.layout_ui_editor > .template-widgets > .widget-header.widget-header-call-module-or-block .options .props,
+		   .layout_ui_editor > .template-widgets > .widget-header.widget-header-call-module-or-block .options .toggle {
+			display:none !important;
+		}
+		
+		.layout_ui_editor > .menu-settings.menu-settings-call-module-or-block .settings-id,
+		   .layout_ui_editor > .menu-settings.menu-settings-call-module-or-block .settings-classes,
+		   .layout_ui_editor > .menu-settings.menu-settings-call-module-or-block .settings-properties,
+		   .layout_ui_editor > .menu-settings.menu-settings-call-module-or-block .settings-general,
+		   .layout_ui_editor > .menu-settings.menu-settings-call-module-or-block .settings-dimension,
+		   .layout_ui_editor > .menu-settings.menu-settings-call-module-or-block .settings-typography,
+		   .layout_ui_editor > .menu-settings.menu-settings-call-module-or-block .settings-decorations,
+		   .layout_ui_editor > .menu-settings.menu-settings-call-module-or-block .settings-extra {
+			display:none;
+		}
+		
+		.layout_ui_editor > .menu-layers .group.group-call-module-or-block > ul {
+			display:none !important;
+		}
+	]]></menu_css>
+	<template_css><![CDATA[
+		.template-widget.template-widget-call-module-or-block {
+			margin:5px !important; /* !important is bc of the css when .borders is active */
+			padding:5px !important; /* !important is bc of the css when .borders is active */
+			border:1px outset #20b727 !important; /* !important is bc of the css when .borders is active */
+			background-image:none !important; /* !important is bc of the css when .borders is active */
+			border-radius:5px;
+			background:#333;
+			color:#20b727;
+			vertical-align:middle;
+			display:block;
+			word-break:break-all;
+		}
+		body > .droppable.borders .template-widget.template-widget-call-module-or-block:before {
+			content:"";
+			border:0;
+			display:none;
+		}
+		
+		.template-widget.template-widget-call-module-or-block > pre {
+			margin:0 !important; /* !important is bc of the css when .borders is active */
+			padding:0 !important; /* !important is bc of the css when .borders is active */
+			border:0 !important; /* !important is bc of the css when .borders is active */
+			background-image:none !important; /* !important is bc of the css when .borders is active */
+			display:block;
+			color:inherit;
+			font-size:inherit;
+			font-family:inherit;
+			overflow:auto;
+		}
+		.template-widget.template-widget-call-module-or-block > pre::-webkit-scrollbar {
+			height:7px;
+		}
+		body > .droppable.borders .template-widget.template-widget-call-module-or-block > pre:before {
+			content:"";
+			border:0;
+			display:none;
+		}
+	]]></template_css>
+	<menu_js><![CDATA[
+		function TemplateCallModuleOrBlockWidget(ui_creator, menu_widget) {
+			var me = this;
+			var obj_php_widget = new PHPWidget(ui_creator, menu_widget);
+			
+			me.init = function() {
+				obj_php_widget.init();
+				
+				menu_widget.removeAttr("data-on-parse-template-widget-html-func");
+				
+				menu_widget.attr({
+					"data-on-create-template-widget-func": ui_creator.obj_var_name + ".menu_widgets_objs['call-module-or-block'].onCreateTemplateWidget",
+				});
+			};
+			
+			me.onCreateTemplateWidget = function(widget, html_element) {
+				var has_html_element = html_element ? true : false;
+				
+				if (!has_html_element)
+					html_element = document.createComment('? ?');
+				
+				obj_php_widget.onCreateTemplateWidget(widget, html_element);
+				
+				if (!has_html_element) {
+					if (typeof onCodeLayoutUIEditorModuleBlockWidgetDragAndDrop == "function")
+						onCodeLayoutUIEditorModuleBlockWidgetDragAndDrop(widget, chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree);
+					else
+						alert("onCodeLayoutUIEditorModuleBlockWidgetDragAndDrop function does not exist! Please only use this widget in the __system/phpframework/src/view/presentation/edit_view.php file");
+				}
+			};
+			
+			me.updateWidgetWithBlockId = function(widget, block_id, project) {
+				var span = widget.children("pre");
+				
+				var code = "&lt;? \n"
+					+ '$block_local_variables = array();' + "\n"
+					+ 'include $EVC->getBlockPath("' + block_id + '"' + (project ? ', "' + project + '"' : '') + ');' + "\n"
+					+ 'echo $EVC->getCMSLayer()->getCMSBlockLayer()->getBlock("' + block_id + '");' + "\n"
+					+ "?&gt;";
+				
+				span.html(code);
+			};
+		}
+	]]></menu_js>
+</widget>

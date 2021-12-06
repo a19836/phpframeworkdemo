@@ -1,0 +1,7 @@
+<module>
+	<label>Show Chat</label>
+	<description>Module "Show Chat" allows to interate with another user via chat messages. This modules needs the jQuery lib.</description>
+	<image>logo.png</image>
+	<load_module_settings_js_function>loadShowChatBlockSettings</load_module_settings_js_function>
+	<is_reserved_module>1</is_reserved_module>
+</module>

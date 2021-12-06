@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<task>
+	<label>Create Function</label>
+	<tag>createfunction</tag>
+	<files>
+		<task_properties_html>WorkFlowTaskHtml.php</task_properties_html>
+		<css>../../common/css/global.css</css>
+		<css>../common/css/global.css</css>
+		<css>../common/css/FunctionUtilObj.css</css>
+		<css>css/WorkFlowTask.css</css>
+		<js>../../common/js/global.js</js>
+		<js>../common/js/global.js</js>
+		<js>../common/js/FunctionUtilObj.js</js>
+		<js>js/WorkFlowTask.js</js>
+	</files>
+	<settings>
+		<connection_menu>
+			<show_properties_menu>0</show_properties_menu>
+			<show_overlay_types_menu>0</show_overlay_types_menu>
+		</connection_menu>
+		<callback>
+			<on_load_task_properties>CreateFunctionTaskPropertyObj.onLoadTaskProperties</on_load_task_properties>
+			<on_submit_task_properties>CreateFunctionTaskPropertyObj.onSubmitTaskProperties</on_submit_task_properties>
+			<on_complete_task_properties>CreateFunctionTaskPropertyObj.onCompleteTaskProperties</on_complete_task_properties>
+			<on_cancel_task_properties>CreateFunctionTaskPropertyObj.onCancelTaskProperties</on_cancel_task_properties>
+			
+			<on_complete_task_label>CreateFunctionTaskPropertyObj.onCompleteLabel</on_complete_task_label>
+			
+			<on_success_task_cloning>onTaskCloning</on_success_task_cloning>
+			<on_success_task_creation>CreateFunctionTaskPropertyObj.onTaskCreation</on_success_task_creation>
+			
+			<on_success_connection_drag>onlyAllowOneConnectionPerExitAndNotToItSelf</on_success_connection_drag>
+		</callback>
+		<center_inner_elements>0</center_inner_elements>
+	</settings>
+	<code_parser>
+		<statements>Stmt_Function</statements>
+	</code_parser>
+</task>

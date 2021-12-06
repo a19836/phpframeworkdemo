@@ -1,0 +1,9 @@
+.global_settings {width:580px; height:270px; text-align:left; padding-top:20px; margin:0 auto;}
+.global_settings h1 {width:100%; font-weight:bold; font-size:20px; text-align:center; line-height:30px; margin:10px 0px; padding:0px 0px;}
+.global_settings .form_fields {margin:0 auto;}
+.global_settings .form_field {float:none; clear:left; height:20px; line-height:20px; margin-bottom:3px;}
+.global_settings .form_field label {width:210px; float:left; text-align:left;}
+.global_settings .form_field input {width:300px; font-size:12px;} 
+.global_settings .form_field select {width:305px; font-size:12px;}
+.global_settings .buttons {float:none; clear:left; width:100%; text-align:center; margin-top:20px;}
+.global_settings .buttons input {-moz-border-radius:0.5em; -webkit-border-radius:0.5em; border-radius:0.5em;}

@@ -1,0 +1,831 @@
+.regions_blocks_includes_settings .invisible {
+	visibility:hidden;
+}
+
+.regions_blocks_includes_settings input {
+	height:17px;
+	line-height:17px;
+}
+.regions_blocks_includes_settings select {
+	height:20px;
+	line-height:20px;
+}
+.regions_blocks_includes_settings input, .regions_blocks_includes_settings select, .regions_blocks_includes_settings textarea {
+	font-family: Verdana,Arial,sans-serif;
+	font-size: 0.9em;
+	background: none repeat scroll 0 0 #d5e3e4;
+	border: 1px inset #999999;
+	color: #555555;
+}
+
+.regions_blocks_includes_settings .template_params .items .item > .icon.delete {
+	display:none;
+}
+.regions_blocks_includes_settings .includes .items .item > .icon.search {
+	margin-left:0;
+}
+.regions_blocks_includes_settings .icon {
+	display:inline-block;
+	float:none;
+	margin:-3px 0 -8px 0;
+	z-index:100;
+}
+.regions_blocks_includes_settings .icon.delete {
+	background-position:0 0;
+}
+.regions_blocks_includes_settings .icon.up {
+	background:url("../../common/img/icon/up_icon.gif") no-repeat 0 0;
+}
+.regions_blocks_includes_settings .icon.down {
+	background:url("../../common/img/icon/down_icon.gif") no-repeat 0 0;
+}
+.regions_blocks_includes_settings .icon.info {
+	background:url("../../common/img/icon/info_icon.png") no-repeat 0 0;
+	margin:0;
+	vertical-align:middle;
+}
+.regions_blocks_includes_settings .icon.search_image {	
+	background:url("../../common/img/icon/search_image_icon.gif") no-repeat 0 0;
+}
+.regions_blocks_includes_settings .icon.add_variable {	
+	background:url("../../common/img/icon/sort_icon.png") no-repeat 0 0;
+}
+
+.regions_blocks_includes_settings .items {
+	margin-left:20px;
+}
+.regions_blocks_includes_settings .template label {
+	width:150px;
+	height:20px;
+	display:block;
+	float:left;
+}
+.regions_blocks_includes_settings .template select {
+	background-color:#FFF;
+}
+.regions_blocks_includes_settings .region_blocks, 
+   .regions_blocks_includes_settings .other_region_blocks, 
+   .regions_blocks_includes_settings .includes, 
+   .regions_blocks_includes_settings .template_params, 
+   .regions_blocks_includes_settings .other_template_params {
+	margin-top:20px;
+}
+.regions_blocks_includes_settings .other_region_blocks,
+   .regions_blocks_includes_settings .other_template_params {
+	margin-left:20px;
+}
+.regions_blocks_includes_settings .region_blocks .items .item, 
+   .regions_blocks_includes_settings .other_region_blocks .items .item,
+   .regions_blocks_includes_settings .template_params .items .item,
+   .regions_blocks_includes_settings .other_template_params .items .item {
+	width:570px;
+	margin-top:10px;
+}
+.regions_blocks_includes_settings .region_blocks .items .item > .icon.edit {
+	background:url("../../common/img/icon/edit_icon.gif") no-repeat 0 0;
+}
+.regions_blocks_includes_settings .region_blocks .items .item:not(.has_edit) > .icon.edit {
+	display:none !important;
+}
+.regions_blocks_includes_settings .region_blocks .items .item > label, 
+   .regions_blocks_includes_settings .other_region_blocks .items .item > label, 
+   .regions_blocks_includes_settings .template_params .items .item > label, 
+   .regions_blocks_includes_settings .other_template_params .items .item > label {
+	width:150px;
+	height:20px;
+	margin-left:5px;
+	margin-right:5px;
+	display:inline-block;
+	font-weight:normal;
+	font-style:normal;
+	white-space:nowrap;
+}
+.regions_blocks_includes_settings .other_region_blocks .items .item > label, 
+   .regions_blocks_includes_settings .other_template_params .items .item > label {
+	width:130px;
+}
+.regions_blocks_includes_settings input,
+  .regions_blocks_includes_settings select {
+	height:24px;
+	padding:0.4em;
+	font-size:10px;
+	background-color:#FFF;
+	border:1px solid #d3d3d3;
+	border-radius:4px;
+	box-sizing:border-box;
+}
+.regions_blocks_includes_settings .region_blocks .items .item > input,
+  .regions_blocks_includes_settings .other_region_blocks .items .item > input {
+	width:200px;
+	text-align:left;
+	/*direction:rtl; - Cannot change the directio to right, otherwise the blocks like "_login" will appear "login_" */
+}
+.regions_blocks_includes_settings .items .item > .block_options,
+   .regions_blocks_includes_settings .items .item > .pretty_block_options_button {
+	width:200px !important; /* !important must be here bc if block_options is hidden then pretty_block_options_button will have the width:0. so we need to overright this issue! */
+}
+.regions_blocks_includes_settings .template_params .items .item > input,
+  .regions_blocks_includes_settings .other_template_params .items .item > input {
+	width:265px;
+}
+.regions_blocks_includes_settings .items .item > .pretty_block_options_button {
+	height:24px;
+	display:inline-block !important;
+	background:white;
+	vertical-align:middle;
+}
+.regions_blocks_includes_settings .items .item > .pretty_block_options_button:hover {
+	border-color:#d3d3d3;
+}
+.regions_blocks_includes_settings .items .item > .pretty_block_options_button.hidden {
+	display:none !important;
+}
+.regions_blocks_includes_settings .items .item > .pretty_block_options_button .ui-selectmenu-text {
+	line-height:17px;
+	/*direction:rtl; - Cannot change the directio to right, otherwise the blocks like "_login" will appear "login_" */
+}
+.pretty_block_options_menu > ul { /* must be generic bc this is appended to the body */
+	max-width:100vw !important;
+	min-height:40px;
+	max-height:200px;
+}
+.pretty_block_options_menu .import_module_block {
+	margin:0 !important;
+	padding:5px !important;
+	background:#ddd;
+	border-bottom:1px inset #bbb !important;
+}
+.pretty_block_options_menu .import_module_block .icon.add {
+	margin-top:0;
+}
+.pretty_block_options_menu > ul .ui-menu-item {
+	padding-left:20px;
+	border:0;
+	border-top:1px solid transparent;
+	border-bottom:1px solid transparent;
+	font-weight:normal;
+}
+.pretty_block_options_menu > ul .ui-menu-item.ui_menu_item_selected {
+	border-color:#fbcb09;
+	background:#ccc;
+	color:#c77405;
+}
+.pretty_block_options_menu > ul .ui-menu-item.ui-state-focus:not(.ui_menu_item_selected),
+  .pretty_block_options_menu > ul .ui-menu-item.ui-state-disabled {
+	margin:0;
+	background:transparent;
+	border-color:transparent;
+	color:inherit;
+}
+.pretty_block_options_menu > ul .ui-menu-item:not(.ui-state-disabled):hover,
+  .pretty_block_options_menu > ul .ui-menu-item.ui-state-focus:not(.ui-state-disabled):hover {
+	margin:0;
+	background:#dadada;
+	border-color:#fbcb09;
+	color:#c77405;
+	opacity:.8;
+}
+.pretty_block_options_menu > ul .ui-menu-item:nth-child(2) { /* blank option */
+	padding-left:5px;
+	color:#999;
+}
+.pretty_block_options_menu > ul .ui-menu-item:nth-child(2):before {
+	content:"-- none --";
+}
+
+.regions_blocks_includes_settings .items .item > .region_block_type {
+	color:#CCC;
+}
+.regions_blocks_includes_settings .items .item > .block_text,
+   .regions_blocks_includes_settings .items .item > .block_html,
+   .regions_blocks_includes_settings .items .item > .block_params > .block_param .block_param_text,
+   .regions_blocks_includes_settings .items .item > .template_param_text {
+	float:none;
+	clear:left;
+	margin-top:3px;
+}
+.regions_blocks_includes_settings .items .item > .block_text > textarea,
+   .regions_blocks_includes_settings .items .item > .block_html > textarea,
+   .regions_blocks_includes_settings .items .item > .block_params > .block_param .block_param_text > textarea,
+   .regions_blocks_includes_settings .items .item > .template_param_text > textarea {
+	width:100%;
+	height:auto;
+	min-height:100px;
+	background-color:#FFF;
+	border:1px solid #ccc;
+	border-radius:4px;
+	box-sizing:border-box;
+}
+.regions_blocks_includes_settings .items .item > .block_params > .block_param > label {
+	width:150px;
+	display:inline-block;
+	font-weight:normal;
+	font-size:80%;
+	color:#666;
+	vertical-align:middle; /* in case the label be in 2 lines bc is too big */
+}
+.regions_blocks_includes_settings .items .item > .block_params > .block_param .block_param_value {
+	width:192px;
+	color:#666;
+}
+.regions_blocks_includes_settings .items .item > .block_html > .block_html_editor {
+	width:540px;
+	height:auto;
+	min-height:100px;
+	background:#fff;
+	border:1px solid #ccc;
+	border-radius:4px;
+}
+.regions_blocks_includes_settings .items .item > .block_params > .block_param select, 
+   .regions_blocks_includes_settings .includes .item > select, 
+   .regions_blocks_includes_settings .template_params .item > select, 
+   .regions_blocks_includes_settings .other_template_params .item > select {
+	width:70px;
+	color:#CCC;
+}
+.regions_blocks_includes_settings .items .item > .block_params {
+	margin-left:40px;
+}
+.regions_blocks_includes_settings .items .item > .block_params > .block_param {
+	margin-top:5px;
+}
+.regions_blocks_includes_settings .no_items {
+	margin-top:10px;
+	margin-left:50px;
+}
+
+.regions_blocks_includes_settings .includes .items {
+	margin-top:5px;
+}
+.regions_blocks_includes_settings .includes .items .item {
+	margin-top:5px;
+}
+.regions_blocks_includes_settings .includes .items .item > .path {
+	width:330px;
+}
+/* TEMPLATE REGION INFO POPUP */
+.template_region_info_popup {
+	position:absolute;
+	top:5%;
+	left:5%;
+	right:5%;
+	bottom:5%;
+	width:90%;
+	height:90%;
+}
+.template_region_info_popup iframe {
+	width:100%;
+	height:100%;
+}
+
+/* CHOOSE MODULE BLOCK POPUP */
+.choose_module_block_popup {
+	position:absolute;
+	top:5%;
+	left:5%;
+	right:5%;
+	bottom:5%;
+	width:90%;
+	height:90%;
+}
+.choose_module_block_popup iframe {
+	width:100%;
+	height:100%;
+}
+
+/* TAB CONTENT TEMPLATE LAYOUT */
+body > .dragging_menu_item {
+	padding:5px;
+	background:#ebf304 !important;
+	background:#ebf30478 !important;
+	border:1px solid #ccc;
+	border-radius:5px;
+	text-align:center;
+}
+
+.tab_content_template_layout {
+	min-height:400px;
+	padding:0 !important;
+	position:relative;
+	background:#ddd !important; /* very important bc when the iframe is smartphone responsive, we loose track of the iframe borders. The background will help to detect this. */
+}
+
+.tab_content_template_layout .iframe_toolbar {
+	height:20px;
+	margin:5px;
+	padding:3px 10px;
+	border:0;
+	border-radius:5px;
+	background:#ddd;
+	text-align:center;
+	opacity:.6;
+}
+.tab_content_template_layout .iframe_toolbar .view_template_samples {
+	line-height:20px;
+	margin-left:20px;
+	float:right;
+}
+.tab_content_template_layout .iframe_toolbar select {
+	height:20px;
+	background:none;
+	box-sizing:border-box;
+	font-size:80%;
+	text-align:center;
+}
+.tab_content_template_layout .iframe_toolbar input {
+	width:35px;
+	height:20px;
+	background:none;
+	box-sizing:border-box;
+	font-size:80%;
+	text-align:center;
+}
+.tab_content_template_layout .iframe_toolbar .dimension,
+  .tab_content_template_layout .iframe_toolbar .orientation {
+	display:none;
+}
+
+.tab_content_template_layout iframe {
+	width:99%;
+	height:95%;
+	height:calc(100% - 30px);
+	padding:0;
+	position:absolute;
+	top:5%;
+	top:calc(30px);
+	left:1%;
+	left:calc(10px);
+	box-sizing:border-box;
+	border:none;
+	background:#fff; /* when is smartphone responsive we loose the track of the iframe borders. The background will help to detect this. */
+	
+	transition:all 1s;
+}
+.tab_content_template_layout.toolbar_open iframe {
+	width:75%;
+	width:calc(100% - 250px);
+	left:250px;
+}
+
+.tab_content_template_layout .iframe_modules_blocks_toolbar {
+	width:1%;
+	width:calc(10px);
+	height:96%;
+	height:calc(100% - 30px);
+	margin:0;
+	position:absolute;
+	top:5%;
+	top:calc(30px);
+	left:0;
+	border-radius:5px;
+	border:1px solid #ccc;
+	background:#fff;
+	
+	transition:width 1s;
+	
+	overflow:hidden;
+}
+.tab_content_template_layout.toolbar_open .iframe_modules_blocks_toolbar {
+	width:25%;
+	width:250px;
+}
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle {
+	width:10px;
+	height:100%;
+	position:absolute;
+	right:0;
+	cursor:pointer;
+	background:#ccc;
+}
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle:before {
+	content:"»";
+	width:10px;
+	padding:10px 0;
+	position:absolute;
+	top:45%;
+	top:calc(50% - 20px);
+	background:#c5c5c5;
+	color:#aaa;
+	font-weight:bold;
+}
+.tab_content_template_layout.toolbar_open .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle:before {
+	content:"«";
+}
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content {
+	width:100%;
+	width:calc(100% - 10px);
+	height:100%;
+	margin-right:10px;
+	overflow:auto;
+}
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree {
+	width:100%;
+	min-width:auto;
+	max-width:none;
+	height:100%;
+	min-height:auto;
+	max-height:none;
+	margin:0;
+	border:0;
+}
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .icon {	
+	float:none;
+	display:inline-block;
+	vertical-align:middle;
+}
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .icon.refresh {	
+	opacity:0;
+}
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .jstree-open > a .icon.refresh {
+	opacity:.7
+}
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .draggable_menu_item_block .icon.edit {	
+	background:url("../../common/img/icon/edit_icon.gif") no-repeat 0 0;
+}
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .draggable_menu_item_module .icon.info {	
+	background:url("../../common/img/icon/info_icon.png") no-repeat scroll 0 0;
+}
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-list {	
+	background:url("../../img/db_icons.png") -66px -0px no-repeat !important;
+}
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-edit {	
+	background:url("../../img/db_icons.png") -224px -201px no-repeat !important;
+}
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-add {	
+	background:url("../../img/db_icons.png") -112px -111px no-repeat !important;
+}
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-view {	
+	background:url("../../common/img/icon/view_icon.gif") 4px 3px no-repeat !important;
+}
+
+/* TAB CONTENT TEMPLATE LAYOUT - DIAGRAM TASK PROPERTIES */
+.tab_content_template_layout .tab_content_template_layout_tasks {
+	position:fixed !important;
+	top:20px !important;
+	left:20px !important;
+	right:20px !important;
+	bottom:20px !important;
+	
+	/* need this otherwise the popup will appear short and weird in the edit_template.php */
+	min-width:calc(100% - 40px) !important;
+	min-height:calc(100% - 40px) !important;
+	box-sizing:border-box !important;
+	overflow:visible !important;
+}
+.tab_content_template_layout .tab_content_template_layout_tasks > .popup_close {
+	z-index:auto !important;
+	
+	/* need this otherwise the close button will appear transparent and on the left side in the edit_template.php */
+	top:-10px !important; 
+	left:auto !important; 
+	right:-10px !important;
+	opacity:1 !important;
+}
+.tab_content_template_layout .tab_content_template_layout_tasks > iframe {
+	width:100% !important;
+	height:100% !important;
+	position:relative !important;
+	top:0 !important;
+	left:0 !important;
+}
+
+/* MODULE INFO TOOLTIP */
+#module_info_tooltip {
+	min-width:100px;
+	min-height:150px;
+	position:fixed;
+	padding:10px;
+	background:#fff;
+	border:1px solid #aaa;
+	border-radius:10px;
+}
+#module_info_tooltip > .close {
+	margin:0;
+	position:absolute;
+	right:5px;
+	top:5px;
+	background:url(../../common/img/icon/close_icon.png) no-repeat scroll 0 0;
+	opacity:.5;
+}
+#module_info_tooltip > .close:hover {
+	opacity:1;
+}
+#module_info_tooltip > .module_data {
+	width:400px;
+	max-width:95vw;
+	text-align:center;
+}
+#module_info_tooltip > .module_data > .loading {
+	margin:40px auto 0;
+	padding-left: 20px;
+	display: inline-block;
+}
+#module_info_tooltip > .module_data > .module_img {
+	width:25%;
+	width:150px;
+	height:150px;
+	line-height:150px;
+	text-transform:uppercase;
+	text-align:center;
+	font-size:14px;
+	font-weight:bold;
+	float:left;
+}
+#module_info_tooltip > .module_data > .module_img img {
+	width:100%;
+	height:100%;
+}
+#module_info_tooltip > .module_data > .module_label {
+	width:75%;
+	width:calc(100% - 170px);
+	margin-bottom:5px;
+	padding-left:20px;
+	font-weight:bold;
+	text-align:left;
+	float:left;
+}
+#module_info_tooltip > .module_data > .module_description {
+	width:75%;
+	width:calc(100% - 170px);
+	padding-left:20px;
+	text-align:left;
+	float:left;
+}
+
+/* CODE */
+/* CODE - MENU */
+.code_layout_ui_editor .code_menu {
+	position:absolute;
+	top:.5em;
+	left:0;
+	z-index:11;
+}
+.code_layout_ui_editor .code_menu.full-screen {
+	position:fixed;
+	
+}
+.code_layout_ui_editor .code_menu ul {
+	background:none;
+	border:none;
+}
+.code_layout_ui_editor .code_menu ul li {
+	border:none;
+}
+.code_layout_ui_editor .code_menu ul li a {
+	color:#fff;
+	border-right-color:#fff;
+}
+.code_layout_ui_editor .code_menu ul li.editor_settings a {
+	border-right:none;
+}
+.code_layout_ui_editor .code_menu ul li.editor_full_screen {
+	display:none;
+}
+
+/* CODE - MYTREE */
+.code_layout_ui_editor .mytree .icon {	
+	float:none;
+	display:inline-block;
+	vertical-align:middle;
+}
+.code_layout_ui_editor .mytree .icon.refresh {	
+	opacity:0;
+}
+.code_layout_ui_editor .mytree .jstree-open > a .icon.refresh {
+	opacity:.7
+}
+.code_layout_ui_editor .mytree .draggable_menu_item .icon.edit {	
+	background:url("../../common/img/icon/edit_icon.gif") no-repeat 0 0;
+}
+.code_layout_ui_editor .mytree .draggable_menu_item .icon.info {	
+	background:url("../../common/img/icon/info_icon.png") no-repeat 0 0;
+}
+.code_layout_ui_editor .mytree .table-list {	
+	background:url("../../img/db_icons.png") -66px -0px no-repeat !important;
+}
+.code_layout_ui_editor .mytree .table-edit {	
+	background:url("../../img/db_icons.png") -224px -201px no-repeat !important;
+}
+.code_layout_ui_editor .mytree .table-add {	
+	background:url("../../img/db_icons.png") -112px -111px no-repeat !important;
+}
+.code_layout_ui_editor .mytree .table-view {	
+	background:url("../../common/img/icon/view_icon.gif") 4px 3px no-repeat !important;
+}
+
+/* CODE - DB TABLE UIS DIAGRAM BLOCK POPUP */
+.code_layout_ui_editor .db_table_uis_diagram_block {
+	position:fixed !important;
+	top:20px !important;
+	left:20px !important;
+	right:20px !important;
+	bottom:20px !important;
+}
+.code_layout_ui_editor .db_table_uis_diagram_block > .popup_close {
+	z-index:auto !important;
+}
+.code_layout_ui_editor .db_table_uis_diagram_block > iframe {
+	width:100% !important;
+	height:100% !important;
+}
+
+/* CODE - ELS UI */
+.code_layout_ui_editor .layout_ui_editor,
+  .template_region_block_html_editor_popup .layout_ui_editor {
+	height:auto;
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0px;
+}
+.template_region_block_html_editor_popup .layout_ui_editor > .menu-widgets > li:first-child {
+	display:none; /*hide code group menu bc ptl and php are not allowed in the template_region_block_html_editor_popup */
+}
+.code_layout_ui_editor .layout_ui_editor > .menu-widgets li.menu-widget-ptl,
+  .template_region_block_html_editor_popup .layout_ui_editor > .menu-widgets li.menu-widget-ptl,
+  .template_region_block_html_editor_popup .layout_ui_editor > .menu-widgets li.menu-widget-php {
+	display:none !important;
+}
+.code_layout_ui_editor .layout_ui_editor > .menu-settings table,
+  .template_region_block_html_editor_popup .layout_ui_editor > .menu-settings table {
+	border-collapse:separate;
+	border-spacing:2px;
+}
+.code_layout_ui_editor .layout_ui_editor > .menu-settings table th,
+  .template_region_block_html_editor_popup .layout_ui_editor > .menu-settings table th {
+	font-weight:bold;
+}
+.code_layout_ui_editor .layout_ui_editor > .menu-settings label,
+  .template_region_block_html_editor_popup .layout_ui_editor > .menu-settings label {
+	display:inline;
+	color:inherit;
+}
+
+.code_layout_ui_editor .layout_ui_editor > .menu-layers label,
+  .template_region_block_html_editor_popup .layout_ui_editor > .menu-layers label {
+	display:inline;
+	float:none;
+}
+
+.code_layout_ui_editor .layout_ui_editor > .options > .options-left,
+  .code_layout_ui_editor .layout_ui_editor > .options > .options-center,
+  .code_layout_ui_editor .layout_ui_editor > .options > .options-right,
+  .code_layout_ui_editor .layout_ui_editor > .options > .options-right-2,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-left,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-center,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-right,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-right-2 {
+	padding-top:7px;
+}
+.code_layout_ui_editor .layout_ui_editor > .options > .options-center,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-center {
+	left:170px;
+}
+.code_layout_ui_editor .layout_ui_editor > .options .option,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options .option {
+	height:20px;
+}
+.code_layout_ui_editor .layout_ui_editor > .options .option.option-screen-width, 
+  .code_layout_ui_editor .layout_ui_editor > .options .option.option-screen-height,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options .option.option-screen-width,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options .option.option-screen-height {
+	height:auto;
+	font-size:70%;
+	vertical-align:middle;
+}
+.code_layout_ui_editor .layout_ui_editor > .options .option.option-screen-width,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options .option.option-screen-width {
+	margin-left:0;
+}
+.code_layout_ui_editor .layout_ui_editor > .options .option.option-px,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options .option.option-px {
+	margin-top:0;
+}
+.code_layout_ui_editor .layout_ui_editor > .options .option.option-x,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options .option.option-x {
+	font-size:70%;
+}
+.code_layout_ui_editor .layout_ui_editor > .options .option.show-full-source,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options .option.show-full-source,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options .option.full-screen {
+	display:none !important;
+}
+.code_layout_ui_editor .layout_ui_editor .option,
+  .code_layout_ui_editor .layout_ui_editor .move,
+  .code_layout_ui_editor .layout_ui_editor .add,
+  .code_layout_ui_editor .layout_ui_editor .delete,
+  .template_region_block_html_editor_popup .layout_ui_editor.option,
+  .template_region_block_html_editor_popup .layout_ui_editor .move,
+  .template_region_block_html_editor_popup .layout_ui_editor .add,
+  .template_region_block_html_editor_popup .layout_ui_editor .delete {
+	background-image:none;
+}
+.code_layout_ui_editor .layout_ui_editor label,
+  .template_region_block_html_editor_popup .layout_ui_editor label {
+	font-style:inherit;
+	font-weight:inherit;
+	color:inherit;
+	font-family:inherit;
+}
+.code_layout_ui_editor .layout_ui_editor .template-source textarea,
+   .code_layout_ui_editor .layout_ui_editor .template-source .ace_editor,
+   .code_layout_ui_editor .layout_ui_editor .template-full-source textarea,
+   .code_layout_ui_editor .layout_ui_editor .template-full-source .ace_editor,
+  .template_region_block_html_editor_popup .layout_ui_editor .template-source textarea,
+  .template_region_block_html_editor_popup .layout_ui_editor .template-source .ace_editor,
+  .template_region_block_html_editor_popup .layout_ui_editor .template-full-source textarea,
+  .template_region_block_html_editor_popup .layout_ui_editor .template-full-source .ace_editor {
+	height:100% !important;
+}
+.code_layout_ui_editor .layout_ui_editor .tabs .tab.view-page {
+	display:none; /* disable view tab bc does not parse PHP */
+}
+
+.code_layout_ui_editor .layout_ui_editor > .template-widgets,
+  .code_layout_ui_editor .layout_ui_editor > .template-widgets-options {
+	right:20%;
+}
+
+.code_layout_ui_editor .layout_ui_editor > .template-widgets-options,
+  .template_region_block_html_editor_popup .layout_ui_editor > .template-widgets-options {
+	z-index:12;
+}
+.template_region_block_html_editor_popup .layout_ui_editor > .template-widgets-options > .options > .show-php,
+  .template_region_block_html_editor_popup .layout_ui_editor > .template-widgets-options > .options > .show-ptl {
+	display:none;
+}
+
+/* CODE - ELS UI RIGHT CONTAINER */
+.code_layout_ui_editor .layout_ui_editor_right_container_resize {
+	width:5px;
+	position:absolute;
+	top:3.5em;
+	right:calc(20% - 5px);
+	bottom:3.5em;
+	box-sizing:border-box;
+	background:#796669;
+	cursor:ew-resize;
+	z-index:11;
+	display:none;
+}
+.code_layout_ui_editor .layout_ui_editor_right_container_resize.full-screen {
+	position:fixed;
+	top:3.5em;
+	bottom:2.8em;
+}
+
+.code_layout_ui_editor .layout_ui_editor_right_container {
+	width:calc(20% - 5px);
+	position:absolute;
+	top:3.5em;
+	right:0;
+	bottom:3.5em;
+	box-sizing:border-box;
+	overflow:auto;
+	background:rgba(250, 250, 250, .7);
+	z-index:11;
+	display:none;
+}
+.code_layout_ui_editor .layout_ui_editor_right_container.full-screen {
+	position:fixed;
+	top:3.5em;
+	bottom:2.8em;
+}
+
+.code_layout_ui_editor .layout_ui_editor_right_container .mytree {
+	min-width:auto;
+	max-width:none;
+	min-height:auto;
+	max-height:none;
+	margin:0;
+	padding:0 0 0 5pxs;
+	border:0;
+	overflow:visible;
+}
+.code_layout_ui_editor .layout_ui_editor_right_container .mytree .jstree-hovered {
+	background: #ddd !important;
+}
+.code_layout_ui_editor .layout_ui_editor_right_container .mytree .jstree-clicked {
+	background: #999;
+}
+.code_layout_ui_editor .layout_ui_editor_right_container .mytree .template-widget {
+	display:none;
+}
+
+/* TEMPLATE REGION BLOCK HTML EDITOR POPUP */
+.template_region_block_html_editor_popup {
+	position:absolute;
+	top:5%;
+	left:5%;
+	right:5%;
+	bottom:5%;
+	width:90%;
+	height:90%;
+}
+.template_region_block_html_editor_popup .layout_ui_editor {
+	top:15px;
+	left:10px;
+	right:10px;
+	bottom:10px;
+}

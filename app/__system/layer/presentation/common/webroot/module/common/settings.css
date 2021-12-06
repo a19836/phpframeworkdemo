@@ -1,0 +1,587 @@
+.block_obj {
+	width:735px;
+}
+.block_obj .module_settings {
+	width:100%;
+}
+.block_obj .module_settings .settings {
+	text-align:left;
+}
+
+/* FORM FIELD */
+.settings_props {
+	margin-bottom:10px;
+	padding-bottom:5px;
+	border-bottom:1px solid #CCC;
+}
+.settings_props .settings_prop {
+	float:none;
+	clear:both;
+	margin-bottom:5px;
+	padding:4px;
+	background-color:#d5e3e4;
+}
+.settings_props .settings_prop.deprecated {
+	background-color:#ffcfcb;
+}
+.settings_props .settings_prop_label {
+	
+}
+.settings_props .show_settings_prop {
+	height:21px;
+	float:right;
+	font-size:10px;
+	color:#888;
+}
+.settings_props .settings_prop_icon {
+	float:right;
+}
+.move {
+    background: rgba(0, 0, 0, 0) url("../../img/icon/move_icon.png") no-repeat scroll 0 0;
+    margin-right:0;
+    cursor:move;
+}
+.move_up {
+    background: rgba(0, 0, 0, 0) url("../../img/icon/up_icon.gif") no-repeat scroll 0 0;
+    margin-right:0;
+}
+.move_down {
+    background: rgba(0, 0, 0, 0) url("../../img/icon/down_icon.gif") no-repeat scroll 0 0;
+    margin-right:0;
+}
+.settings_props .drag_and_drop_next_item {
+	height:40px;
+	background-color:#C0C0C0;
+}
+.settings_props .settings_prop_default_value,
+   .settings_props .settings_prop_search_value {
+	width:170px;
+	float:right;
+	/*margin-right:20px;*/
+}
+.settings_props .settings_prop_default_value label,
+   .settings_props .settings_prop_search_value label {
+	font-weight:normal;
+	font-size:10px;
+	color:#888;
+	line-height:20px;
+}
+.settings_props .settings_prop_default_value input,
+   .settings_props .settings_prop_search_value input {
+	width:80px;
+	height:18px;
+	font-size:11px;
+	color:#888;
+}
+
+.selected_task_properties {
+	display:none;
+	float:none;
+	clear:both;
+	padding:0;
+	
+	max-height:none;
+	position:static;
+	top:auto !important;
+	left:auto !important;
+	right:auto !important;
+	bottom:auto !important;
+	overflow: visible;
+}
+.selected_task_properties .selected_task_properties_tabs {
+    background:none;
+    border-top:0;
+    border-left:0;
+    border-right:0;
+}
+.selected_task_properties .form_containers {
+	padding:0;
+}
+.selected_task_properties .form_containers .fields .field {
+	background-color:#FFF;
+	border:0;
+	padding-top:8px;
+}
+.settings_props .selected_task_properties .form_containers .fields .field {
+	padding-left:7px;
+}
+.selected_task_properties .form_containers .fields .field label {
+	font-size:12px;
+	font-weight:normal;
+	font-style:none;
+}
+.selected_task_properties .form_containers .fields .field input,
+   .selected_task_properties .form_containers .fields .field select,
+   .selected_task_properties .form_containers .fields .field textarea {
+	font-size:12px;
+}
+.selected_task_properties .form_containers .fields .field > .remove_field,
+   .selected_task_properties .form_containers .fields .field > .minimize_field,
+   .selected_task_properties .form_containers .fields .field > .move,
+   .selected_task_properties .form_containers .fields .field > .move_up,
+   .selected_task_properties .form_containers .fields .field > .move_down {
+	display:none;
+}
+.selected_task_properties .form_containers .fields .field .input_value .add_field_automatically {
+	right:33px;
+}
+.selected_task_properties .form_containers .fields .field .input_src .add_field_automatically {
+	right:47px;
+}
+.selected_task_properties .form_containers .fields .field .class input {
+	width:250px;
+}
+
+.button_settings {
+	float:none;
+	clear:both;
+	margin-bottom:5px;
+	padding:4px;
+	background-color:#d5e3e4;
+	display:none;
+}
+.button_settings .button_settings_label {
+	margin-left:5px;
+}
+.button_settings .button_settings_icon {
+	float:right;
+}
+.button_settings .selected_task_properties .form_containers .fields .field .input_type,
+   .button_settings .selected_task_properties .form_containers .fields .field .input_name {
+	display:none;
+}
+
+/* ELS */
+.els {
+	margin-bottom:1em;
+	border:0;
+}
+.els .ptl,
+   .els .els_elements {
+	padding:1em 5px;
+}
+.els .els_elements:empty {
+	padding:0;
+}
+.els .els_tabs {
+	background:none;
+	border-top:0;
+	border-left:0;
+	border-right:0;
+}
+
+/* ELS UI */
+.els .els_ui.layout_ui_editor .tabs {
+	background:#fff;
+}
+.els .els_ui.layout_ui_editor > .menu-settings table {
+	border-collapse:separate;
+	border-spacing:2px;
+}
+.els .els_ui.layout_ui_editor > .menu-settings table th {
+	font-weight:bold;
+}
+.els .els_ui.layout_ui_editor > .options .options-left,
+  .els .els_ui.layout_ui_editor > .options .options-center,
+  .els .els_ui.layout_ui_editor > .options .options-right,
+  .els .els_ui.layout_ui_editor > .options .options-right-2 {
+	padding-top:7px;
+}
+.els .els_ui.layout_ui_editor > .options .option {
+	height:20px;
+}
+.els .els_ui.layout_ui_editor > .options .option.option-screen-width, 
+  .els .els_ui.layout_ui_editor > .options .option.option-screen-height {
+	height:auto;
+	font-size:70%;
+	vertical-align:middle;
+}
+.els .els_ui.layout_ui_editor > .options .option.option-screen-width {
+	margin-left:0;
+}
+.els .els_ui.layout_ui_editor > .options .option.option-px {
+	margin-top:0;
+}
+.els .els_ui.layout_ui_editor > .options .option.option-x {
+	font-size:70%;
+}
+.els .els_ui.layout_ui_editor .option,
+  .els .els_ui.layout_ui_editor .move,
+  .els .els_ui.layout_ui_editor .add,
+  .els .els_ui.layout_ui_editor .delete {
+	background-image:none;
+}
+.els .els_ui.layout_ui_editor label {
+	font-style:inherit;
+	font-weight:inherit;
+	color:inherit;
+	font-family:inherit;
+}
+.els .els_ui.layout_ui_editor .template-source textarea,
+   .els .els_ui.layout_ui_editor .template-source .ace_editor {
+	height:100%;
+}
+.els .els_ui.layout_ui_editor .tabs .tab.view-page {
+	opacity:.4;
+	float:left;
+}
+
+/* ELS ELEMENTS */
+.module_settings .settings div .table_class {
+	float:left;
+	padding:0 5px;
+}
+.module_settings .settings div .rows_class {
+	float:right;
+	padding:0 5px;
+}
+.module_settings .settings div .default_input_data {
+	padding:0 5px;
+}
+.module_settings .settings div .table_class label, 
+   .module_settings .settings div .rows_class label {
+	margin-right:5px;
+	width: 95px;
+	display: inline-block;
+}
+.module_settings .settings div .table_class input,
+   .module_settings .settings div .rows_class input {
+	width:200px;
+}
+
+/* PTL */
+.settings .ptl {
+	padding:1em 5px;
+}
+.settings .ptl textarea,
+   .settings .ptl .ace_editor {
+	width:100%;
+	height:200px;
+	margin:0px;
+	border-top:1px inset #CCC;
+	background-color:#F7F7F7;
+	clear:both;
+	float:none;
+}
+.settings .ptl > .ptl_external_vars {
+	width:48%;
+	min-width:260px;
+	margin:15px 0 0 1%;
+	display:inline-block;
+	vertical-align:top;
+}
+.settings .ptl .ptl_external_vars .group_add,
+  .settings .ptl .ptl_external_vars .key_type,
+  .settings .ptl .ptl_external_vars .value_type {
+	display:none;
+}
+.settings .ptl .ptl_external_vars ul,
+  .settings .ptl .ptl_external_vars .item {
+	min-width:auto;
+	clear:both;
+	border:0;
+}
+.settings .ptl > .ptl_external_vars > .items > label {
+	float:left;
+}
+.settings .ptl .ptl_external_vars input {
+	margin-right:5px;
+	height:17px;
+	line-height:17px;
+}
+.settings .ptl .ptl_external_vars input.value {
+	width:150px;
+}
+.settings .ptl .ptl_external_vars input.key {
+	width:60px;
+	background-color:#FFF;
+	color:#AAA;
+	border:1px solid #ECECEC;
+	text-align:center;
+	font-size:9px;
+}
+.settings .ptl .ptl_external_vars .item_add {
+	background:url("../../img/icon/item_add_icon.png") no-repeat scroll 0 0;
+	margin:1px 0px 0px 5px;
+}
+.settings .ptl .ptl_external_vars .remove {
+	background:url("../../img/icon/delete_icon.gif") no-repeat scroll 0 0;
+	margin:2px 0px 0px 0px;
+	float:none;
+	display:inline-block;
+	vertical-align:middle;
+}
+
+/* LIST BUTTON FIELDS */
+.module_settings .settings div .clear {
+	float:none;
+	clear:both;
+}
+
+.module_settings .settings div .show_edit_button,
+   .module_settings .settings div .show_delete_button,
+   .module_settings .settings div .edit_page_url {
+	height:20px;
+   	float:left;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.module_settings .settings div .show_edit_button,
+   .module_settings .settings div .show_delete_button {
+	width:220px;
+}
+.module_settings .settings div .edit_page_url {
+	width:495px;
+}
+.module_settings .settings div .show_edit_button label,
+   .module_settings .settings div .show_delete_button label {
+	width:170px;
+   	display:block;
+	float:left;
+}
+.module_settings .settings div .edit_page_url label {
+	width:110px;
+   	display:block;
+	float:left;
+}
+.module_settings .settings div .edit_page_url input {
+	width:350px;
+	padding-right:20px;
+}
+.module_settings .settings div .edit_page_url .info {
+	font-size:10px; 
+	color:#999;
+}
+
+/* FORM BUTTON FIELDS */
+.module_settings .settings div .allow_update,
+   .module_settings .settings div .allow_view,
+   .module_settings .settings div .allow_insertion,
+   .module_settings .settings div .allow_deletion,
+   .module_settings .settings div .undefined_object {
+	width:100%;
+	height:20px;
+	float:none;
+	clear:both;
+   	margin-top:10px;
+}
+.module_settings .settings div .undefined_object {
+	border-top:1px solid #CCC;
+	padding-top:10px;
+}
+.module_settings .settings div .allow_update label,
+   .module_settings .settings div .allow_view label,
+   .module_settings .settings div .allow_insertion label,
+   .module_settings .settings div .allow_deletion label {
+	width:160px;
+   	display:block;
+	float:left;
+}
+.module_settings .settings div .undefined_object label {
+	width:210px;
+   	display:block;
+	float:left;
+}
+.module_settings .settings div .allow_update input,
+   .module_settings .settings div .allow_view input,
+   .module_settings .settings div .allow_insertion input,
+   .module_settings .settings div .allow_deletion input {
+	float:left;
+}
+.module_settings .settings div .allow_update .icon,
+   .module_settings .settings div .allow_view .icon,
+   .module_settings .settings div .allow_insertion .icon,
+   .module_settings .settings div .allow_deletion .icon {
+	margin-left:10px;
+}
+
+.module_settings .settings div .status_action {
+	display:none;
+	float:left;
+	clear:both;
+	margin-top:4px;
+	margin-bottom:5px;
+}
+.module_settings .settings div .status_action .on_ok_message,
+   .module_settings .settings div .status_action .on_error_message,
+   .module_settings .settings div .status_action .on_ok_redirect_url,
+   .module_settings .settings div .status_action .on_error_redirect_url {
+	height:25px;
+	padding-left:10px;
+	margin-bottom:3px;
+	float:none;
+	clear:both;
+}
+.module_settings .settings div .status_action .on_error_message {
+	padding-top:5px;
+}
+.module_settings .settings div .status_action .on_ok_action,
+   .module_settings .settings div .status_action .on_error_action {
+	width:390px;
+	height:25px;
+	padding-left:10px;
+	margin-bottom:3px;
+	float:left;
+}
+.module_settings .settings div .status_action .on_ok_redirect_ttl,
+   .module_settings .settings div .status_action .on_error_redirect_ttl {
+	width:310px;
+	height:25px;
+	float:left;
+}
+.module_settings .settings div .status_action .on_ok_message label,
+   .module_settings .settings div .status_action .on_ok_action label,
+   .module_settings .settings div .status_action .on_error_message label,
+   .module_settings .settings div .status_action .on_error_action label,
+   .module_settings .settings div .status_action .on_ok_redirect_url label,
+   .module_settings .settings div .status_action .on_error_redirect_url label {
+	width:150px;
+   	display:block;
+	float:left;
+}
+.module_settings .settings div .status_action .on_ok_redirect_ttl label,
+   .module_settings .settings div .status_action .on_error_redirect_ttl label {
+	width:110px;
+   	display:block;
+	float:left;
+}
+.module_settings .settings div .status_action .on_ok_message input,
+   .module_settings .settings div .status_action .on_error_message input {
+	width:540px;
+}
+.module_settings .settings div .status_action .on_ok_redirect_ttl input,
+   .module_settings .settings div .status_action .on_error_redirect_ttl input {
+	width:150px;
+}
+.module_settings .settings div .status_action .on_ok_redirect_url input,
+   .module_settings .settings div .status_action .on_error_redirect_url input {
+	width:522px;
+	padding-right:20px;
+}
+
+.module_settings .settings div .status_action_undefined_object .on_ok_message,
+   .module_settings .settings div .status_action_undefined_object .on_ok_action,
+   .module_settings .settings div .status_action_undefined_object .on_ok_redirect_url,
+   .module_settings .settings div .status_action_undefined_object .on_ok_redirect_ttl {
+	display:none;
+}
+
+/* STYLE FIELDS: BLOCK_CSS and BLOCK_JS FIELDS */
+.module_settings .settings div .style_type {
+	float:left;
+	padding:10px 5px 15px;
+}
+.module_settings .settings div .block_class {
+	float:right;
+	padding:10px 5px 15px;
+}
+.module_settings .settings div .style_type label, 
+   .module_settings .settings div .block_class label {
+	margin-right:5px;
+	width: 95px;
+	display: inline-block;
+}
+.module_settings .settings div .block_class input {
+	width:170px;
+}
+
+.module_settings .settings div .block_css, 
+   .module_settings .settings div .block_js {
+	width:100%;
+	margin-top:10px;
+	float:none;
+	clear:left;
+}
+.module_settings .settings div .block_js {
+	margin-bottom: 15px;
+	padding-bottom: 15px;
+	border-bottom: 1px solid #CCC;
+}
+.module_settings .settings div .block_css label, 
+   .module_settings .settings div .block_js label {
+	display:block;
+	width:100%;
+}
+.module_settings .settings div .block_css textarea.css, 
+   .module_settings .settings div .block_js textarea.js,
+   .module_settings .settings div .block_css .ace_editor,
+   .module_settings .settings div .block_js .ace_editor {
+	width:100%;
+	height:200px;
+	margin:0px;
+	border-top:1px inset #CCC;
+	background-color:#F7F7F7;
+}
+
+/* PAGINATION FIELDS */
+.module_settings .settings div .pagination {
+   	width:100%;
+   	min-height:75px;
+	text-align:left;
+	padding:10px 5px 15px;
+	float:none;
+	clear:left;
+}
+.module_settings .settings div .pagination div {
+	width:100%;
+	text-align:left;
+	margin-bottom:5px;
+	float:none;
+	clear:left;
+}
+.module_settings .settings div .pagination label {
+	margin-bottom:5px;
+	display:block;
+	float:left;
+	clear:none;
+}
+.module_settings .settings div .pagination label.main_pagination_label {
+	width:100%;
+	float:none;
+	clear:left;
+}
+.module_settings .settings div .pagination div label {
+	width:150px;
+	color:#666;
+}
+.module_settings .settings div .pagination div select {
+	margin-right:5px;
+	text-align:center;
+}
+.module_settings .settings div .pagination .rows_per_page input {
+	width:30px;
+}
+
+/* SEARCH PAGE URL */
+.module_settings .settings div .search_page_url {
+	margin:2px 0 0 -18px;
+	position:absolute;
+	float:none;
+	clear:both;
+	display:inline-block;
+	vertical-align:middle;
+}
+
+/* ADD VARIABLE ICON */
+.module_settings .settings div .add_variable.inline {
+	margin:2px 0 0 -18px;
+	position:absolute;
+	float:none;
+	clear:both;
+	display:inline-block;
+	vertical-align:middle;
+	opacity:.8;
+}
+.module_settings .settings div .add_variable {
+	background: url("../../img/icon/sort_icon.png") no-repeat scroll 0 0;
+}
+
+/* FORM BUTTON FIELDS */
+.module_settings .settings .import_template_ptl_code_popup {
+	min-width:250px;
+	min-height:100px;
+	text-align:center;
+}
+.module_settings .settings .import_template_ptl_code_popup .template {
+	margin:10px 0 20px 0;
+}

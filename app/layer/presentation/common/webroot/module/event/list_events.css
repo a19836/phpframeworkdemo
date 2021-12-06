@@ -1,0 +1,77 @@
+.module_list_events td.event_id {
+	width:100px;
+	text-align:center;
+}
+.module_list_events td.title {
+	min-width:100px;
+}
+.module_list_events td.sub_title {
+	min-width:100px;
+}
+.module_list_events td.published {
+	width:50px;
+	text-align:center;
+}
+.module_list_events td.description {
+	min-width:200px;
+}
+.module_list_events td.address {
+	min-width:100px;
+}
+.module_list_events td.zip_id {
+	min-width:50px;
+}
+.module_list_events td.latitude {
+	min-width:50px;
+}
+.module_list_events td.longitude {
+	min-width:50px;
+}
+.module_list_events td.begin_date {
+	min-width:100px;
+}
+.module_list_events td.end_date {
+	min-width:100px;
+}
+.module_list_events td.photo {
+	width:100px;
+	text-align:center;
+}
+.module_list_events td.photo img {
+	max-width:100px;
+	max-height:100px;
+}
+.module_list_events td.photo_id img {
+	width:100px;
+}
+
+/* PAGINATION */
+.module_list_events .top_pagination, .module_list_events .bottom_pagination {
+	width:100%;
+	line-height:20px;
+	float:none;
+	clear:both;
+	font-size:12px;
+	color:#999;
+}
+.module_list_events .top_pagination {
+	margin-bottom:5px;
+}
+.module_list_events .bottom_pagination {
+	margin-top:5px;
+}
+.module_list_events .pagination_alignment_center {
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+}
+.module_list_events .pagination_alignment_left {
+	margin-left:0;
+	margin-right:auto;
+	text-align:left;
+}
+.module_list_events .pagination_alignment_right {
+	margin-left:auto;
+	margin-right:0;
+	text-align:right;
+}

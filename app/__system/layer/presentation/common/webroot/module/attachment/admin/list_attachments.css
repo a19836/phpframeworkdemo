@@ -1,0 +1,15 @@
+.module_list .attachment_id {
+	text-align:center;
+}
+.module_list .type {
+	text-align:center;
+}
+.module_list .size {
+	text-align:center;
+}
+.module_list .delete_action .icon {
+	margin-right:0;
+}
+.module_list .other_action .icon {
+	background:url("../../../img/icon/view_icon.gif") no-repeat scroll 0px 1px;
+}

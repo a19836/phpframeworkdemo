@@ -1,0 +1,24 @@
+.pagination_box { width:100%; clear: both; margin: 10px 0 0 0;}
+
+.paging { font-family: 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, Arial, sans-serif; 
+		  font-size: 11px; text-align: left; color:#000; display: inline; float: right; width: 340px;}
+.paging .cur_page { background-color: #fff; font-size:11px; }
+.paging .go_to_page { background-color: #fff; float: right; margin-right: 9px; }
+.paging .go_to_page form { }
+.paging .go_to_page select { font-size:10px; font-weight:bold; color: #444; border: 1px solid #888; }
+.paging .go_to_page .button { font-size:10px; font-weight:bold; color: #444; }
+.paging .go_to_page div { }
+.paging .page_numbers { float: right; padding: 1px 0 0; margin-right: 15px; }
+.paging .prev { color:#333; text-decoration:none; font-weight:bold; margin-right: 5px; }
+.paging .next { color:#333; text-decoration:none; font-weight:bold; margin-left: 5px; }
+.paging .selected { color:#000; text-decoration: underline; }
+.paging .unselected { color:#333; text-decoration:none;}
+.paging .unselected:hover, div.paging .prev:hover, div.paging .next:hover { color: #000; text-decoration: underline; }
+
+.go_bt { width: 35px; height: 18px; margin: 0; padding: 0; border: 0;
+		 background: transparent url("../img/go_bt.png") no-repeat right top;
+ 		 text-align: left; font-size: 0; color: #fff;
+		 cursor: pointer; /* hand-shaped cursor */
+		 cursor: hand; /* for IE 5.x */
+		 vertical-align: top; }
+

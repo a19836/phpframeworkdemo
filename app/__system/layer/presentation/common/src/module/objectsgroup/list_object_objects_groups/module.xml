@@ -1,0 +1,7 @@
+<module>
+	<label>List Object Objects Groups</label>
+	<description>Module "List Object Objects Groups" allows to manage the object objects groups.</description>
+	<image>logo.gif</image>
+	<load_module_settings_js_function>loadListSettingsBlockSettings</load_module_settings_js_function>
+	<is_reserved_module>1</is_reserved_module>
+</module>

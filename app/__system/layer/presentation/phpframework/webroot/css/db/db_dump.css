@@ -1,0 +1,80 @@
+.db_dump {
+	margin:0 10px;
+}
+.db_dump .title {
+	width: 100%;
+	color: #000;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 10px 0 5px;
+	text-align: center;
+}
+.db_dump .save_button {
+	width:100%;
+	height:25px;
+	text-align:center;
+	margin:10px 0 15px 0;
+}
+.db_dump .save_button input {
+	border:1px outset;
+	border-radius:0.5em;
+	height:25px !important;
+	line-height:15px !important;
+	padding:3px 5px !important;
+}
+
+.db_dump .tables ul {
+	margin-top:10px;
+}
+.db_dump .tables li {
+	width:25%;
+	min-width:150px;
+	padding:3px 0;
+	display:inline-block;
+	white-space:nowrap;
+	overflow-x:hidden;
+}
+.db_dump .tables .select_buttons {
+	float:right;
+}
+.db_dump .tables .select_buttons a {
+	margin:0 5px;
+	cursor:pointer;
+}
+
+.db_dump .settings {
+	margin-top:20px;
+}
+.db_dump .settings > label {
+	display:block;
+}
+.db_dump .settings > div {
+	width:49%;
+	min-width:300px;
+	padding:5px;
+	display:inline-block;
+	box-sizing:border-box;
+}
+.db_dump .settings > div label {
+	width:200px;
+	display:inline-block;
+	font-weight:normal;
+}
+.db_dump .settings > div.where {
+	width:100%;
+}
+.db_dump .settings > div.where input {
+	width:calc(100% - 220px);
+}
+
+/* ERROR */
+.error {
+	width:100%;
+	min-height:20px;
+	margin-bottom:20px;
+	text-align:center;
+	font-weight:bold;
+	font-size:16px;
+	color:red;
+	box-sizing:border-box;
+}

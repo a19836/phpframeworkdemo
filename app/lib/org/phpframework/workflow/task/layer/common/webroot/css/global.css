@@ -1,0 +1,257 @@
+.jsplumbtaskworkflow path { 
+	stroke-width:2px; 
+}
+.jsplumbtaskworkflow .task {
+	opacity:.3;
+}
+.jsplumbtaskworkflow .task:hover {
+	opacity:.3 !important;
+}
+.jsplumbtaskworkflow .task.active {
+	opacity:1;
+}
+.jsplumbtaskworkflow .task.active:hover {
+	opacity:.8 !important;
+}
+.jsplumbtaskworkflow .task .info {
+	font-weight:bold;
+}
+.jsplumbtaskworkflow .task .tag_info {
+	display:none;
+}
+
+.task_context_menu .activate_task a,
+  .task_context_menu .activate_task a:hover {
+	background:url("../img/enable_icon.png") 4px 4px no-repeat;
+}
+.task_context_menu .activate_task a.active,
+  .task_context_menu .activate_task a.active:hover {
+	background:url("../img/disable_icon.png") 4px 4px no-repeat;
+}
+
+.jsplumbtaskworkflow .selected_task_properties, 
+  .jsplumbtaskworkflow .selected_connection_properties {
+	height:auto !important; /* important must be here and height must be auto bc if we change the connection properties to REST and add multiple options the popup height will be increased and must get updated accordingly */
+}
+.jsplumbtaskworkflow .selected_task_properties > .maximize_minimize_icon, 
+  .jsplumbtaskworkflow .selected_connection_properties > .maximize_minimize_icon {
+	display:none;
+}
+
+/* TASK BROKER SERVERS PROPERTIES */
+
+.selected_task_properties .layer_rest_server_html,
+  .selected_task_properties .layer_soap_server_html {
+	width:530px;
+	margin:5px -5px;
+	padding:5px;
+	border:1px solid #ddd;
+}
+
+.selected_task_properties .layer_rest_server_html > label,
+  .selected_task_properties .layer_soap_server_html > label {
+	width:190px;
+	display:inline-block;
+}
+.selected_task_properties .layer_rest_server_html > div,
+  .selected_task_properties .layer_soap_server_html > div {
+	margin:10px;
+	display:none;
+}
+.selected_task_properties .layer_rest_server_html > div:first-child,
+  .selected_task_properties .layer_soap_server_html > div:first-child {
+	margin-top:20px;
+}
+.selected_task_properties .layer_rest_server_html > div > label,
+  .selected_task_properties .layer_soap_server_html > div > label {
+	width:240px;
+	display:inline-block;
+}
+.selected_task_properties .layer_rest_server_html > div > input,
+  .selected_task_properties .layer_rest_server_html > div > select,
+  .selected_task_properties .layer_soap_server_html > div > input,
+  .selected_task_properties .layer_soap_server_html > div > select {
+	width:250px;
+	margin-left:5px;
+	box-sizing: border-box;
+}
+.selected_task_properties .layer_rest_server_html > div.with_toggle_icon > input,
+  .selected_task_properties .layer_rest_server_html > div.with_toggle_icon > select,
+  .selected_task_properties .layer_soap_server_html > div.with_toggle_icon > input,
+  .selected_task_properties .layer_soap_server_html > div.with_toggle_icon > select {
+	width:225px;
+}
+.selected_task_properties .layer_rest_server_html > div > .info,
+  .selected_task_properties .layer_soap_server_html > div > .info {
+	font-size:80%;
+}
+.selected_task_properties .layer_rest_server_html > div > .toggle_password,
+  .selected_task_properties .layer_soap_server_html > div > .toggle_password {
+	display:inline-block;
+	width:16px;
+	height:16px;
+	margin:0;
+	cursor:pointer;
+	vertical-align:middle;
+	
+	/* Hide Text */
+	text-indent:-9999px;
+	white-space:nowrap;
+	overflow:hidden;
+	
+	background:url('../../common/img/toggle_icon.gif') no-repeat;
+	margin-left:5px;
+}
+
+.selected_task_properties .layer_rest_server_html .other_settings,
+  .selected_task_properties .layer_soap_server_html .other_settings {
+	margin-top:20px;
+	display:none;
+}
+.selected_task_properties .layer_rest_server_html .other_settings table,
+  .selected_task_properties .layer_soap_server_html .other_settings table {
+	width:100%;
+}
+.selected_task_properties .layer_rest_server_html .other_settings .setting_name,
+  .selected_task_properties .layer_soap_server_html .other_settings .setting_name {
+	width:230px;
+}
+.selected_task_properties .layer_rest_server_html .other_settings .setting_value,
+  .selected_task_properties .layer_soap_server_html .other_settings .setting_value {
+	width:250px;
+}
+.selected_task_properties .layer_rest_server_html .other_settings .table_attr_icons,
+  .selected_task_properties .layer_soap_server_html .other_settings .table_attr_icons {
+	width:50px;
+	text-align:center;
+}
+.selected_task_properties .layer_rest_server_html .other_settings input,
+  .selected_task_properties .layer_rest_server_html .other_settings select,
+  .selected_task_properties .layer_soap_server_html .other_settings input,
+  .selected_task_properties .layer_soap_server_html .other_settings select {
+	width:100%;
+	box-sizing:border-box;
+}
+.selected_task_properties .layer_rest_server_html .other_settings table a,
+  .selected_task_properties .layer_soap_server_html .other_settings table a {
+	display:inline-block;
+	width:16px;
+	height:16px;
+	margin:0;
+	cursor:pointer;
+	vertical-align:middle;
+	
+	/* Hide Text */
+	text-indent:-9999px;
+	white-space:nowrap;
+	overflow:hidden;
+}
+.selected_task_properties .layer_rest_server_html .other_settings thead .add,
+  .selected_task_properties .layer_soap_server_html .other_settings thead .add {
+	background:url('../../common/img/add_icon.gif') no-repeat;
+}
+.selected_task_properties .layer_rest_server_html .other_settings tbody .remove,
+  .selected_task_properties .layer_soap_server_html .other_settings tbody .remove {
+	background:url('../../common/img/delete_icon.gif') no-repeat;
+}
+
+/* CONNECTION PROPERTIES */
+
+.selected_connection_properties .layer_connection_html {
+	width:530px;
+}
+
+.selected_connection_properties .layer_connection_html .connection_type label,
+  .selected_connection_properties .layer_connection_html .connection_response_type label {
+	margin-right:5px;
+}
+.selected_connection_properties .layer_connection_html .connection_response_type {
+	margin-top:20px;
+	display:none;
+}
+
+.selected_connection_properties .layer_connection_html .connection_settings {
+	margin-top:20px;
+	display:none;
+}
+.selected_connection_properties .layer_connection_html .connection_settings table {
+	width:100%;
+}
+.selected_connection_properties .layer_connection_html .connection_settings .setting_name {
+	width:230px;
+}
+.selected_connection_properties .layer_connection_html .connection_settings .setting_value {
+	width:250px;
+}
+.selected_connection_properties .layer_connection_html .connection_settings .table_attr_icons {
+	width:50px;
+	text-align:center;
+}
+.selected_connection_properties .layer_connection_html .connection_settings input,
+  .selected_connection_properties .layer_connection_html .connection_settings select {
+	width:100%;
+	box-sizing:border-box;
+}
+.selected_connection_properties .layer_connection_html .connection_settings table a {
+	display:inline-block;
+	width:16px;
+	height:16px;
+	margin:0;
+	cursor:pointer;
+	vertical-align:middle;
+	
+	/* Hide Text */
+	text-indent:-9999px;
+	white-space:nowrap;
+	overflow:hidden;
+}
+.selected_connection_properties .layer_connection_html .connection_settings thead .add {
+	background:url('../../common/img/add_icon.gif') no-repeat;
+}
+.selected_connection_properties .layer_connection_html .connection_settings tbody .remove {
+	background:url('../../common/img/delete_icon.gif') no-repeat;
+}
+
+.selected_connection_properties .layer_connection_html .connection_global_variables_name {
+	margin-top:20px;
+	margin-bottom:20px;
+	display:none;
+}
+.selected_connection_properties .layer_connection_html .connection_global_variables_name table {
+	width:auto;
+	margin:0 auto;
+}
+.selected_connection_properties .layer_connection_html .connection_global_variables_name .var_name {
+	width:250px;
+}
+.selected_connection_properties .layer_connection_html .connection_global_variables_name .table_attr_icons {
+	width:25px;
+	text-align:center;
+}
+.selected_connection_properties .layer_connection_html .connection_global_variables_name input {
+	width:100%;
+	text-align:center;
+	box-sizing:border-box;
+}
+
+.selected_connection_properties .layer_connection_html .connection_global_variables_name table a {
+	display:inline-block;
+	width:16px;
+	height:16px;
+	margin:0;
+	cursor:pointer;
+	
+	/* Hide Text */
+	text-indent:-9999px;
+	white-space:nowrap;
+	overflow:hidden;
+}
+.selected_connection_properties .layer_connection_html .connection_global_variables_name thead .add {
+	background:url('../../common/img/add_icon.gif') no-repeat;
+}
+.selected_connection_properties .layer_connection_html .connection_global_variables_name tbody .remove {
+	background:url('../../common/img/delete_icon.gif') no-repeat;
+}
+.selected_connection_properties .layer_connection_html .connection_global_variables_name .info {
+	margin-bottom:10px;
+}

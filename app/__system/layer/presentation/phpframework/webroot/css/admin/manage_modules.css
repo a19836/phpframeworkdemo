@@ -1,0 +1,138 @@
+.title {
+	color: #000;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 10px 0 20px 0px;
+	text-align: center;
+	width: 100%;
+	height:25px;
+}
+
+.modules_list {
+	width:100%;
+	margin:0 auto;
+	margin-bottom:20px;
+}
+.modules_list .layer {
+	width:50%;
+	margin-bottom:20px;
+	float:left;
+}
+.modules_list .layer label {
+	width:140px;
+	display:block;
+	float:left;
+	font-style:normal;
+	font-weight:normal;
+	margin-left:10px;
+}
+.modules_list .install {
+	width:50%;
+	float:left;
+	text-align:right;
+}
+.modules_list .install a {
+	margin-right:10px;
+}
+.modules_list .layer_modules {
+	display:none;
+}
+
+.modules_list table {
+	width:100%;
+	border:1px solid #CCC;
+	clear:left;
+	float:none;
+	/*table-layout:fixed;*/
+}
+.modules_list table tr.group_module_item {
+	display:none;
+}
+.modules_list table th {
+	font-weight:bold;
+	text-transform:uppercase;
+	font-size:10px;
+	height:20px;
+	line-height:15px;
+}
+.modules_list table td {
+	border:1px solid #CCC;
+	word-wrap:break-word;
+}
+.modules_list table .group {
+	width:10px;
+	padding:5px 0 3px 10px;
+	border-right:0;
+	float:none;
+	clear:left;
+}
+.modules_list table .group label {
+	text-transform:uppercase;
+	float:left;
+}
+.modules_list table .status {
+	width:60px;
+	text-align:center;
+	border-left:0;
+}
+.modules_list table .status span {
+	margin-left:23px;
+	cursor:auto;
+}
+.modules_list table .photo {
+	width:100px;
+	text-align:center;
+}
+.modules_list table td.photo {
+	color:#CCC;
+	font-size:10px;
+	font-style:italic;
+	font-weight:bold;
+	text-transform:uppercase;
+}
+.modules_list table .photo img {
+	max-width:100px;
+}
+.modules_list table .label {
+	width:150px;
+	text-align:center;
+}
+.modules_list table td.label {
+	font-weight:bold;
+}
+.modules_list table .description {
+	width:430px;
+	padding:0 3px 0px 3px;
+	text-align:center;
+}
+.modules_list table .module_id {
+	width:150px;
+	text-align:center;
+}
+.modules_list table .buttons {
+	width:80px;
+	text-align:center;
+}
+.modules_list table .buttons .icon {
+	margin-top:0;
+	display:inline-block;
+	float:none;
+	vertical-align:middle;
+}
+.modules_list table .buttons .delete, .modules_list table .buttons .settings {
+	background-position:0 0;
+	margin-left:0;
+	margin-right:0;
+}
+.modules_list table .buttons .delete {
+	margin-right:5px;
+}
+.modules_list table .disable {
+	background: url("../../common/img/icon/disable_icon.png") 0 0 no-repeat;
+}
+.modules_list table .enable {
+	background: url("../../common/img/icon/enable_icon.png") 0 0 no-repeat;
+}
+.modules_list table .settings {
+	background: url("../../common/img/icon/settings_icon.png") 0 0 no-repeat;
+}

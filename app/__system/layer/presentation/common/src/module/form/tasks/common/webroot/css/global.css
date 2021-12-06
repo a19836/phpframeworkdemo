@@ -1,0 +1,11 @@
+/* task properties */
+.module_form_settings .formitem_task_html {
+	
+}
+.module_form_settings .formitem_task_html .form-group-item > .form-group-header > .form-group-sub-header > .condition-type {
+	margin:0;
+}
+.module_form_settings .formitem_task_html .form-group-item > .form-group-header > .form-group-sub-header > .condition-value {
+	float:right;
+}
+

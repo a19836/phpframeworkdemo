@@ -1,0 +1,32 @@
+.title {
+	color: #000;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 10px 0 20px 0px;
+	text-align: center;
+	width: 100%;
+	height:25px;
+}
+
+.manage_wordpress {
+	width:400px;
+	margin:0 auto;
+	text-align:center;
+}
+.manage_wordpress .project,
+  .manage_wordpress .db_driver {
+	margin-bottom:20px;
+}
+.manage_wordpress label {
+	font-weight:normal;
+}
+.manage_wordpress select {
+	text-align:center;
+}
+.manage_wordpress .buttons input {
+	margin:10px auto 10px auto;
+	height:25px;
+	line-height:15px;
+	font-size:10px;
+	font-weight:bold;
+}

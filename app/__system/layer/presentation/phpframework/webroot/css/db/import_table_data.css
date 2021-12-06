@@ -1,0 +1,176 @@
+.title {
+	width:100%;
+	font-size:16px;
+	text-align:center;
+	margin:10px 0px 5px 0px;
+	font-weight:bold;
+	color:#000;
+}
+.import_table_data {
+	margin-top:20px;
+	text-align:center;
+}
+
+/* GENERIC */
+.import_table_data > form > div {
+	width:340px;
+	margin:0 auto 10px;
+	text-align:left;
+}
+.import_table_data > form > div.columns_attributes,
+   .import_table_data > form > div.insert_ignore,
+   .import_table_data > form > div.update_existent {
+	margin-top:20px;
+}
+.import_table_data > form > div > label {
+	width:160px;
+	height:20px;
+	display:inline-block;
+	float:none;
+	font-weight:bold;
+}
+.import_table_data div.ignore_rows_number label,
+   .import_table_data div.insert_ignore label,
+   .import_table_data div.update_existent label,
+   .import_table_data div.force label {
+	width:235px;
+}
+.import_table_data div.columns_attributes label {
+	width:auto;
+	display:block;
+}
+.import_table_data input, .import_table_data select {
+	display:inline-block;
+	float:none;
+	font-size:11px;
+}
+.import_table_data input {
+	width:170px;
+	line-height:17px;
+	box-sizing:border-box;
+}
+.import_table_data div.ignore_rows_number input {
+	width:50px;
+}
+.import_table_data div.insert_ignore input,
+   .import_table_data div.update_existent input,
+   .import_table_data div.force input {
+	width:auto;
+	vertical-align:top;
+}
+.import_table_data select {
+	width:100px;
+	height:20px;
+}
+.import_table_data div.insert_ignore .info,
+   .import_table_data div.update_existent .info,
+   .import_table_data div.force .info {
+	margin-left:25px;
+	font-size:80%;
+}
+.import_table_data .icon {
+	display:inline-block;
+	float:none;
+	vertical-align:middle;
+}
+.import_table_data .icon.delete {
+	height:auto;
+	margin-top:3px;
+	float:right;
+}
+
+.import_table_data table {
+	float:none;
+	clear:left;
+	margin:10px auto;
+}
+.import_table_data thead {
+	margin-top:10px;
+	margin-left:10px;
+}
+.import_table_data thead th {
+	height:18px;
+	line-height:18px;
+	text-align:center;
+	font-size:9px;
+}
+.import_table_data tbody td {
+	text-align:center;
+	height:20px;
+	background-color:#FFF;
+	border:1px solid #CCC;
+}
+.import_table_data tbody select {
+	background-color:#FFF;
+	border:none;
+}
+
+/* SAVE BUTTON */
+.save_button {
+	width:100%;
+	height:20px;
+	padding-top:20px;
+	text-align:center !important;
+}
+.save_button input {
+	width:auto;
+	height:25px !important;
+	line-height:15px !important;
+	display:inline !important;
+	float:none !important;
+	padding:3px 5px !important;
+	border:1px outset;
+	background: #d5e3e4;
+	
+	-moz-border-radius:0.5em; 
+	-webkit-border-radius:0.5em;
+	border-radius:0.5em;
+}
+
+/* ERROR */
+.error {
+	width:100%;
+	min-height:20px;
+	margin-bottom:20px;
+	text-align:center;
+	font-weight:bold;
+	font-size:16px;
+	color:red;
+	box-sizing:border-box;
+}
+
+/* ERROR */
+.errors {
+	margin-top:40px !important;
+	margin-bottom:40px !important;
+	text-align:left !important;
+	padding-left:10px;
+}
+.errors > label {
+	color:red;
+}
+.errors > ul {
+	margin:0;
+	padding:0;
+	padding-left:20px;
+}
+.errors > ul > li {
+	margin:10px;
+	padding:10px;
+	list-style:none;
+	border:1px solid #ccc;
+	background:#fee;
+}
+.errors > ul > li:before {
+  content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+  color: red; /* Change the color */
+  font-size:16px;
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 1em; /* Also needed for space (tweak if needed) */
+  margin-left:-1.7em; /* Also needed for space (tweak if needed) */
+  margin-right:.5em; /* Also needed for space (tweak if needed) */
+}
+.errors > ul > li:nth-child(even) {
+	background:#fdd;
+}

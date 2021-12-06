@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Flexigrid Form Sample</title>
+<link rel="stylesheet" type="text/css" href="css/flexigrid.css">
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
+<script type="text/javascript" src="js/flexigrid.js"></script>
+<style>
+	body
+		{
+		font-size: 12px;
+		font-family: Helvetica Neue, Arial;
+		padding: 20px;
+		margin: 0;
+		border-top: 30px solid #333;
+		}
+	
+	h1
+		{
+		font-size: 36px;
+		font-weight: normal;
+		letter-spacing: -1px;
+		}
+		
+	.formdata
+		{
+		background: #eee;
+		width: 700px;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		border-radius: 4px;
+		box-shadow: inset 0 0 3px #bbb;
+		color: #333;
+		}
+		
+		.formtitle
+			{
+			padding: 10px 10px;
+			border-bottom: 1px solid #ccc;
+			font-weight: bold;
+			text-shadow: 0 1px #fff;
+			}
+			
+		.formbody
+			{
+			padding: 10px 10px;
+			border-top: 1px solid #f7f7f7;
+			}	
+			
+</style>
+</head>
+<body>
+
+<h1>How to use Flexigrid with a form:</h1>
+
+<div class="formdata">
+<div class="formtitle">Form</div>
+<div class="formbody">
+<p>This is a sample implementation attached to a form, to add additional parameters.</p>
+
+<form id="sform">
+	<p>
+	The values you entered will be place in name column for demo's sake.<br />
+	Value 1 : <input type="text" name="val1" value="" autocomplete="off" /><br />
+    Value 2 : Is a hidden input with value 3<input type="hidden" name="val2" value="3" /><br />
+    Value 3 : 
+    <select name="val3">
+    	<option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+        <option value="4">Four</option>
+        <option value="5">Five</option>
+    </select><br />
+    Value 4 : <input type="checkbox" name="val4" id="val4" value="4" /><label for="val4">This will pass a value 4 if checked</label>
+    </p>
+    <p>
+	    <input type="submit" value="Submit" />
+    </p>
+</form>
+</div>
+</div>
+
+<div class="formdata" style="display:none;">
+<div id="ftitle" class="formtitle">Server Received Values</div>
+<div id="fdata" class="formbody"></div>
+</div>
+
+<table id="flex1" style="display:none"></table>
+
+<script type="text/javascript">
+
+function parsedForm(json)
+{
+var h = "";
+
+if (json.post.val1)
+	h += "<b>Value 1</b>: " + json.post.val1 + "<br />";
+
+h += "<b>Value 2</b>: " + json.post.val2 + "<br />";
+h += "<b>Value 3</b>: " + json.post.val3 + "<br />";
+
+if (json.post.val4)
+	h += "<b>Value 4</b>: " + json.post.val4 + "<br />";
+
+$('#fdata').empty().html(h);
+$('.formdata').slideDown();
+
+return json;
+}
+
+
+$("#flex1").flexigrid({
+	url: 'post2.php',
+	dataType: 'json',
+	colModel : [
+		{display: 'ISO', name : 'iso', width : 40, sortable : true, align: 'center'},
+		{display: 'Name', name : 'name', width : 180, sortable : true, align: 'left'},
+		{display: 'Printable Name', name : 'printable_name', width : 120, sortable : true, align: 'left'},
+		{display: 'ISO3', name : 'iso3', width : 130, sortable : true, align: 'left', hide: true},
+		{display: 'Number Code', name : 'numcode', width : 80, sortable : true, align: 'right'}
+		],
+	searchitems : [
+		{display: 'ISO', name : 'iso'},
+		{display: 'Name', name : 'name', isdefault: true}
+		],
+	sortname: "iso",
+	sortorder: "asc",
+	usepager: true,
+	title: 'Countries',
+	useRp: true,
+	rp: 15,
+	showTableToggleBtn: true,
+	width: 700,
+	onSubmit: addFormData,
+	preProcess: parsedForm,
+	height: 200
+});
+
+//This function adds paramaters to the post of flexigrid. You can add a verification as well by return to false if you don't want flexigrid to submit			
+
+function addFormData(){
+	//passing a form object to serializeArray will get the valid data from all the objects, but, if the you pass a non-form object, you have to specify the input elements that the data will come from
+	var dt = $('#sform').serializeArray();
+	$("#flex1").flexOptions({params: dt});
+	return true;
+}
+
+	
+$('#sform').submit(function (){
+	$('#flex1').flexOptions({newp: 1}).flexReload();
+	return false;
+});
+</script>
+
+</body>
+</html>

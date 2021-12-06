@@ -1,0 +1,45 @@
+.icon {
+	display:block;
+	width:16px;
+	height:20px;
+	margin-top:2px;
+	cursor:pointer;
+	
+	/* Hide Text */
+	text-indent:-9999px;
+	white-space:nowrap;
+	overflow:hidden;
+	
+	float:left;
+	margin-left:5px;
+	margin-right:5px;
+}
+.delete {
+	background:url("../common/img/icon/delete_icon.gif") no-repeat scroll 0 -1px;
+}
+.add {
+	background:url("../common/img/icon/add_icon.gif") no-repeat scroll 0 0;
+}
+.search {
+	background:url("../common/img/icon/search_icon.gif") no-repeat scroll 0 0;
+	margin-top:0px;
+}
+.update {
+	background:url("../common/img/icon/update_icon.gif") no-repeat scroll 0 0;
+}
+.refresh {
+	background:url("../common/img/icon/refresh_icon.png") no-repeat scroll 0 0;
+}
+.view {
+	background:url("../common/img/icon/view_icon.gif") no-repeat scroll 0 0;
+}
+.minimize {
+	background:url("../common/img/icon/minimize_icon.png") no-repeat scroll 0 0;
+}
+.maximize {
+	background:url("../common/img/icon/maximize_icon.png") no-repeat scroll 0 0;
+}
+.loading {
+	background:url("../common/img/loading.gif") no-repeat scroll 0 0;
+}
+

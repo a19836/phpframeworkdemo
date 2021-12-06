@@ -1,0 +1,170 @@
+/* SELECT BROKERS */
+.select_brokers .title {
+	width:100%;
+	font-size:14px;
+	font-weight:bold;
+	color:#000;
+	text-align:center;
+	margin-top:20px;
+	margin-bottom:20px;
+}
+.select_brokers .db_broker, .select_brokers .db_driver, .select_brokers .type {
+	width:270px;
+	height:20px;
+	text-align:left;
+	margin:7px auto;
+	float:none;
+	clear:left;
+}
+.select_brokers .db_broker label, .select_brokers .db_driver label, .select_brokers .type label {
+	width:100px;
+	margin-right:10px;
+	display:block;
+	float:left;
+}
+
+.select_brokers .db_broker select, .select_brokers .db_driver select, .select_brokers .type select {
+	width:155px;
+}
+.select_brokers .buttons {
+	width:100%;
+	float:none;
+	clear:left;
+	text-align:center;
+	padding-top:10px;
+}
+.select_brokers .buttons input {
+	margin-right:20px;
+}
+.select_brokers .error {
+	text-align:center;
+	margin-top:20px;
+	color:red;
+}
+
+/* SELECT TABLES */
+.select_tables .title {
+	width:100%;
+	font-size:14px;
+	font-weight:bold;
+	color:#000;
+	text-align:center;
+	margin-top:20px;
+}
+.select_tables .tables {
+	width:100%;
+	margin:10px 30px 10px 30px;
+	float:none;
+	clear:left;
+}
+.select_tables .tables .table {
+	width:200px;
+	min-height:20px;
+	float:left;
+}
+.select_tables .tables .table input {
+
+}
+.select_tables .tables .table label {
+	margin-left:5px;
+	font-size:10px;
+	font-weight:normal;
+	cursor:pointer;
+}
+.select_tables .buttons {
+	width:100%;
+	float:none;
+	clear:left;
+	text-align:center;
+	padding-top:20px;
+}
+.select_tables .buttons input {
+	margin-right:20px;
+}
+.select_tables .error {
+	text-align:center;
+	margin-top:20px;
+	color:red;
+}
+
+.options {
+	margin:0 auto;
+	padding-top:20px;
+	width:370px;
+	clear:left;
+	float:none;
+}
+.overwrite, .with_maps {
+	float:none;
+	clear:left;
+	width:100%;
+}
+.overwrite input, .with_maps input {
+	
+}
+.overwrite label, .with_maps label {
+	font-size:9px;
+	font-weight:normal;
+}
+
+.select_buttons {
+	float:none;
+	clear:left;
+	width:100%;
+	text-align:center;
+	margin-top:5px;
+}
+.select_buttons a {
+	margin-right:10px;
+	cursor:pointer;
+}
+
+/* SELECT STATUSES */
+.statuses {
+	width:100%;
+	margin-top:20px;
+}
+.statuses .title {
+	width:100%;
+	font-size:14px;
+	font-weight:bold;
+	color:#000;
+	text-align:center;
+}
+.statuses table {
+	display:block;
+	width:550px;
+	margin:20px auto;
+}
+.statuses th {
+	text-align:center;
+	font-weight:bold;
+	border:1px solid #CCC;
+}
+.statuses td {
+	border:1px solid #CCC;
+	padding:0px 5px 0px 5px;
+}
+.statuses .name {
+	width:200px;
+}
+.statuses .path {
+	width:250px;
+}
+.statuses .status {
+	width:100px;
+	font-weight:bold;
+	text-align:center;
+}
+.statuses .status_ok {
+	color:#00AA00;
+}
+.statuses .status_error {
+	color:#FF0000;
+}
+.statuses .desc {
+	width:100%;
+	font-size:14px;
+	color:#000;
+	text-align:center;
+}

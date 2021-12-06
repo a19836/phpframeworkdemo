@@ -1,0 +1,24 @@
+.util_obj {
+	width:99%;
+	width:calc(100% - 10px); /* bc of tabs */
+	overflow:hidden;
+	margin:0 auto;
+}
+
+.util_obj .code_layout_ui_editor {
+	height:calc(100vh - 110px);
+	min-height:300px;
+	padding:0 !important;
+	position:relative;
+}
+.minimized .util_obj .code_layout_ui_editor {
+	height:calc(100vh - 45px);
+}
+
+/* To print the workflow */
+@media print {
+	.util_obj {
+		overflow:visible !important;
+		border:0 !important;
+	}
+}

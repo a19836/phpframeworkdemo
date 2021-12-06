@@ -1,0 +1,91 @@
+.selected_task_properties .array_items {
+	margin-top:0px;
+}
+.selected_task_properties .array_items ul, .selected_task_properties .array_items li {
+	float:none;
+	clear:left;
+	min-width:380px;
+	background-color:#FFF;
+}
+
+.selected_task_properties .array_items ul {
+	border:1px solid #CCC;
+	padding:5px 5px 0px 5px;
+	margin:5px 0px 5px 0px;
+}
+.selected_task_properties .array_items ul ul {
+	width:auto;
+	margin-left:20px;
+}
+.selected_task_properties .array_items .items {
+	height:20px;
+	margin-bottom:5px;
+}
+.selected_task_properties .array_items li.item {
+	min-height:20px;
+	margin-bottom:5px;
+}
+.selected_task_properties .array_items li.item:after {
+	content:" ";
+	height:1px;
+	display:block;
+	clear:both;
+}
+.selected_task_properties .array_items input {
+	margin-right:5px;
+	height:17px;
+	line-height:17px;
+}
+.selected_task_properties .array_items textarea {
+	margin-right:5px;
+	height:15px;
+	line-height:17px;
+}
+.selected_task_properties .array_items select {
+	margin-right:5px;
+	height:21px;
+	line-height:21px;
+}
+.selected_task_properties .array_items input.value {
+	width:130px;
+	padding-right:20px;
+}
+.selected_task_properties .array_items textarea.value {
+	width:146px;
+}
+.selected_task_properties .array_items input.key, 
+   .selected_task_properties .array_items select.key_type, 
+   .selected_task_properties .array_items select.value_type {
+	background-color:#FFF;
+	color:#AAA;
+	border:1px solid #ECECEC;
+	text-align:center;
+	font-size:9px;
+	width:60px;
+}
+.selected_task_properties .array_items select.value_type {
+	float:none;
+	display:inline-block;
+}
+.selected_task_properties .array_items textarea.key {
+	width:56px;
+}
+.selected_task_properties .array_items .add_variable {
+	margin-left:-23px;
+}
+
+.selected_task_properties .array_items .item .remove {
+	background:url("../img/delete_icon.gif") no-repeat scroll 0 0;
+	margin:2px 0px 0px 0px;
+	float:none;
+	display:inline-block;
+	vertical-align:middle;
+}
+.selected_task_properties .array_items .items .group_add {
+	background:url("../img/group_add_icon.png") no-repeat scroll 0 0;
+	margin:1px 0px 0px 5px;
+}
+.selected_task_properties .array_items .items .item_add {
+	background:url("../img/item_add_icon.png") no-repeat scroll 0 0;
+	margin:1px 0px 0px 5px;
+}
