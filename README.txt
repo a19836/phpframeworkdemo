@@ -1,4 +1,4 @@
-- license at file: LICENSE.txt
+- this project license is at file: LICENSE.txt
 
 - install apache, php 5.6 or higher
 
