@@ -1,0 +1,115 @@
+#Set secure options
+ #disables server signature
+ ServerSignature Off 
+
+ #disable CGI and lists of files
+ Options All -ExecCGI -Indexes 
+
+ #prevent folder listing
+ IndexIgnore *
+ 
+ #secure directory by disabling script execution
+ RemoveHandler .cgi .php .php2 .php3 .php4 .php5 .php6 .php7 .phtml .htm .shtml .pl .plx .ppl .perl .py .pyc .pyo .jsp .asp
+
+ #remove all handlers and only add the handler for php
+ <FilesMatch ".*">
+   SetHandler none
+   SetHandler default-handler
+ </FilesMatch>
+ <FilesMatch "\.php">
+   SetHandler application/x-httpd-php
+ </FilesMatch>
+
+ #NOTE THAT THIS VARS WERE ALREADY SET IN THE /etc/apache2/sites-available/jplpinto.localhost.conf
+ #set php base dir to only allow the php to execute code inside of these folders
+ #php_value open_basedir "/var/www/html/phpframeworkdemo/"
+ #php_value sys_temp_dir "/var/www/html/phpframeworkdemo/tmp"
+ #php_value upload_tmp_dir "/var/www/html/phpframeworkdemo/tmp"
+ #php_value session.save_path "/var/www/html/phpframeworkdemo/tmp"
+ #php_value soap.wsdl_cache_dir "/var/www/html/phpframeworkdemo/tmp"
+
+ #disable php errors
+ #php_value expose_php Off
+ #php_value display_errors Off
+ #php_value mail.add_x_header Off
+ #php_value session.cookie_httponly On
+ #php_value session.cookie_secure On
+ #php_value session.use_strict_mode On
+ #php_value allow_url_fopen Off
+ #php_value allow_url_include Off
+ #php_value disable_functions dl,pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wifcontinued,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_get_handler,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,pcntl_async_signals,exec,shell_exec,passthru,system,proc_open,popen,parse_ini_file,show_source
+
+ #disable access to .htaccess or .htpsswd, etc...
+ <FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh)$">
+   Order allow,deny
+   Deny from all
+ </FilesMatch>
+
+# Cache-Control Headers
+<ifModule mod_headers.c>
+   #set cache for static files
+   <filesMatch "\.(js|css|pdf|txt|flv|swf|jpg|jpeg|png|gif|ico|html|htm)$">
+      #caching for 1 day
+      Header set Cache-Control "max-age=86400, public"
+      #86400=1day; 604800=1week
+      #Note that in order to the cache-control work correctly, the Last Modified Header must be present! By default apache already sets the Last Modified Date header.
+
+      Header unset ETag
+      FileETag None
+   </filesMatch>
+
+   #unset cache for scripts
+   <filesMatch "\.(pl|cgi|spl|scgi|fcgi)$">
+	Header unset Cache-Control
+   </filesMatch>
+</IfModule>
+
+#add gzip compression
+<IfModule mod_deflate.c>
+   <IfModule mod_filter.c>
+      # these are known to be safe with MSIE 6
+      AddOutputFilterByType DEFLATE text/html text/plain text/xml
+      
+      # everything else may cause problems with MSIE 6
+      AddOutputFilterByType DEFLATE text/css
+      AddOutputFilterByType DEFLATE application/x-javascript application/javascript application/ecmascript
+      AddOutputFilterByType DEFLATE application/rss+xml
+      AddOutputFilterByType DEFLATE application/xml
+
+      #<filesMatch "\.(js|css|html|htm|php|xml)$">
+      #   SetOutputFilter DEFLATE
+      #</filesMatch>
+  </IfModule>
+</IfModule>
+
+#Redirect to the real document root in the phpframework
+<IfModule mod_rewrite.c>
+   RewriteEngine on
+
+   #Disable all request methods that are not GET or POST
+   RewriteCond %{REQUEST_METHOD} !^(GET|POST|HEAD) [NC]
+   RewriteRule (.*) - [F,L]
+
+   #Block Evil Robots, Site Rippers, and Offline Browsers
+   RewriteCond %{HTTP_USER_AGENT} ^Anarchie [OR]
+   RewriteCond %{HTTP_USER_AGENT} ^ASPSeek [OR]
+   RewriteCond %{HTTP_USER_AGENT} ^attach [OR]
+   RewriteCond %{HTTP_USER_AGENT} ^autoemailspider [OR]
+   RewriteCond %{HTTP_USER_AGENT} ^Xaldon\ WebSpider [OR]
+   RewriteCond %{HTTP_USER_AGENT} ^Xenu [OR]
+   RewriteCond %{HTTP_USER_AGENT} ^Zeus.*Webster [OR]
+   RewriteCond %{HTTP_USER_AGENT} ^Zeus
+   RewriteRule (.*) - [F,L]
+
+   #Prepare root domain default path
+   RewriteCond %{HTTP_HOST} ^(www\.|)demo\.(localhost|local)$ [NC]
+   RewriteRule ^$ app/layer/presentation/my_first_project/ [L,NC]
+
+   #Prepare all other requests
+   RewriteRule ^$ app/ [L,NC]
+
+   RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteRule (.*) app/$1 [L,NC]
+</IfModule>
+
