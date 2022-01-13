@@ -1,0 +1,3 @@
+tmp/*
+app/__system/layer/presentation/phpframework/webroot/__system/*
+app/__system/layer/presentation/test/webroot/__system/*
