@@ -102,7 +102,7 @@
    RewriteRule (.*) - [F,L]
 
    #Prepare root domain default path
-   RewriteCond %{HTTP_HOST} ^(www\.|)demo\.(localhost|local)$ [NC]
+   RewriteCond %{HTTP_HOST} ^(www\.|)(demo|phpframework|phpframeworkdemo)\.(localhost|local)$ [NC]
    RewriteRule ^$ app/layer/presentation/my_first_project/ [L,NC]
 
    #Prepare all other requests
