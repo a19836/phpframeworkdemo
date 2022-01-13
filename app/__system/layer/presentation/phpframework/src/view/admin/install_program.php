@@ -109,15 +109,19 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 		</form>
 	</div>'; } else { $main_content .= '
 	<div class="step_0">
+		<script>
+			var get_store_programs_url = "' . $get_store_programs_url . '";
+		</script>
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="step" value="1" />
 			
 			<label>Please upload your program zip file:</label>
-			<input type="file" name="program_file" />
+			<input class="upload_file" type="file" name="program_file" />
 			
-			<input type="submit" name="upload" value="upload" onClick="$(this).hide();">
+			<input class="button" type="submit" name="upload" value="upload" onClick="$(this).hide();">
 		</form>
 	
+		' . ($get_store_programs_url ? '<div class="install_store_program">To install programs from store please click <a href="javascript:void(0)" onClick="installStoreProgramPopup();">here</a></div>' : '') . '
 		' . ($programs_download_page_url ? '<div class="go_to_programs_download_page">To download more programs please click <a href="' . $programs_download_page_url . '" target="download_programs">here</a></div>' : '') . '
 		
 		<div class="warning">

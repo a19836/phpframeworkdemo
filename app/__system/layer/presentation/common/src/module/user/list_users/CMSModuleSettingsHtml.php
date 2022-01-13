@@ -51,6 +51,7 @@
 		"security_answer_2" => array("show" => 0), 
 		"security_question_3" => array("show" => 0), 
 		"security_answer_3" => array("show" => 0), 
+		"active" => array("show" => 0), 
 		"created_date" => array("show" => 0), 
 		"modified_date"
 	);

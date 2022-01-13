@@ -1,0 +1,19 @@
+#content {
+	position:relative;
+	left:0;
+}
+
+#content .layout_type_permissions_list {
+	text-align:center;
+}
+
+#content .layout_type_permissions_list .layout_type_permissions_content {
+	min-width:200px;
+	display:inline-block;
+	text-align:left;
+}
+
+#content .layout_type_permissions_list .layout_type_permissions_content #referenced_in_layout {
+	max-height:none;
+	overflow: visible;
+}

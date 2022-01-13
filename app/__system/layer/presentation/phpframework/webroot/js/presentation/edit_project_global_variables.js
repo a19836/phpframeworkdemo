@@ -110,8 +110,14 @@ function chooseIncludeFileForProjectGlobalVars(elm) {
 }
 
 function onChooseAvailableTemplate(elm) {
+	var available_projects_templates_props = {};
+	available_projects_templates_props[selected_project_id] = available_templates_props;
+	
 	chooseAvailableTemplate( $(elm).parent().parent().find(" > .var_value select")[0], {
-		show_templates_only: true
+		available_projects_templates_props: available_projects_templates_props,
+		install_template_url: install_template_url,
+		show_templates_only: true,
+		hide_choose_different_editor: true,
 	} );
 }
 

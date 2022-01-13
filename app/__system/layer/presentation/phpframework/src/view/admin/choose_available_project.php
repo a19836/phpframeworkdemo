@@ -34,6 +34,10 @@ var create_project_url = "' . $create_project_url . '";
 var select_project_url = "' . $project_url_prefix . $redirect_path . (strpos($redirect_path, "?") !== false ? '&' : '?') . 'bean_name=#bean_name#&bean_file_name=#bean_file_name#&project=#project#";
 var layers_props = ' . json_encode($layers_projects) . ';
 var is_popup = ' . ($is_popup ? 1 : 0) . ';
+
+$(function () {
+	updateLayerProjects();
+});
 </script>'; $main_content = '
 <div class="choose_available_project">
 	<div class="title">Please choose a project</div>'; if ($layers_projects) { $main_content .= '

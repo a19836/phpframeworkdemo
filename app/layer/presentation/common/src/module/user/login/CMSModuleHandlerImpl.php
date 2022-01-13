@@ -78,6 +78,11 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					$error_message = "There was an internal error because it seems your username is repeated in the DB. Please contact the sysadmin before continue...";
 					unset($user_session);
 				}
+				else if ($user_session == \UserUtil::INACTIVE_USERNAME) {
+					//wrong DB values
+					$error_message = "This user is inactive.";
+					unset($user_session);
+				}
 				else if (is_array($user_session)) {
 					if ($user_session["logged_status"]) {
 						$show_captcha = false;

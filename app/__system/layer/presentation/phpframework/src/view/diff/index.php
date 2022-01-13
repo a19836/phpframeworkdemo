@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$get_sub_files_url = $project_url_prefix . "phpframework/admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&item_type=#item_type#&folder_type=#folder_type#"; $head = '
+ $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $get_sub_files_url = $project_url_prefix . "phpframework/admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#$filter_by_layout_url_query&path=#path#&item_type=#item_type#&folder_type=#folder_type#"; $head = '
 <!-- Add MyTree main JS and CSS files -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerymytree/css/style.min.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerymytree/js/mytree.js"></script>
@@ -34,12 +34,12 @@ $get_sub_files_url = $project_url_prefix . "phpframework/admin/get_sub_files?bea
 <script>
 var get_sub_files_url = \'' . addcslashes($get_sub_files_url, "'") . '\';
 var first_node_to_load = ' . json_encode($_GET) . ';
-</script>'; $main_content = '<div class="title">Files diff</div>
+</script>'; $head .= LayoutTypeProjectUIHandler::getHeader(); $main_content = '<div class="title">Files diff</div>
 
 <div class="diff">
 	<div id="file_tree" class="mytree hidden">
 		<ul>'; foreach ($layers as $layer_type_name => $layer_type) foreach ($layer_type as $layer_name => $layer) { $properties = $layer["properties"]; $item_type = $properties["item_type"]; if (!$properties["item_label"]) $properties["item_label"] = $layer_name; $url = str_replace("#folder_type#", "", str_replace("#item_type#", $item_type, str_replace("#path#", $properties["path"], str_replace("#bean_name#", $properties["bean_name"], str_replace("#bean_file_name#", $properties["bean_file_name"], $get_sub_files_url))))); $main_content .= '
-		<li data-jstree=\'{"icon":"main_node_presentation"}\'>
+		<li data-jstree=\'{"icon":"main_node main_node_' . $properties["item_type"] . '"}\'>
 			<a bean_name="' . $properties["bean_name"] . '" bean_file_name="' . $properties["bean_file_name"] . '" item_type="' . $properties["item_type"] . '" folder_path="" path_prefix="' . $properties["item_label"] . '"><label>' . $properties["item_label"] . '</label></a>
 			<ul url="' . $url . '"></ul>
 		</li>'; } $main_content .= '

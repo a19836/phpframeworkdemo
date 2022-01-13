@@ -22,25 +22,29 @@ class UserAuthenticationUIHandler { public static function getMenu($pdf77ee66, $
 		<ul>
 			<li class="current_user">Current User: "' . $pdf77ee66->auth["user_data"]["username"] . '"</li>
 			<li class="manage_menu_item"><a href="' . $peb014cfd . 'user/manage_users">Manage Users</a></li>
-			<li><a href="' . $peb014cfd . 'user/edit_user">Add User</a></li>
+			<!--li><a href="' . $peb014cfd . 'user/edit_user">Add User</a></li-->
 			
 			<li class="manage_menu_item"><a href="' . $peb014cfd . 'user/manage_user_types">Manage User Types</a></li>
-			<li><a href="' . $peb014cfd . 'user/edit_user_type">Add User Type</a></li>
+			<!--li><a href="' . $peb014cfd . 'user/edit_user_type">Add User Type</a></li-->
 			
 			<li class="manage_menu_item"><a href="' . $peb014cfd . 'user/manage_object_types">Manage Object Types</a></li>
-			<li><a href="' . $peb014cfd . 'user/edit_object_type">Add Object Type</a></li>
+			<!--li><a href="' . $peb014cfd . 'user/edit_object_type">Add Object Type</a></li-->
 			
 			<li class="manage_menu_item"><a href="' . $peb014cfd . 'user/manage_user_user_types">Manage User User Types</a></li>
-			<li><a href="' . $peb014cfd . 'user/edit_user_user_type">Add User User Type</a></li>
+			<!--li><a href="' . $peb014cfd . 'user/edit_user_user_type">Add User User Type</a></li-->
 			
 			<li class="manage_menu_item"><a href="' . $peb014cfd . 'user/manage_permissions">Manage Permissions</a></li>
-			<li><a href="' . $peb014cfd . 'user/edit_permission">Add Permission</a></li>
+			<!--li><a href="' . $peb014cfd . 'user/edit_permission">Add Permission</a></li-->
 			
-			<li class="manage_menu_item"><a href="' . $peb014cfd . 'user/manage_user_type_permissions">Manage User Type Permissions</a></li>
+			<li class="manage_menu_item manage_user_type_permissions"><a href="' . $peb014cfd . 'user/manage_user_type_permissions">Manage User Type Permissions</a></li>
 			
-			<li class="manage_menu_item"><a href="' . $peb014cfd . 'user/manage_login_controls">Manage Login Controls</a></li>
+			<li class="manage_menu_item manage_layout_types"><a href="' . $peb014cfd . 'user/manage_layout_types">Manage Layout Types</a></li>
+			<!--li><a href="' . $peb014cfd . 'user/edit_layout_type">Add Layout Type</a></li-->
+			<li class="manage_menu_item manage_layout_type_permissions"><a href="' . $peb014cfd . 'user/manage_layout_type_permissions">Manage Layout Type Permissions</a></li>
 			
-			' . ($pdf77ee66->isLocalDB() ? '<li class="change_db_keys"><a href="' . $peb014cfd . 'user/change_db_keys">Change DB Keys</a></li>' : '') . '
+			<li class="manage_menu_item manage_login_controls"><a href="' . $peb014cfd . 'user/manage_login_controls">Manage Login Controls</a></li>
 			
-			<li class="change_auth_settings"><a href="' . $peb014cfd . 'user/change_auth_settings">Change Auth Settings</a></li>
+			' . ($pdf77ee66->isLocalDB() ? '<li class="manage_menu_item change_db_keys"><a href="' . $peb014cfd . 'user/change_db_keys">Change DB Keys</a></li>' : '') . '
+			
+			<li class="manage_menu_item change_auth_settings"><a href="' . $peb014cfd . 'user/change_auth_settings">Change Auth Settings</a></li>
 		</ul>'; } } ?>

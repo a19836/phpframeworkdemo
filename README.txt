@@ -1,5 +1,3 @@
-- this project license is at file: LICENSE.txt
-
 - install apache, php 5.6 or higher
 
 - Please be sure that your WebServer has the mod_rewrite enable and the php.ini files are well configured, this is, for security and performance reasons, please update your php.ini files with:
@@ -107,10 +105,14 @@
 	
 - Then go to your /etc/mysql/my.cnf and add the following line:
 	[mysqld]
+	#if mysql version < 8
 	sql-mode="ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+	
+	#if mysql version >= 8
+	sql-mode="ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION"
+	
 	max_allowed_packet=250M
 	wait_timeout=28800
-	max_allowed_packet=100M
 	
 	[mysqld_safe]
 	max_allowed_packet=100M

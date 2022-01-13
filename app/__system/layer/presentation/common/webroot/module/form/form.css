@@ -31,6 +31,11 @@
 	font-size:12px;
 }
 
+.module_form_settings .deprecated_actions_message {
+	margin-bottom:15px;
+	color:red;
+}
+
 .module_form_settings #groups_flow {
 
 }
@@ -101,10 +106,21 @@
 .module_form_settings .form-group-item:last-child:after {
 	display:none;
 }
+.module_form_settings .form-group-item.form-group-item-undefined {
+	opacity:.7;
+}
+.module_form_settings .form-group-item.form-group-item-undefined input,
+  .module_form_settings .form-group-item.form-group-item-undefined select,
+  .module_form_settings .form-group-item.form-group-item-undefined textarea {
+	background:#ccc;
+}
 .module_form_settings .form-group-item > .form-group-header {
 	padding:.5em;
 	background:#d5e3e4;
 	position:relative;
+}
+.module_form_settings .form-group-item.form-group-item-undefined > .form-group-header {
+	background:#ccc;
 }
 .module_form_settings .form-group-item > .form-group-header > .result-var-name {
 	width:350px;
@@ -154,6 +170,9 @@
 	margin-top:.5em;
 	background:#d5e3e4;
 	display:none;
+}
+.module_form_settings .form-group-item.form-group-item-undefined > .form-group-header > .form-group-sub-header {
+	background:#ccc;
 }
 .module_form_settings .form-group-item > .form-group-header > .form-group-sub-header > .condition-type {
 	width:380px;

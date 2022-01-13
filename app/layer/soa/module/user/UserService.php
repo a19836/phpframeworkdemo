@@ -243,7 +243,7 @@ class UserService extends \soa\CommonService {
 	
 	/**
 	 * @param (name=data[user_id], type=bigint, not_null=1, length=19)
-	 * @param (name=data[active], type=bool, not_null=1)
+	 * @param (name=data[active], type=tinyint, not_null=1, length=1)
 	 */
 	public function updateUserActiveStatus($data) {
 		$user_id = $data["user_id"];

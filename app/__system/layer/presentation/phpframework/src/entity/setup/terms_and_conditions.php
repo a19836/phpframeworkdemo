@@ -18,4 +18,5 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); if (!empty($_POST["acceptance"])) { $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "write"); header("location: ?step=2"); echo '<script>window.location = "?step=2"</script>'; die(); } ?>
+$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); if (!empty($_POST["acceptance"])) { $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "write"); header("location: ?step=2"); echo '<script>window.location = "?step=2"</script>'; die(); } $fp = CMS_PATH . "LICENSE.txt"; if (file_exists($fp)) { $contents = file_get_contents($fp); $contents = preg_replace("/\n( \* )/", "\n", $contents); $contents = preg_replace("/\n( \*)/", "\n", $contents); $contents = preg_replace("/^( \*)/", "", $contents); $terms_and_conditions = 'TERMS AND CONDITIONS<br/>
+	<br/>' . str_replace("\n", "<br/>", $contents); } else $terms_and_conditions = 'No License found!<br/>In order to use this software, you must get your license first! <br/>Otherwise you are not allowed to use this software!'; ?>

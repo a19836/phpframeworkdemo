@@ -33,6 +33,11 @@ include_once $EVC->getModulePath("user/UserUI", $EVC->getCommonProjectName());
 		"security_question_3" => array("type" => "select"),
 		"security_answer_3",
 		"user_attachments" => array("show" => 0),
+		"active" => array("show" => 0, "type" => "select", "options" => array(
+			array("value" => 0, "label" => "new"),
+			array("value" => 1, "label"=> "active"),
+			array("value" => 2, "label"=> "inative"),
+		)),
 	);
 	$CommonModuleTableExtraAttributesSettingsUtil->prepareNewFieldsSettings("user", $fields, null, array("is_edit" => true));
 	

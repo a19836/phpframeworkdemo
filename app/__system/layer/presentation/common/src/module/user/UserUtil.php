@@ -17,6 +17,7 @@ if (!class_exists("UserUtil")) {
 		const USER_BLOCKED = 2;
 		const WRONG_CAPTCHA = 3;
 		const DUPLICATED_USERNAME = 4;
+		const INACTIVE_USERNAME = 5;
 	
 		const PUBLIC_USER_TYPE_ID = 1;
 		const ADMIN_USER_TYPE_ID = 2;
@@ -1948,6 +1949,9 @@ if (!class_exists("UserUtil")) {
 					return self::DUPLICATED_USERNAME;
 				
 				$user = $users[0];
+				
+				if ($user && $user["active"] == 2)
+					return self::INACTIVE_USERNAME;
 				
 				//verify password
 				if ($user && !self::validatePassword($user["password"], $password, $settings["do_not_encrypt_password"]))

@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$choose_queries_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#"; $head = '
+$filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $choose_queries_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#$filter_by_layout_url_query&path=#path#"; $head = '
 <!-- Add MyTree main JS and CSS files -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerymytree/css/style.min.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerymytree/js/mytree.js"></script>
@@ -30,7 +30,7 @@ $choose_queries_from_file_manager_url = $project_url_prefix . "admin/get_sub_fil
 <!-- Add Local JS file -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/businesslogic/create_business_logic_objs_automatically.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/businesslogic/create_business_logic_objs_automatically.js"></script>
-'; if ($_POST["step_1"]) { $exists_any_status_ok = false; $main_content .= '<div class="statuses">
+'; $head .= LayoutTypeProjectUIHandler::getHeader(); if ($_POST["step_1"]) { $exists_any_status_ok = false; $main_content .= '<div class="statuses">
 		<div class="title">Automatic Create Business Logic Files - STATUSES</div>
 		<table>
 			<tr>
@@ -44,15 +44,18 @@ $choose_queries_from_file_manager_url = $project_url_prefix . "admin/get_sub_fil
 		</tr>'; if ($s[2]) { $exists_any_status_ok = true; } } $main_content .= '
 		</table>
 	</div>'; if ($exists_any_status_ok) $main_content .= '<script>if (window.parent.refreshLastNodeChilds) window.parent.refreshLastNodeChilds();</script>'; } else { $head .= '<script>
-	var brokers_db_drivers_name = ' . json_encode($brokers_db_drivers_name) . ';'; if ($related_brokers) foreach ($related_brokers as $b) if ($b[2]) { $head .= 'main_layers_properties.' . $b[2] . ' = {ui: {
+	var brokers_db_drivers_name = ' . json_encode($brokers_db_drivers_name) . ';'; if ($related_brokers) foreach ($related_brokers as $b) if ($b[2]) { $get_sub_files_url = str_replace("#bean_file_name#", $b[1], str_replace("#bean_name#", $b[2], $choose_queries_from_file_manager_url)); $head .= 'main_layers_properties.' . $b[2] . ' = {ui: {
 					folder: {
-						get_sub_files_url: "' . str_replace("#bean_file_name#", $b[1], str_replace("#bean_name#", $b[2], $choose_queries_from_file_manager_url)) . '",
+						get_sub_files_url: "' . $get_sub_files_url . '",
+					},
+					cms_common: {
+						get_sub_files_url: "' . $get_sub_files_url . '",
 					},
 					cms_module: {
-						get_sub_files_url: "' . str_replace("#bean_file_name#", $b[1], str_replace("#bean_name#", $b[2], $choose_queries_from_file_manager_url)) . '",
+						get_sub_files_url: "' . $get_sub_files_url . '",
 					},
 					cms_program: {
-						get_sub_files_url: "' . str_replace("#bean_file_name#", $b[1], str_replace("#bean_name#", $b[2], $choose_queries_from_file_manager_url)) . '",
+						get_sub_files_url: "' . $get_sub_files_url . '",
 					},
 					file: {
 						attributes: {
@@ -71,6 +74,9 @@ $choose_queries_from_file_manager_url = $project_url_prefix . "admin/get_sub_fil
 							file_path: "#path#",
 							broker_name: "' . $b[0] . '",
 						}
+					},
+					referenced_folder: {
+						get_sub_files_url: "' . $get_sub_files_url . '",
 					},
 				}};'; } $head .= '
 	var get_broker_db_data_url = "' . $project_url_prefix . 'phpframework/dataaccess/get_broker_db_data?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '";

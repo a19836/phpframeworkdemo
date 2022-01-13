@@ -33,7 +33,7 @@ $head = '
 		</select>
 	</div>'; for ($i = 0; $i < $t; $i++) { $m = $modules[$i]; $bean_name = $m["bean_name"]; $bean_file_name = $m["bean_file_name"]; $project_loaded_modules = $m["modules"]; $delete_module_url = $project_url_prefix . "phpframework/admin/manage_module?bean_name=$bean_name&bean_file_name=$bean_file_name&action=uninstall&module_id=#module_id#"; $disable_module_url = $project_url_prefix . "phpframework/admin/manage_module?bean_name=$bean_name&bean_file_name=$bean_file_name&action=disable&module_id=#module_id#"; $enable_module_url = $project_url_prefix . "phpframework/admin/manage_module?bean_name=$bean_name&bean_file_name=$bean_file_name&action=enable&module_id=#module_id#"; $main_content .= '<div id="layer_modules_' . $i . '" class="layer_modules">'; if ($is_install_module_allowed) $main_content .= '
 	<div class="install">
-		<a href="' . $project_url_prefix . 'phpframework/admin/install_module?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '">Install New Module</a>
+		<a href="' . $project_url_prefix . 'phpframework/admin/install_module?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&filter_by_layout=' . $filter_by_layout . '">Install New Module</a>
 	</div>'; $main_content .= '
 	<table>
 		<thead>
@@ -50,7 +50,7 @@ $head = '
 				</th>
 			</tr>
 		</thead>
-		<tbody>'; if (is_array($loaded_modules)) { foreach ($loaded_modules as $group_module_id => $loaded_modules_by_group) { $sub_main_content = ""; foreach ($loaded_modules_by_group as $module_id => $loaded_module) if ($project_loaded_modules[$module_id]) { $enable = CMSModuleEnableHandler::isModuleEnabled($project_loaded_modules[$module_id]["path"]); $admin_url = $loaded_module["admin_path"] ? $project_url_prefix . "phpframework/admin/module_admin?bean_name=$bean_name&bean_file_name=$bean_file_name&group_module_id=$group_module_id" : null; $sub_main_content .= '<tr class="group_module_item" group_module_id="' . $group_module_id . '">
+		<tbody>'; if (is_array($loaded_modules)) { foreach ($loaded_modules as $group_module_id => $loaded_modules_by_group) { $sub_main_content = ""; foreach ($loaded_modules_by_group as $module_id => $loaded_module) if ($project_loaded_modules[$module_id]) { $enable = CMSModuleEnableHandler::isModuleEnabled($project_loaded_modules[$module_id]["path"]); $admin_url = $loaded_module["admin_path"] ? $project_url_prefix . "phpframework/admin/module_admin?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&group_module_id=$group_module_id" : null; $sub_main_content .= '<tr class="group_module_item" group_module_id="' . $group_module_id . '">
 						<td class="group"></td>
 						<td class="status"><span class="icon ' . ($enable ? 'enable' : 'disable') . '" title="This module is currently ' . ($enable ? 'enabled' : 'disabled') . '"></span></td>
 						<td class="photo">' . ($loaded_module["images"][0]["url"] ? '<img src="' . $loaded_module["images"][0]["url"] . '" />' : 'No Photo') . '</td>

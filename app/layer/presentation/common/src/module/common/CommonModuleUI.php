@@ -525,7 +525,7 @@ class CommonModuleUI {
 					self::prepareBlockFieldPTLCode($EVC, $HtmlFormHandler, $settings["ptl"]["code"], $button_name, $button, $form_data);
 				
 				//remove insert ptl tag if exists, bc if update and insert button are active, the insert button will be discarted and the update button will do both actions.
-				\CommonModuleUI::prepareBlockFieldPTLCode($EVC, $HtmlFormHandler, $settings["ptl"]["code"], "insert", null, $form_data);
+				self::prepareBlockFieldPTLCode($EVC, $HtmlFormHandler, $settings["ptl"]["code"], "insert", null, $form_data);
 			}
 			else 
 				$form_settings["form_containers"][] = array(
@@ -542,8 +542,9 @@ class CommonModuleUI {
 					
 					if ($show) {
 						$field["field"]["input"]["type"] = $field["field"]["input"]["type"] ? $field["field"]["input"]["type"] : ($is_editable ? "text" : "label");
+						$is_field_value_empty = !isset($form_data[$field_name]) || (is_array($form_data[$field_name]) && count($form_data[$field_name]) == 0) || (!is_array($form_data[$field_name]) && strlen($form_data[$field_name]) == 0);
 						
-						if ($is_editable && $error_message && $_POST["save"] && $field["field"]["input"]["allow_null"] != 1 && strlen($form_data[$field_name]) == 0)
+						if ($is_editable && $error_message && $_POST["save"] && $field["field"]["input"]["allow_null"] != 1 && $is_field_value_empty)
 							$undefined_value_class = " undefined_value";
 						
 						$field["field"]["class"] = "form_field " . $field["field"]["class"] . $undefined_value_class;

@@ -1,7 +1,3 @@
-$(function () {
-	updateLayerProjects();
-});
-
 function updateLayerProjects(folder_to_filter) {
 	var option = $(".choose_available_project > .layer select option:selected");
 	var bean_name = option.attr("bean_name");
@@ -55,6 +51,7 @@ function getChooseAvailableProjectHtml(folder_to_filter, fp, project_props) {
 	
 	var is_project = $.isPlainObject(project_props) && project_props["is_project"] === true;
 	var project_id = (folder_to_filter ? folder_to_filter + "/" : "") + fp;
+	var project_logo_url = $.isPlainObject(project_props) && project_props["logo"] ? project_props["logo"] : null;
 	var label = fp.replace("/_/g", " ");
 	label = label.charAt(0).toUpperCase() + label.substr(1, label.length - 1);
 	
@@ -63,8 +60,12 @@ function getChooseAvailableProjectHtml(folder_to_filter, fp, project_props) {
 	else
 		html += '<li class="folder" onClick="updateLayerProjects(\'' + project_id + '\');">'
 	
-	html += '	<label>' + label + '</label>'
-		+ '	<div class="photo"></div>';
+	html += '	<label>' + label + '</label>';
+	
+	if (project_logo_url)
+		html += '	<div class="image">' + (project_logo_url ? '<img src="' + project_logo_url + '" onError="$(this).parent().removeClass("image").addClass("photo");$(this).remove();" />' : '') + '</div>';
+	else
+		html += '	<div class="photo"></div>';
 	
 	if (!is_project) //if is folder
 		html += '<a href="javascript:void(0)">View Projects in this folder</a>';

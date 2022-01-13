@@ -86,6 +86,7 @@ function initIbatisContextMenu(elm) {
 	var queries = elm.find("li i.query");
 	var maps = elm.find("li i.map");
 	var undefined_files = elm.find("li i.undefined_file");
+	var cms_commons_folder = elm.find("li i.cms_common");
 	var cms_modules_folder = elm.find("li i.cms_module");
 	var cms_programs_folder = elm.find("li i.cms_program");
 	var zip_files = elm.find("li i.zip_file");
@@ -95,6 +96,7 @@ function initIbatisContextMenu(elm) {
 	queries.parent().addClass("link");
 	maps.parent().addClass("link");
 	undefined_files.parent().addClass("link");
+	cms_commons_folder.parent().addClass("link");
 	cms_modules_folder.parent().addClass("link");
 	cms_programs_folder.parent().addClass("link");
 	zip_files.parent().addClass("link");
@@ -104,6 +106,7 @@ function initIbatisContextMenu(elm) {
 	addLiContextMenu(queries.parent(), "item_context_menu", {callback: onIbatisContextMenu});
 	addLiContextMenu(maps.parent(), "item_context_menu", {callback: onIbatisContextMenu});
 	addLiContextMenu(undefined_files.parent(), "undefined_file_context_menu", {callback: onIbatisContextMenu});
+	addLiContextMenu(cms_commons_folder.parent(), "ibatis_group_common_context_menu", {callback: onIbatisContextMenu});
 	addLiContextMenu(cms_modules_folder.parent(), "cms_module_context_menu", {callback: onIbatisContextMenu});
 	addLiContextMenu(cms_programs_folder.parent(), "ibatis_group_context_menu", {callback: onIbatisContextMenu});
 	addLiContextMenu(zip_files.parent(), "zip_file_context_menu", {callback: onIbatisContextMenu});
@@ -118,6 +121,7 @@ function initHibernateContextMenu(elm) {
 	var relationships = elm.find("li i.relationship");
 	var maps = elm.find("li i.map");
 	var undefined_files = elm.find("li i.undefined_file");
+	var cms_commons_folder = elm.find("li i.cms_common");
 	var cms_modules_folder = elm.find("li i.cms_module");
 	var cms_programs_folder = elm.find("li i.cms_program");
 	var zip_files = elm.find("li i.zip_file");
@@ -130,6 +134,7 @@ function initHibernateContextMenu(elm) {
 	relationships.parent().addClass("link");
 	maps.parent().addClass("link");
 	undefined_files.parent().addClass("link");
+	cms_commons_folder.parent().addClass("link");
 	cms_modules_folder.parent().addClass("link");
 	cms_programs_folder.parent().addClass("link");
 	zip_files.parent().addClass("link");
@@ -142,6 +147,7 @@ function initHibernateContextMenu(elm) {
 	addLiContextMenu(relationships.parent(), "item_context_menu", {callback: onHibernateContextMenu});
 	addLiContextMenu(maps.parent(), "item_context_menu", {callback: onHibernateContextMenu});
 	addLiContextMenu(undefined_files.parent(), "undefined_file_context_menu", {callback: onHibernateContextMenu});
+	addLiContextMenu(cms_commons_folder.parent(), "hibernate_group_common_context_menu", {callback: onHibernateContextMenu});
 	addLiContextMenu(cms_modules_folder.parent(), "cms_module_context_menu", {callback: onHibernateContextMenu});
 	addLiContextMenu(cms_programs_folder.parent(), "hibernate_group_context_menu", {callback: onHibernateContextMenu});
 	addLiContextMenu(zip_files.parent(), "zip_file_context_menu", {callback: onHibernateContextMenu});
@@ -157,6 +163,7 @@ function initDaoContextMenu(elm) {
 	var files = elm.find("li i.file");
 	var objs_type = elm.find("li i.objtype");
 	var objs_hibernate = elm.find("li i.hibernatemodel");
+	var cms_commons_folder = elm.find("li i.cms_common");
 	var cms_modules_folder = elm.find("li i.cms_module");
 	var cms_programs_folder = elm.find("li i.cms_program");
 	var zip_files = elm.find("li i.zip_file");
@@ -165,6 +172,7 @@ function initDaoContextMenu(elm) {
 	files.parent().addClass("link");
 	objs_type.parent().addClass("link");
 	objs_hibernate.parent().addClass("link");
+	cms_commons_folder.parent().addClass("link");
 	cms_modules_folder.parent().addClass("link");
 	cms_programs_folder.parent().addClass("link");
 	zip_files.parent().addClass("link");
@@ -173,6 +181,7 @@ function initDaoContextMenu(elm) {
 	addLiContextMenu(files.parent(), "undefined_file_context_menu", {callback: onDaoContextMenu});
 	addLiContextMenu(objs_type.parent(), "dao_file_context_menu", {callback: onDaoContextMenu});
 	addLiContextMenu(objs_hibernate.parent(), "dao_file_context_menu", {callback: onDaoContextMenu});
+	addLiContextMenu(cms_commons_folder.parent(), "dao_group_context_menu", {callback: onDaoContextMenu});
 	addLiContextMenu(cms_modules_folder.parent(), "cms_module_context_menu", {callback: onDaoContextMenu});
 	addLiContextMenu(cms_programs_folder.parent(), "dao_group_context_menu", {callback: onDaoContextMenu});
 	addLiContextMenu(zip_files.parent(), "zip_file_context_menu", {callback: onDaoContextMenu});
@@ -241,13 +250,14 @@ function initOtherContextMenu(elm) {
 	addLiContextMenu(zip_files.parent(), "zip_file_context_menu", {callback: onVendorContextMenu});
 }
 
-function initContextContextMenu(elm) {
+function initContextContextMenu(elm) { //business logic
 	var folders = elm.find("li i.folder");
 	var files = elm.find("li i.file");
 	var objs = elm.find("li i.service");
 	var methods = elm.find("li i.method");
 	var functions = elm.find("li i.function");
 	var undefined_files = elm.find("li i.undefined_file");
+	var cms_commons_folder = elm.find("li i.cms_common");
 	var cms_modules_folder = elm.find("li i.cms_module");
 	var cms_programs_folder = elm.find("li i.cms_program");
 	var zip_files = elm.find("li i.zip_file");
@@ -258,6 +268,7 @@ function initContextContextMenu(elm) {
 	methods.parent().addClass("link");
 	functions.parent().addClass("link");
 	undefined_files.parent().addClass("link");
+	cms_commons_folder.parent().addClass("link");
 	cms_modules_folder.parent().addClass("link");
 	cms_programs_folder.parent().addClass("link");
 	zip_files.parent().addClass("link");
@@ -268,6 +279,7 @@ function initContextContextMenu(elm) {
 	addLiContextMenu(methods.parent(), "item_context_menu", {callback: onContextContextMenu});
 	addLiContextMenu(functions.parent(), "item_context_menu", {callback: onContextContextMenu});
 	addLiContextMenu(undefined_files.parent(), "undefined_file_context_menu", {callback: onContextContextMenu});
+	addLiContextMenu(cms_commons_folder.parent(), "business_logic_group_common_context_menu", {callback: onContextContextMenu});
 	addLiContextMenu(cms_modules_folder.parent(), "cms_module_context_menu", {callback: onContextContextMenu});
 	addLiContextMenu(cms_programs_folder.parent(), "business_logic_group_context_menu", {callback: onContextContextMenu});
 	addLiContextMenu(zip_files.parent(), "zip_file_context_menu", {callback: onContextContextMenu});
@@ -491,6 +503,7 @@ function onPresentationContextMenu(target, contextmenu, originalEvent) {
 	contextmenu.find(".edit_project_global_variables a").attr("edit_project_global_variables_url", a.attr("edit_project_global_variables_url"));
 	contextmenu.find(".edit_config a").attr("edit_config_url", a.attr("edit_config_url"));
 	contextmenu.find(".edit_init a").attr("edit_init_url", a.attr("edit_init_url"));
+	contextmenu.find(".manage_references a").attr("manage_references_url", a.attr("manage_references_url"));
 	contextmenu.find(".view_project a").attr("view_project_url", a.attr("view_project_url"));
 	contextmenu.find(".test_project a").attr("test_project_url", a.attr("test_project_url"));
 	contextmenu.find(".install_program a").attr("install_program_url", a.attr("install_program_url"));
@@ -662,6 +675,30 @@ function openWindow(a, attr_name, tab) {
 		else //Broswer has blocked it
 			alert('Please allow popups for this site');
 	}
+}
+
+function goToPopup(a, attr_name, originalEvent) {
+	var url = a.getAttribute(attr_name);
+	//console.log(attr_name+":"+url);
+	
+	if (url) {
+		var popup = $(".go_to_popup");
+		
+		if (!popup[0]) {
+			popup = $('<div class="myfancypopup go_to_popup"></div>');
+			$(document.body).append(popup);
+		}
+		
+		popup.html('<iframe src="' + url + '"></iframe>');
+		
+		MyFancyPopup.init({
+			elementToShow: popup,
+			//parentElement: document,
+		});
+		MyFancyPopup.showPopup();
+	}
+	
+	return false;
 }
 
 function manageFile(a, attr_name, action, on_success_callback) {

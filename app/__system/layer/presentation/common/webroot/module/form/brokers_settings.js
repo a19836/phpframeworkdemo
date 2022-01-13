@@ -73,10 +73,6 @@ function getBrokerSettings(elm, brokers_layer_type) {
 					settings["options"] = opts.children(".options_code").val();
 				}
 			}
-			else {
-				var v = elm.children(".undefined_action_value").val();
-				settings = v ? JSON.parse(v) : settings;
-			}
 				
 			break;
 		case "callibatisquery":
@@ -117,10 +113,6 @@ function getBrokerSettings(elm, brokers_layer_type) {
 				else {
 					settings["options"] = opts.children(".options_code").val();
 				}
-			}
-			else {
-				var v = elm.children(".undefined_action_value").val();
-				settings = v ? JSON.parse(v) : settings;
 			}
 			
 			break;
@@ -231,10 +223,6 @@ function getBrokerSettings(elm, brokers_layer_type) {
 					settings["sma_options"] = sma.children("input").val();
 				}
 			}
-			else {
-				var v = elm.children(".undefined_action_value").val();
-				settings = v ? JSON.parse(v) : settings;
-			}
 			
 			break;
 		case "getquerydata":
@@ -263,10 +251,6 @@ function getBrokerSettings(elm, brokers_layer_type) {
 				else {
 					settings["options"] = opts.children(".options_code").val();
 				}
-			}
-			else {
-				var v = elm.children(".undefined_action_value").val();
-				settings = v ? JSON.parse(v) : settings;
 			}
 			
 			break;

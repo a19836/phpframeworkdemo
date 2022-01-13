@@ -209,7 +209,7 @@ body:not(.mobile_cursor) .template_region > .items > .item > .icon {
 
 .template_region > .items > .item > .block_text {
 	width:100% !important;
-	height:4em !important;
+	height:100px !important;
 }
 .template_region > .items > .item > .block_text > textarea {
 	width:100% !important;

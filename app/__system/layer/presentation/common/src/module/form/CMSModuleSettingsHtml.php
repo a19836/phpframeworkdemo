@@ -6,8 +6,13 @@ include_once $EVC->getUtilPath("WorkFlowUIHandler");
 include_once $EVC->getUtilPath("WorkFlowPresentationHandler");
 include_once $EVC->getUtilPath("WorkFlowQueryHandler");
 include_once $EVC->getUtilPath("CMSPresentationUIAutomaticFilesHandler");
+include_once $EVC->getUtilPath("LayoutTypeProjectHandler");
+include_once $EVC->getUtilPath("LayoutTypeProjectUIHandler");
 include_once $EVC->getModulePath("form/utils", $common_project_name);
 include_once $EVC->getModulePath("common/CommonModuleSettingsUI", $common_project_name);
+
+$filter_by_layout = $_GET["filter_by_layout"]; //optional
+$filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout);
 
 $common_project_name = $EVC->getCommonProjectName();
 $purlp = $project_url_prefix;
@@ -20,6 +25,16 @@ $project_common_url_prefix = $pcurlp;
 if ($PEVC) {
 	//getting available projects
 	$presentation_projects = CMSPresentationLayerHandler::getPresentationLayerProjectsFiles($user_global_variables_file_path, $user_beans_folder_path, $bean_file_name, $bean_name);
+	
+	$LayoutTypeProjectHandler = new LayoutTypeProjectHandler($UserAuthenticationHandler, $user_global_variables_file_path, $user_beans_folder_path, $bean_file_name, $bean_name);
+	$LayoutTypeProjectHandler->filterPresentationLayerProjectsByUserAndLayoutPermissions($presentation_projects, $filter_by_layout, null, array(
+			"do_not_filter_by_layout" => array(
+				"bean_name" => $bean_name,
+				"bean_file_name" => $bean_file_name,
+				"project" => $P->getSelectedPresentationId(),
+			)
+		));
+	//echo "<pre>";print_r($presentation_projects);die();
 	$presentation_projects = array_keys($presentation_projects);
 	
 	//prepare layers settings and brokers
@@ -114,7 +129,7 @@ if ($PEVC) {
 	}
 
 	//preparing head
-	$choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#";
+	$choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#$filter_by_layout_url_query&path=#path#";
 	$choose_dao_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=dao&path=#path#";
 	$choose_lib_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=lib&path=#path#";
 	$choose_vendor_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=vendor&path=#path#";
@@ -138,6 +153,7 @@ if ($PEVC) {
 	$set_tmp_workflow_file_url = $project_url_prefix . "workflow/set_workflow_file?path=${get_tmp_workflow_tasks_id}";
 	
 	$head = WorkFlowPresentationHandler::getHeader($project_url_prefix, $project_common_url_prefix, $WorkFlowUIHandler, $set_workflow_file_url, true, true);
+	$head .= LayoutTypeProjectUIHandler::getHeader();
 	
 	$js_head = '
 	var create_form_settings_code_url = \'' . $project_url_prefix . 'module/form/create_form_settings_code\';
@@ -328,7 +344,12 @@ if ($PEVC) {
 					<a class="add_form_group" onClick="addAndInitNewFormGroup(this)">Add Group <i class="zmdi zmdi-plus-circle"></i></a>
 					<a class="collapse_form_groups" onClick="collapseFormGroups(this)">Collapse Groups <i class="zmdi zmdi-minus-circle-outline"></i></a>
 					<a class="expand_form_groups" onClick="expandFormGroups(this)">Expand Groups <i class="zmdi zmdi-plus-circle-o"></i></a>
-					<a class="open_form_wizard" onClick="openFormWizard()">Open Wizard <i class="zmdi zmdi-view-web"></i></a>
+	
+	<? 
+		if ($db_drivers) 
+			echo '	<a class="open_form_wizard" onClick="openFormWizard()">Open Wizard <i class="zmdi zmdi-view-web"></i></a>';
+	?>
+	
 				</nav>
 				
 				<ul class="form-groups">

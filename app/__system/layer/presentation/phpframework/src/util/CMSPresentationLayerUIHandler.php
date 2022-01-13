@@ -227,7 +227,7 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC
 			<span class="icon add_variable" onclick="onPresentationProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Add Variable</span>
 			<span class="icon delete" onClick="$(this).parent().remove();">Remove</span>
 			<div class="template_param_text' . (strpos($v67db1bd535, "\n") === false ? ' hidden' : '') . '"><textarea>' . htmlspecialchars($v956913c90f, ENT_NOQUOTES) . '</textarea></div>
-		</div>'; } public static function getTabContentTemplateLayoutHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $v8ffce2a791, $pa0462a8e, $v338a2c14a6, $pfc22cc08, $pf7b73b3a, $pe6619ae3, $pd0054995, $v9106c07f80) { $pf8ed4912 .= '
+		</div>'; } public static function getTabContentTemplateLayoutHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v338a2c14a6, $pfc22cc08, $pf7b73b3a, $pe6619ae3, $pd0054995, $v9106c07f80) { $pf8ed4912 .= '
 		<div class="iframe_toolbar">
 			Screen size: 
 			<select class="type" onChange="onChangeTemplateLayoutScreenSize(this)">
@@ -249,7 +249,7 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC
 		<div class="iframe_modules_blocks_toolbar">
 			<div class="iframe_modules_blocks_toolbar_toggle" onclick="toggleIframeModulesBlocksToolbar(this)"></div>
 			<div class="iframe_modules_blocks_toolbar_content" id="iframe_modules_blocks_toolbar_content">
-				' . WorkFlowPresentationHandler::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, $v9106c07f80) . '
+				' . WorkFlowPresentationHandler::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, $v9106c07f80) . '
 			</div>
 		</div>
 		

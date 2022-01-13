@@ -1,4 +1,5 @@
 var show_popup_interval_id = null;
+var chooseProjectTemplateUrlFromFileManagerTree = null; //used by the create_presentation_uis_diagram.js and module/menu/show_menu/settings.js and others
 
 $(function () {
 	/*$(window).bind('beforeunload', function () {
@@ -38,6 +39,13 @@ $(function () {
 	});
 	chooseImageUrlFromFileManagerTree.init("choose_image_url_from_file_manager");
 	
+	chooseProjectTemplateUrlFromFileManagerTree = new MyTree({
+		multiple_selection : false,
+		ajax_callback_before : prepareLayerNodes1,
+		ajax_callback_after : removeAllThatIsNotTemplatesFromTree,
+	});
+	chooseProjectTemplateUrlFromFileManagerTree.init("choose_project_template_url_from_file_manager");
+	
 	/*setTimeout(function(){
 		$(".invalid").first().remove();
 	}, 20000);*/
@@ -50,6 +58,34 @@ $(function () {
 	
 	MyFancyPopup.hidePopup();
 });
+
+function removeAllThatIsNotTemplatesFromTree(ul, data) {
+	ul = $(ul);
+	
+	ul.find("i.file, i.entity_file, i.view_file, i.util_file, i.controller_file, i.config_file, i.undefined_file, i.js_file, i.css_file, i.img_file, i.properties, i.block_file, i.module_file, .entities_folder, .views_folder, .utils_folder, .webroot_folder, .modules_folder, .blocks_folder, .configs_folder").each(function(idx, elm){
+		$(elm).parent().parent().remove();
+	});
+	
+	ul.find("i.folder").each(function(idx, elm){
+		var label = $(elm).parent().children("label").text();
+		
+		if (label == "pages (entities)" || label == "views" || label == "utils" || label == "webroot" || label == "others" || label == "modules" || label == "blocks" || label == "configs") 
+			$(elm).parent().parent().remove();
+		//else if (label == "templates") 
+		//	$(elm).parent().parent().addClass("jstree-last");
+	});
+	
+	//move pages to project node
+	ul.find("i.templates_folder").each(function(idx, elm) {
+		var templates_li = $(elm).parent().parent();
+		var templates_ul = templates_li.children("ul");
+		var project_li = templates_li.parent().parent();
+		var project_ul = project_li.children("ul");
+		
+		project_li.append(templates_ul);
+		project_ul.remove();
+	});
+}
 
 function onChangeTemplate(elm) {
 	elm = $(elm);
@@ -65,7 +101,6 @@ function onChangeTemplateGenre(elm) {
 	var p = elm.parent();
 	var entity_obj = p.parent();
 	var select = p.children("select[name=template]");
-	var template_search_icon = p.children(".search");
 	var external_template_params = entity_obj.children(".external_template_params");
 	var template_value = null;
 	
@@ -73,7 +108,6 @@ function onChangeTemplateGenre(elm) {
 		template_value = select.val();
 		
 		select.show();
-		template_search_icon.show();
 		external_template_params.hide();
 		
 		//update template layout ui
@@ -81,7 +115,6 @@ function onChangeTemplateGenre(elm) {
 	}
 	else {
 		select.hide();
-		template_search_icon.hide();
 		external_template_params.show();
 		
 		onChangeExternalTemplateType( external_template_params.find(".external_template_type select")[0] );
@@ -90,22 +123,62 @@ function onChangeTemplateGenre(elm) {
 
 function onChooseAvailableTemplate(elm, show_templates_only) {
 	var template_elm = $(elm).parent();
+	var entity_obj_elm = template_elm.parent();
+	var func = function(selected_template) {
+		if (!code_exists) { //only if file is new
+			var entity_obj_tabs = entity_obj_elm.children(".entity_obj_tabs");
+			var active_tab = entity_obj_tabs.tabs('option', 'active');
+			
+			if (active_tab == 1) {
+				entity_obj_tabs.tabs('option', 'active', 0);
+				
+				var tabs = entity_obj_tabs.children(".tabs");
+				updateLayoutFromSettings( tabs.children().first().children("a")[0] );
+			}
+		}
+	};
+	var available_projects_templates_props = {};
+	available_projects_templates_props[selected_project_id] = available_templates_props;
 	
 	chooseAvailableTemplate( template_elm.children("select[name=template]")[0], {
 		show_templates_only: show_templates_only,
+		available_projects_templates_props: available_projects_templates_props,
+		available_projects_props: available_projects_props,
+		get_available_templates_props_url: get_available_templates_props_url,
+		install_template_url: install_template_url,
+		
 		on_select: function(selected_template) {
-			if (!code_exists) { //only if file is new
-				var entity_obj_elm = template_elm.parent();
-				var entity_obj_tabs = entity_obj_elm.children(".entity_obj_tabs");
-				var active_tab = entity_obj_tabs.tabs('option', 'active');
-				
-				if (active_tab == 1) {
-					entity_obj_tabs.tabs('option', 'active', 0);
-					
-					var tabs = entity_obj_tabs.children(".tabs");
-					updateLayoutFromSettings( tabs.children().first().children("a")[0] );
-				}
+			var template_genre = template_elm.children("select[name=template_genre]");
+			
+			if (template_genre.val() != "") {
+				template_genre.val("");
+				template_genre.trigger("change");
 			}
+			
+			func(selected_template);
+		},
+		on_select_from_other_project: function(selected_template, choose_template_selected_project_id) {
+			var template_genre = template_elm.children("select[name=template_genre]");
+			template_genre.val("external_template");
+			template_genre.trigger("change");
+			
+			var external_template_params = entity_obj_elm.children(".external_template_params");
+			var external_template_type = external_template_params.find(" > .external_template_type select");
+			external_template_type.val("project");
+			external_template_type.trigger("change");
+			
+			var external_template_id = external_template_params.find(" > .template_id input");
+			external_template_id.val(selected_template);
+			
+			var external_project_id = external_template_params.find(" > .external_project_id input");
+			external_project_id.val(choose_template_selected_project_id);
+			
+			var keep_original_project_url_prefix = external_template_params.find(" > .keep_original_project_url_prefix input");
+			keep_original_project_url_prefix.attr("checked", "checked").prop("checked", true);
+			
+			external_project_id.trigger("blur");
+			
+			func(selected_template);
 		}
 	} );
 }
@@ -117,7 +190,9 @@ function onChangeExternalTemplateType(elm) {
 	
 	external_template_params.children(":not(.external_template_type)").hide();
 	
-	if (external_template_type == "block")
+	if (external_template_type == "project")
+		external_template_params.children(".project_param").show();
+	else if (external_template_type == "block")
 		external_template_params.children(".block_param").show();
 	else if (external_template_type == "wordpress_template")
 		external_template_params.children(".wordpress_template_param").show();
@@ -126,6 +201,54 @@ function onChangeExternalTemplateType(elm) {
 	
 	//update template layout ui
 	updateTemplateLayout( external_template_params.parent() );
+}
+
+function onChooseProjectTemplate(elm) {
+	var p = $(elm).parent();
+	var popup = $("#choose_project_template_url_from_file_manager");
+	
+	MyFancyPopup.init({
+		elementToShow: popup,
+		parentElement: document,
+		
+		targetField: p,
+		updateFunction: chooseProjectTemplateFile
+	});
+	
+	MyFancyPopup.showPopup();
+}
+
+function chooseProjectTemplateFile(elm) {
+	var node = chooseProjectTemplateUrlFromFileManagerTree.getSelectedNodes();
+	node = node[0];
+	
+	if (node) {
+		var a = $(node).children("a");
+		var file_path = a.attr("file_path");
+		var bean_name = a.attr("bean_name");
+		var pos = file_path ? file_path.indexOf("/src/template/") : -1;
+		var is_template = a.children("i").first().is(".template_file");
+		
+		if (file_path && pos != -1 && is_template) {
+			var project_path = getNodeProjectPath(node);
+			project_path = project_path && project_path.substr(project_path.length - 1) == "/" ? project_path.substr(0, project_path.length - 1) : project_path;
+			project_path = project_path == selected_project_id ? "" : project_path;
+			
+			var template_path = file_path.substr(pos + ("/src/template/").length);//14 == /src/template/
+			template_path = template_path.substr(template_path.length - 4, 1) == "." ? template_path.substr(0, template_path.lastIndexOf(".")) : template_path;
+			
+			var p = MyFancyPopup.settings.targetField;
+			p.children("input").val(template_path);
+			p.parent().find(".external_project_id input").val(project_path);
+			
+			//update template layout ui
+			updateTemplateLayout( p.parent().parent() );
+			
+			MyFancyPopup.hidePopup();
+		}
+		else
+			alert("invalid selected template file.\nPlease choose a valid template file.");
+	}
 }
 
 function onChooseBlockTemplate(elm) {
@@ -164,7 +287,7 @@ function chooseBlockTemplate(elm) {
 			
 			var p = MyFancyPopup.settings.targetField;
 			p.children("input").val(block_path);
-			p.parent().find(".block_project_id input").val(project_path);
+			p.parent().find(".external_project_id input").val(project_path);
 			
 			//update template layout ui
 			updateTemplateLayout( p.parent().parent() );
@@ -190,20 +313,25 @@ function updateTemplateLayout(entity_obj) {
 		var external_template_params = entity_obj.children(".external_template_params");
 		var external_template_type = external_template_params.find(" > .external_template_type select").val();
 		
-		if (external_template_type == "block" && external_template_params.find(" > .block_id input").val() == "")
+		if (external_template_type == "project" && external_template_params.find(" > .template_id input").val() == "")
+			is_template_ok = false;
+		else if (external_template_type == "block" && external_template_params.find(" > .block_id input").val() == "")
 			is_template_ok = false;
 		else if (external_template_type == "url" && external_template_params.find(" > .url input").val() == "")
 			is_template_ok = false;
 		else if (external_template_type == "")
 			is_template_ok = false;
-		
 	}
 	
 	if (is_template_ok) {
 		var is_external_template = entity_obj.find(".template select[name=template_genre]").val() ? 1 : 0;
 		var external_template_params = getExternalSetTemplateParams(entity_obj);
 		
-		var url = get_template_regions_and_params_url.replace(/#template#/g, template) + "&is_external_template=" + is_external_template + "&external_template_params=" + encodeURIComponent(JSON.stringify(external_template_params));
+		var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
+		var data = getSettingsTemplateRegionsBlocks(regions_blocks_includes_settings);
+		var template_includes = data["includes"];
+		
+		var url = get_template_regions_and_params_url.replace(/#template#/g, template) + "&is_external_template=" + is_external_template + "&external_template_params=" + encodeURIComponent(JSON.stringify(external_template_params)) + "&template_includes=" + encodeURIComponent(JSON.stringify(template_includes));
 		
 		$.ajax({
 			type : "get",
@@ -473,7 +601,7 @@ function getExternalSetTemplateParams(entity_obj) {
 			"value": "$EVC->getCommonProjectName()",
 			"value_type": "method",
 		});
-		
+	
 		$.each( external_template_params.find(".external_template_type, ." + external_template_type + "_param").find("input, select, textarea"), function(idx, input) {
 			input = $(input);
 			var input_type = input.attr("type");

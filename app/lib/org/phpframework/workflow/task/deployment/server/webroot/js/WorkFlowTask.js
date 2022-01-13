@@ -629,11 +629,11 @@ var ServerTaskPropertyObj = {
 		//prepare html
 		var workflow_elm = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent();
 		
-		workflow_elm.find(".tasks_flow #layer_drivers").html("<span class=\"layer_title\">DB DRIVERS</span>");
-		workflow_elm.find(".tasks_flow #layer_dbs").html("<span class=\"layer_title\">DB LAYERS</span>");
-		workflow_elm.find(".tasks_flow #layer_dals").html("<span class=\"layer_title\">DATA ACCESS LAYERS</span>");
-		workflow_elm.find(".tasks_flow #layer_bls").html("<span class=\"layer_title\">BUSINESS LOGIC LAYERS</span>");
 		workflow_elm.find(".tasks_flow #layer_presentations").html("<span class=\"layer_title\">PRESENTATION LAYERS</span>");
+		workflow_elm.find(".tasks_flow #layer_bls").html("<span class=\"layer_title\">BUSINESS LOGIC LAYERS</span>");
+		workflow_elm.find(".tasks_flow #layer_dals").html("<span class=\"layer_title\">DATA ACCESS LAYERS</span>");
+		workflow_elm.find(".tasks_flow #layer_dbs").html("<span class=\"layer_title\">DB LAYERS</span>");
+		workflow_elm.find(".tasks_flow #layer_drivers").html("<span class=\"layer_title\">DB DRIVERS</span>");
 		
 		//prepare tasks_properties
 		var tasks_properties_elm = $("#" + WF.jsPlumbTaskFlow.main_tasks_properties_obj_id);

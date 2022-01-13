@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-class WorkFlowPresentationHandler { public static function getHeader($peb014cfd, $v37d269c4fa, $pcfdeae4e = false, $v8555f2f905 = false, $pbd963c11 = false, $pda8973ae = false) { $pf8ed4912 = '
+include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresentationHandler { public static function getHeader($peb014cfd, $v37d269c4fa, $pcfdeae4e = false, $v8555f2f905 = false, $pbd963c11 = false, $pda8973ae = false) { $pf8ed4912 = '
 			<!-- Add MyTree main JS and CSS files -->
 			<link rel="stylesheet" href="' . $v37d269c4fa . 'vendor/jquerymytree/css/style.min.css" type="text/css" charset="utf-8" />
 			<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/jquerymytree/js/mytree.js"></script>
@@ -50,9 +50,9 @@ class WorkFlowPresentationHandler { public static function getHeader($peb014cfd,
 			<script language="javascript" type="text/javascript" src="' . $peb014cfd . 'js/edit_php_code.js"></script>
 			'; if ($pbd963c11) $pf8ed4912 .= '
 			<!-- Add CKEditor JS Files  -->
-			<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/ckeditor/ckeditor.js"></script>'; return $pf8ed4912; } public static function getUIEditorWidgetsHtml($v0345b66144, $v37d269c4fa, $v4bf8d90f04, $pfce4d1b3, $v5d3813882f = null) { $v60968209dd = $v0345b66144 . "vendor/jquerylayoutuieditor/"; include_once $v60968209dd . "util.php"; $pae9f35af = "jquerylayoutuieditor/widget/"; $pcb902903 = $v4bf8d90f04 . $pae9f35af; $pf235b497 = $pfce4d1b3 . $pae9f35af; $v0e41af17ee = $v60968209dd . "widget/"; $pce3003cf = $v37d269c4fa . "vendor/jquerylayoutuieditor/widget/"; $pee3480c4 = scanWidgets($v0e41af17ee); $pee3480c4 = filterWidgets($pee3480c4, $v0e41af17ee, $pce3003cf, $v5d3813882f); $pd3938a46 .= getMenuWidgetsHTML($pee3480c4, $v0e41af17ee, $pce3003cf, $pcb902903, $pf235b497); return $pd3938a46; } public static function getExtraUIEditorWidgetsHtml($v0345b66144, $v19b26a58a8, $v4cb34c109a, $v4bf8d90f04, $pfce4d1b3, $v5d3813882f = null) { $v60968209dd = $v0345b66144 . "vendor/jquerylayoutuieditor/"; include_once $v60968209dd . "util.php"; $pae9f35af = "jquerylayoutuieditor/widget/"; $pcb902903 = $v4bf8d90f04 . $pae9f35af; $pf235b497 = $pfce4d1b3 . $pae9f35af; $pee3480c4 = scanWidgets($v19b26a58a8); $pee3480c4 = filterWidgets($pee3480c4, $v19b26a58a8, $v4cb34c109a, $v5d3813882f); $pd3938a46 = getMenuWidgetsHTML($pee3480c4, $v19b26a58a8, $v4cb34c109a, $pcb902903, $pf235b497); return $pd3938a46; } public static function getUserUIEditorWidgetsHtml($v0345b66144, $v0e41af17ee, $v4bf8d90f04, $pfce4d1b3, $v5d3813882f = null) { $pd3938a46 = ""; if ($v0e41af17ee) { $v60968209dd = $v0345b66144 . "vendor/jquerylayoutuieditor/"; include_once $v60968209dd . "util.php"; $pae9f35af = "jquerylayoutuieditor/widget/"; $pcb902903 = $v4bf8d90f04 . $pae9f35af; $pf235b497 = $pfce4d1b3 . $pae9f35af; $v4c778e26ea = $v4bf8d90f04 . $pae9f35af; $v0e41af17ee = is_array($v0e41af17ee) ? $v0e41af17ee : array($v0e41af17ee); foreach ($v0e41af17ee as $pe4619dcd) if (file_exists($pe4619dcd)) { $pe4619dcd = str_replace("//", "/", trim( realpath($pe4619dcd) )); $pe4619dcd .= substr($pe4619dcd, strlen($pe4619dcd) - 1) == "/" ? "" : "/"; $pd0c2309c = hash("crc32b", $pe4619dcd); $pce3003cf = "$pfce4d1b3$pae9f35af$pd0c2309c/"; $pee3480c4 = scanWidgets($pe4619dcd); $pee3480c4 = filterWidgets($pee3480c4, $pe4619dcd, $pce3003cf, $v5d3813882f); self::f22be97f31f($pee3480c4, "$v4c778e26ea$pd0c2309c/"); $pd3938a46 = getMenuWidgetsHTML($pee3480c4, $pe4619dcd, $pce3003cf, $pcb902903, $pf235b497); } } return $pd3938a46; } private static function f22be97f31f($pee3480c4, $pd520d615) { $v5c1c342594 = true; if ($pee3480c4 && !is_dir($pd520d615)) foreach ($pee3480c4 as $v5e813b295b => $v2cd5d67337) { if (is_array($v2cd5d67337)) self::f22be97f31f($v2cd5d67337, $pd520d615 . "$v5e813b295b/"); else { $pcec8b7cc = dirname($v2cd5d67337) . "/webroot/"; if (file_exists($pcec8b7cc) && !self::me1bfc9cf0775($pcec8b7cc, $pd520d615)) $v5c1c342594 = false; } } return $v5c1c342594; } private static function me1bfc9cf0775($v92dcc541a8, $pa5b0817e) { if ($v92dcc541a8 && $pa5b0817e && is_dir($v92dcc541a8)) { if (!is_dir($pa5b0817e)) @mkdir($pa5b0817e, 0755, true); if (is_dir($pa5b0817e)) { $v5c1c342594 = true; $v6ee393d9fb = scandir($v92dcc541a8); if ($v6ee393d9fb) foreach ($v6ee393d9fb as $v7dffdb5a5b) if ($v7dffdb5a5b != '.' && $v7dffdb5a5b != '..') { if (is_dir("$v92dcc541a8/$v7dffdb5a5b")) { if (!self::me1bfc9cf0775("$v92dcc541a8/$v7dffdb5a5b", "$pa5b0817e/$v7dffdb5a5b")) $v5c1c342594 = false; } else if (!copy("$v92dcc541a8/$v7dffdb5a5b", "$pa5b0817e/$v7dffdb5a5b")) $v5c1c342594 = false; } return $v5c1c342594; } } } public static function getPresentationBrokersHtml($pb0e92e25, $pf7b73b3a, $v46a478e94c) { $pf8ed4912 = ''; if ($pb0e92e25) { $pc37695cb = count($pb0e92e25); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $pb0e92e25[$v43dd7d0051]; if ($v7aeaf992f5[2]) { $pf8ed4912 .= 'main_layers_properties.' . $v7aeaf992f5[2] . ' = {ui: {
+			<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/ckeditor/ckeditor.js"></script>'; return $pf8ed4912; } public static function getUIEditorWidgetsHtml($v0345b66144, $v37d269c4fa, $v4bf8d90f04, $pfce4d1b3, $v5d3813882f = null) { $v60968209dd = $v0345b66144 . "vendor/jquerylayoutuieditor/"; include_once $v60968209dd . "util.php"; $pae9f35af = "jquerylayoutuieditor/widget/"; $pcb902903 = $v4bf8d90f04 . $pae9f35af; $pf235b497 = $pfce4d1b3 . $pae9f35af; $v0e41af17ee = $v60968209dd . "widget/"; $pce3003cf = $v37d269c4fa . "vendor/jquerylayoutuieditor/widget/"; $pee3480c4 = scanWidgets($v0e41af17ee); $pee3480c4 = filterWidgets($pee3480c4, $v0e41af17ee, $pce3003cf, $v5d3813882f); $pd3938a46 .= getMenuWidgetsHTML($pee3480c4, $v0e41af17ee, $pce3003cf, $pcb902903, $pf235b497); return $pd3938a46; } public static function getExtraUIEditorWidgetsHtml($v0345b66144, $v19b26a58a8, $v4cb34c109a, $v4bf8d90f04, $pfce4d1b3, $v5d3813882f = null) { $v60968209dd = $v0345b66144 . "vendor/jquerylayoutuieditor/"; include_once $v60968209dd . "util.php"; $pae9f35af = "jquerylayoutuieditor/widget/"; $pcb902903 = $v4bf8d90f04 . $pae9f35af; $pf235b497 = $pfce4d1b3 . $pae9f35af; $pee3480c4 = scanWidgets($v19b26a58a8); $pee3480c4 = filterWidgets($pee3480c4, $v19b26a58a8, $v4cb34c109a, $v5d3813882f); $pd3938a46 = getMenuWidgetsHTML($pee3480c4, $v19b26a58a8, $v4cb34c109a, $pcb902903, $pf235b497); return $pd3938a46; } public static function getUserUIEditorWidgetsHtml($v0345b66144, $v0e41af17ee, $v4bf8d90f04, $pfce4d1b3, $v5d3813882f = null) { $pd3938a46 = ""; if ($v0e41af17ee) { $v60968209dd = $v0345b66144 . "vendor/jquerylayoutuieditor/"; include_once $v60968209dd . "util.php"; $pae9f35af = "jquerylayoutuieditor/widget/"; $pcb902903 = $v4bf8d90f04 . $pae9f35af; $pf235b497 = $pfce4d1b3 . $pae9f35af; $v4c778e26ea = $v4bf8d90f04 . $pae9f35af; $v0e41af17ee = is_array($v0e41af17ee) ? $v0e41af17ee : array($v0e41af17ee); foreach ($v0e41af17ee as $pe4619dcd) if (file_exists($pe4619dcd)) { $pe4619dcd = str_replace("//", "/", trim( realpath($pe4619dcd) )); $pe4619dcd .= substr($pe4619dcd, strlen($pe4619dcd) - 1) == "/" ? "" : "/"; $pd0c2309c = hash("crc32b", $pe4619dcd); $pce3003cf = "$pfce4d1b3$pae9f35af$pd0c2309c/"; $pee3480c4 = scanWidgets($pe4619dcd); $pee3480c4 = filterWidgets($pee3480c4, $pe4619dcd, $pce3003cf, $v5d3813882f); self::f22be97f31f($pee3480c4, "$v4c778e26ea$pd0c2309c/"); $pd3938a46 = getMenuWidgetsHTML($pee3480c4, $pe4619dcd, $pce3003cf, $pcb902903, $pf235b497); } } return $pd3938a46; } private static function f22be97f31f($pee3480c4, $pd520d615) { $v5c1c342594 = true; if ($pee3480c4 && !is_dir($pd520d615)) foreach ($pee3480c4 as $v5e813b295b => $v2cd5d67337) { if (is_array($v2cd5d67337)) self::f22be97f31f($v2cd5d67337, $pd520d615 . "$v5e813b295b/"); else { $pcec8b7cc = dirname($v2cd5d67337) . "/webroot/"; if (file_exists($pcec8b7cc) && !self::me1bfc9cf0775($pcec8b7cc, $pd520d615)) $v5c1c342594 = false; } } return $v5c1c342594; } private static function me1bfc9cf0775($v92dcc541a8, $pa5b0817e) { if ($v92dcc541a8 && $pa5b0817e && is_dir($v92dcc541a8)) { if (!is_dir($pa5b0817e)) @mkdir($pa5b0817e, 0755, true); if (is_dir($pa5b0817e)) { $v5c1c342594 = true; $v6ee393d9fb = scandir($v92dcc541a8); if ($v6ee393d9fb) foreach ($v6ee393d9fb as $v7dffdb5a5b) if ($v7dffdb5a5b != '.' && $v7dffdb5a5b != '..') { if (is_dir("$v92dcc541a8/$v7dffdb5a5b")) { if (!self::me1bfc9cf0775("$v92dcc541a8/$v7dffdb5a5b", "$pa5b0817e/$v7dffdb5a5b")) $v5c1c342594 = false; } else if (!copy("$v92dcc541a8/$v7dffdb5a5b", "$pa5b0817e/$v7dffdb5a5b")) $v5c1c342594 = false; } return $v5c1c342594; } } } public static function getPresentationBrokersHtml($pb0e92e25, $pf7b73b3a, $v46a478e94c) { $pf8ed4912 = ''; if ($pb0e92e25) { $pc37695cb = count($pb0e92e25); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $pb0e92e25[$v43dd7d0051]; if ($v7aeaf992f5[2]) { $v94a9c171e3 = str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pf7b73b3a)) . '&item_type=presentation&folder_type=#folder_type#'; $pf8ed4912 .= 'main_layers_properties.' . $v7aeaf992f5[2] . ' = {ui: {
 						folder: {
-							get_sub_files_url: "' . str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pf7b73b3a)) . '&item_type=presentation&folder_type=#folder_type#",
+							get_sub_files_url: "' . $v94a9c171e3 . '",
 							attributes: {
 								folder_path: "#path#",
 							},
@@ -109,15 +109,22 @@ class WorkFlowPresentationHandler { public static function getHeader($peb014cfd,
 						}
 					};
 					main_layers_properties.' . $v7aeaf992f5[2] . '.ui["project_common"] = main_layers_properties.' . $v7aeaf992f5[2] . '.ui["project"];
-					'; } } } return $pf8ed4912; } public static function getBusinessLogicBrokersHtml($v6e9af47944, $pf7b73b3a, $v46a478e94c) { $pf8ed4912 = ''; if ($v6e9af47944) { $pc37695cb = count($v6e9af47944); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $v6e9af47944[$v43dd7d0051]; if ($v7aeaf992f5[2]) { $pf8ed4912 .= 'main_layers_properties.' . $v7aeaf992f5[2] . ' = {ui: {
+					
+					main_layers_properties.' . $v7aeaf992f5[2] . '.ui["referenced_folder"] = {
+						get_sub_files_url: "' . $v94a9c171e3 . '",
+					};
+					'; } } } return $pf8ed4912; } public static function getBusinessLogicBrokersHtml($v6e9af47944, $pf7b73b3a, $v46a478e94c) { $pf8ed4912 = ''; if ($v6e9af47944) { $pc37695cb = count($v6e9af47944); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $v6e9af47944[$v43dd7d0051]; if ($v7aeaf992f5[2]) { $v94a9c171e3 = str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pf7b73b3a)); $pf8ed4912 .= 'main_layers_properties.' . $v7aeaf992f5[2] . ' = {ui: {
 						folder: {
-							get_sub_files_url: "' . str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pf7b73b3a)) . '",
+							get_sub_files_url: "' . $v94a9c171e3 . '",
+						},
+						cms_common: {
+							get_sub_files_url: "' . $v94a9c171e3 . '",
 						},
 						cms_module: {
-							get_sub_files_url: "' . str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pf7b73b3a)) . '",
+							get_sub_files_url: "' . $v94a9c171e3 . '",
 						},
 						cms_program: {
-							get_sub_files_url: "' . str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pf7b73b3a)) . '",
+							get_sub_files_url: "' . $v94a9c171e3 . '",
 						},
 						file: {
 							attributes: {
@@ -133,30 +140,42 @@ class WorkFlowPresentationHandler { public static function getHeader($peb014cfd,
 								get_file_properties_url: "' . str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $v46a478e94c)) . '"
 							}
 						},
-					}};'; } } } return $pf8ed4912; } public static function getDaoLibAndVendorBrokersHtml($v54c4a1fbb7, $pe2f0f7f1, $v828ff69e5c, $v46a478e94c) { $v5cc2ea124b = str_replace("=dao", "=test_unit", $v54c4a1fbb7); return '
+						referenced_folder: {
+							get_sub_files_url: "' . $v94a9c171e3 . '",
+						},
+					}};'; } } } return $pf8ed4912; } public static function getDaoLibAndVendorBrokersHtml($v54c4a1fbb7, $pe2f0f7f1, $v828ff69e5c, $v46a478e94c) { $v5cc2ea124b = str_replace("=dao", "=test_unit", $v54c4a1fbb7); $pc7a85dd5 = str_replace("#bean_file_name#", "", str_replace("#bean_name#", "dao", $v46a478e94c)); return '
 			main_layers_properties.dao = {ui: {
 				folder: {
+					get_sub_files_url: "' . $v54c4a1fbb7 . '",
+				},
+				cms_common: {
+					get_sub_files_url: "' . $v54c4a1fbb7 . '",
+				},
+				cms_module: {
+					get_sub_files_url: "' . $v54c4a1fbb7 . '",
+				},
+				cms_program: {
 					get_sub_files_url: "' . $v54c4a1fbb7 . '",
 				},
 				file: {
 					attributes: {
 						file_path: "#path#",
 						bean_name: "dao",
-						get_file_properties_url: "' . str_replace("#bean_file_name#", "", str_replace("#bean_name#", "dao", $v46a478e94c)) . '"
+						get_file_properties_url: "' . $pc7a85dd5 . '"
 					}
 				},
 				objtype: {
 					attributes: {
 						file_path: "#path#",
 						bean_name: "dao",
-						get_file_properties_url: "' . str_replace("#bean_file_name#", "", str_replace("#bean_name#", "dao", $v46a478e94c)) . '"
+						get_file_properties_url: "' . $pc7a85dd5 . '"
 					}
 				},
 				hibernatemodel: {
 					attributes: {
 						file_path: "#path#",
 						bean_name: "dao",
-						get_file_properties_url: "' . str_replace("#bean_file_name#", "", str_replace("#bean_name#", "dao", $v46a478e94c)) . '"
+						get_file_properties_url: "' . $pc7a85dd5 . '"
 					}
 				},
 			}};
@@ -224,15 +243,18 @@ class WorkFlowPresentationHandler { public static function getHeader($peb014cfd,
 					}
 				},
 			}};
-		'; } public static function getDataAccessBrokersHtml($v9fda9fad47, $pf7b73b3a) { $pf8ed4912 = ''; if ($v9fda9fad47) { $pc37695cb = count($v9fda9fad47); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $v9fda9fad47[$v43dd7d0051]; if ($v7aeaf992f5[2]) { $pf8ed4912 .= 'main_layers_properties.' . $v7aeaf992f5[2] . ' = {ui: {
+		'; } public static function getDataAccessBrokersHtml($v9fda9fad47, $pf7b73b3a) { $pf8ed4912 = ''; if ($v9fda9fad47) { $pc37695cb = count($v9fda9fad47); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $v9fda9fad47[$v43dd7d0051]; if ($v7aeaf992f5[2]) { $v94a9c171e3 = str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pf7b73b3a)); $pf8ed4912 .= 'main_layers_properties.' . $v7aeaf992f5[2] . ' = {ui: {
 						folder: {
-							get_sub_files_url: "' . str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pf7b73b3a)) . '",
+							get_sub_files_url: "' . $v94a9c171e3 . '",
+						},
+						cms_common: {
+							get_sub_files_url: "' . $v94a9c171e3 . '",
 						},
 						cms_module: {
-							get_sub_files_url: "' . str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pf7b73b3a)) . '",
+							get_sub_files_url: "' . $v94a9c171e3 . '",
 						},
 						cms_program: {
-							get_sub_files_url: "' . str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pf7b73b3a)) . '",
+							get_sub_files_url: "' . $v94a9c171e3 . '",
 						},
 						file: {
 							attributes: {
@@ -267,6 +289,9 @@ class WorkFlowPresentationHandler { public static function getHeader($peb014cfd,
 								relationship_type: "#relationship_type#",
 								hbn_obj_id: "#hbn_obj_id#",
 							}
+						},
+						referenced_folder: {
+							get_sub_files_url: "' . $v94a9c171e3 . '",
 						},
 					}};'; } } } return $pf8ed4912; } public static function getChooseFromFileManagerPopupHtml($v8ffce2a791, $pa0462a8e, $pf7b73b3a, $v54c4a1fbb7, $pe2f0f7f1, $v828ff69e5c, $v5483bfa973, $v9fda9fad47, $pf864769c, $paf75a67c, $v6e9af47944, $pb0e92e25) { $pf8ed4912 = ""; if ($v8ffce2a791 && $pa0462a8e) $pf8ed4912 = self::me4f1b76bfe10($v8ffce2a791, $pa0462a8e, $pf7b73b3a, $v54c4a1fbb7, $pe2f0f7f1, $v828ff69e5c, $v5483bfa973, $v9fda9fad47, $pf864769c, $paf75a67c, $v6e9af47944, $pb0e92e25); else $pf8ed4912 = self::f2ad93f0276($v8ffce2a791, $pa0462a8e, $pf7b73b3a, $v54c4a1fbb7, $pe2f0f7f1, $v828ff69e5c, $v5483bfa973, $v9fda9fad47, $pf864769c, $paf75a67c, $v6e9af47944, $pb0e92e25); if (isset($v5483bfa973) || isset($v9fda9fad47)) { $pf8ed4912 .='<div id="choose_db_driver_table" class="myfancypopup">
 				<div class="broker">
@@ -664,7 +689,7 @@ class WorkFlowPresentationHandler { public static function getHeader($peb014cfd,
 			<li class="set_word_wrap"><a onClick="setWordWrap(this)" wrap="0">Set Word Wrap</a></li>
 			<li class="editor_settings"><a onClick="openEditorSettings()">Open Editor Setings</a></li>
 			<li class="editor_full_screen"><a onClick="toggleEditorFullScreen(this)">Maximize Screen</a></li>
-		</ul>'; } public static function getCodeEditorHtml($v067674f4e4, $v48e4e778a5, $pefdd2109, $v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, $pd0054995, $v9106c07f80, $v5988353a93 = false) { $pf8ed4912 = '
+		</ul>'; } public static function getCodeEditorHtml($v067674f4e4, $v48e4e778a5, $pefdd2109, $v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, $pd0054995, $v9106c07f80, $v5988353a93 = false) { $pf8ed4912 = '
 			<div class="code_menu">
 				' . WorkFlowPresentationHandler::getCodeEditorMenuHtml($v48e4e778a5) . '
 			</div>
@@ -677,11 +702,11 @@ class WorkFlowPresentationHandler { public static function getHeader($peb014cfd,
 			</div>
 			<div class="layout_ui_editor_right_container_resize"></div>
 			<div id="layout_ui_editor_right_container" class="layout_ui_editor_right_container">
-				' . self::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, $v9106c07f80) . '
+				' . self::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, $v9106c07f80) . '
 			</div>
 			
 			<div id="choose_layout_ui_editor_module_block_from_file_manager" class="myfancypopup choose_from_file_manager">
-				' . self::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, "chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree") . '
+				' . self::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, "chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree") . '
 				
 				<div class="button">
 					<input type="button" value="UPDATE" onClick="MyCodeLayoutUIEditorFancyPopup.settings.updateFunction(this)" />
@@ -690,7 +715,7 @@ class WorkFlowPresentationHandler { public static function getHeader($peb014cfd,
 			
 			<div class="myfancypopup db_table_uis_diagram_block" create_page_presentation_uis_diagram_block_url="' . $pd0054995 . '">
 				<iframe></iframe>
-			</div>'; return $pf8ed4912; } public static function getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, $v9106c07f80) { $v9ab35f1f0d = $v08d9602741->getPresentationLayer(); $pe61ee068 = $v08d9602741->getCommonProjectName() . "/" . $v9ab35f1f0d->settings["presentation_modules_path"]; $v9b98e0e818 = WorkFlowBeansFileHandler::getLayerDBDrivers($v3d55458bcd, $v5039a77f9d, $v9ab35f1f0d, true); $pf8ed4912 = '<script>
+			</div>'; return $pf8ed4912; } public static function getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, $v9106c07f80) { $v9ab35f1f0d = $v08d9602741->getPresentationLayer(); $pe61ee068 = $v08d9602741->getCommonProjectName() . "/" . $v9ab35f1f0d->settings["presentation_modules_path"]; $v9b98e0e818 = WorkFlowBeansFileHandler::getLayerDBDrivers($v3d55458bcd, $v5039a77f9d, $v9ab35f1f0d, true); $v1eb9193558 = new LayoutTypeProjectHandler($pdf77ee66, $v3d55458bcd, $v5039a77f9d, $pa0462a8e, $v8ffce2a791); $v1eb9193558->filterLayerBrokersDBDriversPropsBasedInUrl($v9b98e0e818, $pf7b73b3a); $pf8ed4912 = '<script>
 			//clones module_folder properties, bc is the same object that the ui["folder"] properties, this is, is the reference object of the ui["folder"] object.
 			main_layers_properties.' . $v8ffce2a791 . '.ui["module_folder"] = JSON.parse(JSON.stringify(main_layers_properties.' . $v8ffce2a791 . '.ui["module_folder"])); 
 			

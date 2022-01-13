@@ -14,7 +14,7 @@
 }
 #menu ul li {
 	height:20px;
-	border-bottom:1px dashed #FFF;
+	/*border-bottom:1px dashed #FFF;*/
 	padding:3px 10px;
 }
 #menu ul li:hover {
@@ -27,6 +27,7 @@
 	color:#666;
 }
 #menu li.current_user {
+	margin-bottom:20px;
 	padding-top:10px;
 	border-bottom:0;
 	font-style:italic;
@@ -37,17 +38,20 @@
 	background-color:#b3c8cc;
 }
 #menu li.manage_menu_item {
-	margin-top:20px;
 	border-top:1px dashed #FFF;
+}
+#menu li.manage_user_type_permissions,
+  #menu li.manage_layout_type_permissions {
+	border-bottom:1px dashed #FFF;
+}
+#menu li.manage_layout_types,
+  #menu li.manage_login_controls,
+  #menu li.change_db_keys,
+  #menu li.change_auth_settings {
+	margin-top:20px;
+	border-bottom:1px dashed #FFF;
 }
 #menu li.change_db_keys {
-	margin-top:20px;
-	border-top:1px dashed #FFF;
-	background-color:#b0c0e0;
-}
-#menu li.change_auth_settings {
-	margin-top:20px;
-	border-top:1px dashed #FFF;
 	background-color:#b0c0e0;
 }
 
@@ -71,6 +75,7 @@
 
 #content .users_list {}
 #content .user_types_list {}
+#content .layout_types_list {}
 #content .object_types_list {}
 #content .permissions_list {}
 #content .login_controls_list {}
@@ -87,14 +92,17 @@
 #content table .user_id { width:50px; }
 #content table .permission_id { width:50px; }
 #content table .user_type_id { width:50px; }
+#content table .layout_type_id { width:50px; }
 #content table .object_type_id { width:50px; }
 #content table .user_type { width:100px; }
+#content table .layout_type { width:100px; }
 #content table .username { width:150px; }
 #content table .name { width:150px; }
 #content table .created_date { width:150px; }
 #content table .modified_date { width:150px; }
 #content table td.object_id { text-align:left; padding-left:5px; padding-right:5px; }
 #content table .user_type_permission { min-width:100px; }
+#content table .layout_type_permission { min-width:100px; }
 #content table .buttons { width:20px; padding:0; }
 #content table .buttons .add {}
 #content table .buttons .update {}
@@ -102,6 +110,14 @@
 #content div.user_type { width:310px; margin:0 auto 20px auto; float:none; clear:left;}
 #content div.user_type label { display:block; float:left; width:100px; }
 #content div.user_type select { width:200px; text-align:center; }
+
+#content div.layout_type { width:430px; margin:0 auto 20px auto; float:none; clear:left;}
+#content div.layout_type label { display:block; float:left; width:100px; }
+#content div.layout_type select[name=type_id] { width:110px; }
+#content div.layout_type select[name=layout_type_id] { width:200px; }
+
+#content .edit_layout_type div.type { height:auto; }
+#content .edit_layout_type div.type select[name=choose_project] { width:205px; margin-top:5px; margin-left:80px; background:#fff; color:#999; }
 
 #content .form_fields { width:310px; margin:0 auto; }
 #content .form_fields .form_field { float:none; clear:left; height:20px; margin-bottom:7px; }
@@ -147,7 +163,7 @@
 
 #content .edit_user .error { width:100%; text-align:center; font-weight:bold; color:red; }
 
-#content .user_type_permissions_list table {min-width:350px;}
+#content .user_type_permissions_list table {min-width:350px; font-size:80%;}
 #content .user_type_permissions_list table .user_type_permission {width:50px;}
 #content .user_type_permissions_list table .user_type_permission.new:after {content:"new"; color:red; font-weight:bold; margin-left:10px; position:absolute; opacity:0.6;}
 #content .user_type_permissions_list table .user_type_permission .toggle {
@@ -157,4 +173,70 @@
 	display:inline-block;
 	position:absolute;
 	margin-left:50px;
+}
+#content .user_type_permissions_list table .icon {
+	width:24px;
+	height:24px;
+	display:inline-block;
+	float:none;
+	vertical-align:middle;
+}
+#content .user_type_permissions_list .user_type_permissions_content {
+	margin:0 20px;
+}
+#content .user_type_permissions_list .user_type_permissions_content > .tabs { background:#d5e3e4;}
+#content .user_type_permissions_list .user_type_permissions_content #pages_permissions_list,
+  #content .user_type_permissions_list .user_type_permissions_content #layers_permissions_list {
+	max-height:calc(100vh - 220px);
+	overflow:auto;
+	position:relative;
+}
+#content .user_type_permissions_list .user_type_permissions_content #layers_permissions_list table td.main_node {
+	text-align:left;
+}
+#content .user_type_permissions_list .user_type_permissions_content #layers_permissions_list table td.object_id {
+	text-align:left;
+	padding-left:20px;
+}
+
+#content .layout_type_permissions_list .layout_type select {text-align:left;}
+#content .layout_type_permissions_list .layout_type_permissions_content {
+	margin:0 20px;
+}
+#content .layout_type_permissions_list .layout_type_permissions_content label {font-weight:normal;}
+#content .layout_type_permissions_list .layout_type_permissions_content > .tabs { background:#d5e3e4;}
+#content .layout_type_permissions_list .layout_type_permissions_content #belonging_to_layout,
+  #content .layout_type_permissions_list .layout_type_permissions_content #referenced_in_layout {
+	max-height:calc(100vh - 220px);
+	overflow:auto;
+	position:relative;
+	font-size:80%;
+}
+#content .layout_type_permissions_list .layout_type_permissions_content .mytree {
+	margin-top:10px;
+	margin-bottom:10px;
+}
+#content .layout_type_permissions_list .layout_type_permissions_content .mytree li {
+	margin-left:15px;
+	position:relative;
+}
+#content .layout_type_permissions_list .layout_type_permissions_content .mytree li label > input[type=checkbox] {
+	position:absolute;
+	top:3px;
+	left:-15px;
+}
+#content .layout_type_permissions_list .mytree .icon.main_node {
+	width:24px;
+	height:24px;
+	margin-left:15px;
+	display:inline-block;
+	float:none;
+	vertical-align:middle;
+}
+#content .layout_type_permissions_list .buttons {
+	width:auto;
+}
+#content .layout_type_permissions_list .buttons .submit_button {
+	margin:0 auto;
+	float:none;
 }

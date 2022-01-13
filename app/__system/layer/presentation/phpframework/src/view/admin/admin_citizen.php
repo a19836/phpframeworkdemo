@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$switch_project_url = $project_url_prefix . "admin?bean_name=$bean_name&bean_file_name=$bean_file_name&project=#project#"; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $head = '
+$switch_project_url = $project_url_prefix . "admin?bean_name=$bean_name&bean_file_name=$bean_file_name&project=#project#"; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -38,7 +38,7 @@ $switch_project_url = $project_url_prefix . "admin?bean_name=$bean_name&bean_fil
 
 <script>
 menu_item_properties = ' . json_encode($menu_item_properties) . ';
-</script>'; if ($projects) { $main_content = '
+</script>'; $main_content = ''; if (!$projects) $main_content .= '<script>alert("Error: No projects available! Please contact your sysadmin...");</script>'; $main_content .= '
 <div id="selected_menu_properties" class="myfancypopup">
 	<div class="title">Properties</div>
 	<p class="content"></p>
@@ -136,7 +136,7 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 		</li>
 		' . ($is_presentation_layer_allowed ? '
 			<li class="pages">
-				<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=entity&bean_name=$bean_name&bean_file_name=$bean_file_name&path=$project" . '">
+				<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=entity&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">
 					<i class="selected"></i>
 					<span class="fas fa-copy logo"></span>
 					<label>Pages</label>
@@ -152,14 +152,14 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 				
 				<ul>
 					<li class="list_templates">
-						<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=template&bean_name=$bean_name&bean_file_name=$bean_file_name&path=$project" . '">
+						<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=template&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">
 							<i class="selected"></i>
 							<span class="fa fa-list logo"></span>
 							<label>List Templates</label>
 						</a>
 					</li>
 					<li class="install_template">
-						<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/install_template?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$project/src/template/" . '">
+						<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/install_template?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$project/src/template/" . '">
 							<i class="selected"></i>
 							<span class="fab fa-instalod logo"></span>
 							<label>Install Template</label>
@@ -168,7 +168,7 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 				</ul>
 			</li>
 			<li class="webroot">
-				<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=webroot&bean_name=$bean_name&bean_file_name=$bean_file_name&path=$project" . '">
+				<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=webroot&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">
 					<i class="selected"></i>
 					<span class="fas fa-images logo"></span>
 					<label>Webroot</label>
@@ -184,7 +184,7 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 				
 				<ul>
 					<li class="list_utils">
-						<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=util&bean_name=$bean_name&bean_file_name=$bean_file_name&path=$project" . '">
+						<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=util&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">
 							<i class="selected"></i>
 							<span class="fa fa-list logo"></span>
 							<label>List Actions</label>
@@ -208,37 +208,51 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 				<i class="fas fa-chevron-down sub_menu"></i>
 			</a>
 			
-			<ul>
+			<ul>'; if ($is_presentation_layer_allowed) $main_content .= '
 				<li class="edit_global_variables">
-					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/edit_project_global_variables?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$project/src/config/pre_init_config.php" . '">
+					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/edit_project_global_variables?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project/src/config/pre_init_config.php" . '">
 						<i class="selected"></i>
 						<span class="fas fa-globe logo"></span>
 						<label>Edit Global Variables</label>
 					</a>
 				</li>
 				<li class="edit_config">
-					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/edit_config?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$project/src/config/config.php" . '">
+					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/edit_config?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project/src/config/config.php" . '">
 						<i class="selected"></i>
 						<span class="fas fa-edit logo"></span>
 						<label>Edit Config</label>
 					</a>
 				</li>
 				<li class="views">
-					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=view&bean_name=$bean_name&bean_file_name=$bean_file_name&path=$project" . '">
+					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=view&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">
 						<i class="selected"></i>
 						<span class="fas fa-list logo"></span>
 						<label>List Views</label>
 					</a>
 				</li>
 				<li class="blocks">
-					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=block&bean_name=$bean_name&bean_file_name=$bean_file_name&path=$project" . '">
+					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=block&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">
 						<i class="selected"></i>
 						<span class="fas fa-list logo"></span>
 						<label>List Blocks</label>
 					</a>
-				</li>
+				</li>'; if ($layers) { if ($layers["data_access_layers"]) foreach ($layers["data_access_layers"] as $layer_name => $layer) { $bn = $layer["properties"]["bean_name"]; $bfn = $layer["properties"]["bean_file_name"]; $label = WorkFlowBeansFileHandler::getLayerBeanFolderName($user_beans_folder_path . $bfn, $bn, $user_global_variables_file_path); $main_content .= '
+				<li class="data_access_rules">
+					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=block&bean_name=$bn&bean_file_name=$bfn$filter_by_layout_url_query" . '">
+						<i class="selected"></i>
+						<span class="fas fa-list logo"></span>
+						<label>List ' . ucwords($label) . ' Rules</label>
+					</a>
+				</li>'; } if ($layers["business_logic_layers"]) foreach ($layers["business_logic_layers"] as $layer_name => $layer) { $bn = $layer["properties"]["bean_name"]; $bfn = $layer["properties"]["bean_file_name"]; $label = WorkFlowBeansFileHandler::getLayerBeanFolderName($user_beans_folder_path . $bfn, $bn, $user_global_variables_file_path); $main_content .= '
+				<li class="business_logic_services">
+					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=block&bean_name=$bn&bean_file_name=$bfn$filter_by_layout_url_query" . '">
+						<i class="selected"></i>
+						<span class="fas fa-list logo"></span>
+						<label>List ' . ucwords($label) . ' Services</label>
+					</a>
+				</li>'; } } $main_content .= '
 				<li class="tools">
-					<a class="item_header" href="javascript:void(0)" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?element_type=util&bean_name=$bean_name&bean_file_name=$bean_file_name&path=$project&is_popup=1" . '\')">
+					<a class="item_header" href="javascript:void(0)" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?element_type=util&bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$project&is_popup=1" . '\')">
 						<i class="selected"></i>
 						<span class="fas fa-tools logo"></span>
 						<label>Tools</label>
@@ -282,14 +296,14 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 	<div class="iframe_overlay">
 		<div class="iframe_loading">Loading...</div>
 	</div>
-</div>'; } else $main_content .= '<div class="error">Error: No projects available! Please contact your sysadmin...</div>'; function getProjectsHtml($v90b50cf52d, $v593858b53e) { $pf8ed4912 = ''; foreach ($v90b50cf52d as $v29e5d6d712 => $v20dfc6306e) { if ($v20dfc6306e["is_project"]) { $pf8ed4912 .= '<li class="project' . ($v20dfc6306e["is_selected"] ? " shown_project" : "") . '">
-						<a class="item_header" href="' . str_replace("#project#", $v20dfc6306e["element_type_path"], $v593858b53e) . '" title="' . $v29e5d6d712 . '">
-							<i class="selected"></i>
-							<span class="fas fa-globe logo"></span>
-							<label>' . $v29e5d6d712 . '</label>
-						</a>
-					</li>'; } else { $pf8ed4912 .= '<li class="project project_folder">
-						<div class="item_header" title="' . $v29e5d6d712 . '">
-							<span class="fas fa-folder logo"></span>
-							<label>' . $v29e5d6d712 . '</label>
-						</div>'; if ($v20dfc6306e) $pf8ed4912 .= '<ul>' . getProjectsHtml($v20dfc6306e, $v593858b53e) . '</ul>'; $pf8ed4912 .= '</li>'; } } return $pf8ed4912; } ?>
+</div>'; function getProjectsHtml($v90b50cf52d, $v593858b53e) { $pf8ed4912 = ''; if ($v90b50cf52d) foreach ($v90b50cf52d as $v29e5d6d712 => $v20dfc6306e) { if ($v20dfc6306e["is_project"]) { $pf8ed4912 .= '<li class="project' . ($v20dfc6306e["is_selected"] ? " shown_project" : "") . '">
+							<a class="item_header" href="' . str_replace("#project#", $v20dfc6306e["element_type_path"], $v593858b53e) . '" title="' . $v29e5d6d712 . '">
+								<i class="selected"></i>
+								<span class="fas fa-globe logo"></span>
+								<label>' . $v29e5d6d712 . '</label>
+							</a>
+						</li>'; } else { $pf8ed4912 .= '<li class="project project_folder">
+							<div class="item_header" title="' . $v29e5d6d712 . '">
+								<span class="fas fa-folder logo"></span>
+								<label>' . $v29e5d6d712 . '</label>
+							</div>'; if ($v20dfc6306e) $pf8ed4912 .= '<ul>' . getProjectsHtml($v20dfc6306e, $v593858b53e) . '</ul>'; $pf8ed4912 .= '</li>'; } } return $pf8ed4912; } ?>

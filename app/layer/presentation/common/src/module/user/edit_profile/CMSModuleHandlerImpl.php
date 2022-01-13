@@ -114,7 +114,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						
 						$status = \UserUtil::updateUser($EVC, $new_data, $brokers);
 						
-						if ($status && $settings["show_password"] && strlen($new_data["password"])) {
+						if ($status && $settings["show_password"] && strlen($password)) {
 							$new_data["do_not_encrypt_password"] = $settings["do_not_encrypt_password"];
 							
 							//only update password if exists any change

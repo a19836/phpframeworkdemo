@@ -185,18 +185,70 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
   		
   		var status = true;
   		
-  		if (source_task_tag == "dbdriver")
+  		if (source_task_id == target_task_id)
   			status = false;
-  		else if (source_task_tag == "db" && target_task_tag != "dbdriver")
-  			status = false;
-  		else if (source_task_tag == "dataaccess" && target_task_tag != "db")
-  			status = false;
-  		else if (source_task_tag == "businesslogic" && target_task_tag == "presentation")
-  			status = false;
-  		else if (source_task_tag == target_task_tag && source_task_tag != "businesslogic") //businesslogic can be connected to each other
-  			status = false;
-  		else if (source_task_id == target_task_id)
-  			status = false;
+  		//If DBDriver
+  		else if (source_task_tag == "dbdriver") 
+  			status = false; //dbdriver cannot have connections with other layers
+  		//If DB layer
+  		else if (source_task_tag == "db") { 
+		  	if (target_task_tag != "dbdriver") //db-layer can only be connected with dbdriver
+	  			status = false;
+	  	}
+	  	//If DataAccess layer
+  		else if (source_task_tag == "dataaccess") {
+		  	if (!DataAccessLayerTaskPropertyObj.allow_multi_lower_level_layer_connections) { //only allow direct connections with 1 layer bellow
+		  		if (target_task_tag != "db") //dataaccess can only be connected with db-layer. Only db-layer can connect with db driver
+	  				status = false;
+	  		}
+	  		else {
+		  		if (target_task_tag == "dbdriver" && !DataAccessLayerTaskPropertyObj.allow_dbdriver_connections) //only allow db-access to connect with db driver if allow_dbdriver_connections is true, otherwise only DB layer can connect with DBDrivers.
+		  			status = false;
+			  	else if (target_task_tag == "presentation" || target_task_tag == "businesslogic") //dataaccess cannot connect with presentation or businesslogic bc is from a level above.
+			  		status = false;
+		  	}
+  		}
+  		//If BusinessLogic layer
+  		else if (source_task_tag == "businesslogic") {
+		  	if (source_task_tag == target_task_tag && !BusinessLogicLayerTaskPropertyObj.allow_same_layer_connection) //layers cannot be connected to other layers with same type
+  				status = false;
+		  	else if (!BusinessLogicLayerTaskPropertyObj.allow_multi_lower_level_layer_connections) { //only allow direct connections with 1 layer bellow
+		  		if (target_task_tag != "dataaccess")
+		  			status = false;
+		  	}
+		  	else {
+		  		if (target_task_tag == "dbdriver" && !BusinessLogicLayerTaskPropertyObj.allow_dbdriver_connections) //only allow businesslogic to connect with db driver if allow_dbdriver_connections is true, otherwise only DB layer can connect with DBDrivers.
+		  			status = false;
+			  	else if (target_task_tag == "presentation") //businesslogic cannot connect with presentation, bc is from a level above.
+			  		status = false;
+		  	}
+	  	}
+  		//If Presentation layer
+  		else if (source_task_tag == "presentation") {
+	  		if (!PresentationLayerTaskPropertyObj.allow_multi_lower_level_layer_connections) { //only allow direct connections with 1 layer bellow
+		  		if (target_task_tag != "businesslogic")
+		  			status = false;
+		  	}
+		  	else {
+		  		if (target_task_tag == "dbdriver" && !PresentationLayerTaskPropertyObj.allow_dbdriver_connections) //only allow presentation to connect with db driver if allow_dbdriver_connections is true, otherwise only DB layer can connect with DBDrivers.
+		  			status = false;
+		  	}
+	  	}
+	  	
+	  	//check if already a connection with the same tasks
+	  	if (status) {
+	  		var source_connections = WF.jsPlumbTaskFlow.getSourceConnections(source_task_id);
+	  		var count = 0;
+	  		//console.log(source_connections);
+	  		
+	  		if (source_connections)
+	  			for (var i = 0; i < source_connections.length; i++)
+	  				if (source_connections[i].targetId == target_task_id)
+	  					count++;
+	  		
+	  		if (count > 1)
+	  			status = false;
+	  	}
   		
   		if (!status) {
   			var source_label = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(source_task_id);
@@ -317,12 +369,12 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 		var status = isTaskLabelValid(label_obj, task_id);
 		
 		if (status)
-			ContainsLayerGlobalVariables(label_obj.label);
+			containsLayerGlobalVariables(label_obj.label);
 		
 		return status;
 	}
 
-	function ContainsLayerGlobalVariables(label) {
+	function containsLayerGlobalVariables(label) {
 		//var vars = label.match(/\{?\$\{?([\p{L}\w]+)\}?/giu); //'\w' means all words with '_' and '/u' means with accents and ç too. Cannot use this bc it does not work in IE.
 		var vars = label.match(/\{?\$\{?([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC]+)\}?/gi); //'\w' means all words with '_' and 'u' means with accents and ç too.
 		
@@ -358,7 +410,7 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 			main_value += " " + j_field.val();
 		}
 	
-		ContainsLayerGlobalVariables(main_value);
+		containsLayerGlobalVariables(main_value);
 	}
 	
 	/* TASK PROPERTIES */

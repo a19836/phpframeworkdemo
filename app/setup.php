@@ -168,7 +168,12 @@ $dir_path = str_replace(DIRECTORY_SEPARATOR, "/", __DIR__) . "/"; $main_status =
 		<ul>
 			<li>
 				[mysqld]<br>
+				#if mysql version < 8<br>
 				sql-mode=\"ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION\"<br>
+				<br>
+				#if mysql version >= 8<br>
+				sql-mode=\"ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION\"<br>
+				<br>
 				max_allowed_packet=250M<br>
 				wait_timeout=28800
 				max_allowed_packet=100M

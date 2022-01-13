@@ -28,14 +28,21 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); $head = AdminMenuUIHandler
 		<li class="collapse_left_panel" title="Collapse Left Panel" onClick="collapseLeftPanel(this)">Collapse Left Panel</li>
 		<li class="home" title="Go to Home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/admin_home?admin_type=advanced">Home</li>
 		<li class="docbook" title="Go to Doc-Book" onClick="goTo(this, \'docbook_url\', event)" docbook_url="' . $project_url_prefix . 'docbook/">Doc Book</li>
+		<li class="toggle_tree_layout" title="Toggle Tree Layout" onClick="toggleTreeLayout(this, \'' . ($left_panel_tree_layout_class == "left_panel_with_tabs" ? "left_panel_without_tabs" : "left_panel_with_tabs") . '\')">Toggle Tree Layout</li>
 		' . ($is_flush_cache_allowed ? '<li class="flush_cache" title="Flush Cache" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\')">Flush Cache</li>' : '') . '
 	</ul>
 </div>
 
-<div id="left_panel">
+<div id="left_panel" class="' . $left_panel_tree_layout_class . '">
+	<div class="filter_by_layout">
+		<label>Filter by: </label>
+		<select onChange="filterByLayout(this)">
+			<option value="">- All -</option>'; foreach ($presentation_projects_by_layer_label as $layer_label => $projs) { $main_content .= '<optgroup label="' . $layer_label . '">'; foreach ($projs as $proj_id => $proj_name) $main_content .= '<option value="' . $proj_id . '" ' . ($filter_by_layout == $proj_id ? ' selected' : '') . '>' . $proj_name . '</option>'; $main_content .= '</optgroup>'; } foreach ($non_projects_layout_types as $lname => $lid) $main_content .= '<option value="' . $lname . '" ' . ($filter_by_layout == $lname ? ' selected' : '') . '>' . $lname . '</option>'; $main_content .= '	</select>
+	</div>
+	
 	<div class="file_tree_root"></div>
 	<div id="file_tree" class="mytree hidden">
-		<ul>'; $main_layers_properties = array(); $main_content .= AdminMenuUIHandler::getLayersGroup("db_layers", $layers["db_layers"], $main_layers_properties, $project_url_prefix); $main_content .= AdminMenuUIHandler::getLayersGroup("data_access_layers", $layers["data_access_layers"], $main_layers_properties, $project_url_prefix); $main_content .= AdminMenuUIHandler::getLayersGroup("business_logic_layers", $layers["business_logic_layers"], $main_layers_properties, $project_url_prefix); $main_content .= AdminMenuUIHandler::getLayersGroup("presentation_layers", $layers["presentation_layers"], $main_layers_properties, $project_url_prefix); $main_content .= isset($layers["vendors"]["vendor"]) ? AdminMenuUIHandler::getLayer("vendor", $layers["vendors"]["vendor"], $main_layers_properties, $project_url_prefix) : ''; $main_content .= '
+		<ul>'; $main_layers_properties = array(); $main_content .= AdminMenuUIHandler::getLayersGroup("presentation_layers", $layers["presentation_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("business_logic_layers", $layers["business_logic_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("data_access_layers", $layers["data_access_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("db_layers", $layers["db_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= isset($layers["vendors"]["vendor"]) ? AdminMenuUIHandler::getLayer("vendor", $layers["vendors"]["vendor"], $main_layers_properties, $project_url_prefix) : ''; $main_content .= '
 			<li class="management jstree-open" data-jstree=\'{"icon":"main_node main_node_management"}\'>
 				<label>Management</label>
 				<ul>

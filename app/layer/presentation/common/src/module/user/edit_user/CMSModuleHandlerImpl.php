@@ -21,13 +21,11 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$data = $data[0];
 		
 		if ($data["user_id"]) {
-			$data["user_type_ids"] = array();
+			$data["user_type_id"] = array();
 			$user_user_type_data = \UserUtil::getUserUserTypesByConditions($brokers, array("user_id" => $data["user_id"]), null);
 			if ($user_user_type_data)
 				foreach ($user_user_type_data as $item)
-					$data["user_type_ids"][] = $item["user_type_id"];
-			
-			$data["user_type_id"] = $data["user_type_ids"][0];
+					$data["user_type_id"][] = $item["user_type_id"];
 			
 			//Getting User Extra Details
 			$data_extra = $CommonModuleTableExtraAttributesUtil->getTableExtra(array("user_id" => $data["user_id"]), true);
@@ -73,8 +71,18 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				$security_answer_2 = $_POST["security_answer_2"];
 				$security_question_3 = $_POST["security_question_3"];
 				$security_answer_3 = $_POST["security_answer_3"];
+				$active = $_POST["active"];
 				
-				$empty_field_name = \CommonModuleUI::checkIfEmptyFields($settings, array("user_type_id" => $user_type_id, "username" => $username, /*"password" => $password, */"name" => $name, "email" => $email, "security_question_1" => $security_question_1, "security_answer_1" => $security_answer_1, "security_question_2" => $security_question_2, "security_answer_2" => $security_answer_2, "security_question_3" => $security_question_3, "security_answer_3" => $security_answer_3));
+				if ($settings["show_user_type_id"] && is_array($user_type_id)) {
+					foreach ($user_type_id as $utid)
+						if (\CommonModuleUI::checkIfEmptyField($settings, "user_type_id", $utid)) {
+							$empty_field_name = "user_type_id";
+							break;
+						}
+				}
+				
+				if (!$empty_field_name)
+					$empty_field_name = \CommonModuleUI::checkIfEmptyFields($settings, array("username" => $username, /*"password" => $password, */"name" => $name, "email" => $email, "security_question_1" => $security_question_1, "security_answer_1" => $security_answer_1, "security_question_2" => $security_question_2, "security_answer_2" => $security_answer_2, "security_question_3" => $security_question_3, "security_answer_3" => $security_answer_3));
 				
 				if (!$empty_field_name)
 					$empty_field_name = $CommonModuleTableExtraAttributesUtil->checkIfEmptyFields($settings, $_POST);
@@ -114,14 +122,15 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						$new_data["security_question_3"] = $settings["show_security_question_3"] ? $security_question_3 : $new_data["security_question_3"];
 						$new_data["security_answer_3"] = $settings["show_security_answer_3"] ? $security_answer_3 : $new_data["security_answer_3"];
 						
-						$new_data["user_type_id"] = $settings["show_user_type_id"] ? $user_type_id : $new_data["user_type_id"];
+						if ($settings["show_user_type_id"])
+							$new_data["user_type_id"] = is_array($user_type_id) ? $user_type_id : (strlen($user_type_id) > 0 ? array($user_type_id) : array());
 						
 						$CommonModuleTableExtraAttributesUtil->prepareFieldsWithNewData($settings, $new_data, $data, $_POST);
 						
 						\CommonModuleUI::prepareFieldsWithDefaultValue($settings, $new_data);
 						
 						if (empty($new_data["user_type_id"]))
-							$new_data["user_type_id"] = \UserUtil::PUBLIC_USER_TYPE_ID;
+							$new_data["user_type_id"] = array(\UserUtil::PUBLIC_USER_TYPE_ID);
 						
 						if (\CommonModuleUI::areFieldsValid($EVC, $settings, $new_data, $error_message) && $CommonModuleTableExtraAttributesUtil->areFileFieldsValid($EVC, $settings, $error_message)) {
 							$new_data["object_users"] = isset($new_data["object_users"]) ? $new_data["object_users"] : $settings["object_to_objects"];
@@ -132,27 +141,46 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 								$status = \UserUtil::insertUser($EVC, $new_data, $brokers);
 								$inserted_user_id = $status;
 								
-								if ($status && !\UserUtil::insertUserUserType($brokers, array("user_id" => $status, "user_type_id" => $new_data["user_type_id"]))) {
-									$status = false;
+								//add user types
+								if ($status && $new_data["user_type_id"]) {
+									foreach ($new_data["user_type_id"] as $utid)
+										if (!\UserUtil::insertUserUserType($brokers, array("user_id" => $inserted_user_id, "user_type_id" => $utid)))
+											$status = false;
 								}
 								
-								if (strpos($settings["on_insert_ok_action"], "_redirect") !== false) {
+								if (strpos($settings["on_insert_ok_action"], "_redirect") !== false)
 									$settings["on_insert_ok_redirect_url"] .= (strpos($settings["on_insert_ok_redirect_url"], "?") !== false ? "&" : "?") . "user_id=$status";
-								}
 							}
 							else if ($settings["allow_update"] && $data["user_id"] && \UserUtil::updateUser($EVC, $new_data, $brokers)) {
 								$status = true;
 								
-								if ($settings["show_password"] && strlen($new_data["password"])) {
+								if ($settings["show_password"] && strlen($password)) {
 									//only update password if exists any change
 									if (!$new_data["do_not_encrypt_password"] || $data["password"] != $new_data["password"])
 										$status = \UserUtil::updateUserPassword($brokers, $new_data);
 								}
 								
+								//add user types
 								if ($status && $data["user_type_id"] != $new_data["user_type_id"]) {
-									$status = !$data["user_type_id"] || \UserUtil::deleteUserUserType($brokers, $data["user_id"], $data["user_type_id"]);
-									if ($status && !in_array($new_data["user_type_id"], $data["user_type_ids"]))						
-										$status = \UserUtil::insertUserUserType($brokers, array("user_id" => $data["user_id"], "user_type_id" => $new_data["user_type_id"]));
+									//delete old user type ids
+									if ($data["user_type_id"]) {
+										$user_type_ids_to_delete = array_diff($data["user_type_id"], $new_data["user_type_id"]);
+										
+										if ($user_type_ids_to_delete)
+											foreach ($user_type_ids_to_delete as $utid)
+												if (!\UserUtil::deleteUserUserType($brokers, $data["user_id"], $utid))
+													$status = false;
+									}
+									
+									//add new user type ids
+									if ($status && $new_data["user_type_id"]) {	
+										$user_type_ids_to_add = $data["user_type_id"] ? array_diff($new_data["user_type_id"], $data["user_type_id"]) : $new_data["user_type_id"];
+										
+										if ($user_type_ids_to_add)
+											foreach ($user_type_ids_to_add as $utid)
+												if (!\UserUtil::insertUserUserType($brokers, array("user_id" => $data["user_id"], "user_type_id" => $utid)))
+													$status = false;
+									}
 								}
 							}
 						}
@@ -163,8 +191,12 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 							if ($settings["show_username"] && $username && strtolower($data["username"]) != strtolower($username))
 								\UserUtil::changeUserSessionUsernameByUsername($brokers, $settings, $data["username"], $username);
 							
+							//save user active status
+							if ($settings["show_active"])
+								$status = \UserUtil::updateUserActiveStatus($brokers, array("user_id" => $user_id, "active" => $active));
+							
 							//save user attachments
-							$status = \AttachmentUtil::saveObjectAttachments($EVC, \ObjectUtil::USER_OBJECT_TYPE_ID, $user_id, \UserUtil::USER_ATTACHMENTS_GROUP_ID, $error_message);
+							$status = $status && \AttachmentUtil::saveObjectAttachments($EVC, \ObjectUtil::USER_OBJECT_TYPE_ID, $user_id, \UserUtil::USER_ATTACHMENTS_GROUP_ID, $error_message);
 							
 							if ($status) {
 								//save user extra
@@ -206,6 +238,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				"security_answer_2" => $settings["show_security_answer_2"] ? $security_answer_2 : $data["security_answer_2"],
 				"security_question_3" => $settings["show_security_question_3"] ? $security_question_3 : $data["security_question_3"],
 				"security_answer_3" => $settings["show_security_answer_3"] ? $security_answer_3 : $data["security_answer_3"],
+				"active" => $settings["show_active"] ? $active : $data["active"],
 			);
 			
 			$CommonModuleTableExtraAttributesUtil->prepareFieldsWithNewData($settings, $form_data, $data, $_POST);
@@ -235,7 +268,11 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		if ($settings["show_user_type_id"]) {
 			$user_types = \UserUtil::getAllUserTypes($brokers);
-			$user_type_options = array(array("label" => ""));
+			$user_type_options = array();
+			
+			if ($settings["fields"]["user_type_id"]["field"]["input"]["allow_null"])
+				$user_type_options[] = array("label" => "");
+			
 			$available_user_types = array();
 				
 			if ($user_types) {
@@ -250,6 +287,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				}
 			}
 			
+			$settings["fields"]["user_type_id"]["field"]["input"]["name"] = "user_type_id[]";
 			$settings["fields"]["user_type_id"]["field"]["input"]["type"] = $is_editable ? "select" : "label";
 			$settings["fields"]["user_type_id"]["field"]["input"]["options"] = $user_type_options;
 			$settings["fields"]["user_type_id"]["field"]["input"]["available_values"] = $available_user_types;

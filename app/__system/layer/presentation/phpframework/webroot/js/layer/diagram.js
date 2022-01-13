@@ -1,4 +1,7 @@
-;(function() {
+if (typeof allow_connections_to_multiple_levels == "undefined")
+	var allow_connections_to_multiple_levels = true;
+
+$(function() {
 	/*$(window).bind('beforeunload', function () {
 		if (window.parent && window.parent.iframe_overlay)
 			window.parent.iframe_overlay.hide();
@@ -12,7 +15,13 @@
 	
 	jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = updateTasksAfterFileRead;
 	jsPlumbWorkFlow.jsPlumbTaskFile.on_success_update = updateTasksAfterFileRead;
-})();
+	
+	//allow connections to only 1 level below.
+	if (!allow_connections_to_multiple_levels) {
+		PresentationLayerTaskPropertyObj.allow_multi_lower_level_layer_connections = false;
+		BusinessLogicLayerTaskPropertyObj.allow_multi_lower_level_layer_connections = false;
+	}
+});
 
 function updateTasksAfterFileRead() {
 	//load tasks properties

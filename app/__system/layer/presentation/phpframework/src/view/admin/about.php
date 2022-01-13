@@ -73,6 +73,11 @@ $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuth
 		<label>Logged as:</label>
 		<span>' . $logged_name . ' (<a href="javascript:void(0)" onClick="logout()">logout</a>)</span>
 	</div>
+	<div class="license">
+		<label>License:</label>
+		<span>&lt;root path&gt;/' . basename($license_fp) . '</span>
+		<div>' . $license_contents . '</div>
+	</div>
 </div>
 
 <script>

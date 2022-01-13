@@ -55,8 +55,8 @@
 		<id><![CDATA[student]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>102</offset_left>
-		<offset_top>173</offset_top>
+		<offset_left>101</offset_left>
+		<offset_top>152</offset_top>
 		<width>160.3</width>
 		<height>74.3</height>
 		<properties>
@@ -132,8 +132,8 @@
 		<id><![CDATA[teacher]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>399</offset_left>
-		<offset_top>84</offset_top>
+		<offset_left>384</offset_left>
+		<offset_top>67</offset_top>
 		<width>160.3</width>
 		<height>92.3</height>
 		<properties>

@@ -11,16 +11,20 @@
 .manage_wordpress {
 	width:400px;
 	margin:0 auto;
-	text-align:center;
 }
 .manage_wordpress .project,
   .manage_wordpress .db_driver {
 	margin-bottom:20px;
 }
 .manage_wordpress label {
+	width:180px;
+	display:inline-block;
 	font-weight:normal;
 }
 .manage_wordpress select {
+	width:calc(100% - 190px);
+}
+.manage_wordpress .buttons {
 	text-align:center;
 }
 .manage_wordpress .buttons input {

@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQueryHandler { const TASK_QUERY_TYPE = "d0d250c0"; const TASK_QUERY_TAG = "query"; private $pcfdeae4e; private $pcd2aca48; private $v00161f0c07; private $v9b98e0e818; private $v5e788adf08; private $pc66a0204; private $v5a331eab7e; private $pd76831fc; private $v5e4089f2c3; private $v9d043dd3df; private $v197630b0cc; private $v1167f1d261; public function __construct($pcfdeae4e, $pcd2aca48, $v00161f0c07, $v9b98e0e818, $v5e788adf08, $pc66a0204, $v5a331eab7e, $pd76831fc, $v5e4089f2c3, $v9d043dd3df, $v197630b0cc, $v1167f1d261) { $this->pcfdeae4e = $pcfdeae4e; $this->pcd2aca48 = $pcd2aca48; $this->v00161f0c07 = $v00161f0c07; $this->v9b98e0e818 = $v9b98e0e818; $this->v5e788adf08 = $v5e788adf08; $this->pc66a0204 = $pc66a0204; $this->v5a331eab7e = $v5a331eab7e; $this->pd76831fc = $pd76831fc; $this->v5e4089f2c3 = $v5e4089f2c3; $this->v9d043dd3df = $v9d043dd3df; $this->v197630b0cc = $v197630b0cc; $this->v1167f1d261 = $v1167f1d261; } public static function getSelectedDBBrokersDriversTablesAndAttributes($pe54bee2d, $v5e053dece2, $pdb9e96e6, $v875c215016 = false) { $pc4223ce1 = $pe54bee2d->getBrokers(); $v9b98e0e818 = array(); $v5e788adf08 = $pc66a0204 = $v5a331eab7e = $pd76831fc = $v9d043dd3df = null; if ($pc4223ce1) { foreach ($pc4223ce1 as $v2b2cf4c0eb => $pd922c2f7) { $v9b98e0e818[$v2b2cf4c0eb] = $pd922c2f7->getDBDriversName(); if (empty($v5e788adf08)) { $v5e788adf08 = $v2b2cf4c0eb; $pc66a0204 = $v9b98e0e818[$v2b2cf4c0eb][0]; } } } if ($v5e788adf08 && $pc66a0204) { $v5e053dece2 = WorkFlowTasksFileHandler::getDBDiagramTaskFilePath($pdb9e96e6, "db_diagram", $pc66a0204); $v5a331eab7e = file_exists($v5e053dece2) ? "diagram" : "db"; if ($v5a331eab7e == "diagram") { $v094d1a2778 = new WorkFlowDataAccessHandler(); $v094d1a2778->setTasksFilePath($v5e053dece2); $v1d696dbd12 = $v094d1a2778->getTasks(); $v5e4089f2c3 = array_keys($v1d696dbd12["tasks"]); $pd76831fc = !empty($v875c215016) ? $v875c215016 : $v5e4089f2c3[0]; $v9d043dd3df = $v1d696dbd12["tasks"][$pd76831fc]; $v9d043dd3df = $v9d043dd3df["properties"]["table_attr_names"]; } else { $v1502dfe376 = $pe54bee2d->getBroker($v5e788adf08)->getFunction("listTables", null, array("db_driver" => $pc66a0204)); $v5e4089f2c3 = array(); if ($v1502dfe376) foreach ($v1502dfe376 as $pa9848378) $v5e4089f2c3[] = $pa9848378["name"]; if ($v875c215016) { $v9a4d5f4ed3 = $pe54bee2d->getBroker($v5e788adf08)->getFunction("isTableInNamesList", array($v5e4089f2c3, $v875c215016), array("db_driver" => $pc66a0204)); $pd76831fc = $v9a4d5f4ed3 ? $v875c215016 : $v5e4089f2c3[0]; } else $pd76831fc = $v5e4089f2c3[0]; $v9d043dd3df = $pe54bee2d->getBroker($v5e788adf08)->getFunction("listTableFields", $pd76831fc, array("db_driver" => $pc66a0204)); $v9d043dd3df = array_keys($v9d043dd3df); } } return array( "brokers" => $pc4223ce1, "db_drivers" => $v9b98e0e818, "selected_db_broker" => $v5e788adf08, "selected_db_driver" => $pc66a0204, "selected_type" => $v5a331eab7e, "selected_table" => $pd76831fc, "selected_tables_name" => $v5e4089f2c3, "selected_table_attrs" => $v9d043dd3df, ); } public function getDataAccessObjHtml($v69f1629ff2, $pab85d90e = false) { $pf8ed4912 = '
+include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQueryHandler { const TASK_QUERY_TYPE = "d0d250c0"; const TASK_QUERY_TAG = "query"; private $pcfdeae4e; private $pcd2aca48; private $v00161f0c07; private $v9b98e0e818; private $v5e788adf08; private $pc66a0204; private $v5a331eab7e; private $pd76831fc; private $v5e4089f2c3; private $v9d043dd3df; private $v197630b0cc; private $v1167f1d261; public function __construct($pcfdeae4e, $pcd2aca48, $v00161f0c07, $v9b98e0e818, $v5e788adf08, $pc66a0204, $v5a331eab7e, $pd76831fc, $v5e4089f2c3, $v9d043dd3df, $v197630b0cc, $v1167f1d261) { $this->pcfdeae4e = $pcfdeae4e; $this->pcd2aca48 = $pcd2aca48; $this->v00161f0c07 = $v00161f0c07; $this->v9b98e0e818 = $v9b98e0e818; $this->v5e788adf08 = $v5e788adf08; $this->pc66a0204 = $pc66a0204; $this->v5a331eab7e = $v5a331eab7e; $this->pd76831fc = $pd76831fc; $this->v5e4089f2c3 = $v5e4089f2c3; $this->v9d043dd3df = $v9d043dd3df; $this->v197630b0cc = $v197630b0cc; $this->v1167f1d261 = $v1167f1d261; } public static function getSelectedDBBrokersDriversTablesAndAttributes($pe54bee2d, $v5e053dece2, $pdb9e96e6, $v875c215016 = false, $pb154d332 = false, $v1eb9193558 = null) { $pc4223ce1 = $pe54bee2d->getBrokers(); $v9b98e0e818 = array(); $v5e788adf08 = $pc66a0204 = $v5a331eab7e = $pd76831fc = $v9d043dd3df = null; if ($pc4223ce1) { foreach ($pc4223ce1 as $v2b2cf4c0eb => $pd922c2f7) { $v9b98e0e818[$v2b2cf4c0eb] = $pd922c2f7->getDBDriversName(); if ($pb154d332 && $v1eb9193558) $v1eb9193558->filterLayerBrokersDBDriversNamesFromLayoutName($pe54bee2d, $v9b98e0e818[$v2b2cf4c0eb], $pb154d332); if (empty($v5e788adf08) && $v9b98e0e818[$v2b2cf4c0eb]) { $v5e788adf08 = $v2b2cf4c0eb; $pc66a0204 = $v9b98e0e818[$v2b2cf4c0eb][0]; } } } if ($v5e788adf08 && $pc66a0204) { $v5e053dece2 = WorkFlowTasksFileHandler::getDBDiagramTaskFilePath($pdb9e96e6, "db_diagram", $pc66a0204); $v5a331eab7e = file_exists($v5e053dece2) ? "diagram" : "db"; if ($v5a331eab7e == "diagram") { $v094d1a2778 = new WorkFlowDataAccessHandler(); $v094d1a2778->setTasksFilePath($v5e053dece2); $v1d696dbd12 = $v094d1a2778->getTasks(); $v5e4089f2c3 = array_keys($v1d696dbd12["tasks"]); $pd76831fc = !empty($v875c215016) ? $v875c215016 : $v5e4089f2c3[0]; $v9d043dd3df = $v1d696dbd12["tasks"][$pd76831fc]; $v9d043dd3df = $v9d043dd3df["properties"]["table_attr_names"]; } else { $v1502dfe376 = $pe54bee2d->getBroker($v5e788adf08)->getFunction("listTables", null, array("db_driver" => $pc66a0204)); $v5e4089f2c3 = array(); if ($v1502dfe376) foreach ($v1502dfe376 as $pa9848378) $v5e4089f2c3[] = $pa9848378["name"]; if ($v875c215016) { $v9a4d5f4ed3 = $pe54bee2d->getBroker($v5e788adf08)->getFunction("isTableInNamesList", array($v5e4089f2c3, $v875c215016), array("db_driver" => $pc66a0204)); $pd76831fc = $v9a4d5f4ed3 ? $v875c215016 : $v5e4089f2c3[0]; } else $pd76831fc = $v5e4089f2c3[0]; $v9d043dd3df = $pe54bee2d->getBroker($v5e788adf08)->getFunction("listTableFields", $pd76831fc, array("db_driver" => $pc66a0204)); $v9d043dd3df = array_keys($v9d043dd3df); } } return array( "brokers" => $pc4223ce1, "db_drivers" => $v9b98e0e818, "selected_db_broker" => $v5e788adf08, "selected_db_driver" => $pc66a0204, "selected_type" => $v5a331eab7e, "selected_table" => $pd76831fc, "selected_tables_name" => $v5e4089f2c3, "selected_table_attrs" => $v9d043dd3df, ); } public function getDataAccessObjHtml($v69f1629ff2, $pab85d90e = false) { $pf8ed4912 = '
 			<div class="relationships">
 				<div class="description">
 					"Relationships" are links or dependecies between objects or tables.
@@ -99,6 +99,9 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 				folder: {
 					get_sub_files_url: "' . $pec7b777d . '",
 				},
+				cms_common: {
+					get_sub_files_url: "' . $pec7b777d . '",
+				},
 				cms_module: {
 					get_sub_files_url: "' . $pec7b777d . '",
 				},
@@ -115,11 +118,23 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 						file_path: "#path#"
 					}
 				},
+				referenced_folder: {
+					get_sub_files_url: "' . $pec7b777d . '",
+				},
 			}};
-			'; $pf8ed4912 .= '
+			'; $v912c18a5b6 = $this->pcd2aca48 . 'admin/get_sub_files?item_type=dao&path=#path#'; $pf8ed4912 .= '
 			main_layers_properties.dao = {ui: {
 				folder: {
-					get_sub_files_url: "' . $this->pcd2aca48 . 'admin/get_sub_files?item_type=dao&path=#path#",
+					get_sub_files_url: "' . $v912c18a5b6 . '",
+				},
+				cms_common: {
+					get_sub_files_url: "' . $v912c18a5b6 . '",
+				},
+				cms_module: {
+					get_sub_files_url: "' . $v912c18a5b6 . '",
+				},
+				cms_program: {
+					get_sub_files_url: "' . $v912c18a5b6 . '",
 				},
 				hibernatemodel: {
 					attributes: {

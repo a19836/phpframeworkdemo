@@ -24,5 +24,7 @@ else {
 $project_url_prefix = $project_protocol . $_SERVER["HTTP_HOST"] . $project_relative_url_prefix;
 $project_common_url_prefix = $project_protocol . $_SERVER["HTTP_HOST"] . $project_common_relative_url_prefix;
 
+$original_project_url_prefix = $project_url_prefix; //When a page use a template from another project, the system will change this variable with the original project url prefix. This variable should be used to set the images, css and js files in the html code of templates.
+
 $sanitize_html_in_post_request = true; //This is very important bc it protects against xss attacks
 ?>

@@ -1,12 +1,14 @@
 .mytree {margin-bottom:20px;}
 .mytree i.main_node {background: url("../img/icons.png") -7px -3px no-repeat !important;}
-.mytree i.main_node_db_layers {background: url("../img/db_icons.png") -179px -21px no-repeat !important;}
+.mytree i.main_node_db_layers {background: url("../img/db_icons.png") -245px -21px no-repeat !important;}
 .mytree i.main_node_db {background: url("../img/db_icons.png") -179px -89px no-repeat !important;}
 .mytree i.main_node_data_access_layers {background: url("../img/db_icons.png") -133px 0px no-repeat !important;}
 .mytree i.main_node_ibatis {background: url("../img/db_icons.png") -224px -0px no-repeat !important;}
 .mytree i.main_node_hibernate {background: url("../img/db_icons.png") -246px -0px no-repeat !important;}
+.mytree i.main_node_business_logic_layers {background: url("../img/icons.png") -7px -69px no-repeat !important;}
 .mytree i.main_node_businesslogic {background: url("../img/icons.png") -29px -3px no-repeat !important;}
-.mytree i.main_node_presentation {background: url("../img/icons.png") -29px -3px no-repeat !important;}
+.mytree i.main_node_presentation_layers {background: url("../img/icons.png") -50px -244px no-repeat !important;}
+.mytree i.main_node_presentation {background: url("../img/icons.png") -7px -3px no-repeat !important;}
 /*.mytree i.main_node_dao {background: url("../img/icons.png") -51px -156px no-repeat !important;}*/
 .mytree i.main_node_vendor {background: url("../img/icons.png") -115px -156px no-repeat !important;}
 .mytree i.main_node_management {background: url("../img/icons.png") -93px -3px no-repeat !important;}
@@ -66,6 +68,7 @@
 .mytree i.controller_file {background: url("../common/img/icon/php_icon.png") 5px 4px no-repeat !important;}
 .mytree i.block_file {background: url("../img/db_icons.png") 1px 0px no-repeat !important;}
 .mytree i.blocks_folder {background: url("../img/db_icons.png") 1px 0px no-repeat !important;}
+.mytree i.cms_common {background: url("../img/db_icons.png") -245px -156px no-repeat !important;}
 .mytree i.cms_module {background: url("../img/db_icons.png") -245px -156px no-repeat !important;}
 .mytree i.cms_program {background: url("../img/db_icons.png") -245px -156px no-repeat !important;}
 .mytree i.cms_folder {background: url("../img/db_icons.png") -89px -156px no-repeat !important;}
@@ -88,6 +91,7 @@
 .mytree i.layout_ui_editor_widget {background: url("../img/db_icons.png") -223px -200px no-repeat !important;}
 .mytree i.test_unit {background: url("../img/db_icons.png") 0px -178px no-repeat !important;}
 .mytree i.test_unit_obj {background: url("../img/db_icons.png") -21px -178px no-repeat !important;}
+.mytree i.referenced_folder {background: url("../img/icons.png") -5px -27px no-repeat !important;}
 
 .mytree .jstree-hovered {background-color:transparent !important; border-radius:none; box-shadow:none;}
 .mytree .jstree-anchor.jstree-clicked.jstree-hovered, .mytree .jstree-anchor.link.jstree-clicked.jstree-hovered {background-color:#beebff !important; border-radius:2px; box-shadow:inset 0 0 1px #999999;}

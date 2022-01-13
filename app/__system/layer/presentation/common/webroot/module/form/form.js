@@ -147,11 +147,18 @@ function loadFormBlockNewSettings(module_form_settings, add_group_icon, tasks_va
 }
 
 function loadFormBlockNewSettingsActions(add_group_icon, actions, is_sub_group) {
-	if (actions) 
+	if (actions) {
 		$.each(actions, function (i, action) {
 			var group_item = is_sub_group ? addNewFormSubGroup(add_group_icon) : addNewFormGroup(add_group_icon);
 			loadFormBlockNewSettingsAction(action, group_item);
 		});
+		
+		var module_form_settings = $(add_group_icon).parent().closest(".module_form_settings");
+		var exists_deprecated_actions = module_form_settings.find("#groups_flow .form-groups .form-group-item-undefined").length > 0;
+		
+		if (module_form_settings.children(".deprecated_actions_message").length == 0 && exists_deprecated_actions)
+			module_form_settings.prepend('<div class="deprecated_actions_message">Attention: There are actions which are now DEPRECATED! Apparently this presentation layer is not connected anymore with all layers that some actions need use!</div>');
+	}
 }
 		
 function loadFormBlockNewSettingsAction(action, group_item) {
@@ -371,17 +378,17 @@ function loadFormBlockNewSettingsAction(action, group_item) {
 		select.val(action_type);
 		onChangeFormInputType( select[0] );
 		
-		if (typeof DBQueryTaskPropertyObj != "undefined") //db_drivers can be null and so DBQueryTaskPropertyObj won't exists
-			switch (action_type) {
-				case "insert":
-				case "update":
-				case "delete":
-				case "select":
-				case "procedure":
-				case "getinsertedid":
-					$(function () { //must be after everything loads otherwise the UI was not created yet
-						var db_elm = group_item.find(' > .form-group-body > .database-action-body');
-						
+		switch (action_type) {
+			case "insert":
+			case "update":
+			case "delete":
+			case "select":
+			case "procedure":
+			case "getinsertedid":
+				$(function () { //must be after everything loads otherwise the UI was not created yet
+					var db_elm = group_item.find(' > .form-group-body > .database-action-body');
+					
+					if (typeof DBQueryTaskPropertyObj != "undefined" && db_elm[0]) { //db_drivers can be null and so DBQueryTaskPropertyObj won't exists
 						//load header fields
 						var select = db_elm.find('.dal-broker > select');
 						select.val(action_value["dal_broker"]);
@@ -495,17 +502,20 @@ function loadFormBlockNewSettingsAction(action, group_item) {
 						db_elm.find(" > footer .opts .options_type").val( action_value["options_type"] );
 						
 						LayerOptionsUtilObj.onLoadTaskProperties(db_elm.children("footer"), action_value); //init options
-					});	
-					break;
-				
-				case "draw_graph":
-					var draw_graph_elm = group_item.find(' > .form-group-body > .draw-graph-action-body');
-					
-					if ($.isPlainObject(action_value) && action_value.hasOwnProperty("code")) {
-						draw_graph_elm.tabs("option", "active", 1);
-						initDrawGraphCode( draw_graph_elm.children(".draw-graph-js-code") );
 					}
-			}
+					else 
+						initGroupItemUndefinedTask(group_item, action_type, action_value);
+				});	
+				break;
+			
+			case "draw_graph":
+				var draw_graph_elm = group_item.find(' > .form-group-body > .draw-graph-action-body');
+				
+				if ($.isPlainObject(action_value) && action_value.hasOwnProperty("code")) {
+					draw_graph_elm.tabs("option", "active", 1);
+					initDrawGraphCode( draw_graph_elm.children(".draw-graph-js-code") );
+				}
+		}
 	}
 }
 
@@ -1021,9 +1031,24 @@ function initFormGroupItemTasks(group_item, values) {
 				break;
 			
 			var s = values.hasOwnProperty(tag) && values[tag] ? values[tag] : {};
-			group_item.find(" > .form-group-body > .broker-action-body > .undefined_action_value").val( JSON.stringify(s) );
+			initGroupItemUndefinedTask(group_item, tag, s);
 		}
 	}
+}
+
+function initGroupItemUndefinedTask(group_item, tag_name, tag_values) {
+	group_item.find(" > .form-group-body > .undefined-action-value").val( JSON.stringify(tag_values) );
+	
+	var select = group_item.find(" > .form-group-header > select.action-type");
+	var option = select.find("option[value=" + tag_name + "]");
+	
+	if (option.length == 0) {
+		select.append('<option value="' + tag_name + '" undefined="1">Undefined - ' + tag_name + '</option>');
+		select.val(tag_name);
+		onChangeFormInputType( select[0] );
+	}
+	
+	group_item.addClass("form-group-item-undefined");
 }
 
 /* UI FUNCTIONS */
@@ -1083,6 +1108,12 @@ function onChangeFormInputType(elm) {
 	var group_item = elm.parent().closest(".form-group-item");
 	var group_body = group_item.children(".form-group-body");
 	var selection = elm.val();
+	var is_undefined = elm.find("option:selected").attr("undefined");
+	
+	if (is_undefined)
+		group_item.addClass("form-group-item-undefined");
+	else
+		group_item.removeClass("form-group-item-undefined");
 	
 	var sections = group_body.children();
 	sections.hide();
@@ -3265,6 +3296,8 @@ function getModuleFormSettingsFromItemsToSave(items, options) {
 		var group_body = item.children(".form-group-body");
 		
 		var selection = action_type.val();
+		var is_selection_undefined = action_type.find("option:selected").attr("undefined");
+		
 		var item_settings = {
 			"result_var_name": result_var_name.val(), 
 			"action_type": selection, 
@@ -3274,351 +3307,357 @@ function getModuleFormSettingsFromItemsToSave(items, options) {
 			"action_value": {},
 		};
 		
-		switch (selection) {
-			case "html": //getting design form html settings
-				var section = group_body.children(".html-action-body");
-				var create_form_task_html = section.children(".create_form_task_html");
-				
-				item_settings["action_value"]["form_settings_data_type"] = create_form_task_html.find(".form_settings select").val();
-				
-				if (item_settings["action_value"]["form_settings_data_type"] == "array") {
-					var form_settings_data = parseArray( create_form_task_html.children(".form_settings_data") );
-					item_settings["action_value"]["form_settings_data"] = form_settings_data["form_settings_data"];
-				}
-				else if (item_settings["action_value"]["form_settings_data_type"] == "settings") {
-					CreateFormTaskPropertyObj.prepareCssAndJsFieldsToSave(create_form_task_html);
+		if (is_selection_undefined) {
+			var v = group_body.children(".undefined-action-value").val();
+			item_settings["action_value"] = v ? JSON.parse(v) : {};
+		}
+		else {
+			switch (selection) {
+				case "html": //getting design form html settings
+					var section = group_body.children(".html-action-body");
+					var create_form_task_html = section.children(".create_form_task_html");
 					
-					var form_settings_data = FormFieldsUtilObj.convertFormSettingsDataSettingsToArray( create_form_task_html.children(".inline_settings") );
-					ArrayTaskUtilObj.onLoadArrayItems( create_form_task_html.children(".form_settings_data"), form_settings_data, "");
+					item_settings["action_value"]["form_settings_data_type"] = create_form_task_html.find(".form_settings select").val();
 					
-					var form_settings_data = parseArray( create_form_task_html.children(".form_settings_data") );
-					item_settings["action_value"]["form_settings_data"] = form_settings_data["form_settings_data"];
-					item_settings["action_value"]["form_settings_data_type"] = "array";
-				}
-				else if (item_settings["action_value"]["form_settings_data_type"] == "ptl") {
-					var ptl_settings = create_form_task_html.find(".ptl_settings");
-					var code = getPtlElementTemplateSourceEditorValue(ptl_settings, true);
-					var external_vars = {};
-					
-					$.each( ptl_settings.find(" > .ptl_external_vars .item"), function (idx, item) {
-						item = $(item);
-						var k = item.children(".key").val();
-						var v = item.children(".value").val();
-						
-						if (k && v)
-							external_vars[ k.charAt(0) == "$" ? k.substr(1) : k ] = v.charAt(0) == "$" ? v : "$" + v;
-					});
-					
-					item_settings["action_value"]["form_settings_data"] = {"ptl" : {
-						"code" : code,
-						"input_data_var_name" : ptl_settings.find(" > .input_data_var_name > input").val(),
-						"idx_var_name" : ptl_settings.find(" > .idx_var_name > input").val(),
-						"external_vars" : external_vars,
-					}};
-					item_settings["action_value"]["form_settings_data_type"] = "ptl";
-				}
-				else
-					item_settings["action_value"]["form_settings_data"] = create_form_task_html.find(".form_settings input").val();
-				
-				break;
-
-			case "callbusinesslogic":
-			case "callibatisquery":
-			case "callhibernatemethod":
-			case "getquerydata":
-			case "setquerydata":
-			case "callfunction":
-			case "callobjectmethod":
-			case "restconnector":
-			case "soapconnector":
-				//getting brokers settings
-				var section = group_body.children(".broker-action-body");
-				
-				item_settings["action_value"] = getBrokerSettings(section, selection);
-				break;
-				
-			case "insert":
-			case "update":
-			case "delete":
-			case "select":
-			case "procedure":
-			case "getinsertedid":
-				var section = group_body.children(".database-action-body");
-				
-				//get header fields
-				item_settings["action_value"]["dal_broker"] = section.find(".dal-broker select").val();
-				item_settings["action_value"]["db_driver"] = section.find(".db-driver select").val();
-				item_settings["action_value"]["db_type"] = section.find(".db-type select").val();
-				
-				if (selection != "getinsertedid") {
-					//get table or sql fields
-					var select_tab_index = section.find(".query").tabs("option", "active");
-					
-					if (select_tab_index == 0) {
-						var table = section.find(".database-action-table > .table > select").val();
-						
-						item_settings["action_value"]["table"] = table;
-						
-						if (table != "") {
-							var attributes = [];
-							var conditions = [];
-							
-							$.each( section.find(".database-action-table > .attributes > ul > li"), function (idx, li) {
-								li = $(li);
-								
-								if (li.children(".attr-active").is(":checked"))
-									attributes.push({
-										"column": li.attr("data-attr-name"),
-										"value": li.children(".attr-value").val(),
-										"name": li.children(".attr-name").val()
-									});
-							});
-							
-							$.each( section.find(".database-action-table > .conditions > ul > li"), function (idx, li) {
-								li = $(li);
-								
-								if (li.children(".attr-active").is(":checked"))
-									conditions.push({
-										"column": li.attr("data-attr-name"),
-										"value": li.children(".attr-value").val()
-									});
-							});
-							
-							item_settings["action_value"]["attributes"] = attributes;
-							item_settings["action_value"]["conditions"] = conditions;
-						}
-						else if (!ignore_errors) {
-							var label = action_type.find("option:selected").text();
-							StatusMessageHandler.showError("'" + label + "' group cannot be empty!");
-							MyFancyPopup.hidePopup();
-							return;
-						}
-						
+					if (item_settings["action_value"]["form_settings_data_type"] == "array") {
+						var form_settings_data = parseArray( create_form_task_html.children(".form_settings_data") );
+						item_settings["action_value"]["form_settings_data"] = form_settings_data["form_settings_data"];
 					}
-					else {
-						var rel = getUserRelationshipObj( section.find(".relationship") );
-						var sql_type = rel[0] ? rel[0].toLowerCase() : "";
-						var sql = rel[1] && rel[1]["value"] ? rel[1]["value"] : "";
+					else if (item_settings["action_value"]["form_settings_data_type"] == "settings") {
+						CreateFormTaskPropertyObj.prepareCssAndJsFieldsToSave(create_form_task_html);
 						
-						if (sql != "" && sql_type && sql_type != selection)
-							item_settings["action_type"] = sql_type;
+						var form_settings_data = FormFieldsUtilObj.convertFormSettingsDataSettingsToArray( create_form_task_html.children(".inline_settings") );
+						ArrayTaskUtilObj.onLoadArrayItems( create_form_task_html.children(".form_settings_data"), form_settings_data, "");
 						
-						item_settings["action_value"]["sql"] = sql;
-						
-						if (sql == "" && !ignore_errors) {
-							var label = action_type.find("option:selected").text();
-							StatusMessageHandler.showError("'" + label + "' group cannot be empty!");
-							MyFancyPopup.hidePopup();
-							return;
-						}
+						var form_settings_data = parseArray( create_form_task_html.children(".form_settings_data") );
+						item_settings["action_value"]["form_settings_data"] = form_settings_data["form_settings_data"];
+						item_settings["action_value"]["form_settings_data_type"] = "array";
 					}
-				}
-				
-				//get footer fields
-				var opts = section.find(" > footer > .opts");
-				item_settings["action_value"]["options_type"] = opts.children(".options_type").val();
-				
-				if (item_settings["action_value"]["options_type"] == "array") {
-					var aux = parseArray( opts.children(".options") );
-					item_settings["action_value"]["options"] = aux["options"];
-				}
-				else
-					item_settings["action_value"]["options"] = opts.children(".options_code").val();
-				
-				break;
-				
-			case "show_ok_msg":
-			case "show_ok_msg_and_stop":
-			case "show_ok_msg_and_die":
-			case "show_ok_msg_and_redirect":
-			case "show_error_msg":
-			case "show_error_msg_and_stop":
-			case "show_error_msg_and_die":
-			case "show_error_msg_and_redirect":
-			case "alert_msg":
-			case "alert_msg_and_stop":
-			case "alert_msg_and_redirect":
-				var section = group_body.children(".message-action-body");
-				
-				item_settings["action_value"]["message"] = section.find(" > .message > input").val();
-				item_settings["action_value"]["redirect_url"] = section.find(" > .redirect-url > input").val();
-				break;
-				
-			case "redirect": //getting redirect settings
-				var section = group_body.children(".redirect-action-body");
-				
-				item_settings["action_value"] = section.children("input").val();
-				break;
-			
-			case "return_previous_record":
-			case "return_next_record":
-			case "return_specific_record":
-				var section = group_body.children(".records-action-body");
-				
-				item_settings["action_value"]["records_variable_name"] = section.find(" > .records-variable-name > input").val();
-				item_settings["action_value"]["index_variable_name"] = section.find(" > .index-variable-name > input").val();
-				break;
-			
-			case "check_logged_user_permissions":
-				var section = group_body.children(".check-logged-user-permissions-action-body");
-				var user_types = section.find(" > .users-perms > table > tbody .user-type-id select");
-				
-				item_settings["action_value"] = {
-					"all_permissions_checked": section.find(" > .all-permissions-checked > input").is(":checked") ? 1 : 0,
-					"entity_path_var_name": section.find(" > .entity-path-var-name").val(),
-					"logged_user_id": section.find(" > .logged-user-id > input").val(),
-					"users_perms": []
-				};
-				
-				$.each(user_types, function(idx, user_type) {
-					user_type = $(user_type);
-					
-					item_settings["action_value"]["users_perms"].push({
-						"user_type_id": user_type.val(),
-						"activity_id": user_type.parent().closest("tr").find(".activity-id select").val()
-					});
-				});
-				
-				break;
-							
-			case "code": //getting code settings
-				var section = group_body.children(".code-action-body");
-				var editor = section.data("editor");
-				
-				item_settings["action_value"] = editor ? editor.getValue() : section.children("textarea").val();
-				break;
-				
-			case "array": //getting array settings
-				var section = group_body.children(".array-action-body");
-				var aux = parseArray(section);
-				
-				item_settings["action_value"] = aux["array-action-body"];
-				break;
-				
-			case "string": //getting string settings
-				var section = group_body.children(".string-action-body");
-				
-				item_settings["action_value"] = section.children("input").val();
-				break;
-				
-			case "variable": //getting variable settings
-				var section = group_body.children(".variable-action-body");
-				
-				item_settings["action_value"] = section.children("input").val();
-				break;
-				
-			case "sanitize_variable": //getting variable settings
-				var section = group_body.children(".sanitize-variable-action-body");
-				
-				item_settings["action_value"] = section.children("input").val();
-				break;
-				
-			case "list_report": //getting variable settings
-				var section = group_body.children(".list-report-action-body");
-				
-				item_settings["action_value"] = {
-					"type": section.find(".type > select").val(),
-					"doc_name": section.find(".doc_name > input").val(),
-					"variable": section.find(".variable > input").val(),
-					"continue": section.find(".continue > select").val(),
-				};
-				break;
-				
-			case "call_block": //getting variable settings
-				var section = group_body.children(".call-block-action-body");
-				
-				item_settings["action_value"] = {
-					"block": section.find(".block > input").val(),
-					"project": section.find(".project > select").val(),
-				};
-				break;
-				
-			case "include_file": //getting include_file settings
-				var section = group_body.children(".include-file-action-body");
-				
-				item_settings["action_value"] = {
-					"path": section.children("input.path").val(),
-					"once": section.children("input.once").is(":checked") ? 1 : 0,
-				};
-				break;
-			
-			case "draw_graph": //getting draw_graph settings
-				var section = group_body.children(".draw-graph-action-body");
-				var is_code = section.tabs("option", "active") == 1;
-				
-				if (is_code) {
-					var editor = section.children(".draw-graph-js-code").data("editor");
-					
-					item_settings["action_value"] = {
-						"code": editor ? editor.getValue() : sub_section.children("textarea").val(),
-					};
-				}
-				else {
-					var sub_section = section.children(".draw-graph-settings");
-					var lis = sub_section.find(".graph-data-sets > ul > li:not(.no-data-sets)");
-					var data_sets = [];
-					
-					$.each(lis, function(idx, li) {
-						li = $(li);
+					else if (item_settings["action_value"]["form_settings_data_type"] == "ptl") {
+						var ptl_settings = create_form_task_html.find(".ptl_settings");
+						var code = getPtlElementTemplateSourceEditorValue(ptl_settings, true);
+						var external_vars = {};
 						
-						var data_set_options = {
-							"type": li.find(".type select").val(),
-							"item_label": li.find(".item-label input").val(),
-							"values_variable": li.find(".values-variable input").val(),
-							"background_colors": li.find(".background-colors input").val(),
-							"border_colors": li.find(".border-colors input").val(),
-							"border_width": li.find(".border-width input").val()
-						};
-						
-						var other_options = li.find(".other-options > ul > li");
-						$.each(other_options, function(idy, other_option) {
-							other_option = $(other_option);
-							var option_name = other_option.find(".option-name").val();
+						$.each( ptl_settings.find(" > .ptl_external_vars .item"), function (idx, item) {
+							item = $(item);
+							var k = item.children(".key").val();
+							var v = item.children(".value").val();
 							
-							if (option_name)
-								data_set_options[option_name] = other_option.find(".option-value").val();
+							if (k && v)
+								external_vars[ k.charAt(0) == "$" ? k.substr(1) : k ] = v.charAt(0) == "$" ? v : "$" + v;
 						});
 						
-						data_sets.push(data_set_options);
-					});
+						item_settings["action_value"]["form_settings_data"] = {"ptl" : {
+							"code" : code,
+							"input_data_var_name" : ptl_settings.find(" > .input_data_var_name > input").val(),
+							"idx_var_name" : ptl_settings.find(" > .idx_var_name > input").val(),
+							"external_vars" : external_vars,
+						}};
+						item_settings["action_value"]["form_settings_data_type"] = "ptl";
+					}
+					else
+						item_settings["action_value"]["form_settings_data"] = create_form_task_html.find(".form_settings input").val();
+					
+					break;
+
+				case "callbusinesslogic":
+				case "callibatisquery":
+				case "callhibernatemethod":
+				case "getquerydata":
+				case "setquerydata":
+				case "callfunction":
+				case "callobjectmethod":
+				case "restconnector":
+				case "soapconnector":
+					//getting brokers settings
+					var section = group_body.children(".broker-action-body");
+					
+					item_settings["action_value"] = getBrokerSettings(section, selection);
+					break;
+					
+				case "insert":
+				case "update":
+				case "delete":
+				case "select":
+				case "procedure":
+				case "getinsertedid":
+					var section = group_body.children(".database-action-body");
+					
+					//get header fields
+					item_settings["action_value"]["dal_broker"] = section.find(".dal-broker select").val();
+					item_settings["action_value"]["db_driver"] = section.find(".db-driver select").val();
+					item_settings["action_value"]["db_type"] = section.find(".db-type select").val();
+					
+					if (selection != "getinsertedid") {
+						//get table or sql fields
+						var select_tab_index = section.find(".query").tabs("option", "active");
+						
+						if (select_tab_index == 0) {
+							var table = section.find(".database-action-table > .table > select").val();
+							
+							item_settings["action_value"]["table"] = table;
+							
+							if (table != "") {
+								var attributes = [];
+								var conditions = [];
+								
+								$.each( section.find(".database-action-table > .attributes > ul > li"), function (idx, li) {
+									li = $(li);
+									
+									if (li.children(".attr-active").is(":checked"))
+										attributes.push({
+											"column": li.attr("data-attr-name"),
+											"value": li.children(".attr-value").val(),
+											"name": li.children(".attr-name").val()
+										});
+								});
+								
+								$.each( section.find(".database-action-table > .conditions > ul > li"), function (idx, li) {
+									li = $(li);
+									
+									if (li.children(".attr-active").is(":checked"))
+										conditions.push({
+											"column": li.attr("data-attr-name"),
+											"value": li.children(".attr-value").val()
+										});
+								});
+								
+								item_settings["action_value"]["attributes"] = attributes;
+								item_settings["action_value"]["conditions"] = conditions;
+							}
+							else if (!ignore_errors) {
+								var label = action_type.find("option:selected").text();
+								StatusMessageHandler.showError("'" + label + "' group cannot be empty!");
+								MyFancyPopup.hidePopup();
+								return;
+							}
+							
+						}
+						else {
+							var rel = getUserRelationshipObj( section.find(".relationship") );
+							var sql_type = rel[0] ? rel[0].toLowerCase() : "";
+							var sql = rel[1] && rel[1]["value"] ? rel[1]["value"] : "";
+							
+							if (sql != "" && sql_type && sql_type != selection)
+								item_settings["action_type"] = sql_type;
+							
+							item_settings["action_value"]["sql"] = sql;
+							
+							if (sql == "" && !ignore_errors) {
+								var label = action_type.find("option:selected").text();
+								StatusMessageHandler.showError("'" + label + "' group cannot be empty!");
+								MyFancyPopup.hidePopup();
+								return;
+							}
+						}
+					}
+					
+					//get footer fields
+					var opts = section.find(" > footer > .opts");
+					item_settings["action_value"]["options_type"] = opts.children(".options_type").val();
+					
+					if (item_settings["action_value"]["options_type"] == "array") {
+						var aux = parseArray( opts.children(".options") );
+						item_settings["action_value"]["options"] = aux["options"];
+					}
+					else
+						item_settings["action_value"]["options"] = opts.children(".options_code").val();
+					
+					break;
+					
+				case "show_ok_msg":
+				case "show_ok_msg_and_stop":
+				case "show_ok_msg_and_die":
+				case "show_ok_msg_and_redirect":
+				case "show_error_msg":
+				case "show_error_msg_and_stop":
+				case "show_error_msg_and_die":
+				case "show_error_msg_and_redirect":
+				case "alert_msg":
+				case "alert_msg_and_stop":
+				case "alert_msg_and_redirect":
+					var section = group_body.children(".message-action-body");
+					
+					item_settings["action_value"]["message"] = section.find(" > .message > input").val();
+					item_settings["action_value"]["redirect_url"] = section.find(" > .redirect-url > input").val();
+					break;
+					
+				case "redirect": //getting redirect settings
+					var section = group_body.children(".redirect-action-body");
+					
+					item_settings["action_value"] = section.children("input").val();
+					break;
+				
+				case "return_previous_record":
+				case "return_next_record":
+				case "return_specific_record":
+					var section = group_body.children(".records-action-body");
+					
+					item_settings["action_value"]["records_variable_name"] = section.find(" > .records-variable-name > input").val();
+					item_settings["action_value"]["index_variable_name"] = section.find(" > .index-variable-name > input").val();
+					break;
+				
+				case "check_logged_user_permissions":
+					var section = group_body.children(".check-logged-user-permissions-action-body");
+					var user_types = section.find(" > .users-perms > table > tbody .user-type-id select");
 					
 					item_settings["action_value"] = {
-						"include_graph_library": sub_section.find(".include-graph-library select").val(),
-						"width": sub_section.find(".graph-width input").val(),
-						"height": sub_section.find(".graph-height input").val(),
-						"labels_and_values_type": sub_section.find(".labels-and-values-type select").val(),
-						"labels_variable": sub_section.find(".labels-variable input").val(),
-						
-						"data_sets": data_sets
+						"all_permissions_checked": section.find(" > .all-permissions-checked > input").is(":checked") ? 1 : 0,
+						"entity_path_var_name": section.find(" > .entity-path-var-name").val(),
+						"logged_user_id": section.find(" > .logged-user-id > input").val(),
+						"users_perms": []
 					};
-				}
-				break;
-			
-			case "loop": //getting loop settings
-				var section = group_body.children(".loop-action-body");
-				var header = section.children("header");
-				var loop_items = section.find(" > .form-sub-groups > .form-group-item");
+					
+					$.each(user_types, function(idx, user_type) {
+						user_type = $(user_type);
+						
+						item_settings["action_value"]["users_perms"].push({
+							"user_type_id": user_type.val(),
+							"activity_id": user_type.parent().closest("tr").find(".activity-id select").val()
+						});
+					});
+					
+					break;
+								
+				case "code": //getting code settings
+					var section = group_body.children(".code-action-body");
+					var editor = section.data("editor");
+					
+					item_settings["action_value"] = editor ? editor.getValue() : section.children("textarea").val();
+					break;
+					
+				case "array": //getting array settings
+					var section = group_body.children(".array-action-body");
+					var aux = parseArray(section);
+					
+					item_settings["action_value"] = aux["array-action-body"];
+					break;
+					
+				case "string": //getting string settings
+					var section = group_body.children(".string-action-body");
+					
+					item_settings["action_value"] = section.children("input").val();
+					break;
+					
+				case "variable": //getting variable settings
+					var section = group_body.children(".variable-action-body");
+					
+					item_settings["action_value"] = section.children("input").val();
+					break;
+					
+				case "sanitize_variable": //getting variable settings
+					var section = group_body.children(".sanitize-variable-action-body");
+					
+					item_settings["action_value"] = section.children("input").val();
+					break;
+					
+				case "list_report": //getting variable settings
+					var section = group_body.children(".list-report-action-body");
+					
+					item_settings["action_value"] = {
+						"type": section.find(".type > select").val(),
+						"doc_name": section.find(".doc_name > input").val(),
+						"variable": section.find(".variable > input").val(),
+						"continue": section.find(".continue > select").val(),
+					};
+					break;
+					
+				case "call_block": //getting variable settings
+					var section = group_body.children(".call-block-action-body");
+					
+					item_settings["action_value"] = {
+						"block": section.find(".block > input").val(),
+						"project": section.find(".project > select").val(),
+					};
+					break;
+					
+				case "include_file": //getting include_file settings
+					var section = group_body.children(".include-file-action-body");
+					
+					item_settings["action_value"] = {
+						"path": section.children("input.path").val(),
+						"once": section.children("input.once").is(":checked") ? 1 : 0,
+					};
+					break;
 				
-				item_settings["action_value"] = {
-					"records_variable_name": header.find(".records-variable-name input").val(),
-					"records_start_index": header.find(".records-start-index input").val(),
-					"records_end_index": header.find(".records-end-index input").val(),
-					"array_item_key_variable_name": header.find(".array-item-key-variable-name input").val(),
-					"array_item_value_variable_name": header.find(".array-item-value-variable-name input").val(),
-					"actions": getModuleFormSettingsFromItemsToSave(loop_items),
-				};
-				break;
+				case "draw_graph": //getting draw_graph settings
+					var section = group_body.children(".draw-graph-action-body");
+					var is_code = section.tabs("option", "active") == 1;
+					
+					if (is_code) {
+						var editor = section.children(".draw-graph-js-code").data("editor");
+						
+						item_settings["action_value"] = {
+							"code": editor ? editor.getValue() : sub_section.children("textarea").val(),
+						};
+					}
+					else {
+						var sub_section = section.children(".draw-graph-settings");
+						var lis = sub_section.find(".graph-data-sets > ul > li:not(.no-data-sets)");
+						var data_sets = [];
+						
+						$.each(lis, function(idx, li) {
+							li = $(li);
+							
+							var data_set_options = {
+								"type": li.find(".type select").val(),
+								"item_label": li.find(".item-label input").val(),
+								"values_variable": li.find(".values-variable input").val(),
+								"background_colors": li.find(".background-colors input").val(),
+								"border_colors": li.find(".border-colors input").val(),
+								"border_width": li.find(".border-width input").val()
+							};
+							
+							var other_options = li.find(".other-options > ul > li");
+							$.each(other_options, function(idy, other_option) {
+								other_option = $(other_option);
+								var option_name = other_option.find(".option-name").val();
+								
+								if (option_name)
+									data_set_options[option_name] = other_option.find(".option-value").val();
+							});
+							
+							data_sets.push(data_set_options);
+						});
+						
+						item_settings["action_value"] = {
+							"include_graph_library": sub_section.find(".include-graph-library select").val(),
+							"width": sub_section.find(".graph-width input").val(),
+							"height": sub_section.find(".graph-height input").val(),
+							"labels_and_values_type": sub_section.find(".labels-and-values-type select").val(),
+							"labels_variable": sub_section.find(".labels-variable input").val(),
+							
+							"data_sets": data_sets
+						};
+					}
+					break;
 				
-			case "group": //getting group settings
-				var section = group_body.children(".group-action-body");
-				var header = section.children("header");
-				var group_items = section.find(" > .form-sub-groups > .form-group-item");
-				
-				item_settings["action_value"] = {
-					"group_name": header.find(".group-name input").val(),
-					"actions": getModuleFormSettingsFromItemsToSave(group_items),
-				};
-				break;
+				case "loop": //getting loop settings
+					var section = group_body.children(".loop-action-body");
+					var header = section.children("header");
+					var loop_items = section.find(" > .form-sub-groups > .form-group-item");
+					
+					item_settings["action_value"] = {
+						"records_variable_name": header.find(".records-variable-name input").val(),
+						"records_start_index": header.find(".records-start-index input").val(),
+						"records_end_index": header.find(".records-end-index input").val(),
+						"array_item_key_variable_name": header.find(".array-item-key-variable-name input").val(),
+						"array_item_value_variable_name": header.find(".array-item-value-variable-name input").val(),
+						"actions": getModuleFormSettingsFromItemsToSave(loop_items),
+					};
+					break;
+					
+				case "group": //getting group settings
+					var section = group_body.children(".group-action-body");
+					var header = section.children("header");
+					var group_items = section.find(" > .form-sub-groups > .form-group-item");
+					
+					item_settings["action_value"] = {
+						"group_name": header.find(".group-name input").val(),
+						"actions": getModuleFormSettingsFromItemsToSave(group_items),
+					};
+					break;
+			}
 		}
 		
 		actions_settings.push(item_settings);

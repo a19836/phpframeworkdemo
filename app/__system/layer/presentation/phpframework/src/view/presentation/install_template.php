@@ -19,10 +19,16 @@
  */
 
 $head = '
+<!-- Add Icon CSS -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
 <!-- Add Local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/install_template.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/install_template.js"></script>
-'; $main_content = '<div class="title">Install New Template</div>'; if ($_POST) { if (!$status) { $error_message = "There was an error trying to install this template. Please try again..."; if ($messages) { $main_content .= '<ul class="messages">'; foreach ($messages as $project_name => $msgs) { if ($msgs) { $main_content .= '<li><label>' . ucfirst($project_name) . ' project\'s installation:</label><ul>'; foreach ($msgs as $msg) { $main_content .= '<li class="' . $msg["type"] . '">' . $msg["msg"] . '</li>'; } $main_content .= '</ul></li>'; } } $main_content .= '</ul>'; } } else { $status_message = 'Template successfully installed!'; $main_content .= '<script>if (window.parent.refreshLastNodeChilds) window.parent.refreshLastNodeChilds();</script>'; } } $main_content .= '<div class="file_upload">
+
+<script>
+	var get_store_templates_url = "' . $get_store_templates_url . '";
+</script>'; $main_content = '<div class="title">Install New Template</div>'; if ($_POST) { if (!$status) { $error_message = $error_message ? $error_message : "There was an error trying to install this template. Please try again..."; if ($messages) { $main_content .= '<ul class="messages">'; foreach ($messages as $project_name => $msgs) { if ($msgs) { $main_content .= '<li><label>' . ucfirst($project_name) . ' project\'s installation:</label><ul>'; foreach ($msgs as $msg) { $main_content .= '<li class="' . $msg["type"] . '">' . $msg["msg"] . '</li>'; } $main_content .= '</ul></li>'; } } $main_content .= '</ul>'; } } else { $status_message = 'Template successfully installed!'; $main_content .= '<script>if (window.parent.refreshLastNodeChilds) window.parent.refreshLastNodeChilds();</script>'; } } $main_content .= '<div class="file_upload">
 	<div class="sub_title">Please choose the project and module zip file to install:</div>
 	
 	<div class="layer">
@@ -32,7 +38,7 @@ $head = '
 	<form id="form_' . $bn . '" class="hidden" action="?bean_name=' . $bn . '&bean_file_name=' . $bfn . '" method="post" enctype="multipart/form-data">
 		<div class="project">
 			<label>Project: </label>
-			<select name="project">'; if ($projects) { foreach ($projects as $project_name => $project) { if ($project["item_type"] != "project_common") $main_content .= '<option' . ($selected_project == $project_name ? ' selected' : '') . '>' . $project_name . '</option>'; } } $main_content .= '
+			<select name="project">'; if ($projects) { foreach ($projects as $project_name => $project) { $main_content .= '<option' . ($selected_project == $project_name ? ' selected' : '') . '>' . $project_name . '</option>'; } } $main_content .= '
 			</select>
 		</div>
 		
@@ -40,4 +46,5 @@ $head = '
 		<input class="button" type="submit" value="Install Now" name="submit" onClick="$(\'<p class=installing>Installing...</p>\').insertBefore(this);$(this).hide();">
 	</form>
 	
+	' . ($get_store_templates_url ? '<div class="install_store_template">To install templates from store please click <a href="javascript:void(0)" onClick="installStoreTemplatePopup();">here</a></div>' : '') . '
 	' . ($templates_download_page_url ? '<div class="go_to_templates_download_page">To download more templates please click <a href="' . $templates_download_page_url . '" target="download_templates">here</a></div>' : '') . ''; } $main_content .= '</div>'; ?>

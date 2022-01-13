@@ -26,6 +26,17 @@
 	vertical-align:text-bottom;
 	background: url(../../../common/vendor/jquerymytree/css/32px.png) -260px -4px no-repeat !important;
 }
+.choose_available_template_popup > .current_template_folder .icon.folder.with_project {
+	margin-left:30px;
+}
+.choose_available_template_popup > .current_template_folder .icon.project {
+	width:25px;
+	margin:0;
+	display:inline-block;
+	float:none;
+	vertical-align:text-bottom;
+	background: url("../../img/icons.png") no-repeat -202px -46px !important;
+}
 .choose_available_template_popup > .loading_templates {
 	display:block;
 	text-align:center;
@@ -180,6 +191,38 @@
 	color:#33AADD;
 	cursor:pointer;
 }
+.choose_available_template_popup li.other_project {
+	height:142px;
+	padding-top:15px;
+	box-sizing:border-box;
+	background:url(../../img/folder_blue.png) no-repeat center 45px;
+	background-size:100px 70px;
+	color:#33AADD;
+	cursor:pointer;
+}
+.choose_available_template_popup li.project {
+	height:142px;
+	padding-top:15px;
+	box-sizing:border-box;
+}
+.choose_available_template_popup li.project > .image {
+	width:100px;
+	height:70px;
+	margin:0 auto;
+	cursor:pointer;
+}
+.choose_available_template_popup li.project > .image > img {
+	width:100%;
+	height:100%;
+}
+.choose_available_template_popup li.project > .photo {
+	width:100px;
+	height:70px;
+	margin:0 auto;
+	background:url(../../img/project.png) no-repeat center;
+	background-size:100% 100%;
+	cursor:pointer;
+}
 .choose_available_template_popup li.back:hover {
 	text-decoration:underline;
 }
@@ -201,6 +244,19 @@
 	bottom:10px !important;
 }
 .show_available_template_demo_popup iframe {
+	width:100% !important;
+	height:100% !important;
+}
+
+/* TEMPLATE POPUPS - install_template_popup */
+
+.install_template_popup {
+	top:10px !important;
+	left:10px !important;
+	right:10px !important;
+	bottom:10px !important;
+}
+.install_template_popup iframe {
 	width:100% !important;
 	height:100% !important;
 }

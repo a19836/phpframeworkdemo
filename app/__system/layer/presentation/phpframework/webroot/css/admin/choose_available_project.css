@@ -90,6 +90,16 @@
 .choose_available_project li:hover:not(.no_projects) > a {
 	text-decoration:underline;
 }
+.choose_available_project li.project > .image {
+	width:100px;
+	height:70px;
+	margin:0 auto;
+	cursor:pointer;
+}
+.choose_available_project li.project > .image > img {
+	width:100%;
+	height:100%;
+}
 .choose_available_project li.project > .photo {
 	width:100px;
 	height:70px;

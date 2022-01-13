@@ -29,19 +29,27 @@
 }
 .entity_obj .template label {
 	width: 150px;
+	margin-top:5px;
+	margin-bottom:5px;
 	display: inline-block;
 	text-align: left;
 }
 .entity_obj .template select[name=template] {
 	min-width:200px;
 	max-width:calc(100% - 340px);
+	margin-top:5px;
+	margin-bottom:5px;
 }
 .entity_obj .template select[name=template_genre] {
 	width:175px;
+	margin-top:5px;
+	margin-bottom:5px;
 	background:#fff;
 	opacity:.5;
 }
 .entity_obj .template .search {
+	margin-top:5px;
+	margin-bottom:5px;
 	display:inline-block;
 	float:none;
 	vertical-align:middle;
@@ -64,11 +72,16 @@
 	width:190px;
 	display:inline-block;
 }
-.entity_obj .external_template_params > div > input,
+.entity_obj .external_template_params > div > input:not([type=checkbox]),
   .entity_obj .external_template_params > div > select {
 	width:280px;
 	box-sizing:border-box;
 	background:#fff;
+}
+.entity_obj .external_template_params > .template_id > input,
+  .entity_obj .external_template_params > .block_id > input,
+  .entity_obj .external_template_params > .url > input {
+	padding-right:20px;
 }
 .entity_obj .external_template_params .icon.edit {
 	background: url(../../../common/img/icon/edit_icon.gif) no-repeat scroll 0 0;
@@ -76,6 +89,13 @@
 	float: none;
 	display: inline-block;
 	margin: 3px 0 0 -15px;
+	vertical-align: middle;
+	position: absolute;
+}
+.entity_obj .external_template_params .icon.search {
+	float: none;
+	display: inline-block;
+	margin:2px 0 0 -18px;
 	vertical-align: middle;
 	position: absolute;
 }

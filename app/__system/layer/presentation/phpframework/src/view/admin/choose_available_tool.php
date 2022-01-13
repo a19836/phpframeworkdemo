@@ -119,18 +119,18 @@ var is_popup = ' . ($is_popup ? 1 : 0) . ';
 			<div class="description">Create, edit and manage your DAO objects here...</div>
 		</li>
 		<li class="delimiter"></li>
-		'; if ($layers) { if ($layers["db_layers"]) foreach ($layers["db_layers"] as $bean_name => $bean_file_name) $main_content .= '
-		<li class="db_layers" onClick="return goTo(\'' . "{$project_url_prefix}phpframework/presentation/list?bean_name=$bean_name&bean_file_name=$bean_file_name" . '\', event)">
-			<label>DBs</label>
-			<div class="photo"></div>
-			<div class="description">Manage Data-Bases.</div>
-		</li>'; if ($layers["data_access_layers"]) foreach ($layers["data_access_layers"] as $bean_name => $bean_file_name) { $WorkFlowBeansFileHandler = new WorkFlowBeansFileHandler($user_beans_folder_path . $bean_file_name, $user_global_variables_file_path); $obj = $WorkFlowBeansFileHandler->getBeanObject($bean_name); $obj_type = $obj->getType(); $label = WorkFlowBeansFileHandler::getLayerObjFolderName($obj); $main_content .= '
-			<li class="data_access_layers data_access_layers_' . $obj_type . '" onClick="return goTo(\'' . "{$project_url_prefix}phpframework/presentation/list?bean_name=$bean_name&bean_file_name=$bean_file_name" . '\', event)">
+		'; if ($layers) { $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; if ($layers["db_layers"]) foreach ($layers["db_layers"] as $layer_name => $layer) { $bn = $layer["properties"]["bean_name"]; $bfn = $layer["properties"]["bean_file_name"]; $main_content .= '
+			<li class="db_layers" onClick="return goTo(\'' . "{$project_url_prefix}phpframework/presentation/list?bean_name=$bn&bean_file_name=$bfn$filter_by_layout_url_query" . '\', event)">
+				<label>DBs</label>
+				<div class="photo"></div>
+				<div class="description">Manage Data-Bases.</div>
+			</li>'; } if ($layers["data_access_layers"]) foreach ($layers["data_access_layers"] as $layer_name => $layer) { $bn = $layer["properties"]["bean_name"]; $bfn = $layer["properties"]["bean_file_name"]; $WorkFlowBeansFileHandler = new WorkFlowBeansFileHandler($user_beans_folder_path . $bfn, $user_global_variables_file_path); $obj = $WorkFlowBeansFileHandler->getBeanObject($bn); $obj_type = $obj->getType(); $label = WorkFlowBeansFileHandler::getLayerObjFolderName($obj); $main_content .= '
+			<li class="data_access_layers data_access_layers_' . $obj_type . '" onClick="return goTo(\'' . "{$project_url_prefix}phpframework/presentation/list?bean_name=$bn&bean_file_name=$bfn$filter_by_layout_url_query" . '\', event)">
 				<label>' . ucwords($label) . ' Data Access</label>
 				<div class="photo"></div>
 				<div class="description">Manage the ' . $obj_type . ' rules.</div>
-			</li>'; } if ($layers["business_logic_layers"]) foreach ($layers["business_logic_layers"] as $bean_name => $bean_file_name) { $label = WorkFlowBeansFileHandler::getLayerBeanFolderName($user_beans_folder_path . $bean_file_name, $bean_name, $user_global_variables_file_path); $main_content .= '
-			<li class="business_logic_layers" onClick="return goTo(\'' . "{$project_url_prefix}phpframework/presentation/list?bean_name=$bean_name&bean_file_name=$bean_file_name" . '\', event)">
+			</li>'; } if ($layers["business_logic_layers"]) foreach ($layers["business_logic_layers"] as $layer_name => $layer) { $bn = $layer["properties"]["bean_name"]; $bfn = $layer["properties"]["bean_file_name"]; $label = WorkFlowBeansFileHandler::getLayerBeanFolderName($user_beans_folder_path . $bfn, $bn, $user_global_variables_file_path); $main_content .= '
+			<li class="business_logic_layers" onClick="return goTo(\'' . "{$project_url_prefix}phpframework/presentation/list?bean_name=$bn&bean_file_name=$bfn$filter_by_layout_url_query" . '\', event)">
 				<label>' . ucwords($label) . ' Business Logic</label>
 				<div class="photo"></div>
 				<div class="description">Manage the business logic services.</div>

@@ -45,7 +45,7 @@
 	text-align:center;
 }
 .projects_list table .buttons {
-	width:115px;
+	width:140px;
 	text-align:center;
 }
 .projects_list table .buttons .add {
@@ -71,6 +71,10 @@
 }
 .projects_list table .buttons .init {
 	background:url("../../common/img/icon/edit_icon.gif") 2px -1px no-repeat;
+	margin-left:0;
+}
+.projects_list table .buttons .manage_references {
+	background:url("../../common/img/icon/properties_icon.gif") 0 0 no-repeat;
 	margin-left:0;
 }
 

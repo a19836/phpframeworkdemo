@@ -233,14 +233,26 @@ function prepareFolderNodes(ul, data, main_layer_properties, parent_path) {
 						url = url.replace("#bean_file_name#", bean_file_name);
 						url = url.replace("#table#", key);
 					}
+					
+					if (properties && properties.parse_get_sub_files_url_handler) {
+						try {
+							eval('var parse_get_sub_files_url_handler = ' + properties.parse_get_sub_files_url_handler + ';');
+							
+							if (typeof parse_get_sub_files_url_handler == "function")
+								url = parse_get_sub_files_url_handler(url);
+						}
+						catch (e) {}
+					}
 				}
 				
-				if (item_menu && item_id) {
+				if (item_id) //2021-12-22: This is used to ge the properties from data in other files. DO NOT REMOVE THIS
 					a.attr("properties_id", item_id);
 					
+				if (item_menu && item_id) {
 					try {
 						eval("menu_item_properties." + item_id + " = item_menu;");
-					} catch(e) { alert(e.message ? e.message : e); }
+					} 
+					catch(e) { alert(e.message ? e.message : e); }
 				}
 				
 				ul.appendChild(child_li);

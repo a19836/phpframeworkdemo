@@ -1337,12 +1337,12 @@ var FormFieldsUtilObj = {
 		'				<input type="text" class="task_property_field" name="' + prefix + '[validation_regex]" value="' + validation_regex + '" />' +
 		'				<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>' +
 		'			</div>' +
-		'			<div class="min_length" ' + (is_input || is_search || is_url || is_email ? '' : 'style="display:none;"') + ' title="Minimum user input length">' +
+		'			<div class="min_length" ' + (is_input || is_search || is_url || is_email || is_tel ? '' : 'style="display:none;"') + ' title="Minimum user input length">' +
 		'				<label>Min Length:</label>' +
 		'				<input type="text" class="task_property_field" name="' + prefix + '[min_length]" value="' + min_length + '" />' +
 		'				<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>' +
 		'			</div>' +
-		'			<div class="max_length" ' + (is_input || is_search || is_url || is_email ? '' : 'style="display:none;"') + ' title="Maximum user input length">' +
+		'			<div class="max_length" ' + (is_input || is_search || is_url || is_email || is_tel ? '' : 'style="display:none;"') + ' title="Maximum user input length">' +
 		'				<label>Max Length:</label>' +
 		'				<input type="text" class="task_property_field" name="' + prefix + '[max_length]" value="' + max_length + '" />' +
 		'				<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>' +
@@ -1475,6 +1475,9 @@ var FormFieldsUtilObj = {
 								input_other_settings.children(".min_value, .max_value, .min_words, .max_words").hide();
 								break;
 							case "tel": 
+								input_other_settings.children(".min_value, .max_value, .min_length, .max_length").show();
+								input_other_settings.children(".min_words, .max_words").hide();
+								break;
 							case "number": 
 							case "range": 
 							case "date": 

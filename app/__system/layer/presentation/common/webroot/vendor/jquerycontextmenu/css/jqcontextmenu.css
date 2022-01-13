@@ -1,6 +1,7 @@
 
 .jqcontextmenu, .jqcontextmenu ul{ /*topmost and sub ULs, respectively*/
-	font: normal 13px Verdana;
+	/*font: normal 13px Verdana;*/
+	font: normal 13px Verdana, Helvetica, Arial;
 	margin: 0;
 	padding: 0;
 	position: absolute;

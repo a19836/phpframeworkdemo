@@ -199,6 +199,8 @@ function getFormGroupItemHtml($EVC, $project_url_prefix, $project_common_url_pre
 	</header>
 	
 	<div class="selected_task_properties form-group-body">
+		<textarea class="undefined-action-value hidden"></textarea> <!-- This will be used everytime a broker-action or database-action does not exists -->
+		
 		<section class="html-action-body">
 			<!-- FORM -->
 			' . $contents["createform"] . '
@@ -218,6 +220,7 @@ function getFormGroupItemHtml($EVC, $project_url_prefix, $project_common_url_pre
 			</script>
 		</section>
 		
+		' . ($db_drivers ? '
 		<section class="database-action-body">
 			<header>
 				<div class="dal-broker">
@@ -252,10 +255,9 @@ function getFormGroupItemHtml($EVC, $project_url_prefix, $project_common_url_pre
 				</div>
 			</footer>
 		</section>
+		' : '') . '
 		
 		<section class="broker-action-body">
-			<textarea class="undefined_action_value hidden"></textarea> <!-- This will be used everytime a broker does not exists -->
-			
 			' . $contents["callbusinesslogic"] . '
 			' . $contents["callibatisquery"] . '
 			' . $contents["callhibernatemethod"] . '
