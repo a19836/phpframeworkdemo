@@ -94,9 +94,9 @@
 	zlib (is installed by default)
 	
 	If some module is missing you need to execute the command bellow in Linux to install the following packages:
-		sudo apt-get install php-bcmath php-curl php-gd php-mbstring php-mysql php-pgsql php-xml php-ssh2
+		sudo apt-get/yum install php-common php-cli php-bcmath php-curl php-gd php-mbstring php-mysql/php-mysqlnd php-pgsql php-xml php-ssh2 php-json
 		
-		and optionally: sudo apt-get install php-soap
+		and optionally: sudo apt-get/yum install php-soap php-opcache php-dbg php-process php-odbc php-pdo php-fpm php-dba php-dbg
 	
 	If you wish to connect to mssql-server, please install the "mssql-server" package. If you are not able to install this package on linux os, please follow the tutorials in order to install the odbc drivers for mssql-server:
 	- https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server?view=sql-server-ver15
@@ -147,6 +147,13 @@
 	    LimitRequestLine 10000000
 	    LimitXMLRequestBody 10000000
 
+- in CentOS is probably that the apache has the external network connections blocked which doesn't allow the mysql connect with the DBs. 
+To check if this is OFF please type the following commands:
+	sudo getsebool -a | grep httpd_can_network
+	
+	If the httpd_can_network_connect is OFF, you should enable them by typing:
+		sudo setsebool -P httpd_can_network_connect 1
+
 - then execute the script: trunk/other/script/set_perms.sh <trunk folder>
 	
 - configure apache document root to the trunk/app/ folder
@@ -167,5 +174,4 @@
 	   	* * * * * sudo -u www-data php /var/www/html/livingroop/demo/app/layer/presentation/condo/webroot/script.php  --documentroot="/var/www/html/livingroop/demo/" --url="http://jplpinto.localhost/demo/condo/module/workerpool/run_worker_pool_script" --urlpath="module/workerpool/run_worker_pool_script" --loglevel=3
 		
 		0 2 * * * sudo -u www-data php /var/www/html/livingroop/default/app/layer/presentation/condo/webroot/script.php  --documentroot="/var/www/html/livingroop/default/" --url="http://jplpinto.localhost/condo/script/purge_old_data" --urlpath="script/purge_old_data" --loglevel=3
-
 	

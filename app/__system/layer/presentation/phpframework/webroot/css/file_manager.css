@@ -53,8 +53,8 @@
 .mytree i.zip_file {background: url("../common/img/icon/zip_icon.png") 5px 4px no-repeat !important;}
 .mytree i.img_file {background: url("../common/img/icon/img_icon.png") 5px 4px no-repeat !important;}
 .mytree i.webroot_file {background: url("../common/vendor/jquerymytree/css/32px.png") -100px -68px no-repeat !important;}
-.mytree i.entity_file {background: url("../img/icons.png") -137px -114px no-repeat !important;}
-.mytree i.entities_folder {background: url("../img/icons.png") -137px -114px no-repeat !important;}
+.mytree i.entity_file {background: url("../img/icons.png") -137px -113px no-repeat !important;}
+.mytree i.entities_folder {background: url("../img/icons.png") -137px -113px no-repeat !important;}
 .mytree i.view_file {background: url("../common/img/icon/php_icon.png") 5px 4px no-repeat !important;}
 .mytree i.views_folder {background: url("../img/icons.png") -137px -92px no-repeat !important;}
 .mytree i.template_file {background: url("../common/img/icon/html_icon.png") 5px 4px no-repeat !important;}

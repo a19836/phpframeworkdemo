@@ -84,7 +84,7 @@ function goBack() {
 		win.history.go(-1);
 }
 
-function refresh() {
+function refreshIframe() {
 	$("#right_panel .iframe_overlay").show();
 	
 	var iframe = $("#right_panel iframe")[0];

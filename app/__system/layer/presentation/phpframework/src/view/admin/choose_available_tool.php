@@ -34,11 +34,11 @@ var is_popup = ' . ($is_popup ? 1 : 0) . ';
 </script>'; $main_content = '<div class="choose_available_tool">
 	<div class="title">Tools</div>
 	<ul>
-		<li class="switch_admin_ui" onClick="return goTo(\'' . $project_url_prefix . 'admin/admin_uis\', event, 1)">
+		' . ($is_switch_admin_ui_allowed ? '<li class="switch_admin_ui" onClick="return goTo(\'' . $project_url_prefix . 'admin/admin_uis\', event, 1)">
 			<label>Switch Admin UI</label>
 			<div class="photo"></div>
 			<div class="description">Switch to other Admin UI more fitted to your technical skills.</div>
-		</li>
+		</li>' : '') . '
 		<li class="switch_project" onClick="return goTo(\'' . $project_url_prefix . 'admin/choose_available_project?redirect_path=admin\', event, 1)">
 			<label>Switch Project</label>
 			<div class="photo"></div>
@@ -102,24 +102,22 @@ var is_popup = ' . ($is_popup ? 1 : 0) . ';
 			<label>Doc Book</label>
 			<div class="photo"></div>
 			<div class="description">Go to our Library Doc-Book</div>
-		</li>
+		</li>'; if ($layers) { $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; if ($layers["others"]["other"]) $main_content .= '
 		<li class="other_files" onClick="return goTo(\'' . $project_url_prefix . 'phpframework/presentation/list?item_type=other\', event)">
 			<label>Other Files</label>
 			<div class="photo"></div>
 			<div class="description">View, Edit and Upload other files that you may wish to include here...</div>
-		</li>
-		<li class="vendor_files" onClick="return goTo(\'' . $project_url_prefix . 'phpframework/presentation/list?item_type=vendor\', event)">
-			<label>Vendor Files</label>
-			<div class="photo"></div>
-			<div class="description">Extend the framework with the upload of external libraries, new workflow tasks, new ui widgets and much more...</div>
-		</li>
-		<li class="dao_files" onClick="return goTo(\'' . $project_url_prefix . 'phpframework/presentation/list?item_type=dao\', event)">
-			<label>DAO Files</label>
-			<div class="photo"></div>
-			<div class="description">Create, edit and manage your DAO objects here...</div>
-		</li>
-		<li class="delimiter"></li>
-		'; if ($layers) { $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; if ($layers["db_layers"]) foreach ($layers["db_layers"] as $layer_name => $layer) { $bn = $layer["properties"]["bean_name"]; $bfn = $layer["properties"]["bean_file_name"]; $main_content .= '
+		</li>'; if (isset($layers["vendors"]["vendor"])) $main_content .= '
+			<li class="vendor_files" onClick="return goTo(\'' . $project_url_prefix . 'phpframework/presentation/list?item_type=vendor\', event)">
+				<label>Vendor Files</label>
+				<div class="photo"></div>
+				<div class="description">Extend the framework with the upload of external libraries, new workflow tasks, new ui widgets and much more...</div>
+			</li>
+			<li class="dao_files" onClick="return goTo(\'' . $project_url_prefix . 'phpframework/presentation/list?item_type=dao\', event)">
+				<label>DAO Files</label>
+				<div class="photo"></div>
+				<div class="description">Create, edit and manage your DAO objects here...</div>
+			</li>'; $main_content .= '<li class="delimiter"></li>'; if ($layers["db_layers"]) foreach ($layers["db_layers"] as $layer_name => $layer) { $bn = $layer["properties"]["bean_name"]; $bfn = $layer["properties"]["bean_file_name"]; $main_content .= '
 			<li class="db_layers" onClick="return goTo(\'' . "{$project_url_prefix}phpframework/presentation/list?bean_name=$bn&bean_file_name=$bfn$filter_by_layout_url_query" . '\', event)">
 				<label>DBs</label>
 				<div class="photo"></div>

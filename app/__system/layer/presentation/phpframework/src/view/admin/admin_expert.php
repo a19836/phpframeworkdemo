@@ -18,7 +18,10 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$head = '
+if (!$is_admin_ui_expert_allowed) { echo '<script>
+		alert("You don\'t have permission to access this Admin UI!");
+		document.location="' . $project_url_prefix . 'auth/logout";
+	</script>'; die(); } $head = '
 <!-- Add Icon CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 

@@ -18,4 +18,4 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); ?>
+$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); include $EVC->getUtilPath("admin_uis_permissions"); ?>

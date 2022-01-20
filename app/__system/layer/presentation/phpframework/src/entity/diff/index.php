@@ -18,4 +18,4 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include_once $EVC->getEntityPath("admin/admin_advanced"); unset($layers["db_layers"]); $layers["lib"]["lib"]["properties"] = array( "item_type" => "lib", "item_label" => "Lib", ); if ($layers["presentation_layers"]) foreach ($layers["presentation_layers"] as $layer_name => $layer) foreach ($layer as $fn => $f) if ($fn != "properties" && $fn != "aliases") unset($layers["presentation_layers"][$layer_name][$fn]); ?>
+$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); include_once $EVC->getEntityPath("admin/admin_advanced"); unset($layers["db_layers"]); $layers["lib"]["lib"]["properties"] = array( "item_type" => "lib", "item_label" => "Lib", ); if ($layers["presentation_layers"]) foreach ($layers["presentation_layers"] as $layer_name => $layer) foreach ($layer as $fn => $f) if ($fn != "properties" && $fn != "aliases") unset($layers["presentation_layers"][$layer_name][$fn]); ?>

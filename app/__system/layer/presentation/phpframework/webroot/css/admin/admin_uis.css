@@ -67,6 +67,10 @@ li.citizen_admin_ui > .photo {
 	width:120px;
 	background:url(../../img/citizen_admin_ui.png) no-repeat center;
 }
+li.low_code_admin_ui > .photo {
+	width:110px;
+	background:url(../../img/low_code_admin_ui.png) no-repeat center;
+}
 li.advanced_admin_ui > .photo {
 	background:url(../../img/advanced_admin_ui.png) no-repeat center;
 }

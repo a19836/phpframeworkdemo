@@ -18,7 +18,10 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$switch_project_url = $project_url_prefix . "admin?bean_name=$bean_name&bean_file_name=$bean_file_name&project=#project#"; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $head = '
+if (!$is_admin_ui_citizen_allowed) { echo '<script>
+		alert("You don\'t have permission to access this Admin UI!");
+		document.location="' . $project_url_prefix . 'auth/logout";
+	</script>'; die(); } $switch_project_url = $project_url_prefix . "admin?bean_name=$bean_name&bean_file_name=$bean_file_name&project=#project#"; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -134,7 +137,7 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 			</ul>
 		' : '') . '
 		</li>
-		' . ($is_presentation_layer_allowed ? '
+		' . ($layers["presentation_layers"] ? '
 			<li class="pages">
 				<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=entity&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">
 					<i class="selected"></i>
@@ -208,7 +211,7 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 				<i class="fas fa-chevron-down sub_menu"></i>
 			</a>
 			
-			<ul>'; if ($is_presentation_layer_allowed) $main_content .= '
+			<ul>'; if ($layers["presentation_layers"]) $main_content .= '
 				<li class="edit_global_variables">
 					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/edit_project_global_variables?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project/src/config/pre_init_config.php" . '">
 						<i class="selected"></i>
@@ -258,14 +261,20 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 						<label>Tools</label>
 					</a>
 				</li>
+				' . ($is_switch_admin_ui_allowed ? '<li class="switch_admin_ui">
+					<a class="item_header" href="' . $project_url_prefix . 'admin/admin_uis">
+						<i class="selected"></i>
+						<span class="fas fa-th-large logo"></span>
+						<label>Switch Admin UI</label>
+					</a>
+				</li>' : '') . '
 				' . ($is_flush_cache_allowed ? '<li class="flush_cache">
 					<a class="item_header" href="javascript:void(0)" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\');">
 						<i class="selected"></i>
 						<span class="fas fa-broom logo"></span>
 						<label>Flush Cache</label>
 					</a>
-				</li>
-				' : '') . '
+				</li>' : '') . '
 				<li class="logout">
 					<a class="item_header" href="' . $project_url_prefix . 'auth/logout">
 						<i class="selected"></i>
@@ -288,7 +297,7 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 	<span class="fas fa-arrow-left toggle_left_panel" onClick="toggleLeftpanel(this)"></span>
 	<span class="login_info">Logged as "' . $logged_name . '"</span>
 	<span class="icon left" onClick="goBack()" title="Go Back">Go Back</span>
-	<span class="icon refresh" onClick="refresh()" title="Refresh">Refresh</span>
+	<span class="icon refresh" onClick="refreshIframe()" title="Refresh">Refresh</span>
 	<span class="icon home" onClick="goTo(this, \'home_url\', event)" home_url="' . "{$project_url_prefix}admin/admin_home?admin_type=citizen&bean_name=$bean_name&bean_file_name=$bean_file_name&project=$project" . '" title="Go Home">Home</span>
 </div>
 <div id="right_panel">

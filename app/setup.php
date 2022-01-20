@@ -152,8 +152,8 @@ $dir_path = str_replace(DIRECTORY_SEPARATOR, "/", __DIR__) . "/"; $main_status =
 		<br>
 		If some module is missing you need to execute the command bellow in Linux to install the following packages:
 		<ul>
-			<li>sudo apt-get install php-bcmath php-curl php-gd php-mbstring php-mysql php-pgsql php-xml php-ssh2</li>
-			<li>and optionally: sudo apt-get install php-soap</li>
+			<li>sudo apt-get/yum install php-common php-cli php-bcmath php-curl php-gd php-mbstring php-mysql/php-mysqlnd php-pgsql php-xml php-ssh2 php-json</li>
+			<li>and optionally: sudo apt-get/yum install php-soap php-opcache php-dbg php-process php-odbc php-pdo php-fpm php-dba php-dbg</li>
 		</ul>
 		
 		<br>
@@ -220,6 +220,12 @@ $dir_path = str_replace(DIRECTORY_SEPARATOR, "/", __DIR__) . "/"; $main_status =
 			<li>LimitRequestLine 10000000</li>
 			<li>LimitXMLRequestBody 10000000</li>
 		</ul>
+	</li>
+	<li>in CentOS is probably that the apache has the external network connections blocked which doesn't allow the mysql connect with the DBs. To check if this is OFF please type the following commands:<br/>
+	&nbsp;&nbsp;&nbsp;sudo getsebool -a | grep httpd_can_network<br/>
+	<br/>
+	If the httpd_can_network_connect is OFF, you should enable them by typing:<br/>
+	&nbsp;&nbsp;&nbsp;sudo setsebool -P httpd_can_network_connect 1<br/>
 	</li>
 	<li>Please be sure that your WebServer has write permissions to the following files:
 		<ul>"; foreach ($files as $file) { $optional = in_array($file, $optional_files); $status = false; $exists = file_exists($file); if ($exists || !$optional) { $status = $exists ? is_writable($file) : false; $path = $exists && !empty(realpath($file)) ? realpath($file) : $file; $html .= "<li>" . $path . ": <span class=\"" . ($status ? "writeable" : "non_writeable") . "\">" . ($status ? "OK" : "NON WRITEABLE") . "<span></li>\n"; if(!$status) $main_status = false; } } $html .= "	</ul>

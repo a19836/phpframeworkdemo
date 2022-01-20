@@ -60,7 +60,7 @@ function initContextMenus() {
 	addLiContextMenu(obj.children("a").addClass("link"), "main_other_group_context_menu", {callback: onVendorContextMenu});
 	initOtherContextMenu(obj);
 	
-	var selected_menu_properties = $("#selected_menu_properties");
+	//var selected_menu_properties = $("#selected_menu_properties");
 }
 
 function initDBContextMenu(elm) {

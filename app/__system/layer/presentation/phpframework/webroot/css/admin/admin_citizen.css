@@ -233,7 +233,7 @@ body {
 	height:75px;
 }
 #left_panel > ul > li.others.open > ul {
-	height:297px;
+	min-height:297px;
 }
 #left_panel > ul > li ul > li > .item_header {
 	padding-left:25px;
@@ -283,6 +283,9 @@ body {
 }
 #left_panel > ul li > ul > li > .item_header > .logo {
 	padding-top:10px;
+}
+#left_panel > ul li > ul > li.tools {
+	border-top:1px solid #d5e3e4;
 }
 
 /* TOP RIGHT PANEL */

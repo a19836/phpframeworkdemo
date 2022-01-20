@@ -1,6 +1,7 @@
-var iframe_overlay = null; //Tobe used by sub-pages
+var iframe_overlay = null; //To be used by sub-pages
 
 $(function() {
+	//prepare menu panel
 	var menu_panel = $('#menu_panel');
 	
 	menu_panel.on("mouseover", function(){
@@ -16,6 +17,7 @@ $(function() {
 		}
 	});
 	
+	//prepare right panel iframe
 	var win_url = "" + document.location;
 	win_url = win_url.indexOf("#") != -1 ? win_url.substr(0, win_url.indexOf("#")) : win_url;
 	
@@ -51,6 +53,7 @@ $(function() {
 	    	}
 	});
 	
+	//prepare hide_panel
 	$("#hide_panel").draggable({
 		axis: "x",
 		appendTo: 'body',
