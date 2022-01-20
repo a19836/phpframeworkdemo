@@ -208,7 +208,8 @@ body {
 }
 #left_panel #presentation_layers .mytree > ul li[data-jstree='{"icon":"entities_folder"}'] > a > label:after {
 	content:"pages";
-	margin-left:9903px;
+	text-indent:0px;
+	float:left;
 }
 
 /* LEFT PANEL - SUB MENUS */
