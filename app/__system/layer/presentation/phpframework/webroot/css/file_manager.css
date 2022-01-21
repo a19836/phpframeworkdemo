@@ -2,26 +2,26 @@
 .mytree i.main_node {background: url("../img/icons.png") -7px -3px no-repeat !important;}
 .mytree i.main_node_db_layers {
 	/*background: url("../img/db_icons.png") -245px -21px no-repeat !important;*/
-	background: url("../img/db_driver_small_icon_color.png") center no-repeat !important;
+	background: url("../img/db_driver_small_icon.png") center no-repeat !important;
 	background-size: 20px 20px !important;
 }
 .mytree i.main_node_db {background: url("../img/db_icons.png") -179px -89px no-repeat !important;}
 .mytree i.main_node_data_access_layers {
 	/*background: url("../img/db_icons.png") -133px 0px no-repeat !important;*/
-	background: url("../img/data_access_small_icon_color.png") center no-repeat !important;
+	background: url("../img/data_access_small_icon.png") center no-repeat !important;
 	background-size: 20px 20px !important;
 }
 .mytree i.main_node_ibatis {background: url("../img/db_icons.png") -224px -0px no-repeat !important;}
 .mytree i.main_node_hibernate {background: url("../img/db_icons.png") -246px -0px no-repeat !important;}
 .mytree i.main_node_business_logic_layers {
 	/*background: url("../img/icons.png") -7px -69px no-repeat !important;*/
-	background: url("../img/business_logic_small_icon_color.png") center no-repeat !important;
+	background: url("../img/business_logic_small_icon.png") center no-repeat !important;
 	background-size: 20px 20px !important;
 }
 .mytree i.main_node_businesslogic {background: url("../img/icons.png") -29px -3px no-repeat !important;}
 .mytree i.main_node_presentation_layers {
 	/*background: url("../img/icons.png") -50px -244px no-repeat !important;*/
-	background: url("../img/presentation_small_icon_color.png") center no-repeat !important;
+	background: url("../img/presentation_small_icon.png") center no-repeat !important;
 	background-size: 20px 20px !important;
 }
 .mytree i.main_node_presentation {background: url("../img/icons.png") -7px -3px no-repeat !important;}
