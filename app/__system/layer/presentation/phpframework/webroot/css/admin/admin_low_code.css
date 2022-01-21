@@ -92,10 +92,26 @@ body {
 #left_panel > .tabs .tab_vendors {float:right; right:26px;}
 #left_panel > .tabs .tab_settings {float:right; right:-30px;}
 
-#left_panel > .tabs a i.main_node_db_layers {background: url("../../img/db_icons.png") -245px -21px no-repeat !important;}
-#left_panel > .tabs a i.main_node_data_access_layers {background: url("../../img/db_icons.png") -133px 0px no-repeat !important;}
-#left_panel > .tabs a i.main_node_business_logic_layers {background: url("../../img/icons.png") -7px -69px no-repeat !important;}
-#left_panel > .tabs a i.main_node_presentation_layers {background: url("../../img/icons.png") -50px -244px no-repeat !important;}
+#left_panel > .tabs a i.main_node_db_layers {
+	/*background: url("../../img/db_icons.png") -245px -21px no-repeat !important;*/
+	background: url("../../img/db_driver_small_icon_color.png") center no-repeat !important;
+	background-size: 20px 20px !important;
+}
+#left_panel > .tabs a i.main_node_data_access_layers {
+	/*background: url("../../img/db_icons.png") -133px 0px no-repeat !important;*/
+	background: url("../../img/data_access_small_icon_color.png") center no-repeat !important;
+	background-size: 20px 20px !important;
+}
+#left_panel > .tabs a i.main_node_business_logic_layers {
+	/*background: url("../../img/icons.png") -7px -69px no-repeat !important;*/
+	background: url("../../img/business_logic_small_icon_color.png") center no-repeat !important;
+	background-size: 20px 20px !important;
+}
+#left_panel > .tabs a i.main_node_presentation_layers {
+	/*background: url("../../img/icons.png") -50px -244px no-repeat !important;*/
+	background: url("../../img/presentation_small_icon_color.png") center no-repeat !important;
+	background-size: 20px 20px !important;
+}
 #left_panel > .tabs a i.main_node_vendors {background: url("../../img/icons.png") -115px -156px no-repeat !important;}
 #left_panel > .tabs a i.main_node_settings {background: url("../../img/icons.png") -93px -3px no-repeat !important;}
 
