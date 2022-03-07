@@ -141,13 +141,39 @@ function replaceNewNameInUrl(obj, new_class_id, data, options) {
 		
 		var attr_name = typeof options == "object" && options["class_url_attr_name"] ? options["class_url_attr_name"] : "class";
 		var url = "" + document.location;
+		var status = true;
+		
+		//replace class name in url
 		var regex = new RegExp("(&|\\?)" + attr_name + "=[^&]*", "g");
-		url = url.replace(regex, "$1" + attr_name + "=" + new_class_id);
+		var m = url.match(regex);
 		
+		if (m && m.length > 0) //if edit file class
+			url = url.replace(regex, "$1" + attr_name + "=" + new_class_id);
+		else //if add new file class
+			url += "&" + attr_name + "=" + new_class_id;
+		
+		//replace file name in url
 		var original_obj_name = original_class_id.indexOf("\\") != -1 ? original_class_id.substr(original_class_id.lastIndexOf("\\") + 1) : original_class_id;
-		url = url.replace("/" + original_obj_name + ".php", "/" + obj["name"] + ".php");
 		
-		document.location = url;
+		if (url.indexOf("/" + original_obj_name + ".php") != -1) //if edit file class
+			url = url.replace("/" + original_obj_name + ".php", "/" + obj["name"] + ".php");
+		else { //if add new file class
+			var regex = new RegExp("(&|\\?)path=[^&]*", "g");
+			var m = url.match(regex);
+			
+			if (m && m.length > 0) {
+				var str = m[0];
+				var pos = url.indexOf(str) + str.length;
+				url = url.substr(0, pos) + (url.charAt(pos - 1) == "/" ? "" : "/") + obj["name"] + ".php" + url.substr(pos, url.length - pos);
+			}
+			else
+				status = false;
+		}
+		
+		if (status)
+			document.location = url;
+		//else
+		//	StatusMessageHandler.showMessage("Could not redirect page to edit panel. Please do it manually...");
 	}
 }
 
