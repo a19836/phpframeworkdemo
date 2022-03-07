@@ -71,8 +71,8 @@ function getMenuWidgetsHTML($widgets, $widgets_root_path, $widgets_root_url, $we
 		foreach ($widgets as $name => $sub_files) {
 			if (is_array($sub_files)) { //is menu group
 				$groups_html .= '
-				<li class="group">
-					<div class="group-title"><i class="zmdi zmdi-caret-right toggle"></i>' . ucwords(str_replace("_", " ", $name)) . '</div>
+				<li class="group group-open">
+					<div class="group-title"><i class="zmdi zmdi-caret-down toggle"></i>' . ucwords(str_replace("_", " ", $name)) . '</div>
 					<ul>';
 				
 				$groups_html .= getMenuWidgetsHTML($sub_files, $widgets_root_path, $widgets_root_url, $webroot_cache_folder_path, $webroot_cache_folder_url);

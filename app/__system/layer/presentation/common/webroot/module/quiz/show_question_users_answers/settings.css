@@ -27,21 +27,17 @@
 }
 .edit_settings .question_type label {
 	width:120px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .question_id label {
 	width:100px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .question_type select {
 	width:300px;
-	font-size:11px;
 }
 .edit_settings .question_id input {
 	width:150px;
-	font-size:11px;
 }
 
 /* Get Next By Parent */
@@ -68,18 +64,15 @@
 }
 .edit_settings .get_next_by_parent .get_next_object_type_id label {
 	width:100px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .get_next_by_parent .get_next_object_id label {
 	width:90px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .get_next_by_parent .get_next_group label {
 	width:60px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .get_next_by_parent .get_next_object_type_id select {
 	width:130px;

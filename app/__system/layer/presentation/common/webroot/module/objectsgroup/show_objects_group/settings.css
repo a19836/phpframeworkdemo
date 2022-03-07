@@ -79,9 +79,7 @@
 }
 .module_show_objects_group_settings .action_settings div label {
 	margin-bottom:5px;
-	display:block;
-	float:left;
-	clear:none;
+	display:inline-block;
 }
 .module_show_objects_group_settings .action_settings .input_settings_label {
 	font-size:13px;
@@ -108,10 +106,12 @@
    .module_show_objects_group_settings .action_settings .list_by_selected_objects_groups label, 
    .module_show_objects_group_settings .action_settings .list_by_parent .list_parent_object_type_id label {
 	width:140px;
+	display:inline-block;
 }
 .module_show_objects_group_settings .action_settings .list_by_parent .list_parent_object_id label, 
    .module_show_objects_group_settings .action_settings .list_by_parent .list_parent_group label {
 	width:90px;
+	display:inline-block;
 }
 .module_show_objects_group_settings .action_settings .specific_by_id input {
 	width:200px;
@@ -128,18 +128,10 @@
 }
 .module_show_objects_group_settings .action_settings .list_by_selected_objects_groups select {
 	max-width:410px;
-	display:block;
-	float:left;
 }
 
 .module_show_objects_group_settings .action_settings .list_by_selected_objects_groups .icon.add {
 	background-position:0 1px;
-}
-.module_show_objects_group_settings .action_settings .list_by_selected_objects_groups .icon.up {
-	background:url("../../../img/icon/up_icon.gif") no-repeat scroll 0 0px;
-}
-.module_show_objects_group_settings .action_settings .list_by_selected_objects_groups .icon.down {
-	background:url("../../../img/icon/down_icon.gif") no-repeat scroll 0 0px;
 }
 .module_show_objects_group_settings .action_settings .list_by_selected_objects_groups .selected_objects_groups {
 	padding-top:3px;
@@ -192,6 +184,7 @@
 }
 .module_show_objects_group_settings .action_settings .pagination div label {
 	width:150px;
+	display:inline-block;
 	color:#666;
 }
 .module_show_objects_group_settings .action_settings .pagination div select {
@@ -220,20 +213,17 @@
 	background-position:0 1px;
 	margin-left:30px;
 }
-.module_show_objects_group_settings .action_settings .action_buttons_settings .icon.up {
-	background:url("../../../img/icon/up_icon.gif") no-repeat scroll 0 0px;
-}
-.module_show_objects_group_settings .action_settings .action_buttons_settings .icon.down {
-	background:url("../../../img/icon/down_icon.gif") no-repeat scroll 0 0px;
-}
 .module_show_objects_group_settings .action_settings .action_buttons_settings .action_buttons {
-	border:1px solid #CCC;
 	margin:0 auto;
 	float:none;
 	clear:both;
 }
 .module_show_objects_group_settings .action_settings .action_buttons_settings .action_buttons td {
-	border:1px solid #CCC;
+	border-top:1px solid #eee;
+	border-right:1px solid #eee;
+}
+.module_show_objects_group_settings .action_settings .action_buttons_settings .action_buttons td.icons {
+	border:0;
 }
 .module_show_objects_group_settings .action_settings .action_buttons_settings .action_buttons .button_label {
 	width:105px;
@@ -276,7 +266,7 @@
 	width:675px;
 	margin:10px auto 0 auto;
 	padding:5px 5px 2px 5px;
-	background-color:#d5e3e4;
+	background-color:#eee;
 	border:0;
 }
 .module_show_objects_group_settings .action_settings .object_to_objects div {
@@ -289,8 +279,5 @@
 .module_settings .settings div .object_to_objects .object_type_id label, 
    .module_settings .settings div .object_to_objects .object_id label {
 	width:80px;
-}
-.module_show_objects_group_settings .action_settings .object_to_objects div input, 
-   .module_show_objects_group_settings .action_settings .object_to_objects div select {
-	background-color:#FFF;
+	display:inline-block;
 }

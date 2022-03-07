@@ -34,9 +34,6 @@
    .list_settings .catalog_by_parent .catalog_parent_object_id label, 
    .list_settings .catalog_by_parent .catalog_parent_group label {
 	margin-bottom:5px;
-	display:block;
-	float:left;
-	clear:none;
 }
 .list_settings .catalog_sort_column {
 	width:300px;
@@ -69,10 +66,12 @@
    .list_settings .catalog_sort_order label, 
    .list_settings .catalog_by_parent .catalog_parent_object_type_id label {
 	width:110px;
+	display:inline-block;
 }
 .list_settings .catalog_by_parent .catalog_parent_object_id label, 
    .list_settings .catalog_by_parent .catalog_parent_group label {
 	width:90px;
+	display:inline-block;
 }
 .list_settings .catalog_by_tags input {
 	width:540px;
@@ -85,9 +84,7 @@
 	width:100px;
 }
 .list_settings .catalog_by_selected_events select {
-	max-width:410px;
-	display:block;
-	float:left;
+	max-width:420px;
 }
 .list_settings .catalog_sort_column select {
 	width:180px;
@@ -98,12 +95,6 @@
 
 .list_settings .catalog_by_selected_events .icon.add {
 	background-position:0 1px;
-}
-.list_settings .catalog_by_selected_events .icon.up {
-	background:url("../../../img/icon/up_icon.gif") no-repeat scroll 0 0px;
-}
-.list_settings .catalog_by_selected_events .icon.down {
-	background:url("../../../img/icon/down_icon.gif") no-repeat scroll 0 0px;
 }
 .list_settings .catalog_by_selected_events .selected_events {
 	padding-top:3px;

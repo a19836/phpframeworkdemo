@@ -19,95 +19,32 @@
  */
 
 $head = '
+<!-- Ace Editor file -->
 <script src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ace.js"></script>
 <script src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
 
-<style>
-.title {
-	width: 100%;
-	color: #000;
-	font-size: 16px;
-	font-weight: bold;
-	margin: 10px 0 5px;
-	text-align: center;
-}
-.sql_text_area .ace_editor, .sql_text_area textarea {
-	height:400px;
-	width:100%;
-	border-top:3px inset #CCC;
-	border-bottom:3px inset #CCC;
-	margin:0;
-}
-.save_button {
-	width:100%;
-	height:25px;
-	text-align:center;
-	margin:10px 0 15px 0;
-}
-.save_button input {
-	border:1px outset;
-	border-radius:0.5em;
-	height:25px !important;
-	line-height:15px !important;
-	padding:3px 5px !important;
-}
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
-.status_ok, .status_error {
-	width:100%;
-	height:25px;
-	text-align:center;
-	margin:10px 0 15px 0;
-	font-weight:bold;
-}
-.status_ok {
-	color:#009900;
-}
-.status_error {
-	color:#990000;
-}
-</style>'; $main_content .= '<div class="title">DB Diagram\'s SQL</div>'; if ($_POST) { $main_content .= '
-		<div class="status_' . ($status ? 'ok' : 'error') . '">' . ($status ? 'SQL executed successfully' : 'SQL executed unssuccessfully') . '</div>
+<!-- Icons CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+
+<!-- Add Local JS and CSS files -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/db/create_diagram_sql.css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/db/create_diagram_sql.js"></script>'; $main_content .= '<div class="create_diagram_sql">
+	<div class="top_bar">
+		<header>
+			<div class="title">DB Diagram\'s SQL</div>
+			<ul>
+				<li class="execute" title="Execute SQL"><a onClick="execute()"><i class="icon continue"></i> Execute</a></li>
+			</ul>
+		</header>
+	</div>'; if ($_POST) { $main_content .= '
+	<div class="status_' . ($status ? 'ok' : 'error') . '">' . ($status ? 'SQL executed successfully' : 'SQL executed unssuccessfully') . '</div>
 	'; } if (!$_POST || !$status) { $main_content .= '
-		<div class="save_button">
-			<input type="button" name="value" value="EXECUTE SQL" onClick="execute();" />
-		</div>
-	
-		<div class="sql_text_area">
-			<textarea>' . "\n" . htmlspecialchars($sql, ENT_NOQUOTES) . '</textarea>
-		</div>
-		<script>
-			var sql_text_area = $(".sql_text_area");
-			var textarea = sql_text_area.children("textarea")[0];
-			
-			ace.require("ace/ext/language_tools");
-			var editor = ace.edit(textarea);
-			editor.setTheme("ace/theme/chrome");
-			editor.session.setMode("ace/mode/sql");
-	    		editor.setAutoScrollEditorIntoView(true);
-			editor.setOption("maxLines", "Infinity");
-			editor.setOption("minLines", 30);
-			editor.setOptions({
-				enableBasicAutocompletion: true,
-				enableSnippets: true,
-				enableLiveAutocompletion: false,
-			});
-			editor.$blockScrolling = "Infinity";
-			
-			sql_text_area.find("textarea.ace_text-input").removeClass("ace_text-input"); //fixing problem with scroll up, where when focused or pressed key inside editor the page scrolls to top
-			
-			sql_text_area.data("editor", editor);
-			
-			$(function () {
-				editor.focus();
-			});
-		
-			function execute() {
-				var editor = sql_text_area.data("editor");
-				var sql = editor.getValue();
-			
-				$("#main_column").append(\'<form id="form_sql" method="post" style="display:none"><textarea name="sql"></textarea></form>\');
-				$("#form_sql textarea").val(sql);
-				$("#form_sql")[0].submit();
-			}
-		</script>
-	'; } ?>
+	<div class="sql_text_area">
+		<textarea>' . "\n" . htmlspecialchars($sql, ENT_NOQUOTES) . '</textarea>
+	</div>'; } $main_content .= '</div>'; ?>

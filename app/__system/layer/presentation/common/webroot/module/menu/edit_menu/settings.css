@@ -11,8 +11,7 @@
 }
 .edit_settings .group_id_type label {
 	width:120px;
-	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .group_id_type select {
 	max-width:330px;
@@ -26,8 +25,7 @@
 }
 .edit_settings .group_id label {
 	width:80px;
-	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .group_id input {
 	width:150px;
@@ -35,8 +33,7 @@
 
 .edit_settings .group_id_by_tags label {
 	width:100px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .group_id_by_tags input {
 	width:300px;
@@ -69,18 +66,15 @@
 }
 .edit_settings .group_id_from_related_object .object_type_id label {
 	width:100px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .group_id_from_related_object .object_id label {
 	width:90px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .group_id_from_related_object .object_group label {
 	width:60px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .group_id_from_related_object .object_type_id select {
 	width:130px;
@@ -115,13 +109,10 @@
    .edit_settings .list_class label,
    .edit_settings .list_item_class label {
 	width:120px;
-	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .menu_class input,
    .edit_settings .list_class input,
    .edit_settings .list_item_class input {
 	width:330px;
-	display:block;
-	float:left;
 }

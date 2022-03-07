@@ -19,8 +19,6 @@
 
 var CreateFormTaskPropertyObj = {
 	editor_save_func: null,
-	on_choose_page_url_callback: null,
-	on_choose_image_url_callback: null,
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		//console.log(properties_html_elm);
@@ -31,7 +29,7 @@ var CreateFormTaskPropertyObj = {
 		
 		var task_html_elm = $(properties_html_elm).find(".create_form_task_html");
 		
-		if (typeof CreateFormTaskPropertyObj.on_choose_page_url_callback == "function")
+		if (typeof ProgrammingTaskUtil.on_programming_task_choose_page_url_callback == "function")
 			task_html_elm.find(".form_action .search").css("display", "inline-block");
 		
 		if (!task_property_values || jQuery.isEmptyObject(task_property_values)) {
@@ -185,10 +183,7 @@ var CreateFormTaskPropertyObj = {
 	},
 	
 	onCompleteLabel : function(task_id) {
-		onEditLabel(task_id);
-		myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
-		
-		return true;
+		return ProgrammingTaskUtil.onEditLabel(task_id);
 	},
 	
 	onTaskCreation : function(task_id) {
@@ -283,8 +278,8 @@ var CreateFormTaskPropertyObj = {
 					var PtlLayoutUIEditor = new LayoutUIEditor();
 					PtlLayoutUIEditor.options.ui_element = ui;
 					PtlLayoutUIEditor.options.template_source_editor_save_func = CreateFormTaskPropertyObj.editor_save_func;
-					PtlLayoutUIEditor.options.on_choose_page_url_func = CreateFormTaskPropertyObj.on_choose_page_url_callback;
-					PtlLayoutUIEditor.options.on_choose_image_url_func = CreateFormTaskPropertyObj.on_choose_image_url_callback;
+					PtlLayoutUIEditor.options.on_choose_page_url_func = ProgrammingTaskUtil.onProgrammingTaskChoosePageUrl;
+					PtlLayoutUIEditor.options.on_choose_image_url_func = ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl;
 					PtlLayoutUIEditor.options.on_ready_func = function() {
 						if (typeof LayoutUIEditorFormFieldUtil == "function") {
 							var LayoutUIEditorFormFieldUtilObj = new LayoutUIEditorFormFieldUtil(PtlLayoutUIEditor);

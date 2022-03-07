@@ -44,7 +44,7 @@
 					<th class="setting_name table_header">Setting Name</th>
 					<th class="setting_value table_header">Setting Value</th>
 					<th class="table_attr_icons">
-						<a class="add" onClick="addLayerConnectionPropertiesSetting(this)" title="Add">Add</a>
+						<a class="icon add" onClick="addLayerConnectionPropertiesSetting(this)" title="Add">Add</a>
 					</th>
 				</tr>
 			</thead>
@@ -60,7 +60,7 @@
 				<tr>
 					<th class="var_name table_header">Global Variable Name</th>
 					<th class="table_attr_icons">
-						<a class="add" onClick="addLayerConnectionGLobalVarName(this)" title="Add Rest Global Variable Name">Add</a>
+						<a class="icon add" onClick="addLayerConnectionGLobalVarName(this)" title="Add Rest Global Variable Name">Add</a>
 					</th>
 				</tr>
 			</thead>

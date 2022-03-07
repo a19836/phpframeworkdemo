@@ -26,6 +26,7 @@ var DBQueryTaskPropertyObj = {
 	on_delete_table : null,
 	on_complete_table_label : null,
 	on_complete_connection_properties : null,
+	on_complete_select_start_task : null,
 	
 	connection_exit_props : {
 		color: "#000",
@@ -76,7 +77,9 @@ var DBQueryTaskPropertyObj = {
 					
 					attributes_elm.html(html_checks);
 					
-					attributes_elm.find(".check input").click(function(){
+					attributes_elm.find(".check input").click(function(originalEvent) {
+						if (originalEvent && originalEvent.stopPropagation) originalEvent.stopPropagation();//bc checkbox is inside of eps and task, we should avoid the click of the eps and task to be trigger
+						
 						if (typeof DBQueryTaskPropertyObj.on_click_checkbox == "function") {
 							DBQueryTaskPropertyObj.on_click_checkbox(this, WF, rand_number);
 						}
@@ -179,7 +182,7 @@ var DBQueryTaskPropertyObj = {
 		var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
 		
 		if (task[0]) {
-			task.children("." + WF.jsPlumbTaskFlow.task_label_class_name).append('<span class="icon delete">delete</span>');
+			task.children("." + WF.jsPlumbTaskFlow.task_label_class_name).append('<i class="icon delete"></i></i>');//do not use span
 			
 			task.find(" > ." + WF.jsPlumbTaskFlow.task_label_class_name + " .delete").click(function(){
 				myWFObj.setJsPlumbWorkFlow(WF);
@@ -431,7 +434,7 @@ var DBQueryTaskPropertyObj = {
 			}
 			html += '</select></td>'
 				+ '<td class="column_value"><input class="connection_property_field" name="column_values[]" value="' + column_value + '" /></td>'
-				+ '<td class="table_attr_icons"><a onClick="DBQueryTaskPropertyObj.removeTableJoinKey(this)">remove</a></td>'
+				+ '<td class="table_attr_icons"><a class="icon delete" onClick="DBQueryTaskPropertyObj.removeTableJoinKey(this)">remove</a></td>'
 			+ '</tr>';
 			
 			return html;
@@ -450,6 +453,8 @@ var DBQueryTaskPropertyObj = {
 		
 		var task_id = WF.jsPlumbContextMenu.getContextMenuTaskId();
 		this.setStartTaskById(task_id);
+		
+		return false;
 	},
 	
 	setStartTaskById : function(task_id) {
@@ -467,6 +472,13 @@ var DBQueryTaskPropertyObj = {
 			j_task.attr("is_start_task", 1);
 			j_task.addClass(WF.jsPlumbTaskFlow.start_task_class_name);
 		}
+		
+		this.onCompleteSelectStartTask(task_id, j_task);
+	},
+	
+	onCompleteSelectStartTask : function(task_id, j_task) {
+		if (typeof DBQueryTaskPropertyObj.on_complete_select_start_task == "function")
+			DBQueryTaskPropertyObj.on_complete_select_start_task(myWFObj.getJsPlumbWorkFlow(), task_id, j_task);
 	},
 	/** END: MENUS METHODS **/
 };

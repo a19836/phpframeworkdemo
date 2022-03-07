@@ -1,22 +1,26 @@
-.title {
-	width:100%;
-	font-size:16px;
-	text-align:center;
-	margin:10px 0px 5px 0px;
-	font-weight:bold;
-	color:#000;
+/* TOP BAR */
+.top_bar {
 }
+
+/* EDIT TABLE */
 .edit_table {
 	min-height:calc(100vh - 60px);
-	margin-top:20px;
 	text-align:center;
 }
 .edit_table > h3 {
-	background:#d5e3e4;
+	background:#eee;
+	border:0;
 	border-radius:0;
 }
+.edit_table > h3 .ui-icon {
+	display:none;
+}
 .edit_table > h3 .refresh {
+	margin-top:3px;
 	float:right;
+}
+.edit_table .icon.add::before {
+	font-size:16px;
 }
 .edit_table > .table_settings,
   .edit_table > .table_sql_statements,
@@ -36,7 +40,6 @@
 	margin-top:20px;
 }
 .edit_table .attributes .add {
-	float:none;
 	display:inline-block;
 	vertical-align:middle;
 }
@@ -74,19 +77,17 @@
 	float:none;
 	clear:left;
 }
-.edit_table thead td {
-	height:18px;
-	line-height:18px;
+.edit_table thead th {
 	text-align:center;
+	font-size:10px;
+	color:#666;
 }
 .edit_table tbody td {
-	height:20px;
-	line-height:20px;
-	border:1px inset #CCC;
+	border-top:1px solid #CCC;
+	border-right:1px solid #eee;
 }
-.edit_table tbody td input, 
+.edit_table tbody td input:not([type=submit]):not([type=button]), 
    .edit_table tbody td select {
-	background-color:#FFF;
 	border:0;
 	height:20px;
 	line-height:20px;
@@ -218,10 +219,13 @@
 	font-size:10px !important;
 	margin:0 auto;
 }
-.edit_table tbody .table_attr_icons {
+.edit_table .table_attr_icons {
 	width:20px;
-	padding-left:3px;
 	border:0 !important;
+	text-align:center;
+}
+.edit_table tbody .table_attr_icons {
+	
 }
 
 .edit_table .table_sql_statements .sql_statement > label {
@@ -240,44 +244,28 @@
 /* SAVE BUTTON */
 .save_button {
 	width:100%;
-	height:20px;
 	padding-top:20px;
 	text-align:center !important;
 }
-.save_button input {
-	width:auto;
-	height:25px !important;
-	line-height:15px !important;
-	display:inline !important;
-	float:none !important;
-	padding:3px 5px !important;
-	border:1px outset;
-	background: #d5e3e4;
-	
-	-moz-border-radius:0.5em; 
-	-webkit-border-radius:0.5em;
-	border-radius:0.5em;
-}
 .save_button input.delete {
 	margin-left:20px;
-	background:red;
-	color:white;
+	/*background:red;
+	color:white;*/
 }
 .save_button input.execute {
 	margin-left:20px;
 }
 .save_button input.back {
-	background:#ccc;
+	/*background:#ccc;*/
 }
 
 /* ERROR */
 .error {
 	width:100%;
 	min-height:20px;
+	margin-top:20px;
 	margin-bottom:20px;
 	text-align:center;
-	font-weight:bold;
-	font-size:16px;
 	color:red;
 	box-sizing:border-box;
 }

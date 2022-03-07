@@ -206,9 +206,10 @@ var DBTableTaskPropertyObj = {
 		
 		//check which tab is selected and if is Simple UI tab, convert the attributes to advanced UI
 		var active_tab = task_html_elm.tabs('option', 'active');
+		var auto_save = myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.auto_save;
 		
 		if (active_tab == 0) {
-			if (confirm("in order to save, the system will now convert the Simple UI's attributes into the Advanced UI. Do you wish to proceed?"))
+			if (auto_save || auto_convert || confirm("in order to save, the system will now convert the Simple UI's attributes into the Advanced UI. Do you wish to proceed?"))
 				DBTableTaskPropertyObj.updateTableAttributesHtmlWithSimpleAttributes(task_html_elm.find(" > ul > li > a")[0], true);
 			else
 				return false;
@@ -294,6 +295,8 @@ var DBTableTaskPropertyObj = {
 	
 	onCompleteLabel : function(task_id) {
 		onEditLabel(task_id);
+		
+		updateTaskLabelInShownTaskProperties(task_id, ".db_table_task_html .table_name input");
 		
 		myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
 		
@@ -576,9 +579,9 @@ var DBTableTaskPropertyObj = {
 		html +=			 '</select></td>'
 					+ '<td class="table_attr_comment"' + ($.inArray("comment", column_types_hidden_props) != -1 ? ' style="display:none;"' : '') + '><input type="text" class="task_property_field" name="table_attr_comments[]" value="' + comment + '" ' + (is_comment_disabled ? 'disabled="disabled"' : '') + ' /></td>'
 					+ '<td class="table_attr_icons">'
-					+ '	<a class="move_up" onClick="DBTableTaskPropertyObj.moveUpTableAttribute(this)">move up</a>'
-					+ '	<a class="move_down" onClick="DBTableTaskPropertyObj.moveDownTableAttribute(this)">move down</a>'
-					+ '	<a class="delete" onClick="DBTableTaskPropertyObj.removeTableAttribute(this)">remove</a>'
+					+ '	<a class="icon move_up" onClick="DBTableTaskPropertyObj.moveUpTableAttribute(this)">move up</a>'
+					+ '	<a class="icon move_down" onClick="DBTableTaskPropertyObj.moveDownTableAttribute(this)">move down</a>'
+					+ '	<a class="icon delete" onClick="DBTableTaskPropertyObj.removeTableAttribute(this)">remove</a>'
 					+ '</td>'
 			+ '</tr>';
 		
@@ -788,7 +791,7 @@ var DBTableTaskPropertyObj = {
 	},
 	
 	updateSimpleAttributesHtmlWithTableAttributes : function(elm, do_not_confirm) {
-		if (do_not_confirm || confirm("Do you wish to convert the Advanced UI's attributes into the Simple UI?")) {
+		if (do_not_confirm || auto_convert || confirm("Do you wish to convert the Advanced UI's attributes into the Simple UI?")) {
 			var task_html_elm = $(elm).closest(".db_table_task_html");
 			
 			//prepare task_property_values
@@ -838,7 +841,7 @@ var DBTableTaskPropertyObj = {
 	/** START: TASK METHODS - SIMPLE UI **/
 	
 	updateTableAttributesHtmlWithSimpleAttributes : function(elm, do_not_confirm) {
-		if (do_not_confirm || confirm("Do you wish to convert the Simple UI's attributes into the Advanced UI?")) {
+		if (do_not_confirm || auto_convert || confirm("Do you wish to convert the Simple UI's attributes into the Advanced UI?")) {
 			var task_html_elm = $(elm).closest(".db_table_task_html");
 			var lis = task_html_elm.find(".simple_attributes > ul > li:not(.no_simple_attributes)");
 			var html = '';
@@ -1086,10 +1089,10 @@ var DBTableTaskPropertyObj = {
 			html += 			'<option value="' + type + '" title="' + type + '">' + type + ' - NON DEFAULT</option>';
 		
 		html +=			  '</select>'
-						+ '<a class="maximize" onClick="DBTableTaskPropertyObj.toggleSimpleAttributeProps(this)" title="Toggle other Properties">Toggle</a>'
-						+ '<a class="move_up" onClick="DBTableTaskPropertyObj.moveUpSimpleAttribute(this)">move up</a>'
-						+ '<a class="move_down" onClick="DBTableTaskPropertyObj.moveDownSimpleAttribute(this)">move down</a>'
-						+ '<a class="delete" onClick="DBTableTaskPropertyObj.removeSimpleAttributeProps(this)" title="Remove this attribute">Remove</a>'
+						+ '<a class="icon maximize" onClick="DBTableTaskPropertyObj.toggleSimpleAttributeProps(this)" title="Toggle other Properties">Toggle</a>'
+						+ '<a class="icon move_up" onClick="DBTableTaskPropertyObj.moveUpSimpleAttribute(this)">move up</a>'
+						+ '<a class="icon move_down" onClick="DBTableTaskPropertyObj.moveDownSimpleAttribute(this)">move down</a>'
+						+ '<a class="icon delete" onClick="DBTableTaskPropertyObj.removeSimpleAttributeProps(this)" title="Remove this attribute">Remove</a>'
 					+ '</div>'
 					+ '<ul>'
 						+ '<li' + ($.inArray("length", column_types_hidden_props) != -1 ? ' style="display:none;"' : '') + '>'
@@ -1545,9 +1548,9 @@ var DBTableTaskPropertyObj = {
 			}
 			html += '</select></td>'
 				+ '<td class="table_attr_icons">'
-					+ '	<a class="move_up" onClick="DBTableTaskPropertyObj.moveUpTableForeignKey(this)">move up</a>'
-					+ '	<a class="move_down" onClick="DBTableTaskPropertyObj.moveDownTableForeignKey(this)">move down</a>'
-					+ '	<a class="delete" onClick="DBTableTaskPropertyObj.removeTableForeignKey(this)">remove</a>'
+					+ '	<a class="icon move_up" onClick="DBTableTaskPropertyObj.moveUpTableForeignKey(this)">move up</a>'
+					+ '	<a class="icon move_down" onClick="DBTableTaskPropertyObj.moveDownTableForeignKey(this)">move down</a>'
+					+ '	<a class="icon delete" onClick="DBTableTaskPropertyObj.removeTableForeignKey(this)">remove</a>'
 				+ '</td>'
 			+ '</tr>';
 				

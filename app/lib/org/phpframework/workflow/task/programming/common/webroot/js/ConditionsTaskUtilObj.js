@@ -87,7 +87,7 @@ var ConditionsTaskUtilObj = {
 		}
 		
 		return '<li class="item">' +
-			'<input class=\"task_property_field\" type=\"text\" name=\"' + prop_name + '[first][value]\" value=\"' + first_value + '\" />' +
+			'<input class=\"task_property_field var\" type=\"text\" name=\"' + prop_name + '[first][value]\" value=\"' + first_value + '\" />' +
 			'<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Search</span>' +
 			'<select class=\"task_property_field var_type\" name=\"' + prop_name + '[first][type]\">' +	
 				'<option' + (first_type == "string" ? ' selected' : '') + '>string</option>' +	
@@ -104,7 +104,7 @@ var ConditionsTaskUtilObj = {
 				'<option' + (prop['operator'] == '===' ? ' selected' : '') + '>===</option>' +
 				'<option' + (prop['operator'] == '!==' ? ' selected' : '') + '>!==</option>' +
 			'</select>' +
-			'<input class=\"task_property_field\" type=\"text\" name=\"' + prop_name + '[second][value]\" value=\"' + second_value + '\" />' +
+			'<input class=\"task_property_field var\" type=\"text\" name=\"' + prop_name + '[second][value]\" value=\"' + second_value + '\" />' +
 			'<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Search</span>' +
 			'<select class=\"task_property_field var_type\" name=\"' + prop_name + '[second][type]\">' +
 				'<option' + (second_type == "string" ? ' selected' : '') + '>string</option>' +	

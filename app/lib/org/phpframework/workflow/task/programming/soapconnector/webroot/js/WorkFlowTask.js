@@ -20,7 +20,6 @@
 var SoapConnectorTaskPropertyObj = {
 	
 	//brokers_options : null,
-	on_choose_page_callback : null,
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		//console.log(task_property_values);
@@ -28,7 +27,7 @@ var SoapConnectorTaskPropertyObj = {
 		
 		var task_html_elm = $(properties_html_elm).find(".soap_connector_task_html");
 		
-		if (typeof SoapConnectorTaskPropertyObj.on_choose_page_url_callback == "function")
+		if (typeof ProgrammingTaskUtil.on_programming_task_choose_page_url_callback == "function")
 			task_html_elm.find(".wsdl_url .search").css("display", "inline-block");
 		
 		ProgrammingTaskUtil.setResultVariableType(task_property_values, task_html_elm);
@@ -294,10 +293,7 @@ var SoapConnectorTaskPropertyObj = {
 	},
 	
 	onCompleteLabel : function(task_id) {
-		onEditLabel(task_id);
-		myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
-		
-		return true;
+		return ProgrammingTaskUtil.onEditLabel(task_id);
 	},
 	
 	onTaskCreation : function(task_id) {
@@ -323,11 +319,6 @@ var SoapConnectorTaskPropertyObj = {
 		}
 		
 		return "";
-	},
-	
-	onChoosePage : function(elm) {
-		if (typeof this.on_choose_page_callback == "function")
-			this.on_choose_page_callback(elm, $(elm).parent().children("input"));
 	},
 	
 	/* UTILS */

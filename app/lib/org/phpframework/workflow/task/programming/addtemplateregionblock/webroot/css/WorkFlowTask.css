@@ -68,10 +68,7 @@
 	margin-left:0;
 }
 .add_template_region_block_task_html .broker_method_obj input {
-	margin-left:100px;
-}
-.add_template_region_block_task_html .broker_method_obj > .add_variable {
-	margin-top:29px;
+	margin-left:105px;
 }
 .add_template_region_block_task_html .region select,
    .add_template_region_block_task_html .block select {
@@ -82,4 +79,9 @@
 	font-size:9px;
 	width:60px;
 	margin-left:5px;
+}
+
+.add_template_region_block_task_html .region .add_variable,
+   .add_template_region_block_task_html .block .add_variable {
+	margin-left:-23px;
 }

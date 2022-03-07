@@ -33,6 +33,8 @@
 			<on_success_connection_drop>onLayerConnectionDrop</on_success_connection_drop>
 			
 			<on_show_task_menu>onShowLayerTaskMenu</on_show_task_menu>
+			
+			<!--on_click_task>showTaskPropertiesIfExists</on_click_task-->
 		</callback>
 	</settings>
 </task>

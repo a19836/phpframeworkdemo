@@ -1,13 +1,9 @@
-.title {
-	color: #000;
-	font-size: 16px;
-	font-weight: bold;
-	margin: 10px 0 20px 0px;
-	text-align: center;
-	width: 100%;
-	height:25px;
+/* TOP BAR */
+.top_bar {
+	margin-bottom:20px;
 }
 
+/* DIFF */
 .file_upload {
 	width:400px;
 	margin:0 auto;
@@ -43,28 +39,39 @@
 }
 .file_upload .upload_file input {
 	width:300px;
+	border:1px solid #eee;
+	border-radius:3px;
+	direction:rtl;
 }
-.file_upload .upload_file .icon {
-	height:16px;
-	margin-top:0;
+.file_upload .upload_file .delete {
+	margin:0 0 0 5px;
 	display:inline-block;
 	float:none;
 	vertical-align:middle;
 }
+.file_upload .add {
+	margin:0 0 0 5px;
+	display:inline-block;
+	float:none;
+	vertical-align:middle;
+	font-size:16px;
+}
 .file_upload .upload_url {
-	margin:10px auto 0 auto;
+	margin:10px 0;
 }
 .file_upload .upload_url label {
 	width:25px;
-	margin-right:10px;
+	margin:0 10px 0 0;
 	display:inline-block;
 }
 .file_upload .upload_url input {
 	width:260px;
+	border:1px solid #eee;
+	border-radius:3px;
+	direction:rtl;
 }
-.file_upload .upload_url .icon {
-	height:16px;
-	margin-left:8px;
+.file_upload .upload_url .delete {
+	margin:0 0 0 10px;
 	display:inline-block;
 	float:none;
 	vertical-align:middle;
@@ -80,12 +87,6 @@
 .file_upload .installing {
 	margin:10px auto;
 	text-align:center;
-}
-.file_upload .add {
-	margin-top:0;
-	display:inline-block;
-	float:none;
-	vertical-align:middle;
 }
 .file_upload .info {
 	width:100%;

@@ -1,3 +1,19 @@
+/* TITLE */
+.title {
+	height:30px;
+	padding:10px 10px 0;
+	color:#ccc;
+}
+
+.title .sub_title {
+	color:#666;
+	margin-left:50px;
+}
+.title .sub_title:hover {
+	color:#000;
+}
+
+/* GENERIC */
 body.no_scroll {
 	position: fixed;
 	left: 0;
@@ -6,27 +22,9 @@ body.no_scroll {
 	right: 0;
 }
 
-#title {
-	color: #000;
-	font-size: 16px;
-	font-weight: bold;
-	margin: 10px 0 0px 0px;
-	text-align: center;
-	width: 100%;
-	height:25px;
-}
-#sub_title {
-	color: #000;
-	font-size: 12px;
-	margin:0px 0 0px 0px;
-	text-align: center;
-	width: 100%;
-	height:25px;
-}
-
+/* TREE */
 #file_tree {
-	margin:10px auto 0 auto;
-	border-top:1px inset #CCC;
+	margin:-5px auto 0 auto;
 }
 #file_tree li > a:not(.jstree-clicked) {
 	background-color:#f0f0f0;
@@ -39,6 +37,9 @@ body.no_scroll {
 }
 #file_tree li > ul > li:nth-of-type(odd) > a:not(.jstree-clicked) {
 	background-color:#f0f0f0;
+}
+#file_tree li > .sub_menu {
+    display:none;
 }
 #file_tree li > a:hover {
 	background-color:#eee;
@@ -59,76 +60,57 @@ body.no_scroll {
 #file_tree li > a .icons .icon:hover {
 	opacity:.6;
 }
+#file_tree li > a .icons .icon {
+	width:20px;
+	height:20px;
+}
+#file_tree li > a .icons .icon::before {
+	font-size:16px;
+	display:block;
+}
+#file_tree li > a .icons .icon::after {
+	font-size:12px;
+	display:block;
+	color:#666;
+}
 #file_tree li > a .icons .icon div {
 	width:100%;
 	height:100%;
+	position:absolute;
+	top:0;
+	left:0;
+	padding-left:20px;
+	z-index:1;
 }
-#file_tree li > a .icons .icon.sub_menu {
-	width:15px;
-	background:url("../../common/img/dot.gif") center 5px repeat-x;
-	background-size:5px;
-}
-#file_tree li > a .icons .icon.remove {
-	background:url("../../common/img/icon/delete_icon.gif") 0 0 no-repeat;
-}
-#file_tree li > a .icons .icon.create_folder {
-	background:url("../../common/vendor/jquerymytree/css/32px.png") -265px -8px no-repeat;
-}
-#file_tree li > a .icons .icon.create_file {
-	background:url("../../common/img/icon/item_add_icon.png") 0 0 no-repeat;
-}
-#file_tree li > a .icons .icon.view_project {
-	background:url("../../common/img/icon/view_icon.gif") 0 0 no-repeat;
-}
-#file_tree li > a .icons .icon.edit {
-	background:url("../../common/img/icon/update_icon.gif") 0 0 no-repeat;
-}
-#file_tree li > a .icons .icon.edit_raw_file {
-	background:url("../../common/img/icon/edit_icon.gif") 0 0 no-repeat;
-}
-#file_tree li > a .icons .icon.unzip {
-	background:url("../../common/img/icon/zip_icon.png") 0 0 no-repeat;
-}
-#file_tree li > a .icons .icon.create_automatically {
-	width:20px;
-	margin-top:-2px;
-	background:url("../../img/icons.png") -52px -92px no-repeat;
-}
-#file_tree li > a .icons .icon.create_uis_diagram {
-	width:22px;
-	background:url("../../img/db_icons.png") -203px -25px no-repeat;
-}
-#file_tree li > a .icons .icon.install_template {
-	background:url("../../common/img/icon/html_icon.png") 0 0 no-repeat;
-}
-#file_tree li > a .icons .icon.add_table {
-	width:20px;
-	background:url("../../img/db_icons.png") -24px -24px no-repeat;
-}
-#file_tree li > a .icons .icon.manage_records {
-	width:22px;
-	background:url("../../img/db_icons.png") -45px -3px no-repeat;
-}
-#file_tree li > a .icons .icon.edit_diagram {
-	background:url("../../common/img/icon/update_icon.gif") 0 0 no-repeat;
-}
-#file_tree li > a .icons .icon.test_unit_obj {
-	margin-top:2px;
-	background:url("../../img/db_icons.png") -26px -181px no-repeat;
-}
-#file_tree li > a .icons .icon.service_method {
-	width:22px;
-	height:22px;
-	margin-top:2px;
-	background:url("../../img/icons.png") -73px -71px no-repeat;
-}
+/* already exists in icons.css:
+#file_tree li > a .icons .icon.sub_menu::before {content:"\f141"; color:#666;}
+#file_tree li > a .icons .icon.refresh::before {content:"\f2f1";}
+#file_tree li > a .icons .icon.remove::before {content:"\f1f8";}
+/*#file_tree li > a .icons .icon.edit::before {content:"\f303";}*/
+#file_tree li > a .icons .icon.create_folder::before {content:"\f65e";}
+#file_tree li > a .icons .icon.create_file::before {content:"\f477";}
+#file_tree li > a .icons .icon.view_project::before {content:"\f06e";}
+#file_tree li > a .icons .icon.edit_raw_file::before {content:"\f121"; color:#999;}
+#file_tree li > a .icons .icon.edit_raw_file::after {content:"\f303";}
+#file_tree li > a .icons .icon.unzip::before {content:"\f1c6"; font:var(--fa-font-regular); font-size:12px;}
+#file_tree li > a .icons .icon.create_automatically::before {content:"\f079";}
+#file_tree li > a .icons .icon.create_uis_diagram::before {content:"\f079";}
+#file_tree li > a .icons .icon.install_template::before {content:"\f13b"; font:var(--fa-font-brands); font-size:16px;}
+#file_tree li > a .icons .icon.add_table::before {content:"\f0db";}
+#file_tree li > a .icons .icon.manage_records::before {content:"\f00b"; color:#999;}
+#file_tree li > a .icons .icon.manage_records::after {content:"\f303";}
+#file_tree li > a .icons .icon.edit_diagram::before {content:"\f0e8";}
+#file_tree li > a .icons .icon.test_unit_obj::before {content:"\f0ae"; color:#aaa;}
+#file_tree li > a .icons .icon.test_unit_obj::after {content:"\2b";}
+#file_tree li > a .icons .icon.service_method::before {content:"\e13b"; -webkit-transform:scaleY(-1); transform:scaleY(-1);}
 
 #file_tree.mytree_filtered > ul > li:only-child > a {
 	width:auto;
-	margin-top:-25px;
+	margin-top:-30px;
 	position:absolute;
 	right:0;
 	background:transparent;
+	z-index:1;
 }
 #file_tree.mytree_filtered > ul > li:only-child > a.jstree-clicked,
   #file_tree.mytree_filtered > ul > li:only-child > a.jstree-hovered {
@@ -140,6 +122,7 @@ body.no_scroll {
 #file_tree.mytree_filtered > ul > li:only-child > .jstree-icon,
   #file_tree.mytree_filtered > ul > li:only-child > a > .jstree-icon,
   #file_tree.mytree_filtered > ul > li:only-child > a > label,
+  #file_tree.mytree_filtered > ul > li:only-child > .sub_menu,
   #file_tree.mytree_filtered > ul > li:only-child > a > .icons .icon:not(.create_folder):not(.create_file):not(.view_project):not(.refresh):not(.sub_menu) {
 	display:none;
 }

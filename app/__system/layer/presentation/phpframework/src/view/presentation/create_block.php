@@ -18,9 +18,15 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$query_string = str_replace(array("&edit_block_type=advanced", "&edit_block_type=simple"), "", $_SERVER["QUERY_STRING"]); $title = isset($title) ? $title : "Create Block"; $sub_title = isset($sub_title) ? $sub_title : '(<a href="' . $project_url_prefix . 'phpframework/presentation/edit_block?' . $query_string . '&edit_block_type=advanced">Show Advanced UI</a>)'; $add_block_url = $add_block_url ? $add_block_url : $project_url_prefix . "phpframework/presentation/edit_block?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$path&module_id=#module_id#"; $head = '
+$query_string = str_replace(array("&edit_block_type=advanced", "&edit_block_type=simple"), "", $_SERVER["QUERY_STRING"]); $title = isset($title) ? $title : "Create Block"; $title_icons = isset($title_icons) ? $title_icons : '<li class="show_advanced_ui" title="Show Advanced UI"><a class="update" href="' . $project_url_prefix . 'phpframework/presentation/edit_block?' . $query_string . '&edit_block_type=advanced">Show Advanced UI</a></li>'; $add_block_url = $add_block_url ? $add_block_url : $project_url_prefix . "phpframework/presentation/edit_block?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$path&module_id=#module_id#"; $head = '
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
 <!-- Add Icons CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
 
 <!-- Add Local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/create_block.css" type="text/css" charset="utf-8" />
@@ -28,8 +34,15 @@ $query_string = str_replace(array("&edit_block_type=advanced", "&edit_block_type
 
 <script>
 var add_block_url = "' . $add_block_url . '";
-</script>'; $main_content = '<div class="title">' . $title . '</div>
-' . ($sub_title ? '<div class="sub_title">' . $sub_title . '</div>' : '') . '
+</script>'; $main_content = '
+	<div class="top_bar">
+		<header>
+			<div class="title">' . $title . '</div>
+			<ul>
+				' . $title_icons . '
+			</ul>
+		</header>
+	</div>
 
 <div class="modules_list">
 	<table>

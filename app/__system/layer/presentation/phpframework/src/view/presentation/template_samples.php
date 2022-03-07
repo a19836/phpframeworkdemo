@@ -19,6 +19,9 @@
  */
 
 $head = '
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
 <!-- Add Icons CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 

@@ -29,6 +29,8 @@
 			<on_complete_task_label>ServerTaskPropertyObj.onCompleteLabel</on_complete_task_label>
 			
 			<on_success_task_creation>ServerTaskPropertyObj.onTaskCreation</on_success_task_creation>
+			
+			<!--on_click_task>showTaskPropertiesIfExists</on_click_task-->
 		</callback>
 		<center_inner_elements>1</center_inner_elements>
 	</settings>

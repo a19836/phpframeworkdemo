@@ -1,33 +1,50 @@
-/* TASK FLOW CHART */
+/* TOP BAR */
+.icon.create_ui_files,
+  .icon.load_new_existent_files {
+	width:20px;
+	height:20px;
+}
+.icon.create_ui_files::before {
+	font:var(--fa-font-regular);
+	content:"\f0c5";
+}
+.icon.create_ui_files::after {
+	content:"\f0fe";
+}
+.icon.load_new_existent_files::before {
+	font:var(--fa-font-regular);
+	content:"\f0c5";
+}
+.icon.load_new_existent_files::after {
+	content:"\f2f1";
+}
 
-.taskflowchart .workflow_menu ul.dropdown li {
+
+/* TASK FLOW CHART */
+.taskflowchart.with_top_bar_menu .tasks_menu, 
+  .taskflowchart.with_top_bar_menu .tasks_menu_hide, 
+  .taskflowchart.with_top_bar_menu .tasks_flow {
+	top:32px !important;
+}
+.taskflowchart .tasks_menu {
+	width:130px;
+}
+.taskflowchart.reverse .tasks_menu_hide {
+	right:130px;
+}
+.taskflowchart.reverse .tasks_flow {
+	right:135px;
+}
+
+.taskflowchart .workflow_menu:not(.top_bar_menu) ul.dropdown li {
 	height:17px;
 	border-left:1px inset #FFF;
 }
-.taskflowchart .workflow_menu ul.dropdown li a {
+.taskflowchart .workflow_menu:not(.top_bar_menu) ul.dropdown li a {
 	height:20px;
 	line-height:20px;
 	padding-left:22px;
 	display:block;
-}
-.taskflowchart .workflow_menu ul.dropdown li.save a {
-	background:url("../../common/img/icon/save_icon.gif") no-repeat scroll 0px 1px;	
-}
-.taskflowchart .workflow_menu ul.dropdown li.flush_cache a {
-	background:url("../../common/img/icon/recycle_icon.png") no-repeat scroll 0px 1px;	
-}
-.taskflowchart .workflow_menu ul.dropdown li.empty_diagram a {
-	background:url("../../common/img/icon/delete_icon.gif") no-repeat scroll 0px 1px;	
-}
-.taskflowchart .workflow_menu ul.dropdown li.create_ui_files a {
-	background:url("../../common/img/icon/item_add_icon.png") no-repeat scroll 0px 1px;	
-}
-.taskflowchart .workflow_menu ul.dropdown li.load_new_existent_files a {
-	background:url("../../common/img/icon/refresh_icon.png") no-repeat scroll 0px 1px;	
-}
-
-.taskflowchart .tasks_menu .tasks_group_tasks {
-	border:0;
 }
 
 .task_context_menu .start_task {
@@ -46,10 +63,6 @@
 .taskflowchart .selected_task_properties .settings .choose_db_table .db_table_conditions,
    .taskflowchart .selected_task_properties .settings .links {
 	overflow-x:auto;
-}
-.taskflowchart .selected_task_properties .icon {
-    float: none;
-    clear:both;
 }
 .taskflowchart .selected_task_properties .ui > .ui_html > table .ui_table_attribute_value.textarea {
 	background:none; /* The lib/.../workflow/task/programming/common/css/global.js tasks are putting this element with a background, so we need to remove it */
@@ -83,24 +96,7 @@
 	clear:left;
 }
 .choose_from_file_manager .button {
-	height:20px;
-	padding-top:5px;
 	text-align:center;
-	width:100%;
-	clear:left;
-	float:none;
-}
-.choose_from_file_manager .button input {
-	height:20px;
-	line-height:15px;
-	border:1px outset;
-	background: #d5e3e4;
-	display:inline;
-	float:none;
-	
-	-moz-border-radius:0.5em; 
-	-webkit-border-radius:0.5em;
-	border-radius:0.5em;
 }
 .choose_from_file_manager .mytree {
 	border:1px inset #CCC;
@@ -150,11 +146,22 @@
 .create_uis_files .brokers table {
 	margin:0 auto;
 }
+.create_uis_files .brokers table th {
+	text-align:center;
+}
+.create_uis_files .brokers table td {
+	padding-bottom:5px;
+	padding-right:5px;
+}
+.create_uis_files .brokers table td.status {
+	text-align:center;
+}
+.create_uis_files .brokers table td.path input {
+	width:250px;
+	font-size:80%;
+}
 .create_uis_files .button input:nth-child(2) {
 	float:right;
-}
-.create_uis_files .step_1 .button input:nth-child(1) {
-	background-color:#ccc;
 }
 .create_uis_files .button input.disabled {
 	opacity:.4;
@@ -175,7 +182,7 @@
 	background:white;
 }
 .create_uis_files .files_statuses table td {
-	border:1px solid #eee;
+	
 }
 .create_uis_files .files_statuses table .task_label {
 	min-width:100px;
@@ -232,7 +239,7 @@
 .create_uis_files .existent_tasks > ul > li > .task_info {
 	width:100%;
 	padding:5px;
-	background:#d5e3e4;
+	background:#eee;
 	box-sizing:border-box;
 }
 .create_uis_files .existent_tasks > ul > li.tasks_reserved_files > .task_info {
@@ -249,10 +256,18 @@
 .create_uis_files .existent_tasks ul .task_info .icon {
 	float:right;
 }
+.create_uis_files .existent_tasks ul .task_info .icon.maximize::before {
+	content:"\f31e";
+}
+.create_uis_files .existent_tasks ul .task_info .icon.minimize::before {
+	content:"\f78c";
+}
 .create_uis_files .existent_tasks ul .task_info .icon.warning {
-	background:url("../../common/img/icon/warning.png") no-repeat scroll 0px 0px;	
 	margin:0 5px 0 0;
 	float:left;
+}
+.create_uis_files .existent_tasks ul .task_info .icon.warning::before {
+	content:"\f071";
 }
 .create_uis_files .existent_tasks ul .task_info .db_driver,
   .create_uis_files .existent_tasks ul .task_info .db_type,
@@ -321,11 +336,17 @@
 .create_uis_files .existent_tasks ul .services_and_rules > .services_and_rules_head {
 	width:100%;
 	padding:5px;
-	background:#d5e3e4;
+	background:#eee;
 	box-sizing:border-box;
 }
 .create_uis_files .existent_tasks ul .services_and_rules > .services_and_rules_head > .icon {
 	float:right;
+}
+.create_uis_files .existent_tasks ul .services_and_rules > .services_and_rules_head > .icon.maximize::before {
+	content:"\f31e";
+}
+.create_uis_files .existent_tasks ul .services_and_rules > .services_and_rules_head > .icon.minimize::before {
+	content:"\f78c";
 }
 .create_uis_files .existent_tasks ul .services_and_rules > .services_and_rules_body {
 	padding:5px;
@@ -361,14 +382,13 @@
 }
 .create_uis_files .existent_tasks ul .services_and_rules .services_and_rules_body .table_ui .table_header {
 	height:20px;
-	text-align:left;
 	padding:0 5px;
-	clear:both;
-	float:none;
+	background:#eee;
+	border:1px outset #eee;
 }
 .create_uis_files .existent_tasks ul .services_and_rules .services_and_rules_body .table_ui .table_header .icon {
 	float:right;
-	margin-right:0;
+	margin:0 0 0 10px;
 }
 .create_uis_files .existent_tasks ul .services_and_rules .services_and_rules_body .table_ui:last-child {
 	margin-bottom:10px;
@@ -395,6 +415,7 @@
 	max-width:none !important;
 	max-height:none !important;
 	min-width:100%;
+	box-sizing:border-box;
 }
 .create_uis_files .existent_tasks ul .services_and_rules .services_and_rules_body .table_ui .table_ui_panel label {
 	font-style:normal;
@@ -561,6 +582,9 @@
 	margin-right: auto;
 	float: none;
 }
+.create_uis_files .existent_tasks ul .files_statuses > table .view_code .icon.view::before {
+	content:"\f06e";
+}
 
 /* CONFIRM SAVE POPUP */
 .confirm_save {
@@ -633,7 +657,6 @@
 }
 .confirm_save .buttons input {
 	height:20px;
-	line-height:15px;
 	margin-right:20px;
 	font-size:10px;
 	font-weight:bold;

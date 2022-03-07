@@ -35,8 +35,20 @@ $head = '
 <script src="' . $project_common_url_prefix . 'vendor/jsbeautify/js/lib/beautify-css.js"></script>
 <script src="' . $project_common_url_prefix . 'vendor/myhtmlbeautify/MyHtmlBeautify.js"></script>
 
+<!-- Add MD5 JS File -->
+<script src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>
+
 <!-- Edit code JS -->
 <script src="' . $project_url_prefix . 'js/edit_code.js"></script>
+
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
+<!-- Icons CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
 
 <!-- Add local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/edit_raw_file.css" type="text/css" charset="utf-8" />
@@ -47,16 +59,15 @@ var scroll_top = ' . (is_numeric($scroll_top) ? $scroll_top : 0 ) . ';
 var editor_code_type = "' . $editor_code_type . '";
 var code_id = "' . md5($code) . '";
 var readonly = ' . ($readonly ? "true" : "false") . ';
-</script>'; $main_content .= '<div class="title">Edit File "' . $path . '"</div>'; if ($editor_code_type) { $main_content .= '
+</script>'; $main_content .= '
+	<div class="top_bar">
+		<header>
+			<div class="title">Edit File "' . $path . '"</div>'; if ($editor_code_type) { $main_content .= '<ul>'; if ($editor_code_type == "php") $main_content .= '<li class="pretty_print" title="Pretty Print Code"><a onClick="prettyPrintCode()"><i class="icon pretty_print"></i> Pretty Print Code</a></li>'; $main_content .= '	<li class="set_word_wrap" title="Toggle Word Wrap"><a onClick="setWordWrap(this)" wrap="0"><i class="icon word_wrap"></i> Word Wrap</a></li>
+					<li class="editor_settings" title="Open Editor Setings"><a onClick="openEditorSettings()"><i class="icon settings"></i> Open Editor Setings</a></li>
+					<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>'; if (!$readonly) $main_content .= '<li class="save" title="Save File"><a onClick="save(false)"><i class="icon full_screen"></i> Save</a></li>'; $main_content .= '</ul>'; } $main_content .= '
+		</header>
+	</div>'; if ($editor_code_type) { $main_content .= '
 	<div class="code_area">
-		<div class="code_menu">
-			<ul>'; if (!$readonly) $main_content .= '
-				<li class="save"><a onClick="save(false)">Save</a></li>'; $main_content .= '
-				' . ($editor_code_type == "php" ? '<li class="pretty_print"><a onClick="prettyPrintCode()">Pretty Print Code</a></li>' : '') . '
-				<li class="set_word_wrap"><a onClick="setWordWrap(this)" wrap="0">Set Word Wrap</a></li>
-				<li class="editor_settings"><a onClick="openEditorSettings()">Open Editor Setings</a></li>
-			</ul>
-		</div>
 		<textarea>' . "\n" . htmlspecialchars($code, ENT_NOQUOTES) . '</textarea>
 	</div>'; if (!$readonly) $main_content .= '
 	<div class="confirm_save hidden">

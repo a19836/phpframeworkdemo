@@ -18,13 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$head = '
-<!-- Add Icon CSS -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
-
-<!-- Edit code JS -->
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_code.js"></script>
-
+include_once $EVC->getUtilPath("AdminMenuUIHandler"); $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_uis.css" type="text/css" charset="utf-8" />'; if (!$admin_uis_count) { echo '<script>
 		alert("This logged user doesn\'t have access to any Admin UI. Please contact the sysadmin and ask him to give you permission to at least 1 Admin UI.");
@@ -33,27 +27,27 @@ $head = '
 <ul>
 	' . ($is_admin_ui_simple_allowed ? '<li class="ui simple_admin_ui" onClick="document.location=\'' . $project_url_prefix . 'admin?admin_type=simple\'">
 		<label>Simple UI</label>
-		<div class="photo"></div>
+		<div class="icon photo"></div>
 		<div class="description">CMS Style based in No-Code for non-technical people</div>
 	</li>' : '') . '
 	' . ($is_admin_ui_citizen_allowed ? '<li class="ui citizen_admin_ui" onClick="document.location=\'' . $project_url_prefix . 'admin?admin_type=citizen\'">
 		<label>Citizen Development UI</label>
-		<div class="photo"></div>
+		<div class="icon photo"></div>
 		<div class="description">For all citizens with some basic technical knowledge.</div>
 	</li>' : '') . '
 	' . ($is_admin_ui_low_code_allowed ? '<li class="ui low_code_admin_ui" onClick="document.location=\'' . $project_url_prefix . 'admin?admin_type=low_code\'">
 		<label>Low-Code UI</label>
-		<div class="photo"></div>
+		<div class="icon photo"></div>
 		<div class="description">For all low-coders.</div>
 	</li>' : '') . '
 	' . ($is_admin_ui_advanced_allowed ? '<li class="ui advanced_admin_ui" onClick="document.location=\'' . $project_url_prefix . 'admin?admin_type=advanced\'">
 		<label>Advanced UI</label>
-		<div class="photo"></div>
+		<div class="icon photo"></div>
 		<div class="description">For technical people or programmers</div>
 	</li>' : '') . '
 	' . ($is_admin_ui_expert_allowed ? '<li class="ui expert_admin_ui" onClick="document.location=\'' . $project_url_prefix . 'admin?admin_type=expert\'">
 		<label>Expert UI</label>
-		<div class="photo"></div>
+		<div class="icon photo"></div>
 		<div class="description">For experts and ninjas only</div>
 	</li>' : '') . '
 </ul>'; ?>

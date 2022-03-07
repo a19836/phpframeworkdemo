@@ -34,7 +34,7 @@ include_once get_lib("org.phpframework.phpscript.PHPCodePrintingHandler"); inclu
 				<input class="use_name" type="text" value="' . $v1578057dc9 . '" placeHolder="namespace" />
 				<label class="use_as"> as </label>
 				<input class="use_alias" type="text" value="' . $v7c3c74d27f . '" placeHolder="alias" />
-				<span class="icon delete" onClick="$(this).parent().remove();">delete</span>
+				<span class="icon delete" onClick="$(this).parent().remove();" title="Delete">Remove</span>
 			</div>'; } public static function getInludeHTML($pc24afc88 = false) { $v434e0ba045 = $pc24afc88 ? $pc24afc88[0] : ""; $pee6ea13c = $pc24afc88 && $pc24afc88[1]; $v1feee46607 = substr($v434e0ba045, 0, 1) == '"' || substr($v434e0ba045, 0, 1) == '"' ? "string" : ""; $v434e0ba045 = trim($v434e0ba045); $v34f0a629d3 = substr($v434e0ba045, 0, 1); if ($v34f0a629d3 == '"' || $v34f0a629d3 == "'") { $v434e0ba045 = substr($v434e0ba045, 1, -1); $v434e0ba045 = $v34f0a629d3 == '"' ? str_replace('\\"', '"', $v434e0ba045) : str_replace("\\'", "'", $v434e0ba045); } return '
 			<div class="include">
 				<label>Path:</label>
@@ -44,8 +44,8 @@ include_once get_lib("org.phpframework.phpscript.PHPCodePrintingHandler"); inclu
 					<option value=""' . ($v1feee46607 == "" ? ' selected' : '') . '>default</option>
 				</select>
 				<input class="include_once" type="checkbox" value="1" title="Check this if include/require once"' . ($pee6ea13c ? ' checked' : '') . '/>
-				<span class="icon search" onClick="getIncludePathFromFileManager(this, \'input\')" title="Get file from File Manager">Get from File Manager</span>
-				<span class="icon delete" onClick="$(this).parent().remove();">delete</span>
+				<span class="icon search" onClick="getIncludePathFromFileManager(this, \'input\')" title="Get file from File Manager">Search</span>
+				<span class="icon delete" onClick="$(this).parent().remove();" title="Delete">Remove</span>
 			</div>'; } public static function getPropertyHTML($v1654ac0a73 = false) { $pe9716498 = $v1654ac0a73["name"]; $v463ddec21a = $v1654ac0a73["value"]; $v008fc6ff5f = $v1654ac0a73["var_type"]; $pcc2fe66c = ""; if ($v1654ac0a73["comments"] || $v1654ac0a73["doc_comments"]) { $v454a8d0d34 = $v1654ac0a73["doc_comments"] ? implode("\n", $v1654ac0a73["doc_comments"]) : ""; $v454a8d0d34 = trim($v454a8d0d34); $v454a8d0d34 = str_replace("\r", "", $v454a8d0d34); $v454a8d0d34 = preg_replace("/^\/[*]+\s*/", "", $v454a8d0d34); $v454a8d0d34 = preg_replace("/\s*[*]+\/\s*$/", "", $v454a8d0d34); $v454a8d0d34 = preg_replace("/\s*\n\s*[*]*\s*/", "\n", $v454a8d0d34); $v454a8d0d34 = preg_replace("/^\s*[*]*\s*/", "", $v454a8d0d34); $v454a8d0d34 = trim($v454a8d0d34); $pcc2fe66c = is_array($v1654ac0a73["comments"]) ? trim(implode("\n", $v1654ac0a73["comments"])) : ""; $pcc2fe66c .= $v454a8d0d34 ? "\n" . trim($v454a8d0d34) : ""; $pcc2fe66c = str_replace(array("/*", "*/", "//"), "", $pcc2fe66c); $pcc2fe66c = trim($pcc2fe66c); } $v008fc6ff5f = $v008fc6ff5f ? strtolower($v008fc6ff5f) : (isset($v463ddec21a) && (substr($v463ddec21a, 0, 1) == '"' || substr($v463ddec21a, 0, 1) == '"') ? "string" : ""); $v008fc6ff5f = empty($v463ddec21a) ? "string" : $v008fc6ff5f; $pe9716498 = trim($pe9716498); $pe9716498 = substr($pe9716498, 0, 1) == "\$" ? substr($pe9716498, 1) : $pe9716498; $v463ddec21a = trim($v463ddec21a); $v34f0a629d3 = substr($v463ddec21a, 0, 1); if ($v34f0a629d3 == '"' || $v34f0a629d3 == "'") { $v463ddec21a = substr($v463ddec21a, 1, -1); $v463ddec21a = $v34f0a629d3 == '"' ? str_replace('\\"', '"', $v463ddec21a) : str_replace("\\'", "'", $v463ddec21a); } $v4159504aa3 = array("public", "private", "protected", "const"); $v1f8fb57ab1 = array("string" => "string", "" => "default"); $pf8ed4912 = '
 			<tr class="property">
 				<td class="name">
@@ -68,10 +68,10 @@ include_once get_lib("org.phpframework.phpscript.PHPCodePrintingHandler"); inclu
 				<td class="comments">
 					<input type="text" value="' . str_replace('"', "&quot;", $pcc2fe66c) . '" />
 				</td>
-				<td class="icon_cell table_header"><span class="icon delete" onClick="$(this).parent().parent().remove();">Remove</span></td>
+				<td class="icon_cell table_header"><span class="icon delete" onClick="$(this).parent().parent().remove();" title="Delete">Remove</span></td>
 			</tr>'; return $pf8ed4912; } public static function getArgumentHTML($v3e2ea7c182 = false, $v15f6545050 = false, $v9439b47442 = false) { $v1f8fb57ab1 = array("default", "string"); $v9439b47442 = $v9439b47442 ? strtolower($v9439b47442) : (isset($v15f6545050) && (substr($v15f6545050, 0, 1) == '"' || substr($v15f6545050, 0, 1) == "'") ? "string" : ""); $v3e2ea7c182 = trim($v3e2ea7c182); $v3e2ea7c182 = substr($v3e2ea7c182, 0, 1) == "\$" ? substr($v3e2ea7c182, 1) : $v3e2ea7c182; $v15f6545050 = trim($v15f6545050); $v34f0a629d3 = substr($v15f6545050, 0, 1); if ($v34f0a629d3 == '"' || $v34f0a629d3 == "'") { $v15f6545050 = substr($v15f6545050, 1, -1); $v15f6545050 = $v34f0a629d3 == '"' ? str_replace('\\"', '"', $v15f6545050) : str_replace("\\'", "'", $v15f6545050); } $pf8ed4912 = '<tr class="argument">
 				<td class="name">
-					<input type="text" value="' . str_replace('"', "&quot;", $v3e2ea7c182) . '" />
+					<input type="text" value="' . str_replace('"', "&quot;", $v3e2ea7c182) . '" onBlur="onBlurArgumentName(this)" />
 				</td>
 				<td class="value">
 					<input type="text" value="' . str_replace('"', "&quot;", $v15f6545050) . '" />
@@ -80,7 +80,7 @@ include_once get_lib("org.phpframework.phpscript.PHPCodePrintingHandler"); inclu
 					<select>'; $pc37695cb = count($v1f8fb57ab1); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $pf8ed4912 .= '<option' . (strtolower($v1f8fb57ab1[$v43dd7d0051]) == $v9439b47442 ? " selected" : "") . '>' . $v1f8fb57ab1[$v43dd7d0051] . '</option>'; } $pf8ed4912 .= '
 					</select>
 				</td>
-				<td class="icon_cell table_header"><span class="icon delete" onClick="$(this).parent().parent().remove();">Remove</span></td>
+				<td class="icon_cell table_header"><span class="icon delete" onClick="removeArgument(this)" title="Delete">Remove</span></td>
 			</tr>'; return $pf8ed4912; } public static function getAnnotationHTML($ped0a6251 = false, $v18f86e4308 = false) { $v5e813b295b = $v3fb9f41470 = $pf6e8b316 = $v4bfe0500a2 = $pd2c744e8 = $pe9715da5 = ""; if (is_array($ped0a6251)) { $v5e813b295b = $ped0a6251["name"]; $v3fb9f41470 = $ped0a6251["type"]; $pf6e8b316 = !empty($ped0a6251["not_null"]); $v4bfe0500a2 = $ped0a6251["default"]; $pd2c744e8 = str_replace('\\"', '"', $ped0a6251["desc"]); foreach ($ped0a6251 as $pe5c5e2fe => $v956913c90f) { if ($pe5c5e2fe != "name" && $pe5c5e2fe != "type" && $pe5c5e2fe != "not_null" && $pe5c5e2fe != "default" && $pe5c5e2fe != "desc" && $pe5c5e2fe != "sub_name") { $pe9715da5 .= ($pe9715da5 ? ", " : "") . "$pe5c5e2fe=$v956913c90f"; } } } $v220ac3f2f6 = WorkFlowDataAccessHandler::getMapPHPTypes(); $v0edffb2551 = WorkFlowDataAccessHandler::getMapDBTypes(); $v3fb9f41470 = ObjTypeHandler::convertSimpleTypeIntoCompositeType($v3fb9f41470); $pf8ed4912 = '
 		<tr class="annotation">
 			<td class="annotation_type">
@@ -90,7 +90,7 @@ include_once get_lib("org.phpframework.phpscript.PHPCodePrintingHandler"); inclu
 				</select>
 			</td>
 			<td class="name">
-				<input type="text" value="' . str_replace('"', "&quot;", $v5e813b295b) . '" />
+				<input type="text" value="' . str_replace('"', "&quot;", $v5e813b295b) . '" onBlur="onBlurAnnotationName(this)" />
 			</td>
 			<td class="type">
 				<select' . (strpos($v3fb9f41470, "|") !== false ? ' style="display:none"' : '') . '>
@@ -103,7 +103,7 @@ include_once get_lib("org.phpframework.phpscript.PHPCodePrintingHandler"); inclu
 					</optgroup>
 				</select>
 				<input type="text" value="' . str_replace('"', "&quot;", $v3fb9f41470) . '"' . (strpos($v3fb9f41470, "|") !== false ? '' : ' style="display:none"') . ' />
-				<span class="icon textfield" onClick="swapTypeTextField(this)"></span>
+				<span class="icon switch textfield" onClick="swapTypeTextField(this)" title="Swap text field type">Swap text field type</span>
 			</td>
 			<td class="not_null">
 				<input type="checkbox" value="1"' . ($pf6e8b316 ? ' checked' : '') . ' />
@@ -117,5 +117,5 @@ include_once get_lib("org.phpframework.phpscript.PHPCodePrintingHandler"); inclu
 			<td class="others">
 				<input type="text" value="' . str_replace('"', "&quot;", $pe9715da5) . '" />
 			</td>
-			<td class="icon_cell table_header"><span class="icon delete" onClick="$(this).parent().parent().remove();">Remove</span></td>
+			<td class="icon_cell table_header"><span class="icon delete" onClick="removeAnnotation(this)" title="Delete">Remove</span></td>
 		</tr>'; return $pf8ed4912; } } ?>

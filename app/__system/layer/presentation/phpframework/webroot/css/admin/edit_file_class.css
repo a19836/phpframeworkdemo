@@ -1,29 +1,57 @@
+/* TOP BAR */
+.top_bar {
+	margin-bottom:10px;
+}
+.top_bar .title .class_name {
+	width:200px;
+	display:inline-block;
+}
 
+/* FILE CLASS */
+.file_class_obj {
+	width:100%;
+	margin:0;
+	padding:10px;
+	box-sizing:border-box;
+}
 .file_class_obj div .add {
 	margin:3px 0 0 0;
+	font-size:14px;
 }
-.file_class_obj .name {
-	width:100%;
-	height:25px;
-	margin-bottom:5px;
+.file_class_obj label {
+	font-weight:normal;
+	font-style:normal;
 }
-.file_class_obj .name input {
-	width:230px;
+
+.file_class_obj > .name {
+	width:210px;
+	position:fixed;
+	top:5px;
+	left:75px;
+	z-index:2;
+}
+.file_class_obj > .name label {
+	display:none;
+}
+.file_class_obj > .name input {
+	width:200px;
+	border:1px solid #ccc;
+	color:#000;
 }
 .file_class_obj .abstract {
 	width:100%;
-	height:25px;
+	margin-bottom:5px;
 }
 .file_class_obj .abstract input {
 	margin-left:0;
 }
 .file_class_obj .extend, .file_class_obj .implement {
 	width:100%;
-	height:25px;
 	margin-bottom:5px;
 }
 .file_class_obj .extend input, .file_class_obj .implement input {
-	width:525px;
+	width:calc(100% - 150px);
+	min-width:200px;
 }
 
 .file_class_obj .properties {
@@ -31,36 +59,36 @@
 	padding-top:20px;
 }
 .file_class_obj .properties label {
-	clear:left;
-	float:none;
+	width:80px;
+}
+.file_class_obj .properties label > .add {
+	vertical-align: middle;
+	font-size:16px;
 }
 .file_class_obj .properties table {
 	width:810px;
 	margin-top:5px;
-	border:1px solid #CCC;
 }
 .file_class_obj .properties thead th {
-	text-transform:uppercase;
-	font-style:italic;
-	font-weight:bold;
 	font-size:10px;
-}
-.file_class_obj .properties thead .add {
-	margin-left:5px;
-}
-.file_class_obj .properties tbody .delete {
-	margin-top:3px;
-	height:16px;
+	border-bottom:1px solid #CCC;
+	border-right:1px solid #eee;
 }
 .file_class_obj .properties tbody td {
-	border:1px inset #CCC;
+	border-bottom:1px solid #CCC;
+	border-right:1px solid #eee;
 }
-.file_class_obj .properties tbody .icon_cell {
-	border:1px outset;
+.file_class_obj .properties .icon_cell {
+	border:0;
+	text-align:center;
+}
+.file_class_obj .properties .icon_cell .icon {
+	margin:auto 5px;
+	font-size:14px;
 }
 .file_class_obj .properties tbody input, .file_class_obj .properties tbody select {
 	border:0;
-	background-color:#FFF;
+	background-color:transparent;
 	float:none;
 	clear:left;
 }
@@ -103,6 +131,9 @@
 .file_class_obj .properties table .comments input {
 	width:145px;
 }
+.file_class_obj .properties table .icon_cell {
+	width:25px;
+}
 
 .file_class_obj .comments {
 	width:100%;
@@ -114,7 +145,8 @@
 	float:none;
 }
 .file_class_obj .comments textarea {
-	width:665px;
+	width:calc(100% - 10px);
+	min-width:200px;
 	height:60px;
 	margin-top:5px;
 	font-size:1em;

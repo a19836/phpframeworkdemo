@@ -7,18 +7,32 @@ var auto_scroll_active = true;
 var MyDiagramUIFancyPopup = new MyFancyPopupClass();
 
 $(function () {
-	/*$(window).bind('beforeunload', function () {
-		if (window.parent && window.parent.iframe_overlay)
-			window.parent.iframe_overlay.hide();
+	$(window).bind('beforeunload', function () {
+		if (jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()) {
+			if (window.parent && window.parent.iframe_overlay)
+				window.parent.iframe_overlay.hide();
+			
+			return "If you proceed your changes won't be saved. Do you wish to continue?";
+		}
 		
-		return "Changes you made may not be saved. Click cancel to save them first, otherwise to continue...";
-	});*/
+		return null;
+	});
 	
+	//prepare top_bar
+	$(".taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu");
+	
+	//init auto save
+	addAutoSaveMenu(".taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.save", "onToggleWorkflowAutoSave");
+	enableAutoSave(onToggleWorkflowAutoSave);
+	initAutoSave(".taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.save a");
+	
+	//init workflow
 	jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_connector = "Straight";
 	jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_overlay = "Forward Arrow";
 	jsPlumbWorkFlow.jsPlumbTaskFlow.available_connection_connectors_type = ["Straight"];
 	jsPlumbWorkFlow.jsPlumbTaskFlow.available_connection_overlays_type = ["Forward Arrow"];
 	
+	//init trees
 	choosePageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
 		ajax_callback_before : prepareLayerNodes1,
@@ -75,6 +89,7 @@ $(function () {
 	});
 	chooseHibernateObjectMethodFromFileManagerTree.init("choose_hibernate_object_method_from_file_manager");
 	
+	//init ui
 	var old_file_code = $(".confirm_save .file_code .old_file_code pre");
 	var new_file_code = $(".confirm_save .file_code .new_file_code pre");
 	
@@ -1904,13 +1919,14 @@ function removeTableUIPanel(elm) {
 
 function toggleTableUIPanel(elm) {
 	elm = $(elm);
+	var table_ui_panel = elm.parent().parent().children(".table_ui_panel");
 	
-	if (elm.hasClass("maximize")) {
-		elm.parent().parent().children(".table_ui_panel").show();
+	if (table_ui_panel.css("display") == "none") {
+		table_ui_panel.show();
 		elm.removeClass("maximize").addClass("minimize");
 	}
 	else {
-		elm.parent().parent().children(".table_ui_panel").hide();
+		table_ui_panel.hide();
 		elm.removeClass("minimize").addClass("maximize");
 	}
 	
@@ -2680,4 +2696,29 @@ function prepareSavedTasksProperties(tasks) {
 function updateMyDiagramUIFancyPopup() {
 	$(window).scrollTop(0);
 	MyDiagramUIFancyPopup.updatePopup();
+}
+
+function saveUIsDiagramFlow() {
+	prepareAutoSaveVars();
+	
+	if (jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()) {
+		jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
+			success: function(data, textStatus, jqXHR) {
+				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url, function() {
+						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+						saveUIsDiagramFlow();
+					});
+				else if (is_from_auto_save) {
+					jsPlumbWorkFlow.jsPlumbStatusMessage.removeMessages("status");
+					resetAutoSave();
+				}
+			},
+			timeout: is_from_auto_save && auto_save_connection_ttl ? auto_save_connection_ttl : 0,
+		});
+	}
+	else if (!is_from_auto_save)
+		jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Nothing to save.");
+	else
+		resetAutoSave();
 }

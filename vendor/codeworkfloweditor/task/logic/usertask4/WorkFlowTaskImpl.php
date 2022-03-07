@@ -10,7 +10,7 @@ class WorkFlowTaskImpl extends \WorkFlowTask {
 	public function createTaskPropertiesFromCodeStmt($stmt, $WorkFlowTaskCodeParser, &$exits = null, &$inner_tasks = null) {
 		$stmt_type = strtolower($stmt->getType());
 		
-		if ($stmt_type == "expr_exit") {
+		if ($stmt_type == "expr_yyy") {
 			$expr = $stmt->expr;
 			if ($expr) {
 				$expr_type = strtolower($expr->getType());
@@ -57,7 +57,7 @@ class WorkFlowTaskImpl extends \WorkFlowTask {
 		
 		$value = self::getVariableValueCode($properties["value"], $properties["type"]);
 		
-		$code = $prefix_tab . "die($value);\n";
+		$code = $prefix_tab . "yyy($value);\n";
 		
 		return $code;// . self::printTask($tasks, $data["exits"][self::DEFAULT_EXIT_ID], $stop_task_id, $prefix_tab, $options);
 	}

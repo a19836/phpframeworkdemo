@@ -59,7 +59,7 @@
 			<option>variable</option>
 			<option value="">code</option>
 		</select>
-		<span class="icon search" onclick="SetTemplateRegionBlockParamTaskPropertyObj.on_choose_page_url_callback(this)" title="Search Page">Search page</span>
+		<span class="icon search" onclick="ProgrammingTaskUtil.onProgrammingTaskChoosePageUrl(this)" title="Search Page">Search page</span>
 	</div>
 		
 	<div class="task_property_exit" exit_id="default_exit" exit_color="#b70608"></div>

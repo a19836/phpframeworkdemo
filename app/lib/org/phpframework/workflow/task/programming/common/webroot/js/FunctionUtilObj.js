@@ -27,6 +27,7 @@ var FunctionUtilObj = {
 	get_tmp_workflow_file_url : null,
 	create_code_from_workflow_file_url : null,
 	create_workflow_file_from_code_url : null,
+	auto_convert: false,
 	
 	loadMethodArgs : function(parent_elm, arguments) {
 		if (arguments) {
@@ -87,9 +88,11 @@ var FunctionUtilObj = {
 		var main_tasks_flow_parent = $("#" + this.OriginalJsPlumbWorkFlowObject.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent();
 		var main_div_id = "edit_function_code_" + main_tasks_flow_parent.attr("id");
 		
+		this.auto_convert = typeof auto_convert != "undefined" ? auto_convert : false;
+		
 		//prepare html
 		var html = '	<div class="myfancypopup edit_function_code">'
-				+ '		<ul>'
+				+ '		<ul class="tabs tabs_transparent tabs_right">'
 				+ '			<li id="code_editor_tab"><a href="#code" onClick="FunctionUtilObj.onClickCodeEditorTab(this);return false;">Code</a></li>'
 				+ '			<li id="tasks_flow_tab"><a href="#ui" onClick="FunctionUtilObj.onClickTaskWorkflowTab(this);return false;">Workflow</a></li>'
 				+ '		</ul>'
@@ -97,33 +100,31 @@ var FunctionUtilObj = {
 				+ '		<span class="message"></span>'
 				+ '		'
 				+ '		<div id="code">'
-				+ '			<div class="code_menu">'
+				+ '			<div class="code_menu top_bar_menu">'
 				+ '				<ul>'
-				+ '					<li class="pretty_print"><a onClick="FunctionUtilObj.prettyPrintCode(this)">Pretty Print Code</a></li>'
-				+ '					<li class="set_word_wrap"><a onClick="FunctionUtilObj.setWordWrap(this)" wrap="0">Set Word Wrap</a></li>'
-				+ '					<li class="editor_settings"><a onClick="FunctionUtilObj.openEditorSettings(this)">Open Editor Setings</a></li>'
+				+ '					<li class="editor_settings" title="Open Editor Setings"><a onClick="FunctionUtilObj.openEditorSettings(this)"><i class="icon settings"></i> Open Editor Setings</a></li>'
+				+ '					<li class="pretty_print" title="Pretty Print Code"><a onClick="FunctionUtilObj.prettyPrintCode(this)"><i class="icon pretty_print"></i> Pretty Print Code</a></li>'
+				+ '					<li class="set_word_wrap" title="Set Word Wrap"><a class="active" onClick="FunctionUtilObj.setWordWrap(this)" wrap="0"><i class="icon word_wrap"></i> Word Wrap</a></li>'
 				+ '				</ul>'
 				+ '			</div>'
 				+ '			<textarea></textarea>'
-				+ '			'
-				+ '			<div class="button">'
-				+ '				<input type="button" value="UPDATE CODE" onClick="FunctionUtilObj.EditFunctionCodeMyFancyPopupObject.settings.updateFunction(this)" />'
-				+ '			</div>'
 				+ '		</div>'
 				+ '		'
 				+ '		<div id="ui">'
-				+ '			<div id="' + main_div_id + '" class="taskflowchart">'
-				+ '				<div id="workflow_menu" class="workflow_menu">'
+				+ '			<div id="' + main_div_id + '" class="taskflowchart reverse with_top_bar_menu fixed_properties">'
+				+ '				<div id="workflow_menu" class="workflow_menu top_bar_menu">'
 				+ '					<ul class="dropdown">'
-				+ '						' + (this.create_code_from_workflow_file_url && this.set_tmp_workflow_file_url ? '<li class="generate_code_from_tasks_flow"><a onclick="FunctionUtilObj.generateCodeFromTasksFlow(this);return false;">Generate Code From Tasks\' Flow</a></li>' : '')
-				+ '						' + (this.create_workflow_file_from_code_url && this.get_tmp_workflow_file_url ? '<li class="generate_tasks_flow_from_code"><a onclick="FunctionUtilObj.generateTasksFlowFromCode(this);return false;">Update Tasks\' Flow from Code</a></li>' : '')
-				+ '						<li class="sort_tasks">'
-				+ '							<a onclick="FunctionUtilObj.sortWorkflowTask(this);return false;">Sort Tasks</a><ul><li class="sort_tasks">'
-				+ '							<a onclick="FunctionUtilObj.sortWorkflowTask(this, 1);return false;">Sort Type 1</a></li><li class="sort_tasks">'
-				+ '							<a onclick="FunctionUtilObj.sortWorkflowTask(this, 2);return false;">Sort Type 2</a></li><li class="sort_tasks">'
-				+ '							<a onclick="FunctionUtilObj.sortWorkflowTask(this, 3);return false;">Sort Type 3</a></li><li class="sort_tasks">'
-				+ '							<a onclick="FunctionUtilObj.sortWorkflowTask(this, 4);return false;">Sort Type 4</a>'
+				+ '						<li class="sort_tasks" title="Sort Tasks">'
+				+ '							<a onclick="FunctionUtilObj.sortWorkflowTask(this);return false;"><i class="icon sort"></i> Sort Tasks</a>'
+				+ '							<ul>'
+				+ '								<li class="sort_tasks"><a onclick="FunctionUtilObj.sortWorkflowTask(this, 1);return false;"><i class="icon sort"></i> Sort Type 1</a></li>'
+				+ '								<li class="sort_tasks"><a onclick="FunctionUtilObj.sortWorkflowTask(this, 2);return false;"><i class="icon sort"></i> Sort Type 2</a></li>'
+				+ '								<li class="sort_tasks"><a onclick="FunctionUtilObj.sortWorkflowTask(this, 3);return false;"><i class="icon sort"></i> Sort Type 3</a></li>'
+				+ '								<li class="sort_tasks"><a onclick="FunctionUtilObj.sortWorkflowTask(this, 4);return false;"><i class="icon sort"></i> Sort Type 4</a></li>'
+				+ '							</ul>'
 				+ '						</li>'
+				+ '						' + (this.create_workflow_file_from_code_url && this.get_tmp_workflow_file_url ? '<li class="generate_tasks_flow_from_code" title="Update Tasks\' Flow from Code"><a onclick="FunctionUtilObj.generateTasksFlowFromCode(this);return false;"><i class="icon generate_tasks_flow_from_code"></i> Update Tasks\' Flow from Code</a></li>' : '')
+				+ '						' + (this.create_code_from_workflow_file_url && this.set_tmp_workflow_file_url ? '<li class="generate_code_from_tasks_flow" title="Generate Code From Tasks\' Flow"><a onclick="FunctionUtilObj.generateCodeFromTasksFlow(this);return false;"><i class="icon generate_code_from_tasks_flow"></i> Generate Code From Tasks\' Flow</a></li>' : '')
 				+ '					</ul>'
 				+ '				</div>'
 				+ '				'
@@ -139,6 +140,10 @@ var FunctionUtilObj = {
 				+ '				'
 				+ '				<div class="connections_properties hidden"></div>'
 				+ '			</div>'
+				+ '		</div>'
+				+ '		'
+				+ '		<div class="button">'
+				+ '			<input type="button" value="UPDATE CODE" onClick="FunctionUtilObj.EditFunctionCodeMyFancyPopupObject.settings.updateFunction(this)" />'
 				+ '		</div>'
 				+ '	</div>';
 		
@@ -196,6 +201,13 @@ var FunctionUtilObj = {
 	},
 	
 	updateFunctionCode : function(elm) {
+		//convert workflow to code first
+		var edit_function_code = $(elm).parent().closest(".edit_function_code");
+		var selected_tab = edit_function_code.children("ul.tabs").children("li.ui-tabs-selected, li.ui-tabs-active").first();
+		
+		if (FunctionUtilObj.auto_convert && FunctionUtilObj.EditFunctionCodeJsPlumbWorkFlow && selected_tab.attr("id") == "tasks_flow_tab")
+			FunctionUtilObj.generateCodeFromTasksFlow(elm, true);
+		
 		var code = FunctionUtilObj.getEditFunctionCodeEditorValue(elm);
 		code = "?>" + code + "<?php ";
 		code = code.replace(/\?>\s*<\?(php|)/g, "").replace(/^\s+/g, "").replace(/\s+$/g, "");
@@ -242,6 +254,9 @@ var FunctionUtilObj = {
 		setTimeout(function() {
 			if (FunctionUtilObj.EditFunctionCodeEditor && $(elm).closest(".edit_function_code").children("#code").is(":visible"))
 				FunctionUtilObj.EditFunctionCodeEditor.focus();
+			
+			if (FunctionUtilObj.auto_convert && FunctionUtilObj.EditFunctionCodeJsPlumbWorkFlow)
+				FunctionUtilObj.generateCodeFromTasksFlow(elm, true);
 		}, 10);
 	},
 	
@@ -288,6 +303,9 @@ var FunctionUtilObj = {
 				WF.resizePanels();
 			}, 500);
 		}
+		else if (this.auto_convert) {
+			this.generateTasksFlowFromCode(elm, true);
+		}
 		
 		//set the new JsPlumbWorkFlow
 		myWFObj.setJsPlumbWorkFlow(WF);
@@ -320,7 +338,7 @@ var FunctionUtilObj = {
 			var new_code_id = code ? $.md5(code) : null;
 			
 			if (old_workflow_id != new_workflow_id || (generated_code_id && generated_code_id != new_code_id)) {
-				if (do_not_confirm || confirm("Do you wish to update this code accordingly with the workflow tasks?")) {
+				if (do_not_confirm || this.auto_convert || confirm("Do you wish to update this code accordingly with the workflow tasks?")) {
 					status = false;
 					
 					var workflow_menu = ui_elm.find(" > .taskflowchart > .workflow_menu");
@@ -417,7 +435,7 @@ var FunctionUtilObj = {
 			new_code_id = code ? $.md5(code) : null;
 			
 			if (!old_code_id || old_code_id != new_code_id) {
-				if (do_not_confirm || confirm("Do you wish to update this workflow accordingly with the code in the editor?")) {
+				if (do_not_confirm || this.auto_convert || confirm("Do you wish to update this workflow accordingly with the code in the editor?")) {
 					status = false;
 				
 					var workflow_menu = ui_elm.find(" > .taskflowchart > .workflow_menu");

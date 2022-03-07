@@ -19,15 +19,26 @@
  */
 
 include $EVC->getUtilPath("UserAuthenticationUIHandler"); $head = '
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
 <!-- Add Icons CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
 
 <!-- Add Local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/user/user.css" type="text/css" charset="utf-8" />
 '; $main_content = '
 <div id="menu">' . UserAuthenticationUIHandler::getMenu($UserAuthenticationHandler, $project_url_prefix) . '</div>
 <div id="content">
-	<div class="title">Manage Login Controls</div>
+	<div class="top_bar">
+		<header>
+			<div class="title">Manage Login Controls</div>
+		</header>
+	</div>
+	
 	<div class="login_controls_list">
 	<table>
 		<tr>

@@ -1,14 +1,11 @@
-.manage_record {
-	padding:0 10px;
+/* TOP BAR */
+.top_bar {
+	margin-bottom:20px;
 }
 
-.manage_record .title {
-	width: 100%;
-	color: #000;
-	font-size: 16px;
-	font-weight: bold;
-	margin: 10px 0 5px;
-	text-align: center;
+/* MANAGE RECORD */
+.manage_record {
+	padding:0 10px;
 }
 
 /* TABLE */
@@ -40,15 +37,7 @@
 	margin:10px 0 0 0;
 }
 .manage_record .buttons input {
-	border:1px outset;
-	border-radius:0.5em;
-	height:25px !important;
-	line-height:15px !important;
 	padding:3px 5px !important;
-}
-.manage_record .buttons input.delete {
-	background:red;
-	color:white;
 }
 
 /* ERROR */

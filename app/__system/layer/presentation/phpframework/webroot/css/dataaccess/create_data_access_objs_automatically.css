@@ -1,13 +1,9 @@
-/* SELECT BROKERS */
-.select_brokers .title {
-	width:100%;
-	font-size:14px;
-	font-weight:bold;
-	color:#000;
-	text-align:center;
-	margin-top:20px;
+/* DROPDOWN */
+.top_bar {
 	margin-bottom:20px;
 }
+
+/* SELECT BROKERS */
 .select_brokers .db_broker, .select_brokers .db_driver, .select_brokers .type {
 	width:270px;
 	height:20px;
@@ -21,20 +17,12 @@
 	margin-right:10px;
 	display:block;
 	float:left;
+	font-weight:normal;
+	font-style:normal;
 }
 
 .select_brokers .db_broker select, .select_brokers .db_driver select, .select_brokers .type select {
 	width:155px;
-}
-.select_brokers .buttons {
-	width:100%;
-	float:none;
-	clear:left;
-	text-align:center;
-	padding-top:10px;
-}
-.select_brokers .buttons input {
-	margin-right:20px;
 }
 .select_brokers .error {
 	text-align:center;
@@ -43,13 +31,12 @@
 }
 
 /* SELECT TABLES */
-.select_tables .title {
-	width:100%;
-	font-size:14px;
-	font-weight:bold;
-	color:#000;
+.select_tables .select_buttons {
 	text-align:center;
-	margin-top:20px;
+}
+.select_tables .select_buttons a {
+	margin:0 5px;
+	cursor:pointer;
 }
 .select_tables .tables {
 	width:100%;
@@ -70,16 +57,6 @@
 	font-size:10px;
 	font-weight:normal;
 	cursor:pointer;
-}
-.select_tables .buttons {
-	width:100%;
-	float:none;
-	clear:left;
-	text-align:center;
-	padding-top:20px;
-}
-.select_tables .buttons input {
-	margin-right:20px;
 }
 .select_tables .error {
 	text-align:center;
@@ -107,29 +84,9 @@
 	font-weight:normal;
 }
 
-.select_buttons {
-	float:none;
-	clear:left;
-	width:100%;
-	text-align:center;
-	margin-top:5px;
-}
-.select_buttons a {
-	margin-right:10px;
-	cursor:pointer;
-}
-
 /* SELECT STATUSES */
 .statuses {
 	width:100%;
-	margin-top:20px;
-}
-.statuses .title {
-	width:100%;
-	font-size:14px;
-	font-weight:bold;
-	color:#000;
-	text-align:center;
 }
 .statuses table {
 	display:block;

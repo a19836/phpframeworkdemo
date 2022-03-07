@@ -1,26 +1,11 @@
+/* TOP BAR */
+.top_bar {
+	margin-bottom:20px;
+}
+
+/* DB DUMP */
 .db_dump {
-	margin:0 10px;
-}
-.db_dump .title {
-	width: 100%;
-	color: #000;
-	font-size: 16px;
-	font-weight: bold;
-	margin: 10px 0 5px;
-	text-align: center;
-}
-.db_dump .save_button {
-	width:100%;
-	height:25px;
-	text-align:center;
-	margin:10px 0 15px 0;
-}
-.db_dump .save_button input {
-	border:1px outset;
-	border-radius:0.5em;
-	height:25px !important;
-	line-height:15px !important;
-	padding:3px 5px !important;
+	margin:0 10px 20px;
 }
 
 .db_dump .tables ul {

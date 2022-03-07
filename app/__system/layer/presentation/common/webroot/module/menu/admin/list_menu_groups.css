@@ -4,10 +4,16 @@
 .module_list .delete_action .icon {
 	margin-right:0;
 }
-.module_list .other_action.list_menu_items .icon {
-	background:url("../../../img/icon/table_icon.gif") no-repeat scroll 0px 0px;
+.module_list .other_action.list_menu_items .icon::before {
+	content:"\f00a";
 	margin-right:2px;
 }
-.module_list .other_action.manage_menu_group .icon {
-	background:url("../../../img/icon/update_icon.gif") no-repeat scroll 0px 0px;
+.module_list .other_action.manage_menu_group .icon::before {
+	content:"\f550";
+	color:#999;
+}
+.module_list .other_action.manage_menu_group .icon::after {
+	content:"\f303";
+	top:0;
+	left:3px;
 }

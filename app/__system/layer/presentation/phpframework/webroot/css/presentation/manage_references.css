@@ -1,3 +1,9 @@
+/* TOP BAR */
+.top_bar {
+	margin-bottom:10px;
+}
+
+/* REFERENCES */
 #content {
 	position:relative;
 	left:0;

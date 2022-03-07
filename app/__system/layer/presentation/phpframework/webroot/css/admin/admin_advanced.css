@@ -1,15 +1,29 @@
-#menu_panel {position:fixed; left:0px; top:0px; width:300px; height:5px; overflow:hidden; background-color:#d5e3e4; border-bottom:1px solid #bbb; z-index:2;}
-#left_panel {position:absolute; left:0px; top:0px; width:300px; bottom:0px; padding-top:5px; overflow-y:scroll; overflow-x:auto; z-index:1;}
-#hide_panel {position:absolute; left:300px; top:0px; width:5px; bottom:0px; overflow:hidden; background:url("../../img/back_frame_open_close_vertical.gif") repeat-y; cursor:move; z-index:3;}
+#menu_panel {
+	position:fixed; 
+	left:0px; 
+	top:0px; 
+	width:300px; 
+	height:32px; 
+	padding:3px 5px 5px; 
+	overflow:hidden; 
+	z-index:2; 
+	box-sizing:border-box;
+	
+	border-top:2px solid #ff0000;
+	background: -moz-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #ffffff73));
+	background: -webkit-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -o-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -ms-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: linear-gradient(to bottom, #eee 50%, #ffffff73 100%);
+}
+#left_panel {position:absolute; left:0px; top:32px; width:300px; bottom:0px; padding-top:5px; overflow-y:scroll; overflow-x:auto; z-index:1;}
+#hide_panel {position:absolute; left:300px; top:0px; width:5px; bottom:0px; overflow:hidden; background:url("../../img/back_frame_open_close_vertical_red.gif") repeat-y; cursor:move; z-index:3;}
 #right_panel {position:absolute; left:305px; top:0px; right:0px; bottom:0px; z-index:1;}
 
-#menu_panel li {width:20px; height:20px; margin-top:3px; font-size:0; text-indent:-9999; cursor:pointer;}
-#menu_panel .expand_left_panel {float:right; margin-right:5px; background:url("../../img/icons.png") -31px -71px no-repeat #d5e3e4;}
-#menu_panel .collapse_left_panel {float:left; margin-left:5px; background:url("../../img/icons.png") -185px -6px no-repeat #d5e3e4;}
-#menu_panel .home {float:left; margin-left:5px; background:url("../../common/img/icon/home_icon.png") center no-repeat #d5e3e4;}
-#menu_panel .docbook {float:left; margin-left:5px; background:url("../../common/img/icon/info_icon.png") center no-repeat #d5e3e4;}
-#menu_panel .flush_cache {width:22px; height:21px; float:left; margin-left:5px; background:url("../../img/icons.png") -159px -201px no-repeat #d5e3e4;}
-#menu_panel .toggle_tree_layout {float:left; margin-left:5px; background:url("../../common/img/icon/view_properties_icon.gif") center no-repeat #d5e3e4;}
+#menu_panel li {cursor:pointer; margin:0 3px; display:inline-block; font-size:14px;}
+#menu_panel .expand_left_panel {float:right; margin-top:3px;}
+#menu_panel .collapse_left_panel {float:right; margin-top:3px;}
 
 #left_panel .file_tree_root {width:24px; height:24px; background: url("../../img/icons.png") -202px -47px no-repeat !important;}
 #left_panel #file_tree a > label, #left_panel #file_tree a > label > label {font-weight:normal; font-style:normal;}
@@ -17,12 +31,13 @@
 #left_panel.left_panel_with_tabs #file_tree > ul {margin-top:15px; margin-left:-15px; border:0; font-size:12px;}
 #left_panel.left_panel_with_tabs .file_tree_root {display:none;}
 #left_panel.left_panel_with_tabs .tabs {margin-left:15px; background:unset; border-top:0; border-left:0; border-right:0; border-radius:0;}
+#left_panel.left_panel_with_tabs .tabs .tab_main_node {background:#fff; padding:2px 5px 5px;}
+#left_panel.left_panel_with_tabs .tabs .tab_main_node.ui-state-active {background:#eee;}
+#left_panel.left_panel_with_tabs .tabs .tab_main_node_vendor {float:right; top:2px; right:36px;}
+#left_panel.left_panel_with_tabs .tabs .tab_main_node_management {float:right; top:2px; right:-30px;}
 #left_panel.left_panel_with_tabs .tabs a {padding:0;}
-#left_panel.left_panel_with_tabs .tabs .ui-state-active {background:#d5e3e4;}
 #left_panel.left_panel_with_tabs .tabs a .icon {display:inline-block; width:24px; height:24px; margin:0;}
-#left_panel.left_panel_with_tabs .tabs .tab_main_node_vendor {float:right; right:26px;}
-#left_panel.left_panel_with_tabs .tabs .tab_main_node_management {float:right; right:-30px;}
-#left_panel.left_panel_with_tabs .main_tree_node {padding:0 0 0 15px; background:#d5e3e4;}
+#left_panel.left_panel_with_tabs .main_tree_node {padding:0 0 0 15px; background:#eee;}
 #left_panel.left_panel_with_tabs .main_tree_node > a > label, #left_panel .main_tree_node > a > label > label {font-style:normal; opacity:.9;}
 #left_panel.left_panel_with_tabs .main_tree_node > ul {background:#fff;}
 
@@ -30,7 +45,7 @@
 #left_panel .filter_by_layout label {font-size:80%; font-weight:normal; font-style:normal; color:#999;}
 #left_panel .filter_by_layout select {width:calc(100% - 60px); background:#fff; border:1px solid #ccc; color:#999; font-size:80%;}
 
-#hide_panel .button {position:absolute; top:45%; width:5px; height:34px; left:0; cursor:pointer;}
+#hide_panel .button {position:absolute; top:45%; top:calc(50% - 17px); width:5px; height:34px; left:0; cursor:pointer;}
 #hide_panel .button.maximize {background:url("../../img/tool_frame_right.gif") no-repeat;}
 #hide_panel .button.minimize {background:url("../../img/tool_frame_left.gif") no-repeat;}
 

@@ -36,25 +36,25 @@
 }
 
 .call_presentation_layer_web_service_task_html {
-	min-width:420px;
+	min-width:430px;
 }
 
 .call_presentation_layer_web_service_task_html .get_automatically,
    .call_presentation_layer_web_service_task_html .project,
    .call_presentation_layer_web_service_task_html .page {
-	width:420px;
+	width:430px;
 	height:20px;
-	margin:0 auto;
+	margin:0 auto 5px;
 }
 .call_presentation_layer_web_service_task_html .get_automatically {
 	margin-top:15px;
-	margin-bottom:5px;
 }
 .call_presentation_layer_web_service_task_html .extvars,
    .call_presentation_layer_web_service_task_html .incs,
    .call_presentation_layer_web_service_task_html .incs_once {
-   	min-width:420px;
+   	min-width:430px;
    	min-height:20px;
+	margin-bottom:5px;
    	padding-top:5px;
 }
 .call_presentation_layer_web_service_task_html .extvars .array_items .items,
@@ -62,7 +62,7 @@
    .call_presentation_layer_web_service_task_html .incs_once .array_items .items {
 	position:absolute;
 	margin-top:-25px;
-	margin-left:175px;
+	margin-left:180px;
 }
 .call_presentation_layer_web_service_task_html .extvars .array_items ul .items,
    .call_presentation_layer_web_service_task_html .incs .array_items ul .items,
@@ -73,7 +73,20 @@
 }
 
 .call_presentation_layer_web_service_task_html .get_automatically label {
-	width:190px;
+	width:170px;
+}
+.call_presentation_layer_web_service_task_html .get_automatically .icon {
+	width:23px;
+	height:23px;
+}
+.call_presentation_layer_web_service_task_html .get_automatically .icon::before {
+	content:"\f022";
+}
+.call_presentation_layer_web_service_task_html .get_automatically .icon::after {
+	content:"\f079";
+}
+.call_presentation_layer_web_service_task_html .get_automatically .icon:hover::after {
+	color:#000;
 }
 .call_presentation_layer_web_service_task_html .broker_method_obj label,
    .call_presentation_layer_web_service_task_html .project label,
@@ -106,7 +119,7 @@
 	text-align:center;
 	font-size:9px;
 	width:60px;
-	margin-bottom:5px;
+	height:19px;
 }
 
 .call_presentation_layer_web_service_task_html .advanced_settings {
@@ -129,7 +142,7 @@
 }
 .call_presentation_layer_web_service_task_html .incs .array_items .items .item_add, 
    .call_presentation_layer_web_service_task_html .incs_once .array_items .items .item_add {
-	margin-left:0;
+	
 }
 .call_presentation_layer_web_service_task_html .incs .array_items .item .key, 
    .call_presentation_layer_web_service_task_html .incs .array_items .item .key_type, 
@@ -153,7 +166,7 @@
 .call_presentation_layer_web_service_task_html .incs .array_items ul, 
    .call_presentation_layer_web_service_task_html .incs_once .array_items ul {
 	border:0;
-	margin-top:0;
+	margin-top:5px;
 	margin-bottom:0;
 	padding-top:0;
 	padding-bottom:0;
@@ -166,5 +179,6 @@
 
 .call_presentation_layer_web_service_task_html .incs .array_items .search, 
    .call_presentation_layer_web_service_task_html .incs_once .array_items .search {
-	margin-right:0px;
+	
 }
+

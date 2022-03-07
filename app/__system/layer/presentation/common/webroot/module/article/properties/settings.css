@@ -1,3 +1,7 @@
+.article_settings > .article_id {
+	padding-left:5px;
+}
+
 .article_settings .settings_props {
 	border-bottom:0;
 	margin-top:15px;
@@ -10,7 +14,8 @@
 	margin-top:5px;
 }
 .article_settings .settings_props .prop_comments .add_comment_url label {
-	width: 150px;
+	width:150px;
+	display:inline-block;
 }
 .article_settings .settings_props .prop_comments .add_comment_url input {
 	width:485px;
@@ -31,10 +36,8 @@
 }
 .article_settings .settings div .allow_not_published label {
 	width:160px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .article_settings .settings div .allow_not_published input {
-	float:left;
 }
 

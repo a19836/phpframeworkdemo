@@ -35,11 +35,11 @@
 			height:1.5em;
 			display:inline-block;
 			border-radius:5px;
-			border:1px solid #bbb;
-			color:#333;
+			border:1px solid rgba(0, 0, 0, .2);
+			color:inherit;
 			overflow:hidden;
 			
-			background: #bbb; /* Old browsers */
+			background: rgba(0, 0, 0, .2); /* Old browsers */
 			background: -moz-linear-gradient(top, #fff 0%, #ddd 100%); /* FF3.6-15 */
 			background: -webkit-linear-gradient(top, #fff 0%,#ddd 100%); /* Chrome10-25,Safari5.1-6 */
 			background: linear-gradient(to bottom, #fff 0%,#ddd 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */

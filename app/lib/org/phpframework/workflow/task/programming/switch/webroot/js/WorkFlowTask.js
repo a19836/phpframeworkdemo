@@ -51,7 +51,7 @@ var SwitchTaskPropertyObj = {
 			task_property_values['default'].exit = 'default_exit';
 		}
 		
-		var object_var = typeof task_property_values["object_var"] != "undefined" ? task_property_values["object_var"] : "";
+		var object_var = typeof task_property_values["object_var"] != "undefined" && task_property_values["object_var"] != null ? task_property_values["object_var"] : "";
 		object_var = task_property_values["object_type"] == "variable" && object_var.substr(0, 1) == "$" ? object_var.substr(1) : object_var;
 		properties_html_elm.find(".object_var input").val(object_var);
 		
@@ -193,10 +193,7 @@ var SwitchTaskPropertyObj = {
 	},
 	
 	onCompleteLabel : function(task_id) {
-		onEditLabel(task_id);
-		myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
-		
-		return true;
+		return ProgrammingTaskUtil.onEditLabel(task_id);
 	},
 	
 	onTaskCreation : function(task_id) {

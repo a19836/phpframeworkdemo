@@ -1,54 +1,105 @@
+.regions_blocks_includes_settings_overlay {
+	content:"";
+	position:fixed;
+	top:30px;
+	left:0;
+	right:0;
+	bottom:0;
+	z-index:1;
+	background:rgba(0, 0, 0, .5);
+	display:none;
+}
+.regions_blocks_includes_settings {
+	height:300px;
+	margin:0 auto;
+	padding:20px 10px;
+	position:fixed;
+	left:0;
+	right:0;
+	bottom:0;
+	overflow:auto;
+	box-sizing:border-box;
+	z-index:2;
+	background:#fff;
+}
+.regions_blocks_includes_settings:not(.resizing) {
+	transition:1s all;
+}
+.regions_blocks_includes_settings.collapsed {
+	height:25px !important;
+	padding-top:0;
+	overflow:hidden;
+}
+.regions_blocks_includes_settings .settings_header {
+	height:30px;
+	margin-top:-20px;
+	padding:5px;
+	position:fixed;
+	left:0;
+	right:0;
+	box-sizing:border-box;
+	overflow:hidden;
+	cursor:ns-resize;
+	z-index:1051;
+	border-top:1px solid #ccc;
+	
+	background: -moz-linear-gradient(top, #eee 50%, #f7f7f7 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #f7f7f7));
+	background: -webkit-linear-gradient(top, #eee 50%, #f7f7f7 100%);
+	background: -o-linear-gradient(top, #eee 50%, #f7f7f7 100%);
+	background: -ms-linear-gradient(top, #eee 50%, #f7f7f7 100%);
+	background: linear-gradient(to bottom, #eee 50%, #f7f7f7 100%);
+}
+.regions_blocks_includes_settings.collapsed .settings_header {
+	margin-top:-3px;
+	border:0;
+	
+	background: -moz-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(50%, #eee), color-stop(100%, #ffffff73));
+	background: -webkit-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	background: -o-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	background: -ms-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	background: linear-gradient(to top, #eee 50%, #ffffff73 100%);
+}
+.regions_blocks_includes_settings .settings_header .icon {
+	margin:0 5px 0 0;
+	float:right;
+	font-size:16px;
+}
+.regions_blocks_includes_settings .settings_header .icon.minimize {
+	margin-top:-3px;
+}
+
 .regions_blocks_includes_settings .invisible {
 	visibility:hidden;
 }
 
 .regions_blocks_includes_settings input {
-	height:17px;
-	line-height:17px;
+	
 }
 .regions_blocks_includes_settings select {
-	height:20px;
-	line-height:20px;
+	
 }
 .regions_blocks_includes_settings input, .regions_blocks_includes_settings select, .regions_blocks_includes_settings textarea {
 	font-family: Verdana,Arial,sans-serif;
 	font-size: 0.9em;
-	background: none repeat scroll 0 0 #d5e3e4;
-	border: 1px inset #999999;
+	/*background:#eee;
+	border: 1px inset #eee;*/
 	color: #555555;
 }
 
-.regions_blocks_includes_settings .template_params .items .item > .icon.delete {
+.regions_blocks_includes_settings .template_params .items .item > .delete {
 	display:none;
 }
-.regions_blocks_includes_settings .includes .items .item > .icon.search {
+.regions_blocks_includes_settings .includes .items .item > .search {
 	margin-left:0;
 }
 .regions_blocks_includes_settings .icon {
 	display:inline-block;
 	float:none;
-	margin:-3px 0 -8px 0;
+	margin:auto 2px;
 	z-index:100;
-}
-.regions_blocks_includes_settings .icon.delete {
-	background-position:0 0;
-}
-.regions_blocks_includes_settings .icon.up {
-	background:url("../../common/img/icon/up_icon.gif") no-repeat 0 0;
-}
-.regions_blocks_includes_settings .icon.down {
-	background:url("../../common/img/icon/down_icon.gif") no-repeat 0 0;
-}
-.regions_blocks_includes_settings .icon.info {
-	background:url("../../common/img/icon/info_icon.png") no-repeat 0 0;
-	margin:0;
-	vertical-align:middle;
-}
-.regions_blocks_includes_settings .icon.search_image {	
-	background:url("../../common/img/icon/search_image_icon.gif") no-repeat 0 0;
-}
-.regions_blocks_includes_settings .icon.add_variable {	
-	background:url("../../common/img/icon/sort_icon.png") no-repeat 0 0;
+	font-size:14px;
 }
 
 .regions_blocks_includes_settings .items {
@@ -56,9 +107,7 @@
 }
 .regions_blocks_includes_settings .template label {
 	width:150px;
-	height:20px;
-	display:block;
-	float:left;
+	display:inline-block;
 }
 .regions_blocks_includes_settings .template select {
 	background-color:#FFF;
@@ -78,13 +127,11 @@
    .regions_blocks_includes_settings .other_region_blocks .items .item,
    .regions_blocks_includes_settings .template_params .items .item,
    .regions_blocks_includes_settings .other_template_params .items .item {
-	width:570px;
+	width:585px;
 	margin-top:10px;
 }
-.regions_blocks_includes_settings .region_blocks .items .item > .icon.edit {
-	background:url("../../common/img/icon/edit_icon.gif") no-repeat 0 0;
-}
-.regions_blocks_includes_settings .region_blocks .items .item:not(.has_edit) > .icon.edit {
+.regions_blocks_includes_settings .region_blocks .items .item:not(.has_edit) > .edit,
+  .regions_blocks_includes_settings .other_region_blocks .items .item:not(.has_edit) > .edit {
 	display:none !important;
 }
 .regions_blocks_includes_settings .region_blocks .items .item > label, 
@@ -92,7 +139,6 @@
    .regions_blocks_includes_settings .template_params .items .item > label, 
    .regions_blocks_includes_settings .other_template_params .items .item > label {
 	width:150px;
-	height:20px;
 	margin-left:5px;
 	margin-right:5px;
 	display:inline-block;
@@ -106,11 +152,10 @@
 }
 .regions_blocks_includes_settings input,
   .regions_blocks_includes_settings select {
-	height:24px;
-	padding:0.4em;
+	height:26px;
 	font-size:10px;
 	background-color:#FFF;
-	border:1px solid #d3d3d3;
+	border:1px solid #eee;
 	border-radius:4px;
 	box-sizing:border-box;
 }
@@ -133,9 +178,10 @@
 	display:inline-block !important;
 	background:white;
 	vertical-align:middle;
+	border-color:#eee;
 }
 .regions_blocks_includes_settings .items .item > .pretty_block_options_button:hover {
-	border-color:#d3d3d3;
+	border-color:#eee;
 }
 .regions_blocks_includes_settings .items .item > .pretty_block_options_button.hidden {
 	display:none !important;
@@ -154,9 +200,19 @@
 	padding:5px !important;
 	background:#ddd;
 	border-bottom:1px inset #bbb !important;
+	font-weight:normal;
 }
-.pretty_block_options_menu .import_module_block .icon.add {
-	margin-top:0;
+.pretty_block_options_menu .import_module_block a,
+  .pretty_block_options_menu .import_module_block a i {
+	color:#ff0000;
+	color:var(--icon-hover-color);
+}
+.pretty_block_options_menu .import_module_block a:hover,
+  .pretty_block_options_menu .import_module_block a:hover i {
+	color:initial;
+}
+.pretty_block_options_menu .import_module_block a .add {
+	margin:auto 5px;
 }
 .pretty_block_options_menu > ul .ui-menu-item {
 	padding-left:20px;
@@ -167,8 +223,10 @@
 }
 .pretty_block_options_menu > ul .ui-menu-item.ui_menu_item_selected {
 	border-color:#fbcb09;
+	border-color:var(--icon-hover-color);
 	background:#ccc;
 	color:#c77405;
+	color:var(--icon-hover-color);
 }
 .pretty_block_options_menu > ul .ui-menu-item.ui-state-focus:not(.ui_menu_item_selected),
   .pretty_block_options_menu > ul .ui-menu-item.ui-state-disabled {
@@ -182,7 +240,9 @@
 	margin:0;
 	background:#dadada;
 	border-color:#fbcb09;
+	border-color:var(--icon-hover-color);
 	color:#c77405;
+	color:var(--icon-hover-color);
 	opacity:.8;
 }
 .pretty_block_options_menu > ul .ui-menu-item:nth-child(2) { /* blank option */
@@ -212,7 +272,7 @@
 	height:auto;
 	min-height:100px;
 	background-color:#FFF;
-	border:1px solid #ccc;
+	border:1px solid #eee;
 	border-radius:4px;
 	box-sizing:border-box;
 }
@@ -233,7 +293,7 @@
 	height:auto;
 	min-height:100px;
 	background:#fff;
-	border:1px solid #ccc;
+	border:1px solid #eee;
 	border-radius:4px;
 }
 .regions_blocks_includes_settings .items .item > .block_params > .block_param select, 
@@ -304,41 +364,58 @@ body > .dragging_menu_item {
 }
 
 .tab_content_template_layout {
-	min-height:400px;
-	padding:0 !important;
+	width:99%;
+	width:calc(100% - 5px);
+	height:calc(100vh - 55px); /* Toolbar and settings height */
+	padding:0 0 30px !important;
 	position:relative;
 	background:#ddd !important; /* very important bc when the iframe is smartphone responsive, we loose track of the iframe borders. The background will help to detect this. */
+	box-sizing: border-box;
+	text-align:center;
+	overflow:auto;
+	transition:all 1s;
+}
+.tab_content_template_layout.toolbar_open {
+	width:75%;
+	width:calc(100% - 250px);
 }
 
 .tab_content_template_layout .iframe_toolbar {
-	height:20px;
-	margin:5px;
-	padding:3px 10px;
-	border:0;
-	border-radius:5px;
-	background:#ddd;
-	text-align:center;
-	opacity:.6;
+	text-align:right;
+	position:fixed;
+	top:5px;
+	right:205px;
+	color:#999;
+	font-size:10px;
+	z-index:4;
 }
 .tab_content_template_layout .iframe_toolbar .view_template_samples {
-	line-height:20px;
-	margin-left:20px;
-	float:right;
+	margin-left:5px;
+	font-size:var(--icon-font-size);
+}
+.tab_content_template_layout .iframe_toolbar .view_template_samples::before {
+	content:"\f1b3";
+}
+.tab_content_template_layout .iframe_toolbar .view_template_samples::after {
+	content:"\f06e";
 }
 .tab_content_template_layout .iframe_toolbar select {
-	height:20px;
+	color:#666;
 	background:none;
+	border:1px solid #eee;
 	box-sizing:border-box;
-	font-size:80%;
 	text-align:center;
+	font-size:inherit;
 }
 .tab_content_template_layout .iframe_toolbar input {
 	width:35px;
-	height:20px;
+	margin-right:3px;
+	color:#666;
 	background:none;
+	border:1px solid #eee;
 	box-sizing:border-box;
-	font-size:80%;
 	text-align:center;
+	font-size:inherit;
 }
 .tab_content_template_layout .iframe_toolbar .dimension,
   .tab_content_template_layout .iframe_toolbar .orientation {
@@ -346,40 +423,28 @@ body > .dragging_menu_item {
 }
 
 .tab_content_template_layout iframe {
-	width:99%;
-	height:95%;
-	height:calc(100% - 30px);
+	width:100%;
+	height:100%;
+	margin:auto; /* when responsive and iframe has small widtha and height, it should be centered */
 	padding:0;
-	position:absolute;
-	top:5%;
-	top:calc(30px);
-	left:1%;
-	left:calc(10px);
 	box-sizing:border-box;
 	border:none;
 	background:#fff; /* when is smartphone responsive we loose the track of the iframe borders. The background will help to detect this. */
 	
 	transition:all 1s;
 }
-.tab_content_template_layout.toolbar_open iframe {
-	width:75%;
-	width:calc(100% - 250px);
-	left:250px;
-}
 
 .tab_content_template_layout .iframe_modules_blocks_toolbar {
 	width:1%;
-	width:calc(10px);
-	height:96%;
-	height:calc(100% - 30px);
+	width:calc(5px);
+	height:auto;
 	margin:0;
-	position:absolute;
-	top:5%;
-	top:calc(30px);
-	left:0;
-	border-radius:5px;
-	border:1px solid #ccc;
+	position:fixed;
+	top:30px;
+	right:0;
+	bottom:25px;
 	background:#fff;
+	text-align:left;
 	
 	transition:width 1s;
 	
@@ -387,35 +452,35 @@ body > .dragging_menu_item {
 }
 .tab_content_template_layout.toolbar_open .iframe_modules_blocks_toolbar {
 	width:25%;
-	width:250px;
+	width:calc(250px);
 }
 .tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle {
-	width:10px;
-	height:100%;
+	width:5px;
 	position:absolute;
-	right:0;
+	top:0;
+	left:0;
+	bottom:0;
 	cursor:pointer;
-	background:#ccc;
+	overflow:hidden;
+	background:url("../../img/back_frame_open_close_vertical_red.gif") repeat-y;
 }
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle:before {
-	content:"»";
-	width:10px;
-	padding:10px 0;
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle .button {
+	width:5px;
+	height:34px;
 	position:absolute;
+	left:0;
 	top:45%;
-	top:calc(50% - 20px);
-	background:#c5c5c5;
-	color:#aaa;
-	font-weight:bold;
+	top:calc(50% - 17px);
+	background:url("../../img/tool_frame_left.gif") no-repeat;
 }
-.tab_content_template_layout.toolbar_open .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle:before {
-	content:"«";
+.tab_content_template_layout.toolbar_open .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle .button {
+	background:url("../../img/tool_frame_right.gif") no-repeat;
 }
 .tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content {
 	width:100%;
-	width:calc(100% - 10px);
+	width:calc(100% - 5px);
 	height:100%;
-	margin-right:10px;
+	margin-left:5px;
 	overflow:auto;
 }
 .tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree {
@@ -429,7 +494,7 @@ body > .dragging_menu_item {
 	border:0;
 }
 .tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .icon {	
-	float:none;
+	margin-left:5px;
 	display:inline-block;
 	vertical-align:middle;
 }
@@ -439,23 +504,36 @@ body > .dragging_menu_item {
 .tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .jstree-open > a .icon.refresh {
 	opacity:.7
 }
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .draggable_menu_item_block .icon.edit {	
-	background:url("../../common/img/icon/edit_icon.gif") no-repeat 0 0;
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-list,
+  .tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-edit,
+  .tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-add,
+  .tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-view {	
+	vertical-align:baseline;
+	color:var(--icon-hover-color);
 }
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .draggable_menu_item_module .icon.info {	
-	background:url("../../common/img/icon/info_icon.png") no-repeat scroll 0 0;
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-list::before {	
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f00a";
 }
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-list {	
-	background:url("../../img/db_icons.png") -66px -0px no-repeat !important;
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-edit::before {	
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f044";
 }
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-edit {	
-	background:url("../../img/db_icons.png") -224px -201px no-repeat !important;
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-add::before {	
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f0fe";
 }
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-add {	
-	background:url("../../img/db_icons.png") -112px -111px no-repeat !important;
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-view {	
-	background:url("../../common/img/icon/view_icon.gif") 4px 3px no-repeat !important;
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-view::before {	
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f06e";
 }
 
 /* TAB CONTENT TEMPLATE LAYOUT - DIAGRAM TASK PROPERTIES */
@@ -466,7 +544,7 @@ body > .dragging_menu_item {
 	right:20px !important;
 	bottom:20px !important;
 	
-	/* need this otherwise the popup will appear short and weird in the edit_template.php */
+	/* need this otherwise the popup will appear short and weird in the edit_template_simple.php */
 	min-width:calc(100% - 40px) !important;
 	min-height:calc(100% - 40px) !important;
 	box-sizing:border-box !important;
@@ -475,7 +553,7 @@ body > .dragging_menu_item {
 .tab_content_template_layout .tab_content_template_layout_tasks > .popup_close {
 	z-index:auto !important;
 	
-	/* need this otherwise the close button will appear transparent and on the left side in the edit_template.php */
+	/* need this otherwise the close button will appear transparent and on the left side in the edit_template_simple.php */
 	top:-10px !important; 
 	left:auto !important; 
 	right:-10px !important;
@@ -498,13 +576,13 @@ body > .dragging_menu_item {
 	background:#fff;
 	border:1px solid #aaa;
 	border-radius:10px;
+	z-index:3;
 }
 #module_info_tooltip > .close {
 	margin:0;
 	position:absolute;
 	right:5px;
 	top:5px;
-	background:url(../../common/img/icon/close_icon.png) no-repeat scroll 0 0;
 	opacity:.5;
 }
 #module_info_tooltip > .close:hover {
@@ -552,81 +630,55 @@ body > .dragging_menu_item {
 	float:left;
 }
 
+/* WORKFLOW */
+/*#ui .taskflowchart .workflow_menu {
+	border:0;
+}
+#ui .taskflowchart .workflow_menu.top_bar_menu {
+	right:5px;
+}
+#ui .taskflowchart .workflow_menu.top_bar_menu > ul > li.tasks_flow_full_screen {
+	border-right:0;
+}
+#ui .taskflowchart .workflow_menu > .dropdown > .save {
+	display:none;
+}*/
+
 /* CODE */
-/* CODE - MENU */
-.code_layout_ui_editor .code_menu {
+/* CODE - MENU - NOT TOP BAR MENU */
+.code_layout_ui_editor .code_menu:not(.top_bar_menu) {
 	position:absolute;
 	top:.5em;
 	left:0;
 	z-index:11;
 }
-.code_layout_ui_editor .code_menu.full-screen {
-	position:fixed;
-	
-}
-.code_layout_ui_editor .code_menu ul {
+.code_layout_ui_editor .code_menu:not(.top_bar_menu) ul {
 	background:none;
 	border:none;
 }
-.code_layout_ui_editor .code_menu ul li {
+.code_layout_ui_editor .code_menu:not(.top_bar_menu) ul li {
 	border:none;
 }
-.code_layout_ui_editor .code_menu ul li a {
+.code_layout_ui_editor .code_menu:not(.top_bar_menu) ul li a {
 	color:#fff;
 	border-right-color:#fff;
 }
-.code_layout_ui_editor .code_menu ul li.editor_settings a {
+/*.code_layout_ui_editor .code_menu:not(.top_bar_menu) ul li.editor_settings a {
 	border-right:none;
 }
-.code_layout_ui_editor .code_menu ul li.editor_full_screen {
+.code_layout_ui_editor .code_menu:not(.top_bar_menu) ul li.editor_full_screen {
 	display:none;
 }
+.code_layout_ui_editor .code_menu > ul > .save {
+	display:none;
+}*/
 
-/* CODE - MYTREE */
-.code_layout_ui_editor .mytree .icon {	
-	float:none;
-	display:inline-block;
-	vertical-align:middle;
+/* CODE - MENU - TOP BAR MENU */
+.code_layout_ui_editor .code_menu.top_bar_menu {
+	z-index:2;
 }
-.code_layout_ui_editor .mytree .icon.refresh {	
-	opacity:0;
-}
-.code_layout_ui_editor .mytree .jstree-open > a .icon.refresh {
-	opacity:.7
-}
-.code_layout_ui_editor .mytree .draggable_menu_item .icon.edit {	
-	background:url("../../common/img/icon/edit_icon.gif") no-repeat 0 0;
-}
-.code_layout_ui_editor .mytree .draggable_menu_item .icon.info {	
-	background:url("../../common/img/icon/info_icon.png") no-repeat 0 0;
-}
-.code_layout_ui_editor .mytree .table-list {	
-	background:url("../../img/db_icons.png") -66px -0px no-repeat !important;
-}
-.code_layout_ui_editor .mytree .table-edit {	
-	background:url("../../img/db_icons.png") -224px -201px no-repeat !important;
-}
-.code_layout_ui_editor .mytree .table-add {	
-	background:url("../../img/db_icons.png") -112px -111px no-repeat !important;
-}
-.code_layout_ui_editor .mytree .table-view {	
-	background:url("../../common/img/icon/view_icon.gif") 4px 3px no-repeat !important;
-}
-
-/* CODE - DB TABLE UIS DIAGRAM BLOCK POPUP */
-.code_layout_ui_editor .db_table_uis_diagram_block {
-	position:fixed !important;
-	top:20px !important;
-	left:20px !important;
-	right:20px !important;
-	bottom:20px !important;
-}
-.code_layout_ui_editor .db_table_uis_diagram_block > .popup_close {
-	z-index:auto !important;
-}
-.code_layout_ui_editor .db_table_uis_diagram_block > iframe {
-	width:100% !important;
-	height:100% !important;
+.code_layout_ui_editor .code_menu.top_bar_menu > ul {
+	border:0;
 }
 
 /* CODE - ELS UI */
@@ -638,6 +690,35 @@ body > .dragging_menu_item {
 	left:0;
 	right:0;
 	bottom:0px;
+	margin:0;
+}
+.code_layout_ui_editor .layout_ui_editor.full-screen,
+  .template_region_block_html_editor_popup .layout_ui_editor.full-screen {
+	position: absolute !important; /* overwrite the css from jquerylayoutuieditor/style.css */
+	bottom: 0px !important;
+	z-index:1;
+}
+.code_layout_ui_editor .layout_ui_editor > .tabs,
+  .template_region_block_html_editor_popup .layout_ui_editor > .tabs {
+	display:none;
+}
+.layout_ui_editor > .menu-widgets, 
+  .layout_ui_editor > .menu-layers, 
+  .layout_ui_editor > .menu-settings, 
+  .layout_ui_editor > .template-widgets-options {
+	border:0;
+}
+.layout_ui_editor > .menu-settings .group ul.group-block,
+  .layout_ui_editor > .menu-settings .settings-classes .user-classes {
+	background:rgba(0,0,0,0.05);
+}
+.layout_ui_editor > .menu-settings input,
+  .layout_ui_editor > .menu-settings select,
+  .layout_ui_editor > .menu-settings textarea {
+	color:#485152 !important;
+}
+#code .layout_ui_editor textarea {
+	position:initial !important;/* bc of the '#code textarea' that sets the position to fixed. */
 }
 .template_region_block_html_editor_popup .layout_ui_editor > .menu-widgets > li:first-child {
 	display:none; /*hide code group menu bc ptl and php are not allowed in the template_region_block_html_editor_popup */
@@ -652,21 +733,6 @@ body > .dragging_menu_item {
 	border-collapse:separate;
 	border-spacing:2px;
 }
-.code_layout_ui_editor .layout_ui_editor > .menu-settings table th,
-  .template_region_block_html_editor_popup .layout_ui_editor > .menu-settings table th {
-	font-weight:bold;
-}
-.code_layout_ui_editor .layout_ui_editor > .menu-settings label,
-  .template_region_block_html_editor_popup .layout_ui_editor > .menu-settings label {
-	display:inline;
-	color:inherit;
-}
-
-.code_layout_ui_editor .layout_ui_editor > .menu-layers label,
-  .template_region_block_html_editor_popup .layout_ui_editor > .menu-layers label {
-	display:inline;
-	float:none;
-}
 
 .code_layout_ui_editor .layout_ui_editor > .options > .options-left,
   .code_layout_ui_editor .layout_ui_editor > .options > .options-center,
@@ -678,7 +744,11 @@ body > .dragging_menu_item {
   .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-right-2 {
 	padding-top:7px;
 }
-.code_layout_ui_editor .layout_ui_editor > .options > .options-center,
+.code_layout_ui_editor .layout_ui_editor > .options > .options-right,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-right {
+	direction:rtl;
+}
+/*.code_layout_ui_editor .layout_ui_editor > .options > .options-center,
   .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-center {
 	left:170px;
 }
@@ -705,6 +775,10 @@ body > .dragging_menu_item {
 .code_layout_ui_editor .layout_ui_editor > .options .option.option-x,
   .template_region_block_html_editor_popup .layout_ui_editor > .options .option.option-x {
 	font-size:70%;
+}*/
+.code_layout_ui_editor .layout_ui_editor > .options .option,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options .option {
+	opacity:1;
 }
 .code_layout_ui_editor .layout_ui_editor > .options .option.show-full-source,
   .template_region_block_html_editor_popup .layout_ui_editor > .options .option.show-full-source,
@@ -742,22 +816,196 @@ body > .dragging_menu_item {
 	display:none; /* disable view tab bc does not parse PHP */
 }
 
-.code_layout_ui_editor .layout_ui_editor > .template-widgets,
+/*.code_layout_ui_editor .layout_ui_editor > .template-widgets,
   .code_layout_ui_editor .layout_ui_editor > .template-widgets-options {
 	right:20%;
 }
-
 .code_layout_ui_editor .layout_ui_editor > .template-widgets-options,
   .template_region_block_html_editor_popup .layout_ui_editor > .template-widgets-options {
 	z-index:12;
-}
-.template_region_block_html_editor_popup .layout_ui_editor > .template-widgets-options > .options > .show-php,
+}*/
+.code_layout_ui_editor .layout_ui_editor > .template-widgets-options > .options > .show-ptl,
+  .template_region_block_html_editor_popup .layout_ui_editor > .template-widgets-options > .options > .show-php,
   .template_region_block_html_editor_popup .layout_ui_editor > .template-widgets-options > .options > .show-ptl {
 	display:none;
 }
+.code_layout_ui_editor .layout_ui_editor > .template-widgets .widget-header,
+  .code_layout_ui_editor .layout_ui_editor > .template-widgets > .droppable-header {
+	background-color:#eee;
+}
+.layout_ui_editor .text-selection-menu {
+	background-color:#f7f7f7;
+}
+
+/* CODE - ELS UI - LAYOUT UI EDITOR - TOP BAR MENU */
+/*.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.full-screen,
+  .template_region_block_html_editor_popup .layout_ui_editor.with_top_bar_menu.full-screen {
+	top:30px !important;
+	bottom:0 !important;
+	z-index:1;
+}*/
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options {
+	width:150px;
+	position:absolute;
+	right:0;
+	z-index:3;
+}
+/*.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.layout-shown.full-screen > .options {
+	width:100%;
+	height:30px;
+	left:0;
+	background:#d5e3e4;
+}*/
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center {
+	width:170px;
+	padding:0 60px 0 0;
+	position:fixed;
+	top:6px;
+	left:auto;
+	right:285px;
+	bottom:auto;
+	box-sizing:border-box;
+	text-align:right;
+	z-index:1;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center .layout-in-desktop {
+	position:absolute;
+	right:0px;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center .layout-in-mobile {
+	position:absolute;
+	right:28px;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center .option.option-screen-width, 
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center .option.option-screen-height,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center .option.option-px,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center .option.option-x {
+	font-size:10px;
+	vertical-align:middle;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right {
+	width:250px;
+	padding:0;
+	position:fixed;
+	top:6px;
+	left:auto;
+	right:25px;
+	bottom:auto;
+	box-sizing:border-box;
+	z-index:1;
+	text-align:right;
+}
+/*.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.full-screen > .options > .options-left {
+	top:30px;
+}*/
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option:not(input) {
+	width:auto;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu:not(.layout-shown) > .options .option.full-screen {
+	display:none;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.save {
+	position:fixed;
+	top:9px;
+	right:0;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .resize-panels,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .template-source,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .template-full-source,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .template-widgets,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .template-preview {
+	top:0;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .menu-widgets, 
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .menu-layers,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .template-widgets-options {
+	top:30px;
+}
+/*.code_layout_ui_editor.editor_full_screen .layout_ui_editor.with_top_bar_menu.full-screen > .menu-widgets, 
+  .code_layout_ui_editor.editor_full_screen .layout_ui_editor.with_top_bar_menu.full-screen > .menu-layers,
+  .code_layout_ui_editor.editor_full_screen .layout_ui_editor.with_top_bar_menu.full-screen > .template-widgets-options {
+	top:60px;
+}*/
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .menu-layers {
+	padding-top:10px;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.fixed_properties.menu-settings-shown > .template-widgets,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.fixed_properties.menu-settings-shown > .menu-widgets, 
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.fixed_properties.menu-settings-shown > .menu-layers,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.fixed_properties.menu-settings-shown > .template-widgets-options {
+	margin-bottom:25px;
+}
+.code_layout_ui_editor .layout_ui_editor.fixed_properties > .menu-settings .settings-info {
+	background: -moz-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #ffffff73));
+	background: -webkit-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -o-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -ms-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: linear-gradient(to bottom, #eee 50%, #ffffff73 100%);
+}
+
+/* CODE - MYTREE */
+.code_layout_ui_editor .mytree .icon {	
+	margin-left:5px;
+	display:inline-block;
+	vertical-align:middle;
+}
+.code_layout_ui_editor .mytree .icon.refresh {	
+	opacity:0;
+}
+.code_layout_ui_editor .mytree .jstree-open > a .icon.refresh {
+	opacity:.7
+}
+.code_layout_ui_editor .mytree .table-list,
+  .code_layout_ui_editor .mytree .table-edit,
+  .code_layout_ui_editor .mytree .table-add,
+  .code_layout_ui_editor .mytree .table-view {	
+	vertical-align:baseline;
+	color:var(--icon-hover-color);
+}
+.code_layout_ui_editor .mytree .table-list::before {	
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f00a";
+}
+.code_layout_ui_editor .mytree .table-edit::before {	
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f044";
+}
+.code_layout_ui_editor .mytree .table-add::before {	
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f0fe";
+}
+.code_layout_ui_editor .mytree .table-view::before {	
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f06e";
+}
+
+/* CODE - DB TABLE UIS DIAGRAM BLOCK POPUP */
+.code_layout_ui_editor .db_table_uis_diagram_block {
+	position:fixed !important;
+	top:20px !important;
+	left:20px !important;
+	right:20px !important;
+	bottom:20px !important;
+}
+.code_layout_ui_editor .db_table_uis_diagram_block > .popup_close {
+	z-index:auto !important;
+}
+.code_layout_ui_editor .db_table_uis_diagram_block > iframe {
+	width:100% !important;
+	height:100% !important;
+}
 
 /* CODE - ELS UI RIGHT CONTAINER */
-.code_layout_ui_editor .layout_ui_editor_right_container_resize {
+/*.code_layout_ui_editor .layout_ui_editor_right_container_resize {
 	width:5px;
 	position:absolute;
 	top:3.5em;
@@ -768,30 +1016,32 @@ body > .dragging_menu_item {
 	cursor:ew-resize;
 	z-index:11;
 	display:none;
-}
-.code_layout_ui_editor .layout_ui_editor_right_container_resize.full-screen {
+}*/
+/*.code_layout_ui_editor .layout_ui_editor_right_container_resize.full-screen {
 	position:fixed;
 	top:3.5em;
 	bottom:2.8em;
-}
+}*/
 
 .code_layout_ui_editor .layout_ui_editor_right_container {
-	width:calc(20% - 5px);
+	margin:0;
+	padding:0;
 	position:absolute;
-	top:3.5em;
-	right:0;
-	bottom:3.5em;
-	box-sizing:border-box;
-	overflow:auto;
-	background:rgba(250, 250, 250, .7);
-	z-index:11;
+	top:30px;
+	left: 70%;
+	right: 0;
+	bottom:0;
+	overflow-y: auto;
+	overflow-x: hidden;
+	vertical-align:top;
 	display:none;
+	box-sizing:border-box;
 }
-.code_layout_ui_editor .layout_ui_editor_right_container.full-screen {
+/*.code_layout_ui_editor .layout_ui_editor_right_container.full-screen {
 	position:fixed;
 	top:3.5em;
 	bottom:2.8em;
-}
+}*/
 
 .code_layout_ui_editor .layout_ui_editor_right_container .mytree {
 	min-width:auto;

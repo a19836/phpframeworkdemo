@@ -19,8 +19,14 @@
  */
 
 $head = '
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
 <!-- Add Icons CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
 
 <!-- Add Local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/install_program.css" type="text/css" charset="utf-8" />
@@ -28,8 +34,15 @@ $head = '
 
 <script>
 var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/manage_modules\';
-</script>'; $main_content = '<div class="install_program">
-	<div class="title">Program Installation</div>'; if ($step >= 3) { $main_content .= '<div class="step_3">'; if ($errors) { $main_content .= '<label class="error">There were some erros installing this program, this is:</label>
+</script>'; $main_content = '<div class="install_program">'; if ($step >= 3) { $main_content .= '<div class="step_3">
+		<div class="top_bar">
+			<header>
+				<div class="title">Program Installation</div>
+				<ul class="dropdown" style="display:none;">
+					<li class="continue" title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
+				</ul>
+			</header>
+		</div>'; if ($errors) { $main_content .= '<label class="error">There were some erros installing this program, this is:</label>
 		<ul class="errors_list">'; $files = $errors["files"]; unset($errors["files"]); foreach($errors as $k => $v) if (is_string($v)) $main_content .= '<li>' . $v . '</li>'; if ($files) { $main_content .= '<li>The following files could not be copied:</li>
 			<ul>'; foreach($files as $src_path => $dst_path) $main_content .= '<li>' . (is_numeric($src_path) ? "" : $src_path . ' => ') . $dst_path . '</li>'; $main_content .= '</ul>'; } $main_content .= '</ul>'; } else if ($error_message) { $main_content .= '<label class="error">' . $error_message . '</label>'; } else if ($next_step_html) { $main_content .= '
 		<form method="post" enctype="multipart/form-data">
@@ -38,10 +51,11 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 			
 			' . $next_step_html . '
 			
-			<div class="buttons">
-				<input type="submit" name="continue" value="continue" onClick="$(this).hide();">
-			</div>
-		</form>'; } else { $main_content .= '<label class="ok">' . $status_message . '</label>
+			<input type="hidden" name="continue" value="Continue" />
+		</form>
+		<script>
+			$(".top_bar > header > ul").show();
+		</script>'; } else { $main_content .= '<label class="ok">' . $status_message . '</label>
 		
 		<div class="users_permissions">
 			<label>Users Permissions Settings</label>
@@ -59,7 +73,15 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 			<div class="users_management_admin_panel_popup myfancypopup">
 				<iframe></iframe>
 			</div>
-		</div>'; } if ($messages) $main_content .= '<label class="error">Important messages:</label><ul class="messages_list"><li>' . implode("</li><li>", $messages) . '</li></ul>'; $main_content .= '</div>'; } else if ($step == 2) { $main_content .= '<div class="step_2">'; if ($db_drivers) $main_content .= '<div class="db_drivers"><label>The DBs where the program will be installed: </label>' . implode(", ", $db_drivers) . '</div>'; $main_content .= '<div class="layers">
+		</div>'; } if ($messages) $main_content .= '<label class="error">Important messages:</label><ul class="messages_list"><li>' . implode("</li><li>", $messages) . '</li></ul>'; $main_content .= '</div>'; } else if ($step == 2) { $main_content .= '<div class="step_2">
+		<div class="top_bar">
+			<header>
+				<div class="title">Program Installation</div>
+				<ul>
+					<li class="continue" title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
+				</ul>
+			</header>
+		</div>'; if ($db_drivers) $main_content .= '<div class="db_drivers"><label>The DBs where the program will be installed: </label>' . implode(", ", $db_drivers) . '</div>'; $main_content .= '<div class="layers">
 		<label>The files from the uploaded file will be copied to the following folders:</label>
 		<ul>'; if ($layers) { foreach ($layers as $layer_type => $items) { $layer_label = ""; switch ($layer_type) { case "ibatis": $layer_label = "Data Access - Ibatis Layers"; break; case "hibernate": $layer_label = "Data Access - Hibernate Layers"; break; case "businesslogic": $layer_label = "Business Logic Layers"; break; case "presentation": $layer_label = "Presentation Layers"; break; case "vendor": $layer_label = "Vendors"; break; } $main_content .= '<li>' . $layer_label . ':
 			<ul>'; foreach ($items as $broker_name => $layer_props) { $layer_files = $all_files[$broker_name]; if ($layer_type == "vendor" && !is_array($layer_files)) { $file_exists = $layer_files; $extra = $file_exists ? ($overwrite ? " (Already exists and will be replaced!)" : " (Already exists and will be backed-up!)") : ""; $main_content .= '<li class="' . ($file_exists ? 'file_exists' : 'file_ok') . '">' . $broker_name . $extra . '</li>'; } else if (is_array($layer_files) && $layer_type == "presentation") { $main_content .= '<li class="broker"><label>' . ucwords($broker_name) . ':</label>
@@ -72,10 +94,19 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="step" value="3" />
 			<textarea class="hidden" name="post_data">' . json_encode($_POST) . '</textarea>
-			<input type="submit" name="continue" value="continue" onClick="$(this).hide();">
+			
+			<input type="hidden" name="continue" value="Continue" />
 		</form>
 	</div>'; } else if ($step == 1) { $main_content .= '
-	<div class="step_1">'; if ($info && $info["description"]) $main_content .= '<div class="info"><pre>' . ($info["label"] ? $info["label"] . " - " : "") . str_replace("\n", "<br/>", $info["description"]) . '</pre></div>'; $main_content .= '
+	<div class="step_1">
+		<div class="top_bar">
+			<header>
+				<div class="title">Program Installation</div>
+				<ul>
+					<li class="continue" title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
+				</ul>
+			</header>
+		</div>'; if ($info && $info["description"]) $main_content .= '<div class="info"><pre>' . ($info["label"] ? $info["label"] . " - " : "") . str_replace("\n", "<br/>", $info["description"]) . '</pre></div>'; $main_content .= '
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="step" value="2" />
 			<input type="hidden" name="program_name" value="' . $program_name . '" />
@@ -103,12 +134,19 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 			
 			' . ($program_settings ? '<div class="program_settings"><label>Other Program Settings:</label>' . $program_settings . '</div>' : '') . '
 			
-			<div class="buttons">
-				<input type="submit" name="continue" value="continue" onClick="$(this).hide();">
-			</div>
+			<input type="hidden" name="continue" value="Continue" />
 		</form>
 	</div>'; } else { $main_content .= '
 	<div class="step_0">
+		<div class="top_bar">
+			<header>
+				<div class="title">Program Installation</div>
+				<ul>
+					<li class="continue" title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
+				</ul>
+			</header>
+		</div>
+		
 		<script>
 			var get_store_programs_url = "' . $get_store_programs_url . '";
 		</script>
@@ -118,7 +156,7 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 			<label>Please upload your program zip file:</label>
 			<input class="upload_file" type="file" name="program_file" />
 			
-			<input class="button" type="submit" name="upload" value="upload" onClick="$(this).hide();">
+			<input type="hidden" name="continue" value="Continue" />
 		</form>
 	
 		' . ($get_store_programs_url ? '<div class="install_store_program">To install programs from store please click <a href="javascript:void(0)" onClick="installStoreProgramPopup();">here</a></div>' : '') . '

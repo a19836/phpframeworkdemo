@@ -2,13 +2,23 @@ var show_popup_interval_id = null;
 var chooseProjectTemplateUrlFromFileManagerTree = null; //used by the create_presentation_uis_diagram.js and module/menu/show_menu/settings.js and others
 
 $(function () {
-	/*$(window).bind('beforeunload', function () {
-		if (window.parent && window.parent.iframe_overlay)
-			window.parent.iframe_overlay.hide();
+	$(window).bind('beforeunload', function () {
+		if (isEntityCodeObjChanged()) {
+			if (window.parent && window.parent.iframe_overlay)
+				window.parent.iframe_overlay.hide();
+			
+			return "If you proceed your changes won't be saved. Do you wish to continue?";
+		}
 		
-		return "Changes you made may not be saved. Click cancel to save them first, otherwise to continue...";
-	});*/
+		return null;
+	});
 	
+	//init auto save
+	addAutoSaveMenu(".top_bar li.save");
+	enableAutoSave(onToggleAutoSave); //only for testing
+	initAutoSave(".top_bar li.save a");
+	
+	//init trees
 	createChoosePresentationIncludeFromFileManagerTree();
 	
 	choosePropertyVariableFromFileManagerTree = new MyTree({
@@ -46,18 +56,42 @@ $(function () {
 	});
 	chooseProjectTemplateUrlFromFileManagerTree.init("choose_project_template_url_from_file_manager");
 	
-	/*setTimeout(function(){
-		$(".invalid").first().remove();
-	}, 20000);*/
-	
+	//init ui
 	var entity_obj = $(".entity_obj");
-	initPageAndTemplateLayout(entity_obj, entity_obj.find(".entity_obj_tabs"));
 	
-	if (!code_exists)
-		onChooseAvailableTemplate( entity_obj.find(".template .search")[0], show_templates_only ); //open template popup automatically if entity is new
+	if (entity_obj[0]) {
+		initPageAndTemplateLayout(entity_obj, entity_obj.find(".entity_obj_tabs"), function() {
+			update_settings_from_layout_iframe_func = function() {
+				updateSettingsFromLayout(entity_obj);
+			};
+			update_layout_iframe_from_settings_func = function() {
+				updateLayoutFromSettings(entity_obj);
+			};
+			
+			/*setTimeout(function(){
+				$(".invalid").first().remove();
+			}, 20000);*/
+		});
+		
+		if (!code_exists)
+			onChooseAvailableTemplate( entity_obj.find(".template .search")[0], show_templates_only ); //open template popup automatically if entity is new
+		
+		//set saved_obj_id
+		saved_obj_id = getEntityCodeObjId();
+	}
 	
 	MyFancyPopup.hidePopup();
 });
+
+//To be used in the toggleFullScreen function
+function onToggleFullScreen(in_full_screen) {
+	setTimeout(function() {
+		var entity_obj = $(".entity_obj");
+		var top = parseInt(entity_obj.find(".regions_blocks_includes_settings").css("top"));
+		
+		resizeSettingsPanel(entity_obj, top);
+	}, 500);
+}
 
 function removeAllThatIsNotTemplatesFromTree(ul, data) {
 	ul = $(ul);
@@ -75,7 +109,7 @@ function removeAllThatIsNotTemplatesFromTree(ul, data) {
 		//	$(elm).parent().parent().addClass("jstree-last");
 	});
 	
-	//move pages to project node
+	//move templates to project node
 	ul.find("i.templates_folder").each(function(idx, elm) {
 		var templates_li = $(elm).parent().parent();
 		var templates_ul = templates_li.children("ul");
@@ -126,15 +160,15 @@ function onChooseAvailableTemplate(elm, show_templates_only) {
 	var entity_obj_elm = template_elm.parent();
 	var func = function(selected_template) {
 		if (!code_exists) { //only if file is new
-			var entity_obj_tabs = entity_obj_elm.children(".entity_obj_tabs");
+			/*var entity_obj_tabs = entity_obj_elm.children(".entity_obj_tabs");
 			var active_tab = entity_obj_tabs.tabs('option', 'active');
 			
 			if (active_tab == 1) {
 				entity_obj_tabs.tabs('option', 'active', 0);
 				
-				var tabs = entity_obj_tabs.children(".tabs");
-				updateLayoutFromSettings( tabs.children().first().children("a")[0] );
-			}
+				updateLayoutFromSettings(entity_obj_elm);
+			}*/
+			updateLayoutFromSettings(entity_obj_elm);
 		}
 	};
 	var available_projects_templates_props = {};
@@ -391,13 +425,10 @@ function updateTemplateLayout(entity_obj) {
 	}
 }
 
-function updateLayoutFromSettings(elm) {
-	elm = $(elm);
-	
-	if (!elm.hasClass("inactive")) {
+function updateLayoutFromSettings(entity_obj) {
+	if (!entity_obj.hasClass("inactive")) {
 		var orig_template_params_values_list = JSON.stringify(template_params_values_list);
 		
-		var entity_obj = $(".entity_obj");
 		var iframe = entity_obj.find(".entity_template_layout iframe");
 		var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
 		
@@ -449,11 +480,8 @@ function getSelectedTemplate(entity_obj) {
 	return template;
 }
 
-function updateSettingsFromLayout(elm) {
-	elm = $(elm);
-	
-	if (!elm.hasClass("inactive")) {
-		var entity_obj = $(".entity_obj");
+function updateSettingsFromLayout(entity_obj) {
+	if (!entity_obj.hasClass("inactive")) {
 		var iframe = entity_obj.find(".entity_template_layout iframe");
 		var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
 		var are_different = areLayoutAndSettingsDifferent(iframe, regions_blocks_includes_settings);
@@ -472,78 +500,86 @@ function updateSettingsFromLayout(elm) {
 	}
 }
 
-function confirmSave(opts) {
-	MyFancyPopup.init({
-		parentElement: window,
-	});
-	MyFancyPopup.showOverlay();
-	MyFancyPopup.showLoading();
-	
+/* SAVING FUNCTIONS */
+
+function getEntityCodeObjId() {
 	var obj = getObjToSave();
 	
-	$.ajax({
-		type : "post",
-		url : create_entity_code_url,
-		data : {"object" : obj},
-		dataType : "json",
-		success : function(data, textStatus, jqXHR) {
-			var old_code = $(".current_entity_code").text();
+	return $.md5(save_object_url + JSON.stringify(obj));
+}
+
+function isEntityCodeObjChanged() {
+	var entity_obj = $(".entity_obj");
+	
+	if (!entity_obj[0])
+		return false;
+	
+	var new_saved_obj_id = getEntityCodeObjId();
+	
+	return saved_obj_id != new_saved_obj_id;
+}
+
+function save(opts) {
+	var entity_obj = $(".entity_obj");
+	
+	prepareAutoSaveVars();
+		
+	if (entity_obj[0]) {
+		var obj = getObjToSave();
+		var new_saved_obj_id = $.md5(save_object_url + JSON.stringify(obj)); //Do not use getEntityCodeObjId, so it can be faster...
+		
+		if (!saved_obj_id || saved_obj_id != new_saved_obj_id) {
+			if (!is_from_auto_save) {
+				var save_btn = $(".top_bar ul li.save a");
+				var save_on_click = save_btn.attr("onClick");
+				save_btn.removeAttr("onClick");
+				
+				var save_preview_btn = $(".top_bar ul li.save_preview a");
+				var save_preview_on_click = save_preview_btn.attr("onClick");
+				save_preview_btn.removeAttr("onClick");
+				
+				MyFancyPopup.init({
+					parentElement: window,
+				});
+				MyFancyPopup.showOverlay();
+				MyFancyPopup.showLoading();
+			}
 			
-			showConfirmationCodePopup(old_code, data, {
-				save: function() {
-					save(opts);
+			saveObj(save_object_url, obj, {
+				success: function(data, textStatus, jqXHR) {
+					if (opts && typeof opts["success"] == "function")
+						opts["success"]();
+					
+					if (!is_from_auto_save) {
+						save_btn.attr("onClick", save_on_click);
+						save_preview_btn.attr("onClick", save_preview_on_click);
+						MyFancyPopup.hidePopup();
+					}
+					else
+						resetAutoSave();
+					
+					return true;
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					if (!is_from_auto_save) {
+						save_btn.attr("onClick", save_on_click);
+						save_preview_btn.attr("onClick", save_preview_on_click);
+						MyFancyPopup.hidePopup();
+					}
+					else
+						resetAutoSave();
 					
 					return true;
 				},
 			});
-			
-			MyFancyPopup.hidePopup();
-		},
-		error : function(jqXHR, textStatus, errorThrown) { 
-			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_entity_code_url, function() {
-					StatusMessageHandler.removeLastShownMessage("error");
-					confirmSave(opts);
-				});
-			else {
-				var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-				StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + msg);
-			}
-			
-			MyFancyPopup.hidePopup();
-		},
-	});
-}
-
-function save(opts) {
-	var save_btns = $(".entity_obj > .buttons input");
-	save_btns.attr("disabled", "disabled").hide();
-	
-	MyFancyPopup.init({
-		parentElement: window,
-	});
-	MyFancyPopup.showOverlay();
-	MyFancyPopup.showLoading();
-	
-	var obj = getObjToSave();
-	
-	saveObj(save_object_url, obj, {
-		success: function(data, textStatus, jqXHR) {
-			if (opts && typeof opts["success"] == "function")
-				opts["success"]();
-			
-			save_btns.removeAttr("disabled").show();
-			MyFancyPopup.hidePopup();
-			
-			return true;
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			save_btns.removeAttr("disabled").show();
-			MyFancyPopup.hidePopup();
-			
-			return true;
-		},
-	});
+		}
+		else if (!is_from_auto_save)
+			StatusMessageHandler.showMessage("Nothing to save.");
+		else
+			resetAutoSave();
+	}
+	else if (!is_from_auto_save)
+		alert("No entity object to save! Please contact the sysadmin...");
 }
 
 function saveAndPreview(confirm_save) {
@@ -561,6 +597,105 @@ function saveAndPreview(confirm_save) {
 		confirmSave(opts);
 	else
 		save(opts);
+}
+
+function confirmSave(opts) {
+	if ($(".entity_obj").length == 0){
+		alert("There is no entity object! Please contact the sysadmin...");
+		return false;
+	}
+	
+	prepareAutoSaveVars();
+	
+	var obj = getObjToSave();
+	var new_saved_obj_id = $.md5(save_object_url + JSON.stringify(obj)); //Do not use getEntityCodeObjId, so it can be faster...
+	
+	if (!saved_obj_id || saved_obj_id != new_saved_obj_id) {
+		if (!is_from_auto_save) {
+			MyFancyPopup.init({
+				parentElement: window,
+			});
+			MyFancyPopup.showOverlay();
+			MyFancyPopup.showLoading();
+		}
+		
+		opts = opts ? opts : {};
+		
+		$.ajax({
+			type : "post",
+			url : create_entity_code_url,
+			data : {"object" : obj},
+			dataType : "json",
+			success : function(data, textStatus, jqXHR) {
+				if (!is_from_auto_save) {
+					//only show this message if is a manual save, otherwise we don't want to do anything. Otherwise the browser is showing this popup constantly and is annoying for the user.
+					var old_code = $(".current_entity_code").text();
+					
+					showConfirmationCodePopup(old_code, data, {
+						save: function() {
+							//change save button action to be simply save, otherwise it is always showing the confirmation popup everytime we save the file.
+							if (opts && typeof opts["success"] == "function") {
+								var prev_func = opts["success"];
+								
+								opts["success"] = function() {
+									prev_func();
+									
+									$(".top_bar li.save a").click(function() { //cannot use the .attr("onClick", "save()") bc it doesn't work, so we must use click(function() {...});
+										save();
+									});
+								}
+							}
+							else {
+								if (!opts)
+									opts = {};
+								
+								opts["success"] = function() {
+									$(".top_bar li.save a").click(function() { //cannot use the .attr("onClick", "save()") bc it doesn't work, so we must use click(function() {...});
+										save();
+									});
+								}
+							}
+							
+							save(opts);
+							
+							return true;
+						},
+						cancel: function() {
+							if (is_from_auto_save)
+								resetAutoSave();
+							
+							return typeof opts.confirmation_cancel != "function" || opts.confirmation_cancel(data);
+						},
+					});
+					
+					MyFancyPopup.hidePopup();
+				}
+				else
+					resetAutoSave();
+			},
+			error : function(jqXHR, textStatus, errorThrown) { 
+				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_entity_code_url, function() {
+						StatusMessageHandler.removeLastShownMessage("error");
+						
+						confirmSave(opts);
+					});
+				else if (!is_from_auto_save) {
+					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+					StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + msg);
+				}
+				
+				if (!is_from_auto_save) 
+					MyFancyPopup.hidePopup();
+				else
+					resetAutoSave();
+			},
+		});
+	}
+	else if (!is_from_auto_save)
+		StatusMessageHandler.showMessage("Nothing to save.");
+	else
+		resetAutoSave();
 }
 
 function preview() {
@@ -660,12 +795,10 @@ function getObjToSave() {
 	var entity_obj = $(".entity_obj");
 	
 	//detect selected tab is layout
-	var tabs = entity_obj.find(".entity_obj_tabs");
-	var active_tab = tabs.tabs('option', 'active');
-	if (active_tab == 0) {
-		var tab = $( tabs.find(" > .tabs > li")[1] );
-		updateSettingsFromLayout( tab.children("a") );
-	}
+	/*var active_tab = entity_obj.children(".entity_obj_tabs").tabs('option', 'active');
+	if (active_tab == 0) 
+		updateSettingsFromLayout(entity_obj);
+	*/
 	
 	var obj = getRegionsBlocksAndIncludesObjToSave();
 	//console.log(obj);

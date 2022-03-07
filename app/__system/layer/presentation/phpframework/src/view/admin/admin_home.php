@@ -46,8 +46,8 @@ $head = '
 <!-- //for-mobile-apps -->
 
 <!-- Custom fonts for this template-->
-<link href="' . $project_url_prefix . 'vendor/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">
-<script src="' . $project_url_prefix . 'vendor/fontawesome/js/all.min.js"></script>
+<link href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">
+<!--script src="' . $project_common_url_prefix . 'vendor/fontawesome/js/all.min.js"></script-->
 
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_home.css" type="text/css" charset="utf-8" />

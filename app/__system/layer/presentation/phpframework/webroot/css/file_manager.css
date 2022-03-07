@@ -1,119 +1,12 @@
 .mytree {margin-bottom:20px;}
-.mytree i.main_node {background: url("../img/icons.png") -7px -3px no-repeat !important;}
-.mytree i.main_node_db_layers {
-	/*background: url("../img/db_icons.png") -245px -21px no-repeat !important;*/
-	background: url("../img/db_driver_small_icon.png") center no-repeat !important;
-	background-size: 20px 20px !important;
-}
-.mytree i.main_node_db {background: url("../img/db_icons.png") -179px -89px no-repeat !important;}
-.mytree i.main_node_data_access_layers {
-	/*background: url("../img/db_icons.png") -133px 0px no-repeat !important;*/
-	background: url("../img/data_access_small_icon.png") center no-repeat !important;
-	background-size: 20px 20px !important;
-}
-.mytree i.main_node_ibatis {background: url("../img/db_icons.png") -224px -0px no-repeat !important;}
-.mytree i.main_node_hibernate {background: url("../img/db_icons.png") -246px -0px no-repeat !important;}
-.mytree i.main_node_business_logic_layers {
-	/*background: url("../img/icons.png") -7px -69px no-repeat !important;*/
-	background: url("../img/business_logic_small_icon.png") center no-repeat !important;
-	background-size: 20px 20px !important;
-}
-.mytree i.main_node_businesslogic {background: url("../img/icons.png") -29px -3px no-repeat !important;}
-.mytree i.main_node_presentation_layers {
-	/*background: url("../img/icons.png") -50px -244px no-repeat !important;*/
-	background: url("../img/presentation_small_icon.png") center no-repeat !important;
-	background-size: 20px 20px !important;
-}
-.mytree i.main_node_presentation {background: url("../img/icons.png") -7px -3px no-repeat !important;}
-/*.mytree i.main_node_dao {background: url("../img/icons.png") -51px -156px no-repeat !important;}*/
-.mytree i.main_node_vendor {background: url("../img/icons.png") -115px -156px no-repeat !important;}
-.mytree i.main_node_management {background: url("../img/icons.png") -93px -3px no-repeat !important;}
-.mytree i.main_node_user_management {background: url("../img/icons.png") -6px -134px no-repeat !important;}
-.mytree i.main_node_layers_management {background: url("../img/icons.png") -181px -92px no-repeat !important;}
-.mytree i.main_node_modules_management {background: url("../img/db_icons.png") -245px -156px no-repeat !important;}
-.mytree i.main_node_projects_management {background: url("../img/icons.png") -202px -46px no-repeat !important;}
-.mytree i.main_node_deployment_management {background: url("../img/icons.png") -115px -222px no-repeat !important;}
-.mytree i.main_node_program_installation {background: url("../img/icons.png") -138px -222px no-repeat !important;}
-.mytree i.main_node_diff_files {background: url("../img/icons.png") -50px -90px no-repeat !important;}
-.mytree i.main_node_testunit_management {background: url(../img/db_icons.png) 0px -178px no-repeat !important;}
-.mytree i.main_node_other {background: url("../img/db_icons.png") -20px -156px no-repeat !important;}
-.mytree i.main_node_flush_cache {background: url("../img/icons.png") -158px -201px no-repeat !important;}
-.mytree i.main_node_admin_simple_ui {background: url("../img/icons.png") -28px -135px no-repeat !important;}
-.mytree i.main_node_logout {background: url("../img/icons.png") -181px -3px no-repeat !important;}
-.mytree i.main_node_about {background: url("../common/img/icon/info_icon.png") center no-repeat !important;}
-.mytree i.folder {background: url("../common/vendor/jquerymytree/css/32px.png") -260px -4px no-repeat !important;}
-.mytree i.file {background: url("../common/vendor/jquerymytree/css/32px.png") -100px -68px no-repeat !important;}
-.mytree i.import {background: url("../img/icons.png") -202px -5px no-repeat !important;}
-.mytree i.call_import {background: url("../img/icons.png") -50px -155px no-repeat !important;}
-.mytree i.db_driver {background: url("../img/db_icons.png") -21px -0px no-repeat !important;}
-.mytree i.db_management {background: url("../img/db_icons.png") -43px -0px no-repeat !important;}
-.mytree i.db_diagram {background: url("../img/db_icons.png") -200px -21px no-repeat !important;}
-.mytree i.table {background: url("../img/db_icons.png") -21px -21px no-repeat !important;}
-.mytree i.attribute {background: url("../img/db_icons.png") -223px -156px no-repeat !important;}
-.mytree i.method {background: url("../img/icons.png") -72px -69px no-repeat !important;}
-.mytree i.function {background: url("../img/icons.png") -182px -69px no-repeat !important;}
-.mytree i.obj {background: url("../img/icons.png") -7px -134px no-repeat !important;}
-.mytree i.query {background: url("../img/icons.png") -160px -47px no-repeat !important;}
-.mytree i.relationship {background: url("../img/icons.png") -159px -69px no-repeat !important;}
-.mytree i.hbn_native {background: url("../img/icons.png") -137px -114px no-repeat !important;}
-.mytree i.map {background: url("../img/icons.png") -205px -135px no-repeat !important;}
-.mytree i.objtype {background: url("../img/icons.png") -115px -5px no-repeat !important;}
-.mytree i.hibernatemodel {background: url("../img/icons.png") -72px -47px no-repeat !important;}
-.mytree i.service {background: url("../img/icons.png") -72px -202px no-repeat !important;}
-.mytree i.project_folder {background:url("../img/icons.png") no-repeat -29px -3px !important;}
-.mytree i.project {background:url("../img/icons.png") no-repeat -202px -46px !important;}
-.mytree i.project_common {background:url("../img/icons.png") no-repeat -93px -134px !important;}
-.mytree i.php_file {background: url("../common/img/icon/php_icon.png") 5px 4px no-repeat !important;}
-.mytree i.css_file {background: url("../common/img/icon/css_icon.png") 5px 4px no-repeat !important;}
-.mytree i.js_file {background: url("../common/img/icon/js_icon.png") 5px 4px no-repeat !important;}
-.mytree i.zip_file {background: url("../common/img/icon/zip_icon.png") 5px 4px no-repeat !important;}
-.mytree i.img_file {background: url("../common/img/icon/img_icon.png") 5px 4px no-repeat !important;}
-.mytree i.webroot_file {background: url("../common/vendor/jquerymytree/css/32px.png") -100px -68px no-repeat !important;}
-.mytree i.entity_file {background: url("../img/icons.png") -137px -113px no-repeat !important;}
-.mytree i.entities_folder {background: url("../img/icons.png") -137px -113px no-repeat !important;}
-.mytree i.view_file {background: url("../common/img/icon/php_icon.png") 5px 4px no-repeat !important;}
-.mytree i.views_folder {background: url("../img/icons.png") -137px -92px no-repeat !important;}
-.mytree i.template_file {background: url("../common/img/icon/html_icon.png") 5px 4px no-repeat !important;}
-.mytree i.template_folder {background: url("../common/vendor/jquerymytree/css/32px.png") -260px -4px no-repeat !important;}
-.mytree i.templates_folder {background: url("../img/icons.png") -138px -27px no-repeat !important;}
-.mytree i.util_file {background: url("../common/img/icon/php_icon.png") 5px 4px no-repeat !important;}
-.mytree i.utils_folder {background: url("../img/icons.png") -49px -91px no-repeat !important;}
-.mytree i.class {background: url("../img/icons.png") -72px -202px no-repeat !important;} /* used in the utils */
-.mytree i.config_file {background: url("../common/img/icon/php_icon.png") 5px 4px no-repeat !important;}
-.mytree i.configs_folder {background: url("../img/icons.png") -28px -179px no-repeat !important;}
-.mytree i.controller_file {background: url("../common/img/icon/php_icon.png") 5px 4px no-repeat !important;}
-.mytree i.block_file {background: url("../img/db_icons.png") 1px 0px no-repeat !important;}
-.mytree i.blocks_folder {background: url("../img/db_icons.png") 1px 0px no-repeat !important;}
-.mytree i.cms_common {background: url("../img/db_icons.png") -245px -156px no-repeat !important;}
-.mytree i.cms_module {background: url("../img/db_icons.png") -245px -156px no-repeat !important;}
-.mytree i.cms_program {background: url("../img/db_icons.png") -245px -156px no-repeat !important;}
-.mytree i.cms_folder {background: url("../img/db_icons.png") -89px -156px no-repeat !important;}
-.mytree i.wordpress_folder {background: url("../img/wordpress_icon.png") no-repeat !important;}
-.mytree i.wordpress_installation_folder {background: url("../img/wordpress_installation_icon.png") no-repeat !important;}
-.mytree i.module_file {background: url("../img/icons.png") -202px -70px no-repeat !important;}
-.mytree i.module_folder {background: url("../img/db_icons.png") -89px -156px no-repeat !important;}
-.mytree i.properties {background: url("../common/img/icon/properties_icon.gif") 5px 4px no-repeat !important;}
-.mytree i.webroot_folder {background: url("../img/icons.png") -50px -243px no-repeat !important;}
-.mytree i.controllers_folder {background: url("../img/db_icons.png") -201px -88px no-repeat !important;}
-.mytree i.cache_file {background: url("../common/vendor/jquerymytree/css/32px.png") -100px -68px no-repeat !important;}
-.mytree i.caches_folder {background: url("../img/icons.png") -93px -25px no-repeat !important;}
-.mytree i.undefined_file {background: url("../img/icons.png") -28px -47px no-repeat !important;}
-.mytree i.reserved_file {background: url("../img/db_icons.png") -111px -134px no-repeat !important;}
-.mytree i.reserved_folder {background: url("../img/db_icons.png") -89px -134px no-repeat !important;}
-.mytree i.dao {background: url("../img/icons.png") -51px -156px no-repeat !important;}
-.mytree i.code_workflow_editor {background: url("../img/db_icons.png") -223px -200px no-repeat !important;}
-.mytree i.code_workflow_editor_task {background: url("../img/db_icons.png") -223px -200px no-repeat !important;}
-.mytree i.layout_ui_editor {background: url("../img/db_icons.png") -223px -200px no-repeat !important;}
-.mytree i.layout_ui_editor_widget {background: url("../img/db_icons.png") -223px -200px no-repeat !important;}
-.mytree i.test_unit {background: url("../img/db_icons.png") 0px -178px no-repeat !important;}
-.mytree i.test_unit_obj {background: url("../img/db_icons.png") -21px -178px no-repeat !important;}
-.mytree i.referenced_folder {background: url("../img/icons.png") -5px -27px no-repeat !important;}
 
+.jstree-default .jstree-clicked {background-color:#ddd !important;}
 .mytree .jstree-hovered {background-color:transparent !important; border-radius:none; box-shadow:none;}
-.mytree .jstree-anchor.jstree-clicked.jstree-hovered, .mytree .jstree-anchor.link.jstree-clicked.jstree-hovered {background-color:#beebff !important; border-radius:2px; box-shadow:inset 0 0 1px #999999;}
-.mytree .jstree-anchor.link.jstree-hovered {background-color:#e7f4f9 !important; border-radius: 2px; box-shadow: inset 0 0 1px #cccccc;}
-.mytree .jstree-anchor {cursor:default;}
+.mytree .jstree-anchor.jstree-clicked.jstree-hovered, .mytree .jstree-anchor.link.jstree-clicked.jstree-hovered {background-color:#ccc !important; border-radius:2px; box-shadow:inset 0 0 1px #999999;}
+.mytree .jstree-anchor.link.jstree-hovered {background-color:#eee !important; border-radius: 2px; box-shadow: inset 0 0 1px #cccccc;}
+.mytree .jstree-anchor {cursor:default; vertical-align:middle;}
 .mytree a.link * {cursor:pointer;}
+.mytree li > .sub_menu {margin-left:5px; color:#ccc;}
 
 .mytree li.disabled > a {opacity:.5;}
 .mytree li.module_folder_disabled > a, .mytree li.module_folder_disabled > ul {opacity:.5;}
@@ -121,3 +14,734 @@
 #selected_menu_properties {
 	min-width:200px;
 }
+
+/* ICONS */
+.mytree .jstree-themeicon {
+	background:none;
+}
+.mytree i.jstree-themeicon::before,
+  .mytree i.tab_icon::before {
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	font-size:16px;
+	display:block;
+	margin-top:4px;
+}
+.mytree i.jstree-themeicon::after,
+  .mytree i.tab_icon::after {
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	font-size:12px;
+	display:block;
+	margin:-10px 0 0 10px;
+}
+.mytree i.jstree-themeicon::before {
+	content:"\f07b";
+	color:#f5df86;
+}
+.mytree i.main_node::before {
+	content:"\f07b";
+	color:#666;
+}
+.mytree i.file::before {
+	font:var(--fa-font-regular);
+	font-size:16px;
+	margin-left:-5px;
+	content:"\f15b";
+	color:#ccc;
+}
+.mytree i.folder::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.undefined_file::before {
+	font:var(--fa-font-regular);
+	font-size:16px;
+	margin-left:-5px;
+	content:"\f15b";
+	color:#ccc;
+}
+.mytree i.undefined_file::after {
+	content:"\3f";
+	color:#ff0000;
+}
+.mytree i.reserved_file::before {
+	font:var(--fa-font-regular);
+	font-size:16px;
+	margin-left:-5px;
+	content:"\f15b";
+	color:#ccc;
+}
+.mytree i.reserved_file::after {
+	content:"\f05e";
+	color:#ff0000;
+}
+.mytree i.reserved_folder::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.reserved_folder::after {
+	content:"\f05e";
+	color:#ff0000;
+}
+
+/* ICONS - COMMON */
+.mytree i.cms_common::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.cms_common::after {
+	content:"\f187";
+	color:#666;
+}
+.mytree i.cms_module::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.cms_module::after {
+	content:"\f61f";
+	color:#666;
+}
+.mytree i.cms_program::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.cms_program::after {
+	content:"\f51f";
+	color:#666;
+}
+.mytree i.cms_folder::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.cms_folder::after {
+	content:"\f49e";
+	color:#666;
+}
+.mytree i.referenced_folder::before {
+	content:"\2a";
+	color:#f5df86;
+}
+
+/* ICONS - PRESENTATION */
+.mytree i.main_node_presentation_layers::before {
+	content:"\f5fd";
+	color:#f5df86;
+}
+.mytree i.main_node_presentation_layers::after {
+	content:"\f0ac";
+	color:#666;
+}
+.mytree i.main_node_presentation::before {
+	content:"\f07b";
+	color:#f5df86;
+}
+.mytree i.main_node_presentation::after {
+	content:"\f233";
+	color:#666;
+}
+.mytree i.project::before {
+	content:"\f0a0";
+	color:#999;
+}
+.mytree i.project_folder::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.project_folder::after {
+	content:"\f0a0";
+	color:#666;
+}
+.mytree i.project_common::before {
+	content:"\f0a0";
+	color:#ccc;
+}
+.mytree i.project_common::after {
+	content:"\f1e0";
+	color:#333;
+}
+.mytree i.configs_folder::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.configs_folder::after {
+	content:"\f013";
+	color:#666;
+}
+.mytree i.config_file::before {
+	font:var(--fa-font-regular);
+	font-size:16px;
+	margin-left:-5px;
+	content:"\f15b";
+	color:#ccc;
+}
+.mytree i.config_file::after {
+	content:"\f013";
+	color:#666;
+}
+.mytree i.entities_folder::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.entities_folder::after {
+	content:"\f0ac";
+	color:#666;
+}
+.mytree i.entity_file::before {
+	font:var(--fa-font-regular);
+	font-size:16px;
+	margin-left:-5px;
+	content:"\f15b";
+	color:#ccc;
+}
+.mytree i.entity_file::after {
+	content:"\f0ac";
+	color:#666;
+}
+.mytree i.views_folder::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.views_folder::after {
+	content:"\f03e";
+	color:#666;
+}
+.mytree i.view_file::before {
+	font:var(--fa-font-regular);
+	font-size:16px;
+	margin-left:-5px;
+	content:"\f15b";
+	color:#ccc;
+}
+.mytree i.view_file::after {
+	content:"\f03e";
+	color:#666;
+}
+.mytree i.templates_folder::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.templates_folder::after {
+	font:var(--fa-font-brands);
+	font-size:16px;
+	content:"\f13b";
+	color:#666;
+}
+.mytree i.template_folder::before {
+	content:"\f802";
+	color:#f5df86;
+}
+.mytree i.template_folder::after {
+	font:var(--fa-font-brands);
+	font-size:16px;
+	content:"\f13b";
+	color:#666;
+}
+.mytree i.template_file::before {
+	font:var(--fa-font-regular);
+	font-size:16px;
+	margin-left:-5px;
+	content:"\f15b";
+	color:#ccc;
+}
+.mytree i.template_file::after {
+	font:var(--fa-font-brands);
+	font-size:16px;
+	content:"\f13b";
+	color:#666;
+}
+.mytree i.blocks_folder::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.blocks_folder::after {
+	content:"\f1b3";
+	color:#666;
+}
+.mytree i.block_file::before {
+	font:var(--fa-font-regular);
+	font-size:16px;
+	margin-left:-5px;
+	content:"\f15b";
+	color:#ccc;
+}
+.mytree i.block_file::after {
+	content:"\f1b3";
+	color:#666;
+}
+.mytree i.utils_folder::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.utils_folder::after {
+	content:"\f121";
+	color:#666;
+}
+.mytree i.util_file::before {
+	font:var(--fa-font-regular);
+	font-size:16px;
+	margin-left:-5px;
+	content:"\f15b";
+	color:#ccc;
+}
+.mytree i.util_file::after {
+	content:"\f121";
+	color:#666;
+}
+.mytree i.class::before {
+	content:"\f121";
+	color:#ccc;
+}
+.mytree i.class::after {
+	content:"\f468";
+	color:#666;
+}
+.mytree i.webroot_folder::before {
+	content:"\f0ac";
+	color:#666;
+}
+.mytree i.webroot_file::before {
+	font:var(--fa-font-regular);
+	font-size:16px;
+	margin-left:-5px;
+	content:"\f15b";
+	color:#ccc;
+}
+.mytree i.webroot_file::after {
+	content:"\f0ac";
+	color:#666;
+}
+.mytree i.img_file::before {
+	content:"\f1c5";
+	color:#666;
+}
+.mytree i.php_file::before,
+  .mytree i.css_file::before,
+  .mytree i.js_file::before,
+  .mytree i.zip_file::before {
+	font:var(--fa-font-regular);
+	font-size:16px;
+	margin-left:-5px;
+	content:"\f15b";
+	color:#ccc;
+}
+.mytree i.php_file::after,
+  .mytree i.css_file::after,
+  .mytree i.js_file::after,
+  .mytree i.zip_file::after {
+	color:#333;
+	margin:-7px 0 0 -3px;
+	font:initial;
+	font-family:var(--icon-font-family);
+	font-size:8px;
+	font-weight:bold;
+	background:#f5df8688;
+	display:inline-block;
+	padding:1px 3px;
+}
+.mytree i.php_file::after {
+	content:"PHP";
+}
+.mytree i.css_file::after {
+	content:"CSS";
+}
+.mytree i.js_file::after {
+	content:"JS";
+}
+.mytree i.zip_file::after {
+	content:"ZIP";
+}
+
+.mytree i.properties::before {
+	content:"\f802";
+	color:#666;
+}
+.mytree i.controllers_folder::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.controllers_folder::after {
+	content:"\f1e6";
+	color:#666;
+}
+.mytree i.controller_file::before {
+	font:var(--fa-font-regular);
+	font-size:16px;
+	margin-left:-5px;
+	content:"\f15b";
+	color:#ccc;
+}
+.mytree i.controller_file::after {
+	content:"\f1e6";
+	color:#666;
+}
+.mytree i.caches_folder::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.caches_folder::after {
+	content:"\f0c7";
+	color:#666;
+}
+.mytree i.cache_file::before {
+	font:var(--fa-font-regular);
+	font-size:16px;
+	margin-left:-5px;
+	content:"\f15b";
+	color:#ccc;
+}
+.mytree i.cache_file::after {
+	content:"\f0c7";
+	color:#666;
+}
+.mytree i.wordpress_folder::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.wordpress_folder::after {
+	font:var(--fa-font-brands);
+	font-size:16px;
+	content:"\f19a";
+	color:#1e769d;
+}
+.mytree i.wordpress_installation_folder::before {
+	font:var(--fa-font-brands);
+	font-size:16px;
+	content:"\f19a";
+	color:#1e769d;
+}
+.mytree i.module_folder::before {
+	content:"\f61f";
+	color:#666;
+}
+.mytree i.module_file::before {
+	font:var(--fa-font-regular);
+	font-size:16px;
+	margin-left:-5px;
+	content:"\f15b";
+	color:#ccc;
+}
+.mytree i.module_file::after {
+	content:"\f61f";
+	color:#666;
+}
+
+/* ICONS - BUSINESS LOGIC */
+.mytree i.main_node_business_logic_layers::before {
+	content:"\f5fd";
+	color:#f5df86;
+}
+.mytree i.main_node_business_logic_layers::after {
+	content:"\e13b";
+	color:#666;
+	-webkit-transform: scaleY(-1);
+	transform: scaleY(-1);
+}
+.mytree i.main_node_businesslogic::before {
+	content:"\f07b";
+	color:#f5df86;
+}
+.mytree i.main_node_businesslogic::after {
+	content:"\e13b";
+	color:#666;
+	-webkit-transform: scaleY(-1);
+	transform: scaleY(-1);
+}
+.mytree i.service::before {
+	content:"\f468";
+	color:#666;
+}
+.mytree i.method::before {
+	content:"\f121";
+	color:#ccc;
+}
+.mytree i.method::after {
+	content:"\e13b";
+	color:#666;
+	-webkit-transform: scaleY(-1);
+	transform: scaleY(-1);
+}
+.mytree i.function::before {
+	content:"\f121";
+	color:#ccc;
+}
+.mytree i.function::after {
+	content:"\e13b";
+	color:#666;
+	-webkit-transform: scaleY(-1);
+	transform: scaleY(-1);
+	margin-left:-10px;
+}
+
+/* ICONS - DATA-ACCESS */
+.mytree i.main_node_data_access_layers::before {
+	content:"\f5fd";
+	color:#f5df86;
+}
+.mytree i.main_node_data_access_layers::after {
+	content:"\f1c0";
+	color:#666;
+}
+.mytree i.main_node_hibernate::before {
+	content:"\f07b";
+	color:#f5df86;
+}
+.mytree i.main_node_hibernate::after {
+	content:"\f0fd";
+	color:#666;
+}
+.mytree i.main_node_ibatis::before {
+	content:"\f07b";
+	color:#f5df86;
+}
+.mytree i.main_node_ibatis::after {
+	content:"\f121";
+	color:#666;
+}
+.mytree i.obj::before {
+	content:"\f1c0";
+	color:#ccc;
+}
+.mytree i.obj::after {
+	content:"\f1b2";
+	color:#666;
+}
+.mytree i.query::before {
+	content:"\f1c0";
+	color:#ccc;
+}
+.mytree i.query::after {
+	content:"\f121";
+	color:#666;
+}
+.mytree i.relationship::before {
+	content:"\f1c0";
+	color:#ccc;
+}
+.mytree i.relationship::after {
+	content:"\f1e0";
+	color:#666;
+}
+.mytree i.hbn_native::before {
+	content:"\f1c0";
+	color:#ccc;
+}
+.mytree i.hbn_native::after {
+	content:"\f192";
+	color:#666;
+}
+.mytree i.map::before {
+	content:"\f1c0";
+	color:#ccc;
+}
+.mytree i.map::after {
+	content:"\f279";
+	color:#666;
+}
+.mytree i.import::before {
+	content:"\f56f";
+	color:#ccc;
+}
+.mytree i.call_import::before {
+	content:"\f574";
+	color:#ccc;
+}
+
+/* ICONS - DB */
+.mytree i.main_node_db_layers::before {
+	content:"\f51e";
+	color:#f5df86;
+}
+.mytree i.main_node_db_layers::after {
+	content:"\f1c0";
+	color:#666;
+}
+.mytree i.main_node_db::before {
+	content:"\f51e";
+	color:#f5df86;
+}
+.mytree i.main_node_db::after {
+	content:"\f1e6";
+	color:#666;
+	-webkit-transform:rotate(45deg);
+	transform:rotate(45deg);
+}
+.mytree i.db_driver::before {
+	content:"\f1c0";
+	color:#aab2c0;
+}
+.mytree i.db_management::before {
+	content:"\f00a";
+	color:#aab2c0;
+}
+.mytree i.db_diagram::before {
+	content:"\f0e8";
+	color:#aab2c0;
+}
+.mytree i.table::before {
+	content:"\f0db";
+	color:#aab2c0;
+}
+.mytree i.attribute::before {
+	content:"\f00b";
+	color:#aab2c0;
+}
+
+/* ICONS - VENDOR */
+.mytree i.main_node_vendor::before {
+	content:"\f2a1";
+	color:#f5df86;
+}
+.mytree i.main_node_dao::before {
+	/*content:"\f5fd";*/
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.main_node_dao::after {
+	content:"\f247";
+	color:#666;
+}
+.mytree i.dao::before {
+	content:"\f247";
+	color:#f5df86;
+}
+.mytree i.objtype::before {
+	font:var(--fa-font-brands);
+	font-size:16px;
+	content:"\f174";
+	color:#ccc;
+}
+.mytree i.objtype::after {
+	content:"\f304";
+	color:#666;
+}
+.mytree i.hibernatemodel::before {
+	content:"\f0fd";
+	color:#ccc;
+}
+.mytree i.hibernatemodel::after {
+	content:"\f304";
+	color:#666;
+}
+.mytree i.code_workflow_editor::before {
+	content:"\f0e8";
+	color:#f5df86;
+}
+.mytree i.code_workflow_editor::after {
+	content:"\f304";
+	color:#666;
+}
+.mytree i.code_workflow_editor_task::before {
+	font:var(--fa-font-brands);
+	font-size:16px;
+	content:"\f174";
+	color:#f5df86;
+}
+.mytree i.code_workflow_editor_task::after {
+	content:"\f304";
+	color:#666;
+}
+.mytree i.layout_ui_editor::before {
+	content:"\f53f";
+	color:#f5df86;
+}
+.mytree i.layout_ui_editor::after {
+	content:"\f304";
+	color:#666;
+}
+.mytree i.layout_ui_editor_widget::before {
+	content:"\f0c8";
+	color:#f5df86;
+}
+.mytree i.layout_ui_editor_widget::after {
+	content:"\f304";
+	color:#666;
+}
+.mytree i.test_unit::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.mytree i.test_unit::after {
+	content:"\f0ae";
+	color:#666;
+}
+.mytree i.test_unit_obj::before {
+	content:"\f0ae";
+	color:#666;
+}
+
+/* ICONS - MANAGEMENT */
+.mytree i.main_node_management::before {
+	content:"\f7d9";
+	color:#f5df86;
+}
+.mytree i.main_node_admin_simple_ui::before {
+	content:"\f5c3";
+	color:#5ed7c0;
+	color:#999;
+}
+.mytree i.main_node_user_management::before {
+	content:"\f0c0";
+	color:#026e15;
+	color:#999;
+}
+.mytree i.main_node_layers_management::before {
+	content:"\f5fd";
+	color:#f1c537;
+	color:#999;
+}
+.mytree i.main_node_modules_management::before {
+	content:"\f61f";
+	color:#418ec2;
+	color:#999;
+}
+.mytree i.main_node_projects_management::before {
+	content:"\f233";
+	color:#fb5c5c;
+	color:#999;
+}
+.mytree i.main_node_deployment_management::before {
+	content:"\f5b0";
+	color:#41998b;
+	color:#999;
+}
+.mytree i.main_node_program_installation::before {
+	content:"\f51f";
+	color:#d7d9d6;
+	color:#999;
+}
+.mytree i.main_node_testunit_management::before {
+	content:"\f0ae";
+	color:#1988c3;
+	color:#999;
+}
+.mytree i.main_node_diff_files::before {
+	content:"\f24d";
+	color:#da77fc;
+	color:#999;
+}
+.mytree i.main_node_other::before {
+	content:"\f86d";
+	color:#edc336;
+	color:#999;
+}
+.mytree i.main_node_flush_cache::before {
+	content:"\f51a";
+	color:#6e2102;
+	color:#999;
+}
+.mytree i.main_node_logout::before {
+	content:"\f14d";
+	color:#999;
+	-webkit-transform: scaleX(-1);
+	transform: scaleX(-1);
+}
+.mytree i.main_node_about::before {
+	content:"\f05a";
+	color:#4782ef;
+	color:#999;
+}
+
+

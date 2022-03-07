@@ -15,50 +15,48 @@ function initFileTreeMenu() {
 }
 
 function initContextMenus() {
-	$("#file_tree li *:not(a > label)").click(function(originalEvent){
-		if (originalEvent.preventDefault) originalEvent.preventDefault(); 
-		else originalEvent.returnValue = false;
-		
-		$(".jqcontextmenu").hide();
-	});
+	var file_tree = $("#file_tree");
 	
 	var obj = null;
 	
-	obj = $("#file_tree .db_layers li.main_node_db");
+	obj = file_tree.find(".db_layers li.main_node_db");
 	addLiContextMenu(obj.children("a").addClass("link"), "main_db_group_context_menu", {callback: onDBContextMenu});
 	initDBContextMenu(obj);//This covers the scenario where the DB_DRIVER node is inside of the ".db_layers li.main_node_db" and ".db_layers" node
 	
-	obj = $("#file_tree .data_access_layers li.main_node_ibatis");
+	obj = file_tree.find(".data_access_layers li.main_node_ibatis");
 	addLiContextMenu(obj.children("a").addClass("link"), "main_ibatis_group_context_menu", {callback: onIbatisContextMenu});
 	initIbatisContextMenu(obj);
 	
-	obj = $("#file_tree .data_access_layers li.main_node_hibernate");
+	obj = file_tree.find(".data_access_layers li.main_node_hibernate");
 	addLiContextMenu(obj.children("a").addClass("link"), "main_hibernate_group_context_menu", {callback: onHibernateContextMenu});
 	initHibernateContextMenu(obj);
 	
-	obj = $("#file_tree .business_logic_layers li.main_node_businesslogic");
+	obj = file_tree.find(".business_logic_layers li.main_node_businesslogic");
 	addLiContextMenu(obj.children("a").addClass("link"), "main_business_logic_group_context_menu", {callback: onContextContextMenu});
 	initContextContextMenu(obj);
 	
-	obj = $("#file_tree .presentation_layers li.main_node_presentation");
+	obj = file_tree.find(".presentation_layers li.main_node_presentation");
 	addLiContextMenu(obj.children("a").addClass("link"), "main_presentation_group_context_menu", {callback: onPresentationContextMenu});
 	initPresentationContextMenu(obj);
 	
-	obj = $("#file_tree li.main_node_dao");
+	obj = file_tree.find("li.main_node_dao");
 	addLiContextMenu(obj.children("a").addClass("link"), "main_dao_group_context_menu", {callback: onDaoContextMenu});
 	initDaoContextMenu(obj);
 	
-	obj = $("#file_tree li.main_node_vendor");
+	obj = file_tree.find("li.main_node_vendor");
 	addLiContextMenu(obj.children("a").addClass("link"), "main_vendor_group_context_menu", {callback: onVendorContextMenu});
 	initVendorContextMenu(obj);
 	
-	obj = $("#file_tree li.main_node_test_unit");
+	obj = file_tree.find("li.main_node_test_unit");
 	addLiContextMenu(obj.children("a").addClass("link"), "main_test_unit_group_context_menu", {callback: onTestUnitContextMenu});
 	initTestUnitContextMenu(obj);
 	
-	obj = $("#file_tree li.main_node_other");
+	obj = file_tree.find("li.main_node_other");
 	addLiContextMenu(obj.children("a").addClass("link"), "main_other_group_context_menu", {callback: onVendorContextMenu});
 	initOtherContextMenu(obj);
+	
+	prepareParentChildsEventToHideContextMenu(file_tree);
+	addSubMenuIconToParentChildsWithContextMenu(file_tree);
 	
 	//var selected_menu_properties = $("#selected_menu_properties");
 }
@@ -376,7 +374,7 @@ function initPresentationContextMenu(elm) {
 	addLiContextMenu(entities_sub_folders.parent(), "presentation_pages_group_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(view_files.parent(), "presentation_file_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(views_folder.parent(), "presentation_evc_group_context_menu", {callback: onPresentationContextMenu});
-	addLiContextMenu(template_files.parent(), "presentation_file_context_menu", {callback: onPresentationContextMenu});
+	addLiContextMenu(template_files.parent(), "presentation_template_file_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(template_folders.parent(), "presentation_group_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(templates_folder.parent(), "presentation_main_templates_group_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(util_files.parent(), "presentation_util_file_context_menu", {callback: onPresentationContextMenu});
@@ -588,14 +586,15 @@ function onContextMenu(target, contextmenu, originalEvent) {
 }
 
 function showProperties(menu_item) {
-	$("#selected_menu_properties").hide();
+	var selected_menu_properties = $("#selected_menu_properties");
+	selected_menu_properties.hide();
 	
 	var id = menu_item.getAttribute("properties_id");
 	//console.log(menu_item);
+	var html;
 	
 	if (id && menu_item_properties.hasOwnProperty(id) && menu_item_properties[id]) {
 		var properties = menu_item_properties[id];
-		var html;
 		
 		if (properties) {
 			html = "";
@@ -609,18 +608,19 @@ function showProperties(menu_item) {
 				html += "<label>" + key + ": </label>" + value + "<br/>\n";
 			}
 		}
-		else {
+		else
 			html = "There are no properties to be shown";
-		}
-		
-		$("#selected_menu_properties .content").html(html);
-		
-		MyFancyPopup.init({
-			elementToShow: $("#selected_menu_properties")
-		});
-		
-		MyFancyPopup.showPopup();
 	}
+	else
+		html = "There are no properties to be shown";
+	
+	selected_menu_properties.find(".content").html(html);
+	
+	MyFancyPopup.init({
+		elementToShow: $("#selected_menu_properties")
+	});
+	
+	MyFancyPopup.showPopup();
 	
 	return false;
 }
@@ -934,7 +934,7 @@ function managePresentationFile(a, attr_name, action, new_file_name, url, tree_n
 	else if (url && url.indexOf("/src/template/") != -1 && action == "remove") { //deletes template webroot folder if apply
 		var tree_node = $("#" + tree_node_id_to_be_updated);
 		var p = tree_node.parent().parent();
-		var is_template_folder = tree_node.find(" > a > i").is(".folder") && p.find(" > a > i").is(".templates_folder");
+		var is_template_folder = tree_node.find(" > a > i").is(".folder, .template_folder") && p.find(" > a > i").is(".templates_folder"); //by default it should be a .template_folder
 		
 		//deletes template folder from webroot
 		if (is_template_folder && confirm("Do you wish to remove the correspondent webroot folder too")) {

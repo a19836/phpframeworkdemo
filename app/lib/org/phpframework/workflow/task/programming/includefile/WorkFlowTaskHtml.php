@@ -22,7 +22,7 @@
 		<label>File Path: </label>
 		<input type="text" class="task_property_field" name="file_path" />
 		<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Search</span>
-		<span class="icon search" onClick="IncludeFileTaskPropertyObj.onChooseFile(this)">Search</span>
+		<span class="icon search" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseFilePath(this)">Search</span>
 	</div>
 	<div class="type">
 		<label>Type: </label>

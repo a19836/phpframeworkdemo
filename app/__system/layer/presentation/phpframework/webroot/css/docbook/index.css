@@ -1,22 +1,31 @@
+/* TOP BAR */
+.top_bar {
+	
+}
+
+/* DOCBOOK */
 .docbook {
-	padding:20px;
+	
 }
 .docbook .docbook_tree .icon.view,
-  .docbook .docbook_tree .icon.php {
-	float:none;
-	clear:both;
-	display:inline-block;
-	vertical-align:middle;
-}
-.docbook .docbook_tree .icon.php {
-	background: url(../../common/img/icon/php_icon.png) no-repeat scroll 0 0;
+  .docbook .docbook_tree .icon.code {
+	margin-left:5px;
 }
 
 .docbook .docbook_tree .file_docbook {
 	width:100%;
 	height:500px;
 	max-height:80vh;
+	padding:0;
 	display:block;
 	border:1px solid #ccc;
 	background:#fff;
+}
+
+.docbook .docbook_tree .jstree-clicked,
+  .docbook .docbook_tree .jstree-hovered,
+  .docbook .docbook_tree .jstree-anchor:hover {
+	background:transparent !important;
+	border:0 !important;
+	box-shadow:none !important;
 }

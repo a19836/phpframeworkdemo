@@ -1,9 +1,24 @@
 var timeout_id = null;
+var saved_str_id = null;
 
 $(function () {
+	$(window).unbind('beforeunload').bind('beforeunload', function () {
+		var str = getActiveEditorValue();
+		var new_str_id = $.md5(str);
+	
+		if (saved_str_id != new_str_id) {
+			if (window.parent && window.parent.iframe_overlay)
+				window.parent.iframe_overlay.hide();
+			
+			return "If you proceed your changes won't be saved. Do you wish to continue?";
+		}
+		
+		return null;
+	});
+	
+	$(".top_bar .save a").attr("onclick", "saveEchoStrSettings(this);");
+	
 	var echostr_settings = $(".echostr_settings");
-	var block_obj = echostr_settings.parent().closest(".block_obj");
-	block_obj.children(".buttons").children("input").attr("onclick", "saveEchoStrSettings(this);");
 	
 	createLayoutUIEditor( echostr_settings.find(" > #layoutui_content > textarea")[0] );
 	createTinyMCEEditor( echostr_settings.find(" > #tinymce_content > textarea")[0] );
@@ -29,6 +44,9 @@ function loadEchoStrBlockSettings(settings_elm, settings_values) {
 	
 	echostr_settings.children("textarea.module_settings_property").val(value);
 	echostr_settings.find(" > .editor > textarea").val(value);
+	
+	//set save str id
+	saved_str_id = $.md5(value);
 }
 
 function createLayoutUIEditor(textarea) {
@@ -39,7 +57,7 @@ function createLayoutUIEditor(textarea) {
 			var ui = parent.children(".layout_ui_editor");
 			
 			if (!ui[0]) {
-				ui = $('<div class="layout_ui_editor"><ul class="menu-widgets"></ul><div class="template-source"></div></div>');
+				ui = $('<div class="layout_ui_editor reverse fixed_properties"><ul class="menu-widgets"></ul><div class="template-source"></div></div>');
 				parent.append(ui);
 			}
 			else if (ui.data("LayoutUIEditor")) 
@@ -62,6 +80,17 @@ function createLayoutUIEditor(textarea) {
 					var LayoutUIEditorFormFieldUtilObj = new LayoutUIEditorFormFieldUtil(PtlLayoutUIEditor);
 					LayoutUIEditorFormFieldUtilObj.initFormFieldsSettings();
 				}
+				
+				var luie = PtlLayoutUIEditor.getUI();
+        			var options = luie.children(".options");
+        			
+        			//prepare full-screen option
+				options.find(".full-screen").click(function() {
+        				if (luie.hasClass("full-screen"))
+        					openFullscreen(ui[0]);
+        				else
+        					closeFullscreen();
+        			});
 			};
 			window[ptl_ui_creator_var_name] = PtlLayoutUIEditor;
 			PtlLayoutUIEditor.init(ptl_ui_creator_var_name);
@@ -192,11 +221,17 @@ function getActiveEditorValue() {
 	
 	if (active_tab == 0) {
 		var editor_elm = echostr_settings.children("#layoutui_content");
-		var ptl_layout_ui_editor = editor_elm.find(".layout_ui_editor").data("LayoutUIEditor");
+		var PtlLayoutUIEditor = editor_elm.find(".layout_ui_editor").data("LayoutUIEditor");
 		
-		if (ptl_layout_ui_editor) {
-			ptl_layout_ui_editor.forceTemplateSourceConversionAutomatically(); //Be sure that the template source is selected
-			str = ptl_layout_ui_editor.getTemplateSourceEditorValue();
+		if (PtlLayoutUIEditor) {
+			//converts visual into code if visual tab is selected
+			var is_template_layout_tab_show = PtlLayoutUIEditor.isTemplateLayoutShown();
+			
+			if (is_template_layout_tab_show)
+				PtlLayoutUIEditor.convertTemplateLayoutToSource();
+			
+			//PtlLayoutUIEditor.forceTemplateSourceConversionAutomatically(); //Be sure that the template source is selected
+			str = PtlLayoutUIEditor.getTemplateSourceEditorValue();
 		}
 		else {
 			var editor = editor_elm.data("editor");
@@ -218,40 +253,64 @@ function getActiveEditorValue() {
 }
 
 function saveEchoStrSettings() {
+	prepareAutoSaveVars();
+	
 	var active_tab = $(".echostr_settings").tabs('option', 'active');
 	var str = getActiveEditorValue();
+	var new_str_id = $.md5(str);
 	
-	if (active_tab == 0) { //is layout ui editor
-		MyFancyPopup.showOverlay();
-		MyFancyPopup.showLoading();
-		
-		$.ajax({
-			type : "post",
-			url : create_echostr_settings_code_url,
-			data : {str: str},
-			dataType : "json",
-			success : function(data, textStatus, jqXHR) {
-				if (data && data["code"])
-					saveBlockRawCode(data["code"]);
-				else
-					StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
-				
-				MyFancyPopup.hidePopup();
-			},
-			error : function() { 
-				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_echostr_settings_code_url, function() {
-						saveEchoStrSettings();
-					});
-				else
-					StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
-				
-				MyFancyPopup.hidePopup();
-			},
-		});
+	if (!saved_str_id || saved_str_id != new_str_id) {
+		if (active_tab == 0) { //is layout ui editor
+			if (!is_from_auto_save) {
+				MyFancyPopup.showOverlay();
+				MyFancyPopup.showLoading();
+			}
+			
+			$.ajax({
+				type : "post",
+				url : create_echostr_settings_code_url,
+				data : {str: str},
+				dataType : "json",
+				success : function(data, textStatus, jqXHR) {
+					if (data && data["code"]) {
+						if (saveBlockRawCode(data["code"]))
+							saved_str_id = new_str_id; //set new saved_str_id
+					}
+					else if (!is_from_auto_save)
+						StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
+					
+					if (!is_from_auto_save)
+						MyFancyPopup.hidePopup();
+					else
+						resetAutoSave();
+				},
+				error : function() { 
+					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_echostr_settings_code_url, function() {
+							saveEchoStrSettings();
+						});
+					else if (!is_from_auto_save)
+						StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
+					
+					if (!is_from_auto_save)
+						MyFancyPopup.hidePopup();
+					else
+						resetAutoSave();
+				},
+			});
+		}
+		else {
+			$(".echostr_settings > textarea.module_settings_property").val(str);
+			
+			if (saveBlock())
+				saved_str_id = new_str_id; //set new saved_str_id
+			
+			if (is_from_auto_save)
+				resetAutoSave();
+		}
 	}
-	else {
-		$(".echostr_settings > textarea.module_settings_property").val(str);
-		saveBlock();
-	}
+	else if (!is_from_auto_save)
+		StatusMessageHandler.showMessage("Nothing to save.");
+	else
+		resetAutoSave();
 }

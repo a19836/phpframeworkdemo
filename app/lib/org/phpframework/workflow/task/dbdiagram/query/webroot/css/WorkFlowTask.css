@@ -15,23 +15,23 @@
 .jsplumbtaskworkflow .task.task_query {
 	min-width:160px !important;
 	min-height:5em !important;
-	border:1px solid #000;
+	border:1px solid #666 !important;
 	
-	-moz-border-radius:0px !important; 
-	-webkit-border-radius:0px !important;
-	border-radius:0px !important;
+	-moz-border-radius:5px !important; 
+	-webkit-border-radius:5px !important;
+	border-radius:5px !important;
 	
-	background: #d5e3e4 !important;
+	background: #ddd !important;
 	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Q1ZTNlNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQwJSIgc3RvcC1jb2xvcj0iI2NjZGVlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNiM2M4Y2MiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+) !important;
-	background: -moz-linear-gradient(top,  #d5e3e4 0%, #ccdee0 40%, #b3c8cc 100%) !important;
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d5e3e4), color-stop(40%,#ccdee0), color-stop(100%,#b3c8cc)) !important;
-	background: -webkit-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%) !important;
-	background: -o-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%) !important;
-	background: -ms-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%) !important;
-	background: linear-gradient(to bottom,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%) !important;
+	background: -moz-linear-gradient(top,  #ddd 0%, #aaa 40%, #000 100%) !important;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ddd), color-stop(40%,#aaa), color-stop(100%,#000)) !important;
+	background: -webkit-linear-gradient(top,  #ddd 0%,#aaa 40%,#000 100%) !important;
+	background: -o-linear-gradient(top,  #ddd 0%,#aaa 40%,#000 100%) !important;
+	background: -ms-linear-gradient(top,  #ddd 0%,#aaa 40%,#000 100%) !important;
+	background: linear-gradient(to bottom,  #ddd 0%,#aaa 40%,#000 100%) !important;
 	
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 )" !important;
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 ) !important;
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ddd', endColorstr='#000',GradientType=0 )" !important;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ddd', endColorstr='#000',GradientType=0 ) !important;
 }
 .jsplumbtaskworkflow .task.task_query .info {
 	position:absolute;
@@ -81,7 +81,7 @@
 }
 .jsplumbtaskworkflow .task.task_query .attributes {
 	position:absolute;
-	width:30px;
+	/*width:30px;*/
 	height:auto !important;
 	top:0px;
 	left:0px;
@@ -157,9 +157,7 @@
 .selected_connection_properties .db_table_connection_html {
 	width:585px;
 	margin:0 auto;
-}
-.selected_connection_properties .db_table_connection_html * {
-	font-size:12px !important;
+	font-size:12px;
 }
 .selected_connection_properties .db_table_connection_html .header {
 	width:210px;
@@ -179,6 +177,8 @@
 }
 .selected_connection_properties .db_table_connection_html .header select {
 	width:65px;
+	border:1px solid #eee;
+	background:transparent;
 }
 .selected_connection_properties .db_table_connection_html .header .source_table,
    .selected_connection_properties .db_table_connection_html .header .target_table {
@@ -202,32 +202,17 @@
 	margin-right:0px;
 	height:18px;
 	line-height:18px;
+	text-transform:lowercase;
+	color:#999;
 }
-.selected_connection_properties .db_table_connection_html thead th.table_attr_icons {
+.selected_connection_properties .db_table_connection_html .table_attr_icons {
 	width:16px !important;
-	margin-left:3px;
-}
-.selected_connection_properties .db_table_connection_html thead .add {
-	width:16px !important;
-	height:16px !important;
-	background-color:#FFF !important;
-	border:0 !important;
-}
-.selected_connection_properties .db_table_connection_html thead .add a {
-	display:block;
-	width:16px;
-	height:16px;
-	background:url('../../common/img/add_icon.gif') no-repeat;
-	cursor:pointer;
-	
-	/* Hide Text */
-	text-indent:-9999px;
-	white-space:nowrap;
-	overflow:hidden;
+	text-align:center;
+	border:0;
 }
 
 .selected_connection_properties .db_table_connection_html table .source_column,
-   .selected_connection_properties .db_table_connection_html table .target_column {
+   .selected_connection_properties .db_table_connection_html table .target_column {.selected_connection_properties .db_table_connection_html tbody td select, .selected_connection_properties .db_table_connection_html tbody td input
 	width:150px;
 }
 .selected_connection_properties .db_table_connection_html table .operator {
@@ -241,8 +226,8 @@
 	text-align:center;
 	height:20px;
 	margin-right:0px;
-	border:1px inset #CCC;
-	background-color:#FFF;
+	border-top:1px solid #eee;
+	border-right:1px solid #eee;
 }
 .selected_connection_properties .db_table_connection_html tbody td select, 
    .selected_connection_properties .db_table_connection_html tbody td input {
@@ -251,7 +236,7 @@
 	font-size:12px !important;
 	margin:0 auto;
 	border:0;
-	background-color:#FFF;
+	background-color:transparent;
 }
 .selected_connection_properties .db_table_connection_html tbody td select {
 	width:150px;
@@ -263,22 +248,4 @@
 }
 .selected_connection_properties .db_table_connection_html tbody td input {
 	width:135px;
-}
-.selected_connection_properties .db_table_connection_html tbody .table_attr_icons {
-	width:16px !important;
-	margin-left:3px;
-	border:0;
-}
-.selected_connection_properties .db_table_connection_html tbody .table_attr_icons a {
-	display:block;
-	width:16px;
-	height:16px;
-	margin-top:3px;
-	background:url('../../common/img/delete_icon.gif') no-repeat;
-	cursor:pointer;
-	
-	/* Hide Text */
-	text-indent:-9999px;
-	white-space:nowrap;
-	overflow:hidden;
 }

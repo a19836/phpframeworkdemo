@@ -20,7 +20,7 @@
 ?><div class="call_presentation_layer_web_service_task_html">
 	<div class="get_automatically">
 		<label>Get Page from File Manager: </label>
-		<span class="icon update" onClick="callPresentationLayerWebServiceTaskPropertyObj.onChoosePage(this)" title="Get page from File Manager">Update</span>
+		<span class="icon update" onClick="ProgrammingTaskUtil.onProgrammingTaskChoosePageUrl(this)" title="Get page from File Manager">Update</span>
 	</div>
 	<!--div class="broker_method_obj" title="Write here the EVC variable">
 		<label>Presentation Layer:</label>
@@ -63,7 +63,7 @@
 		<div class="incs">
 			<label class="main_label">Includes:</label>
 			<input type="text" class="task_property_field includes_code" name="includes" />
-			<span class="icon search" onClick="callPresentationLayerWebServiceTaskPropertyObj.onChooseFile(this)">Search</span>
+			<span class="icon search" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseFilePath(this)">Search</span>
 			<select class="task_property_field includes_type" name="includes_type" onChange="callPresentationLayerWebServiceTaskPropertyObj.onChangeParametersType(this, 'includes')">
 				<option></option>
 				<option>string</option>
@@ -75,7 +75,7 @@
 		<div class="incs_once">
 			<label class="main_label">Includes Once:</label>
 			<input type="text" class="task_property_field includes_once_code" name="includes_once" />
-			<span class="icon search" onClick="callPresentationLayerWebServiceTaskPropertyObj.onChooseFile(this)">Search</span>
+			<span class="icon search" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseFilePath(this)">Search</span>
 			<select class="task_property_field includes_once_type" name="includes_once_type" onChange="callPresentationLayerWebServiceTaskPropertyObj.onChangeParametersType(this, 'includes_once')">
 				<option></option>
 				<option>string</option>

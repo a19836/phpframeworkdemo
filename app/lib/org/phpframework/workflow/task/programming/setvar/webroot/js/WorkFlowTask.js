@@ -19,14 +19,12 @@
 
 var SetVarTaskPropertyObj = {
 	
-	on_choose_page_url_callback: null,
-	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
 		
 		var task_html_elm = $(properties_html_elm).find(".set_var_task_html");
 		
-		if (typeof SetVarTaskPropertyObj.on_choose_page_url_callback == "function")
+		if (typeof ProgrammingTaskUtil.on_programming_task_choose_page_url_callback == "function")
 			task_html_elm.find(".value .search").css("display", "inline-block");
 		
 		ProgrammingTaskUtil.setResultVariableType(task_property_values, task_html_elm);
@@ -118,10 +116,7 @@ var SetVarTaskPropertyObj = {
 	},
 	
 	onCompleteLabel : function(task_id) {
-		onEditLabel(task_id);
-		myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
-		
-		return true;
+		return ProgrammingTaskUtil.onEditLabel(task_id);
 	},
 	
 	onTaskCreation : function(task_id) {
@@ -131,7 +126,7 @@ var SetVarTaskPropertyObj = {
 		
 			var label = SetVarTaskPropertyObj.getDefaultExitLabel(task_property_values);
 			ProgrammingTaskUtil.updateTaskDefaultExitLabel(task_id, label);
-		
+			
 			onEditLabel(task_id);
 		}, 30);
 	},
@@ -182,7 +177,7 @@ var SetVarTaskPropertyObj = {
 			input.show();
 			//maximize_icon.hide();
 			
-			if (typeof this.on_choose_page_url_callback == "function")
+			if (typeof ProgrammingTaskUtil.on_programming_task_choose_page_url_callback == "function")
 				search_icon.show();
 		}
 		

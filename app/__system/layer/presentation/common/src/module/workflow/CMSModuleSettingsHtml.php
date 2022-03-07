@@ -121,6 +121,13 @@ if ($PEVC) {
 
 	
 	$head = WorkFlowPresentationHandler::getHeader($project_url_prefix, $project_common_url_prefix, $WorkFlowUIHandler, $set_workflow_file_url, true);
+	
+	//must have the top_bar after this, bc the getHeader method loads the common/vendor/jquerytaskflowchart/css/style.css which will overwrite the previous loaded top_bar.css styles. So we must re-add it here again.
+	$head .= '
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+';
+
 	$head .= '
 	<link rel="stylesheet" href="' . $module["webroot_url"] . 'workflow.css" type="text/css" charset="utf-8" />
 	<script type="text/javascript" src="' . $module["webroot_url"] . 'workflow.js"></script>
@@ -147,24 +154,16 @@ var get_broker_db_data_url = \'' . $get_broker_db_data_url . '\';
 	ProgrammingTaskUtil.on_programming_task_choose_object_method_callback = onProgrammingTaskChooseObjectMethod;
 	ProgrammingTaskUtil.on_programming_task_choose_function_callback = onProgrammingTaskChooseFunction;
 	ProgrammingTaskUtil.on_programming_task_choose_class_name_callback = onProgrammingTaskChooseClassName;
-	
-	IncludeFileTaskPropertyObj.on_choose_file_callback = onIncludeFileTaskChooseFile;
-	SetVarTaskPropertyObj.on_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
-	CreateFormTaskPropertyObj.on_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
-	CreateFormTaskPropertyObj.on_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
-	InlineHTMLTaskPropertyObj.on_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
-	InlineHTMLTaskPropertyObj.on_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
+ProgrammingTaskUtil.on_programming_task_choose_file_path_callback = onIncludeFileTaskChooseFile;
+	ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
+	ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
 	
 	FunctionUtilObj.set_tmp_workflow_file_url = set_tmp_workflow_file_url;
 	FunctionUtilObj.get_tmp_workflow_file_url = get_tmp_workflow_file_url;
 	FunctionUtilObj.create_code_from_workflow_file_url = create_code_from_workflow_file_url;
 	FunctionUtilObj.create_workflow_file_from_code_url = create_workflow_file_from_code_url;
 
-	GetUrlContentsTaskPropertyObj.on_choose_page_callback = onIncludePageUrlTaskChooseFile;
-	SoapConnectorTaskPropertyObj.on_choose_page_callback = onIncludePageUrlTaskChooseFile;
-
 	LayerOptionsUtilObj.on_choose_db_driver_callback = onChooseDBDriver;
-	callPresentationLayerWebServiceTaskPropertyObj.on_choose_file_callback = onIncludeFileTaskChooseFile;
 	callPresentationLayerWebServiceTaskPropertyObj.on_choose_page_callback = onPresentationTaskChoosePage;
 	callPresentationLayerWebServiceTaskPropertyObj.brokers_options = ' . json_encode($presentation_brokers_obj) . ';
 	
@@ -228,14 +227,14 @@ var get_broker_db_data_url = \'' . $get_broker_db_data_url . '\';
 	
 	echo '
 	<div class="module_workflow_content">
-		<ul>
+		<ul class="tabs tabs_transparent tabs_right">
 			<li id="code_editor_tab"><a href="#code" onClick="onClickCodeEditorTab(this);return false;">Code</a></li>
 			<li id="tasks_flow_tab"><a href="#ui" onClick="onClickTaskWorkflowTab(this);return false;">Workflow</a></li>
 			<li id="external_vars_tab"><a href="#external_vars">External Vars</a></li>
 		</ul>
 	
 		<div id="code">
-			<div class="code_menu">
+			<div class="code_menu top_bar_menu">
 				' . WorkFlowPresentationHandler::getCodeEditorMenuHtml(array("save_func" => "saveModuleWorkflowSettings")) . '
 			</div>
 			<textarea></textarea>

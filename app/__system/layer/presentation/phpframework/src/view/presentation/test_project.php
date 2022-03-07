@@ -40,6 +40,9 @@ function getVarsHtml($v3fb9f41470) { $v761f4d757f = $_POST ? $_POST[$v3fb9f41470
 		<td class="value"><input type="text" name="' . $v3fb9f41470 . '_vars[' . $v8a4df75785 . '][value]" placeHolder="write here your ' . $v3fb9f41470 . ' var value" value="' . $v67db1bd535 . '" /></td>
 		<td class="actions"><i class="icon delete" onClick="removeVar(this)"></i></td>
 	</tr>'; } $head = '
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
 <!-- Add Icons CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
@@ -54,7 +57,7 @@ function getVarsHtml($v3fb9f41470) { $v761f4d757f = $_POST ? $_POST[$v3fb9f41470
 	var vars_html = \'' . addcslashes(str_replace("\n", "", getVarHtml("#type#", "#index#", "#name#", "#value#")), "'") . '\';
 </script>'; $main_content = '
 <div class="test_project">
-	<div class="icon maximize toggle" onClick="toggleSettings(this)"></div>
+	<div class="icon maximize" onClick="toggleSettings(this)"></div>
 	<div class="title">Test Project</div>
 	<div class="sub_title">(path: "' . $path . '")</div>
 	

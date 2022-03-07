@@ -47,8 +47,7 @@
    .forgot_credentials_settings .username_attribute_label label,
    .forgot_credentials_settings .password_attribute_label label {
 	width:220px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .forgot_credentials_settings .admin_email input,
    .forgot_credentials_settings .smtp_host input,

@@ -1,8 +1,42 @@
+var saved_mp_obj_id = null;
+
 $(function () {
+	$(window).bind('beforeunload', function () {
+		if (isMPChanged()) {
+			if (window.parent && window.parent.iframe_overlay)
+				window.parent.iframe_overlay.hide();
+			
+			return "If you proceed your changes won't be saved. Do you wish to continue?";
+		}
+		
+		return null;
+	});
+	
+	//init ui
 	MyFancyPopup.init({
 		parentElement: window,
 	});
+	
+	//set saved_mp_obj_id
+	saved_mp_obj_id = getMPObjId();
 });
+
+function getMPObjId() {
+	return $(".projects_list > form .default_project select").val();
+}
+
+function isMPChanged() {
+	var new_mp_obj_id = getMPObjId();
+	
+	return saved_mp_obj_id != new_mp_obj_id;
+}
+
+function submitForm(elm) {
+	elm = $(elm);
+	var oForm = elm.parent().closest(".top_bar").parent().find(".projects_list form");
+	elm.hide();
+	oForm.submit();
+}
 
 function showProjectsLayer(elm) {
 	var selected_option = elm.options[elm.selectedIndex];

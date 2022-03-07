@@ -1,71 +1,109 @@
-.jqcontextmenu {background-color:#d5e3e4; border:1px solid #ccc; border-radius:5px;}
-.jqcontextmenu li {background-color:#d5e3e4;}
+.jqcontextmenu {background-color:#f7f7f7; border:1px solid #ccc; border-radius:5px;}
+.jqcontextmenu li {background-color:#f7f7f7;}
 .jqcontextmenu li:first-child {border-top-left-radius:5px; border-top-right-radius:5px;}
 .jqcontextmenu li:last-child {border-bottom-left-radius:5px; border-bottom-right-radius:5px;}
-.jqcontextmenu li:hover {background-color:#eff4f5 !important;}
-.jqcontextmenu li a {margin-left:25px; padding:4px 5px 4px 2px; cursor:pointer; background-color:#d5e3e4; color:#666;}
+.jqcontextmenu li:hover {background-color:#eee !important;}
+.jqcontextmenu li a {margin-left:5px; padding:4px 5px 4px 2px; cursor:pointer; background-color:#f7f7f7; color:#666; display:inline-block;}
 .jqcontextmenu li:first-child a {border-top-left-radius:5px; border-top-right-radius:5px;}
 .jqcontextmenu li:last-child a {border-bottom-left-radius:5px; border-bottom-right-radius:5px;}
 .jqcontextmenu li a:hover {text-decoration:none;}
-.jqcontextmenu li:hover a {background-color:#eff4f5;}
-.jqcontextmenu .line_break {height:0px; border:1px inset #CCC; margin:3px; padding:0;}
-.jqcontextmenu .edit {background:url("../../common/img/icon/update_icon.gif") 5px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .edit_new {background:url("../../common/img/icon/update_icon.gif") 5px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .properties {background:url("../../common/img/icon/view_properties_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .create_folder {background:url("../../common/vendor/jquerymytree/css/32px.png") -260px -4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .create_file {background:url("../../common/vendor/jquerymytree/css/32px.png") -100px -68px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .upload {background:url("../../img/icons.png") -114px -197px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .download {background:url("../../img/icons.png") -202px -4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .remove {background:url("../../common/img/icon/delete_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .rename {background:url("../../common/img/icon/rename_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .refresh {background:url("../../common/img/icon/refresh_icon.png") 4px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .copy {background:url("../../common/img/icon/copy_icon.png") 4px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .cut {background:url("../../common/img/icon/cut_icon.png") 4px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .paste {background:url("../../common/img/icon/paste_icon.png") 4px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .zip {background:url("../../common/img/icon/zip_icon.png") 4px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .unzip {background:url("../../common/img/icon/zip_icon.png") 4px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .diff_file {background: url("../../img/icons.png") -115px -114px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .add_table {background:url("../../img/db_icons.png") -21px -21px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .db_dump {background:url("../../img/icons.png") -202px -4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .execute_sql {background:url("../../common/img/icon/edit_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .manage_records {background:url("../../img/db_icons.png") -43px -0px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .edit_diagram {background:url("../../common/img/icon/update_icon.gif") 5px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .create_diagram_sql {background:url("../../common/img/icon/edit_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .create_sql {background:url("../../common/img/icon/edit_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .import_data {background:url("../../img/icons.png") -201px -92px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .export_data {background:url("../../img/icons.png") -5px -114px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .obj {background:url("../../common/img/icon/add_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .create_automatically {background:url("../../img/icons.png") -49px -91px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .create_uis_diagram {background:url("../../img/db_icons.png") -200px -21px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .manage_includes {background:url("../../img/icons.png") -203px -5px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .edit_raw_file {background:url("../../common/img/icon/edit_icon.gif") 6px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .edit_raw_file_new {background:url("../../common/img/icon/edit_icon.gif") 6px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .query {background:url("../../img/icons.png") -158px -47px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .relationship {background:url("../../img/icons.png") -158px -69px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .result_map {background:url("../../img/icons.png") -203px -134px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .parameter_map {background:url("../../img/icons.png") -203px -134px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .service_obj {background:url("../../img/icons.png") -71px -202px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .service_method {background:url("../../img/icons.png") -71px -69px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .service_function {background:url("../../img/icons.png") -181px -69px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .hbnt_obj {background:url("../../img/icons.png") -71px -46px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .objt_obj {background:url("../../img/icons.png") -115px -4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .edit_project_global_variables {background:url("../../common/img/icon/update_icon.gif") 5px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .edit_config {background:url("../../common/img/icon/settings_icon.png") 5px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .edit_init {background:url("../../common/img/icon/edit_icon.gif") 5px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .manage_references {background:url("../../common/img/icon/properties_icon.gif") 5px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .view_project {background:url("../../common/img/icon/view_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .test_project {background:url("../../common/img/icon/view_icon.gif") 4px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .add_project {background:url("../../img/icons.png") -202px -46px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .manage_modules {background: url("../../img/db_icons.png") -245px -156px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .manage_wordpress {background:url("../../img/wordpress_icon.png") 5px 4px/15px no-repeat #d5e3e4 !important;} /*position: 4px; size:15px*/
-.jqcontextmenu .install_program {background:url("../../img/icons.png") -138px -222px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .install_template {background: url("../../common/img/icon/html_icon.png") 5px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .convert_template {background: url("../../common/img/icon/html_icon.png") 5px 4px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .test_unit_obj {background:url("../../img/db_icons.png") -21px -178px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .manage_test_units {background:url("../../img/db_icons.png") 0px -178px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .class_obj {background:url("../../img/icons.png") -71px -202px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .class_method {background:url("../../img/icons.png") -71px -69px no-repeat #d5e3e4 !important;}
-.jqcontextmenu .class_function {background:url("../../img/icons.png") -180px -69px no-repeat #d5e3e4 !important;}
+.jqcontextmenu li:hover a {background-color:#eee;}
+.jqcontextmenu .line_break {height:0px; border-top:1px solid #CCC; margin:0 3px; padding:0;}
+
+.jqcontextmenu li::before {
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	font-size:16px;
+	width:20px;
+	display:inline-block;
+	margin-top:4px;
+	margin-left:4px;
+}
+.jqcontextmenu li::after {
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	font-size:12px;
+	display:inline-block;
+	color:#666;
+	position:absolute;
+	left:7px;
+	top:10px;
+}
+.jqcontextmenu .edit::before {content:"\f303";}
+.jqcontextmenu .edit_new::before {content:"\f303";}
+.jqcontextmenu .edit_new::after {content:"\2b";}
+.jqcontextmenu .properties::before {content:"\f022";}
+.jqcontextmenu .create_folder::before {content:"\f65e";}
+.jqcontextmenu .create_file::before {content:"\f477";}
+.jqcontextmenu .upload::before {content:"\f093";}
+.jqcontextmenu .download::before {content:"\f019";}
+.jqcontextmenu .remove::before {content:"\f1f8";}
+.jqcontextmenu .rename::before {content:"\f5b7";}
+.jqcontextmenu .refresh::before {content:"\f2f1";}
+.jqcontextmenu .copy::before {content:"\f0c5";}
+.jqcontextmenu .cut::before {content:"\f0c4";}
+.jqcontextmenu .paste::before {content:"\f0ea";}
+.jqcontextmenu .zip::before {content:"\f1c6";}
+.jqcontextmenu .unzip::before {content:"\f1c6"; font:var(--fa-font-regular); font-size:12px;}
+.jqcontextmenu .diff_file::before {content:"\f53e";}
+.jqcontextmenu .add_table::before {content:"\f0db";}
+.jqcontextmenu .db_dump::before {content:"\f093";}
+.jqcontextmenu .import_data::before {content:"\f56f";}
+.jqcontextmenu .export_data::before {content:"\f56e";}
+.jqcontextmenu .execute_sql::before {content:"\f04b";}
+.jqcontextmenu .manage_records::before {content:"\f00b"; color:#999;}
+.jqcontextmenu .manage_records::after {content:"\f303";}
+.jqcontextmenu .edit_diagram::before {content:"\f0e8";}
+.jqcontextmenu .create_diagram_sql::before {content:"\f121"; color:#999;}
+.jqcontextmenu .create_diagram_sql::after {content:"\f0e8";}
+.jqcontextmenu .create_sql::before {content:"\f121"; color:#999;}
+.jqcontextmenu .create_sql::after {content:"\f0e8";}
+.jqcontextmenu .obj::before {content:"\f1c0"; color:#999;}
+.jqcontextmenu .obj::after {content:"\f1b2"; color:#555;}
+.jqcontextmenu .create_automatically::before {content:"\f079";}
+.jqcontextmenu .create_uis_diagram::before {content:"\f079";}
+.jqcontextmenu .manage_includes::before {content:"\f5ee";}
+.jqcontextmenu .edit_raw_file::before {content:"\f121"; color:#999;}
+.jqcontextmenu .edit_raw_file::after {content:"\f303";}
+.jqcontextmenu .edit_raw_file_new::before {content:"\f121"; color:#999;}
+.jqcontextmenu .edit_raw_file_new::after {content:"\f303";}
+.jqcontextmenu .query::before {content:"\f1c0"; color:#999;}
+.jqcontextmenu .query::after {content:"\f121"; color:#333;}
+.jqcontextmenu .relationship::before {content:"\f1c0"; color:#999;}
+.jqcontextmenu .relationship::after {content:"\f1e0"; color:#333;}
+.jqcontextmenu .result_map::before {content:"\f1c0"; color:#999;}
+.jqcontextmenu .result_map::after {content:"\f279";}
+.jqcontextmenu .parameter_map::before {content:"\f1c0"; color:#999;}
+.jqcontextmenu .parameter_map::after {content:"\f279";}
+.jqcontextmenu .service_obj::before {content:"\f468";}
+.jqcontextmenu .service_method::before {content:"\e13b"; -webkit-transform:scaleY(-1); transform:scaleY(-1);}
+.jqcontextmenu .service_function::before {content:"\e13b"; -webkit-transform:scaleY(-1); transform:scaleY(-1);}
+.jqcontextmenu .hbnt_obj::before {content:"\f0fd"; color:#999;}
+.jqcontextmenu .hbnt_obj::after {content:"\f304";}
+.jqcontextmenu .objt_obj::before {content:"\f174"; color:#999; font:var(--fa-font-brands); font-size:16px;}
+.jqcontextmenu .objt_obj::after {content:"\f304";}
+.jqcontextmenu .edit_project_global_variables::before {content:"\f0ac"; color:#999;}
+.jqcontextmenu .edit_project_global_variables::after {content:"\f304";}
+.jqcontextmenu .edit_config::before {content:"\f013"; color:#999;}
+.jqcontextmenu .edit_config::after {content:"\f304";}
+.jqcontextmenu .edit_init::before {content:"\f573";}
+.jqcontextmenu .manage_references::before {content:"\f572";}
+.jqcontextmenu .view_project::before {content:"\f06e";}
+.jqcontextmenu .test_project::before {content:"\f06e";}
+.jqcontextmenu .add_project::before {content:"\f65e";}
+.jqcontextmenu .manage_modules::before {content:"\f61f";}
+.jqcontextmenu .manage_wordpress::before {content:"\f19a"; font:var(--fa-font-brands); font-size:16px;}
+.jqcontextmenu .install_program::before {content:"\f51f";}
+.jqcontextmenu .install_template::before {content:"\f13b"; font:var(--fa-font-brands); font-size:16px;}
+.jqcontextmenu .convert_template::before {content:"\f13b"; font:var(--fa-font-brands); font-size:16px;}
+.jqcontextmenu .test_unit_obj::before {content:"\f0ae"; color:#aaa;}
+.jqcontextmenu .test_unit_obj::after {content:"\2b"; margin-left:7px;}
+.jqcontextmenu .manage_test_units::before {content:"\f0ae";}
+.jqcontextmenu .class_obj::before {content:"\f1c9";}
+.jqcontextmenu .class_method::before {content:"\e13b"; -webkit-transform:scaleY(-1); transform:scaleY(-1);}
+.jqcontextmenu .class_function::before {content:"\e13b"; -webkit-transform:scaleY(-1); transform:scaleY(-1);}
 
 .choose_available_tool_popup,
   .choose_available_project_popup,

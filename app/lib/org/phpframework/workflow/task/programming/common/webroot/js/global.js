@@ -28,12 +28,27 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		on_programming_task_choose_object_method_callback : null,
 		on_programming_task_choose_function_callback : null,
 		on_programming_task_choose_class_name_callback : null,
+		on_programming_task_choose_file_path_callback : null,
+		on_programming_task_choose_page_url_callback : null,
+		on_programming_task_choose_image_url_callback : null,
+		
+		connections_to_add_after_deletion: null,
 		
 		createTaskLabelField : function(properties_html_elm, task_id) {
 			var label = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
 			label = label ? label.replace(/"/g, "&quot;") : "";
 			
 			properties_html_elm.find(".properties_task_id").html('<input type="text" value="' + label + '" old_value="' + label + '" />');
+		},
+		
+		onEditLabel : function(task_id) {
+			onEditLabel(task_id);
+			
+			updateTaskLabelInShownTaskProperties(task_id, ".properties_task_id input");
+			
+			myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
+			
+			return true;
 		},
 		
 		saveTaskLabelField : function(properties_html_elm, task_id) {
@@ -136,22 +151,23 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		
 			var type = elm.val();
 			var task_html_elm = elm.parent().parent().parent();
-		
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			
 			switch(type) {
 				case "variable":
 					task_html_elm.find(".type_variable").show();
 					task_html_elm.find(".type_obj_prop, .type_echo").hide();
-					myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().resizeOverlay();
+					WF.getMyFancyPopupObj().resizeOverlay();
 					break;
 				case "obj_prop": 
 					task_html_elm.find(".type_obj_prop").show();
 					task_html_elm.find(".type_variable, .type_echo").hide();
-					myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().resizeOverlay();
+					WF.getMyFancyPopupObj().resizeOverlay();
 					break;
 				case "echo": 
 					task_html_elm.find(".type_echo").show();
 					task_html_elm.find(".type_variable, .type_obj_prop").hide();
-					myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().resizeOverlay();
+					WF.getMyFancyPopupObj().resizeOverlay();
 					break;
 				default:
 					task_html_elm.find(".type_variable, .type_obj_prop, .type_echo").hide();
@@ -352,8 +368,7 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		
 		updateTaskExitsLabels : function(task_id, labels) {
 			var WF = myWFObj.getJsPlumbWorkFlow();
-			
-			var task = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskById(task_id);
+			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
 			var exits = task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " ." + WF.jsPlumbTaskFlow.task_ep_class_name);
 			
 			var exit, connection_exit_id, span, bg, title;
@@ -409,6 +424,79 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 				p.children(".add_variable").hide();
 		},
 		
+		onBeforeTaskDeletion : function(task_id, task) {
+			this.connections_to_add_after_deletion = [];
+			this.new_start_task_id = null;
+			this.new_start_task_order = null;
+			
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var child_connections = WF.jsPlumbTaskFlow.getSourceConnections(task_id);
+			var cl = child_connections.length;
+			var target_id = cl > 0 && child_connections[0] ? child_connections[0].targetId : null;
+			
+			if (target_id) {
+				//prepare new start task
+				var start_task_order = task.attr("is_start_task");
+				
+				if (start_task_order > 0) {
+					this.new_start_task_id = target_id;
+					this.new_start_task_order = start_task_order;
+				}
+				
+				//prepare parent connections
+				var parent_connections = WF.jsPlumbTaskFlow.getTargetConnections(task_id);
+				var pl = parent_connections.length;
+				
+				if (pl > 0)
+					for (var i = 0; i < pl; i++) {
+						var parent_connection = parent_connections[i];
+						var source_id = parent_connection.sourceId;
+						
+						if (source_id) {
+							var parameters = parent_connection.getParameters();
+							var connector_type = parameters.connection_exit_type;
+							var connection_overlay = parameters.connection_exit_overlay;
+							var connection_label = parent_connection.getOverlay("label").getLabel();
+							var connection_exit_props = {
+								id: parameters.connection_exit_id, 
+								color: parameters.connection_exit_color
+							};
+						
+							this.connections_to_add_after_deletion.push([source_id, target_id, connection_label, connector_type, connection_overlay, connection_exit_props]);
+						}
+					}
+			}
+			
+			return true;
+		},
+		
+		onAfterTaskDeletion : function(task_id, task) {
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			
+			//prepare new start task
+			if (this.new_start_task_id) {
+				var new_task = WF.jsPlumbTaskFlow.getTaskById(this.new_start_task_id);
+				new_task.attr("is_start_task", this.new_start_task_order).addClass("is_start_task");
+			}
+			
+			//prepare new connections
+			if ($.isArray(this.connections_to_add_after_deletion) && this.connections_to_add_after_deletion.length > 0) {
+				for (var i = 0; i < this.connections_to_add_after_deletion.length; i++) {
+					var c = this.connections_to_add_after_deletion[i];
+					var source_task_id = c[0];
+					var target_task_id = c[1];
+					var connection_label = c[2];
+					var connector_type = c[3];
+					var connection_overlay = c[4];
+					var connection_exit_props = c[5];
+					
+					WF.jsPlumbTaskFlow.connect(source_task_id, target_task_id, connection_label, connector_type, connection_overlay, connection_exit_props);
+				}
+			}
+			
+			return true;
+		},
+		
 		onProgrammingTaskChooseCreatedVariable : function(elm) {
 			if (typeof this.on_programming_task_choose_created_variable_callback == "function") {
 				this.on_programming_task_choose_created_variable_callback(elm);
@@ -436,6 +524,24 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		onProgrammingTaskChooseClassName : function(elm) {
 			if (typeof this.on_programming_task_choose_class_name_callback == "function") {
 				this.on_programming_task_choose_class_name_callback(elm);
+			}
+		},
+		
+		onProgrammingTaskChooseFilePath : function(elm) {
+			if (typeof this.on_programming_task_choose_file_path_callback == "function") {
+				this.on_programming_task_choose_file_path_callback(elm);
+			}
+		},
+		
+		onProgrammingTaskChoosePageUrl : function(elm) {
+			if (typeof this.on_programming_task_choose_page_url_callback == "function") {
+				this.on_programming_task_choose_page_url_callback(elm);
+			}
+		},
+		
+		onProgrammingTaskChooseImageUrl : function(elm) {
+			if (typeof this.on_programming_task_choose_image_url_callback == "function") {
+				this.on_programming_task_choose_image_url_callback(elm);
 			}
 		},
 	};

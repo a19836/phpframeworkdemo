@@ -20,8 +20,6 @@
 var callPresentationLayerWebServiceTaskPropertyObj = {
 	
 	//brokers_options : null,
-	on_choose_page_callback : null,
-	on_choose_file_callback : null,
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
@@ -82,7 +80,7 @@ var callPresentationLayerWebServiceTaskPropertyObj = {
 		
 		array_items_html_elm.find(".items .item_add").first().attr("onclick", "callPresentationLayerWebServiceTaskPropertyObj.addIncludeItem(this)");
 		
-		array_items_html_elm.find(".item .value_type").after('<span class="icon search" onClick="callPresentationLayerWebServiceTaskPropertyObj.onChooseFile(this)">Search</span>');
+		array_items_html_elm.find(".item .value_type").after('<span class="icon search" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseFilePath(this)">Search</span>');
 	},
 	
 	addIncludeItem : function(a) {
@@ -92,7 +90,7 @@ var callPresentationLayerWebServiceTaskPropertyObj = {
 
 		if (main_ul[0]) {
 			var last_li = main_ul.children("li").last();
-			last_li.children(".value_type").after('<span class="icon search" onClick="callPresentationLayerWebServiceTaskPropertyObj.onChooseFile(this)">Search</span>');
+			last_li.children(".value_type").after('<span class="icon search" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseFilePath(this)">Search</span>');
 		}
 	},
 	
@@ -173,10 +171,7 @@ var callPresentationLayerWebServiceTaskPropertyObj = {
 	},
 	
 	onCompleteLabel : function(task_id) {
-		onEditLabel(task_id);
-		myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
-		
-		return true;
+		return ProgrammingTaskUtil.onEditLabel(task_id);
 	},
 	
 	onTaskCreation : function(task_id) {
@@ -213,17 +208,5 @@ var callPresentationLayerWebServiceTaskPropertyObj = {
 			return ProgrammingTaskUtil.getResultVariableString(task_property_values) + 'call_presentation_layer_web_service(array("presentation_id" => ' + project + ', "url" => ' + page + ', "external_vars" => ' + external_vars + ', "includes" => ' + includes + ', "includes_once" => ' + includes_once + '))';
 		}
 		return "";
-	},
-	
-	onChoosePage : function(elm) {
-		if (typeof this.on_choose_page_callback == "function") {
-			this.on_choose_page_callback(elm);
-		}
-	},
-	
-	onChooseFile : function(elm) {
-		if (typeof this.on_choose_file_callback == "function") {
-			this.on_choose_file_callback(elm);
-		}
 	},
 };

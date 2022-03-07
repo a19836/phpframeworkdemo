@@ -18,23 +18,10 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-if (!$is_admin_ui_citizen_allowed) { echo '<script>
+include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_citizen_allowed) { echo '<script>
 		alert("You don\'t have permission to access this Admin UI!");
 		document.location="' . $project_url_prefix . 'auth/logout";
-	</script>'; die(); } $switch_project_url = $project_url_prefix . "admin?bean_name=$bean_name&bean_file_name=$bean_file_name&project=#project#"; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $head = '
-<!-- Add Fontawsome Icons CSS -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'vendor/fontawesome/css/all.min.css">
-
-<!-- Add Icon CSS -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
-
-<!-- Edit code JS -->
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_code.js"></script>
-
-<!-- Add Admin Menu JS and CSS files -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_menu.css" type="text/css" charset="utf-8" />
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_menu.js"></script>
-
+	</script>'; die(); } $switch_project_url = $project_url_prefix . "admin?bean_name=$bean_name&bean_file_name=$bean_file_name&project=#project#"; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_citizen.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_citizen.js"></script>
@@ -241,21 +228,21 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 					</a>
 				</li>'; if ($layers) { if ($layers["data_access_layers"]) foreach ($layers["data_access_layers"] as $layer_name => $layer) { $bn = $layer["properties"]["bean_name"]; $bfn = $layer["properties"]["bean_file_name"]; $label = WorkFlowBeansFileHandler::getLayerBeanFolderName($user_beans_folder_path . $bfn, $bn, $user_global_variables_file_path); $main_content .= '
 				<li class="data_access_rules">
-					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=block&bean_name=$bn&bean_file_name=$bfn$filter_by_layout_url_query" . '">
+					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=block&bean_name=$bn&bean_file_name=$bfn$filter_by_layout_url_query&selected_db_driver=$db_driver_broker_name" . '">
 						<i class="selected"></i>
 						<span class="fas fa-list logo"></span>
 						<label>List ' . ucwords($label) . ' Rules</label>
 					</a>
 				</li>'; } if ($layers["business_logic_layers"]) foreach ($layers["business_logic_layers"] as $layer_name => $layer) { $bn = $layer["properties"]["bean_name"]; $bfn = $layer["properties"]["bean_file_name"]; $label = WorkFlowBeansFileHandler::getLayerBeanFolderName($user_beans_folder_path . $bfn, $bn, $user_global_variables_file_path); $main_content .= '
 				<li class="business_logic_services">
-					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=block&bean_name=$bn&bean_file_name=$bfn$filter_by_layout_url_query" . '">
+					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=block&bean_name=$bn&bean_file_name=$bfn$filter_by_layout_url_query&selected_db_driver=$db_driver_broker_name" . '">
 						<i class="selected"></i>
 						<span class="fas fa-list logo"></span>
 						<label>List ' . ucwords($label) . ' Services</label>
 					</a>
 				</li>'; } } $main_content .= '
 				<li class="tools">
-					<a class="item_header" href="javascript:void(0)" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?element_type=util&bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$project&is_popup=1" . '\')">
+					<a class="item_header" href="javascript:void(0)" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?element_type=util&bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$project&selected_db_driver=$db_driver_broker_name&is_popup=1" . '\')">
 						<i class="selected"></i>
 						<span class="fas fa-tools logo"></span>
 						<label>Tools</label>
@@ -294,11 +281,11 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 	</ul>
 </div>
 <div id="top_right_panel">
-	<span class="fas fa-arrow-left toggle_left_panel" onClick="toggleLeftpanel(this)"></span>
-	<span class="login_info">Logged as "' . $logged_name . '"</span>
-	<span class="icon left" onClick="goBack()" title="Go Back">Go Back</span>
-	<span class="icon refresh" onClick="refreshIframe()" title="Refresh">Refresh</span>
-	<span class="icon home" onClick="goTo(this, \'home_url\', event)" home_url="' . "{$project_url_prefix}admin/admin_home?admin_type=citizen&bean_name=$bean_name&bean_file_name=$bean_file_name&project=$project" . '" title="Go Home">Home</span>
+	<span class="icon toggle_left_panel" onClick="toggleLeftpanel(this)"></span>
+	<span class="login_info"><i class="icon user"></i>  "' . $logged_name . '"</span>
+	<span class="icon go_back" onClick="goBack()" title="Go Back"></span>
+	<span class="icon refresh" onClick="refreshIframe()" title="Refresh"></span>
+	<span class="icon home" onClick="goTo(this, \'home_url\', event)" home_url="' . "{$project_url_prefix}admin/admin_home?admin_type=citizen&bean_name=$bean_name&bean_file_name=$bean_file_name&project=$project" . '" title="Go Home"></span>
 </div>
 <div id="right_panel">
 	<iframe src="' . "{$project_url_prefix}admin/admin_home?admin_type=citizen&bean_name=$bean_name&bean_file_name=$bean_file_name&project=$project" . '"></iframe>

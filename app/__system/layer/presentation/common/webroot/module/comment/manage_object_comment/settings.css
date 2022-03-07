@@ -42,18 +42,17 @@
    .manage_object_comment_settings .ok_response label,
    .manage_object_comment_settings .error_response label {
 	width:130px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .manage_object_comment_settings .user_id label {
 	width:90px;
+	display:inline-block;
 }
 .manage_object_comment_settings .allow_update label,
    .manage_object_comment_settings .allow_insertion label,
    .manage_object_comment_settings .allow_deletion label {
 	width:180px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .manage_object_comment_settings .object_type_id select,
    .manage_object_comment_settings .object_id input,

@@ -39,36 +39,36 @@
 }
 
 
-.add_template_region_block_task_html {
+.user_task_2_html {
 	width:425px;
 }
 
-.add_template_region_block_task_html .region, 
-   .add_template_region_block_task_html .block {
+.user_task_2_html .region, 
+   .user_task_2_html .block {
 	margin-bottom:5px;
 }
-.add_template_region_block_task_html .region,
-   .add_template_region_block_task_html .block {
+.user_task_2_html .region,
+   .user_task_2_html .block {
 	width:100%;
 	height:20px;
 }
-.add_template_region_block_task_html .region label,
-   .add_template_region_block_task_html .block label,
-   .add_template_region_block_task_html .broker_method_obj label {
+.user_task_2_html .region label,
+   .user_task_2_html .block label,
+   .user_task_2_html .broker_method_obj label {
 	width:100px;
 }
-.add_template_region_block_task_html .region input,
-   .add_template_region_block_task_html .block input {
+.user_task_2_html .region input,
+   .user_task_2_html .block input {
 	width:230px;
 }
-.add_template_region_block_task_html .broker_method_obj {
+.user_task_2_html .broker_method_obj {
 	margin-left:0;
 }
-.add_template_region_block_task_html .broker_method_obj input {
+.user_task_2_html .broker_method_obj input {
 	margin-left:100px;
 }
-.add_template_region_block_task_html .region select,
-   .add_template_region_block_task_html .block select {
+.user_task_2_html .region select,
+   .user_task_2_html .block select {
 	background-color:#FFF;
 	color:#AAA;
 	border:1px solid #ECECEC;

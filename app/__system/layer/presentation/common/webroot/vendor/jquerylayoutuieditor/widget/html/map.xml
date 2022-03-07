@@ -27,7 +27,7 @@
 			height:3em;
 			display:inline-block;
 			border:0;
-			color:#fff;
+			color:inherit;
 			overflow:hidden;
 		}
 		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-map i,
@@ -91,7 +91,7 @@
 						if (field_value != "")
 							widget.attr("src", field_value);
 						else {
-							alert("Map src cannot be empty!");
+							ui_creator.showError("Map src cannot be empty!");
 							field.val( widget.attr("src") );
 						}
 					}

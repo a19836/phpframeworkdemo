@@ -23,7 +23,7 @@
 			height:auto;
 			display:inline-block;
 			border:0;
-			color:#fff;
+			color:inherit;
 			overflow:hidden;
 		}
 		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-iframe i,

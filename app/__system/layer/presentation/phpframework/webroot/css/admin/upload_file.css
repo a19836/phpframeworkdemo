@@ -1,24 +1,16 @@
-.title {
-	color: #000;
-	font-size: 16px;
-	font-weight: bold;
-	margin: 10px 0 20px 0px;
-	text-align: center;
-	width: 100%;
-	height:25px;
-}
-
 .dropzone {
 	position:absolute;
 	left:0;
-	top:50px;
+	top:32px;
 	right:0;
 	bottom:0;
+	border:0;
 }
 
 .dropzone .dz-default {
-	font-size: 14px;
-	font-weight: bold;
+	margin-top:45vh;
+	/*font-size: 14px;
+	font-weight: bold;*/
 }
 .dropzone .dz-preview .dz-error-message {
 	width:300px;

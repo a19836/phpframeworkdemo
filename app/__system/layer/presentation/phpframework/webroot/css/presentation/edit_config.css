@@ -1,7 +1,15 @@
+/* TOP BAR */
+.top_bar {
+	margin-bottom:10px;
+}
+
+/* CONFIG OBJ */
 .config_obj {
-	width:99%;
-	overflow:auto;
+	width:100%;
+	overflow:hidden;
 	margin:0 auto;
+	padding:0;
+	border:0;
 }
 
 /* To print the workflow */

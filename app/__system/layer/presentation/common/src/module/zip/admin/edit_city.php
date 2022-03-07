@@ -27,7 +27,7 @@ if ($PEVC) {
 		else if ($_POST["delete"]) {
 			$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "delete");
 			$action = "delete";
-			$status = ZipUtil::deleteZipsByCityId($brokers, $city_id) && ZipUtil::deleteZonesByCityId($brokers, $city_id) && ZipUtil::deleteCity($brokers, $city_id)
+			$status = ZipUtil::deleteZipsByCityId($brokers, $city_id) && ZipUtil::deleteZonesByCityId($brokers, $city_id) && ZipUtil::deleteCity($brokers, $city_id);
 		}
 		
 		if ($action) {

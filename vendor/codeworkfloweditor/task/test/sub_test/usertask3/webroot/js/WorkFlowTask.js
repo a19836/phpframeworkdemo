@@ -17,13 +17,13 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-var BreakTaskPropertyObj = {
+var UserTask3TaskPropertyObj = {
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
 		
 		var value = task_property_values["value"] ? "" + task_property_values["value"] : "";
-		properties_html_elm.find(".break_task_html .value input").val(value);
+		properties_html_elm.find(".user_task_3_task_html .value input").val(value);
 	},
 	
 	onSubmitTaskProperties : function(properties_html_elm, task_id, task_property_values) {
@@ -34,7 +34,7 @@ var BreakTaskPropertyObj = {
 	
 	onCompleteTaskProperties : function(properties_html_elm, task_id, task_property_values, status) {
 		if (status) {
-			var label = BreakTaskPropertyObj.getDefaultExitLabel(task_property_values);
+			var label = UserTask3TaskPropertyObj.getDefaultExitLabel(task_property_values);
 			//ProgrammingTaskUtil.updateTaskDefaultExitLabel(task_id, label);
 			myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskById(task_id).attr("title", label).find(".info span").html(label);
 		}
@@ -54,7 +54,7 @@ var BreakTaskPropertyObj = {
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
 			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
-			var label = BreakTaskPropertyObj.getDefaultExitLabel(task_property_values);
+			var label = UserTask3TaskPropertyObj.getDefaultExitLabel(task_property_values);
 			//ProgrammingTaskUtil.updateTaskDefaultExitLabel(task_id, label);
 			myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskById(task_id).attr("title", label).find(".info span").html(label);
 		

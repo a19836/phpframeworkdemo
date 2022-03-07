@@ -41,7 +41,7 @@ var FormItemTaskPropertyObj = {
 			action_type_elm.find("option[value='loop'], option[value='group']").remove();
 		
 		toggleGroupBody( header_elm.children(".toggle")[0] );
-		header_elm.children(".toggle, .remove, .move-down, .move-up").remove();
+		header_elm.children(".toggle, .remove, .move_down, .move_up").remove();
 		
 		//load task_property_values
 		if (task_property_values && task_property_values["properties"])

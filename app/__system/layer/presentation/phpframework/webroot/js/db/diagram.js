@@ -1,13 +1,28 @@
 var MyFancyPopupCreateDiagramSQL = new MyFancyPopupClass();
 
-;(function() {
-	/*$(window).bind('beforeunload', function () {
-		if (window.parent && window.parent.iframe_overlay)
-			window.parent.iframe_overlay.hide();
+$(function () {
+	$(window).bind('beforeunload', function () {
+		if (jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()) {
+			if (window.parent && window.parent.iframe_overlay)
+				window.parent.iframe_overlay.hide();
+			
+			return "If you proceed your changes won't be saved. Do you wish to continue?";
+		}
 		
-		return "Changes you made may not be saved. Click cancel to save them first, otherwise to continue...";
-	});*/
+		return null;
+	});
 	
+	//prepare top_bar
+	$(".taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu");
+	
+	//init auto save
+	addAutoSaveMenu(".taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.save", "onToggleWorkflowAutoSave");
+	addAutoConvertMenu(".taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.save", "onToggleWorkflowAutoConvert");
+	enableAutoSave(onToggleWorkflowAutoSave);
+	enableAutoConvert(onToggleWorkflowAutoConvert);
+	initAutoSave(".taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.save a");
+	
+	//init workflow
 	jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_connector = "Flowchart";
 	jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_overlay = "One To One";
 	//jsPlumbWorkFlow.jsPlumbTaskFlow.available_connection_connectors_type = ["Flowchart"];
@@ -15,13 +30,13 @@ var MyFancyPopupCreateDiagramSQL = new MyFancyPopupClass();
 
 	jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = updateTasksAfterFileRead;
 	jsPlumbWorkFlow.jsPlumbTaskFile.on_success_update = updateTasksAfterFileRead;
-})();
+});
 
 function prepareTaskContextMenu() {
 	;(function() {
 		jsPlumbWorkFlow.onReady(function() {
 			$("#" + jsPlumbWorkFlow.jsPlumbContextMenu.task_context_menu_id + " .set_label a").html("Edit Table Name");
-		
+			
 			var start_task = $("#" + jsPlumbWorkFlow.jsPlumbContextMenu.task_context_menu_id + " .start_task a");
 			start_task.html("Get DB Table\'s Attributes");
 			start_task.attr("onClick", "");
@@ -69,15 +84,29 @@ function updateTaskTableAttributes(task_id, do_not_confirm) {
 }
 
 function saveDBDiagram() {
-	jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
-		success: function(data, textStatus, jqXHR) {
-			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url, function() {
-					jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
-					saveDBDiagram();
-				});
-		},
-	});
+	prepareAutoSaveVars();
+	
+	if (jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()) {
+		jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
+			success: function(data, textStatus, jqXHR) {
+				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url, function() {
+						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+						
+						saveDBDiagram();
+					});
+				else if (is_from_auto_save) {
+					jsPlumbWorkFlow.jsPlumbStatusMessage.removeMessages("status");
+					resetAutoSave();
+				}
+			},
+			timeout: is_from_auto_save && auto_save_connection_ttl ? auto_save_connection_ttl : 0,
+		});
+	}
+	else if (!is_from_auto_save)
+		jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Nothing to save.");
+	else
+		resetAutoSave();
 
 	return false;
 }

@@ -19,11 +19,20 @@
  */
 
 include $EVC->getUtilPath("UserAuthenticationUIHandler"); $head = '
+<!-- Add MD5 JS File -->
+<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>
+
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
 <!-- Add Icons CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
 <!-- Add FileManager JS file -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/file_manager.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
 
 <!-- Add Local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/user/user.css" type="text/css" charset="utf-8" />
@@ -35,7 +44,15 @@ var get_user_type_permissions_url = \'' . $project_url_prefix . 'user/get_user_t
 '; $main_content = '
 <div id="menu">' . UserAuthenticationUIHandler::getMenu($UserAuthenticationHandler, $project_url_prefix) . '</div>
 <div id="content">
-	<div class="title">Manage User Type Permissions</div>
+	<div class="top_bar">
+		<header>
+			<div class="title">Manage User Type Permissions</div>
+			<ul>
+				<li class="save" title="Save"><a onClick="submitForm(this)"><i class="icon save"></i> Save</a></li>
+			</ul>
+		</header>
+	</div>
+	
 	<div class="user_type_permissions_list">
 	<form method="post" onSubmit="return saveUserTypePermissions();">
 		<div class="user_type">
@@ -71,14 +88,14 @@ var get_user_type_permissions_url = \'' . $project_url_prefix . 'user/get_user_t
 						<td class="object_id" object_id="' . $object_id . '"><i class="icon main_node_' . $layer_props["item_type"] . '"></i> ' . $layers_label[$layer_type_name][$layer_name] . '</td>
 						<td class="user_type_permission user_type_permission_' . $permissions["access"] . '" permission_id="' . $permissions["access"] . '">
 							<input type="checkbox" name="permissions_by_objects[' . $layer_object_type_id . '][' . $object_id . '][]" value="' . $permissions["access"] . '" default_value="0" />
-							<span class="icon toggle" onClick="toggleLayerPermissionVisibility(this)" title="Set/Unset Permission"></span>
+							<span class="icon toggle" onClick="toggleLayerPermissionVisibility(this)" title="Set/Unset Permission">Toggle</span>
 						</td>
 					</tr>'; foreach ($layer as $folder_name => $folder) { $object_id = "$layer_object_id_prefix/" . $layers_object_id[$layer_type_name][$layer_name] . "/$folder_name"; $indentation = str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", count(explode("/", $folder_name))); $icon_class = $layer_type_name == "db_layers" ? "db_driver" : "project"; $main_content .= '
 					<tr>
 						<td class="object_id" object_id="' . $object_id . '">' . $indentation . '<i class="icon ' . $icon_class . '"></i>' . $folder_name . '</td>
 						<td class="user_type_permission user_type_permission_' . $permissions["access"] . '" permission_id="' . $permissions["access"] . '">
 							<input type="checkbox" name="permissions_by_objects[' . $layer_object_type_id . '][' . $object_id . '][]" value="' . $permissions["access"] . '" default_value="0" />
-							<span class="icon toggle" onClick="toggleLayerPermissionVisibility(this)" title="Set/Unset Permission"></span>
+							<span class="icon toggle" onClick="toggleLayerPermissionVisibility(this)" title="Set/Unset Permission">Toggle</span>
 						</td>
 					</tr>'; } } } $main_content .= '	</table>
 			</div>

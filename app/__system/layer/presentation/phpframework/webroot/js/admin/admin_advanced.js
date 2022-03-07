@@ -2,7 +2,7 @@ var iframe_overlay = null; //To be used by sub-pages
 
 $(function() {
 	//prepare menu panel
-	var menu_panel = $('#menu_panel');
+	/*var menu_panel = $('#menu_panel');
 	
 	menu_panel.on("mouseover", function(){
 		if (menu_panel.attr("is_open") != "1") {
@@ -15,7 +15,7 @@ $(function() {
 			menu_panel.css("height", "5px");
 			menu_panel.attr("is_open", "0");
 		}
-	});
+	});*/
 	
 	//prepare right panel iframe
 	var win_url = "" + document.location;
@@ -89,9 +89,9 @@ $(function() {
 			var djst = li.attr("data-jstree");
 			var m = djst.match(/"icon"\s*:\s*"(.*)"/);
 			var classes = m[1];
-			var tab_classes = "tab_" + classes.split(" ").join(" tab_");
+			var tab_classes = "tab_main_node tab_" + classes.split(" ").join(" tab_");
 			
-			tabs_html	+= '<li class="' + tab_classes + '"><a href="#' + id + '" title="' + label + '"><i class="icon ' + classes + '"></i></a></li>';
+			tabs_html	+= '<li class="' + tab_classes + '"><a href="#' + id + '" title="' + label + '"><i class="tab_icon ' + classes + '"></i></a></li>';
 			
 			li.addClass("main_tree_node");
 		});
@@ -100,6 +100,10 @@ $(function() {
 		
 		file_tree_ul.prepend(tabs_html);
 		file_tree_ul.tabs();
+		
+		file_tree_ul.find(" > ul.tabs > .tab_main_node a").click(function(idx, a){
+			$(".jqcontextmenu").hide();
+		});
 	}
 });
 

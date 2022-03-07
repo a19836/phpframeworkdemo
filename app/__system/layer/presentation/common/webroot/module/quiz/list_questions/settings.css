@@ -23,9 +23,7 @@
    .list_settings .list_sort_column label,
    .list_settings .list_sort_order label {
 	margin-bottom:5px;
-	display:block;
-	float:left;
-	clear:none;
+	display:inline-block;
 }
 .list_settings .list_sort_column {
 	width:330px;
@@ -58,10 +56,12 @@
    .list_settings .list_by_parent .list_parent_object_type_id label,
    .list_settings .list_sort_column label {
 	width:130px;
+	display:inline-block;
 }
 .list_settings .list_by_parent .list_parent_object_id label, 
    .list_settings .list_by_parent .list_parent_group label {
 	width:90px;
+	display:inline-block;
 }
 .list_settings .list_by_parent .list_parent_object_type_id select {
 	width:130px;

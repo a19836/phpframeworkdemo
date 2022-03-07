@@ -24,7 +24,7 @@ function addDocbookAction(ul, data) {
 			p.append(icon);
 		}
 		
-		var icon = $('<i class="icon php" title="View Code"></i>');
+		var icon = $('<i class="icon code" title="View Code"></i>');
 		icon.on("click", function(event) {
 			openFileCode(p.parent());
 		});

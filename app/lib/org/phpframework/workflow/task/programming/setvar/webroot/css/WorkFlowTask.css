@@ -56,13 +56,13 @@
 	width:50px;
 }
 .set_var_task_html .value input {
-	width:280px;
+	width:270px;
 	margin-right:5px;
 }
 .set_var_task_html .value textarea, .set_var_task_html .value .ace_editor {
 	float:none;
 	clear:left;
-	width:375px;
+	width:365px;
 	height:110px;
 	border:1px inset #CCC;
 }

@@ -19,11 +19,24 @@
  */
 
 $head = '
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
+<!-- Add Icons CSS -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+
 <!-- Add Local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/cms/wordpress/manage.css" type="text/css" charset="utf-8" />
-'; $main_content = '<div class="title">Manage WordPress</div>
+'; $main_content = '
+<div class="top_bar">
+	<header>
+		<div class="title">Manage WordPress</div>
+	</header>
+</div>
 <div class="manage_wordpress">
-	
 	<form method="post">'; if (is_array($projects)) { $main_content .= '
 		<div class="project">
 			<label>Please choose a Project:</label>

@@ -76,7 +76,7 @@ $ui_menu_widgets_html .= WorkFlowPresentationHandler::getUserUIEditorWidgetsHtml
 <script type="text/javascript" src="<?= $module["webroot_url"]; ?>echostr.js"></script>
 
 <div class="echostr_settings">
-	<ul>
+	<ul class="tabs">
 		<li class="textarea_tab"><a href="#layoutui_content">Ace Editor</a></li>
 		<li class="tinymce_tab"><a href="#tinymce_content" onClick="resizeTinyMCEEditor()">TinyMCE Editor</a></li>
 		<li class="ckeditor_tab"><a href="#ckeditor_content" onClick="resizeCKEditor()">CK Editor</a></li>

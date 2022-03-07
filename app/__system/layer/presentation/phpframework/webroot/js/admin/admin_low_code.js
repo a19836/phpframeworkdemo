@@ -180,6 +180,7 @@ function initFileTreeMenu() {
 		
 		var item_tree = new MyTree({
 			multiple_selection : false,
+			toggle_selection : false,
 			ajax_callback_before : prepareLayerNodes1,
 			ajax_callback_after : prepareLayerNodes2,
 			ajax_callback_error : validateLayerNodesRequest,
@@ -287,13 +288,6 @@ function initContextMenus() {
 		if (item_id.substr(item_id.length - 5) == "_tree")
 			item_id = item_id.substr(0, item_id.length - 5);
 		
-		item.find("li *:not(a > label)").click(function(originalEvent){
-			if (originalEvent.preventDefault) originalEvent.preventDefault(); 
-			else originalEvent.returnValue = false;
-			
-			$(".jqcontextmenu").hide();
-		});
-		
 		var obj = null;
 		
 		if (item_id == "db_layers") {
@@ -337,6 +331,10 @@ function initContextMenus() {
 			addLiContextMenu(obj.children("a").addClass("link"), "main_other_group_context_menu", {callback: onVendorContextMenu});
 			initOtherContextMenu(obj);
 		}
+		
+		prepareParentChildsEventToHideContextMenu(item);
+		addSubMenuIconToParentChildsWithContextMenu(item);
+		
 		//var selected_menu_properties = $("#selected_menu_properties");
 	});
 }
@@ -371,4 +369,6 @@ function addLiContextMenu(target, context_menu_id, options) {
 function selectMyTreeNode(node) {
 	var item_tree = $(node).parent().closest(".mytree");
 	mytree = item_tree.data("item_tree");
+	
+	return true;
 }

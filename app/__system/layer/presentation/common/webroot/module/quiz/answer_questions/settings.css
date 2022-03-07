@@ -24,16 +24,15 @@
 .edit_settings .questions_type label,
    .edit_settings .session_id label {
 	width:120px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .user_id label {
 	width:90px;
+	display:inline-block;
 }
 .edit_settings .allow_multiple_answers label {
 	width:180px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .user_id input,
    .edit_settings .session_id input {
@@ -72,18 +71,15 @@
 }
 .edit_settings .get_by_parent .questions_parent_object_type_id label {
 	width:100px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .get_by_parent .questions_parent_object_id label {
 	width:90px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .get_by_parent .questions_parent_group label {
 	width:60px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .edit_settings .get_by_parent .questions_parent_object_type_id select {
 	width:130px;

@@ -17,7 +17,7 @@
 .edit_settings .html_images_settings .upload_url label,
   .edit_settings .html_images_settings .attachment_id_regex label {
   	width:175px;
-  	float:left;
+	display:inline-block;
 }
 .edit_settings .html_images_settings .attachment_id_regex input {
   	width:500px;

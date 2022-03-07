@@ -32,7 +32,7 @@
 			display:inline-block;
 			border-radius:5px;
 			border:0;
-			color:#fff;
+			color:inherit;
 			overflow:hidden;
 		}
 		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-video i,
@@ -103,7 +103,7 @@
 						if (field_value != "")
 							widget.attr("src", field_value);
 						else {
-							alert("Video src cannot be empty!");
+							ui_creator.showError("Video src cannot be empty!");
 							field.val( widget.attr("src") );
 						}
 					}

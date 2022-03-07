@@ -1,42 +1,22 @@
+#main_column {
+	background:transparent;
+}
+
+/* TEST UNITS */
 .test_units {
-	padding:20px;
-}
-.test_units > label {
-	margin-bottom:20px;
-	display:block;
-	text-align:center;
-}
-.test_units > .buttons {
-	margin-top:20px;
-	text-align:center;
+	padding-top:10px;
+	padding-left:30px;
 }
 .test_units .test_units_tree .icon {
-	float:none;
-	clear:both;
-	display:inline-block;
+	margin:auto 5px;
 	vertical-align:middle;
+	font-size:16px;
 }
-.test_units .test_units_tree .icon.edit {
-	margin-left:10px;
-	background:url("../../common/img/icon/update_icon.gif") no-repeat scroll 0 0;
+.test_units .test_units_tree .icon.add_folder::before {
+	content:"\f65e";
 }
-.test_units .test_units_tree .icon.remove {
-	background:url("../../common/img/icon/recycle_icon.png") no-repeat scroll 0 0;
-}
-.test_units .test_units_tree .icon.rename {
-	background:url("../../common/img/icon/rename_icon.gif") no-repeat scroll 0 0;
-}
-.test_units .test_units_tree .icon.add_folder {
-	background:url(../../common/vendor/jquerymytree/css/32px.png) -265px -8px no-repeat;
-}
-.test_units .test_units_tree .icon.add_test {
-	background:url("../../common/img/icon/item_add_icon.png") no-repeat scroll 0 0;
-}
-.test_units .test_units_tree .icon.execute {
-	background:url("../../common/img/icon/right_icon.gif") no-repeat scroll 0 0;
-}
-.test_units .test_units_tree .icon.info {
-	background:url("../../common/img/icon/info_icon.png") no-repeat scroll 0 0;
+.test_units .test_units_tree .icon.add_test::before {
+	content:"\f477";
 }
 
 .test_units .test_units_tree .edit_test_unit_file {
@@ -48,7 +28,7 @@
 	background:#fff;
 }
 .test_units .test_units_tree .edit_test_unit_file .refresh {
-	margin:10px 0 0 10px;
+	margin:-20px 0 0 5px;
 	position:absolute;
 }
 .test_units .test_units_tree .edit_test_unit_file iframe {
@@ -59,7 +39,7 @@
 
 .test_units .test_units_tree .select_test_unit {
 	position:absolute;
-	left:0;
+	left:10px;
 }
 
 .test_units .test_units_tree li:before {

@@ -30,47 +30,31 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); $filter_by_layout_url_query = La
 <!-- Edit Code JS file -->
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_code.js"></script>
 
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+<!-- Edit QUERY JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/dataaccess/edit_query.css" type="text/css" charset="utf-8" />
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/edit_query.js"></script>'; $head .= $WorkFlowQueryHandler->getHeader(); $head .= $WorkFlowQueryHandler->getDataAccessJavascript($bean_name, $bean_file_name, $path, $item_type, $hbn_obj_id, $get_dao_sub_files_url); $head .= '<script>
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/edit_query.js"></script>
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+
+<!-- Local JS and CSS files -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/dataaccess/edit_includes.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/edit_includes.js"></script>'; $head .= $WorkFlowQueryHandler->getHeader(); $head .= $WorkFlowQueryHandler->getDataAccessJavascript($bean_name, $bean_file_name, $path, $item_type, $hbn_obj_id, $get_dao_sub_files_url); $head .= '<script>
 var save_data_access_object_url = \'' . $project_url_prefix . 'phpframework/dataaccess/save_includes?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $path . '&item_type=' . $item_type . '&obj=' . $hbn_obj_id . '&relationship_type=' . $relationship_type . '\';
 var old_obj_id = null;
-</script>
-<style>
-.data_access_obj {
-	width:690px;
-}
-.data_access_obj .description {
-	background:none;
-	border:none;
-	text-align:left;
-	margin:0;
-	padding:0;
-	font-weight:bold;
-	font-size:14px;
-}
-.data_access_obj .includes .add {
-	float:left;
-	margin-top:-20px;
-	margin-left:125px;
-}
-.data_access_obj .includes .fields {
-	width:100%;
-	margin:10px 0 0 0;
-}
-.data_access_obj .includes .include input.include_path {
-	width:445px;
-}
-</style>'; $main_content = $WorkFlowQueryHandler->getGlobalTaskFlowChar(); $main_content .= '<div class="title">Manage Includes</div>'; $main_content .= $WorkFlowQueryHandler->getChooseIncludeFromFileManagerHtml($get_dao_sub_files_url, "choose_include_from_file_manager"); $main_content .= '
-<div class="data_access_obj">	
-	<div class="relationships">
-		' . $WorkFlowQueryHandler->getInludeHTMLBlock($obj_data) . '
-	</div>
-	<script>
-	$(".description").html("Add new Include:");
-	</script>
-	
-	<div class="save_button">
-		<input type="button" name="value" value="SAVE" onClick="saveIbatisObject();" />
+</script>'; $main_content = $WorkFlowQueryHandler->getGlobalTaskFlowChar(); $main_content .= '<div class="edit_includes">
+	<div class="top_bar">
+		<header>
+			<div class="title">Manage Includes</div>
+			<ul>
+				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
+				<li class="save" title="Save Includes"><a onClick="saveIbatisObject()"><i class="icon save"></i> Save</a></li>
+			</ul>
+		</header>
+	</div>'; $main_content .= $WorkFlowQueryHandler->getChooseIncludeFromFileManagerHtml($get_dao_sub_files_url, "choose_include_from_file_manager"); $main_content .= '
+	<div class="data_access_obj">	
+		<div class="relationships">
+			' . $WorkFlowQueryHandler->getInludeHTMLBlock($obj_data) . '
+		</div>
 	</div>
 </div>'; ?>

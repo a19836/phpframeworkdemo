@@ -1,6 +1,6 @@
 $(function () {
 	var wh = $(window).height();
-	var h = wh - 265;
+	var h = wh - 135;
 	h = h < 300 ? 300 : h;
 	
 	var sql_results = $(".sql_results");

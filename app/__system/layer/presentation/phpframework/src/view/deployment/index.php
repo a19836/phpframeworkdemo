@@ -27,8 +27,16 @@ include_once get_lib("org.phpframework.cms.wordpress.WordPressUrlsParser"); incl
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/file_manager.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/file_manager.js"></script>
 
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
+<!-- Add Icons CSS file -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+
+<!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/deployment/index.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/deployment/index.js"></script>'; $head .= $WorkFlowUIHandler->getJS($workflow_path_id); $head .= '<script>
 ServerTaskPropertyObj.template_workflow_html += \'' . str_replace("<script>", "<' + 'script>", str_replace("</script>", "<' + '/script>", str_replace("'", "\\'", str_replace(array("\n", "\r"), "", getTemplateWorklowHtml($SubWorkFlowUIHandler, $project_url_prefix))))) . '\';
@@ -89,7 +97,13 @@ var wordpress_installations_relative_path = "' . $EVC->getCommonProjectName() . 
 					
 					if (!main_layers_properties.' . $l[2] . '.ui.project.attributes.hasOwnProperty("file_path"))
 						main_layers_properties.' . $l[2] . '.ui.project.attributes.file_path = "#path#";'; $head .= '
-				}'; } } $head .= '</script>'; $menus = array( "Save" => array("class" => "save", "click" => "return saveDBDiagram();"), "Flush Cache" => array("class" => "flush_cache", "click" => "return flushCache();"), "Add new Server" => array("class" => "add_new_server", "click" => "addNewServer();return false;"), "Empty Diagram" => array("class" => "empty_diagram", "click" => "emptyDiagam();return false;"), ); $WorkFlowUIHandler->setMenus($menus); $main_content = '
+				}'; } } $head .= '</script>'; $menus = array( "Flush Cache" => array( "class" => "flush_cache", "html" => '<a onClick="return flushCache();"><i class="icon flush_cache"></i> Flush Cache</a>', ), "Empty Diagram" => array( "class" => "empty_diagram", "html" => '<a onClick="emptyDiagam();return false;"><i class="icon empty_diagram"></i> Empty Diagram</a>', ), "Add new Server" => array( "class" => "add_new_server", "html" => '<a onClick="addNewServer();return false;"><i class="icon add"></i> Add new Server</a>', ), "Save" => array( "class" => "save", "html" => '<a onClick="return saveDeploymentDiagram();"><i class="icon save"></i> Save</a>', ), ); $WorkFlowUIHandler->setMenus($menus); $main_content = '
+	<div class="top_bar">
+		<header>
+			<div class="title">Deployment</div>
+		</header>
+	</div>
+	
 	<div id="choose_template_task_layer_file_from_file_manager" class="myfancypopup choose_from_file_manager">
 		<div class="broker">
 			<label>Broker:</label>
@@ -116,4 +130,4 @@ var wordpress_installations_relative_path = "' . $EVC->getCommonProjectName() . 
 		<div class="button">
 			<input type="button" value="UPDATE" onClick="MyDeploymentUIFancyPopup.settings.updateFunction(this)" />
 		</div>
-	</div>'; $main_content .= $WorkFlowUIHandler->getContent(); $main_content .= '<div class="loading_panel"></div>'; function getTemplateWorklowHtml($v8685d1ca97, $peb014cfd) { $v243e50bc1d = array( "Set Global Vars" => array("class" => "set_global_vars", "click" => "return ServerTaskPropertyObj.openTemplateGlobalVarsOrSettingsPopup(this, '" . $peb014cfd . "phpframework/layer/list_global_vars');"), "Set Project Settings" => array("class" => "set_project_settings", "click" => "return ServerTaskPropertyObj.openTemplateGlobalVarsOrSettingsPopup(this, '" . $peb014cfd . "phpframework/layer/list_global_settings');"), ); $v8685d1ca97->setMenus($v243e50bc1d); $pf8ed4912 = $v8685d1ca97->getContent("taskflowchart_#rand#"); return $pf8ed4912; } ?>
+	</div>'; $main_content .= $WorkFlowUIHandler->getContent(); $main_content .= '<div class="loading_panel"></div>'; function getTemplateWorklowHtml($v8685d1ca97, $peb014cfd) { $v243e50bc1d = array( "Set Global Vars" => array( "class" => "set_global_vars", "html" => '<a onClick="return ServerTaskPropertyObj.openTemplateGlobalVarsOrSettingsPopup(this, \'' . $peb014cfd . 'phpframework/layer/list_global_vars\');"><i class="icon global_vars"></i> Globar Vars</a>', ), "Set Global Settings" => array( "class" => "set_global_settings", "html" => '<a onClick="return ServerTaskPropertyObj.openTemplateGlobalVarsOrSettingsPopup(this, \'' . $peb014cfd . 'phpframework/layer/list_global_settings\');"><i class="icon global_settings"></i> Global Settings</a>', ), ); $v8685d1ca97->setMenus($v243e50bc1d); $pf8ed4912 = $v8685d1ca97->getContent("taskflowchart_#rand#"); return $pf8ed4912; } ?>

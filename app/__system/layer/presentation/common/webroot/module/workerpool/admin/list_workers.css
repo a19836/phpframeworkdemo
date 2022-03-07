@@ -56,9 +56,10 @@
 	position:relative;
 }
 .module_list thead th.edit_action .add {
-	margin-left:15px;
+	margin-left:5px;
 	position:absolute;
 	top:2px;
+	font-size:14px;
 }
 .module_list thead th.delete_action {
 	min-width:22px;

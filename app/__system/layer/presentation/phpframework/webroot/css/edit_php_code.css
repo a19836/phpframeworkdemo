@@ -1,7 +1,6 @@
-.title {
+/*.title {
 	color: #000;
 	font-size: 16px;
-	font-weight: bold;
 	margin: 10px 0 20px 0px;
 	text-align: center;
 	width: 100%;
@@ -13,18 +12,17 @@
 	width:100%;
 	height:20px;
 	margin-bottom:20px;
-}
+}*/
 
 .ui-widget {
 	font-size:0.9em !important;
 }
 
-.code_menu ul {
+.code_menu:not(.top_bar_menu) ul {
 	width:100%;
-	height:25px;
+	min-height:25px;
 	float:none;
 	clear:left;
-	overflow:hidden;
 	
 	padding: 0px;
 	border: 1px outset #999999;
@@ -40,14 +38,13 @@
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 )";
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 );
 }
-.code_menu ul li {
+.code_menu:not(.top_bar_menu) ul li {
 	margin:0 2px 0 5px;
 	border-right:1px solid #ccc;
-	float:left;
+	display:inline-block;
 }
-.code_menu ul li a {
+.code_menu:not(.top_bar_menu) ul li a {
 	color:#222;
-	font-weight:bold;
 	font-size:10px;
 	cursor:pointer;
 	padding:0 0 0 20px;
@@ -56,44 +53,54 @@
 	display:block;
 	border-right:1px inset #999;
 }
-.code_menu ul li.editor_settings {
-	background:url("../common/img/icon/settings_icon.png") no-repeat scroll 0 5px;
-	width:140px;
+.code_menu:not(.top_bar_menu) ul li ul {
+	margin-left:-14px;
+	position:absolute;
+	top:auto;
+	left:auto;
+	background:#d5e3e4;
+	border:0;
+	z-index:2;
+	display:none;
 }
-.code_menu ul li.pretty_print {
-	background:url("../common/img/icon/view_icon.gif") no-repeat scroll 0 5px;
-	width:125px;
+.code_menu:not(.top_bar_menu) ul li:hover ul {
+	display:block;
 }
-.code_menu ul li.set_word_wrap {
-	background:url("../common/img/icon/sort_icon.png") no-repeat scroll 0 5px;
-	width:113px;
+.code_menu:not(.top_bar_menu) ul li ul li {
+	margin:0;
+	padding:5px 8px;
+	display:block;
+	border-left:1px inset #fff;
+	border-bottom:1px inset #ccc;
+	border-right:0;
 }
-.code_menu ul li.save {
-	background:url("../common/img/icon/save_icon.gif") no-repeat scroll 0 5px;
-	width:58px;
+.code_menu:not(.top_bar_menu) ul li ul li:hover{
+	background:#b3c8cc;
 }
-.code_menu ul li.editor_full_screen {
-	background:url("../common/img/icon/maximize_icon.png") no-repeat scroll 0px 4px;
+.code_menu:not(.top_bar_menu) ul li.auto_save_convert_settings ul {
 	width:150px;
 }
-#code.editor_full_screen .code_menu ul li.editor_full_screen {
-	background:url("../common/img/icon/minimize_icon.png") no-repeat scroll 0px 4px;
+.code_menu:not(.top_bar_menu) ul li.auto_save_convert_settings ul li {
+	position:relative;
+}
+.code_menu:not(.top_bar_menu) ul li.auto_save_convert_settings ul li input {
+	position:absolute;
+	right:10px;
 }
 
 #code.editor_full_screen {
-	position:fixed;
+	/*position:fixed;
 	top:0px;
 	left:0px;
 	right:0px;
 	bottom:0px;
 	margin:0;
 	height:auto;
-	z-index:9;
+	z-index:9;*/
 }
 #code textarea, #code .ace_editor {
 	width:100%;
 	border:0;
-	border-top:1px inset #CCC;
 	border-bottom:3px inset #CCC;
 	margin:0;
 }
@@ -101,84 +108,82 @@
 	position:fixed !important; /* 2021-02-08 JP: this is very important bc is fixing the problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.*/
 }
 #code.ui-tabs-panel {
-	padding:2px 0 0 0 !important;
+	padding:0 !important;
 }
 
 #ui {	
 	padding:0;
 }
 #ui.tasks_flow_full_screen {
-	position:fixed;
+	/*position:fixed;
 	top:0px;
 	left:0px;
 	right:0px;
 	bottom:0px;
 	margin:0;
 	height:auto;
-	z-index:9;
+	z-index:9;*/
 }
 #ui .taskflowchart {
 	height:400px;
 	position:relative;
 	overflow:hidden;
 }
+#ui .taskflowchart .tasks_menu {
+	background-color:#f9f9f9;
+}
+#ui .taskflowchart .tasks_flow {
+	background-color:#f9f9f9;
+}
+
 #ui .taskflowchart .workflow_menu {
 	display:none;
 }
-#ui .taskflowchart .tasks_menu {
-	background-color:#d5e3e4;
-}
-#ui .taskflowchart .tasks_menu_hide {
-	
-}
-#ui .taskflowchart .tasks_flow {
-	background-color:#F0F0F0;
-}
-
-#ui .taskflowchart .workflow_menu ul.dropdown li {
-	height:17px;
+#ui .taskflowchart .workflow_menu:not(.top_bar_menu) ul.dropdown li {
 	border-left:1px inset #FFF;
 }
-#ui .taskflowchart .workflow_menu ul.dropdown li a {
-	height:20px;
-	line-height:20px;
-	padding-left:22px;
+#ui .taskflowchart .workflow_menu:not(.top_bar_menu) ul.dropdown li a {
 	display:block;
 }
-#ui .taskflowchart .workflow_menu ul.dropdown li.save a {
-	background:url("../common/img/icon/save_icon.gif") no-repeat scroll 0px 1px;	
-}
-#ui .taskflowchart .workflow_menu ul.dropdown li.flush_cache a {
-	background:url("../common/img/icon/recycle_icon.png") no-repeat scroll 0px 1px;	
-}
-#ui .taskflowchart .workflow_menu ul.dropdown li.empty_diagram a {
-	background:url("../common/img/icon/delete_icon.gif") no-repeat scroll 0px 1px;	
-}
-#ui .taskflowchart .workflow_menu ul.dropdown li.generate_code_from_tasks_flow a {
-	background:url("../common/img/icon/update_icon.gif") no-repeat scroll 0px 2px;	
-}
-#ui .taskflowchart .workflow_menu ul.dropdown li.generate_tasks_flow_from_code a {
-	background:url("../common/img/icon/update_icon.gif") no-repeat scroll 0px 2px;	
-}
-#ui .taskflowchart .workflow_menu ul.dropdown li.tasks_flow_full_screen a {
-	background:url("../common/img/icon/maximize_icon.png") no-repeat scroll 0px 1px;
-}
-#ui.tasks_flow_full_screen .taskflowchart .workflow_menu ul.dropdown li.tasks_flow_full_screen a {
-	background:url("../common/img/icon/minimize_icon.png") no-repeat scroll 0px 1px;
-}
-#ui .taskflowchart .workflow_menu ul.dropdown li.sort_tasks a {
-	background:url("../common/img/icon/sort_icon.png") 0px 1px no-repeat;	
+#ui .taskflowchart .workflow_menu ul.dropdown li ul {
+	min-width:auto;
+	position:absolute;
+	top:auto;
+	left:auto;
+	margin-left:-9px;
 }
 #ui .taskflowchart .workflow_menu ul.dropdown li.sort_tasks ul {
-	min-width:105px;
-	position: initial;
-	top: auto;
-	left: auto;
+	width:90px;
 }
 
 #ui .taskflowchart .tasks_menu .task {
 	width:80px;
 	font-size:8px;
+}
+#ui .taskflowchart .tasks_flow .connection_add_new_task_panel .generic_buttons input {
+	background:#d5e3e4;
+}
+
+#ui .taskflowchart.with_top_bar_menu .tasks_menu,
+  #ui .taskflowchart.with_top_bar_menu .tasks_menu_hide,
+  #ui .taskflowchart.with_top_bar_menu .tasks_flow {
+	top:0 !important;
+}
+#ui .taskflowchart.with_top_bar_menu .tasks_menu.task_properties_shown,
+  #ui .taskflowchart.with_top_bar_menu .tasks_menu_hide.task_properties_shown,
+  #ui .taskflowchart.with_top_bar_menu .tasks_flow.task_properties_shown,
+  #ui .taskflowchart.with_top_bar_menu .tasks_menu.connection_properties_shown,
+  #ui .taskflowchart.with_top_bar_menu .tasks_menu_hide.connection_properties_shown,
+  #ui .taskflowchart.with_top_bar_menu .tasks_flow.connection_properties_shown {
+	bottom:247px;
+}
+#ui .taskflowchart.with_top_bar_menu .tasks_menu.task_properties_shown.task_properties_collapsed,
+  #ui .taskflowchart.with_top_bar_menu .tasks_menu_hide.task_properties_shown.task_properties_collapsed,
+  #ui .taskflowchart.with_top_bar_menu .tasks_flow.task_properties_shown.task_properties_collapsed,
+  #ui .taskflowchart.with_top_bar_menu .tasks_menu.connection_properties_shown.connection_properties_collapsed,
+  #ui .taskflowchart.with_top_bar_menu .tasks_menu_hide.connection_properties_shown.connection_properties_collapsed,
+  #ui .taskflowchart.with_top_bar_menu .tasks_flow.connection_properties_shown.connection_properties_collapsed {
+	bottom:25px;
 }
 
 .big_white_panel {
@@ -224,7 +229,7 @@
    .choose_from_file_manager .businesslogic, 
    .choose_from_file_manager .broker, 
    .choose_from_file_manager .db_driver {
-	height:20px;
+   	
 }
 .choose_from_file_manager .type label, 
    .choose_from_file_manager .new_var label,
@@ -235,11 +240,10 @@
    .choose_from_file_manager .businesslogic label, 
    .choose_from_file_manager .broker label, 
    .choose_from_file_manager .db_driver label {
-	display:block;
-	float:left;
+	display:inline-block;
 	width:120px;
-	height:20px;
-	line-height:20px;
+	font-weight:normal;
+	font-style:normal;
 }
 .choose_from_file_manager .type select, 
    .choose_from_file_manager .new_var input,
@@ -251,11 +255,8 @@
    .choose_from_file_manager .businesslogic select, 
    .choose_from_file_manager .broker select, 
    .choose_from_file_manager .db_driver select {
-	display:block;
-	float:left;
+	display:inline-block;
 	width:250px;
-	height:20px;
-	line-height:20px;
 	margin-bottom:5px;
 }
 .choose_from_file_manager .new_var input {
@@ -270,16 +271,20 @@
 	padding-left:10px;
 }
 .choose_from_file_manager .new_var > .name > .sub_group input  {
-	width:calc(100% - 30px);
+	width:calc(100% - 27px);
+}
+.choose_from_file_manager .new_var > .name > .add {
+	margin-left:5px;
+}
+.choose_from_file_manager .new_var > .name > .sub_group .delete {
+	margin-left:9px;
 }
 .choose_from_file_manager .icon.info {
-	background:url("../common/img/icon/info_icon.png") 0px 0px no-repeat;
 	margin:0px 0px 0px 5px;
 }
 .choose_from_file_manager .button, 
   #choose_db_driver .button,
   #choose_db_driver_table .button {
-	height:20px;
 	padding-top:5px;
 	text-align:center;
 	width:100%;
@@ -289,16 +294,8 @@
 .choose_from_file_manager .button input, 
   #choose_db_driver .button input,
   #choose_db_driver_table .button input  {
-	height:20px;
-	line-height:15px;
-	border:1px outset;
-	background: #d5e3e4;
 	display:inline;
 	float:none;
-	
-	-moz-border-radius:0.5em; 
-	-webkit-border-radius:0.5em;
-	border-radius:0.5em;
 }
 
 #choose_db_driver,
@@ -311,7 +308,6 @@
   #choose_db_driver_table .db_driver, 
   #choose_db_driver_table .type, 
   #choose_db_driver_table .db_table {
-	height:20px;
 	margin:10px 0;
 }
 #choose_db_driver .broker label, 
@@ -320,11 +316,8 @@
   #choose_db_driver_table .db_driver label, 
   #choose_db_driver_table .type label, 
   #choose_db_driver_table .db_table label {
-	display:block;
-	float:left;
+	display:inline-block;
 	width:110px;
-	height:20px;
-	line-height:20px;
 	overflow:hidden;
 }
 #choose_db_driver .broker select, 
@@ -334,13 +327,11 @@
   #choose_db_driver_table .type select, 
   #choose_db_driver_table .db_table select {
 	width:200px;
-	height:20px;
-	line-height:20px;
 }
 
 /* TREE */
 .mytree {
-	border:1px inset #CCC;
+	/*border:1px inset #eee;*/
 	min-width:300px;
 	min-height:200px;
 	max-width:450px;
@@ -361,7 +352,8 @@
 	z-index:1501; /*.workflow_menu from tasks workflow has an zindex of 1500. So this zindex must be bigger.*/
 }
 .confirm_save .title {
-	margin-bottom:20px;
+	margin:20px auto;
+	text-align:center;
 }
 .confirm_save .code_comparison {
 	
@@ -414,11 +406,10 @@
 	margin-bottom:10px;
 }
 .confirm_save .buttons input {
-	height:20px;
-	line-height:15px;
+	/*height:20px;
+	line-height:15px;*/
 	margin-right:20px;
 	font-size:10px;
-	font-weight:bold;
 }
 .confirm_save .disable_auto_scroll {
 	position:absolute;

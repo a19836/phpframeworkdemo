@@ -1,3 +1,24 @@
+function submitForm(elm, on_submit_func) {
+	elm = $(elm);
+	var oForm = elm.parent().closest(".top_bar").parent().children("form");
+	var status = typeof on_submit_func == "function" ? on_submit_func( oForm[0] ) : true;
+	
+	if (status) {
+		elm.hide();
+		oForm.submit();
+	}
+	
+	return status;
+}
+
+function checkSelectedTables(oForm) {
+	if ($(oForm).find(".tables .table input[type=checkbox]:checked").length == 0) {
+		alert("You must select at least 1 table.");
+		return false;
+	}
+	return true;
+}
+
 function updateDBDrivers(elm) {
 	var db_broker = $(elm).val();
 	var options = "";

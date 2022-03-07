@@ -17,6 +17,23 @@
 	margin-left:1px;
 	vertical-align:middle;
 }
-.module_list #file_tree .icon.view {
-	background:url("../../../img/icon/view_icon.gif") no-repeat scroll 0px 1px;
+.module_list #file_tree > a > .jstree-icon,
+  .module_list #file_tree .jstree-themeicon {
+	background:none;
+}
+.module_list #file_tree > a > .jstree-icon::before,
+  .module_list #file_tree .jstree-themeicon::before {
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	margin-top:7px;
+	display:block;
+}
+.module_list #file_tree > a > .jstree-icon::before {
+	content:"\f0a0";
+	color:#333;
+}
+.module_list #file_tree .jstree-themeicon::before {
+	content:"\f07b";
+	color:#f5df86;
 }

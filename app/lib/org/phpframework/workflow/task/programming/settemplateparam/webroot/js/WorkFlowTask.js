@@ -20,14 +20,13 @@
 var SetTemplateParamTaskPropertyObj = {
 	
 	brokers_options : null,
-	on_choose_page_url_callback: null,
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
 		
 		var task_html_elm = $(properties_html_elm).find(".set_template_param_task_html");
 		
-		if (typeof SetTemplateParamTaskPropertyObj.on_choose_page_url_callback == "function")
+		if (typeof ProgrammingTaskUtil.on_programming_task_choose_page_url_callback == "function")
 			task_html_elm.find(".value .search").css("display", "inline-block");
 		
 		BrokerOptionsUtilObj.initFields(task_html_elm.find(".broker_method_obj"), SetTemplateParamTaskPropertyObj.brokers_options, task_property_values["method_obj"]);
@@ -64,10 +63,7 @@ var SetTemplateParamTaskPropertyObj = {
 	},
 	
 	onCompleteLabel : function(task_id) {
-		onEditLabel(task_id);
-		myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
-		
-		return true;
+		return ProgrammingTaskUtil.onEditLabel(task_id);
 	},
 	
 	onTaskCreation : function(task_id) {

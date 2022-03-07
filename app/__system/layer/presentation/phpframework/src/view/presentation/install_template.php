@@ -19,8 +19,14 @@
  */
 
 $head = '
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
 <!-- Add Icon CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
 
 <!-- Add Local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/install_template.css" type="text/css" charset="utf-8" />
@@ -28,7 +34,15 @@ $head = '
 
 <script>
 	var get_store_templates_url = "' . $get_store_templates_url . '";
-</script>'; $main_content = '<div class="title">Install New Template</div>'; if ($_POST) { if (!$status) { $error_message = $error_message ? $error_message : "There was an error trying to install this template. Please try again..."; if ($messages) { $main_content .= '<ul class="messages">'; foreach ($messages as $project_name => $msgs) { if ($msgs) { $main_content .= '<li><label>' . ucfirst($project_name) . ' project\'s installation:</label><ul>'; foreach ($msgs as $msg) { $main_content .= '<li class="' . $msg["type"] . '">' . $msg["msg"] . '</li>'; } $main_content .= '</ul></li>'; } } $main_content .= '</ul>'; } } else { $status_message = 'Template successfully installed!'; $main_content .= '<script>if (window.parent.refreshLastNodeChilds) window.parent.refreshLastNodeChilds();</script>'; } } $main_content .= '<div class="file_upload">
+</script>'; $main_content = '
+	<div class="top_bar">
+		<header>
+			<div class="title">Install New Template</div>
+			<ul>
+				<li class="continue" title="Install Template Now"><a onClick="installTemplate(this)"><i class="icon continue"></i> Install Template Now</a></li>
+			</ul>
+		</header>
+	</div>'; if ($_POST) { if (!$status) { $error_message = $error_message ? $error_message : "There was an error trying to install this template. Please try again..."; if ($messages) { $main_content .= '<ul class="messages">'; foreach ($messages as $project_name => $msgs) { if ($msgs) { $main_content .= '<li><label>' . ucfirst($project_name) . ' project\'s installation:</label><ul>'; foreach ($msgs as $msg) { $main_content .= '<li class="' . $msg["type"] . '">' . $msg["msg"] . '</li>'; } $main_content .= '</ul></li>'; } } $main_content .= '</ul>'; } } else { $status_message = 'Template successfully installed!'; $main_content .= '<script>if (window.parent.refreshLastNodeChilds) window.parent.refreshLastNodeChilds();</script>'; } } $main_content .= '<div class="file_upload">
 	<div class="sub_title">Please choose the project and module zip file to install:</div>
 	
 	<div class="layer">
@@ -43,7 +57,6 @@ $head = '
 		</div>
 		
 		<input class="upload_file" type="file" name="zip_file">
-		<input class="button" type="submit" value="Install Now" name="submit" onClick="$(\'<p class=installing>Installing...</p>\').insertBefore(this);$(this).hide();">
 	</form>
 	
 	' . ($get_store_templates_url ? '<div class="install_store_template">To install templates from store please click <a href="javascript:void(0)" onClick="installStoreTemplatePopup();">here</a></div>' : '') . '

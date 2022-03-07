@@ -8,16 +8,15 @@ body {
 	margin: 0;
 	height:100%;
 }
-
-input, select, textarea {
-	border:1px inset #999999;
-	background:#d5e3e4;
-	color:#555555;
-	font-family:Verdana,Arial,sans-serif;
+input:not([type=submit]):not([type=button]), select, textarea {
+	/* bc of firefox that has a different style for select fields */
+	background:transparent; 
+	border:1px solid #eee;
+	border-radius:2px;
 }
 
 /* BLUE GRADIENT */
-.table_header {
+/*.table_header {
 	padding: 0px;
 	border: 1px outset #999999;
 	background: #d5e3e4;
@@ -36,7 +35,7 @@ input, select, textarea {
 	color:#555555;
 	font-weight:normal;
 	text-align:center;
-}
+}*/
 
 /* GRAY-BLUE GRADIENT *
 .table_header {
@@ -105,4 +104,26 @@ input, select, textarea {
 }
 ::-webkit-scrollbar-thumb:window-inactive {
 	background:rgba(0,0,0,0.2); 
+}
+
+/* MESSAGES */
+.status_message .status_message_info span.close_message, 
+  .status_message .status_message_error span.close_message {
+	display:inline-block !important;
+	width:20px !important;
+	height:auto !important;
+	margin-right:0 !important;
+	text-indent:0 !important;
+	background:none !important;
+	font-size:16px;
+}
+.status_message .status_message_info span.close_message::before, 
+  .status_message .status_message_error span.close_message::before {
+	width:15px;
+	display:inline-block;
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f057";
+	margin-right:20px;
 }

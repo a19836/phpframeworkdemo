@@ -46,14 +46,12 @@
 .menu_settings .menu_type label, 
    .menu_settings .menu_class label, 
    .menu_settings .menu_title label {
-   	display:block;
-	width:100px;
-	float:left;
+   	width:100px;
+	display:inline-block;
 }
 .menu_settings .template_type label {
-   	display:block;
-	width:125px;
-	float:left;
+   	width:125px;
+	display:inline-block;
 }
 .menu_settings .menu_background_color label, 
    .menu_settings .menu_text_color label,
@@ -62,14 +60,14 @@
    .menu_settings .sub_menu_text_color label,
    .menu_settings .sub_menu_background_image label {
    	width:190px;
-	display:block;
-	float:left;
+	display:inline-block;
 	font-size:90%;
 	font-weight:normal;
 }
 .menu_settings .menu_text_color label,
    .menu_settings .sub_menu_text_color label {
    	width:140px;
+	display:inline-block;
 }
 .menu_settings .menu_class input {
 	width:200px;
@@ -86,8 +84,6 @@
 	width:65px;
 	height:19px;
 	font-size:12px;
-	float:left;
-	background:#fff;
 	box-sizing:border-box;
 }
 .menu_settings .menu_background_image input[type=text], 
@@ -104,7 +100,6 @@
 	border:none;
 	background:initial;
 	color:initial;
-	float:left;
 	-webkit-appearance: none;
 }
 .menu_settings .menu_background_color input[type=color]::-webkit-color-swatch-wrapper, 
@@ -156,12 +151,10 @@
 	clear:left;
 }
 .menu_settings .menu_items label {
-   	display:block;
 	width:100px;
-	float:left;
+	display:inline-block;
 }
 .menu_settings .menu_items select.items_type {
-	float:left;
 	margin-bottom:5px;
 }
 
@@ -185,8 +178,7 @@
    .menu_settings .menu_items .menu_by_user_defined label,
    .menu_settings .menu_items .menu_by_tag label {
 	width:100px;
-   	display:block;
-	float:left;
+	display:inline-block;
 	font-weight:normal;
 }
 .menu_settings .menu_items .menu_by_parent .menu_parent_object_type_id {
@@ -203,6 +195,7 @@
 .menu_settings .menu_items .menu_by_parent .menu_parent_object_id label, 
    .menu_settings .menu_items .menu_by_parent .menu_parent_group label {
 	width:80px;
+	display:inline-block;
 }
 .menu_settings .menu_items .menu_by_parent .menu_parent_object_type_id select {
 	width:150px;
@@ -220,11 +213,13 @@
 }
 .menu_settings .menu_items .menu_items_default_settings label {
 	width:100%;
+	display:inline-block;
 	font-weight:normal;
 	margin-bottom:5px;
 }
 .menu_settings .menu_items .menu_items_default_settings div label {
 	width:65px;
+	display:inline-block;
 	font-style:normal;
 	margin-bottom:0;
 }
@@ -239,19 +234,20 @@
 	margin-left:10px;
 }
 .menu_settings .menu_items .menu_items_default_settings .item_title {
-	width:265px;
+	width:275px;
 	float:left;
 	margin-top:5px;
 	margin-left:10px;
 }
 .menu_settings .menu_items .menu_items_default_settings .item_class {
-	width:245px;
+	width:260px;
 	float:left;
 	margin-top:5px;
 	margin-left:10px;
 }
 .menu_settings .menu_items .menu_items_default_settings .item_class label {
 	width:50px;
+	display:inline-block;
 }
 .menu_settings .menu_items .menu_items_default_settings .item_label input,
    .menu_settings .menu_items .menu_items_default_settings .item_title input,
@@ -273,12 +269,6 @@
 
 .menu_settings .menu_items .icon {
 	margin-right:0px;
-}
-.menu_settings .menu_items .icon.up {
-	background:url("../../../img/icon/up_icon.gif") no-repeat 0 0;
-}
-.menu_settings .menu_items .icon.down {
-	background:url("../../../img/icon/down_icon.gif") no-repeat 0 0;
 }
 
 .menu_settings .items {
@@ -302,14 +292,10 @@
 	height:25px;
 }
 .menu_settings .item .menu_label label {
-	display:block;
-	float:left;
-	clear:none;
 	width:50px;
+	display:inline-block;
 }
 .menu_settings .item .menu_label input {
-	display:block;
-	float:left;
 	width:200px;
 }
 .menu_settings .item .menu_url,
@@ -341,9 +327,8 @@
    .menu_settings .item .menu_previous_html label, 
    .menu_settings .item .menu_next_html label {
 	width:65px;
+	display:inline-block;
 	font-weight:normal;
-	float:left;
-	clear:none;
 }
 .menu_settings .item .menu_title input, 
    .menu_settings .item .menu_class input {

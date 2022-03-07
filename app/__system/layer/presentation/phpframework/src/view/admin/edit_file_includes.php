@@ -19,6 +19,9 @@
  */
 
 include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#$filter_by_layout_url_query&path=#path#"; $choose_dao_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=dao&path=#path#"; $choose_lib_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=lib&path=#path#"; $choose_vendor_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=vendor&path=#path#"; $head = '
+<!-- Add MD5 JS File -->
+<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>
+
 <!-- Add MyTree main JS and CSS files -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerymytree/css/style.min.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerymytree/js/mytree.js"></script>
@@ -31,8 +34,16 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); $filter_by_layout
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_code.js"></script>
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_php_code.js"></script>
 
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
+<!-- Icons CSS file -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+
+<!-- Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/edit_file_includes.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/edit_file_includes.js"></script>
 
@@ -44,7 +55,16 @@ var save_object_url = \'' . $project_url_prefix . 'phpframework/admin/save_file_
 
 var new_use_html = \'' . str_replace("'", "\\'", str_replace("\n", "", WorkFlowPHPFileHandler::getUseHTML())) .'\';
 var new_include_html = \'' . str_replace("'", "\\'", str_replace("\n", "", WorkFlowPHPFileHandler::getInludeHTML())) .'\';
-'; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getBusinessLogicBrokersHtml($business_logic_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDataAccessBrokersHtml($data_access_brokers, $choose_bean_layer_files_from_file_manager_url); $head .= '</script>'; $head .= LayoutTypeProjectUIHandler::getHeader(); $main_content = '<div class="title">Manage Includes</div>'; $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $db_brokers, $data_access_brokers, $ibatis_brokers, $hibernate_brokers, $business_logic_brokers, $presentation_brokers); $main_content .= '
+'; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getBusinessLogicBrokersHtml($business_logic_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDataAccessBrokersHtml($data_access_brokers, $choose_bean_layer_files_from_file_manager_url); $head .= '</script>'; $head .= LayoutTypeProjectUIHandler::getHeader(); $main_content = '
+	<div class="top_bar">
+		<header>
+			<div class="title">Manage Includes</div>
+			<ul>
+				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
+				<li class="save" title="Save Query"><a onClick="saveIncludes()"><i class="icon full_screen"></i> Save</a></li>
+			</ul>
+		</header>
+	</div>'; $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $db_brokers, $data_access_brokers, $ibatis_brokers, $hibernate_brokers, $business_logic_brokers, $presentation_brokers); $main_content .= '
 <div class="includes_obj">
 	<div class="namespace">
 		<label>Namespace:</label>
@@ -52,19 +72,15 @@ var new_include_html = \'' . str_replace("'", "\\'", str_replace("\n", "", WorkF
 	</div>
 	<div class="uses">
 		<label>Uses:</label>
-		<span class="icon add" onClick="addNewUse(this)">Add Include</span>
+		<span class="icon add" onClick="addNewUse(this)" title="Add Use">Add</span>
 		<div class="fields">'; $uses = $obj_data ? $obj_data["uses"] : null; if ($uses) foreach ($uses as $use => $alias) $main_content .= WorkFlowPHPFileHandler::getUseHTML($use, $alias); $main_content .= '
 		</div>
 	</div>
 	<div class="includes">
 		<label>Includes:</label>
-		<span class="icon add" onClick="addNewInclude(this)">Add Include</span>
+		<span class="icon add" onClick="addNewInclude(this)" title="Add Include">Add</span>
 		<div class="fields">'; $includes = $obj_data ? $obj_data["includes"] : null; if ($includes) { $t = count($includes); for ($i = 0; $i < $t; $i++) { $include = $includes[$i]; if ($include && $include[0]) $main_content .= WorkFlowPHPFileHandler::getInludeHTML($include); } } $main_content .= '
 		</div>
 	</div>
-</div>
-
-<div class="buttons">
-	<input type="button" value="SAVE" onClick="saveIncludes()" />
 </div>
 '; ?>

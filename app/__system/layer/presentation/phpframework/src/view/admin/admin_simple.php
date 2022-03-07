@@ -18,20 +18,10 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-if (!$is_admin_ui_simple_allowed) { echo '<script>
+include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_simple_allowed) { echo '<script>
 		alert("You don\'t have permission to access this Admin UI!");
 		document.location="' . $project_url_prefix . 'auth/logout";
-	</script>'; die(); } $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $head = '
-<!-- Add Icon CSS -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
-
-<!-- Edit code JS -->
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_code.js"></script>
-
-<!-- Add Admin Menu JS and CSS files -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_menu.css" type="text/css" charset="utf-8" />
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_menu.js"></script>
-
+	</script>'; die(); } $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_simple.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_simple.js"></script>
@@ -81,9 +71,9 @@ if (!$is_admin_ui_simple_allowed) { echo '<script>
 		</li>
 		<li class="buttons">
 			<span class="project">Selected project: "' . $project . '"</span>
-			<span class="icon home" onClick="goTo(this, \'home_url\', event)" home_url="' . "{$project_url_prefix}admin/admin_home?admin_type=simple&bean_name=$bean_name&bean_file_name=$bean_file_name&project=$project" . '" title="Go Home">Home</span>
-			<span class="icon refresh" onClick="refreshIframe()" title="Refresh">Refresh</span>
-			<span class="icon left" onClick="goBack()" title="Go Back">Go Back</span>
+			<span class="icon home" onClick="goTo(this, \'home_url\', event)" home_url="' . "{$project_url_prefix}admin/admin_home?admin_type=simple&bean_name=$bean_name&bean_file_name=$bean_file_name&project=$project" . '" title="Go Home"></span>
+			<span class="icon refresh" onClick="refreshIframe()" title="Refresh"></span>
+			<span class="icon go_back" onClick="goBack()" title="Go Back"></span>
 		</li>
 	</ul>
 </div>

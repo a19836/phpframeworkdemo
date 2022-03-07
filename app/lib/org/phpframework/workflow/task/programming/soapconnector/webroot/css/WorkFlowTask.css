@@ -101,6 +101,7 @@
   .soap_connector_task_html .client_headers > ul > li > div > select,
   .soap_connector_task_html .result_type select[name=result_type_type] {
 	width:60px;
+	height:19px;
 	background-color:#FFF;
 	color:#AAA;
 	border:1px solid #ECECEC;
@@ -112,7 +113,7 @@
 }
 .soap_connector_task_html .remote_function_arguments > .remote_function_args.array_items > .items {
 	float:left;
-	margin-top:-25px;
+	margin-top:-21px;
 	margin-left:240px;
 }
 
@@ -135,12 +136,18 @@
 	width:70px;
 }
 .soap_connector_task_html .client_options table .name input,
-  .soap_connector_task_html .client_options table .value input,
-  .soap_connector_task_html .client_options table .var_type select {
+  .soap_connector_task_html .client_options table .value input {
 	width:100%;
-	height: 20px;
+	height:20px;
 	box-sizing:border-box;
-	border-style: solid;
+	border:1px solid #eee;
+}
+.soap_connector_task_html .client_options table .var_type select {
+	width:100%;
+	height:20px;
+	box-sizing:border-box;
+	border:0;
+	background:transparent;
 }
 .soap_connector_task_html .client_options table .name input,
   .soap_connector_task_html .client_options table .value input {
@@ -151,11 +158,6 @@
 }
 .soap_connector_task_html .client_options table .icon_cell {
 	width:20px;
-}
-.soap_connector_task_html .client_options table .icon_cell .icon {
-	margin:0;
-	float:none;
-	display:inline-block;
 }
 
 .soap_connector_task_html .client_headers {
@@ -181,7 +183,7 @@
 	background-color:#eee;
 	border:1px solid #ddd;
 }
-.soap_connector_task_html .client_headers > ul > li > .delete {
+.soap_connector_task_html .client_headers > ul > li > .icon.delete {
 	float:right;
 }
 .soap_connector_task_html .client_headers > ul > li > div {
@@ -192,7 +194,7 @@
 }
 .soap_connector_task_html .client_headers > ul > li > div > select {
 	width:60px;
-	margin-bottom:5px;
+	height:19px;
 	background-color:transparent;
 	color:#AAA;
 	border:1px solid #ECECEC;
@@ -241,10 +243,10 @@
 	text-align:center;
 	font-size:9px;
 	width:60px;
-	margin-bottom:5px;
+	height:19px;
 }
 .soap_connector_task_html .result_type .add_variable {
-	margin-left:-23px;
+	margin-left:-26px;
 }
 .soap_connector_task_html .result_type .info {
 	padding-top:10px;

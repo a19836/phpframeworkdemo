@@ -1,5 +1,5 @@
 $(function () {
-	$(".logout_settings").parent().closest(".block_obj").children(".buttons").children("input").attr("onclick", "saveLogout(this);");
+	$(".top_bar .save a").attr("onclick", "saveLogout(this);");
 });
 
 function loadLogoutBlockSettings(settings_elm, settings_values) {
@@ -35,7 +35,7 @@ function loadLogoutBlockSettings(settings_elm, settings_values) {
 }
 
 function saveLogout(button) {
-	var block_settings = $(button).parent().closest(".block_obj").children(".module_settings").children(".settings").children(".edit_settings");
+	var block_settings = $(".block_obj > .module_settings > .settings > .edit_settings");
 	var validate_object_to_object_settings = block_settings.children(".validate_object_to_object_settings");
 	
 	if (!onSaveValidationFields(validate_object_to_object_settings))

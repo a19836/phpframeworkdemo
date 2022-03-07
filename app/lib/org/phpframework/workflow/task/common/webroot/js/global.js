@@ -191,6 +191,21 @@ if (typeof is_global_common_file_already_included == "undefined") {
 		}
 	}
 	
+	function updateTaskLabelInShownTaskProperties(task_id, task_properties_input_selector) {
+		//if task properties is open, update label
+		var WF = myWFObj.getJsPlumbWorkFlow();
+		var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+		var task_type = task.attr("type");
+		var show_task_properties = WF.jsPlumbProperty.isTaskSubSettingTrue(task_type, "task_menu", "show_properties_menu", true);
+		
+		if (show_task_properties) {
+			var selected_task_properties = $("#" + WF.jsPlumbProperty.selected_task_properties_id);
+			
+			if (selected_task_properties.is(":visible") && selected_task_properties.attr("task_id") == task_id)
+				selected_task_properties.find(task_properties_input_selector).val( WF.jsPlumbTaskFlow.getTaskLabel(task) );
+		}
+	}
+	
 	function stringToUCWords(str) {
 		var parts = str.split(" ");
 		
@@ -262,5 +277,25 @@ if (typeof is_global_common_file_already_included == "undefined") {
 		}
 		
 		return value;
+	}
+	
+	function showTaskPropertiesIfExists(task_id, task) {
+		var WF = myWFObj.getJsPlumbWorkFlow();
+		var task_type = task.attr("type");
+		var show_task_properties = WF.jsPlumbProperty.isTaskSubSettingTrue(task_type, "task_menu", "show_properties_menu", true);
+		
+		if (show_task_properties)
+			WF.jsPlumbProperty.showTaskProperties(task_id);
+	}
+	
+	function showConnectionPropertiesIfExists(connection) {
+		if (connection) {
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var task_type = $("#" + connection.sourceId).attr("type");
+			var show_connection_properties = WF.jsPlumbProperty.isTaskSubSettingTrue(task_type, "connection_menu", "show_properties_menu", true);
+			
+			if (show_connection_properties)
+				WF.jsPlumbProperty.showConnectionProperties(connection.id);
+		}
 	}
 }

@@ -1,13 +1,9 @@
-.title {
-	color: #000;
-	font-size: 16px;
-	font-weight: bold;
-	margin: 10px 0 20px 0px;
-	text-align: center;
-	width: 100%;
-	height:25px;
+/* TOP BAR */
+.top_bar {
+	margin-bottom:20px;
 }
 
+/* WORDPRESS */
 .manage_wordpress {
 	width:400px;
 	margin:0 auto;
@@ -28,9 +24,10 @@
 	text-align:center;
 }
 .manage_wordpress .buttons input {
-	margin:10px auto 10px auto;
 	height:25px;
 	line-height:15px;
+	display:inline-block;
+	margin:10px;
 	font-size:10px;
 	font-weight:bold;
 }

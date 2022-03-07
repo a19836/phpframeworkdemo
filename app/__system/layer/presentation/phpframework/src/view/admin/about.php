@@ -19,11 +19,24 @@
  */
 
 $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $head = '
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
+<!-- Add Icon CSS -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+
 <!-- Add Local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/about.css" type="text/css" charset="utf-8" />
 '; $main_content = '
 <div class="about">
-	<div class="title">About</div>
+	<div class="top_bar">
+		<header>
+			<div class="title">About</div>
+		</header>
+	</div>
 
 	<div class="author">
 		<label>Author:</label>

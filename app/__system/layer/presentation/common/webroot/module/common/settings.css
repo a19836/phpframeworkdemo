@@ -19,7 +19,7 @@
 	clear:both;
 	margin-bottom:5px;
 	padding:4px;
-	background-color:#d5e3e4;
+	background-color:#eee;
 }
 .settings_props .settings_prop.deprecated {
 	background-color:#ffcfcb;
@@ -35,20 +35,24 @@
 }
 .settings_props .settings_prop_icon {
 	float:right;
+	margin:auto 0 auto 5px;
 }
-.move {
+.settings_props .settings_prop_icon.icon::before {
+	font-size:16px;
+}
+/*.icon.move {
     background: rgba(0, 0, 0, 0) url("../../img/icon/move_icon.png") no-repeat scroll 0 0;
     margin-right:0;
     cursor:move;
 }
-.move_up {
+.icon.move_up {
     background: rgba(0, 0, 0, 0) url("../../img/icon/up_icon.gif") no-repeat scroll 0 0;
     margin-right:0;
 }
-.move_down {
+.icon.move_down {
     background: rgba(0, 0, 0, 0) url("../../img/icon/down_icon.gif") no-repeat scroll 0 0;
     margin-right:0;
-}
+}*/
 .settings_props .drag_and_drop_next_item {
 	height:40px;
 	background-color:#C0C0C0;
@@ -64,12 +68,10 @@
 	font-weight:normal;
 	font-size:10px;
 	color:#888;
-	line-height:20px;
 }
 .settings_props .settings_prop_default_value input,
    .settings_props .settings_prop_search_value input {
 	width:80px;
-	height:18px;
 	font-size:11px;
 	color:#888;
 }
@@ -128,6 +130,10 @@
 .selected_task_properties .form_containers .fields .field .input_src .add_field_automatically {
 	right:47px;
 }
+.selected_task_properties .form_containers .fields .field .input_src .add_variable.inline,
+  .selected_task_properties .form_containers .fields .field .input_href .add_variable.inline {
+	margin-left:-21px;
+}
 .selected_task_properties .form_containers .fields .field .class input {
 	width:250px;
 }
@@ -137,7 +143,7 @@
 	clear:both;
 	margin-bottom:5px;
 	padding:4px;
-	background-color:#d5e3e4;
+	background-color:#eee;
 	display:none;
 }
 .button_settings .button_settings_label {
@@ -145,6 +151,7 @@
 }
 .button_settings .button_settings_icon {
 	float:right;
+	font-size:16px;
 }
 .button_settings .selected_task_properties .form_containers .fields .field .input_type,
    .button_settings .selected_task_properties .form_containers .fields .field .input_name {
@@ -251,7 +258,7 @@
 
 /* PTL */
 .settings .ptl {
-	padding:1em 5px;
+	padding:0 5px 1em;
 }
 .settings .ptl textarea,
    .settings .ptl .ace_editor {
@@ -262,6 +269,13 @@
 	background-color:#F7F7F7;
 	clear:both;
 	float:none;
+}
+.settings .ptl .layout_ui_editor {
+	border-left:1px solid #eee;
+	border-right:1px solid #eee;
+}
+.settings .ptl .layout_ui_editor .tabs {
+	border-top:1px solid #eee;
 }
 .settings .ptl > .ptl_external_vars {
 	width:48%;
@@ -286,14 +300,13 @@
 }
 .settings .ptl .ptl_external_vars input {
 	margin-right:5px;
-	height:17px;
-	line-height:17px;
 }
 .settings .ptl .ptl_external_vars input.value {
 	width:150px;
 }
 .settings .ptl .ptl_external_vars input.key {
 	width:60px;
+	height:19px;
 	background-color:#FFF;
 	color:#AAA;
 	border:1px solid #ECECEC;
@@ -301,15 +314,19 @@
 	font-size:9px;
 }
 .settings .ptl .ptl_external_vars .item_add {
-	background:url("../../img/icon/item_add_icon.png") no-repeat scroll 0 0;
-	margin:1px 0px 0px 5px;
+	margin:0 0 0 5px;
+}
+.settings .ptl .ptl_external_vars .item_add::before {
+	content:"\f0fe";
+    font-size: 14px
 }
 .settings .ptl .ptl_external_vars .remove {
-	background:url("../../img/icon/delete_icon.gif") no-repeat scroll 0 0;
-	margin:2px 0px 0px 0px;
 	float:none;
 	display:inline-block;
 	vertical-align:middle;
+}
+.settings .ptl .ptl_external_vars .add_variable.inline {
+	margin:4px 0 0 -24px;
 }
 
 /* LIST BUTTON FIELDS */
@@ -336,13 +353,11 @@
 .module_settings .settings div .show_edit_button label,
    .module_settings .settings div .show_delete_button label {
 	width:170px;
-   	display:block;
-	float:left;
+   	display:inline-block;
 }
 .module_settings .settings div .edit_page_url label {
 	width:110px;
-   	display:block;
-	float:left;
+   	display:inline-block;
 }
 .module_settings .settings div .edit_page_url input {
 	width:350px;
@@ -374,25 +389,27 @@
    .module_settings .settings div .allow_insertion label,
    .module_settings .settings div .allow_deletion label {
 	width:160px;
-   	display:block;
-	float:left;
+   	display:inline-block;
 }
 .module_settings .settings div .undefined_object label {
-	width:210px;
-   	display:block;
-	float:left;
+	width:200px;
+   	display:inline-block;
 }
 .module_settings .settings div .allow_update input,
    .module_settings .settings div .allow_view input,
    .module_settings .settings div .allow_insertion input,
    .module_settings .settings div .allow_deletion input {
-	float:left;
+	
 }
 .module_settings .settings div .allow_update .icon,
    .module_settings .settings div .allow_view .icon,
    .module_settings .settings div .allow_insertion .icon,
    .module_settings .settings div .allow_deletion .icon {
 	margin-left:10px;
+	font-size:16px;
+}
+.module_settings .settings div .undefined_object .icon {
+	font-size:16px;
 }
 
 .module_settings .settings div .status_action {
@@ -436,14 +453,12 @@
    .module_settings .settings div .status_action .on_ok_redirect_url label,
    .module_settings .settings div .status_action .on_error_redirect_url label {
 	width:150px;
-   	display:block;
-	float:left;
+   	display:inline-block;
 }
 .module_settings .settings div .status_action .on_ok_redirect_ttl label,
    .module_settings .settings div .status_action .on_error_redirect_ttl label {
 	width:110px;
-   	display:block;
-	float:left;
+   	display:inline-block;
 }
 .module_settings .settings div .status_action .on_ok_message input,
    .module_settings .settings div .status_action .on_error_message input {
@@ -554,15 +569,19 @@
 
 /* SEARCH PAGE URL */
 .module_settings .settings div .search_page_url {
-	margin:2px 0 0 -18px;
+	margin:auto 0 auto -18px;
 	position:absolute;
 	float:none;
 	clear:both;
 	display:inline-block;
 	vertical-align:middle;
+	font-size:16px;
 }
 
 /* ADD VARIABLE ICON */
+.module_settings .settings div .icon.add_variable::before {
+	font-size:16px;
+}
 .module_settings .settings div .add_variable.inline {
 	margin:2px 0 0 -18px;
 	position:absolute;
@@ -571,9 +590,6 @@
 	display:inline-block;
 	vertical-align:middle;
 	opacity:.8;
-}
-.module_settings .settings div .add_variable {
-	background: url("../../img/icon/sort_icon.png") no-repeat scroll 0 0;
 }
 
 /* FORM BUTTON FIELDS */

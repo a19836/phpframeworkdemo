@@ -18,7 +18,12 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $head = $WorkFlowUIHandler->getHeader(); $head .= '<link rel="stylesheet" href="' . $project_url_prefix . 'css/db/diagram.css" type="text/css" charset="utf-8" />
+include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $head = $WorkFlowUIHandler->getHeader(); $head .= '
+	<!-- Top-Bar CSS file -->
+	<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+	
+	<!-- Add Local JS and CSS files -->
+	<link rel="stylesheet" href="' . $project_url_prefix . 'css/db/diagram.css" type="text/css" charset="utf-8" />
 	<script>
 		var get_updated_db_diagram_url = \'' . $project_url_prefix . 'db/get_updated_db_diagram?layer_bean_folder_name=' . $layer_bean_folder_name . '&bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $workflow_path_id . '\';
 		var get_db_data_url = \'' . $project_url_prefix . 'db/get_db_data?layer_bean_folder_name=' . $layer_bean_folder_name . '&bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&table=#table#\';
@@ -26,7 +31,12 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHan
 		
 		var task_type_id = "' . WorkFlowDBHandler::TASK_TABLE_TYPE . '";
 	</script>
-	<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/db/diagram.js"></script>'; $head .= $WorkFlowUIHandler->getJS($workflow_path_id); $head .= '<script>prepareTaskContextMenu();</script>'; $menus = array( "Save" => array("class" => "save", "click" => "return saveDBDiagram();"), "Flush Cache" => array("class" => "flush_cache", "click" => "return flushCache();"), "Update DB Diagram Automatically" => array("class" => "update_db_diagram_automatically", "click" => "return updateDBDiagram();"), "Add new Table" => array("class" => "add_new_table", "click" => "addNewTable();return false;"), "Empty Diagram" => array("class" => "empty_diagram", "click" => "emptyDiagam();return false;"), "Create Diagram's SQL" => array("class" => "create_diagram_sql", "click" => "createDiagamSQL();return false;"), ); $WorkFlowUIHandler->setMenus($menus); $main_content = $WorkFlowUIHandler->getContent(); if ($DBDriver) $main_content .= '<script>
+	<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/db/diagram.js"></script>'; $head .= $WorkFlowUIHandler->getJS($workflow_path_id); $head .= '<script>prepareTaskContextMenu();</script>'; $menus = array( "Flush Cache" => array( "class" => "flush_cache", "html" => '<a onClick="return flushCache();"><i class="icon flush_cache"></i> Flush Cache</a>', ), "Empty Diagram" => array( "class" => "empty_diagram", "html" => '<a onClick="emptyDiagam();return false;"><i class="icon empty_diagram"></i> Empty Diagram</a>', ), "Add new Table" => array( "class" => "add_new_table", "html" => '<a onClick="addNewTable();return false;"><i class="icon add"></i> Add new Table</a>', ), "Update DB Diagram Automatically" => array( "class" => "update_db_diagram_automatically", "html" => '<a onClick="return updateDBDiagram();"><i class="icon update_db_diagram_automatically"></i> Update DB Diagram Automatically</a>', ), "Create Diagram's SQL" => array( "class" => "create_diagram_sql", "html" => '<a onClick="createDiagamSQL();return false;"><i class="icon create_diagram_sql"></i> Create Diagram\'s SQL</a>', ), "Save" => array( "class" => "save", "html" => '<a onClick="return saveDBDiagram();"><i class="icon save"></i> Save</a>', ), ); $WorkFlowUIHandler->setMenus($menus); $main_content = '
+	<div class="top_bar">
+		<header>
+			<div class="title">Tables Diagram from DB: \'' . $bean_name . '\'</div>
+		</header>
+	</div>'; $main_content .= $WorkFlowUIHandler->getContent(); if ($DBDriver) $main_content .= '<script>
 			DBTableTaskPropertyObj.column_types = ' . json_encode($DBDriver->getDBColumnTypes()) . ';
 			DBTableTaskPropertyObj.column_simple_types = ' . json_encode($DBDriver->getDBColumnSimpleTypes()) . ';
 			DBTableTaskPropertyObj.column_numeric_types = ' . json_encode($DBDriver->getDBColumnNumericTypes()) . ';

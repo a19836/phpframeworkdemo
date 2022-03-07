@@ -127,7 +127,7 @@ function onUserSettingsTypeChange(elm) {
 }
 
 function saveSingleSignOn(button) {
-	var block_settings = $(button).parent().closest(".block_obj").children(".module_settings").children(".settings").children(".edit_settings");
+	var block_settings = $(".block_obj > .module_settings > .settings > .edit_settings");
 	var actions_settings = block_settings.children(".actions_settings");
 	
 	if (!onSaveValidationFields(actions_settings))

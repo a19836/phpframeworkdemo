@@ -103,3 +103,17 @@ function removeStoreTemplateUrl(elm) {
 	upload_url.after('<input class="upload_file" type="file" name="zip_file">');
 	upload_url.remove();
 }
+
+function installTemplate(elm) {
+	var oForm = $(".file_upload > form");
+	var zip_url = oForm.find(".upload_url input");
+	var zip_file = oForm.find("input.upload_file");
+	var status = (zip_url[0] && zip_url.val() != "") || (zip_file[0] && zip_file[0].files.length > 0);
+	
+	if (status) {
+		$(elm).hide();
+		oForm.submit();
+	}
+	else
+		StatusMessageHandler.showError("You must upload a template first!");
+}

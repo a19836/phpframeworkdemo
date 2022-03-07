@@ -119,7 +119,7 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC
 				<input type="button" value="UPDATE" onClick="' . $v8aefdcedb9 . '.settings.updateFunction(this)" />
 			</div>
 		</div>'; } public static function getTemplateRegionBlockHtmlEditorPopupHtml($pefdd2109) { return '<div class="template_region_block_html_editor_popup myfancypopup">
-			<div class="layout_ui_editor">
+			<div class="layout_ui_editor reverse fixed_properties">
 				<ul class="menu-widgets hidden">
 					' . $pefdd2109 . '
 				</ul>
@@ -134,7 +134,7 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC
 		
 			<div class="other_region_blocks">
 				<label>Extra Regions:</label>
-				<span class="icon add" onClick="addOtherRegionBlock(this)">Add</span>
+				<span class="icon add" onClick="addOtherRegionBlock(this)" title="Add">Add</span>
 			
 				<div class="items">'; $v7959970a41 = false; if ($v2b1e634696) { $pc37695cb = count($v2b1e634696); $v5bd013bcfe = array(); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v49cb7db1ab = $v2b1e634696[$v43dd7d0051]; $v9b9b8653bc = $v49cb7db1ab[0]; $peebaaf55 = $v49cb7db1ab[1]; $pd6ec966e = $v49cb7db1ab[2]; $pcbe60070 = $v49cb7db1ab[3]; $v8eaa4de79a = $pcbe60070 ? md5($peebaaf55) : $peebaaf55; if (!isset($pc9cb1421[$v9b9b8653bc][$v8eaa4de79a][$pd6ec966e])) { if (isset($v5bd013bcfe["$v9b9b8653bc-$v8eaa4de79a-$pd6ec966e"])) $v5bd013bcfe["$v9b9b8653bc-$v8eaa4de79a-$pd6ec966e"]++; else $v5bd013bcfe["$v9b9b8653bc-$v8eaa4de79a-$pd6ec966e"] = 0; $pf8ed4912 .= self::getRegionBlockHtml($v9b9b8653bc, $peebaaf55, $pd6ec966e, $pcbe60070, $v5aaf0d3496, $v5e5b435544, $peb496cef, $v5bd013bcfe["$v9b9b8653bc-$v8eaa4de79a-$pd6ec966e"]); $v7959970a41 = true; } } } $pf8ed4912 .= '	</div>
 				<div class="no_items' . ($v7959970a41 ? ' hidden' : '') . '">There are no extra regions in this file</div>
@@ -142,7 +142,7 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC
 		
 			<div class="includes">
 				<label>Includes:</label>
-				<span class="icon add" onClick="addInclude(this)">Add</span>
+				<span class="icon add" onClick="addInclude(this)" title="Add">Add</span>
 			
 				<div class="items">'; if ($pc06f1034) { $pc37695cb = count($pc06f1034); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $pc24afc88 = $pc06f1034[$v43dd7d0051]; $v154d33eec4 = CMSPresentationLayerHandler::getArgumentCode($pc24afc88["path"], $pc24afc88["path_type"]); $pf8ed4912 .= self::getIncludeHtml($v154d33eec4, $pc24afc88["once"]); } } $pf8ed4912 .= '	</div>
 				<div class="no_items' . ($pc06f1034 ? ' hidden' : '') . '">There are no includes in this file</div>
@@ -157,12 +157,12 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC
 		
 			<div class="other_template_params">
 				<label>Extra Params:</label>
-				<span class="icon add" onClick="addOtherTemplateParam(this)">Add</span>
+				<span class="icon add" onClick="addOtherTemplateParam(this)" title="Add">Add</span>
 			
 				<div class="items">'; $v7959970a41 = false; foreach ($v1fb4b254d3 as $v58b61e02bc => $v72eb975550) { if ($v58b61e02bc && !isset($v0db218b458[$v58b61e02bc])) { $pf8ed4912 .= self::getTemplateParamHtml($v58b61e02bc, $v72eb975550); $v7959970a41 = true; } } $pf8ed4912 .= '	</div>
 				<div class="no_items' . ($v7959970a41 ? ' hidden' : '') . '">There are no extra params in this file</div>
 			</div>'; return $pf8ed4912; } public static function getRegionBlockHtml($v9b9b8653bc, $paa7b7454, $v7eefa5ee2c, $v2b9707135d, $v5aaf0d3496, $v5e5b435544 = array(), $peb496cef = array(), $pe603f3eb = 0) { $v5aaf0d3496 = is_array($v5aaf0d3496) ? $v5aaf0d3496 : array(); $v23caa16bce = $v36aefa195e = array(); if (!$v2b9707135d) { $v23caa16bce = $v5e5b435544[$v9b9b8653bc][$paa7b7454]; $v36aefa195e = $peb496cef[$v9b9b8653bc][$paa7b7454][$pe603f3eb]; $v56b1e1a2b7 = substr($paa7b7454, 0, 1) == '"' ? str_replace('"', '', $paa7b7454) : $paa7b7454; $pc611e727 = substr($v7eefa5ee2c, 0, 1) == '"' ? str_replace('"', '', $v7eefa5ee2c) : $v7eefa5ee2c; $pd45d0d0d = $v5aaf0d3496[$pc611e727]; $v7959970a41 = empty($v56b1e1a2b7) || ($pd45d0d0d && in_array($v56b1e1a2b7, $pd45d0d0d)); $pe7eba739 = !$v7959970a41 && strpos($paa7b7454, "\n") === false && (substr($paa7b7454, 0, 1) == '"' || !strlen($paa7b7454)); $peb283674 = !$v7959970a41 && strpos($paa7b7454, "\n") !== false; $pada21496 = !$v7959970a41 && strpos($paa7b7454, "\n") === false && substr($paa7b7454, 0, 1) == '$' && strpos($paa7b7454, "->") === false; $v7fa8301bf0 = $v7959970a41; $v3ae55a9a2e = $pe7eba739 || $pada21496 ? ' is_input' : ($peb283674 ? ' is_text' : ''); $v3ae55a9a2e .= $v7fa8301bf0 && $paa7b7454 ? ' has_edit' : ''; } else { $v3fb9f41470 = CMSPresentationLayerHandler::getValueType($paa7b7454, array("empty_string_type" => "string", "non_set_type" => "string")); $pf8ed4912 = CMSPresentationLayerHandler::getArgumentCode($paa7b7454, $v3fb9f41470); $v3ae55a9a2e = ' is_html has_edit'; } $v7a1b9c07b3 = substr($v9b9b8653bc, 0, 1) == '"' ? str_replace('"', '', $v9b9b8653bc) : $v9b9b8653bc; $v9b9b8653bc = str_replace('"', "&quot;", $v9b9b8653bc); $pf8ed4912 = '<div class="item' . $v3ae55a9a2e . '" rb_index="' . $pe603f3eb . '">
-			<span class="icon info invisible" onClick="openTemplateRegionInfoPopup(this)" title="View region samples">Region Info</span>
+			<span class="icon info invisible" onClick="openTemplateRegionInfoPopup(this)" title="View region samples">View region samples</span>
 			<label title="' . $v7a1b9c07b3 . '">' . $v7a1b9c07b3 . ':</label>
 			<input class="region" type="hidden" value="' . $v9b9b8653bc . '" />
 			<select class="block_options ' . ($v7fa8301bf0 ? '' : ' hidden') . '" onChange="onChangeRegionBlock(this)">
@@ -182,51 +182,51 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC
 			<span class="icon delete invisible" onClick="deleteRegionBlock(this)" title="Remove this region-block">Remove</span>
 			<span class="icon add invisible" onClick="addRepeatedRegionBlock(this)" title="Add new block for region: ' . $v7a1b9c07b3 . '">Add</span>
 			<span class="icon up invisible" onClick="moveUpRegionBlock(this)" title="Move up this region-block">Move up</span>
-			<span class="icon down invisible" onClick="moveDownRegionBlock(this)" title="Move down this region-block">Move up</span>
+			<span class="icon down invisible" onClick="moveDownRegionBlock(this)" title="Move down this region-block">Move down</span>
 			<span class="icon edit invisible" onClick="editRegionBlock(this)" title="Edit this block">Edit</span>
 			
 			<div class="block_text' . (!$peb283674 ? ' hidden' : '') . '"><textarea onBlur="onBlurRegionBlock(this)">' . stripslashes(substr($paa7b7454, 0, 1) == '"' && substr($paa7b7454, -1) == '"' ? substr($paa7b7454, 1, -1) : $paa7b7454) . '</textarea></div>
 			
-			<div class="block_html editor' . (!$v2b9707135d ? ' hidden' : '') . '"><textarea>' . ($v2b9707135d ? htmlspecialchars($paa7b7454) : "") . '</textarea></div>'; $pf8ed4912 .= '<div class="block_params">'; if ($v23caa16bce) { $pc37695cb = count($v23caa16bce); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v9acf40c110 = $v23caa16bce[$v43dd7d0051]; $pf8ed4912 .= self::getBlockParamHtml($v9acf40c110, $v36aefa195e[$v9acf40c110]); } } $pf8ed4912 .= '</div>
+			<div class="block_html editor' . (!$v2b9707135d ? ' hidden' : '') . '"><textarea onBlur="onBlurRegionBlock(this)">' . ($v2b9707135d ? htmlspecialchars($paa7b7454) : "") . '</textarea></div>'; $pf8ed4912 .= '<div class="block_params">'; if ($v23caa16bce) { $pc37695cb = count($v23caa16bce); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v9acf40c110 = $v23caa16bce[$v43dd7d0051]; $pf8ed4912 .= self::getBlockParamHtml($v9acf40c110, $v36aefa195e[$v9acf40c110]); } } $pf8ed4912 .= '</div>
 		</div>'; return $pf8ed4912; } public static function getBlockParamHtml($v58b61e02bc, $v67db1bd535) { $v9acf40c110 = substr($v58b61e02bc, 0, 1) == '"' ? str_replace('\\"', '"', substr($v58b61e02bc, 1, -1)) : $v58b61e02bc; $v956913c90f = substr($v67db1bd535, 0, 1) == '"' ? str_replace('\\"', '"', substr($v67db1bd535, 1, -1)) : $v67db1bd535; $v58b61e02bc = str_replace('"', "&quot;", $v58b61e02bc); return '<div class="block_param" param="' . $v58b61e02bc . '">
 			<label title="' . str_replace('"', "&quot;", $v9acf40c110) . '">' . $v9acf40c110 . ':</label>
 			<input class="block_param_name" type="hidden" value="' . $v58b61e02bc . '" />
-			<input class="block_param_value' . (strpos($v67db1bd535, "\n") !== false ? ' hidden' : '') . '" type="text" value="' . str_replace('"', "&quot;", $v956913c90f) . '" />
+			<input class="block_param_value' . (strpos($v67db1bd535, "\n") !== false ? ' hidden' : '') . '" type="text" value="' . str_replace('"', "&quot;", $v956913c90f) . '" onBlur="onBlurRegionBlockParam(this)" />
 			<select onChange="onChangeRegionBlockParamType(this)">
 				<option value="">default</option>
 				<option' . (strpos($v67db1bd535, "\n") === false && (substr($v67db1bd535, 0, 1) == '"' || !strlen($v67db1bd535)) ? ' selected' : '') . '>string</option>
 				<option' . (strpos($v67db1bd535, "\n") !== false ? ' selected' : '') . '>text</option>
 				<option' . (strpos($v67db1bd535, "\n") === false && substr($v67db1bd535, 0, 1) == '$' && strpos($v67db1bd535, "->") === false ? ' selected' : '') . '>variable</option>
 			</select>
-			<span class="icon search search_page" onclick="onPresentationIncludePageUrlTaskChooseFile(this)" title="Choose a page url">Search</span>
-			<span class="icon search search_image" onclick="onPresentationIncludeImageUrlTaskChooseFile(this)" title="Choose an image url">Search</span>
-			<span class="icon add_variable" onclick="onPresentationProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Add Variable</span>
-			<div class="block_param_text' . (strpos($v67db1bd535, "\n") === false ? ' hidden' : '') . '"><textarea>' . htmlspecialchars($v956913c90f, ENT_NOQUOTES) . '</textarea></div>
+			<span class="icon search search_page" onclick="onPresentationIncludePageUrlTaskChooseFile(this)" title="Choose a page url">Search Page</span>
+			<span class="icon search search_image" onclick="onPresentationIncludeImageUrlTaskChooseFile(this)" title="Choose an image url">Search Image</span>
+			<span class="icon add_variable search_variable" onclick="onPresentationProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Search Variable</span>
+			<div class="block_param_text' . (strpos($v67db1bd535, "\n") === false ? ' hidden' : '') . '"><textarea onBlur="onBlurRegionBlockParam(this)">' . htmlspecialchars($v956913c90f, ENT_NOQUOTES) . '</textarea></div>
 		</div>'; } public static function getIncludeHtml($v154d33eec4, $v311012acc5) { $v52679883a6 = substr($v154d33eec4, 0, 1) == '"' ? str_replace('\\"', '"', substr($v154d33eec4, 1, -1)) : $v154d33eec4; return '<div class="item">
-			<input class="path" type="text" value="' . str_replace('"', "&quot;", $v52679883a6) . '" />
-			<span class="icon search" onClick="onPresentationIncludeTaskChoosePage(this)" title="Choose a file to include">Search</span>
-			<select>
+			<input class="path" type="text" value="' . str_replace('"', "&quot;", $v52679883a6) . '" onBlur="onBlurInclude(this)" />
+			<select onchange="onChangeIncludeType(this)">
 				<option value="">default</option>
 				<option' . (substr($v154d33eec4, 0, 1) == '"' || !strlen($v154d33eec4) ? ' selected' : '') . '>string</option>
 				<option' . (substr($v154d33eec4, 0, 1) == '$' && strpos($v154d33eec4, "->") === false ? ' selected' : '') . '>variable</option>
 			</select>
-			<input class="once" type="checkbox" value="1"' . ($v311012acc5 ? ' checked' : '') . ' title="Check here to active the include ONCE feature" />
-			<span class="icon delete" onClick="$(this).parent().remove();">Remove</span>
+			<input class="once" type="checkbox" value="1"' . ($v311012acc5 ? ' checked' : '') . ' title="Check here to active the include ONCE feature" onchange="onChangeIncludeOnce(this)" />
+			<span class="icon search" onClick="onPresentationIncludeTaskChoosePage(this)" title="Choose a file to include">Search</span>
+			<span class="icon delete" onClick="removeInclude(this)">Remove</span>
 		</div>'; } public static function getTemplateParamHtml($v58b61e02bc, $v67db1bd535) { $v9acf40c110 = substr($v58b61e02bc, 0, 1) == '"' ? str_replace('\\"', '"', substr($v58b61e02bc, 1, -1)) : $v58b61e02bc; $v956913c90f = substr($v67db1bd535, 0, 1) == '"' ? str_replace('\\"', '"', substr($v67db1bd535, 1, -1)) : $v67db1bd535; $v58b61e02bc = str_replace('"', "&quot;", $v58b61e02bc); return '<div class="item">
 			<label title="' . str_replace('"', "&quot;", $v9acf40c110) . '">' . $v9acf40c110 . ':</label>
 			<input class="template_param_name" type="hidden" value="' . $v58b61e02bc . '" />
-			<input class="template_param_value' . (strpos($v67db1bd535, "\n") !== false ? ' hidden' : '') . '" type="text" value="' . str_replace('"', "&quot;", $v956913c90f) . '" />
+			<input class="template_param_value' . (strpos($v67db1bd535, "\n") !== false ? ' hidden' : '') . '" type="text" value="' . str_replace('"', "&quot;", $v956913c90f) . '" onBlur="onBlurTemplateParam(this)" />
 			<select onChange="onChangeTemplateParamType(this)">
 				<option value="">default</option>
 				<option' . (strpos($v67db1bd535, "\n") === false && (substr($v67db1bd535, 0, 1) == '"' || !strlen($v67db1bd535)) ? ' selected' : '') . '>string</option>
 				<option' . (strpos($v67db1bd535, "\n") !== false ? ' selected' : '') . '>text</option>
 				<option' . (strpos($v67db1bd535, "\n") === false && substr($v67db1bd535, 0, 1) == '$' && strpos($v67db1bd535, "->") === false ? ' selected' : '') . '>variable</option>
 			</select>
-			<span class="icon search search_page" onclick="onPresentationIncludePageUrlTaskChooseFile(this)" title="Choose a page url">Search</span>
-			<span class="icon search search_image" onclick="onPresentationIncludeImageUrlTaskChooseFile(this)" title="Choose an image url">Search</span>
-			<span class="icon add_variable" onclick="onPresentationProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Add Variable</span>
-			<span class="icon delete" onClick="$(this).parent().remove();">Remove</span>
-			<div class="template_param_text' . (strpos($v67db1bd535, "\n") === false ? ' hidden' : '') . '"><textarea>' . htmlspecialchars($v956913c90f, ENT_NOQUOTES) . '</textarea></div>
+			<span class="icon search search_page" onclick="onPresentationIncludePageUrlTaskChooseFile(this)" title="Choose a page url">Search Page</span>
+			<span class="icon search search_image" onclick="onPresentationIncludeImageUrlTaskChooseFile(this)" title="Choose an image url">Search Image</span>
+			<span class="icon add_variable search_variable" onclick="onPresentationProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Search Variable</span>
+			<span class="icon delete" onClick="removeTemplateParam(this);">Remove</span>
+			<div class="template_param_text' . (strpos($v67db1bd535, "\n") === false ? ' hidden' : '') . '"><textarea onBlur="onBlurTemplateParam(this)">' . htmlspecialchars($v956913c90f, ENT_NOQUOTES) . '</textarea></div>
 		</div>'; } public static function getTabContentTemplateLayoutHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v338a2c14a6, $pfc22cc08, $pf7b73b3a, $pe6619ae3, $pd0054995, $v9106c07f80) { $pf8ed4912 .= '
 		<div class="iframe_toolbar">
 			Screen size: 
@@ -244,10 +244,10 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC
 				<input class="width" name="width" placeHolder="Width" onKeyUp="onChangeTemplateLayoutScreenSize(this)" />px <input class="height" name="height" placeHolder="Height" onKeyUp="onChangeTemplateLayoutScreenSize(this)" />px
 			</span>
 			
-			<a class="view_template_samples" href="javascript:void(0)" onClick="openTemplateSamples(this)">View Template Samples</a>
+			<a class="icon view_template_samples" href="javascript:void(0)" onClick="openTemplateSamples(this)" title="View Template Samples">View Template Samples</a>
 		</div>
 		<div class="iframe_modules_blocks_toolbar">
-			<div class="iframe_modules_blocks_toolbar_toggle" onclick="toggleIframeModulesBlocksToolbar(this)"></div>
+			<div class="iframe_modules_blocks_toolbar_toggle" onclick="toggleIframeModulesBlocksToolbar(this)"><div class="button"></div></div>
 			<div class="iframe_modules_blocks_toolbar_content" id="iframe_modules_blocks_toolbar_content">
 				' . WorkFlowPresentationHandler::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, $v9106c07f80) . '
 			</div>

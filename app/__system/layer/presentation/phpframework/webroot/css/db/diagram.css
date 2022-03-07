@@ -1,3 +1,23 @@
+/* ICONS */
+.icon.update_db_diagram_automatically::before {
+	content:"\f00b";
+}
+.icon.update_db_diagram_automatically::after {
+	content:"\f079";
+}
+.icon.create_diagram_sql::before {
+	content:"\f542";
+}
+.icon.create_diagram_sql::after {
+	content:"\f1c0";
+}
+
+/* TASKS FLOW CHART */
+.taskflowchart.with_top_bar_menu .tasks_menu, 
+  .taskflowchart.with_top_bar_menu .tasks_menu_hide, 
+  .taskflowchart.with_top_bar_menu .tasks_flow {
+	top:32px !important;
+}
 .taskflowchart .tasks_menu {
 	width:0px !important;
 	display:none;
@@ -5,43 +25,26 @@
 }
 .taskflowchart .tasks_flow {
 	left:0px !important;
+	right:0px !important;
 }
-
 .taskflowchart .tasks_menu_hide {
 	display:none;
 }
 
-.taskflowchart .workflow_menu ul.dropdown li {
-	height:17px;
-	border-left:1px inset #FFF;
+body .task_context_menu .start_task:not(.is_start_task) a,
+  body .task_context_menu .start_task:not(.is_start_task) a {
+	/*background:url("../../common/img/icon/refresh_icon.png") no-repeat scroll 4px 4px !important;*/
+	padding-left:5px !important;
+	background:transparent;
 }
-.taskflowchart .workflow_menu ul.dropdown li a {
-	height:20px;
-	line-height:20px;
-	padding-left:22px;
-	display:block;
-}
-.taskflowchart .workflow_menu ul.dropdown li.save a {
-	background:url("../../common/img/icon/save_icon.gif") no-repeat scroll 0px 1px;	
-}
-.taskflowchart .workflow_menu ul.dropdown li.flush_cache a {
-	background:url("../../common/img/icon/recycle_icon.png") no-repeat scroll 0px 1px;	
-}
-.taskflowchart .workflow_menu ul.dropdown li.update_db_diagram_automatically a {
-	background:url("../../common/img/icon/update_icon.gif") no-repeat scroll 0px 1px;	
-}
-.taskflowchart .workflow_menu ul.dropdown li.add_new_table a {
-	background:url("../../common/img/icon/add_icon.gif") no-repeat scroll 0px 1px;	
-}
-.taskflowchart .workflow_menu ul.dropdown li.empty_diagram a {
-	background:url("../../common/img/icon/delete_icon.gif") no-repeat scroll 0px 1px;	
-}
-.taskflowchart .workflow_menu ul.dropdown li.create_diagram_sql a {
-	background:url("../../common/img/icon/edit_icon.gif") no-repeat scroll 0px 1px;	
-}
-
-.task_context_menu .start_task a {
-	background:url("../../common/img/icon/refresh_icon.png") no-repeat scroll 4px 4px !important;
+.task_context_menu .start_task a::before {
+	width:15px;
+	display:inline-block;
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f2f1";
+	margin-right:5px;
 }
 
 .loading_panel {

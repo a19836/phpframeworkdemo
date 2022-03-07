@@ -24,23 +24,35 @@
 }
 
 .call_hibernate_object_task_html {
-	min-width:420px;
+	min-width:430px;
 }
 
 .call_hibernate_object_task_html .get_automatically,
    .call_hibernate_object_task_html .module_id,
    .call_hibernate_object_task_html .service_id {
-	width:420px;
+	width:430px;
 	height:20px;
-	margin:0 auto;
+	margin:0 auto 5px;;
 }
 .call_hibernate_object_task_html .get_automatically {
 	margin-top:15px;
 	margin-bottom:5px;
 }
-
 .call_hibernate_object_task_html .get_automatically label {
-	width:250px;
+	width:230px;
+}
+.call_hibernate_object_task_html .get_automatically .icon {
+	width:23px;
+	height:23px;
+}
+.call_hibernate_object_task_html .get_automatically .icon::before {
+	content:"\f022";
+}
+.call_hibernate_object_task_html .get_automatically .icon::after {
+	content:"\f079";
+}
+.call_hibernate_object_task_html .get_automatically .icon:hover::after {
+	color:#000;
 }
 .call_hibernate_object_task_html .module_id label,
    .call_hibernate_object_task_html .service_id label {
@@ -59,7 +71,10 @@
 	text-align:center;
 	font-size:9px;
 	width:60px;
-	margin-bottom:5px;
+	height:19px;
+}
+.call_hibernate_object_task_html .broker_method_obj .search {
+	margin:0;
 }
 
 

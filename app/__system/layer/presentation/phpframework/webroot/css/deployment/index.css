@@ -1,5 +1,10 @@
 /* TASKS FLOW CHART */
 
+.taskflowchart.with_top_bar_menu .tasks_menu, 
+  .taskflowchart.with_top_bar_menu .tasks_menu_hide, 
+  .taskflowchart.with_top_bar_menu .tasks_flow {
+	top:32px !important;
+}
 .taskflowchart .tasks_menu {
 	width:0px !important;
 	display:none;
@@ -7,39 +12,10 @@
 }
 .taskflowchart .tasks_flow {
 	left:0px !important;
+	right:0px !important;
 }
-
 .taskflowchart .tasks_menu_hide {
 	display:none;
-}
-
-.taskflowchart .workflow_menu ul.dropdown li {
-	height:17px;
-	border-left:1px inset #FFF;
-}
-.taskflowchart .workflow_menu ul.dropdown li a {
-	height:20px;
-	line-height:20px;
-	padding-left:22px;
-	display:block;
-}
-.taskflowchart .workflow_menu ul.dropdown li.save a {
-	background:url("../../common/img/icon/save_icon.gif") no-repeat scroll 0px 1px;	
-}
-.taskflowchart .workflow_menu ul.dropdown li.flush_cache a {
-	background:url("../../common/img/icon/recycle_icon.png") no-repeat scroll 0px 1px;	
-}
-.taskflowchart .workflow_menu ul.dropdown li.add_new_server a {
-	background:url("../../common/img/icon/add_icon.gif") no-repeat scroll 0px 1px;	
-}
-.taskflowchart .workflow_menu ul.dropdown li.empty_diagram a {
-	background:url("../../common/img/icon/delete_icon.gif") no-repeat scroll 0px 1px;	
-}
-.taskflowchart .workflow_menu ul.dropdown li.set_global_vars a { /* used in template workflow */
-	background:url("../../common/img/icon/update_icon.gif") no-repeat scroll 0px 1px;	
-}
-.taskflowchart .workflow_menu ul.dropdown li.set_project_settings a { /* used in template workflow */
-	background:url("../../common/img/icon/update_icon.gif") no-repeat scroll 0px 1px;	
 }
 
 .taskflowchart .tasks_flow .task.task_server {
@@ -51,6 +27,29 @@
 .taskflowchart .tasks_flow .selected_task_properties {
 	width:auto !important;
 	height:auto !important;
+}
+
+/* TEMPLATE TASKS FLOW CHART */
+
+.server_task_html .template_workflow > .taskflowchart > .tasks_flow {
+	top:0 !important;
+	border:0;
+}
+.server_task_html .template_workflow .taskflowchart .workflow_menu {
+	top:-30px;
+	left:auto;
+	border:0;
+	background:#fff;
+}
+.server_task_html .template_workflow .taskflowchart .workflow_menu ul.dropdown li {
+	padding:0;
+}
+.server_task_html .template_workflow .taskflowchart .workflow_menu ul.dropdown li.set_global_settings {
+	margin-left:10px;
+	border-left:0;
+}
+.server_task_html .template_workflow .taskflowchart .workflow_menu ul.dropdown li a .icon {
+	margin:0;
 }
 
 /* CHOOSE FROM FILE MANAGER */
@@ -71,20 +70,8 @@
 	clear:left;
 	float:none;
 }
-.choose_from_file_manager .button input {
-	height:20px;
-	line-height:15px;
-	border:1px outset;
-	background: #d5e3e4;
-	display:inline;
-	float:none;
-	
-	-moz-border-radius:0.5em; 
-	-webkit-border-radius:0.5em;
-	border-radius:0.5em;
-}
 .choose_from_file_manager .mytree {
-	border:1px inset #CCC;
+	border:0;
 	min-width:300px;
 	min-height:200px;
 	max-width:450px;

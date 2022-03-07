@@ -1,33 +1,52 @@
-.title {
-	margin-bottom:0;
+/* ICONS */
+.icon.toggle_module_data {
+	width:20px;
+	height:20px;
 }
+.icon.toggle_module_data::before {
+	content:"\f05a";
+}
+.icon.toggle_module_data::after {
+	content:"\f06e";
+	font-size:10px;
+}
+
+/* TOP BAR */
+.top_bar {
+	margin-bottom:10px;
+}
+.top_bar header {
+	z-index:999999;
+}
+
+/* GENERIC */
 .invalid {
 	width:100%;
 	text-align:center;
-	font-weight:bold;
 	font-style:italic;
 	color:#FF0000;
+	margin-top:10px;
 	margin-bottom:20px;
 }
 .error {
 	width:100%;
 	text-align:center;
-	font-weight:bold;
 	font-style:italic;
 	margin-bottom:20px;
 	color:red;
 }
 
+/* BLOCK OBJ */
 .block_obj {
-	width:670px;
-	margin:0 auto;
-	margin-bottom:20px;
+	margin:0 auto 20px;
 }
 
 /* MODULE DATA */
 .block_obj .module_data {
 	width:670px;
 	margin:0 auto;
+	padding:20px;
+	display:none;
 }
 .block_obj .module_data .module_img {
 	width:150px;
@@ -73,28 +92,19 @@
 	clear:left;
 	width:670px;
 }
+.block_obj .module_settings > label {
+	font-weight:normal;
+	font-style:normal;
+	opacity:.3;
+	padding-left:10px;
+}
 .block_obj .module_settings .settings {
-	border:1px inset #CCC;
+	/*border:1px inset #CCC;*/
 	min-height:100px;
 	text-align:center;
 	margin-top:5px;
 	padding:5px 5px;
 
-}
-
-/* MODULE BUTTONS */
-.block_obj .buttons {
-	margin-top:20px;
-	width:100%;
-	height:20px;
-	text-align:center;
-}
-.block_obj .buttons input {
-	height:20px;
-	line-height:15px;
-	margin-right:20px;
-	font-size:10px;
-	font-weight:bold;
 }
 
 /* MODULE ADMIN PANEL POPUP */

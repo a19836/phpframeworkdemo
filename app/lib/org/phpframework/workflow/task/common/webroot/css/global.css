@@ -1,5 +1,33 @@
+.jsplumbtaskworkflow .icon,
+  .selected_task_properties .icon,
+  .selected_connection_properties .icon {
+	margin:auto 3px;
+}
+.jsplumbtaskworkflow .icon::before,
+  .selected_task_properties .icon::before,
+  .selected_connection_properties .icon::before {
+	vertical-align: middle;
+	font-size:14px;
+}
+.jsplumbtaskworkflow .icon::after,
+  .selected_task_properties .icon::after,
+  .selected_connection_properties .icon::after {
+	font-size:14px;
+}
+.jsplumbtaskworkflow .icon.add::before,
+  .selected_task_properties .icon.add::before,
+  .selected_connection_properties .icon.add::before {
+	vertical-align:text-top;
+	font-size:16px;
+}
+.jsplumbtaskworkflow .icon.textarea::before,
+  .selected_task_properties .icon.textarea::before,
+  .selected_connection_properties .icon.textarea::before {
+	content:"\f074";
+}
+
 /* BLUE GRADIENT */
-.table_header {
+/*.table_header {
 	padding: 0px;
 	border: 1px outset #999999;
 	background: #d5e3e4;
@@ -18,7 +46,7 @@
 	color:#555555;
 	font-weight:normal;
 	text-align:center;
-}
+}*/
 
 /* GRAY-BLUE GRADIENT 
 .table_header {

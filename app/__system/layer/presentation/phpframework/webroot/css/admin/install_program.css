@@ -1,15 +1,12 @@
-.install_program {
-	margin:20px;
-	text-align:center;
+/* TOP BAR */
+.top_bar {
+	margin-bottom:20px;
 }
-.install_program .title {
-	color: #000;
-	font-size: 16px;
-	font-weight: bold;
-	margin: 10px 0 20px 0px;
-	text-align: center;
-	width: 100%;
-	height:25px;
+
+/* INSTALL PROGRAM */
+.install_program {
+	margin:0 20px 20px;
+	text-align:center;
 }
 .install_program input[type=text][disabled] {
 	opacity:.3;
@@ -43,14 +40,6 @@
 	display:inline-block;
 	float:none;
 	vertical-align:middle;
-}
-.install_program .step_0 .button {
-	display:block;
-	margin:10px auto 20px auto;
-	height:20px;
-	line-height:15px;
-	font-size:10px;
-	font-weight:bold;
 }
 .install_program .step_0 .warning {
 	margin:20px;
@@ -121,10 +110,6 @@
 	display:inline-block;
 	margin:10px auto;
 }
-.install_program .step_1 .buttons {
-	margin-top:10px;
-	margin-bottom:10px;
-}
 
 .install_program .step_2 > .db_drivers > label,
   .install_program .step_2 > .layers > label {
@@ -152,10 +137,6 @@
 	text-align:center;
 }
 
-.install_program .step_3 .buttons {
-	margin-top:10px;
-	margin-bottom:10px;
-}
 .install_program .step_3 > .error {
 	color:red;
 }

@@ -27,6 +27,15 @@
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/file_manager.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/file_manager.js"></script>
 
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
+<!-- Add Icon CSS -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/diff/index.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/diff/index.js"></script>
@@ -34,7 +43,15 @@
 <script>
 var get_sub_files_url = \'' . addcslashes($get_sub_files_url, "'") . '\';
 var first_node_to_load = ' . json_encode($_GET) . ';
-</script>'; $head .= LayoutTypeProjectUIHandler::getHeader(); $main_content = '<div class="title">Files diff</div>
+</script>'; $head .= LayoutTypeProjectUIHandler::getHeader(); $main_content = '
+<div class="top_bar">
+	<header>
+		<div class="title">Files diff</div>
+		<ul>
+			<li class="execute_diff" title="Execute Diff"><a onclick="diff();"><i class="icon continue"></i> Execute diff</a></li>
+		</ul>
+	</header>
+</div>
 
 <div class="diff">
 	<div id="file_tree" class="mytree hidden">
@@ -49,8 +66,6 @@ var first_node_to_load = ' . json_encode($_GET) . ';
 	<div class="files_selection_info">
 		<input class="first_selection_info" value="" placeHolder="Please select a file in the above file manager tree" />
 		<input class="second_selection_info" value="" placeHolder="Please select a file in the above file manager tree" />
-		
-		<input type="button" value="Execute Diff" onClick="diff(this)" />
 	</div>
 
 	<div class="files_differences">

@@ -79,6 +79,9 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		<script src="' . $this->project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ace.js"></script>
 		<script src="' . $this->project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
 		
+		<!-- Add Fontawsome Icons CSS -->
+		<link rel="stylesheet" href="' . $this->project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+		
 		<!-- Add Icons CSS files -->
 		<link rel="stylesheet" href="' . $this->project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 		
@@ -110,13 +113,13 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		
 		$html = '
 	<div class="manage_table_exta_attributes edit_table">
-		<h3>Table Settings <a class="icon refresh" href="javascript:void(0);" onClick="document.location=document.location+\'\';">refresh</a></h3>
+		<h3>Table Settings <a class="icon refresh" href="javascript:void(0);" onClick="document.location=document.location+\'\';" title="Refresh">Refresh</a></h3>
 		<div class="table_settings">
 			<form method="post">
 				<input type="hidden" name="step" value="1"/>
 				
 				<div class="attributes">
-					<label>Attributes for table: "' . $this->extra_attributes_table_name . '" <a class="icon add" onClick="addTableAttribute(this)">ADD</a></label>
+					<label>Attributes for table: "' . $this->extra_attributes_table_name . '" <a class="icon add" onClick="addTableAttribute(this)" title="Add">Add</a></label>
 				</div>
 				
 				<table>
@@ -137,7 +140,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 							<th class="table_attr_file_type table_header">File Type</th>
 							<th class="table_attr_comment table_header"' . (in_array("comment", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>Comments</th>
 							<th class="table_attr_icons">
-								<a class="icon add" onClick="addTableAttribute(this)">ADD</a>
+								<a class="icon add" onClick="addTableAttribute(this)" title="Add">Add</i></a>
 							</th>
 						</tr>
 					</thead>
@@ -547,7 +550,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 				<input type="text" name="attributes[' . $idx . '][comment]" value="' . $data["comment"] . '" ' . ($is_comment_disabled ? 'disabled="disabled"' : '') . ' />
 			</td>
 			<td class="table_attr_icons">
-				<a class="icon delete" onClick="removeTableAttribute(this)" ' . ($data ? 'confirm="1"' : "") . '>remove</a>
+				<a class="icon delete" onClick="removeTableAttribute(this)" ' . ($data ? 'confirm="1"' : "") . ' title="Remove">Remove</a>
 			</td>
 		</tr>';
 		

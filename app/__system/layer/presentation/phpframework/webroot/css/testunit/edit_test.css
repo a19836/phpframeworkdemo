@@ -1,7 +1,17 @@
+/* TOP BAR */
+.top_bar {
+	margin-bottom:10px;
+}
+
+/* EDIT TEST */
 .edit_test {
-	width:99%;
+	width:100%;
 	overflow:auto;
-	margin:0 auto;
+	margin:0;
+	padding:0;
+	border:0;
+	box-sizing:border-box;
+	position:relative;
 }
 
 .error {
@@ -10,10 +20,27 @@
 	font-weight:bold;
 }
 
+/* EDIT TEST - SETTINGS */
 .edit_test #settings {
-	width:auto;
-	min-width:700px;
+	height:220px;
 	margin:0 auto;
+	padding:40px 10px 10px;
+	position:fixed;
+	left:0;
+	right:0;
+	bottom:0;
+	overflow:auto;
+	box-sizing:border-box;
+	z-index:1050;
+	background:#fff;
+}
+.edit_test #settings:not(.resizing) {
+	transition:1s all;
+}
+.edit_test #settings.collapsed {
+	height:25px !important;
+	padding-top:0;
+	overflow:hidden;
 }
 
 .edit_test #settings div {
@@ -22,33 +49,62 @@
 }
 .edit_test #settings label {
 	width:80px;
-	height:20px;
 	padding-top:3px;
-	display:block;
-	float:left;
+	display:inline-block;
+	font-weight:normal;
+	font-style:normal;
 }
 .edit_test #settings input {
-	height:20px;
-	line-height:20px;
-	display:block;
-	float:left;
+	display:inline-block;
 	font-size:12px;
 }
 .edit_test #settings select {
-	height:25px;
-	line-height:25px;
-	display:block;
-	float:left;
+	display:inline-block;
 	font-size:12px;
 }
 
-.edit_test #settings div .add {
-	margin:3px 0 0 0;
+.edit_test #settings .settings_header {
+	height:30px;
+	margin-top:-40px;
+	padding:5px;
+	position:fixed;
+	left:0;
+	right:0;
+	box-sizing:border-box;
+	overflow:hidden;
+	cursor:ns-resize;
+	z-index:1051;
+	border-top:1px solid #ccc;
+	
+	background: -moz-linear-gradient(top, #eee 50%, #f7f7f7 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #f7f7f7));
+	background: -webkit-linear-gradient(top, #eee 50%, #f7f7f7 100%);
+	background: -o-linear-gradient(top, #eee 50%, #f7f7f7 100%);
+	background: -ms-linear-gradient(top, #eee 50%, #f7f7f7 100%);
+	background: linear-gradient(to bottom, #eee 50%, #f7f7f7 100%);
+}
+.edit_test #settings.collapsed .settings_header {
+	margin-top:-3px;
+	border:0;
+		
+	background: -moz-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(50%, #eee), color-stop(100%, #ffffff73));
+	background: -webkit-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	background: -o-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	background: -ms-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	background: linear-gradient(to top, #eee 50%, #ffffff73 100%);
+}
+.edit_test #settings .settings_header .icon {
+	margin:0 5px 0 0;
+	float:right;
+	font-size:16px;
 }
 
 .edit_test #settings .enabled {
 	width:100%;
-	height:25px;
+}
+.edit_test #settings.collapsed .enabled {
+	margin-top:30px;
 }
 .edit_test #settings .enabled input {
 	margin-left:0;
@@ -59,37 +115,37 @@
 	margin-top:10px;
 } 
 .edit_test #settings .global_variables_files_path label {
-	width:100%;
-	clear:left;
-	float:none;
+	width:165px;
+}
+.edit_test #settings .global_variables_files_path > .add {
+	vertical-align: middle;
+	font-size:14px;
+	display:none;
 }
 .edit_test #settings .global_variables_files_path table {
 	width:235px;
 	margin-top:5px;
-	border:1px solid #CCC;
 }
 .edit_test #settings .global_variables_files_path thead th {
-	text-transform:uppercase;
-	font-style:italic;
-	font-weight:bold;
 	font-size:10px;
-}
-.edit_test #settings .global_variables_files_path thead .add {
-	margin-left:5px;
-}
-.edit_test #settings .global_variables_files_path tbody .delete {
-	margin-top:3px;
-	height:16px;
+	border-bottom:1px solid #ccc;
+	border-right:1px solid #f5f5f5;
+	color:#666;
 }
 .edit_test #settings .global_variables_files_path tbody td {
-	border:1px inset #CCC;
+	border-bottom:1px solid #ccc;
+	border-right:1px solid #f5f5f5;
 }
-.edit_test #settings .global_variables_files_path tbody .icon_cell {
-	border:1px outset;
+.edit_test #settings .global_variables_files_path .icon_cell {
+	border:0;
+}
+.edit_test #settings .global_variables_files_path .icon_cell .icon {
+	margin:auto 5px;
+	font-size:14px;
 }
 .edit_test #settings .global_variables_files_path tbody input, .edit_test .annotations tbody select {
 	border:0;
-	background-color:#FFF;
+	background-color:transparent;
 	float:none;
 	clear:left;
 }
@@ -99,45 +155,40 @@
 }
 .edit_test #settings .global_variables_files_path table .path input {
 	width:195px;
-	text-align:center;
 }
 
 /* ANNOTATIONS */
 .edit_test #settings .annotations {
 	margin-top:10px;
 } 
-.edit_test #settings .annotations label {
-	width:100%;
-	clear:left;
-	float:none;
+.edit_test #settings .annotations > .add {
+	vertical-align: middle;
+	font-size:14px;
 }
 .edit_test #settings .annotations table {
 	width:670px;
 	margin-top:5px;
-	border:1px solid #CCC;
 }
 .edit_test #settings .annotations thead th {
-	text-transform:uppercase;
-	font-style:italic;
-	font-weight:bold;
 	font-size:10px;
-}
-.edit_test #settings .annotations thead .add {
-	margin-left:5px;
-}
-.edit_test #settings .annotations tbody .delete {
-	margin-top:3px;
-	height:16px;
+	border-bottom:1px solid #ccc;
+	border-right:1px solid #f5f5f5;
+	color:#666;
 }
 .edit_test #settings .annotations tbody td {
-	border:1px inset #CCC;
+	border-bottom:1px solid #ccc;
+	border-right:1px solid #f5f5f5;
 }
-.edit_test #settings .annotations tbody .icon_cell {
-	border:1px outset;
+.edit_test #settings .annotations .icon_cell {
+	border:0;
+}
+.edit_test #settings .annotations .icon_cell .icon {
+	margin:auto 5px;
+	font-size:14px;
 }
 .edit_test #settings .annotations tbody input, .edit_test .annotations tbody select {
 	border:0;
-	background-color:#FFF;
+	background-color:transparent;
 	float:none;
 	clear:left;
 }
@@ -156,11 +207,9 @@
 }
 .edit_test #settings .annotations table .path input {
 	width:195px;
-	text-align:center;
 }
 .edit_test #settings .annotations table .annotation_type select {
 	width:80px;
-	text-align:center;
 }
 .edit_test #settings .annotations table .description input {
 	width:145px;
@@ -185,26 +234,11 @@
 	margin-top:5px;
 }
 
-.buttons {
-	height:20px;
-	padding-top:20px;
-	text-align:center;
-	width:100%;
-	clear:left;
-	float:none;
-}
-.buttons input {
-	height:25px !important;
-	line-height:15px !important;
-	padding:3px 5px !important;
-	border:1px outset;
-	background: #d5e3e4;
-	display:inline !important;
-	float:none !important;
-	
-	-moz-border-radius:0.5em; 
-	-webkit-border-radius:0.5em;
-	border-radius:0.5em;
+/* CODE */
+.edit_test > #ui > .taskflowchart, /* is very important to have ">" otherwise it will enter in conflict with ".taskflowchart .edit_function_code > #ui .taskflowchart" */
+  .edit_test #code > textarea,
+  .edit_test #code .ace_editor {
+	height:calc(100vh - 55px) !important;
 }
 
 /* To print the workflow */

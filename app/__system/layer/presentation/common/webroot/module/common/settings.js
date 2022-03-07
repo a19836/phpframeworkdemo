@@ -26,7 +26,7 @@ function initObjectBlockSettings(class_name, save_func, save_func_name) {
 	var block_settings = $("." + class_name).first();
 	
 	if (save_func_name) {
-		block_settings.parent().parent().parent().children(".buttons").children("input").attr("onclick", save_func_name + "(this);");
+		$(".top_bar .save a").attr("onclick", save_func_name + "(this);");
 	}
 	
 	createObjectItemCodeEditor( block_settings.find(".block_css textarea.css")[0], "css", save_func);
@@ -53,7 +53,7 @@ function initObjectBlockSettings(class_name, save_func, save_func_name) {
 		ElsLayoutUIEditor.options.on_choose_page_url_func = typeof onIncludePageUrlTaskChooseFile == "function" ? onIncludePageUrlTaskChooseFile : null;
 		ElsLayoutUIEditor.options.on_choose_image_url_func = typeof onIncludeImageUrlTaskChooseFile == "function" ? onIncludeImageUrlTaskChooseFile : null;
 		ElsLayoutUIEditor.options.template_source_editor_save_func = function() {
-			var button = ptl.parent().closest(".block_obj").children(".buttons").children("input")[0];
+			var button = $(".top_bar .save a")[0];
 			save_func(button);
 		};
 		ElsLayoutUIEditor.options.on_ready_func = function() {
@@ -128,7 +128,7 @@ function loadTaskFormFieldsBlockSettings(settings_elm, settings_values, class_na
 				
 				prop_elm = $('<div class="settings_prop prop_' + field_id + ' deprecated">'
 					+ '<label class="settings_prop_label">Field "' + field_name  + '" - DEPRECATED - WILL BE DELETED ON NEXT SAVE!</label>'
-					+ '<span class="settings_prop_icon icon delete" title="Delete" onclick="$(this).parent().remove()">Delete field</span>'
+					+ '<span class="settings_prop_icon icon delete" title="Delete" onclick="$(this).parent().remove()">Remove</span>'
 					+ '<div class="clear"></div>'
 				+ '</div>');
 			}
@@ -521,7 +521,7 @@ function createObjectItemCodeEditor(textarea, type, save_func) {
 					sender: 'editor|cli'
 				},
 				exec: function(env, args, request) {
-					var button = parent.parent().closest(".block_obj").children(".buttons").children("input")[0];
+					var button = $(".top_bar .save a")[0];
 					save_func(button);
 				},
 			});
@@ -538,13 +538,20 @@ function createObjectItemCodeEditor(textarea, type, save_func) {
 }
 
 function setPtlElementTemplateSourceEditorValue(ptl, value, force) {
-	var ptl_layout_ui_editor = ptl.children(".layout_ui_editor").data("LayoutUIEditor");
+	var PtlLayoutUIEditor = ptl.children(".layout_ui_editor").data("LayoutUIEditor");
 	
-	if (ptl_layout_ui_editor) {
-		if (force)
-			ptl_layout_ui_editor.forceTemplateSourceConversionAutomatically(); //Be sure that the template source is selected
+	if (PtlLayoutUIEditor) {
+		if (force) {
+			//converts visual into code if visual tab is selected
+			var is_template_layout_tab_show = PtlLayoutUIEditor.isTemplateLayoutShown();
+			
+			if (is_template_layout_tab_show)
+				PtlLayoutUIEditor.convertTemplateLayoutToSource();
+			
+			//PtlLayoutUIEditor.forceTemplateSourceConversionAutomatically(); //Be sure that the template source is selected
+		}
 		
-		ptl_layout_ui_editor.setTemplateSourceEditorValue(value);
+		PtlLayoutUIEditor.setTemplateSourceEditorValue(value);
 	}
 	else {
 		var editor = ptl.data("editor");
@@ -559,13 +566,20 @@ function setPtlElementTemplateSourceEditorValue(ptl, value, force) {
 }
 
 function getPtlElementTemplateSourceEditorValue(ptl, force) {
-	var ptl_layout_ui_editor = ptl.children(".layout_ui_editor").data("LayoutUIEditor");
+	var PtlLayoutUIEditor = ptl.children(".layout_ui_editor").data("LayoutUIEditor");
 	
-	if (ptl_layout_ui_editor) {
-		if (force)
-			ptl_layout_ui_editor.forceTemplateSourceConversionAutomatically(); //Be sure that the template source is selected
+	if (PtlLayoutUIEditor) {
+		if (force) {
+			//converts visual into code if visual tab is selected
+			var is_template_layout_tab_show = PtlLayoutUIEditor.isTemplateLayoutShown();
+			
+			if (is_template_layout_tab_show)
+				PtlLayoutUIEditor.convertTemplateLayoutToSource();
+			
+			//PtlLayoutUIEditor.forceTemplateSourceConversionAutomatically(); //Be sure that the template source is selected
+		}
 		
-		return ptl_layout_ui_editor.getTemplateSourceEditorValue();
+		return PtlLayoutUIEditor.getTemplateSourceEditorValue();
 	}
 	
 	var editor = ptl.data("editor");
@@ -740,7 +754,7 @@ function saveListSettings(button) {
 }
 
 function saveObjectListBlock(button, class_name) {
-	var block_settings = $(button).parent().parent().children(".module_settings").children(".settings").children("." + class_name);
+	var block_settings = $(".block_obj > .module_settings > .settings > ." + class_name);
 	
 	if (block_settings.children(".show_edit_button").children("input").is(":checked")) {
 		var edit_page_url = block_settings.children(".edit_page_url").children("input").val();
@@ -827,7 +841,7 @@ function preparePTLSettingsForSaving(elm) {
 }
 
 function saveObjectBlock(button, class_name) {
-	var block_settings = $(button).parent().parent().children(".module_settings").children(".settings").children("." + class_name);
+	var block_settings = $(".block_obj > .module_settings > .settings > ." + class_name);
 	//console.log(block_settings);
 	
 	//DELETE DEPRECATED TASK FORM FIELDS
@@ -867,5 +881,5 @@ function saveObjectBlock(button, class_name) {
 		onSaveObjectBlock(block_settings, button, class_name);
 	
 	//SAVE BLOCK
-	saveBlock();
+	return saveBlock();
 }

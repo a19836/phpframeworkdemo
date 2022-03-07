@@ -42,16 +42,19 @@
 
 
 .set_template_param_task_html {
-	width:430px;
+	width:440px;
 }
 
+.set_template_param_task_html .broker_method_obj {
+	width:440px;
+}
 .set_template_param_task_html .name, 
    .set_template_param_task_html .value {
 	margin-bottom:5px;
 }
 .set_template_param_task_html .name,
    .set_template_param_task_html .value {
-	width:100%;
+	width:440px;
 	height:20px;
 }
 .set_template_param_task_html .name label,
@@ -74,14 +77,14 @@
 	text-align:center;
 	font-size:9px;
 	width:60px;
-	margin-left:5px;
+	height:19px;
 }
 .set_template_param_task_html .broker_method_obj {
 	margin-left:0;
 }
 .set_template_param_task_html .broker_method_obj input {
-	margin-left:100px;
+	margin-left:105px;
 }
-.set_template_param_task_html .broker_method_obj > .add_variable {
-	margin-top:29px;
+.set_template_param_task_html > div:not(.broker_method_obj) > .add_variable {
+	margin-left:-23px;
 }

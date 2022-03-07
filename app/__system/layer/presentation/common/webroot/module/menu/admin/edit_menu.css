@@ -51,12 +51,11 @@
 	display:none;
 }
 .module_edit .menu_items .items .menu_item .item_label {
-	background-color:#d5e3e4;
+	background-color:#eee;
 	padding:4px;
 }
 .module_edit .menu_items .items .menu_item .item_label input {
 	width:300px;
-	background-color:#FFF;
 }
 .module_edit .menu_items .items .menu_item .item_class label {
 	text-align:center;
@@ -87,7 +86,7 @@
 	margin-top:5px;
 }
 .module_edit .menu_items .items .menu_item input {
-	width:180px;
+	width:175px;
 }
 .module_edit .menu_items .items .menu_item .item_url input,
    .module_edit .menu_items .items .menu_item .item_previous_html input,
@@ -103,45 +102,9 @@
 	margin-left:20px;
 }
 
-
-.module_edit .icon {
-	display:block;
-	width:16px;
-	height:20px;
-	margin-top:2px;
-	cursor:pointer;
-	
-	/* Hide Text */
-	text-indent:-9999px;
-	white-space:nowrap;
-	overflow:hidden;
-	
-	float:left;
-	margin-left:5px;
-	margin-right:5px;
+.module_edit .icon.out::before {
+	content:"\f0a8";
 }
-.module_edit .delete {
-	background:url("../../../img/icon/delete_icon.gif") no-repeat scroll 0 -1px;
-}
-.module_edit .add {
-	background:url("../../../img/icon/add_icon.gif") no-repeat scroll 0 0;
-	margin-left:30px;
-}
-.module_edit .up {
-	background:url("../../../img/icon/up_icon.gif") no-repeat scroll 0 0;
-}
-.module_edit .down {
-	background:url("../../../img/icon/down_icon.gif") no-repeat scroll 0 0;
-}
-.module_edit .out {
-	background:url("../../../img/icon/left_icon.gif") no-repeat scroll 0 0;
-}
-.module_edit .in {
-	background:url("../../../img/icon/right_icon.gif") no-repeat scroll 0 0;
-}
-.module_edit .maximize {
-	background:url("../../../img/icon/maximize_icon.png") no-repeat scroll 0 0;
-}
-.module_edit .minimize {
-	background:url("../../../img/icon/minimize_icon.png") no-repeat scroll 0 0;
+.module_edit .icon.in::before {
+	content:"\f0a9";
 }

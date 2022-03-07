@@ -15,9 +15,9 @@ $(function () {
 	});
 });
 
-function loadUrl() {
-	var convert_url_to_template = $(".convert_url_to_template");
-	var url = convert_url_to_template.find(".page_url input").val();
+function loadUrl(elm) {
+	elm = $(elm);
+	var url = $(".top_bar .title input[name=page_url]").val();
 	
 	if (url) {
 		var iframe_doc = iframe[0].contentWindow.document;
@@ -25,6 +25,8 @@ function loadUrl() {
 		var iframe_html = iframe_contents.find("html");
 		var iframe_head = iframe_contents.find("head");
 		var iframe_body = iframe_contents.find("body");
+		
+		elm.removeClass("load").addClass("loading");
 		
 		iframe_head.html("");
 		iframe_body.html("");
@@ -135,8 +137,12 @@ function loadUrl() {
 				}
 				else
 					alert("Error loading url. Please try again...");
+				
+				elm.removeClass("loading").addClass("load");
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
+				elm.removeClass("loading").addClass("load");
+				
 				var msg = "Error loading url. Please try again...";
 				alert(msg);
 				
@@ -315,17 +321,15 @@ function convertToType(type) {
 }
 
 function saveTemplate() {
-	var convert_url_to_template = $(".convert_url_to_template");
-	var template_name = convert_url_to_template.find(".template input[name=template_name]").val();
+	var template_name = $(".top_bar .title input[name=template_name]").val();
 	
 	if (!is_page_url_loaded)
 		alert("Page url must be loaded first.");
 	else if (!template_name) 
 		alert("Template name cannot be blank.");
 	else {
-		var save_button = convert_url_to_template.find(".template input[type=button]");
-		var save_btn_value = save_button.val();
-		save_button.val("Saving...").attr("disabled", "disabled");
+		var save_button = $(".top_bar ul li.save a");
+		var on_click = save_button.attr("onClick");
 		
 		//prepare iframe html - prepare regions and params
 		var iframe_contents = iframe.contents();
@@ -419,10 +423,10 @@ function saveTemplate() {
 				else
 					alert("Error saving template. Please try again...");
 				
-				save_button.val(save_btn_value).removeAttr("disabled");
+				save_button.attr("onClick", on_click);
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
-				save_button.val(save_btn_value).removeAttr("disabled");
+				save_button.attr("onClick", on_click);
 				
 				var msg = "Error saving template. Please try again...";
 				alert(msg);

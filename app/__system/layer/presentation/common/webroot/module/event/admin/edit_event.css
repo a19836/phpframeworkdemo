@@ -44,20 +44,20 @@
 }
 
 .module_edit .cke_top {
-	background-color:#d5e3e4;
+	background-color:#eee;
 	border: 1px outset #999999;
 }
 .module_edit .cke_chrome {
-	border-color:#b3c8cc;
+	border-color:#ddd;
 }
 .module_edit .cke_bottom {
-	background-color:#d5e3e4;
+	background-color:#eee;
 }
 .module_edit .cke_bottom * {
 	color:#333;
 }
 .module_edit .cke_top a.cke_button_off:hover/*, .module_edit .cke_top a.cke_button_disabled:hover*/ {
-	background-color:#b3c8cc;
+	background-color:#ddd;
 }
 
 .module_edit .form_fields .form_field.latitude,
@@ -80,23 +80,23 @@
 .module_edit .form_fields .form_field.event_attachments label {
 	display:none;
 }
-.module_edit .form_fields .form_field.event_attachments .module_object_attachments {
+.module_edit .form_fields .form_field.event_attachments .module_edit_object_attachments {
 	margin-top:0;
 }
-.module_edit .form_fields .form_field.event_attachments .module_object_attachments .title {
+.module_edit .form_fields .form_field.event_attachments .module_edit_object_attachments .title {
 	color:#333;
 	font-family:Verdana, Arial, Courier;
 	font-style:italic;
 }
-.module_edit .form_fields .form_field.event_attachments .module_object_attachments table,
-   .module_edit .form_fields .form_field.event_attachments .module_object_attachments table td {
-	border-color:#b3c8cc;
-}
-.module_edit .form_fields .form_field.event_attachments .module_object_attachments table th {
-	background-color:#d5e3e4;
+.module_edit .form_fields .form_field.event_attachments .module_edit_object_attachments table th {
+	border-bottom:1px solid #ccc;
+	border-right:1px solid #eee;
 	color:#999;
-	font-weight:bold;
 }
-.module_edit .form_fields .form_field.event_attachments .module_object_attachments table td.name input {
+.module_edit .form_fields .form_field.event_attachments .module_edit_object_attachments table td {
+	border-bottom:1px solid #ccc;
+	border-right:1px solid #eee;
+}
+.module_edit .form_fields .form_field.event_attachments .module_edit_object_attachments table td.name input {
 	width:295px;
 }

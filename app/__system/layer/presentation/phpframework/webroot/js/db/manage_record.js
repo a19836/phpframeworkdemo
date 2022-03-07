@@ -1,7 +1,37 @@
+var saved_record_obj_id = null;
+
 $(function () {
+	if (!is_popup)
+		$(window).bind('beforeunload', function () {
+			if (isRecordChanged()) {
+				if (window.parent && window.parent.iframe_overlay)
+					window.parent.iframe_overlay.hide();
+				
+				return "If you proceed your changes won't be saved. Do you wish to continue?";
+			}
+			
+			return null;
+		});
+	
 	var manage_record = $(".manage_record");
 	prepareRecordFields(manage_record);
+	
+	//set saved_record_obj_id
+	saved_record_obj_id = getRecordObjId();
 });
+
+function getRecordObjId() {
+	var manage_record = $(".manage_record");
+	var attributes = getAttributesObj(manage_record);
+	
+	return $.md5(JSON.stringify(attributes));
+}
+
+function isRecordChanged() {
+	var new_record_obj_id = getRecordObjId();
+	
+	return saved_record_obj_id != new_record_obj_id;
+}
 
 function deleteRecord(elm) {
 	if (confirm("Do you wish to delete this record?")) {
@@ -19,6 +49,9 @@ function deleteRecord(elm) {
 					if (data == "1") {
 						manage_record.find("table, .buttons").remove();
 						manage_record.append('<div class="error">Record deleted successfully</div>');
+						
+						//set saved_record_obj_id
+						saved_record_obj_id = getRecordObjId();
 						
 						StatusMessageHandler.showMessage("Record deleted successfully!");
 						
@@ -53,6 +86,9 @@ function saveRecord(elm, do_not_confirm) {
 				dataType : "text",
 				success : function(data, textStatus, jqXHR) {
 					if (data == "1") {
+						//set saved_record_obj_id
+						saved_record_obj_id = getRecordObjId();
+						
 						StatusMessageHandler.showMessage("Record saved successfully!");
 						
 						//update pks in case the user change them
@@ -100,6 +136,9 @@ function addRecord(elm) {
 				}
 				
 				if ( ($.isNumeric(data) && data > 0) || $.isPlainObject(data) ) {
+					//set saved_record_obj_id
+					saved_record_obj_id = getRecordObjId();
+					
 					var msg = $('<div class="ok">Record added successfully!<br/>To add another record click <a href="#">here</a></div>');
 					msg.find("a").click(function(e) {
 						msg.remove();

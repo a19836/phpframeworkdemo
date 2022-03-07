@@ -1,32 +1,23 @@
 var cached_data_for_variables_in_workflow = {};
+var saved_settings_id = null;
 
 $(function () {
-	//only add popups if not exist yet
-	if (choose_from_file_manager_popup_html) {
-		var items = $(choose_from_file_manager_popup_html);
+	//unbind beforeunload that was inited by the edit_query.js and edit_simple_block.js
+	$(window).unbind('beforeunload').bind('beforeunload', function () {
+		if (isModuleFormSettingsChanged()) {
+			if (window.parent && window.parent.iframe_overlay)
+				window.parent.iframe_overlay.hide();
+			
+			return "If you proceed your changes won't be saved. Do you wish to continue?";
+		}
 		
-		$.each(items, function (idx, item) {
-			if (item.nodeType == Node.ELEMENT_NODE) {
-				var id = item.getAttribute("id");
-				
-				if (!id || $("#" + id).length == 0)
-					$(document.body).append(item);
-			}
-			else
-				$(document.body).append(item);
-		});
-	}
+		return null;
+	});
 	
-	var module_form_settings = $(".module_form_settings");
-	var block_obj = module_form_settings.parent().closest(".block_obj");
-	block_obj.children(".buttons").children("input").attr("onclick", "saveModuleFormSettings(this);");
+	//prepare top_bar
+	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu").find("li.save, li.auto_save_convert_settings, li.tasks_flow_full_screen").remove();
 	
-	if (workflow_module_installed_and_enabled)
-		block_obj.find(" > .module_data > .module_description").append('<a class="convert_to_module_workflow" onclick="convertModuleFormSettingsToModuleWorkflowSettings(this)">Convert this block into code workflow...</a>');
-	
-	createObjectItemCodeEditor( module_form_settings.find(".block_css textarea.css")[0], "css", saveModuleFormSettings);
-	createObjectItemCodeEditor( module_form_settings.find(".block_js textarea.js")[0], "javascript", saveModuleFormSettings);
-	
+	//init trees
 	/* This is already executed in the common/settings.js, so we cannot executed again.
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
@@ -63,6 +54,33 @@ $(function () {
 	});
 	chooseBlockFromFileManagerTree.init("choose_block_from_file_manager");
 	
+	//only add popups if not exist yet
+	if (choose_from_file_manager_popup_html) {
+		var items = $(choose_from_file_manager_popup_html);
+		
+		$.each(items, function (idx, item) {
+			if (item.nodeType == Node.ELEMENT_NODE) {
+				var id = item.getAttribute("id");
+				
+				if (!id || $("#" + id).length == 0)
+					$(document.body).append(item);
+			}
+			else
+				$(document.body).append(item);
+		});
+	}
+	
+	//init ui
+	var module_form_settings = $(".module_form_settings");
+	var block_obj = module_form_settings.parent().closest(".block_obj");
+	$(".top_bar .save a").attr("onclick", "saveModuleFormSettings(this);");
+	
+	if (workflow_module_installed_and_enabled)
+		block_obj.find(" > .module_data > .module_description").append('<a class="convert_to_module_workflow" onclick="convertModuleFormSettingsToModuleWorkflowSettings(this)">Convert this block into code workflow...</a>');
+	
+	createObjectItemCodeEditor( module_form_settings.find(".block_css textarea.css")[0], "css", saveModuleFormSettings);
+	createObjectItemCodeEditor( module_form_settings.find(".block_js textarea.js")[0], "javascript", saveModuleFormSettings);
+	
 	var module_form_contents = module_form_settings.children(".module_form_contents");
 	
 	//remove database options bc there are no detected db_drivers
@@ -78,6 +96,9 @@ $(function () {
 	
 	//load task flow and code editor
 	onLoadTaskFlowChartAndCodeEditor();
+	
+	//set saved settings id
+	saved_settings_id = getModuleFormSettingsId();
 	
 	MyFancyPopup.hidePopup();
 });
@@ -98,7 +119,7 @@ function loadFormBlockSettings(settings_elm, settings_values) {
 	//setting the save_func in the CreateFormTaskPropertyObj
 	if (CreateFormTaskPropertyObj) 
 		CreateFormTaskPropertyObj.editor_save_func = function () {
-			var button = module_form_settings.parent().closest(".block_obj").children(".buttons").children("input")[0];
+			var button = $(".top_bar .save a")[0];
 			saveModuleFormSettings(button);
 		}
 	
@@ -1387,7 +1408,7 @@ function initDatabaseActionBodyQuerySql(elm, rand_number) {
 					sender: 'editor|cli'
 				},
 				exec: function(env, args, request) {
-					var button = elm.parent().closest(".block_obj").children(".buttons").children("input")[0];
+					var button = $(".top_bar .save a")[0];
 					saveModuleFormSettings(button);
 				},
 			});
@@ -2127,7 +2148,7 @@ function onDrawGraphSettingsLabelsAndValuesTypeChange(elm) {
 
 function toggleGroupBody(elm) {
 	elm = $(elm);
-	elm.toggleClass("zmdi-plus-circle-o zmdi-minus-circle-outline");
+	elm.toggleClass("expand_content collapse_content");
 	
 	var group_header = elm.parent().closest(".form-group-header");
 	var group = group_header.parent().closest(".form-group-item");
@@ -2483,7 +2504,7 @@ function toggleFormWizardTableOptions(elm) {
 
 function toggleFormWizardActionOptions(elm) {
 	elm = $(elm);
-	elm.toggleClass("zmdi-plus-circle-o zmdi-minus-circle-outline");
+	elm.toggleClass("expand_content collapse_content");
 	var ao = elm.parent().children(".action-options");
 	var is_visible = ao.css("display") == "none";
 	ao.toggle();
@@ -3696,7 +3717,7 @@ function getModuleFormSettings(module_form_settings) {
 	var module_form_contents = module_form_settings.children(".module_form_contents");
 	var task_flow_tab_openned_by_user = module_form_contents.find("#tasks_flow_tab a").attr("is_init");
 	
-	if (task_flow_tab_openned_by_user) {
+	if (task_flow_tab_openned_by_user && !is_from_auto_save) { //only if not auto save action, otherwise ignore it and only save the properties.
 		var selected_tab = module_form_contents.children("ul").find("li.ui-tabs-selected, li.ui-tabs-active").first();
 		
 		if (selected_tab.attr("id") != "tasks_flow_tab") {
@@ -3875,53 +3896,90 @@ function generateTasksFlowFromGroups(do_not_confirm) {
 	return status;
 }
 
-function saveModuleFormSettings(button) {
-	MyFancyPopup.showOverlay();
-	MyFancyPopup.showLoading();
+function isModuleFormSettingsChanged() {
+	var new_settings_id = getModuleFormSettingsId();
 	
-	var module_form_settings = $(".module_form_settings");
+	return saved_settings_id != new_settings_id;
+}
+
+function getModuleFormSettingsId() {
+	var module_form_settings = $(".block_obj > .module_settings > .settings > .module_form_settings");
 	var settings = getModuleFormSettings(module_form_settings);
-	//console.log(settings);
 	
-	if (!$.isPlainObject(settings) || !$.isArray(settings["actions"])) {
-		if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-			showAjaxLoginPopup(jquery_native_xhr_object.responseURL, [ create_workflow_file_from_settings_url, jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url ], function() {
-				jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
-				StatusMessageHandler.removeLastShownMessage("error");
-				saveModuleFormSettings(button);
-			});
-		else
-			StatusMessageHandler.showError("Error trying to get form settings actions.\nPlease try again...");
+	return $.isPlainObject(settings) ? $.md5(JSON.stringify(settings)) : null;
+}
+
+function saveModuleFormSettings(button) {
+	prepareAutoSaveVars();
+	
+	var new_settings_id = getModuleFormSettingsId();
+	
+	if (!saved_settings_id || saved_settings_id != new_settings_id) {
+		if (!is_from_auto_save) {
+			MyFancyPopup.showOverlay();
+			MyFancyPopup.showLoading();
+		}
 		
-		return;
-	}
-	
-	$.ajax({
-		type : "post",
-		url : create_form_settings_code_url,
-		data : {"settings" : settings},
-		dataType : "json",
-		success : function(data, textStatus, jqXHR) {
-			if (data && data["code"])
-				saveBlockRawCode(data["code"]);
-			else
-				StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
-			
-			MyFancyPopup.hidePopup();
-		},
-		error : function() { 
+		var module_form_settings = $(".block_obj > .module_settings > .settings > .module_form_settings");
+		var settings = getModuleFormSettings(module_form_settings);
+		//console.log(settings);
+		
+		if (!$.isPlainObject(settings) || !$.isArray(settings["actions"])) {
 			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_form_settings_code_url, function() {
+				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, [ create_workflow_file_from_settings_url, jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url ], function() {
 					jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
 					StatusMessageHandler.removeLastShownMessage("error");
+					
 					saveModuleFormSettings(button);
 				});
+			else if (!is_from_auto_save)
+				StatusMessageHandler.showError("Error trying to get form settings actions.\nPlease try again...");
 			else
-				StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
+				resetAutoSave();
 			
-			MyFancyPopup.hidePopup();
-		},
-	});
+			return;
+		}
+		
+		$.ajax({
+			type : "post",
+			url : create_form_settings_code_url,
+			data : {"settings" : settings},
+			dataType : "json",
+			success : function(data, textStatus, jqXHR) {
+				if (data && data["code"]) {
+					if (saveBlockRawCode(data["code"]))
+						saved_settings_id = new_settings_id; //set new saved_str_id
+				}
+				else if (!is_from_auto_save)
+					StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
+				
+				if (!is_from_auto_save)
+					MyFancyPopup.hidePopup();
+				else
+					resetAutoSave();
+			},
+			error : function() { 
+				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_form_settings_code_url, function() {
+						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+						StatusMessageHandler.removeLastShownMessage("error");
+						
+						saveModuleFormSettings(button);
+					});
+				else if (!is_from_auto_save)
+					StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
+				
+				if (!is_from_auto_save)
+					MyFancyPopup.hidePopup();
+				else
+					resetAutoSave();
+			},
+		});
+	}
+	else if (!is_from_auto_save)
+		StatusMessageHandler.showMessage("Nothing to save.");
+	else
+		resetAutoSave();
 }
 
 function convertModuleFormSettingsToModuleWorkflowSettings(elm) {

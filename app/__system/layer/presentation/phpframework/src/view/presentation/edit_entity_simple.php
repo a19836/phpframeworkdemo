@@ -27,8 +27,14 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); $filter_by_layout_ur
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/file_manager.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/file_manager.js"></script>
 
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
 <!-- Add Icons CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
 
 <!-- Add PHP CODE CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/edit_php_code.css" type="text/css" charset="utf-8" />
@@ -80,10 +86,23 @@ var layer_default_template = \'' . $layer_default_template . '\';
 var available_templates_props = ' . json_encode($available_templates_props) . ';
 var available_projects_props = ' . json_encode($available_projects_props) . ';
 var show_templates_only = ' . ($_GET["show_templates_only"] ? 1 : 0) . '; //This is set when we switch the entity advanced ui to the simple ui.
-'; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= '</script>'; $head .= CMSPresentationLayerUIHandler::getHeader($project_url_prefix, $project_common_url_prefix, $get_available_blocks_list_url, $get_block_params_url, $create_entity_code_url, $available_blocks_list, $regions_blocks_list, $block_params_values_list, $blocks_join_points, $template_params_values_list, $selected_project_id, true); $head .= LayoutTypeProjectUIHandler::getHeader(); $main_content = '<div class="title">Edit Page "' . $entity_view_code . '" <a class="icon view" href="' . $view_project_url . '" target="project" title="View project page">View project page</a></div>'; if ($obj_data) { $code_exists = !empty(trim($obj_data["code"])); $query_string = str_replace(array("&edit_entity_type=advanced", "&edit_entity_type=simple"), "", $_SERVER["QUERY_STRING"]); $main_content .= '<div class="sub_title">(<a href="?' . $query_string . '&edit_entity_type=advanced">Switch to Free Html Editor</a>)</div>
+'; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= '</script>'; $head .= CMSPresentationLayerUIHandler::getHeader($project_url_prefix, $project_common_url_prefix, $get_available_blocks_list_url, $get_block_params_url, $create_entity_code_url, $available_blocks_list, $regions_blocks_list, $block_params_values_list, $blocks_join_points, $template_params_values_list, $selected_project_id, true); $head .= LayoutTypeProjectUIHandler::getHeader(); $query_string = str_replace(array("&edit_entity_type=advanced", "&edit_entity_type=simple"), "", $_SERVER["QUERY_STRING"]); $main_content = '
+	<div class="top_bar">
+		<header>
+			<div class="title">Edit Page "<span class="file_name" title="' . $entity_view_code . '">' . $entity_view_code . '</span>"</div>
+			<ul>
+				<li class="advanced_editor" title="Switch to Free Html Editor"><a href="?' . $query_string . '&edit_entity_type=advanced"><i class="icon show_advanced_ui"></i> Switch to Free Html Editor</a></li>
+				<li class="view_project_page" title="View Project Page"><a href="' . $view_project_url . '" target="project"><i class="icon view"></i></a></li>
+				<li class="preview" title="Preview & Test Page"><a onClick="preview()"><i class="icon preview_file"></i> Preview & Test Page</a></li>
+				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
+				<li class="save" title="Save Page"><a onClick="' . ($confirm_save ? 'confirmSave' : 'save') . '()"><i class="icon save"></i> Save</a></li>
+				<li class="save_preview" title="Save & Preview Page"><a onClick="saveAndPreview(' . ($confirm_save ? 'true' : 'false') . ');"><i class="icon save_preview_file"></i> Save & Preview Page</a></li>
+			</ul>
+		</header>
+	</div>'; if ($obj_data) { $code_exists = !empty(trim($obj_data["code"])); $main_content .= '
 	<script>	
 	var code_exists = ' . ($code_exists ? 1 : 0) . ';
-	</script>'; if ($hard_coded) $main_content .='<div class="invalid">This file was probably changed manually and if you continue editing it in this SIMPLE UI, you may overwrite some old changes.<br/>Please change to ADVANCED UI and proceed from there...</div>'; $common_webroot_path = $EVC->getWebrootPath($EVC->getCommonProjectName()); $ui_menu_widgets_html = WorkFlowPresentationHandler::getUIEditorWidgetsHtml($common_webroot_path, $project_common_url_prefix, $webroot_cache_folder_path, $webroot_cache_folder_url); $ui_menu_widgets_html .= WorkFlowPresentationHandler::getExtraUIEditorWidgetsHtml($common_webroot_path, $EVC->getViewsPath() . "presentation/common_editor_widget/", $project_url_prefix . "widget/", $webroot_cache_folder_path, $webroot_cache_folder_url); $ui_menu_widgets_html .= WorkFlowPresentationHandler::getUserUIEditorWidgetsHtml($common_webroot_path, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, null, null, null, null, null, $presentation_brokers); $main_content .= CMSPresentationLayerUIHandler::getChoosePresentationIncludeFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $presentation_brokers); $main_content .= CMSPresentationLayerUIHandler::getTemplateRegionBlockHtmlEditorPopupHtml($ui_menu_widgets_html); $main_content .= '<div id="choose_project_template_url_from_file_manager" class="myfancypopup choose_from_file_manager">
+	</script>'; if ($hard_coded) $main_content .='<div class="invalid">This file was probably changed manually. If you continue editing this file through this editor, it may loose some data.<br/>We recommend you to edit this file through the "<a href="?' . $query_string . '&edit_entity_type=advanced">Advanced Editor</a>" instead.<span class="icon close" onClick="$(this).parent().hide();"></span></div>'; $common_webroot_path = $EVC->getWebrootPath($EVC->getCommonProjectName()); $ui_menu_widgets_html = WorkFlowPresentationHandler::getUIEditorWidgetsHtml($common_webroot_path, $project_common_url_prefix, $webroot_cache_folder_path, $webroot_cache_folder_url); $ui_menu_widgets_html .= WorkFlowPresentationHandler::getExtraUIEditorWidgetsHtml($common_webroot_path, $EVC->getViewsPath() . "presentation/common_editor_widget/", $project_url_prefix . "widget/", $webroot_cache_folder_path, $webroot_cache_folder_url); $ui_menu_widgets_html .= WorkFlowPresentationHandler::getUserUIEditorWidgetsHtml($common_webroot_path, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, null, null, null, null, null, $presentation_brokers); $main_content .= CMSPresentationLayerUIHandler::getChoosePresentationIncludeFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $presentation_brokers); $main_content .= CMSPresentationLayerUIHandler::getTemplateRegionBlockHtmlEditorPopupHtml($ui_menu_widgets_html); $main_content .= '<div id="choose_project_template_url_from_file_manager" class="myfancypopup choose_from_file_manager">
 		<ul class="mytree">
 			<li>
 				<label>' . $presentation_brokers[0][0] . '</label>
@@ -93,43 +112,43 @@ var show_templates_only = ' . ($_GET["show_templates_only"] ? 1 : 0) . '; //This
 		<div class="button">
 			<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
 		</div>
-	</div>'; $main_content .= '<div class="entity_obj">
+	</div>'; $main_content .= '<div class="entity_obj inactive">
 		' . getTemplatesHtml($set_template, $selected_template, $available_templates, $installed_wordpress_folders_name) . '
 		
 		<div class="entity_obj_tabs">
-			<ul class="tabs">
-				<li><a class="inactive" href="#entity_template_layout" onClick="updateLayoutFromSettings(this)">Layout</a></li>
-				<li class="' . ($code_exists ? "" : "ui-tabs-active") . '"><a class="inactive" href="#entity_template_settings" onClick="updateSettingsFromLayout(this)">Settings</a></li>
-			</ul>
+			<!--ul class="tabs">
+				<li><a class="inactive" href="#entity_template_layout" onClick="updateLayoutFromSettings($(\'.entity_obj\'))">Layout</a></li>
+				<li class="' . ($code_exists ? "" : "ui-tabs-active") . '"><a class="inactive" href="#entity_template_settings" onClick="updateSettingsFromLayout($(\'.entity_obj\'))">Settings</a></li>
+			</ul-->
 			
-			<div class="entity_template_settings regions_blocks_includes_settings" id="entity_template_settings">
+			<div class="regions_blocks_includes_settings_overlay"></div>
+			<div class="entity_template_settings regions_blocks_includes_settings collapsed" id="entity_template_settings">
+				<div class="settings_header">
+					Settings
+					<div class="icon maximize" onClick="toggleSettingsPanel(this)" title="Toggle Settings">Toggle</i></div>
+				</div>
+				
 				' . CMSPresentationLayerUIHandler::getRegionsBlocksAndIncludesHtml($selected_or_default_template, $available_regions_list, $regions_blocks_list, $available_blocks_list, $available_block_params_list, $block_params_values_list, $includes, $available_params_list, $template_params_values_list) . '
 			</div>'; $template_region_blocks = array_map(function($n) { return ""; }, array_flip($available_regions_list)); if ($regions_blocks_list) foreach ($regions_blocks_list as $rbl) { if (!is_array($template_region_blocks[ $rbl[0] ])) $template_region_blocks[ $rbl[0] ] = array(); $template_region_blocks[ $rbl[0] ][] = $rbl; } $template_includes = array_map(function($include) { $inc_path = CMSPresentationLayerHandler::getArgumentCode($include["path"], $include["path_type"]); return array("path" => $inc_path, "once" => $include["once"]); }, $includes); $qs = array( "template" => $selected_or_default_template, "template_regions" => $template_region_blocks, "template_params" => $template_params_values_list, "template_includes" => $template_includes, "is_external_template" => $is_external_template, "external_template_params" => $set_template["template_params"], ); $iframe_url = $edit_simple_template_layout_url . "&data=" . urlencode(json_encode($qs)); $main_content .= '
 			<div class="entity_template_layout tab_content_template_layout" id="entity_template_layout">
 				' . CMSPresentationLayerUIHandler::getTabContentTemplateLayoutHtml($user_global_variables_file_path, $user_beans_folder_path, $PEVC, $UserAuthenticationHandler, $bean_name, $bean_file_name, $iframe_url, $edit_simple_template_layout_url, $choose_bean_layer_files_from_file_manager_url, $get_db_data_url, $create_page_presentation_uis_diagram_block_url, "iframeModulesBlocksToolbarTree") . '
 			</div>
 		</div>
-		
-		<div class="buttons">
-			<input type="button" name="preview" value="PREVIEW SAVED FILE" onClick="preview();" />
-			<input type="button" name="save" value="SAVE" onClick="' . ($confirm_save ? 'confirmSave' : 'save') . '();" />
-			<input type="button" name="save" value="SAVE & PREVIEW" onClick="saveAndPreview(' . ($confirm_save ? 'true' : 'false') . ');" />
-		</div>
 	</div>
 	
 	<div class="current_entity_code hidden">' . str_replace(">", "&gt;", str_replace("<", "&lt;", $obj_data["code"])) . '</div>'; } else $main_content .= '<div class="error">Error: The system couldn\'t detect the selected file. Please refresh and try again...</div>'; function getTemplatesHtml($pb46d1829, $v7b2ad4afbf, $paf93610a, $v32c1e58e0c) { if (is_array($pb46d1829["template_params"])) { $pa1cddb9c = is_array($pb46d1829["template_params"]["type"]) ? $pb46d1829["template_params"]["type"]["value"] : null; if ($pa1cddb9c == 'project') { $v76b80da673 = is_array($pb46d1829["template_params"]["template_id"]) ? $pb46d1829["template_params"]["template_id"]["value"] : null; $v1a936daaed = is_array($pb46d1829["template_params"]["external_project_id"]) ? $pb46d1829["template_params"]["external_project_id"]["value"] : null; $pa2ed4c82 = is_array($pb46d1829["template_params"]["keep_original_project_url_prefix"]) ? $pb46d1829["template_params"]["keep_original_project_url_prefix"]["value"] : null; } else if ($pa1cddb9c == 'block') { $v76b80da673 = is_array($pb46d1829["template_params"]["block_id"]) ? $pb46d1829["template_params"]["block_id"]["value"] : null; $v1a936daaed = is_array($pb46d1829["template_params"]["external_project_id"]) ? $pb46d1829["template_params"]["external_project_id"]["value"] : null; } else if ($pa1cddb9c == 'wordpress_template') { $v76b80da673 = is_array($pb46d1829["template_params"]["url_query"]) ? $pb46d1829["template_params"]["url_query"]["value"] : null; $v820cf4f4d9 = is_array($pb46d1829["template_params"]["wordpress_installation_name"]) ? $pb46d1829["template_params"]["wordpress_installation_name"]["value"] : null; } else if ($pa1cddb9c == 'url') { $v74823199e7 = is_array($pb46d1829["template_params"]["url"]) ? $pb46d1829["template_params"]["url"]["value"] : null; } $v467a8922be = is_array($pb46d1829["template_params"]["cache_ttl"]) ? $pb46d1829["template_params"]["cache_ttl"]["value"] : null; } $pf8ed4912 = '
 	<div class="template">
-		<label>Selected Template: </label>
-		<select name="template" onChange="onChangeTemplate(this)" ' . ($pa1cddb9c ? ' style="display:none"' : ' title="' . str_replace('"', '&quot;', $v7b2ad4afbf) . '"') . '>
-			<option value="">-- DEFAULT --</option>'; foreach ($paf93610a as $v9a84a79e2e) $pf8ed4912 .= '<option value="' . $v9a84a79e2e . '"' . ($v9a84a79e2e == $v7b2ad4afbf ? ' selected' : '') . '>' . $v9a84a79e2e . '</option>'; $pf8ed4912 .= '
-		</select>
-		
+		<label>with</label>
 		<select name="template_genre" onChange="onChangeTemplateGenre(this)">
 			<option value="">Internal Template</option>
 			<option value="external_template"' . ($pa1cddb9c ? ' selected' : '') . '>External Template</option>
 		</select>
 		
-		<span class="icon search" onClick="onChooseAvailableTemplate(this, true)" ' . ($pa1cddb9c ? ' style="display:none"' : '') . ' Title="Choose a template">Search</span>
+		<select name="template" onChange="onChangeTemplate(this)" ' . ($pa1cddb9c ? ' style="display:none"' : ' title="' . str_replace('"', '&quot;', $v7b2ad4afbf) . '"') . '>
+			<option value="">-- DEFAULT --</option>'; foreach ($paf93610a as $v9a84a79e2e) $pf8ed4912 .= '<option value="' . $v9a84a79e2e . '"' . ($v9a84a79e2e == $v7b2ad4afbf ? ' selected' : '') . '>' . $v9a84a79e2e . '</option>'; $pf8ed4912 .= '
+		</select>
+		
+		<span class="icon search" onClick="onChooseAvailableTemplate(this, true)" Title="Choose a template">Search</span>
 	</div>
 	
 	<div class="external_template_params"' . (!$pa1cddb9c ? ' style="display:none"' : '') . '>
@@ -153,7 +172,7 @@ var show_templates_only = ' . ($_GET["show_templates_only"] ? 1 : 0) . '; //This
 		<div class="block_id block_param"' . ($pa1cddb9c == 'block' ? '' : ' style="display:none"') . '>
 			<label>Block:</label>
 			<input name="block_id" value="' . ($pa1cddb9c == 'block' ? $v76b80da673 : '') . '" onBlur="onBlurExternalTemplate(this)" />
-			<span class="icon search" onClick="onChooseBlockTemplate(this)" Title="Choose a block">Edit</span>
+			<span class="icon search" onClick="onChooseBlockTemplate(this)" Title="Choose a block">Search</span>
 		</div>
 		
 		<div class="external_project_id project_param block_param"' . ($pa1cddb9c == 'project' || $pa1cddb9c == 'block' ? '' : ' style="display:none"') . '>

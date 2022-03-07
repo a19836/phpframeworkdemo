@@ -18,11 +18,4 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include $EVC->getViewPath("admin/edit_raw_file"); $head .= '<style>
-.code_area .code_menu {
-	top:0px;
-}
-.code_area {
-	top:25px;
-}
-</style>'; ?>
+include $EVC->getViewPath("admin/edit_raw_file"); ?>

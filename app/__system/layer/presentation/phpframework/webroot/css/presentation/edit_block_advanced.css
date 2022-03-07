@@ -1,11 +1,40 @@
-.block_obj {
-	width:99%;
-	overflow:hidden;
-	margin:0 auto;
+/* TOP BAR */
+.top_bar {
+	margin-bottom:10px;
+}
+.top_bar header > ul {
+	right:90px;
+}
+.top_bar header > ul li.show_simple_ui {
+	position:absolute;
+	left:-70px;
 }
 
-.title {
-	margin-bottom:0;
+/* BLOCK OBJ */
+.block_obj {
+	width:100%;
+	overflow:hidden;
+	margin:0 auto;
+	padding:0;
+	border:0;
+}
+.block_obj #code .code_menu.top_bar_menu,
+  .block_obj #ui .taskflowchart .workflow_menu.top_bar_menu {
+	right:185px;
+}
+.block_obj #code .code_menu.top_bar_menu .editor_full_screen,
+  .block_obj #ui .taskflowchart .workflow_menu.top_bar_menu .tasks_flow_full_screen {
+	position:absolute;
+	right:-50px;
+}
+.block_obj #code .code_menu.top_bar_menu li.auto_save_convert_settings,
+  .block_obj #ui .taskflowchart .workflow_menu.top_bar_menu li.auto_save_convert_settings {
+	position:absolute;
+	right:-72px;
+}
+.block_obj #code .code_menu.top_bar_menu .save,
+  .block_obj #ui .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu .save {
+	display:none;
 }
 
 /* To print the workflow */

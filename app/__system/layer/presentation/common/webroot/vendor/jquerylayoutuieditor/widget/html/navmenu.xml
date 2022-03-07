@@ -23,7 +23,7 @@
 			display:inline-block;
 			border-radius:5px;
 			border:0;
-			color:#fff;
+			color:inherit;
 			overflow:hidden;
 		}
 		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-navmenu i,

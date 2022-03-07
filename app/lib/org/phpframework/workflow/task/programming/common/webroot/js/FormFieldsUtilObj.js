@@ -1158,6 +1158,7 @@ var FormFieldsUtilObj = {
 		'			<label>Url:</label>' +
 		'			<input type="text" class="task_property_field" name="' + prefix + '[href]" value="' + input_href + '" />' +
 		'			<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>' +
+		(ProgrammingTaskUtil.on_programming_task_choose_page_url_callback ? '<span class="icon search search_page" onClick="ProgrammingTaskUtil.onProgrammingTaskChoosePageUrl(this)">Add Variable</span>' : '') +
 		'		</div>' +
 		'		<div class="input_target" ' + (is_link ? '' : 'style="display:none;"') + '>' +
 		'			<label>Target:</label>' +
@@ -1169,6 +1170,7 @@ var FormFieldsUtilObj = {
 		'			<input type="text" class="task_property_field" name="' + prefix + '[src]" value="' + input_src + '" />' +
 		'			<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>' +
 		'			<span class="icon add_field_automatically" onClick="FormFieldsUtilObj.addFieldAutomatically(this)" title="Add Field Automatically">add field automatically</span>' +
+		(ProgrammingTaskUtil.on_programming_task_choose_image_url_callback ? '<span class="icon search search_page" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl(this)">Add Variable</span>' : '') +
 		'		</div>' +
 		'		<div class="input_title">' +
 		'			<label>Title:</label>' +

@@ -27,13 +27,18 @@
 	font-weight:normal;
 	font-size:12px;
 }
-.module_form_settings input, .module_form_settings select, .module_form_settings textarea {
+.module_form_settings input:not([type=submit]):not([type=button]), .module_form_settings select, .module_form_settings textarea {
 	font-size:12px;
+	background-color:#fff;
 }
 
 .module_form_settings .deprecated_actions_message {
 	margin-bottom:15px;
 	color:red;
+}
+
+.module_form_settings .module_form_contents {
+	border:0;
 }
 
 .module_form_settings #groups_flow {
@@ -53,14 +58,23 @@
 	height:100% !important;
 }
 .module_form_settings #ui .taskflowchart .workflow_menu {
-	top:0;
+	top:7px;
+	right:120px;
+	z-index:999999;
 }
-.module_form_settings #ui .taskflowchart .tasks_menu,
-   .module_form_settings #ui .taskflowchart .tasks_menu_hide,
-   .module_form_settings #ui .taskflowchart .tasks_flow {
-	top:30px;
+.module_form_settings #ui .taskflowchart .tasks_menu {
+	width:130px;
+}
+.module_form_settings #ui .taskflowchart .tasks_menu_hide {
+	right:130px;
+}
+.module_form_settings #ui .taskflowchart .tasks_flow {
+	right:135px;
 }
 .module_form_settings #ui .taskflowchart .tasks_menu > ul > li:nth-child(2) {
+	display:none;
+}
+.module_form_settings #ui .taskflowchart .tasks_menu .tasks_group_label:hover:after {
 	display:none;
 }
 
@@ -94,14 +108,20 @@
 	border:1px solid #ccc;
 }
 .module_form_settings .form-group-item:not(.collapsed):after {
-	content:"";
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f358";
+	
 	width:100%;
 	height:70px;
 	margin-top:10px;
 	display:block;
-	background:url(down_arrow.gif) center no-repeat;
 	background-size:contain;
 	position:absolute;
+	font-size:70px;
+	text-align:center;
+	color:#ddd;
 }
 .module_form_settings .form-group-item:last-child:after {
 	display:none;
@@ -116,7 +136,7 @@
 }
 .module_form_settings .form-group-item > .form-group-header {
 	padding:.5em;
-	background:#d5e3e4;
+	background:#ddd;
 	position:relative;
 }
 .module_form_settings .form-group-item.form-group-item-undefined > .form-group-header {
@@ -125,24 +145,27 @@
 .module_form_settings .form-group-item > .form-group-header > .result-var-name {
 	width:350px;
 	padding-left:5px;
+	background-color:#fff;
 	
 	/* bc of the loop and group sub-groups */
 	float:none;
 	display:inline;
 }
 .module_form_settings .form-group-item > .form-group-header > .result-var-name.result-var-name-output {
-	border:0;
+	
 }
 .module_form_settings .form-group-item > .form-group-header > .action-type {
-	float:right;
+	width:calc(100% - 480px);
+	min-width:200px;
+	margin-left:5px;
 }
 .module_form_settings .form-group-item > .form-group-header > .toggle {
 	margin:5px;
 	cursor:pointer;
 }
 .module_form_settings .form-group-item > .form-group-header > .remove,
-  .module_form_settings .form-group-item > .form-group-header > .move-up,
-  .module_form_settings .form-group-item > .form-group-header > .move-down {
+  .module_form_settings .form-group-item > .form-group-header > .move_up,
+  .module_form_settings .form-group-item > .form-group-header > .move_down {
 	margin:5px;
 	float:right;
 	cursor:pointer;
@@ -150,45 +173,44 @@
 	/* bc of the loop and group sub-groups */
 	background:none;
 }
-.module_form_settings .form-group-item > .form-group-header > .move-up {
-	margin-left:10px;
+.module_form_settings .form-group-item > .form-group-header > .move_up {
+	margin-left:5px;
 }
-.module_form_settings .form-groups > .form-group-item:nth-child(2) > .form-group-header > .move-up {
+.module_form_settings .form-groups > .form-group-item:nth-child(2) > .form-group-header > .move_up {
 	visibility: hidden;
 }
-.module_form_settings .form-groups > .form-group-item:last-child > .form-group-header > .move-down {
+.module_form_settings .form-groups > .form-group-item:last-child > .form-group-header > .move_down {
 	visibility: hidden;
 }
 .module_form_settings .form-group-item > .form-group-header > .toggle:hover,
   .module_form_settings .form-group-item > .form-group-header > .remove:hover,
-  .module_form_settings .form-group-item > .form-group-header > .move-up:hover,
-  .module_form_settings .form-group-item > .form-group-header > .move-down:hover {
+  .module_form_settings .form-group-item > .form-group-header > .move_up:hover,
+  .module_form_settings .form-group-item > .form-group-header > .move_down:hover {
 	color:#000;
 }
 .module_form_settings .form-group-item > .form-group-header > .form-group-sub-header {
 	min-height:20px;
 	margin-top:.5em;
-	background:#d5e3e4;
+	background:#ddd;
 	display:none;
 }
 .module_form_settings .form-group-item.form-group-item-undefined > .form-group-header > .form-group-sub-header {
 	background:#ccc;
 }
 .module_form_settings .form-group-item > .form-group-header > .form-group-sub-header > .condition-type {
-	width:380px;
-	margin-left:2em;
+	width:358px;
+	margin-left:32px;
 }
 .module_form_settings .form-group-item > .form-group-header > .form-group-sub-header > .condition-value {
-	width:calc(100% - 480px);
+	width:calc(100% - 490px);
 	min-width:200px;
-	margin-left:10px;
+	margin-left:5px;
 	padding-left:5px;
 	display:none;
 }
 .module_form_settings .form-group-item > .form-group-header > .form-group-sub-header > .action-description {
 	width:100%;
 	min-height:40px;
-	margin-top:5px;
 }
 .module_form_settings .form-group-item > .form-group-header > .form-group-sub-header > .action-description label {
 	font-size:80%;
@@ -203,7 +225,6 @@
 	height:30px;
 	display:block;
 	box-sizing:border-box;
-	border:1px solid #ccc;
 	font-size:80%;
 }
 .module_form_settings .form-group-item > .form-group-body {
@@ -220,19 +241,25 @@
 
 /* BROKER TASK HTML */
 .module_form_settings .selected_task_properties .broker-action-body .call_business_logic_task_html > div:not(.broker_method_obj) > .add_variable,
-  .module_form_settings .selected_task_properties .broker-action-body .call_business_logic_task_html .array_items .add_variable,
   .module_form_settings .selected_task_properties .broker-action-body .call_ibatis_query_task_html > div:not(.broker_method_obj) > .add_variable,
-  .module_form_settings .selected_task_properties .broker-action-body .call_ibatis_query_task_html .array_items .add_variable,
   .module_form_settings .selected_task_properties .broker-action-body .call_hibernate_method_task_html > div:not(.broker_method_obj) > .add_variable,
   .module_form_settings .selected_task_properties .broker-action-body .call_hibernate_method_task_html > .service_method_args > div > .add_variable, 
-  .module_form_settings .selected_task_properties .broker-action-body .call_hibernate_method_task_html .array_items .add_variable,
-  .module_form_settings .selected_task_properties .broker-action-body .get_url_contents_task_html .add_variable, 
-  .module_form_settings .selected_task_properties .broker-action-body .soap_connector_task_html .add_variable, 
-  .module_form_settings .selected_task_properties .array-action-body .add_variable {
-	margin-left:-23px !important;
+  .module_form_settings .selected_task_properties .broker-action-body .soap_connector_task_html .add_variable {
+	margin-left:-26px !important;
 }
-.module_form_settings .selected_task_properties .broker-action-body .soap_connector_task_html .client_options .client_option .add_variable,
-  .module_form_settings .selected_task_properties .broker-action-body .soap_connector_task_html .client_headers > ul > li > div > .add_variable {
+.module_form_settings .selected_task_properties .broker-action-body .call_hibernate_method_task_html > .service_method_args .sma_ids > .add_variable, 
+  .module_form_settings .selected_task_properties .broker-action-body .call_hibernate_method_task_html > .service_method_args .sma_statuses > .add_variable,
+  .module_form_settings .selected_task_properties .broker-action-body .call_object_method_task_html .method_name .add_variable,
+  .module_form_settings .selected_task_properties .broker-action-body .get_url_contents_task_html .add_variable,
+  .module_form_settings .selected_task_properties .broker-action-body .soap_connector_task_html .client_headers > ul > li > div > .add_variable,
+  .module_form_settings .selected_task_properties .broker-action-body .soap_connector_task_html .remote_function_args .add_variable,
+  .module_form_settings .selected_task_properties .broker-action-body .call_business_logic_task_html .array_items .add_variable.inline,
+  .module_form_settings .selected_task_properties .broker-action-body .call_ibatis_query_task_html .array_items .add_variable.inline,
+  .module_form_settings .selected_task_properties .broker-action-body .call_hibernate_method_task_html .array_items .add_variable.inline,
+  .module_form_settings .selected_task_properties .array-action-body.array_items .add_variable.inline {
+	margin-left:-22px !important;
+}
+.module_form_settings .selected_task_properties .broker-action-body .soap_connector_task_html .client_options .client_option .add_variable {
 	margin-left:-18px !important;
 }
 
@@ -244,6 +271,9 @@
    .module_form_settings .create_form_task_html .result,
    .module_form_settings .create_form_task_html .task_property_exit {
 	display:none;
+}
+.module_form_settings .create_form_task_html .form_action .add_variable.inline {
+	margin-left:-22px !important;
 }
 .module_form_settings .create_form_task_html .form_containers > .fields > .container {
 	background:white;
@@ -264,7 +294,7 @@
 	display:block;
 }
 .module_form_settings .selected_task_properties .form_containers .fields .field .class input {
-	width:200px;
+	width:180px;
 }
 .module_form_settings .selected_task_properties .form_containers .fields .field .input_value .add_field_automatically {
 	right:28px;
@@ -303,7 +333,7 @@
 
 .module_form_settings .database-action-body .database-action-table {
 	text-align:center;
-	padding-top:50px;
+	padding-top:10px;
 }
 .module_form_settings .database-action-body .database-action-table > .table {
 	display:inline-block;
@@ -311,7 +341,6 @@
 .module_form_settings .database-action-body .database-action-table > .attributes,
    .module_form_settings .database-action-body .database-action-table > .conditions {
 	text-align:left;
-	margin-top:10px;
 	padding:10px;
 	display:none;
 }
@@ -390,6 +419,9 @@
 	margin-top:-4px;
 	display:inline-block;
 }
+.module_form_settings .database-action-body .relationship .query .taskflowchart .jsplumbtaskworkflow .task.task_query .eps {
+	background:#fff;
+}
 .module_form_settings .database-action-body .relationship .query .query_settings .advanced_query_settings {
 	margin-top:187px;
 }
@@ -399,9 +431,9 @@
 .module_form_settings .database-action-body .relationship .query_settings_tab > table {
 	border:0;
 }
-.module_form_settings .database-action-body .relationship .query_settings_tab .fields .field td {
-	border:1px solid #ccc;
-	background:#fff;
+.module_form_settings .database-action-body .relationship .query_settings_tab .fields .field td:not(.icon_cell) {
+	border-top:1px solid #eee;
+	border-right:1px solid #eee;
 }
 .module_form_settings .database-action-body .relationship .query_settings_tab .fields .field td input,
   .module_form_settings .database-action-body .relationship .query_settings_tab .fields .field td select {
@@ -426,10 +458,14 @@
 .module_form_settings .database-action-body .relationship .limit_start .limit {
 	width:50%;
 	text-align:left;
+	box-sizing:border-box;
+	display:inline-block;
 }
 .module_form_settings .database-action-body .relationship .limit_start .start {
 	width:50%;
 	text-align:right;
+	box-sizing:border-box;
+	display:inline-block;
 }
 .module_form_settings .database-action-body .relationship .limit_start .limit label, 
   .module_form_settings .database-action-body .relationship .limit_start .start label {
@@ -450,9 +486,13 @@
 	color:#fff;
 }
 .module_form_settings .database-action-body .search {
+	margin:0;
 	float:none;
 	display:inline-block;
 	vertical-align:middle;
+}
+.module_form_settings .database-action-body .add_variable::before {
+	font-size:14px !important;
 }
 
 /* LAYOUT UI EDITOR */
@@ -501,6 +541,17 @@
 	width:calc(100% - 133px);
 	padding-right:20px;
 }
+.module_form_settings .message-action-body > .redirect-url .search {
+	margin:-3px 0 auto -16px;
+}
+.module_form_settings .message-action-body > .redirect-url .search::before {
+	font-size:16px;
+}
+
+/* REDIRECT PANEL */
+.module_form_settings .redirect-action-body > .search {
+	margin:-3px 0 auto -16px !important;
+}
 
 /* RECORD PANEL */
 .module_form_settings .records-action-body {
@@ -525,7 +576,7 @@
 .module_form_settings .records-action-body > .records-variable-name input,
   .module_form_settings .records-action-body > .index-variable-name input {
 	width:280px;
-	width:calc(100% - 190px);
+	width:calc(100% - 200px);
 	padding-right:20px;
 }
 
@@ -656,6 +707,9 @@
   .module_form_settings .call-block-action-body > .project > label {
 	width:120px;
 }
+.module_form_settings .call-block-action-body > .block > .search {
+	margin-top:-3px;
+}
 
 /* INCLUDE FILE PANEL */
 .module_form_settings .include-file-action-body > input.path {
@@ -670,7 +724,7 @@
 	text-align:left;
 }
 .module_form_settings .include-file-action-body > .search_page_url {
-	margin-left:-5px !important;
+	margin:-3px 0 auto -45px !important;
 }
 
 /* DRAW GRAPH PANEL */
@@ -773,6 +827,7 @@
 	background:#fff;
 	z-index:9999;
 }
+
 .module_form_settings .form-wizard > .steps {
 	margin:20px 0 40px 0;
 }
@@ -831,11 +886,13 @@
 	margin-right:5px;
 	display:inline-block;
 }
-.module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .attributes li .attr-value {
+.module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .attributes li .attr-value,
+  .module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .conditions li .attr-name {
 	display:none;
 }
-.module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .conditions li .attr-value:before {
+.module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .conditions li label:after {
 	content:" = ";
+	float:right;
 }
 
 .module_form_settings .form-wizard > .steps > .step.actions-selection > label {
@@ -1129,11 +1186,40 @@
 }
 
 /* WORKFLOW - TASKS */
-.module_form_settings .jsplumbtaskworkflow .selected_task_properties > .maximize_minimize_icon,
-  .module_form_settings .jsplumbtaskworkflow .selected_connection_properties > .maximize_minimize_icon {
+.module_form_settings .taskflowchart .jsplumbtaskworkflow .form-group-item > .form-group-body.selected_task_properties .loop-action-body > header > a,
+  .module_form_settings .taskflowchart .jsplumbtaskworkflow .form-group-item > .form-group-body.selected_task_properties .group-action-body > header > a {
 	display:none;
 }
-.module_form_settings .jsplumbtaskworkflow .form-group-item > .form-group-body.selected_task_properties .loop-action-body > header > a,
-  .module_form_settings .jsplumbtaskworkflow .form-group-item > .form-group-body.selected_task_properties .group-action-body > header > a {
+
+.module_form_settings .taskflowchart.with_top_bar_menu .tasks_menu.task_properties_shown, 
+  .module_form_settings .taskflowchart.with_top_bar_menu .tasks_menu_hide.task_properties_shown, 
+  .module_form_settings .taskflowchart.with_top_bar_menu .tasks_flow.task_properties_shown, 
+  .module_form_settings .taskflowchart.with_top_bar_menu .tasks_menu.connection_properties_shown, 
+  .module_form_settings .taskflowchart.with_top_bar_menu .tasks_menu_hide.connection_properties_shown, 
+  .module_form_settings .taskflowchart.with_top_bar_menu .tasks_flow.connection_properties_shown {
+	bottom:0 !important;
+}
+.module_form_settings .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_task_properties > .maximize_minimize_icon,
+  .module_form_settings .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_connection_properties > .maximize_minimize_icon,
+  .module_form_settings .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_task_properties > .expand_collapse_icon,
+  .module_form_settings .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_connection_properties > .expand_collapse_icon {
+	display:none;
+}
+
+.module_form_settings .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_task_properties.maximize_properties, 
+  .module_form_settings .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_connection_properties.maximize_properties {
+	z-index:999999 !important;
+}
+.module_form_settings .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_task_properties .form-group-item {
+	margin-bottom:0;
+}
+.module_form_settings .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_task_properties .form-group-item:after {
+	display:none;
+}
+.module_form_settings .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_task_properties .form-group-item .selected_task_properties {
+	height:auto !important;
+}
+.module_form_settings .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_task_properties .form-group-item .selected_task_properties::before,
+  .module_form_settings .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_task_properties .form-group-item .selected_connection_properties::before {
 	display:none;
 }

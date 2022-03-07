@@ -407,6 +407,7 @@ function onMenuItemIconClick(elm, e) {
 		
 		var class_names = icon.attr("class");
 		var class_name = class_names.replace("icon", "").replace(/\s+/, "");
+		//console.log(class_name);
 		var context_menu_li = context_menu_elm.find("." + class_name);
 		var context_menu_li_a = context_menu_li.children("a");
 		

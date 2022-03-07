@@ -19,11 +19,27 @@
  */
 
 include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilPath("WorkFlowUIHandler"); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $head = '
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
+<!-- Add Icons CSS -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/create_presentation_uis_automatically.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/create_presentation_uis_automatically.js"></script>'; if ($_POST["step_3"]) { $main_content .= '
 	<div class="statuses">
-		<div class="title">Automatic Create Presentation Files - STATUSES</div>
+		<div class="top_bar">
+			<header>
+				<div class="title">Automatic creation in \'' . $path . '\'. Statuses:</div>
+				<ul>
+					<!--li class="go_back" title="Go Back"><a onClick="history.go(-1);"><i class="icon go_back"></i></a></li-->
+				</ul>
+			</header>
+		</div>
 		<table>
 			<tr>
 				<th class="table_name table_header">Type</th>
@@ -142,24 +158,41 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilP
 			onLoadTableSettings();
 		});'; $head .= '</script>'; $head .= LayoutTypeProjectUIHandler::getHeader(); $main_content = WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $db_brokers, $data_access_brokers, $ibatis_brokers, $hibernate_brokers, $business_logic_brokers, $presentation_brokers); $main_content .= '
 		<div class="tables_settings">
-			<div class="title">Please check the following table\'s settings:</div>
+			<div class="top_bar">
+				<header>
+					<div class="title">Automatic creation in \'' . $path . '\'. Please check the following table\'s settings:</div>
+					<ul>
+						<!--li class="go_back" title="Go Back"><a onClick="history.go(-1);"><i class="icon go_back"></i></a></li-->
+						<li class="continue" title="Continue"><a onClick="save(this)"><i class="icon continue"></i> Continue</a></li>
+					</ul>
+				</header>
+			</div>
 			<div class="tables_groups">'; $t = count($selected_tables); for ($i = 0; $i < $t; $i++) { $table_name = $selected_tables[$i]; $table = WorkFlowDataAccessHandler::getTableFromTables($tables, $table_name); if ($table) $main_content .= CMSPresentationUIAutomaticFilesHandler::getTableGroupHtml($table_name, $foreign_keys, $tasks_contents, $allowed_tasks, $with_items_list_ui, $with_view_item_ui, $with_insert_item_form_ui, $with_update_item_form_ui, $with_fks_ui, $selected_tables_alias); } $main_content .= '</div>
 			<div class="error">
 				<label>The system tried to detect automatically all table\'s settings, but it couldn\'t for the following ones:</label>
 				<ul></ul>
 				<label>If you decide to use these settings above please correct them before proceed...</label>
 			</div>
-			<div class="buttons">
+			<div class="stas_form">
 				<form method="post">
 					<textarea name="sta">' . json_encode($selected_tables_alias) . '</textarea>
 					<textarea name="statuses"></textarea>
-					<input type="Submit" name="step_3" value="Continue" onClick="return save(this);" />
+					
+					<input type="hidden" name="step_3" value="Continue" />
 				</form>
 			</div>
 		</div>'; } if (empty($selected_tables)) $main_content .= '<div class="main_error">No tables selected. Please go back and select at least one table...</div>'; else if (empty($active_brokers)) $main_content .= '<div class="main_error">No brokers active. Please go back and select at least one broker...</div>'; } else if ($_POST["step_1"]) { $head .= '<script>
 		var users_management_admin_panel_url = \'' . $project_url_prefix . "phpframework/module/user/admin/index?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path" . '\';
 	</script>'; $main_content = '<div class="select_tables">
-		<div class="title">Please select the table objects that you wish to create:</div>
+		<div class="top_bar">
+			<header>
+				<div class="title">Automatic creation in \'' . $path . '\'. Please select the table objects that you wish to create:</div>
+				<ul>
+					<!--li class="go_back" title="Go Back"><a onClick="history.go(-1);"><i class="icon go_back"></i></a></li-->
+					<li class="continue" title="Continue"><a onClick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
+				</ul>
+			</header>
+		</div>
 		<form method="post">
 			<input type="hidden" name="db_layer" value="' . $db_layer . '" />
 			<input type="hidden" name="db_layer_file" value="' . $db_layer_file . '" />
@@ -168,10 +201,10 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilP
 			<input type="hidden" name="type" value="' . $type . '" />
 			<input type="hidden" name="authenticated_template" value="' . $authenticated_template . '" />
 			<input type="hidden" name="force_user_action" value="' . $force_user_action . '" />'; if (!empty($tables_name)) { $main_content .= '<div class="select_buttons">
-			<a onclick="$(\'.select_tables .tables input\').attr(\'checked\', \'checked\')">Select All</a>
-			<a onclick="$(\'.select_tables .tables input\').removeAttr(\'checked\')">Deselect All</a>
-		</div>
-		<div class="tables">'; $t = count($tables_name); for ($i = 0; $i < $t; $i++) { $table_name = $tables_name[$i]; $main_content .= '<div class="table">
+				<a onclick="$(\'.select_tables .tables input\').attr(\'checked\', \'checked\')">Select All</a>
+				<a onclick="$(\'.select_tables .tables input\').removeAttr(\'checked\')">Deselect All</a>
+			</div>
+			<div class="tables">'; $t = count($tables_name); for ($i = 0; $i < $t; $i++) { $table_name = $tables_name[$i]; $main_content .= '<div class="table">
 						<input type="checkbox" name="st[]" value="' . $table_name . '" />
 						<input type="hidden" name="sta[' . $table_name . ']" value="" />
 						<label title="Click here to enter a different table alias..." onClick="addTableAlias(this)">' . $table_name . '</label>
@@ -258,12 +291,18 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilP
 					</select>
 				</div>'; } else $main_content .= '<div class="error">There was an error loading the available users type and activities. Probable the user module is not installed yet...</div>'; $main_content .= '
 			</div>
-			<div class="buttons">
-				<input type="Submit" name="step_2" value="Continue" onClick="$(this).hide()" />
-			</div>'; } else { if ($type == "diagram") $main_content .= '<div class="error">There are no tables created in the DB Diagram.<br/>Please go to the DB Layer that you wish, create the correspondent DB Diagram and then execute again this action.</div>'; else $main_content .= '<div class="error">We couldn\'t detect any tables in the DB.</div>'; } $main_content .= '
+			
+			<input type="hidden" name="step_2" value="Continue" />'; } else { if ($type == "diagram") $main_content .= '<div class="error">There are no tables created in the DB Diagram.<br/>Please go to the DB Layer that you wish, create the correspondent DB Diagram and then execute again this action.</div>'; else $main_content .= '<div class="error">We couldn\'t detect any tables in the DB.</div>'; } $main_content .= '
 		</form>
 	</div>'; } else { $main_content = '<div class="select_layers">
-		<div class="title">Please select the DB Driver and click continue:</div>
+		<div class="top_bar">
+			<header>
+				<div class="title">Automatic creation in \'' . $path . '\'. Please select the DB Driver and click continue:</div>
+				<ul>
+					<li class="continue" title="Continue"><a onClick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
+				</ul>
+			</header>
+		</div>
 		<form method="post">'; if (empty($path)) $main_content .= '<div class="error">You cannot execute this action with an undefined path.</div>'; else if (empty($PEVC)) $main_content .= '<div class="error">Bean name doesn\'t exist. If this problem persists, please talk with the sys-admin.</div>'; else if (!is_dir($folder_path)) $main_content .= '<div class="error">You can only execute this action inside of a folder.</div>'; else if (!empty($db_drivers)) { $db_layer = $db_layer_file = null; $main_content .= '
 			<script>
 				var default_db_driver = "' . $default_db_driver . '";
@@ -293,9 +332,7 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilP
 				<input type="checkbox" name="include_db_driver" value="1"' . ($include_db_driver ? " checked" : "") . ' />
 				<label>Hard-code db-driver?</label>
 			</div>'; $main_content .= '
-			<div class="buttons">
-				<input type="Submit" name="step_1" value="Continue" onClick="$(this).hide()" />
-			</div>
+			<input type="hidden" name="step_1" value="Continue" />
 			
 			<div class="error">
 				Note that this feature is too heavy and slow and if your browser is not well configured, this won\'t work. <br/>

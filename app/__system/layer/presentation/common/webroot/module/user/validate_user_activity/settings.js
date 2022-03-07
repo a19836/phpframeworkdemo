@@ -70,7 +70,7 @@ function toggleObjectIdPanel(elm) {
 }
 
 function saveValidateUserActivity(button) {
-	var block_settings = $(button).parent().parent().children(".module_settings").children(".settings").children(".validate_object_to_object_settings");
+	var block_settings = $(".block_obj > .module_settings > .settings > .validate_object_to_object_settings");
 	
 	var select = block_settings.children(".object_type_id").children("select");
 	var cp = select.val() == "current_page" && object_type_page_id != -1;

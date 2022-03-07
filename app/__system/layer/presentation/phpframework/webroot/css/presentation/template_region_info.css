@@ -1,11 +1,6 @@
 .title {
-	color: #000;
-	font-size: 16px;
-	font-weight: bold;
 	margin: 10px 0 20px 0px;
 	text-align: center;
-	width: 100%;
-	min-height: 25px;
 }
 
 .template_region_obj .no_template_regions {
@@ -13,12 +8,14 @@
 	color:#999;
 }
 .template_region_obj li {
+	margin-bottom:20px;
 	border:1px solid #ccc;
+	border-radius:3px;
 }
 .template_region_obj li > .header {
 	padding:5px;
-	background:#d5e3e4;
-	font-weight:700;
+	background:#eee;
+	text-transform:capitalize;
 }
 .template_region_obj li > .header .icon {
 	float:right;
@@ -28,6 +25,14 @@
 	height:100%;
 	padding:0;
 	display:none;
+}
+.template_region_obj li .sample > ul {
+	background:none;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-radius: 0;
+	font-size:10px;
 }
 .template_region_obj li .sample iframe,
   .template_region_obj li .sample textarea {

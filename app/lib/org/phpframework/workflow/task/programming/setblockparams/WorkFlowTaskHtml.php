@@ -24,7 +24,7 @@
 		<label>Value: </label>
 		<input type="text" class="task_property_field" name="value" />
 		<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Search</span>
-		<span class="icon search" onclick="SetBlockParamsTaskPropertyObj.on_choose_page_url_callback(this)" title="Search Page">Search page</span>
+		<span class="icon search" onclick="ProgrammingTaskUtil.onProgrammingTaskChoosePageUrl(this)" title="Search Page">Search page</span>
 	</div>
 	<div class="type">
 		<label>Type: </label>

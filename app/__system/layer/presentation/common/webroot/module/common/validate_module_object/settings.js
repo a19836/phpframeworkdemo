@@ -137,7 +137,7 @@ function onSaveValidationFields(block_settings) {
 }
 
 function saveValidateObjectToObject(button) {
-	var block_settings = $(button).parent().parent().children(".module_settings").children(".settings").children(".validate_object_to_object_settings");
+	var block_settings = $(".block_obj > .module_settings > .settings > .validate_object_to_object_settings");
 	
 	//Only if exists
 	var module_object_id = block_settings.children(".module_object_id").children("input");

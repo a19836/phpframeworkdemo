@@ -43,11 +43,11 @@ function toggleLeftpanel(elm) {
 	
 	if (body.hasClass("left_panel_shrinked")) {
 		body.removeClass("left_panel_shrinked");
-		elm.removeClass("fa-arrow-right").addClass("fa-arrow-left");
+		//elm.removeClass("fa-arrow-right").addClass("fa-arrow-left");
 	}
 	else {
 		body.addClass("left_panel_shrinked");
-		elm.removeClass("fa-arrow-left").addClass("fa-arrow-right");
+		//elm.removeClass("fa-arrow-left").addClass("fa-arrow-right");
 	}
 }
 

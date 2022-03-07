@@ -21,16 +21,16 @@
 include_once $EVC->getUtilPath("CMSPresentationLayerHandler"); include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); $common_project_name = $EVC->getCommonProjectName(); $modules_path = $EVC->getModulesPath($common_project_name); $object_module_path = $modules_path . "object/"; $user_module_path = $modules_path . "user/"; if (!file_exists($object_module_path) || !file_exists($user_module_path)) die("You must install the 'object' and 'user' module in order to proceed!"); include_once $EVC->getModulePath("object/ObjectUtil", $common_project_name); include_once $EVC->getModulePath("user/UserUtil", $common_project_name); class CMSPresentationUIAutomaticFilesHandler { public static function getTableGroupHtml($v8c5df8072b, $pba9184cd, $v830c74e006, $v64e98269be, $v06d89caf4f, $v09bdc7fd3a, $pec1f6eeb, $v96e120d9d5, $v610214e838, $v3b6d7c67a8 = false) { $v566db8f5a9 = ""; $v31199c28eb = ""; $v6cea3cefa2 = $v3b6d7c67a8 ? WorkFlowDataAccessHandler::getTableFromTables($v3b6d7c67a8, $v8c5df8072b) : null; if ($v3b6d7c67a8 && $v6cea3cefa2) { $v31199c28eb = " with alias: '" . $v6cea3cefa2 . "'"; $v566db8f5a9 = ' table_alias="' . $v6cea3cefa2 . '"'; } $pf8ed4912 = '<div class="table_group" table_name="' . $v8c5df8072b . '"' . $v566db8f5a9 . '>
 			<div class="table_header">
 				<label>' . ucfirst($v8c5df8072b) . '\'s Table' . $v31199c28eb . '</label>
-				<span class="icon maximize" onClick="toggleTablePanel(this)">Maximize</span>
-				<span class="icon delete" onClick="removeTablePanel(this)">Remove</span>
+				<span class="icon maximize" onClick="toggleTablePanel(this)" title="Toggle Properties">Toggle</i></span>
+				<span class="icon delete" onClick="removeTablePanel(this)" title="Remove">Remove</span>
 			</div>
 			<div class="table_panel">'; $pfc2c3a6c = $v64e98269be; $v61fd0490ce = $v64e98269be; $pd69fb7d0 = array_search("setquerydata", $pfc2c3a6c); if ($pd69fb7d0 !== false) unset($pfc2c3a6c[$pd69fb7d0]); $pd69fb7d0 = array_search("getquerydata", $v61fd0490ce); if ($pd69fb7d0 !== false) unset($v61fd0490ce[$pd69fb7d0]); if ($v06d89caf4f) { $pf8ed4912 .= self::getTableUIHtml("Search/Get all table's rows", $v830c74e006, $pfc2c3a6c, "get_all"); $pf8ed4912 .= self::getTableUIHtml("Count all table's items", $v830c74e006, $pfc2c3a6c, "count"); } if ($v06d89caf4f || $v09bdc7fd3a || $v96e120d9d5) $pf8ed4912 .= self::getTableUIHtml("Get a specific table's row", $v830c74e006, $pfc2c3a6c, "get"); if ($pec1f6eeb) $pf8ed4912 .= self::getTableUIHtml("Insert a specific table's row", $v830c74e006, $v61fd0490ce, "insert"); if ($v96e120d9d5) { $pf8ed4912 .= self::getTableUIHtml("Update a specific table's row", $v830c74e006, $v61fd0490ce, "update"); $pf8ed4912 .= self::getTableUIHtml("Update a specific table's row primary key", $v830c74e006, $v61fd0490ce, "update_pks"); $pf8ed4912 .= self::getTableUIHtml("Delete a specific table's row", $v830c74e006, $v61fd0490ce, "delete"); } else if ($v06d89caf4f) { $pf8ed4912 .= self::getTableUIHtml("Update a specific table's row", $v830c74e006, $v61fd0490ce, "update"); $pf8ed4912 .= self::getTableUIHtml("Delete a specific table's row", $v830c74e006, $v61fd0490ce, "delete"); } if ($v610214e838) { $pf8ed4912 .= '
 			<div class="table_ui">
 				<div class="table_header">
 					<label>Foreign Tables</label>
-					<span class="icon maximize" onClick="toggleTableUIPanel(this)">Maximize</span>
-					<span class="icon delete" onClick="removeTableUIPanel(this)">Remove</span>
-					<span class="icon add" onClick="addForeignTable(this)">Add</span>
+					<span class="icon maximize" onClick="toggleTableUIPanel(this)" title="Toggle Properties">Toggle</span>
+					<span class="icon delete" onClick="removeTableUIPanel(this)" title="Remove">Remove</span>
+					<span class="icon add" onClick="addForeignTable(this)" title="Add">Add</span>
 				</div>
 				<div class="table_ui_panel">'; $v571a648e93 = $pba9184cd ? WorkFlowDataAccessHandler::getTableFromTables($pba9184cd, $v8c5df8072b) : null; $v6be2309ce7 = array(); if ($v571a648e93) { $pc37695cb = count($v571a648e93); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $pa7c14731 = $v571a648e93[$v43dd7d0051]; $v78108fb2bd = $pa7c14731["child_table"] == $v8c5df8072b ? $pa7c14731["parent_table"] : $pa7c14731["child_table"]; if (!$v6be2309ce7[$v78108fb2bd]) $pf8ed4912 .= self::getForeignTableRowHtml($v8c5df8072b, $v78108fb2bd, $v830c74e006, $v64e98269be, $v3b6d7c67a8); $v6be2309ce7[$v78108fb2bd] = 1; } } $pf8ed4912 .= '</div>
 			</div>'; } $pf8ed4912 .= '</div>
@@ -38,8 +38,8 @@ include_once $EVC->getUtilPath("CMSPresentationLayerHandler"); include_once $EVC
 		<div class="table_ui ' . $v3fb9f41470 . '">
 			<div class="table_header">
 				<label>' . $pb8c0935b . '</label>
-				<span class="icon maximize" onClick="toggleTableUIPanel(this)">Maximize</span>
-				<span class="icon delete" onClick="removeTableUIPanel(this)">Remove</span>
+				<span class="icon maximize" onClick="toggleTableUIPanel(this)" title="Toggle Properties">Toggle</span>
+				<span class="icon delete" onClick="removeTableUIPanel(this)" title="Remove">Remove</span>
 			</div>
 			<div class="selected_task_properties table_ui_panel" type="' . $v3fb9f41470 . '" relationship_table="' . $pa512b698 . '">
 				<div class="brokers_layer_type">

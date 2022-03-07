@@ -61,7 +61,7 @@
 	<div class="rest_auth_pass with_toggle_icon">
 		<label>Rest Authentication Password: </label>
 		<input class="task_property_field" type="password" name="layer_brokers[rest][rest_auth_pass]" />
-		<a class="toggle_password" onClick="toggleLayerRestConnectionPropertiesSettingPasswordField(this)">Toggle Password</a>
+		<a class="icon toggle_password" onClick="toggleLayerRestConnectionPropertiesSettingPasswordField(this)">Toggle Password</a>
 		<div class="info">Password that wil be authenticated in the server side</div>
 	</div>
 	
@@ -85,7 +85,7 @@
 					<th class="setting_name table_header">Setting Name</th>
 					<th class="setting_value table_header">Setting Value</th>
 					<th class="table_attr_icons">
-						<a class="add" onClick="addLayerTypeServerPropertiesOtherSetting(this, 'rest')" title="Add">Add</a>
+						<a class="icon add" onClick="addLayerTypeServerPropertiesOtherSetting(this, 'rest')" title="Add">Add</a>
 					</th>
 				</tr>
 			</thead>
@@ -106,7 +106,7 @@
 					<th class="setting_name table_header">Setting Name</th>
 					<th class="setting_value table_header">Setting Value</th>
 					<th class="table_attr_icons">
-						<a class="add" onClick="addLayerTypeServerPropertiesOtherSetting(this, 'soap')" title="Add">Add</a>
+						<a class="icon add" onClick="addLayerTypeServerPropertiesOtherSetting(this, 'soap')" title="Add">Add</a>
 					</th>
 				</tr>
 			</thead>

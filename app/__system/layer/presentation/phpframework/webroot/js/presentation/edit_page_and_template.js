@@ -24,6 +24,9 @@ var resize_iframe_timeout= null;
 
 var init_page_and_template_layout_timeout_id = null;
 
+var update_layout_iframe_from_settings_func = null;
+var update_settings_from_layout_iframe_func = null;
+
 /* TEMPLATE-REGIONS-BLOCKS */
 
 function createChoosePresentationIncludeFromFileManagerTree() {
@@ -309,7 +312,7 @@ function openTemplateSamples(elm) {
 		return;
 	}
 	
-	var template = $(".entity_obj .template > select[name=template]").val(); //this only applies to the edit_entity_simple.php. the edit_template.php already contains the template in the url. Do not add p.parent() here otherwise when this function gets call from the simple_template_layout.php iframe will not work.
+	var template = $(".entity_obj .template > select[name=template]").val(); //this only applies to the edit_entity_simple.php. the edit_template_simple.php already contains the template in the url. Do not add p.parent() here otherwise when this function gets call from the simple_template_layout.php iframe will not work.
 	var template_genre = $(".entity_obj .template > select[name=template_genre]").val();
 	
 	if (template_genre)
@@ -432,11 +435,23 @@ function getTinyMCEOptions(block_html) {
 		convert_urls: false,// disable convert urls for images and other urls, this is, the url that the user inserts is the url that will be in the HTML.
 		inline: true, //makes tinymce inline. It doesn't work if the main element is a textarea.
 		setup: function(editor) {
-			editor.on('init', function() {
+			editor.on('init', function(e) {
 				//all your after init logics here.
 				block_html.attr("tinymce_inited", 1);
 			});
-		}
+			
+			editor.on('change', function(e) {
+				//Note that this method will execute inside of the iframe too, so we must call the right onBlurRegionBlock
+				var textarea = block_html.children("textarea");
+				var doc = block_html[0].ownerDocument || document;
+				var win = doc.defaultView || doc.parentWindow;
+				var str = getRegionBlockHtmlEditorValue(block_html);
+				
+				textarea.val(str);
+				
+				win.onBlurRegionBlock(textarea[0]);
+			});
+		},
 	};
 }
 
@@ -479,6 +494,8 @@ function setRegionBlockHtmlEditorValue(block_html, html) {
 	}
 	else
 		block_html.children("textarea").val(html);
+	
+	updateLayoutIframeFromSettingsField();
 }
 
 function loadAvailableBlocksList(parent, opts) {
@@ -847,7 +864,7 @@ function addRegionBlockOption(select_elm, block, project) {
 		optgroup.append(option);
 		
 		var p = select_elm.parent();
-		select_elm.selectmenu("close");
+		select_elm.selectmenu("close"); //TODO: fix this error when drag and drop echostr module to a region: Uncaught Error: cannot call methods on selectmenu prior to initialization; attempted to call method 'close'
 		refreshPretifyRegionBlockComboBox(select_elm);
 		select_elm.trigger("change");
 		
@@ -1060,12 +1077,11 @@ function getRegionBlockHtml(region, block, block_project, is_html, rb_index) {
 		label.attr("title", label.attr("title").replace(/"/g, ""));
 		
 		select = rb_html.children(".region_block_type");
-		var block_select = rb_html.children(".block_options");
+		var block_options = rb_html.children(".block_options");
 		var block_input = rb_html.children("input.block");
 		var block_text = rb_html.children(".block_text");
-		var block_options = rb_html.children(".block_options");
 		
-		block_select.val(b);
+		block_options.val(b);
 		block_input.val(b);
 		block_text.children("textarea").val(stripslashes(bt));
 		
@@ -1245,6 +1261,10 @@ function editRegionBlock(elm, opts) {
 	}
 }
 
+function onBlurRegionBlock(elm) {
+	onChangeRegionBlock(elm);
+}
+
 function moveUpRegionBlock(elm) {
 	moveRegionBlock(elm, "up");
 }
@@ -1268,83 +1288,155 @@ function moveRegionBlock(elm, direction) {
 		if (next_item[0]) 
 			item.parent()[0].insertBefore(next_item[0], item[0]);
 	}
+	
+	updateLayoutIframeFromSettingsField();
 }
 
 function deleteRegionBlock(elm) {
 	var item = $(elm).parent();
 	var items = item.parent();
 
-	if (items.parent().hasClass("other_region_blocks")) 
+	if (items.parent().hasClass("other_region_blocks"))  {
 		item.remove();
+	
+		updateLayoutIframeFromSettingsField();
+	}
 	else {
 		var region = item.children("input.region").val();
 		var other_similar_rb = items.find(".item input.region[value='" + region + "']");
 
-		if (other_similar_rb.length > 1)
+		if (other_similar_rb.length > 1) {
 			item.remove();
-		else 
+			
+			updateLayoutIframeFromSettingsField();
+		}
+		else {
+			resetRegionBlock(item); //resetRegionBlock already triggers the onChange and onBlur events for the selected field which calls the updateLayoutIframeFromSettingsField method.
+			
 			StatusMessageHandler.showError("Error trying to remove this region-block because is the only one of his kind. You must leave at least 1 block-region for each region.");
+		}
 	}
 }
 
-function addInclude(elm) {
-	var html = include_html.replace(/#path#/g, "");
-	var include = $(html);
+function resetRegionBlock(item) {
+	var region_block_type = item.children(".region_block_type");
+	var block_options = item.children(".block_options");
+	var block_input = item.children("input.block");
+	var block_text = item.children(".block_text");
+	var block_html = item.children(".block_html");
+	var block_params = item.children(".block_params");
+	var block_simulated_html = item.children(".block_simulated_html");
 	
-	include.children("select").val("string");
+	var type = region_block_type.val();
 	
-	var inc = $(".regions_blocks_includes_settings .includes");
-	inc.find(".items").append(include);
-	inc.find(".no_items").hide();
-}
-
-function getTemplateParamHtml(param, value) {
-	value = value ? value : "";
-	var v = value.substr(0, 1) == '"' ? value.substr(1, value.length - 2).replace(/\\"/g, '"') : value;
-	var vt = value.substr(0, 1) == '"' && value.substr(value.length - 1) == '"' ? value.substr(1, value.length - 2) : value;
+	//reset params and simulated html
+	block_params.html("");
+	block_simulated_html.remove();
 	
-	var par = param.replace(/"/g, "&quot;");
-	var val = value.replace(/"/g, "&quot;");
-	var tp_html = $( template_param_html.replace(/#param#/g, par).replace(/#value#/g, val) );
-	
-	var label = tp_html.children("label").first();
-	label.html( label.text().replace(/"/g, "") );
-	
-	tp_html.children("input.template_param_value").val(v);
-	tp_html.children(".template_param_text").children("textarea").val(stripslashes(vt));
-	
-	var param_value_type = value.length > 0 ? getArgumentType(value) : "string";
-	tp_html.children("select").val(param_value_type);
-	
-	if (param_value_type == "text") {
-		tp_html.children("input.template_param_value").hide();
-		tp_html.children(".template_param_text").show();
+	//reset selected field
+	if (type == "options") {
+		var pretty_select = item.children(".pretty_block_options_button");
+		
+		block_options.val("");
+		
+		if (pretty_select[0])
+			refreshPretifyRegionBlockComboBox(block_options);
+		
+		block_options.trigger("change");
 	}
-	
-	return tp_html;
-}
-
-function addOtherTemplateParam(elm) {
-	var param = prompt("Please write the Param Id that you wish to add?");
-	
-	if (param == null) {
-		return true;
+	else if (type == "text") {
+		var text_textarea = block_text.children("textarea");
+		
+		text_textarea.val("");
+		text_textarea.trigger("blur");
 	}
-	
-	if (param && param.trim()) {
-		param = param.trim();
-		param = param.substr(0, 1) != '$' ? '"' + param + '"' : param;
-		
-		var tp_html = getTemplateParamHtml(param, "");
-		
-		var otp = $(".regions_blocks_includes_settings .other_template_params");
-		otp.find(".items").append(tp_html);
-		otp.find(".no_items").hide();
-		
-		//resizeElementLabels(otp);
+	else if (type == "html") {
+		setRegionBlockHtmlEditorValue(block_html, "");
 	}
 	else {
-		alert("Error: Param Id cannot be undefined!");
+		block_input.val("");
+		block_input.trigger("blur");
+	}
+}
+
+function onChangeRegionBlockType(elm) {
+	elm = $(elm);
+	var type = elm.val();
+	var p = elm.parent();
+	
+	var select = p.children(".block_options");
+	var pretty_select = p.children(".pretty_block_options_button");
+	var input = p.children("input.block");
+	var text = p.children(".block_text");
+	var text_textarea = text.children("textarea");
+	var block_html = p.children(".block_html");
+	
+	p.removeClass("has_edit"); //hide edit icon. it will be shown by the onChangeRegionBlock function, if apply...
+	
+	if (type == "options") {
+		var set_value = p.hasClass("is_text") || p.hasClass("is_input"); //if was already options no need to change value
+		var value = p.hasClass("is_text") ? text_textarea.val() : input.val();
+		
+		set_value && select.val(value);
+		
+		if (pretty_select[0]) {
+			select.hide().addClass("hidden");
+			pretty_select.show().removeClass("hidden");
+			
+			if (set_value) {
+				//console.log("called refreshPretifyRegionBlockComboBox");
+				refreshPretifyRegionBlockComboBox(select);
+			}
+		}
+		else
+			select.show().removeClass("hidden");
+		
+		input.hide().addClass("hidden");
+		text.hide().addClass("hidden");
+		block_html.hide().addClass("hidden");
+		
+		p.removeClass("is_input").removeClass("is_text").removeClass("is_html").addClass("is_select");
+		select.trigger("change");
+	}
+	else if (type == "text") {
+		if (!p.hasClass("is_text") && !p.hasClass("is_html")) //very important bc the getRegionBlockHtml triggers this function with all the values already setted. if we don't do this check it will puty the fild in blank
+			text_textarea.val( p.hasClass("is_input") ? input.val() : select.val() );
+		
+		select.hide().addClass("hidden");
+		pretty_select.hide().addClass("hidden");
+		input.hide().addClass("hidden");
+		text.show().removeClass("hidden");
+		block_html.hide().addClass("hidden");
+		
+		p.removeClass("is_input").removeClass("is_select").removeClass("is_html").addClass("is_text");
+		text_textarea.trigger("blur");
+	}
+	else if (type == "html") {
+		select.hide().addClass("hidden");
+		pretty_select.hide().addClass("hidden");
+		input.hide().addClass("hidden");
+		text.hide().addClass("hidden");
+		block_html.show().removeClass("hidden");
+		
+		p.removeClass("is_input").removeClass("is_select").removeClass("is_text").addClass("is_html has_edit");
+		
+		if (!hasRegionBlockHtmlEditor(block_html))
+			createRegionBlockHtmlEditor(block_html);
+	
+		updateLayoutIframeFromSettingsField();
+	}
+	else {
+		if (!p.hasClass("is_input") && !p.hasClass("is_html")) //very important bc the getRegionBlockHtml triggers this function with all the values already setted. if we don't do this check it will puty the fild in blank
+			input.val( p.hasClass("is_text") ? text_textarea.val() : select.val() );
+		
+		select.hide().addClass("hidden");
+		pretty_select.hide().addClass("hidden");
+		input.show().removeClass("hidden");
+		text.hide().addClass("hidden");
+		block_html.hide().addClass("hidden");
+		
+		p.removeClass("is_text").removeClass("is_select").removeClass("is_html").addClass("is_input");
+		input.trigger("blur");
 	}
 }
 
@@ -1364,6 +1456,38 @@ function onChangeRegionBlock(elm) {
 	
 	//Update Block Join Points
 	onLoadRegionBlockJoinPoints(parent, region, (block ? '"' + block + '"' : null));
+	
+	//layout settings
+	updateLayoutIframeFromSettingsField();
+}
+
+function addInclude(elm) {
+	var html = include_html.replace(/#path#/g, "");
+	var include = $(html);
+	
+	include.children("select").val("string");
+	
+	var inc = $(".regions_blocks_includes_settings .includes");
+	inc.find(".items").append(include);
+	inc.find(".no_items").hide();
+}
+
+function onBlurInclude(Elm) {
+	updateLayoutIframeFromSettingsField();
+}
+
+function onChangeIncludeType(elm) {
+	updateLayoutIframeFromSettingsField();
+}
+
+function onChangeIncludeOnce(elm) {
+	updateLayoutIframeFromSettingsField();
+}
+
+function removeInclude(elm) {
+	$(elm).parent().remove();
+	
+	updateLayoutIframeFromSettingsField();
 }
 
 function onLoadRegionBlockParams(region_block_item) {
@@ -1499,81 +1623,8 @@ function onLoadRegionBlocksParams(region_blocks_elm) {
 		onLoadRegionBlockParams( $(items[i]) );
 }
 
-function onChangeRegionBlockType(elm) {
-	elm = $(elm);
-	var type = elm.val();
-	var p = elm.parent();
-	
-	var select = p.children(".block_options");
-	var pretty_select = p.children(".pretty_block_options_button");
-	var input = p.children("input.block");
-	var text = p.children(".block_text");
-	var text_textarea = text.children("textarea");
-	var block_html = p.children(".block_html");
-	
-	p.removeClass("has_edit"); //hide edit icon. it will be shown by the onChangeRegionBlock function, if apply...
-	
-	if (type == "options") {
-		var set_value = p.hasClass("is_text") || p.hasClass("is_input"); //if was already options no need to change value
-		var value = p.hasClass("is_text") ? text_textarea.val() : input.val();
-		
-		set_value && select.val(value);
-		
-		if (pretty_select[0]) {
-			select.hide().addClass("hidden");
-			pretty_select.show().removeClass("hidden");
-			
-			if (set_value) 
-				refreshPretifyRegionBlockComboBox(select);
-		}
-		else
-			select.show().removeClass("hidden");
-		
-		input.hide().addClass("hidden");
-		text.hide().addClass("hidden");
-		block_html.hide().addClass("hidden");
-		
-		p.removeClass("is_input").removeClass("is_text").removeClass("is_html").addClass("is_select");
-		select.trigger("change");
-	}
-	else if (type == "text") {
-		if (!p.hasClass("is_text") && !p.hasClass("is_html")) //very important bc the getRegionBlockHtml triggers this function with all the values already setted. if we don't do this check it will puty the fild in blank
-			text_textarea.val( p.hasClass("is_input") ? input.val() : select.val() );
-		
-		select.hide().addClass("hidden");
-		pretty_select.hide().addClass("hidden");
-		input.hide().addClass("hidden");
-		text.show().removeClass("hidden");
-		block_html.hide().addClass("hidden");
-		
-		p.removeClass("is_input").removeClass("is_select").removeClass("is_html").addClass("is_text");
-		text_textarea.trigger("blur");
-	}
-	else if (type == "html") {
-		select.hide().addClass("hidden");
-		pretty_select.hide().addClass("hidden");
-		input.hide().addClass("hidden");
-		text.hide().addClass("hidden");
-		block_html.show().removeClass("hidden");
-		
-		p.removeClass("is_input").removeClass("is_select").removeClass("is_text").addClass("is_html has_edit");
-		
-		if (!hasRegionBlockHtmlEditor(block_html))
-			createRegionBlockHtmlEditor(block_html);
-	}
-	else {
-		if (!p.hasClass("is_input") && !p.hasClass("is_html")) //very important bc the getRegionBlockHtml triggers this function with all the values already setted. if we don't do this check it will puty the fild in blank
-			input.val( p.hasClass("is_text") ? text_textarea.val() : select.val() );
-		
-		select.hide().addClass("hidden");
-		pretty_select.hide().addClass("hidden");
-		input.show().removeClass("hidden");
-		text.hide().addClass("hidden");
-		block_html.hide().addClass("hidden");
-		
-		p.removeClass("is_text").removeClass("is_select").removeClass("is_html").addClass("is_input");
-		input.trigger("blur");
-	}
+function onBlurRegionBlockParam(elm) {
+	updateLayoutIframeFromSettingsField();
 }
 
 function onChangeRegionBlockParamType(elm) {
@@ -1592,6 +1643,58 @@ function onChangeRegionBlockParamType(elm) {
 	else {
 		input.show();
 		text.hide();
+	}
+	
+	updateLayoutIframeFromSettingsField();
+}
+
+function getTemplateParamHtml(param, value) {
+	value = value ? value : "";
+	var v = value.substr(0, 1) == '"' ? value.substr(1, value.length - 2).replace(/\\"/g, '"') : value;
+	var vt = value.substr(0, 1) == '"' && value.substr(value.length - 1) == '"' ? value.substr(1, value.length - 2) : value;
+	
+	var par = param.replace(/"/g, "&quot;");
+	var val = value.replace(/"/g, "&quot;");
+	var tp_html = $( template_param_html.replace(/#param#/g, par).replace(/#value#/g, val) );
+	
+	var label = tp_html.children("label").first();
+	label.html( label.text().replace(/"/g, "") );
+	
+	tp_html.children("input.template_param_value").val(v);
+	tp_html.children(".template_param_text").children("textarea").val(stripslashes(vt));
+	
+	var param_value_type = value.length > 0 ? getArgumentType(value) : "string";
+	tp_html.children("select").val(param_value_type);
+	
+	if (param_value_type == "text") {
+		tp_html.children("input.template_param_value").hide();
+		tp_html.children(".template_param_text").show();
+	}
+	
+	return tp_html;
+}
+
+function addOtherTemplateParam(elm) {
+	var param = prompt("Please write the Param Id that you wish to add?");
+	
+	if (param == null) {
+		return true;
+	}
+	
+	if (param && param.trim()) {
+		param = param.trim();
+		param = param.substr(0, 1) != '$' ? '"' + param + '"' : param;
+		
+		var tp_html = getTemplateParamHtml(param, "");
+		
+		var otp = $(".regions_blocks_includes_settings .other_template_params");
+		otp.find(".items").append(tp_html);
+		otp.find(".no_items").hide();
+		
+		//resizeElementLabels(otp);
+	}
+	else {
+		alert("Error: Param Id cannot be undefined!");
 	}
 }
 
@@ -1612,10 +1715,18 @@ function onChangeTemplateParamType(elm) {
 		input.show();
 		text.hide();
 	}
+	
+	updateLayoutIframeFromSettingsField();
 }
 
-function onBlurRegionBlock(elm) {
-	onChangeRegionBlock(elm);
+function onBlurTemplateParam(elm) {
+	updateLayoutIframeFromSettingsField();
+}
+
+function removeTemplateParam(elm) {
+	$(elm).parent().remove();
+	
+	updateLayoutIframeFromSettingsField();
 }
 
 function getRegionsBlocksAndIncludesObjToSave() {
@@ -1693,7 +1804,7 @@ function getRegionBlockItems(region_blocks_elm) {
 		else if (block_type == "html") {
 			var block_html = item.children(".block_html");
 			block = getRegionBlockHtmlEditorValue(block_html);
-			block = block.replace(/\\/g, "\\\\"); //very important otherwise if we add a backslash it will be remove after the next time we reload the edit page (edit_entity_simple or edit_template). Everytime that the edit page gets reloaded with the editor or textarea, it will show the backslashes unescaped. So when we save them, we must escape them, otherwise the next time we reload this page the backslashes will disappear.
+			block = block.replace(/\\/g, "\\\\"); //very important otherwise if we add a backslash it will be remove after the next time we reload the edit page (edit_entity_simple or edit_template_simple). Everytime that the edit page gets reloaded with the editor or textarea, it will show the backslashes unescaped. So when we save them, we must escape them, otherwise the next time we reload this page the backslashes will disappear.
 			
 			block_type = "string";
 			is_html = true;
@@ -2171,6 +2282,44 @@ function updateRegionsBlocksRBIndexIfNotSet(regions_blocks_includes_settings) {
 	}
 }
 
+function updateSettingsFromLayoutIframeField() {
+	if (typeof update_settings_from_layout_iframe_func == "function") {
+		//save synchronization functions
+		var update_settings_from_layout_iframe_func_bkp = update_settings_from_layout_iframe_func;
+		var update_layout_iframe_from_settings_func_bkp = update_layout_iframe_from_settings_func;
+		
+		//disable synchronization functions in case some call recursively by mistake
+		update_settings_from_layout_iframe_func = null;
+		update_layout_iframe_from_settings_func = null;
+		
+		//synchronize
+		update_settings_from_layout_iframe_func_bkp();
+		
+		//sets back synchronization functions
+		update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
+		update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
+	}
+}
+
+function updateLayoutIframeFromSettingsField() {
+	if (typeof update_layout_iframe_from_settings_func == "function"){
+		//save synchronization functions
+		var update_settings_from_layout_iframe_func_bkp = update_settings_from_layout_iframe_func;
+		var update_layout_iframe_from_settings_func_bkp = update_layout_iframe_from_settings_func;
+		
+		//disable synchronization functions in case some call recursively by mistake
+		update_settings_from_layout_iframe_func = null;
+		update_layout_iframe_from_settings_func = null;
+		
+		//synchronize
+		update_layout_iframe_from_settings_func_bkp();
+		
+		//sets back synchronization functions
+		update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
+		update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
+	}
+}
+
 function updateLayoutIframeFromSettings(iframe, data, iframe_html_to_parse) {
 	var iframe_parent = iframe.parent().closest(".tab_content_template_layout");
 	var iframe_url = iframe.attr("orig_src");
@@ -2336,7 +2485,7 @@ function openTemplateRegionInfoPopup(elm) {
 	var region_type = getArgumentType(region);
 	region = region_type == "string" ? region.replace(/"/g, "") : region;
 	
-	var template = $(".entity_obj .template > select[name=template]").val(); //this only applies to the edit_entity_simple.php. the edit_template.php already contains the template in the url. Do not add p.parent() here otherwise when this function gets call from the simple_template_layout.php iframe will not work.
+	var template = $(".entity_obj .template > select[name=template]").val(); //this only applies to the edit_entity_simple.php. the edit_template_simple.php already contains the template in the url. Do not add p.parent() here otherwise when this function gets call from the simple_template_layout.php iframe will not work.
 	var template_genre = $(".entity_obj .template > select[name=template_genre]").val();
 	
 	if (template_genre)
@@ -2375,8 +2524,7 @@ function openTemplateRegionInfoPopup(elm) {
 
 /* TAB CONTENT TEMPLATE LAYOUT */
 
-function initPageAndTemplateLayout(main_parent_elm, main_layout_elm) {
-	var tabs = main_layout_elm.children(".tabs");
+function initPageAndTemplateLayout(main_parent_elm, main_layout_elm, on_ready_callback) {
 	var iframe = main_layout_elm.find(" > .tab_content_template_layout > iframe");
 	
 	prepareRegionsBlocksHtmlValue(main_parent_elm);
@@ -2385,22 +2533,23 @@ function initPageAndTemplateLayout(main_parent_elm, main_layout_elm) {
 	
 	//resizeAllLabels();
 	
-	var regions_blocks_includes_settings = main_layout_elm.find(" > .regions_blocks_includes_settings");
+	var regions_blocks_includes_settings = main_parent_elm.find(".regions_blocks_includes_settings");
 	var regions_blocks_items = regions_blocks_includes_settings.find(".region_blocks, .other_region_blocks");
 	onLoadRegionBlocksJoinPoints(regions_blocks_items);
 	onLoadRegionBlocksParams(regions_blocks_items);
 	
-	main_layout_elm.tabs();
-	
 	if (iframe[0]) {
 		var iframe_unload_func = function () {
-			tabs.find("li a").addClass("inactive");
+			main_parent_elm.addClass("inactive");
 		};
 		iframe.load(function() {
 			$(iframe[0].contentWindow).unload(iframe_unload_func);
-			tabs.find("li a").removeClass("inactive");
+			main_parent_elm.removeClass("inactive");
 			
 			onLoadIframeTabContentTemplateLayout();
+			
+			if (typeof on_ready_callback == "function")
+				on_ready_callback();
 		});
 		$(iframe[0].contentWindow).unload(iframe_unload_func);
 		
@@ -2408,19 +2557,24 @@ function initPageAndTemplateLayout(main_parent_elm, main_layout_elm) {
 			if (iframe[0].contentWindow && typeof iframe[0].contentWindow.getTemplateRegionsBlocks == "function") {
 				init_page_and_template_layout_timeout_id && clearInterval(init_page_and_template_layout_timeout_id);
 				
-				tabs.find("li a").removeClass("inactive");
+				main_parent_elm.removeClass("inactive");
+				
+				if (typeof on_ready_callback == "function")
+					on_ready_callback();
 			}
 		}, 700); //0.7 secs
 		
 		setTimeout(function() {
 			init_page_and_template_layout_timeout_id && clearInterval(init_page_and_template_layout_timeout_id);
 			
-			tabs.find("li a").removeClass("inactive");
+			main_parent_elm.removeClass("inactive");
+			
+			if (typeof on_ready_callback == "function")
+				on_ready_callback();
 		}, 10000); //10 secs
 		
-		iframe.parent().children(".iframe_toolbar").find("select, input").each(function(idx, item) {
-			if (item.nodeName.toLowerCase() == "select")
-				item.setAttribute("onChange", item.getAttribute("onChange") + ";updateEntityTemplateLayoutHeight(this);");
+		iframe.parent().children(".iframe_toolbar").find("select").each(function(idx, item) {
+			item.setAttribute("onChange", item.getAttribute("onChange") + ";updateEntityTemplateLayoutHeight(this);");
 		});
 	}
 	
@@ -2432,6 +2586,76 @@ function initPageAndTemplateLayout(main_parent_elm, main_layout_elm) {
 	
 	//init Iframe Modules Blocks Toolbar
 	initIframeModulesBlocksToolbarTree();
+	
+	//init settings
+	var settings_overlay = main_parent_elm.find(".regions_blocks_includes_settings_overlay");
+	var settings_header = regions_blocks_includes_settings.children(".settings_header");
+	
+	regions_blocks_includes_settings.draggable({
+		axis: "y",
+		appendTo: 'body',
+		cursor: 'move',
+          tolerance: 'pointer',
+          handle: ' > .settings_header',
+		start: function(event, ui) {
+			iframe.css("visibility", "hidden");
+			settings_overlay.show();
+			regions_blocks_includes_settings.addClass("resizing").removeClass("collapsed");
+			settings_header.find(".icon").addClass("minimize").removeClass("maximize");
+			return true;
+		},
+		drag: function(event, ui) {
+			var h = $(window).height() - (ui.offset.top - $(window).scrollTop());
+			
+			regions_blocks_includes_settings.css({
+				height: h + "px",
+				top: "", 
+				left: "", 
+				bottom: ""
+			});
+		},
+		stop: function(event, ui) {
+			var top = parseInt(ui.helper.css("top"));//Do not use ui.offset.top bc if the window has scrollbar, it will get the wrong top for the calculations inside of resizeSettingsPanel
+			resizeSettingsPanel(main_parent_elm, top);
+		},
+	});
+}
+
+function resizeSettingsPanel(main_parent_elm, top) {
+	var settings = main_parent_elm.find(".regions_blocks_includes_settings");
+	var settings_overlay = main_parent_elm.find(".regions_blocks_includes_settings_overlay");
+	var iframe = main_parent_elm.find(".tab_content_template_layout iframe");
+	var icon = settings.children(".settings_header .icon");
+	
+	var wh = $(window).height();
+	var height = 0;
+	
+	iframe.css("visibility", "");
+	settings_overlay.hide();
+	settings.removeClass("resizing");
+	settings.css({top: "", left: "", bottom: ""}); //remove top, left and bottom from style attribute in #settings_header
+	
+	if (top < 30) { //30 is the size of #top_bar (30px)
+		height = wh - 30;
+		
+		settings.css("height", height + "px");
+	}
+	else if (top > wh - 25) { //25 is the size of #settings .settings_header when collapsed
+		icon.addClass("maximize").removeClass("minimize");
+		settings.addClass("collapsed");
+		
+		settings.css("height", ""); //remove height from style attribute in #settings
+	}
+	else
+		settings.css("height", (wh - top) + "px");
+}
+
+function toggleSettingsPanel(elm) {
+	elm = $(elm);
+	elm.toggleClass("maximize").toggleClass("minimize");
+	
+	var settings = elm.parent().closest('.regions_blocks_includes_settings');
+	settings.toggleClass("collapsed");
 }
 
 function onLoadIframeTabContentTemplateLayout() {
@@ -2440,7 +2664,7 @@ function onLoadIframeTabContentTemplateLayout() {
 	
 	//prepare full height
 	var iframe_body = iframe[0].contentWindow.document.body;
-	iframe.parent().css("height", (iframe_body.scrollHeight + 40) + 'px');
+	//iframe.parent().css("height", (iframe_body.scrollHeight + 40) + 'px'); //no need to do this anymore bc the height is now fixed bc of the top bar.
 	
 	//prepare responsive size
 	onChangeTemplateLayoutScreenSize( iframe.parent().find(" > .iframe_toolbar > select")[0] );
@@ -2467,11 +2691,12 @@ function disableLinksAndButtonClickEvent(parent_elm) {
 }
 
 function updateEntityTemplateLayoutHeight(elm) {
+	/* no need to do this anymore bc the height is now fixed bc of the top bar.
 	setTimeout(function() {
 		var entity_template_layout = $(elm).parent().closest(".entity_template_layout");
 		var iframe = entity_template_layout.children("iframe");
-		entity_template_layout.css("height", (iframe.height() + 40) + 'px');
-	}, 1000);
+		entity_template_layout.css("height", (iframe.height() + 40) + 'px'); 
+	}, 1000);*/
 }
 
 function toggleIframeModulesBlocksToolbar(elm) {
@@ -2503,6 +2728,10 @@ function initIframeModulesBlocksDroppableRegions() {
 	      activeClass: "ui-droppable-active",
 	      tolerance: "pointer",
 	      drop: function(event, ui) {
+	      	//when resizing the regions_blocks_includes_settings panel, it will call this function, and so we want to ignore it, bc the regions_blocks_includes_settings is not a draggable element that we wish...
+	      	if (ui.draggable.hasClass("regions_blocks_includes_settings"))
+	      		return false;
+	      	
 	      	var droppable = $(this);
 	      	
 	      	setTimeout(function() {
@@ -2766,15 +2995,23 @@ function showModuleInfoWithSmartPosition(elm) {
 	var module_info_tooltip = $("body > #module_info_tooltip");
 	var popup = $(elm).parent().closest(".myfancypopup");
 	var layout_ui_editor_right_container = $(elm).parent().closest(".layout_ui_editor_right_container");
+	var iframe_modules_blocks_toolbar = $(elm).parent().closest(".iframe_modules_blocks_toolbar");
 	var z_index = null;
 	
-	if (layout_ui_editor_right_container.length > 0)
+	if (layout_ui_editor_right_container.length > 0 || iframe_modules_blocks_toolbar.length > 0) {
+		var w = layout_ui_editor_right_container.length > 0 ? layout_ui_editor_right_container.width() : iframe_modules_blocks_toolbar.width();
+		
 		module_info_tooltip.css({
-			top: "auto",
+			/*top: "auto",
 			left: "auto",
 			bottom: $(window).height() - window.event.y,
-			right: $(window).width() - window.event.x + 10,
+			right: $(window).width() - window.event.x + 10,*/
+			top: window.event.y - 20,
+			left: "auto",
+			right: w - 20,
+			bottom: "auto",
 		});
+	}
 	
 	if (popup.length > 0)
 		z_index = popup.css("z-index");
@@ -2804,6 +3041,55 @@ function updateModuleInfoData(module_info_tooltip, data) {
 		
 		module_info_tooltip.children(".module_data").html(html);
 	}
+}
+
+/* CODE TABS */
+
+function onClickLayoutEditorUICodeTab(elm) {
+	onClickCodeEditorTab(elm);
+	
+	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout_ui_editor").data("LayoutUIEditor");
+	
+	if (PtlLayoutUIEditor) {
+		var luie = PtlLayoutUIEditor.getUI();
+		var tabs = luie.find(" > .tabs > .tab");
+		
+		if (!tabs.filter(".tab-active").is(".view-source"))
+			tabs.filter(".view-source").first().trigger("click");
+	}
+}
+
+function onClickLayoutEditorUIVisualTab(elm) {
+	onClickCodeEditorTab(elm);
+	
+	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout_ui_editor").data("LayoutUIEditor");
+	
+	if (PtlLayoutUIEditor) {
+		var luie = PtlLayoutUIEditor.getUI();
+		var tabs = luie.find(" > .tabs > .tab");
+		
+		if (!tabs.filter(".tab-active").is(".view-layout"))
+			tabs.filter(".view-layout").first().trigger("click");
+	}
+}
+
+function onClickLayoutEditorUITaskWorkflowTab(elm) {
+	//if it comes from visual tab, generates the code befoe it clicks in the workflow tab
+	if (auto_convert) {
+		var ul = $(elm).parent().closest("ul");
+		var previous_active_tab = ul.children(".ui-state-active");
+		
+		if (previous_active_tab.attr("id") == "visual_editor_tab") {
+			var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout_ui_editor").data("LayoutUIEditor");
+			
+			if (PtlLayoutUIEditor) {
+				//convert visual to code
+				PtlLayoutUIEditor.convertTemplateLayoutToSource();
+			}
+		}
+	}
+	
+	onClickTaskWorkflowTab(elm);
 }
 
 /* CODE LAYOUT UI EDITOR */
@@ -3083,6 +3369,7 @@ function createCodeLayoutUIEDitorEditor(textarea, options) {
 			var PtlLayoutUIEditor = new LayoutUIEditor();
 			PtlLayoutUIEditor.options.ui_element = ui;
 			PtlLayoutUIEditor.options.template_source_editor_save_func = options && options.save_func ? options.save_func : null;
+			PtlLayoutUIEditor.options.auto_convert = typeof auto_convert != "undefined" && auto_convert;
 			
 			if (typeof onIncludePageUrlTaskChooseFile == "function")
 				PtlLayoutUIEditor.options.on_choose_page_url_func = function(elm) {
@@ -3102,13 +3389,45 @@ function createCodeLayoutUIEDitorEditor(textarea, options) {
 					LayoutUIEditorFormFieldUtilObj.initFormFieldsSettings();
 				}
 				
-				var right_containers = $(".layout_ui_editor_right_container, .layout_ui_editor_right_container_resize");
-				var code_menu = $(".code_layout_ui_editor .code_menu");
+				//add right_container to layout ui editor
+				var right_container = $(".layout_ui_editor_right_container");
 				var luie = PtlLayoutUIEditor.getUI();
+        			var menu_widgets = PtlLayoutUIEditor.getMenuWidgets();
+        			var menu_layers = PtlLayoutUIEditor.getMenuLayers();
+        			var template_widgets_options = PtlLayoutUIEditor.getTemplateWidgetsOptions();
+				var menu_settings = PtlLayoutUIEditor.getMenuSettings();
         			var options = luie.children(".options");
         			
-        			//prepare save button
-        			var save_option = $('<i class="zmdi zmdi-floppy option save" title="Save" style="display:none"></i>');
+        			luie.append(right_container);
+        			right_container.hide();
+        			
+        			var right_container_icon = $('<i class="zmdi zmdi-view-dashboard option show-right-container hidden" title="Show Modules, Blocks and DBs"></i>');
+        			right_container_icon.click(function() {
+        				right_container.fadeIn("slow");
+					menu_widgets.fadeOut("slow");
+					menu_layers.fadeOut("slow");
+					template_widgets_options.fadeOut("slow");
+					
+					options.find(".show-widgets, .show-layers, .show-layout-options").removeClass("option-active");
+					$(this).addClass("option-active");
+					
+					if (!luie.hasClass("fixed_properties")) {
+						menu_settings.fadeOut("slow");
+						options.find(".show-settings").removeClass("option-active");
+					}
+        			});
+        			options.find(".show-widgets").before(right_container_icon);
+        			
+        			options.find(".show-widgets, .show-layers, .show-layout-options" + (!luie.hasClass("fixed_properties") ? ", .show-settings" : "")).click(function() {
+        				right_container_icon.removeClass("option-active");
+        				right_container.fadeOut("slow");
+        			});
+				
+				//prepare save button
+        			var code_layout_ui_editor = $(".code_layout_ui_editor");
+				var code_menu = code_layout_ui_editor.find(".code_menu");
+				var save_option = $('<i class="zmdi zmdi-floppy option save" title="Save" style="display:none"></i>');
+        			
         			save_option.click(function() {
         				code_menu.find(".save a").trigger("click");
         				PtlLayoutUIEditor.clickViewLayoutTabWithoutSourceConversion();
@@ -3118,11 +3437,9 @@ function createCodeLayoutUIEDitorEditor(textarea, options) {
 				//prepare tabs click
         			luie.find(" > .tabs > .tab").click(function() {
 					if ($(this).hasClass("view-layout")) {
-						right_containers.show();
 						save_option.show();
 					}
 					else {
-						right_containers.hide();
 						save_option.hide();
 					}
 					
@@ -3134,18 +3451,25 @@ function createCodeLayoutUIEDitorEditor(textarea, options) {
 		   		
 		   		//prepare full-screen option
 				options.find(".full-screen").click(function() {
-        				if (luie.hasClass("full-screen")) {
+        				toggleEditorFullScreen();
+        				
+        				/*if (luie.hasClass("full-screen")) {
         					var z_index = luie.css("z-index");
-        					right_containers.addClass("full-screen").css("z-index", z_index + 1);
-        					code_menu.addClass("full-screen").css("z-index", z_index + 1);
+        					code_layout_ui_editor.addClass("editor_full_screen");
+        					code_menu.css("z-index", z_index + 1);
+        					openFullscreen();
         				}
         				else	{
-        					right_containers.removeClass("full-screen");
-        					code_menu.removeClass("full-screen");
-        				}
+        					code_layout_ui_editor.removeClass("editor_full_screen");
+        					closeFullscreen();
+        				}*/
+        				
+        				setTimeout(function() {
+	        				PtlLayoutUIEditor.MyTextSelection.refreshMenu();
+	        			}, 1000);
         			});
-        			
-        			initResizeCodeLayoutUIEditorRightContainer(PtlLayoutUIEditor);
+
+				//initResizeCodeLayoutUIEditorRightContainer(PtlLayoutUIEditor);
 			};
 			window[ptl_ui_creator_var_name] = PtlLayoutUIEditor;
 			PtlLayoutUIEditor.init(ptl_ui_creator_var_name);
@@ -3168,7 +3492,7 @@ function createCodeLayoutUIEDitorEditor(textarea, options) {
 	}
 }
 
-function initResizeCodeLayoutUIEditorRightContainer(PtlLayoutUIEditor) {
+/*function initResizeCodeLayoutUIEditorRightContainer(PtlLayoutUIEditor) {
 	var layout_ui_editor_right_container = $(".layout_ui_editor_right_container");
 	var layout_ui_editor_container = PtlLayoutUIEditor.getUI().parent();
 	var template_widgets = PtlLayoutUIEditor.getTemplateWidgets();
@@ -3208,22 +3532,36 @@ function initResizeCodeLayoutUIEditorRightContainer(PtlLayoutUIEditor) {
 				PtlLayoutUIEditor.MyTextSelection.refreshMenu();
 		},
 	});
-}
+}*/
 
 function getCodeLayoutUIEditorCode(main_obj) {
 	var PtlLayoutUIEditor = main_obj.find(".layout_ui_editor").data("LayoutUIEditor");
 	var code = null;
 	
 	if (PtlLayoutUIEditor) {
-		PtlLayoutUIEditor.forceTemplateSourceConversionAutomatically(); //Be sure that the template source is selected
+		//converts visual into code if visual tab is selected
+		var is_template_layout_tab_show = PtlLayoutUIEditor.isTemplateLayoutShown();
 		
+		if (is_template_layout_tab_show)
+			PtlLayoutUIEditor.convertTemplateLayoutToSource();
+		
+		/*var is_template_preview_tab_show = PtlLayoutUIEditor.isTemplatePreviewShown();
+		
+		PtlLayoutUIEditor.forceTemplateSourceConversionAutomatically(); //If template source is not selected, it will select this tab.
+		
+		//When auto save active, the getCodeLayoutUIEditorCode function will be called and the forceTemplateSourceConversionAutomatically will select the SOURCE tab. So we need to re-open again the previous opened tab.
+		if (is_template_preview_tab_show)
+			PtlLayoutUIEditor.showTemplatePreview();
+		else if (is_template_layout_tab_show)
+			PtlLayoutUIEditor.clickViewLayoutTabWithoutSourceConversion();
+		*/
 		var luie = PtlLayoutUIEditor.getUI();
 		var is_full_source_active = luie.find(" > .options .option.show-full-source").hasClass("option-active");
 		
 		return is_full_source_active ? PtlLayoutUIEditor.getTemplateFullSourceEditorValue() : PtlLayoutUIEditor.getTemplateSourceEditorValue();
 	}
 	
-	var editor = PtlLayoutUIEditor.data("editor");
+	var editor = main_obj.data("editor");
 	return editor ? editor.getValue() : main_obj.find(".layout_ui_editor > .template-source > textarea").first().val();
 }
 

@@ -37,30 +37,22 @@
 	width:100% !important;
 }
 
+.db_driver_task_html {
+	width:390px;
+}
 .db_driver_task_html div {
-	float:none;
-	clear:left;
 	margin-bottom:5px;
 }
 .db_driver_task_html label {
-	width:200px;
-	height:20px;
-	line-height:20px;
-	display:block;
-	float:left;
+	width:140px;
+	display:inline-block;
 }
 .db_driver_task_html input {
 	width:200px;
 }
 .db_driver_task_html select {
-	width:205px;
+	width:208px;
 }
-.db_driver_task_html .toggle_password {
-	width:16px;
-	height:16px;
-	background:url("../img/toggle_icon.gif") no-repeat center center;
-	vertical-align:middle;
-	float: right;
-	margin-left: 5px;
-	cursor:pointer;
+.db_driver_task_html .toggle_password::before {
+	content:"\f074";
 }

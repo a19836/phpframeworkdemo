@@ -16,8 +16,8 @@
 			padding-top:10px;
 			display:inline-block;
 			border-radius:5px;
-			border:1px solid #bbb;
-			color:#fff;
+			border:1px solid rgba(0, 0, 0, .2);
+			color:inherit;
 			overflow:hidden;
 			font-size:200%;
 		}
@@ -88,7 +88,7 @@
 						}
 						
 						widget.remove();
-						alert("This item can only be dropped into Table elements!");
+						ui_creator.showError("This item can only be dropped into Table elements!");
 					}
 				}
 			};
@@ -129,7 +129,7 @@
 				var available_options = ["th", "td"];
 				
 				if (!type || type == "" || available_options.indexOf(type.toLowerCase()) == -1)
-					alert("You must enter 1 of the following options: th/td");
+					ui_creator.showError("You must enter 1 of the following options: th/td");
 				else {
 					type = type.toLowerCase();
 					

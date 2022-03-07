@@ -18,11 +18,11 @@
 }
 
 .get_db_driver_task_html {
-	min-width:420px;
+	min-width:430px;
 }
 
 .get_db_driver_task_html .db_driver {
-	width:420px;
+	width:430px;
 	min-height:20px;
 	margin:10px auto 0 auto;
 }
@@ -48,14 +48,10 @@
 	text-align:center;
 	font-size:9px;
 	width:70px;
-	margin-bottom:5px;
+	height:19px;
 }
 .get_db_driver_task_html > div:not(.broker_method_obj) > .add_variable {
-	margin-left:-23px;
+	margin-left:-26px;
 }
-.get_db_driver_task_html > div.broker_method_obj > .add_variable {
-	margin-top:29px;
-}
-
 
 

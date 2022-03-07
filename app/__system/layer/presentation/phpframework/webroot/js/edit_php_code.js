@@ -14,6 +14,7 @@ var chooseImageUrlFromFileManagerTree = null; //used by the create_presentation_
 var brokers_db_drivers = {};
 var auto_scroll_active = true;
 var word_wrap_active = false;
+var show_low_code_first = true;
 
 $(function () {
 	MyFancyPopup.init({
@@ -23,140 +24,44 @@ $(function () {
 	MyFancyPopup.showLoading();
 });
 
-function onLoadTaskFlowChartAndCodeEditor() {
-	resizeTaskFlowChart()
-	resizeCodeEditor();
+/* AUTO SAVE & CONVERT FUNCTIONS */
+
+function onTogglePHPCodeAutoSave() {
+	var inputs = $("#code .code_menu ul li.auto_save_convert_settings ul .auto_save_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_convert_settings ul .auto_save_activation input, #code .layout_ui_editor > .options .option.auto_save_convert_settings ul li.auto_save_activation input");
 	
-	$(window).resize(function() {
-		resizeTaskFlowChart();
-		resizeCodeEditor();
+	if (auto_save) {
+		jsPlumbWorkFlow.jsPlumbTaskFile.auto_save = false; //should be false bc the saveObj calls the getCodeForSaving method which already saves the workflow by default, and we don't need 2 saves at the same time.
+		jsPlumbWorkFlow.jsPlumbProperty.auto_save = true;
+		$(".taskflowchart").removeClass("auto_save_disabled");
 		
-		MyFancyPopup.updatePopup();
-	});
-	
-	jsPlumbWorkFlow.onReady(function() {
-		$(".taskflowchart .workflow_menu").show();
-		$(".big_white_panel").hide();
-	});
-	
-	MyFancyPopup.hidePopup();
-}
-
-function createCodeEditor(textarea, options) {
-	var parent = $(textarea).parent();
-	var mode = options && options["mode"] ? options["mode"] : null;
-	mode = mode ? mode : "php";
-	
-	ace.require("ace/ext/language_tools");
-	var editor = ace.edit(textarea);
-	editor.setTheme("ace/theme/chrome");
-	editor.session.setMode("ace/mode/" + mode);
-	editor.setAutoScrollEditorIntoView(true);
-	editor.setOption("minLines", 5);
-	editor.setOptions({
-		enableBasicAutocompletion: true,
-		enableSnippets: true,
-		enableLiveAutocompletion: false,
-	});
-	editor.setOption("wrap", true);
-	
-	if (options && typeof options.save_func == "function") {
-		editor.commands.addCommand({
-			name: 'saveFile',
-			bindKey: {
-				win: 'Ctrl-S',
-				mac: 'Command-S',
-				sender: 'editor|cli'
-			},
-			exec: function(env, args, request) {
-				options.save_func();
-			},
-		});
-	}
-	
-	parent.find("textarea.ace_text-input").removeClass("ace_text-input"); //fixing problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.
-	
-	parent.data("editor", editor);
-	
-	if (!options.hasOwnProperty("no_height") || !options["no_height"]) {
-		var h = getCodeEditorHeight(parent);
-		parent.children(".ace_editor").css("height", h + "px");
-	}
-	
-	return editor;
-}
-
-function resizeTaskFlowChart() {
-	$(".taskflowchart").height(getTaskFlowChartHeight() + "px");
-	
-	jsPlumbWorkFlow.resizePanels();
-}
-
-function resizeCodeEditor(code_elm) {
-	code_elm = code_elm ? code_elm : $("#code");
-	code_elm.find("textarea, .ace_editor").css("height", getCodeEditorHeight(code_elm) + "px");
-	
-	var editor = code_elm.data("editor");
-	if (editor)
-		editor.resize();
-}
-
-function getTaskFlowChartHeight() {
-	var taskflowchart = $(".taskflowchart");
-	var offset = taskflowchart.offset();
-	var top = parseInt(offset.top) + 5;
-	
-	return parseInt( $(window).height() ) - top;
-}
-
-function getCodeEditorHeight(code_editor_parent) {
-	if (code_editor_parent[0]) {
-		var offset = code_editor_parent.offset();
-		var top = parseInt(offset.top + 1);
-		
-		var code_menu = code_editor_parent.children(".code_menu");
-		top += (code_menu[0] ? code_menu.height() : 0) + 10;
-		
-		return parseInt( $(window).height() ) - top;
-	}
-	return null;
-}
-
-function prettyPrintCode() {
-	var editor = $("#code").data("editor");
-	
-	var code = editor ? editor.getValue() : $("#code textarea").first().val();
-	code = MyHtmlBeautify.beautify(code);
-	code = code.replace(/^\s+/g, "").replace(/\s+$/g, "");
-	
-	if (editor)
-		editor.setValue(code);
-	else
-		$("#code textarea").first().val(code);
-}
-
-function setWordWrap(elm) {
-	var editor = $("#code").data("editor");
-	
-	if (editor) {
-		var wrap = $(elm).attr("wrap") != 1 ? false : true;
-		$(elm).attr("wrap", wrap ? 0 : 1);
-	
-		editor.getSession().setUseWrapMode(wrap);
-		StatusMessageHandler.showMessage("Wrap is now " + (wrap ? "enable" : "disable"));
-	}
-}
-
-function openEditorSettings() {
-	var editor = $("#code").data("editor");
-	
-	if (editor) {
-		editor.execCommand("showSettingsMenu");
+		inputs.attr("checked", "checked").prop("checked", true);
 	}
 	else {
-		StatusMessageHandler.showError("Error trying to open the editor settings...");
+		jsPlumbWorkFlow.jsPlumbTaskFile.auto_save = false;
+		jsPlumbWorkFlow.jsPlumbProperty.auto_save = false;
+		$(".taskflowchart").addClass("auto_save_disabled");
+		
+		inputs.removeAttr("checked", "checked").prop("checked", false);
 	}
 }
+
+function onTogglePHPCodeAutoConvert() {
+	var inputs = $("#code .code_menu ul li.auto_save_convert_settings ul .auto_convert_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_convert_settings ul .auto_convert_activation input, #code .layout_ui_editor > .options .option.auto_save_convert_settings ul li.auto_convert_activation input");
+	
+	if (auto_convert) {
+		inputs.attr("checked", "checked").prop("checked", true);
+	}
+	else {
+		inputs.removeAttr("checked").prop("checked", false);
+	}
+	
+	var PtlLayoutUIEditor = $(".layout_ui_editor").data("LayoutUIEditor");
+	
+	if (PtlLayoutUIEditor) 
+		PtlLayoutUIEditor.options.auto_convert = auto_convert;
+}
+
+/* TREE FUNCTIONS */
 
 function removeObjectPropertiesAndMethodsFromTreeForVariables(ul, data) {
 	$(ul).find(".function, i.undefined_file, i.css_file, i.js_file, i.img_file, .webroot_folder").each(function(idx, elm){
@@ -458,6 +363,29 @@ function removeAllThatIsNotBlocksFromTree(ul, data) {
 	});
 }
 
+/* UTIL FUNCTIONS */
+
+function updateSelectElementWithFileItems(elm, items) {
+	var options_html = "";
+	
+	if (items && items.length > 0) {
+		var class_name = elm.attr("class_name");
+		
+		for (var i = 0; i < items.length; i++) {
+			var item = items[i];
+			var name = item["name"] ? item["name"] : "";
+			var is_static = item["static"] == "1" ? 1 : 0;
+			var is_hidden = item["hidden"] == "1" ? 1 : 0;
+			
+			if (!is_hidden) {
+				options_html += '<option is_static="' + is_static + '" class_name="' + (class_name ? class_name : "") + '">' + name + '</option>';
+			}
+		}
+	}
+	
+	elm.html(options_html);
+}
+
 function getClassProperties(url, file_path, class_name) {
 	url = url.replace("#path#", file_path).replace("#class_name#", class_name).replace("#type#", "properties");
 	
@@ -506,27 +434,6 @@ function getBrokerDBDrivers(broker, bean_file_name, bean_name, item_type) {
 	return getFileProperties(url);
 }
 
-function updateSelectElementWithFileItems(elm, items) {
-	var options_html = "";
-	
-	if (items && items.length > 0) {
-		var class_name = elm.attr("class_name");
-		
-		for (var i = 0; i < items.length; i++) {
-			var item = items[i];
-			var name = item["name"] ? item["name"] : "";
-			var is_static = item["static"] == "1" ? 1 : 0;
-			var is_hidden = item["hidden"] == "1" ? 1 : 0;
-			
-			if (!is_hidden) {
-				options_html += '<option is_static="' + is_static + '" class_name="' + (class_name ? class_name : "") + '">' + name + '</option>';
-			}
-		}
-	}
-	
-	elm.html(options_html);
-}
-
 function getFileProperties(url) {
 	var props = null;
 	
@@ -544,6 +451,8 @@ function getFileProperties(url) {
 	
 	return props;
 }
+
+/* POPUP FUNCTIONS */
 
 function getTargetFieldForProgrammingTaskChooseFromFileManager(elm) {
 	var target_field = null;
@@ -681,7 +590,7 @@ function chooseCreatedVariable(elm) {
 	var input = $(MyFancyPopup.settings.targetField);
 	input.val(value ? value : "");
 	
-	//update var_Type if exists
+	//update var_type if exists
 	var var_type = input.parent().parent().find(".var_type select");
 	var_type.val("");
 	var_type.trigger("change");
@@ -697,6 +606,25 @@ function chooseCreatedVariable(elm) {
 	}
 	else if (input.is(".value") && input.parent().is(".item")) //in case of array items
 		input.parent().children(".value_type").val("");
+	else if (input.is(".var") && input.parent().is(".item")) { //in case of conditions items
+		//fins the next sibling with class .var_type
+		var node = input;
+		
+		do {
+			var next = node.next();
+			
+			if (next.hasClass("var_type")) {
+				next.val("");
+				break;
+			}
+			
+			node = next;
+		} 
+		while(next[0]);
+	}
+	
+	//put cursor in targetField
+	input.focus();
 	
 	MyFancyPopup.hidePopup();
 }
@@ -720,7 +648,7 @@ function getNewVarWithSubGroupsInProgrammingTaskChooseCreatedVariablePopup(type_
 }
 function addNewVarSubGroupToProgrammingTaskChooseCreatedVariablePopup(elm) {
 	var sub_groups = $(elm).parent().find(".sub_group").last();
-	var sub_group = $('<li><input /><span class="icon delete" onClick="removeNewVarSubGroupToProgrammingTaskChooseCreatedVariablePopup(this)">Remove</span><ul class="sub_group"></ul></li>');
+	var sub_group = $('<li><input /><span class="icon delete" onClick="removeNewVarSubGroupToProgrammingTaskChooseCreatedVariablePopup(this)" title="Remove">Remove</span><ul class="sub_group"></ul></li>');
 	
 	sub_groups.append(sub_group);
 }
@@ -842,7 +770,7 @@ function chooseObjectMethod(elm) {
 			
 			updateObjNameAccordingWithObjectPropertySelection(select, obj_field, static_field);
 			
-			if (confirm("Do you wish to update automatically this method arguments?")) {
+			if (auto_convert || confirm("Do you wish to update automatically this method arguments?")) {
 				var args = getMethodArguments( select.attr("get_file_properties_url"), select.attr("file_path"), select.attr("class_name"), value);
 				ProgrammingTaskUtil.setArgs(args, dest.parent().parent().find(".method_args .args"));
 			}
@@ -871,7 +799,7 @@ function chooseFunction(elm) {
 	
 	$(MyFancyPopup.settings.targetField).val(value ? value : "");
 	
-	if (value && confirm("Do you wish to update automatically this function arguments?")) {
+	if (value && (auto_convert || confirm("Do you wish to update automatically this function arguments?"))) {
 		var args = getFunctionArguments( select.attr("get_file_properties_url"), select.attr("file_path"), value);
 		ProgrammingTaskUtil.setArgs(args, $(MyFancyPopup.settings.targetField).parent().parent().find(".func_args .args"));
 	}
@@ -910,7 +838,7 @@ function chooseClassName(elm, do_not_update_args) {
 		
 		$(MyFancyPopup.settings.targetField).val(class_name ? class_name : "");
 		
-		if (!do_not_update_args && confirm("Do you wish to update automatically this class arguments?")) {
+		if (!do_not_update_args && (auto_convert || confirm("Do you wish to update automatically this class arguments?"))) {
 			var select = $("#choose_method_from_file_manager .method select");
 			var file_path = select.attr("file_path");
 			var get_file_properties_url = select.attr("get_file_properties_url");
@@ -2052,294 +1980,204 @@ function choosePresentation(elm) {
 	}
 }
 
-function onClickCodeEditorTab(elm) {
-	setTimeout(function() {
+/* UI, TABS, WORKFLOW & CODE EDITOR FUNCTIONS */
+
+function onLoadTaskFlowChartAndCodeEditor() {
+	if ($(".taskflowchart")[0]) {
+		resizeTaskFlowChart()
 		resizeCodeEditor();
 		
-		var editor = $("#code").data("editor");
-		if (editor && $("#code").is(":visible"))
-			editor.focus();
-	}, 10);
+		$(window).resize(function() {
+			resizeTaskFlowChart();
+			resizeCodeEditor();
+			
+			MyFancyPopup.updatePopup();
+		});
+		
+		jsPlumbWorkFlow.onReady(function() {
+			$(".taskflowchart .workflow_menu").show();
+			$(".big_white_panel").hide();
+		});
+		
+		//init the code_id in #ui and #code so the system doesn't re-generate the code and workflow when clicked in the code and taskflow tabs and bc of the isCodeAndWorkflowObjChanged method, when the #tasks_flow_tab is not inited yet.
+		if ($("#ui").length && $("#code").length) {
+			var code = getEditorCodeRawValue();
+			var code_id = $.md5(code);
+			
+			$("#code").attr("generated_code_id", code_id);
+			$("#ui").attr("code_id", code_id);
+		}
+	}
+	
+	MyFancyPopup.hidePopup();
 }
 
-function onClickTaskWorkflowTab(elm) {
-	elm = $(elm);
+function createCodeEditor(textarea, options) {
+	var parent = $(textarea).parent();
+	var mode = options && options["mode"] ? options["mode"] : null;
+	mode = mode ? mode : "php";
 	
-	if (elm.attr("is_init") != 1) {
-		elm.attr("is_init", 1);
-		
-		MyFancyPopup.init({
-			parentElement: window,
-		});
-		MyFancyPopup.showOverlay();
-		MyFancyPopup.showLoading();
-		
-		var selector = elm.attr("href");
-		var p = elm.parent().closest("ul").parent();
-		var ui_elm = p.children(selector);
-		
-		if (!ui_elm[0])
-			ui_elm = p.find(selector);
-		
-		var workflow_menu = ui_elm.find(".workflow_menu");
-		workflow_menu.hide();
-		
-		jsPlumbWorkFlow.jsPlumbTaskFile.read(get_workflow_file_url, {
-			"success": function(data, textStatus, jqXHR) {
-				resizeTaskFlowChart();
-				
-				MyFancyPopup.hidePopup();
-				workflow_menu.show();
-				jsPlumbWorkFlow.resizePanels();
-				
-				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, get_workflow_file_url, function() {
-						elm.removeAttr("is_init");
-						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
-						onClickTaskWorkflowTab(elm[0]);
-					});
+	ace.require("ace/ext/language_tools");
+	var editor = ace.edit(textarea);
+	editor.setTheme("ace/theme/chrome");
+	editor.session.setMode("ace/mode/" + mode);
+	editor.setAutoScrollEditorIntoView(true);
+	editor.setOption("minLines", 5);
+	editor.setOptions({
+		enableBasicAutocompletion: true,
+		enableSnippets: true,
+		enableLiveAutocompletion: false,
+	});
+	editor.setOption("wrap", true);
+	
+	if (options && typeof options.save_func == "function") {
+		editor.commands.addCommand({
+			name: 'saveFile',
+			bindKey: {
+				win: 'Ctrl-S',
+				mac: 'Command-S',
+				sender: 'editor|cli'
 			},
-			"error": function(jqXHR, textStatus, errorThrown) {
-				resizeTaskFlowChart();
-				
-				MyFancyPopup.hidePopup();
-				workflow_menu.show();
-				jsPlumbWorkFlow.resizePanels();
-				
-				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, get_workflow_file_url, function() {
-						elm.removeAttr("is_init");
-						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
-						onClickTaskWorkflowTab(elm[0]);
-					});
+			exec: function(env, args, request) {
+				options.save_func();
 			},
 		});
+	}
+	
+	parent.find("textarea.ace_text-input").removeClass("ace_text-input"); //fixing problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.
+	
+	parent.data("editor", editor);
+	
+	if (!options.hasOwnProperty("no_height") || !options["no_height"]) {
+		var h = getCodeEditorHeight(parent);
+		parent.children(".ace_editor").css("height", h + "px");
+	}
+	
+	return editor;
+}
+
+function resizeTaskFlowChart() {
+	$(".taskflowchart").height(getTaskFlowChartHeight() + "px");
+	
+	jsPlumbWorkFlow.resizePanels();
+}
+
+function resizeCodeEditor(code_elm) {
+	code_elm = code_elm ? code_elm : $("#code");
+	
+	var height = getCodeEditorHeight(code_elm);
+	var editor_elm = code_elm.find(".ace_editor");
+	
+	if (editor_elm[0])
+		editor_elm.css("height", height + "px");
+	else
+		code_elm.find(" > textarea, > .layout_ui_editor > textarea").css("height", getCodeEditorHeight(code_elm) + "px");
+	
+	var editor = code_elm.data("editor");
+	if (editor)
+		editor.resize();
+}
+
+function getTaskFlowChartHeight() {
+	var taskflowchart = $(".taskflowchart");
+	var offset = taskflowchart.offset();
+	var top = parseInt(offset.top) + 5;
+	
+	return parseInt( $(window).height() ) - top;
+}
+
+function getCodeEditorHeight(code_editor_parent) {
+	if (code_editor_parent[0]) {
+		var offset = code_editor_parent.offset();
+		var top = parseInt(offset.top + 1);
+		
+		var code_menu = code_editor_parent.children(".code_menu:not(.top_bar_menu)");
+		top += (code_menu[0] ? code_menu.height() : 0) + 10;
+		
+		return parseInt( $(window).height() ) - top;
+	}
+	return null;
+}
+
+function prettyPrintCode() {
+	var editor = $("#code").data("editor");
+	
+	var code = editor ? editor.getValue() : $("#code textarea").first().val();
+	code = MyHtmlBeautify.beautify(code);
+	code = code.replace(/^\s+/g, "").replace(/\s+$/g, "");
+	
+	if (editor)
+		editor.setValue(code);
+	else
+		$("#code textarea").first().val(code);
+}
+
+function setWordWrap(elm) {
+	var editor = $("#code").data("editor");
+	
+	if (editor) {
+		var wrap = $(elm).attr("wrap") != 1 ? false : true;
+		$(elm).attr("wrap", wrap ? 0 : 1);
+		
+		editor.getSession().setUseWrapMode(wrap);
+		StatusMessageHandler.showMessage("Wrap is now " + (wrap ? "enable" : "disable"));
+	}
+}
+
+function openEditorSettings() {
+	var editor = $("#code").data("editor");
+	
+	if (editor) {
+		editor.execCommand("showSettingsMenu");
 	}
 	else {
-		setTimeout(function() {
-			updateTasksFlow();
-			resizeTaskFlowChart();
-		}, 10);
+		StatusMessageHandler.showError("Error trying to open the editor settings...");
 	}
-}
-
-function updateTasksFlow() {
-	jsPlumbWorkFlow.getMyFancyPopupObj().updatePopup();
-		
-	var tasks = jsPlumbWorkFlow.jsPlumbTaskFlow.getAllTasks();
-	
-	for (var i = 0; i < tasks.length; i++) {
-		var task = tasks[i];
-		
-		onEditLabel(task.id);
-		jsPlumbWorkFlow.jsPlumbTaskFlow.repaintTask( $(task) );
-	}
-}
-
-function generateCodeFromTasksFlow(do_not_confirm) {
-	var status = true;
-	
-	var old_workflow_id = $("#ui").attr("workflow_id");
-	var data = jsPlumbWorkFlow.jsPlumbTaskFile.getWorkFlowData();
-	var new_workflow_id = $.md5(JSON.stringify(data));
-	
-	var generated_code_id = $("#code").attr("generated_code_id");
-	var code = getEditorCodeRawValue();
-	var new_code_id = code ? $.md5(code) : null;
-	
-	if (old_workflow_id != new_workflow_id || (generated_code_id && generated_code_id != new_code_id)) {
-		if (do_not_confirm || confirm("Do you wish to update this code accordingly with the workflow tasks?")) {
-			status = false;
-			
-			MyFancyPopup.init({
-				parentElement: window,
-			});
-			MyFancyPopup.showOverlay();
-			MyFancyPopup.showLoading();
-			$(".workflow_menu").hide();
-			
-			var save_options = {
-				overwrite: true,
-				success: function(data, textStatus, jqXHR) {
-					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, set_tmp_workflow_file_url, function() {
-							jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
-							StatusMessageHandler.removeLastShownMessage("error");
-							generateCodeFromTasksFlow(true);
-						});
-				},
-			};
-			
-			if (jsPlumbWorkFlow.jsPlumbTaskFile.save(set_tmp_workflow_file_url, save_options)) {
-				$.ajax({
-					type : "get",
-					url : create_code_from_workflow_file_url,
-					dataType : "json",
-					success : function(data, textStatus, jqXHR) {
-						if (data && data.hasOwnProperty("code")) {
-							var code = "<?php\n" + data.code.trim() + "\n?>";
-							setEditorCodeRawValue(code);
-							
-							$("#ui").attr("workflow_id", new_workflow_id);
-							$("#code").attr("generated_code_id", $.md5(code));
-							
-							if (data["error"] && data["error"]["infinit_loop"] && data["error"]["infinit_loop"][0]) {
-								var loops = data["error"]["infinit_loop"];
-								
-								var msg = "";
-								for (var i = 0; i < loops.length; i++) {
-									var loop = loops[i];
-									var slabel = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(loop["source_task_id"]);
-									var tlabel = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(loop["target_task_id"]);
-									
-									msg += (i > 0 ? "\n" : "") + "- '" + slabel + "' => '" + tlabel + "'";
-								}
-								
-								msg = "The system detected the following invalid loops and discarded them from the code:\n" + msg + "\n\nYou should remove them from the workflow and apply the correct 'loop task' for doing loops.";
-								jsPlumbWorkFlow.jsPlumbStatusMessage.showError(msg);
-								alert(msg);
-							}
-							else {
-								var edit_tab = $("#raw_editor_tab a").first(); //bc of edit_template
-								edit_tab = edit_tab[0] ? edit_tab : $("#code_editor_tab a").first(); //bc of all others
-								edit_tab.click();
-								
-								status = true;
-							}
-						}
-						else
-							StatusMessageHandler.showError("There was an error trying to update this code. Please try again.");
-						
-						MyFancyPopup.hidePopup();
-						$(".workflow_menu").show();
-					},
-					error : function(jqXHR, textStatus, errorThrown) { 
-						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-						
-						if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-							showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_code_from_workflow_file_url, function() {
-								generateCodeFromTasksFlow(true);
-							});
-						else {
-							StatusMessageHandler.showError("There was an error trying to update this code. Please try again." + msg);
-				
-							MyFancyPopup.hidePopup();
-							$(".workflow_menu").show();
-						}
-					},
-					async : false,
-				});
-			}
-			else {
-				StatusMessageHandler.showError("There was an error trying to update this code. Please try again.");
-				MyFancyPopup.hidePopup();
-				$(".workflow_menu").show();
-			}
-		}
-	}
-	else
-		StatusMessageHandler.showMessage("The tasks flow diagram has no changes. No need to update the code.");
-	
-	return status;
-}
-
-function generateTasksFlowFromCode(do_not_confirm) {
-	var status = true;
-	
-	var old_code_id = $("#ui").attr("code_id");
-	var code = getEditorCodeRawValue();
-	var new_code_id = code ? $.md5(code) : null;
-
-	if (!old_code_id || old_code_id != new_code_id) {
-		if (do_not_confirm || confirm("Do you wish to update this workflow accordingly with the code in the editor?")) {
-			status = false;
-			
-			jsPlumbWorkFlow.getMyFancyPopupObj().hidePopup();
-			MyFancyPopup.init({
-				parentElement: window,
-			});
-			MyFancyPopup.showOverlay();
-			MyFancyPopup.showLoading();
-			$(".workflow_menu").hide();
-			
-			$.ajax({
-				type : "post",
-				url : create_workflow_file_from_code_url,
-				data : code,
-				dataType : "text",
-				success : function(data, textStatus, jqXHR) {
-					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_workflow_file_from_code_url, function() {
-							generateTasksFlowFromCode(true);
-						});
-					else if (data == 1) {
-						var previous_callback = jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read;
-						
-						jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = function(data, text_status, jqXHR) {
-							if (!data) {
-								jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to load the workflow's tasks.");
-							}
-							else {
-								$("#ui").attr("code_id", new_code_id);
-								$("#ui").attr("workflow_id", $.md5(JSON.stringify(data)) );
-							
-								jsPlumbWorkFlow.jsPlumbTaskSort.sortTasks();
-								
-								status = true;
-							}
-							
-							jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = previous_callback;
-						}
-					
-						jsPlumbWorkFlow.jsPlumbTaskFile.reload(get_tmp_workflow_file_url, {"async": true});
-					}
-					else 
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again." + (data ? "\n" + data : ""));
-				
-					MyFancyPopup.hidePopup();
-					$(".workflow_menu").show();
-				},
-				error : function(jqXHR, textStatus, errorThrown) { 
-					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-					jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again." + msg);
-				
-					MyFancyPopup.hidePopup();
-					$(".workflow_menu").show();
-				},
-				async : false,
-			});
-		}
-	}
-	else
-		StatusMessageHandler.showMessage("The code has no changes. No need to update the tasks flow diagram.");
-	
-	return status;
 }
 
 function toggleTaskFlowFullScreen(elm) {
-	elm = $(elm);
-	var p = $("#ui")
-	p.toggleClass("tasks_flow_full_screen");
-	
-	if (p.hasClass("tasks_flow_full_screen"))
-		elm.html("Minimized Screen");
-	else
-		elm.html("Maximize Screen");
+	toggleEditorFullScreen(elm);
 	
 	resizeTaskFlowChart();
 }
 
+function toggleCodeEditorFullScreen(elm) {
+	toggleEditorFullScreen(elm);
+	
+	resizeCodeEditor( $(elm).parent().closest(".code_menu").parent() );
+}
+
 function toggleEditorFullScreen(elm) {
 	elm = $(elm);
-	var p = elm.parent().closest(".code_menu").parent();
-	p.toggleClass("editor_full_screen");
 	
-	if (p.hasClass("editor_full_screen"))
-		elm.html("Minimized Screen");
-	else
-		elm.html("Maximize Screen");
+	var in_full_screen = isInFullScreen();
+	var ui = $("#ui");
+	var code = $("#code");
 	
-	resizeCodeEditor(p);
+	toggleFullScreen();
+	
+	if (in_full_screen) {
+		code.removeClass("editor_full_screen");
+		ui.removeClass("tasks_flow_full_screen");
+		
+		code.find(" > .code_menu > ul > .editor_full_screen a").removeClass("active");
+		ui.find(" > .taskflowchart > .workflow_menu > .dropdown > .tasks_flow_full_screen a").removeClass("active");
+		
+		//bc of the LayoutUIEditor
+		code.children(".layout_ui_editor, .layout_ui_editor_right_container").removeClass("full-screen");
+	   	code.find(".layout_ui_editor .options .full-screen").removeClass("zmdi-fullscreen-exit").addClass("zmdi-fullscreen");
+	}
+	else {
+		code.addClass("editor_full_screen");
+		ui.addClass("tasks_flow_full_screen");
+		
+		code.find(" > .code_menu > ul > .editor_full_screen a").addClass("active");
+		ui.find(" > .taskflowchart > .workflow_menu > .dropdown > .tasks_flow_full_screen a").addClass("active");
+		
+		//bc of the LayoutUIEditor
+		code.children(".layout_ui_editor, .layout_ui_editor_right_container").addClass("full-screen");
+	   	code.find(".layout_ui_editor .options .full-screen").addClass("zmdi-fullscreen-exit").removeClass("zmdi-fullscreen");
+	}
 }
 
 function setEditorCodeRawValue(code) {
@@ -2435,47 +2273,670 @@ function toggleHeader(elm) {
 	resizeCodeEditor();
 }
 
-function getCodeForSaving(parent_elm, options) {
-	MyFancyPopup.init({
-		parentElement: window,
-	});
-	MyFancyPopup.showOverlay();
-	MyFancyPopup.showLoading();
-	$(".workflow_menu").hide();
+function onClickCodeEditorTab(elm) {
+	jsPlumbWorkFlow.jsPlumbTaskFile.stopAutoSave();
 	
-	var code = options && options.strip_php_tags ? getEditorCodeValue() : getEditorCodeRawValue();
-	var new_code_id = code ? $.md5(code) : null;
-	var old_code_id = $("#ui").attr("code_id");
-	
-	var task_flow_tab_openned_by_user = parent_elm.find("#tasks_flow_tab a").attr("is_init");
-	
-	var status = true;
-	if (task_flow_tab_openned_by_user) {
-		var selected_tab = parent_elm.children("ul").find("li.ui-tabs-selected, li.ui-tabs-active").first();
+	if (auto_convert) {
+		StatusMessageHandler.showMessage("Generating code based in workflow... Loading...");
 		
-		if (selected_tab.attr("id") != "tasks_flow_tab") {
-			parent_elm.find("ul #tasks_flow_tab a").first().click();
-			updateTasksFlow();
+		//close properties popup in case the auto_save be active on close task properties popup, but only if is not auto_save, otherwise the task properties can become messy, like it happens with the task inlinehtml.
+		if (auto_save && jsPlumbWorkFlow.jsPlumbProperty.auto_save && !is_from_auto_save) {
+			if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedTaskPropertiesOpen())
+				jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+			else if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedConnectionPropertiesOpen())
+				jsPlumbWorkFlow.jsPlumbProperty.saveConnectionProperties();
 		}
 		
-		status = jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
-			overwrite: true, 
-			silent: true, 
-			success: function(data, textStatus, jqXHR) {
-				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-					StatusMessageHandler.showError("Please Login first!");
+		generateCodeFromTasksFlow(true, {
+			do_not_change_to_code_tab: true, 
+			
+			success : function() {
+				StatusMessageHandler.removeMessages("info");
+			},
+			error : function() {
+				StatusMessageHandler.removeMessages("info");
 			},
 		});
+	}
 	
-		if (status && new_code_id != old_code_id && confirm("Do you wish to generate new code based in the Workflow UI tab, before you save?\nIf you click the cancel button, the system will discard the changes in the UI tab and give preference to the Code tab.")) {
-			status = generateCodeFromTasksFlow(true);
+	setTimeout(function() {
+		resizeCodeEditor();
 		
-			if (status) 
-				code = options && options.strip_php_tags ? getEditorCodeValue() : getEditorCodeRawValue();
+		var editor = $("#code").data("editor");
+		if (editor && $("#code").is(":visible"))
+			editor.focus();
+	}, 10);
+}
+
+function onClickTaskWorkflowTab(elm, options) {
+	elm = $(elm);
+	
+	if (elm.attr("is_init") != 1) {
+		elm.attr("is_init", 1);
+		
+		MyFancyPopup.init({
+			parentElement: window,
+		});
+		MyFancyPopup.showOverlay();
+		MyFancyPopup.showLoading();
+		
+		var selector = elm.attr("href");
+		var p = elm.parent().closest("ul").parent();
+		var ui_elm = p.children(selector);
+		
+		if (!ui_elm[0])
+			ui_elm = p.find(selector);
+		
+		var workflow_menu = ui_elm.find(".workflow_menu");
+		workflow_menu.hide();
+		
+		var auto_save_bkp = auto_save;
+		auto_save = false;
+		
+		jsPlumbWorkFlow.jsPlumbTaskFile.read(get_workflow_file_url, {
+			"success": function(data, textStatus, jqXHR) {
+				resizeTaskFlowChart();
+				
+				MyFancyPopup.hidePopup();
+				workflow_menu.show();
+				jsPlumbWorkFlow.resizePanels();
+				
+				auto_save = auto_save_bkp;
+				
+				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, get_workflow_file_url, function() {
+						elm.removeAttr("is_init");
+						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+						onClickTaskWorkflowTab(elm[0], options);
+					});
+				else {
+					//set workflow_id to #ui so it doesn't re-generate the code when clicked in the code tab
+					var workflow_id = getCurrentWorkFlowId();
+					var code = getEditorCodeRawValue();
+					var new_code_id = $.md5(code);
+					
+					//Note that the code_id and the generated_code_id were already set in the onLoadTaskFlowChartAndCodeEditor, when the page loads
+					$("#ui").attr("workflow_id", workflow_id);
+					
+					//If auto_convert is active and:
+					//- if diagram is empty and code exists
+					//- or if taskflow is not yet inited and we meanwhile changed the code
+					//so we must generate a new diagram
+					if (auto_convert) {
+						var is_empty_diagram = code && (!data || (!$.isArray(data["tasks"]) && !$.isPlainObject(data["tasks"])) || $.isEmptyObject(data["tasks"]));
+						var old_code_id = $("#ui").attr("code_id");
+						
+						if (is_empty_diagram || (old_code_id != new_code_id))
+							generateTasksFlowFromCode(true, {
+								force : true,
+								success : function(data, textStatus, jqXHR) {
+									StatusMessageHandler.removeMessages("info");
+									
+									if (typeof options == "object" && typeof options["on_success"] == "function")
+										options["on_success"]();
+									
+									//save new workflow for the first time
+									jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
+										overwrite: true, 
+										silent: true, 
+										success: jsPlumbWorkFlow.jsPlumbTaskFile.save_options["success"], 
+									});
+								},
+								error : function(jqXHR, textStatus, errorThrown) {
+									StatusMessageHandler.removeMessages("info");
+									
+									if (typeof options == "object" && typeof options["on_error"] == "function")
+										options["on_error"]();
+								},
+							});
+					}
+					else if (typeof options == "object" && typeof options["on_success"] == "function")
+						options["on_success"]();
+				}
+			},
+			"error": function(jqXHR, textStatus, errorThrown) {
+				resizeTaskFlowChart();
+				
+				MyFancyPopup.hidePopup();
+				workflow_menu.show();
+				jsPlumbWorkFlow.resizePanels();
+				
+				auto_save = auto_save_bkp;
+				
+				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, get_workflow_file_url, function() {
+						elm.removeAttr("is_init");
+						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+						onClickTaskWorkflowTab(elm[0], options);
+					});
+				else if (typeof options == "object" && typeof options["on_error"] == "function")
+					options["on_error"]();
+			},
+		});
+	}
+	else {
+		//when editing code, if auto_save is active, the system will try to convert the code to a workflow, but ig the php code contains errors (bc the user didn't finish yet his code, the generateTasksFlowFromCode will show errors, so we must remove this errors first, before generateTasksFlowFromCode.
+		if (auto_save) {
+			StatusMessageHandler.removeMessages("error");
+			jsPlumbWorkFlow.jsPlumbStatusMessage.removeMessages("error");
 		}
 		
-		if (selected_tab.attr("id") != "tasks_flow_tab")
+		setTimeout(function() {
+			updateTasksFlow();
+			resizeTaskFlowChart();
+			
+			jsPlumbWorkFlow.jsPlumbTaskFile.startAutoSave();
+			
+			if (auto_convert) {
+				StatusMessageHandler.showMessage("Generating workflow based in code... Loading...");
+				
+				generateTasksFlowFromCode(true, {
+					success : function(data, textStatus, jqXHR) {
+						StatusMessageHandler.removeMessages("info");
+						
+						if (typeof options == "object" && typeof options["on_success"] == "function")
+							options["on_success"]();
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						StatusMessageHandler.removeMessages("info");
+						
+						if (typeof options == "object" && typeof options["on_error"] == "function")
+							options["on_error"]();
+					},
+				});
+			}
+		}, 10);
+	}
+}
+
+function updateTasksFlow() {
+	jsPlumbWorkFlow.getMyFancyPopupObj().updatePopup();
+		
+	var tasks = jsPlumbWorkFlow.jsPlumbTaskFlow.getAllTasks();
+	
+	for (var i = 0; i < tasks.length; i++) {
+		var task = tasks[i];
+		
+		onEditLabel(task.id);
+		jsPlumbWorkFlow.jsPlumbTaskFlow.repaintTask( $(task) );
+	}
+}
+
+function getCurrentWorkFlowId() {
+	var data = jsPlumbWorkFlow.jsPlumbTaskFile.getWorkFlowData();
+	data = Object.assign({}, data);
+	
+	//regularize the sizes and offsets from tasks, so we can get the real workflow id and check if there were changes or not in the workflow...
+	if (data && data["tasks"])
+		for (var task_id in data["tasks"]) {
+			data["tasks"][task_id]["width"] = 100;
+			data["tasks"][task_id]["height"] = 100;
+			data["tasks"][task_id]["offset_top"] = 0;
+			data["tasks"][task_id]["offset_left"] = 0;
+		}
+	
+	var workflow_id = $.md5(JSON.stringify(data));
+	
+	return workflow_id;
+}
+
+function generateCodeFromTasksFlow(do_not_confirm, options) {
+	var status = true;
+	var options = typeof options == "object" ? options : {};
+	
+	var old_workflow_id = $("#ui").attr("workflow_id");
+	var new_workflow_id = getCurrentWorkFlowId();
+	
+	var generated_code_id = $("#code").attr("generated_code_id");
+	var code = getEditorCodeRawValue();
+	var new_code_id = $.md5(code);
+	
+	var is_tasks_flow_tab_inited = $("#code").parent().find(" > ul > #tasks_flow_tab > a").attr("is_init") == 1;
+	
+	if (is_tasks_flow_tab_inited && (
+		old_workflow_id != new_workflow_id || (generated_code_id && generated_code_id != new_code_id) || options["force"]
+	)) {
+		if (do_not_confirm || auto_convert || confirm("Do you wish to update this code accordingly with the workflow tasks?")) {
+			status = false;
+			
+			if (!is_from_auto_save) {
+				MyFancyPopup.init({
+					parentElement: window,
+				});
+				MyFancyPopup.showOverlay();
+				MyFancyPopup.showLoading();
+				$(".workflow_menu").hide();
+			}
+			
+			var save_options = {
+				overwrite: true,
+				silent: true,
+				do_not_silent_errors: true,
+				success: function(data, textStatus, jqXHR) {
+					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, set_tmp_workflow_file_url, function() {
+							jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+							StatusMessageHandler.removeLastShownMessage("error");
+							generateCodeFromTasksFlow(true, options);
+						});
+				},
+			};
+			
+			if (jsPlumbWorkFlow.jsPlumbTaskFile.save(set_tmp_workflow_file_url, save_options)) {
+				//if not default start task, the system will try to figure out one by default, but is always good to show a message to the user alerting him of this situation...
+				if (!is_from_auto_save) {
+					var exists_start_tasks = $("#" + jsPlumbWorkFlow.jsPlumbTaskFlow.main_tasks_flow_obj_id + " ." + jsPlumbWorkFlow.jsPlumbTaskFlow.task_class_name + "." + jsPlumbWorkFlow.jsPlumbTaskFlow.start_task_class_name).length > 0;
+					
+					if (!exists_start_tasks)
+						StatusMessageHandler.showMessage("There is no startup task selected. The system tried to select a default one, but is more reliable if you define one manually...");
+				}
+				
+				$.ajax({
+					type : "get",
+					url : create_code_from_workflow_file_url,
+					dataType : "json",
+					success : function(data, textStatus, jqXHR) {
+						if (data && data.hasOwnProperty("code")) {
+							var code = "<?php\n" + data.code.trim() + "\n?>";
+							setEditorCodeRawValue(code);
+							var new_code_id = $.md5(code);
+							
+							$("#ui").attr("workflow_id", new_workflow_id);
+							$("#ui").attr("code_id", new_code_id);
+							$("#code").attr("generated_code_id", new_code_id);
+							
+							if (data["error"] && data["error"]["infinit_loop"] && data["error"]["infinit_loop"][0]) {
+								var loops = data["error"]["infinit_loop"];
+								
+								var msg = "";
+								for (var i = 0; i < loops.length; i++) {
+									var loop = loops[i];
+									var slabel = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(loop["source_task_id"]);
+									var tlabel = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(loop["target_task_id"]);
+									
+									msg += (i > 0 ? "\n" : "") + "- '" + slabel + "' => '" + tlabel + "'";
+								}
+								
+								msg = "The system detected the following invalid loops and discarded them from the code:\n" + msg + "\n\nYou should remove them from the workflow and apply the correct 'loop task' for doing loops.";
+								jsPlumbWorkFlow.jsPlumbStatusMessage.showError(msg);
+								
+								if (typeof options["error"] == "function")
+									options["error"]();
+								
+								alert(msg);
+							}
+							else {
+								if (!options["do_not_change_to_code_tab"]) {
+									var edit_tab = $("#raw_editor_tab a").first(); //bc of edit_template_simple
+									edit_tab = edit_tab[0] ? edit_tab : $("#code_editor_tab a").first(); //bc of all others
+									edit_tab.click();
+								}
+								
+								status = true;
+								
+								if (typeof options["success"] == "function")
+									options["success"]();
+							}
+						}
+						else {
+							StatusMessageHandler.showError("There was an error trying to update this code. Please try again.");
+							
+							if (typeof options["error"] == "function")
+								options["error"]();
+						}
+						
+						MyFancyPopup.hidePopup();
+						$(".workflow_menu").show();
+					},
+					error : function(jqXHR, textStatus, errorThrown) { 
+						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+						
+						if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+							showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_code_from_workflow_file_url, function() {
+								generateCodeFromTasksFlow(true, options);
+							});
+						else {
+							StatusMessageHandler.showError("There was an error trying to update this code. Please try again." + msg);
+				
+							MyFancyPopup.hidePopup();
+							$(".workflow_menu").show();
+							
+							if (typeof options["error"] == "function")
+								options["error"]();
+						}
+					},
+					async : options.hasOwnProperty("async") ? options["async"] : true,
+				});
+			}
+			else {
+				StatusMessageHandler.showError("There was an error trying to update this code. Please try again.");
+				MyFancyPopup.hidePopup();
+				$(".workflow_menu").show();
+				
+				if (typeof options["error"] == "function")
+					options["error"]();
+			}
+		}
+		else if (typeof options["success"] == "function")
+			options["success"]();
+	}
+	else {
+		if (!is_from_auto_save) {
+			if (!is_tasks_flow_tab_inited)
+				StatusMessageHandler.showMessage("Tasks flow diagram was not loaded yet. Please open the tasks flow diagram first, before any conversion...");
+			else
+				StatusMessageHandler.showMessage("The tasks flow diagram has no changes. No need to update the code.");
+		}
+		
+		if (typeof options["success"] == "function")
+			options["success"]();
+	}
+	
+	return status;
+}
+
+function generateTasksFlowFromCode(do_not_confirm, options) {
+	var status = true;
+	var options = typeof options == "object" ? options : {};
+	
+	var old_code_id = $("#ui").attr("code_id");
+	var code = getEditorCodeRawValue();
+	var new_code_id = $.md5(code);
+	
+	if (old_code_id != new_code_id || options["force"]) {
+		if (do_not_confirm || auto_convert || confirm("Do you wish to update this workflow accordingly with the code in the editor?")) {
+			status = false;
+			
+			if (!is_from_auto_save) {
+				jsPlumbWorkFlow.getMyFancyPopupObj().hidePopup();
+				MyFancyPopup.init({
+					parentElement: window,
+				});
+				MyFancyPopup.showOverlay();
+				MyFancyPopup.showLoading();
+				$(".workflow_menu").hide();
+			}
+			
+			var auto_save_bkp = auto_save;
+			auto_save = false;
+			
+			$.ajax({
+				type : "post",
+				url : create_workflow_file_from_code_url,
+				data : code,
+				dataType : "text",
+				success : function(data, textStatus, jqXHR) {
+					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL)) {
+						auto_save = auto_save_bkp;
+						
+						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_workflow_file_from_code_url, function() {
+							generateTasksFlowFromCode(true, options);
+						});
+					}
+					else if (data == 1) {
+						var previous_callback = jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read;
+						var previous_tasks_flow_saved_data_obj = jsPlumbWorkFlow.jsPlumbTaskFile.saved_data_obj; //save the previous jsPlumbTaskFile.saved_data_obj, bc when we run the jsPlumbTaskFile.reload method, this var will be with the new workflow data obj and then the auto_save won't run bc the jsPlumbTaskFile.isWorkFlowChangedFromLastSaving will return false. So we must save this var before and then re-put it again with the previous value.
+						
+						jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = function(data, text_status, jqXHR) {
+							if (!data) {
+								jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to load the workflow's tasks.");
+								
+								if (typeof options["error"] == "function")
+									options["error"]();
+							}
+							else {
+								jsPlumbWorkFlow.jsPlumbTaskSort.sortTasks();
+								
+								$("#code").attr("generated_code_id", new_code_id);
+								$("#ui").attr("code_id", new_code_id);
+								$("#ui").attr("workflow_id", getCurrentWorkFlowId());
+								
+								status = true;
+								
+								if (typeof options["success"] == "function")
+									options["success"]();
+							}
+							
+							auto_save = auto_save_bkp;
+							
+							//The jsPlumbTaskFile will call after this function the jsPlumbTaskFile.startAutoSave method which updates the jsPlumbTaskFile.saved_data_obj var with the new workflow data obj. So we must execute a setTimeout so we can then update the old value to the jsPlumbTaskFile.saved_data_obj var.
+							setTimeout(function() {
+								jsPlumbWorkFlow.jsPlumbTaskFile.saved_data_obj = previous_tasks_flow_saved_data_obj;
+							}, 100);
+							
+							jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = previous_callback;
+						}
+						
+						jsPlumbWorkFlow.jsPlumbTaskFile.reload(get_tmp_workflow_file_url, {
+							"async": true,
+							error: function() {
+								auto_save = auto_save_bkp;
+							}
+						});
+					}
+					else {
+						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again." + (data ? "\n" + data : ""));
+						auto_save = auto_save_bkp;
+					
+						if (typeof options["error"] == "function")
+							options["error"]();
+					}
+					
+					if (!is_from_auto_save) {
+						MyFancyPopup.hidePopup();
+						$(".workflow_menu").show();
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown) { 
+					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+					jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again." + msg);
+					auto_save = auto_save_bkp;
+					
+					if (typeof options["error"] == "function")
+						options["error"]();
+					
+					if (!is_from_auto_save) {
+						MyFancyPopup.hidePopup();
+						$(".workflow_menu").show();
+					}
+				},
+				async : options.hasOwnProperty("async") ? options["async"] : true,
+			});
+		}
+		else if (typeof options["success"] == "function")
+			options["success"]();
+	}
+	else {
+		if (!is_from_auto_save)
+			StatusMessageHandler.showMessage("The code has no changes. No need to update the tasks flow diagram.");
+		
+		if (typeof options["success"] == "function")
+			options["success"]();
+	}
+	
+	return status;
+}
+
+/* SAVING FUNCTIONS */
+
+function isCodeAndWorkflowObjChanged(main_obj_with_tabs) {
+	//checks if code is different
+	var code = getEditorCodeRawValue();
+	var new_code_id = $.md5(code);
+	var old_code_id = $("#ui").attr("code_id");
+	
+	var is_changed = old_code_id != new_code_id;
+	
+	//if code is the same and task flow tab was already opened by user, checks if diagram is different but ignoring the tasks positioning, this is, only comparing the tasks' data.
+	if (!is_changed) {
+		var is_tasks_flow_tab_inited = main_obj_with_tabs.find(" > ul > #tasks_flow_tab > a").attr("is_init");
+		
+		if (is_tasks_flow_tab_inited) {
+			var old_workflow_id = $("#ui").attr("workflow_id");
+			var new_workflow_id = getCurrentWorkFlowId();
+			
+			is_changed = old_workflow_id != new_workflow_id;
+			
+			//if code and diagram are the same, checks if the the tasks positioning are different
+			if (!is_changed) {
+				var selected_tab = main_obj_with_tabs.children("ul").find("li.ui-tabs-selected, li.ui-tabs-active").first();
+				
+				is_changed = selected_tab.attr("id") == "tasks_flow_tab" && jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving(); //compares if tasks' sizes and offsets are different, but only if workflow tab is selected.
+			}
+		}
+	}
+	
+	/*console.log("is_changed:"+is_changed);
+	console.log("old_workflow_id:"+old_workflow_id);
+	console.log("new_workflow_id:"+new_workflow_id);
+	console.log("old_code_id:"+old_code_id);
+	console.log("new_code_id:"+new_code_id);*/
+	
+	return is_changed;
+}
+
+function getCodeForSaving(parent_elm, options) {
+	prepareAutoSaveVars();
+	
+	if (!is_from_auto_save) { //only show loading bar if a manual save action
+		MyFancyPopup.init({
+			parentElement: window,
+		});
+		MyFancyPopup.showOverlay();
+		MyFancyPopup.showLoading();
+		
+		$(".workflow_menu").hide();
+	}
+	
+	options = typeof options == "object" ? options : {};
+	
+	var raw_code = getEditorCodeRawValue();
+	var code = options.strip_php_tags ? getEditorCodeValue() : raw_code;
+	var new_code_id = $.md5(raw_code);
+	var old_code_id = $("#ui").attr("code_id");
+	
+	var is_tasks_flow_tab_inited = parent_elm.find("#tasks_flow_tab a").attr("is_init");
+	var status = true;
+	
+	if (is_tasks_flow_tab_inited) {
+		var old_workflow_id = $("#ui").attr("workflow_id");
+		var new_workflow_id = getCurrentWorkFlowId();
+		var selected_tab = parent_elm.children("ul").find("li.ui-tabs-selected, li.ui-tabs-active").first();
+		
+		//if in tasks_flow_tab, saves workflow if manual save action, then gets the new code to be saved, if auto_convert is active or if user accepts confirmation message.
+		if (selected_tab.attr("id") == "tasks_flow_tab") {
+			updateTasksFlow();
+			
+			//close properties popup in case the auto_save be active on close task properties popup, but only if is not auto_save, otherwise the task properties can become messy, like it happens with the task inlinehtml.
+			if (auto_save && jsPlumbWorkFlow.jsPlumbProperty.auto_save && !is_from_auto_save) {
+				if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedTaskPropertiesOpen())
+					jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+				else if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedConnectionPropertiesOpen())
+					jsPlumbWorkFlow.jsPlumbProperty.saveConnectionProperties();
+				
+				new_workflow_id = getCurrentWorkFlowId();
+			}
+			
+			//save workflow
+			if (jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving() || !is_from_auto_save) //if it is a manual save action, saves workflow
+				status = jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
+					overwrite: true, 
+					silent: true, 
+					do_not_silent_errors: true,
+					success: jsPlumbWorkFlow.jsPlumbTaskFile.save_options["success"], 
+				});
+			
+			//generate code if some changes in workflow
+			if (status && ((old_workflow_id != new_workflow_id) || (old_code_id != new_code_id))) {
+				var convert_code = auto_convert || (!is_from_auto_save && confirm("Do you wish to generate new code based in the Workflow UI tab, before you save?\nIf you click the cancel button, the system will discard the changes in the UI tab and give preference to the Code tab.")); //if auto_convert is active or is a manual user save action with a confirmation msg.
+				
+				if (convert_code) {
+					status = generateCodeFromTasksFlow(true, {do_not_change_to_code_tab: auto_convert, async: false});
+					
+					if (status) 
+						code = options.strip_php_tags ? getEditorCodeValue() : getEditorCodeRawValue();
+				}
+			}
+		}
+		else if (selected_tab.attr("id") == "code_editor_tab" || selected_tab.attr("id") == "visual_editor_tab") { //if in code_editor_tab or in visual_editor_tab and auto_convert is active, saves the code as it is and then converts asynchronous the workflow and then save it.
+			if (auto_convert)
+				generateTasksFlowFromCode(true, {
+					success: function() {
+						//only saves workflow if it was really generated
+						if (old_code_id != new_code_id) { 
+							//disable auto_convert so it doesn't call the generateTasksFlowFromCode method in onClickTaskWorkflowTab
+							auto_convert = false;
+							
+							//click in workflow tab
+							parent_elm.find("ul #tasks_flow_tab a").first().click();
+							updateTasksFlow();
+							
+							//save workflow
+							jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
+								overwrite: true, 
+								silent: true, 
+								do_not_silent_errors: true,
+								success: jsPlumbWorkFlow.jsPlumbTaskFile.save_options["success"],
+							});
+							
+							//click in code tab
+							selected_tab.children("a").click();
+							
+							//enable auto_convert
+							auto_convert = true;
+						}
+						else //remove messages saying there are no changes to save
+							StatusMessageHandler.removeMessages("info");
+					},
+				});
+		}
+		else { //if in other tab, saves workflow and if 
+			//backup auto_convert value
+			var auto_convert_bkp = auto_convert;
+			
+			auto_convert = false; //set auto_convert to false so it doesn't call the generateTasksFlowFromCode method in onClickTaskWorkflowTab
+		
+			//click in workflow tab
+			parent_elm.find("ul #tasks_flow_tab a").first().click();
+			updateTasksFlow();
+			
+			//close properties popup in case the auto_save be active on close task properties popup, but only if is not auto_save, otherwise the task properties can become messy, like it happens with the task inlinehtml.
+			if (auto_save && jsPlumbWorkFlow.jsPlumbProperty.auto_save && !is_from_auto_save) {
+				if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedTaskPropertiesOpen())
+					jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+				else if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedConnectionPropertiesOpen())
+					jsPlumbWorkFlow.jsPlumbProperty.saveConnectionProperties();
+				
+				new_workflow_id = getCurrentWorkFlowId();
+			}
+			
+			//save workflow
+			if (jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving() || !is_from_auto_save) //if it is a manual save action, saves workflow
+				status = jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
+					overwrite: true, 
+					silent: true, 
+					do_not_silent_errors: true,
+					success: jsPlumbWorkFlow.jsPlumbTaskFile.save_options["success"], 
+				});
+			
+			//generate code if some changes in workflow
+			if (status && ((old_workflow_id != new_workflow_id) || (old_code_id != new_code_id))) {
+				var convert_code = auto_convert_bkp || (!is_from_auto_save && confirm("Do you wish to generate new code based in the Workflow UI tab, before you save?\nIf you click the cancel button, the system will discard the changes in the UI tab and give preference to the Code tab.")); //if auto_convert is active or is a manual user save action with a confirmation msg.
+				
+				if (convert_code) {
+					status = generateCodeFromTasksFlow(true, {do_not_change_to_code_tab: auto_convert_bkp, async: false});
+					
+					if (status) 
+						code = options.strip_php_tags ? getEditorCodeValue() : getEditorCodeRawValue();
+				}
+			}
+			
+			//click in code tab
 			selected_tab.children("a").click();
+			
+			//reset the auto_convert with previous value
+			auto_convert = auto_convert_bkp;
+		}
 	}
 	
 	return status ? code : null;
@@ -2487,85 +2948,142 @@ function saveObjCode(save_object_url, obj, opts) {
 	else {
 		opts = opts ? opts : {};
 		
-		if (typeof opts.error != "function" || opts.error()) 
-			StatusMessageHandler.showError("Error trying to generate new code and saving the tasks' flow. Please try again...");
+		if (typeof opts.error != "function" || opts.error()) {
+			if (!is_from_auto_save)
+				StatusMessageHandler.showError("Error trying to generate new code and saving the tasks' flow. Please try again...");
+		}
 		
-		MyFancyPopup.hidePopup();
-		$(".workflow_menu").show();
+		if (!is_from_auto_save) {
+			MyFancyPopup.hidePopup();
+			$(".workflow_menu").show();
+		}
+		else
+			resetAutoSave();
 	}
 }
 
 function saveObj(save_object_url, obj, opts) {
 	opts = opts ? opts : {};
 	
-	var url = save_object_url + (file_modified_time ? (save_object_url.indexOf("?") != -1 ? "" : "?") + "&file_modified_time=" + file_modified_time : "");
+	var url = save_object_url + (file_modified_time ? (save_object_url.indexOf("?") != -1 ? "&" : "?") + "file_modified_time=" + file_modified_time : "");
+	var url_aux = save_object_url;
 	
-	if (typeof opts.parse_url == "function")
+	if (typeof opts.parse_url == "function") {
 		url = opts.parse_url(url);
+		url_aux = opts.parse_url(url_aux);
+	}
 	
-	var ajax_options = {
-		type : "post",
-		url : url,
-		data : {"object" : obj},
-		dataType : "text",
-		success : function(data, textStatus, jqXHR) {
-			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
-					saveObj(save_object_url, obj, opts);
-				});
-			else {
-				var json_data = data && ("" + data).substr(0, 1) == "{" ? JSON.parse(data) : null;
-				var status = parseInt(data) == 1 || ($.isPlainObject(json_data) && json_data["status"] == 1);
-				var file_was_changed = !status && $.isPlainObject(json_data) && json_data["status"] == "CHANGED";
-				
-				if(status) {
-					if ($.isPlainObject(json_data) && json_data["modified_time"])
-						file_modified_time = json_data["modified_time"];
-					
-					if (typeof opts.success != "function" || opts.success(data, textStatus, jqXHR)) 
-						StatusMessageHandler.showMessage("Saved successfully.");
-				}
-				else if (file_was_changed)
-					showConfirmationCodePopup(json_data["old_code"], json_data["new_code"], {
-						save: function() {
-							//remove file_modified_time so it doesn't check if the file was changed. 
-							var pu = opts.parse_url;
-							
-							opts.parse_url = function(url) {
-								url = typeof pu == "function" ? pu(url) : url;
-								return url.replace(/(&|\?)file_modified_time=([0-9]*)/g, "");
-							};
-							
-							if (typeof opts.confirmation_save != "function" || opts.confirmation_save(data)) {
-								saveObj(save_object_url, obj, opts);
-								
-								return true;
-							}
-						},
-						cancel: function() {
-							return typeof opts.confirmation_cancel != "function" || opts.confirmation_cancel(data);
-						},
+	var new_saved_obj_id = $.md5(url_aux + JSON.stringify(obj));
+	
+	//only saves if object is different
+	if (!saved_obj_id || saved_obj_id != new_saved_obj_id) {
+		var ajax_options = {
+			type : "post",
+			url : url,
+			data : {"object" : obj},
+			dataType : "text",
+			success : function(data, textStatus, jqXHR) {
+				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
+						saveObj(save_object_url, obj, opts);
 					});
-				else if (typeof opts.error != "function" || opts.error(jqXHR, textStatus, data)) 
-					StatusMessageHandler.showError("Error trying to save new changes. Please try again..." + (data ? "\n" + data : ""));
-				
-				MyFancyPopup.hidePopup();
-				$(".workflow_menu").show();
-			}
-		},
-		error : function(jqXHR, textStatus, errorThrown) { 
-			if (typeof opts.error != "function" || opts.error(jqXHR, textStatus, errorThrown)) 
-				StatusMessageHandler.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to save new changes. Please try again..." + (jqXHR.responseText ? "\n" + jqXHR.responseText : ""));
-			
-			MyFancyPopup.hidePopup();
-			$(".workflow_menu").show();
-		},
-	};
-	
-	if (opts.hasOwnProperty("async")) 
-		ajax_options["async"] = opts["async"];
-	
-	$.ajax(ajax_options);
+				else {
+					var json_data = data && ("" + data).substr(0, 1) == "{" ? JSON.parse(data) : null;
+					var status = parseInt(data) == 1 || ($.isPlainObject(json_data) && json_data["status"] == 1);
+					var file_was_changed = !status && $.isPlainObject(json_data) && json_data["status"] == "CHANGED";
+					
+					if(status) {
+						if ($.isPlainObject(json_data) && json_data["modified_time"])
+							file_modified_time = json_data["modified_time"];
+						
+						if (typeof opts.success != "function" || opts.success(data, textStatus, jqXHR)) {
+							if (!is_from_auto_save) //only show message if a manual save action
+								StatusMessageHandler.showMessage("Saved successfully.");
+						}
+						
+						//sets new saved_obj_id
+						saved_obj_id = new_saved_obj_id;
+					}
+					else if (file_was_changed) {
+						if (!is_from_auto_save) { 
+							//only show this message if is a manual save, otherwise we don't want to do anything. Otherwise the browser is showing this popup constantly and is annoying for the user.
+							showConfirmationCodePopup(json_data["old_code"], json_data["new_code"], {
+								save: function() {
+									//remove file_modified_time so it doesn't check if the file was changed. 
+									var pu = opts.parse_url;
+									
+									opts.parse_url = function(url) {
+										url = typeof pu == "function" ? pu(url) : url;
+										return url.replace(/(&|\?)file_modified_time=([0-9]*)/g, "");
+									};
+									
+									if (typeof opts.confirmation_save != "function" || opts.confirmation_save(data)) {
+										saveObj(save_object_url, obj, opts);
+										
+										return true;
+									}
+									else if (is_from_auto_save)
+										resetAutoSave();
+								},
+								cancel: function() {
+									if (is_from_auto_save)
+										resetAutoSave();
+									
+									return typeof opts.confirmation_cancel != "function" || opts.confirmation_cancel(data);
+								},
+							});
+						}
+						else
+							resetAutoSave();
+					}
+					else if (typeof opts.error != "function" || opts.error(jqXHR, textStatus, data)) {
+						if (!is_from_auto_save) //only show error if manual save, bc if is auto_save the user shouldn't be bother with errors while is changing the code.
+							StatusMessageHandler.showError("Error trying to save new changes. Please try again..." + (data ? "\n" + data : ""));
+					}
+					
+					if (!is_from_auto_save) {
+						MyFancyPopup.hidePopup();
+						$(".workflow_menu").show();
+					}
+					else
+						resetAutoSave();
+				}
+			},
+			error : function(jqXHR, textStatus, errorThrown) { 
+				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
+						saveObj(save_object_url, obj, opts);
+					});
+				else {
+					if (typeof opts.error != "function" || opts.error(jqXHR, textStatus, errorThrown)) 
+						StatusMessageHandler.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to save new changes. Please try again..." + (jqXHR.responseText ? "\n" + jqXHR.responseText : ""));
+					
+					if (!is_from_auto_save) {
+						MyFancyPopup.hidePopup();
+						$(".workflow_menu").show();
+					}
+					else
+						resetAutoSave();
+				}
+			},
+		};
+		
+		if (is_from_auto_save && auto_save_connection_ttl)
+			ajax_options["timeout"] = auto_save_connection_ttl; //add timeout to auto save connection.
+		
+		if (opts.hasOwnProperty("async")) 
+			ajax_options["async"] = opts["async"];
+		
+		$.ajax(ajax_options);
+	}
+	else if (!is_from_auto_save) {
+		StatusMessageHandler.showMessage("Nothing to save.");
+		
+		MyFancyPopup.hidePopup();
+		$(".workflow_menu").show();
+	}
+	else
+		resetAutoSave();
 }
 
 function showConfirmationCodePopup(old_code, new_code, opts) {

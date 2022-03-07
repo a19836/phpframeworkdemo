@@ -50,9 +50,6 @@
    .catalog_settings .filter_by_published label,
    .catalog_settings .event_properties_url label {
 	margin-bottom:5px;
-	display:block;
-	float:left;
-	clear:none;
 }
 .catalog_settings .catalog_type {
 	width:230px;
@@ -60,7 +57,7 @@
 	clear:none;
 }
 .catalog_settings .catalog_title {
-	width:420px;
+	width:430px;
 	float:left;
 	clear:none;
 }
@@ -98,15 +95,18 @@
    .catalog_settings .catalog_sort_order label, 
    .catalog_settings .catalog_by_parent .catalog_parent_object_type_id label {
 	width:110px;
+	display:inline-block;
 }
 .catalog_settings .catalog_sort_column label,
    .catalog_settings .filter_by_published label,
    .catalog_settings .event_properties_url label {
 	width:170px;
+	display:inline-block;
 }
 .catalog_settings .catalog_by_parent .catalog_parent_object_id label, 
    .catalog_settings .catalog_by_parent .catalog_parent_group label {
 	width:90px;
+	display:inline-block;
 }
 .catalog_settings .catalog_title input {
 	width:300px;
@@ -121,12 +121,10 @@
 	width:100px;
 }
 .catalog_settings .catalog_by_parent .catalog_parent_group input {
-	width:20px;
+	width:30px;
 }
 .catalog_settings .catalog_by_selected_events select {
 	max-width:410px;
-	display:block;
-	float:left;
 }
 .catalog_settings .catalog_sort_column select {
 	width:170px;
@@ -149,12 +147,6 @@
 
 .catalog_settings .catalog_by_selected_events .icon.add {
 	background-position:0 1px;
-}
-.catalog_settings .catalog_by_selected_events .icon.up {
-	background:url("../../../img/icon/up_icon.gif") no-repeat scroll 0 0px;
-}
-.catalog_settings .catalog_by_selected_events .icon.down {
-	background:url("../../../img/icon/down_icon.gif") no-repeat scroll 0 0px;
 }
 .catalog_settings .catalog_by_selected_events .selected_events {
 	padding-top:3px;
@@ -203,6 +195,7 @@
 }
 .catalog_settings .catalog_blog_list div label {
 	width:230px;
+	display:inline-block;
 	color:#666;
 }
 .catalog_settings .catalog_blog_list div input {

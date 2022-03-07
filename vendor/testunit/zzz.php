@@ -19,7 +19,7 @@ class zzz extends TestUnit {
 	 */
 	public function execute () {
 		//START: task[setvar][Set Var]
-		$name = "Joao";
+		$name = "Joao P. Pinto";
 		
 		//START: task[return][Return]
 		return $name;

@@ -18,6 +18,7 @@ if ($PEVC) {
 	}
 	
 	$head = $CommonModuleAdminTableExtraAttributesUtil->getHead();
+	$head .= '<link rel="stylesheet" href="' . $CommonModuleAdminUtil->getWebrootAdminFolderUrl() . 'manage_event_extra_attributes.css" type="text/css" charset="utf-8" />';
 	$menu_settings = $EventAdminUtil->getMenuSettings();
 	$main_content = $CommonModuleAdminTableExtraAttributesUtil->getContent();
 }

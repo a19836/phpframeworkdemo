@@ -1,14 +1,22 @@
 var daoObjsTree = null;
 var includesTree = null;
+var query_auto_update_sql_from_ui_func = null;
+var query_auto_update_ui_from_sql_func = null;
+var saved_user_relationships_obj_id = null;
 
 $(function () {
-	/*$(window).bind('beforeunload', function () {
-		if (window.parent && window.parent.iframe_overlay)
-			window.parent.iframe_overlay.hide();
+	$(window).unbind('beforeunload').bind('beforeunload', function () {
+		if (isUserRelationshipsObjChanged()) {
+			if (window.parent && window.parent.iframe_overlay)
+				window.parent.iframe_overlay.hide();
+			
+			return "If you proceed your changes won't be saved. Do you wish to continue?";
+		}
 		
-		return "Changes you made may not be saved. Click cancel to save them first, otherwise to continue...";
-	});*/
+		return null;
+	});
 	
+	//init trees
 	includesTree = new MyTree({
 		multiple_selection : false,
 		ajax_callback_before : prepareLayerNodes1,
@@ -22,6 +30,7 @@ $(function () {
 	});
 	daoObjsTree.init("choose_dao_object_from_file_manager");
 	
+	//others
 	$(window).resize(function() {
 		MyFancyPopup.updatePopup();
 	});
@@ -29,11 +38,18 @@ $(function () {
 	$(".relationships_tabs").tabs();
 	$(".relationships_tabs").show();
 	
-	$(".relationships .rels .query").tabs();
-	$(".query_settings").tabs();
-	$(".query_insert_update_delete").tabs();
+	var main_relationships_elms = $(".relationships");
 	
-	DBQueryTaskPropertyObj.show_properties_on_conection_drop = true;
+	if (main_relationships_elms.length > 0) {
+		main_relationships_elms.find(".rels .query").tabs();
+		main_relationships_elms.find(".query_settings").tabs();
+		main_relationships_elms.find(".query_insert_update_delete").tabs();
+		
+		DBQueryTaskPropertyObj.show_properties_on_conection_drop = true;
+		
+		//set saved_user_relationships_obj_id
+		saved_user_relationships_obj_id = getUserRelationshipsObjId();
+	}
 });
 
 /* START: INCLUDES */
@@ -95,9 +111,21 @@ function prepareIncludeFilePath(file_path) {
 
 function addNewInclude(elm) {
 	var html_obj = $(new_include_html);
-	$(elm).parent().children(".fields").append(html_obj);
+	var fields = $(elm).parent().children(".fields");
+	fields.append(html_obj);
+	
+	fields.children(".no_includes").hide();
 	
 	return html_obj;
+}
+
+function removeInclude(elm) {
+	var include = $(elm).parent();
+	var fields = include.parent();
+	include.remove();
+	
+	if (fields.children(".include").length == 0)
+		fields.children(".no_includes").show();
 }
 
 function removeHbnObjectFromTree(ul, data) {
@@ -633,7 +661,7 @@ function syncChooseTableOrAttributePopupWithAnotherPopup(popup, other_popup) {
 }
 
 /** START: CHOOSE DB TABLE OR ATTRIBUTE - MAP **/
-function getTableFromDB(elm) {
+function getTableFromDB(elm, rand_number) {
 	var popup = $("#choose_db_table_or_attribute");
 	
 	popup.hide(); //This popup is shared with other actions so we must hide it first otherwise the user experience will be weird bc we will see the popup changing with the new changes.
@@ -654,13 +682,15 @@ function getTableFromDB(elm) {
 		
 		targetField: input,
 		hideChooseAttributesField: true,
-		updateFunction: updateTableField
+		updateFunction: function(sub_elm) {
+			updateTableField(sub_elm, rand_number);
+		}
 	});
 	
 	MyFancyPopup.showPopup();
 }
 
-function getTableAttributeFromDB(elm, selector) {
+function getTableAttributeFromDB(elm, selector, rand_number) {
 	var popup = $("#choose_db_table_or_attribute");
 	
 	popup.hide(); //This popup is shared with other actions so we must hide it first otherwise the user experience will be weird bc we will see the popup changing with the new changes.
@@ -683,26 +713,44 @@ function getTableAttributeFromDB(elm, selector) {
 		},
 		
 		targetField: $(elm).parent().find(selector)[0],
-		updateFunction: updateAttributeField
+		updateFunction: function(sub_elm) {
+			updateAttributeField(sub_elm, rand_number);
+		}
 	});
 	
 	MyFancyPopup.showPopup();
 }
 
-function updateTableField(elm) {
+function updateTableField(elm, rand_number) {
 	var table_name = $(elm).parent().parent().find(".db_table select").val();
 	table_name = table_name ? table_name : "";
 	
 	$(MyFancyPopup.settings.targetField).val(table_name);
 	
+	//auto update sql from settings
+	if (typeof rand_number == "number") {
+		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+		
+		if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
+			autoUpdateSqlFromUI(rand_number);
+	}
+	
 	MyFancyPopup.hidePopup();
 }
 
-function updateAttributeField(elm) {
+function updateAttributeField(elm, rand_number) {
 	var attribute_name = $(elm).parent().parent().find(".db_attribute select").val();
 	attribute_name = attribute_name ? attribute_name : "";
 	
 	$(MyFancyPopup.settings.targetField).val(attribute_name);
+	
+	//auto update sql from settings
+	if (typeof rand_number == "number") {
+		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+		
+		if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
+			autoUpdateSqlFromUI(rand_number);
+	}
 	
 	MyFancyPopup.hidePopup();
 }
@@ -824,9 +872,13 @@ function updateQueryTableField(elm, rand_number) {
 	input.attr("old_value", input.val().trim());
 	input.val(table_name);
 	
-	if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_and_settings") == 1) {
+	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	
+	if (main_tasks_flow_obj.attr("sync_ui_and_settings") == 1)
 		onBlurQueryTableField(input[0], rand_number);
-	}
+	
+	if (main_tasks_flow_obj.attr("sync_ui_settings_with_sql") == 1)
+		autoUpdateSqlFromUI(rand_number);
 	
 	WF.getMyFancyPopupObj().hidePopup();
 }
@@ -878,9 +930,13 @@ function updateQueryAttributeField(elm, rand_number) {
 	}
 	
 	//PREPARING UI
-	if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_and_settings") == 1) {
+	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	
+	if (main_tasks_flow_obj.attr("sync_ui_and_settings") == 1)
 		prepareUIWhenChangingQueryTableAttributeField(rand_number, column_div, table_name, attribute_name, old_table_name, old_attribute_name);
-	}
+	
+	if (main_tasks_flow_obj.attr("sync_ui_settings_with_sql") == 1)
+		autoUpdateSqlFromUI(rand_number);
 	
 	WF.getMyFancyPopupObj().hidePopup();
 }
@@ -891,8 +947,9 @@ function onFocusTableField(input) {
 
 function onBlurQueryTableField(input, rand_number) {
 	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
-		
-	if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_and_settings") == 1) {
+	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	
+	if (main_tasks_flow_obj.attr("sync_ui_and_settings") == 1) {
 		var old_table_name = input.getAttribute("old_value");
 		var new_table_name = input.value.trim();
 	
@@ -917,6 +974,9 @@ function onBlurQueryTableField(input, rand_number) {
 		prepareUIWhenChangingQueryTableAttributeField(rand_number, column_div, new_table_name, attribute_name, old_table_name, attribute_name);
 	}
 	
+	if (main_tasks_flow_obj.attr("sync_ui_settings_with_sql") == 1)
+		autoUpdateSqlFromUI(rand_number);
+	
 	$(input).removeAttr("old_value");
 }
 
@@ -926,8 +986,9 @@ function onFocusAttributeField(input) {
 
 function onBlurQueryAttributeField(input, rand_number) {
 	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
-		
-	if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_and_settings") == 1) {
+	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	
+	if (main_tasks_flow_obj.attr("sync_ui_and_settings") == 1) {
 		var old_attribute_name = input.getAttribute("old_value");
 		var attribute_name = input.value.trim();
 	
@@ -951,7 +1012,17 @@ function onBlurQueryAttributeField(input, rand_number) {
 		prepareUIWhenChangingQueryTableAttributeField(rand_number, column_div, table_name, attribute_name, table_name, old_attribute_name);
 	}
 	
+	if (main_tasks_flow_obj.attr("sync_ui_settings_with_sql") == 1)
+		autoUpdateSqlFromUI(rand_number);
+	
 	$(input).removeAttr("old_value");
+}
+
+function onBlurQueryInputField(input, rand_number) {
+	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	
+	if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
+		autoUpdateSqlFromUI(rand_number);
 }
 
 function prepareUIWhenChangingQueryTableAttributeField(rand_number, column_div, table_name, attribute_name, old_table_name, old_attribute_name) {
@@ -1473,6 +1544,9 @@ function addNewTask(rand_number) {
 			
 			var task_id = addNewTable(rand_number, db_table, table_attr_names);
 			
+			//check if there is any start task, and if not sets this new task as start task
+			//TODO
+			
 			WF.getMyFancyPopupObj().hidePopup();
 		},
 	});
@@ -1624,6 +1698,17 @@ function addQuerySort(elm, rand_number) {
 	return html_obj;
 }
 
+function deleteQueryField(elm, rand_number) {
+	var field = $(elm).parent().parent();
+	
+	var input = field.children(".table, .column, .value").children("input");
+	input.val("");
+	
+	onBlurQueryInputField(input[0], rand_number);
+	
+	field.remove();
+}
+
 function deleteQueryAttribute(elm, rand_number) {
 	var field = $(elm).parent().parent();
 	
@@ -1658,6 +1743,9 @@ function deleteQueryKey(elm, rand_number) {
 	deleteQueryKeyFromConnectionsProperties(rand_number, ptable, pcolumn, ftable, fcolumn, cv, join_value, operator);
 	
 	field.remove();
+	
+	if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
+		autoUpdateSqlFromUI(rand_number);
 }
 
 function onFocusQueryKey(input) {
@@ -1666,8 +1754,9 @@ function onFocusQueryKey(input) {
 
 function onBlurQueryKey(input, rand_number) {
 	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
 	
-	if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_and_settings") == 1) {
+	if (main_tasks_flow_obj.attr("sync_ui_and_settings") == 1) {
 		var field = $(input).parent().parent();
 	
 		var new_ptable = "", old_ptable = "", new_pcolumn = "", old_pcolumn = "", new_ftable = "", old_ftable = "", new_fcolumn = "", old_fcolumn = "", new_cv = "", old_cv = "", new_join_value = "", old_join_value = "", new_operator = "", old_operator = "";
@@ -1820,16 +1909,43 @@ function onBlurQueryKey(input, rand_number) {
 		}
 	}
 	
+	if (main_tasks_flow_obj.attr("sync_ui_settings_with_sql") == 1)
+		autoUpdateSqlFromUI(rand_number);
+	
 	$(input).removeAttr("old_value");
+}
+
+function toggleParameterAndResultFields(elm, prefix_class) {
+	elm = $(elm);
+	var selector = (prefix_class ? prefix_class : "") + " .data_access_obj";
+	var data_access_obj = $(selector);
+	var is_shown = elm.hasClass("active");
+	
+	data_access_obj.find(".relationship").find(".parameter_class_id, .parameter_map_id, .result_class_id, .result_map_id").each(function(idx, child) {
+		child = $(child);
+		
+		if (is_shown)
+			child.slideUp("normal", function() {
+				child.hide();
+			});
+		else
+			child.slideDown("normal", function() {
+				child.css("display", "inline-block");
+			});
+	}).promise().done(function () { 
+		if (is_shown) {
+			elm.removeClass("active");
+			data_access_obj.removeClass("with_parameter_and_result_fields");
+		}
+		else {
+			elm.addClass("active");
+			data_access_obj.addClass("with_parameter_and_result_fields");
+		}
+	});
 }
 
 function toggleQuery(elm) {
 	elm = $(elm);
-	
-	if (elm.hasClass("minimize"))
-		elm.removeClass("minimize").addClass("maximize");
-	else
-		elm.removeClass("maximize").addClass("minimize");
 	
 	var relationship_obj = elm.parent().parent();
 	var query_obj = relationship_obj.children("div.query");
@@ -1838,11 +1954,13 @@ function toggleQuery(elm) {
 	var extra_selector = rel_type == "insert" || rel_type == "update" || rel_type == "delete" ? "" : ", .result_class_id, .result_map_id";
 	
 	relationship_obj.children(".parameter_class_id, .parameter_map_id, div.query" + extra_selector).each(function(idx, child) {
-		if($(query_obj).css("display") != "none") {//hide
+		if($(query_obj).css("display") != "none") {
 			$(child).slideUp("slow");
+			elm.removeClass("active");
 		}
-		else {//show
+		else {
 			$(child).slideDown("slow");
+			elm.addClass("active");
 		}
 	});
 }
@@ -1853,16 +1971,16 @@ function showOrHideQuerySettings(elm, rand_number) {
 	if (settings) {
 		if($(settings).css("display") == "none") {//show
 			$(settings).slideDown("slow");
-			$(elm).html("Hide Settings");
+			$(elm).addClass("active");
 		}
 		else {//hide
 			$(settings).slideUp("slow");
-			$(elm).html("Show Settings");
+			$(elm).removeClass("active");
 		}
 	}
 }
 
-function showOrHideQueryUI(elm, rand_number) {
+function showOrHideQueryUI(elm, rand_number, options) {
 	var tfc = $(elm).parent().parent().parent().parent();
 	
 	if (tfc[0]) {
@@ -1874,19 +1992,18 @@ function showOrHideQueryUI(elm, rand_number) {
 			tfc.attr("original_height", h);
 		
 		var oh = parseInt(tfc.attr("original_height"));
+		var callback = typeof options == "object" && typeof options["callback"] == "function" ? options["callback"] : null;
 		
 		//30px + margin-bottom = 33, but just in case we put 40
 		if(h < 40) {//show 
-			tfc.animate( { height: oh + "px" }, { queue:false, duration:500 });
+			tfc.animate( { height: oh + "px" }, { queue:false, duration:500, always: callback });
 			tf.slideDown("slow");
-			$(elm).html("Hide UI");
 			
 			repaintQueryTasks(rand_number);
 		}
 		else {//hide
 			tf.slideUp("slow");
-			tfc.animate( { height: (parseInt(wm.css("height")) + 5) + "px" }, { queue:false, duration:500 });
-			$(elm).html("Show UI");
+			tfc.animate( { height: (parseInt(wm.css("height")) + 5) + "px" }, { queue:false, duration:500, always: callback });
 		}
 	}
 }
@@ -1895,10 +2012,10 @@ function showOrHideExtraQuerySettings(elm, rand_number) {
 	var query_settings_tabs = $(elm).parent().children(".query_settings_tabs");
 	
 	if (query_settings_tabs.children(".query_settings_tabs_limit").css("display") == "none") {//it will show in the next code
-		$(elm).html("Show Less Settings");
+		$(elm).addClass("active");
 	}
 	else {//it will hide in the next code
-		$(elm).html("Show More Settings");
+		$(elm).removeClass("active");
 	}
 	
 	query_settings_tabs.children(".query_settings_tabs_conditions, .query_settings_tabs_group_by, .query_settings_tabs_sorting, .query_settings_tabs_limit").each(function(idx, tab_elm) {
@@ -1920,8 +2037,9 @@ function repaintQueryTasks(rand_number) {
 
 function updateRelationshipType(elm, rand_number) {
 	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
 	
-	if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_and_settings") == 1) {
+	if (main_tasks_flow_obj.attr("sync_ui_and_settings") == 1) {
 		var rel_type = $(elm).val();
 		
 		var relationship_obj = $(elm).parent().parent();
@@ -1949,6 +2067,9 @@ function updateRelationshipType(elm, rand_number) {
 			}
 		}
 	}
+	
+	if (main_tasks_flow_obj.attr("sync_ui_settings_with_sql") == 1)
+		autoUpdateSqlFromUI(rand_number);
 }
 	
 function prepareQuerySqlFromUIOrViceVersa(tab_elm, rand_number, do_not_confirm) {
@@ -1984,7 +2105,7 @@ function prepareQuerySqlFromUIOrViceVersa(tab_elm, rand_number, do_not_confirm) 
 	}
 }
 
-function createSqlFromUI(ul, rand_number, do_not_confirm) {
+function createSqlFromUI(ul, rand_number, do_not_confirm, do_not_focus_sql) {
 	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
 	
 	var query_sql_elm_selector = ul.children(".query_sql_tab").children("a").attr("href");
@@ -2007,7 +2128,7 @@ function createSqlFromUI(ul, rand_number, do_not_confirm) {
 	var can_continue = data.attributes.length != 0 || data.conditions.length != 0 || data.groups_by.length != 0 || data.keys.length != 0;
 	
 	if (can_continue && (old_obj_id != new_obj_id || (old_rel_type && new_rel_type != old_rel_type))) {
-		if (do_not_confirm || confirm("The system will now create a sql query based in the fields that you inserted in the UI.\nDo you wish to proceed?")) {
+		if (do_not_confirm || auto_convert || confirm("The system will now create a sql query based in the fields that you inserted in the UI.\nDo you wish to proceed?")) {
 			//get selected db broker and db driver and add them to get_sql_from_query_obj
 			var popup = relationship_obj.find(".choose_table_or_attribute").first();
 			var db_broker = popup.find(".db_broker select").val();
@@ -2026,7 +2147,7 @@ function createSqlFromUI(ul, rand_number, do_not_confirm) {
 					query_sql_elm.attr("obj", new_obj_id);
 					query_sql_elm.attr("rel_type", new_rel_type);
 					
-					setQuerySqlEditorValue(query_sql_elm_selector, sql);
+					setQuerySqlEditorValue(query_sql_elm_selector, sql, do_not_focus_sql);
 				},
 				error : function(jqXHR, textStatus, errorThrown) { 
 					if (jqXHR.responseText)
@@ -2056,12 +2177,14 @@ function createUIFromSql(ul, rand_number, do_not_confirm) {
 	
 	//console.log("SQL:"+old_sql_id+"#####"+new_sql_id+"### IS EQUAL: "+(old_sql_id == new_sql_id)+"### NEW SQL: "+new_sql);
 	
+	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	
 	if (!old_sql_id && !new_sql) {
-		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
 		WF.getMyFancyPopupObj().hidePopup();
 	}
 	else if (old_sql_id != new_sql_id || (old_rel_type && new_rel_type != old_rel_type)) {
-		if (do_not_confirm || confirm("The system will now create a UI based in the sql query that you wrote.\nDo you wish to proceed?")) {
+		if (do_not_confirm || auto_convert || confirm("The system will now create a UI based in the sql query that you wrote.\nDo you wish to proceed?")) {
 			//CHECKS IF EXISTS ANY INNER SELECT STATEMENT
 			var aux = new_sql.toLowerCase().replace("select", "");//only removes 1st select
 			var inner_select = aux.indexOf("select") != -1;
@@ -2089,8 +2212,12 @@ function createUIFromSql(ul, rand_number, do_not_confirm) {
 						if (rel_type != "") {
 							var select_type = relationship_obj.children(".rel_type").children("select");
 							select_type.val(rel_type);
-						
+							
+							//update relationship type, but before disable the sync_ui_settings_with_sql
+							var sync_ui_settings_with_sql = main_tasks_flow_obj.attr("sync_ui_settings_with_sql");
+							main_tasks_flow_obj.attr("sync_ui_settings_with_sql", 0);
 							updateRelationshipType(select_type[0], rand_number);
+							main_tasks_flow_obj.attr("sync_ui_settings_with_sql", sync_ui_settings_with_sql);
 							
 							//UPDATING QUERY SETTINGS
 							var query_settings;
@@ -2131,6 +2258,24 @@ function createUIFromSql(ul, rand_number, do_not_confirm) {
 			}
 		}
 	}
+}
+
+function autoUpdateSqlFromUI(rand_number) {
+	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	var query = main_tasks_flow_obj.parent().closest(".query");
+	var ul = query.children(".query_tabs");
+	
+	createSqlFromUI(ul, rand_number, true, true);
+}
+
+function autoUpdateUIFromSql(rand_number) {
+	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	var query = main_tasks_flow_obj.parent().closest(".query");
+	var ul = query.children(".query_tabs");
+	
+	createUIFromSql(ul, rand_number, true);
 }
 
 function updateQuerySettingsFields(data, query_settings, rel_type, rand_number) {
@@ -2544,6 +2689,15 @@ function setQuerySqlEditor(selector) {
 				enableSnippets: true,
 				enableLiveAutocompletion: false,
 			});
+			editor.getSession().setUseWrapMode(true);
+			
+			//set blur function for sql editor
+			editor.on("blur", function() {
+				var rand_number = elm.parent().closest(".query").attr("rand_number");
+				onBlurQuerySqlEditor(rand_number);
+			});
+			
+			editor.renderer.setScrollMargin(5, 5); //set padding-top and bottom
 			
 			elm.find("textarea.ace_text-input").removeClass("ace_text-input"); //fixing problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.
 			
@@ -2558,17 +2712,30 @@ function getQuerySqlEditor(selector) {
 	return editor;
 }
 
-function setQuerySqlEditorValue(selector, value) {
+function onBlurQuerySqlEditor(rand_number) {
+	if (rand_number) {
+		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+		
+		if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_sql_with_ui_settings") == 1)
+			autoUpdateUIFromSql(rand_number);
+	}
+}
+
+function setQuerySqlEditorValue(selector, value, do_not_focus_sql) {
 	var editor = getQuerySqlEditor(selector);
 	if (editor) {
 		editor.setValue(value, 1);
 		editor.resize();
-		editor.focus();
+		
+		if (!do_not_focus_sql)
+			editor.focus();
 	}
 	else {
 		var textarea = $(selector).children("textarea").first();
 		textarea.val(value);
-		textarea.focus();
+		
+		if (!do_not_focus_sql)
+			textarea.focus();
 	}
 }
 
@@ -2586,18 +2753,19 @@ function getQuerySqlEditorValue(selector) {
 
 /** START: QUERY - UTILS FOR THE DBQUERYTABLEHANDLER **/	
 function onClickQueryAtributeCheckBox(checkbox, WF, rand_number) {
-	var task = $(checkbox).parent().parent().parent().parent().parent();
+	checkbox = $(checkbox);
+	var task = checkbox.parent().parent().parent().parent().parent();
 	var settings = task.parent().parent().parent().parent().children(".query_settings")[0];
 	
 	var table_name = WF.jsPlumbTaskFlow.getTaskLabel(task);
-	var attribute_name = checkbox.getAttribute("attribute");
+	var attribute_name = checkbox.attr("attribute");
 	var fields = $(settings).find(".attributes .fields");
 	var items = $(fields).children(".field");
 	
 	var tasks = getTasksByTableName(selected_table, WF);
 	var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : selected_table;
 	
-	if ($(checkbox).is(':checked')) {
+	if (checkbox.is(':checked')) {
 		var exists = false;
 		
 		for (var i = 0; i < items.length; i++) {
@@ -2639,6 +2807,9 @@ function onClickQueryAtributeCheckBox(checkbox, WF, rand_number) {
 			}
 		}
 	}
+	
+	if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
+		autoUpdateSqlFromUI(rand_number);
 }
 
 function onDeleteQueryTable(task, WF) {
@@ -2662,6 +2833,12 @@ function onDeleteQueryTable(task, WF) {
 					}
 				}
 			});
+			
+			//auto update sql from ui
+			var rand_number = settings.parent().closest(".query").attr("rand_number");
+			
+			if (rand_number && $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
+				autoUpdateSqlFromUI(rand_number);
 		}
 		
 		//If any table gets deleted reset the obj id, so if the user generates again a new diagram based in the same sql, it will work fine!
@@ -2684,6 +2861,12 @@ function prepareTableLabelSettings(WF, task_id, old_table_name, new_table_name) 
 				elm.value = new_table_name;
 			}
 		});
+		
+		//auto update sql from ui
+		var rand_number = settings.parent().closest(".query").attr("rand_number");
+		
+		if (rand_number && $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
+			autoUpdateSqlFromUI(rand_number);
 	}
 }
 
@@ -2691,7 +2874,8 @@ function prepareTablesRelationshipKeys(WF, connection, old_connection_property_v
 	//console.log(old_connection_property_values);
 	//console.log(new_connection_property_values);
 	
-	var settings_fields = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().parent().parent().find(".query_settings .keys .fields");
+	var settings = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().parent().parent().find(".query_settings");
+	var settings_fields = settings.find(".keys .fields");
 	
 	if (settings_fields[0] && (new_connection_property_values || old_connection_property_values)) {
 		new_connection_property_values = !new_connection_property_values ? {} : new_connection_property_values;
@@ -2818,7 +3002,22 @@ function prepareTablesRelationshipKeys(WF, connection, old_connection_property_v
 			}
 		}
 		/* END: ADD NEW KEYS */
+		
+		//auto update sql from ui
+		var rand_number = settings.parent().closest(".query").attr("rand_number");
+		
+		if (rand_number && $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
+			autoUpdateSqlFromUI(rand_number);
 	}
+}
+
+function prepareTableStartTask(WF, task_id, task) {
+	//auto update sql from ui
+	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	var rand_number = main_tasks_flow_obj.parent().closest(".query").attr("rand_number");
+	
+	if (rand_number && main_tasks_flow_obj.attr("sync_ui_settings_with_sql") == 1)
+		autoUpdateSqlFromUI(rand_number);
 }
 /** END: QUERY - UTILS FOR THE DBQUERYTABLEHANDLER **/
 
@@ -3342,10 +3541,29 @@ function updateRelationshipsSqlStatementsAutomatically(relationships, rel_type, 
 /* END: UPDATE AUTOMATICALLY */
 
 /* START: SAVE ALL */
-function saveQueryObject() {
-	var new_obj_id = $(".rel_name input").first().val();
+function onSuccessSingleQuerySave(obj, new_obj_id, data, options) {
+	var new_obj_type = $(".data_access_obj .relationships .rel_type select").val();
+	var is_type_different = old_obj_type && new_obj_type && old_obj_type.trim() != new_obj_type.trim();
+	var is_id_different = old_obj_id && new_obj_id && old_obj_id.trim() != new_obj_id.trim();
 	
-	saveIbatisObject(new_obj_id);
+	//If name or type is different, reload page with right name and type
+	if (is_type_different || is_id_different) {
+		if (window.parent && typeof window.parent.refreshLastNodeParentChilds == "function")
+			window.parent.refreshLastNodeParentChilds();
+		
+		var url = "" + document.location;
+		url = url.replace(/(&|\?)query_type=[^&]*/g, "$1query_type=" + new_obj_type);
+		url = url.replace(/(&|\?)query_id=[^&]*/g, "$1query_id=" + new_obj_id);
+		
+		document.location = url;
+	}
+}
+
+function saveQueryObject(on_success_callback) {
+	var new_obj_id = $(".rel_name input").first().val();
+	var options = on_success_callback ? {on_success: on_success_callback} : null;
+	
+	saveIbatisObject(new_obj_id, options);
 }
 
 function saveMapObject() {
@@ -3354,7 +3572,7 @@ function saveMapObject() {
 	saveIbatisObject(new_obj_id);
 }
 
-function saveIbatisObject(new_obj_id) {
+function saveIbatisObject(new_obj_id, options) {
 	var main_relationships_elm = $(".relationships");
 	var obj = getUserRelationshipsObj(main_relationships_elm);
 	//console.log(obj);
@@ -3364,55 +3582,86 @@ function saveIbatisObject(new_obj_id) {
 	if (error_msg == "") {
 		obj = {"queries": obj};
 	
-		saveDataAccessObject(obj, new_obj_id);
+		saveDataAccessObject(obj, new_obj_id, options);
 	}
 	else
 		StatusMessageHandler.showError("Error:" + error_msg);
 }
 
-function saveDataAccessObject(obj, new_obj_id) {
-	//console.log(obj);
+function saveDataAccessObject(obj, new_obj_id, options) {
+	prepareAutoSaveVars();
 	
-	$.ajax({
-		type : "post",
-		url : save_data_access_object_url,
-		data : {"object" : obj, "overwrite" : 1},
-		dataType : "json",
-		success : function(data, textStatus, jqXHR) {
-			if(data == 1) {
-				var msg = "Saved successfully.";
-				
-				if (old_obj_id && new_obj_id && old_obj_id.trim() != new_obj_id.trim()) {
-					if (removeDataAccessObject(old_obj_id)) {
-						old_obj_id = new_obj_id.trim();
+	//console.log(obj);
+	options = typeof options == "object" ? options : {};
+	
+	var new_user_relationships_obj_id = getUserRelationshipsObjId();
+	
+	//only saves if object is different
+	if (saved_user_relationships_obj_id != new_user_relationships_obj_id || options["force"]) {
+		//console.log(obj);
+		
+		$.ajax({
+			type : "post",
+			url : save_data_access_object_url,
+			data : {"object" : obj, "overwrite" : 1},
+			dataType : "json",
+			success : function(data, textStatus, jqXHR) {
+				if(data == 1) {
+					if (typeof options["on_success"] == "function")
+						options["on_success"](obj, new_obj_id, data, options);
+					
+					var msg = "Saved successfully.";
+					
+					if (old_obj_id && new_obj_id && old_obj_id.trim() != new_obj_id.trim()) {
+						if (removeDataAccessObject(old_obj_id)) {
+							old_obj_id = new_obj_id.trim();
+						}
+						else {
+							msg += "\nHowever we couldn't replace this object with the new id/name that you inserted, so we created a duplicated object with the new id.\n\nTo remove the old object, please try to save again...";
+						}
+						
+						if (window.parent && typeof window.parent.refreshLastNodeParentChilds == "function")
+							window.parent.refreshLastNodeParentChilds();
 					}
-					else {
-						msg += "\nHowever we couldn't replace this object with the new id/name that you inserted, so we created a duplicated object with the new id.\n\nTo remove the old object, please try to save again...";
+					else if (!old_obj_id) {//it means it is a new object
+						if (window.parent && typeof window.parent.refreshLastNodeParentChilds == "function")
+							window.parent.refreshLastNodeParentChilds();
 					}
 					
-					window.parent.refreshLastNodeParentChilds();
+					if (!is_from_auto_save) //only show message if a manual save action
+						StatusMessageHandler.showMessage(msg);
+					
+					//update saved_user_relationships_obj_id
+					saved_user_relationships_obj_id = new_user_relationships_obj_id;
 				}
-				else if (!old_obj_id) {//it means it is a new object
-					window.parent.refreshLastNodeParentChilds();
-				}
+				else
+					StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + (data ? "\n" + data : ""));
 				
-				StatusMessageHandler.showMessage(msg);
-			}
-			else
-				StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + (data ? "\n" + data : ""));
-		},
-		error : function(jqXHR, textStatus, errorThrown) { 
-			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, save_data_access_object_url, function() {
-					StatusMessageHandler.removeLastShownMessage("error");
-					saveDataAccessObject(obj, new_obj_id);
-				});
-			else {
-				var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-				StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + msg);
-			}
-		},
-	});
+				if (is_from_auto_save)
+					resetAutoSave();
+			},
+			error : function(jqXHR, textStatus, errorThrown) { 
+				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, save_data_access_object_url, function() {
+						StatusMessageHandler.removeLastShownMessage("error");
+						saveDataAccessObject(obj, new_obj_id);
+					});
+				else {
+					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+					StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + msg);
+					
+					if (is_from_auto_save)
+						resetAutoSave();
+				}
+			},
+			timeout: is_from_auto_save && auto_save_connection_ttl ? auto_save_connection_ttl : 0,
+		});
+	}
+	else if (!is_from_auto_save) {
+		StatusMessageHandler.showMessage("Nothing to save.");
+	}
+	else
+		resetAutoSave();
 }
 
 function removeDataAccessObject(obj_id) {
@@ -3433,6 +3682,18 @@ function removeDataAccessObject(obj_id) {
 	});
 	
 	return status;
+}
+
+function getUserRelationshipsObjId() {
+	var main_relationships_elm = $(".relationships");
+	var obj = getUserRelationshipsObj(main_relationships_elm);
+	return $.md5(JSON.stringify(obj));
+}
+
+function isUserRelationshipsObjChanged() {
+	var new_user_relationships_obj_id = getUserRelationshipsObjId();
+	
+	return saved_user_relationships_obj_id != new_user_relationships_obj_id;
 }
 
 function getUserRelationshipsObj(main_relationships_elm) {

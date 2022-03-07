@@ -39,10 +39,12 @@
 .module_edit .mime_types .add {
 	position:absolute; 
 	margin:-22px 0 0 540px;
+	font-size:16px;
 }
 .module_edit .extensions .add {
 	position:absolute; 
 	margin:-22px 0 0 330px;
+	font-size:16px;
 }
 .module_edit .mime_types table, .module_edit .extensions table {
 	max-height:200px;

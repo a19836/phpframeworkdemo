@@ -32,8 +32,7 @@
    .upload_object_attachment_settings .main_label label,
    .upload_object_attachment_settings .item_label label {
 	width:180px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .upload_object_attachment_settings .object_id input {
 	width:150px;

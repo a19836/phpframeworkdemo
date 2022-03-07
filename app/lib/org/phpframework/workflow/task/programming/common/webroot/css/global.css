@@ -1,5 +1,11 @@
+.jsplumbtaskworkflow .icon.search_page::after,
+  .selected_task_properties .icon.search_page::after,
+  .selected_connection_properties .icon.search_page::after {
+	font-size:10px;
+}
+
 /* START - FIX PROPERTIES TO BOTTOM */
-.selected_task_properties {
+.taskflowchart:not(.fixed_properties) .selected_task_properties {
 	width:auto !important;
 	height:auto !important;
 	max-height:70%;
@@ -14,6 +20,10 @@
 	right:10px !important;
 	border-radius:0;
 	overflow:auto;
+}
+.taskflowchart:not(.fixed_properties).reverse .selected_task_properties {
+	left:0 !important;
+	right:259px !important;
 }
 .selected_task_properties.tasks_menu_hidden {
 	left:5px !important;
@@ -30,7 +40,8 @@
 .selected_task_properties > .popup_close:hover {
 	opacity:1;
 }
-.selected_task_properties > .generic_buttons {
+
+.taskflowchart:not(.fixed_properties) .selected_task_properties > .generic_buttons {
 	position:relative;
 	margin-top:30px;
 }
@@ -42,21 +53,16 @@
 	clear:left;
 }
 .selected_task_properties label, .selected_task_properties input, .selected_task_properties textarea, .selected_task_properties select {
-	display:block;
-	float:left;
+	display:inline-block;
 }
 .selected_task_properties label {
-	height:20px;
-	line-height:20px;
+	
 }
 .selected_task_properties input {
-	height:17px;
-	line-height:17px;
 	margin-left:0px;
 }
 .selected_task_properties select {
-	height:21px;
-	line-height:21px;
+	
 }
 
 .selected_task_properties .properties_task_id {
@@ -105,6 +111,7 @@
    .selected_task_properties .result .type_variable .result_var_assignment {
 	width:100%;
 	height:20px;
+	margin-top:5px;
 }
 .selected_task_properties .result .type_variable label {
 	width:130px;
@@ -128,6 +135,7 @@
    .selected_task_properties .result .type_obj_prop .result_prop_assignment {
 	width:100%;
 	height:20px;
+	margin-top:5px;
 }
 .selected_task_properties .result .type_obj_prop .result_obj_name label,
    .selected_task_properties .result .type_obj_prop .result_prop_name label, 
@@ -141,10 +149,14 @@
 	width:180px;
 	padding-right:20px;
 }
+.selected_task_properties .result .type_obj_prop .result_prop_name .add_variable.inline {
+	margin-left:-21px;
+}
 .selected_task_properties .result .type_obj_prop .result_prop_name .search {
 	float:none;
 	display:inline-block;
 	vertical-align:middle;
+	margin:0;
 }
 
 .selected_task_properties .args {
@@ -153,13 +165,12 @@
 	padding-top:5px;
 }
 .selected_task_properties .args td {
-	border:1px solid #CCC;
+	border-top:1px solid #ccc;
+	border-right:1px solid #eee;
 }
 .selected_task_properties .args th {
 	font-size:10px;
-	font-style:italic;
-	font-weight:bold;
-	text-transform:uppercase;
+	text-transform:capitalize;
 }
 .selected_task_properties .table_arg_empty td {
 	font-size:10px;
@@ -196,60 +207,18 @@
 	border:0;
 }
 .selected_task_properties .args td.table_arg_remove {
-	border:1px outset;
-	border-left:0;
+	border:0;
 }
 
-.selected_task_properties .icon {
-	display:block;
-	width:16px;
-	height:16px;
-	cursor:pointer;
-	
-	/* Hide Text */
-	text-indent:-9999px;
-	white-space:nowrap;
-	overflow:hidden;
-	
-	float:left;
-}
-.selected_task_properties .search {
-	background:url("../img/search_icon.gif") no-repeat scroll 0 0;
-	margin:0px 0px 0px 5px;
-}
-.selected_task_properties .add {
-	background:url("../img/add_icon.gif") no-repeat scroll 0 0;
-	margin:0px 3px 0px 3px;
-}
-.selected_task_properties .remove {
-	background:url("../img/delete_icon.gif") no-repeat scroll 0 0;
-	margin:0px 3px 0px 3px;
-}
-.selected_task_properties .textarea {
-	background:url("../img/textarea_icon.png") no-repeat scroll 0 0;
-	margin:0px 3px 0px 3px;
-}
-.selected_task_properties .maximize {
-	background:url("../img/maximize_icon.png") no-repeat scroll 0 0;
-	margin:0px 3px 0px 3px;
-}
-.selected_task_properties .minimize {
-	background:url("../img/minimize_icon.png") no-repeat scroll 0 0;
-	margin:0px 3px 0px 3px;
-}
-.selected_task_properties .add_variable {
-	background:url("../img/sort_icon.png") no-repeat scroll 0 0;
-}
 .selected_task_properties .add_variable.inline {
-	margin:2px 0 0 -18px;
+	margin-left:-18px;
 	position:absolute;
 	float:none;
 	clear:both;
-	display:inline-block;
-	vertical-align:middle;
 }
 .selected_task_properties .add_variable.inline-area {
-	
+	margin-top:0;
+	margin-left:-18px;
 }
 
 .jsplumbtaskworkflow .task {

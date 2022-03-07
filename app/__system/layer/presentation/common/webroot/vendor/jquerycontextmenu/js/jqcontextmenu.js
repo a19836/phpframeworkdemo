@@ -47,11 +47,16 @@ var jquerycontextmenu = {
 	showbox:function($, $contextmenu, e){
 		$contextmenu.show();
 		
-		var interval = setInterval(function() {
+		var interval = $contextmenu.data("interval");
+		if (interval)
+			clearInterval(interval);
+		
+		interval = setInterval(function() {
 			if (!$contextmenu.is(":hover")) {
 				jquerycontextmenu.hidebox($, $contextmenu);
 			}
 		}, 5000);
+		
 		$contextmenu.data("interval", interval);
 		
 		this.selectedevent = e;
@@ -62,7 +67,7 @@ var jquerycontextmenu = {
 		if (interval)
 			clearInterval(interval);
 		
-		$contextmenu.find('ul').andSelf().hide() //hide context menu plus all of its sub ULs
+		$contextmenu.find('ul').andSelf().hide(); //hide context menu plus all of its sub ULs
 	},
 	
 	buildcontextmenu:function($, $menu){

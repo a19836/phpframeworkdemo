@@ -1,11 +1,24 @@
 $(function () {
-	/*$(window).bind('beforeunload', function () {
-		if (window.parent && window.parent.iframe_overlay)
-			window.parent.iframe_overlay.hide();
+	$(window).bind('beforeunload', function () {
+		if (isBlockCodeObjChanged()) {
+			if (window.parent && window.parent.iframe_overlay)
+				window.parent.iframe_overlay.hide();
+			
+			return "If you proceed your changes won't be saved. Do you wish to continue?";
+		}
 		
-		return "Changes you made may not be saved. Click cancel to save them first, otherwise to continue...";
-	});*/
+		return null;
+	});
 	
+	//prepare top_bar
+	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu");
+	
+	//init auto save
+	enableAutoSave(onTogglePHPCodeAutoSave);
+	enableAutoConvert(onTogglePHPCodeAutoConvert);
+	initAutoSave("#code > .code_menu li.save a");
+	
+	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
 		ajax_callback_before : prepareLayerNodes1,
@@ -83,36 +96,76 @@ $(function () {
 	});
 	chooseImageUrlFromFileManagerTree.init("choose_image_url_from_file_manager");
 	
-	$(".block_obj").tabs();
+	//init ui
+	var block_obj = $(".block_obj");
 	
-	var textarea = $("#code textarea")[0];
-	if (textarea) {
-		var editor = createCodeEditor(textarea, {save_func: saveBlock});
-		if (editor) {
-			editor.focus();
+	if (block_obj[0]) {
+		block_obj.tabs();
+		
+		var textarea = $("#code textarea")[0];
+		if (textarea) {
+			var editor = createCodeEditor(textarea, {save_func: saveBlock});
+			
+			if (editor)
+				editor.focus();
 		}
+		
+		//init code and task flow editor
+		onLoadTaskFlowChartAndCodeEditor();
+		
+		//set saved_obj_id
+		saved_obj_id = getBlockCodeObjId();
 	}
-	
-	onLoadTaskFlowChartAndCodeEditor();
 });
+
+function getBlockCodeObjId() {
+	var obj = getBlockCodeObj();
+	
+	//remove error messages bc when we call the getCodeForSaving method, it will save try to save the workflow but it will give an error bc we are calling the isTestObjChanged on window before load, which will kill the ongoing ajax requests...
+	StatusMessageHandler.removeMessages("error");
+	jsPlumbWorkFlow.jsPlumbStatusMessage.removeMessages("error");
+	
+	$(".workflow_menu").show();
+	MyFancyPopup.hidePopup();
+	
+	return $.md5(save_object_url + JSON.stringify(obj));
+}
+
+function isBlockCodeObjChanged() {
+	var block_obj = $(".block_obj");
+	
+	if (!block_obj[0])
+		return false;
+	
+	return isCodeAndWorkflowObjChanged(block_obj);
+}
+
+function getBlockCodeObj() {
+	var block_obj = $(".block_obj");
+	
+	if (!block_obj[0])
+		return null;
+	
+	var code = getCodeForSaving(block_obj); //if tasks flow tab is selected ask user to convert workfow into code
+	
+	return {"code": code};
+}
 
 function saveBlock() {
 	var block_obj = $(".block_obj");
 	
-	var code = getCodeForSaving(block_obj);
-	var obj = {"code": code};
+	prepareAutoSaveVars();
 	
-	saveObjCode(save_object_url, obj, {
-		error: function() {
-			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url, function() {
-					jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
-					StatusMessageHandler.removeMessages("error");
-					
-					saveBlock();
-				});
-			
-			return true;
-		},
-	});
+	if (block_obj[0]) {
+		if (is_from_auto_save && !isBlockCodeObjChanged()) {
+			resetAutoSave();
+			return;
+		}
+		
+		var obj = getBlockCodeObj();
+		
+		saveObjCode(save_object_url, obj);
+	}
+	else if (!is_from_auto_save)
+		alert("No block object to save! Please contact the sysadmin...");
 }

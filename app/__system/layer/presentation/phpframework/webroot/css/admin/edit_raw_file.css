@@ -1,83 +1,21 @@
-.title {
-	width: 100%;
-	color: #000;
-	font-size: 16px;
-	font-weight: bold;
-	margin: 10px 0 5px;
-	text-align: center;
+/* DROPDOWN */
+.top_bar header {
+	z-index:9999;
 }
 
+/* CODE AREA */
 .code_area {
-	position:absolute;
-	top:65px;
+	/*position:absolute;
+	top:32px;
 	left:0;
 	right:0;
 	bottom:0;
-	overflow:auto;
-}
-.code_area .code_menu {
-	width:100%;
-	position:fixed;
-	top:40px;
-	z-index:100;
-}
-.code_area .code_menu ul {
-	width:100%;
-	height:25px;
-	float:none;
-	clear:left;
-	overflow:hidden;
-	
-	padding: 0px;
-	border: 1px outset #999999;
-	background: #d5e3e4;
-	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Q1ZTNlNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQwJSIgc3RvcC1jb2xvcj0iI2NjZGVlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNiM2M4Y2MiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-	background: -moz-linear-gradient(top,  #d5e3e4 0%, #ccdee0 40%, #b3c8cc 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d5e3e4), color-stop(40%,#ccdee0), color-stop(100%,#b3c8cc));
-	background: -webkit-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
-	background: -o-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
-	background: -ms-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
-	background: linear-gradient(to bottom,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
-	
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 )";
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 );
-}
-.code_area .code_menu ul li {
-	margin:0 5px;
-	border-right:1px solid #ccc;
-	float:left;
-}
-.code_area .code_menu ul li a {
-	color:#222;
-	font-weight:bold;
-	font-size:10px;
-	cursor:pointer;
-	padding:0 0 0 20px;
-	height:25px;
-	line-height:27px;
-	display:block;
-	border-right:1px inset #999;
-}
-.code_area .code_menu ul li.pretty_print {
-	background:url("../../common/img/icon/view_icon.gif") no-repeat scroll 0 5px;
-	width:110px;
-}
-.code_area .code_menu ul li.set_word_wrap {
-	background:url("../../common/img/icon/sort_icon.png") no-repeat scroll 0 5px;
-	width:100px;
-}
-.code_area .code_menu ul li.editor_settings {
-	background:url("../../common/img/icon/settings_icon.png") no-repeat scroll 0 5px;
-	width:130px;
-}
-.code_area .code_menu ul li.save {
-	background:url("../../common/img/icon/save_icon.gif") no-repeat scroll 0 5px;
-	width:55px;
+	overflow:auto;*/
 }
 .code_area .ace_editor, .code_area textarea {
 	height:400px;
+	min-height:calc(100vh - 35px);
 	width:100%;
-	border-top:3px inset #CCC;
 	border-bottom:3px inset #CCC;
 	margin:0;
 }
@@ -104,7 +42,7 @@
 	width:100%;
 	height:25px;
 	text-align:center;
-	margin:10px 0 15px 0;
+	margin:10px 0;
 	font-weight:bold;
 	color:#FF0000;
 }
@@ -169,11 +107,7 @@
 	margin-bottom:10px;
 }
 .confirm_save .buttons input {
-	height:20px;
-	line-height:15px;
-	margin-right:20px;
 	font-size:10px;
-	font-weight:bold;
 }
 .confirm_save .disable_auto_scroll {
 	position:absolute;

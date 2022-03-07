@@ -18,13 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$create_project_url = "{$project_url_prefix}phpframework/presentation/manage_projects"; $head = '
-<!-- Add Icon CSS -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
-
-<!-- Edit code JS -->
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_code.js"></script>
-
+include_once $EVC->getUtilPath("AdminMenuUIHandler"); $create_project_url = "{$project_url_prefix}phpframework/presentation/manage_projects"; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/choose_available_project.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/choose_available_project.js"></script>
@@ -45,7 +39,7 @@ $(function () {
 		<label>Presentation Layer:</label>
 		<select onChange="updateLayerProjects(this)">'; foreach ($layers_projects as $bean_name => $layer_props) { $main_content .= '<option bean_name="' . $bean_name . '" bean_file_name="' . $layer_props["bean_file_name"] . '">' . $layer_props["item_label"] . '</option>'; } $main_content .= '
 		</select>
-		<a class="create_project" href="#" onClick="openAddProjectPopup(\'' . $create_project_url . '\');"><span class="icon add" title="Add new Project"></span> Add Project</a>
+		<a class="create_project" href="#" onClick="openAddProjectPopup(\'' . $create_project_url . '\');" title="Add new Project"><span class="icon add"></span> Add Project</a>
 	</div>'; } $main_content .= '
 	<div class="current_project_folder"></div>
 	<div class="loading_projects"><span class="icon loading"></span> Loading projects...</div>

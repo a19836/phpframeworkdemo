@@ -1,11 +1,24 @@
 $(function () {
-	/*$(window).bind('beforeunload', function () {
-		if (window.parent && window.parent.iframe_overlay)
-			window.parent.iframe_overlay.hide();
+	$(window).bind('beforeunload', function () {
+		if (isUtilCodeObjChanged()) {
+			if (window.parent && window.parent.iframe_overlay)
+				window.parent.iframe_overlay.hide();
+			
+			return "If you proceed your changes won't be saved. Do you wish to continue?";
+		}
 		
-		return "Changes you made may not be saved. Click cancel to save them first, otherwise to continue...";
-	});*/
+		return null;
+	});
 	
+	//prepare top_bar
+	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu");
+	
+	//init auto save
+	enableAutoSave(onTogglePHPCodeAutoSave);
+	enableAutoConvert(onTogglePHPCodeAutoConvert);
+	initAutoSave("#code > .code_menu li.save a");
+	
+	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
 		ajax_callback_before : prepareLayerNodes1,
@@ -91,19 +104,74 @@ $(function () {
 	chooseImageUrlFromFileManagerTree.init("choose_image_url_from_file_manager");
 	
 	var util_obj = $(".util_obj");
-	util_obj.tabs();
 	
-	initCodeLayoutUIEditor(util_obj, saveUtil);
-	
-	onLoadTaskFlowChartAndCodeEditor();
+	if (util_obj[0]) {
+		util_obj.tabs();
+		
+		var textarea = $("#code textarea")[0];
+		if (textarea) {
+			var editor = createCodeEditor(textarea, {save_func: saveUtil});
+			
+			if (editor)
+				editor.focus();
+		}
+		
+		//load workflow
+		onLoadTaskFlowChartAndCodeEditor();
+		
+		//set saved_obj_id
+		saved_obj_id = getUtilCodeObjId();
+	}
 });
+
+function getUtilCodeObjId() {
+	var obj = getUtilCodeObj();
+	
+	//remove error messages bc when we call the getCodeForSaving method, it will save try to save the workflow but it will give an error bc we are calling the isTestObjChanged on window before load, which will kill the ongoing ajax requests...
+	StatusMessageHandler.removeMessages("error");
+	jsPlumbWorkFlow.jsPlumbStatusMessage.removeMessages("error");
+	
+	$(".workflow_menu").show();
+	MyFancyPopup.hidePopup();
+	
+	return $.md5(save_object_url + JSON.stringify(obj));
+}
+
+function isUtilCodeObjChanged() {
+	var util_obj = $(".util_obj");
+	
+	if (!util_obj[0])
+		return false;
+	
+	return isCodeAndWorkflowObjChanged(util_obj);
+}
+
+function getUtilCodeObj() {
+	var util_obj = $(".util_obj");
+	
+	if (!util_obj[0])
+		return null;
+	
+	code = getCodeForSaving(util_obj); //if tasks flow tab is selected ask user to convert workfow into code
+	
+	return {"code": code};
+}
 
 function saveUtil() {
 	var util_obj = $(".util_obj");
-	var code = getCodeLayoutUIEditorCode(util_obj);
-	code = getCodeForSaving(util_obj); //if tasks flow tab is selected ask user to convert workfow into code
 	
-	var obj = {"code": code};
+	prepareAutoSaveVars();
 	
-	saveObjCode(save_object_url, obj);
+	if (util_obj[0]) {
+		if (is_from_auto_save && !isUtilCodeObjChanged()) {
+			resetAutoSave();
+			return;
+		}
+		
+		var obj = getUtilCodeObj();
+		
+		saveObjCode(save_object_url, obj);
+	}
+	else if (!is_from_auto_save)
+		alert("No util object to save! Please contact the sysadmin...");
 }

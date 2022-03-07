@@ -18,8 +18,14 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
  $head = '
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
 <!-- Add Icons CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
 
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/db/import_table_data.css" type="text/css" charset="utf-8" />
@@ -29,7 +35,14 @@
 var column_head_html = \'' . str_replace("'", "\\'", str_replace("\n", "", getColumnHeadHtml("#column_index#"))) . '\';
 var column_attributes_html = \'' . str_replace("'", "\\'", str_replace("\n", "", getColumnAttributeHtml($table_attrs))) . '\';
 </script>'; $main_content = '
-<div class="title">Import Data to Table \'' . $table . '\'</div>
+<div class="top_bar">
+	<header>
+		<div class="title">Import Data to Table \'' . $table . '\'</div>
+		<ul>
+			<li class="import" title="Import"><a onClick="submitForm(this)"><i class="icon continue"></i> Import</a></li>
+		</ul>
+	</header>
+</div>
 
 <div class="import_table_data">'; if ($error_message) $main_content .= '<div class="error">' . $error_message . ($errors ? '<br/>Please see errors bellow...' : '') . '</div>'; $main_content .= '
 	<form method="post" enctype="multipart/form-data">
@@ -86,7 +99,7 @@ var column_attributes_html = \'' . str_replace("'", "\\'", str_replace("\n", "",
 		</div>
 		
 		<div class="columns_attributes">
-			<label>Columns to Attributes: <span class="icon add" onClick="addNewColumn(this)">Add Column</span></label>
+			<label>Columns to Attributes: <span class="icon add" onClick="addNewColumn(this)" title="Add Column">Add</span></label>
 		</div>
 		
 		<table class="columns_attributes_table">
@@ -99,17 +112,13 @@ var column_attributes_html = \'' . str_replace("'", "\\'", str_replace("\n", "",
 				</tr>
 			</tbody>
 		</table>
-		
-		<div class="save_button">
-			<input type="submit" name="import" value="IMPORT" />
-		</div>
 	</form>'; if ($errors) $main_content .= '<div class="errors">
 		<label>Errors:</label>
 		<ul>
 			<li>' . implode('</li><li>', $errors) . '</li>
 		</ul>
 	</div>'; $main_content .= '
-</div>'; function getColumnHeadHtml($v39d7f37cb9) { return '<th class="column table_header"><span class="label">Column ' . $v39d7f37cb9 . '</span><span class="icon delete" onClick="removeColumn(this)">Remove Column</span></th>'; } function getColumnAttributeHtml($pc3502754, $v342541f3c7 = null) { $pf8ed4912 = '
+</div>'; function getColumnHeadHtml($v39d7f37cb9) { return '<th class="column table_header"><span class="label">Column ' . $v39d7f37cb9 . '</span><span class="icon delete" onClick="removeColumn(this)" title="Remove Column">Remove</span></th>'; } function getColumnAttributeHtml($pc3502754, $v342541f3c7 = null) { $pf8ed4912 = '
 	<td class="column">
 		<select name="columns_attributes[]">
 			<option value="">-- none --</option>'; if ($pc3502754) foreach ($pc3502754 as $v5e45ec9bb9) $pf8ed4912 .= '

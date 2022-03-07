@@ -20,7 +20,6 @@
 var GetUrlContentsTaskPropertyObj = {
 	
 	//brokers_options : null,
-	on_choose_page_callback : null,
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
@@ -120,10 +119,7 @@ var GetUrlContentsTaskPropertyObj = {
 	},
 	
 	onCompleteLabel : function(task_id) {
-		onEditLabel(task_id);
-		myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
-		
-		return true;
+		return ProgrammingTaskUtil.onEditLabel(task_id);
 	},
 	
 	onTaskCreation : function(task_id) {
@@ -149,11 +145,6 @@ var GetUrlContentsTaskPropertyObj = {
 		}
 		
 		return "";
-	},
-	
-	onChoosePage : function(elm) {
-		if (typeof this.on_choose_page_callback == "function")
-			this.on_choose_page_callback(elm, $(elm).parent().children(".value"));
 	},
 	
 	/* UTILS */
@@ -225,8 +216,8 @@ var GetUrlContentsTaskPropertyObj = {
 					li.children(".value").attr("placeHolder", "Write here your url");
 					
 					//add search icon
-					if (typeof GetUrlContentsTaskPropertyObj.on_choose_page_callback == "function")
-						li.children(".value_type").before('<span class="icon search" onClick="GetUrlContentsTaskPropertyObj.onChoosePage(this)">Search</span>');
+					if (typeof ProgrammingTaskUtil.on_programming_task_choose_page_url_callback == "function")
+						li.children(".value_type").before('<span class="icon search" onClick="ProgrammingTaskUtil.onProgrammingTaskChoosePageUrl(this)">Search</span>');
 					
 					//move it to the beginnning
 					li.parent().prepend(li); 
@@ -561,8 +552,8 @@ var GetUrlContentsTaskPropertyObj = {
 		var icon = p.children(".icon.search");
 		
 		if (key_option == "url") {
-			if (!icon[0] && typeof this.on_choose_page_callback == "function")
-				p.children(".value").after('<span class="icon search" onClick="GetUrlContentsTaskPropertyObj.onChoosePage(this)">Search</span>');
+			if (!icon[0] && typeof ProgrammingTaskUtil.on_programming_task_choose_page_url_callback == "function")
+				p.children(".value").after('<span class="icon search" onClick="ProgrammingTaskUtil.onProgrammingTaskChoosePageUrl(this)">Search</span>');
 			
 			icon.show();
 		}

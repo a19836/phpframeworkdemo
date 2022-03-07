@@ -9,30 +9,8 @@ $(function () {
 	});
 });
 
-function getUploadInputNextIndex() {
-	var index = 0;
-	var upload_files = $(".file_upload").find(".upload_file input, .upload_url input");
-	
-	$.each(upload_files, function(idx, input) {
-		var name = input.getAttribute("name");
-		var m = name.match(/\[([0-9]+)\]/);
-		
-		if (m && $.isNumeric(m[1])) {
-			var idx = parseInt(m[1]);
-			
-			if (idx > index)
-				index = idx;
-		}
-	});
-	
-	index++;
-	
-	return index;
-}
-
 function addNewFile(elm) {
-	var index = getUploadInputNextIndex();
-	var html = '<div class="upload_file"><input type="file" name="zip_file[' + index + ']" multiple> <span class="icon delete" onClick="$(this).parent().remove()"></span></div>';
+	var html = '<div class="upload_file"><input type="file" name="zip_file[]" multiple> <span class="icon delete" onClick="$(this).parent().remove()"></span></div>';
 	var upload_files = $(elm).parent().children(".upload_file, .upload_url");
 	
 	if (upload_files.filter(".upload_file").length < 20)
@@ -42,14 +20,13 @@ function addNewFile(elm) {
 }
 
 function onSubmitButtonClick(elm) {
-	if (checkUploadedFiles()) {
-		$('<p class=installing>Installing...</p>').insertBefore(elm);
-		$(elm).hide();
-		
-		return true;
-	}
+	elm = $(elm);
 	
-	return false;
+	if (checkUploadedFiles()) {
+		var oForm = elm.parent().closest(".top_bar").parent().find(".file_upload form");
+		elm.hide();
+		oForm.submit();
+	}
 }
 
 function checkUploadedFiles() {
@@ -172,8 +149,7 @@ function viewStoreModule(module_label) {
 
 function chooseStoreModule(url) {
 	if (url) {
-		var index = getUploadInputNextIndex();
-		var upload_url = $('<div class="upload_url"><label>Url:</label><input type="text" name="zip_url[' + index + ']" value="' + url + '"><span class="icon delete" onClick="removeStoreModuleUrl(this);"></span></div>');
+		var upload_url = $('<div class="upload_url"><label>Url:</label><input type="text" name="zip_url[]" value="' + url + '"><span class="icon delete" onClick="removeStoreModuleUrl(this);"></span></div>');
 		
 		var upload_file = $(".file_upload .upload_file").last();
 		upload_file.after(upload_url);

@@ -15,23 +15,23 @@
 .jsplumbtaskworkflow .task.task_table {
 	min-width:160px !important;
 	min-height:5em !important;
-	border:1px solid #000;
+	border:1px solid #666 !important;
 	
-	-moz-border-radius:0px !important; 
-	-webkit-border-radius:0px !important;
-	border-radius:0px !important;
+	-moz-border-radius:5px !important; 
+	-webkit-border-radius:5px !important;
+	border-radius:5px !important;
 	
-	background: #d5e3e4 !important;
-	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Q1ZTNlNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQwJSIgc3RvcC1jb2xvcj0iI2NjZGVlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNiM2M4Y2MiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+) !important;
-	background: -moz-linear-gradient(top,  #d5e3e4 0%, #ccdee0 40%, #b3c8cc 100%) !important;
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d5e3e4), color-stop(40%,#ccdee0), color-stop(100%,#b3c8cc)) !important;
-	background: -webkit-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%) !important;
-	background: -o-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%) !important;
-	background: -ms-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%) !important;
-	background: linear-gradient(to bottom,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%) !important;
+	background: #ddd !important;
+	/*background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Q1ZTNlNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQwJSIgc3RvcC1jb2xvcj0iI2NjZGVlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNiM2M4Y2MiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+) !important;*/
+	background: -moz-linear-gradient(top,  #ddd 0%, #aaa 40%, #000 100%) !important;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ddd), color-stop(40%,#aaa), color-stop(100%,#000)) !important;
+	background: -webkit-linear-gradient(top,  #ddd 0%,#aaa 40%,#000 100%) !important;
+	background: -o-linear-gradient(top,  #ddd 0%,#aaa 40%,#000 100%) !important;
+	background: -ms-linear-gradient(top,  #ddd 0%,#aaa 40%,#000 100%) !important;
+	background: linear-gradient(to bottom,  #ddd 0%,#aaa 40%,#000 100%) !important;
 	
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 )" !important;
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 ) !important;
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ddd', endColorstr='#000',GradientType=0 )" !important;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ddd', endColorstr='#000',GradientType=0 ) !important;
 }
 .jsplumbtaskworkflow .task.task_table .info {
 	position:absolute;
@@ -134,9 +134,10 @@
 }
 .selected_task_properties .db_table_task_html {
 	width:1245px;
-}
-.selected_task_properties .db_table_task_html * {
-	font-size:12px !important;
+	margin-left:-20px;
+	margin-right:-20px;
+	border:0;
+	font-size:12px;
 }
 .selected_task_properties .db_table_task_html .table_name {
 	width:100%;
@@ -148,45 +149,15 @@
 }
 .selected_task_properties .db_table_task_html .table_name input {
 	width:255px;
+	border:1px solid #eee;
 }
 .selected_task_properties .db_table_task_html > ul {
 	margin-top:20px;
-}
-
-.selected_task_properties .db_table_task_html .add {
-	background-color:#FFF !important;
-	border:0px !important;
-	display:inline-block;
-	vertical-align:sub;
-}
-.selected_task_properties .db_table_task_html .add a {
-	display:block;
-	width:16px;
-	height:16px;
-	margin-top:0;
-	margin-left:5px;
-	background:url('../../common/img/add_icon.gif') no-repeat;
-	cursor:pointer;
-	
-	/* Hide Text */
-	text-indent:-9999px;
-	white-space:nowrap;
-	overflow:hidden;
-}
-.selected_task_properties .db_table_task_html .move_up {
-	background:url('../../common/img/up_icon.gif') no-repeat;
-}
-.selected_task_properties .db_table_task_html .move_down {
-	background:url('../../common/img/down_icon.gif') no-repeat;
-}
-.selected_task_properties .db_table_task_html .delete {
-	background:url('../../common/img/delete_icon.gif') no-repeat;
-}
-.selected_task_properties .db_table_task_html .maximize {
-	background:url('../../common/img/maximize_icon.png') no-repeat;
-}
-.selected_task_properties .db_table_task_html .minimize {
-	background:url('../../common/img/minimize_icon.png') no-repeat;
+	background:none;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-radius: 0;
 }
 
 /* START: SELECTED TASK PROPERTIES - SIMPLE UI */
@@ -195,22 +166,13 @@
 }
 .selected_task_properties .db_table_task_html .simple_attributes > ul li > .header input {
 	margin-right:5px;
+	border:1px solid #eee;
 }
 .selected_task_properties .db_table_task_html .simple_attributes > ul li > .header select.simple_attr_type {
 	width:350px;
-	background:white;
-}
-.selected_task_properties .db_table_task_html .simple_attributes > ul li > .header a {
-	width:16px;
-	height:20px;
-	margin:auto 0 auto 5px;
-	display:inline-block;
-	cursor:pointer;
-	background-position-y:2px;
-	
-	/* Hide Text */
-	text-indent:-9999px;
-	white-space:nowrap;
+	margin-right:10px;
+	border:1px solid #eee;
+	background:transparent;
 }
 .selected_task_properties .db_table_task_html .simple_attributes > ul li > ul {
 	width:535px;
@@ -258,11 +220,9 @@
   .selected_task_properties .db_table_task_html .table_storage_engine select {
 	position:absolute;
 	left:180px;
-}
-.selected_task_properties .db_table_task_html .table_charset select, 
-  .selected_task_properties .db_table_task_html .table_collation select, 
-  .selected_task_properties .db_table_task_html .table_storage_engine select {
   	width:205px;
+  	border:1px solid #eee;
+  	background:transparent;
 }
 .selected_task_properties .db_table_task_html .table_charset label, 
   .selected_task_properties .db_table_task_html .table_collation label, 
@@ -278,25 +238,23 @@
 	height:200px;
 	float:none;
 	clear:left;
-	border:1px inset #f7f7f7;
-	
 	overflow-y:scroll;
 	overflow-x:hidden;
 	z-index:10;
 	display:block;
 }
-.selected_task_properties .db_table_task_html thead td {
-	height:18px;
-	line-height:18px;
-	text-align:center;
+.selected_task_properties .db_table_task_html thead th {
+	color:#999;
+	font-size:10px;
 }
-.selected_task_properties .db_table_task_html thead .add a {
+.selected_task_properties .db_table_task_html thead .add {
 	margin-left:22px;
 }
 .selected_task_properties .db_table_task_html tbody td {
 	height:20px;
 	line-height:20px;
-	border:1px inset #CCC;
+	border-top:1px solid #eee;
+	border-right:1px solid #eee;
 }
 .selected_task_properties .db_table_task_html tbody td input, 
    .selected_task_properties .db_table_task_html tbody td select {
@@ -426,22 +384,13 @@
 	font-size:10px !important;
 	margin:0 auto;
 }
+.selected_task_properties .db_table_task_html .table_attr_icons {
+	width:80px;
+	text-align:center;
+}
 .selected_task_properties .db_table_task_html tbody .table_attr_icons {
-	width:60px;
 	padding-left:3px;
 	border:0 !important;
-}
-.selected_task_properties .db_table_task_html tbody .table_attr_icons a {
-	display:inline-block;
-	width:16px;
-	height:16px;
-	margin-top:3px;
-	cursor:pointer;
-	
-	/* Hide Text */
-	text-indent:-9999px;
-	white-space:nowrap;
-	overflow:hidden;
 }
 
 /* START: SELECTED CONNECTION PROPERTIES */
@@ -451,9 +400,7 @@
 .selected_connection_properties .db_table_connection_html {
 	width:560px;
 	margin:0 auto;
-}
-.selected_connection_properties .db_table_connection_html * {
-	font-size:12px !important;
+	font-size:12px;
 }
 .selected_connection_properties .db_table_connection_html .relationship_props {
 	width:530px;
@@ -464,11 +411,10 @@
 	margin-top:10px;
 	margin-left:auto;
 	margin-right:auto;
-	border:1px solid #CCC;
+	border:1px solid #eee;
 	padding:4px 2px 4px 2px;
 }
 .selected_connection_properties .db_table_connection_html .relationship_props div {
-	min-height:20px;
 	text-align:center;
 	display:inline-block;
 	vertical-align:middle;
@@ -488,6 +434,8 @@
 .selected_connection_properties .db_table_connection_html .relationship_props select {
 	text-align:center;
 	width:115px;
+	border:1px solid #eee;
+	background:transparent;
 }
 .selected_connection_properties .db_table_connection_html .buttons {
 	width:100%;
@@ -523,28 +471,13 @@
 	height:18px;
 	line-height:18px;
 	word-break:break-word;
+	color:#999;
 }
-.selected_connection_properties .db_table_connection_html thead th.table_attr_icons {
-	width:60px !important;
+.selected_connection_properties .db_table_connection_html .table_attr_icons {
+	width:80px;
 }
-.selected_connection_properties .db_table_connection_html thead .add {
-	width:16px !important;
-	height:16px !important;
-	background-color:#FFF !important;
-	border:0 !important;
-}
-.selected_connection_properties .db_table_connection_html thead .add a {
-	display:block;
-	width:16px;
-	height:16px;
-	margin-left:25px;
-	background:url('../../common/img/add_icon.gif') no-repeat;
-	cursor:pointer;
-	
-	/* Hide Text */
-	text-indent:-9999px;
-	white-space:nowrap;
-	overflow:hidden;
+.selected_connection_properties .db_table_connection_html thead .table_attr_icons {
+	text-align:center;
 }
 
 .selected_connection_properties .db_table_connection_html tbody td {
@@ -552,7 +485,8 @@
 	width:170px;
 	height:20px;
 	margin-right:0px;
-	border:1px inset #CCC;
+	border-top:1px solid #eee;
+	border-right:1px solid #eee;
 	background-color:#FFF;
 }
 .selected_connection_properties .db_table_connection_html tbody td select {
@@ -565,28 +499,6 @@
 	background-color:#FFF;
 }
 .selected_connection_properties .db_table_connection_html tbody .table_attr_icons {
-	width:60px !important;
 	padding-left:3px;
 	border:0;
-}
-.selected_connection_properties .db_table_connection_html tbody .table_attr_icons a {
-	display:inline-block;
-	width:16px;
-	height:16px;
-	margin-top:3px;
-	cursor:pointer;
-	
-	/* Hide Text */
-	text-indent:-9999px;
-	white-space:nowrap;
-	overflow:hidden;
-}
-.selected_connection_properties .db_table_connection_html .move_up {
-	background:url('../../common/img/up_icon.gif') no-repeat;
-}
-.selected_connection_properties .db_table_connection_html .move_down {
-	background:url('../../common/img/down_icon.gif') no-repeat;
-}
-.selected_connection_properties .db_table_connection_html .delete {
-	background:url('../../common/img/delete_icon.gif') no-repeat;
 }

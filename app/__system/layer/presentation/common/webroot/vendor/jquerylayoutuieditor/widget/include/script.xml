@@ -34,10 +34,10 @@
 		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-script,
 		  body > .menu-widget.menu-widget-script.ui-draggable-dragging {
 			display:inline-block;
-			background:#000;
+			background:rgba(0, 0, 0, .2);
 			border-radius:5px;
-			border:1px outset #bbb;
-			color:#666;
+			border:1px outset rgba(0, 0, 0, .2);
+			color:inherit;
 			overflow:hidden;
 		}
 		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-script i,

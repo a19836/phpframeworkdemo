@@ -39,7 +39,7 @@
 		<textarea class="task_property_field"></textarea><!-- Name will be defined via javascript otherwise it will give an exception when creating the createform task -->
 		
 		<!-- MY LAYOUT UI EDITOR -->
-		<div class="layout_ui_editor ptl_ui">
+		<div class="layout_ui_editor ptl_ui reverse fixed_properties with_top_bar_menu">
 			<ul class="menu-widgets hidden"></ul><!--  Menu widgets will be added later -->
 			<div class="template-source"><textarea></textarea></div>
 		</div>
@@ -100,7 +100,7 @@
 			<label>Form Action:</label>
 			<input type="text" class="task_property_field" name="form_action" />
 			<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
-			<span class="icon search" onclick="CreateFormTaskPropertyObj.on_choose_page_url_callback(this)" title="Search Page">Search page</span>
+			<span class="icon search" onclick="ProgrammingTaskUtil.onProgrammingTaskChoosePageUrl(this)" title="Search Page">Search page</span>
 		</div>
 	
 		<div class="form_containers">

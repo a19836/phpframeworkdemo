@@ -37,11 +37,27 @@
 	margin-bottom:5px;
 }
 .db_dao_action_task_html .broker_method_obj input  {
-	margin-left:130px;
+	margin-left:135px;
 }
 .db_dao_action_task_html .get_automatically {
 	margin-top:15px;
 	margin-bottom:5px;
+}
+.db_dao_action_task_html .get_automatically label {
+	width:200px;
+}
+.db_dao_action_task_html .get_automatically .icon {
+	width:23px;
+	height:23px;
+}
+.db_dao_action_task_html .get_automatically .icon::before {
+	content:"\f022";
+}
+.db_dao_action_task_html .get_automatically .icon::after {
+	content:"\f079";
+}
+.db_dao_action_task_html .get_automatically .icon:hover::after {
+	color:#000;
 }
 .db_dao_action_task_html .method_name {
 	margin-top:10px;
@@ -65,9 +81,6 @@
 	position:static;
 	margin-top:0;
 	margin-left:0;
-}
-.db_dao_action_task_html .get_automatically label {
-	width:200px;
 }
 .db_dao_action_task_html .broker_method_obj label,
   .db_dao_action_task_html .method_name label,
@@ -99,6 +112,7 @@
 	text-align:center;
 	font-size:9px;
 	width:60px;
+	height:19px;
 	float:none;
 	display:inline-block;
 	margin-bottom:0;
@@ -194,11 +208,7 @@
 	margin-left:195px;
 }
 .db_dao_action_task_html > div:not(.broker_method_obj) > .add_variable {
-	margin-left:-23px;
+	margin-left:-26px;
 }
-.db_dao_action_task_html > div.broker_method_obj > .add_variable {
-	margin-top:29px;
-}
-
 
 

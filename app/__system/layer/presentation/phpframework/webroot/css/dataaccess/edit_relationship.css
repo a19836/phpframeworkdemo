@@ -1,0 +1,120 @@
+/* TITLE */
+.edit_relationship > .top_bar {
+	margin-bottom:15px;
+}
+.edit_relationship > .top_bar .title .query_type {
+	width:125px;
+	display:inline-block;
+}
+.edit_relationship > .top_bar .title .query_name {
+	width:200px;
+	display:inline-block;
+}
+
+/* RELATIONSHIP */
+.edit_relationship .data_access_obj {
+	width:100%;
+}
+.edit_relationship .data_access_obj.with_parameter_and_result_fields {
+	
+}
+.edit_relationship .relationship {
+	padding:0;
+	border:0;
+	display:none;
+}
+.edit_relationship .relationship .header_buttons {
+	display:none;
+}
+.edit_relationship .relationship .rel_type {
+	width:90px;
+	margin:0;
+	position:fixed;
+	top:7px;
+	left:35px;
+	z-index:2;
+}
+.edit_relationship .relationship .rel_type label {
+	display:none;
+}
+.edit_relationship .relationship .rel_type select {
+	width:115px;
+	border:1px solid #ccc;
+	color:#000;
+	background:transparent;
+}
+.edit_relationship .relationship .rel_name {
+	width:210px;
+	margin:0;
+	position:fixed;
+	top:7px;
+	left:243px;
+	z-index:2;
+}
+.edit_relationship .relationship .rel_name label {
+	display:none;
+}
+.edit_relationship .relationship .rel_name input {
+	width:200px;
+	border:1px solid #ccc;
+	color:#000;
+	background:transparent;
+}
+.edit_relationship .relationship .parameter_class_id, 
+  .edit_relationship .relationship .parameter_map_id, 
+  .edit_relationship .relationship .result_class_id, 
+  .edit_relationship .relationship .result_map_id {
+	margin-left:20px;
+	display:none;
+}
+
+/* RELATIONSHIP - QUERY */
+.edit_relationship .relationship .query {
+	margin-top:0;
+	padding:0;
+	border:0;
+	background:transparent;
+}
+.edit_relationship .data_access_obj.with_parameter_and_result_fields .relationship .query {
+	margin-top:20px;
+	border-top:1px solid #000;
+	border-radius:0;
+}
+.edit_relationship .data_access_obj.with_parameter_and_result_fields .relationship .query > .ui-widget-content {
+	/*border-top:1px solid #000;*/
+}
+.edit_relationship .relationship .query table {
+	margin-left:auto;
+	margin-right:auto;
+	border:0;
+}
+.edit_relationship .relationship .query .query_settings {
+	height:calc(100vh - 50px);
+	box-sizing:border-box;
+	padding-top:10px;
+	border-radius:0;
+}
+.edit_relationship .relationship .query .query_settings .query_settings_tab {
+	height:calc(100vh - 100px);
+	min-height:100px;
+	padding-bottom:20px;
+	box-sizing:border-box;
+	overflow:auto;
+}
+.edit_relationship .relationship .query .query_settings .advanced_query_settings {
+	margin-top:auto;
+	bottom:10px;
+}
+.edit_relationship .relationship .query .query_settings > .query_settings_tabs {
+	border-top-left-radius:0;
+	border-top-right-radius:0;
+}
+.edit_relationship .relationship .sub_limit_start {
+	height:auto;
+	margin-top:0;
+	padding-top:35px;
+	overflow:visible;
+}
+.edit_relationship .relationship .limit_start .limit label, .relationship .limit_start .start label {
+	font-weight:normal;
+}

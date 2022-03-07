@@ -1,60 +1,36 @@
-.title {
-	width: 100%;
-	color: #000;
-	font-size: 16px;
-	font-weight: bold;
-	margin: 10px 0 5px;
-	text-align: center;
+/* TOP BAR */
+.top_bar {
+	
 }
-.save_button {
-	width:100%;
-	height:25px;
-	text-align:center;
-	margin:10px 0 15px 0;
-}
-.save_button input {
-	border:1px outset;
-	border-radius:0.5em;
-	height:25px !important;
-	line-height:15px !important;
-	padding:3px 5px !important;
-}
+
+/* SQL AREA */
 .sql_text_area .ace_editor, .sql_text_area textarea {
 	width:100%;
-	height:170px;
+	height:100px;
 	margin:0;
-	border-top:3px inset #CCC;
-	border-bottom:3px inset #CCC;
+	border-top:1px inset #CCC;
+	border-bottom:1px inset #CCC;
 }
 .sql_results {
-	border-top:3px inset #CCC;
 	margin:0;
-	background: #d5e3e4;
 	overflow:auto;
 }
 .sql_results table {
-	border:1px solid #CCC;
 	width:100%;
-	background-color:#FFF;
 }
 .sql_results table th {
-	font-weight:bold;
 	font-size:10px;
-	height:20px;
-	line-height:20px;
 	color:#999;
 	padding:0 5px;
 }
 .sql_results table td {
-	border:1px solid #CCC;
-	height:20px;
-	line-height:20px;
+	border-top:1px solid #CCC;
+	border-right:1px solid #eee;
 	color:#333;
 	padding:0 5px;
 }
 .sql_results table td.empty {
 	text-align:center;
-	font-weight:bold;
 }
 .sql_results .dataTables_length, .sql_results .dataTables_filter, .sql_results .dataTables_info, .sql_results .dataTables_paginate {
 	height:20px;

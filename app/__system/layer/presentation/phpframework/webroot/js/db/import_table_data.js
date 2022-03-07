@@ -1,3 +1,10 @@
+function submitForm(elm) {
+	elm = $(elm);
+	var oForm = elm.parent().closest(".top_bar").parent().find(".import_table_data form");
+	elm.hide();
+	oForm.submit();
+}
+
 function addNewColumn(elm) {
 	elm = $(elm);
 	var table = elm.parent().parent().parent().children("table.columns_attributes_table");
@@ -25,7 +32,7 @@ function removeColumn(elm) {
 	//reorder indexes
 	var tds = thead.children();
 	for (var i = index; i < tds.length; i++)
-		$(tds[i]).children("span").html("Column " + (i + 1));
+		$(tds[i]).children(".label").html("Column " + (i + 1));
 }
 
 function activateCheckBox(elm) {

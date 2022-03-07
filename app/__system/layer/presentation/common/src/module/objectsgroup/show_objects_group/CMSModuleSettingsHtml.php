@@ -87,8 +87,8 @@ echo '
 var js_load_function = ' . ($js_load_function ? $js_load_function : 'null') . ';
 var create_form_settings_code_url = \'' . $project_url_prefix . 'module/objectsgroup/show_objects_group/create_form_settings_code\';
 
-CreateFormTaskPropertyObj.on_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
-CreateFormTaskPropertyObj.on_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
+ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
+ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
 </script>';
 ?>
 <link rel="stylesheet" href="<?= $module["webroot_url"]; ?>settings.css" type="text/css" charset="utf-8" />

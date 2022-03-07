@@ -31,12 +31,10 @@
    .catalog_settings .filter_by_published label,
    .catalog_settings .question_properties_url label {
 	margin-bottom:5px;
-	display:block;
-	float:left;
-	clear:none;
+	display:inline-block;
 }
 .catalog_settings .catalog_type {
-	width:230px;
+	width:240px;
 	float:left;
 	clear:none;
 }
@@ -78,15 +76,18 @@
    .catalog_settings .catalog_sort_order label, 
    .catalog_settings .catalog_by_parent .catalog_parent_object_type_id label {
 	width:130px;
+	display:inline-block;
 }
 .catalog_settings .catalog_sort_column label,
    .catalog_settings .filter_by_published label,
    .catalog_settings .question_properties_url label {
 	width:180px;
+	display:inline-block;
 }
 .catalog_settings .catalog_by_parent .catalog_parent_object_id label, 
    .catalog_settings .catalog_by_parent .catalog_parent_group label {
 	width:90px;
+	display:inline-block;
 }
 .catalog_settings .catalog_title input {
 	width:300px;
@@ -98,7 +99,7 @@
 	width:100px;
 }
 .catalog_settings .catalog_by_parent .catalog_parent_group input {
-	width:20px;
+	width:30px;
 }
 .catalog_settings .question_properties_url input {
 	width:390px;

@@ -56,7 +56,8 @@
 	padding-right:20px; 
 }
 .call_function_task_html .func_name .search {
-	float:none;
-	display:inline-block;
-	vertical-align:middle;
+	
+}
+.call_function_task_html .func_name .add_variable.inline {
+	margin-left:-21px;
 }

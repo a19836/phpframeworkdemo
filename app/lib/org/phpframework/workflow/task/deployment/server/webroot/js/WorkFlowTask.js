@@ -393,6 +393,9 @@ var ServerTaskPropertyObj = {
 		var popup_close = server_properties_popup.children(".popup_close");
 		var server_templates_icons = server_properties_popup.find(".server_task_html > .templates_container > table > tbody > tr > td.actions > .icon");
 		
+		var auto_save_bkp = auto_save;
+		auto_save = false;
+		
 		this.TemplatePropertiesMyFancyPopupObject.init({
 			elementToShow: template_properties,
 			onOpen: function() {
@@ -423,6 +426,8 @@ var ServerTaskPropertyObj = {
 				
 				//should be the last to execute
 				server_templates_icons.show();
+				
+				auto_save = auto_save_bkp;
 			},
 			saveTemplateProperties: true,
 		});

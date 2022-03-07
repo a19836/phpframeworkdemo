@@ -6,12 +6,18 @@ echo "Testing subtest business logic function (without class. Independent functi
 //echo $EVC->getBroker()->callBusinessLogic("test", "test", 123, array("no_cache" => false));
 echo "<br/>";
 echo $EVC->getBroker()->callBusinessLogic("test/subtest", "foo", "value xxx", array("no_cache" => false));
+//echo $EVC->getBroker()->callBusinessLogic("test.subtest.IndependentFunctionsServices.php", "foo", "value xxx", array("no_cache" => false));
+//echo $EVC->getBroker()->callBusinessLogic("test/subtest/IndependentFunctionsServices.php", "foo", "value xxx", array("no_cache" => false));
+//echo $EVC->getBroker()->callBusinessLogic("test/subtest/IndependentFunctionsServices", "foo", "value xxx", array("no_cache" => false));
+//echo $EVC->getBroker()->callBusinessLogic("test.subtest.IndependentFunctionsServices", "foo", "value xxx", array("no_cache" => false));
 echo "<br/>";
 echo $EVC->getBroker()->callBusinessLogic("test.subtest", "bar", "value bar", array("no_cache" => false));
 echo "<hr/>";
 
 echo "Testing subtest business logic: ";
 echo $EVC->getBroker()->callBusinessLogic("test.subtest", "SubTestService.executeBusinessLogicSubTest", null, array("no_cache" => false/*, "no_annotations" => true*/));
+//echo $EVC->getBroker()->callBusinessLogic("test.subtest.SubTestService.php", "SubTestService.executeBusinessLogicSubTest", null, array("no_cache" => false/*, "no_annotations" => true*/));
+//echo $EVC->getBroker()->callBusinessLogic("test/subtest/SubTestService.php", "SubTestService.executeBusinessLogicSubTest", null, array("no_cache" => false/*, "no_annotations" => true*/));
 echo "<hr/>";
 
 echo "Testing subsubtest business logic: ";

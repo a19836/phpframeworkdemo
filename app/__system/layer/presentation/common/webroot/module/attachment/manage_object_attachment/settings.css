@@ -35,8 +35,7 @@
    .manage_object_attachment_settings .ok_response label,
    .manage_object_attachment_settings .error_response label {
 	width:130px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .manage_object_attachment_settings .action select,
    .manage_object_attachment_settings .object_type_id select,

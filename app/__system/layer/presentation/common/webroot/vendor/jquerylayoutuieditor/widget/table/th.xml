@@ -14,10 +14,10 @@
 		  body > .menu-widget.menu-widget-table-column-head.ui-draggable-dragging {
 			height:70px;
 			display:inline-block;
-			background:#fff;
+			background:rgba(0, 0, 0, .2);
 			border-radius:5px;
-			border:1px solid #bbb;
-			color:#333;
+			border:1px solid rgba(0, 0, 0, .2);
+			color:inherit;
 			overflow:hidden;
 			font-size:130%;
 		}
@@ -90,7 +90,7 @@
 						}
 						
 						widget.remove();
-						alert("This item can only be dropped into Table elements!");
+						ui_creator.showError("This item can only be dropped into Table elements!");
 					}
 				}
 			};

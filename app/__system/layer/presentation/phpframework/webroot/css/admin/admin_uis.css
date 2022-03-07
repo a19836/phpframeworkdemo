@@ -36,44 +36,52 @@ li > label {
 }
 li > .description {
 	height:0;
-	padding:10px;
+	padding:15px 10px 10px;
 	position:absolute;
 	top:auto;
 	bottom:-10px;
 	left:0;
 	right:0;
 	box-sizing:border-box;
-	background-color:#b3c8cced;
-	color:#fff;
+	color:#555;
 	vertical-align:middle;
 	cursor:pointer;
 	transition:all 1s;
+	
+	background: -moz-linear-gradient(bottom, #eee 70%, #ffffff73 100%);
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(70%, #eee), color-stop(100%, #ffffff73));
+	background: -webkit-linear-gradient(bottom, #eee 70%, #ffffff73 100%);
+	background: -o-linear-gradient(bottom, #eee 70%, #ffffff73 100%);
+	background: -ms-linear-gradient(bottom, #eee 70%, #ffffff73 100%);
+	background: linear-gradient(to top, #eee 70%, #ffffff73 100%);
 }
 li:hover > .description {
 	height:60px;
 	bottom:0;
 }
 li > .photo {
-	width:70px;
-	height:100px;
+	width:100%;
+	height:auto;
 	margin:10px auto 0;
-	background-size:100% 100% !important;
 	cursor:pointer;
+	font-size:80px;
+	box-sizing:border-box;
 }
-li.simple_admin_ui > .photo {
-	background:url(../../img/simple_admin_ui.png) no-repeat center;
+li > .photo::before {
+	margin:0;
 }
-li.citizen_admin_ui > .photo {
-	width:120px;
-	background:url(../../img/citizen_admin_ui.png) no-repeat center;
+li.simple_admin_ui > .photo::before {
+	content:"\f1ae";
 }
-li.low_code_admin_ui > .photo {
-	width:110px;
-	background:url(../../img/low_code_admin_ui.png) no-repeat center;
+li.citizen_admin_ui > .photo::before {
+	content:"\f0c0";
 }
-li.advanced_admin_ui > .photo {
-	background:url(../../img/advanced_admin_ui.png) no-repeat center;
+li.low_code_admin_ui > .photo::before {
+	content:"\f501";
 }
-li.expert_admin_ui > .photo {
-	background:url(../../img/expert_admin_ui.png) no-repeat center;
+li.advanced_admin_ui > .photo::before {
+	content:"\f21b";
+}
+li.expert_admin_ui > .photo::before {
+	content:"\f504";
 }

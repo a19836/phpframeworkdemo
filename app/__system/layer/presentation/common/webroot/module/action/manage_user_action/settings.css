@@ -40,8 +40,6 @@
    .manage_user_action_settings .ok_response label,
    .manage_user_action_settings .error_response label {
 	width:130px;
-   	display:block;
-	float:left;
 }
 .manage_user_action_settings .user_id label {
 	width:90px;
@@ -50,8 +48,6 @@
    .manage_user_action_settings .allow_insertion label,
    .manage_user_action_settings .allow_deletion label {
 	width:180px;
-   	display:block;
-	float:left;
 }
 .manage_user_action_settings .object_type_id select,
    .manage_user_action_settings .object_id input,

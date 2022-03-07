@@ -46,8 +46,8 @@
 			height:4.5em;
 			display:inline-block;
 			border-radius:5px;
-			border:1px solid #bbb;
-			color:#fff;
+			border:1px solid rgba(0, 0, 0, .2);
+			color:inherit;
 			overflow:hidden;
 		}
 		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-table i,
@@ -172,7 +172,7 @@
 				var available_options = ["tr", "thead", "tbody", "tfoot"];
 				
 				if (!type || type == "" || available_options.indexOf(type.toLowerCase()) == -1)
-					alert("You must enter 1 of the following options: tr/thead/tbody/tfoot");
+					ui_creator.showError("You must enter 1 of the following options: tr/thead/tbody/tfoot");
 				else {
 					type = type.toLowerCase();
 					

@@ -1,4 +1,4 @@
-<div class="break_task_html">
+<div class="user_task_3_task_html">
 	<div class="value">
 		<label>Value: </label>
 		<input type="number" class="task_property_field" name="value" minValue="1" />

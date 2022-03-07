@@ -1,3 +1,8 @@
+:root {
+	--icon-font-size:14px;
+	--icon-hover-color:#ff0000;
+}
+
 /* !important in all css items is very important because bootstrap styles overwrite these styles if they don't have the flag: !important*/
 body.mobile_cursor,
   body.mobile_cursor a {
@@ -12,8 +17,11 @@ body.mobile_cursor,
 }
 
 .template_region {
+	width:100% !important; /* Not sure about this. Maybe this should be done via javascript where we detect the size of the parent. the same should be done for the height... */
 	min-width:50px !important;
 	min-height:50px !important;
+	margin:0 !important;
+	padding:0 !important;
 	text-align:center !important;
 }
 .template_region.ui-droppable-active {
@@ -134,21 +142,22 @@ body.mobile_cursor,
 	display:inline-block !important;
 }
 .template_region > .items > .item > .icon {
-	width:20px !important;
-	height:20px !important;
 	margin:0 !important;
 	padding:0 !important;
 	position:absolute !important;
 	top:-21px !important;
-	
-	/* Hide Text */
-	text-indent:-9999px !important;
-	white-space:nowrap !important;
-	overflow:hidden !important;
-	
-	float:none !important;
 	display:none !important;
 	z-index:9999 !important;
+	font-size:14px !important;
+	font-size:var(--icon-font-size) !important;
+	color:#555 !important;
+}
+.template_region > .items > .item > .icon::before {
+	color:inherit !important;
+}
+.template_region > .items > .item > .icon:hover {
+	color:#ff0000 !important;
+	color:var(--icon-hover-color) !important;
 }
 body:not(.mobile_cursor) .template_region > .items > .item > .icon {
 	cursor:pointer !important;
@@ -159,27 +168,25 @@ body:not(.mobile_cursor) .template_region > .items > .item > .icon {
 }
 .template_region > .items > .item > .icon.info {
 	left:3px !important;
-	background:url("../../common/img/icon/info_icon.png") no-repeat scroll 0 2px !important;
 }
 .template_region > .items > .item > .icon.delete {
 	left:100px !important;
-	background:url("../../common/img/icon/delete_icon.gif") no-repeat scroll 0 2px !important;
 }
+/*.template_region > .items > .item:first-child > .icon.delete {
+	display:none !important;
+}*/
 .template_region > .items > .item > .icon.add {
 	left:125px !important;
-	background:url("../../common/img/icon/add_icon.gif") no-repeat scroll 0 2px !important;
+	font-size:16px !important;
 }
 .template_region > .items > .item > .icon.up {
 	left:150px !important;
-	background:url("../../common/img/icon/up_icon.gif") no-repeat scroll 0 2px !important;
 }
 .template_region > .items > .item > .icon.down {
 	left:175px !important;
-	background:url("../../common/img/icon/down_icon.gif") no-repeat scroll 0 2px !important;
 }
 .template_region > .items > .item > .icon.edit {
 	left:200px !important;
-	background:url("../../common/img/icon/edit_icon.gif") no-repeat scroll 2px 2px !important;
 }
 .template_region > .items > .item:not(.has_edit) > .icon.edit {
 	display:none !important;
@@ -197,6 +204,8 @@ body:not(.mobile_cursor) .template_region > .items > .item > .icon {
 	border:0 !important;
 	box-sizing:border-box !important;
 	vertical-align:top !important;
+     font-weight:normal !important;
+     font-size:12px !important;
 }
 .template_region.item-light > .items > .item > select.block_options,
   .template_region.item-light > .items > .item > .pretty_block_options_button,
@@ -254,7 +263,6 @@ body:not(.mobile_cursor) .template_region > .items > .item > .icon {
 /* pretty_block_options_menu */
 .template_region > .items > .item > .pretty_block_options_button {
 	padding:0 !important;
-	font-size:inherit !important;
      cursor:pointer !important;
 }
 body.mobile_cursor .template_region > .items > .item > .pretty_block_options_button {
@@ -336,8 +344,10 @@ body.mobile_cursor .pretty_block_options_menu .ui-menu .ui-menu-item {
 }
 .pretty_block_options_menu > ul .ui-menu-item.ui_menu_item_selected {
 	border-color:#fbcb09 !important;
+	border-color:var(--icon-hover-color) !important;
 	background:#ccc !important;
 	color:#c77405 !important;
+	color:var(--icon-hover-color) !important;
 }
 .pretty_block_options_menu > ul .ui-menu-item.ui-state-focus:not(.ui_menu_item_selected),
   .pretty_block_options_menu > ul .ui-menu-item.ui-state-disabled {
@@ -351,7 +361,9 @@ body.mobile_cursor .pretty_block_options_menu .ui-menu .ui-menu-item {
 	margin:0 !important;
 	background:#dadada !important;
 	border-color:#fbcb09 !important;
+	border-color:var(--icon-hover-color) !important;
 	color:#c77405 !important;
+	color:var(--icon-hover-color) !important;
 	opacity:.8 !important;
 }
 .pretty_block_options_menu > ul .ui-menu-item:nth-child(2) { /* blank option */
@@ -374,26 +386,17 @@ body.mobile_cursor .pretty_block_options_menu .ui-menu .ui-menu-item {
 	font-weight: inherit;
 	font-family: inherit;
 	vertical-align:middle !important;
+	color:#ff0000 !important;
+	color:var(--icon-hover-color) !important;
+}
+.pretty_block_options_menu > ul .import_module_block a:hover {
+	color:initial !important;
 }
 .pretty_block_options_menu > ul .import_module_block a .icon {
 	display:inline-block !important;
-	width:16px !important;
-	height:20px !important;
-	margin:-3px 0 -8px 0 !important;
-	
-	/* Hide Text */
-	text-indent:-9999px !important;
-	white-space:nowrap !important;
-	overflow:hidden !important;
-	
-	float:none !important;
+	margin:auto 5px !important;
 	z-index:100 !important;
 }
 body:not(.mobile_cursor) .pretty_block_options_menu > ul .import_module_block a .icon {
 	cursor:pointer !important;
-}
-.pretty_block_options_menu > ul .import_module_block a .icon.add {
-	float:left !important;
-	margin:0 5px !important;
-	background:url("../../common/img/icon/add_icon.gif") no-repeat scroll 0 0 !important;
 }

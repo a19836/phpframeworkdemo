@@ -56,8 +56,8 @@
 .create_function_task_html > .code label {
 	width:75px;
 }
-.create_function_task_html > .code .update {
-	margin:2px 0 0;
+.create_function_task_html > .code .icon.update::before {
+	content:"\f303";
 }
 
 .create_function_task_html > .arguments > label,

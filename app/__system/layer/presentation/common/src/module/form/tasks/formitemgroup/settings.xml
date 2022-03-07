@@ -24,6 +24,8 @@
 			<on_success_task_cloning>FormItemTaskPropertyObj.onSuccessTaskCloning</on_success_task_cloning>
 			
 			<on_success_connection_drag>onlyAllowOneConnectionPerExitAndNotToItSelf</on_success_connection_drag>
+			
+			<on_click_task>showTaskPropertiesIfExists</on_click_task>
 		</callback>
 		<center_inner_elements>0</center_inner_elements>
 	</settings>

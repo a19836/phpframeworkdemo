@@ -1,28 +1,18 @@
-.manage_records .title {
-	width: 100%;
-	color: #000;
-	font-size: 16px;
-	font-weight: bold;
-	margin: 10px 0 5px;
-	text-align: center;
+/* TOP BAR */
+.top_bar {
+	margin-bottom:20px;
 }
-.manage_records .title .back {
-	float:left;
-	background: url(../../common/img/icon/left_icon.gif) no-repeat scroll center center;
-}
-.manage_records .title .refresh {
-	float:right;
-}
+
+/* MANAGE RECORDS */
 .manage_records .db_type {
-	margin:0 auto;
-	display:block;
+	margin-left:5px;s
 }
 
 /* TABLE */
 .manage_records .responsive_table {
 	margin:0;
-	/*background: #d5e3e4;*/
-	border:1px inset #CCC;
+	/*background: #d5e3e4;
+	border:1px inset #CCC;*/
 	overflow:auto;
 }
 .manage_records table {
@@ -38,25 +28,50 @@
 	color:#999;
 	padding:0 5px;
 }
-.manage_records table th .icon.sort,
-  .manage_records table th .icon.unsort {
-	height:10px;
+.manage_records table th .add {
+	font-size:16px;
+}
+.manage_records table th .sort,
+  .manage_records table th .unsort {
+	width:10px;
+	height:12px;
 	margin:0;
 	display:inline-block;
 	float:none;
 	vertical-align:middle;
 }
-.manage_records table th .icon.sort:not(.loading) {
-	background: url(../../common/img/tablesorter/bg.gif) no-repeat scroll center center;
+.manage_records table th .sort::before {
+	content:"\f0dc";
+	vertical-align:top;
 }
-.manage_records table th .icon.sort.sort_asc {
-	background: url(../../common/img/tablesorter/asc.gif) no-repeat scroll center center;
+.manage_records table th .sort.sort_asc::before {
+	content:"\f0de";
+	vertical-align:baseline;
 }
-.manage_records table th .icon.sort.sort_desc {
-	background: url(../../common/img/tablesorter/desc.gif) no-repeat scroll center center;
+.manage_records table th .sort.sort_desc::before {
+	content:"\f0dd";
+	vertical-align:top;
 }
-.manage_records table th .icon.unsort {
-	background: url(../../common/img/tablesorter/unsort.gif) no-repeat scroll right center;
+.manage_records table th .unsort::before {
+	content:"\f00d";
+	vertical-align:top;
+}
+.manage_records table th .sort.loading {
+	width:20px;
+	height:20px;
+	-webkit-animation-name: fa-spin;
+	animation-name: fa-spin;
+	-webkit-animation-duration: var(--fa-animation-duration,2s);
+	animation-duration: var(--fa-animation-duration,2s);
+	-webkit-animation-iteration-count: var(--fa-animation-iteration-count,infinite);
+	animation-iteration-count: var(--fa-animation-iteration-count,infinite);
+	-webkit-animation-timing-function: var(--fa-animation-timing,linear);
+	animation-timing-function: var(--fa-animation-timing,linear);
+	
+	-webkit-animation-delay: var(--fa-animation-delay,0);
+	animation-delay: var(--fa-animation-delay,0);
+	-webkit-animation-direction: var(--fa-animation-direction,normal);
+	animation-direction: var(--fa-animation-direction,normal);
 }
 .manage_records table th.fks {
 	background:transparent;
@@ -74,7 +89,6 @@
 }
 .manage_records table .empty {
 	text-align:center;
-	font-weight:bold;
 }
 .manage_records table .select_item {
 	text-align:center;
@@ -93,26 +107,19 @@
 }
 .manage_records table .actions .icon {
 	margin:3px 3px 0;
-	display:inline-block;
-	float:none;
 	vertical-align:middle;
 }
-.manage_records table .actions .icon.toggle {
-	background: url(../../common/img/icon/rename_icon.gif) no-repeat scroll 0 0;
-}
-.manage_records table .actions .icon.save {
-	background: url(../../common/img/icon/save_icon.gif) no-repeat scroll 0 0;
+.manage_records table .actions .save {
 	display:none;
 }
-.manage_records table .actions .icon.undo_toggle {
-	background: url(../../common/img/icon/undo_icon.png) no-repeat scroll 0 0;
+.manage_records table .actions .undo_toggle {
 	display:none;
 }
-.manage_records table .editable .actions .icon.save,
-  .manage_records table .editable .actions .icon.undo_toggle {
+.manage_records table .editable .actions .save,
+  .manage_records table .editable .actions .undo_toggle {
 	display:inline-block;
 }
-.manage_records table .editable .actions .icon.toggle {
+.manage_records table .editable .actions .switch {
 	display:none;
 }
 .manage_records table input:not([type=checkbox]):not([type=radio]),
@@ -193,15 +200,23 @@
 	padding:10px;
 	display:block;
 	float:none;
-	background:#d5e3e4;
 	font-weight:normal;
+	
+	background: -moz-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #ffffff73));
+	background: -webkit-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -o-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -ms-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: linear-gradient(to bottom, #eee 50%, #ffffff73 100%);
 }
-.manage_records .conditions .icon {
-	float:none;
-	display:inline-block;
+.manage_records .conditions .add {
+	font-size:16px;
 	vertical-align:middle;
 }
-.manage_records .conditions input,
+.manage_records .conditions .delete {
+	vertical-align:middle;
+}
+.manage_records .conditions input:not([type=button]),
   .manage_records .conditions select {
 	background:transparent;
 	border:1px solid #ccc;
@@ -213,7 +228,6 @@
 .manage_records .conditions > label input {
 	margin:0 5px;
 	float:right;
-	background:#eee;
 }
 .manage_records .conditions > ul {
 	
@@ -248,15 +262,7 @@
 	clear:both;
 }
 .manage_records .buttons input {
-	border:1px outset;
-	border-radius:0.5em;
-	height:25px !important;
-	line-height:15px !important;
 	padding:3px 5px !important;
-}
-.manage_records .buttons input.delete {
-	background:red;
-	color:white;
 }
 
 /* ERROR */

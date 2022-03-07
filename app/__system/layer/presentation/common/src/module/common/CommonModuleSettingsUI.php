@@ -60,7 +60,7 @@ class CommonModuleSettingsUI {
 		
 			<div id="els_ptl" class="ptl">
 				<!-- LAYOUT UI EDITOR -->
-				<div class="layout_ui_editor els_ui">
+				<div class="layout_ui_editor els_ui reverse">
 					<ul class="menu-widgets hidden">
 						' . self::getLayoutUIEditorMenuWidgetsHtml($settings) . '
 					</ul>
@@ -78,12 +78,12 @@ class CommonModuleSettingsUI {
 				<div class="table_class">
 					<label>Table Class:</label>
 					<input type="text" class="module_settings_property" name="table_class" />
-					<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+					<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 				</div>
 				<div class="rows_class">
 					<label>Rows Class:</label>
 					<input type="text" class="module_settings_property" name="rows_class" />
-					<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+					<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 				</div>
 				<div class="clear"></div>';
 		
@@ -425,10 +425,10 @@ class CommonModuleSettingsUI {
 		$html = '
 		<div class="settings_prop prop_' . $field_id . ($admin_class ? " $admin_class" : "") . '">
 			<label class="settings_prop_label">Field "' . $field_label . '"</label>
-			<span class="settings_prop_icon icon maximize" title="Minimize/Maximize" onClick="toggleField(this)">Toggle field</span>
-			<span class="settings_prop_icon icon move" title="Move">Move field</span>
-			<!--span class="settings_prop_icon icon move_up" title="Move Up" onClick="moveUpField(this)">Move field up</span>
-			<span class="settings_prop_icon icon move_down" title="Move Down" onClick="moveDownField(this)">Move field down</span-->
+			<span class="settings_prop_icon icon maximize" title="Minimize/Maximize" onClick="toggleField(this)">Toggle</span>
+			<span class="settings_prop_icon icon move" title="Move">Move</span>
+			<!--span class="settings_prop_icon icon move_up" title="Move Up" onClick="moveUpField(this)">Move Up</span>
+			<span class="settings_prop_icon icon move_down" title="Move Down" onClick="moveDownField(this)">Move Down</span-->
 			
 			<select class="show_settings_prop module_settings_property" name="show_' . $field_id . '">
 				<option value="0">Hide this field</option>
@@ -440,7 +440,7 @@ class CommonModuleSettingsUI {
 			<div class="settings_prop_default_value">
 				<label>Default Value: </label>
 				<input class="module_settings_property" name="' . $field_id . '_default_value" value="' . $default_value . '" />
-				<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+				<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 			</div>';
 		}
 		else {
@@ -448,7 +448,7 @@ class CommonModuleSettingsUI {
 			<div class="settings_prop_search_value">
 				<label>Search Value: </label>
 				<input class="module_settings_property" name="' . $field_id . '_search_value" value="' . $search_value . '" />
-				<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+				<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 			</div>';
 		}
 		
@@ -499,7 +499,7 @@ class CommonModuleSettingsUI {
 			<div class="edit_page_url">
 				<label>Edit Page Url:</label>
 				<input type="text" class="module_settings_property" name="edit_page_url" value="" />
-				<span class="icon search search_page_url" onclick="onIncludePageUrlTaskChooseFile(this)" title="Search Page">Search page</span>
+				<span class="icon search search_page_url" onclick="onIncludePageUrlTaskChooseFile(this)" title="Search Page">Search Page</span>
 				<div class="info">The system will add the row id at the end of the url.</div>
 			</div>';
 			
@@ -546,7 +546,7 @@ class CommonModuleSettingsUI {
 			<div class="allow_insertion">
 				<label>' . ($field["button_label"] ? $field["button_label"] : "Allow Insertion") . ':</label>
 				<input type="checkbox" class="module_settings_property" name="allow_insertion" value="1"' . ($field["show"] ? " checked" : "") . ' />
-				<span class="status_action_toggle_icon icon maximize" title="Minimize/Maximize Status Insert Settings" onclick="toggleStatusAction(this, \'insert\')">Toggle Status Insert Settings</span>
+				<span class="icon maximize status_action_toggle_icon" title="Minimize/Maximize Status Insert Settings" onclick="toggleStatusAction(this, \'insert\')">Toggle</span>
 			</div>' . 
 			self::getStatusActionHtml("insert", "alert_message_and_redirect", "show_message", $field["ok_message"], $field["error_message"]) . 
 			self::getEditButtonFormFieldHtml($field, "insert");
@@ -564,7 +564,7 @@ class CommonModuleSettingsUI {
 			<div class="allow_update">
 				<label>' . ($field["button_label"] ? $field["button_label"] : "Allow Update") . ':</label>
 				<input type="checkbox" class="module_settings_property" name="allow_update" value="1"' . ($field["show"] || !array_key_exists("show", $field) ? " checked" : "") . ' />
-				<span class="status_action_toggle_icon icon maximize" title="Minimize/Maximize Status Update Settings" onclick="toggleStatusAction(this, \'update\')">Toggle Status Update Settings</span>
+				<span class="icon maximize status_action_toggle_icon" title="Minimize/Maximize Status Update Settings" onclick="toggleStatusAction(this, \'update\')">Toggle</span>
 			</div>' . 
 			self::getStatusActionHtml("update", "show_message", "show_message", $field["ok_message"], $field["error_message"]) . 
 			self::getEditButtonFormFieldHtml($field, "update");
@@ -588,7 +588,7 @@ class CommonModuleSettingsUI {
 			<div class="allow_deletion">
 				<label>' . ($field["button_label"] ? $field["button_label"] : "Allow Deletion") . ':</label>
 				<input type="checkbox" class="module_settings_property" name="allow_deletion" value="1"' . ($field["show"] ? " checked" : "") . ' />
-				<span class="status_action_toggle_icon icon maximize" title="Minimize/Maximize Status Delete Settings" onclick="toggleStatusAction(this, \'delete\')">Toggle Status Delete Settings</span>
+				<span class="icon maximize status_action_toggle_icon" title="Minimize/Maximize Status Delete Settings" onclick="toggleStatusAction(this, \'delete\')">Toggle</span>
 			</div>' . 
 			self::getStatusActionHtml("delete", "show_message_and_stop", "show_message", $field["ok_message"], $field["error_message"]) .  
 			self::getEditButtonFormFieldHtml($field, "delete");
@@ -599,7 +599,7 @@ class CommonModuleSettingsUI {
 			
 			$html .= '<div class="undefined_object">
 					<label>' . ($field["button_label"] ? $field["button_label"] : "When Object doesn't exists") . ':</label>
-					<span class="status_action_toggle_icon icon maximize" title="Minimize/Maximize Status Undefined Object Settings" onclick="toggleStatusAction(this, \'undefined_object\')">Toggle Status Undefined Object Settings</span>
+					<span class="icon maximize status_action_toggle_icon" title="Minimize/Maximize Status Undefined Object Settings" onclick="toggleStatusAction(this, \'undefined_object\')">Toggle</span>
 				</div>' . self::getStatusActionHtml("undefined_object", null, "show_message_and_stop", $field["ok_message"], $field["error_message"]);
 		}
 		
@@ -631,7 +631,7 @@ class CommonModuleSettingsUI {
 		$html = '
 		<div class="button_settings button_settings_' . $field_id . '">
 			<label class="button_settings_label">More settings for this button...</label>
-			<span class="button_settings_icon icon maximize" title="Minimize/Maximize" onclick="toggleField(this)">Toggle field</span>
+			<span class="icon maximize button_settings_icon" title="Minimize/Maximize" onclick="toggleField(this)">Toggle</span>
 			
 			<div class="selected_task_properties">
 				<div id="' . $field_id . '_form_containers" class="form_containers">
@@ -670,7 +670,7 @@ class CommonModuleSettingsUI {
 			<div class="on_ok_message">
 				<label>On OK Message: </label>
 				<input type="text" class="module_settings_property" name="on_' . $action . '_ok_message" value="' . $ok_message . '" />
-				<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+				<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 			</div>
 			<div class="on_ok_action">
 				<label>On OK Action: </label>
@@ -692,13 +692,13 @@ class CommonModuleSettingsUI {
 			<div class="on_ok_redirect_url"' . ($show_ok_redirect_url ? "" : ' style="display:none"') . '>
 				<label>Redirect Url: </label>
 				<input type="text" class="module_settings_property" name="on_' . $action . '_ok_redirect_url" />
-				<span class="icon search search_page_url" onclick="onIncludePageUrlTaskChooseFile(this)" title="Search Page">Search page</span>
+				<span class="icon search search_page_url" onclick="onIncludePageUrlTaskChooseFile(this)" title="Search Page">Search Page</span>
 			</div>
 			
 			<div class="on_error_message">
 				<label>On Error Message: </label>
 				<input type="text" class="module_settings_property" name="on_' . $action . '_error_message" value="' . $error_message . '" />
-				<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+				<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 			</div>
 			<div class="on_error_action">
 				<label>On Error Action: </label>
@@ -720,7 +720,7 @@ class CommonModuleSettingsUI {
 			<div class="on_error_redirect_url"' . ($show_error_redirect_url ? "" : ' style="display:none"') . '>
 				<label>Redirect Url: </label>
 				<input type="text" class="module_settings_property" name="on_' . $action . '_error_redirect_url" />
-				<span class="icon search search_page_url" onclick="onIncludePageUrlTaskChooseFile(this)" title="Search Page">Search page</span>
+				<span class="icon search search_page_url" onclick="onIncludePageUrlTaskChooseFile(this)" title="Search Page">Search Page</span>
 			</div>
 		</div>';
 		
@@ -737,13 +737,13 @@ class CommonModuleSettingsUI {
 				<div class="object_id" title="Object Type and Object id must be unique and cannot be repeated!">
 					<label>Object Id:</label>
 					<input type="text" class="module_settings_property" name="' . $var_name . '[#idx#][object_id]" value="" />
-					<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+					<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 				</div>
 				<div class="object_group" title="Group is optional!">
 					<label>Group:</label>
 					<input type="text" class="module_settings_property" name="' . $var_name . '[#idx#][group]" value="" />
 				</div>
-				<span class="icon delete" onClick="$(this).parent().remove()">Remove</span>
+				<span class="icon delete" onClick="$(this).parent().remove()" title="Remove">Remove</span>
 				<div class="clear"></div>
 			</div>';
 		
@@ -754,9 +754,9 @@ class CommonModuleSettingsUI {
 		<div class="clear"></div>
 		<div class="object_to_objects_settings ' . $var_name . '">
 			<label class="object_to_objects_main_label">' . $title . '</label>
-			<span class="icon add" onClick="addObjectToObjectItem(this, ' . $var_name . '_html)">Add</span>
+			<span class="icon add" onClick="addObjectToObjectItem(this, ' . $var_name . '_html)" title="Add">Add</span>
 			
-			' . str_replace('<span class="icon delete" onClick="$(this).parent().remove()">Remove</span>', '', str_replace("#idx#", "0", $object_to_object_html)) . '
+			' . str_replace('<span class="icon delete" onClick="$(this).parent().remove()" title="Remove">Remove</span>', '', str_replace("#idx#", "0", $object_to_object_html)) . '
 		</div>
 		<div class="clear"></div>';
 	}
@@ -779,7 +779,7 @@ class CommonModuleSettingsUI {
 		<div class="block_class">
 			<label>Block Class:</label>
 			<input type="text" class="module_settings_property" name="block_class" value="' . (is_string($block_class) ? $block_class : "") . '" />
-			<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+			<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 		</div>';
 		
 		$html .= '<div class="clear"></div>';
@@ -825,7 +825,7 @@ class CommonModuleSettingsUI {
 	<div class="module_object_id">
 		<label>' . $field_name . ':</label>
 		<input type="text" class="module_settings_property" name="' . $field_id . '" value="" />
-		<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+		<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 		<span>Select this box if you wish to edit this value in the page level: <input type="checkbox" class="module_settings_property" name="' . $field_id . '_page_level" value="1" onClick="togglePageLevel(this);" /></span>
 	</div>
 	
@@ -837,7 +837,7 @@ class CommonModuleSettingsUI {
 	<div class="object_id">
 		<label>Object Id:</label>
 		<input type="text" class="module_settings_property" name="object_id" value="" />
-		<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+		<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 		<span>Select this box if you wish to edit this value in the page level: <input type="checkbox" class="module_settings_property" name="object_id_page_level" value="1" onClick="togglePageLevel(this);" /></span>
 	</div>
 	<div class="group">
@@ -895,17 +895,17 @@ class CommonModuleSettingsUI {
 	<div class="validation_message">
 		<label>' . $validation_message_label . ':</label>
 		<input type="text" class="module_settings_property" name="validation_message" value="" />
-		<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+		<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 	</div>
 	<div class="validation_class">
 		<label>' . $validation_class_label . ':</label>
 		<input class="module_settings_property" name="validation_class" value="" />
-		<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+		<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 	</div>
 	<div class="validation_redirect">
 		<label>' . $validation_redirect_label . ':</label>
 		<input type="text" class="module_settings_property" name="validation_redirect" value="" />
-		<span class="icon search search_page_url" onclick="onIncludePageUrlTaskChooseFile(this)" title="Search Page">Search page</span>
+		<span class="icon search search_page_url" onclick="onIncludePageUrlTaskChooseFile(this)" title="Search Page">Search Page</span>
 	</div>
 	<div class="validation_ttl">
 		<label>' . $validation_ttl_label . ':</label>
@@ -948,17 +948,17 @@ class CommonModuleSettingsUI {
 	<div class="non_validation_message">
 		<label>' . $non_validation_message_label . ':</label>
 		<input type="text" class="module_settings_property" name="non_validation_message" value="" />
-		<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+		<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 	</div>
 	<div class="non_validation_class">
 		<label>' . $non_validation_class_label . ':</label>
 		<input class="module_settings_property" name="non_validation_class" value="" />
-		<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+		<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 	</div>
 	<div class="non_validation_redirect">
 		<label>' . $non_validation_redirect_label . ':</label>
 		<input type="text" class="module_settings_property" name="non_validation_redirect" value="" />
-		<span class="icon search search_page_url" onclick="onIncludePageUrlTaskChooseFile(this)" title="Search Page">Search page</span>
+		<span class="icon search search_page_url" onclick="onIncludePageUrlTaskChooseFile(this)" title="Search Page">Search Page</span>
 	</div>
 	<div class="non_validation_ttl">
 		<label>' . $non_validation_ttl_label . ':</label>

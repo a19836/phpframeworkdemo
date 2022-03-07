@@ -29,7 +29,7 @@
 			</tr>
 		</thead>
 		<tbody index_prefix="users_perms">
-			<tr class="no_users"><td colspan="2">There are no configured users...</td></tr>
+			<tr class="no_users"><td colspan="3">There are no configured users...</td></tr>
 		</tbody>
 	</table>
 </div>

@@ -13,17 +13,17 @@
 	
 	padding: 0px;
 	border: 1px outset #999999;
-	background: #d5e3e4;
+	background: #eee;
 	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Q1ZTNlNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQwJSIgc3RvcC1jb2xvcj0iI2NjZGVlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNiM2M4Y2MiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-	background: -moz-linear-gradient(top,  #d5e3e4 0%, #ccdee0 40%, #b3c8cc 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d5e3e4), color-stop(40%,#ccdee0), color-stop(100%,#b3c8cc));
-	background: -webkit-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
-	background: -o-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
-	background: -ms-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
-	background: linear-gradient(to bottom,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
+	background: -moz-linear-gradient(top,  #eee 0%, #ddd 40%, #ccc 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eee), color-stop(40%,#ddd), color-stop(100%,#ccc));
+	background: -webkit-linear-gradient(top,  #eee 0%,#ddd 40%,#ccc 100%);
+	background: -o-linear-gradient(top,  #eee 0%,#ddd 40%,#ccc 100%);
+	background: -ms-linear-gradient(top,  #eee 0%,#ddd 40%,#ccc 100%);
+	background: linear-gradient(to bottom,  #eee 0%,#ddd 40%,#ccc 100%);
 	
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 )";
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 );
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#eee', endColorstr='#ccc',GradientType=0 )";
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eee', endColorstr='#ccc',GradientType=0 );
 	
 	-moz-border-radius:0.5em; 
 	-webkit-border-radius:0.5em;
@@ -89,10 +89,10 @@
 
 /* TERMS AND CONDITIONS */
 #terms_and_conditions {
-	width:500px;
+	min-width:500px;
 	margin:0 auto;
 	text-align:center;
-	padding-top:20px;
+	padding:20px;
 }
 #terms_and_conditions .title {
 	width:100%;
@@ -173,26 +173,34 @@
 .db_settings .form_field.db_port input {width:60px;}
 .db_settings .form_field.show_advanced_db_options span { display:block; text-align:right; padding-right:30px; }
 .db_settings .form_field .toggle_password {
-	width:16px;
-	height:16px;
-	display:inline-block;
-	background:url("../common/img/icon/rename_icon.gif") no-repeat center center;
-	vertical-align:middle;
 	margin-left: 5px;
-	cursor:pointer;
 }
 .db_settings .buttons {display:none;}
 .db_settings .hide {display:none;}
 
 /* LAYERS */
-.taskflowchart .workflow_menu {
-	top:65px;
+#layer_form:not(.hide_setup) .top_bar header {
+	top:64px;
+	
+	/*background: linear-gradient(0deg, #ffffff73 0%, #d5e3e4 50%, #ffffff73 100%);*/
+
 }
-.taskflowchart .workflow_menu .flush_cache {
-	display:none; /* Do not allow flush cache when setup otherwise it will delete the file LAYER_CACHE_PATH/default_project_name with the default project name */
+#layer_form:not(.hide_setup) .taskflowchart.with_top_bar_menu .tasks_menu, 
+  #layer_form:not(.hide_setup) .taskflowchart.with_top_bar_menu .tasks_menu_hide, 
+  #layer_form:not(.hide_setup) .taskflowchart.with_top_bar_menu .tasks_flow {
+	top:95px !important;
 }
-.taskflowchart .tasks_menu, .taskflowchart .tasks_menu_hide, .taskflowchart .tasks_flow {
-	top:95px;
+#layer_form:not(.hide_setup) .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu {
+	top:70px;
+}
+#layer_form.hide_setup .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.save {
+	display:none;
+}
+#layer_form .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu .set_global_vars {
+	border-left:0;
+}
+#layer_form .taskflowchart .workflow_menu .flush_cache {
+	display:none !important; /* Do not allow flush cache when setup otherwise it will delete the file LAYER_CACHE_PATH/default_project_name with the default project name */
 }
 
 /* END */

@@ -18,12 +18,9 @@
 			height:4em;
 			line-height:2em;
 			border-radius:5px;
-			border:1px solid #b9a5a6;
-			color:#999;
+			border:1px solid rgba(0, 0, 0, .1);
+			color:inherit;
 			position:relative;
-		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-container-12:hover {
-			color:#ab7a90;
 		}
 		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-container-12 > span,
 		   body > .menu-widget.menu-widget-container-12.ui-draggable-dragging > span {
@@ -46,7 +43,7 @@
 			height:2em;
 			padding:0 !important;
 			display:inline-block;
-			outline:2px solid #b9a5a6;
+			outline:2px solid rgba(0, 0, 0, .2);
 			outline-offset:-3px;
 		}
 		

@@ -23,13 +23,16 @@
 .edit_settings .user_environments_settings {
 	padding-top:20px !important;
 }
+.edit_settings .user_environments_settings .add {
+	font-size:14px;
+}
 .edit_settings .object_to_objects_settings {
 	padding-top:25px !important;
 }
 .edit_settings .object_to_objects_settings .add {
 	margin:-25px 0 0 235px !important;
+	font-size:14px;
 }
-
 
 .edit_settings .auth0_settings > div {
 	margin-bottom:5px;
@@ -69,6 +72,7 @@
    .edit_settings .actions_settings .validation_action label,
    .edit_settings .actions_settings .non_validation_action label {
 	width:180px;
+	display:inline-block;
 }
 .edit_settings .actions_settings .validation_message label,
    .edit_settings .actions_settings .validation_class label,
@@ -81,6 +85,7 @@
    .edit_settings .actions_settings .non_validation_ttl label,
    .edit_settings .actions_settings .non_validation_blocks_execution label {
 	width:230px;
+	display:inline-block;
 }
 .edit_settings .actions_settings .validation_message input,
    .edit_settings .actions_settings .validation_class input,
@@ -118,6 +123,7 @@
 }
 .edit_settings .user_settings .other_user_settings .user_creation_settings .user_type_id > label {
 	width:80px;
+	display:inline-block;
 }
 .edit_settings .user_settings .other_user_settings .user_creation_settings .do_not_encrypt_password {
 	margin-bottom:10px;
@@ -138,6 +144,7 @@
 }
 .edit_settings .settings_props .settings_prop.prop_password .selected_task_properties .form_containers .fields .field .other_settings .password_generator label {
 	width:130px;
+	display:inline-block;
 	font-size:90%;
 }
 
@@ -151,6 +158,5 @@
 
 .edit_settings .user_type_id label {
 	width:150px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }

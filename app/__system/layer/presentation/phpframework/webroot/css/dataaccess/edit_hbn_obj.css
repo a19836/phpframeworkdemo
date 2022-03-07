@@ -1,49 +1,45 @@
-.sub_title {
+/* TITLE */
+.top_bar {
+	margin-bottom:15px;
+}
+.edit_hbn_obj .data_access_obj {
 	width:100%;
-	font-size:12px;
-	text-align:center;
-	margin:-7px 0px 20px 0px;
-	color:#999;
-	cursor:pointer;
+	min-width:640px;
+	margin-top:0;
+	padding:0 10px 10px;
+	box-sizing:border-box;
 }
-.sub_title:hover {
-	color:#666;
+.edit_hbn_obj .data_access_obj > .name {
+	width:210px;
+	margin:0;
+	position:fixed;
+	top:7px;
+	left:140px;
+	z-index:2;
 }
-.advanced_settings, .simple_settings {
+.edit_hbn_obj .data_access_obj > .name label {
 	display:none;
 }
-.data_access_obj {
-	width:790px;
+.edit_hbn_obj .data_access_obj > .name input {
+	width:200px;
+	border:1px solid #ccc;
+	color:#000;
+	background:transparent;
 }
-
-/* GENERIC */
-.data_access_obj #tabs {
+.edit_hbn_obj .data_access_obj #tabs {
 	margin-top:40px;
+	border:0;
+	display:none;
+}
+.edit_hbn_obj .advanced_settings, 
+  .edit_hbn_obj .simple_settings {
 	display:none;
 }
 
 /* MAIN ATTRIBUTES */
-.data_access_obj .create_automatically {
-	width:100%;
-	height:0px;
-}
-.data_access_obj .create_automatically label {
-	float:right;
-	margin-top:0px;
-	font-weight:normal;
-	font-size:9px;
-	color:#999;
-	cursor:pointer;
-}
-.data_access_obj .create_automatically .update {
-	float:right;
-	margin-top:-1px;
-}
-
 .data_access_obj .name, .data_access_obj .table, .data_access_obj .extends {
 	width:100%;
 	margin-bottom:3px;
-	height:20px;
 	float:none;
 	clear:left;
 }
@@ -56,6 +52,12 @@
 .data_access_obj .extends select {
 	width:270px;
 }
+.data_access_obj .extends .search {
+	margin-top:2px;
+}
+.data_access_obj .table .searchh {
+	margin-top:2px;
+}
 
 /* IDS */
 .data_access_obj .ids {
@@ -63,6 +65,10 @@
 }
 .data_access_obj .ids label {
 	margin-bottom:10px;
+}
+.data_access_obj .ids .add,
+  .data_access_obj .ids .update_automatically {
+	margin-left:5px;
 }
 .data_access_obj .id {
 	margin-top:3px;
@@ -82,7 +88,10 @@
 	margin:0px 0px 0px 30px;
 }
 .data_access_obj .ids .id select.generator {
-	margin:0px 20px 0px 0px;
+	margin:0;
+}
+.data_access_obj .ids .id .delete {
+	margin-left:5px;
 }
 
 /* RELATIONSHIPS */
@@ -98,5 +107,7 @@
 	display:none;
 }
 .hbn_obj_relationships .relationship .query .query_settings {
+	padding-top:20px;
+	border-top:1px solid #eee;
 	display:block;
 }

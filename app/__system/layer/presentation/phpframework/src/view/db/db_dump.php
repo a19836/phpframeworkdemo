@@ -19,8 +19,26 @@
  */
 
 $head = '
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/db/db_dump.css" charset="utf-8" />'; $main_content .= '<div class="db_dump">
-	<div class="title">DB Dump</div>'; if ($_POST && $error_messsage) $main_content .= '<div class="error">' . $error_messsage . '</div>'; $main_content .= '	
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
+<!-- Icons CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+
+<!-- Add Local JS and CSS files -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/db/db_dump.css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/db/db_dump.js"></script>'; $main_content .= '<div class="db_dump">
+	<div class="top_bar">
+		<header>
+			<div class="title">DB Dump</div>
+			<ul>
+				<li class="execute" title="Execute Dump"><a onClick="submitForm(this)"><i class="icon continue"></i> Execute Dump</a></li>
+			</ul>
+		</header>
+	</div>'; if ($_POST && $error_messsage) $main_content .= '<div class="error">' . $error_messsage . '</div>'; $main_content .= '	
 	<form method="post">
 		<div class="tables">
 			<label>Select the tables you wish to dump:</label>
@@ -148,10 +166,6 @@ $head = '
 				<label>Table where statement:</label>
 				<input type="text" name="settings[where]" value="" />
 			</div>
-		</div>
-		
-		<div class="save_button">
-			<input type="submit" name="dump" value="EXECUTE DUMP" />
 		</div>
 	</form>
 </div>

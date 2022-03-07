@@ -14,7 +14,7 @@ class WorkFlowTaskImpl extends \WorkFlowTask {
 	public function createTaskPropertiesFromCodeStmt($stmt, $WorkFlowTaskCodeParser, &$exits = null, &$inner_tasks = null) {
 		$stmt_type = strtolower($stmt->getType());
 		
-		if ($stmt_type == "stmt_break") {
+		if ($stmt_type == "stmt_xxx") {
 			$value = $stmt->num && $stmt->num->value ? $stmt->num->value : "";
 			
 			$props = array(
@@ -46,9 +46,9 @@ class WorkFlowTaskImpl extends \WorkFlowTask {
 		$properties = $data["properties"];
 		$value = is_numeric($properties["value"]) ? " " . $properties["value"] : "";
 		
-		$code .= $prefix_tab . "break$value \"bla\";\n";
+		$code .= $prefix_tab . "xxx$value \"bla\";\n";
 		
-		return $code; //break does not write the code after it-self. There are no tasks after!
+		return $code; //xxx does not write the code after it-self. There are no tasks after!
 	}
 }
 ?>

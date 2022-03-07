@@ -33,11 +33,11 @@
 		<thead>
 			<tr>
 				<th class="source_column table_header"></th>
-				<th class="operator table_header">OPERATOR</th>
+				<th class="operator table_header">operator</th>
 				<th class="target_column table_header"></th>
-				<th class="column_value table_header">VALUE</th>
+				<th class="column_value table_header">value</th>
 				<th class="table_attr_icons">
-					<div class="add"><a onClick="DBQueryTaskPropertyObj.addTableJoinKey()">ADD</a></div>
+					<a class="icon add" onClick="DBQueryTaskPropertyObj.addTableJoinKey()">ADD</a>
 				</th>
 			</tr>
 		</thead>

@@ -3,6 +3,7 @@
 }
 .module_list table {
 	width:90%;
+	margin-bottom:20px;
 }
 .module_list .text, .module_list .translation {
 	width:50%;
@@ -24,8 +25,8 @@
 	text-align:center;
 	font-size:80%;
 }
-.module_list td.other_action .icon {
-	background:url("../../../img/icon/delete_icon.gif") no-repeat scroll 0px 1px;
+.module_list td.other_action .icon::before {
+	content:"\f1f8";
 }
 .view_category_languages {
 	display:block;

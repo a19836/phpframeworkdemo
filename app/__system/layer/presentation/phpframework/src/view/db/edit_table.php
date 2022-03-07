@@ -22,8 +22,14 @@
 <script src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ace.js"></script>
 <script src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
 
-<!-- Add Icons CSS files -->
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
+<!-- Icons CSS file -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
 
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/db/edit_table.css" type="text/css" charset="utf-8" />
@@ -36,10 +42,14 @@ var column_types_ignored_props = ' . json_encode($column_types_ignored_props) . 
 var attribute_html = \'' . str_replace("'", "\\'", str_replace("\n", "", getTableAttributeHtml($obj, "#idx#"))) . '\';
 var step = ' . ($step ? $step : 0) . ';
 </script>'; $main_content = '
-<div class="title">' . ($table ? 'Edit Table \'' . $table . '\'' : 'Add Table') . '</div>
+<div class="top_bar">
+	<header>
+		<div class="title">' . ($table ? 'Edit Table \'' . $table . '\'' : 'Add Table') . '</div>
+	</header>
+</div>
 
 <div class="edit_table">'; if ($table && !$table_exists) $main_content .= '<div class="error">Table does not exists!</div>'; else if ($action == "delete" && $e === true) $main_content .= '<div>Table deleted successfully!</div>'; else { $main_content .= '
-	<h3>Table Settings <a class="icon refresh" href="javascript:void(0);" onClick="document.location=document.location+\'\';">refresh</a></h3>
+	<h3>Table Settings <a class="icon refresh" href="javascript:void(0);" onClick="document.location=document.location+\'\';" title="Refresh">Refresh</a></h3>
 	<div class="table_settings">
 		<form method="post">
 			<input type="hidden" name="step" value="1"/>
@@ -69,7 +79,7 @@ var step = ' . ($step ? $step : 0) . ';
 			</select>
 		</div>'; } $main_content .= '
 			<div class="attributes">
-				<label>Table Attributes: <a class="icon add" onClick="addTableAttribute(this)">ADD</a></label>
+				<label>Table Attributes: <a class="icon add" onClick="addTableAttribute(this)" title="Add">Add</a></label>
 			</div>
 			
 			<table>
@@ -89,7 +99,7 @@ var step = ' . ($step ? $step : 0) . ';
 						<th class="table_attr_collation table_header"' . (in_array("collation", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>Collation</th>
 						<th class="table_attr_comment table_header"' . (in_array("comment", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>Comments</th>
 						<th class="table_attr_icons">
-							<a class="icon add" onClick="addTableAttribute(this)">ADD</a>
+							<a class="icon add" onClick="addTableAttribute(this)" title="Add">Add</a>
 						</th>
 					</tr>
 				</thead>
@@ -98,8 +108,8 @@ var step = ' . ($step ? $step : 0) . ';
 			</table>
 			
 			<div class="save_button">
-				' . ($table ? '<input type="submit" name="update" value="UPDATE" />
-				<input class="delete" type="submit" name="delete" value="DELETE" onClick="return onDeleteButton(this);" />' : '<input type="submit" name="add" value="ADD" />') . '
+				' . ($table ? '<input type="submit" name="update" value="update" />
+				<input class="delete" type="submit" name="delete" value="delete" onClick="return onDeleteButton(this);" />' : '<input type="submit" name="add" value="add" />') . '
 			</div>
 		</form>
 	</div>
@@ -116,11 +126,11 @@ var step = ' . ($step ? $step : 0) . ';
 				<textarea class="editor">' . htmlspecialchars($sql, ENT_NOQUOTES) . '</textarea>
 			</div>'; $main_content .= '		
 			<div class="save_button">
-				<input class="back" type="button" name="back" value="BACK" onClick="return onBackButton(this, 0);" />
-				<input class="execute" type="submit" name="execute" value="EXECUTE" onClick="return onExecuteButton(this);" />
+				<input class="back" type="button" name="back" value="back" onClick="return onBackButton(this, 0);" />
+				<input class="execute" type="submit" name="execute" value="execute" onClick="return onExecuteButton(this);" />
 			</div>'; } else $main_content .= '<div>' . $status_message . '</div>		
 			<div class="save_button">
-				<input class="back" type="button" name="back" value="BACK" onClick="return onBackButton(this, 0);" />
+				<input class="back" type="button" name="back" value="back" onClick="return onBackButton(this, 0);" />
 			</div>'; $main_content .= '
 		</form>
 	</div>
@@ -133,7 +143,7 @@ var step = ' . ($step ? $step : 0) . ';
 			</ul>
 		</div>'; $main_content .= '
 		<div class="save_button">
-			<input class="back" type="button" name="back" value="BACK" onClick="return onBackButton(this, 1);" />
+			<input class="back" type="button" name="back" value="back" onClick="return onBackButton(this, 1);" />
 		</div>
 	</div>'; } $main_content .= '
 </div>'; function getTableAttributeHtml($v972f1a5c2b, $pd69fb7d0, $v539082ff30 = null) { $pe2c07578 = $v972f1a5c2b ? $v972f1a5c2b->getColumnCharsets() : array(); $v06b0f1c9be = $v972f1a5c2b ? $v972f1a5c2b->getColumnCollations() : array(); $v4159504aa3 = $v972f1a5c2b ? $v972f1a5c2b->getDBColumnTypes() : DB::getAllSharedColumnTypes(); $v8b7819f513 = $v972f1a5c2b ? $v972f1a5c2b->getDBColumnTypesIgnoredProps() : DB::getAllSharedColumnTypesIgnoredProps(); $pdc1215e3 = $v972f1a5c2b ? $v972f1a5c2b->getDBColumnTypesHiddenProps() : DB::getAllSharedColumnTypesHiddenProps(); $pe2c07578 = is_array($pe2c07578) ? $pe2c07578 : array(); $v06b0f1c9be = is_array($v06b0f1c9be) ? $v06b0f1c9be : array(); $v4159504aa3 = is_array($v4159504aa3) ? $v4159504aa3 : array(); $v8b7819f513 = is_array($v8b7819f513) ? $v8b7819f513 : array(); $v4a32ab2adf = is_array($v8b7819f513[ $v539082ff30["type"] ]) ? $v8b7819f513[ $v539082ff30["type"] ] : array(); $pd8c9353b = $v539082ff30["primary_key"] ? false : $v539082ff30["null"]; $v9707fb73e0 = $v539082ff30["primary_key"] ? true : $v539082ff30["unique"]; $v6c33401cc3 = $v539082ff30["auto_increment"]; $v6a54e01756 = strlen($v539082ff30["default"]) ? true : $v539082ff30["has_default"]; $v78c1f573dd = !$v539082ff30["type"] || in_array("length", $v4a32ab2adf); $pd68d0564 = !$v539082ff30["type"] || in_array("unsigned", $v4a32ab2adf); $v6876f9e654 = in_array("null", $v4a32ab2adf); $pebcbeb3e = in_array("auto_increment", $v4a32ab2adf); $pd0d5cab2 = in_array("default", $v4a32ab2adf); $pa3102e3f = in_array("extra", $v4a32ab2adf); $v5ef44a2b0a = in_array("charset", $v4a32ab2adf); $pfba02f79 = in_array("collation", $v4a32ab2adf); $pd5de3879 = in_array("comment", $v4a32ab2adf); $pf8ed4912 = '
@@ -187,6 +197,6 @@ var step = ' . ($step ? $step : 0) . ';
 			<input type="text" name="attributes[' . $pd69fb7d0 . '][comment]" value="' . $v539082ff30["comment"] . '" ' . ($pd5de3879 ? 'disabled="disabled"' : '') . ' />
 		</td>
 		<td class="table_attr_icons">
-			<a class="icon delete" onClick="removeTableAttribute(this)" ' . ($v539082ff30 ? 'confirm="1"' : "") . '>remove</a>
+			<a class="icon delete" onClick="removeTableAttribute(this)" ' . ($v539082ff30 ? 'confirm="1"' : "") . ' title="Remove">Remove</a>
 		</td>
 	</tr>'; return $pf8ed4912; } ?>

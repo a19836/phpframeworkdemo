@@ -18,26 +18,26 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQueryHandler { const TASK_QUERY_TYPE = "d0d250c0"; const TASK_QUERY_TAG = "query"; private $pcfdeae4e; private $pcd2aca48; private $v00161f0c07; private $v9b98e0e818; private $v5e788adf08; private $pc66a0204; private $v5a331eab7e; private $pd76831fc; private $v5e4089f2c3; private $v9d043dd3df; private $v197630b0cc; private $v1167f1d261; public function __construct($pcfdeae4e, $pcd2aca48, $v00161f0c07, $v9b98e0e818, $v5e788adf08, $pc66a0204, $v5a331eab7e, $pd76831fc, $v5e4089f2c3, $v9d043dd3df, $v197630b0cc, $v1167f1d261) { $this->pcfdeae4e = $pcfdeae4e; $this->pcd2aca48 = $pcd2aca48; $this->v00161f0c07 = $v00161f0c07; $this->v9b98e0e818 = $v9b98e0e818; $this->v5e788adf08 = $v5e788adf08; $this->pc66a0204 = $pc66a0204; $this->v5a331eab7e = $v5a331eab7e; $this->pd76831fc = $pd76831fc; $this->v5e4089f2c3 = $v5e4089f2c3; $this->v9d043dd3df = $v9d043dd3df; $this->v197630b0cc = $v197630b0cc; $this->v1167f1d261 = $v1167f1d261; } public static function getSelectedDBBrokersDriversTablesAndAttributes($pe54bee2d, $v5e053dece2, $pdb9e96e6, $v875c215016 = false, $pb154d332 = false, $v1eb9193558 = null) { $pc4223ce1 = $pe54bee2d->getBrokers(); $v9b98e0e818 = array(); $v5e788adf08 = $pc66a0204 = $v5a331eab7e = $pd76831fc = $v9d043dd3df = null; if ($pc4223ce1) { foreach ($pc4223ce1 as $v2b2cf4c0eb => $pd922c2f7) { $v9b98e0e818[$v2b2cf4c0eb] = $pd922c2f7->getDBDriversName(); if ($pb154d332 && $v1eb9193558) $v1eb9193558->filterLayerBrokersDBDriversNamesFromLayoutName($pe54bee2d, $v9b98e0e818[$v2b2cf4c0eb], $pb154d332); if (empty($v5e788adf08) && $v9b98e0e818[$v2b2cf4c0eb]) { $v5e788adf08 = $v2b2cf4c0eb; $pc66a0204 = $v9b98e0e818[$v2b2cf4c0eb][0]; } } } if ($v5e788adf08 && $pc66a0204) { $v5e053dece2 = WorkFlowTasksFileHandler::getDBDiagramTaskFilePath($pdb9e96e6, "db_diagram", $pc66a0204); $v5a331eab7e = file_exists($v5e053dece2) ? "diagram" : "db"; if ($v5a331eab7e == "diagram") { $v094d1a2778 = new WorkFlowDataAccessHandler(); $v094d1a2778->setTasksFilePath($v5e053dece2); $v1d696dbd12 = $v094d1a2778->getTasks(); $v5e4089f2c3 = array_keys($v1d696dbd12["tasks"]); $pd76831fc = !empty($v875c215016) ? $v875c215016 : $v5e4089f2c3[0]; $v9d043dd3df = $v1d696dbd12["tasks"][$pd76831fc]; $v9d043dd3df = $v9d043dd3df["properties"]["table_attr_names"]; } else { $v1502dfe376 = $pe54bee2d->getBroker($v5e788adf08)->getFunction("listTables", null, array("db_driver" => $pc66a0204)); $v5e4089f2c3 = array(); if ($v1502dfe376) foreach ($v1502dfe376 as $pa9848378) $v5e4089f2c3[] = $pa9848378["name"]; if ($v875c215016) { $v9a4d5f4ed3 = $pe54bee2d->getBroker($v5e788adf08)->getFunction("isTableInNamesList", array($v5e4089f2c3, $v875c215016), array("db_driver" => $pc66a0204)); $pd76831fc = $v9a4d5f4ed3 ? $v875c215016 : $v5e4089f2c3[0]; } else $pd76831fc = $v5e4089f2c3[0]; $v9d043dd3df = $pe54bee2d->getBroker($v5e788adf08)->getFunction("listTableFields", $pd76831fc, array("db_driver" => $pc66a0204)); $v9d043dd3df = array_keys($v9d043dd3df); } } return array( "brokers" => $pc4223ce1, "db_drivers" => $v9b98e0e818, "selected_db_broker" => $v5e788adf08, "selected_db_driver" => $pc66a0204, "selected_type" => $v5a331eab7e, "selected_table" => $pd76831fc, "selected_tables_name" => $v5e4089f2c3, "selected_table_attrs" => $v9d043dd3df, ); } public function getDataAccessObjHtml($v69f1629ff2, $pab85d90e = false) { $pf8ed4912 = '
+include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQueryHandler { const TASK_QUERY_TYPE = "d0d250c0"; const TASK_QUERY_TAG = "query"; private $pcfdeae4e; private $pcd2aca48; private $v00161f0c07; private $v9b98e0e818; private $v5e788adf08; private $pc66a0204; private $v5a331eab7e; private $pd76831fc; private $v5e4089f2c3; private $v9d043dd3df; private $v197630b0cc; private $v1167f1d261; public function __construct($pcfdeae4e, $pcd2aca48, $v00161f0c07, $v9b98e0e818, $v5e788adf08, $pc66a0204, $v5a331eab7e, $pd76831fc, $v5e4089f2c3, $v9d043dd3df, $v197630b0cc, $v1167f1d261) { $this->pcfdeae4e = $pcfdeae4e; $this->pcd2aca48 = $pcd2aca48; $this->v00161f0c07 = $v00161f0c07; $this->v9b98e0e818 = $v9b98e0e818; $this->v5e788adf08 = $v5e788adf08; $this->pc66a0204 = $pc66a0204; $this->v5a331eab7e = $v5a331eab7e; $this->pd76831fc = $pd76831fc; $this->v5e4089f2c3 = $v5e4089f2c3; $this->v9d043dd3df = $v9d043dd3df; $this->v197630b0cc = $v197630b0cc; $this->v1167f1d261 = $v1167f1d261; } public static function getSelectedDBBrokersDriversTablesAndAttributes($pe54bee2d, $v5e053dece2, $pdb9e96e6, $v875c215016 = false, $v1bdf90f0ab = false, $pb154d332 = false, $v1eb9193558 = null) { $pc4223ce1 = $pe54bee2d->getBrokers(); $v9b98e0e818 = array(); $v5e788adf08 = $pc66a0204 = $pf0f5722a = $v4fda6fa047 = $v5a331eab7e = $pd76831fc = $v9d043dd3df = null; if ($pc4223ce1) { foreach ($pc4223ce1 as $v2b2cf4c0eb => $pd922c2f7) { $v9b98e0e818[$v2b2cf4c0eb] = $pd922c2f7->getDBDriversName(); if ($pb154d332 && $v1eb9193558) $v1eb9193558->filterLayerBrokersDBDriversNamesFromLayoutName($pe54bee2d, $v9b98e0e818[$v2b2cf4c0eb], $pb154d332); if ($v1bdf90f0ab && empty($v5e788adf08) && $v9b98e0e818[$v1bdf90f0ab]) { $v5e788adf08 = $v2b2cf4c0eb; $pc66a0204 = $v9b98e0e818[$v1bdf90f0ab][0]; } else if (empty($pf0f5722a) && $v9b98e0e818[$v2b2cf4c0eb]) { $pf0f5722a = $v2b2cf4c0eb; $v4fda6fa047 = $v9b98e0e818[$v2b2cf4c0eb][0]; } } if (empty($v5e788adf08) && $pf0f5722a) { $v5e788adf08 = $pf0f5722a; $pc66a0204 = $v4fda6fa047; } } if ($v5e788adf08 && $pc66a0204) { $v5e053dece2 = WorkFlowTasksFileHandler::getDBDiagramTaskFilePath($pdb9e96e6, "db_diagram", $pc66a0204); $v5a331eab7e = file_exists($v5e053dece2) ? "diagram" : "db"; if ($v5a331eab7e == "diagram") { $v094d1a2778 = new WorkFlowDataAccessHandler(); $v094d1a2778->setTasksFilePath($v5e053dece2); $v1d696dbd12 = $v094d1a2778->getTasks(); $v5e4089f2c3 = array_keys($v1d696dbd12["tasks"]); $pd76831fc = !empty($v875c215016) ? $v875c215016 : $v5e4089f2c3[0]; $v9d043dd3df = $v1d696dbd12["tasks"][$pd76831fc]; $v9d043dd3df = $v9d043dd3df["properties"]["table_attr_names"]; } else { $v1502dfe376 = $pe54bee2d->getBroker($v5e788adf08)->getFunction("listTables", null, array("db_driver" => $pc66a0204)); $v5e4089f2c3 = array(); if ($v1502dfe376) foreach ($v1502dfe376 as $pa9848378) $v5e4089f2c3[] = $pa9848378["name"]; if ($v875c215016) { $v9a4d5f4ed3 = $pe54bee2d->getBroker($v5e788adf08)->getFunction("isTableInNamesList", array($v5e4089f2c3, $v875c215016), array("db_driver" => $pc66a0204)); $pd76831fc = $v9a4d5f4ed3 ? $v875c215016 : $v5e4089f2c3[0]; } else $pd76831fc = $v5e4089f2c3[0]; $v9d043dd3df = $pe54bee2d->getBroker($v5e788adf08)->getFunction("listTableFields", $pd76831fc, array("db_driver" => $pc66a0204)); $v9d043dd3df = array_keys($v9d043dd3df); } } return array( "brokers" => $pc4223ce1, "db_drivers" => $v9b98e0e818, "selected_db_broker" => $v5e788adf08, "selected_db_driver" => $pc66a0204, "selected_type" => $v5a331eab7e, "selected_table" => $pd76831fc, "selected_tables_name" => $v5e4089f2c3, "selected_table_attrs" => $v9d043dd3df, ); } public function getDataAccessObjHtml($v69f1629ff2, $pab85d90e = false) { $pf8ed4912 = '
 			<div class="relationships">
 				<div class="description">
 					"Relationships" are links or dependecies between objects or tables.
 				</div>
-				<span class="icon update" onClick="updateDataAccessObjectRelationshipsAutomatically(this)" title="Create Relationships Automatically">Create Relationships Automatically</span>
+				<span class="icon update_automatically" onClick="updateDataAccessObjectRelationshipsAutomatically(this)" title="Create Relationships Automatically">Update Automatically</span>
 				
 				<div class="relationships_tabs">
-					 <ul>
-						<li><a href="#relationships_tabs-1">Foreign Tables</a></li>
+					 <ul class="tabs tabs_transparent">
+						<li><a href="#relationships_tabs-1">' . ($pab85d90e ? 'Foreign Tables' : 'Rules') . '</a></li>
 						' . ($pab85d90e ? '' : '<li><a href="#relationships_tabs-2">Parameters Maps</a></li>') . '
 						<li><a href="#relationships_tabs-3">Results Maps</a></li>
 						<li><a href="#relationships_tabs-4">Includes</a></li>
 					</ul>'; $pf8ed4912 .= '
 					<div id="relationships_tabs-1">
 						<div class="description">
-							The purpose for the "Foreign Tables" is to create relationships between objects, so we can call specific methods according with these relationships. Here is an example:<br/>
+							' . ($pab85d90e ? 'The purpose for the "Foreign Tables" is to create relationships between objects, so we can call specific methods according with these relationships. Here is an example:<br/>
 							- if the current object is the CAR object<br/>
 							- and cars have doors<br/>
-							...You should create the relationship between CAR and DOOR, in order to get the doors for specific CAR\'s objects, or the correspondent doors\' details or other information related this relationship...
+							...You should create the relationship between CAR and DOOR, in order to get the doors for specific CAR\'s objects, or the correspondent doors\' details or other information related this relationship...' : 'The purpose for the "Rules" is to create specific queries, not included by the native methods...') . '
 						</div>
 						<span class="icon add add_relationship" onClick="addRelationshipBlock(this, ' . ($pab85d90e ? '1' : '0') . ')">Add</span>
 						<div class="rels">'; if ($v69f1629ff2) { foreach ($v69f1629ff2 as $pa1c701b0 => $v987a981e39) { if ($pa1c701b0 == "one_to_one" || $pa1c701b0 == "one_to_many" || $pa1c701b0 == "many_to_one" || $pa1c701b0 == "many_to_many" || $pa1c701b0 == "insert" || $pa1c701b0 == "update" || $pa1c701b0 == "delete" || $pa1c701b0 == "select" || $pa1c701b0 == "procedure") { $pf8ed4912 .= $this->getQueriesBlockHtml($v987a981e39, $pab85d90e, $pa1c701b0); } } } $pf8ed4912 .= '	
@@ -53,7 +53,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 									So we can create a "Parameters Map/Class" to convert this input object to the right one, transforming the attribute "n" to "name", "a" to "age" and "c" to "country". This is, to something like: {"name" => "David", "age" => "35", "country" => "Portugal"}<br/>
 									Additionally we can refer that the "age" attribute is a numeric field, and the system will check and convert the correspondent value to that type.
 								</div>
-								<span class="icon add" onClick="addParameterMap(this)" title="Add new Map">add</span>
+								<span class="icon add add_parameter" onClick="addParameterMap(this)" title="Add new Map">Add</span>
 								<div class="parameters">'; if ($v69f1629ff2["parameter_map"]) { $pc37695cb = count($v69f1629ff2["parameter_map"]); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) $pf8ed4912 .= $this->getParameterMapHTML("map", $v69f1629ff2["parameter_map"][$v43dd7d0051], $this->v197630b0cc, $this->v1167f1d261, true); } $pf8ed4912 .= '
 								</div>
 							</div>
@@ -68,7 +68,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 								So we can create a "Result Map/Class" to convert this result to the right output object, transforming the attribute "name" to "n", "age" to "a" and "country" to "c". This is, to something like: {"n" => "David", "a" => "35", "c" => "Portugal"}<br/>
 								Additionally we can refer that the "a" attribute is a numeric field, and the system will check and convert the correspondent value to that type.
 							</div>
-							<span class="icon add" onClick="addResultMap(this)" title="Add new Map">add</span>
+							<span class="icon add add_result" onClick="addResultMap(this)" title="Add new Map">Add</span>
 							<div class="results">'; if ($v69f1629ff2["result_map"]) { $pc37695cb = count($v69f1629ff2["result_map"]); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) $pf8ed4912 .= $this->getResultMapHTML("map", $v69f1629ff2["result_map"][$v43dd7d0051], $this->v197630b0cc, $this->v1167f1d261, true); } $pf8ed4912 .= '
 							</div>
 						</div>
@@ -172,6 +172,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 			DBQueryTaskPropertyObj.on_delete_table = onDeleteQueryTable;
 			DBQueryTaskPropertyObj.on_complete_table_label = prepareTableLabelSettings;
 			DBQueryTaskPropertyObj.on_complete_connection_properties = prepareTablesRelationshipKeys;
+			DBQueryTaskPropertyObj.on_complete_select_start_task = prepareTableStartTask;
 			
 			var db_brokers_drivers_tables_attributes = {};'; foreach ($this->v9b98e0e818 as $pab752e34 => $v84bde5f80a) { $pf8ed4912 .= 'db_brokers_drivers_tables_attributes["' . $pab752e34 . '"] = {};'; if ($v84bde5f80a) { $pc37695cb = count($v84bde5f80a); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) $pf8ed4912 .= 'db_brokers_drivers_tables_attributes["' . $pab752e34 . '"]["' . $v84bde5f80a[$v43dd7d0051] . '"] = {
 						db: {},
@@ -258,15 +259,15 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 				<input class="include_path" type="text" value="' . $pc24afc88 . '" />
 				<label class="is_include_relative">Relative:</label>
 				<input class="is_include_relative" type="checkbox" value="1" ' . ($v8b6fd90a28 ? 'checked="checked"' : '') . ' />
-				<span class="icon search" onClick="getIncludePathFromFileManager(this, \'input.include_path\')" title="Get file from File Manager">Get from File Manager</span>
-				<span class="icon delete" onClick="$(this).parent().remove();">delete</span>
+				<span class="icon search" onClick="getIncludePathFromFileManager(this, \'input.include_path\')" title="Get file from File Manager">Search</span>
+				<span class="icon delete" onClick="removeInclude(this);" title="Delete">Remove</span>
 			</div>'; } public function getInludeHTMLBlock($v280898d986) { $pf8ed4912 .= '
 		<div class="includes">
 			<div class="description">
 				"includes" are files that you can add and that contains specific configurations, this is, an include file can have parameteres or result maps, queries, relationships, etc...
 			</div>
-			<span class="icon add" onClick="addNewInclude(this)" title="Add new include">add</span>
-			<div class="fields">'; if ($v280898d986) { $pc37695cb = count($v280898d986); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $pc24afc88 = $v280898d986[$v43dd7d0051]["value"]; $v8b6fd90a28 = $v280898d986[$v43dd7d0051]["@"]["relative"]; $pf8ed4912 .= $this->getInludeHTML($pc24afc88, $v8b6fd90a28); } } $pf8ed4912 .= '
+			<span class="icon add" onClick="addNewInclude(this)" title="Add new include">Add</span>
+			<div class="fields">'; if ($v280898d986) { $pc37695cb = count($v280898d986); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $pc24afc88 = $v280898d986[$v43dd7d0051]["value"]; $v8b6fd90a28 = $v280898d986[$v43dd7d0051]["@"]["relative"]; $pf8ed4912 .= $this->getInludeHTML($pc24afc88, $v8b6fd90a28); } } else $pf8ed4912 .= '<div class="no_includes">There are includes...</div>'; $pf8ed4912 .= '
 			</div>
 		</div>'; return $pf8ed4912; } public function getMapSelectOptions($pe3573e1b, $pb92c3c9b, $v4b559a4220 = "org.phpframework.object.php.Primitive", $v0a938c6790 = true, $v4cad1832a9 = true) { $pb92c3c9b = ObjTypeHandler::convertSimpleTypeIntoCompositeType($pb92c3c9b, $v4b559a4220); $pf8ed4912 = $v0a938c6790 ? '<option></option>' : ''; $pf8ed4912 .= '<optgroup label="Primitive Types">'; if ($pe3573e1b) foreach ($pe3573e1b as $pb13127fc => $v945fda93f2) { if (strpos($pb13127fc, $v4b559a4220) === 0) { $pf8ed4912 .= '<option value="' . $pb13127fc . '" ' . ($pb92c3c9b == $pb13127fc ? 'selected' : '') . '>' . $v945fda93f2 . '</option>'; } } $pf8ed4912 .= '</optgroup>
 			<optgroup label="Composite Types">'; if ($pe3573e1b) foreach ($pe3573e1b as $pb13127fc => $v945fda93f2) { if (strpos($pb13127fc, $v4b559a4220) === false) { $pf8ed4912 .= '<option value="' . $pb13127fc . '" ' . ($pb92c3c9b == $pb13127fc ? 'selected' : '') . '>' . $v945fda93f2 . '</option>'; } } $pf8ed4912 .= '</optgroup>
@@ -279,11 +280,11 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 				<select>
 		 			' . $this->getMapSelectOptions($v197630b0cc, $v5a911d8233) . '
 				</select>
-				<span class="icon search" onClick="geMapPHPTypeFromFileManager(this, \'select\')" title="Get type from File Manager">Get from File Manager</span>
+				<span class="icon search" onClick="geMapPHPTypeFromFileManager(this, \'select\')" title="Get type from File Manager">Search</span>
 			</td>
 			<td class="output_name">
 				<input type="text" value="' . $v1c301b29c5 . '" />
-				<span class="icon search" onClick="getTableAttributeFromDB(this, \'input\')" title="Get attribute from DB">Get from DB</span>
+				<span class="icon search" onClick="getTableAttributeFromDB(this, \'input\')" title="Get attribute from DB">Search</span>
 			</td>
 			<td class="output_type">
 				<select>
@@ -293,15 +294,15 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 			<td class="mandatory">
 				<input type="checkbox" value="1" ' . ($v18d8ec0406 ? 'checked="checked"' : '') . ' />
 			</td>
-			<td class="icon_cell"><span class="icon delete" onClick="$(this).parent().parent().remove();">delete</span></td>
+			<td class="icon_cell"><span class="icon delete" onClick="$(this).parent().parent().remove();" title="Delete">Remove</span></td>
 		</tr>'; return $pf8ed4912; } public function getParameterMapHTML($paeae9fca, $v2967293505, $v197630b0cc, $v1167f1d261, $pb6233a29 = false) { $pf8ed4912 = '
 		<div class="map" ' . ($paeae9fca == "map" ? 'style="display:block;"' : 'style="display:none;"') . '>
 			<label>Parameter Map:</label>
-			<span class="icon delete" onClick="$(this).parent().remove();" ' . ($pb6233a29 ? '' : 'style="display:none;"') . '>delete</span>
-			<span class="icon update" onClick="createParameterOrResultMapAutomatically(this, \'parameter\')" title="Create Map Automatically">Create Map Automatically</span>
+			<span class="icon delete" onClick="$(this).parent().remove();" title="Delete" ' . ($pb6233a29 ? '' : 'style="display:none;"') . '>Remove</span>
+			<span class="icon update_automatically" onClick="createParameterOrResultMapAutomatically(this, \'parameter\')" title="Create Map Automatically">Update Automatically</span>
 			<div class="map_id">
 				<label>ID:</label>
-				<input type="text" value="' . $v2967293505["@"]["id"] . '" onBlur="validateMapId(this, \'parameter\');" />
+				<input type="text" value="' . $v2967293505["@"]["id"] . '" placeHolder="Id/Name" onBlur="validateMapId(this, \'parameter\');" />
 			</div>
 			<div class="map_class">
 				<label>Class:</label>
@@ -315,7 +316,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 						<th class="output_name table_header">DB Attribute Name</th>
 						<th class="output_type table_header">DB Attribute Type</th>
 						<th class="mandatory table_header">Mandatory</th>
-						<th><span class="icon add" onClick="addNewParameter(this)">add</span></th>
+						<th class="icon_cell"><span class="icon add" onClick="addNewParameter(this)" title="Add">Add</span></th>
 					</tr>
 				</thead>
 				<tbody class="fields">'; $v9367d5be85 = $v2967293505["childs"]["parameter"]; if ($v9367d5be85) { $pc37695cb = count($v9367d5be85); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $pc5faab2f = $v9367d5be85[$v43dd7d0051]["@"]; $pf8ed4912 .= $this->getParameterHTML($v197630b0cc, $v1167f1d261, $pc5faab2f["input_name"], $pc5faab2f["input_type"], $pc5faab2f["output_name"], $pc5faab2f["output_type"], $pc5faab2f["mandatory"]); } } else $pf8ed4912 .= $this->getParameterHTML($v197630b0cc, $v1167f1d261); $pf8ed4912 .= '	</tbody>
@@ -324,7 +325,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 		<tr class="result field">
 			<td class="input_name">
 				<input type="text" value="' . $v8dca298c48 . '" />
-				<span class="icon search" onClick="getTableAttributeFromDB(this, \'input\')" title="Get attribute from DB">Get from DB</span>
+				<span class="icon search" onClick="getTableAttributeFromDB(this, \'input\')" title="Get attribute from DB">Search</span>
 			</td>
 			<td class="input_type">
 				<select>
@@ -338,20 +339,20 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 				<select>
 					' . $this->getMapSelectOptions($v197630b0cc, $v10353796a8) . '
 				</select>
-				<span class="icon search" onClick="geMapPHPTypeFromFileManager(this, \'select\')" title="Get type from File Manager">Get from File Manager</span>
+				<span class="icon search" onClick="geMapPHPTypeFromFileManager(this, \'select\')" title="Get type from File Manager">Search</span>
 			</td>
 			<td class="mandatory">
 				<input type="checkbox" value="1" ' . ($v18d8ec0406 ? 'checked="checked"' : '') . ' />
 			</td>
-			<td class="icon_cell"><span class="icon delete" onClick="$(this).parent().parent().remove();">delete</span></td>
+			<td class="icon_cell"><span class="icon delete" onClick="$(this).parent().parent().remove();" title="Delete">Remove</span></td>
 		</tr>'; } public function getResultMapHTML($pbd9f98de, $pce128343, $v197630b0cc, $v1167f1d261, $pb6233a29 = false) { $pf8ed4912 = '
 		<div class="map" ' . ($pbd9f98de == "map" ? 'style="display:block;"' : 'style="display:none;"') . '>
 			<label>Result Map:</label>
-			<span class="icon delete" onClick="$(this).parent().remove();" ' . ($pb6233a29 ? '' : 'style="display:none;"') . '>delete</span>
-			<span class="icon update" onClick="createParameterOrResultMapAutomatically(this, \'result\')" title="Create Map Automatically">Create Map Automatically</span>
+			<span class="icon delete" onClick="$(this).parent().remove();" title="Delete" ' . ($pb6233a29 ? '' : 'style="display:none;"') . '>Remove</span>
+			<span class="icon update_automatically" onClick="createParameterOrResultMapAutomatically(this, \'result\')" title="Create Map Automatically">Update Automatically</span>
 			<div class="map_id">
 				<label>ID:</label>
-				<input type="text" value="' . $pce128343["@"]["id"] . '" onBlur="validateMapId(this, \'result\');" />
+				<input type="text" value="' . $pce128343["@"]["id"] . '" placeHolder="Id/Name" onBlur="validateMapId(this, \'result\');" />
 			</div>
 			<div class="map_class">
 				<label>Class:</label>
@@ -365,7 +366,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 						<th class="output_name table_header">PHP Attribute Name</th>
 						<th class="output_type table_header">PHP Attribute Type</th>
 						<th class="mandatory table_header">Mandatory</th>
-						<th><span class="icon add" onClick="addNewResult(this)">add</span></th>
+						<th class="icon_cell"><span class="icon add" onClick="addNewResult(this)" title="Add">Add</span></th>
 					</tr>
 				</thead>
 				<tbody class="fields">'; $pee4c7870 = $pce128343["childs"]["result"]; if ($pee4c7870) { $pc37695cb = count($pee4c7870); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v9ad1385268 = $pee4c7870[$v43dd7d0051]["@"]; $pf8ed4912 .= $this->getResultHTML($v197630b0cc, $v1167f1d261, $v9ad1385268["input_name"], $v9ad1385268["input_type"], $v9ad1385268["output_name"], $v9ad1385268["output_type"], $v9ad1385268["mandatory"]); } } else $pf8ed4912 .= $this->getResultHTML($v197630b0cc, $v1167f1d261); $pf8ed4912 .= '	</tbody>
@@ -373,8 +374,8 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 		</div>'; return $pf8ed4912; } public function getQueriesBlockHtml($v987a981e39, $pab85d90e = false, $pa1c701b0 = false, $v483eef20da = true) { $pf8ed4912 = ""; if ($v987a981e39) { $pc37695cb = count($v987a981e39); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v16eb00c1d7 = $v987a981e39[$v43dd7d0051]; $v1cbfbb49c5 = WorkFlowDataAccessHandler::getNodeValue($v16eb00c1d7, "id"); $v5e813b295b = WorkFlowDataAccessHandler::getNodeValue($v16eb00c1d7, "name"); $v217e7cf3c0 = WorkFlowDataAccessHandler::getNodeValue($v16eb00c1d7, "parameter_class"); $v2967293505 = WorkFlowDataAccessHandler::getNodeValue($v16eb00c1d7, "parameter_map"); $v21ff8db28c = WorkFlowDataAccessHandler::getNodeValue($v16eb00c1d7, "result_class"); $pce128343 = WorkFlowDataAccessHandler::getNodeValue($v16eb00c1d7, "result_map"); $pfdbbc383 = $v16eb00c1d7["childs"]["attribute"]; $v9994512d98 = $v16eb00c1d7["childs"]["key"]; $paf1bc6f6 = $v16eb00c1d7["childs"]["condition"]; $pe4b1434e = $v16eb00c1d7["childs"]["group_by"]; $v04003a4f53 = $v16eb00c1d7["childs"]["sort"]; $v552b831ecd = WorkFlowDataAccessHandler::getNodeValue($v16eb00c1d7, "limit"); $v7e4b517c18 = WorkFlowDataAccessHandler::getNodeValue($v16eb00c1d7, "start"); $v3c76382d93 = $v16eb00c1d7["value"]; $v93ff269092 = rand(0, 1000); $v016220e8f0 = $pab85d90e ? $v5e813b295b : $v1cbfbb49c5; $v539082ff30 = array( "type" => $pa1c701b0, "name" => $v016220e8f0, "parameter_class" => $v217e7cf3c0, "parameter_map" => $v2967293505, "result_class" => $v21ff8db28c, "result_map" => $pce128343, "attributes" => $pfdbbc383, "keys" => $v9994512d98, "conditions" => $paf1bc6f6, "groups_by" => $pe4b1434e, "sorts" => $v04003a4f53, "limit" => $v552b831ecd, "start" => $v7e4b517c18, "sql" => $v3c76382d93 ); $v30857f7eca = array( "init_ui" => true, "minimize" => $v483eef20da, ); $pbe1051a0 = $this->getQueryBlockHtml($pab85d90e, $v30857f7eca, $v539082ff30); $pbe1051a0 = str_replace("#rand#", $v93ff269092, $pbe1051a0); $pf8ed4912 .= $pbe1051a0; } } return $pf8ed4912; } public function getQueryBlockHtml($pab85d90e = false, $v30857f7eca = false, $v539082ff30 = false) { $v6cf0577ade = $v30857f7eca["init_ui"]; $v483eef20da = $v30857f7eca["minimize"]; $pa1c701b0 = $v539082ff30["type"]; $v5e813b295b = $v539082ff30["name"]; $v217e7cf3c0 = $v539082ff30["parameter_class"]; $v2967293505 = $v539082ff30["parameter_map"]; $v21ff8db28c = $v539082ff30["result_class"]; $pce128343 = $v539082ff30["result_map"]; $pfdbbc383 = $v539082ff30["attributes"]; $v9994512d98 = $v539082ff30["keys"]; $paf1bc6f6 = $v539082ff30["conditions"]; $pe4b1434e = $v539082ff30["groups_by"]; $v04003a4f53 = $v539082ff30["sorts"]; $v552b831ecd = $v539082ff30["limit"]; $v7e4b517c18 = $v539082ff30["start"]; $v3c76382d93 = $v539082ff30["sql"]; if ($pab85d90e) { $pba9aec33 = array("one_to_one", "one_to_many", "many_to_one", "many_to_many"); $pcdd6ebdf = true; } else { $pba9aec33 = array("insert", "update", "delete", "select", "procedure"); $pcdd6ebdf = $pa1c701b0 == "select"; } $pf8ed4912 = '
 		<div class="relationship">
 			<div class="header_buttons">
-				<span class="icon delete" onClick="$(this).parent().parent().remove();">Remove</span>
-				<span class="icon minimize" onClick="toggleQuery(this);">Minimize</span>
+				<span class="icon delete" onClick="$(this).parent().parent().remove();" title="Remove Query">Remove</span>
+				<span class="icon toggle" onClick="toggleQuery(this);" title="Toggle Query">Toggle</span>
 			</div>
 			<div style="float:none; clear:both;"></div>
 			<div class="rel_type">
@@ -383,7 +384,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 			</div>
 			<div class="rel_name">
 				<label>Name:</label>
-				<input type="text" value="' . $v5e813b295b . '" onBlur="validateRelationshipName(this);" />
+				<input type="text" value="' . $v5e813b295b . '" placeHolder="Name" onBlur="validateRelationshipName(this);" />
 			</div>
 			<div style="float:none; clear:both;"></div>'; if (!$pab85d90e) { $pf8ed4912 .= '
 			<div class="parameter_class_id">
@@ -413,7 +414,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 			});
 			</script>'; } return $pf8ed4912; } public function getQueryHtml($pab85d90e = false, $v6cf0577ade = false, $pa1c701b0 = false, $pcdd6ebdf = true, $pfdbbc383 = false, $v9994512d98 = false, $paf1bc6f6 = false, $pe4b1434e = false, $v04003a4f53 = false, $v552b831ecd = false, $v7e4b517c18 = false, $v3c76382d93 = false) { $pf8ed4912 = '
 		<div rand_number="#rand#" class="query">
-			<ul class="query_tabs">
+			<ul class="tabs tabs_transparent query_tabs">
 				<li class="query_design_tab"><a href="#query_obj_tabs_#rand#-1" onClick="initQueryDesign(this, #rand#)">UI</a></li>
 				<li class="query_sql_tab"><a href="#query_obj_tabs_#rand#-2" onClick="initQuerySql(this, #rand#)">SQL</a></li>
 			</ul>
@@ -434,11 +435,11 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 		</div>'; return $pf8ed4912; } public function getQueryInsertUpdateDeleteHtml($pfdbbc383 = false, $paf1bc6f6 = false) { $pc661dc6b = $pfdbbc383 ? WorkFlowDataAccessHandler::getNodeValue($pfdbbc383[0], "table") : ""; $pc661dc6b = $pc661dc6b ? $pc661dc6b : ($paf1bc6f6 ? WorkFlowDataAccessHandler::getNodeValue($paf1bc6f6[0], "table") : ""); $pf8ed4912 = '
 		<div class="query_table">
 			<label>Table:</label>
-			<input type="text" value="' . $pc661dc6b .'" />
+			<input type="text" value="' . $pc661dc6b .'" onBlur="onBlurQueryInputField(this, #rand#)" />
 			<span class="icon search" onClick="getTableFromDB(this, #rand#)">Search</span>	
 		</div>
 		
-		<ul class="query_insert_update_delete_tabs">
+		<ul class="tabs tabs_transparent query_insert_update_delete_tabs">
 			<li class="query_insert_update_delete_tabs_attributes"><a href="#query_insert_update_delete_tabs_#rand#-1">Attributes</a></li>
 			<li class="query_insert_update_delete_tabs_conditions"><a href="#query_insert_update_delete_tabs_#rand#-2">Conditions</a></li>
 		</ul> 
@@ -449,7 +450,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 					<tr>
 						<th class="column table_header">Column</th>
 						<th class="value table_header">Value</th>
-						<th class="icon_cell table_header"><span class="icon add" onClick="addQueryAttribute2(this, #rand#)">Add</span></th>
+						<th class="icon_cell table_header"><span class="icon add" onClick="addQueryAttribute2(this, #rand#)">Add</span></span></th>
 					</tr>
 				</thead>
 				<tbody class="fields">'; if ($pfdbbc383) { $pc37695cb = count($pfdbbc383); for ($v9d27441e80 = 0; $v9d27441e80 < $pc37695cb; $v9d27441e80++) { $v97915b9670 = $pfdbbc383[$v9d27441e80]; if ($v97915b9670["@"] || $v97915b9670["childs"]) { $v9ea12a829c = WorkFlowDataAccessHandler::getNodeValue($v97915b9670, "column"); $v67db1bd535 = WorkFlowDataAccessHandler::getNodeValue($v97915b9670, "value"); $pf8ed4912 .= self::getQueryAttributeHtml2($v9ea12a829c, $v67db1bd535); } } } $pf8ed4912 .= '
@@ -464,7 +465,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 						<th class="column table_header">Column</th>
 						<th class="operator table_header">Operator</th>
 						<th class="value table_header">Value</th>
-						<th class="icon_cell table_header"><span class="icon add" onClick="addQueryCondition2(this, #rand#)">Add</span></th>
+						<th class="icon_cell table_header"><span class="icon add" onClick="addQueryCondition2(this, #rand#)">Add</span></span></th>
 					</tr>
 				</thead>
 				<tbody class="fields">'; if ($paf1bc6f6) { $pc37695cb = count($paf1bc6f6); for ($v9d27441e80 = 0; $v9d27441e80 < $pc37695cb; $v9d27441e80++) { $v32dd06ab9b = $paf1bc6f6[$v9d27441e80]; if ($v32dd06ab9b["@"] || $v32dd06ab9b["childs"]) { $v9ea12a829c = WorkFlowDataAccessHandler::getNodeValue($v32dd06ab9b, "column"); $v19a7745bc6 = WorkFlowDataAccessHandler::getNodeValue($v32dd06ab9b, "operator"); $v67db1bd535 = WorkFlowDataAccessHandler::getNodeValue($v32dd06ab9b, "value"); $pf8ed4912 .= self::getQueryConditionHtml2($v9ea12a829c, $v19a7745bc6, $v67db1bd535); } } } $pf8ed4912 .= '
@@ -475,7 +476,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 			' . $this->getQueryWorkFlow($pab85d90e, $v6cf0577ade, $pfdbbc383, $v9994512d98, $paf1bc6f6) . '
 			</div>
 			<div class="query_settings">
-				<ul class="query_settings_tabs">
+				<ul class="tabs tabs_transparent query_settings_tabs">
 					<li class="query_settings_tabs_attributes"><a href="#query_settings_tabs_#rand#-1">Attributes</a></li>
 					<li class="query_settings_tabs_keys"><a href="#query_settings_tabs_#rand#-2">Keys</a></li>
 					<li class="query_settings_tabs_conditions"><a href="#query_settings_tabs_#rand#-3">Conditions</a></li>
@@ -486,7 +487,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 			
 				' . $this->getChooseQueryTableOrAttributeHtml(false, "jsPlumbWorkFlow_#rand#.getMyFancyPopupObj()") . '
 			
-				<span class="icon view advanced_query_settings" onClick="showOrHideExtraQuerySettings(this, #rand#)">Show Less Settings</span>
+				<span class="icon view advanced_query_settings" onClick="showOrHideExtraQuerySettings(this, #rand#)">Toggle Advanced Settings</span>
 				<div id="query_settings_tabs_#rand#-1" class="attributes query_settings_tab">
 					<table>
 						<thead class="fields_title">
@@ -570,15 +571,15 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 					<div class="sub_limit_start">
 						<div class="start">
 							<label>Start:</label>
-							<input type="text" value="' . $v7e4b517c18 . '" />
+							<input type="text" value="' . $v7e4b517c18 . '" onBlur="onBlurQueryInputField(this, #rand#)" />
 						</div>
 						<div class="limit">
 							<label>Limit:</label>
-							<input type="text" value="' . $v552b831ecd . '" />
+							<input type="text" value="' . $v552b831ecd . '" onBlur="onBlurQueryInputField(this, #rand#)" />
 						</div>
 					</div>
 				</div>
-			</div>'; return $pf8ed4912; } public function getQueryWorkFlow($pab85d90e = false, $v6cf0577ade = false, $pfdbbc383 = false, $v9994512d98 = false, $paf1bc6f6 = false) { $v243e50bc1d = array( "Add new Table" => array("class" => "add_new_table", "click" => "return addNewTask(#rand#);"), "Update Tables' Attributes" => array("class" => "update_tables_attributes", "click" => "return updateQueryDBBroker(#rand#, false);"), "Show Settings" => array("class" => "toggle_settings", "click" => "return showOrHideQuerySettings(this, #rand#);"), "Hide UI" => array("class" => "toggle_ui", "click" => "return showOrHideQueryUI(this, #rand#);"), ); $this->pcfdeae4e->setMenus($v243e50bc1d); $pf8ed4912 = '<div id="taskflowchart_#rand#" class="taskflowchart">
+			</div>'; return $pf8ed4912; } public function getQueryWorkFlow($pab85d90e = false, $v6cf0577ade = false, $pfdbbc383 = false, $v9994512d98 = false, $paf1bc6f6 = false) { $v243e50bc1d = array( "Add new Table" => array( "class" => "add_new_table", "html" => '<a class="icon" onClick="return addNewTask(#rand#);">Add new Table</a>' ), "Update Tables' Attributes" => array( "class" => "update_tables_attributes", "html" => '<a class="icon" onClick="return updateQueryDBBroker(#rand#, false);">Update Tables\' Attributes</a>' ), "Toggle UI" => array( "class" => "toggle_ui", "html" => '<a class="icon" onClick="return showOrHideQueryUI(this, #rand#);">Toggle UI</a>' ), "Toggle Settings" => array( "class" => "toggle_settings", "html" => '<a class="icon" onClick="return showOrHideQuerySettings(this, #rand#);">Toggle Settings</a>' ), ); $this->pcfdeae4e->setMenus($v243e50bc1d); $pf8ed4912 = '<div id="taskflowchart_#rand#" class="taskflowchart">
 			' . $this->pcfdeae4e->getMenusContent() . '
 			<div class="tasks_flow" sync_ui_and_settings="' . ($pab85d90e ? 0 : 1) . '">
 				' . $this->getChooseQueryTableOrAttributeHtml(false, "jsPlumbWorkFlow_#rand#.getMyFancyPopupObj()") . '
@@ -595,27 +596,27 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 			</script>'; } return $pf8ed4912; } public static function getQueryAttributeHtml1($pc661dc6b = false, $v9ea12a829c = false, $v5e813b295b = false) { return '
 		<tr class="field">
 			<td class="table">
-				<input type="text" value="' . $pc661dc6b .'" onfocus="onFocusTableField(this)" onBlur="onBlurQueryTableField(this, #rand#)" />
+				<input type="text" value="' . $pc661dc6b .'" onFocus="onFocusTableField(this)" onBlur="onBlurQueryTableField(this, #rand#)" />
 				<span class="icon search" onClick="getQueryTableFromDB(this, #rand#)">Search</span>
 			</td>
 			<td class="column">
-				<input type="text" value="' . $v9ea12a829c .'" onfocus="onFocusAttributeField(this)" onBlur="onBlurQueryAttributeField(this, #rand#)" />
+				<input type="text" value="' . $v9ea12a829c .'" onFocus="onFocusAttributeField(this)" onBlur="onBlurQueryAttributeField(this, #rand#)" />
 				<span class="icon search" onClick="getQueryTableAttributeFromDB(this, \'input\', #rand#)">Search</span>
 			</td>
 			<td class="name">
-				<input type="text" value="' . $v5e813b295b .'" />
+				<input type="text" value="' . $v5e813b295b .'" onBlur="onBlurQueryInputField(this, #rand#)" />
 			</td>
 			<td class="icon_cell table_header"><span class="icon delete" onClick="deleteQueryAttribute(this, #rand#);">Remove</span></td>
 		</tr>'; } public static function getQueryAttributeHtml2($v9ea12a829c = false, $v67db1bd535 = false) { return '
 		<tr class="field">
 			<td class="column">
-				<input type="text" value="' . $v9ea12a829c .'" />
+				<input type="text" value="' . $v9ea12a829c .'" onBlur="onBlurQueryInputField(this, #rand#)" />
 				<span class="icon search" onClick="getTableAttributeFromDB(this, \'input\', #rand#)">Search</span>
 			</td>
 			<td class="value">
-				<input type="text" value="' . $v67db1bd535 .'" />
+				<input type="text" value="' . $v67db1bd535 .'" onBlur="onBlurQueryInputField(this, #rand#)" />
 			</td>
-			<td class="icon_cell table_header"><span class="icon delete" onClick="$(this).parent().parent().remove();">Remove</span></td>
+			<td class="icon_cell table_header"><span class="icon delete" onClick="deleteQueryField(this, #rand#);">Remove</span></td>
 		</tr>'; } public static function getQueryKeyHtml($v3b625ac0a5 = false, $pa3c827a4 = false, $v294f67133d = false, $v8903e4e7c4 = false, $v67db1bd535 = false, $v3c581c912b = false, $v19a7745bc6 = false) { $v3cbbdf9379 = array("inner", "left", "right"); $pa75e95f5 = array("=", "!=", ">", ">=", "<=", "like", "not like", "is", "not is", "in"); $v19a7745bc6 = strtolower($v19a7745bc6); $v3c581c912b = strtolower($v3c581c912b); if ($v19a7745bc6 == "in") { $v67db1bd535 = trim($v67db1bd535); $v67db1bd535 = substr($v67db1bd535, 0, 1) == "(" && substr($v67db1bd535, strlen($v67db1bd535) - 1) == ")" ? substr($v67db1bd535, 1, strlen($v67db1bd535) - 2) : $v67db1bd535; } else if (!$v19a7745bc6 && ($pa3c827a4 || $v8903e4e7c4)) { $v19a7745bc6 = "="; } $pf8ed4912 = '
 			<tr class="field">
 				<td class="ptable">
@@ -648,58 +649,58 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 			</tr>'; return $pf8ed4912; } public static function getQueryConditionHtml1($pc661dc6b = false, $v9ea12a829c = false, $v19a7745bc6 = false, $v67db1bd535 = false) { $pa75e95f5 = array("=", "!=", ">", ">=", "<=", "like", "not like", "is", "not is", "in"); $v19a7745bc6 = strtolower($v19a7745bc6); if ($v19a7745bc6 == "in") { $v67db1bd535 = trim($v67db1bd535); $v67db1bd535 = substr($v67db1bd535, 0, 1) == "(" && substr($v67db1bd535, strlen($v67db1bd535) - 1) == ")" ? substr($v67db1bd535, 1, strlen($v67db1bd535) - 2) : $v67db1bd535; } else if (!$v19a7745bc6 && $v9ea12a829c) { $v19a7745bc6 = "="; } $pf8ed4912 = '
 			<tr class="field">
 				<td class="table">
-					<input type="text" value="' . $pc661dc6b .'" />
+					<input type="text" value="' . $pc661dc6b .'" onBlur="onBlurQueryInputField(this, #rand#)" />
 					<span class="icon search" onClick="getQueryTableFromDB(this, #rand#)">Search</span>
 				</td>
 				<td class="column">
-					<input type="text" value="' . $v9ea12a829c .'" />
+					<input type="text" value="' . $v9ea12a829c .'" onBlur="onBlurQueryInputField(this, #rand#)" />
 					<span class="icon search" onClick="getQueryTableAttributeFromDB(this, \'input\', #rand#)">Search</span>
 				</td>
 				<td class="operator">
-					<select>
+					<select onChange="onBlurQueryInputField(this, #rand#)">
 						<option></option>'; if ($pa75e95f5) { $pc37695cb = count($pa75e95f5); for ($pc5166886 = 0; $pc5166886 < $pc37695cb; $pc5166886++) $pf8ed4912 .= '	<option ' . ($v19a7745bc6 == $pa75e95f5[$pc5166886] ? 'selected' : '') . '>' . $pa75e95f5[$pc5166886] . '</option>'; } $pf8ed4912 .= '	</select>
 				</td>
 				<td class="value">
-					<input type="text" value="' . $v67db1bd535 .'" />
+					<input type="text" value="' . $v67db1bd535 .'" onBlur="onBlurQueryInputField(this, #rand#)" />
 				</td>
-				<td class="icon_cell table_header"><span class="icon delete" onClick="$(this).parent().parent().remove();">Remove</span></td>
+				<td class="icon_cell table_header"><span class="icon delete" onClick="deleteQueryField(this, #rand#);">Remove</span></td>
 			</tr>'; return $pf8ed4912; } public static function getQueryConditionHtml2($v9ea12a829c = false, $v19a7745bc6 = false, $v67db1bd535 = false) { $pa75e95f5 = array("=", "!=", ">", ">=", "<=", "like", "not like", "is", "not is", "in"); $v19a7745bc6 = strtolower($v19a7745bc6); if ($v19a7745bc6 == "in") { $v67db1bd535 = trim($v67db1bd535); $v67db1bd535 = substr($v67db1bd535, 0, 1) == "(" && substr($v67db1bd535, strlen($v67db1bd535) - 1) == ")" ? substr($v67db1bd535, 1, strlen($v67db1bd535) - 2) : $v67db1bd535; } else if (!$v19a7745bc6 && $v9ea12a829c) $v19a7745bc6 = "="; $pf8ed4912 = '
 			<tr class="field">
 				<td class="column">
-					<input type="text" value="' . $v9ea12a829c .'" />
+					<input type="text" value="' . $v9ea12a829c .'" onBlur="onBlurQueryInputField(this, #rand#)" />
 					<span class="icon search" onClick="getTableAttributeFromDB(this, \'input\', #rand#)">Search</span>
 				</td>
 				<td class="operator">
-					<select>
+					<select onChange="onBlurQueryInputField(this, #rand#)">
 						<option></option>'; if ($pa75e95f5) { $pc37695cb = count($pa75e95f5); for ($pc5166886 = 0; $pc5166886 < $pc37695cb; $pc5166886++) $pf8ed4912 .= '	<option ' . ($v19a7745bc6 == $pa75e95f5[$pc5166886] ? 'selected' : '') . '>' . $pa75e95f5[$pc5166886] . '</option>'; } $pf8ed4912 .= '	</select>
 				</td>
 				<td class="value">
-					<input type="text" value="' . $v67db1bd535 .'" />
+					<input type="text" value="' . $v67db1bd535 .'" onBlur="onBlurQueryInputField(this, #rand#)" />
 				</td>
-				<td class="icon_cell table_header"><span class="icon delete" onClick="$(this).parent().parent().remove();">Remove</span></td>
+				<td class="icon_cell table_header"><span class="icon delete" onClick="deleteQueryField(this, #rand#);">Remove</span></td>
 			</tr>'; return $pf8ed4912; } public static function getQueryGroupByHtml($pc661dc6b = false, $v9ea12a829c = false) { return '
 		<tr class="field">
 			<td class="table">
-				<input type="text" value="' . $pc661dc6b .'" />
+				<input type="text" value="' . $pc661dc6b .'" onBlur="onBlurQueryInputField(this, #rand#)" />
 				<span class="icon search" onClick="getQueryTableFromDB(this, #rand#)">Search</span>
 			</td>
 			<td class="column">
-				<input type="text" value="' . $v9ea12a829c .'" />
+				<input type="text" value="' . $v9ea12a829c .'" onBlur="onBlurQueryInputField(this, #rand#)" />
 				<span class="icon search" onClick="getQueryTableAttributeFromDB(this, \'input\', #rand#)">Search</span>
 			</td>
-			<td class="icon_cell table_header"><span class="icon delete" onClick="$(this).parent().parent().remove();">Remove</span></td>
+			<td class="icon_cell table_header"><span class="icon delete" onClick="deleteQueryField(this, #rand#);">Remove</span></td>
 		</tr>'; } public static function getQuerySortHtml($pc661dc6b = false, $v9ea12a829c = false, $pc06af91c = false) { $pbe68ffeb = array("ASC", "DESC"); $pf8ed4912 = '
 			<tr class="field">
 				<td class="table">
-					<input type="text" value="' . $pc661dc6b .'" />
+					<input type="text" value="' . $pc661dc6b .'" onBlur="onBlurQueryInputField(this, #rand#)" />
 					<span class="icon search" onClick="getQueryTableFromDB(this, #rand#)">Search</span>
 				</td>
 				<td class="column">
-					<input type="text" value="' . $v9ea12a829c .'" />
+					<input type="text" value="' . $v9ea12a829c .'" onBlur="onBlurQueryInputField(this, #rand#)" />
 					<span class="icon search" onClick="getQueryTableAttributeFromDB(this, \'input\', #rand#)">Search</span>
 				</td>
 				<td class="order">
-					<select>'; if ($pbe68ffeb) { $pc37695cb = count($pbe68ffeb); for ($pc5166886 = 0; $pc5166886 < $pc37695cb; $pc5166886++) $pf8ed4912 .= '	<option ' . ($pc06af91c == $pbe68ffeb[$pc5166886] ? 'selected' : '') . '>' . $pbe68ffeb[$pc5166886] . '</option>'; } $pf8ed4912 .= '	</select>
+					<select onChange="onBlurQueryInputField(this, #rand#)">'; if ($pbe68ffeb) { $pc37695cb = count($pbe68ffeb); for ($pc5166886 = 0; $pc5166886 < $pc37695cb; $pc5166886++) $pf8ed4912 .= '	<option ' . ($pc06af91c == $pbe68ffeb[$pc5166886] ? 'selected' : '') . '>' . $pbe68ffeb[$pc5166886] . '</option>'; } $pf8ed4912 .= '	</select>
 				</td>
-				<td class="icon_cell table_header"><span class="icon delete" onClick="$(this).parent().parent().remove();">Remove</span></td>
+				<td class="icon_cell table_header"><span class="icon delete" onClick="deleteQueryField(this, #rand#);">Remove</span></td>
 			</tr>'; return $pf8ed4912; } } ?>

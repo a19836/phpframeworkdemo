@@ -11,7 +11,7 @@ class WorkFlowTaskImpl extends \WorkFlowTask {
 		if ($props) {
 			$method_name = $props["method_name"];
 			
-			if ($method_name == "addRegionBlock") {
+			if ($method_name == "yyyy") {
 				$args = $props["method_args"];
 				
 				$region = $args[0]["value"];
@@ -66,7 +66,7 @@ class WorkFlowTaskImpl extends \WorkFlowTask {
 			$method_obj .= "->";
 		}
 		
-		$code  = $prefix_tab . $method_obj . "addRegionBlock(" . self::getVariableValueCode($properties["region"], $properties["region_type"]) . ", " . self::getVariableValueCode($properties["block"], $properties["block_type"]) . ", \"bla\");\n";
+		$code  = $prefix_tab . $method_obj . "yyyy(" . self::getVariableValueCode($properties["region"], $properties["region_type"]) . ", " . self::getVariableValueCode($properties["block"], $properties["block_type"]) . ", \"bla\");\n";
 		
 		return $code . self::printTask($tasks, $data["exits"][self::DEFAULT_EXIT_ID], $stop_task_id, $prefix_tab, $options);
 	}

@@ -1,0 +1,65 @@
+/* TITLE */
+.edit_map > .top_bar {
+	margin-bottom:20px;
+}
+.edit_map > .top_bar .title .map_name {
+	width:200px;
+	display:inline-block;
+}
+
+/* RELATIONSHIP */
+.edit_map .data_access_obj {
+	width:100%;
+}
+.edit_map .map {
+	margin:0 !important;
+	padding:0 !important;
+	border:0 !important;
+}
+.edit_map .data_access_obj > .relationships > .parameters_maps > .parameters,
+  .edit_map .data_access_obj > .relationships > .parameters_maps > .parameters,
+  .edit_map .data_access_obj > .relationships > .results_maps > .results,
+  .edit_map .data_access_obj > .relationships > .results_maps > .results {
+	margin:0 auto !important;
+}
+.data_access_obj .relationships .results_maps .map, 
+  .data_access_obj .relationships .parameters_maps .map {
+	width:645px;
+}
+.edit_map .data_access_obj > .relationships > .parameters_maps > .parameters > .map > label,
+  .edit_map .data_access_obj > .relationships > .parameters_maps > .parameters > .map > .icon.update_automatically,
+  .edit_map .data_access_obj > .relationships > .results_maps > .results > .map > label,
+  .edit_map .data_access_obj > .relationships > .results_maps > .results > .map > .icon.update_automatically {
+	display:none;
+}
+.edit_map .map .map_id {
+	width:210px;
+	margin:0;
+	position:fixed;
+	top:7px;
+	left:130px;
+	z-index:2;
+}
+.edit_map .results_maps.map .map_id {
+	left:55px;
+}
+.edit_map .map .map_id label {
+	display:none;
+}
+.edit_map .map .map_id input {
+	width:200px;
+	border:1px solid #ccc;
+	color:#000;
+	background:transparent;
+}
+.edit_map .data_access_obj .relationships .map .map_class {
+	margin-left:10px;
+	display:none;
+}
+.data_access_obj .relationships .map .map_class label {
+	font-weight:normal;
+	line-height:20px;
+}
+.edit_map .data_access_obj.with_map_fields .relationships .map table {
+	margin-top:20px;
+}

@@ -43,6 +43,17 @@
 	background:#eab34fa3;
 }
 
+/* page_task_html */
+.page_task_html {
+	border:0;
+}
+.page_task_html > ul.ui-tabs-nav {
+	background:none;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-radius: 0;
+}
 .page_task_html > .loading {
 	text-align:center;
 	margin-bottom:20px;
@@ -53,7 +64,7 @@
 	margin-bottom:20px;
 }
 .page_task_html > .invalid_file a {
-	color:#33AADD;
+	color:#ff0000;
 }
 .page_task_html > .error {
 	text-align:center;
@@ -89,10 +100,10 @@
 .page_task_html .advanced_settings > a.edit_page {
 	margin-top:20px;
 	text-align:right;
-	color:#33AADD;
+	color:#ff0000;
 }
-.page_task_html .advanced_settings > a .icon {
-	margin:-2px 5px 0;
+.page_task_html .advanced_settings > a .icon.update::before {
+	content:"\f303";
 }
 .page_task_html .advanced_settings > div {
 	margin-top:20px;
@@ -135,16 +146,20 @@
 .page_task_html .advanced_settings .includes li input[type="checkbox"] {
 	margin-left:5px;
 }
+.page_task_html .advanced_settings .regions_blocks li .icon.add::before {
+	vertical-align:middle;
+}
 
 /* EDIT PAGE ADMIN PANEL POPUP */
 
 .page_task_html .edit_page_admin_panel_popup {
-	width:90vw;
-	height:90vh;
+	width:100vw;
+	height:100vh;
 	position:fixed;
-	left:5%;
-	top:5%;
+	left:0 !important;
+	top:0 !important;
 	z-index:2005 !important; /* Must be !important bc for some reason when the myfancypopup calculates the z-index, is giving a z-index smaller than main popup close button... */
+	box-sizing:border-box;
 }
 .page_task_html .edit_page_admin_panel_popup > iframe {
 	width:100% !important;

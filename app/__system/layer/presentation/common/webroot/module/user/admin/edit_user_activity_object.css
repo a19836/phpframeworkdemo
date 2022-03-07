@@ -4,3 +4,9 @@
 .module_edit .form_fields .form_field label {
 	width:120px;
 }
+.module_edit .form_fields .form_field input {
+	width:220px;
+}
+.module_edit .form_fields .form_field select {
+	width:227px;
+}

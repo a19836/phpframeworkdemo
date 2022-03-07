@@ -718,7 +718,7 @@ function onCheckParseWordPressUrls(elm) {
 
 function saveGetHtmlContents(button) {
 	//get previous_html and next_html editors, and getValue and set value to textarea.module_settings_property
-	var block_settings = $(button).parent().parent().children(".module_settings").children(".settings").children(".module_get_html_contents_settings");
+	var block_settings = $(".block_obj > .module_settings > .settings > .module_get_html_contents_settings");
 	var html_elms = block_settings.find(".previous_html, .next_html, .code");
 	
 	$.each(html_elms, function(idx, html_elm) {

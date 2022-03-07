@@ -45,9 +45,15 @@ include $EVC->getViewPath("/layer/diagram"); $confirm_msg = $diagram_already_exi
 				MyFancyPopup.hidePopup();
 		}
 	}
-</script>'; if ($hide_cancel_btn) $head .= '<style> #setup .buttons .cancel {display:none;} </style>'; if ($hide_beginner_btn) $head .= '<style> #setup .buttons .back {display:none;} </style>'; if ($strict_connections_to_one_level) $head .= '<script> allow_connections_to_multiple_levels = false; //allow connections to only 1 level below. </script>'; $main_content .= '<div id="layer_form" style="display:none">
-	<form method="post">
+</script>'; if ($hide_cancel_btn) $head .= '<style> #setup .buttons .cancel {display:none;} </style>'; if ($hide_beginner_btn) $head .= '<style> #setup .buttons .back {display:none;} </style>'; if ($strict_connections_to_one_level) $head .= '<script> allow_connections_to_multiple_levels = false; //allow connections to only 1 level below. </script>'; $main_content = '<div id="layer_form"' . ($hide_setup ?'class="hide_setup"' : '') . '">
+	' . $main_content . '
+	
+	<form method="post" style="display:none">
 		<input type="hidden" name="create_layers_workflow" value="1" />'; if ($tasks_folders) foreach ($tasks_folders as $task_id => $folder) $main_content .= '
 		<input type="hidden" name="tasks_folders[' . $task_id . ']" value="' . $folder . '" />'; $main_content .= '
 	</form>
-</div>'; $continue_function = "continueSetup()"; $back_function = "document.location='?step=3&iframe=$is_inside_of_iframe'"; $back_label = "BEGINNER"; ?>
+</div>'; if ($hide_setup) { $main_content .= '<script>
+		var html = \'<li class="continue" title="Save and Rebuild Layers"><a onclick="return continueSetup();"><i class="icon continue"></i> Save and Rebuild Layers</a></li>\';
+		$(".taskflowchart .workflow_menu li.save").after(html);
+	</script>
+	<style> #setup .buttons {display:none;} </style>'; } $continue_function = "continueSetup()"; $back_function = "document.location='?step=3&iframe=$is_inside_of_iframe'"; $back_label = "BEGINNER"; ?>

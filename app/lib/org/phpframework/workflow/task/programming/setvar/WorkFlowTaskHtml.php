@@ -22,7 +22,7 @@
 		<label>Value: </label>
 		<input type="text" class="task_property_field" name="value" />
 		<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Search</span>
-		<span class="icon search" onclick="SetVarTaskPropertyObj.on_choose_page_url_callback(this)" title="Search Page">Search page</span>
+		<span class="icon search" onclick="ProgrammingTaskUtil.onProgrammingTaskChoosePageUrl(this)" title="Search Page">Search page</span>
 		<span class="icon textarea" onClick="SetVarTaskPropertyObj.changeValueTextField(this)" title="Change from text area to text input and vice-versa.">Change Text Field</span>
 		<span class="icon maximize" onClick="SetVarTaskPropertyObj.maximizeEditor(this)">Maximize</span>
 		<textarea></textarea>

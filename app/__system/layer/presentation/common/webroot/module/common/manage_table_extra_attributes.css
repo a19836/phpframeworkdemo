@@ -21,6 +21,9 @@
 .manage_table_exta_attributes .table_attr_allow_javascript input {
 	margin:0 auto;
 }
+.manage_table_exta_attributes .add {
+	font-size:14px;
+}
 
 /* WARNING */
 .manage_table_exta_attributes .info {

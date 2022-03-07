@@ -99,13 +99,13 @@ body > .droppable.highlight {
 :not(.template-widget)::-webkit-scrollbar-track { /* Track */
     -webkit-border-radius:0;
     border-radius:0;
-    background:#2a2223; 
-    -webkit-box-shadow:inset 0 0 6px #2a2223; 
+    background:#555; 
+    -webkit-box-shadow:inset 0 0 6px #555; 
 }
 :not(.template-widget)::-webkit-scrollbar-thumb { /* Handle */
     -webkit-border-radius:5px;
     border-radius:5px;
-    background:#807072; 
+    background:#ccc; 
     -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.15); 
 }
 :not(.template-widget)::-webkit-scrollbar-thumb:window-inactive {

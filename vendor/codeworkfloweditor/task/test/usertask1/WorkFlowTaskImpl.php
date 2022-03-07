@@ -12,7 +12,7 @@ class WorkFlowTaskImpl extends \WorkFlowTask {
 			$func_name = $props["func_name"];
 			$args = $props["func_args"];
 			
-			if ($func_name && strtolower($func_name) == "header") {
+			if ($func_name && strtolower($func_name) == "xxxx") {
 				unset($props["func_name"]);
 				unset($props["func_args"]);
 				unset($props["label"]);
@@ -52,7 +52,7 @@ class WorkFlowTaskImpl extends \WorkFlowTask {
 		
 		$value = self::getVariableValueCode($properties["value"], $properties["type"]);
 		
-		$code = $prefix_tab . "header($value, \"bla\");\n";
+		$code = $prefix_tab . "xxxx($value, \"bla\");\n";
 		
 		return $code . self::printTask($tasks, $data["exits"][self::DEFAULT_EXIT_ID], $stop_task_id, $prefix_tab, $options);
 	}

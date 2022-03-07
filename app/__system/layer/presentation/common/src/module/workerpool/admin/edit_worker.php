@@ -299,7 +299,7 @@ if ($PEVC) {
 			$statuses_options[] = array("value" => $status_id, "label" => $status_label);
 	
 	$class_contents = '
-		<span class="icon search search_page_url" onclick="onIncludeWorkerFileTaskChooseFile(this)" title="Search File">Search file</span>
+		<span class="icon search search_page_url" onclick="onIncludeWorkerFileTaskChooseFile(this)" title="Search File">Search File</span>
 		<div class="info">
 			The Worker class must implements the "WorkerPoolWork" class in "<a href="' . $project_url_prefix . 'admin/view_file?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $worker_pool_class_pres_path . '" target="WorkerPoolWork">' . $worker_pool_class_cms_path . '</a>".<br/>
 			You can see an example in "<a href="' . $project_url_prefix . 'admin/view_file?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $send_email_worker_pool_class_pres_path . '" target="SendEmailWorkerPoolWork">' . $send_email_worker_pool_class_cms_path . '</a>".
@@ -331,13 +331,13 @@ if ($PEVC) {
 			
 			//CallExternalFunctionWorkerPoolWork fields
 			"function_file" => array("type" => "text", "class" => "function", "label" => "File: ", 
-				"next_html" => '<span class="icon search search_page_url" onclick="onIncludeWorkerFileTaskChooseFunction(this)" title="Search File">Search Function</span>'
+				"next_html" => '<span class="icon search search_page_url" onclick="onIncludeWorkerFileTaskChooseFunction(this)" title="Search Function">Search Function</span>'
 			),
 			"function_name" => array("type" => "text", "class" => "function"),
 			
 			//CallExternalClassMethodWorkerPoolWork fields
 			"class_method_file" => array("type" => "text", "class" => "class_method", "label" => "File: ", 
-				"next_html" => '<span class="icon search search_page_url" onclick="onIncludeWorkerFileTaskChooseClassMethod(this)" title="Search File">Search Class Method</span>'
+				"next_html" => '<span class="icon search search_page_url" onclick="onIncludeWorkerFileTaskChooseClassMethod(this)" title="Search Class Method">Search Class Method</span>'
 			),
 			"class_name" => array("type" => "text", "class" => "class_method"),
 			"method_name" => array("type" => "text", "class" => "class_method"),

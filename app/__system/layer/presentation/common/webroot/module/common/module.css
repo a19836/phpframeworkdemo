@@ -14,8 +14,6 @@ body {
 }
 
 input, select, textarea {
-	border: 1px inset #999999;
-	background: #d5e3e4;
 	color:#555555;
 	font-family: Verdana,Arial,sans-serif;
 }
@@ -46,20 +44,15 @@ input, select, textarea {
 	top:0px;
 	right:0px;
 	z-index:1500;
-	
 	padding: 0px;
-	border: 1px outset #999999;
-	background: #d5e3e4;
-	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Q1ZTNlNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQwJSIgc3RvcC1jb2xvcj0iI2NjZGVlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNiM2M4Y2MiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-	background: -moz-linear-gradient(top,  #d5e3e4 0%, #ccdee0 40%, #b3c8cc 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d5e3e4), color-stop(40%,#ccdee0), color-stop(100%,#b3c8cc));
-	background: -webkit-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
-	background: -o-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
-	background: -ms-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
-	background: linear-gradient(to bottom,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
 	
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 )";
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 );
+	border-top:2px solid #ff0000;
+	background: -moz-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #ffffff73));
+	background: -webkit-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -o-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -ms-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: linear-gradient(to bottom, #eee 50%, #ffffff73 100%);
 }
 .main_content .menu ul.dropdown li {
 	background:none;
@@ -67,23 +60,24 @@ input, select, textarea {
 }
 .main_content .menu ul.dropdown li a {
 	font-size:10px;
+	vertical-align:middle;
 }
 .main_content .menu ul.dropdown li ul {
-	background: #d5e3e4;
+	background:#eee;
 	min-width:150px;
 }
 .main_content .menu ul.dropdown li.large ul {
 	min-width:250px;
 }
 .main_content .menu ul.dropdown li ul li:hover {
-	background:#b3c8cc;
+	background:#ddd;
 }
 .main_content .menu ul.dropdown li ul li.highlight {
 	border-top:1px inset #FFF;
-	background:#b3c8cc;
+	background:#ddd;
 }
 .main_content .menu ul.dropdown li ul li.highlight:hover {
-	background:#ccdee0;
+	background:#ccc;
 }
 
 .main_content .menu ul.dropdown li.other_modules {
@@ -96,10 +90,16 @@ input, select, textarea {
 	text-align:right;
 }
 
-
 .main_content .menu ul.dropdown li.settings {
-	background:url("../../img/icon/settings_icon.png") no-repeat scroll 10px 5px;
-	padding-left:32px;
+	
+}
+.main_content .menu ul.dropdown li.settings::before {
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f7d9";
+	margin-right:5px;
+	vertical-align:middle;
 }
 
 /* MAIN TITLE */
@@ -194,49 +194,22 @@ input, select, textarea {
 }
 
 .module_edit .icon, .module_list .icon {
-	display:block;
-	width:16px;
-	height:20px;
-	margin-top:2px;
-	cursor:pointer;
-	
-	/* Hide Text */
-	text-indent:-9999px;
-	white-space:nowrap;
-	overflow:hidden;
-	
-	float:left;
-	margin-left:5px;
-	margin-right:5px;
+	margin:2px 5px 0 5px;
 }
-.module_edit .delete, .module_list .delete {
-	background:url("../../img/icon/delete_icon.gif") no-repeat scroll 0 1px;
+.module_edit .top_pagination, .module_list .top_pagination {
+	margin-bottom:10px;
 }
-.module_edit .add, .module_list .add {
-	background:url("../../img/icon/add_icon.gif") no-repeat scroll 0 1px;
-}
-.module_edit .edit, .module_list .edit {
-	background:url("../../img/icon/edit_icon.gif") no-repeat scroll 2px 1px;
+.module_edit .bottom_pagination, .module_list .bottom_pagination {
+	margin-top:10px;
 }
 .module_edit table, .module_list table {
-	border:1px solid #CCC;
 	margin:0 auto;
 }
 .module_edit th, .module_list th {
 	min-height:20px;
 	padding:2px 5px;
-	border:1px outset #999999;
-	background: #d5e3e4;
-	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Q1ZTNlNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQwJSIgc3RvcC1jb2xvcj0iI2NjZGVlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNiM2M4Y2MiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-	background: -moz-linear-gradient(top,  #d5e3e4 0%, #ccdee0 40%, #b3c8cc 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d5e3e4), color-stop(40%,#ccdee0), color-stop(100%,#b3c8cc));
-	background: -webkit-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
-	background: -o-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
-	background: -ms-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
-	background: linear-gradient(to bottom,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
-	
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 )";
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 );
+	border-bottom:1px solid #ccc;
+	border-right:1px solid #eee;
 	
 	font-family: Verdana,Arial,sans-serif;
 	color:#555555;
@@ -245,7 +218,8 @@ input, select, textarea {
 	text-align:center;
 }
 .module_edit td, .module_list td {
-	border:1px solid #CCC;
+	border-bottom:1px solid #ccc;
+	border-right:1px solid #eee;
 	padding:0px 4px;
 	text-align:left;
 }
@@ -278,14 +252,11 @@ input, select, textarea {
 }
 .module_edit .form_fields .form_field label {
 	width:135px;
-	height:20px;
-	display:block;
-	float:left;
+	display:inline-block;
 	font-weight:normal;
 }
 .module_edit .form_fields .form_field input {
 	width:200px;
-	background-color:#FFF;
 }
 .module_edit .form_fields .form_field input.checkbox,
   .module_edit .form_fields .form_field .checkbox input {
@@ -306,6 +277,14 @@ input, select, textarea {
 }
 
 .module_edit .buttons {
+	margin:0 auto 5px auto;
+	text-align:center;
+}
+.module_edit .buttons .submit_button {
+	margin:0 10px;
+	display:inline-block;
+}
+/*.module_edit .buttons {
 	width:auto;
 	min-height:20px;
 	float:none;
@@ -324,14 +303,14 @@ input, select, textarea {
 	width:auto;
 	margin-left:5px;
 	margin-right:5px;
-	background-color:#CCC; /* JP 2021-10-29: Before this was #f7f7f7, but bc this is used in the presentation files too and if the page background is white, this won't look good. So I replaced the background by #ccc to be darker. */
+	background-color:#CCC; /* JP 2021-10-29: Before this was #f7f7f7, but bc this is used in the presentation files too and if the page background is white, this won't look good. So I replaced the background by #ccc to be darker. *//*
 }
 .module_edit .buttons .submit_button.submit_button_save {
 	margin-right:10px;
 }
 .module_edit .buttons .button_delete {
 	margin-left:10px;
-}
+}*/
 
 /* LIST ITEMS */
 .module_list {
@@ -368,7 +347,7 @@ input, select, textarea {
 	text-align:center;
 }
 .module_list .paging .selected {
-	background-color:#b3c8cc;
+	background-color:#ccc;
 	color:#666;
 	padding:0 2px;
 }

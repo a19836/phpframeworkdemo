@@ -4,6 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	
 	<link rel="stylesheet" href="<?php echo $project_common_url_prefix; ?>css/global.css" type="text/css" charset="utf-8" />
+	<link rel="stylesheet" href="<?php echo $project_url_prefix; ?>phpframework/css/global.css" type="text/css" charset="utf-8" />
 	
 	<script type="text/javascript" src="<?php echo $project_common_url_prefix; ?>vendor/json/js/json2.js"></script>
 	<script type="text/javascript" src="<?php echo $project_common_url_prefix; ?>vendor/jquery/js/jquery-1.8.1.min.js"></script>
@@ -29,6 +30,12 @@
 	<!-- Message -->
 	<link rel="stylesheet" href="<?php echo $project_common_url_prefix; ?>vendor/jquerymystatusmessage/css/style.css" type="text/css" charset="utf-8" />
 	<script type="text/javascript" src="<?php echo $project_common_url_prefix; ?>vendor/jquerymystatusmessage/js/statusmessage.js"></script>
+	
+	<!-- Add Fontawsome Icons CSS -->
+	<link rel="stylesheet" href="<?php echo $project_common_url_prefix; ?>vendor/fontawesome/css/all.min.css">
+	
+	<!-- Add Icons CSS files -->
+	<link rel="stylesheet" href="<?php echo $project_url_prefix; ?>css/icons.css" type="text/css" charset="utf-8" />
 	
 	<!-- Local CSS and JS -->
 	<link rel="stylesheet" href="<?php echo $project_common_url_prefix; ?>module/common/module.css" type="text/css" charset="utf-8" />

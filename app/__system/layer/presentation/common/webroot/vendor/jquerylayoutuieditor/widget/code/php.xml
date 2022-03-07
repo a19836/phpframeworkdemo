@@ -71,6 +71,7 @@
 			/*font-size:inherit;*/
 			font-size:12px;
 			font-family:inherit;
+			text-align:left;
 			overflow:auto;
 		}
 		.template-widget.template-widget-php > pre::-webkit-scrollbar {

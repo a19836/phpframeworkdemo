@@ -1,6 +1,24 @@
 var includesTree = null;
+var saved_includes_obj_id = null;
 
 $(function () {
+	$(window).bind('beforeunload', function () {
+		if (isIncludesObjChanged()) {
+			if (window.parent && window.parent.iframe_overlay)
+				window.parent.iframe_overlay.hide();
+			
+			return "If you proceed your changes won't be saved. Do you wish to continue?";
+		}
+		
+		return null;
+	});
+	
+	//init auto save
+	addAutoSaveMenu(".top_bar li.save");
+	enableAutoSave(onToggleAutoSave);
+	initAutoSave(".top_bar li.save a");
+	
+	//init trees
 	includesTree = new MyTree({
 		multiple_selection : false,
 		ajax_callback_before : prepareLayerNodes1,
@@ -8,15 +26,13 @@ $(function () {
 	});
 	includesTree.init("choose_file_from_file_manager");
 	
+	//init ui
 	$(window).resize(function() {
 		MyFancyPopup.updatePopup();
 	});
-	/*$(window).bind('beforeunload', function () {
-		if (window.parent && window.parent.iframe_overlay)
-			window.parent.iframe_overlay.hide();
-		
-		return "Changes you made may not be saved. Click cancel to save them first, otherwise to continue...";
-	});*/
+	
+	//set saved_includes_obj_id
+	saved_includes_obj_id = getIncludesObjId();
 	
 	MyFancyPopup.hidePopup();
 });
@@ -109,6 +125,17 @@ function addNewInclude(elm) {
 	return html_obj;
 }
 
+function getIncludesObjId() {
+	var obj = getIncludesObj();
+	return $.md5(JSON.stringify(obj));
+}
+
+function isIncludesObjChanged() {
+	var new_includes_obj_id = getIncludesObjId();
+	
+	return saved_includes_obj_id != new_includes_obj_id;
+}
+
 function getIncludesObj() {
 	var includes_obj = $(".includes_obj");	
 	
@@ -156,29 +183,53 @@ function getIncludesObj() {
 }
 
 function saveIncludes() {
-	var object = getIncludesObj();
+	prepareAutoSaveVars();
 	
-	$.ajax({
-		type : "post",
-		url : save_object_url,
-		data : {"object" : object},
-		dataType : "json",
-		success : function(data, textStatus, jqXHR) {
-			if (data == 1 || ($.isPlainObject(data) && data["status"] == 1))
-				StatusMessageHandler.showMessage("Saved successfully.");
-			else 
-				StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + (data ? "\n" + data : ""));
-		},
-		error : function(jqXHR, textStatus, errorThrown) { 
-			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, save_object_url, function() {
-					StatusMessageHandler.removeLastShownMessage("error");
-					saveIncludes();
-				});
-			else {
-				var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-				StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + msg);
-			}
-		},
-	});
+	var new_includes_obj_id = getIncludesObjId();
+	
+	//only saves if object is different
+	if (!saved_includes_obj_id || saved_includes_obj_id != new_includes_obj_id) {
+		var object = getIncludesObj();
+		
+		$.ajax({
+			type : "post",
+			url : save_object_url,
+			data : {"object" : object},
+			dataType : "json",
+			success : function(data, textStatus, jqXHR) {
+				if (data == 1 || ($.isPlainObject(data) && data["status"] == 1)) {
+					//update saved_includes_obj_id
+					saved_includes_obj_id = new_includes_obj_id;
+					
+					if (!is_from_auto_save)
+						StatusMessageHandler.showMessage("Saved successfully.");
+					else
+						resetAutoSave();
+				}
+				else if (!is_from_auto_save)
+					StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + (data ? "\n" + data : ""));
+				else
+					resetAutoSave();
+			},
+			error : function(jqXHR, textStatus, errorThrown) { 
+				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, save_object_url, function() {
+						StatusMessageHandler.removeLastShownMessage("error");
+						saveIncludes();
+					});
+				else if (!is_from_auto_save) {
+					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+					StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + msg);
+				}
+				else
+					resetAutoSave();
+			},
+			timeout : is_from_auto_save && auto_save_connection_ttl ? auto_save_connection_ttl : 0,
+		});
+	}
+	else if (!is_from_auto_save) {
+		StatusMessageHandler.showMessage("Nothing to save.");
+	}
+	else
+		resetAutoSave();
 }

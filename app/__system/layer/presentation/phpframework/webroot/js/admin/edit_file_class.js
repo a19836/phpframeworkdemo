@@ -1,12 +1,33 @@
 var classesTree = null;
+var saved_class_obj_id = null;
 
 $(function () {
+	$(window).bind('beforeunload', function () {
+		if (isClassObjChanged()) {
+			if (window.parent && window.parent.iframe_overlay)
+				window.parent.iframe_overlay.hide();
+			
+			return "If you proceed your changes won't be saved. Do you wish to continue?";
+		}
+		
+		return null;
+	});
+	
+	//init auto save
+	addAutoSaveMenu(".top_bar li.save");
+	enableAutoSave(onToggleAutoSave);
+	initAutoSave(".top_bar li.save a");
+	
+	//init trees
 	classesTree = new MyTree({
 		multiple_selection : false,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeNonPHPClassFilesFromTree,
 	});
 	classesTree.init("choose_php_class_from_file_manager");
+	
+	//set saved_class_obj_id
+	saved_class_obj_id = getFileClassObjId();
 });
 
 function removeNonPHPClassFilesFromTree(ul, data) {
@@ -105,12 +126,43 @@ function updateClassFieldFromFileManager(elm) {
 
 function addNewProperty(elm) {
 	var html_obj = $(new_property_html);
-	$(elm).parent().parent().parent().parent().find(".fields").append(html_obj);
+	$(elm).parent().closest(".properties").find("table .fields").append(html_obj);
 	
 	return html_obj;
 }
 
-function saveFileClass() {
+function replaceNewNameInUrl(obj, new_class_id, data, options) {
+	var is_id_different = original_class_id != new_class_id;
+	
+	//If id is different, reload page with right id
+	if (is_id_different) {
+		if (window.parent && typeof window.parent.refreshLastNodeParentChilds == "function")
+			window.parent.refreshLastNodeParentChilds();
+		
+		var attr_name = typeof options == "object" && options["class_url_attr_name"] ? options["class_url_attr_name"] : "class";
+		var url = "" + document.location;
+		var regex = new RegExp("(&|\\?)" + attr_name + "=[^&]*", "g");
+		url = url.replace(regex, "$1" + attr_name + "=" + new_class_id);
+		
+		var original_obj_name = original_class_id.indexOf("\\") != -1 ? original_class_id.substr(original_class_id.lastIndexOf("\\") + 1) : original_class_id;
+		url = url.replace("/" + original_obj_name + ".php", "/" + obj["name"] + ".php");
+		
+		document.location = url;
+	}
+}
+
+function getFileClassObjId() {
+	var obj = getFileClassObj();
+	return $.md5(JSON.stringify(obj));
+}
+
+function isClassObjChanged() {
+	var new_class_obj_id = getFileClassObjId();
+	
+	return saved_class_obj_id != new_class_obj_id;
+}
+
+function getFileClassObj() {
 	var class_elm = $(".file_class_obj");
 	
 	var extends_value = class_elm.children(".extend").children("input").val();
@@ -154,44 +206,77 @@ function saveFileClass() {
 		"comments": class_elm.children(".comments").children("textarea").val(),
 	};
 	
-	var url = save_object_url.replace("#class_id#", original_class_id);
+	return obj;
+}
+
+function saveFileClass(options) {
+	prepareAutoSaveVars();
 	
-	$.ajax({
-		type : "post",
-		url : url,
-		data : {"object" : obj},
-		dataType : "json",
-		success : function(data, textStatus, jqXHR) {
-			if (data == 1 || ($.isPlainObject(data) && data["status"] == 1)) {
-				var namespace = obj["namespace"] ? obj["namespace"].replace(/^[ \n\r]+/g, "").replace(/[ \n\r]+$/g, "") : "";
-				var new_class_id = (namespace ? (namespace.substr(0, 1) == "\\" ? "" : "\\") + namespace + "\\" : "") + obj["name"];
-				
-				if (original_class_id != new_class_id) {
-					//prepare file name if namespace exists
-					var original_obj_name = original_class_id.indexOf("\\") != -1 ? original_class_id.substr(original_class_id.lastIndexOf("\\") + 1) : original_class_id;
+	var new_class_obj_id = getFileClassObjId();
+	
+	//only saves if object is different
+	if (!saved_class_obj_id || saved_class_obj_id != new_class_obj_id) {
+		var obj = getFileClassObj();
+		var url = save_object_url.replace("#class_id#", original_class_id);
+		
+		options = typeof options == "object" ? options : {};
+		
+		$.ajax({
+			type : "post",
+			url : url,
+			data : {"object" : obj},
+			dataType : "json",
+			success : function(data, textStatus, jqXHR) {
+				if (data == 1 || ($.isPlainObject(data) && data["status"] == 1)) {
+					//update saved_class_obj_id
+					saved_class_obj_id = new_class_obj_id;
 					
-					save_object_url = save_object_url.replace("/" + original_obj_name + ".php", "/" + obj["name"] + ".php");
-					original_class_id = new_class_id;
+					var namespace = obj["namespace"] ? obj["namespace"].replace(/^[ \n\r]+/g, "").replace(/[ \n\r]+$/g, "") : "";
+					var new_class_id = (namespace ? (namespace.substr(0, 1) == "\\" ? "" : "\\") + namespace + "\\" : "") + obj["name"];
 					
-					if (window.parent && typeof window.parent.refreshLastNodeParentChilds == "function")
-						window.parent.refreshLastNodeParentChilds();
+					if (typeof options["on_success"] == "function")
+						options["on_success"](obj, new_class_id, data, options);
+					
+					if (original_class_id != new_class_id) {
+						//prepare file name if namespace exists
+						var original_obj_name = original_class_id.indexOf("\\") != -1 ? original_class_id.substr(original_class_id.lastIndexOf("\\") + 1) : original_class_id;
+						
+						save_object_url = save_object_url.replace("/" + original_obj_name + ".php", "/" + obj["name"] + ".php");
+						original_class_id = new_class_id;
+						
+						if (window.parent && typeof window.parent.refreshLastNodeParentChilds == "function")
+							window.parent.refreshLastNodeParentChilds();
+					}
+					
+					if (!is_from_auto_save)
+						StatusMessageHandler.showMessage("Saved successfully.");
+					else
+						resetAutoSave();
 				}
-				
-				StatusMessageHandler.showMessage("Saved successfully.");
-			}
-			else
-				StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + (data && !$.isPlainObject(data) ? "\n" + data : ""));
-		},
-		error : function(jqXHR, textStatus, errorThrown) { 
-			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
-					StatusMessageHandler.removeLastShownMessage("error");
-					saveFileClass();
-				});
-			else {
-				var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-				StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + msg);
-			}
-		},
-	});
+				else if (!is_from_auto_save)
+					StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + (data && !$.isPlainObject(data) ? "\n" + data : ""));
+				else
+					resetAutoSave();
+			},
+			error : function(jqXHR, textStatus, errorThrown) { 
+				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
+						StatusMessageHandler.removeLastShownMessage("error");
+						saveFileClass();
+					});
+				else if (!is_from_auto_save) {
+					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+					StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + msg);
+				}
+				else
+					resetAutoSave();
+			},
+			timeout : is_from_auto_save && auto_save_connection_ttl ? auto_save_connection_ttl : 0,
+		});
+	}
+	else if (!is_from_auto_save) {
+		StatusMessageHandler.showMessage("Nothing to save.");
+	}
+	else
+		resetAutoSave();
 }

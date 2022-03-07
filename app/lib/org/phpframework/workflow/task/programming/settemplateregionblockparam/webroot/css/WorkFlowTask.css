@@ -42,7 +42,7 @@
 
 
 .set_template_region_block_param_task_html {
-	width:430px;
+	width:440px;
 }
 .set_template_region_block_param_task_html .region, 
    .set_template_region_block_param_task_html .block, 
@@ -53,7 +53,7 @@
    .set_template_region_block_param_task_html .block, 
    .set_template_region_block_param_task_html .param_name, 
    .set_template_region_block_param_task_html .param_value {
-	width:100%;
+	width:440px;
 	height:20px;
 }
 .set_template_region_block_param_task_html .region label, 
@@ -78,7 +78,7 @@
 	text-align:center;
 	font-size:9px;
 	width:60px;
-	margin-left:5px;
+	height:19px;
 }
 .set_template_region_block_param_task_html .param_value .search {
 	display:none;

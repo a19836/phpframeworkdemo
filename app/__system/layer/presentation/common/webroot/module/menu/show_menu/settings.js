@@ -311,7 +311,7 @@ function updateMenuItemsIndexes(main_ul) {
 }
 
 function saveMenu(button) {
-	var menu_items = $(button).parent().parent().find(" > .module_settings > .settings > .menu_settings > .menu_items");
+	var menu_items = $(".block_obj > .module_settings > .settings > .menu_settings > .menu_items");
 	var query_type = menu_items.find(" > .query_type > select").val();
 	var select = menu_items.find(" > .selected_menu > select");
 	var input = menu_items.find(" > .menu_by_user_defined > input");

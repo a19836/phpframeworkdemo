@@ -5,8 +5,6 @@
 .jsplumbtaskworkflow .selected_task_properties, .jsplumbtaskworkflow .selected_connection_properties {
 	width:auto !important;
 	height:auto !important;
-	max-height:70%;
-	max-height:calc(100% - 40px);
 	padding-bottom:10px;
 	box-sizing:border-box;
 	
@@ -18,19 +16,27 @@
 	border-radius:0;
 	overflow:auto;
 }
+.taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_task_properties, .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_connection_properties {
+	max-height:70%;
+	max-height:calc(100% - 40px);
+}
 .jsplumbtaskworkflow .selected_task_properties > .popup_close, .jsplumbtaskworkflow .selected_connection_properties > .popup_close {
-	top:0;
+	/*top:0;
 	left:0;
-	right:auto;
+	right:auto;*/
 	opacity:.1;
 }
 .jsplumbtaskworkflow .selected_task_properties > .popup_close, .jsplumbtaskworkflow .selected_connection_properties > .popup_close:hover {
 	opacity:1;
 }
-.jsplumbtaskworkflow .selected_task_properties > .maximize_minimize_icon, .jsplumbtaskworkflow .selected_connection_properties > .maximize_minimize_icon {
+.taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_task_properties > .maximize_minimize_icon, 
+  .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_connection_properties > .maximize_minimize_icon,
+  .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_task_properties > .expand_collapse_icon, 
+  .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_connection_properties > .expand_collapse_icon {
 	display:none;
 }
-.selected_task_properties > .generic_buttons, .jsplumbtaskworkflow .selected_connection_properties > .generic_buttons {
+.taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_task_properties > .generic_buttons, 
+  .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_connection_properties > .generic_buttons {
 	position:relative;
 	margin-top:30px;
-}
+} 

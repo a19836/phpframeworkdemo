@@ -64,7 +64,7 @@ DBDriverTaskPropertyObj.ignore_options_by_extension = ' . json_encode($ignore_co
 	<div class="password">
 		<label>Password:</label>
 		<input type="password" class="task_property_field" name="password" value="" />
-		<span class="toggle_password" onClick="DBDriverTaskPropertyObj.togglePasswordField(this)"></span>
+		<span class="icon toggle_password" onClick="DBDriverTaskPropertyObj.togglePasswordField(this)"></span>
 	</div>
 
 	<div class="persistent">

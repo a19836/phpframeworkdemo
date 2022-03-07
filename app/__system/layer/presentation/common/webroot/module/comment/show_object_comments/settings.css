@@ -38,13 +38,11 @@
    .show_object_comments_settings .show_comments label,
    .show_object_comments_settings .user_label label {
 	width:160px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .show_object_comments_settings .add_comment_url label {
 	width:140px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .show_object_comments_settings .object_type_id select,
    .show_object_comments_settings .object_id input,
@@ -92,18 +90,15 @@
 }
 .show_object_comments_settings .filter_by_parent .filter_object_type_id label {
 	width:100px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .show_object_comments_settings .filter_by_parent .filter_object_id label {
 	width:90px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .show_object_comments_settings .filter_by_parent .filter_group label {
 	width:60px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 .show_object_comments_settings .filter_by_parent .filter_object_type_id select {
 	width:130px;

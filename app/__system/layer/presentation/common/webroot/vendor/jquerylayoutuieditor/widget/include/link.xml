@@ -35,10 +35,10 @@
 		  body > .menu-widget.menu-widget-link.ui-draggable-dragging {
 			padding-top:.3em;
 			display:inline-block;
-			background:#c0c0c0;
+			background:rgba(0, 0, 0, .2);
 			border-radius:5px;
-			border:1px outset #bbb;
-			color:#666;
+			border:1px outset rgba(0, 0, 0, .2);
+			color:inherit;
 			font-size:12px;
 			font-weight:bold;
 			font-family:cursive;

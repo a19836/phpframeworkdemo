@@ -34,7 +34,7 @@
 			</tr>
 		</thead>
 		<tbody index_prefix="links">
-			<tr class="no_links"><td colspan="4">There are no links...</td></tr>
+			<tr class="no_links"><td colspan="6">There are no links...</td></tr>
 		</tbody>
 	</table>
 </div>

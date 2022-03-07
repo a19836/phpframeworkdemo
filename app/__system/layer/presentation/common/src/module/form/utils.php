@@ -15,7 +15,7 @@ function getActionHtml($action, $with_options = 1) {
 		<label title="' . $title . '">' . $label . '</label>';
 	
 	if ($with_options) {
-		$html .= '<i class="zmdi zmdi-plus-circle-o toggle" onClick="toggleFormWizardActionOptions(this)"></i>
+		$html .= '<i class="icon expand_content toggle" onClick="toggleFormWizardActionOptions(this)"></i>
 		<div class="action-options">';
 		
 		if ($with_options == 1)
@@ -93,12 +93,12 @@ function getFormGroupItemHtml($EVC, $project_url_prefix, $project_common_url_pre
 	
 	$html = '
 	<header class="form-group-header">
-		<i class="zmdi zmdi-plus-circle-o toggle" onClick="toggleGroupBody(this)"></i>
+		<i class="icon expand_content toggle" onClick="toggleGroupBody(this)"></i>
 		<input class="result-var-name result-var-name-output" type="text" placeHolder="Result Variable Name or leave it empty for direct output" title="This action will only appear in the output if this field is empty. If this \'Result Variable Name\' cotains a value, the output will be putted to this correspondent variable." />
 		
-		<i class="zmdi zmdi-delete remove" onClick="removeItem(this)"></i>
-		<i class="zmdi zmdi-long-arrow-down move-down" onClick="moveDownItem(this)"></i>
-		<i class="zmdi zmdi-long-arrow-up move-up" onClick="moveUpItem(this)"></i>
+		<i class="icon remove" onClick="removeItem(this)"></i>
+		<i class="icon move_down" onClick="moveDownItem(this)"></i>
+		<i class="icon move_up" onClick="moveUpItem(this)"></i>
 		
 		<select class="action-type" onChange="onChangeFormInputType(this)">
 			' . ($db_drivers ? '<optgroup label="DataBase Actions">

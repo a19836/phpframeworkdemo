@@ -18,4 +18,4 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-interface ILayer { public function setCacheLayer($pbc7e2f66); public function getCacheLayer(); public function isCacheActive(); public function getModuleCacheLayer(); public function getErrorHandler(); public function getPHPFrameWork(); public function setPHPFrameWorkObjName($v077f7f1e6b); public function getPHPFrameWorkObjName(); } ?>
+interface ILayer { public function setCacheLayer($pbc7e2f66); public function getCacheLayer(); public function isCacheActive(); public function getModuleCacheLayer(); public function getErrorHandler(); public function getPHPFrameWork(); public function setPHPFrameWorkObjName($v077f7f1e6b); public function getPHPFrameWorkObjName(); public function getLayerPathSetting(); } ?>

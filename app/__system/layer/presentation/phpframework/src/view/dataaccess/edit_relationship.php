@@ -30,30 +30,34 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); $filter_by_layout_url_query = La
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/dataaccess/edit_hbn_obj.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/edit_hbn_obj.js"></script>
 
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+<!-- Edit QUERY JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/dataaccess/edit_query.css" type="text/css" charset="utf-8" />
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/edit_query.js"></script>'; $head .= $WorkFlowQueryHandler->getHeader(); $head .= $WorkFlowQueryHandler->getDataAccessJavascript($bean_name, $bean_file_name, $path, $item_type, $hbn_obj_id, $get_layer_sub_files_url); $head .= '<script>
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/edit_query.js"></script>
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+
+<!-- Local JS and CSS files -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/dataaccess/edit_relationship.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/edit_relationship.js"></script>'; $head .= $WorkFlowQueryHandler->getHeader(); $head .= $WorkFlowQueryHandler->getDataAccessJavascript($bean_name, $bean_file_name, $path, $item_type, $hbn_obj_id, $get_layer_sub_files_url); $head .= '<script>
 var save_data_access_object_url = \'' . $project_url_prefix . 'phpframework/dataaccess/save_query?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $path . '&item_type=' . $item_type . '&obj=' . $hbn_obj_id . '&relationship_type=' . $relationship_type . '\';
 var remove_data_access_object_url = \'' . $project_url_prefix . 'phpframework/dataaccess/remove_query?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $path . '&item_type=' . $item_type . '&obj=' . $hbn_obj_id . '&relationship_type=' . $relationship_type . '&query_id=#obj_id#&query_type=' . $query_type . '\';
 var old_obj_id = \'' . $query_id . '\';
-</script>
-<style>
-.relationship {
-	border:0;
-}
-.data_access_obj {
-	width:690px;
-}
-.relationship .header_buttons {
-	display:none;
-}
-.relationship {
-	display:none;
-}
-.save_button {
-	padding-top:0;
-}
-</style>'; $main_content = $WorkFlowQueryHandler->getGlobalTaskFlowChar(); $title = $query_id ? 'Edit "' . $query_id . '" Relationship' : 'Add Relationship'; $main_content .= '<div class="title">' . $title . '</div>'; if ($obj_data || !$query_id) { $main_content .= $WorkFlowQueryHandler->getChooseQueryTableOrAttributeHtml("choose_db_table_or_attribute"); $main_content .= $WorkFlowQueryHandler->getChooseDAOObjectFromFileManagerHtml("choose_dao_object_from_file_manager"); $main_content .= $WorkFlowQueryHandler->getChooseAvailableMapIdHtml("choose_map_id"); $sql_html = $WorkFlowQueryHandler->getQueriesBlockHtml(array($obj_data), true, $obj_data["name"], false); $main_content .= '
+var old_obj_type = \'' . $query_type . '\';
+</script>'; $main_content = $WorkFlowQueryHandler->getGlobalTaskFlowChar(); $main_content .= '<div class="edit_relationship">
+	<div class="top_bar">
+		<header>
+			<div class="title">
+				' . ($query_id ? "Edit" : "Add") . ' <span class="query_type"></span> Relationship: <span class="query_name"></span>
+			</div>
+			
+			<ul>
+				<li class="toggle_ids" title="Toggle Ids"><a class="toggle_icon" onClick="toggleParameterAndResultFields(this, \'.edit_relationship\')"><i class="icon toggle_ids"></i> Toggle Ids</a></li>
+				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
+				<li class="save" title="Save Relationship"><a onClick="saveQueryObject(onSuccessSingleQuerySave)"><i class="icon save"></i> Save</a></li>
+			</ul>
+		</header>
+	</div>'; if ($obj_data || !$query_id) { $main_content .= $WorkFlowQueryHandler->getChooseQueryTableOrAttributeHtml("choose_db_table_or_attribute"); $main_content .= $WorkFlowQueryHandler->getChooseDAOObjectFromFileManagerHtml("choose_dao_object_from_file_manager"); $main_content .= $WorkFlowQueryHandler->getChooseAvailableMapIdHtml("choose_map_id"); $sql_html = $WorkFlowQueryHandler->getQueriesBlockHtml(array($obj_data), true, $obj_data["name"], false); $main_content .= '
 <div class="data_access_obj">	
 	<div class="hbn_obj_relationships">
 		<div class="relationships">
@@ -62,15 +66,4 @@ var old_obj_id = \'' . $query_id . '\';
 			</div>
 		</div>
 	</div>
-	<script>
-		$(".relationship").css("display", "block");
-		$(".relationship .result_map_id .search").css("display", "none");
-		
-		$(".hbn_obj_relationships .advanced_query_settings").click();
-		//$(".hbn_obj_relationships .advanced_query_settings").html("Show More Settings");
-	</script>
-	
-	<div class="save_button">
-		<input type="button" name="value" value="SAVE" onClick="saveQueryObject();" />
-	</div>
-</div>'; } else $main_content .= '<div class="error">Error: The system couldn\'t detect the selected object. Please refresh and try again...</div>'; ?>
+</div>'; } else $main_content .= '<div class="error">Error: The system couldn\'t detect the selected object. Please refresh and try again...</div>'; $main_content .= '</div>'; ?>

@@ -1,12 +1,29 @@
 var db_diagrams_data = {};
+var saved_hbn_class_obj_id = null;
 
 $(function () {
-	/*$(window).bind('beforeunload', function () {
-		if (window.parent && window.parent.iframe_overlay)
-			window.parent.iframe_overlay.hide();
+	$(window).unbind('beforeunload').bind('beforeunload', function () {
+		if (isHibernateClassObjectChanged()) {
+			if (window.parent && window.parent.iframe_overlay)
+				window.parent.iframe_overlay.hide();
+			
+			return "If you proceed your changes won't be saved. Do you wish to continue?";
+		}
 		
-		return "Changes you made may not be saved. Click cancel to save them first, otherwise to continue...";
-	});*/
+		return null;
+	});
+	
+	//init auto save
+	addAutoSaveMenu(".top_bar li.save");
+	addAutoConvertMenu(".top_bar li.save");
+	enableAutoSave(onToggleAutoSave);
+	enableAutoConvert(onToggleAutoConvert);
+	initAutoSave(".top_bar li.save a");
+	
+	//init ui
+	var relationships_elm = $(".hbn_obj_relationships").children(".relationships");
+	relationships_elm.find(".advanced_query_settings").addClass("active");
+	relationships_elm.children(".update_automatically").first().attr("onClick", "updateHibernateObjectRelationshipsAutomatically(this)");
 	
 	$("#tabs").tabs();
 	$("#tabs").show();
@@ -17,7 +34,29 @@ $(function () {
 	$("#relationship_tab, #query_tab").click(function(originalEvent) {
 		initAllQueryTasks();
 	});
+	
+	//set saved_hbn_class_obj_id
+	if ($(".edit_hbn_obj")[0])
+		saved_hbn_class_obj_id = getHibernateClassObjectId();
 });
+
+function toggleHbnObjAdvancedSettings(elm) {
+	elm = $(elm);
+	var advanced_settings = $(".advanced_settings");
+	var simple_settings = $(".simple_settings");
+	var is_shown = elm.hasClass("active");
+	
+	if (is_shown) {
+		elm.removeClass("active");
+		advanced_settings.hide();
+		simple_settings.show();
+	}
+	else {
+		elm.addClass("active");
+		advanced_settings.show();
+		simple_settings.hide();
+	}
+}
 
 /* START: HBN OBJ TABLE */
 function getHbnObjTableFromDB(elm) {
@@ -167,7 +206,7 @@ function onChangeResultType(elm) {
 
 /* START: UPDATE AUTOMATICALLY */
 function createHibernateObjectAutomatically(elm) {
-	var target_field = elm;
+	var target_field = $(".edit_hbn_obj .data_access_obj > .name > input")[0];
 	
 	updateRelationshipsAutomatically(elm, target_field, updateHibernateObjectAutomatically);
 }
@@ -320,7 +359,18 @@ function updateHibernateObjectRelationships(relationships, rel_type, icon_add_re
 /* END: UPDATE AUTOMATICALLY */
 
 /* START: SAVE ALL */
-function saveHibernateObject() {
+function getHibernateClassObjectId() {
+	var obj = getHibernateClassObject();
+	return $.md5(JSON.stringify(obj));
+}
+
+function isHibernateClassObjectChanged() {
+	var new_hbn_class_obj_id = getHibernateClassObjectId();
+	
+	return saved_hbn_class_obj_id != new_hbn_class_obj_id;
+}
+
+function getHibernateClassObject() {
 	var data_access_elm = $(".data_access_obj");
 	var hbn_obj = {};
 	
@@ -401,14 +451,50 @@ function saveHibernateObject() {
 	var main_queries_obj = getUserRelationshipsObj(main_queries_elm);
 	hbn_obj["queries"] = main_queries_obj;
 	
+	return hbn_obj;
+}
+
+function saveHibernateObject() {
+	var hbn_obj = getHibernateClassObject();
 	var error_msg = validateHibernateObject(hbn_obj);
 	
 	if (error_msg == "") {
-		var new_obj_id = hbn_obj["name"];
+		prepareAutoSaveVars();
 		
-		hbn_obj = {"class": hbn_obj};
-	
-		saveDataAccessObject(hbn_obj, new_obj_id);
+		var new_hbn_class_obj_id = getHibernateClassObjectId();
+		
+		//only saves if object is different
+		if (saved_hbn_class_obj_id != new_hbn_class_obj_id) {
+			var new_obj_id = hbn_obj["name"];
+			hbn_obj = {"class": hbn_obj};
+		
+			saveDataAccessObject(hbn_obj, new_obj_id, {
+				"force": true,
+				on_success: function(obj, new_obj_id, data) {
+					//update saved_hbn_class_obj_id
+					saved_hbn_class_obj_id = new_hbn_class_obj_id;
+					
+					//checks if name changed
+					var is_id_different = old_obj_id && new_obj_id && old_obj_id.trim() != new_obj_id.trim();
+					
+					//If id is different, reload page with right id
+					if (is_id_different) {
+						if (window.parent && typeof window.parent.refreshLastNodeParentChilds == "function")
+							window.parent.refreshLastNodeParentChilds();
+						
+						var url = "" + document.location;
+						url = url.replace(/(&|\?)obj=[^&]*/g, "$1obj=" + new_obj_id);
+						
+						document.location = url;
+					}
+				}
+			});
+		}
+		else if (!is_from_auto_save) {
+			StatusMessageHandler.showMessage("Nothing to save.");
+		}
+		else
+			resetAutoSave();
 	}
 	else
 		alert("Error:" + error_msg);

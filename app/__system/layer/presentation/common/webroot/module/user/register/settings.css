@@ -13,8 +13,7 @@
 .edit_settings .user_type_id label,
    .edit_settings .redirect_page_url label {
 	width:150px;
-   	display:block;
-	float:left;
+	display:inline-block;
 }
 
 .edit_settings .redirect_page_url input {
@@ -36,5 +35,6 @@
 }
 .edit_settings .settings_props .settings_prop.prop_password .selected_task_properties .form_containers .fields .field .other_settings .password_generator label {
 	width:130px;
+	display:inline-block;
 	font-size:90%;
 }

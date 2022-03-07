@@ -121,9 +121,9 @@ var LoopTaskPropertyObj = {
 	},
 	
 	getInitCounterVariableHtml : function(idx, name, value, type) {
-		name = name ? name.replace(/"/g, "&quot;") : "";
-		value = typeof value != "undefined" ? value.replace(/"/g, "&quot;") : "";
-		type = type ? type : "";
+		name = typeof name != "undefined" && name != null ? name.replace(/"/g, "&quot;") : "";
+		value = typeof value != "undefined" && value != null ? value.replace(/"/g, "&quot;") : "";
+		type = typeof type != "undefined" && type != null ? type : "";
 		
 		name = name.substr(0, 1) == '$' ? name.substr(1) : name;
 		value = type == "variable" && value.substr(0, 1) == '$' ? value.substr(1) : value;
@@ -241,10 +241,7 @@ var LoopTaskPropertyObj = {
 	},
 	
 	onCompleteLabel : function(task_id) {
-		onEditLabel(task_id);
-		myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
-		
-		return true;
+		return ProgrammingTaskUtil.onEditLabel(task_id);
 	},
 	
 	onTaskCreation : function(task_id) {

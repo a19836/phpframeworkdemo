@@ -22,9 +22,9 @@
 }
 
 .set_query_data_task_html .sql {
-	width:420px;
+	width:430px;
 	min-height:20px;
-	margin:0 auto;
+	margin:0 auto 5px;
 }
 .set_query_data_task_html .sql label {
 	width:110px;
@@ -42,7 +42,7 @@
 	height:100px;
 	float:none;
 	clear:left;
-	margin-bottom:5px;
+	margin:5px 0;
 	background-color:#FFF;
 	border:1px inset #CCC;
 }
@@ -53,7 +53,7 @@
 	text-align:center;
 	font-size:9px;
 	width:60px;
-	margin-bottom:5px;
+	height:19px;
 }
 .set_query_data_task_html .opts {
 	margin-bottom:5px;
@@ -64,11 +64,5 @@
 	margin-bottom:0;
 }
 .set_query_data_task_html > div:not(.broker_method_obj) > .add_variable {
-	margin-left:-23px;
+	margin-left:-26px;
 }
-.set_query_data_task_html > div.broker_method_obj > .add_variable {
-	margin-top:29px;
-}
-
-
-

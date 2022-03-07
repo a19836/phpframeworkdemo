@@ -346,7 +346,8 @@ function showExecutedTestResponse(li, msg) {
 			li.children("a").after(div);
 	}
 	
-	div.html(msg).hide();
+	div.html(msg);
+	div.hide();
 }
 
 function manageFile(icon, action, on_success_callback) {

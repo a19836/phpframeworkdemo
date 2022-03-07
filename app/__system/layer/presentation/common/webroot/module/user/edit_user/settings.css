@@ -12,5 +12,6 @@
 }
 .edit_settings .settings_props .settings_prop.prop_password .selected_task_properties .form_containers .fields .field .other_settings .password_generator label {
 	width:130px;
+	display:inline-block;
 	font-size:90%;
 }

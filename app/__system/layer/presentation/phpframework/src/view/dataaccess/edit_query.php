@@ -30,48 +30,50 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); $filter_by_layout_url_query = La
 <!-- Edit Code JS file -->
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_code.js"></script>
 
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
+<!-- Icons CSS file -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Edit QUERY JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/dataaccess/edit_query.css" type="text/css" charset="utf-8" />
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/edit_query.js"></script>'; $head .= $WorkFlowQueryHandler->getHeader(); $head .= $WorkFlowQueryHandler->getDataAccessJavascript($bean_name, $bean_file_name, $path, $item_type, $hbn_obj_id, $get_layer_sub_files_url); $head .= '<script>
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/edit_query.js"></script>
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+
+<!-- Local JS and CSS files -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/dataaccess/edit_single_query.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/edit_single_query.js"></script>'; $head .= $WorkFlowQueryHandler->getHeader(); $head .= $WorkFlowQueryHandler->getDataAccessJavascript($bean_name, $bean_file_name, $path, $item_type, $hbn_obj_id, $get_layer_sub_files_url); $head .= '<script>
 var save_data_access_object_url = \'' . $project_url_prefix . 'phpframework/dataaccess/save_query?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $path . '&item_type=' . $item_type . '&obj=' . $hbn_obj_id . '&relationship_type=' . $relationship_type . '\';
 var remove_data_access_object_url = \'' . $project_url_prefix . 'phpframework/dataaccess/remove_query?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $path . '&item_type=' . $item_type . '&obj=' . $hbn_obj_id . '&relationship_type=' . $relationship_type . '&query_id=#obj_id#&query_type=' . $query_type . '\';
 var old_obj_id = \'' . $query_id . '\';
-</script>
-<style>
-.relationship {
-	border:0;
-}
-.data_access_obj {
-	width:690px;
-}
-.relationship .header_buttons {
-	display:none;
-}
-.relationship {
-	display:none;
-}
-.save_button {
-	padding-top:0;
-}
-</style>'; $main_content = $WorkFlowQueryHandler->getGlobalTaskFlowChar(); $title = $query_id ? 'Edit "' . $query_id . '" Query SQL' : 'Add Query SQL'; $main_content .= '<div class="title">' . $title . '</div>'; if ($obj_data || !$query_id) { $main_content .= $WorkFlowQueryHandler->getChooseQueryTableOrAttributeHtml("choose_db_table_or_attribute"); $main_content .= $WorkFlowQueryHandler->getChooseDAOObjectFromFileManagerHtml("choose_dao_object_from_file_manager"); $main_content .= $WorkFlowQueryHandler->getChooseAvailableMapIdHtml("choose_map_id"); $data = array( "type" => $rel_type, "name" => $name, "parameter_class" => $parameter_class, "parameter_map" => $parameter_map, "result_class" => $result_class, "result_map" => $result_map, "sql" => $sql ); $settings = array( "init_ui" => true, ); $rand = rand(0, 1000); $sql_html = $WorkFlowQueryHandler->getQueryBlockHtml(false, $settings, $data); $sql_html = str_replace("#rand#", $rand, $sql_html); $main_content .= '
+var old_obj_type = \'' . $rel_type . '\';
+</script>'; $main_content = $WorkFlowQueryHandler->getGlobalTaskFlowChar(); $rand = rand(0, 1000); $main_content .= '<div class="edit_single_query">
+	<div class="top_bar">
+		<header>
+			<div class="title">
+				' . ($query_id ? "Edit" : "Add") . ' <span class="query_type"></span> SQL Query: <span class="query_name"></span>
+			</div>
+			<ul>
+				<li class="add_new_table select_query" title="Add new Table"><a onclick="return addNewTask(' . $rand . ');"><i class="icon add"></i> Add Table</a></li>
+				<li class="update_tables_attributes select_query" title="Update Tables\' Attributes"><a onclick="return updateQueryDBBroker(' . $rand . ', false);"><i class="icon update_tables_attributes"></i> Update Tables\' Attributes</a></li>
+				<li class="toggle_ids" title="Toggle Ids"><a class="toggle_icon" onClick="toggleParameterAndResultFields(this, \'.edit_single_query\')"><i class="icon toggle_ids"></i> Toggle Ids</a></li>
+				<li class="toggle_ui select_query" title="Toggle UI"><a class="toggle_icon active" onclick="return showOrHideSingleQueryUI(this, ' . $rand . ');"><i class="icon toggle_ui"></i> Toggle UI</a></li>
+				<li class="toggle_settings select_query" title="Toggle Settings"><a class="toggle_icon active" onclick="return showOrHideSingleQuerySettings(this, ' . $rand . ');"><i class="icon toggle_settings"></i> Toggle Settings</a></li>
+				
+				<li class="create_sql_from_ui" title="Create SQL From UI"><a onClick="autoUpdateSqlFromUI(' . $rand . ')"><i class="icon create_sql_from_ui"></i> Create SQL From UI</a></li>
+				<li class="create_ui_from_sql" title="Create UI From SQL"><a onClick="autoUpdateUIFromSql(' . $rand . ')"><i class="icon create_ui_from_sql"></i> Create UI From SQL</a></li>
+				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
+				<li class="save" title="Save Query"><a onClick="saveQueryObject(onSuccessSingleQuerySave)"><i class="icon save"></i> Save</a></li>
+			</ul>
+		</header>
+	</div>'; if ($obj_data || !$query_id) { $main_content .= $WorkFlowQueryHandler->getChooseQueryTableOrAttributeHtml("choose_db_table_or_attribute"); $main_content .= $WorkFlowQueryHandler->getChooseDAOObjectFromFileManagerHtml("choose_dao_object_from_file_manager"); $main_content .= $WorkFlowQueryHandler->getChooseAvailableMapIdHtml("choose_map_id"); $data = array( "type" => $rel_type, "name" => $name, "parameter_class" => $parameter_class, "parameter_map" => $parameter_map, "result_class" => $result_class, "result_map" => $result_map, "sql" => $sql ); $settings = array( "init_ui" => true, ); $sql_html = $WorkFlowQueryHandler->getQueryBlockHtml(false, $settings, $data); $sql_html = str_replace("#rand#", $rand, $sql_html); $main_content .= '
 <div class="data_access_obj">	
 	<div class="relationships">
 		<div class="rels">
 			' . $sql_html . '
 		</div>
 	</div>
-	<script>
-	$(function () {
-		$(".relationship").css("display", "block");
-		
-		var a = $(".query_tabs .query_sql_tab a").first();
-		a.attr("not_create_sql_from_ui", 1);
-		a.click();
-		a.removeAttr("not_create_sql_from_ui");
-	});
-	</script>
-	
-	<div class="save_button">
-		<input type="button" name="value" value="SAVE" onClick="saveQueryObject();" />
-	</div>
-</div>'; } else $main_content .= '<div class="error">Error: The system couldn\'t detect the selected object. Please refresh and try again...</div>'; ?>
+</div>'; } else $main_content .= '<div class="error">Error: The system couldn\'t detect the selected object. Please refresh and try again...</div>'; $main_content .= '</div>'; ?>

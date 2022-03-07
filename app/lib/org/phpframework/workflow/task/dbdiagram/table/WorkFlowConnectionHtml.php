@@ -36,7 +36,7 @@
 				<th class="source_column table_header"></th>
 				<th class="target_column table_header"></th>
 				<th class="table_attr_icons">
-					<div class="add"><a onClick="DBTableTaskPropertyObj.addTableForeignKey()">ADD</a></div>
+					<a class="icon add" onClick="DBTableTaskPropertyObj.addTableForeignKey()">ADD</a>
 				</th>
 			</tr>
 		</thead>

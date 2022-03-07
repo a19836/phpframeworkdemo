@@ -1,38 +1,74 @@
+$(function () {
+	hideOrShowIsBusinessLogicService( $(".top_bar .title > select.is_business_logic_service")[0] );
+	
+	//set saved_class_method_settings_id
+	saved_class_method_settings_id = getFileClassMethodSettingsId();
+});
+
 function hideOrShowIsBusinessLogicService(elm) {
 	var is_business_logic_service = $(elm).val();
 	
-	var settings = $(elm).parent().parent();
+	var settings = $(".file_class_method_obj #settings");
+	var arguments_tbody = settings.find(".arguments .fields");
+	var arguments_rows = arguments_tbody.children(".argument");
+	var annotations_tbody = settings.find(".annotations .fields");
+	var annotations_rows = annotations_tbody.children(".annotation");
 	
 	if (is_business_logic_service == 1) {
 		settings.children(".type, .abstract, .static, .arguments").hide();
-		settings.find(".arguments .fields").html("");
-		addNewArgument( settings.find(".arguments thead .add")[0] );
+		
+		//remove argument from ProgrammingTaskUtil.variables_in_workflow
+		for (var i = 0; i < arguments_rows.length; i++)
+			removeArgument( $(arguments_rows[i]).find(".icon.delete")[0] );
+		
+		//add default $data variable to ProgrammingTaskUtil.variables_in_workflow
+		ProgrammingTaskUtil.variables_in_workflow["$data"] = {};
+		
+		//add annotations to ProgrammingTaskUtil.variables_in_workflow
+		for (var i = 0; i < annotations_rows.length; i++) {
+			var input = $(annotations_rows[i]).find(".name input");
+			var name = input.val();
+			name = ("" + name).replace(/^[&$]/g, "");
+			
+			delete ProgrammingTaskUtil.variables_in_workflow["$" + name];
+			
+			//add annotation as normal argument
+			onBlurAnnotationName(input[0]);
+		}
 	}
 	else {
+		//remove default $data variable from ProgrammingTaskUtil.variables_in_workflow
+		delete ProgrammingTaskUtil.variables_in_workflow["$data"];
+		
+		//remove method annotations variables from ProgrammingTaskUtil.variables_in_workflow
+		for (var i = 0; i < annotations_rows.length; i++) {
+			var input = $(annotations_rows[i]).find(".name input");
+			var name = input.val();
+			name = ("" + name).replace(/^[&$]/g, "");
+			
+			delete ProgrammingTaskUtil.variables_in_workflow["$data[\"" + name + "\"]"];
+			
+			//add annotation as normal argument
+			onBlurAnnotationName(input[0]);
+		}
+		
+		if (arguments_rows.length == 0) {
+			var item = addNewArgument( arguments_tbody.parent().find("thead .add")[0] );
+			//item.find(".name input").val("data");
+		}
+		else //add argument to ProgrammingTaskUtil.variables_in_workflow
+			for (var i = 0; i < arguments_rows.length; i++)
+				onBlurArgumentName( $(arguments_rows[i]).find(".name input")[0] );
+		
 		if (settings.hasClass("function_settings")) {
 			settings.children(".arguments").show();
 			settings.children(".type, .abstract, .static").hide();
 		}
-		else {
+		else
 			settings.children(".type, .abstract, .static, .arguments").show();
-		}
 	}
 }
 
-function saveMethod() {
-	var obj = getFileClassMethodObj();
-	obj["is_business_logic_service"] = $(".file_class_method_obj > #settings > .is_business_logic_service").children("select").val();
-	
-	var save_url = save_object_url.replace("#method_id#", original_method_id);
-	
-	saveObjCode(save_url, obj, {
-		success: function(data, textStatus, jqXHR) {
-			if (original_method_id != obj["name"]) {
-				original_method_id = obj["name"];
-				window.parent.refreshLastNodeParentChilds();
-			}
-			
-			return true;
-		}
-	});
+function prepareFileClassMethodSettingsObj(obj) {
+	obj["is_business_logic_service"] = $(".top_bar .title > select.is_business_logic_service").val();
 }

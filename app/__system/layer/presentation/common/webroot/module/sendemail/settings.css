@@ -26,8 +26,7 @@
 .send_email_settings .email_template_settings input,
    .send_email_settings .email_template_settings textarea {
 	width:100%;
-	width:calc(100% - 110px);
-	background:white;
+	width:calc(100% - 120px);
 }
 
 .send_email_settings .smtp_settings {

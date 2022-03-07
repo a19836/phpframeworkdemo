@@ -19,10 +19,24 @@
  */
 
 $head = '
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
+<!-- Icons CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/dataaccess/create_data_access_objs_automatically.css" type="text/css" charset="utf-8" />
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/create_data_access_objs_automatically.js"></script>'; if ($_POST["step_2"]) { $exists_any_status_ok = false; $main_content = '<div class="statuses">
-		<div class="title">Please check the statuses of the table objects created:</div>
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/create_data_access_objs_automatically.js"></script>'; $main_content = ''; if ($_POST["step_2"]) { $exists_any_status_ok = false; $main_content .= '<div class="statuses">
+		<div class="top_bar">
+			<header>
+				<div class="title">Automatic creation in \'' . $path . '\'. Please check the statuses of the table objects created:</div>
+			</header>
+		</div>
+		
 		<table>
 			<tr>
 				<th class="name">Table Name</th>
@@ -36,8 +50,15 @@ $head = '
 			</tr>'; if ($data[2]) { $exists_any_status_ok = true; } } if (empty($selected_tables)) { $main_content .= '<tr><td colspan="3" style="text-align:center;">No elements available</td></tr>'; } $main_content .= '
 		</table>
 		<div class="desc">If any of the statuses is equal to <span class="status_error">ERROR</span>, please try again for the correspondent table...</div>
-	</div>'; if ($exists_any_status_ok) $main_content .= '<script>if (window.parent.refreshLastNodeChilds) window.parent.refreshLastNodeChilds();</script>'; } else if ($_POST["step_1"]) { $main_content = '<div class="select_tables">
-		<div class="title">Please select the table objects that you wish to create:</div>
+	</div>'; if ($exists_any_status_ok) $main_content .= '<script>if (window.parent.refreshLastNodeChilds) window.parent.refreshLastNodeChilds();</script>'; } else if ($_POST["step_1"]) { $main_content .= '<div class="select_tables">
+		<div class="top_bar">
+			<header>
+				<div class="title">Automatic creation in \'' . $path . '\'. Please select the table objects that you wish to create:</div>
+				<ul>
+					<li class="continue" title="Continue"><a onClick="submitForm(this, checkSelectedTables);"><i class="icon continue"></i> Continue</a></li>
+				</ul>
+			</header>
+		</div>
 		<form method="post">
 			<input type="hidden" name="db_broker" value="' . $db_broker . '" />
 			<input type="hidden" name="db_driver" value="' . $db_driver . '" />
@@ -60,14 +81,20 @@ $head = '
 					<label>Do you wish to overwrite the selected items, if they already exists?</label>
 				</div>
 			</div>
-			<div class="buttons">
-				<input type="Submit" name="step_2" value="Continue" onClick="$(this).hide()" />
-			</div>'; } else { if ($type == "diagram") { $main_content .= '<div class="error">There are no tables created in the DB Diagram.<br/>Please go to the DB Layer that you wish, create the correspondent DB Diagram and then execute again this action.</div>'; } else { $main_content .= '<div class="error">We couldn\'t detect any tables in the DB.</div>'; } } $main_content .= '
+			
+			<input type="hidden" name="step_2" value="Continue" />'; } else { if ($type == "diagram") { $main_content .= '<div class="error">There are no tables created in the DB Diagram.<br/>Please go to the DB Layer that you wish, create the correspondent DB Diagram and then execute again this action.</div>'; } else { $main_content .= '<div class="error">We couldn\'t detect any tables in the DB.</div>'; } } $main_content .= '
 		</form>
 	</div>'; } else { $head .= '<script>
 		var db_drivers = ' . json_encode($db_drivers) . ';
-	</script>'; $main_content = '<div class="select_brokers">
-		<div class="title">Please select the DB Driver and click continue:</div>
+	</script>'; $main_content .= '<div class="select_brokers">
+		<div class="top_bar">
+			<header>
+				<div class="title">Automatic creation in \'' . $path . '\'. Please select the DB Driver:</div>
+				<ul>
+					<li class="continue" title="Continue"><a onClick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
+				</ul>
+			</header>
+		</div>
 		<form method="post">'; if (empty($path)) { $main_content .= '<div class="error">You cannot execute this action with an undefined path.</div>'; } else if (empty($obj)) { $main_content .= '<div class="error">Bean name doesn\'t exist. If this problem persists, please talk with the sys-admin.</div>'; } else if (!empty($db_drivers)) { $main_content .= '
 			<div class="db_broker">
 				<label>DB Broker:</label>
@@ -86,9 +113,8 @@ $head = '
 					<option value="db">From DB Server</option>
 					<option value="diagram">From DB Diagram</option>
 				</select>
-			</div>'; $main_content .= '
-			<div class="buttons">
-				<input type="Submit" name="step_1" value="Continue" onClick="$(this).hide()" />
-			</div>'; } else { $main_content .= '<div class="error">There are no DB brokers.<br/>Apparently you have Data Access Layers without any DB brokers, which means your application is not correctly configured.<br/>Please go to "Layers Management" Menu and configure correclty your DB brokers.</div>'; } $main_content .= '
+			</div>
+			
+			<input type="hidden" name="step_1" value="Continue" />'; } else { $main_content .= '<div class="error">There are no DB brokers.<br/>Apparently you have Data Access Layers without any DB brokers, which means your application is not correctly configured.<br/>Please go to "Layers Management" Menu and configure correclty your DB brokers.</div>'; } $main_content .= '
 		</form>
 	</div>'; } ?>

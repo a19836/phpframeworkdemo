@@ -59,25 +59,25 @@
 	display:none;
 }
 
-.usertask4_task_html {
-	width:295px;
+.user_task_4_task_html {
+	width:310px;
 }
 
-.usertask4_task_html .value {
+.user_task_4_task_html .value {
 	margin-top:15px;
 }
 
-.usertask4_task_html .value,
-   .usertask4_task_html .type {
+.user_task_4_task_html .value,
+   .user_task_4_task_html .type {
 	width:100%;
 	height:20px;
 	margin-bottom:5px;
 }
-.usertask4_task_html .value label,
-   .usertask4_task_html .type label {
+.user_task_4_task_html .value label,
+   .user_task_4_task_html .type label {
 	width:60px;
 }
-.usertask4_task_html .value input {
+.user_task_4_task_html .value input {
 	width:200px;   
 }
 

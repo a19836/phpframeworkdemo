@@ -1,13 +1,9 @@
-/* SELECT LAYERS - STEP 0 */
-.select_layers .title {
-	width:100%;
-	font-size:14px;
-	font-weight:bold;
-	color:#000;
-	text-align:center;
-	margin-top:20px;
+/* DROPDOWN */
+.top_bar {
 	margin-bottom:20px;
 }
+
+/* SELECT LAYERS - STEP 0 */
 .select_layers .db_layer, .select_layers .db_driver, .select_layers .type, .select_layers .authenticated_template, .select_layers .include_db_driver {
 	width:300px;
 	height:20px;
@@ -26,6 +22,8 @@
 	margin-right:10px;
 	display:block;
 	float:left;
+	font-weight:normal;
+	font-style:normal;
 }
 .select_layers .include_db_driver label {
 	font-weight:normal;
@@ -40,14 +38,6 @@
 }
 
 /* SELECT TABLES - STEP 1 */
-.select_tables .title {
-	width:100%;
-	font-size:14px;
-	font-weight:bold;
-	color:#000;
-	text-align:center;
-	margin-top:20px;
-}
 .select_buttons {
 	float:none;
 	clear:left;
@@ -162,6 +152,10 @@
 	padding:0 5px;
 	text-align:center;
 }
+.select_tables .users_permissions table td.delete,
+   .select_tables .users_permissions table th.delete {
+	background:none;
+}
 .select_tables .users_permissions table td.name {
 	text-align:left;
 }
@@ -226,6 +220,9 @@
 .tables_settings .error ul li.info {
 	color:#000099;
 }
+.tables_settings .stas_form {
+	display:none;
+}
 
 .table_group {
 	width:100%;
@@ -238,10 +235,16 @@
 	padding:0 5px;
 	clear:both;
 	float:none;
+	background:#eee;
+	border:1px outset #eee;
+}
+.table_group .table_header label {
+	font-weight:normal;
+	font-style:normal;
 }
 .table_group .table_header .icon {
 	float:right;
-	margin-right:0;
+	margin:0 5px;
 }
 .table_group .table_panel {
 	display:none;
@@ -400,32 +403,16 @@
 }
 
 /* STEP 3 */
-.statuses .title {
-	width:100%;
-	font-size:14px;
-	font-weight:bold;
-	color:#000;
-	text-align:center;
-	margin-top:20px;
-	margin-bottom:20px;
-}
 .statuses table {
-	border:1px solid #CCC;
 	width:750px;
 	margin:20px auto;
 }
 .statuses th {
 	color:#999;
-	font-weight:bold;
 	font-size:10px;
-	height:20px;
-	line-height:20px;
 }
 .statuses td {
-	border:1px solid #CCC;
 	color:#999;
-	height:20px;
-	line-height:20px;
 }
 .statuses td.table_name, .statuses td.status {
 	font-weight:bold;
@@ -438,17 +425,3 @@
 	color:#990000;
 }
 
-/* GENERIC */
-.buttons {
-	width:100%;
-	float:none;
-	clear:left;
-	text-align:center;
-	padding-top:20px;
-}
-.buttons input {
-	margin-right:20px;
-}
-.buttons textarea {
-	display:none;
-}

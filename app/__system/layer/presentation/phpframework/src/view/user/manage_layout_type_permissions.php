@@ -19,8 +19,11 @@
  */
 
 include $EVC->getUtilPath("UserAuthenticationUIHandler"); include $EVC->getUtilPath("WorkFlowPresentationHandler"); $choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#"; $head = '
-<!-- Add MD5 -->
+<!-- Add MD5 JS File -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>
+
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
 <!-- Add Icons CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
@@ -35,6 +38,9 @@ include $EVC->getUtilPath("UserAuthenticationUIHandler"); include $EVC->getUtilP
 
 <!-- Edit code JS -->
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_code.js"></script>
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
 
 <!-- Add Local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/user/user.css" type="text/css" charset="utf-8" />
@@ -59,7 +65,15 @@ var get_layout_type_permissions_url = \'' . $project_url_prefix . 'user/get_layo
 </script>'; $main_content = '
 <div id="menu">' . UserAuthenticationUIHandler::getMenu($UserAuthenticationHandler, $project_url_prefix) . '</div>
 <div id="content">
-	<div class="title">Manage Layout Type Permissions</div>
+	<div class="top_bar">
+		<header>
+			<div class="title">Manage Layout Type Permissions</div>
+			<ul>
+				<li class="save" title="Save"><a onClick="submitForm(this)"><i class="icon save"></i> Save</a></li>
+			</ul>
+		</header>
+	</div>
+	
 	<div class="layout_type_permissions_list">
 		<form method="post" onSubmit="return saveLayoutTypePermissions();">
 			<div class="layout_type">

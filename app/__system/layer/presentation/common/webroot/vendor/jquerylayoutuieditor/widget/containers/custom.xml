@@ -18,14 +18,14 @@
 			width:195px;
 			height:35px !important;
 			overflow:hidden;
-			background:#b9a5a6;
+			background:rgba(0, 0, 0, .1);
 		}
 		.layout_ui_editor > .menu-widgets .container.custom-container .drag_me,
 		  body > .menu-widget.container.custom-container.ui-draggable-dragging .drag_me {
 			line-height: 1.3em;
 			display: block;
 			font-size:12px;
-			color:#333;
+			color:inherit;
 		}
 		.layout_ui_editor > .menu-widgets .container.custom-container .custom-values,
 		  body > .menu-widget.container.custom-container.ui-draggable-dragging .custom-values {
@@ -125,7 +125,7 @@
 			
 			me.checkCustomContainer = function(widget, event, ui_obj) {
 				if ($(widget).find(".custom-values").val() == "") {
-					alert('Please fill the field with your values.');
+					ui_creator.showError('Please fill the field with your values.');
 					return false;
 				}
 				

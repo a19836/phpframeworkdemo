@@ -1,7 +1,21 @@
+/* TOP BAR */
+.top_bar {
+	margin-bottom:10px;
+}
+
+/* UTIL OBJ */
 .global_vars_obj {
-	width:99%;
-	overflow:auto;
+	width:100%;
+	overflow:hidden;
 	margin:0 auto;
+	padding:0;
+	border:0;
+}
+
+.global_vars_obj #code .code_menu.top_bar_menu,
+  .global_vars_obj #ui .taskflowchart .workflow_menu.top_bar_menu,
+  .global_vars_obj #form_global_vars .code_menu.top_bar_menu {
+	right:135px;
 }
 
 /* To print the workflow */
@@ -24,9 +38,21 @@
 	text-align:left; 
 	margin:0px auto;
 }
+#form_global_vars .vars .buttons .icon {
+	margin:auto 5px;
+}
 #form_global_vars .vars th {
 	text-align:center; 
-	font-weight:bold;
+	color:#666;
+}
+#form_global_vars .vars th.buttons {
+	text-align:left;
+}
+#form_global_vars .vars th.buttons .add {
+	font-size:14px;
+}
+#form_global_vars .vars td {
+	padding-bottom:5px;
 }
 #form_global_vars .vars input {
 	width:205px;
@@ -35,7 +61,7 @@
 	width:210px;
 }
 #form_global_vars .vars .var_desc {
-	width:200px;
+	min-width:200px;
 	color:#999;
 	padding-left:10px;
 }
@@ -50,17 +76,7 @@
 	margin-right:5px;
 }
 #form_global_vars .vars td .search {
-	display:inline-block;
-	float:none;
 	vertical-align:middle;
-}
-
-#form_global_vars .save {
-	margin:10px auto;
-	
-	-moz-border-radius:0.4em; 
-	-webkit-border-radius:0.4em; 
-	border-radius:0.4em;
 }
 
 /* choose_available_template_popup */

@@ -72,7 +72,7 @@
 	float:none;
 	display:inline-block;
 	vertical-align:middle;
-	margin:2px 5px 2px 0px;
+	margin:auto 0;
 }
 .get_url_contents_task_html .dts .array_items > ul > .item.url {
 	background:#ccc;
@@ -105,7 +105,7 @@
 	padding-right:20px;
 }
 .get_url_contents_task_html .dts > .add_variable {
-	margin-left:-23px;
+	margin-left:-26px;
 }
 
 .get_url_contents_task_html .dts .data_type {
@@ -115,7 +115,7 @@
 	text-align:center;
 	font-size:9px;
 	width:60px;
-	margin-bottom:5px;
+	height:19px;
 }
 
 .get_url_contents_task_html .result_type {
@@ -147,12 +147,12 @@
 	text-align:center;
 	font-size:9px;
 	width:60px;
+	height:19px;
 	float:none;
 	display:inline-block;
-	margin-bottom:0;
 }
 .get_url_contents_task_html .result_type .add_variable {
-	margin-left:-23px;
+	margin-left:-26px;
 }
 .get_url_contents_task_html .result_type .info {
 	padding-top:10px;

@@ -7,8 +7,6 @@
 	padding-top:5px;
 	background-color:#FF0000;
 	color:#FFF;
-	font-size:12px;
-	font-weight:bold;
 	text-align:center;
 	z-index:2000;
 }
@@ -21,8 +19,6 @@
 	padding-top:5px;
 	background-color:#CCFF99;
 	color:#000;
-	font-size:12px;
-	font-weight:bold;
 	text-align:center;
 	z-index:2000;
 }

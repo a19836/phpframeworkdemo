@@ -1,38 +1,37 @@
-.title {
-	color: #000;
-	font-size: 16px;
-	font-weight: bold;
-	margin: 10px 0 20px 0px;
-	text-align: center;
-	width: 100%;
-	height:25px;
-}
-
+/* MODULES */
 .modules_list {
 	width:100%;
 	margin:0 auto;
 	margin-bottom:20px;
 }
 .modules_list .layer {
-	width:50%;
-	margin-bottom:20px;
-	float:left;
+	position:fixed;
+	top:7px;
+	left:160px;
+	z-index:1;
 }
 .modules_list .layer label {
-	width:140px;
+	/*width:140px;
 	display:block;
 	float:left;
 	font-style:normal;
 	font-weight:normal;
-	margin-left:10px;
+	margin-left:10px;*/
+	display:none;
+}
+.modules_list .layer select {
+	border:1px solid #ccc;
+	color:#000;
+	background:transparent;
 }
 .modules_list .install {
-	width:50%;
-	float:left;
-	text-align:right;
+	position:fixed;
+	top:5px;
+	right:5px;
+	z-index:1;
 }
 .modules_list .install a {
-	margin-right:10px;
+	color:#000;
 }
 .modules_list .layer_modules {
 	display:none;
@@ -40,7 +39,7 @@
 
 .modules_list table {
 	width:100%;
-	border:1px solid #CCC;
+	margin-top:10px;
 	clear:left;
 	float:none;
 	/*table-layout:fixed;*/
@@ -49,14 +48,11 @@
 	display:none;
 }
 .modules_list table th {
-	font-weight:bold;
-	text-transform:uppercase;
 	font-size:10px;
-	height:20px;
-	line-height:15px;
 }
 .modules_list table td {
-	border:1px solid #CCC;
+	border-top:1px dashed #ddd;
+	border-right:1px solid #eee;
 	word-wrap:break-word;
 }
 .modules_list table .group {
@@ -66,8 +62,17 @@
 	float:none;
 	clear:left;
 }
+.modules_list table td.group {
+	border-top:1px solid #ccc;
+}
+.modules_list table .group_module_item td.group {
+	border-top:1px dashed #ddd;
+}
 .modules_list table .group label {
-	text-transform:uppercase;
+	text-transform:capitalize;
+}
+.modules_list table .group .icon {
+	margin:3px 10px 0 0;
 	float:left;
 }
 .modules_list table .status {
@@ -76,7 +81,6 @@
 	border-left:0;
 }
 .modules_list table .status span {
-	margin-left:23px;
 	cursor:auto;
 }
 .modules_list table .photo {
@@ -114,25 +118,9 @@
 	text-align:center;
 }
 .modules_list table .buttons .icon {
-	margin-top:0;
+	margin:5px 3px;
 	display:inline-block;
 	float:none;
 	vertical-align:middle;
-}
-.modules_list table .buttons .delete, .modules_list table .buttons .settings {
-	background-position:0 0;
-	margin-left:0;
-	margin-right:0;
-}
-.modules_list table .buttons .delete {
-	margin-right:5px;
-}
-.modules_list table .disable {
-	background: url("../../common/img/icon/disable_icon.png") 0 0 no-repeat;
-}
-.modules_list table .enable {
-	background: url("../../common/img/icon/enable_icon.png") 0 0 no-repeat;
-}
-.modules_list table .settings {
-	background: url("../../common/img/icon/settings_icon.png") 0 0 no-repeat;
+	font-size:14px;
 }

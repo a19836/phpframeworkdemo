@@ -7,6 +7,19 @@ $(function () {
 	});
 });
 
+function submitForm(elm, on_submit_func) {
+	elm = $(elm);
+	var oForm = elm.parent().closest(".top_bar").parent().children("form");
+	var status = typeof on_submit_func == "function" ? on_submit_func( oForm[0] ) : true;
+	
+	if (status) {
+		elm.hide();
+		oForm.submit();
+	}
+	
+	return status;
+}
+
 function openUsersManagementAdminPanelPopup(elm) {
 	elm = $(elm);
 	var popup_elm = elm.parent().closest(".users_permissions").children(".users_management_admin_panel_popup");

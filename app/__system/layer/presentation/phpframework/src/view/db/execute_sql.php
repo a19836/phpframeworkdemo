@@ -19,6 +19,7 @@
  */
 
 $head = '
+<!-- Add ACE editor -->
 <script src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ace.js"></script>
 <script src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
 
@@ -26,17 +27,32 @@ $head = '
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerydatatables/media/css/jquery.dataTables.min.css" charset="utf-8" />
 <script src="' . $project_common_url_prefix . 'vendor/jquerydatatables/media/js/jquery.dataTables.min.js"></script>
 
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
+<!-- Icons CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+
+<!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/db/execute_sql.css" charset="utf-8" />
-<script src="' . $project_url_prefix . 'js/db/execute_sql.js"></script>'; $main_content .= '<div class="title">Execute SQL</div>
-	<div class="save_button">
-		<input type="button" name="value" value="EXECUTE SQL" onClick="execute();" />
+<script src="' . $project_url_prefix . 'js/db/execute_sql.js"></script>'; $main_content .= '
+	<div class="top_bar">
+		<header>
+			<div class="title">Execute SQL</div>
+			<ul>
+				<li class="execute" title="Execute"><a onClick="execute()"><i class="icon continue"></i> Execute</a></li>
+			</ul>
+		</header>
 	</div>
 
 	<div class="sql_text_area">
 		<textarea>' . "\n" . htmlspecialchars($sql, ENT_NOQUOTES) . '</textarea>
 	</div>
 	<div class="sql_results">
-		<table class="display compact">'; $fields = $results["fields"]; $rows = $results["result"]; if ($fields) { $main_content .= '<thead><tr>'; $t = count($fields); for ($i = 0; $i < $t; $i++) { $name = $fields[$i]->name; $main_content .= '<th class="table_header">' . $name . '</th>'; } $main_content .= '</tr></thead>'; } $main_content .= '<tbody>'; if ($_POST) { if (!$is_select_sql) $main_content .= '<tr><td class="empty" colspan="' . ($fields ? count($fields) : 0) . '">' . ($results ? "SQL EXECUTED SUCCESSFULLY" : "SQL EXECUTED UNSUCCESSFULLY") . '</tr>'; else if (!$results || !is_array($rows) || empty($rows)) $main_content .= '<tr><td class="empty" colspan="' . ($fields ? count($fields) : 0) . '">EMPTY</tr>'; else { $t = count($rows); for ($i = 0; $i < $t; $i++) { $row = $rows[$i]; $main_content .= '<tr>'; foreach ($row as $column_name => $column_value) $main_content .= '<td>' . $column_value . '</td>'; $main_content .= '</tr>'; } } } else $main_content .= '<tr><td class="empty">Click in the "EXECUTE SQL" button to execute the query and show its results...</tr>'; $main_content .= '</tbody>
+		<table class="display compact">'; $fields = $results["fields"]; $rows = $results["result"]; if ($fields) { $main_content .= '<thead><tr>'; $t = count($fields); for ($i = 0; $i < $t; $i++) { $name = $fields[$i]->name; $main_content .= '<th class="table_header">' . $name . '</th>'; } $main_content .= '</tr></thead>'; } $main_content .= '<tbody>'; if ($_POST) { if (!$is_select_sql) $main_content .= '<tr><td class="empty" colspan="' . ($fields ? count($fields) : 0) . '">' . ($results ? "SQL executed successfully" : "SQL executed unsuccessfully") . '</tr>'; else if (!$results || !is_array($rows) || empty($rows)) $main_content .= '<tr><td class="empty" colspan="' . ($fields ? count($fields) : 0) . '">Empty results...</tr>'; else { $t = count($rows); for ($i = 0; $i < $t; $i++) { $row = $rows[$i]; $main_content .= '<tr>'; foreach ($row as $column_name => $column_value) $main_content .= '<td>' . $column_value . '</td>'; $main_content .= '</tr>'; } } } else $main_content .= '<tr><td class="empty">Click in the "EXECUTE SQL" button to execute the query and show its results...</tr>'; $main_content .= '</tbody>
 		</table>
 	</div>
 	

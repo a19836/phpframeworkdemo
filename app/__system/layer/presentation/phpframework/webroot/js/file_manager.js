@@ -5,6 +5,7 @@ var last_selected_node_parent_id= null;
 
 var mytree = new MyTree({
 	multiple_selection : false,
+	toggle_selection : false,
 	ajax_callback_before : prepareLayerNodes1,
 	ajax_callback_after : prepareLayerNodes2,
 	ajax_callback_error : validateLayerNodesRequest,
@@ -306,12 +307,64 @@ function initUlChildsContextMenu(ul, main_layer_properties) {
 			initPresentationContextMenu(ul);
 	}
 	
+	prepareParentChildsEventToHideContextMenu(ul);
+	addSubMenuIconToParentChildsWithContextMenu(ul);
+}
+
+function prepareParentChildsEventToHideContextMenu(ul) {
 	ul.find("li *:not(a > label)").click(function(originalEvent) {
 		if (originalEvent.preventDefault) originalEvent.preventDefault(); 
 		else originalEvent.returnValue = false;
 		
 		$(".jqcontextmenu").hide();
 	});
+}
+	
+function addSubMenuIconToParentChildsWithContextMenu(ul) {
+	var func = function(originalEvent) {
+		if (originalEvent.preventDefault) originalEvent.preventDefault(); 
+		else originalEvent.returnValue = false;
+		
+		if (originalEvent.stopPropagation) originalEvent.stopPropagation(); 
+		
+		var a = $(this).parent().children("a");
+		triggerUlChildLinkContextMenu(a, originalEvent);
+	};
+	
+	ul.find("li > a").each(function(idx, a) {
+		a = $(a);
+		var context_menu_id = a.data("context_menu_id");
+		
+		if (context_menu_id) {
+			var menu_icon = $('<span class="icon sub_menu" title="Open context menu"></span>');
+			menu_icon.click(func);
+			a.after(menu_icon);
+		}
+	});
+}
+
+function triggerUlChildLinkContextMenu(a, originalEvent) {
+	$(".jqcontextmenu").hide();
+	
+	var context_menu_id = a.data("context_menu_id");
+	
+	if (context_menu_id) {
+		var context_menu_elm = $("#" + context_menu_id);
+		
+		if (context_menu_elm[0]) {
+			var context_menu_options = a.data("context_menu_options");
+			
+			if (context_menu_options && context_menu_options.callback && typeof context_menu_options.callback == "function") {
+				var original_target = originalEvent.target;
+				originalEvent.target = a.children("label")[0];
+				context_menu_options.callback(a, context_menu_elm, originalEvent);
+				originalEvent.target = original_target;
+			}
+			
+			jquerycontextmenu.positionul(jQuery, context_menu_elm, originalEvent);
+			jquerycontextmenu.showbox(jQuery, context_menu_elm, originalEvent);
+		}
+	}
 }
 
 function getNodeParentIdByNodeId(node_id) {

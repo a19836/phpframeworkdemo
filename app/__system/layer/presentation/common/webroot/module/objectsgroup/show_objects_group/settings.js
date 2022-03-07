@@ -1,5 +1,19 @@
+var saved_settings_id = null;
+
 $(function () {
-	$(".module_show_objects_group_settings").parent().parent().parent().children(".buttons").children("input").attr("onclick", "saveModuleShowObjectsGroupSettings(this);");
+	//unbind beforeunload that was inited by the edit_simple_block.js
+	$(window).unbind('beforeunload').bind('beforeunload', function () {
+		if (isModuleShowObjectsGroupSettingsChanged()) {
+			if (window.parent && window.parent.iframe_overlay)
+				window.parent.iframe_overlay.hide();
+			
+			return "If you proceed your changes won't be saved. Do you wish to continue?";
+		}
+		
+		return null;
+	});
+	
+	$(".top_bar .save a").attr("onclick", "saveModuleShowObjectsGroupSettings(this);");
 	
 	$(".module_show_objects_group_settings").children(".create_form_task_html").children(".form_input, .form_input_data").remove();
 	
@@ -13,6 +27,9 @@ $(function () {
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
 	});
 	choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");
+	
+	//set saved settings id
+	saved_settings_id = getModuleShowObjectsGroupSettingsId();
 	
 	MyFancyPopup.hidePopup();
 });
@@ -311,13 +328,22 @@ function removeActionButton(elm) {
 		table.children(".no_action_buttons").show();
 }
 
-function saveModuleShowObjectsGroupSettings(button) {
-	MyFancyPopup.showOverlay();
-	MyFancyPopup.showLoading();
+function isModuleShowObjectsGroupSettingsChanged() {
+	var new_settings_id = getModuleShowObjectsGroupSettingsId();
 	
+	return saved_settings_id != new_settings_id;
+}
+
+function getModuleShowObjectsGroupSettingsId() {
+	var settings = getModuleShowObjectsGroupSettings();
+	
+	return $.md5(JSON.stringify(settings));
+}
+
+function getModuleShowObjectsGroupSettings() {
 	var settings = {};
 	
-	var block_settings = $(button).parent().parent().children(".module_settings").children(".settings").children(".module_show_objects_group_settings");
+	var block_settings = $(".block_obj > .module_settings > .settings > .module_show_objects_group_settings");
 	var create_form_task_html = block_settings.children(".create_form_task_html");
 	
 	/*if (create_form_task_html.children(".inline_settings").children(".with_form").children("select").val() != "1" && block_settings.children(".action_settings").children(".action_buttons_settings").children(".action_buttons").find("td.button_label").length > 0) {
@@ -370,31 +396,61 @@ function saveModuleShowObjectsGroupSettings(button) {
 	
 	//console.log(settings);
 	
-	$.ajax({
-		type : "post",
-		url : create_form_settings_code_url,
-		data : {"settings" : settings},
-		dataType : "json",
-		success : function(data, textStatus, jqXHR) {
-			if (data && data["code"])
-				saveBlockRawCode(data["code"]);
-			else 
-				StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
-			
-			MyFancyPopup.hidePopup();
-		},
-		error : function() { 
-			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_form_settings_code_url, function() {
-					StatusMessageHandler.removeLastShownMessage("error");
-					saveModuleShowObjectsGroupSettings(button);
-				});
-			else
-				StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
-			
-			MyFancyPopup.hidePopup();
-		},
-	});
+	return settings;
+}
+
+function saveModuleShowObjectsGroupSettings(button) {
+	prepareAutoSaveVars();
+	
+	var new_settings_id = getModuleShowObjectsGroupSettingsId();
+	
+	if (!saved_settings_id || saved_settings_id != new_settings_id) {
+		if (!is_from_auto_save) {
+			MyFancyPopup.showOverlay();
+			MyFancyPopup.showLoading();
+		}
+		
+		var settings = getModuleShowObjectsGroupSettings();
+		
+		$.ajax({
+			type : "post",
+			url : create_form_settings_code_url,
+			data : {"settings" : settings},
+			dataType : "json",
+			success : function(data, textStatus, jqXHR) {
+				if (data && data["code"]) {
+					if (saveBlockRawCode(data["code"]))
+						saved_settings_id = new_settings_id; //set new saved_str_id
+				}
+				else if (!is_from_auto_save)
+					StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
+				
+				if (!is_from_auto_save)
+					MyFancyPopup.hidePopup();
+				else
+					resetAutoSave();
+			},
+			error : function() { 
+				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_form_settings_code_url, function() {
+						StatusMessageHandler.removeLastShownMessage("error");
+						
+						saveModuleShowObjectsGroupSettings(button);
+					});
+				else if (!is_from_auto_save)
+					StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
+				
+				if (!is_from_auto_save)
+					MyFancyPopup.hidePopup();
+				else
+					resetAutoSave();
+			},
+		});
+	}
+	else if (!is_from_auto_save)
+		StatusMessageHandler.showMessage("Nothing to save.");
+	else
+		resetAutoSave();
 }
 
 function parseArray(html_elm) {

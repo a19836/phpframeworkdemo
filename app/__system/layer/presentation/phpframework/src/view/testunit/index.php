@@ -27,8 +27,14 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); $choose_test_units_fil
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/file_manager.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/file_manager.js"></script>
 
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
 <!-- Add Icons CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
 
 <!-- Add local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/testunit/index.css" type="text/css" charset="utf-8" />
@@ -41,7 +47,14 @@ var manage_file_url = "' . $manage_file_url . '";
 var create_test_url = "' . $create_test_url . '";
 '; $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_test_units_files_from_file_manager_url, "", "", ""); $head .= '</script>'; $main_content = '
 <div class="test_units">
-	<label>Manage Test Units</label>
+	<div class="top_bar">
+		<header>
+			<div class="title">Manage Test Units</div>
+			<ul>
+				<li class="execute" title="Execute Selected Tests"><a onClick="executeSelectedTests(true)"><i class="icon continue"></i> Execute Selected Tests</a></li>
+			</ul>
+		</header>
+	</div>
 	
 	<div id="test_units_tree" class="test_units_tree">
 		<ul class="mytree">
@@ -51,9 +64,5 @@ var create_test_url = "' . $create_test_url . '";
 				<ul url="' . $choose_test_units_files_from_file_manager_url . '"></ul>
 			</li>
 		</ul>
-	</div>
-	
-	<div class="buttons">
-		<input type="button" name="save" value="EXECUTE SELECTED TESTS" onclick="executeSelectedTests(true);">
 	</div>
 </div>'; ?>

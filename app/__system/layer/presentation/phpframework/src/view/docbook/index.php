@@ -27,8 +27,14 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); $choose_lib_files_from
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/file_manager.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/file_manager.js"></script>
 
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
 <!-- Add Icons CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
 
 <!-- Add local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/docbook/index.css" type="text/css" charset="utf-8" />
@@ -39,7 +45,12 @@ var open_file_docbook_url = "' . $open_file_docbook_url . '";
 var open_file_code_url = "' . $open_file_code_url . '";
 '; $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml("", $choose_lib_files_from_file_manager_url, "", ""); $head .= '</script>'; $main_content = '
 <div class="docbook">
-	<label>Doc Book</label>
+	<div class="top_bar">
+		<header>
+			<div class="title">Doc Book</div>
+		</header>
+	</div>
+	
 	<div id="docbook_tree" class="docbook_tree">
 		<ul class="mytree">
 			<li>

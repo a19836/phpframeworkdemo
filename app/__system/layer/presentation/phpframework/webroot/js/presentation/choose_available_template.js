@@ -133,10 +133,10 @@ function prepareChooseAvailableTemplateHtml(folder_to_filter) {
 		dirs.pop();
 		var parent_folder = dirs.join("/");
 		
-		html += '<li class="back" onClick="prepareChooseAvailableTemplateHtml(\'' + parent_folder + '\');">Go Up</li>';
+		html += '<li class="back" onClick="prepareChooseAvailableTemplateHtml(\'' + parent_folder + '\');">Parent Folder</li>';
 	}
 	else if (is_external_project)
-		html += '<li class="back back_to_type" onClick="prepareChooseAvailableProjectsHtml();">Go Up</li>';
+		html += '<li class="back back_to_type" onClick="prepareChooseAvailableProjectsHtml();">Go Back</li>';
 	else {
 		if (!MyFancyPopupAvailableTemplate.settings.hide_choose_different_editor)
 			html += '<li class="back back_to_type" onClick="prepareChooseAvailableTemplateTypeHtml();">Choose different Editor</li>';
@@ -223,7 +223,7 @@ function getChooseAvailableTemplateHtml(folder_to_filter, fp, template_props) {
 	else
 		html += '<li class="folder" onClick="prepareChooseAvailableTemplateHtml(\'' + template_id + '\');">'
 	
-	html += '<label>' + label + '</label>';
+	html += '<label title="' + label + '">' + label + '</label>';
 	
 	if (is_file) {
 		var logo = template_props["logo"];
@@ -267,10 +267,10 @@ function prepareChooseAvailableProjectsHtml(folder_to_filter) {
 				dirs.pop();
 				var parent_folder = dirs.join("/");
 				
-				html = '<li class="back" onClick="prepareChooseAvailableProjectsHtml(\'' + parent_folder + '\');">Go Up</li>';
+				html = '<li class="back" onClick="prepareChooseAvailableProjectsHtml(\'' + parent_folder + '\');">Parent Folder</li>';
 			}
 			else
-				html = '<li class="back" onClick="backToMainProjectAvailableTemplatesHtml()">Go Up</li>';
+				html = '<li class="back" onClick="backToMainProjectAvailableTemplatesHtml()">Go Back</li>';
 			
 			//add files 
 			for (var k in aps) 
@@ -306,7 +306,7 @@ function getChooseAvailableProjectHtml(folder_to_filter, fp, project_props) {
 	else
 		html += '<li class="folder" onClick="prepareChooseAvailableProjectsHtml(\'' + project_id + '\');">'
 	
-	html += '	<label>' + label + '</label>';
+	html += '	<label title="' + label + '">' + label + '</label>';
 	
 	if (project_logo_url)
 		html += '	<div class="image">' + (project_logo_url ? '<img src="' + project_logo_url + '" onError="$(this).parent().removeClass("image").addClass("photo");$(this).remove();" />' : '') + '</div>';

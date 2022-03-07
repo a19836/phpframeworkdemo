@@ -43,7 +43,7 @@ DBTableTaskPropertyObj.table_storage_engines = DBTableTaskPropertyObj.table_stor
 	
 	<div id="simple_ui">
 		<div class="simple_attributes">
-			<label>Table Attributes: <div class="add"><a onClick="DBTableTaskPropertyObj.addSimpleAttribute(this)" title="Add new Attribute">ADD</a></div></label>
+			<label>Table Attributes: <a class="icon add" onClick="DBTableTaskPropertyObj.addSimpleAttribute(this)" title="Add new Attribute">ADD</a></label>
 			
 			<ul>
 				<li class="no_simple_attributes">There are no attributes defined!</li>
@@ -68,7 +68,7 @@ DBTableTaskPropertyObj.table_storage_engines = DBTableTaskPropertyObj.table_stor
 		</div>
 		
 		<div class="attributes">
-			<label>Table Attributes: <div class="add"><a onClick="DBTableTaskPropertyObj.addTableAttribute(this)">ADD</a></div></label>
+			<label>Table Attributes: <a class="icon add" onClick="DBTableTaskPropertyObj.addTableAttribute(this)">ADD</a></label>
 		</div>
 		
 		<table>
@@ -88,7 +88,7 @@ DBTableTaskPropertyObj.table_storage_engines = DBTableTaskPropertyObj.table_stor
 					<th class="table_attr_collation table_header">Collation</th>
 					<th class="table_attr_comment table_header">Comments</th>
 					<th class="table_attr_icons">
-						<div class="add"><a onClick="DBTableTaskPropertyObj.addTableAttribute(this)">ADD</a></div>
+						<a class="icon add" onClick="DBTableTaskPropertyObj.addTableAttribute(this)">ADD</a>
 					</th>
 				</tr>
 			</thead>

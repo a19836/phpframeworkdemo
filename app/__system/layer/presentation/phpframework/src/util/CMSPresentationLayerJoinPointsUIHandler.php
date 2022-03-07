@@ -35,7 +35,7 @@ class CMSPresentationLayerJoinPointsUIHandler { public static function convertBl
 					<label>Module\'s Join Points:</label>'; if ($v29fec2ceaa && $v5030d91f53) { $pf8ed4912 .= '<span class="view_module_source_code" onClick="openModuleSourceCode(this, \'' . $v29fec2ceaa . '\')">View join points in the module\'s source code</span>
 					
 					<div class="module_source_code">
-						<span class="close" onClick="closeModuleSourceCode(this)">Close</span>
+						<span class="icon close" onClick="closeModuleSourceCode(this)"></span>
 						<textarea readonly="readonly"></textarea>
 					</div>'; } $pf8ed4912 .= '
 					<div class="join_points">'; $pc37695cb = count($pd84094b3); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v5d2ebe3c1a = $pd84094b3[$v43dd7d0051]; $v34bca6a112 = $v5d2ebe3c1a["join_point_name"]; if ($v34bca6a112) { $pdcf670f6 = 'join_point[' . $v34bca6a112 . ']'; $pf8ed4912 .= '
@@ -46,9 +46,9 @@ class CMSPresentationLayerJoinPointsUIHandler { public static function convertBl
 									<option value="1">Active - Only here</option>
 									<option value="2">Active - Here and on Page Level</option>
 								</select>
-								<span class="icon maximize" onClick="maximizeJoinPointsSettings(this)" title="Maximize/Minimize join point methods">Maximize/Minimize</span>
+								<span class="icon maximize" onClick="maximizeJoinPointsSettings(this)" title="Maximize/Minimize join point methods">Toggle</span>
 								<span class="icon add" onClick="addJoinPointMethod(this, \'' . $pdcf670f6 . '\')" title="Add new join point method">Add</span>
-								<span class="icon info" onClick="showJoinPointDetails(this)" title="Show join point details">Add</span>
+								<span class="icon info" onClick="showJoinPointDetails(this)" title="Show join point details">Info</span>
 								<div class="join_point_details">
 									<div class="join_point_description">
 										<label>Join Point Description: "' . $v5d2ebe3c1a["join_point_description"] . '"</label>
@@ -81,12 +81,12 @@ class CMSPresentationLayerJoinPointsUIHandler { public static function convertBl
 				</div>'; } return $pf8ed4912; } public static function getJoinPointMethodHtml() { $pf8ed4912 = '
 		<div class="join_point_method">
 			<label>Join Point Method</label>
-			<span class="icon delete" onClick="removeJoinPointMethod(this)">Remove</span>
+			<span class="icon delete" onClick="removeJoinPointMethod(this)" title="Remove">Remove</span>
 						
 			<div class="method_file">
 				<label>Method File: </label>
 				<input class="module_join_points_property" type="text" name="#prefix#[method_file]" value="" />
-				<span class="icon add_variable inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Add Variable</span>
+				<span class="icon add_variable inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Search Variable</span>
 				<span class="icon search" onclick="onIncludeFileTaskChooseFile(this)" title="Choose a file to include">Search</span>
 			</div>
 			
@@ -101,14 +101,14 @@ class CMSPresentationLayerJoinPointsUIHandler { public static function convertBl
 			<div class="method_obj">
 				<label>Method Obj: </label>
 				<input class="module_join_points_property" type="text" name="#prefix#[method_obj]" value="" />
-				<span class="icon add_variable inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Add Variable</span>
+				<span class="icon add_variable inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable"><Search Variable</span>
 			</div>
 	
 			<div class="method_name">
 				<label>Method Name: </label>
 				<input class="module_join_points_property" type="text" name="#prefix#[method_name]" value="" />
-				<span class="icon add_variable inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Add Variable</span>
-				<span class="icon search" onClick="onChooseJoinPointMethodOrFunction(this)">Search Method</span>
+				<span class="icon add_variable inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Search Variable</span>
+				<span class="icon search" onClick="onChooseJoinPointMethodOrFunction(this)" title="Search Method">Search</span>
 			</div>
 	
 			<div class="method_static">
@@ -126,7 +126,7 @@ class CMSPresentationLayerJoinPointsUIHandler { public static function convertBl
 						<th class="table_header method_input">Method Input</th>
 						<th class="table_header erase_from_input" title="Erase item from input array">Erase</th>
 						<th class="table_header icons">
-							<span class="icon add" onClick="addJoinPointTableItem(this, \'#prefix#[input_mapping]\', input_mapping_from_join_point_to_method_item_html)">Add</span>
+							<span class="icon add" onClick="addJoinPointTableItem(this, \'#prefix#[input_mapping]\', input_mapping_from_join_point_to_method_item_html)" title="Add">Add</span>
 						</th>
 					</tr>
 					<tr class="empty_table">
@@ -143,7 +143,7 @@ class CMSPresentationLayerJoinPointsUIHandler { public static function convertBl
 						<th class="table_header value">Value</th>
 						<th class="table_header type">Type</th>
 						<th class="table_header icons">
-							<span class="icon add" onClick="addJoinPointTableItem(this, \'#prefix#[method_args]\', method_arg_html)">Add</span>
+							<span class="icon add" onClick="addJoinPointTableItem(this, \'#prefix#[method_args]\', method_arg_html)" title="Add">Add</span>
 						</th>
 					</tr>
 					<tr class="empty_table hidden">
@@ -162,7 +162,7 @@ class CMSPresentationLayerJoinPointsUIHandler { public static function convertBl
 						<th class="table_header join_point_output">Join Point Output</th>
 						<th class="table_header erase_from_output" title="Erase item from output array">Erase</th>
 						<th class="table_header icons">
-							<span class="icon add" onClick="addJoinPointTableItem(this, \'#prefix#[output_mapping]\', output_mapping_from_method_to_join_point_item_html)">Add</span>
+							<span class="icon add" onClick="addJoinPointTableItem(this, \'#prefix#[output_mapping]\', output_mapping_from_method_to_join_point_item_html)" title="Add">Add</span>
 						</th>
 					</tr>
 					<tr class="empty_table">
@@ -175,27 +175,27 @@ class CMSPresentationLayerJoinPointsUIHandler { public static function convertBl
 			<td class="join_point_input">
 				$input["
 				<input class="module_join_points_property" type="text" name="#prefix#[join_point_input]" value="' . $v539082ff30["join_point_input"] . '" />
-				<span class="icon add_variable small inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Add Variable</span>
+				<span class="icon add_variable small inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Search Variable</span>
 				"]
 			</td>
 			<td class="from_to">=&gt;</td>
 			<td class="method_input">
 				$input["
 				<input class="module_join_points_property" type="text" name="#prefix#[method_input]" value="' . $v539082ff30["method_input"] . '" />
-				<span class="icon add_variable small inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Add Variable</span>
+				<span class="icon add_variable small inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Search Variable</span>
 				"]
 			</td>
 			<td class="erase_from_input">
 				<input class="module_join_points_property" type="checkbox" name="#prefix#[erase_from_input]" value="1" title="Erase item from input array" ' . (!isset($v539082ff30["erase_from_input"]) || $v539082ff30["erase_from_input"] ? "checked" : "") . ' />
 			</td>
 			<td class="icons">
-				<span class="icon delete" onClick="removeJoinPointTableItem(this)">Remove</span>
+				<span class="icon delete" onClick="removeJoinPointTableItem(this)" title="Remove">Remove</span>
 			</td>
 		</tr>'; } public static function getMethodArgHtml($v539082ff30 = null) { return '
 		<tr>
 			<td class="value">
 				<input class="module_join_points_property" type="text" name="#prefix#[value]" value="' . $v539082ff30["value"] . '" />
-				<span class="icon add_variable small inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Add Variable</span>
+				<span class="icon add_variable small inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Search Variable</span>
 			</td>
 			<td class="type">
 				<select class="module_join_points_property" name="#prefix#[type]">
@@ -205,27 +205,27 @@ class CMSPresentationLayerJoinPointsUIHandler { public static function convertBl
 				</select>
 			</td>
 			<td class="icons">
-				<span class="icon delete" onClick="removeJoinPointTableItem(this)">Remove</span>
+				<span class="icon delete" onClick="removeJoinPointTableItem(this)" title="Remove">Remove</span>
 			</td>
 		</tr>'; } public static function getOutputMappingFromMethodToJoinPointHtml($v539082ff30 = null) { return '
 		<tr>
 			<td class="method_output">
 				$output["
 				<input class="module_join_points_property" type="text" name="#prefix#[method_output]" value="' . $v539082ff30["method_output"] . '" />
-				<span class="icon add_variable small inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Add Variable</span>
+				<span class="icon add_variable small inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Search Variable</span>
 				"]
 			</td>
 			<td class="from_to">=&gt;</td>
 			<td class="join_point_output">
 				$output["
 				<input class="module_join_points_property" type="text" name="#prefix#[join_point_output]" value="' . $v539082ff30["join_point_output"] . '" />
-				<span class="icon add_variable small inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Add Variable</span>
+				<span class="icon add_variable small inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Search Variable</span>
 				"]
 			</td>
 			<td class="erase_from_output">
 				<input class="module_join_points_property" type="checkbox" name="#prefix#[erase_from_output]" value="1" title="Erase item from output array" ' . (!isset($v539082ff30["erase_from_output"]) || $v539082ff30["erase_from_output"] ? "checked" : "") . ' />
 			</td>
 			<td class="icons">
-				<span class="icon delete" onClick="removeJoinPointTableItem(this)">Remove</span>
+				<span class="icon delete" onClick="removeJoinPointTableItem(this)" title="Remove">Remove</span>
 			</td>
 		</tr>'; } } ?>

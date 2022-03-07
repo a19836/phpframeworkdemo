@@ -428,13 +428,14 @@ function removeTablePanel(elm) {
 
 function toggleTablePanel(elm) {
 	elm = $(elm);
+	var table_panel = elm.parent().parent().children(".table_panel");
 	
-	if (elm.hasClass("maximize")) {
-		elm.parent().parent().children(".table_panel").show();
+	if (!table_panel.is(":visible")) {
+		table_panel.show();
 		elm.removeClass("maximize").addClass("minimize");
 	}
 	else {
-		elm.parent().parent().children(".table_panel").hide();
+		table_panel.hide();
 		elm.removeClass("minimize").addClass("maximize");
 	}
 }
@@ -447,13 +448,14 @@ function removeTableUIPanel(elm) {
 
 function toggleTableUIPanel(elm) {
 	elm = $(elm);
+	var table_ui_panel = elm.parent().parent().children(".table_ui_panel");
 	
-	if (elm.hasClass("maximize")) {
-		elm.parent().parent().children(".table_ui_panel").show();
+	if (!table_ui_panel.is(":visible")) {
+		table_ui_panel.show();
 		elm.removeClass("maximize").addClass("minimize");
 	}
 	else {
-		elm.parent().parent().children(".table_ui_panel").hide();
+		table_ui_panel.hide();
 		elm.removeClass("minimize").addClass("maximize");
 	}
 }
@@ -632,9 +634,24 @@ function addForeignTable(elm) {
 	}
 }
 
+function submitForm(elm, on_submit_func) {
+	elm = $(elm);
+	var oForm = elm.parent().closest(".top_bar").parent().children("form");
+	var status = typeof on_submit_func == "function" ? on_submit_func( oForm[0] ) : true;
+	
+	if (status) {
+		elm.hide();
+		oForm.submit();
+	}
+	
+	return status;
+}
+
 function save(elm) {
 	elm = $(elm);
-	elm.hide();
+	var on_click = elm.attr("onClick");
+	elm.addClass("loading").attr("onClick", "");
+	
 	MyFancyPopup.showLoading();
 	
 	var settings = getPanelsSettings();
@@ -655,16 +672,16 @@ function save(elm) {
 				var obj_statuses = $.parseJSON(statuses); //if no json, it will throw a javascript error
 				
 				if (obj_statuses && $.isPlainObject(obj_statuses) && !$.isEmptyObject(obj_statuses)) {
-					var form = $(".tables_settings .buttons form");
+					var form = $(".tables_settings .stas_form form");
 					form.find("textarea[name='statuses']").val(statuses);
 					form.append('<input type="hidden" name="step_3" value="Continue" />');
 					form.submit();
 				}
 				else
-					elm.show();
+					elm.removeClass("loading").attr("onClick", on_click);
 			} 
 			catch(e) {
-				elm.show();
+				elm.removeClass("loading").attr("onClick", on_click);
 				alert("Error trying to create automatically ui files. Please try again...");
 				
 				if (console && console.log) {
@@ -678,7 +695,7 @@ function save(elm) {
 		error : function(jqXHR, textStatus, errorThrown) { 
 			var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
 			StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again..." + msg);
-			elm.show();
+			elm.removeClass("loading").attr("onClick", on_click);
 	
 			MyFancyPopup.hidePopup();
 		},

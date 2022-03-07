@@ -20,6 +20,9 @@
 	height:20px;
 	margin-bottom:5px;
 }
+.selected_task_properties .conditions li.group > select {
+	margin-right:10px;
+}
 .selected_task_properties .conditions li.item {
 	height:20px;
 	margin-bottom:5px;
@@ -43,21 +46,12 @@
 	width:60px;
 }
 
-.selected_task_properties .conditions li.item .remove {
-	background:url("../img/delete_icon.gif") no-repeat scroll 0 0;
-	margin:2px 0px 0px 0px;
+.selected_task_properties .conditions li.group .icon.group_add::before {
+	content:"\f271";
 }
-.selected_task_properties .conditions li.group .remove {
-	background:url("../img/delete_icon.gif") no-repeat scroll 0 0;
-	margin:1px 0px 0px 5px;
-}
-.selected_task_properties .conditions li.group .group_add {
-	background:url("../img/group_add_icon.png") no-repeat scroll 0 0;
-	margin:1px 0px 0px 5px;
-}
-.selected_task_properties .conditions li.group .item_add {
-	background:url("../img/item_add_icon.png") no-repeat scroll 0 0;
-	margin:1px 0px 0px 5px;
+.selected_task_properties .conditions li.group .icon.item_add::before {
+	content:"\f0fe";
+	font-size:16px;
 }
 
 .selected_task_properties .conditions .add_variable {

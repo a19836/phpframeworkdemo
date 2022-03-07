@@ -155,6 +155,12 @@ if ($PEVC) {
 	$head = WorkFlowPresentationHandler::getHeader($project_url_prefix, $project_common_url_prefix, $WorkFlowUIHandler, $set_workflow_file_url, true, true);
 	$head .= LayoutTypeProjectUIHandler::getHeader();
 	
+	//must have the top_bar after this, bc the getHeader method loads the common/vendor/jquerytaskflowchart/css/style.css which will overwrite the previous loaded top_bar.css styles. So we must re-add it here again.
+	$head .= '
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+';
+	
 	$js_head = '
 	var create_form_settings_code_url = \'' . $project_url_prefix . 'module/form/create_form_settings_code\';
 	var convert_form_settings_to_workflow_code_url = \'' . $project_url_prefix . "module/form/convert_form_settings_to_workflow_code?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path" . '\';
@@ -179,18 +185,11 @@ if ($PEVC) {
 	ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback = onProgrammingTaskChooseCreatedVariable;
 	ProgrammingTaskUtil.on_programming_task_choose_object_method_callback = onProgrammingTaskChooseObjectMethod;
 	ProgrammingTaskUtil.on_programming_task_choose_function_callback = onProgrammingTaskChooseFunction;
-	
-	CreateFormTaskPropertyObj.on_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
-	CreateFormTaskPropertyObj.on_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
+	ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
+	ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
 	
 	if (typeof LayerOptionsUtilObj != "undefined" && LayerOptionsUtilObj)
 		LayerOptionsUtilObj.on_choose_db_driver_callback = onChooseDBDriver;
-	
-	if (typeof GetUrlContentsTaskPropertyObj != "undefined" && GetUrlContentsTaskPropertyObj)
-		GetUrlContentsTaskPropertyObj.on_choose_page_callback = onIncludePageUrlTaskChooseFile;
-	
-	if (typeof SoapConnectorTaskPropertyObj != "undefined" && SoapConnectorTaskPropertyObj)
-		SoapConnectorTaskPropertyObj.on_choose_page_callback = onIncludePageUrlTaskChooseFile;
 	
 	if (typeof CallBusinessLogicTaskPropertyObj != "undefined" && CallBusinessLogicTaskPropertyObj) {
 		CallBusinessLogicTaskPropertyObj.on_choose_business_logic_callback = onBusinessLogicTaskChooseBusinessLogic;
@@ -214,7 +213,11 @@ if ($PEVC) {
 	if (typeof SetQueryDataTaskPropertyObj != "undefined" && SetQueryDataTaskPropertyObj) {
 		SetQueryDataTaskPropertyObj.brokers_options = ' . json_encode(array_merge($db_brokers_obj, $data_access_brokers_obj)) . ';
 	}
-
+	
+	if (typeof DBQueryTaskPropertyObj != "undefined" && DBQueryTaskPropertyObj) {
+		DBQueryTaskPropertyObj.show_properties_on_conection_drop = true;
+	}
+	
 	var brokers_settings = ' . json_encode($brokers_settings) . ';
 	var brokers_name_by_obj_code = ' . json_encode($brokers_name_by_obj_code) . ';
 
@@ -334,20 +337,20 @@ if ($PEVC) {
 		<script type="text/javascript" src="<?= $module["webroot_url"]; ?>form.js"></script>
 		
 		<div class="module_form_contents">
-			<ul>
+			<ul class="tabs tabs_transparent">
 				<li id="groups_flow_tab"><a href="#groups_flow">By Groups</a></li>
 				<li id="tasks_flow_tab"><a href="#ui" onClick="onClickTaskWorkflowTab(this);return false;">By Workflow</a></li>
 			</ul>
 			
 			<div id="groups_flow">
 				<nav>
-					<a class="add_form_group" onClick="addAndInitNewFormGroup(this)">Add Group <i class="zmdi zmdi-plus-circle"></i></a>
-					<a class="collapse_form_groups" onClick="collapseFormGroups(this)">Collapse Groups <i class="zmdi zmdi-minus-circle-outline"></i></a>
-					<a class="expand_form_groups" onClick="expandFormGroups(this)">Expand Groups <i class="zmdi zmdi-plus-circle-o"></i></a>
+					<a class="add_form_group" onClick="addAndInitNewFormGroup(this)">Add Group <i class="icon add"></i></a>
+					<a class="collapse_form_groups" onClick="collapseFormGroups(this)">Collapse Groups <i class="icon collapse_content"></i></a>
+					<a class="expand_form_groups" onClick="expandFormGroups(this)">Expand Groups <i class="icon expand_content"></i></a>
 	
 	<? 
 		if ($db_drivers) 
-			echo '	<a class="open_form_wizard" onClick="openFormWizard()">Open Wizard <i class="zmdi zmdi-view-web"></i></a>';
+			echo '	<a class="open_form_wizard" onClick="openFormWizard()">Open Wizard <i class="icon wizard"></i></a>';
 	?>
 	
 				</nav>

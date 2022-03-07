@@ -19,8 +19,14 @@
  */
 
 $head = '
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
 <!-- Add Icons CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Top-Bar CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
 
 <!-- Add Local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/install_module.css" type="text/css" charset="utf-8" />
@@ -29,7 +35,18 @@ $head = '
 <script>
 	var get_store_modules_url = \'' . $get_store_modules_url . '\';
 </script>
-'; $main_content = '<div class="title">Install New Module</div>
+'; $main_content = '
+<div class="top_bar">
+	<header>
+		<div class="title">Install New Module</div>
+		<ul>
+			<li class="install" title="Install Now">
+				<a onclick="onSubmitButtonClick(this);"><i class="icon continue"></i> Install Now</a>
+			</li>
+		</ul>
+	</header>
+</div>
+
 <div class="file_upload">
 	<label>Please choose the project and module zip file to install:</label>
 	
@@ -38,11 +55,10 @@ $head = '
 			<option value="">-- ALL PROJECTS\' DBS --</option>'; if ($projects) foreach ($projects as $project_name => $project) if ($project["item_type"] != "project_common") $main_content .= '<option' . ($selected_project == $project_name ? ' selected' : '') . ' value="' . $project_name . '">' . strtoupper($project_name) . ' Project\' DBs</option>'; $main_content .= '</select>
 		<select name="db_driver">
 			<option value="">-- ALL DB DRIVERS --</option>'; if ($available_db_drivers) foreach ($available_db_drivers as $db_driver_name => $db_driver_props) $main_content .= '<option' . ($selected_db_driver == $db_driver_name ? ' selected' : '') . ' value="' . $db_driver_name . '">' . strtoupper($db_driver_name) . '</option>'; $main_content .= '</select>
-		<span class="icon add" onClick="addNewFile(this)" title="Add new File">Add new File</span>
+		<span class="icon add" onClick="addNewFile(this)" title="Add new File">Add</span>
 		<div class="upload_file">
-			<input type="file" name="zip_file[0]" multiple>
+			<input type="file" name="zip_file[]" multiple>
 		</div>
-		<input class="button" type="submit" value="Install Now" name="submit" onClick="return onSubmitButtonClick(this)">
 	</form>
 	
 	' . ($get_store_modules_url ? '<div class="install_store_module">To install modules from store please click <a href="javascript:void(0)" onClick="installStoreModulePopup();">here</a></div>' : '') . '
@@ -58,7 +74,9 @@ $head = '
 	<div class="warning">
 		Note that in case of have Layers remotely installed, this is, Layers that are not locally installed and are remotely accessable, and if you wish to access this module from these Layers, you must then, install this module individually in that Layers too...
 	</div>
-</div>'; if ($_POST) { if (!$status) { $error_message = $error_message ? $error_message : "There was an error trying to install modules. Please try again..."; if ($messages) { $main_content .= '<ul class="messages">'; $curr_module = null; foreach ($messages as $module_id => $module_projects) { if ($curr_module && $curr_module != $module_id) $main_content .= '<li class="space"></li>'; $main_content .= '<li class="module">' . ucwords($module_id) . ' Module\'s installation</li>'; foreach ($module_projects as $project_name => $msgs) if ($msgs) { $main_content .= '<li class="project"><label>' . ucfirst($project_name) . ' project\'s installation:</label><ul>'; foreach ($msgs as $msg) $main_content .= '<li class="' . $msg["type"] . '">' . str_replace("\n", "<br/>", trim($msg["msg"])) . '</li>'; $main_content .= '</ul></li>'; } $curr_module = $module_id; } $main_content .= '</ul>'; } } else { die("<script>
+</div>'; if ($_POST) { if ($messages) { $messages_html = '<ul class="messages">'; $curr_module = null; foreach ($messages as $module_id => $module_projects) { if ($curr_module && $curr_module != $module_id) $messages_html .= '<li class="space"></li>'; $messages_html .= '<li class="module">' . ucwords($module_id) . ' Module\'s installation</li>'; foreach ($module_projects as $project_name => $msgs) if ($msgs) { $messages_html .= '<li class="project"><label>' . ucfirst($project_name) . ' project\'s installation:</label><ul>'; foreach ($msgs as $msg) $messages_html .= '<li class="' . $msg["type"] . '">' . str_replace("\n", "<br/>", trim($msg["msg"])) . '</li>'; $messages_html .= '</ul></li>'; } $curr_module = $module_id; } $messages_html .= '</ul>'; } if (!$status) { $error_message = $error_message ? $error_message : "There was an error trying to install modules. Please try again..."; $main_content .= $messages_html; } else if ($messages_html) { $main_content .= $messages_html . "<script>
+			alert('Please do NOT forget to activate this module and go to the \"Manage User Type Permissions\" page and add the new permissions to the correspondent files for this module, otherwise the module may NOT work propertly!');
+		</script>"; } else { die("<script>
 			if (window.parent.refreshLastNodeChilds) 
 				window.parent.refreshLastNodeChilds();
 			

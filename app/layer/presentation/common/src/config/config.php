@@ -2,7 +2,8 @@
 if ($GLOBALS["force_https"] && (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off')) { 
     $actual_link = "https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
     header('Location: ' . $actual_link, true, 302);
-    exit;
+    echo "<script>document.location='$actual_link';</script>";
+    die();
 }
 
 $presentation_id = $GLOBALS["presentation_id"];

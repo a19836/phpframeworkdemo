@@ -21,7 +21,7 @@ input, select, textarea {vertical-align:middle;}
    GENERAL SETTINGS
 ----------------------------------------------- */
 a {
-	color:#33AADD;
+	color:#ff0000;
 	text-decoration:none;
 }
 a:hover {
@@ -33,14 +33,10 @@ a:hover {
 }
 
 input, select, textarea {
-	color:#000;
 	font-family:verdana,arial,courier;
 }
 
 label {
-	font-style:italic;
-	font-weight:bold;
-	color:#333;
 	font-family:verdana,arial,courier;
 }
 

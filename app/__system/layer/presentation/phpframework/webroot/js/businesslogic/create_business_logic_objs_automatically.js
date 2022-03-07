@@ -15,9 +15,27 @@ $(function () {
 		onChangeDBBroker(select);
 });
 
+function submitForm(elm, on_submit_func) {
+	elm = $(elm);
+	var oForm = elm.parent().closest(".top_bar").parent().children("form");
+	var status = typeof on_submit_func == "function" ? on_submit_func( oForm[0] ) : true;
+	
+	if (status) {
+		elm.hide();
+		oForm.submit();
+	}
+	
+	return status;
+}
+
 function removeQueriesAndMapsAndOtherHbnNodesFromTree(ul, data) {
-	$(ul).find("i.query, i.map, i.relationship, i.hbn_native").each(function(idx, elm){
-		$(elm).parent().parent().remove();
+	$(ul).find("i.query, i.map, i.relationship, i.hbn_native, i.referenced_folder").each(function(idx, elm){
+		var li = $(elm).parent().parent();
+		
+		if (li.next("li").length == 0)
+			li.prev("li").addClass("jstree-last");
+		
+		li.remove();
 	});
 }
 

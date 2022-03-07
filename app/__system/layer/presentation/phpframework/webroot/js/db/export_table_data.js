@@ -1,4 +1,12 @@
-function exportTable(btn) {
+$(function() {
+	$(window).unbind('beforeunload');
+	
+	disableAutoSave(onToggleAutoSave);
+	
+	$(".top_bar ul .auto_save_convert_settings").remove();
+});
+
+function exportTable() {
 	var query = $(".data_access_obj  > .relationships > .rels > .relationship .query");
 	var rand_number = query.attr("rand_number");
 	var query_sql_tab = query.find(".query_tabs .query_sql_tab");
@@ -13,6 +21,8 @@ function exportTable(btn) {
 	var form = $(".export_form");
 	form.find("input[name=sql]").val(sql);
 	
-	$(btn).hide();
+	$(".top_bar .export").hide();
 	form.submit();
+	
+	$(".top_bar .export").show();
 }

@@ -53,7 +53,7 @@
 			<option>variable</option>
 			<option value="">code</option>
 		</select>
-		<span class="icon search" onclick="SoapConnectorTaskPropertyObj.onChoosePage(this)">Search</span>
+		<span class="icon search" onclick="ProgrammingTaskUtil.onProgrammingTaskChoosePageUrl(this)">Search</span>
 	</div>
 	<div class="client_options">
 		<label>Client options:</label>

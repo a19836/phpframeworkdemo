@@ -1,4 +1,4 @@
-<div class="add_header_task_html">
+<div class="user_task_1_task_html">
 	<div class="value">
 		<label>Value: </label>
 		<input type="text" class="task_property_field" name="value" />

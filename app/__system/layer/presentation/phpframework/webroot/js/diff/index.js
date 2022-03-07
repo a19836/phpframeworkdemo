@@ -245,7 +245,7 @@ function updateSelectedNodesInfo() {
 	files_selection_info.find(".second_selection_info").val(second_file_to_compare);
 }
 
-function diff(btn) {
+function diff() {
 	if (first_selection && second_selection) {
 		var first_a = $(first_selection).children("a");
 		var second_a = $(second_selection).children("a");

@@ -19,8 +19,6 @@
 
 var InlineHTMLTaskPropertyObj = {
 	editor_save_func: null,
-	on_choose_page_url_callback: null,
-	on_choose_image_url_callback: null,
 	is_code_html_base : true, //This means that the base is html and not php
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
@@ -41,15 +39,15 @@ var InlineHTMLTaskPropertyObj = {
 			PtlLayoutUIEditor.options.ui_element = layout_ui_editor_elm;
 			PtlLayoutUIEditor.options.template_source_editor_save_func = InlineHTMLTaskPropertyObj.editor_save_func;
 			
-			if (typeof InlineHTMLTaskPropertyObj.on_choose_page_url_callback == "function")
+			if (typeof ProgrammingTaskUtil.on_programming_task_choose_page_url_callback == "function")
 				PtlLayoutUIEditor.options.on_choose_page_url_func = function(elm) {
-					InlineHTMLTaskPropertyObj.on_choose_page_url_callback(elm);
+					ProgrammingTaskUtil.onProgrammingTaskChoosePageUrl(elm);
 					MyFancyPopup.settings.is_code_html_base = InlineHTMLTaskPropertyObj.is_code_html_base;
 				}
 			
-			if (typeof InlineHTMLTaskPropertyObj.on_choose_image_url_callback == "function")
+			if (typeof ProgrammingTaskUtil.on_programming_task_choose_image_url_callback == "function")
 				PtlLayoutUIEditor.options.on_choose_image_url_func = function(elm) {
-					InlineHTMLTaskPropertyObj.on_choose_image_url_callback(elm);
+					ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl(elm);
 					MyFancyPopup.settings.is_code_html_base = InlineHTMLTaskPropertyObj.is_code_html_base;
 				}
 			
@@ -208,10 +206,7 @@ var InlineHTMLTaskPropertyObj = {
 	},
 	
 	onCompleteLabel : function(task_id) {
-		onEditLabel(task_id);
-		myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
-		
-		return true;
+		return ProgrammingTaskUtil.onEditLabel(task_id);
 	},
 	
 	onTaskCreation : function(task_id) {

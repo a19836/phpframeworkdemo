@@ -109,6 +109,63 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 		.layout_ui_editor.layout_ui_editor_3 > .options > .options-center {
 			background:#660000;
 		}
+		
+		.layout_ui_editor.layout_ui_editor_4 {
+			margin:100px auto 0 auto;
+			
+			--tooltip-bg:#d5e3e4;
+			--tooltip-color:#666;
+			
+			--tabs-bg:#fff;
+			
+			--main-bg:#d5e3e4;
+			--main-color:#888;
+			--main-color-hover:#73a3a8;
+			--main-bg-hover:#485152;
+			--main-border:#bcd4d6;
+			--main-color-active:#222;
+			--outside-border:#ccc;
+			
+			--selected-item-bg:#666;
+			--selected-item-color:#bcd4d6;
+			
+			--button-border:#bcd4d6;
+			--button-bg:#485152;
+			--button-color:#d5e3e4;
+			--button-color-hover:#bcd4d6;
+			
+			--input-border:#bcd4d6;
+			--input-bg:#485152;
+			--input-color:#97a3a4;
+			
+			--select-option-disabled-bg:#d5e3e4;
+			--select-option-disabled-color:#666;
+			
+			--popup-bg:#485152;
+			--popup-color:#d5e3e4;
+			
+			--scrollbar-track:#555;
+			--scrollbar-thumb:#ccc;
+			
+			--resize-panel-bg-color:#485152;
+			
+			--text-selection-border-active: #d5e3e422;
+		}
+		.layout_ui_editor.layout_ui_editor_4 > .menu-widgets, 
+		  .layout_ui_editor.layout_ui_editor_4 > .menu-layers, 
+		  .layout_ui_editor.layout_ui_editor_4 > .menu-settings, 
+		  .layout_ui_editor.layout_ui_editor_4 > .template-widgets-options {
+			border:0;
+		}
+		.layout_ui_editor.layout_ui_editor_4 > .menu-settings .group ul.group-block,
+		  .layout_ui_editor.layout_ui_editor_4 > .menu-settings .settings-classes .user-classes {
+			background:rgba(0,0,0,0.05);
+		}
+		.layout_ui_editor.layout_ui_editor_4 > .menu-settings input,
+		  .layout_ui_editor.layout_ui_editor_4 > .menu-settings select,
+		  .layout_ui_editor.layout_ui_editor_4 > .menu-settings textarea {
+			color:#485152 !important;
+		}
 	</style>
 </head>
 <body>
@@ -116,7 +173,7 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 if ($_SERVER["HTTP_HOST"] != "jplpinto.localhost")
 	echo("<script>alert('Please configure your computer to point the host jplpinto.localhost to this IP, otherwise the layout ui editor won't work with the FormFieldsUtilObj!');</script>");
 ?>
-	<div class="layout_ui_editor layout_ui_editor_1">
+	<div class="layout_ui_editor reverse layout_ui_editor_1">
 		<ul class="menu-widgets hidden">
 			<? echo $menu_widgets_html; ?>
 		</ul>
@@ -129,6 +186,12 @@ if ($_SERVER["HTTP_HOST"] != "jplpinto.localhost")
 	</div>
 	
 	<div class="layout_ui_editor layout_ui_editor_3">
+		<ul class="menu-widgets hidden">
+			<? echo $menu_widgets_html; ?>
+		</ul>
+	</div>
+	
+	<div class="layout_ui_editor reverse fixed_properties layout_ui_editor_4">
 		<ul class="menu-widgets hidden">
 			<? echo $menu_widgets_html; ?>
 		</ul>

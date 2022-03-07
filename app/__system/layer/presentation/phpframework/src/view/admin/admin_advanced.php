@@ -27,12 +27,12 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_advanced
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_advanced.js"></script>'; $main_content = AdminMenuUIHandler::getContextMenus($exists_db_drivers); $main_content .= '
 <div id="menu_panel">
 	<ul>
-		<li class="expand_left_panel" title="Expand Left Panel" onClick="expandLeftPanel(this)">Expand Left Panel</li>
-		<li class="collapse_left_panel" title="Collapse Left Panel" onClick="collapseLeftPanel(this)">Collapse Left Panel</li>
-		<li class="home" title="Go to Home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/admin_home?admin_type=advanced">Home</li>
-		<li class="docbook" title="Go to Doc-Book" onClick="goTo(this, \'docbook_url\', event)" docbook_url="' . $project_url_prefix . 'docbook/">Doc Book</li>
-		<li class="toggle_tree_layout" title="Toggle Tree Layout" onClick="toggleTreeLayout(this, \'' . ($left_panel_tree_layout_class == "left_panel_with_tabs" ? "left_panel_without_tabs" : "left_panel_with_tabs") . '\')">Toggle Tree Layout</li>
-		' . ($is_flush_cache_allowed ? '<li class="flush_cache" title="Flush Cache" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\')">Flush Cache</li>' : '') . '
+		<li class="icon home" title="Go to Home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/admin_home?admin_type=advanced"></li>
+		<li class="icon docbook" title="Go to Doc-Book" onClick="goTo(this, \'docbook_url\', event)" docbook_url="' . $project_url_prefix . 'docbook/"></li>
+		' . ($is_flush_cache_allowed ? '<li class="icon flush_cache" title="Flush Cache" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\')"></li>' : '') . '
+		<li class="icon toggle_tree_layout" title="Toggle Tree Layout" onClick="toggleTreeLayout(this, \'' . ($left_panel_tree_layout_class == "left_panel_with_tabs" ? "left_panel_without_tabs" : "left_panel_with_tabs") . '\')"></li>
+		<li class="icon expand_left_panel" title="Expand Left Panel" onClick="expandLeftPanel(this)"></li>
+		<li class="icon collapse_left_panel" title="Collapse Left Panel" onClick="collapseLeftPanel(this)"></li>
 	</ul>
 </div>
 
@@ -52,7 +52,7 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_advanced
 					' . ($is_switch_admin_ui_allowed ? '<li data-jstree=\'{"icon":"main_node_admin_simple_ui"}\'><a class="link" href="' . $project_url_prefix . 'admin/admin_uis" onClick="document.location=this.href"><label>Switch Admin UI</label></a></li>' : '') . '
 					<!--li data-jstree=\'{"icon":"main_node_admin_simple_ui"}\'><a class="link" href="' . $project_url_prefix . 'admin/choose_available_tool" onClick="document.location=this.href"><label>Switch Project</label></a></li-->
 					' . ($is_manage_users_allowed ? '<li data-jstree=\'{"icon":"main_node_user_management"}\'><a class="link" onClick="goTo(this,\'url\', event)" url="' . $project_url_prefix . 'user/manage_users"><label>Users Management</label></a></li>' : '') . '
-					' . ($is_manage_layers_allowed ? '<li data-jstree=\'{"icon":"main_node_layers_management"}\'><a class="link" onClick="goTo(this,\'url\', event)" url="' . $project_url_prefix . 'setup?step=3.1&iframe=1&hide_cancel_btn=1&hide_beginner_btn=1"><label>Layers Management</label></a></li>' : '') . '
+					' . ($is_manage_layers_allowed ? '<li data-jstree=\'{"icon":"main_node_layers_management"}\'><a class="link" onClick="goTo(this,\'url\', event)" url="' . $project_url_prefix . 'setup?step=3.1&iframe=1&hide_setup=1"><label>Layers Management</label></a></li>' : '') . '
 					' . ($is_manage_modules_allowed ? '<li data-jstree=\'{"icon":"main_node_modules_management"}\'><a class="link" onClick="goTo(this,\'url\', event)" url="' . $project_url_prefix . 'phpframework/admin/manage_modules"><label>Modules Management</label></a></li>' : '') . '
 					' . ($is_manage_projects_allowed ? '<li data-jstree=\'{"icon":"main_node_projects_management"}\'><a class="link" onClick="goTo(this,\'url\', event)" url="' . $project_url_prefix . 'phpframework/presentation/manage_projects"><label>Projects Management</label></a></li>' : '') . '
 					' . ($is_testunits_allowed ? '<li data-jstree=\'{"icon":"main_node_testunit_management"}\'><a class="link" onClick="goTo(this,\'url\', event)" url="' . $project_url_prefix . 'phpframework/testunit/"><label>Test-Units Management</label></a></li>' : '') . '

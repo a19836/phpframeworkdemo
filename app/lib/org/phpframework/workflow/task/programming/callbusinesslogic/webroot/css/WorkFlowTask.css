@@ -26,13 +26,13 @@
 }
 
 .call_business_logic_task_html {
-	min-width:420px;
+	min-width:430px;
 }
 
 .call_business_logic_task_html .get_automatically,
    .call_business_logic_task_html .module_id,
    .call_business_logic_task_html .service_id {
-	width:420px;
+	width:430px;
 	height:20px;
 	margin:0 auto;
 }
@@ -46,8 +46,24 @@
 	margin-top:15px;
 	margin-bottom:5px;
 }
+.call_business_logic_task_html .get_automatically label {
+	width:230px;
+}
+.call_business_logic_task_html .get_automatically .icon {
+	width:23px;
+	height:23px;
+}
+.call_business_logic_task_html .get_automatically .icon::before {
+	content:"\f022";
+}
+.call_business_logic_task_html .get_automatically .icon::after {
+	content:"\f079";
+}
+.call_business_logic_task_html .get_automatically .icon:hover::after {
+	color:#000;
+}
 .call_business_logic_task_html .params {
-   	width:420px;
+   	width:430px;
    	min-height:20px;
 	margin-left:auto;
 	margin-right:auto;
@@ -63,9 +79,6 @@
 	margin-left:0;
 }
 
-.call_business_logic_task_html .get_automatically label {
-	width:255px;
-}
 .call_business_logic_task_html .module_id label,
    .call_business_logic_task_html .service_id label,
    .call_business_logic_task_html .params .main_label {
@@ -88,15 +101,12 @@
 	text-align:center;
 	font-size:9px;
 	width:60px;
+	height:19px;
 	float:none;
 	display:inline-block;
 	margin-bottom:0;
 }
 .call_business_logic_task_html > div:not(.broker_method_obj) > .add_variable {
-	margin-left:-23px;
+	margin-left:-26px;
 }
-.call_business_logic_task_html > div.broker_method_obj > .add_variable {
-	margin-top:29px;
-}
-
 

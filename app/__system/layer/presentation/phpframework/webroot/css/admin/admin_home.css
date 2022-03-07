@@ -22,8 +22,8 @@
 
 /* TUTORIALS */
 .admin_panel .tutorials .card {
-	border-left:.25rem solid #b3c8cc;
-	border-right:.25rem solid #b3c8cc;
+	border-left:1px solid #ff0000aa;
+	border-right:1px solid #ff0000aa;
 	box-sizing:border-box;
 }
 .admin_panel .tutorials .card.border_bottom {
@@ -45,6 +45,9 @@
 	border-right: .3em solid transparent;
 	border-bottom: .3em solid;
 	border-left: .3em solid transparent;
+}
+.admin_panel .btn-link {
+	color:#ff0000;
 }
 
 /* MODAL VIDEO */

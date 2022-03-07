@@ -445,7 +445,7 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 		'<tr>'
 			+ '<td class="setting_name"><input class="task_property_field" type="text" name="layer_brokers[' + type + '][other_settings][vars_name][]" /></td>'
 			+ '<td class="setting_value"><input class="task_property_field" type="text" name="layer_brokers[' + type + '][other_settings][vars_value][]" /></td>'
-			+ '<td class="table_attr_icons"><a class="remove" onClick="$(this).parent().closest(\'tr\').remove()">Remove</a></td>'
+			+ '<td class="table_attr_icons"><a class="icon remove" onClick="$(this).parent().closest(\'tr\').remove()">Remove</a></td>'
 		+ '</tr>';
 		
 		html = $(html);
@@ -481,7 +481,7 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 		'<tr>'
 			+ '<td class="setting_name"><input class="connection_property_field" type="text" name="connection_settings[vars_name][]" /></td>'
 			+ '<td class="setting_value"><input class="connection_property_field" type="text" name="connection_settings[vars_value][]" /></td>'
-			+ '<td class="table_attr_icons"><a class="remove" onClick="$(this).parent().closest(\'tr\').remove()">Remove</a></td>'
+			+ '<td class="table_attr_icons"><a class="icon remove" onClick="$(this).parent().closest(\'tr\').remove()">Remove</a></td>'
 		+ '</tr>';
 		
 		html = $(html);
@@ -494,7 +494,7 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 		var html = 
 		'<tr>'
 			+ '<td class="var_name"><input class="connection_property_field" name="connection_global_variables_name[]" type="text" /></td>'
-			+ '<td class="table_attr_icons"><a class="remove" onClick="$(this).parent().closest(\'tr\').remove()">Remove</a></td>'
+			+ '<td class="table_attr_icons"><a class="icon remove" onClick="$(this).parent().closest(\'tr\').remove()">Remove</a></td>'
 		+ '</tr>';
 		
 		html = $(html);

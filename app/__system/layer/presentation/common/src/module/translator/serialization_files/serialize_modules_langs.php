@@ -131,6 +131,7 @@ echo serialize(array(
 	"This user is blocked. Please try again later..." => "Este utilizador está bloqueado. Por favor tente mais tarde...",
 	"Please insert the right captcha text!" => "Insira por favor o texto correcto de captcha!",
 	"There was an internal error because it seems your username is repeated in the DB. Please contact the sysadmin before continue..." => "Erro interno devido à repetição do seu username na BD. Por favor contacte o administrador de sistemas antes de continuar...",
+	"This user is inactive." => "Utilizador está inativo.",
 	"Login successfully..." => "Login correcto...",
 	"Incorrect #username_label# or #password_label#..." => "Incorrecto #username_label# ou #password_label#...",
 	"There was an error trying to login user. Please try again..." => "Erro ao fazer login de utilizador. Por tente novamente...",

@@ -18,14 +18,24 @@ body {
 /* MENU PANEL */
 #menu_panel {
 	width:300px;
-	height:25px;
+	height:32px;
+	padding:3px 5px 5px;
 	line-height:25px;
 	position:absolute; 
 	top:0;
 	left:0;
 	right:0;
-	background:#b3c8cc;
+	box-sizing:border-box;
 	overflow:hidden;
+	font-size:14px;
+	
+	border-top:2px solid #ff0000;
+	background: -moz-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #ffffff73));
+	background: -webkit-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -o-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -ms-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: linear-gradient(to bottom, #eee 50%, #ffffff73 100%);
 }
 #menu_panel > .selected_project {
 	padding:0 0 0 5px;
@@ -37,23 +47,15 @@ body {
 	content:"Project: ";
 }
 #menu_panel .login_info {
-	margin-left:5px;
-	margin-right:5px;
-	line-height:25px;
+	margin:0 5px;
 	color:#586264;
 	font-size:80%;
 	float:right;
 	opacity:.5;
 }
-#menu_panel .icon {
-	margin-top:5px;
+#menu_panel .icon:not(.user) {
+	margin:5px 5px 0;
 	float:right;
-}
-#menu_panel .left {
-	background:url("../../common/img/icon/left_icon.gif") no-repeat scroll 0 0;
-}
-#menu_panel .home {
-	background:url("../../common/img/icon/home_icon.png") no-repeat scroll 0 0;
 }
 #menu_panel .icon:hover {
 	opacity:.6;
@@ -67,7 +69,7 @@ body {
 	padding-bottom:20px;
 	position:absolute; 
 	left:0px; 
-	top:25px; 
+	top:32px; 
 	bottom:0px;
 	color:#444;
 	border:0;
@@ -87,34 +89,75 @@ body {
 	border-radius:0; 
 	/*overflow:hidden; - I don't need to do this anymore bc the trees (#left_panel .layers > .mytree) appear on top of the tabs and hide the tabs that appear in 2 lines */
 }
-#left_panel > .tabs a {padding:0;}
-#left_panel > .tabs .ui-state-active {background:#fff;}
-#left_panel > .tabs a .icon {display:inline-block; width:24px; height:24px; margin:0;}
-#left_panel > .tabs .tab_vendors {float:right; right:26px;}
-#left_panel > .tabs .tab_settings {float:right; right:-30px;}
+#left_panel > .tabs .tab {height:30px; box-sizing:border-box; padding:2px 5px 5px;}
+#left_panel > .tabs .tab:not(.ui-tabs-active) {margin-top:-4px; background:#f7f7f7;}
+#left_panel > .tabs .tab.ui-tabs-active {margin-top:-3px;}
+#left_panel > .tabs .tab.tab_vendors {float:right; right:36px;}
+#left_panel > .tabs .tab.tab_settings {float:right; right:-30px;}
+#left_panel > .tabs .tab a {padding:0;}
+#left_panel > .tabs .tab a .tab_icon {display:inline-block; margin:0;}
+#left_panel > .tabs .tab a .tab_icon.ui-state-active {background:#fff;}
 
-#left_panel > .tabs a i.main_node_db_layers {
-	/*background: url("../../img/db_icons.png") -245px -21px no-repeat !important;*/
-	background: url("../../img/db_driver_small_icon.png") center no-repeat !important;
-	background-size: 20px 20px !important;
+#left_panel > .tabs a i.tab_icon::before {
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	font-size:16px;
+	display:block;
+	margin-top:4px;
 }
-#left_panel > .tabs a i.main_node_data_access_layers {
-	/*background: url("../../img/db_icons.png") -133px 0px no-repeat !important;*/
-	background: url("../../img/data_access_small_icon.png") center no-repeat !important;
-	background-size: 20px 20px !important;
+#left_panel > .tabs a i.tab_icon::after {
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	font-size:12px;
+	display:block;
+	margin:-10px 0 0 10px;
 }
-#left_panel > .tabs a i.main_node_business_logic_layers {
-	/*background: url("../../img/icons.png") -7px -69px no-repeat !important;*/
-	background: url("../../img/business_logic_small_icon.png") center no-repeat !important;
-	background-size: 20px 20px !important;
+#left_panel > .tabs a i.main_node_db_layers::before {
+	content:"\f51e";
+	color:#f5df86;
 }
-#left_panel > .tabs a i.main_node_presentation_layers {
-	/*background: url("../../img/icons.png") -50px -244px no-repeat !important;*/
-	background: url("../../img/presentation_small_icon.png") center no-repeat !important;
-	background-size: 20px 20px !important;
+#left_panel > .tabs a i.main_node_db_layers::after {
+	content:"\f1e6";
+	color:#666;
+	-webkit-transform:rotate(45deg);
+	transform:rotate(45deg);
 }
-#left_panel > .tabs a i.main_node_vendors {background: url("../../img/icons.png") -115px -156px no-repeat !important;}
-#left_panel > .tabs a i.main_node_settings {background: url("../../img/icons.png") -93px -3px no-repeat !important;}
+#left_panel > .tabs a i.main_node_data_access_layers::before {
+	content:"\f5fd";
+	color:#f5df86;
+}
+#left_panel > .tabs a i.main_node_data_access_layers::after {
+	content:"\f1c0";
+	color:#666;
+}
+#left_panel > .tabs a i.main_node_business_logic_layers::before {
+	content:"\f5fd";
+	color:#f5df86;
+}
+#left_panel > .tabs a i.main_node_business_logic_layers::after {
+	content:"\e13b";
+	color:#666;
+	-webkit-transform: scaleY(-1);
+	transform: scaleY(-1);
+}
+#left_panel > .tabs a i.main_node_presentation_layers::before {
+	content:"\f5fd";
+	color:#f5df86;
+}
+#left_panel > .tabs a i.main_node_presentation_layers::after {
+	content:"\f0ac";
+	color:#666;
+}
+#left_panel > .tabs a i.main_node_vendors::before {
+	content:"\f2a1";
+	color:#f5df86;
+}
+#left_panel > .tabs a i.main_node_settings::before {
+	content:"\f7d9";
+	color:#f5df86;
+}
 
 /* LEFT PANEL - TREE */
 #left_panel .layers {
@@ -148,7 +191,7 @@ body {
 	margin:10px;
 	background:unset;
 }
-#left_panel .with_sub_groups > ul > li:first-child {
+#left_panel .layers > .mytree.with_sub_groups > ul > li:first-child {
 	padding-top:0;
 }
 #left_panel .with_sub_groups > ul > li > a > label {
@@ -167,14 +210,23 @@ body {
 #left_panel .with_sub_groups > ul > li.jstree-loading > .jstree-icon {
 	background-position:5px 8px;
 }
+#left_panel .with_sub_groups > ul > li {
+	position:relative;
+}
 #left_panel .with_sub_groups > ul > li > a {
 	padding:5px 5px 5px 25px;
 	border-radius:5px;
-	background-color:#b3c8cc;
+	background-color:#eee;
 	display:block;
 }
+#left_panel .with_sub_groups > ul > li > .icon.sub_menu {
+	position:absolute;
+	top:12px;
+	right:5px;
+	color:#aaa;
+}
 #left_panel .with_sub_groups > ul > li > a.jstree-hovered {
-	background-color:#b3c8cc !important;
+	background-color:#eee !important;
 }
 #left_panel .with_sub_groups > ul > li > ul > li {
 	margin-left:0;
@@ -182,7 +234,8 @@ body {
 
 /* LEFT PANEL - WITHOUT SUB GROUPS */
 #left_panel .mytree.hide_tree_item > ul > li > a,
-  #left_panel .mytree.hide_tree_item > ul > li > i {
+  #left_panel .mytree.hide_tree_item > ul > li > i,
+  #left_panel .mytree.hide_tree_item > ul > li > .sub_menu {
 	display:none;
 }
 #left_panel .mytree.hide_tree_item > ul > li:first-child {
@@ -195,7 +248,8 @@ body {
 	padding-top:10px;
 }
 #left_panel .mytree.hide_tree_item > ul li.hide_tree_item > a,
-  #left_panel .mytree.hide_tree_item > ul li.hide_tree_item > i {
+  #left_panel .mytree.hide_tree_item > ul li.hide_tree_item > i,
+  #left_panel .mytree.hide_tree_item > ul li.hide_tree_item > .sub_menu {
 	display:none;
 }
 #left_panel .mytree.hide_tree_item > ul li.hide_tree_item:not(.with_sub_groups) > ul > li {
@@ -238,11 +292,23 @@ body {
 	left:0;
 	right:0;
 	bottom:0;
-	background:#b3c8cc;
-	border-top:1px solid #586264;
+	
+	background: -moz-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(50%, #eee), color-stop(100%, #ffffff73));
+	background: -webkit-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	background: -o-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	background: -ms-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	background: linear-gradient(to top, #eee 50%, #ffffff73 100%);
 }
 #left_panel .sub_menus.open {
 	height:auto;
+	
+	background: -moz-linear-gradient(bottom, #eee 97%, #ffffff73 100%);
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(97%, #eee), color-stop(100%, #ffffff73));
+	background: -webkit-linear-gradient(bottom, #eee 97%, #ffffff73 100%);
+	background: -o-linear-gradient(bottom, #eee 97%, #ffffff73 100%);
+	background: -ms-linear-gradient(bottom, #eee 97%, #ffffff73 100%);
+	background: linear-gradient(to top, #eee 97%, #ffffff73 100%);
 }
 #left_panel .sub_menus > label {
 	line-height: 20px;
@@ -253,15 +319,15 @@ body {
 	font-size:80%;
 	font-weight:normal;
 	cursor:pointer;
-	opacity:.8;
+	color:#7a888b;
 }
 #left_panel .sub_menus.open > label {
-	background:#bfd5d9;
 	border-bottom:1px solid #aaa;
 }
 #left_panel .sub_menus > label > i {
 	float:right;
 	margin:8px 8px 0 0;
+	color:#7a888b;
 }
 #left_panel .sub_menus.open > label > i {
 	margin-top:2px;
@@ -271,7 +337,7 @@ body {
 }
 #left_panel .sub_menus > ul li.level {
 	padding:5px 10px;
-	background:#bfd5d9;
+	background:#ddd;
 	border-top:1px solid #aaa;
 	font-size:80%;
 }
@@ -301,12 +367,12 @@ body {
 }
 #left_panel .sub_menus > ul li.external_sub_menu .jqcontextmenu li,
   #left_panel .sub_menus > ul li.external_sub_menu .jqcontextmenu li a {
-	background-color:#b3c8cc !important;
+	background-color:#eee !important;
 	border-radius:0;
 }
 #left_panel .sub_menus > ul li.external_sub_menu .jqcontextmenu li:hover,
   #left_panel .sub_menus > ul li.external_sub_menu .jqcontextmenu li:hover a {
-	background-color:#bfd5d9 !important;
+	background-color:#ddd !important;
 }
 #left_panel .sub_menus > ul li.external_sub_menu .jqcontextmenu li.line_break {
 	margin:0 5px;
@@ -321,8 +387,8 @@ body {
 }
 
 /* HIDE PANEL */
-#hide_panel {position:absolute; left:300px; top:0px; width:5px; bottom:0px; overflow:hidden; background:url("../../img/back_frame_open_close_vertical.gif") repeat-y; cursor:move; z-index:3;}
-#hide_panel .button {position:absolute; top:45%; width:5px; height:34px; left:0; cursor:pointer;}
+#hide_panel {position:absolute; left:300px; top:0px; width:5px; bottom:0px; overflow:hidden; background:url("../../img/back_frame_open_close_vertical_red.gif") repeat-y; cursor:move; z-index:3;}
+#hide_panel .button {position:absolute; top:45%; top:calc(50% - 17px); width:5px; height:34px; left:0; cursor:pointer;}
 #hide_panel .button.maximize {background:url("../../img/tool_frame_right.gif") no-repeat;}
 #hide_panel .button.minimize {background:url("../../img/tool_frame_left.gif") no-repeat;}
 

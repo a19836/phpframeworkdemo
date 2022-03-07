@@ -36,7 +36,7 @@
 
 
 .set_presentation_view_task_html {
-	width:340px;
+	width:430px;
 }
 
 .set_presentation_view_task_html .value {
@@ -44,7 +44,7 @@
 }
 .set_presentation_view_task_html .value,
    .set_presentation_view_task_html .type {
-	width:100%;
+	width:430px;
 	height:20px;
 }
 .set_presentation_view_task_html .value label,
@@ -56,8 +56,5 @@
 	width:230px;
 }
 .set_presentation_view_task_html .broker_method_obj input {
-	margin-left:80px;
-}
-.set_presentation_view_task_html .broker_method_obj > .add_variable {
-	margin-top:29px;
+	margin-left:85px;
 }

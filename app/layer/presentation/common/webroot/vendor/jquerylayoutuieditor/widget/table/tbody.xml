@@ -30,8 +30,8 @@
 			height:4.5em;
 			display:inline-block;
 			border-radius:5px;
-			border:1px solid #bbb;
-			color:#fff;
+			border:1px solid rgba(0, 0, 0, .2);
+			color:inherit;
 			overflow:hidden;
 		}
 		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-table-body i,
@@ -91,7 +91,7 @@
 							parent.append(widget);
 						else {
 							widget.remove();
-							alert("This item can only be dropped to Tables!");
+							ui_creator.showError("This item can only be dropped to Tables!");
 							return false;
 						}
 					}

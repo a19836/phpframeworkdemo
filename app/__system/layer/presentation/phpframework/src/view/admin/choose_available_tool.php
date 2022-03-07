@@ -18,13 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$head = '
-<!-- Add Icon CSS -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
-
-<!-- Edit code JS -->
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_code.js"></script>
-
+include_once $EVC->getUtilPath("AdminMenuUIHandler"); $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/choose_available_tool.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/choose_available_tool.js"></script>
@@ -51,7 +45,7 @@ var is_popup = ' . ($is_popup ? 1 : 0) . ';
 			<div class="photo"></div>
 			<div class="description">Create, edit and remove Projects. Set default project...</div>
 		</li>' : '') . '
-		' . ($is_manage_layers_allowed ? '<li class="manage_layers" onClick="return goTo(\'' . $project_url_prefix . 'setup?step=3.1&iframe=1\', event)">
+		' . ($is_manage_layers_allowed ? '<li class="manage_layers" onClick="return goTo(\'' . $project_url_prefix . 'setup?step=3.1&iframe=1&hide_setup=1\', event)">
 			<label>Manage Layers</label>
 			<div class="photo"></div>
 			<div class="description">Edit the framework structure by managing its\' layers</div>
@@ -123,12 +117,12 @@ var is_popup = ' . ($is_popup ? 1 : 0) . ';
 				<div class="photo"></div>
 				<div class="description">Manage Data-Bases.</div>
 			</li>'; } if ($layers["data_access_layers"]) foreach ($layers["data_access_layers"] as $layer_name => $layer) { $bn = $layer["properties"]["bean_name"]; $bfn = $layer["properties"]["bean_file_name"]; $WorkFlowBeansFileHandler = new WorkFlowBeansFileHandler($user_beans_folder_path . $bfn, $user_global_variables_file_path); $obj = $WorkFlowBeansFileHandler->getBeanObject($bn); $obj_type = $obj->getType(); $label = WorkFlowBeansFileHandler::getLayerObjFolderName($obj); $main_content .= '
-			<li class="data_access_layers data_access_layers_' . $obj_type . '" onClick="return goTo(\'' . "{$project_url_prefix}phpframework/presentation/list?bean_name=$bn&bean_file_name=$bfn$filter_by_layout_url_query" . '\', event)">
+			<li class="data_access_layers data_access_layers_' . $obj_type . '" onClick="return goTo(\'' . "{$project_url_prefix}phpframework/presentation/list?bean_name=$bn&bean_file_name=$bfn$filter_by_layout_url_query&selected_db_driver=$selected_db_driver" . '\', event)">
 				<label>' . ucwords($label) . ' Data Access</label>
 				<div class="photo"></div>
 				<div class="description">Manage the ' . $obj_type . ' rules.</div>
 			</li>'; } if ($layers["business_logic_layers"]) foreach ($layers["business_logic_layers"] as $layer_name => $layer) { $bn = $layer["properties"]["bean_name"]; $bfn = $layer["properties"]["bean_file_name"]; $label = WorkFlowBeansFileHandler::getLayerBeanFolderName($user_beans_folder_path . $bfn, $bn, $user_global_variables_file_path); $main_content .= '
-			<li class="business_logic_layers" onClick="return goTo(\'' . "{$project_url_prefix}phpframework/presentation/list?bean_name=$bn&bean_file_name=$bfn$filter_by_layout_url_query" . '\', event)">
+			<li class="business_logic_layers" onClick="return goTo(\'' . "{$project_url_prefix}phpframework/presentation/list?bean_name=$bn&bean_file_name=$bfn$filter_by_layout_url_query&selected_db_driver=$selected_db_driver" . '\', event)">
 				<label>' . ucwords($label) . ' Business Logic</label>
 				<div class="photo"></div>
 				<div class="description">Manage the business logic services.</div>

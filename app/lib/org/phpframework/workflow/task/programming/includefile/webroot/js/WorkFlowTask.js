@@ -19,8 +19,6 @@
 
 var IncludeFileTaskPropertyObj = {
 	
-	on_choose_file_callback : null,
-	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
 	},
@@ -43,10 +41,7 @@ var IncludeFileTaskPropertyObj = {
 	},
 	
 	onCompleteLabel : function(task_id) {
-		onEditLabel(task_id);
-		myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
-		
-		return true;
+		return ProgrammingTaskUtil.onEditLabel(task_id);
 	},
 	
 	onTaskCreation : function(task_id) {
@@ -61,11 +56,5 @@ var IncludeFileTaskPropertyObj = {
 	
 	getDefaultExitLabel : function(task_property_values) {
 		return task_property_values["file_path"] ? "include" + (task_property_values["once"] ? "_once" : "") + " " + ProgrammingTaskUtil.getValueString(task_property_values["file_path"], task_property_values["type"]) : "";
-	},
-	
-	onChooseFile : function(elm) {
-		if (typeof this.on_choose_file_callback == "function") {
-			this.on_choose_file_callback(elm);
-		}
 	},
 };

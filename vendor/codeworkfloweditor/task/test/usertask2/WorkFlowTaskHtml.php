@@ -1,4 +1,4 @@
-<div class="add_template_region_block_task_html">
+<div class="user_task_2_html">
 	<div class="broker_method_obj" title="Write here the CMS Template Layer variable">
 		<label>Template Obj:</label>
 		<select onChange="BrokerOptionsUtilObj.onBrokerChange(this)"></select>

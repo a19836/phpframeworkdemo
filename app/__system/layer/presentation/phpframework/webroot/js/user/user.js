@@ -1,3 +1,45 @@
+var saved_form_obj_id = null;
+
+$(function () {
+	if (isEditFormPage()) {
+		$(window).bind('beforeunload', function () {
+			if (isFormChanged()) {
+				if (window.parent && window.parent.iframe_overlay)
+					window.parent.iframe_overlay.hide();
+				
+				return "If you proceed your changes won't be saved. Do you wish to continue?";
+			}
+			
+			return null;
+		});
+		
+		//set saved_record_obj_id
+		saved_form_obj_id = getFormObjId();
+	}
+});
+
+function isEditFormPage() {
+	return $("#content > div > form").length > 0;
+}
+
+function getFormObjId() {
+	var obj = $("#content > div > form").serialize();
+	
+	return $.md5(obj);
+}
+
+function isFormChanged() {
+	var new_form_obj_id = getFormObjId();
+	
+	return saved_form_obj_id != new_form_obj_id;
+}
+
+function submitForm(elm, input_class) {
+	$(window).unbind('beforeunload');
+	
+	$(elm).parent().closest(".top_bar").parent().find("form").find(".buttons .submit_button input" + (input_class ? "." + input_class : "") + "").trigger("click");
+}
+
 function toggleAllPermissions(elm, class_name) {
 	elm = $(elm);
 	var table = elm.parent().closest("table");
@@ -91,6 +133,7 @@ function updateUserTypePermissions(elm) {
 										var permission_id = sub_elm.attr("permission_id");
 										var input = sub_elm.children("input");
 										input.removeAttr("disabled");
+										sub_elm.children(".toggle").addClass("active");
 										
 										if (user_type_permissions[object_type_id][object_id].hasOwnProperty(permission_id))
 											input.attr("checked", "checked").prop("checked", true);
@@ -106,8 +149,11 @@ function updateUserTypePermissions(elm) {
 										input.removeAttr("checked").prop("checked", false);
 										
 										if (input[0].hasAttribute("default_value")) {
+											var p = input.parent();
+											
 											input.attr("disabled", "disabled");
-											input.parent().addClass("new");
+											p.children(".toggle").removeClass("active");
+											p.addClass("new");
 										}
 									});
 							});
@@ -115,6 +161,9 @@ function updateUserTypePermissions(elm) {
 				}
 				else
 					$(".user_type_permissions_list table td.user_type_permission input").removeAttr("checked").prop("checked", false).parent().removeClass("new");
+				
+				//update saved_form_obj_id with new loaded items
+				saved_form_obj_id = getFormObjId();
 				
 				MyFancyPopup.hidePopup();
 			},
@@ -133,12 +182,17 @@ function updateUserTypePermissions(elm) {
 }
 
 function toggleLayerPermissionVisibility(elm) {
-	var input = $(elm).parent().children("input");
+	elm = $(elm);
+	var input = elm.parent().children("input");
 	
-	if (input[0].hasAttribute("disabled"))
+	if (input[0].hasAttribute("disabled")) {
 		input.removeAttr("disabled");
-	else
+		elm.addClass("active");
+	}
+	else {
 		input.attr("disabled", "disabled");
+		elm.removeClass("active");
+	}
 }
 
 function onChangeLocalDBSettings(elm) {
@@ -228,6 +282,9 @@ function updateLayoutTypePermissionsById(layout_type_id) {
 					loadLayoutTypePermissions(main_elm);
 				}
 				
+				//update saved_form_obj_id with new loaded items
+				saved_form_obj_id = getFormObjId();
+				
 				MyFancyPopup.hidePopup();
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
@@ -312,7 +369,7 @@ function removeAllThatCannotBeReferencedFromTree(ul, data) {
 	});
 	
 	//add checkbox to all files
-	ul.find("i.file, i.objtype, i.hibernatemodel, i.service, i.class, i.test_unit_obj, i.config_file, i.entity_file, i.view_file, i.template_file, i.block_file, i.util_file").each(function(idx, elm) {
+	ul.find("i.file, i.objtype, i.hibernatemodel, i.service, i.class, i.test_unit_obj, i.config_file, i.entity_file, i.view_file, i.template_file, i.block_file, i.util_file, i.controller_file").each(function(idx, elm) {
 		elm = $(elm);
 		var a = elm.parent();
 		var li = a.parent();
@@ -334,7 +391,7 @@ function removeAllThatCannotBeReferencedFromTree(ul, data) {
 	});
 	
 	//add checkbox to all folders
-	ul.find("i.folder, i.cms_common, i.cms_module, .module_folder, i.cms_program, .project, .project_common, .project_folder, .configs_folder, .entities_folder, .views_folder, .templates_folder, .blocks_folder, .utils_folder, .webroot_folder, .controllers_folder, .caches_folder").each(function(idx, elm){
+	ul.find("i.folder, i.cms_common, i.cms_module, .module_folder, i.cms_program, .project, .project_common, .project_folder, .configs_folder, .entities_folder, .views_folder, .templates_folder, .template_folder, .blocks_folder, .utils_folder, .webroot_folder, .controllers_folder, .caches_folder").each(function(idx, elm){
 		var li = $(elm).parent().parent();
 		addTreeItemCheckbox(li, data, permissions[permission_referenced_name], li.parent().attr("object_id_prefix"));
 	});

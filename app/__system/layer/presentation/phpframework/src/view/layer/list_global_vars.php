@@ -23,6 +23,10 @@ $var_html = '<tr>
 		<td class="var_value"><input type="text" class="var_value" name="vars_value[]" value="#var_value#" allownull="true" /></td>
 		<td class="buttons"><a class="icon delete" onClick="$(this.parentNode.parentNode).remove();">REMOVE</a></td>
 	</tr>'; $head = '
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
+<!-- Add Icons CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" />
 
 <script>
@@ -35,7 +39,7 @@ function addNewVariable() {
 }
 </script>
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/layer/list_global_vars.css" type="text/css" charset="utf-8" />'; $main_content = '<div class="global_vars">
-		<h1>Global Variables</h1>'; if (is_array($vars)) { $main_content .= '
+		<h1>Global Variables <a class="icon add" href="javascript:void(0)" onClick="return addNewVariable();" title="Add new variable">Add</a></h1>'; if (is_array($vars)) { $main_content .= '
 	<form method="post" onSubmit="return MyJSLib.FormHandler.formCheck(this);">
 		<table class="vars">
 			<tr>
@@ -46,5 +50,4 @@ function addNewVariable() {
 		</table>
 		
 		<input class="save" type="submit" name="save" value="Save" confirmation="1" />
-		<input class="add_new" type="button" name="add" value="Add" onClick="return addNewVariable();"/>
 	</form>'; } $main_content .= '</div>'; ?>

@@ -347,6 +347,16 @@ function editRow(elm) {
 			type: "iframe",
 			url: url,
 			targetRow: is_insert ? null : row[0],
+			beforeClose: function() {
+				var win = popup.children("iframe")[0].contentWindow;
+				
+				if (typeof win.isRecordChanged == "function") {
+					if (win.isRecordChanged())
+						return confirm("If you proceed your changes won't be saved. Do you wish to continue?");
+				}
+				
+				return true;
+			},
 		});
 		MyFancyPopup.showPopup();
 	}

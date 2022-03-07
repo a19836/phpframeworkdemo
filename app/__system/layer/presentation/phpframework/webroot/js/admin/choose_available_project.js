@@ -41,7 +41,7 @@ function prepareChooseAvailableProjectsHtml(layer_projects, folder_to_filter) {
 		html += '<li class="no_projects">There are no available projects...<br/>Please create a new project by clicking <a href="' + create_project_url + '">here</a>.</li>';
 	
 	var choose_available_project = $(".choose_available_project");
-	choose_available_project.children(".current_project_folder").html(folder_to_filter ? '<span class="icon folder"></span> ' + folder_to_filter + "/" : "");
+	choose_available_project.children(".current_project_folder").html(folder_to_filter ? '<span class="folder"></span> ' + folder_to_filter + "/" : "");
 	choose_available_project.children("ul").html(html);
 	choose_available_project.children(".loading_projects").hide();
 }
