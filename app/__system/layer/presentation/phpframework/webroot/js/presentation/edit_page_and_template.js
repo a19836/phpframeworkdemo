@@ -1313,7 +1313,7 @@ function deleteRegionBlock(elm) {
 		else {
 			resetRegionBlock(item); //resetRegionBlock already triggers the onChange and onBlur events for the selected field which calls the updateLayoutIframeFromSettingsField method.
 			
-			StatusMessageHandler.showError("Error trying to remove this region-block because is the only one of his kind. You must leave at least 1 block-region for each region.");
+			StatusMessageHandler.showError("Cannot remove this region-block because is the only one of his kind. You must leave at least 1 block-region for each region.");
 		}
 	}
 }

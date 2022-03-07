@@ -23,9 +23,15 @@ function onSubmitButtonClick(elm) {
 	elm = $(elm);
 	
 	if (checkUploadedFiles()) {
+		var on_click = elm.attr("onClick");
+		elm.addClass("loading").removeAttr("onClick");
+		
 		var oForm = elm.parent().closest(".top_bar").parent().find(".file_upload form");
-		elm.hide();
 		oForm.submit();
+		
+		/*setTimeout(function() {
+			elm.removeClass("loading").attr("onClick", on_click);
+		}, 2000);*/
 	}
 }
 

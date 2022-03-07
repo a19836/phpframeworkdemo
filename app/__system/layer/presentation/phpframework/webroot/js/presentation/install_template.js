@@ -111,8 +111,15 @@ function installTemplate(elm) {
 	var status = (zip_url[0] && zip_url.val() != "") || (zip_file[0] && zip_file[0].files.length > 0);
 	
 	if (status) {
-		$(elm).hide();
+		elm = $(elm);
+		var on_click = elm.attr("onClick");
+		elm.addClass("loading").removeAttr("onClick");
+		
 		oForm.submit();
+		
+		/*setTimeout(function() {
+			elm.removeClass("loading").attr("onClick", on_click);
+		}, 2000);*/
 	}
 	else
 		StatusMessageHandler.showError("You must upload a template first!");

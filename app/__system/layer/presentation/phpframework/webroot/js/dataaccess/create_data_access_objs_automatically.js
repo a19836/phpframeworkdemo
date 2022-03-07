@@ -4,8 +4,14 @@ function submitForm(elm, on_submit_func) {
 	var status = typeof on_submit_func == "function" ? on_submit_func( oForm[0] ) : true;
 	
 	if (status) {
-		elm.hide();
+		var on_click = elm.attr("onClick");
+		elm.addClass("loading").removeAttr("onClick");
+		
 		oForm.submit();
+		
+		/*setTimeout(function() {
+			elm.removeClass("loading").attr("onClick", on_click);
+		}, 2000);*/
 	}
 	
 	return status;

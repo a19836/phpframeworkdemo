@@ -632,7 +632,7 @@
 	left: 0.25em; 
 	right: 0.25em; 
 	bottom: 0.25em; 
-	padding: 0em 125px 0.2em 0.2em; 
+	padding: 0em 150px 0.2em 0.2em; 
 	overflow:hidden;
 } 
 .relationship .query .query_settings .ui-tabs-nav li { 
@@ -764,7 +764,7 @@
 .relationship .query_insert_update_delete .query_insert_update_delete_tab {
 	height:165px;
 	overflow-y:scroll;
-	overflow-x:hidden;
+	overflow-x:auto;
 }
 
 .relationship .query_insert_update_delete ul.query_insert_update_delete_tabs.ui-widget-header {

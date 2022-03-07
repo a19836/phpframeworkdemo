@@ -132,6 +132,7 @@
 .select_tables .brokers table td.path input {
 	width:250px;
 	font-size:80%;
+	background-color:#fff;
 }
 
 .select_tables .users_permissions {
