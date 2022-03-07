@@ -2366,7 +2366,7 @@ function onClickTaskWorkflowTab(elm, options) {
 						var is_empty_diagram = code && (!data || (!$.isArray(data["tasks"]) && !$.isPlainObject(data["tasks"])) || $.isEmptyObject(data["tasks"]));
 						var old_code_id = $("#ui").attr("code_id");
 						
-						if (is_empty_diagram || (old_code_id != new_code_id))
+						if (is_empty_diagram || (old_code_id != new_code_id)) {
 							generateTasksFlowFromCode(true, {
 								force : true,
 								success : function(data, textStatus, jqXHR) {
@@ -2389,6 +2389,9 @@ function onClickTaskWorkflowTab(elm, options) {
 										options["on_error"]();
 								},
 							});
+						}
+						else if (typeof options == "object" && typeof options["on_success"] == "function")
+							options["on_success"]();
 					}
 					else if (typeof options == "object" && typeof options["on_success"] == "function")
 						options["on_success"]();
