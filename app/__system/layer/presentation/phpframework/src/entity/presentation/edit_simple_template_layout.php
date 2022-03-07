@@ -34,7 +34,7 @@ include_once $EVC->getUtilPath("WorkFlowBeansFileHandler"); include_once $EVC->g
 		<script type="text/javascript" src="' . $v5f6585d5af . 'vendor/tinymce/js/tinymce/jquery.tinymce.min.js"></script>	
 	   	
 		<!-- Add Fontawsome Icons CSS -->
-		<link rel="stylesheet" href="' . $v37d269c4fa . 'vendor/fontawesome/css/all.min.css">
+		<link rel="stylesheet" href="' . $v5f6585d5af . 'vendor/fontawesome/css/all.min.css">
 		
 		<!-- Add Icons CSS -->
 		<link rel="stylesheet" href="' . $pfde6442c . 'css/icons.css">
