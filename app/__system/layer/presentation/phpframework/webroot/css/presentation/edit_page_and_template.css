@@ -692,6 +692,9 @@ body > .dragging_menu_item {
 	bottom:0px;
 	margin:0;
 }
+.template_region_block_html_editor_popup .layout_ui_editor {
+	background:transparent; /* in firefox this editor appears with a bigger z-index than the popup close icon. so we must put the bg transparent so we can see the popup close btn */
+}
 .code_layout_ui_editor .layout_ui_editor.full-screen,
   .template_region_block_html_editor_popup .layout_ui_editor.full-screen {
 	position: absolute !important; /* overwrite the css from jquerylayoutuieditor/style.css */
@@ -1036,6 +1039,13 @@ body > .dragging_menu_item {
 	vertical-align:top;
 	display:none;
 	box-sizing:border-box;
+	
+	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+	color:#666;
+	font-size:13px;
+}
+.code_layout_ui_editor .layout_ui_editor_right_container a {
+	color:#666;
 }
 /*.code_layout_ui_editor .layout_ui_editor_right_container.full-screen {
 	position:fixed;

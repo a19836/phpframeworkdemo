@@ -3492,6 +3492,15 @@ function createCodeLayoutUIEDitorEditor(textarea, options) {
 	}
 }
 
+function onResizeCodeLayoutUIEditorWithRightContainer(props) {
+	var layout_ui_editor_right_container = props.ui.children(".layout_ui_editor_right_container");
+	
+	if (props.is_reverse)
+		layout_ui_editor_right_container.css({"left": props.calc_str});
+	else
+		layout_ui_editor_right_container.css({"right": props.perc_str});
+}
+
 /*function initResizeCodeLayoutUIEditorRightContainer(PtlLayoutUIEditor) {
 	var layout_ui_editor_right_container = $(".layout_ui_editor_right_container");
 	var layout_ui_editor_container = PtlLayoutUIEditor.getUI().parent();

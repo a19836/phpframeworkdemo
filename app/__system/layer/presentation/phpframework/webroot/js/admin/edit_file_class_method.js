@@ -462,7 +462,10 @@ function saveFileClassMethodObj(obj) {
 				
 				//replace new method name in url and refresh page
 				var url = "" + document.location;
-				url = url.replace(/(&|\\?)(method|function)=[^&]*/g, "$1$2=" + new_name);
+				var service_exists = url.match(/(&|\\?)service=[^&]+/);
+				
+				url = url.replace(/(&|\\?)(method|function)=[^&]*/g, "$1");
+				url += "&" + (service_exists ? "method" : "function") + "=" + original_method_id;
 				document.location = url;
 			}
 			

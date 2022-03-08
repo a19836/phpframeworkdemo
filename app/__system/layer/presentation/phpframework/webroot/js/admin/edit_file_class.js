@@ -163,8 +163,11 @@ function replaceNewNameInUrl(obj, new_class_id, data, options) {
 			
 			if (m && m.length > 0) {
 				var str = m[0];
-				var pos = url.indexOf(str) + str.length;
-				url = url.substr(0, pos) + (url.charAt(pos - 1) == "/" ? "" : "/") + obj["name"] + ".php" + url.substr(pos, url.length - pos);
+				
+				if (str.substr(str.length - 1) == "/" || str.substr(str.length - 4).toLowerCase() != ".php") {
+					var pos = url.indexOf(str) + str.length;
+					url = url.substr(0, pos) + (url.charAt(pos - 1) == "/" ? "" : "/") + obj["name"] + ".php" + url.substr(pos, url.length - pos);
+				}
 			}
 			else
 				status = false;

@@ -28,6 +28,10 @@ var ServerTaskPropertyObj = {
 	on_choose_test_units_callback : null,
 	on_choose_template_flow_layer_file_callback : null,
 	on_get_layer_wordpress_installations_url_callback : null,
+	on_open_template_properties_popup_callback : null,
+	on_close_template_properties_popup_callback : null,
+	on_open_server_properties_popup_callback : null,
+	on_close_server_properties_popup_callback : null,
 	show_php_obfuscation_option : true,
 	show_js_obfuscation_option : true,
 	projects_max_expiration_date_allowed : "",
@@ -57,6 +61,10 @@ var ServerTaskPropertyObj = {
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		var task_html_element = properties_html_elm.find(".server_task_html");
 		var template_properties = task_html_element.find(" > .templates_container > .template_properties");
+		
+		//call callback
+		if (typeof ServerTaskPropertyObj.on_open_server_properties_popup_callback == "function")
+			ServerTaskPropertyObj.on_open_server_properties_popup_callback(properties_html_elm, task_id, task_property_values);
 		
 		//init JsPlumbWorkFlowObject and workflow_global_variables
 		ServerTaskPropertyObj.JsPlumbWorkFlowObject = myWFObj.getJsPlumbWorkFlow();
@@ -158,6 +166,10 @@ var ServerTaskPropertyObj = {
 		
 		ServerTaskPropertyObj.saved_deployments = null;
 		delete ServerTaskPropertyObj.saved_deployments;
+		
+		//call callback
+		if (typeof ServerTaskPropertyObj.on_close_server_properties_popup_callback == "function")
+			ServerTaskPropertyObj.on_close_server_properties_popup_callback(properties_html_elm, task_id, task_property_values, status);
 	},
 	
 	onCancelTaskProperties : function(properties_html_elm, task_id, task_property_values, status) {
@@ -169,6 +181,10 @@ var ServerTaskPropertyObj = {
 		ServerTaskPropertyObj.templates_properties = {};
 		ServerTaskPropertyObj.TemplatesWorkflowHandlerObject = null;
 		ServerTaskPropertyObj.server_deployments_template_name_replacements = {};
+		
+		//call callback
+		if (typeof ServerTaskPropertyObj.on_close_server_properties_popup_callback == "function")
+			ServerTaskPropertyObj.on_close_server_properties_popup_callback(properties_html_elm, task_id, task_property_values, status);
 		
 		return true;
 	},
@@ -393,8 +409,8 @@ var ServerTaskPropertyObj = {
 		var popup_close = server_properties_popup.children(".popup_close");
 		var server_templates_icons = server_properties_popup.find(".server_task_html > .templates_container > table > tbody > tr > td.actions > .icon");
 		
-		var auto_save_bkp = auto_save;
-		auto_save = false;
+		if (typeof this.on_open_template_properties_popup_callback == "function")
+			this.on_open_template_properties_popup_callback(elm, template_id, template_properties);
 		
 		this.TemplatePropertiesMyFancyPopupObject.init({
 			elementToShow: template_properties,
@@ -427,7 +443,8 @@ var ServerTaskPropertyObj = {
 				//should be the last to execute
 				server_templates_icons.show();
 				
-				auto_save = auto_save_bkp;
+				if (typeof ServerTaskPropertyObj.on_close_template_properties_popup_callback == "function")
+					ServerTaskPropertyObj.on_close_template_properties_popup_callback(elm, template_id, template_properties);
 			},
 			saveTemplateProperties: true,
 		});

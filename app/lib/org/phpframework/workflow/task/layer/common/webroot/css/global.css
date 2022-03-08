@@ -19,6 +19,10 @@
 .jsplumbtaskworkflow .task .tag_info {
 	display:none;
 }
+.jsplumbtaskworkflow .task .short_actions {
+	right:auto;
+	left:0;
+}
 
 .task_context_menu .activate_task a,
   .task_context_menu .activate_task a:hover {

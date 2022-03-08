@@ -41,6 +41,9 @@
 	background:#e4cfe4;
 	background:#a554a5a3;
 }
+.jsplumbtaskworkflow .task.task_listing > .short_actions {
+	display:none;
+}
 
 /* task properties */
 /* task properties - Table UI */

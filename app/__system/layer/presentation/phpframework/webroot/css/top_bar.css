@@ -337,6 +337,29 @@
 
 /* WORKFLOW - ICONS */
 
+body .taskflowchart .task .short_actions {
+	top:-15px;
+}
+body .taskflowchart .task .short_actions .move_action,
+  body .taskflowchart .task .short_actions .context_menu_action {
+	width:auto;
+	height:auto;
+	background:none !important;
+}
+.taskflowchart .task .short_actions .move_action::before,
+  .taskflowchart .task .short_actions .context_menu_action::before {
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+}
+.taskflowchart .task .short_actions .move_action::before {
+	content:"\f047";
+}
+.taskflowchart .task .short_actions .context_menu_action::before {
+	content:"\f141";
+	margin-left:5px;
+}
+
 .task_context_menu, 
   .task_context_menu ul, 
   .connection_context_menu, 
@@ -641,6 +664,9 @@ body .layout_ui_editor {
 	--resize-panel-bg-color:#666;
 	
 	--text-selection-border-active: #dddddd22;
+}
+body .layout_ui_editor > .resize-panels {
+	background:url("../img/back_frame_open_close_vertical_red.gif") repeat-y;
 }
 
 /* LAYOUT CODE EDITOR - MENU */

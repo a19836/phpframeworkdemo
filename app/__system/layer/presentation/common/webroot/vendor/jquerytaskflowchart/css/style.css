@@ -379,6 +379,27 @@
 	color:rgb(0, 0, 0, .3);
 }
 
+.taskflowchart .task .short_actions {
+	position:absolute;
+	top:-20px;
+	right:2px;
+	color:rgb(0, 0, 0, .3);
+}
+.taskflowchart .task .short_actions .move_action {
+	width:16px;
+	height:16px;
+	display:inline-block;
+	background:url(../img/move_icon.png);
+}
+.taskflowchart .task .short_actions .context_menu_action {
+	width:16px;
+	height:16px;
+	margin-left:5px;
+	display:inline-block;
+	background:url(../img/view_properties_icon.gif);
+	cursor:pointer;
+}
+
 .taskflowchart .task .info {
 	z-index:4;
 	text-align:center;

@@ -339,6 +339,15 @@ function onBlurExternalTemplate(elm) {
 }
 
 function updateTemplateLayout(entity_obj) {
+	//save synchronization functions
+	var update_settings_from_layout_iframe_func_bkp = update_settings_from_layout_iframe_func;
+	var update_layout_iframe_from_settings_func_bkp = update_layout_iframe_from_settings_func;
+	
+	//disable synchronization functions in case some call recursively by mistake
+	update_settings_from_layout_iframe_func = null;
+	update_layout_iframe_from_settings_func = null;
+	
+	//prepare new template load
 	var iframe = entity_obj.find(".entity_template_layout iframe");
 	var template = getSelectedTemplate(entity_obj);
 	var is_template_ok = template ? true : false;
@@ -412,16 +421,29 @@ function updateTemplateLayout(entity_obj) {
 					"is_external_template": is_external_template,
 					"external_template_params": external_template_params,
 				});
+				
+				//sets back synchronization functions
+				update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
+				update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
 			},
 			error : function(jqXHR, textStatus, errorThrown) { 
 				if (jqXHR.responseText);
 					StatusMessageHandler.showError(jqXHR.responseText);
+				
+				//sets back synchronization functions
+				update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
+				update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
 			}
 		});
 	}
 	else {
+		//update new template
 		updateSelectedTemplateRegionsBlocks(entity_obj, null);
 		updateLayoutIframeFromSettings(iframe, {"template": ""});
+			
+		//sets back synchronization functions
+		update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
+		update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
 	}
 }
 

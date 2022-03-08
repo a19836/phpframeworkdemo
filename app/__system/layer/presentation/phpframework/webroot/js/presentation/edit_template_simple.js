@@ -86,6 +86,11 @@ $(function () {
 		
 		//init ui layout editor
 		initCodeLayoutUIEditor(template_obj, saveTemplate);
+		var luie = template_obj.find(".code_editor_body > .layout_ui_editor");
+		var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
+		
+		if (PtlLayoutUIEditor)
+			PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorWithRightContainer;
 		
 		initPageAndTemplateLayout(template_obj, template_obj, function() {
 			update_settings_from_layout_iframe_func = function() {
@@ -106,8 +111,6 @@ $(function () {
 		
 		//select layout view. Needs to be inside of settimeout otherwise the layout ui editor will not be inited correctly
 		setTimeout(function() {
-			var luie = template_obj.find(".code_editor_body > .layout_ui_editor");
-			
 			//show view layout panel instead of code
 			var view_layout = luie.find(" > .tabs > .view-layout");
 			view_layout.addClass("do-not-confirm");

@@ -2480,7 +2480,7 @@ function updateQueryUITableFromQuerySettings(rand_number, main_table) {
 					DBQueryTaskPropertyObj.deleteTable(task_ids[table_name], false);
 			
 			//REORDER TASKS' POSITIONS
-			var top = 10;
+			var top = 20;
 			var left = 10;
 			var attr_count = 0;
 		

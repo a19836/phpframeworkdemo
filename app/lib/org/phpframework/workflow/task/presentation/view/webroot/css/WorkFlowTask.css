@@ -41,6 +41,9 @@
 	background:#c5c8f6;
 	background:#0e1dfba3;
 }
+.jsplumbtaskworkflow .task.task_view > .short_actions {
+	display:none;
+}
 
 /* task properties */
 .view_task_html .settings .choose_db_table .db_table_conditions {

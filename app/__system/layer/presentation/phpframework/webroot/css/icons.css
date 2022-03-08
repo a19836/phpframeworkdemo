@@ -159,7 +159,7 @@
 }
 .icon.move::before {
 	content:"\f047";
-    cursor:move;
+	cursor:move;
 }
 .icon.move_up::before,
   .icon.up::before {

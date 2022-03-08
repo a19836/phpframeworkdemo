@@ -171,6 +171,16 @@ function chooseFile(elm, treeObj) {
 	}
 }
 
+function onOpenServerPropertiesPopup() {
+	//when auto_save is on and I open a template diagram inside of a server properties, and then the auto save runs, the system is saving the tasks from the layers diagram to the deployment diagram, so we must disable the auto_save until the server properties popup gets closed.	
+	window.auto_save_bkp = auto_save;
+	auto_save = false;
+}
+
+function onCloseServerPropertiesPopup() {
+	auto_save = window.auto_save_bkp;
+}
+
 function updateTemplateTaskLayerUrlFileManager(elm) {
 	var option = elm.options[ elm.selectedIndex ];
 	var url = option.getAttribute("url");
