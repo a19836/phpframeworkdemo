@@ -108,6 +108,13 @@
 	color:blue;
 	cursor:pointer;
 }
+.select_options .choose_from_file_manager .mytree li > a > span::after {
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f303";
+	margin-left:5px;
+}
 .select_options .choose_from_file_manager .mytree label {
 	font-weight:normal;
 	font-style:normal;
@@ -118,25 +125,22 @@
 	margin-top:20px;
 }
 .statuses table {
-	border:1px solid #CCC;
 	width:600px;
 	margin:20px auto;
 }
 .statuses th {
 	color:#999;
-	font-weight:bold;
 	font-size:10px;
 	height:20px;
 	line-height:20px;
 }
+.statuses th.status {
+	text-align:center;
+}
 .statuses td {
-	border:1px solid #CCC;
 	color:#999;
 	height:20px;
 	line-height:20px;
-}
-.statuses td.object_name {
-	text-align:center;
 }
 .statuses td.status {
 	font-weight:bold;

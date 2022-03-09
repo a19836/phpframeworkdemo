@@ -88,6 +88,7 @@ GetBeanObjectTaskPropertyObj.bean_names_options = ' . json_encode($bean_names_op
 		<header>
 			<div class="title">Edit Template "' . basename($path) . '"</div>
 			<ul>
+				<li class="update_layout_from_settings" title="Update Settings to Layout UI"><a onClick="updateCodeEditorLayoutFromSettings( $(\'.template_obj\') )"><i class="icon update_layout_from_settings"></i> Update Settings to Layout UI</a></li>
 				<li class="show_advanced_ui" title="Switch to Advanced UI"><a href="?' . $query_string . '&edit_template_type=advanced"><i class="icon show_advanced_ui"></i> Switch to Advanced UI</a></li>
 				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save Template"><a onClick="saveTemplate()"><i class="icon save"></i> Save</a></li>

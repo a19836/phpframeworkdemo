@@ -132,7 +132,7 @@ $(function () {
 	enableAutoConvert(onToggleModuleWorkflowAutoConvert);
 	
 	$(".top_bar li.auto_save_convert_settings").remove(); //remove auto_save_menu bc we will add another one below...
-	var auto_save_icon = $("#code > .code_menu .auto_save_convert_settings").clone();
+	var auto_save_icon = $("#code > .code_menu li.auto_save_convert_settings").clone();
 	$(".top_bar li.save").before(auto_save_icon);
 	
 	//load workflow
@@ -260,28 +260,6 @@ function removeExternalVar(elm) {
 	}
 }
 
-function isModuleWorkflowObjChanged() {
-	var new_workflow_settings_id = getModuleWorkflowSettingsId();
-	
-	//remove error messages bc when we call the getCodeForSaving method, it will save try to save the workflow but it will give an error bc we are calling the isTestObjChanged on window before load, which will kill the ongoing ajax requests...
-	//StatusMessageHandler.removeMessages("error");
-	//jsPlumbWorkFlow.jsPlumbStatusMessage.removeMessages("error");
-	
-	var code = getEditorCodeRawValue();
-	var new_code_id = $.md5(code);
-	var old_code_id = $(".module_workflow_content > #ui").attr("code_id");
-	
-	var old_workflow_id = $(".module_workflow_content > #ui").attr("workflow_id");
-	var new_workflow_id = getCurrentWorkFlowId();
-	
-	var selected_tab = $(".module_workflow_content > ul").find("li.ui-tabs-selected, li.ui-tabs-active").first();
-	
-	return saved_workflow_settings_id != new_workflow_settings_id
-		|| old_workflow_id != new_workflow_id
-		|| old_code_id != new_code_id;
-		(selected_tab.attr("id") == "tasks_flow_tab" && jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()); //compares if tasks' sizes and offsets are different, but only if workflow tab is selected.
-}
-
 function getModuleWorkflowSettingsId() {
 	var settings = getModuleWorkflowSettings();
 	
@@ -291,18 +269,38 @@ function getModuleWorkflowSettingsId() {
 function getModuleWorkflowObjId() {
 	var obj = getModuleWorkflowObj();
 	
+	//remove error messages bc when we call the getCodeForSaving method, it will save try to save the workflow but it will give an error bc we are calling the isTestObjChanged on window before load, which will kill the ongoing ajax requests...
+	StatusMessageHandler.removeMessages("error");
+	jsPlumbWorkFlow.jsPlumbStatusMessage.removeMessages("error");
+	
 	$(".workflow_menu").show();
 	MyFancyPopup.hidePopup();
 	
 	return $.md5(JSON.stringify(obj));
 }
 
-function getModuleWorkflowObj() {
-	var obj = getModuleWorkflowSettings();
-	
+function isModuleWorkflowObjChanged() {
 	var module_workflow_content = $(".module_workflow_content");
-	var code = getCodeForSaving(module_workflow_content);
-	obj["code"] = code;
+	
+	if (!module_workflow_content[0])
+		return false;
+	
+	if (isCodeAndWorkflowObjChanged(module_workflow_content))
+		return true;
+	
+	var new_workflow_settings_id = getModuleWorkflowSettingsId();
+	
+	return saved_workflow_settings_id != new_workflow_settings_id;
+}
+
+function getModuleWorkflowObj() {
+	var module_workflow_content = $(".module_workflow_content");
+	
+	if (!module_workflow_content[0])
+		return null;
+	
+	var obj = getModuleWorkflowSettings();
+	obj["code"] = getCodeForSaving(module_workflow_content); //if tasks flow tab is selected ask user to convert workfow into code
 	
 	return obj;
 }
@@ -324,64 +322,75 @@ function getModuleWorkflowSettings() {
 }
 
 function saveModuleWorkflowSettings(button) {
-	prepareAutoSaveVars();
+	var module_workflow_content = $(".module_workflow_content");
 	
-	var obj = getModuleWorkflowObj();
-	var new_workflow_obj_id = $.md5(JSON.stringify(obj)); //Do not call getModuleWorkflowObjId here otherwise it will execute twice the getCodeForSaving method which may generate twice the workflow based on code
-	
-	if (!saved_workflow_obj_id || saved_workflow_obj_id != new_workflow_obj_id) {
-		if (!is_from_auto_save) {
-			MyFancyPopup.showOverlay();
-			MyFancyPopup.showLoading();
+	if (module_workflow_content[0]) {
+		prepareAutoSaveVars();
+		
+		if (is_from_auto_save && !isModuleWorkflowObjChanged()) {
+			resetAutoSave();
+			return;
 		}
 		
-		$.ajax({
-			type : "post",
-			url : create_workflow_settings_code_url,
-			data : obj,
-			dataType : "json",
-			success : function(data, textStatus, jqXHR) {
-				if (data && data["code"]) {
-					if (saveBlockRawCode(data["code"])) {
-						saved_workflow_obj_id = new_workflow_obj_id; //set new saved_str_id
-						saved_workflow_settings_id = getModuleWorkflowSettingsId(); //update saved_workflow_settings_id
-					}
-				}
-				else if (!is_from_auto_save)
-					StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
-				
-				if (!is_from_auto_save) {
-					MyFancyPopup.hidePopup();
-					$(".workflow_menu").show(); //show workflow_menu hidden by the getCodeForSaving method, if a manual save action
-				}
-				else
-					resetAutoSave();
-			},
-			error : function(jqXHR, textStatus, errorThrown) { 
-				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_workflow_settings_code_url, function() {
-						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
-						StatusMessageHandler.removeLastShownMessage("error");
-						saveModuleWorkflowSettings(button);
-					});
-				else if (!is_from_auto_save)
-					StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
-				
-				if (!is_from_auto_save) {
-					MyFancyPopup.hidePopup();
-					$(".workflow_menu").show(); //show workflow_menu hidden by the getCodeForSaving method, if a manual save action
-				}
-				else
-					resetAutoSave();
-			},
-		});
-	}
-	else if (!is_from_auto_save) {
-		StatusMessageHandler.showMessage("Nothing to save.");
+		var obj = getModuleWorkflowObj();
+		var new_workflow_obj_id = $.md5(JSON.stringify(obj)); //Do not call getModuleWorkflowObjId here otherwise it will execute twice the getCodeForSaving method which may generate twice the workflow based on code
 		
-		MyFancyPopup.hidePopup(); //the getModuleWorkflowObjId executed the showPopup, so we must hide it
-		$(".workflow_menu").show(); //show workflow_menu hidden by the getCodeForSaving method, if a manual save action
+		if (!saved_workflow_obj_id || saved_workflow_obj_id != new_workflow_obj_id) {
+			if (!is_from_auto_save) {
+				MyFancyPopup.showOverlay();
+				MyFancyPopup.showLoading();
+			}
+			
+			$.ajax({
+				type : "post",
+				url : create_workflow_settings_code_url,
+				data : obj,
+				dataType : "json",
+				success : function(data, textStatus, jqXHR) {
+					if (data && data["code"]) {
+						if (saveBlockRawCode(data["code"])) {
+							saved_workflow_obj_id = new_workflow_obj_id; //set new saved_str_id
+							saved_workflow_settings_id = getModuleWorkflowSettingsId(); //update saved_workflow_settings_id
+						}
+					}
+					else if (!is_from_auto_save)
+						StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
+					
+					if (!is_from_auto_save) {
+						MyFancyPopup.hidePopup();
+						$(".workflow_menu").show(); //show workflow_menu hidden by the getCodeForSaving method, if a manual save action
+					}
+					else
+						resetAutoSave();
+				},
+				error : function(jqXHR, textStatus, errorThrown) { 
+					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_workflow_settings_code_url, function() {
+							jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+							StatusMessageHandler.removeLastShownMessage("error");
+							saveModuleWorkflowSettings(button);
+						});
+					else if (!is_from_auto_save)
+						StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
+					
+					if (!is_from_auto_save) {
+						MyFancyPopup.hidePopup();
+						$(".workflow_menu").show(); //show workflow_menu hidden by the getCodeForSaving method, if a manual save action
+					}
+					else
+						resetAutoSave();
+				},
+			});
+		}
+		else if (!is_from_auto_save) {
+			StatusMessageHandler.showMessage("Nothing to save.");
+			
+			MyFancyPopup.hidePopup(); //the getModuleWorkflowObj executed the showPopup, so we must hide it
+			$(".workflow_menu").show(); //show workflow_menu hidden by the getCodeForSaving method, if a manual save action
+		}
+		else
+			resetAutoSave();
 	}
 	else
-		resetAutoSave();
+		alert("No object to save! Please contact the sysadmin...");
 }

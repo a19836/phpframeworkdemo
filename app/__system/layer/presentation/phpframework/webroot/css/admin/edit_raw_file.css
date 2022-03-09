@@ -34,8 +34,11 @@
     opacity: 1;
 }
 .code_area .ace_editor .ace_search {
-	position:fixed;
-	top:66px;
+	/*position:fixed;
+	top:33px;*/
+}
+.code_area .ace_editor .ace_search .ace_search_field {
+	background-color:#fff;
 }
 
 .error {

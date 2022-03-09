@@ -57,7 +57,7 @@ function showProjectsLayer(elm) {
 function deleteProject(elm, url) {
 	if (confirm("Are you sure that you wish to delete this project?")) {
 		if (confirm("If you delete this project, you will loose all the created pages and other files inside of this project!\nDo you wish to continue?")) {
-			if (confirm("LAST WARNING:\n\tIf you proceed, you cannot undo this deletion!\nAre you sure you wish to remove this project?")) {
+			if (confirm("LAST WARNING:\nIf you proceed, you cannot undo this deletion!\nAre you sure you wish to remove this project?")) {
 				MyFancyPopup.showOverlay();
 				MyFancyPopup.showLoading();
 	
@@ -114,7 +114,7 @@ function addProject(elm, url) {
 			MyFancyPopup.hidePopup();
 		});
 	}
-	else {
+	else if (project_name != null) {
 		StatusMessageHandler.showError("Error: Project name cannot be empty");
 	}
 }

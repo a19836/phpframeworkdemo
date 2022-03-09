@@ -448,7 +448,7 @@ function updateTemplateLayout(entity_obj) {
 }
 
 function updateLayoutFromSettings(entity_obj) {
-	if (!entity_obj.hasClass("inactive")) {
+	if (entity_obj[0] && !entity_obj.hasClass("inactive")) {
 		var orig_template_params_values_list = JSON.stringify(template_params_values_list);
 		
 		var iframe = entity_obj.find(".entity_template_layout iframe");

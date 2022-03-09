@@ -93,13 +93,7 @@
 	width:550px;
 	margin:20px auto;
 }
-.statuses th {
-	text-align:center;
-	font-weight:bold;
-	border:1px solid #CCC;
-}
 .statuses td {
-	border:1px solid #CCC;
 	padding:0px 5px 0px 5px;
 }
 .statuses .name {
@@ -110,8 +104,10 @@
 }
 .statuses .status {
 	width:100px;
-	font-weight:bold;
 	text-align:center;
+}
+.statuses td.status {
+	font-weight:bold;
 }
 .statuses .status_ok {
 	color:#00AA00;

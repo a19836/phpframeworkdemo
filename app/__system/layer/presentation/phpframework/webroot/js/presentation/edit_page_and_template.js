@@ -19,8 +19,8 @@ var available_blocks_list_loading = false;
 var available_blocks_list_loading_interval_id = null;
 var loaded_modules_info = {};
 var shown_module_info_id = null;
-var show_module_info_timeout= null;
-var resize_iframe_timeout= null;
+var show_module_info_timeout = null;
+var resize_iframe_timeout = null;
 
 var init_page_and_template_layout_timeout_id = null;
 
@@ -783,13 +783,25 @@ function openPretifyRegionBlockComboBoxImportModuleBlockOptionPopup(select_elm, 
 			this.contentWindow.$.ajaxSetup({
 				complete: function(jqXHR, textStatus) {
 					if (jqXHR.status == 200 && this.url.indexOf("/presentation/save_page_module_block?") > 0) {
-						var ajax_response = $.parseJSON(jqXHR.responseText);
+						var ajax_response = null;
+						
+						try {
+							if (jqXHR.responseText && ("" + jqXHR.responseText).charAt(0) == "{")
+								ajax_response = $.parseJSON(jqXHR.responseText);
+						}
+						catch(e) {
+							console.log("jqXHR.responseText: " + jqXHR.responseText);
+							console.log(e);
+						}
 						
 						if (ajax_response && ajax_response["status"] == 1) {
-							addRegionBlockOption(select_elm, ajax_response["block_id"], selected_project_id);
-							
 							TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.setOption("onClose", null);
+							popup.hide(); //force popup to hide faster bc when we call the addRegionBlockOption, it will make the browser slow and the hidePopup bc it calls the jquery fadeOut function, it will be freezed for a second, which gives a bad user experience and is not user-friendly.
 							TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.hidePopup();
+							
+							setTimeout(function() {
+								addRegionBlockOption(select_elm, ajax_response["block_id"], selected_project_id);
+							}, 10);
 						}
 					}
 			    	}
@@ -864,7 +876,7 @@ function addRegionBlockOption(select_elm, block, project) {
 		optgroup.append(option);
 		
 		var p = select_elm.parent();
-		select_elm.selectmenu("close"); //TODO: fix this error when drag and drop echostr module to a region: Uncaught Error: cannot call methods on selectmenu prior to initialization; attempted to call method 'close'
+		select_elm.selectmenu("close");
 		refreshPretifyRegionBlockComboBox(select_elm);
 		select_elm.trigger("change");
 		
@@ -1308,6 +1320,7 @@ function deleteRegionBlock(elm) {
 		if (other_similar_rb.length > 1) {
 			item.remove();
 			
+			//when delete multiple region blocks at the same time (but with 700 milliseconds os spacing. Do not do it very fast!), in the settings panel, the template layout is not getting refresh, or is only getting refreshed for the 1st deleted block. In this case the user should click in the button to update the layout ui.
 			updateLayoutIframeFromSettingsField();
 		}
 		else {
@@ -2302,7 +2315,7 @@ function updateSettingsFromLayoutIframeField() {
 }
 
 function updateLayoutIframeFromSettingsField() {
-	if (typeof update_layout_iframe_from_settings_func == "function"){
+	if (typeof update_layout_iframe_from_settings_func == "function") {
 		//save synchronization functions
 		var update_settings_from_layout_iframe_func_bkp = update_settings_from_layout_iframe_func;
 		var update_layout_iframe_from_settings_func_bkp = update_layout_iframe_from_settings_func;
@@ -2597,6 +2610,7 @@ function initPageAndTemplateLayout(main_parent_elm, main_layout_elm, on_ready_ca
 		cursor: 'move',
           tolerance: 'pointer',
           handle: ' > .settings_header',
+          cancel: '.icon', //this means that is inside of .settings_header
 		start: function(event, ui) {
 			iframe.css("visibility", "hidden");
 			settings_overlay.show();
@@ -2708,10 +2722,6 @@ function initIframeModulesBlocksToolbarTree() {
 	
 	//create Iframe Modules Blocks Toolbar
 	createIframeModulesBlocksToolbarTree();
-	
-	$("body").on("click", function() {
-		closeModuleInfo();
-	});
 }
 
 function initIframeModulesBlocksDroppableRegions() {
@@ -2900,10 +2910,14 @@ function addDBTableDraggableItemBlockToPage(block_file_path) {
 	var block = block_file_path.substr(pos + "/src/block/".length);
 	
 	var block_options = TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.settings.targetedField;
-	addRegionBlockOption(block_options, block, project);
 	
 	TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.setOption("onClose", null);
+	TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.settings.elementToShow.hide(); //force popup to hide faster bc when we call the addRegionBlockOption, it will make the browser slow and the hidePopup bc it calls the jquery fadeOut function, it will be freezed for a second, which gives a bad user experience and is not user-friendly.
 	TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.hidePopup();
+	
+	setTimeout(function() {
+		addRegionBlockOption(block_options, block, project);
+	}, 10);
 }
 
 function getMenuItemModuleId(menu_item) {
@@ -2940,26 +2954,7 @@ function showModuleInfo(elm) {
 			top: window.event.y,
 			left: window.event.x + 10,
 		})
-		.on("mouseenter", function() {
-			if (show_module_info_timeout)
-				clearTimeout(show_module_info_timeout);
-		})
-		.on("mouseleave", function() {
-			if (show_module_info_timeout)
-				clearTimeout(show_module_info_timeout);
-			
-			show_module_info_timeout = setTimeout(function() {
-				closeModuleInfo();
-			}, 5000);
-		})
 		.show();
-		
-		if (show_module_info_timeout)
-			clearTimeout(show_module_info_timeout);
-		
-		show_module_info_timeout = setTimeout(function() {
-			closeModuleInfo();
-		}, 5000);
 		
 		if (loaded_modules_info.hasOwnProperty(module_id))
 			updateModuleInfoData(module_info_tooltip, loaded_modules_info[module_id]);

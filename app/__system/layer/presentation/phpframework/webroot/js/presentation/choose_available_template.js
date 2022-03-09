@@ -61,6 +61,8 @@ function installTemplatePopup() {
 		var popup = $(".install_template_popup");
 		
 		if (!popup[0]) {
+			url += (url.indexOf("?") != -1 ? "&" : "?") + "on_success_js_func=MyFancyPopupInstallTemplate.hidePopup";
+			
 			popup = $('<div class="myfancypopup install_template_popup"><iframe src="' + url + '"></iframe></div>');
 			$(document.body).append(popup);
 		}
@@ -371,6 +373,12 @@ function selectAvailableTemplate(selected_template) {
 	}
 	else if (current_template != selected_template) {
 		select.val(selected_template);
+		
+		//add template to selet field, if not exists yet, bc it may be a new template recent installed.
+		if (select.val() != selected_template) {
+			select.append('<option value="' + selected_template + '">' + selected_template + '</option>');
+			select.val(selected_template);
+		}
 		
 		select.trigger("change"); //on edit_entity_simple we must trigger the onChangeTemplate method.
 		

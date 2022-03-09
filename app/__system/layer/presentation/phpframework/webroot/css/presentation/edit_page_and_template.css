@@ -551,12 +551,7 @@ body > .dragging_menu_item {
 	overflow:visible !important;
 }
 .tab_content_template_layout .tab_content_template_layout_tasks > .popup_close {
-	z-index:auto !important;
-	
 	/* need this otherwise the close button will appear transparent and on the left side in the edit_template_simple.php */
-	top:-10px !important; 
-	left:auto !important; 
-	right:-10px !important;
 	opacity:1 !important;
 }
 .tab_content_template_layout .tab_content_template_layout_tasks > iframe {

@@ -16,8 +16,10 @@ $(function () {
 		return null;
 	});
 	
+	//prepare auto_save
 	$(".top_bar .save a").attr("onclick", "saveEchoStrSettings(this);");
 	
+	//prepare ui
 	var echostr_settings = $(".echostr_settings");
 	
 	createLayoutUIEditor( echostr_settings.find(" > #layoutui_content > textarea")[0] );
@@ -26,8 +28,23 @@ $(function () {
 	
 	echostr_settings.tabs();
 	
+	//select layout view. Needs to be inside of settimeout otherwise the layout ui editor will not be inited correctly
+	setTimeout(function() {
+		var luie = echostr_settings.find("#layoutui_content > .layout_ui_editor");
+		
+		//show view layout panel instead of code
+		var view_layout = luie.find(" > .tabs > .view-layout");
+		view_layout.addClass("do-not-confirm");
+		view_layout.trigger("click");
+		view_layout.removeClass("do-not-confirm");
+		
+		//show php widgets
+		luie.find(" > .template-widgets-options .show-php input").attr("checked", "checked").prop("checked", true).trigger("click").attr("checked", "checked").prop("checked", true);
+	}, 500);
+	
 	$(window).resize(function() {
 		clearTimeout(timeout_id);
+		
 		timeout_id = setTimeout(function() {
 			resizeTinyMCEEditor();
 			resizeCKEditor();

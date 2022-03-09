@@ -150,6 +150,7 @@ $(function () {
 			cursor: 'move',
                tolerance: 'pointer',
                handle: ' > .settings_header',
+         		cancel: '.icon', //this means that is inside of .settings_header
 			start: function(event, ui) {
 				settings.addClass("resizing").removeClass("collapsed");
 				settings.find(" > .settings_header .icon").addClass("minimize").removeClass("maximize");

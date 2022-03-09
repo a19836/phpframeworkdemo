@@ -10,6 +10,17 @@ $(function () {
 	});
 });
 
+function toggleLayerAndProject() {
+	var file_upload = $(".file_upload");
+	var layer = file_upload.children(".layer");
+	var project = file_upload.find(" > form > .project");
+	
+	if (!layer.hasClass("unique_layer"))
+		layer.toggleClass("hidden");
+	
+	project.toggleClass("hidden");
+}
+
 function onChangeLayer(elm) {
 	elm = $(elm);
 	var bn = elm.val();
@@ -105,22 +116,28 @@ function removeStoreTemplateUrl(elm) {
 }
 
 function installTemplate(elm) {
-	var oForm = $(".file_upload > form");
-	var zip_url = oForm.find(".upload_url input");
-	var zip_file = oForm.find("input.upload_file");
-	var status = (zip_url[0] && zip_url.val() != "") || (zip_file[0] && zip_file[0].files.length > 0);
+	var layer_bn = $(".file_upload > .layer select").val();
+	var oForm = $(".file_upload > #form_" + layer_bn);
 	
-	if (status) {
-		elm = $(elm);
-		var on_click = elm.attr("onClick");
-		elm.addClass("loading").removeAttr("onClick");
+	if (oForm[0]) {
+		var zip_url = oForm.find(".upload_url input");
+		var zip_file = oForm.find("input.upload_file");
+		var status = (zip_url[0] && zip_url.val() != "") || (zip_file[0] && zip_file[0].files.length > 0);
 		
-		oForm.submit();
-		
-		/*setTimeout(function() {
-			elm.removeClass("loading").attr("onClick", on_click);
-		}, 2000);*/
+		if (status) {
+			elm = $(elm);
+			var on_click = elm.attr("onClick");
+			elm.addClass("loading").removeAttr("onClick");
+			
+			oForm.submit();
+			
+			/*setTimeout(function() {
+				elm.removeClass("loading").attr("onClick", on_click);
+			}, 2000);*/
+		}
+		else
+			StatusMessageHandler.showError("You must upload a template first!");
 	}
 	else
-		StatusMessageHandler.showError("You must upload a template first!");
+		StatusMessageHandler.showError("form object undefined! Please contact the sysadmin...");
 }

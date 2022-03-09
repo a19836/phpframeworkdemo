@@ -19,21 +19,6 @@
 	position:absolute;
 	left:-66px;
 }
-.top_bar header > ul > li:hover:after, 
-  .top_bar_menu > ul > li:hover:after,
-  .layout_ui_editor.with_top_bar_menu > .options .option:not(.auto_save_convert_settings):hover:after {
-	right:120px;
-}
-.top_bar.project_with_auto_view.view_file_exists header > ul > li:hover:after, 
-  .entity_obj.project_with_auto_view.view_file_exists .top_bar_menu > ul > li:hover:after,
-  .entity_obj.project_with_auto_view.view_file_exists .layout_ui_editor.with_top_bar_menu > .options .option:not(.auto_save_convert_settings):hover:after {
-	right:170px;
-}
-.top_bar.project_with_auto_view:not(.view_file_exists) header > ul > li:hover:after, 
-  .entity_obj.project_with_auto_view:not(.view_file_exists)  .top_bar_menu > ul > li:hover:after,
-  .entity_obj.project_with_auto_view:not(.view_file_exists)  .layout_ui_editor.with_top_bar_menu > .options .option:not(.auto_save_convert_settings):hover:after {
-	right:185px;
-}
 
 
 /* ENTITY OBJ */

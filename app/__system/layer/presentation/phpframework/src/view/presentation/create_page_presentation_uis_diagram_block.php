@@ -20,25 +20,35 @@
 
 include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($new_path) { $page_name = $db_table . "_" . $task_tag . ($task_tag_action ? "_" . $task_tag_action : ""); $head .= '
 	<style>
-	.taskflowchart .tasks_menu {
+	.taskflowchart .tasks_menu_hide,
+	  .taskflowchart .workflow_menu {
+		display:none !important;
+	}
+	.taskflowchart .tasks_menu,
+	  .taskflowchart .tasks_flow {
+		bottom: 30px !important;
+	}
+	.taskflowchart .selected_task_properties {
+		font-size:11px;
+	}
+	.taskflowchart .selected_task_properties .ui-widget {
+		font-size:11px;
+	}
+	
+	.taskflowchart:not(.with_top_bar_menu):not(.reverse) .tasks_menu {
 		width:130px !important;
 		top: -50px !important;
 	    	left: -20px !important;
-	    	bottom: 30px !important;
 	}
-	.taskflowchart .tasks_menu_hide {
-		display:none !important;
-	}
-	.taskflowchart .tasks_flow {
+	.taskflowchart:not(.with_top_bar_menu):not(.reverse) .tasks_flow {
 		top:0 !important;
 		left:110px !important;
-	    	bottom: 30px !important;
 	}
-	.selected_task_properties {
+	.taskflowchart:not(.with_top_bar_menu):not(.reverse) .selected_task_properties {
 		left: 114px !important;
 	    	bottom: 48px !important;
 	}
-	.workflow_message {
+	.taskflowchart:not(.with_top_bar_menu):not(.reverse) .workflow_message {
 		bottom:48px !important;
 	}
 
@@ -194,10 +204,10 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 			step_5.find("> .button").hide();
 			
 			setTimeout(function() {
-				alert("Block created successfully");
-				
 				if (parent && typeof parent.' . $parent_add_block_func . ' == "function")
 					parent.' . $parent_add_block_func . '(selected_block_path);
+				else
+					alert("Block created successfully");
 				
 				//Refreshing blocks folder in main tree of the admin advanced panel
 				if (window.parent && window.parent.parent && window.parent.parent.refreshLastNodeChilds && window.parent.parent.mytree && window.parent.parent.mytree.tree_elm) {

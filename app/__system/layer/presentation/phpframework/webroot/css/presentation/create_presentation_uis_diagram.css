@@ -247,7 +247,7 @@
 }
 .create_uis_files .existent_tasks ul .task_info .task_file,
   .create_uis_files .existent_tasks ul .task_info .task_label {
-	font-weight:bold;
+	/*font-weight:bold;*/
 }
 .create_uis_files .existent_tasks ul .task_info .db_table_alias input,
   .create_uis_files .existent_tasks ul .task_info .db_table_parent_alias input {

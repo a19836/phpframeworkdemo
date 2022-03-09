@@ -2893,7 +2893,7 @@ function getCodeForSaving(parent_elm, options) {
 					},
 				});
 		}
-		else { //if in other tab, saves workflow and if 
+		else { //if in other tab (like any other tab that is not the code and task_flow tabs), saves workflow and if workflow is changed, generate the new code
 			//backup auto_convert value
 			var auto_convert_bkp = auto_convert;
 			

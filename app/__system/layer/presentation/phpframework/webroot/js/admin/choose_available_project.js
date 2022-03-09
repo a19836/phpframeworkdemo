@@ -38,10 +38,10 @@ function prepareChooseAvailableProjectsHtml(layer_projects, folder_to_filter) {
 				html += getChooseAvailableProjectHtml(folder_to_filter, k, aps[k]);
 	}
 	else
-		html += '<li class="no_projects">There are no available projects...<br/>Please create a new project by clicking <a href="' + create_project_url + '">here</a>.</li>';
+		html += '<li class="no_projects">There are no available projects...<br/>Please create a new project by clicking <a href="javascript:void(0)" onClick="addProject();">here</a>.</li>';
 	
 	var choose_available_project = $(".choose_available_project");
-	choose_available_project.children(".current_project_folder").html(folder_to_filter ? '<span class="folder"></span> ' + folder_to_filter + "/" : "");
+	choose_available_project.children(".current_project_folder").html(folder_to_filter ? '<span class="folder"></span> ' + folder_to_filter + "/" : "").attr("folder_to_filter", folder_to_filter);
 	choose_available_project.children("ul").html(html);
 	choose_available_project.children(".loading_projects").hide();
 }
@@ -135,26 +135,46 @@ function getAvailableProjectsConvertedWithFolders(layer_projects, folder_to_filt
 	return aps;
 }
 
-function openAddProjectPopup(url) {
-	var popup = $(".add_project_popup");
+function addProject() {
+	var project_name = prompt("Please write the new project name:");
 	
-	if (!popup[0]) {
-		popup = $('<div class="myfancypopup add_project_popup"><iframe src="' + url + '"></iframe></div>');
-		$(document.body).append(popup);
-	}
-	
-	MyFancyPopup.init({
-		elementToShow: popup,
-		parentElement: document,
+	if (project_name) {
+		MyFancyPopup.showOverlay();
+		MyFancyPopup.showLoading();
 		
-		onClose: function() {
+		var choose_available_project= $(".choose_available_project");
+		var option = choose_available_project.find(" > .layer select option:selected").first();
+		var folder_to_filter = choose_available_project.children(".current_project_folder").attr("folder_to_filter");
+		var extra = (folder_to_filter ? folder_to_filter + "/" : "") + project_name;
+		var url = add_project_url.replace("#extra#", extra).replace("#bean_name#", option.attr("bean_name")).replace("#bean_file_name#", option.attr("bean_file_name"));
+		
+		$.ajax({
+			type : "get",
+			url : url,
+			dataType : "text",
+			success : function(data, textStatus, jqXHR) {
+				if (data == "1") {
+					var url = "" + document.location;
+					url = url.indexOf("#") != -1 ? url.substr(0, url.indexOf("#")) : url; //remove # so it can refresh page
+					
+					if (folder_to_filter)
+						url += "&folder_to_filter=" + folder_to_filter;
+					
+					document.location = url
+				}
+				else
+					StatusMessageHandler.showError("Error: Project not created! Please try again." + (data ? "\n" + data : ""));
+			},
+			error : function(jqXHR, textStatus, errorThrown) { 
+				if (jqXHR.responseText);
+					StatusMessageHandler.showError(jqXHR.responseText);
+			}
+		}).always(function() {
 			MyFancyPopup.hidePopup();
-			MyFancyPopup.showOverlay();
-			MyFancyPopup.showLoading();
-			
-			document.location.reload();
-		},
-	});
-	MyFancyPopup.showPopup();
+		});
+	}
+	else if (project_name != null) {
+		StatusMessageHandler.showError("Error: Project name cannot be empty");
+	}
 }
 

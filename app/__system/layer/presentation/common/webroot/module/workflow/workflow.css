@@ -27,7 +27,7 @@
 }
 .module_workflow_settings #code .code_menu,
   .module_workflow_settings #ui .taskflowchart .workflow_menu {
-	right:143px;
+	right:120px;
 	z-index:999999;
 }
 .module_workflow_settings #code .code_menu > ul > .save,

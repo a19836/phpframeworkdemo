@@ -3912,7 +3912,9 @@ function getModuleFormSettingsId() {
 function saveModuleFormSettings(button) {
 	prepareAutoSaveVars();
 	
-	var new_settings_id = getModuleFormSettingsId();
+	var module_form_settings = $(".block_obj > .module_settings > .settings > .module_form_settings");
+	var settings = getModuleFormSettings(module_form_settings);
+	var new_settings_id = $.isPlainObject(settings) ? $.md5(JSON.stringify(settings)) : null;
 	
 	if (!saved_settings_id || saved_settings_id != new_settings_id) {
 		if (!is_from_auto_save) {
@@ -3920,8 +3922,6 @@ function saveModuleFormSettings(button) {
 			MyFancyPopup.showLoading();
 		}
 		
-		var module_form_settings = $(".block_obj > .module_settings > .settings > .module_form_settings");
-		var settings = getModuleFormSettings(module_form_settings);
 		//console.log(settings);
 		
 		if (!$.isPlainObject(settings) || !$.isArray(settings["actions"])) {

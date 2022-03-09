@@ -42,15 +42,15 @@ $head = '
 				<li class="continue" title="Install Template Now"><a onClick="installTemplate(this)"><i class="icon continue"></i> Install Template Now</a></li>
 			</ul>
 		</header>
-	</div>'; if ($_POST) { if (!$status) { $error_message = $error_message ? $error_message : "There was an error trying to install this template. Please try again..."; if ($messages) { $main_content .= '<ul class="messages">'; foreach ($messages as $project_name => $msgs) { if ($msgs) { $main_content .= '<li><label>' . ucfirst($project_name) . ' project\'s installation:</label><ul>'; foreach ($msgs as $msg) { $main_content .= '<li class="' . $msg["type"] . '">' . $msg["msg"] . '</li>'; } $main_content .= '</ul></li>'; } } $main_content .= '</ul>'; } } else { $status_message = 'Template successfully installed!'; $main_content .= '<script>if (window.parent.refreshLastNodeChilds) window.parent.refreshLastNodeChilds();</script>'; } } $main_content .= '<div class="file_upload">
-	<div class="sub_title">Please choose the project and module zip file to install:</div>
+	</div>'; if ($_POST) { if (!$status) { $error_message = $error_message ? $error_message : "There was an error trying to install this template. Please try again..."; if ($messages) { $main_content .= '<ul class="messages">'; foreach ($messages as $project_name => $msgs) { if ($msgs) { $main_content .= '<li><label>' . ucfirst($project_name) . ' project\'s installation:</label><ul>'; foreach ($msgs as $msg) { $main_content .= '<li class="' . $msg["type"] . '">' . $msg["msg"] . '</li>'; } $main_content .= '</ul></li>'; } } $main_content .= '</ul>'; } } else { $status_message = 'Template successfully installed!'; $on_success_js_func = $on_success_js_func ? $on_success_js_func : "refreshLastNodeChilds"; $main_content .= "<script>if (typeof window.parent.$on_success_js_func == 'function') window.parent.$on_success_js_func();</script>"; } } $main_content .= '<div class="file_upload">
+	<div class="sub_title">Please choose the project and module zip file to install: <span class="icon view" onClick="toggleLayerAndProject()" title="Click here to install a template in a different project"></span></div>
 	
-	<div class="layer">
+	<div class="layer' . (count($layers_projects) == 1 ? ' unique_layer hidden' : '') . '">
 		<label>Layer: </label>
 		<select onChange="onChangeLayer(this)">'; foreach ($layers_projects as $bn => $layer) $main_content .= '<option' . ($bean_name == $bn ? ' selected' : '') . ' value="' . $bn . '">' . $layer["item_label"] . '</option>'; $main_content .= '</select>
-	</div>'; foreach ($layers_projects as $bn => $layer) { $bfn = $layer["bean_file_name"]; $projects = $layer["projects"]; $main_content .= '
-	<form id="form_' . $bn . '" class="hidden" action="?bean_name=' . $bn . '&bean_file_name=' . $bfn . '" method="post" enctype="multipart/form-data">
-		<div class="project">
+	</div>'; foreach ($layers_projects as $bn => $layer) { $bfn = $layer["bean_file_name"]; $projects = $layer["projects"]; $query_str = $_SERVER["QUERY_STRING"]; $query_str = preg_replace("/(^|&)(bean_name|bean_file_name)=[^&]*/", "", $query_str); $main_content .= '
+	<form id="form_' . $bn . '" class="hidden" action="?bean_name=' . $bn . '&bean_file_name=' . $bfn . $query_str . '" method="post" enctype="multipart/form-data">
+		<div class="project' . ($selected_project && $projects[$selected_project] ? ' hidden' : '') . '">
 			<label>Project: </label>
 			<select name="project">'; if ($projects) { foreach ($projects as $project_name => $project) { $main_content .= '<option' . ($selected_project == $project_name ? ' selected' : '') . '>' . $project_name . '</option>'; } } $main_content .= '
 			</select>

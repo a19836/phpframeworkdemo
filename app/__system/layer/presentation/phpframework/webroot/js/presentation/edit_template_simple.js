@@ -222,51 +222,53 @@ function updateCodeEditorLayoutFromMainTab(elm) {
 }
 
 function updateCodeEditorLayoutFromSettings(template_obj) {
-	var regions_blocks_includes_settings = template_obj.find(".regions_blocks_includes_settings");
-	
-	//must happen before the updateRegionsFromBodyEditor
-	var orig_template_params_values_list = JSON.stringify(template_params_values_list);
-	
-	updateRegionsBlocksRBIndexIfNotSet(regions_blocks_includes_settings); //very important, otherwise we will loose the region-block params-values and joinpoints for the new regions added dynamically
-	
-	//very important, otherwise we will loose the region-block params-values and joinpoints
-	updateRegionsBlocksParamsLatestValues(regions_blocks_includes_settings); 
-	updateRegionsBlocksJoinPointsSettingsLatestObjs(regions_blocks_includes_settings);
-	
-	//updates the last regions and params. This is very important. otherwise the template preview won't show the latest regions and params from the html.
-	updateRegionsFromBodyEditor(false);
-	
-	if (!template_obj.hasClass("inactive")) {
-		var iframe = template_obj.find(".code_editor_layout iframe");
-		var are_different = areLayoutAndSettingsDifferent(iframe, regions_blocks_includes_settings);
+	if (template_obj[0]) {
+		var regions_blocks_includes_settings = template_obj.find(".regions_blocks_includes_settings");
 		
-		//get regions and params from settings
-		var data = getSettingsTemplateRegionsBlocks(regions_blocks_includes_settings);
-		//console.log(data);
+		//must happen before the updateRegionsFromBodyEditor
+		var orig_template_params_values_list = JSON.stringify(template_params_values_list);
 		
-		if (!are_different)
-			are_different = orig_template_params_values_list != JSON.stringify(data["params"]);
+		updateRegionsBlocksRBIndexIfNotSet(regions_blocks_includes_settings); //very important, otherwise we will loose the region-block params-values and joinpoints for the new regions added dynamically
 		
-		if (are_different /*&& confirm("Do you wish to convert the template settings to the layout panel?\n\nNote: You must save the html code first, in order to see the new changes that you made (if you made any).")*/) {
-			//update regions_blocks_list
-			regions_blocks_list = data["regions_blocks"];
-			
-			//update template_params_values_list
-			template_params_values_list = data["params"];
-			
-			//prepare iframe with new data
+		//very important, otherwise we will loose the region-block params-values and joinpoints
+		updateRegionsBlocksParamsLatestValues(regions_blocks_includes_settings); 
+		updateRegionsBlocksJoinPointsSettingsLatestObjs(regions_blocks_includes_settings);
+		
+		//updates the last regions and params. This is very important. otherwise the template preview won't show the latest regions and params from the html.
+		updateRegionsFromBodyEditor(false);
+		
+		if (!template_obj.hasClass("inactive")) {
 			var iframe = template_obj.find(".code_editor_layout iframe");
-			var iframe_data = {
-				"template_regions" : data["template_regions"],
-				"template_params": data["params"],
-				"template_includes": data["includes"]
-			};
+			var are_different = areLayoutAndSettingsDifferent(iframe, regions_blocks_includes_settings);
 			
-			//show template preview based in the html source
-			var current_html = getTemplateCodeForSaving(true);
-			MyFancyPopup.hidePopup();
+			//get regions and params from settings
+			var data = getSettingsTemplateRegionsBlocks(regions_blocks_includes_settings);
+			//console.log(data);
 			
-			updateLayoutIframeFromSettings(iframe, iframe_data, current_html);
+			if (!are_different)
+				are_different = orig_template_params_values_list != JSON.stringify(data["params"]);
+			
+			if (are_different /*&& confirm("Do you wish to convert the template settings to the layout panel?\n\nNote: You must save the html code first, in order to see the new changes that you made (if you made any).")*/) {
+				//update regions_blocks_list
+				regions_blocks_list = data["regions_blocks"];
+				
+				//update template_params_values_list
+				template_params_values_list = data["params"];
+				
+				//prepare iframe with new data
+				var iframe = template_obj.find(".code_editor_layout iframe");
+				var iframe_data = {
+					"template_regions" : data["template_regions"],
+					"template_params": data["params"],
+					"template_includes": data["includes"]
+				};
+				
+				//show template preview based in the html source
+				var current_html = getTemplateCodeForSaving(true);
+				MyFancyPopup.hidePopup();
+				
+				updateLayoutIframeFromSettings(iframe, iframe_data, current_html);
+			}
 		}
 	}
 }

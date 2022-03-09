@@ -91,6 +91,7 @@ var show_templates_only = ' . ($_GET["show_templates_only"] ? 1 : 0) . '; //This
 		<header>
 			<div class="title">Edit Page "<span class="file_name" title="' . $entity_view_code . '">' . $entity_view_code . '</span>"</div>
 			<ul>
+				<li class="update_layout_from_settings" title="Update Settings to Layout UI"><a onClick="updateLayoutFromSettings( $(\'.entity_obj\') )"><i class="icon update_layout_from_settings"></i> Update Settings to Layout UI</a></li>
 				<li class="advanced_editor" title="Switch to Free Html Editor"><a href="?' . $query_string . '&edit_entity_type=advanced"><i class="icon show_advanced_ui"></i> Switch to Free Html Editor</a></li>
 				<li class="view_project_page" title="View Project Page"><a href="' . $view_project_url . '" target="project"><i class="icon view"></i></a></li>
 				<li class="preview" title="Preview & Test Page"><a onClick="preview()"><i class="icon preview_file"></i> Preview & Test Page</a></li>
