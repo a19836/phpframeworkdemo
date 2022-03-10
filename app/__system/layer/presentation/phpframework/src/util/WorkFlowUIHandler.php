@@ -185,8 +185,8 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 			' . $this->printTasksList() . '
 		</div>
 		
-		<div class="tasks_menu_hide" onclick="jsPlumbWorkFlow.jsPlumbContextMenu.toggleTasksMenuPanel(this)">
-			<div class="button minimize"></div>
+		<div class="tasks_menu_hide">
+			<div class="button minimize" onclick="jsPlumbWorkFlow.jsPlumbContextMenu.toggleTasksMenuPanel(this)"></div>
 		</div>
 		
 		<div class="tasks_flow scroll">

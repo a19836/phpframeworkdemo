@@ -2714,7 +2714,7 @@ function updateEntityTemplateLayoutHeight(elm) {
 }
 
 function toggleIframeModulesBlocksToolbar(elm) {
-	$(elm).parent().parent().toggleClass("toolbar_open");
+	$(elm).parent().closest(".tab_content_template_layout").toggleClass("toolbar_open");
 }
 
 function initIframeModulesBlocksToolbarTree() {
@@ -2722,6 +2722,52 @@ function initIframeModulesBlocksToolbarTree() {
 	
 	//create Iframe Modules Blocks Toolbar
 	createIframeModulesBlocksToolbarTree();
+	
+	//set iframe_modules_blocks_toolbar_toggle resizable
+	var tab_content_template_layout = $(".tab_content_template_layout");
+	var iframe_modules_blocks_toolbar = tab_content_template_layout.children(".iframe_modules_blocks_toolbar");
+	
+	iframe_modules_blocks_toolbar.draggable({
+		axis: "x",
+		appendTo: 'body',
+		cursor: 'move',
+          tolerance: 'pointer',
+          handle: ' > .iframe_modules_blocks_toolbar_toggle',
+          cancel: ' > .button', //button is inside of main_tasks_menu_hide_obj_id
+          cursor: 'move',
+		start: function(event, ui) {
+			if (tab_content_template_layout.hasClass("toolbar_open")) {
+				tab_content_template_layout.addClass("resizing");
+				return true;
+			}
+			
+			return false;
+		},
+		drag : function(event, ui) {
+			var w = $(window).width() - (ui.offset.left - $(window).scrollLeft());
+			
+			iframe_modules_blocks_toolbar.css({
+				width: w + "px",
+				top: "", 
+				left: "", 
+				right: "", 
+				bottom: ""
+			});
+			tab_content_template_layout.css({
+				width: ui.offset.left + "px",
+			});
+		},
+		stop : function(event, ui) {
+			tab_content_template_layout.removeClass("resizing");
+			
+			iframe_modules_blocks_toolbar.css({
+				top: "", 
+				left: "", 
+				right: "", 
+				bottom: ""
+			});
+		}
+	});
 }
 
 function initIframeModulesBlocksDroppableRegions() {

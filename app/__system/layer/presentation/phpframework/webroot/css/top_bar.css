@@ -256,15 +256,15 @@
 	position:absolute;
 	top:7px;
 	left:auto;
-	right:84px;
+	right:77px;
 	bottom:auto;
-	font-size:var(--icon-font-size);
+	font-size:16px;/*var(--icon-font-size);*/
 	text-align:left;
-	color:#333;
+	color:#555;
 }
 .taskflowchart.with_top_bar_menu.fixed_properties .tasks_flow .selected_task_properties.maximize_properties .generic_buttons,
   .taskflowchart.with_top_bar_menu.fixed_properties .tasks_flow .selected_connection_properties.maximize_properties .generic_buttons {
-	right:58px;
+	right:50px;
 }
 .taskflowchart.with_top_bar_menu.fixed_properties:not(.auto_save_disabled) .tasks_flow .selected_task_properties .generic_buttons, 
   .taskflowchart.with_top_bar_menu.fixed_properties:not(.auto_save_disabled) .tasks_flow .selected_connection_properties .generic_buttons {
@@ -523,6 +523,10 @@ body .connection_context_menu .delete a {
 	margin-right:5px;
 }
 
+.taskflowchart.fixed_properties .selected_task_properties .popup_close,
+  .taskflowchart.fixed_properties .selected_connection_properties .popup_close {
+	color:#555;
+}
 .selected_task_properties .maximize_minimize_icon, 
   .selected_connection_properties .maximize_minimize_icon,
   .selected_task_properties .expand_collapse_icon, 
@@ -533,11 +537,11 @@ body .connection_context_menu .delete a {
 	text-indent:0;
 	float:none;
 	font-size:var(--icon-font-size);
-	color:#333;
+	color:#555;
 }
 .taskflowchart.fixed_properties .selected_task_properties .maximize_minimize_icon, 
   .taskflowchart.fixed_properties .selected_connection_properties .maximize_minimize_icon {
-	right:32px;
+	right:25px;
 }
 .selected_task_properties .maximize_minimize_icon, 
   .selected_connection_properties .maximize_minimize_icon {
@@ -550,7 +554,7 @@ body .connection_context_menu .delete a {
 	text-rendering:auto;
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
-	content:"\f2d0";
+	content:"\f31e";
 }
 .selected_task_properties.maximize_properties .maximize_minimize_icon, 
   .selected_connection_properties.maximize_properties .maximize_minimize_icon {
@@ -564,6 +568,10 @@ body .connection_context_menu .delete a {
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
 	content:"\f78c";
+}
+.taskflowchart.fixed_properties .selected_task_properties .expand_collapse_icon, 
+  .taskflowchart.fixed_properties .selected_connection_properties .expand_collapse_icon {
+	right:50px;
 }
 .selected_task_properties .expand_collapse_icon, 
   .selected_connection_properties .expand_collapse_icon {
@@ -589,7 +597,7 @@ body .connection_context_menu .delete a {
 	text-rendering:auto;
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
-	content:"\f31e";
+	content:"\f2d0";
 }
 
 body .workflow_message .status span, 
@@ -772,6 +780,24 @@ body .layout_ui_editor > .resize-panels {
 .layout_ui_editor.with_top_bar_menu > .options .option.auto_save_convert_settings ul li input {
 	position:absolute;
 	right:10px;
+}
+
+/* LAYOUT CODE EDITOR - SETTINGS */
+.layout_ui_editor.with_top_bar_menu.fixed_properties > .menu-settings .settings-info .close::before,
+  .layout_ui_editor.with_top_bar_menu.fixed_properties > .menu-settings .settings-info .full-screen::before {
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	color:#555;
+}
+.layout_ui_editor.with_top_bar_menu.fixed_properties > .menu-settings .settings-info .close::before {
+	content:"\f057";
+}
+.layout_ui_editor.with_top_bar_menu.fixed_properties > .menu-settings .settings-info .full-screen::before {
+	content:"\f31e";
+}
+.layout_ui_editor.with_top_bar_menu.fixed_properties > .menu-settings.full-screen .settings-info .full-screen::before {
+	content:"\f78c";
 }
 
 /* TABS */

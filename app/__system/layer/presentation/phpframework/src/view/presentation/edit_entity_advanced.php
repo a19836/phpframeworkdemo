@@ -124,7 +124,7 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 '; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getBusinessLogicBrokersHtml($business_logic_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDataAccessBrokersHtml($data_access_brokers, $choose_bean_layer_files_from_file_manager_url); $head .= '</script>'; $query_string = str_replace(array("&edit_entity_type=advanced", "&edit_entity_type=simple"), "", $_SERVER["QUERY_STRING"]); $main_content = '
 	<div class="top_bar ' . ($project_with_auto_view ? "project_with_auto_view" . ($view_file_exists ? " view_file_exists" : "") : "") . '">
 		<header>
-			<div class="title">Edit Entity "' . $entity_view_code . '"</div>
+			<div class="title">Edit Entity "' . basename($path) . '"</div>
 			<ul>
 				<li class="view_project_page" title="View project page"><a href="' . $view_project_url . '" target="project"><i class="icon view"></i> View project page</a></li>
 				<li class="simple_editor" title="Switch to Template Editor"><a href="?' . $query_string . '&edit_entity_type=simple&show_templates_only=1"><i class="icon show_simple_ui"></i> Switch to Template Editor</a></li>

@@ -54,7 +54,8 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); $filter_by_layout_ur
 	
 	<!-- Add Local JS and CSS files -->
 	<link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/create_presentation_uis_diagram.css" type="text/css" charset="utf-8" />
-	<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/create_presentation_uis_diagram.js"></script>'; $head .= $tasks_head; $head .= $WorkFlowUIHandler->printTasksCSSAndJS(); $head .= $WorkFlowUIHandler->getJS($workflow_path_id); $diagram_relative_folder_path = trim(substr($path, strpos($path, "/src/entity/") + strlen("/src/entity/"))); $diagram_relative_folder_path .= substr($diagram_relative_folder_path, -1) != "/" ? "/" : ""; $head .= '<script>
+	<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/create_presentation_uis_diagram.js"></script>
+	'; $head .= $tasks_head; $head .= $WorkFlowUIHandler->printTasksCSSAndJS(); $head .= $WorkFlowUIHandler->getJS($workflow_path_id, false, array("selected_task_properties_resizable" => true, "selected_connection_properties_resizable" => true)); $diagram_relative_folder_path = trim(substr($path, strpos($path, "/src/entity/") + strlen("/src/entity/"))); $diagram_relative_folder_path .= substr($diagram_relative_folder_path, -1) != "/" ? "/" : ""; $head .= '<script>
 		var layer_type = "pres";
 		var selected_project_id = "' . $selected_project_id . '";
 		
@@ -84,6 +85,8 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); $filter_by_layout_ur
 		var get_current_path_sub_files_url = \'' . $get_current_path_sub_files_url . '\';
 		
 		var page_task_type= "d7975b77"; //page task type id
+		
+		jsPlumbWorkFlow.setjsPlumbWorkFlowObjOption("on_resize_panels_function", onResizeTaskFlowChartPanels); //add default function to reset the top positon of the tasksflow panels, if with_top_bar class exists
 		
 		ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback = onProgrammingTaskChooseCreatedVariable;
 		ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;

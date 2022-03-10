@@ -387,7 +387,7 @@ body {
 }
 
 /* HIDE PANEL */
-#hide_panel {position:absolute; left:300px; top:0px; width:5px; bottom:0px; overflow:hidden; background:url("../../img/back_frame_open_close_vertical_red.gif") repeat-y; cursor:move; z-index:3;}
+#hide_panel {position:absolute; left:300px; top:0px; width:5px; bottom:0px; overflow:hidden; background:url("../../img/back_frame_open_close_vertical_red.gif") repeat-y; cursor:ew-resize; z-index:3;}
 #hide_panel .button {position:absolute; top:45%; top:calc(50% - 17px); width:5px; height:34px; left:0; cursor:pointer;}
 #hide_panel .button.maximize {background:url("../../img/tool_frame_right.gif") no-repeat;}
 #hide_panel .button.minimize {background:url("../../img/tool_frame_left.gif") no-repeat;}

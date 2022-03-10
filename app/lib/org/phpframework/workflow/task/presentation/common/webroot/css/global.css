@@ -73,8 +73,8 @@
 
 /* Task Properties */
 .selected_task_properties {
-	width:auto !important; /* bc of the ui html be dynamic, we must set the width to auto. Otherwise the task properties popup will appear with the wrong width. */
-	height:auto !important; /* bc of the ui html be dynamic, we must set the height to auto. Otherwise the task properties popup will appear with the wrong height. */
+	width:auto; /* bc of the ui html be dynamic, we must set the width to auto. Otherwise the task properties popup will appear with the wrong width. */
+	height:auto; /* bc of the ui html be dynamic, we must set the height to auto. Otherwise the task properties popup will appear with the wrong height. */
 }
 .selected_task_properties .properties_task_id {
 	display:none;
@@ -91,6 +91,10 @@
 	left:0;
 	top:0;
 	display:block !important;
+}
+.taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_task_properties .properties_task_id, 
+  .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_connection_properties .properties_task_id {
+	width:auto;
 }
 
 /* Task Properties - settings */

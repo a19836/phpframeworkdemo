@@ -130,8 +130,8 @@ var FunctionUtilObj = {
 				+ '				'
 				+ '				<div class="tasks_menu scroll"></div>'
 				+ '				'
-				+ '				<div class="tasks_menu_hide" onclick="myWFObj.getJsPlumbWorkFlow().jsPlumbContextMenu.toggleTasksMenuPanel(this)">'
-				+ '					<div class="button minimize"></div>'
+				+ '				<div class="tasks_menu_hide">'
+				+ '					<div class="button minimize" onClick="myWFObj.getJsPlumbWorkFlow().jsPlumbContextMenu.toggleTasksMenuPanel(this)"></div>'
 				+ '				</div>'
 				+ '				'
 				+ '				<div class="tasks_flow scroll"></div>'
@@ -270,7 +270,7 @@ var FunctionUtilObj = {
 			var main_div_id = elm.parent().closest(".edit_function_code").children(selector).children(".taskflowchart").attr("id");
 			
 			WF = new jsPlumbWorkFlowHandler(main_div_id, {
-				init_function: function(innerWF) {
+				on_init_function: function(innerWF) {
 					//prepare tasks menus
 					$("#" + innerWF.jsPlumbContextMenu.main_tasks_menu_obj_id + " ." + innerWF.jsPlumbContextMenu.tasks_group_tasks_class_name).each(function(idx, item) {
 						item = $(item);

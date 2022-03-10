@@ -109,7 +109,7 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 '; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getBusinessLogicBrokersHtml($business_logic_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDataAccessBrokersHtml($data_access_brokers, $choose_bean_layer_files_from_file_manager_url); $head .= '</script>'; $query_string = str_replace(array("&edit_block_type=advanced", "&edit_block_type=simple"), "", $_SERVER["QUERY_STRING"]); $main_content = '
 	<div class="top_bar">
 		<header>
-			<div class="title">Edit Block "' . $block_id . '"</div>
+			<div class="title">Edit Block "' . basename($path) . '"</div>
 			<ul>
 				<li class="show_simple_ui" title="Show Simple UI"><a href="?' . $query_string . '&edit_block_type=simple"><i class="icon show_simple_ui"></i> Show Simple UI</a></li>
 				<li class="save" title="Save Block"><a onClick="saveBlock()"><i class="icon save"></i> Save</a></li>

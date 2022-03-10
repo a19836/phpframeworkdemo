@@ -18,7 +18,7 @@
 	background: linear-gradient(to bottom, #eee 50%, #ffffff73 100%);
 }
 #left_panel {position:absolute; left:0px; top:32px; width:300px; bottom:0px; padding-top:5px; overflow-y:scroll; overflow-x:auto; z-index:1;}
-#hide_panel {position:absolute; left:300px; top:0px; width:5px; bottom:0px; overflow:hidden; background:url("../../img/back_frame_open_close_vertical_red.gif") repeat-y; cursor:move; z-index:3;}
+#hide_panel {position:absolute; left:300px; top:0px; width:5px; bottom:0px; overflow:hidden; background:url("../../img/back_frame_open_close_vertical_red.gif") repeat-y; cursor:ew-resize; z-index:3;}
 #right_panel {position:absolute; left:305px; top:0px; right:0px; bottom:0px; z-index:1;}
 
 #menu_panel li {cursor:pointer; margin:0 3px; display:inline-block; font-size:14px;}

@@ -1255,7 +1255,7 @@ function initQueryDesign(tab_elm, rand_number) {
 
 function addTaskFlowChart(rand, init_now) {
 	var options = {
-		"init_function" : function(WFObj) {
+		on_init_function : function(WFObj) {
 			var task_context_menu = $("#" + WFObj.jsPlumbContextMenu.task_context_menu_id);
 			task_context_menu.children(".set_label").children("a").html("Set Table Alias");
 		

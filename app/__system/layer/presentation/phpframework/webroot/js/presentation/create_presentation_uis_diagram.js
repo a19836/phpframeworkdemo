@@ -107,6 +107,9 @@ $(function () {
 		}
 	});
 	
+	//add default function to reset the top positon of the tasksflow panels, if with_top_bar class exists 
+	onResizeTaskFlowChartPanels(jsPlumbWorkFlow, 0);
+	
 	MyFancyPopup.hidePopup();
 });
 

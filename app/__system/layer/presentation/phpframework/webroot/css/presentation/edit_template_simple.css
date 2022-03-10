@@ -93,10 +93,10 @@
 /* Code Editor - Body - ELS UI */
 .template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu > .options .options-right {
 	width:200px;
-	right:227px;
+	right:252px;
 }
 .template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu > .options > .options-center {
-	right:425px;
+	right:450px;
 }
 .template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu > .options .options-left .option.save,
   .template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu > .options .options-right .option.full-screen {

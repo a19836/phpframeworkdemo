@@ -35,11 +35,11 @@
 	background:#fff;
 }
 .edit_test #settings:not(.resizing) {
-	transition:1s all;
+	transition:.5s all;
 }
 .edit_test #settings.collapsed {
 	height:25px !important;
-	padding-top:0;
+	padding-top:20px;
 	overflow:hidden;
 }
 
@@ -74,7 +74,7 @@
 	overflow:hidden;
 	cursor:ns-resize;
 	z-index:1051;
-	border-top:1px solid #ccc;
+	border-top:1px solid #eee;
 	
 	background: -moz-linear-gradient(top, #eee 50%, #f7f7f7 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #f7f7f7));
@@ -84,7 +84,7 @@
 	background: linear-gradient(to bottom, #eee 50%, #f7f7f7 100%);
 }
 .edit_test #settings.collapsed .settings_header {
-	margin-top:-3px;
+	margin-top:-20px;
 	border:0;
 		
 	background: -moz-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
@@ -99,12 +99,12 @@
 	float:right;
 	font-size:16px;
 }
+.edit_test #settings:not(.collapsed) .settings_header .icon {
+	margin-top:-3px;
+}
 
 .edit_test #settings .enabled {
 	width:100%;
-}
-.edit_test #settings.collapsed .enabled {
-	margin-top:30px;
 }
 .edit_test #settings .enabled input {
 	margin-left:0;
@@ -235,10 +235,14 @@
 }
 
 /* CODE */
-.edit_test > #ui > .taskflowchart, /* is very important to have ">" otherwise it will enter in conflict with ".taskflowchart .edit_function_code > #ui .taskflowchart" */
-  .edit_test #code > textarea,
+.edit_test #code > textarea,
   .edit_test #code .ace_editor {
 	height:calc(100vh - 55px) !important;
+}
+.edit_test > #ui .taskflowchart.with_top_bar_menu .tasks_menu:not(.task_properties_shown):not(.connection_properties_shown), 
+  .edit_test > #ui .taskflowchart.with_top_bar_menu .tasks_menu_hide:not(.task_properties_shown):not(.connection_properties_shown), 
+  .edit_test > #ui .taskflowchart.with_top_bar_menu .tasks_flow:not(.task_properties_shown):not(.connection_properties_shown) {
+	bottom:30px;
 }
 
 /* To print the workflow */

@@ -5,9 +5,9 @@
 }
 
 /* START - FIX PROPERTIES TO BOTTOM */
-.taskflowchart:not(.fixed_properties) .selected_task_properties {
-	width:auto !important;
-	height:auto !important;
+.taskflowchart:not(.fixed_properties) .selected_task_properties:not(.maximize_properties) {
+	width:auto;
+	height:auto;
 	max-height:70%;
 	max-height:calc(100% - 170px);
 	padding-bottom:10px;
@@ -16,17 +16,20 @@
 	position:fixed;
 	left:259px !important;
 	top:auto !important;
-	bottom:18px !important;
+	bottom:0 !important;
 	right:10px !important;
 	border-radius:0;
 	overflow:auto;
 }
-.taskflowchart:not(.fixed_properties).reverse .selected_task_properties {
+.taskflowchart:not(.fixed_properties).reverse .selected_task_properties:not(.maximize_properties) {
 	left:0 !important;
-	right:259px !important;
+	right:255px !important;
 }
-.selected_task_properties.tasks_menu_hidden {
+.taskflowchart:not(.fixed_properties):not(.reverse) .selected_task_properties.tasks_menu_hidden {
 	left:5px !important;
+}
+.taskflowchart:not(.fixed_properties).reverse .selected_task_properties.tasks_menu_hidden {
+	right:5px !important;
 }
 .selected_task_properties > .content > div {
 	margin:0 auto;

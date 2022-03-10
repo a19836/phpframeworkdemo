@@ -2062,6 +2062,11 @@ function resizeTaskFlowChart() {
 	jsPlumbWorkFlow.resizePanels();
 }
 
+function onResizeTaskFlowChartPanels(WF, height) {
+	if ($("#" + WF.jsPlumbContextMenu.main_tasks_menu_obj_id).parent().hasClass("with_top_bar_menu"))
+		$("#" + WF.jsPlumbContextMenu.main_tasks_menu_obj_id + ", #" + WF.jsPlumbContextMenu.main_tasks_menu_hide_obj_id + ", #" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).css("top", "");
+}
+
 function resizeCodeEditor(code_elm) {
 	code_elm = code_elm ? code_elm : $("#code");
 	
@@ -2081,7 +2086,7 @@ function resizeCodeEditor(code_elm) {
 function getTaskFlowChartHeight() {
 	var taskflowchart = $(".taskflowchart");
 	var offset = taskflowchart.offset();
-	var top = parseInt(offset.top) + 5;
+	var top = parseInt(offset.top);
 	
 	return parseInt( $(window).height() ) - top;
 }

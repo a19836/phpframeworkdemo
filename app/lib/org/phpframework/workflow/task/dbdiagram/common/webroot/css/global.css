@@ -3,8 +3,8 @@
 }
 
 .jsplumbtaskworkflow .selected_task_properties, .jsplumbtaskworkflow .selected_connection_properties {
-	width:auto !important;
-	height:auto !important;
+	width:auto;
+	height:auto;
 	padding-bottom:10px;
 	box-sizing:border-box;
 	
@@ -40,3 +40,7 @@
 	position:relative;
 	margin-top:30px;
 } 
+.taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_task_properties .properties_task_id, 
+  .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_connection_properties .properties_task_id {
+	width:auto;
+}

@@ -64,7 +64,7 @@ var available_templates_props = ' . json_encode($available_templates_props) . ';
 '; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= '</script>'; $main_content = WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, null, null, null, null, null, null); $main_content .= '
 <div class="top_bar">
 	<header>
-		<div class="title">Project Global Variables</div>
+		<div class="title">Project Global Variables for project "' . $selected_project_id . '"</div>
 	</header>
 </div>
 <div class="global_vars_obj with_top_bar_tab">

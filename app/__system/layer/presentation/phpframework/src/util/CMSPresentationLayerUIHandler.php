@@ -247,7 +247,7 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC
 			<a class="icon view_template_samples" href="javascript:void(0)" onClick="openTemplateSamples(this)" title="View Template Samples">View Template Samples</a>
 		</div>
 		<div class="iframe_modules_blocks_toolbar">
-			<div class="iframe_modules_blocks_toolbar_toggle" onclick="toggleIframeModulesBlocksToolbar(this)"><div class="button"></div></div>
+			<div class="iframe_modules_blocks_toolbar_toggle"><div class="button" onclick="toggleIframeModulesBlocksToolbar(this)"></div></div>
 			<div class="iframe_modules_blocks_toolbar_content" id="iframe_modules_blocks_toolbar_content">
 				' . WorkFlowPresentationHandler::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, $v9106c07f80) . '
 			</div>

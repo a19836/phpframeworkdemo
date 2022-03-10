@@ -34,7 +34,15 @@ $(function() {
 		PresentationLayerTaskPropertyObj.allow_multi_lower_level_layer_connections = false;
 		BusinessLogicLayerTaskPropertyObj.allow_multi_lower_level_layer_connections = false;
 	}
+	
+	//add default function to reset the top positon of the tasksflow panels, if with_top_bar class exists 
+	onResizeTaskFlowChartPanels(jsPlumbWorkFlow, 0);
 });
+
+function onResizeTaskFlowChartPanels(WF, height) {
+	if ($("#" + WF.jsPlumbContextMenu.main_tasks_menu_obj_id).parent().hasClass("with_top_bar_menu"))
+		$("#" + WF.jsPlumbContextMenu.main_tasks_menu_obj_id + ", #" + WF.jsPlumbContextMenu.main_tasks_menu_hide_obj_id + ", #" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).css("top", "");
+}
 
 function updateTasksAfterFileRead() {
 	//load tasks properties

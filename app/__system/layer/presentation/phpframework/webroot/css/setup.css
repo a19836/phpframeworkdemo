@@ -179,6 +179,9 @@
 .db_settings .hide {display:none;}
 
 /* LAYERS */
+#layer_form.hide_setup {
+	margin-top:-55px; /* This is the padding-top for the parent div: #setup */
+}
 #layer_form:not(.hide_setup) .top_bar header {
 	top:64px;
 	
