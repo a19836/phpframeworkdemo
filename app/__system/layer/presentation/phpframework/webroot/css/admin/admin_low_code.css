@@ -1,6 +1,6 @@
 body {
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-	font-size:14px;
+	font-size:13px;
 	font-weight:400;
 }
 
@@ -326,14 +326,27 @@ body {
 }
 #left_panel .sub_menus > label > i {
 	float:right;
-	margin:8px 8px 0 0;
+	margin:9px 8px 0 0;
 	color:#7a888b;
+	font-size:14px;
 }
 #left_panel .sub_menus.open > label > i {
 	margin-top:2px;
 }
 #left_panel .sub_menus.open > label > i:before {
 	content:"\f0dd";
+}
+#left_panel .sub_menus > i {
+	position:absolute;
+	right:8px;
+	bottom:8px;
+	color:#7a888b;
+	cursor:pointer;
+	font-size:14px;
+	z-index:999999999;
+}
+#left_panel .sub_menus:not(.open) > i {
+	display:none;
 }
 #left_panel .sub_menus > ul li.level {
 	padding:5px 10px;

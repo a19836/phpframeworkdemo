@@ -1,7 +1,7 @@
 $(function() {
 	//init auto save
-	addAutoSaveMenu(".top_bar li.save");
-	enableAutoSave(onToggleAutoSave);
+	addAutoSaveMenu(".top_bar li.save", "onToggleQueryAutoSave");
+	enableAutoSave(onToggleQueryAutoSave);
 	initAutoSave(".top_bar li.save a");
 	
 	//init ui

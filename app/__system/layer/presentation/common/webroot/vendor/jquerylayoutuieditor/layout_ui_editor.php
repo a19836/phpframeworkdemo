@@ -113,43 +113,166 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 		.layout_ui_editor.layout_ui_editor_4 {
 			margin:100px auto 0 auto;
 			
-			--tooltip-bg:#d5e3e4;
-			--tooltip-color:#666;
-			
-			--tabs-bg:#fff;
-			
+			/* generic */
 			--main-bg:#d5e3e4;
 			--main-color:#888;
-			--main-color-hover:#73a3a8;
-			--main-bg-hover:#485152;
-			--main-border:#bcd4d6;
-			--main-color-active:#222;
-			--outside-border:#ccc;
 			
-			--selected-item-bg:#666;
-			--selected-item-color:#bcd4d6;
+			/* tabs */
+			--tabs-bg:#fff;
+			--tabs-item-border:#ccc;
+			--tabs-item-bg:#fff;
+			--tabs-item-active-border:#ccc;
+			--tabs-item-active-bg:#d5e3e4;
+			--tabs-item-hover-color:#333;
 			
-			--button-border:#bcd4d6;
-			--button-bg:#485152;
-			--button-color:#d5e3e4;
-			--button-color-hover:#bcd4d6;
+			/* menu-widgets */
+			--menu-widgets-widget-border:#ccc;
+			--menu-widgets-group-color:#485152;
 			
-			--input-border:#bcd4d6;
-			--input-bg:#485152;
-			--input-color:#97a3a4;
+			/* template-source */
+			--template-source-border:#d5e3e4;
+			--template-source-bg:#fff;
 			
-			--select-option-disabled-bg:#d5e3e4;
-			--select-option-disabled-color:#666;
+			/* template-preview */
+			--template-preview-border:#d5e3e4;
+			--template-preview-bg:#fff;
 			
-			--popup-bg:#485152;
-			--popup-color:#d5e3e4;
+			/* template-widgets-droppable */
+			--template-widgets-droppable-border:#d5e3e4;
+			--template-widgets-droppable-bg:#fff;
 			
-			--scrollbar-track:#555;
-			--scrollbar-thumb:#ccc;
+			/* menu-settings */
+			--menu-settings-bg:#fff;
 			
-			--resize-panel-bg-color:#485152;
+			--menu-settings-input-border:transparent;
+			--menu-settings-input-bg:#d5e3e4;
+			--menu-settings-input-color:#485152;
+			--menu-settings-select-option-bg:#485152;
+			--menu-settings-select-option-color:#ddd;
 			
-			--text-selection-border-active: #d5e3e422;
+			--menu-settings-button-border:#d5e3e4;
+			--menu-settings-button-bg:#485152;
+			--menu-settings-button-color:#d5e3e4;
+			--menu-settings-button-hover-color:#bcd4d6;
+			
+			--menu-settings-user-classes-bg:rgba(0,0,0,0.25);
+			--menu-settings-user-class-border:transparent;
+			--menu-settings-user-class-bg:#ddd;
+			--menu-settings-user-class-color:#333;
+			
+			--menu-settings-group-color:#485152;
+			--menu-settings-group-list-bg:#d5e3e4;
+			--menu-settings-group-block-list-border:transparent;
+			--menu-settings-group-block-list-bg:#ccc;
+			
+			--menu-settings-measurement-style-select-border-left:#bcd4d6;
+			--menu-settings-buttons-style-btn-border:transparent;
+			--menu-settings-buttons-style-btn-bg:rgba(0,0,0,0.25);
+			--menu-settings-buttons-style-btn-color:#485152;
+			--menu-settings-buttons-style-btn-hover-color:#999;
+			--menu-settings-buttons-style-btn-selected-border:transparent;
+			--menu-settings-buttons-style-btn-selected-bg:#485152;
+			--menu-settings-buttons-style-btn-selected-color:#ddd;
+			--menu-settings-color-style-color-selector-border:transparent;
+			--menu-settings-color-style-color-selector-bg:transparent;
+			--menu-settings-color-style-color-code-bg:transparent;
+			--menu-settings-color-style-color-code-border:transparent;
+			
+			--menu-settings-info-border:#bcd4d6;
+			--menu-settings-info-bg:#d5e3e4;
+			
+			/* widget-header */
+			--widget-header-border:transparent;
+			--widget-header-bg:#d5e3e4;
+			--widget-header-color:#485152;
+			--widget-header-hover-color:#333;
+			
+			/* droppable-header */
+			--droppable-header-border:transparent;
+			--droppable-header-bg:#d5e3e4;
+			--droppable-header-color:#485152;
+			--droppable-header-hover-color:#333;
+			
+			/* menu-layers */
+			--menu-layers-group-hover-border:#bcd4d6;
+			--menu-layers-group-selected-border:#bcd4d6;
+			--menu-layers-group-title-border:transparent;
+			--menu-layers-group-title-color:#485152;
+			--menu-layers-group-selected-title-bg:#72a3a9;
+			--menu-layers-group-selected-title-color:#bcd4d6;
+			--menu-layers-group-open-title-color:#333;
+			--menu-layers-group-title-hover-color:#73a3a8;
+			--menu-layers-place-holder-bg:#73a3a8;
+			--menu-layers-sort-clone-bg:#73a3a8;
+			
+			/* option */
+			--option-active-color:#555;
+			--option-hover-color:#777;
+			--option-input-border:transparent;
+			--option-input-bg:#fff;
+			--option-input-color:#000;
+			--option-label-color:#000;
+			--option-label-hover-color:#000
+
+			/* scrollbar */
+			--scrollbar-track-bg:#555;
+			--scrollbar-thumb-bg:#ccc;
+			
+			/* resize-panel */
+			--resize-panel-bg:#bcd4d6;
+			
+			/* text-selection-menu */
+			--text-selection-menu-bg:#d5e3e4;
+			--text-selection-menu-color:#485152;
+			
+			--text-selection-menu-item-hover-color:#777;
+			--text-selection-menu-item-active-border:#d5e3e422;
+			--text-selection-menu-item-active-color:#999;
+			
+			--text-selection-menu-input-border:#bcd4d6;
+			--text-selection-menu-input-bg:#fff;
+			--text-selection-menu-input-color:#485152;
+			--text-selection-menu-select-option-disabled-bg:#d5e3e4;
+			--text-selection-menu-select-option-disabled-color:#485152;
+			--text-selection-menu-icon-color:#555;
+			
+			--text-selection-menu-popup-border:#bcd4d6;
+			--text-selection-menu-popup-button-border:#bcd4d6;
+			--text-selection-menu-popup-button-bg:#485152;
+			--text-selection-menu-popup-button-color:#d5e3e4;
+			--text-selection-menu-popup-input-border:#bcd4d6;
+			--text-selection-menu-popup-input-bg:transparent;
+			--text-selection-menu-popup-input-color:#485152;
+			
+			--text-selection-menu-table-border:#bcd4d6;
+			--text-selection-menu-table-bg:#fff;
+			
+			--text-selection-menu-tooltip-bg:#d5e3e4;
+			--text-selection-menu-tooltip-color:#666;
+			
+			--text-selection-menu-msg-color:#fff;
+			--text-selection-menu-error-msg-bg:rgba(255, 0, 0, 0.4);
+			--text-selection-menu-info-msg-bg:rgba(0, 0, 0, 0.1);
+			
+			/* add-widget-popup */
+			--add-widget-popup-border:#bcd4d6;
+			--add-widget-popup-bg:#666;
+			--add-widget-popup-color:#d5e3e4;
+			--add-widget-popup-button-border:#bcd4d6;
+			--add-widget-popup-button-bg:#73a3a8;
+			--add-widget-popup-button-color:#d5e3e4;
+			--add-widget-popup-input-border:#485152;
+			--add-widget-popup-input-bg:#485152;
+			--add-widget-popup-input-color:#485152;
+			
+			/* template-widget-source-popup */
+			--template-widget-source-popup-bg:#485152;
+			--template-widget-source-popup-color:#d5e3e4;
+			
+			/* messages */
+			--editor-info-msg-bg:rgba(204, 255, 153, 0.8);
+			--editor-error-msg-bg:rgba(255, 0, 0, 0.8);
+			--editor-error-msg-color:#fff;
 		}
 		.layout_ui_editor.layout_ui_editor_4 > .menu-widgets, 
 		  .layout_ui_editor.layout_ui_editor_4 > .menu-layers, 

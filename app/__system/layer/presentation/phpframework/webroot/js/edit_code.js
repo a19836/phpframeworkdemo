@@ -33,7 +33,7 @@ function addAutoSaveMenu(selector, callback) {
 					+ '<ul>'
 						+ '<li class="auto_save_activation" title="Is Auto Save Active">'
 							+ 'Auto Save On: '
-							+ '<input type="checkbox" onchange="toggleAutoSaveCheckbox(this, ' + callback + ')" value="1">'
+							+ '<input type="checkbox" onChange="toggleAutoSaveCheckbox(this, ' + callback + ')" value="1">'
 						+ '</li>'
 					+ '</ul>'
 				+ '</li>');
@@ -43,7 +43,7 @@ function addAutoSaveMenu(selector, callback) {
 	else if (item.find(".auto_save_activation").length == 0) {
 		var html = $('<li class="auto_save_activation" title="Is Auto Save Active">'
 					+ 'Auto Save On: '
-					+ '<input type="checkbox" onchange="toggleAutoSaveCheckbox(this, ' + callback + ')" value="1">'
+					+ '<input type="checkbox" onChange="toggleAutoSaveCheckbox(this, ' + callback + ')" value="1">'
 				+ '</li>');
 		
 		item.children("ul").prepend(html);

@@ -28,6 +28,7 @@ var DBTableTaskPropertyObj = {
 	column_numeric_types : null,
 	column_types_ignored_props : null,
 	column_types_hidden_props : null,
+	show_properties_on_connection_drop : false,
 	
 	//private variables
 	selected_connection_properties_data : null,
@@ -155,41 +156,19 @@ var DBTableTaskPropertyObj = {
 		if (!task_property_values || !task_property_values.table_attr_names || task_property_values.table_attr_names.length == 0)
 			advanced_attributes_html = DBTableTaskPropertyObj.getTableAttributeHtml();
 		else {
-			if (!$.isArray(task_property_values.table_attr_names) && !$.isPlainObject(task_property_values.table_attr_names)) {
-				for (var i = 0; i < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; i++) {
-					var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[i];
-					task_property_values["table_attr_" + prop_name + "s"] = [ task_property_values["table_attr_" + prop_name + "s"] ];
-				}
-			}
+			DBTableTaskPropertyObj.regularizeTaskPropertyValues(task_property_values);
 			
-			//I added the collation after, so there are some .xml files that don't contain this. So we need to add this, otherwise we get a js error.
-			for (var i in task_property_values.table_attr_names) {
+			$.each(task_property_values.table_attr_names, function(i, table_attr_name) {
+				var data = {};
+				
 				for (var j = 0; j < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; j++) {
 					var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[j];
-					
-					if (!task_property_values.hasOwnProperty("table_attr_" + prop_name + "s") || 
-						(!$.isPlainObject(task_property_values["table_attr_" + prop_name + "s"]) && !$.isArray(task_property_values["table_attr_" + prop_name + "s"]))
-					) 
-						task_property_values["table_attr_" + prop_name + "s"] = {};
-					
-					if (typeof task_property_values["table_attr_" + prop_name + "s"][i] == "undefined") 
-						task_property_values["table_attr_" + prop_name + "s"][i] = null;
+					data[prop_name] = task_property_values["table_attr_" + prop_name + "s"][i];
 				}
-			}
-			
-			for (var i in task_property_values.table_attr_names) {
-				if (i >= 0) {
-					var data = {};
-					
-					for (var j = 0; j < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; j++) {
-						var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[j];
-						data[prop_name] = task_property_values["table_attr_" + prop_name + "s"][i];
-					}
 				
-					advanced_attributes_html += DBTableTaskPropertyObj.getTableAttributeHtml(data);
-					simple_attributes_html += DBTableTaskPropertyObj.getSimpleAttributeHtml(data);
-				}
-			}
+				advanced_attributes_html += DBTableTaskPropertyObj.getTableAttributeHtml(data);
+				simple_attributes_html += DBTableTaskPropertyObj.getSimpleAttributeHtml(data);
+			});
 		}
 		
 		task_html_elm.find(".table_attrs").html(advanced_attributes_html);
@@ -307,13 +286,7 @@ var DBTableTaskPropertyObj = {
 		var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
 		
 		if (task_property_values && task_property_values.table_attr_names && task_property_values.table_attr_names.length > 0) {
-			if (!$.isArray(task_property_values.table_attr_names) && !$.isPlainObject(task_property_values.table_attr_names)) {
-				for (var i = 0; i < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; i++) {
-					var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[i];
-					task_property_values["table_attr_" + prop_name + "s"] = [ task_property_values["table_attr_" + prop_name + "s"] ];
-				}
-			}
-		
+			DBTableTaskPropertyObj.regularizeTaskPropertyValues(task_property_values);
 			DBTableTaskPropertyObj.prepareTableAttributes(task_id, task_property_values);
 		}
 	},
@@ -764,11 +737,9 @@ var DBTableTaskPropertyObj = {
 				
 					if(arr) {
 						arr = !$.isArray(arr) && !$.isPlainObject(arr) ? [arr] : arr;
-						for (var k in arr) {
-							if (k >= 0) {
-								fks.push(arr[k]);
-							}
-						}
+						$.each(arr, function(k, item) {
+							fks.push(item);
+						});
 					}
 				}
 			
@@ -777,11 +748,9 @@ var DBTableTaskPropertyObj = {
 				
 					if(arr) {
 						arr = !$.isArray(arr) && !$.isPlainObject(arr) ? [arr] : arr;
-						for (var k in arr) {
-							if (k >= 0) {
-								fks.push(arr[k]);
-							}
-						}
+						$.each(arr, function(k, item) {
+							fks.push(item);
+						});
 					}
 				}
 			}
@@ -814,7 +783,7 @@ var DBTableTaskPropertyObj = {
 			var html = "";
 			
 			//I added the collation after, so there are some .xml files that don't contain this. So we need to add this, otherwise we get a js error.
-			for (var i in task_property_values.table_attr_names) {
+			$.each(task_property_values.table_attr_names, function(i, table_attr_name) {
 				var data = {};
 				
 				for (var j = 0; j < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; j++) {
@@ -825,7 +794,7 @@ var DBTableTaskPropertyObj = {
 				}
 				
 				html += DBTableTaskPropertyObj.getSimpleAttributeHtml(data);
-			}
+			});
 			
 			var ul = task_html_elm.find(".simple_attributes > ul");
 			ul.children("li:not(.no_simple_attributes)").remove();
@@ -1350,22 +1319,16 @@ var DBTableTaskPropertyObj = {
 		
 		//the first time we load the task proeprties from a file, the source_attributes is an array, but when we save new properties from the selected_task_properties panel, the source_attributes becomes an object. So we need always to do the following:
 		var new_source_attributes = new Array();
-		if (source_attributes) {
-			for (var i in source_attributes) {
-				if (i >= 0) {
-					new_source_attributes.push(source_attributes[i]);
-				}
-			}
-		}
+		if (source_attributes)
+			$.each(source_attributes, function(i, source_attribute) {
+				new_source_attributes.push(source_attribute);
+			});
 		
 		var new_target_attributes = new Array();
-		if (target_attributes) {
-			for (var i in target_attributes) {
-				if (i >= 0) {
-					new_target_attributes.push(target_attributes[i]);
-				}
-			}
-		}
+		if (target_attributes)
+			$.each(target_attributes, function(i, target_attribute) {
+				new_target_attributes.push(target_attribute);
+			});
 		
 		DBTableTaskPropertyObj.selected_connection_properties_data = {
 			source_table: source_table ? source_table : "",
@@ -1420,16 +1383,14 @@ var DBTableTaskPropertyObj = {
 			
 				html = "";
 			
-				for (var i in connection_property_values.source_columns) {
-					if (i >= 0) {
-						var data = {
-							source_column: connection_property_values.source_columns[i],
-							target_column: connection_property_values.target_columns[i]
-						};
-				
-						html += DBTableTaskPropertyObj.getTableForeignKeyHtml(data);
-					}
-				}
+				$.each(connection_property_values.source_columns, function(i, connection_property_value) {
+					var data = {
+						source_column: connection_property_values.source_columns[i],
+						target_column: connection_property_values.target_columns[i]
+					};
+			
+					html += DBTableTaskPropertyObj.getTableForeignKeyHtml(data);
+				});
 			}
 		
 			if (!html) {
@@ -1513,6 +1474,201 @@ var DBTableTaskPropertyObj = {
 		return true;
 	},
 	
+	onTableConnectionDrop : function(conn) {
+		var status = onTableConnectionDrop(conn);
+		
+		if (status) {
+			var source_task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[conn.sourceId];
+			var target_task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[conn.targetId];
+			
+			//prepare source_task_property_values in case the task_property_values_table_attr_prop_names be a string instead of an array/object.
+			if (source_task_property_values && source_task_property_values.table_attr_names && source_task_property_values.table_attr_names.length > 0)
+				DBTableTaskPropertyObj.regularizeTaskPropertyValues(source_task_property_values);
+			
+			//prepare target_task_property_values in case the task_property_values_table_attr_prop_names be a string instead of an array/object.
+			if (conn.sourceId != conn.targetId && target_task_property_values && target_task_property_values.table_attr_names && target_task_property_values.table_attr_names.length > 0) {
+				DBTableTaskPropertyObj.regularizeTaskPropertyValues(target_task_property_values);
+			}
+			
+			//finds the primary key for target table
+			var target_pks = {};
+			
+			if (target_task_property_values && target_task_property_values.table_attr_primary_keys && source_task_property_values.table_attr_primary_keys.length > 0)
+				$.each(target_task_property_values.table_attr_primary_keys, function(i, table_attr_primary_key) {
+					if (DBTableTaskPropertyObj.checkIfTrue(table_attr_primary_key)) {
+						var pk_name = target_task_property_values.table_attr_names[i];
+						target_pks[pk_name] = i;
+					}
+				});
+			
+			if (!$.isEmptyObject(target_pks)) {
+				var conn_attrs = {};
+				var attrs_to_add = {};
+				
+				if (conn.sourceId == conn.targetId) { //find PKs for table and if attributes "parent_" + xxx don't exist, add them
+					for (var pk_name in target_pks) {
+						var exists = false;
+						
+						$.each(source_task_property_values.table_attr_names, function(i, table_attr_name) {
+							if (table_attr_name == "parent_" + pk_name) {
+								conn_attrs[table_attr_name] = pk_name;
+								exists = true;
+								return false;
+							}
+						});
+						
+						if (!exists) {
+							conn_attrs["parent_" + pk_name] = pk_name;
+							attrs_to_add["parent_" + pk_name] = pk_name;
+						}
+					}
+				}
+				else { //finds if PKs from one table exist in another, and if not, add them
+					//check if pk attr exists in source_task_property_values.table_attr_names
+					if (source_task_property_values && source_task_property_values.table_attr_names && source_task_property_values.table_attr_names.length > 0) {
+						var target_table_name = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskLabelByTaskId(conn.targetId);
+						
+						for (var pk_name in target_pks) {
+							var exists = false;
+							
+							$.each(source_task_property_values.table_attr_names, function(i, table_attr_name) {
+								if (table_attr_name == target_table_name + "_" + pk_name) {
+									conn_attrs[table_attr_name] = pk_name;
+									exists = true;
+									return false;
+								}
+							});
+							
+							if (!exists)
+								$.each(source_task_property_values.table_attr_names, function(i, table_attr_name) {
+									if (table_attr_name == pk_name) {
+										conn_attrs[table_attr_name] = pk_name;
+										exists = true;
+										return false;
+									}
+								});
+							
+							if (!exists) {
+								conn_attrs[pk_name] = pk_name;
+								attrs_to_add[pk_name] = pk_name;
+							}
+						}
+					}
+					else
+						for (var pk_name in target_pks) {
+							conn_attrs[pk_name] = pk_name;
+							attrs_to_add[pk_name] = pk_name;
+						}
+				}
+				
+				if (!$.isEmptyObject(attrs_to_add)) {
+					//if source_task_property_values is null, sets it an empty object 
+					if (!source_task_property_values)
+						myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[conn.sourceId] = source_task_property_values = {};
+					
+					//if source_task_property_values.table_attr_names is null, sets to it an empty array
+					if (!$.isArray(source_task_property_values.table_attr_names) && !$.isPlainObject(source_task_property_values.table_attr_names))
+						for (var i = 0; i < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; i++) {
+							var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[i];
+							source_task_property_values["table_attr_" + prop_name + "s"] = [];
+						}
+					
+					//if source_task_property_values is a plain object, gets the maximum index
+					var max_index = -1;
+					
+					if ($.isPlainObject(source_task_property_values.table_attr_names))
+						for (var i in source_task_property_values.table_attr_names)
+							if (i > max_index)
+								max_index = i;
+					
+					max_index++;
+					
+					//add attributes to source_task_property_values
+					for (var src_attr_name in attrs_to_add) {
+						var trg_attr_name = attrs_to_add[src_attr_name];
+						var index = target_pks[trg_attr_name];
+						
+						for (var i = 0; i < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; i++) {
+							var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[i];
+							var prop_value = target_task_property_values["table_attr_" + prop_name + "s"][index];
+							
+							if (prop_name == "name")
+								prop_value = src_attr_name;
+							else if (prop_name == "primary_key" || prop_name == "auto_increment" || prop_name == "unique")
+								prop_value = 0;
+							else if (prop_name == "extra" && prop_value && ("" + prop_value).toLowerCase().indexOf("auto_increment") != -1)
+								prop_value = ("" + prop_value).replace(/auto_increment/g, "");
+							
+							if ($.isArray(source_task_property_values["table_attr_" + prop_name + "s"]))
+								source_task_property_values["table_attr_" + prop_name + "s"].push(prop_value);
+							else
+								source_task_property_values["table_attr_" + prop_name + "s"][max_index] = prop_value;
+						}
+					}
+				}
+				
+				//add connection properties with correspondent attributes
+				var props = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.connections_properties[conn.connection.id];
+				
+				if (!props)
+					myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.connections_properties[conn.connection.id] = props = {};
+				
+				if (!props.source_columns) {
+					props.source_columns = [];
+					props.target_columns = [];
+				}
+				else	if (!$.isArray(props.source_columns) && !$.isPlainObject(props.source_columns)) {
+					props.source_columns = [ props.source_columns ];
+					props.target_columns = [ props.target_columns ];
+				}
+				
+				//if props.source_columns is a plain object, gets the maximum index
+				var max_index = -1;
+				
+				if ($.isPlainObject(props.source_columns))
+					for (var i in props.source_columns)
+						if (i > max_index)
+							max_index = i;
+				
+				max_index++;
+				
+				//sets the pk_name to connection: source and target tables
+				for (var src_attr_name in conn_attrs) {
+					var trg_attr_name = conn_attrs[src_attr_name];
+					
+					if ($.isArray(props.source_columns)) {
+						//only adds if not exists yet
+						if ($.inArray(src_attr_name, props.source_columns) == -1 || $.inArray(trg_attr_name, props.target_columns) == -1) {
+							props.source_columns.push(src_attr_name);
+							props.target_columns.push(trg_attr_name);
+						}
+					}
+					else {
+						//only adds if not exists yet
+						for (var idx in props.source_columns)
+							if (props.source_columns[idx] == src_attr_name && props.target_columns[idx] == trg_attr_name) {
+								props.source_columns[max_index] = src_attr_name;
+								props.target_columns[max_index] = trg_attr_name;
+								max_index++;
+								break;
+							}
+					}
+				}
+				
+				//refresh tasks and connection with new configurations
+				myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.changeConnectionOverlayType(conn.connection, "Many To One");
+				DBTableTaskPropertyObj.prepareTableAttributes(conn.sourceId, source_task_property_values);
+				DBTableTaskPropertyObj.prepareTableForeignKeys(conn.sourceId);
+				DBTableTaskPropertyObj.prepareTableForeignKeys(conn.targetId);
+			}
+		}
+		
+		if (DBTableTaskPropertyObj.show_properties_on_connection_drop)
+			myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.showConnectionProperties(conn.connection.id);
+		
+		return status;
+	},
+	
 	onSuccessConnectionDeletion : function(connection) {
 		DBTableTaskPropertyObj.prepareTableForeignKeys(connection.sourceId);
 		DBTableTaskPropertyObj.prepareTableForeignKeys(connection.targetId);
@@ -1538,14 +1694,14 @@ var DBTableTaskPropertyObj = {
 			
 			var html = '<tr>'
 				+ '<td class="source_column"><select class="connection_property_field" name="source_columns[]"><option></option>';
-			for (var i = 0; i < properties_source_attributes.length; i++) {
+			for (var i = 0; i < properties_source_attributes.length; i++)
 				html += '<option ' + (properties_source_attributes[i] == source_column ? "selected" : "") + '>' + properties_source_attributes[i] + '</option>';
-			}
+			
 			html +=	'</select></td>'
 				+ '<td class="target_column"><select class="connection_property_field" name="target_columns[]"><option></option>';
-			for (var i = 0; i < properties_target_attributes.length; i++) {
+			for (var i = 0; i < properties_target_attributes.length; i++)
 				html += '<option ' + (properties_target_attributes[i] == target_column ? "selected" : "") + '>' + properties_target_attributes[i] + '</option>';
-			}
+			
 			html += '</select></td>'
 				+ '<td class="table_attr_icons">'
 					+ '	<a class="icon move_up" onClick="DBTableTaskPropertyObj.moveUpTableForeignKey(this)">move up</a>'
@@ -1562,12 +1718,10 @@ var DBTableTaskPropertyObj = {
 	addTableForeignKey : function() {
 		var html = DBTableTaskPropertyObj.getTableForeignKeyHtml();
 		
-		if (!html) {
+		if (!html)
 			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("Error: Couldn't detect this connection's properties. Please remove this connection, create a new one and try again...");
-		}
-		else {
+		else
 			$("#" + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.main_tasks_flow_obj_id + " .db_table_connection_html .table_attrs").append(html);
-		}
 	},
 	
 	removeTableForeignKey : function(elm) {
@@ -1594,9 +1748,8 @@ var DBTableTaskPropertyObj = {
 		var connections = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTargetConnections(task_id);
 		var target_inconsistencies = this.checkingTaskConnectionsPropertiesFromTaskPropertiesAux(connections, table_attr_names, "target");
 		
-		if (source_inconsistencies || target_inconsistencies) {
+		if (source_inconsistencies || target_inconsistencies)
 			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("The system detected some inconsistencies in some connections' properties for this table, but they were fixed and removed successfully.");
-		}
 	},
 	
 	checkingTaskConnectionsPropertiesFromTaskPropertiesAux : function(connections, table_attr_names, type) {
@@ -1625,22 +1778,20 @@ var DBTableTaskPropertyObj = {
 					target_columns: [],
 				};
 				
-				for (j in props.source_columns) {
-					if (j >= 0) {
-						var sc = props.source_columns[j];
-						var tc = props.target_columns[j];
-					
-						var exists = (type == "source" && $.inArray(sc, table_attr_names) != -1) || (type == "target" && $.inArray(tc, table_attr_names) != -1);
-					
-						if (exists) {
-							new_props["source_columns"].push(sc);
-							new_props["target_columns"].push(tc);
-						}
-						else {
-							inconsistencies = true;
-						}
+				$.each(props.source_columns, function(j, source_column) {
+					var sc = props.source_columns[j];
+					var tc = props.target_columns[j];
+				
+					var exists = (type == "source" && $.inArray(sc, table_attr_names) != -1) || (type == "target" && $.inArray(tc, table_attr_names) != -1);
+				
+					if (exists) {
+						new_props["source_columns"].push(sc);
+						new_props["target_columns"].push(tc);
 					}
-				}
+					else {
+						inconsistencies = true;
+					}
+				});
 				
 				myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.connections_properties[c.id] = new_props.source_columns.length > 0 ? new_props : null;
 			}
@@ -1654,5 +1805,29 @@ var DBTableTaskPropertyObj = {
 		var v = typeof value == "string" ? value.toLowerCase() : "";
 		
 		return value && value != null && typeof value != "undefined" && value != 0 && v != "null" && v != "false" && v != "0" ? true : false;
+	},
+	
+	regularizeTaskPropertyValues : function(task_property_values) {
+		if (!$.isArray(task_property_values.table_attr_names) && !$.isPlainObject(task_property_values.table_attr_names)) {
+			for (var i = 0; i < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; i++) {
+				var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[i];
+				task_property_values["table_attr_" + prop_name + "s"] = [ task_property_values["table_attr_" + prop_name + "s"] ];
+			}
+		}
+		
+		//I added the collation after, so there are some .xml files that don't contain this. So we need to add this, otherwise we get a js error.
+		$.each(task_property_values.table_attr_names, function(i, table_attr_name) {
+			for (var j = 0; j < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; j++) {
+				var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[j];
+				
+				if (!task_property_values.hasOwnProperty("table_attr_" + prop_name + "s") || 
+					(!$.isPlainObject(task_property_values["table_attr_" + prop_name + "s"]) && !$.isArray(task_property_values["table_attr_" + prop_name + "s"]))
+				) 
+					task_property_values["table_attr_" + prop_name + "s"] = {};
+				
+				if (typeof task_property_values["table_attr_" + prop_name + "s"][i] == "undefined") 
+					task_property_values["table_attr_" + prop_name + "s"][i] = null;
+			}
+		});
 	},
 };

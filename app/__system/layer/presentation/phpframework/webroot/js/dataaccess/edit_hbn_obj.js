@@ -14,9 +14,9 @@ $(function () {
 	});
 	
 	//init auto save
-	addAutoSaveMenu(".top_bar li.save");
+	addAutoSaveMenu(".top_bar li.save", "onToggleQueryAutoSave");
 	addAutoConvertMenu(".top_bar li.save");
-	enableAutoSave(onToggleAutoSave);
+	enableAutoSave(onToggleQueryAutoSave);
 	enableAutoConvert(onToggleAutoConvert);
 	initAutoSave(".top_bar li.save a");
 	

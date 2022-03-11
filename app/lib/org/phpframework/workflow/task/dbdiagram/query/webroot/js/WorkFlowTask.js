@@ -20,7 +20,7 @@
 var DBQueryTaskPropertyObj = {
 	selected_connection_properties_data : null,
 	old_connection_property_values : null,
-	show_properties_on_conection_drop : false,
+	show_properties_on_connection_drop : false,
 	
 	on_click_checkbox : null,
 	on_delete_table : null,
@@ -370,13 +370,101 @@ var DBQueryTaskPropertyObj = {
 			return false;
 		}
 		
-		onTableConnectionDrop(conn);
+		var status = onTableConnectionDrop(conn);
 		
-		if (DBQueryTaskPropertyObj.show_properties_on_conection_drop) {
-			myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.showConnectionProperties(conn.connection.id);
+		if (status && conn.sourceId != conn.targetId) { //if not the same table
+			DBQueryTaskPropertyObj.initSelectedConnectionPropertiesData(conn);
+		
+			var properties_data = DBQueryTaskPropertyObj.selected_connection_properties_data;
+			var source_attributes = properties_data["source_attributes"];
+			var target_attributes = properties_data["target_attributes"];
+			
+			//finds the same attribute in both tables. Note that we don't know what are the primary keys, so we can only find the attributes with the same name in both tables.
+			var conn_attrs = {};
+			
+			for (var i = 0; i < source_attributes.length; i++) {
+				var source_attribute = source_attributes[i];
+				
+				for (var j = 0; j < target_attributes.length; j++) {
+					var target_attribute = target_attributes[i];
+					
+					if (target_attribute == source_attribute) {
+						conn_attrs[source_attribute] = target_attribute;
+						break;
+					}
+				}
+			}
+			
+			//add connection properties with correspondent attributes
+			var props = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.connections_properties[conn.connection.id];
+			var old_props = props;
+			
+			if (!props)
+				myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.connections_properties[conn.connection.id] = props = {};
+			
+			if (!props.source_columns) {
+				props.source_columns = [];
+				props.target_columns = [];
+				props.column_values = [];
+				props.operators = [];
+			}
+			else	if (!$.isArray(props.source_columns) && !$.isPlainObject(props.source_columns)) {
+				props.source_columns = [ props.source_columns ];
+				props.target_columns = [ props.target_columns ];
+				props.column_values = [ props.column_values ];
+				props.operators = [ props.operators ];
+			}
+			
+			//if props.source_columns is a plain object, gets the maximum index
+			var max_index = -1;
+			
+			if ($.isPlainObject(props.source_columns))
+				for (var i in props.source_columns)
+					if (i > max_index)
+						max_index = i;
+			
+			max_index++;
+			
+			//sets the pk_name to connection: source and target tables
+			for (var src_attr_name in conn_attrs) {
+				var trg_attr_name = conn_attrs[src_attr_name];
+				
+				if ($.isArray(props.source_columns)) {
+					//only adds if not exists yet
+					if ($.inArray(src_attr_name, props.source_columns) == -1 || $.inArray(trg_attr_name, props.target_columns) == -1) {
+						props.source_columns.push(src_attr_name);
+						props.target_columns.push(trg_attr_name);
+						props.column_values.push("");
+						props.operators.push("=");
+					}
+				}
+				else {
+					//only adds if not exists yet
+					for (var idx in props.source_columns)
+						if (props.source_columns[idx] == src_attr_name && props.target_columns[idx] == trg_attr_name) {
+							props.source_columns[max_index] = src_attr_name;
+							props.target_columns[max_index] = trg_attr_name;
+							props.column_values[max_index] = "";
+							props.operators[max_index] = "=";
+							max_index++;
+							break;
+						}
+				}
+			}
+			
+			props["tables_join"] = "inner";
+			props["source_table"] = properties_data.source_table;
+			props["target_table"] = properties_data.target_table;
+			
+			//refresh connection with new configurations
+			if (typeof DBQueryTaskPropertyObj.on_complete_connection_properties == "function")
+				DBQueryTaskPropertyObj.on_complete_connection_properties(myWFObj.getJsPlumbWorkFlow(), conn.connection, old_props, props);
 		}
 		
-		return true;
+		if (DBQueryTaskPropertyObj.show_properties_on_connection_drop)
+			myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.showConnectionProperties(conn.connection.id);
+		
+		return status;
 	},
 	
 	addTableJoinKey : function() {

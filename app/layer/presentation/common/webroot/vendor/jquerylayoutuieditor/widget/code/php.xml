@@ -14,7 +14,7 @@
 		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-php,
 		  body > .menu-widget.menu-widget-php.ui-draggable-dragging {
 			height:auto;
-			background:#333;
+			background:#eee;
 			border-radius:5px;
 			border:1px solid #20b727;
 			color:#20b727;

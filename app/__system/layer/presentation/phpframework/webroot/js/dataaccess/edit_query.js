@@ -45,12 +45,37 @@ $(function () {
 		main_relationships_elms.find(".query_settings").tabs();
 		main_relationships_elms.find(".query_insert_update_delete").tabs();
 		
-		DBQueryTaskPropertyObj.show_properties_on_conection_drop = true;
+		DBQueryTaskPropertyObj.show_properties_on_connection_drop = true;
 		
 		//set saved_user_relationships_obj_id
 		saved_user_relationships_obj_id = getUserRelationshipsObjId();
 	}
 });
+
+function onToggleQueryAutoSave() {
+	onToggleAutoSave();
+	
+	$(".query").each(function(idx, query) {
+		query = $(query);
+		var rand_number = query.attr("rand_number");
+		
+		if (rand_number) {
+			eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+			
+			if (auto_save) {
+				WF.jsPlumbTaskFile.auto_save = false; //should be false bc the saveObj calls the getCodeForSaving method which already saves the workflow by default, and we don't need 2 saves at the same time.
+				WF.jsPlumbProperty.auto_save = true;
+				$(".taskflowchart").removeClass("auto_save_disabled");
+			}
+			else {
+				WF.jsPlumbTaskFile.auto_save = false;
+				WF.jsPlumbProperty.auto_save = false;
+				$(".taskflowchart").addClass("auto_save_disabled");
+			}
+			//console.log("WF.jsPlumbProperty.auto_save:"+WF.jsPlumbProperty.auto_save);
+		}
+	});
+}
 
 /* START: INCLUDES */
 function getIncludePathFromFileManager(elm, selector) {
@@ -1247,6 +1272,9 @@ function initQueryDesign(tab_elm, rand_number) {
 			WF.init();
 		
 		WF.getMyFancyPopupObj().updatePopup();
+		
+		//prepare auto_save in WF
+		onToggleQueryAutoSave();
 		
 		if (not_create_ui_from_sql != 1) 
 			prepareQuerySqlFromUIOrViceVersa(tab_elm, rand_number, do_not_confirm);

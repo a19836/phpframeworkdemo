@@ -19,6 +19,7 @@
 			height:35px !important;
 			overflow:hidden;
 			background:rgba(0, 0, 0, .1);
+			border-radius:3px;
 		}
 		.layout_ui_editor > .menu-widgets .container.custom-container .drag_me,
 		  body > .menu-widget.container.custom-container.ui-draggable-dragging .drag_me {
@@ -35,6 +36,7 @@
 			vertical-align:top;
 			text-align:center;
 			box-sizing:border-box;
+			border:0;
 		}
 		
 		.layout_ui_editor > .menu-settings.menu-settings-custom-container li.group.settings-properties > ul .columns table .container-col-move,

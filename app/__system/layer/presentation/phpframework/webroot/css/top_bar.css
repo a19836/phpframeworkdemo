@@ -629,58 +629,177 @@ body .workflow_message .status span,
 
 /* LAYOUT CODE EDITOR */
 body .layout_ui_editor {
-	--tooltip-bg:#ddd;
-	--tooltip-color:#666;
-	
-	--tabs-bg:#fff;
-	
+	/* generic */
 	--main-bg:#fff;
 	--main-color:#888;
-	--main-color-hover:#333;
-	--main-bg-hover:#666;
-	--main-border:#eee;
-	--main-color-active:#222;
-	--outside-border:#ccc;
 	
-	--menu-settings-bg:#f7f7f7;
+	/* tabs */
+	--tabs-bg:#fff;
+	--tabs-item-border:#ccc;
+	--tabs-item-bg:#fff;
+	--tabs-item-active-border:#ccc;
+	--tabs-item-active-bg:#999;
+	--tabs-item-hover-color:#333;
 	
+	/* menu-widgets */
+	--menu-widgets-widget-border:#ccc;
+	--menu-widgets-group-color:#666;
+	
+	/* template-source */
+	--template-source-border:#eee;
+	--template-source-bg:#fff;
+	
+	/* template-preview */
+	--template-preview-border:#eee;
+	--template-preview-bg:#fff;
+	
+	/* template-widgets-droppable */
+	--template-widgets-droppable-border:#eee;
+	--template-widgets-droppable-bg:#fff;
+	
+	/* menu-settings */
+	--menu-settings-bg:#fff;
+	
+	--menu-settings-input-border:#eee;
+	--menu-settings-input-bg:#fff;
+	--menu-settings-input-color:#333;
+	--menu-settings-select-option-bg:#fff;
+	--menu-settings-select-option-color:#666;
+	
+	--menu-settings-button-border:#eee;
+	--menu-settings-button-bg:#666;
+	--menu-settings-button-color:#eee;
+	--menu-settings-button-hover-color:#ddd;
+	
+	--menu-settings-user-classes-bg:#f7f7f7;
+	--menu-settings-user-class-border:transparent;
+	--menu-settings-user-class-bg:#ddd;
+	--menu-settings-user-class-color:#333;
+	
+	--menu-settings-group-color:#555;
+	--menu-settings-group-list-bg:#f7f7f7;
+	--menu-settings-group-block-list-border:transparent;
+	--menu-settings-group-block-list-bg:#f7f7f7;
+	
+	--menu-settings-measurement-style-select-border-left:transparent;
+	--menu-settings-buttons-style-btn-border:transparent;
+	--menu-settings-buttons-style-btn-bg:#eee;
+	--menu-settings-buttons-style-btn-color:#999;
+	--menu-settings-buttons-style-btn-hover-color:#000;
+	--menu-settings-buttons-style-btn-selected-border:transparent;
+	--menu-settings-buttons-style-btn-selected-bg:#ddd;
+	--menu-settings-buttons-style-btn-selected-color:#999;
+	--menu-settings-color-style-color-selector-border:transparent;
+	--menu-settings-color-style-color-selector-bg:transparent;
+	--menu-settings-color-style-color-code-bg:transparent;
+	--menu-settings-color-style-color-code-border:transparent;
+	
+	--menu-settings-info-border:#eee;
+	--menu-settings-info-bg:#eee;
+	
+	/* widget-header */
 	--widget-header-border:transparent;
 	--widget-header-bg:#eee;
 	--widget-header-color:#999;
+	--widget-header-hover-color:#333;
 	
-	--selected-item-bg:#999;
-	--selected-item-color:#eee;
+	/* droppable-header */
+	--droppable-header-border:transparent;
+	--droppable-header-bg:#eee;
+	--droppable-header-color:#999;
+	--droppable-header-hover-color:#333;
 	
-	--button-border:#eee;
-	--button-bg:#666;
-	--button-color:#eee;
-	--button-color-hover:#ddd;
+	/* menu-layers */
+	--menu-layers-group-hover-border:#333;
+	--menu-layers-group-selected-border:#eee;
+	--menu-layers-group-title-border:transparent;
+	--menu-layers-group-title-color:#999;
+	--menu-layers-group-selected-title-bg:#eee;
+	--menu-layers-group-selected-title-color:#777;
+	--menu-layers-group-open-title-color:#333;
+	--menu-layers-group-title-hover-color:#111;
+	--menu-layers-place-holder-bg:#f7f7f7;
+	--menu-layers-sort-clone-bg:#f7f7f7;
 	
-	--input-border:#eee;
-	--input-bg:#fff;
-	--input-color:#333;
+	/* option */
+	--option-active-color:#555;
+	--option-hover-color:#777;
+	--option-input-border:#eee;
+	--option-input-bg:#fff;
+	--option-input-color:#000;
+	--option-label-color:#000;
+	--option-label-hover-color:#333
+
+	/* scrollbar */
+	--scrollbar-track-bg:#555;
+	--scrollbar-thumb-bg:#ccc;
 	
-	--sub-settings-group-border:#ddd;
-	--sub-settings-group-bg:#eee;
+	/* resize-panel */
+	--resize-panel-bg:#666;
 	
-	--select-option-disabled-bg:#eee;
-	--select-option-disabled-color:#999;
+	/* text-selection-menu */
+	--text-selection-menu-bg:#fff;
+	--text-selection-menu-color:#666;
 	
-	--popup-bg:#ddd;
-	--popup-color:#999;
+	--text-selection-menu-item-hover-color:#000;
+	--text-selection-menu-item-active-border:#dddddd22;
+	--text-selection-menu-item-active-color:#999;
 	
-	--scrollbar-track:#555;
-	--scrollbar-thumb:#ccc;
+	--text-selection-menu-input-border:#eee;
+	--text-selection-menu-input-bg:#fff;
+	--text-selection-menu-input-color:#333;
+	--text-selection-menu-select-option-disabled-bg:#eee;
+	--text-selection-menu-select-option-disabled-color:#999;
+	--text-selection-menu-icon-color:#555;
 	
-	--resize-panel-bg-color:#666;
+	--text-selection-menu-popup-border:#eee;
+	--text-selection-menu-popup-button-border:#eee;
+	--text-selection-menu-popup-button-bg:#666;
+	--text-selection-menu-popup-button-color:#eee;
+	--text-selection-menu-popup-input-border:#eee;
+	--text-selection-menu-popup-input-bg:#fff;
+	--text-selection-menu-popup-input-color:#333;
 	
-	--text-selection-border-active: #dddddd22;
+	--text-selection-menu-table-border:#eee;
+	--text-selection-menu-table-bg:#fff;
+	
+	--text-selection-menu-tooltip-bg:#ddd;
+	--text-selection-menu-tooltip-color:#666;
+	
+	--text-selection-menu-msg-color:#fff;
+	--text-selection-menu-error-msg-bg:rgba(255, 0, 0, 0.4);
+	--text-selection-menu-info-msg-bg:rgba(0, 0, 0, 0.1);
+	
+	/* add-widget-popup */
+	--add-widget-popup-border:#eee;
+	--add-widget-popup-bg:#fff;
+	--add-widget-popup-color:#999;
+	--add-widget-popup-button-border:#eee;
+	--add-widget-popup-button-bg:#666;
+	--add-widget-popup-button-color:#eee;
+	--add-widget-popup-input-border:#eee;
+	--add-widget-popup-input-bg:#fff;
+	--add-widget-popup-input-color:#333;
+	
+	/* template-widget-source-popup */
+	--template-widget-source-popup-bg:#fff;
+	--template-widget-source-popup-color:#999;
+	
+	/* messages */
+	--editor-info-msg-bg:rgba(204, 255, 153, 0.8);
+	--editor-error-msg-bg:rgba(255, 0, 0, 0.8);
+	--editor-error-msg-color:#fff;
 }
 body .layout_ui_editor > .resize-panels {
 	background:url("../img/back_frame_open_close_vertical_red.gif") repeat-y;
 }
 
-/* LAYOUT CODE EDITOR - MENU */
+/* LAYOUT CODE EDITOR - MENU-WIDGETS */
+.layout_ui_editor > .menu-widgets .container.custom-container .custom-values {
+	background:#fff;
+}
+
+/* LAYOUT CODE EDITOR - MENU-OPTIONS */
 .layout_ui_editor.with_top_bar_menu > .options .option {
 	font-size:18px;
 	color:#333;

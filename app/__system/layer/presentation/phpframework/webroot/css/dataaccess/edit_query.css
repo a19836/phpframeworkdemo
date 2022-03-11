@@ -593,6 +593,10 @@
 .relationship .query .taskflowchart .tasks_flow .popup_overlay {
 	display:none !important;
 }
+.relationship .query .taskflowchart:not(.auto_save_disabled) .tasks_flow .selected_task_properties .generic_buttons, 
+  .relationship .query .taskflowchart:not(.auto_save_disabled) .tasks_flow .selected_connection_properties .generic_buttons {
+	display:none;
+}
 
 /** RELATIONSHIPS RELS: DESIGN SETTINGS **/
 .relationship .query .query_settings {

@@ -79,9 +79,10 @@
 		  body > .menu-widget.menu-widget-tabs.ui-draggable-dragging {
 			height:2rem;
 			padding:0;
-			background:url('#widget_webroot_url#logo.png') no-repeat center center;
+			background:url('#widget_webroot_url#logo.png') no-repeat center center rgba(0, 0, 0, .1);
 			background-size:100% 100%;
 			border:0;
+			border-radius:3px;
 		}
 		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-tabs span:first-child,
 		  body > .menu-widget.menu-widget-tabs.ui-draggable-dragging span:first-child {

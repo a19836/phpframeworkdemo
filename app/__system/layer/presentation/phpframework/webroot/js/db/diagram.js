@@ -30,6 +30,8 @@ $(function () {
 
 	jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = updateTasksAfterFileRead;
 	jsPlumbWorkFlow.jsPlumbTaskFile.on_success_update = updateTasksAfterFileRead;
+	
+	DBTableTaskPropertyObj.show_properties_on_connection_drop = true;
 });
 
 function prepareTaskContextMenu() {
@@ -145,37 +147,42 @@ function updateTasksAfterFileRead() {
 }
 
 function addNewTable() {
-	var task_id = jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByType(task_type_id);
-	jsPlumbWorkFlow.jsPlumbTaskFlow.setTaskLabelByTaskId(task_id, {label: null}); //set {label: null}, so the jsPlumbTaskFlow.setTaskLabel method ignores the prompt and adds the default label or an auto generated label.
+	var table_name = prompt("Please enter the table name:");
+
+	if (table_name != null && ("" + table_name).replace(/\s+/, "") != "") {
+		var task_id = jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByType(task_type_id);
+		
+		jsPlumbWorkFlow.jsPlumbTaskFlow.setTaskLabelByTaskId(task_id, {label: table_name}); //set {label: table_name}, so the jsPlumbTaskFlow.setTaskLabel method ignores the prompt and adds the default label or an auto generated label.
 	
-	//add id, created_date and modified_date attributes by default
-	var task_label = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
-	var id_attribute_name = "id_" + task_label.toLowerCase().replace(/ /g, "_").replace(/_/g, "_");
-	id_attribute_name = normalizeTaskTableName(id_attribute_name);
-	
-	var task_property_values = jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id];
-	task_property_values = task_property_values ? task_property_values : {};
-	
-	task_property_values.table_attr_names = [id_attribute_name, "created_date", "modified_date"];
-	task_property_values.table_attr_primary_keys = ["1", null, null];
-	task_property_values.table_attr_types = ["bigint", "timestamp", "timestamp"];
-	task_property_values.table_attr_lengths = ["20", null, null];
-	task_property_values.table_attr_nulls = [null, "1", "1"];
-	task_property_values.table_attr_unsigneds = ["1", null, null];
-	task_property_values.table_attr_uniques = ["1", null, null];
-	task_property_values.table_attr_auto_increments = ["1", null, null];
-	task_property_values.table_attr_has_defaults = [null, null, null];
-	task_property_values.table_attr_defaults = [null, null, null];
-	task_property_values.table_attr_extras = [null, null, null];
-	task_property_values.table_attr_charsets = [null, null, null];
-	task_property_values.table_attr_collations = [null, null, null];
-	task_property_values.table_attr_comments = [null, null, null];
-	jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id] = task_property_values;
-	
-	DBTableTaskPropertyObj.prepareTableAttributes(task_id, task_property_values);
-	
-	//open properties
-	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+		//add id, created_date and modified_date attributes by default
+		var task_label = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
+		var id_attribute_name = "id_" + task_label.toLowerCase().replace(/ /g, "_").replace(/_/g, "_");
+		id_attribute_name = normalizeTaskTableName(id_attribute_name);
+		
+		var task_property_values = jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id];
+		task_property_values = task_property_values ? task_property_values : {};
+		
+		task_property_values.table_attr_names = [id_attribute_name, "created_date", "modified_date"];
+		task_property_values.table_attr_primary_keys = ["1", null, null];
+		task_property_values.table_attr_types = ["bigint", "timestamp", "timestamp"];
+		task_property_values.table_attr_lengths = ["20", null, null];
+		task_property_values.table_attr_nulls = [null, "1", "1"];
+		task_property_values.table_attr_unsigneds = ["1", null, null];
+		task_property_values.table_attr_uniques = ["1", null, null];
+		task_property_values.table_attr_auto_increments = ["1", null, null];
+		task_property_values.table_attr_has_defaults = [null, null, null];
+		task_property_values.table_attr_defaults = [null, null, null];
+		task_property_values.table_attr_extras = [null, null, null];
+		task_property_values.table_attr_charsets = [null, null, null];
+		task_property_values.table_attr_collations = [null, null, null];
+		task_property_values.table_attr_comments = [null, null, null];
+		jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id] = task_property_values;
+		
+		DBTableTaskPropertyObj.prepareTableAttributes(task_id, task_property_values);
+		
+		//open properties
+		jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+	}
 }
 
 function createDiagamSQL() {

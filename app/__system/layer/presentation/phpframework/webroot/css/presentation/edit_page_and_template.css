@@ -697,6 +697,8 @@ body > .dragging_menu_item {
 }
 #code .layout_ui_editor textarea {
 	position:initial !important;/* bc of the '#code textarea' that sets the position to fixed. */
+	border:1px solid var(--menu-settings-input-border, transparent);
+    
 }
 .template_region_block_html_editor_popup .layout_ui_editor > .menu-widgets > li:first-child {
 	display:none; /*hide code group menu bc ptl and php are not allowed in the template_region_block_html_editor_popup */

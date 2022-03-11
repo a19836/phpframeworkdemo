@@ -49,6 +49,15 @@
 	opacity:.4;
 	float:left;
 }
+.echostr_settings .layout_ui_editor > .menu-widgets, 
+  .echostr_settings .layout_ui_editor > .menu-layers, 
+  .echostr_settings .layout_ui_editor > .menu-settings, 
+  .echostr_settings .layout_ui_editor > .template-widgets-options,
+  .echostr_settings .layout_ui_editor > .template-widgets,
+  .echostr_settings .layout_ui_editor > .resize-panels,
+  .echostr_settings .layout_ui_editor > .messages {
+	bottom:0 !important;
+}
 /*
 .echostr_settings .layout_ui_editor > .menu-settings table {
 	border-collapse:separate;

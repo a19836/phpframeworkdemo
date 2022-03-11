@@ -215,7 +215,7 @@ if ($PEVC) {
 	}
 	
 	if (typeof DBQueryTaskPropertyObj != "undefined" && DBQueryTaskPropertyObj) {
-		DBQueryTaskPropertyObj.show_properties_on_conection_drop = true;
+		DBQueryTaskPropertyObj.show_properties_on_connection_drop = true;
 	}
 	
 	var brokers_settings = ' . json_encode($brokers_settings) . ';

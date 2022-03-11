@@ -120,9 +120,10 @@
 		  body > .menu-widget.menu-widget-navbar.ui-draggable-dragging {
 			height:3rem;
 			padding:0;
-			background:url('#widget_webroot_url#logo.png') no-repeat center 3px;
+			background:url('#widget_webroot_url#logo.png') no-repeat center 3px rgba(0, 0, 0, .1);
 			background-size:80% 1.8rem;
 			border:0;
+			border-radius:3px;
 		}
 		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-navbar span:first-child,
 		  body > .menu-widget.menu-widget-navbar.ui-draggable-dragging span:first-child {

@@ -91,4 +91,5 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 				<i class="fas fa-sort-up"></i>
 			</label>
 			<ul>' . $pf8ed4912 . '</ul>
+			<i class="fas fa-sort-down" onClick="toggleSubmenus(this)"></i>
 		</div>'; } ?>
