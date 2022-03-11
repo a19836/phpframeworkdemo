@@ -629,6 +629,10 @@ function confirmSave(opts) {
 	
 	prepareAutoSaveVars();
 	
+	//if is confirm popup, when from auto_save, it should not do anyting
+	if (is_from_auto_save)
+		return false;
+	
 	var obj = getObjToSave();
 	var new_saved_obj_id = $.md5(save_object_url + JSON.stringify(obj)); //Do not use getEntityCodeObjId, so it can be faster...
 	
