@@ -151,9 +151,9 @@ function prepareChooseAvailableTemplateHtml(folder_to_filter) {
 		//add default templates
 		if (!folder_to_filter) {
 			if (!is_external_project)
-				html += '<li class="project_default_template" onClick="selectAvailableTemplate();">'
+				html += '<li class="project_default_template" onClick="selectAvailableTemplate(\'\');">'
 						+ '<label>Project default template</label>'
-						+ '<div class="photo_default" onclick="selectAvailableTemplate()">Default</div>'
+						+ '<div class="photo_default" onclick="selectAvailableTemplate(\'\')">Default</div>'
 					+ '</li>';
 			
 			var default_available_templates = ["empty", "ajax", "default"];
@@ -359,13 +359,7 @@ function selectAvailableTemplate(selected_template) {
 	var project_id = MyFancyPopupAvailableTemplate.settings.choose_template_selected_project_id;
 	var is_external_project = project_id && project_id != selected_project_id;
 	
-	if (!selected_template) {
-		MyFancyPopupAvailableTemplate.hidePopup();
-		
-		if (typeof MyFancyPopupAvailableTemplate.settings.onSelect == "function")
-			MyFancyPopupAvailableTemplate.settings.onSelect(selected_template);
-	}
-	else if (is_external_project) {
+	if (is_external_project) {
 		MyFancyPopupAvailableTemplate.hidePopup();
 		
 		if (typeof MyFancyPopupAvailableTemplate.settings.onSelectFromOtherProject == "function")
