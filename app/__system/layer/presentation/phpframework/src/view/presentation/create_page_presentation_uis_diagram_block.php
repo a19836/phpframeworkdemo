@@ -168,11 +168,11 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 			td = $(td);
 			var file_path = td.text();
 			
-			if (file_path.indexOf("/src/entity/") != -1) {
+			if (file_path == \'' . $new_path . $page_name . '\') {
 				td.parent().find(".select_file input").removeAttr("checked").prop("checked", false);
 				td.parent().hide();
 			}
-			else if (file_path.indexOf("/src/block/") != -1)
+			else if (file_path.indexOf("/src/entity/") != -1 || file_path.indexOf("/src/block/") != -1)
 				td.parent().find(".select_file input").attr("checked", "checked").prop("checked", true);
 		});
 	}
@@ -185,7 +185,7 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 			td = $(td);
 			var file_path = td.text();
 			
-			if (file_path.indexOf("/src/entity/") != -1)
+			if (file_path == \'' . $new_path . $page_name . '\')
 				td.parent().hide();
 			else if (td.parent().find(".status.status_ok").length > 0) {
 				if (file_path.toLowerCase() == file_block_to_search.toLowerCase()) {
