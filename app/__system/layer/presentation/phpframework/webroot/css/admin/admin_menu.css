@@ -1,4 +1,4 @@
-.jqcontextmenu {background-color:#f7f7f7; border:1px solid #ccc; border-radius:5px;}
+.jqcontextmenu {background-color:#f7f7f7; color:#999; border:1px solid #ccc; border-radius:5px;}
 .jqcontextmenu li {background-color:#f7f7f7;}
 .jqcontextmenu li:first-child {border-top-left-radius:5px; border-top-right-radius:5px;}
 .jqcontextmenu li:last-child {border-bottom-left-radius:5px; border-bottom-right-radius:5px;}
