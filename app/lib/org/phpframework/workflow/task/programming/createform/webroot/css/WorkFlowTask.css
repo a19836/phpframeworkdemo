@@ -196,11 +196,13 @@
 }
 .create_form_task_html .form_id input,
    .create_form_task_html .form_class input {
-	width:210px;
+	width:190px;
+	padding-right:20px;
 }
 .create_form_task_html .form_on_submit input,
    .create_form_task_html .form_action input {
-	width:605px;
+	width:585px;
+	padding-right:20px;
 }
 .create_form_task_html .form_action .add_variable {
 	margin-left:-22px;

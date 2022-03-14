@@ -61,10 +61,11 @@
    .selected_task_properties .form_containers .container .container_props .ctitle input,
    .selected_task_properties .form_containers .container .container_props .class input,
    .selected_task_properties .form_containers .container .container_props .target input {
-	width:230px;
+	width:210px;
+	padding-right:20px;
 }
 .selected_task_properties .form_containers .container .container_props textarea {
-	width:325px;
+	width:322px;
 	height:65px;
 	margin-bottom:5px;
 }
@@ -85,6 +86,7 @@
 	margin-bottom:5px;
 	width:700px;
 	min-height:20px;
+	position:relative;
 }
 .selected_task_properties .form_containers .fields .add_variable {
 	margin-top:2px;
@@ -192,6 +194,12 @@
    .selected_task_properties .form_containers .fields .field .input_next_html label {
 	width:70px;
 }
+.selected_task_properties .form_containers .fields .field .label_previous_html label,
+   .selected_task_properties .form_containers .fields .field .label_next_html label,
+   .selected_task_properties .form_containers .fields .field .input_previous_html label,
+   .selected_task_properties .form_containers .fields .field .input_next_html label {
+	vertical-align:top;
+}
 .selected_task_properties .form_containers .fields .field .label_extra_attributes label,
    .selected_task_properties .form_containers .fields .field .input_extra_attributes label,
    .selected_task_properties .form_containers .fields .field .input_available_values label,
@@ -208,11 +216,12 @@
 	margin-bottom:0px;
 }
 .selected_task_properties .form_containers .fields .field .class input {
-	width:180px;
+	width:160px;
+	padding-right:20px;
 }
 .selected_task_properties .form_containers .fields .field .label_type select,
    .selected_task_properties .form_containers .fields .field .input_type select {
-	width:247px;
+	width:244px;
 	background-color:#fff;
 }
 .selected_task_properties .form_containers .fields .field .label_value input,
@@ -224,23 +233,30 @@
    .selected_task_properties .form_containers .fields .field .input_place_holder input,
    .selected_task_properties .form_containers .fields .field .input_target input,
    .selected_task_properties .form_containers .fields .field .input_title input {
-	width:240px;
+	width:220px;
+	padding-right:20px;
 	background-color:#fff;
 }
 .selected_task_properties .form_containers .fields .field .input_href input {
-	width:220px;
+	width:205px;
+	padding-right:15px;
 	background-color:#fff;
 }
 .selected_task_properties .form_containers .fields .field .label_previous_html textarea,
    .selected_task_properties .form_containers .fields .field .label_next_html textarea,
    .selected_task_properties .form_containers .fields .field .input_previous_html textarea,
    .selected_task_properties .form_containers .fields .field .input_next_html textarea {
-	width:242px;
+	width:238px;
 	height:65px;  
 	background-color:#fff; 
 }
+.selected_task_properties .form_containers .fields .field .input_value input {
+	width:200px;
+	padding-right:40px;
+}
 .selected_task_properties .form_containers .fields .field .input_src input {
-	width:579px;
+	width:544px;
+	padding-right:35px;
 	background-color:#fff; 
 }
 .selected_task_properties .form_containers .fields .field .input_value,
@@ -252,6 +268,9 @@
 	position:absolute;
 	float:none;
 	clear:both;
+}
+.selected_task_properties .form_containers .fields .field .input_value .add_field_automatically {
+	right:32px;
 }
 .selected_task_properties .form_containers .fields .field .input_src .add_field_automatically {
 	right:42px;
@@ -299,7 +318,8 @@
    .selected_task_properties .form_containers .fields .field .other_settings .validation_label input,
    .selected_task_properties .form_containers .fields .field .other_settings .validation_message input,
    .selected_task_properties .form_containers .fields .field .other_settings .validation_regex input {
-	width:400px;
+	width:380px;
+	padding-right:20px;
 	background-color:#fff;
 }
 .selected_task_properties .form_containers .fields .field .other_settings .min_length input,
@@ -309,6 +329,7 @@
    .selected_task_properties .form_containers .fields .field .other_settings .min_words input,
    .selected_task_properties .form_containers .fields .field .other_settings .max_words input {
 	width:80px;
+	padding-right:20px;
 	background-color:#fff;
 }
 
@@ -399,6 +420,7 @@
    .selected_task_properties .form_containers .fields .field .input_extra_attributes > input, 
    .selected_task_properties .form_containers .fields .field .input_available_values > input,  
    .selected_task_properties .form_containers .fields .field .input_options > input {
+	padding-right:20px;
 	background-color:#fff;
 }
 
@@ -422,7 +444,8 @@
 }
 .selected_task_properties .form_containers .fields .field .label_extra_attributes table input,
    .selected_task_properties .form_containers .fields .field .input_extra_attributes table input {
-	width:200px;
+	width:180px;
+	padding-right:20px;
 	background-color:#FFF;
 	border:0;
 }
@@ -450,7 +473,8 @@
 	border-top:1px solid #eee;
 }
 .selected_task_properties .form_containers .fields .field .input_available_values table input {
-	width:200px;
+	width:180px;
+	padding-right:20px;
 	background-color:#FFF;
 	border:0;
 }
@@ -477,12 +501,14 @@
 	border-top:1px solid #eee;
 }
 .selected_task_properties .form_containers .fields .field .input_options table input {
-	width:200px;
+	width:180px;
+	padding-right:20px;
 	background-color:#FFF;
 	border:0;
 }
 .selected_task_properties .form_containers .fields .field .input_options table .other_attributes input {
-	width:250px;
+	width:230px;
+	padding-right:20px;
 }
 .selected_task_properties .form_containers .fields .field .input_options table .value,
    .selected_task_properties .form_containers .fields .field .input_options table .label {
@@ -547,10 +573,12 @@
    .selected_task_properties .form_containers .fields .pagination .total_rows input,
    .selected_task_properties .form_containers .fields .pagination .page_attr_name input,
    .selected_task_properties .form_containers .fields .pagination .page_number input {
-	width:80px;
+	width:60px;
+	padding-right:20px;
 }
 .selected_task_properties .form_containers .fields .pagination .on_click_js_func input{
-	width:290px;
+	width:270px;
+	padding-right:20px;
 }
 .selected_task_properties .form_containers .fields .pagination .pagination_template select {
 	width:86px;
@@ -590,7 +618,8 @@
 .selected_task_properties .form_containers .table .table_props .table_class input,
    .selected_task_properties .form_containers .table .table_props .rows_class input,
    .selected_task_properties .form_containers .table .table_props .default_input_data input {
-	width:230px;
+	width:210px;
+	padding-right:20px;
 }
 .selected_task_properties .form_containers .table .table_props .default_input_data .add_variable.inline {
 	margin-left:-22px;
@@ -649,7 +678,8 @@
    .selected_task_properties .form_containers .tree .tree_props .lis_class input,
    .selected_task_properties .form_containers .tree .tree_props .default_input_data input,
    .selected_task_properties .form_containers .tree .tree_props .recursive_input_data input {
-	width:230px;
+	width:210px;
+	padding-right:20px;
 }
 .selected_task_properties .form_containers .tree .tree_props .default_input_data .add_variable.inline {
 	margin-left:-22px;

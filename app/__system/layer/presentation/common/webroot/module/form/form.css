@@ -294,13 +294,11 @@
 	display:block;
 }
 .module_form_settings .selected_task_properties .form_containers .fields .field .class input {
-	width:180px;
+	width:160px;
 }
-.module_form_settings .selected_task_properties .form_containers .fields .field .input_value .add_field_automatically {
-	right:28px;
-}
-.module_form_settings .selected_task_properties .form_containers .fields .field .input_src .add_field_automatically {
-	right:42px;
+.module_form_settings .selected_task_properties .form_containers .fields .field .input_src input {
+	width:539px;
+	padding-right:40px;
 }
 .module_form_settings .selected_task_properties .form_containers .tree .tree_props .default_input_data {
 	padding:0;

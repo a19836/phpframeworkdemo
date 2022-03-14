@@ -127,6 +127,16 @@ function onToggleGlobalVariablesAutoConvert() {
 		inputs.removeAttr("checked", "checked").prop("checked", false);
 }
 
+function onChangeSimpleFormGlobalVarSelect(elm) {
+	if (auto_save)
+		saveGlobalVariables();
+}
+
+function onBlurSimpleFormGlobalVarInput(elm) {
+	if (auto_save)
+		saveGlobalVariables();
+}
+
 function addNewVariable(elm) {
 	var table = $(elm).parent().parent().parent();
 	var item = $(global_var_html);

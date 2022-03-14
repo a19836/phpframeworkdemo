@@ -561,6 +561,7 @@ body > .dragging_menu_item {
 	left:20px !important;
 	right:20px !important;
 	bottom:20px !important;
+	padding:0;
 	
 	/* need this otherwise the popup will appear short and weird in the edit_template_simple.php */
 	min-width:calc(100% - 40px) !important;

@@ -20,19 +20,28 @@
 
 include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($new_path) { $page_name = $db_table . "_" . $task_tag . ($task_tag_action ? "_" . $task_tag_action : ""); $head .= '
 	<style>
+	.top_bar li.continue {
+		margin-right:25px;
+	}
+	
 	.taskflowchart .tasks_menu_hide,
 	  .taskflowchart .workflow_menu {
 		display:none !important;
 	}
-	.taskflowchart .tasks_menu,
-	  .taskflowchart .tasks_flow {
-		bottom: 30px !important;
+	.taskflowchart.with_top_bar_menu .tasks_menu, 
+	  .taskflowchart.with_top_bar_menu .tasks_menu_hide, 
+	  .taskflowchart.with_top_bar_menu .tasks_flow {
+		top:30px;
 	}
 	.taskflowchart .selected_task_properties {
 		font-size:11px;
 	}
 	.taskflowchart .selected_task_properties .ui-widget {
 		font-size:11px;
+	}
+	.taskflowchart.fixed_properties .selected_task_properties.maximize_properties, 
+	  .taskflowchart.fixed_properties .selected_connection_properties.maximize_properties {
+		top:30px !important;
 	}
 	
 	.taskflowchart:not(.with_top_bar_menu):not(.reverse) .tasks_menu {
@@ -56,32 +65,31 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 		min-width:100% !important;
 		min-height:100% !important;
 		position:absolute !important;
-		top:0 !important;
-		left:0 !important;
-		right:0 !important;
-		bottom:0 !important;
+		top:-2px !important;
+		left:-2px !important;
+		right:-2px !important;
+		bottom:-2px !important;
 		
 		background-image:none;
+		border:0;
+		background:transparent;
 	}
 	.taskflowchart .tasks_flow .task_page > .tag_info,
 	  .taskflowchart .tasks_flow .task_page > .info,
-	  .taskflowchart .tasks_flow .task_page > .eps {
+	  .taskflowchart .tasks_flow .task_page > .eps,
+	  .taskflowchart .tasks_flow .task:hover:after {
 		display:none;
 	}
 	.taskflowchart .tasks_flow .task.task_page > .task_droppable {
 		top:0;
 	}
 
+	.create_uis_files {
+		left:15px !important;
+		right:15px !important;
+	}
 	.create_uis_files .overwrite {
 		display:none;
-	}
-
-	#main_column > .buttons {
-		width:100%;
-		position:absolute;
-		left:0;
-		bottom:0;
-		text-align:center;
 	}
 	</style>
 
@@ -90,7 +98,11 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 	
 	$(function () {
 		$(".create_uis_files .overwrite input").removeAttr("checked").prop("checked", false);
-
+		
+		var top_bar_header = $(".top_bar header");
+		top_bar_header.children("ul").remove();
+		top_bar_header.append(\'<ul><li class="continue" title="Continue"><a onclick="createPageUIFiles(this)"><i class="icon continue"></i> Continue</a></li></ul>\');
+		
 		//prepare workflow
 		var WF = jsPlumbWorkFlow;
 		var taskflowchart = $(".taskflowchart");
@@ -212,6 +224,10 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 				//Refreshing blocks folder in main tree of the admin advanced panel
 				if (window.parent && window.parent.parent && window.parent.parent.refreshLastNodeChilds && window.parent.parent.mytree && window.parent.parent.mytree.tree_elm) {
 					var project = window.parent.parent.$("#" + window.parent.parent.last_selected_node_id).parent().closest("li[data-jstree=\'{\"icon\":\"project\"}\']");
+					
+					var entities_folder_id = project.children("ul").children("li[data-jstree=\'{\"icon\":\"entities_folder\"}\']").attr("id");
+					window.parent.parent.refreshNodeChildsByNodeId(entities_folder_id);
+					
 					var blocks_folder_id = project.children("ul").children("li[data-jstree=\'{\"icon\":\"blocks_folder\"}\']").attr("id");
 					window.parent.parent.refreshNodeChildsByNodeId(blocks_folder_id);
 				}
@@ -220,7 +236,7 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 	}
 
 	function onCloseCreateUIFiles() {
-		$("#main_column > .buttons > .button").show();
+		$(".top_bar li.continue").show();
 	}
 
 	function createPageUIFiles() {
@@ -247,15 +263,11 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 			var can_continue = exists_permissions ? confirm("We detected that you added some permissions. \nIn order to them to work, the page must be already configured to initialize the logged user. \nIf this is not the case, please click on the CANCEL button.") : true;
 			
 			if (can_continue) {
-				$("#main_column > .buttons > .button").hide();
+				$(".top_bar li.continue").hide();
 				createUIFiles();
 			}
 		}
 		else
 			jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please create some tasks first...");
 	}
-	</script>'; $main_content .= '
-	<div class="buttons">
-		<input class="button" type="button" name="add" value="Create Block and Proceed" onClick="createPageUIFiles()" />
-	</div>
-	'; } ?>
+	</script>'; } ?>
