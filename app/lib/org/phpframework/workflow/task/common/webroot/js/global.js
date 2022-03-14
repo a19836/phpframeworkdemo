@@ -285,7 +285,7 @@ if (typeof is_global_common_file_already_included == "undefined") {
 		var show_task_properties = WF.jsPlumbProperty.isTaskSubSettingTrue(task_type, "task_menu", "show_properties_menu", true);
 		
 		if (show_task_properties)
-			WF.jsPlumbProperty.showTaskProperties(task_id);
+			WF.jsPlumbProperty.showTaskProperties(task_id, {do_not_call_hide_properties : true});
 	}
 	
 	function showConnectionPropertiesIfExists(connection) {
@@ -295,7 +295,7 @@ if (typeof is_global_common_file_already_included == "undefined") {
 			var show_connection_properties = WF.jsPlumbProperty.isTaskSubSettingTrue(task_type, "connection_menu", "show_properties_menu", true);
 			
 			if (show_connection_properties)
-				WF.jsPlumbProperty.showConnectionProperties(connection.id);
+				WF.jsPlumbProperty.showConnectionProperties(connection.id, {do_not_call_hide_properties : true});
 		}
 	}
 }

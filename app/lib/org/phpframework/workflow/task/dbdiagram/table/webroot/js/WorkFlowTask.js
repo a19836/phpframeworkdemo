@@ -1440,7 +1440,7 @@ var DBTableTaskPropertyObj = {
 		}
 		
 		if (status)
-			myWFObj.getJsPlumbWorkFlow().jsPlumbContextMenu.setSelectedConnectionOverlay(overlay);
+			myWFObj.getJsPlumbWorkFlow().jsPlumbContextMenu.setSelectedConnectionOverlay(overlay, {do_not_call_hide_properties : true});
 		else 
 			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError(error_message);
 		
