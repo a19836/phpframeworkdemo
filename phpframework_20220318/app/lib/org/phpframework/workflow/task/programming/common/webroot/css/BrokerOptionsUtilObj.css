@@ -1,0 +1,20 @@
+.selected_task_properties .broker_method_obj {
+	width:430px;
+	height:45px;
+	margin:0 auto 5px auto;
+}
+.selected_task_properties .broker_method_obj label {
+	width:110px;
+}
+.selected_task_properties .broker_method_obj select {
+	width:237px;
+	margin-bottom:5px;
+}
+.selected_task_properties .broker_method_obj input {
+	width:210px;
+	margin-left:115px;
+	padding-right:20px;
+}
+.selected_task_properties .broker_method_obj .search {
+	/*margin-top:2px;*/
+}

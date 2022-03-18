@@ -1,0 +1,58 @@
+.jsplumbtaskmenu .task.task_echo {
+	background-image:url('../img/bg.gif');
+	text-align:left;
+}
+.jsplumbtaskmenu .task.task_echo span {
+	display:block;
+	margin-left:11px;
+	margin-top:14px;
+}
+.jsplumbtaskworkflow .task.task_echo {
+	/*background-image:url('../img/bg.gif');
+	-o-background-size:100% 100%;
+	-webkit-background-size:100% 100%;
+	-moz-background-size:100% 100%;
+	background-size:100% 100%; */
+	
+	/* in IE */
+	-ms-background-size:100% 100%;
+	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
+	
+	/*border:none;
+	box-shadow:none;
+	-o-box-shadow:none;
+	-webkit-box-shadow:none;
+	-moz-box-shadow:none;*/
+    	
+	/* For IE */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
+	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+}
+.jsplumbtaskworkflow .task.task_echo .info span {
+	color:#dca80a;
+}
+
+.echo_task_html {
+	width:295px;
+}
+
+.echo_task_html .value {
+	margin-top:15px;
+}
+
+.echo_task_html .value,
+   .echo_task_html .type {
+	width:100%;
+	height:20px;
+	margin-bottom:5px;
+}
+.echo_task_html .value label,
+   .echo_task_html .type label {
+	width:60px;
+}
+.echo_task_html .value input {
+	width:200px;   
+}
+
+

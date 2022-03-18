@@ -1,0 +1,59 @@
+.jsplumbtaskmenu .task.task_foreach {
+	background-image:url('../img/bg.gif');
+}
+.jsplumbtaskmenu .task.task_foreach:hover span {
+	background-color:#FFF;
+}
+.jsplumbtaskworkflow .task.task_foreach {
+	/*background-image:url('../img/bg.gif');
+	-o-background-size:100% 100%;
+	-webkit-background-size:100% 100%;
+	-moz-background-size:100% 100%;
+	background-size:100% 100%; */
+	
+	/* in IE */
+	-ms-background-size:100% 100%;
+	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
+	
+	border-radius:100%;
+	/*border-width:3px;
+	border:none;
+	box-shadow:none;
+	-o-box-shadow:none;
+	-webkit-box-shadow:none;
+	-moz-box-shadow:none;*/
+    	
+	/* For IE */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
+	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+}
+.jsplumbtaskworkflow .task.task_foreach .info span {
+	color:#5b9b2a;
+}
+
+.foreach_task_html {
+	width:360px;
+	min-width:350px;
+}
+
+.foreach_task_html .obj {
+	margin-top:10px;
+}
+.foreach_task_html .obj,
+   .foreach_task_html .key,
+   .foreach_task_html .value {
+	width:100%;
+	min-height:20px;
+	margin-bottom:5px;
+}
+.foreach_task_html .obj label,
+   .foreach_task_html .key label,
+   .foreach_task_html .value label {
+	width:140px;
+}
+.foreach_task_html .obj input,
+   .foreach_task_html .key input,
+   .foreach_task_html .value input {
+	width:200px;
+}

@@ -1,0 +1,21 @@
+<?php
+/*
+ * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
+ * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * 
+ * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
+ * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
+ * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
+ * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
+ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->getUtilPath("WorkFlowBeansFileHandler"); $bean_name = $_GET["bean_name"]; $bean_file_name = $_GET["bean_file_name"]; $path = $_GET["path"]; $hbn_obj_id = $_GET["obj"]; $relationship_type = $_GET["relationship_type"]; $path = str_replace("../", "", $path); $is_import_file = $relationship_type == "import"; $PHPVariablesFileHandler = new PHPVariablesFileHandler($user_global_variables_file_path); $PHPVariablesFileHandler->startUserGlobalVariables(); $WorkFlowBeansFileHandler = new WorkFlowBeansFileHandler($user_beans_folder_path . $bean_file_name, $user_global_variables_file_path); $obj = $WorkFlowBeansFileHandler->getBeanObject($bean_name); if ($obj && is_a($obj, "DataAccessLayer") && $_POST) { $object = $_POST["object"]; $overwrite = $_POST["overwrite"]; $layer_path = $obj->getLayerPathSetting(); $file_path = trim($layer_path . $path); if ($path) { $UserAuthenticationHandler->checkInnerFilePermissionAuthentication($file_path, "layer", "access"); UserAuthenticationHandler::checkUsersMaxNum($UserAuthenticationHandler); UserAuthenticationHandler::checkActionsMaxNum($UserAuthenticationHandler); $folder_path = substr($file_path, strlen($file_path) - 1) == "/" ? $file_path : dirname($file_path); if (!is_dir($folder_path)) { mkdir($folder_path, 0755, true); } $object = MyXML::convertChildsToAttributesInBasicArray($object, array("lower_case_keys" => true)); $object = MyXML::basicArrayToComplexArray($object, array("lower_case_keys" => true)); $WorkFlowDataAccessHandler = new WorkFlowDataAccessHandler(); if ($obj->getType() == "hibernate") { switch ($file_type) { case "save_obj": $status = $WorkFlowDataAccessHandler->createHibernateObjectFromObjectData($file_path, $object, $overwrite, $hbn_obj_id); break; case "save_query": case "save_relationship": case "save_map": if ($is_import_file) { $status = $WorkFlowDataAccessHandler->createTableQueriesFromObjectData($file_path, $object, $overwrite, $queries_ids, true); } else { $status = $WorkFlowDataAccessHandler->createHibernateQueriesFromObjectData($file_path, $hbn_obj_id, $object, $queries_ids, $relationship_type); } break; case "save_includes": $status = $WorkFlowDataAccessHandler->createIncludesFromObjectData($file_path, $object, $obj->getType()); break; } } else { switch ($file_type) { case "save_query": case "save_map": $status = $WorkFlowDataAccessHandler->createTableQueriesFromObjectData($file_path, $object, $overwrite, $queries_ids, $is_import_file); break; case "save_includes": $status = $WorkFlowDataAccessHandler->createIncludesFromObjectData($file_path, $object, $obj->getType()); break; } } if ($status) { $UserAuthenticationHandler->incrementUsedActionsTotal(); $cache_path = $obj->getCacheLayer()->getCachedDirPath() . "/" . (is_a($obj, "IbatisDataAccessLayer") ? IBatisClientCache::CACHE_DIR_NAME : HibernateClientCache::CACHE_DIR_NAME); CacheHandlerUtil::deleteFolder($cache_path, false); } } } $PHPVariablesFileHandler->endUserGlobalVariables(); die($status); ?>

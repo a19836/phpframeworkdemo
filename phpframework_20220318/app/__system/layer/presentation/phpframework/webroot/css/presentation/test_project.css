@@ -1,0 +1,69 @@
+html, body, #main_column {
+	height:100%;
+}
+.test_project {
+	height:100%;
+	text-align:center;
+}
+.test_project.hide_settings > .title,
+  .test_project.hide_settings > .sub_title,
+  .test_project.hide_settings > form {
+	display:none;
+}
+.test_project > .icon {
+	padding:0px 2px;
+	position:absolute;
+	top:10px;
+	left:0;
+	z-index:1;
+}
+.test_project > .title {
+	margin-bottom:0;
+}
+.test_project > iframe {
+	width:100%;
+	min-height:400px;
+	padding:0;
+}
+.test_project.hide_settings > iframe {
+	height:100%;
+}
+.test_project form {
+	margin:20px 0 10px;
+	padding-bottom:10px;
+	border-bottom:1px solid #ccc;
+}
+.test_project form .vars {
+	width:450px;
+	margin:0 auto 20px;
+	display:inline-block;
+}
+.test_project form .vars table {
+	margin:10px auto 0;
+}
+.test_project form .vars table th,
+  .test_project form .vars table td {
+	text-align:center;
+	border:1px solid #ccc;
+}
+.test_project form .vars table .name,
+  .test_project form .vars table .value {
+	width:200px;
+}
+.test_project form .vars table td input {
+	width:100%;
+	background:#fff;
+	border:0;
+	font-size:80%;
+	text-align:center;
+}
+.test_project form .vars table .actions {
+	width:20px;
+}
+.test_project form .vars table .no_vars td {
+	font-weight:bold;
+}
+.test_project form .vars table .icon {
+	margin:0 auto;
+	float:none;
+}

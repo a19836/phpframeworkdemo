@@ -1,0 +1,21 @@
+/* TOP BAR */
+.top_bar {
+	margin-bottom:10px;
+}
+
+/* UTIL OBJ */
+.util_obj {
+	width:100%;
+	overflow:hidden;
+	margin:0 auto;
+	padding:0;
+	border:0;
+}
+
+/* To print the workflow */
+@media print {
+	.util_obj {
+		overflow:visible !important;
+		border:0 !important;
+	}
+}

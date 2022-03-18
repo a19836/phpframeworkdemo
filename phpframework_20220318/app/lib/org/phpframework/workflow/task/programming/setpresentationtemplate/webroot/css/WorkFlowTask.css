@@ -1,0 +1,59 @@
+.jsplumbtaskmenu .task.task_setpresentationtemplate {
+	background-image:url('../img/bg.gif');
+}
+.jsplumbtaskmenu .task.task_setpresentationtemplate span {
+	line-height:13px;
+	display:block;
+	margin-top:-3px;
+	color:#000;
+}
+.jsplumbtaskworkflow .task.task_setpresentationtemplate {
+	/*background-image:url('../img/bg.gif');
+	-o-background-size:100% 100%;
+	-webkit-background-size:100% 100%;
+	-moz-background-size:100% 100%;
+	background-size:100% 100%; */
+	
+	/* in IE */
+	-ms-background-size:100% 100%;
+	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
+	
+	/*border:none;
+	box-shadow:none;
+	-o-box-shadow:none;
+	-webkit-box-shadow:none;
+	-moz-box-shadow:none;*/
+    	
+	/* For IE */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
+	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+}
+.jsplumbtaskworkflow .task.task_setpresentationtemplate .info span {
+	color:#b70608;
+}
+
+
+.set_presentation_template_task_html {
+	width:430px;
+}
+
+.set_presentation_template_task_html .value {
+	margin-bottom:5px;
+}
+.set_presentation_template_task_html .value,
+   .set_presentation_template_task_html .type {
+	width:430px;
+	height:20px;
+}
+.set_presentation_template_task_html .value label,
+   .set_presentation_template_task_html .type label,
+   .set_presentation_template_task_html .broker_method_obj label {
+	width:100px;
+}
+.set_presentation_template_task_html .value input {
+	width:230px;
+}
+.set_presentation_template_task_html .broker_method_obj input {
+	margin-left:105px;
+}

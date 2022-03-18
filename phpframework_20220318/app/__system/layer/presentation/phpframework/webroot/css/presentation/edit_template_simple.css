@@ -1,0 +1,139 @@
+/* TOP BAR */
+.top_bar {
+	margin-bottom:10px;
+}
+.top_bar header > ul {
+	right:130px;
+}
+
+/* GENERIC */
+.error {
+	width:100%;
+	text-align:center;
+	font-style:italic;
+	color:#FF0000;
+	margin-top:10px;
+	margin-bottom:20px;
+}
+
+/* TEMPLATE OBJ */
+.template_obj {
+	width:100%;
+	overflow:hidden;
+	margin:0 auto;
+	padding:0;
+	border:0;
+}
+.template_obj .invalid {
+	padding:10px;
+	position:absolute;
+	left:0;
+	top:0;
+	right:0;
+	text-align:center;
+	background:#fff;
+	border:1px solid #ff0000;
+	color:#ff0000;
+	z-index:5;
+}
+.template_obj .invalid a {
+	color:#ff0000;
+	text-decoration:underline;
+}
+.template_obj .invalid .close {
+	position:absolute;
+	right:5px;
+	bottom:10px;
+}
+
+/* Template Preview */
+.template_obj #preview {
+	height:calc(100vh - 33px);
+	min-height:300px;
+	padding:0 !important;
+	position:relative;
+}
+.template_obj #preview iframe {
+	width:100%;
+	height:100%;
+	min-height:400px;
+	box-sizing:border-box;
+	border:none;
+}
+
+/* Code Editor - Contents */
+.template_obj .code_editor_layout {
+	height:calc(100vh - 33px);
+	min-height:300px;
+	padding:0 !important;
+	position:relative;
+	border:0;
+}
+.template_obj .code_editor_layout.tab_content_template_layout .iframe_toolbar {
+	right:285px;
+}
+
+/* Code Editor - Body */
+.template_obj .code_editor_body {
+	height:calc(100vh - 33px);
+	min-height:300px;
+	padding:0 !important;
+	position:relative;
+	border:0;
+}
+.template_obj .code_editor_body .code_menu.top_bar_menu {
+	right:227px;
+}
+.template_obj .code_editor_body .code_menu.top_bar_menu li.editor_full_screen,
+  .template_obj .code_editor_body .code_menu.top_bar_menu li.auto_save_convert_settings,
+  .template_obj .code_editor_body .code_menu.top_bar_menu li.save {
+	display:none;
+}
+
+/* Code Editor - Body - ELS UI */
+.template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu > .options .options-right {
+	width:200px;
+	right:252px;
+}
+.template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu > .options > .options-center {
+	right:450px;
+}
+.template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu > .options .options-left .option.save,
+  .template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu > .options .options-right .option.full-screen {
+	display:none !important;
+}
+
+/* Settings */
+.template_obj .regions_blocks_includes_settings .update_automatically:not(.icon) {
+	width:250px;
+	margin-top:20px;
+	float:right;
+	color:#777;
+	font-size:90%;
+	text-align:right;
+	opacity:.8;
+}
+.template_obj .regions_blocks_includes_settings .update_automatically:not(.icon):hover {
+	opacity:1;
+}
+
+.template_obj .regions_blocks_includes_settings .head {
+	margin-top:20px;
+}
+.template_obj .regions_blocks_includes_settings .head textarea, 
+  .template_obj .regions_blocks_includes_settings .head .ace_editor {
+	width:100%;
+	height:200px;
+	border:0;
+	border:.5px solid #eee;
+	margin:0;
+	box-sizing:border-box;
+}
+
+/* To print the workflow */
+@media print {
+	.template_obj {
+		overflow:visible !important;
+		border:0 !important;
+	}
+}

@@ -1,0 +1,64 @@
+.selected_task_properties .opts {
+   	width:430px;
+   	min-height:20px;
+	margin:0 auto;
+}
+.selected_task_properties .opts .array_items .items {
+	position:absolute;
+	margin-top:-25px;
+	margin-left:175px;
+}
+.selected_task_properties .opts .array_items ul .items {
+	position:static;
+	margin-top:0;
+	margin-left:0;
+}
+
+.selected_task_properties .opts .main_label {
+	width:110px;
+}
+.selected_task_properties .opts .options_code {
+	width:210px;
+	margin-right:5px;
+	padding-right:20px;
+}
+.selected_task_properties .opts .options_type {
+	background-color:#FFF;
+	color:#AAA;
+	border:1px solid #ECECEC;
+	text-align:center;
+	font-size:9px;
+	width:60px;
+	height:20px;
+}
+.selected_task_properties .opts .options .item select.key {
+	width:131px;
+}
+.selected_task_properties .opts .options .item .search {
+	margin-left:-25px;
+	margin-right:10px;
+	margin-top:2px;
+}
+/*.selected_task_properties .opts .options .item .add_variable + .search {
+	margin-left:-41px;
+	margin-right:25px;
+}*/
+.selected_task_properties .opts .options .items .add1,
+  .selected_task_properties .opts .options .items .add2,
+  .selected_task_properties .opts .options .items .add3 {
+	width:20px;
+}
+.selected_task_properties .opts .options .items .add1::before {
+	content:"\f217";
+	vertical-align:middle;
+}
+.selected_task_properties .opts .options .items .add2::before {
+	content:"\f234";
+	vertical-align:middle;
+}
+.selected_task_properties .opts .options .items .add3::before {
+	font:var(--fa-font-regular);
+	content:"\f0fe";
+	font-size:16px;
+	vertical-align:middle;
+}

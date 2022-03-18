@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget>
+	<label>Check Box</label>
+	<tag>checkbox</tag>
+	<settings>
+		<template_node_name>input</template_node_name>
+		<create_widget_class>CheckBoxWidget</create_widget_class>
+	</settings>
+	<menu_widget><![CDATA[
+			<span class="zmdi zmdi-check-square"></span>
+	]]></menu_widget>
+	<template_widget></template_widget>
+	<properties><![CDATA[
+		<div class="form-group settings-property is-checked">
+			<label class="col-md-4 col-sm-5 col-5 col-form-label">Is Checked: </label>
+			<input type="checkbox" name="is-checked" value="1" />
+		</div>
+		<div class="form-group row settings-property name">
+			<label class="col-md-4 col-sm-5 col-form-label">Name: </label>
+			<input class="col-md-8 col-sm-7 form-control" name="name" />
+		</div>
+		<div class="form-group row settings-property value">
+			<label class="col-md-4 col-sm-5 col-form-label">Value: </label>
+			<input class="col-md-8 col-sm-7 form-control" name="value" />
+		</div>
+	]]></properties>
+	<menu_css><![CDATA[
+		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-checkbox,
+		  body > .menu-widget.menu-widget-checkbox.ui-draggable-dragging {
+			width:25px;
+			height:25px;
+			display:inline-block;
+			overflow:hidden;
+			border:none;
+		}
+		
+		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-checkbox > span,
+		  body > .menu-widget.menu-widget-checkbox.ui-draggable-dragging > span {
+			font-size:25px;
+			color:#999;
+		}
+		
+		.layout_ui_editor > .template-widgets .widget-header.widget-header-checkbox {
+			border-radius:0 5px 5px 0;
+		}
+		.layout_ui_editor > .template-widgets .widget-header.widget-header-checkbox > label,
+		  .layout_ui_editor > .template-widgets .widget-header.widget-header-checkbox .options .option.toggle {
+			display:none;
+		}
+	]]></menu_css>
+	<menu_js><![CDATA[
+		function CheckBoxWidget(ui_creator, menu_widget) {
+			var me = this;
+			
+			me.init = function() {
+				menu_widget.attr({
+					"data-on-parse-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.checkbox.parseHtml",
+					"data-on-create-template-widget-func": ui_creator.obj_var_name + ".menu_widgets_objs.checkbox.onCreateTemplateWidget",
+				});
+				
+				menu_widget.children(".properties").attr({
+					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.checkbox.saveSettingsField",
+					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.checkbox.parseSettings",
+				});
+			};
+			
+			me.parseHtml = function(html_element) {
+				return html_element && html_element.nodeName.toLowerCase() == "input" && ("" + html_element.getAttribute("type")).toLowerCase() == "checkbox";
+			};
+			
+			me.parseSettings = function(widget, widget_settings) {
+				widget_settings["is-checked"] = widget.is(":checked") ? 1 : 0;
+				widget_settings["name"] = widget.attr("name");
+				widget_settings["value"] = widget.attr("value");
+			};
+			
+			me.onCreateTemplateWidget = function(widget, html_element) {
+				widget[0].type = "checkbox";
+			};
+			
+			me.saveSettingsField = function(field, widget, status) {
+				if (status) {
+					field = $(field);
+					var field_value = field.val();
+					var sprop = field.parent();
+					
+					if (sprop.hasClass("is-checked")) {
+						if (field.is(":checked")) {
+							widget.attr("checked", "checked").prop("checked", true);
+							widget.addClass("checked");
+						}
+						else {
+							widget.removeAttr("checked").prop("checked", false);
+							widget.removeClass("checked");
+						}
+					}
+					else if (sprop.hasClass("name")) {
+						if (field_value != "")
+							widget.attr("name", field_value);
+						else
+							widget.removeAttr("name");
+					}
+					else if (sprop.hasClass("value")) {
+						if (field_value != "")
+							widget.attr("value", field_value);
+						else
+							widget.attr("value", "");
+					}
+				}
+				
+				return status;
+			};
+		}
+	]]></menu_js>
+</widget>

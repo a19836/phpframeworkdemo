@@ -1,0 +1,67 @@
+.jsplumbtaskmenu .task.task_rendertemplateregion {
+	background-image:url('../img/bg.gif');
+	/*background-color:#999;
+	border:1px solid #999;
+	-moz-border-radius:0.5em; 
+	-webkit-border-radius:0.5em;
+	border-radius:0.5em;*/
+}
+.jsplumbtaskmenu .task.task_rendertemplateregion span {
+	line-height:13px;
+	display:block;
+	margin-top:0;
+	color:#000;
+	background-color: rgba(255, 255, 255,.5);
+}
+.jsplumbtaskworkflow .task.task_rendertemplateregion {
+	/*background-image:url('../img/bg.gif');
+	background-color:#FF0F0F;
+	-o-background-size:100% 100%;
+	-webkit-background-size:100% 100%;
+	-moz-background-size:100% 100%;
+	background-size:100% 100%; */
+	
+	/* in IE */
+	-ms-background-size:100% 100%;
+	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
+	
+	/*border:none;
+	box-shadow:none;
+	-o-box-shadow:none;
+	-webkit-box-shadow:none;
+	-moz-box-shadow:none;*/
+    	
+	/* For IE */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
+	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+}
+.jsplumbtaskworkflow .task.task_rendertemplateregion .info span {
+	/*color:#000;*/
+	color:#999;
+}
+
+
+.render_template_region_task_html {
+	width:395px;
+}
+
+.render_template_region_task_html .region {
+	margin-bottom:5px;
+}
+.render_template_region_task_html .region,
+   .render_template_region_task_html .type {
+	width:100%;
+	height:20px;
+}
+.render_template_region_task_html .region label,
+   .render_template_region_task_html .type label,
+   .render_template_region_task_html .broker_method_obj label {
+	width:135px;
+}
+.render_template_region_task_html .region input {
+	width:230px;
+}
+.render_template_region_task_html .broker_method_obj input {
+	margin-left:140px;
+}

@@ -1,0 +1,57 @@
+.jsplumbtaskmenu .task.task_getdbdriver {
+	background-image:url('../img/bg.gif');
+}
+.jsplumbtaskworkflow .task.task_getdbdriver {
+	/*background-image:url('../img/bg.gif');
+	-o-background-size:contain;
+	-webkit-background-size:contain;
+	-moz-background-size:contain;
+	background-size:contain; */
+	
+	/* in IE */
+	-ms-background-size:contain;
+	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='contain')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='contain');*/
+}
+.jsplumbtaskworkflow .task.task_getdbdriver .info span {
+	color:#a6abac;
+}
+
+.get_db_driver_task_html {
+	min-width:430px;
+}
+
+.get_db_driver_task_html .db_driver {
+	width:430px;
+	min-height:20px;
+	margin:10px auto 0 auto;
+}
+.get_db_driver_task_html .db_driver label {
+	width:110px;
+}
+.get_db_driver_task_html .db_driver .db_driver_variable {
+	width:210px;
+	margin-right:5px;
+	padding-right:20px;
+}
+.get_db_driver_task_html .db_driver input.db_driver_value {
+	display:none;
+}
+.get_db_driver_task_html .db_driver select.db_driver_options {
+	width:235px;
+	margin-right:5px;
+}
+.get_db_driver_task_html .db_driver select[name=db_driver_type] {
+	background-color:#FFF;
+	color:#AAA;
+	border:1px solid #ECECEC;
+	text-align:center;
+	font-size:9px;
+	width:70px;
+	height:19px;
+}
+.get_db_driver_task_html > div:not(.broker_method_obj) > .add_variable {
+	margin-left:-26px;
+}
+
+

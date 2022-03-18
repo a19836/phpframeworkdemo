@@ -1,0 +1,75 @@
+.jsplumbtaskmenu .task.task_createfunction {
+	background-image:url('../img/bg.gif');
+}
+.jsplumbtaskmenu .task.task_createfunction span {
+	background-color:rgba(255, 255, 255, .3);
+}
+.jsplumbtaskmenu .task.task_createfunction span {
+	line-height:13px;
+	display:block;
+	margin-top:5px;
+}
+.jsplumbtaskworkflow .task.task_createfunction {
+	/*background-image:url('../img/bg.gif');
+	-o-background-size:100% 100%;
+	-webkit-background-size:100% 100%;
+	-moz-background-size:100% 100%;
+	background-size:100% 100%; */
+	
+	/* in IE */
+	-ms-background-size:100% 100%;
+	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
+	
+	/*border:none;
+	box-shadow:none;
+	-o-box-shadow:none;
+	-webkit-box-shadow:none;
+	-moz-box-shadow:none;*/
+    	
+	/* For IE */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
+	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+}
+.jsplumbtaskworkflow .task.task_createfunction .info span {
+	color:#6492b5;
+}
+
+.create_function_task_html > .name,
+  .create_function_task_html > .type,
+  .create_function_task_html > .abstract,
+  .create_function_task_html > .static,
+  .create_function_task_html > .code,
+  .create_function_task_html > .arguments,
+  .create_function_task_html > .comments {
+	width:100%;
+	min-height:20px;
+	margin-top:10px;
+	margin-bottom:5px;
+}
+.create_function_task_html > .name label,
+  .create_function_task_html > .type label,
+  .create_function_task_html > .abstract label,
+  .create_function_task_html > .static label {
+	width:100px;
+}
+.create_function_task_html > .code label {
+	width:75px;
+}
+.create_function_task_html > .code .icon.update::before {
+	content:"\f303";
+}
+
+.create_function_task_html > .arguments > label,
+  .create_function_task_html > .comments label {
+	width:100%;
+	margin-bottom:5px;
+	display:block;
+	float:none;
+}
+.create_function_task_html > .comments textarea {
+	width:100%;
+	max-width:100%;
+	height:100px;
+	float:none;
+}

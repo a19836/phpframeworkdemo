@@ -1,0 +1,63 @@
+.jsplumbtaskmenu .task.task_callfunction {
+	background-image:url('../img/bg.gif');
+}
+.jsplumbtaskmenu .task.task_callfunction span {
+	background-color:rgba(0,0,0,.7);
+	color:#fdc90a;
+}
+.jsplumbtaskworkflow .task.task_callfunction {
+	/*background-image:url('../img/bg.gif');
+	-o-background-size:100% 100%;
+	-webkit-background-size:100% 100%;
+	-moz-background-size:100% 100%;
+	background-size:100% 100%; */
+	background:#000;
+	
+	/* in IE */
+	-ms-background-size:100% 100%;
+	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
+	
+	/*border:none;
+	box-shadow:none;
+	-o-box-shadow:none;
+	-webkit-box-shadow:none;
+	-moz-box-shadow:none;*/
+    	
+	/* For IE */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
+	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+}
+.jsplumbtaskworkflow .task.task_callfunction .info span {
+	color:#fdc90a;
+	/*color:#FFF;
+	background-color:#000;
+	
+	opacity:0.7;
+	-ms-filter: alpha(opacity=70);
+	filter: alpha(opacity=70);*/
+}
+
+.call_function_task_html {
+	width:390px;
+}
+
+.call_function_task_html .func_name {
+	width:100%;
+	height:20px;
+	margin-top:15px;
+	margin-bottom:5px;
+}
+.call_function_task_html .func_name label {
+	width:135px;
+}
+.call_function_task_html .func_name input {
+	width:180px;  
+	padding-right:20px; 
+}
+.call_function_task_html .func_name .search {
+	
+}
+.call_function_task_html .func_name .add_variable.inline {
+	margin-left:-21px;
+}

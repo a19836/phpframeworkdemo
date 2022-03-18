@@ -1,0 +1,278 @@
+/* TEMPLATE POPUPS - choose_available_template_popup */
+
+.choose_available_template_popup {
+	top:10px !important;
+	left:10px !important;
+	right:10px !important;
+	bottom:10px !important;
+}
+.choose_available_template_popup > label {
+	display:block;
+	text-align:center;
+}
+.choose_available_template_popup > .install_template {
+	text-align:center;
+}
+.choose_available_template_popup > .current_template_folder {
+	height:20px;
+	margin-bottom:10px;
+	text-align:center;
+}
+.choose_available_template_popup > .current_template_folder .icon.folder {
+	
+}
+.choose_available_template_popup > .current_template_folder .icon.folder.with_project {
+	margin-left:30px;
+}
+.choose_available_template_popup > .current_template_folder .icon.project::before {
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	font:var(--fa-font-solid);
+	content:"\f0a0";
+	color:#fb5c5c;
+}
+.choose_available_template_popup > .loading_templates {
+	display:block;
+	text-align:center;
+}
+.choose_available_template_popup > .loading_templates .icon {
+	display:inline-block;
+	float:none;
+	vertical-align:middle;
+}
+.choose_available_template_popup > ul {
+	height:calc(100% - 70px);
+	overflow-y:auto;
+	text-align:center;
+}
+.choose_available_template_popup li {
+	display:inline-block;
+	width:200px;
+	min-height:100px;
+	margin:10px;
+	padding:10px;
+	position:relative;
+	border:1px solid #ccc;
+	border-radius:5px;
+	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 20%);
+	vertical-align:top;
+	cursor:default;
+}
+.choose_available_template_popup li {
+	height:142px;
+	box-sizing:border-box;
+}
+.choose_available_template_popup li:hover {
+	box-shadow:0px 0px 10px 10px rgb(200 200 200 / 20%);
+	opacity:.9;
+}
+.choose_available_template_popup li.folder {
+	cursor:pointer;
+}
+.choose_available_template_popup li.separator {
+	width:auto;
+	height:1px;
+	min-height:auto;
+	margin:20px;
+	padding:0;
+	display:block;
+	border:0;
+	border-top:1px solid #ccc;
+	border-radius:0;
+	box-shadow:none;
+}
+.choose_available_template_popup li > label {
+	width:100%;
+	height:16px;
+	margin-bottom:10px;
+	display:block;
+	text-align:center;
+	font-weight:normal;
+	font-size:80%;
+	overflow:hidden;
+	direction:rtl;
+	white-space:nowrap;
+}
+.choose_available_template_popup li.folder > label {
+	cursor:pointer;
+}
+.choose_available_template_popup li > a {
+	margin-top:10px;
+	display:block;
+	text-align:center;
+	font-size:80%;
+}
+.choose_available_template_popup li.folder:hover > a {
+	text-decoration:underline;
+}
+.choose_available_template_popup li > a.select_template {
+	float:left;
+}
+.choose_available_template_popup li > a.show_demo {
+	float:right;
+}
+.choose_available_template_popup li > span.show_demo {
+	margin-top:10px;
+	display:block;
+	text-align:center;
+	font-size:80%;
+	color:#999;
+	float:right;
+}
+.choose_available_template_popup li > a .icon {
+	height:17px;
+	margin:0;
+	display:inline-block;
+	float:none;
+	vertical-align:middle;
+	font-size:16px;
+}
+.choose_available_template_popup li > a .icon.view {
+	font-size:14px;
+}
+.choose_available_template_popup li > img {
+	width:100%;
+	height:70px;
+	cursor:pointer;
+}
+.choose_available_template_popup li > img:hover {
+	width:100%;
+	height:100%;
+	position:absolute;
+	left:0;
+	top:0;
+	z-index:1;
+}
+.choose_available_template_popup li > .photo_ajax::before,
+  .choose_available_template_popup li > .photo_empty::before,
+  .choose_available_template_popup li > .photo_default::before,
+  .choose_available_template_popup li > .photo::before,
+  .choose_available_template_popup li.back::after,
+  .choose_available_template_popup li.other_project::after {
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	font:var(--fa-font-solid);
+	font-size:70px;
+	color:#ccc;
+	display:block;
+}
+.choose_available_template_popup li.file > .photo_ajax {
+	height:70px;
+	padding-top:5px;
+	box-sizing:border-box;
+	cursor:pointer;
+}
+.choose_available_template_popup li.file > .photo_ajax::before {
+	content:"\f7c0";
+	font-size:60px;
+}
+.choose_available_template_popup li.file > .photo_empty,
+  .choose_available_template_popup li.file > .photo_default,
+  .choose_available_template_popup li.project_default_template > .photo_default {
+	height:70px;
+	overflow:hidden;
+}
+.choose_available_template_popup li.file > .photo_empty::before {
+	content:"\f15b";
+}
+.choose_available_template_popup li.file > .photo_default::before,
+  .choose_available_template_popup li.project_default_template > .photo_default::before {
+	content:"\f570";
+}
+.choose_available_template_popup li.file > .photo {
+	cursor:pointer;
+}
+.choose_available_template_popup li.file > .photo::before {
+	content:"\f570";
+}
+.choose_available_template_popup li.template_type.html_editor {
+	padding-top:20px;
+	cursor:pointer;
+}
+.choose_available_template_popup li.template_type.html_editor > .photo::before {
+	content:"\f121";
+}
+.choose_available_template_popup li.template_type.template_editor {
+	padding-top:20px;
+	cursor:pointer;
+}
+.choose_available_template_popup li.template_type.template_editor > .photo::before {
+	content:"\f53f";
+}
+.choose_available_template_popup li.folder {
+	cursor:pointer;
+}
+.choose_available_template_popup li.folder > .photo::before {
+	content:"\f07c";
+	color:#f5df86;
+}
+.choose_available_template_popup li.back {
+	padding-top:15px;
+	cursor:pointer;
+	font-size:80%;
+}
+.choose_available_template_popup li.back::after {
+	content:"\f359";
+	margin-top:10px;
+}
+.choose_available_template_popup li.other_project {
+	padding-top:15px;
+	cursor:pointer;
+	font-size:80%;
+}
+.choose_available_template_popup li.other_project::after {
+	content:"\f07b";
+	color:#f5df86;
+	margin-top:10px;
+}
+.choose_available_template_popup li.project {
+	padding-top:15px;
+}
+.choose_available_template_popup li.project > .image {
+	width:100px;
+	height:70px;
+	margin:0 auto;
+	cursor:pointer;
+}
+.choose_available_template_popup li.project > .image > img {
+	width:100%;
+	height:100%;
+}
+.choose_available_template_popup li.project > .photo {
+	cursor:pointer;
+}
+.choose_available_template_popup li.project > .photo::before {
+	content:"\f0a0";
+	color: #fb5c5c;
+}
+.choose_available_template_popup li.project_default_template {
+	padding-top:15px;
+	color:#ff0000;
+	cursor:pointer;
+}
+
+/* TEMPLATE POPUPS - show_available_template_demo_popup */
+
+.show_available_template_demo_popup {
+	top:10px !important;
+	left:10px !important;
+	right:10px !important;
+	bottom:10px !important;
+}
+.show_available_template_demo_popup iframe {
+	width:100% !important;
+	height:100% !important;
+}
+
+/* TEMPLATE POPUPS - install_template_popup */
+
+.install_template_popup {
+	top:10px !important;
+	left:10px !important;
+	right:10px !important;
+	bottom:10px !important;
+}
+.install_template_popup iframe {
+	width:100% !important;
+	height:100% !important;
+}
