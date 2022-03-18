@@ -16,12 +16,6 @@
 	color:#ff0000;
 }
 
-@media (min-height: 321px) {
-	.login { /* If small popup, does NOT add margin-top */
-		margin-top: calc(50vh - 160px);
-	}
-}
-
 .form_fields { width:320px; margin:0 auto; }
 .form_fields .form_field label { width:100px; margin-right:10px; font-weight:normal; }
 .form_fields .form_field input { width:200px; display:inline-block; }

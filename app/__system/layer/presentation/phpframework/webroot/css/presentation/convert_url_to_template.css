@@ -1,10 +1,4 @@
 /* TOP BAR */
-.top_bar .title {
-	width:575px;
-	background:#d5e3e4;
-	position:absolute;
-	z-index:1;
-}
 .top_bar .title input[name=page_url] {
 	width:300px;
 	margin-left:5px;
@@ -12,16 +6,32 @@
 	padding-right:20px;
 }
 .top_bar .title .icon {
-	margin-left:-30px;
-	float:none;
-	display:inline-block;
+	margin-top:2px;
+	margin-left:-25px;
 	position:absolute;
-}
-.top_bar .title .icon.load {
-	background:url("../../common/img/icon/refresh_icon.png") no-repeat scroll 0 0;
 }
 .top_bar .title input[name=template_name] {
 	margin-left:5px;
+}
+.icon.convert_to_region,
+  .icon.convert_to_param {
+    vertical-align: middle !important;
+}
+.icon.convert_to_region::before,
+  .icon.convert_to_param::before {
+	content:"\f111";
+}
+.icon.convert_to_region::after,
+  .icon.convert_to_param::after {
+	top:2px;
+	left:4px;
+	color:#fff;
+}
+.icon.convert_to_region::after {
+	content:"R";
+}
+.icon.convert_to_param::after {
+	content:"P";
 }
 
 /* CONVERT URL TO TEMPLATE */

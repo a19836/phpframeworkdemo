@@ -6,7 +6,7 @@
 	z-index:9999;
 }
 .edit_single_query > .top_bar .title { 
-	width:420px;
+	width:440px;
 	z-index:1;
 	position:absolute;
 }
@@ -15,9 +15,24 @@
 	display:inline-block;
 }
 .edit_single_query > .top_bar .title .query_name {
-	width:200px;
+	width:215px;
 	display:inline-block;
 }
+.edit_single_query > .top_bar .title .is_convertable_sql { 
+	height:auto;
+	line-height:initial;
+	margin:auto;
+}
+.edit_single_query:not(.covertable_sql) .top_bar li.add_new_table,
+  .edit_single_query:not(.covertable_sql) .top_bar li.update_tables_attributes,
+  .edit_single_query:not(.covertable_sql) .top_bar li.toggle_ui,
+  .edit_single_query:not(.covertable_sql) .top_bar li.toggle_settings,
+  .edit_single_query:not(.covertable_sql) .top_bar li.create_sql_from_ui,
+  .edit_single_query:not(.covertable_sql) .top_bar li.create_ui_from_sql,
+  .edit_single_query:not(.covertable_sql) .top_bar li.auto_save_convert_settings li.auto_convert_activation {
+	display:none !important;
+}
+
 
 /* RELATIONSHIP */
 .edit_single_query .data_access_obj {
@@ -121,6 +136,17 @@
 	height:100px; 
 	border-top:0;
 }
+.edit_single_query:not(.covertable_sql) .data_access_obj.with_parameter_and_result_fields .relationship .query .sql_text_area textarea, 
+  .edit_single_query:not(.covertable_sql) .data_access_obj.with_parameter_and_result_fields .relationship .query .ace_editor {
+	height:200px; 
+}
+.edit_single_query:not(.covertable_sql) .data_access_obj:not(.with_parameter_and_result_fields) .relationship .query .sql_text_area textarea, 
+  .edit_single_query:not(.covertable_sql) .data_access_obj:not(.with_parameter_and_result_fields) .relationship .query .ace_editor {
+	height:calc(100vh - 35px);
+}
+.edit_single_query:not(.covertable_sql) .relationship .query .query_select {
+	display:none !important;
+}
 .edit_single_query .relationship .query .query_select .taskflowchart,
   .edit_single_query .relationship .query .query_select .taskflowchart .tasks_flow,
   .edit_single_query .relationship .query .query_select .taskflowchart .workflow_menu {
@@ -163,6 +189,9 @@
 	padding-bottom:50px;
 	border:0;
 	box-sizing:border-box;
+}
+.edit_single_query:not(.covertable_sql) .relationship .query_insert_update_delete {
+	display:none !important;
 }
 .edit_single_query .relationship .query_insert_update_delete .query_insert_update_delete_tabs {
 	text-align:left;

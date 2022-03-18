@@ -305,14 +305,14 @@
 .create_uis_files .existent_tasks ul ul .inner_tasks .inner_tasks_head {
 	width:100%;
 	padding:5px;
-	background:#d5e3e4;
+	background:#eee;
 	box-sizing:border-box;
 }
 .create_uis_files .existent_tasks > ul > li > .inner_tasks > .inner_tasks_head {
 	display:none;
 }
 .create_uis_files .existent_tasks ul .inner_tasks .inner_tasks_head label {
-	font-weight:bold;
+	/*font-weight:bold;*/
 }
 .create_uis_files .existent_tasks ul .inner_tasks .inner_tasks_head .icon {
 	float:right;

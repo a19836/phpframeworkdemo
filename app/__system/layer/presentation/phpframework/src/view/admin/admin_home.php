@@ -57,7 +57,12 @@ $head = '
 	<ul>
 		<li><a href="#tutorials">Tutorials</a></li>
 		<li><a href="#how_it_works">How it works?</a></li>
+		<li><a href="#projects">Projects</a></li>
 	</ul>
+	
+	<div id="projects" class="projects">
+		TODO: show list of projects...
+	</div>
 	
 	<div id="how_it_works" class="how_it_works">
 		' . $presentation . '

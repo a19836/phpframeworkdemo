@@ -1,11 +1,20 @@
 $(function() {
+	var edit_single_query = $(".edit_single_query");
+	
 	//init auto save
 	addAutoSaveMenu(".top_bar li.save", "onToggleQueryAutoSave");
+	addAutoConvertMenu(".top_bar li.save", "onToggleQueryAutoConvert");
 	enableAutoSave(onToggleQueryAutoSave);
+	
+	if (is_covertable_sql)
+		enableAutoConvert(onToggleQueryAutoConvert);
+	else
+		disableAutoConvert(onToggleQueryAutoConvert);
+	
 	initAutoSave(".top_bar li.save a");
 	
 	//init ui
-	var relationship = $(".edit_single_query .data_access_obj .relationships .relationship");
+	var relationship = edit_single_query.find(".data_access_obj .relationships .relationship");
 	var query = relationship.find(".query");
 	var rand_number = query.attr("rand_number");
 	var select = relationship.find(".rel_type select");
@@ -44,6 +53,25 @@ $(function() {
 		WF.getMyFancyPopupObj().updatePopup();
 	});
 });
+
+function onToggleQueryAutoConvert() {
+	onToggleAutoConvert();
+	
+	var rand_number = $(".edit_single_query .data_access_obj .relationships .relationship .query").attr("rand_number");
+	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	
+	if (auto_convert) {
+		main_tasks_flow_obj.attr("sync_ui_settings_with_sql", 1);
+		main_tasks_flow_obj.attr("sync_sql_with_ui_settings", 1);
+		
+		onBlurQuerySqlEditor(rand_number);
+	}
+	else {
+		main_tasks_flow_obj.attr("sync_ui_settings_with_sql", 0);
+		main_tasks_flow_obj.attr("sync_sql_with_ui_settings", 0);
+	}
+}
 
 function updateSingleQueryRelationshipType(elm, rand_number) {
 	updateRelationshipType(elm, rand_number);
@@ -125,4 +153,29 @@ function onToggleFullScreen(in_full_screen) {
 		MyFancyPopup.updatePopup();
 		WF.getMyFancyPopupObj().updatePopup();
 	}, 500);
+}
+
+function onChangeIsConvertableSQL(elm) {
+	elm = $(elm);
+	var edit_single_query = $(".edit_single_query");
+	
+	if (elm.is(":checked")) {
+		edit_single_query.addClass("covertable_sql");
+		
+		if (elm.attr("previous_auto_convert") == 1) {
+			enableAutoConvert(onToggleQueryAutoConvert);
+			
+			var query = edit_single_query.find(".data_access_obj .relationships .relationship .query");
+			query.find(".rel_type select").trigger("change");
+			
+			var rand_number = query.attr("rand_number");
+			onBlurQuerySqlEditor(rand_number);
+		}
+	}
+	else {
+		elm.attr("previous_auto_convert", auto_convert ? 1 : 0);
+		
+		edit_single_query.removeClass("covertable_sql");
+		disableAutoConvert(onToggleQueryAutoConvert);
+	}
 }

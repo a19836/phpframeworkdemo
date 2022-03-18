@@ -50,11 +50,13 @@ var save_data_access_object_url = \'' . $project_url_prefix . 'phpframework/data
 var remove_data_access_object_url = \'' . $project_url_prefix . 'phpframework/dataaccess/remove_query?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $path . '&item_type=' . $item_type . '&obj=' . $hbn_obj_id . '&relationship_type=' . $relationship_type . '&query_id=#obj_id#&query_type=' . $query_type . '\';
 var old_obj_id = \'' . $query_id . '\';
 var old_obj_type = \'' . $rel_type . '\';
-</script>'; $main_content = $WorkFlowQueryHandler->getGlobalTaskFlowChar(); $rand = rand(0, 1000); $main_content .= '<div class="edit_single_query">
+var is_covertable_sql = ' . ($is_covertable_sql ? 1 : 0) . ';
+</script>'; $main_content = $WorkFlowQueryHandler->getGlobalTaskFlowChar(); $rand = rand(0, 1000); $main_content .= '<div class="edit_single_query' . ($is_covertable_sql ? " covertable_sql" : "") . '">
 	<div class="top_bar">
 		<header>
 			<div class="title">
 				' . ($query_id ? "Edit" : "Add") . ' <span class="query_type"></span> SQL Query: <span class="query_name"></span>
+				<input class="is_convertable_sql" type="checkbox" title="Is SQL convertable"' . ($is_covertable_sql ? " checked" : "") . ' onChange="onChangeIsConvertableSQL(this)" previous_auto_convert="1" />
 			</div>
 			<ul>
 				<li class="add_new_table select_query" title="Add new Table"><a onclick="return addNewTask(' . $rand . ');"><i class="icon add"></i> Add Table</a></li>

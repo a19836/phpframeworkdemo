@@ -274,6 +274,9 @@
 	border-left:1px solid #eee;
 	border-right:1px solid #eee;
 }
+.settings .ptl .layout_ui_editor.full-screen {
+	top:30px !important;
+}
 .settings .ptl .layout_ui_editor .tabs {
 	border-top:1px solid #eee;
 }

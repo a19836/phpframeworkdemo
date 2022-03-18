@@ -32,6 +32,9 @@
 }
 .modules_list table .group label {
 	text-transform:uppercase;
+}
+.modules_list table .group .icon {
+	margin:0 10px 0 0;
 	float:left;
 }
 .modules_list table .photo {

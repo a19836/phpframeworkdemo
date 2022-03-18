@@ -37,7 +37,7 @@
 		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-checkbox > span,
 		  body > .menu-widget.menu-widget-checkbox.ui-draggable-dragging > span {
 			font-size:25px;
-			color:#fff;
+			color:#999;
 		}
 		
 		.layout_ui_editor > .template-widgets .widget-header.widget-header-checkbox {

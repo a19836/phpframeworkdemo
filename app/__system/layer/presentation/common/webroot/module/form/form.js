@@ -24,6 +24,22 @@ $(function () {
 		});
 	
 	//init trees
+	//only add popups if not exist yet - must be before the code that inits the trees
+	if (choose_from_file_manager_popup_html) {
+		var items = $(choose_from_file_manager_popup_html);
+		
+		$.each(items, function (idx, item) {
+			if (item.nodeType == Node.ELEMENT_NODE) {
+				var id = item.getAttribute("id");
+				
+				if (!id || $("#" + id).length == 0)
+					$(document.body).append(item);
+			}
+			else
+				$(document.body).append(item);
+		});
+	}
+	
 	/* This is already executed in the common/settings.js, so we cannot executed again.
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
@@ -59,22 +75,6 @@ $(function () {
 		ajax_callback_after : removeAllThatIsNotBlocksFromTree,
 	});
 	chooseBlockFromFileManagerTree.init("choose_block_from_file_manager");
-	
-	//only add popups if not exist yet
-	if (choose_from_file_manager_popup_html) {
-		var items = $(choose_from_file_manager_popup_html);
-		
-		$.each(items, function (idx, item) {
-			if (item.nodeType == Node.ELEMENT_NODE) {
-				var id = item.getAttribute("id");
-				
-				if (!id || $("#" + id).length == 0)
-					$(document.body).append(item);
-			}
-			else
-				$(document.body).append(item);
-		});
-	}
 	
 	//init ui
 	var module_form_settings = $(".module_form_settings");

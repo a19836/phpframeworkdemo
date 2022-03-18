@@ -73,6 +73,16 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 			<div class="users_management_admin_panel_popup myfancypopup">
 				<iframe></iframe>
 			</div>
+			
+			<script>
+				//Refreshing blocks folder in main tree of the admin advanced panel
+				if (window.parent && window.parent.parent && window.parent.parent.refreshLastNodeChilds && window.parent.parent.mytree && window.parent.parent.mytree.tree_elm) {
+					window.parent.refreshLastNodeChilds();
+					
+					var project_folder_id = window.parent.parent.$("#" + window.parent.parent.last_selected_node_id).parent().closest("li[data-jstree=\'{\"icon\":\"project\"}\']").attr("id");
+					window.parent.parent.refreshNodeChildsByNodeId(project_folder_id);
+				}
+			</script>
 		</div>'; } if ($messages) $main_content .= '<label class="error">Important messages:</label><ul class="messages_list"><li>' . implode("</li><li>", $messages) . '</li></ul>'; $main_content .= '</div>'; } else if ($step == 2) { $main_content .= '<div class="step_2">
 		<div class="top_bar">
 			<header>

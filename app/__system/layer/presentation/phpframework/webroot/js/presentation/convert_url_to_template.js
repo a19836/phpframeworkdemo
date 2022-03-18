@@ -26,7 +26,7 @@ function loadUrl(elm) {
 		var iframe_head = iframe_contents.find("head");
 		var iframe_body = iframe_contents.find("body");
 		
-		elm.removeClass("load").addClass("loading");
+		elm.addClass("loading");
 		
 		iframe_head.html("");
 		iframe_body.html("");
@@ -138,10 +138,10 @@ function loadUrl(elm) {
 				else
 					alert("Error loading url. Please try again...");
 				
-				elm.removeClass("loading").addClass("load");
+				elm.removeClass("loading");
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
-				elm.removeClass("loading").addClass("load");
+				elm.removeClass("loading");
 				
 				var msg = "Error loading url. Please try again...";
 				alert(msg);
@@ -228,6 +228,10 @@ function convertToType(type) {
 	if (clicked_element) {
 		var type_label = type[0].toUpperCase() + type.substr(1);
 		var name = prompt("Please type the name of the " + type + ":");
+		
+		if (name == null)
+			return;
+		
 		name = name ? name.replace(/\s+/g, "") : "";
 		
 		if (name != "") {

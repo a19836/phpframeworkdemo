@@ -5,6 +5,7 @@ var auto_save_action_interval = 5 * 1000; //5 seconds in milliseconds
 var auto_save_connection_ttl = 30 * 1000; //30 seconds in milliseconds
 var is_from_auto_save = false;
 var saved_obj_id = null;
+var MyFancyPopupLogin = new MyFancyPopupClass();
 
 if (typeof _orgAjax == "undefined") { //this avoids the infinit loop if this file gets call twice, like it happens in some modules. DO NOT REMOVE THIS - 2020-09-28!
 	var jquery_native_xhr_object = null;
@@ -201,7 +202,7 @@ function disableAutoConvert(callback) {
 function onToggleAutoConvert() {
 	var inputs = $(".top_bar li.auto_save_convert_settings ul .auto_convert_activation input");
 	
-	if (auto_save) {
+	if (auto_convert) {
 		inputs.attr("checked", "checked").prop("checked", true);
 	}
 	else {
@@ -211,7 +212,7 @@ function onToggleAutoConvert() {
 function onToggleWorkflowAutoConvert() {
 	var inputs = $(".taskflowchart .workflow_menu ul.dropdown li.auto_save_convert_settings ul .auto_convert_activation input");
 	
-	if (auto_save) {
+	if (auto_convert) {
 		inputs.attr("checked", "checked").prop("checked", true);
 	}
 	else {
@@ -221,21 +222,23 @@ function onToggleWorkflowAutoConvert() {
 
 /* AJAX Functions */
 function isAjaxReturnedResponseLogin(url) {
-	return url && url.indexOf("/__system/auth/login?popup=1") > 0;
+	return url && url.indexOf("/__system/auth/login") > 0;
 }
 
 function showAjaxLoginPopup(login_url, urls_to_match, success_func) {
 	urls_to_match = $.isArray(urls_to_match) ? urls_to_match : [urls_to_match];
+	var auto_save_bkp = auto_save;
 	
-	var MyFancyPopupLogin = new MyFancyPopupClass();
 	var popup = $('#ajax_login_popup');
 	var iframe = popup.children("iframe");
 	var iframe_on_load_func = function() {
 		var current_iframe_url = decodeURI(this.contentWindow.location.href);
 		//console.log(current_iframe_url);
+		//console.log(urls_to_match);
 		
 		if ($.inArray(current_iframe_url, urls_to_match) != -1) {
 			MyFancyPopupLogin.hidePopup();
+			auto_save = auto_save_bkp;
 			
 			if (typeof success_func == "function")
 				success_func();
@@ -246,7 +249,7 @@ function showAjaxLoginPopup(login_url, urls_to_match, success_func) {
 			var h = contents.height();
 			
 			w = w > 380 ? w : 380;
-			h = h > 320 ? h : 320;
+			h = h > 280 ? h : 280;
 			
 			iframe.css({width: w + "px", height: h + "px"});
 		}
@@ -272,7 +275,7 @@ function showAjaxLoginPopup(login_url, urls_to_match, success_func) {
 		$("body").append(popup);
 	}
 	
-	iframe[0].src = login_url;
+	iframe[0].src = login_url + (login_url.indexOf("?") > -1 ? "&" : "?") + "popup=1";
 	
 	MyFancyPopupLogin.init({
 		elementToShow: popup,

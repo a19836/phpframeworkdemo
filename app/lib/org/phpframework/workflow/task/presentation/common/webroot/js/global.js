@@ -408,7 +408,7 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 		onChangeDBTable : function(elm, do_not_confirm) {
 			elm = $(elm);
 			
-			if (do_not_confirm || confirm("This will update the UI. Do you wish to continue?")) {
+			//if (do_not_confirm || confirm("This will update the UI. Do you wish to continue?")) {
 				var task_html_element = elm.parent().closest(".page_content_task_html"); //in here I can use .page_content_task_html
 				var table = elm.val();
 				elm.attr("orig_db_table", table);
@@ -416,11 +416,11 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 				this.updateTableUI(task_html_element);
 				
 				this.updateDBTableConditionsAccordingWithSelectedDBTable(task_html_element);
-			}
+			/*}
 			else {
 				var orig_db_table = elm.attr("orig_db_table");
 				elm.val(orig_db_table ? orig_db_table : "");
-			}
+			}*/
 		},
 		
 		onChangeDBTableParent : function(elm) {
@@ -432,13 +432,14 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 		onChangeFormAction : function(elm, do_not_confirm) {
 			elm = $(elm);
 			
-			if (do_not_confirm || confirm("This will update the UI. Do you wish to continue?")) {
+			//if (do_not_confirm || confirm("This will update the UI. Do you wish to continue?")) {
 				var task_html_element = elm.parent().closest(".page_content_task_html"); //in here I can use .page_content_task_html
 				var filter_by_attributes = this.getDesignedDBTableAttributes(task_html_element);
 				this.updateTableUI(task_html_element, filter_by_attributes);
-			}
+			/*}
 			else //undo checkbox click action
 				elm.is(":checked") ? elm.removeAttr("checked").prop("checked", false) : elm.attr("checked", "checked").prop("checked", true);
+			*/
 		},
 		
 		loadTableUIAttributes : function(task_html_element, attributes) {

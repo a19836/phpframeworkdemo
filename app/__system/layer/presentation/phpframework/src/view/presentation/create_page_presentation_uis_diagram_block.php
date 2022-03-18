@@ -221,7 +221,7 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 				else
 					alert("Block created successfully");
 				
-				//Refreshing blocks folder in main tree of the admin advanced panel
+				//Refreshing entities and blocks folder in main tree of the admin advanced panel
 				if (window.parent && window.parent.parent && window.parent.parent.refreshLastNodeChilds && window.parent.parent.mytree && window.parent.parent.mytree.tree_elm) {
 					var project = window.parent.parent.$("#" + window.parent.parent.last_selected_node_id).parent().closest("li[data-jstree=\'{\"icon\":\"project\"}\']");
 					

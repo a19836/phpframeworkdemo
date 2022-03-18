@@ -24,6 +24,13 @@
 #menu_panel li {cursor:pointer; margin:0 3px; display:inline-block; font-size:14px;}
 #menu_panel .expand_left_panel {float:right; margin-top:3px;}
 #menu_panel .collapse_left_panel {float:right; margin-top:3px;}
+#menu_panel .login_info {
+	margin:3px 5px 0;
+	color:#586264;
+	font-size:80%;
+	float:right;
+	opacity:.5;
+}
 
 #left_panel .file_tree_root {width:24px; height:24px; background: url("../../img/icons.png") -202px -47px no-repeat !important;}
 #left_panel #file_tree a > label, #left_panel #file_tree a > label > label {font-weight:normal; font-style:normal;}

@@ -193,7 +193,7 @@ var menu_item_html = \'' . addcslashes(str_replace("\n", "", $menu_item_html), "
 	</div>
 	
 	<div class="els">
-		<a class="import_template_ptl" href="javascript:void(0);" onClick="importTemplatePTLCode(this, 'menu/show_menu')">Import Template PTL:</a>
+		<a class="import_template_ptl" href="javascript:void(0);" onClick="importTemplatePTLCode(this, 'menu/show_menu')">Import Template PTL</a>
 		
 		<ul class="els_tabs"></ul> <!-- WE must leave this tabs here, bc the common/settings are initing the tabs, and if this tabs will not be here, it will get the next ul which will be the .menu-widgets and then will mess the ui bc of the tabs css-->
 		

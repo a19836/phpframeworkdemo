@@ -43,14 +43,14 @@ $head = '
 			<div class="title">
 				Convert 
 				<input type="text" name="page_url" placeHolder="Page Url" />
-				<a class="icon load" onClick="loadUrl(this);" title="Load Url">Load</a>
+				<a class="icon refresh" onClick="loadUrl(this);" title="Load Url">Load</a>
 				To
 				<input type="text" name="template_name" placeHolder="Template name" />
 			</div>
 			<ul>
-				<li class="convert_to_region" title="Convert to Region"><a class="update" onClick="convertToRegion()">Convert to Region</a></li>
-				<li class="convert_to_param" title="Convert to Param"><a class="update" onClick="convertToParam()">Convert to Param</a></li>
-				<li class="save" title="Save as Template"><a class="save" onClick="saveTemplate()">Save as Template</a></li>
+				<li class="convert_to_region" title="Convert to Region"><a onClick="convertToRegion()"><i class="icon convert_to_region"></i> Convert to Region</a></li>
+				<li class="convert_to_param" title="Convert to Param"><a onClick="convertToParam()"><i class="icon convert_to_param"></i> Convert to Param</a></li>
+				<li class="save" title="Save as Template"><a onClick="saveTemplate()"><i class="icon save"></i> Save as Template</a></li>
 			</ul>
 		</header>
 	</div>'; $main_content .= '

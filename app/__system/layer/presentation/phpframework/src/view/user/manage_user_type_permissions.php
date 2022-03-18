@@ -64,7 +64,7 @@ var get_user_type_permissions_url = \'' . $project_url_prefix . 'user/get_user_t
 			<ul class="tabs">
 				<li><a href="#pages_permissions_list">Pages Permissions</a></li>
 				<li><a href="#layers_permissions_list">Layers Permissions</a></li>
-				<li><a href="#admin_uis_permissions_list">Admin UIs Permissions</a></li>
+				<li><a href="#admin_uis_permissions_list">Workspaces Permissions</a></li>
 			</ul>
 			
 			<div id="pages_permissions_list">
@@ -103,7 +103,7 @@ var get_user_type_permissions_url = \'' . $project_url_prefix . 'user/get_user_t
 			<div id="admin_uis_permissions_list">
 				<table object_type_id="' . $admin_ui_object_type_id . '">
 					<tr>
-						<th class="table_header object_id">Admin UIs</th>
+						<th class="table_header object_id">Workspaces</th>
 						<th class="table_header user_type_permission user_type_permission_' . $permissions["access"] . '">access<input type="checkbox" onClick="toggleAllPermissions(this, \'user_type_permission_' . $permissions["access"] . '\')" /></th>
 					</tr>'; foreach ($admin_uis as $object_id => $label) $main_content .= '	<tr>
 						<td class="object_id" object_id="' . $object_id . '">' . $label . '</td>

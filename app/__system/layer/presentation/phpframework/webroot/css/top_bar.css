@@ -152,6 +152,7 @@
 	background:#eee;
 	border-bottom-left-radius:5px;
 	border-bottom-right-radius:5px;
+	overflow:hidden; /* otherwise the border-radius will not be show */
 	display:none;
 }
 .top_bar li:hover ul,
@@ -638,7 +639,7 @@ body .layout_ui_editor {
 	--tabs-item-border:#ccc;
 	--tabs-item-bg:#fff;
 	--tabs-item-active-border:#ccc;
-	--tabs-item-active-bg:#999;
+	--tabs-item-active-bg:#eee;
 	--tabs-item-hover-color:#333;
 	
 	/* menu-widgets */
@@ -660,7 +661,7 @@ body .layout_ui_editor {
 	/* menu-settings */
 	--menu-settings-bg:#fff;
 	
-	--menu-settings-input-border:#eee;
+	--menu-settings-input-border:#ccc;
 	--menu-settings-input-bg:#fff;
 	--menu-settings-input-color:#333;
 	--menu-settings-select-option-bg:#fff;

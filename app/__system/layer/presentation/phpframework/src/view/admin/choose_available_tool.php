@@ -29,9 +29,9 @@ var is_popup = ' . ($is_popup ? 1 : 0) . ';
 	<div class="title">Tools</div>
 	<ul>
 		' . ($is_switch_admin_ui_allowed ? '<li class="switch_admin_ui" onClick="return goTo(\'' . $project_url_prefix . 'admin/admin_uis\', event, 1)">
-			<label>Switch Admin UI</label>
+			<label>Switch Workspace</label>
 			<div class="photo"></div>
-			<div class="description">Switch to other Admin UI more fitted to your technical skills.</div>
+			<div class="description">Switch to other Workspace more fitted to your technical skills.</div>
 		</li>' : '') . '
 		<li class="switch_project" onClick="return goTo(\'' . $project_url_prefix . 'admin/choose_available_project?redirect_path=admin\', event, 1)">
 			<label>Switch Project</label>

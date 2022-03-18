@@ -19,7 +19,8 @@
 }
 .echostr_settings > .editor {
 	width:100%;
-	height:350px;
+	height:calc(100vh - 100px);
+	min-height:350px;
 	padding:0;
 }
 .echostr_settings textarea {
@@ -28,11 +29,12 @@
 }
 .echostr_settings textarea.module_settings_property {
 	display:none;
-}
+} 
 
 /* layout_ui_editor */
 .echostr_settings .layout_ui_editor {
-	height:315px;
+	height:calc(100% - 40px);
+	min-height:315px;
 	border:1px solid #ccc;
 	z-index:101;
 }

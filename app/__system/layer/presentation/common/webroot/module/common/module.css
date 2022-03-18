@@ -213,8 +213,9 @@ input, select, textarea {
 	
 	font-family: Verdana,Arial,sans-serif;
 	color:#555555;
-	font-weight:bold;
+	font-weight:normal;
 	font-style:italic;
+	font-size:80%;
 	text-align:center;
 }
 .module_edit td, .module_list td {

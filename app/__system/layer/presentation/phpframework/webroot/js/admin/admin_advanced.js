@@ -1,6 +1,9 @@
 var iframe_overlay = null; //To be used by sub-pages
 
 $(function() {
+	//change label "Vendors" to "Biblioteca Externa"
+	$("#file_tree li.main_node_vendor > a > label").html("Biblioteca Externa");
+	
 	//prepare menu panel
 	/*var menu_panel = $('#menu_panel');
 	
@@ -59,10 +62,13 @@ $(function() {
 		appendTo: 'body',
 		containment: $("#hide_panel").parent(),
 		cursor: 'move',
+		cancel: '.button',
 		start : function(event, ui) {
-			$('#right_panel iframe').hide(); // We need to hide the iframe bc the draggable event has some problems with iframes
-			
-			return $(this).children(".button").hasClass("minimize");
+			if ($(this).children(".button").hasClass("minimize")) {
+				$('#right_panel iframe').hide(); // We need to hide the iframe bc the draggable event has some problems with iframes
+				return true;
+			}
+			return false;
 		},
 		drag : function(event, ui) {
 			updatePanelsAccordingWithHidePanel();
@@ -178,6 +184,31 @@ function goToHandler(url, a, attr_name, originalEvent) {
 				console.log(e);
 		}
 	}, 100);
+}
+
+function goBack() {
+	var iframe = $("#right_panel iframe")[0];
+	var win = iframe.contentWindow;
+	
+	if (win)
+		win.history.go(-1);
+}
+
+function refreshIframe() {
+	$("#right_panel .iframe_overlay").show();
+	
+	var iframe = $("#right_panel iframe")[0];
+	var doc = (iframe.contentWindow || iframe.contentDocument);
+	doc = doc.document ? doc.document : doc;
+	
+	try {
+		iframe.src = doc.location;
+	}
+	catch(e) {
+		//sometimes gives an error bc of the iframe beforeunload event. This doesn't matter, but we should catch it and ignore it.
+		if (console && console.log)
+			console.log(e);
+	}
 }
 
 function toggleTreeLayout(elm, tree_layout) {

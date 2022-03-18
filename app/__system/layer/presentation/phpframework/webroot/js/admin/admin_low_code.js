@@ -51,10 +51,13 @@ $(function() {
 		appendTo: 'body',
 		containment: $("#hide_panel").parent(),
 		cursor: 'move',
+		cancel: '.button',
 		start : function(event, ui) {
-			$('#right_panel iframe').hide(); // We need to hide the iframe bc the draggable event has some problems with iframes
-			
-			return $(this).children(".button").hasClass("minimize");
+			if ($(this).children(".button").hasClass("minimize")) {
+				$('#right_panel iframe').hide(); // We need to hide the iframe bc the draggable event has some problems with iframes
+				return true;
+			}
+			return false;
 		},
 		drag : function(event, ui) {
 			updatePanelsAccordingWithHidePanel();

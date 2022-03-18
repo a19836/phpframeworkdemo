@@ -21,36 +21,43 @@
 	background-color:#FFF;
 }
 .manage_records table th {
-	font-weight:bold;
-	font-size:10px;
 	height:20px;
 	line-height:20px;
-	color:#999;
 	padding:0 5px;
+	border-right:1px solid #eee;
+	color:#999;
+	font-size:10px;
 }
 .manage_records table th .add {
 	font-size:16px;
 }
 .manage_records table th .sort,
   .manage_records table th .unsort {
-	width:10px;
+	width:16px;
 	height:12px;
-	margin:0;
+	margin:5px 0 0;
 	display:inline-block;
-	float:none;
+	float:right;
 	vertical-align:middle;
 }
 .manage_records table th .sort::before {
-	content:"\f0dc";
+	content:"\f175";
 	vertical-align:top;
+	color:#999;
+}
+.manage_records table th .sort::after {
+	content:"\f176";
+	vertical-align:top;
+	top:0;
+	left:7px;
+	color:#999;
+	font-size:inherit;
 }
 .manage_records table th .sort.sort_asc::before {
-	content:"\f0de";
-	vertical-align:baseline;
+	color:#000;
 }
-.manage_records table th .sort.sort_desc::before {
-	content:"\f0dd";
-	vertical-align:top;
+.manage_records table th .sort.sort_desc::after {
+	color:#000;
 }
 .manage_records table th .unsort::before {
 	content:"\f00d";
@@ -78,7 +85,8 @@
 	border:0;
 }
 .manage_records table td {
-	border:1px solid #CCC;
+	border-top:1px solid #eee;
+	border-right:1px solid #eee;
 	height:20px;
 	line-height:20px;
 	color:#333;

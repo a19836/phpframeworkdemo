@@ -19,7 +19,7 @@
  */
 
 if (!$is_admin_ui_expert_allowed) { echo '<script>
-		alert("You don\'t have permission to access this Admin UI!");
+		alert("You don\'t have permission to access this Workspace!");
 		document.location="' . $project_url_prefix . 'auth/logout";
 	</script>'; die(); } $head = '
 <!-- Add Fontawsome Icons CSS -->
