@@ -22,6 +22,7 @@ var shown_module_info_id = null;
 var show_module_info_timeout = null;
 var resize_iframe_timeout = null;
 
+var init_page_and_template_layout_interval_id = null;
 var init_page_and_template_layout_timeout_id = null;
 
 var update_layout_iframe_from_settings_func = null;
@@ -306,7 +307,7 @@ function onPresentationIncludeImageUrlTaskChooseFile(elm) {
 	};
 }
 
-function openTemplateSamples(elm) {
+function openTemplateSamples() {
 	if (!template_samples_url) {
 		alert("There is any url to open popup with the template samples. Please talk with the system administrator.");
 		return;
@@ -371,11 +372,11 @@ function createRegionsBlocksHtmlEditor(parent) {
 		var type = select.val();
 		
 		if (type == "html")
-			createRegionBlockHtmlEditor( select.parent().children(".block_html") );
+			createRegionBlockHtmlEditor(select.parent().children(".block_html"));
 	});
 }
 
-function createRegionBlockHtmlEditor(block_html) {
+function createRegionBlockHtmlEditor(block_html, opts) {
 	block_html = block_html instanceof jQuery ? block_html : $(block_html);
 	var is_wyswyg_editor = block_html.hasClass("editor");
 	
@@ -395,18 +396,20 @@ function createRegionBlockHtmlEditor(block_html) {
 			
 			editor_elm.html(textarea.val());
 			
-			var tinymce_opts = getTinyMCEOptions(block_html);
-			editor_elm.tinymce(tinymce_opts);
+			if (!hasRegionBlockHtmlEditor(block_html)) {
+				var tinymce_opts = getTinyMCEOptions(block_html, opts);
+				editor_elm.tinymce(tinymce_opts);
+			}
 		}
 	}
 }
 
-function getTinyMCEOptions(block_html) {
-	block_html = block_html instanceof jQuery ? block_html : $(block_html);
+function getTinyMCEOptions(block_html, opts) {
+	block_html = block_html instanceof jQuery ? block_html[0] : block_html;
 	
 	return {
 		//theme: 'modern',
-		//width: block_html.width(),
+		//width: $(block_html).width(),
 		plugins: [
 			'advlist anchor autolink autoresize link image lists charmap preview hr pagebreak',
 			'searchreplace wordcount visualblocks visualchars code insertdatetime media nonbreaking pagebreak',
@@ -437,19 +440,22 @@ function getTinyMCEOptions(block_html) {
 		setup: function(editor) {
 			editor.on('init', function(e) {
 				//all your after init logics here.
-				block_html.attr("tinymce_inited", 1);
+				block_html.setAttribute("tinymce_inited", 1);
+				
+				if (opts && typeof opts.ready_func == "function")
+					opts.ready_func();
 			});
 			
 			editor.on('change', function(e) {
 				//Note that this method will execute inside of the iframe too, so we must call the right onBlurRegionBlock
-				var textarea = block_html.children("textarea");
-				var doc = block_html[0].ownerDocument || document;
+				var textarea = filterSelectorInNodes(block_html.childNodes, "textarea");
+				var doc = block_html.ownerDocument || document;
 				var win = doc.defaultView || doc.parentWindow;
 				var str = getRegionBlockHtmlEditorValue(block_html);
 				
-				textarea.val(str);
+				textarea.value = str;
 				
-				win.onBlurRegionBlock(textarea[0]);
+				win.onBlurRegionBlock(textarea);
 			});
 		},
 	};
@@ -593,19 +599,34 @@ function loadAvailableBlocksListInRegionsBlocks(parent, opts) {
 			item = $(item);
 			var block = item.val();
 			var option = item.find("option:selected");
-			var proj = option.attr("project");
+			var region_block_type = item.parent().children(".region_block_type");
+			var block_input = item.parent().children("input.block");
+			var block_input_value = block_input.val();
 			
 			item.html(html);
 			
-			if (block != "" && option[0]) {
-				var region_block_type = item.parent().children(".region_block_type");
+			/*if (block == "" && region_block_type.val() == "string" && block_input_value != "" && selected_project_id &&	available_blocks_list.hasOwnProperty(selected_project_id) && $.isArray(available_blocks_list[selected_project_id]) && $.inArray(block_input_value, available_blocks_list[selected_project_id]) != -1) {
+				item.val(block_input_value);
+				item.find("option[value='" + block_input_value + "']").filter("[project='" + selected_project_id + "']").first().attr("selected", "selected");
 				
-				if (available_blocks_list.hasOwnProperty(proj) && $.isArray(available_blocks_list[proj]) && $.inArray(block, available_blocks_list[proj]) != -1) 
+				region_block_type.val("options");
+				region_block_type.trigger("change");
+			}
+			else */if (block != "" && option[0] && region_block_type.val() != "") { //if region_block_type.val() == "", it means is a code type, so we should not do anything in this case!
+				var proj = option.attr("project");
+				
+				if (available_blocks_list.hasOwnProperty(proj) && $.isArray(available_blocks_list[proj]) && $.inArray(block, available_blocks_list[proj]) != -1) {
 					item.find("option[value='" + block + "']").filter("[project='" + proj + "']").first().attr("selected", "selected");
+					
+					if (region_block_type.val() == "string") {
+						region_block_type.val("options");
+						region_block_type.trigger("change");
+					}
+				}
 				else if (region_block_type.val() == "options") {
 					region_block_type.val("string");
 					region_block_type.trigger("change");
-					item.parent().children(".block").val(block); //puts old block into the input after the onChangeRegionBlockType executed, otherwise this value will be overwrited.
+					block_input.val(block); //puts old block into the input after the onChangeRegionBlockType executed, otherwise this value will be overwrited.
 				}
 			}
 			
@@ -966,9 +987,11 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 							rb_indexes[rm_index_key]++;
 						else
 							rb_indexes[rm_index_key] = 0;
+						
+						rb_index = rb_indexes[rm_index_key];
 					}
 					
-					var rb_html = getRegionBlockHtml(region, block, proj, is_html, $.isNumeric(rb_index) ? rb_index : rb_indexes[rm_index_key]);
+					var rb_html = getRegionBlockHtml(region, block, proj, is_html, rb_index);
 					region_blocks.append(rb_html);
 				}
 			}
@@ -1000,10 +1023,12 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 					rb_indexes[rm_index_key]++;
 				else
 					rb_indexes[rm_index_key] = 0;
+				
+				rb_index = rb_indexes[rm_index_key];
 			}
 			
-			var rb_html = getRegionBlockHtml(region, block, proj, is_html, $.isNumeric(rb_index) ? rb_index : rb_indexes[rm_index_key]);
-	
+			var rb_html = getRegionBlockHtml(region, block, proj, is_html, rb_index);
+			
 			other_region_blocks.append(rb_html);
 			exists = true;
 		}
@@ -1098,12 +1123,12 @@ function getRegionBlockHtml(region, block, block_project, is_html, rb_index) {
 		block_text.children("textarea").val(stripslashes(bt));
 		
 		var apbl = available_blocks_list ? available_blocks_list[bp] : null;
-		var exists_in_blocks = !b || (apbl && $.inArray(b, apbl) != -1) ? true : false;
+		var exists_in_blocks = (apbl && $.inArray(b, apbl) != -1) ? true : false;
 		
-		if (exists_in_blocks) 
+		if (b == "" || exists_in_blocks) 
 			select.val("options");
 		else {
-			var block_type = getArgumentType(block);
+			var block_type = getArgumentType(block); //if no block, by default sets to string
 			select.val(block_type);
 			
 			rb_html.addClass(b.indexOf("\n") != -1 ? "is_text" : "is_input");
@@ -1434,9 +1459,11 @@ function onChangeRegionBlockType(elm) {
 		p.removeClass("is_input").removeClass("is_select").removeClass("is_text").addClass("is_html has_edit");
 		
 		if (!hasRegionBlockHtmlEditor(block_html))
-			createRegionBlockHtmlEditor(block_html);
-	
-		updateLayoutIframeFromSettingsField();
+			createRegionBlockHtmlEditor(block_html, {ready_func : function() {
+				updateLayoutIframeFromSettingsField();
+			}});
+		else
+			updateLayoutIframeFromSettingsField();
 	}
 	else {
 		if (!p.hasClass("is_input") && !p.hasClass("is_html")) //very important bc the getRegionBlockHtml triggers this function with all the values already setted. if we don't do this check it will puty the fild in blank
@@ -2342,6 +2369,7 @@ function updateLayoutIframeFromSettings(iframe, data, iframe_html_to_parse) {
 	
 	iframe_url = iframe_url.replace(/\n/g, "%0A"); //replaces end-lines
 	//console.log(iframe_url);
+	//console.log(data);
 	
 	//reset iframe_parent before set the new height. This is bc if the previous loaded template was too long than this new template will stay with the height of the previous one and will not update the correct height from the new iframe body
 	iframe_parent.css("height", ""); 
@@ -2557,6 +2585,12 @@ function initPageAndTemplateLayout(main_parent_elm, main_layout_elm, on_ready_ca
 		};
 		iframe.load(function() {
 			$(iframe[0].contentWindow).unload(iframe_unload_func);
+			
+			//remove setTimeout and setInterval bc the on_ready_callback will be called now and don't need to be called in the future!
+			init_page_and_template_layout_interval_id && clearInterval(init_page_and_template_layout_interval_id);
+			init_page_and_template_layout_timeout_id && clearTimeout(init_page_and_template_layout_timeout_id);
+			init_page_and_template_layout_interval_id = init_page_and_template_layout_timeout_id = null;
+			
 			main_parent_elm.removeClass("inactive");
 			
 			onLoadIframeTabContentTemplateLayout();
@@ -2566,9 +2600,12 @@ function initPageAndTemplateLayout(main_parent_elm, main_layout_elm, on_ready_ca
 		});
 		$(iframe[0].contentWindow).unload(iframe_unload_func);
 		
-		init_page_and_template_layout_timeout_id = setInterval(function() {
+		init_page_and_template_layout_interval_id = setInterval(function() {
 			if (iframe[0].contentWindow && typeof iframe[0].contentWindow.getTemplateRegionsBlocks == "function") {
-				init_page_and_template_layout_timeout_id && clearInterval(init_page_and_template_layout_timeout_id);
+				//remove setTimeout and setInterval bc the on_ready_callback will be called now and don't need to be called in the future!
+				init_page_and_template_layout_interval_id && clearInterval(init_page_and_template_layout_interval_id);
+				init_page_and_template_layout_timeout_id && clearTimeout(init_page_and_template_layout_timeout_id);
+				init_page_and_template_layout_interval_id = init_page_and_template_layout_timeout_id = null;
 				
 				main_parent_elm.removeClass("inactive");
 				
@@ -2577,8 +2614,10 @@ function initPageAndTemplateLayout(main_parent_elm, main_layout_elm, on_ready_ca
 			}
 		}, 700); //0.7 secs
 		
-		setTimeout(function() {
-			init_page_and_template_layout_timeout_id && clearInterval(init_page_and_template_layout_timeout_id);
+		init_page_and_template_layout_timeout_id = setTimeout(function() {
+			//remove setTimeout and setInterval bc the on_ready_callback will be called now and don't need to be called in the future!
+			init_page_and_template_layout_interval_id && clearInterval(init_page_and_template_layout_interval_id);
+			init_page_and_template_layout_interval_id = init_page_and_template_layout_timeout_id = null;
 			
 			main_parent_elm.removeClass("inactive");
 			
@@ -2649,8 +2688,8 @@ function resizeSettingsPanel(main_parent_elm, top) {
 	settings.removeClass("resizing");
 	settings.css({top: "", left: "", bottom: ""}); //remove top, left and bottom from style attribute in #settings_header
 	
-	if (top < 30) { //30 is the size of #top_bar (30px)
-		height = wh - 30;
+	if (top < 40) { //40 is the size of #top_bar (40px)
+		height = wh - 40;
 		
 		settings.css("height", height + "px");
 	}
@@ -3135,7 +3174,7 @@ function onClickLayoutEditorUITaskWorkflowTab(elm) {
 
 /* CODE LAYOUT UI EDITOR */
 
-function initCodeLayoutUIEditor(main_obj, save_func) {
+function initCodeLayoutUIEditor(main_obj, save_func, ready_func) {
 	chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree = new MyTree({
 		multiple_selection : false,
 		ajax_callback_before : prepareLayerNodes1,
@@ -3162,7 +3201,7 @@ function initCodeLayoutUIEditor(main_obj, save_func) {
 	chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer.init("layout_ui_editor_right_container");
 	
 	var textarea = main_obj.find(".layout_ui_editor textarea")[0];
-	var editor = createCodeLayoutUIEDitorEditor(textarea, {save_func: save_func});
+	var editor = createCodeLayoutUIEDitorEditor(textarea, {save_func: save_func, ready_func: ready_func});
 	if (editor)
 		editor.focus();
 }
@@ -3391,7 +3430,7 @@ function updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block_id, 
 	}
 }
 
-function createCodeLayoutUIEDitorEditor(textarea, options) {
+function createCodeLayoutUIEDitorEditor(textarea, opts) {
 	if (textarea) {
 		var parent = $(textarea).parent();
 		
@@ -3409,8 +3448,9 @@ function createCodeLayoutUIEDitorEditor(textarea, options) {
 			var ptl_ui_creator_var_name = "PTLLayoutUIEditor_" + Math.floor(Math.random() * 1000);
 			var PtlLayoutUIEditor = new LayoutUIEditor();
 			PtlLayoutUIEditor.options.ui_element = ui;
-			PtlLayoutUIEditor.options.template_source_editor_save_func = options && options.save_func ? options.save_func : null;
+			PtlLayoutUIEditor.options.template_source_editor_save_func = opts && opts.save_func ? opts.save_func : null;
 			PtlLayoutUIEditor.options.auto_convert = typeof auto_convert != "undefined" && auto_convert;
+			PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorPanels;
 			
 			if (typeof onIncludePageUrlTaskChooseFile == "function")
 				PtlLayoutUIEditor.options.on_choose_page_url_func = function(elm) {
@@ -3493,6 +3533,8 @@ function createCodeLayoutUIEDitorEditor(textarea, options) {
 		   		//prepare full-screen option
 				options.find(".full-screen").click(function() {
         				toggleEditorFullScreen();
+	        			
+	        			PtlLayoutUIEditor.showFixedMenuSettings();
         				
         				/*if (luie.hasClass("full-screen")) {
         					var z_index = luie.css("z-index");
@@ -3511,6 +3553,9 @@ function createCodeLayoutUIEDitorEditor(textarea, options) {
         			});
 
 				//initResizeCodeLayoutUIEditorRightContainer(PtlLayoutUIEditor);
+				
+				if (opts && opts.ready_func)
+					opts.ready_func();
 			};
 			window[ptl_ui_creator_var_name] = PtlLayoutUIEditor;
 			PtlLayoutUIEditor.init(ptl_ui_creator_var_name);
@@ -3533,7 +3578,27 @@ function createCodeLayoutUIEDitorEditor(textarea, options) {
 	}
 }
 
+//To be used in the toggleFullScreen function
+function onToggleCodeEditorFullScreen(in_full_screen, main_obj) {
+	setTimeout(function() {
+		var PtlLayoutUIEditor = main_obj.find(".layout_ui_editor").data("LayoutUIEditor");
+		PtlLayoutUIEditor.showFixedMenuSettings();
+		PtlLayoutUIEditor.MyTextSelection.refreshMenu();
+	}, 500);
+}
+
+function onResizeCodeLayoutUIEditorPanels(props) {
+	var options_left = props.ui.find(" > .options > .options-left");
+	
+	if (props.is_reverse)
+		options_left.css({"left": "calc(" + props.perc + "% + " + props.resize_panels_width + "px)"});
+	else
+		options_left.css({"right": "calc(100% - " + props.perc + "%)"});
+}
+
 function onResizeCodeLayoutUIEditorWithRightContainer(props) {
+	onResizeCodeLayoutUIEditorPanels(props);
+	
 	var layout_ui_editor_right_container = props.ui.children(".layout_ui_editor_right_container");
 	
 	if (props.is_reverse)

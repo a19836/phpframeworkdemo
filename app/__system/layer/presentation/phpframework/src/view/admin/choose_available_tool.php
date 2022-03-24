@@ -90,23 +90,28 @@ var is_popup = ' . ($is_popup ? 1 : 0) . ';
 			<div class="photo"></div>
 			<div class="description">Show framework info.</div>
 		</li>
+		<li class="logout" onClick="return goTo(\'' . $project_url_prefix . 'auth/logout\', event, 1)">
+			<label>Logout</label>
+			<div class="photo"></div>
+			<div class="description">Logout</div>
+		</li>
 		<li class="delimiter"></li>
 		
 		<li class="doc_book" onClick="return goTo(\'' . $project_url_prefix . 'docbook/\', event)">
-			<label>Doc Book</label>
+			<label>Internal Library</label>
 			<div class="photo"></div>
 			<div class="description">Go to our Library Doc-Book</div>
-		</li>'; if ($layers) { $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; if ($layers["others"]["other"]) $main_content .= '
+		</li>'; if ($layers) { $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; if (isset($layers["vendors"]["vendor"])) $main_content .= '
+			<li class="vendor_files" onClick="return goTo(\'' . $project_url_prefix . 'phpframework/presentation/list?item_type=vendor\', event)">
+				<label>External Library</label>
+				<div class="photo"></div>
+				<div class="description">Extend the framework with the upload of external libraries, new workflow tasks, new ui widgets and much more...</div>
+			</li>'; if ($layers["others"]["other"]) $main_content .= '
 		<li class="other_files" onClick="return goTo(\'' . $project_url_prefix . 'phpframework/presentation/list?item_type=other\', event)">
 			<label>Other Files</label>
 			<div class="photo"></div>
 			<div class="description">View, Edit and Upload other files that you may wish to include here...</div>
 		</li>'; if (isset($layers["vendors"]["vendor"])) $main_content .= '
-			<li class="vendor_files" onClick="return goTo(\'' . $project_url_prefix . 'phpframework/presentation/list?item_type=vendor\', event)">
-				<label>Vendor Files</label>
-				<div class="photo"></div>
-				<div class="description">Extend the framework with the upload of external libraries, new workflow tasks, new ui widgets and much more...</div>
-			</li>
 			<li class="dao_files" onClick="return goTo(\'' . $project_url_prefix . 'phpframework/presentation/list?item_type=dao\', event)">
 				<label>DAO Files</label>
 				<div class="photo"></div>

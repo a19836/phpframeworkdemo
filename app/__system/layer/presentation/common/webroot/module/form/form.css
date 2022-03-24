@@ -1,7 +1,9 @@
-.title {
-	margin-bottom:0px;
+/* TOP BAR */
+.top_bar > header {
+	z-index:5;
 }
 
+/* BLOCK OBJ */
 .block_obj {
 	width:825px; /* bc of the createformtask */
 }
@@ -51,30 +53,36 @@
     position: fixed;
     top:0px;
 }
-.module_form_settings #ui .taskflowchart {
+.module_form_settings #ui > .taskflowchart {
 	min-height:400px;
+	overflow:visible;
 }
-.module_form_settings #ui.tasks_flow_full_screen .taskflowchart {
+.module_form_settings #ui.tasks_flow_full_screen > .taskflowchart {
 	height:100% !important;
 }
-.module_form_settings #ui .taskflowchart .workflow_menu {
-	top:7px;
-	right:120px;
-	z-index:999999;
+.module_form_settings #ui > .taskflowchart > .workflow_menu {
+	position:absolute;
+	top:-25px;
+	right:5px;
+	z-index:4;
 }
-.module_form_settings #ui .taskflowchart .tasks_menu {
+.module_form_settings #ui > .taskflowchart > .workflow_menu:before {
+	font-size:14px;
+	color:#666;
+}
+.module_form_settings #ui > .taskflowchart > .tasks_menu {
 	width:130px;
 }
-.module_form_settings #ui .taskflowchart .tasks_menu_hide {
+.module_form_settings #ui > .taskflowchart > .tasks_menu_hide {
 	right:130px;
 }
-.module_form_settings #ui .taskflowchart .tasks_flow {
+.module_form_settings #ui > .taskflowchart > .tasks_flow {
 	right:135px;
 }
-.module_form_settings #ui .taskflowchart .tasks_menu > ul > li:nth-child(2) {
+.module_form_settings #ui > .taskflowchart > .tasks_menu > ul > li:nth-child(2) {
 	display:none;
 }
-.module_form_settings #ui .taskflowchart .tasks_menu .tasks_group_label:hover:after {
+.module_form_settings #ui > .taskflowchart > .tasks_menu .tasks_group_label:hover:after {
 	display:none;
 }
 
@@ -406,6 +414,7 @@
 }
 .module_form_settings .database-action-body .relationship .query .taskflowchart .workflow_menu {
 	width:100%;
+	display:block !important;
 }
 .module_form_settings .database-action-body .relationship .query .taskflowchart .workflow_menu .toggle_ui {
 	display:none;
@@ -1202,6 +1211,10 @@
   .module_form_settings .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_task_properties > .expand_collapse_icon,
   .module_form_settings .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_connection_properties > .expand_collapse_icon {
 	display:none;
+}
+.module_form_settings .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_task_properties > .generic_buttons,
+  .module_form_settings .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_connection_properties > .generic_buttons {
+	right:30px !important;
 }
 
 .module_form_settings .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_task_properties.maximize_properties, 

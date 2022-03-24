@@ -114,8 +114,8 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 			margin:100px auto 0 auto;
 			
 			/* generic */
-			--main-bg:#d5e3e4;
-			--main-color:#888;
+			--main-editor-bg:#d5e3e4;
+			--main-editor-color:#888;
 			
 			/* tabs */
 			--tabs-bg:#fff;

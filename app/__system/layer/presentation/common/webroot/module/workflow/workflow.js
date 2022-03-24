@@ -133,7 +133,7 @@ $(function () {
 	
 	$(".top_bar li.auto_save_convert_settings").remove(); //remove auto_save_menu bc we will add another one below...
 	var auto_save_icon = $("#code > .code_menu li.auto_save_convert_settings").clone();
-	$(".top_bar li.save").before(auto_save_icon);
+	$(".top_bar li.show_advanced_ui").after(auto_save_icon);
 	
 	//load workflow
 	onLoadTaskFlowChartAndCodeEditor();

@@ -88,10 +88,17 @@ GetBeanObjectTaskPropertyObj.bean_names_options = ' . json_encode($bean_names_op
 		<header>
 			<div class="title">Edit Template "' . pathinfo($path, PATHINFO_FILENAME) . '"</div>
 			<ul>
-				<li class="update_layout_from_settings" title="Update Settings to Layout UI"><a onClick="updateCodeEditorLayoutFromSettings( $(\'.template_obj\') )"><i class="icon update_layout_from_settings"></i> Update Settings to Layout UI</a></li>
-				<li class="show_advanced_ui" title="Switch to Advanced UI"><a href="?' . $query_string . '&edit_template_type=advanced"><i class="icon show_advanced_ui"></i> Switch to Advanced UI</a></li>
 				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save Template"><a onClick="saveTemplate()"><i class="icon save"></i> Save</a></li>
+				<li class="sub_menu">
+					<i class="icon sub_menu"></i>
+					<ul>
+						<li class="show_advanced_ui" title="Switch to Advanced UI"><a href="?' . $query_string . '&edit_template_type=advanced"><i class="icon show_advanced_ui"></i> Switch to Advanced UI</a></li>
+						<li class="update_layout_from_settings" title="Update Settings to Layout UI"><a onClick="updateCodeEditorLayoutFromSettings( $(\'.template_obj\') )"><i class="icon update_layout_from_settings"></i> Update Settings to Layout UI</a></li>
+						<li class="view_template_samples" title="View Template Samples"><a onClick="openTemplateSamples()"><i class="icon view_template_samples"></i> View Template Samples</a></li>
+						<li class="dummy_elm_to_add_auto_save_options"></li>
+					</ul>
+				</li>
 			</ul>
 		</header>
 	</div>'; if ($obj_data) { $code = $obj_data["code"]; $doc_type_props = WorkFlowPresentationHandler::getHtmlTagProps($code, "!DOCTYPE"); $html_props = WorkFlowPresentationHandler::getHtmlTagProps($code, "html"); $head_props = WorkFlowPresentationHandler::getHtmlTagProps($code, "head", array("get_inline_code" => true)); $body_props = WorkFlowPresentationHandler::getHtmlTagProps($code, "body", array("get_inline_code" => true)); $code_exists = !empty(trim($code)); if ($code_exists && !$html_props["inline_code"] && !$head_props["inline_code"] && !$body_props["inline_code"]) $body_props["inline_code"] = $code; $is_code_valid = !$code_exists || $html_props["inline_code"] || $html_props["html_attributes"] || $head_props["inline_code"] || $head_props["html_attributes"] || $body_props["inline_code"] || $body_props["html_attributes"]; $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, null, null, null, null, null, $presentation_brokers); $main_content .= CMSPresentationLayerUIHandler::getChoosePresentationIncludeFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $presentation_brokers); $common_webroot_path = $EVC->getWebrootPath($EVC->getCommonProjectName()); $ui_menu_widgets_html = WorkFlowPresentationHandler::getUIEditorWidgetsHtml($common_webroot_path, $project_common_url_prefix, $webroot_cache_folder_path, $webroot_cache_folder_url); $ui_menu_widgets_html .= WorkFlowPresentationHandler::getExtraUIEditorWidgetsHtml($common_webroot_path, $EVC->getViewsPath() . "presentation/common_editor_widget/", $project_url_prefix . "widget/", $webroot_cache_folder_path, $webroot_cache_folder_url); $ui_menu_widgets_html .= WorkFlowPresentationHandler::getUserUIEditorWidgetsHtml($common_webroot_path, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $template_region_block_html_editor_ui_menu_widgets_html = $ui_menu_widgets_html; $ui_menu_widgets_html .= WorkFlowPresentationHandler::getExtraUIEditorWidgetsHtml($common_webroot_path, $EVC->getViewsPath() . "presentation/view_editor_widget/", $project_url_prefix . "widget/", $webroot_cache_folder_path, $webroot_cache_folder_url); $ui_menu_widgets_html .= WorkFlowPresentationHandler::getExtraUIEditorWidgetsHtml($common_webroot_path, $EVC->getViewsPath() . "presentation/template_editor_widget/", $project_url_prefix . "widget/", $webroot_cache_folder_path, $webroot_cache_folder_url); $main_content .= CMSPresentationLayerUIHandler::getTemplateRegionBlockHtmlEditorPopupHtml($template_region_block_html_editor_ui_menu_widgets_html); $main_content .= '
@@ -125,7 +132,7 @@ GetBeanObjectTaskPropertyObj.bean_names_options = ' . json_encode($bean_names_op
 		<div class="regions_blocks_includes_settings_overlay"></div>
 		<div class="code_editor_settings regions_blocks_includes_settings collapsed" id="code_editor_settings">
 			<div class="settings_header">
-				Settings
+				Main Settings
 				<div class="icon maximize" onClick="toggleSettingsPanel(this)">Toggle</div>
 			</div>
 			

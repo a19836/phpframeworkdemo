@@ -150,9 +150,10 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 			<div class="title">
 				' . $title . ' <input class="name" type="text" value="' . ($obj_data ? $obj_data["name"] : "") . '" placeHolder="Name" title="Name" />
 			</div>
-			<!--ul class="dropdown">
+			<ul>
+				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save"><a onClick="' . $js_save_func_name . '()"><i class="icon save"></i> Save</a></li>
-			</ul-->
+			</ul>
 		</header>
 	</div>'; if ($obj_data || (!$method_id && $ft == "class_method") || (!$function_id && $ft == "function")) { $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $db_brokers, $data_access_brokers, $ibatis_brokers, $hibernate_brokers, $business_logic_brokers, $presentation_brokers); $main_content .= '
 	<div class="file_class_method_obj with_top_bar_tab">
@@ -163,7 +164,7 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 		
 		<div id="settings" class="' . $ft . '_settings collapsed">
 			<div class="settings_header">
-				Settings
+				Main Settings
 				<div class="icon maximize" onClick="toggleSettingsPanel(this)">Toggle</div>
 			</div>'; if ($file_type == "edit_file_class_method") { $main_content .= '
 			<div class="type">

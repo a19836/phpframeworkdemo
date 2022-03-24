@@ -61,7 +61,13 @@ var new_include_html = \'' . str_replace("'", "\\'", str_replace("\n", "", WorkF
 			<div class="title">Manage Includes</div>
 			<ul>
 				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
-				<li class="save" title="Save Query"><a onClick="saveIncludes()"><i class="icon full_screen"></i> Save</a></li>
+				<li class="save" title="Save"><a onClick="saveIncludes()"><i class="icon save"></i> Save</a></li>
+				<li class="sub_menu">
+					<i class="icon sub_menu"></i>
+					<ul>
+						<li class="dummy_elm_to_add_auto_save_options"></li>
+					</ul>
+				</li>
 			</ul>
 		</header>
 	</div>'; $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $db_brokers, $data_access_brokers, $ibatis_brokers, $hibernate_brokers, $business_logic_brokers, $presentation_brokers); $main_content .= '

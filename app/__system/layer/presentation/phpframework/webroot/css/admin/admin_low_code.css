@@ -60,6 +60,9 @@ body {
 #menu_panel .icon:hover {
 	opacity:.6;
 }
+#menu_panel .icon.logout {
+	margin-right:0;
+}
 
 /* LEFT PANEL */
 #left_panel {
@@ -92,8 +95,8 @@ body {
 #left_panel > .tabs .tab {height:30px; box-sizing:border-box; padding:2px 5px 5px;}
 #left_panel > .tabs .tab:not(.ui-tabs-active) {margin-top:-4px; background:#f7f7f7;}
 #left_panel > .tabs .tab.ui-tabs-active {margin-top:-3px;}
-#left_panel > .tabs .tab.tab_vendors {float:right; right:36px;}
-#left_panel > .tabs .tab.tab_settings {float:right; right:-30px;}
+#left_panel > .tabs .tab.tab_library {float:right;}
+#left_panel > .tabs .tab.tab_settings {float:right;}
 #left_panel > .tabs .tab a {padding:0;}
 #left_panel > .tabs .tab a .tab_icon {display:inline-block; margin:0;}
 #left_panel > .tabs .tab a .tab_icon.ui-state-active {background:#fff;}
@@ -116,7 +119,7 @@ body {
 }
 #left_panel > .tabs a i.main_node_db_layers::before {
 	content:"\f51e";
-	color:#f5df86;
+	color:#d3b12a;
 }
 #left_panel > .tabs a i.main_node_db_layers::after {
 	content:"\f1e6";
@@ -126,7 +129,7 @@ body {
 }
 #left_panel > .tabs a i.main_node_data_access_layers::before {
 	content:"\f5fd";
-	color:#f5df86;
+	color:#d3b12a;
 }
 #left_panel > .tabs a i.main_node_data_access_layers::after {
 	content:"\f1c0";
@@ -134,7 +137,7 @@ body {
 }
 #left_panel > .tabs a i.main_node_business_logic_layers::before {
 	content:"\f5fd";
-	color:#f5df86;
+	color:#d3b12a;
 }
 #left_panel > .tabs a i.main_node_business_logic_layers::after {
 	content:"\e13b";
@@ -144,19 +147,23 @@ body {
 }
 #left_panel > .tabs a i.main_node_presentation_layers::before {
 	content:"\f5fd";
-	color:#f5df86;
+	color:#d3b12a;
 }
 #left_panel > .tabs a i.main_node_presentation_layers::after {
 	content:"\f0ac";
 	color:#666;
 }
+#left_panel > .tabs a i.main_node_library::before {
+	content:"\f518";
+	color:#d3b12a;
+}
 #left_panel > .tabs a i.main_node_vendors::before {
 	content:"\f2a1";
-	color:#f5df86;
+	color:#d3b12a;
 }
 #left_panel > .tabs a i.main_node_settings::before {
 	content:"\f7d9";
-	color:#f5df86;
+	color:#d3b12a;
 }
 
 /* LEFT PANEL - TREE */

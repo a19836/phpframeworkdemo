@@ -1,4 +1,4 @@
-/* TITLE */
+/* TOP BAR */
 .top_bar {
 	margin-bottom:15px;
 }
@@ -31,6 +31,9 @@
   .edit_single_query:not(.covertable_sql) .top_bar li.create_ui_from_sql,
   .edit_single_query:not(.covertable_sql) .top_bar li.auto_save_convert_settings li.auto_convert_activation {
 	display:none !important;
+}
+.edit_single_query > .top_bar .dummy_elm_to_add_auto_save_options {
+	display:none;
 }
 
 

@@ -53,10 +53,16 @@ var auto_increment_db_attributes_types = ' . json_encode(DB::getAllColumnAutoInc
 				' . ($hbn_obj_id ? "Edit" : "Add") . ' Hibernate Object: <span class="query_name"></span>
 			</div>
 			<ul>
-				<li class="update_automatically" title="Update Automatically"><a onClick="createHibernateObjectAutomatically(this)"><i class="icon update_automatically"></i> Update Automatically</a></li>
-				<li class="toggle_advanced_settings" title="Toggle Advanced Settings"><a class="toggle_icon" onClick="toggleHbnObjAdvancedSettings(this)"><i class="icon toggle_ids"></i> Toggle Advanced Settings</a></li>
 				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save Query"><a onClick="saveHibernateObject()"><i class="icon save"></i> Save</a></li>
+				<li class="sub_menu">
+					<i class="icon sub_menu"></i>
+					<ul>
+						<li class="update_automatically" title="Update Automatically"><a onClick="createHibernateObjectAutomatically(this)"><i class="icon update_automatically"></i> Update Automatically</a></li>
+						<li class="toggle_advanced_settings" title="Toggle Advanced Settings"><a class="toggle_icon" onClick="toggleHbnObjAdvancedSettings(this)"><i class="icon toggle_ids"></i> Toggle Advanced Settings</a></li>
+						<li class="dummy_elm_to_add_auto_save_options"></li>
+					</ul>
+				</li>
 			</ul>
 		</header>
 	</div>'; if ($obj_data || !$hbn_obj_id) { $name = WorkFlowDataAccessHandler::getNodeValue($obj_data, "name"); $table = WorkFlowDataAccessHandler::getNodeValue($obj_data, "table"); $extends = WorkFlowDataAccessHandler::getNodeValue($obj_data, "extends"); $main_content .= $WorkFlowQueryHandler->getChooseQueryTableOrAttributeHtml("choose_db_table_or_attribute"); $main_content .= $WorkFlowQueryHandler->getChooseIncludeFromFileManagerHtml($get_layer_sub_files_url, "choose_include_from_file_manager"); $main_content .= $WorkFlowQueryHandler->getChooseDAOObjectFromFileManagerHtml("choose_dao_object_from_file_manager"); $main_content .= $WorkFlowQueryHandler->getChooseAvailableMapIdHtml("choose_map_id"); $main_content .= '

@@ -2,8 +2,15 @@
 .top_bar {
 	margin-bottom:10px;
 }
+.top_bar .title {
+	/* hide icons from .top_bar > header > ul if screen is too thin */
+	width:550px;
+	background:inherit;
+	position:fixed;
+	z-index:1;
+}
 .top_bar header {
-	z-index:3;
+	z-index:6;
 }
 .top_bar .file_name {
 	width:100px;
@@ -18,6 +25,9 @@
 	background-image: radial-gradient(1px 1px at bottom, #999 1px, transparent 1px);
 	background-size:5px 60px;
 	background-position:0px 20px;
+}
+.top_bar li.dummy_elm_to_add_auto_save_options {
+	display:none;
 }
 
 /* GENERIC */
@@ -34,7 +44,7 @@
 	padding:10px;
 	position:absolute;
 	left:0;
-	top:30px;
+	top:35px;
 	right:0;
 	text-align:center;
 	background:#fff;
@@ -66,7 +76,7 @@
 	position:fixed;
 	top:0;
 	left:175px;
-	z-index:4;
+	z-index:7;
 	color:#000;
 }
 .entity_obj .template > label {
@@ -89,16 +99,35 @@
 	vertical-align:middle;
 }
 
+/* tab_content_template_layout */
+.entity_obj.is_external_template .tab_content_template_layout .iframe_modules_blocks_toolbar {
+	top:75px;
+}
+.entity_obj.is_external_template .tab_content_template_layout {
+	height: calc(100vh - 75px);
+	margin-top:40px;
+}
+
 /* EXTERNAL TEMPLATE PARAMS */
 
 .entity_obj .external_template_params {
-	max-width:500px;
-	margin:20px auto;
-	padding:0 10px;
-	border:1px solid #ccc;
+	position:fixed;
+	left:0;
+	right:0;
+	border-bottom:1px solid #ccc;
+	background:#eee;
+	z-index:7;
+	overflow:hidden;
+}
+.entity_obj .external_template_params.collapsed {
+	height:40px;
+}
+.entity_obj .external_template_params .external_template_params_toggle_btn {
+	
 }
 .entity_obj .external_template_params > div {
-	margin:10px 0;
+	margin:10px auto;
+	width:500px;
 }
 .entity_obj .external_template_params > div > label {
 	width:190px;
@@ -120,7 +149,7 @@
 	position: absolute;
 }
 .entity_obj .external_template_params .search {
-	margin:5px 0 auto -18px;
+	margin:0 0 auto -18px;
 	position: absolute;
 }
 .entity_obj .external_template_params .info {

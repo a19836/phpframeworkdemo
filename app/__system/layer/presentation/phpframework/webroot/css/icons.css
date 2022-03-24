@@ -98,6 +98,9 @@
 
 /* SOME DEFAULT ICONS */
 
+.icon.logout::before {
+	content:"\f2f5";
+}
 .icon.search::before {
 	content:"\f002";
 }
@@ -237,11 +240,17 @@
 .icon.collapse_left_panel::before {
 	content:"\f090";
 }
+.icon.toggle_left_panel::before {
+	content:"\f0c9";
+}
 .icon.toggle_tree_layout::before {
 	content:"\e476";
 }
-.icon.toggle_left_panel::before {
-	content:"\f0c9";
+.icon.toggle_theme_layout::before {
+	content:"\f5c3";
+}
+.icon.tools::before {
+	content:"\f7d9";
 }
 .icon.close::before {
 	content:"\f057";
@@ -416,6 +425,17 @@
 	font-size:10px;
 }
 
+.icon.view_template_samples {
+	width:20px;
+	height:20px;
+}
+.icon.view_template_samples::before {
+	content:"\f1b3";
+}
+.icon.view_template_samples::after {
+	content:"\f06e";
+}
+
 .icon.expand_content::before {
 	content:"\f055";
 }
@@ -427,7 +447,7 @@
 }
 .icon.folder::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .icon.enable {
 	color:green;

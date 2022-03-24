@@ -104,6 +104,8 @@
 .jqcontextmenu .class_obj::before {content:"\f1c9";}
 .jqcontextmenu .class_method::before {content:"\e13b"; -webkit-transform:scaleY(-1); transform:scaleY(-1);}
 .jqcontextmenu .class_function::before {content:"\e13b"; -webkit-transform:scaleY(-1); transform:scaleY(-1);}
+.jqcontextmenu .view_docbook::before {content:"\f02d"; text-indent: 2px;}
+.jqcontextmenu .view_code::before {content:"\f121";}
 
 .choose_available_tool_popup,
   .choose_available_project_popup,

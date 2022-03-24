@@ -13,7 +13,7 @@ $(function () {
 	});
 	
 	//init auto save
-	addAutoSaveMenu(".top_bar li.save");
+	addAutoSaveMenu(".top_bar li.toggle_module_data");
 	enableAutoSave(onToggleAutoSave);
 	initAutoSave(".top_bar li.save a");
 	

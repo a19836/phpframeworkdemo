@@ -204,7 +204,7 @@
 }
 .choose_available_template_popup li.folder > .photo::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .choose_available_template_popup li.back {
 	padding-top:15px;
@@ -222,7 +222,7 @@
 }
 .choose_available_template_popup li.other_project::after {
 	content:"\f07b";
-	color:#f5df86;
+	color:#d3b12a;
 	margin-top:10px;
 }
 .choose_available_template_popup li.project {

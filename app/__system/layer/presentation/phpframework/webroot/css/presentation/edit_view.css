@@ -2,6 +2,15 @@
 .top_bar {
 	margin-bottom:10px;
 }
+.top_bar header {
+	z-index:4;
+}
+.top_bar header > ul {
+	right:151px;
+}
+.with_top_bar_tab > .tabs {
+	z-index:4;
+}
 
 /* VIEW OBJ */
 .view_obj {
@@ -13,40 +22,34 @@
 }
 
 .view_obj .code_layout_ui_editor {
-	height:calc(100vh - 33px);
+	height:calc(100vh - 40px);
 	min-height:300px;
 	padding:0 !important;
 	position:relative;
 }
 
+.view_obj .code_layout_ui_editor .code_menu.top_bar_menu,
+  .view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right,
+  .view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center,
+  .view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.fixed_properties > .menu-settings {
+	z-index:5;
+}
 .view_obj .code_menu.top_bar_menu,
   .view_obj .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu {
-	right:132px;
-}
-.view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right {
-	top:5px;
-	right:158px;
+	right:140px;
 }
 .view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center {
-	right:405px;
+	right:395px;
 }
-.view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.save {
-	top:7px;
-	right:135px;
-	color:#666;
-	font-size:16px;
+.view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right {
+	right:200px;
 }
-.view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.full-screen {
-	font-size:16px;
-	color:#666;
-	margin-top:2px;
+.view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.save,
+  .view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.full-screen {
+	display:none !important;
 }
-.view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.auto_save_convert_settings {
-	padding-right:0;
-}
-.view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.auto_save_convert_settings a .icon.auto_save_convert_settings {
-	margin-top:1px;
-	vertical-align:middle;
+.view_obj .code_layout_ui_editor .layout_ui_editor:not(.layout-shown) > .options > .options-left {
+	display:none;
 }
 
 /* To print the workflow */

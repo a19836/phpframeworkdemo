@@ -2,6 +2,9 @@
 .top_bar {
 	margin-bottom:10px;
 }
+.top_bar header > ul {
+	right:105px;
+}
 
 /* CONFIG OBJ */
 .config_obj {

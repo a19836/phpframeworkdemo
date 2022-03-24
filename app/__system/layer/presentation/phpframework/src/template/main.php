@@ -54,7 +54,7 @@
 	<? echo $head; ?>
 </head>
 <body>
-	<div id="main_column">
+	<div id="main_column" class="<?= $_COOKIE["theme_layout"] ?>">
 	<? 
 		include $EVC->getTemplatePath("message");
 		

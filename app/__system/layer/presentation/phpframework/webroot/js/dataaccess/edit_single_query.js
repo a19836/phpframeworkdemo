@@ -2,8 +2,8 @@ $(function() {
 	var edit_single_query = $(".edit_single_query");
 	
 	//init auto save
-	addAutoSaveMenu(".top_bar li.save", "onToggleQueryAutoSave");
-	addAutoConvertMenu(".top_bar li.save", "onToggleQueryAutoConvert");
+	addAutoSaveMenu(".top_bar li.dummy_elm_to_add_auto_save_options", "onToggleQueryAutoSave");
+	addAutoConvertMenu(".top_bar li.dummy_elm_to_add_auto_save_options", "onToggleQueryAutoConvert");
 	enableAutoSave(onToggleQueryAutoSave);
 	
 	if (is_covertable_sql)

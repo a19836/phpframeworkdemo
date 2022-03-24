@@ -59,16 +59,22 @@ var is_covertable_sql = ' . ($is_covertable_sql ? 1 : 0) . ';
 				<input class="is_convertable_sql" type="checkbox" title="Is SQL convertable"' . ($is_covertable_sql ? " checked" : "") . ' onChange="onChangeIsConvertableSQL(this)" previous_auto_convert="1" />
 			</div>
 			<ul>
-				<li class="add_new_table select_query" title="Add new Table"><a onclick="return addNewTask(' . $rand . ');"><i class="icon add"></i> Add Table</a></li>
-				<li class="update_tables_attributes select_query" title="Update Tables\' Attributes"><a onclick="return updateQueryDBBroker(' . $rand . ', false);"><i class="icon update_tables_attributes"></i> Update Tables\' Attributes</a></li>
-				<li class="toggle_ids" title="Toggle Ids"><a class="toggle_icon" onClick="toggleParameterAndResultFields(this, \'.edit_single_query\')"><i class="icon toggle_ids"></i> Toggle Ids</a></li>
-				<li class="toggle_ui select_query" title="Toggle UI"><a class="toggle_icon active" onclick="return showOrHideSingleQueryUI(this, ' . $rand . ');"><i class="icon toggle_ui"></i> Toggle UI</a></li>
-				<li class="toggle_settings select_query" title="Toggle Settings"><a class="toggle_icon active" onclick="return showOrHideSingleQuerySettings(this, ' . $rand . ');"><i class="icon toggle_settings"></i> Toggle Settings</a></li>
-				
-				<li class="create_sql_from_ui" title="Create SQL From UI"><a onClick="autoUpdateSqlFromUI(' . $rand . ')"><i class="icon create_sql_from_ui"></i> Create SQL From UI</a></li>
-				<li class="create_ui_from_sql" title="Create UI From SQL"><a onClick="autoUpdateUIFromSql(' . $rand . ')"><i class="icon create_ui_from_sql"></i> Create UI From SQL</a></li>
 				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save Query"><a onClick="saveQueryObject(onSuccessSingleQuerySave)"><i class="icon save"></i> Save</a></li>
+				<li class="sub_menu">
+					<i class="icon sub_menu"></i>
+					<ul>
+						<li class="add_new_table select_query" title="Add new Table"><a onclick="return addNewTask(' . $rand . ');"><i class="icon add"></i> Add Table</a></li>
+						<li class="update_tables_attributes select_query" title="Update Tables\' Attributes"><a onclick="return updateQueryDBBroker(' . $rand . ', false);"><i class="icon update_tables_attributes"></i> Update Tables\' Attributes</a></li>
+						<li class="toggle_ids" title="Toggle Ids"><a class="toggle_icon" onClick="toggleParameterAndResultFields(this, \'.edit_single_query\')"><i class="icon toggle_ids"></i> Toggle Ids</a></li>
+						<li class="toggle_ui select_query" title="Toggle UI"><a class="toggle_icon active" onclick="return showOrHideSingleQueryUI(this, ' . $rand . ');"><i class="icon toggle_ui"></i> Toggle UI</a></li>
+						<li class="toggle_settings select_query" title="Toggle Settings"><a class="toggle_icon active" onclick="return showOrHideSingleQuerySettings(this, ' . $rand . ');"><i class="icon toggle_settings"></i> Toggle Settings</a></li>
+						
+						<li class="create_sql_from_ui" title="Create SQL From UI"><a onClick="autoUpdateSqlFromUI(' . $rand . ')"><i class="icon create_sql_from_ui"></i> Create SQL From UI</a></li>
+						<li class="create_ui_from_sql" title="Create UI From SQL"><a onClick="autoUpdateUIFromSql(' . $rand . ')"><i class="icon create_ui_from_sql"></i> Create UI From SQL</a></li>
+						<li class="dummy_elm_to_add_auto_save_options"></li>
+					</ul>
+				</li>
 			</ul>
 		</header>
 	</div>'; if ($obj_data || !$query_id) { $main_content .= $WorkFlowQueryHandler->getChooseQueryTableOrAttributeHtml("choose_db_table_or_attribute"); $main_content .= $WorkFlowQueryHandler->getChooseDAOObjectFromFileManagerHtml("choose_dao_object_from_file_manager"); $main_content .= $WorkFlowQueryHandler->getChooseAvailableMapIdHtml("choose_map_id"); $data = array( "type" => $rel_type, "name" => $name, "parameter_class" => $parameter_class, "parameter_map" => $parameter_map, "result_class" => $result_class, "result_map" => $result_map, "sql" => $sql ); $settings = array( "init_ui" => true, ); $sql_html = $WorkFlowQueryHandler->getQueryBlockHtml(false, $settings, $data); $sql_html = str_replace("#rand#", $rand, $sql_html); $main_content .= '

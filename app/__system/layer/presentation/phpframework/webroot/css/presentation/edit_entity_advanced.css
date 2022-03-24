@@ -2,22 +2,20 @@
 .top_bar {
 	margin-bottom:10px;
 }
+.top_bar header {
+	z-index:3;
+}
 .top_bar header > ul {
-	right:130px;
+	right:150px;
 }
 .top_bar.project_with_auto_view.view_file_exists header > ul {
-	right:175px;
+	right:195px;
 }
 .top_bar.project_with_auto_view:not(.view_file_exists) header > ul {
-	right:190px;
+	right:208px;
 }
-.top_bar header > ul li.view_project_page {
-	position:absolute;
-	left:-88px;
-}
-.top_bar header > ul li.simple_editor {
-	position:absolute;
-	left:-66px;
+.with_top_bar_tab > .tabs {
+	z-index:3;
 }
 
 
@@ -51,61 +49,55 @@
 	position:relative;
 }
 
+.entity_obj .code_layout_ui_editor .code_menu.top_bar_menu,
+  .entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right,
+  .entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center,
+  .entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.fixed_properties > .menu-settings {
+	z-index:5;
+}
 .entity_obj .code_menu.top_bar_menu,
-  .entity_obj .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu,
-  .entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right {
-	right:242px;
+  .entity_obj .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu {
+	right:140px;
 }
-.entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center {
-	right:438px;
-}
-.entity_obj.project_with_auto_view.view_file_exists .code_menu.top_bar_menu,
-  .entity_obj.project_with_auto_view.view_file_exists .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu,
-  .entity_obj.project_with_auto_view.view_file_exists .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right {
-	right:287px;
-}
-.entity_obj.project_with_auto_view.view_file_exists .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center {
-	right:482px;
-}
-.entity_obj.project_with_auto_view:not(.view_file_exists) .code_menu.top_bar_menu,
-  .entity_obj.project_with_auto_view:not(.view_file_exists) .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu,
-  .entity_obj.project_with_auto_view:not(.view_file_exists) .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right {
-	right:302px;
-}
-.entity_obj.project_with_auto_view:not(.view_file_exists) .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center {
-	right:497px;
-}
-
-.entity_obj #code .code_menu.top_bar_menu .editor_full_screen,
-  .entity_obj #ui .taskflowchart .workflow_menu.top_bar_menu .tasks_flow_full_screen {
-	position:absolute;
-	right:-70px;
-}
-.entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .full-screen {
-	position:absolute;
-	top:1px;
-	right:-67px;
-	font-size:16px;
-	color:#666;
-}
-.entity_obj #code .code_menu.top_bar_menu li.auto_save_convert_settings,
-  .entity_obj #ui .taskflowchart .workflow_menu.top_bar_menu li.auto_save_convert_settings {
-	position:absolute;
-	right:-90px;
+.entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right {
+	right:250px;
 }
 .entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.auto_save_convert_settings {
-	position:absolute;
-	top:1px;
-	right:-93px;
+	right:-120px;
+}
+.entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center {
+	right:448px;
+}
+.entity_obj.project_with_auto_view.view_file_exists .code_menu.top_bar_menu,
+  .entity_obj.project_with_auto_view.view_file_exists .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu {
+	right:183px;
+}
+.entity_obj.project_with_auto_view.view_file_exists .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right {
+	right:293px;
+}
+.entity_obj.project_with_auto_view.view_file_exists .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center {
+	right:490px;
+}
+.entity_obj.project_with_auto_view:not(.view_file_exists) .code_menu.top_bar_menu,
+  .entity_obj.project_with_auto_view:not(.view_file_exists) .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu {
+	right:197px;
+}
+.entity_obj.project_with_auto_view:not(.view_file_exists) .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right {
+	right:307px;
+}
+.entity_obj.project_with_auto_view:not(.view_file_exists) .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center {
+	right:505px;
 }
 .entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right {
 	width:200px;
 }
 
-.entity_obj #code .code_menu.top_bar_menu .save,
-  .entity_obj #ui .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu .save,
-  .entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.save {
+.entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.save,
+  .entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.full-screen {
 	display:none !important;
+}
+.entity_obj .code_layout_ui_editor .layout_ui_editor:not(.layout-shown) > .options > .options-left {
+	display:none;
 }
 
 #view {

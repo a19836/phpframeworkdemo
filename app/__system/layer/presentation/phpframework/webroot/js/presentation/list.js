@@ -58,6 +58,12 @@ $(function() {
 			addLiContextMenu(link.addClass("link"), "main_presentation_group_context_menu", {callback: onPresentationContextMenu});
 			initPresentationContextMenu(li);
 		}
+		else if (li.is(".main_node_lib")) {
+			initLibContextMenu(li);
+		}
+		else if (li.is(".main_node_lib")) {
+			initLibContextMenu(li);
+		}
 		else if (li.is(".main_node_dao")) {
 			addLiContextMenu(link.addClass("link"), "main_dao_group_context_menu", {callback: onDaoContextMenu});
 			initDaoContextMenu(li);

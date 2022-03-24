@@ -70,6 +70,7 @@ GetBeanObjectTaskPropertyObj.bean_names_options = ' . json_encode($bean_names_op
 			<div class="title">Edit Template "' . basename($path) . '"</div>
 			<ul>
 				<li class="show_simple_ui" title="Show Simple UI"><a href="?' . $query_string . '&edit_template_type=simple"><i class="icon show_simple_ui"></i> Show Simple UI</a></li>
+				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save Template"><a onClick="saveTemplate()"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>

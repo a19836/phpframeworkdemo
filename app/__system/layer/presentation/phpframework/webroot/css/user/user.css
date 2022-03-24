@@ -24,7 +24,6 @@
 	text-align:right;
 	z-index:1;
 	
-	border-top:2px solid #ff0000;
 	background-color:#eee;
 	background: -moz-linear-gradient(right, #eee 97%, #ffffff73 100%);
 	background: -webkit-gradient(linear, right top, right bottom, color-stop(97%, #eee), color-stop(100%, #ffffff73));
@@ -49,15 +48,16 @@
 	font-size:90%;
 }
 #menu li.current_user {
+	height:37px;
 	line-height:30px;
-	margin-bottom:10px;
-	padding:0;
+	padding:0 10px 0 0;
 	border-bottom:0;
 	font-style:italic;
 	text-align:right;
 	color:#999;
-	background:#eee;
 	font-size:90%;
+	
+	background: linear-gradient(to bottom, #f7f7f7 0%, #eee 95%, #ffffff73 100%);
 }
 #menu li.manage_menu_item {
 	border-top:1px dashed #FFF;

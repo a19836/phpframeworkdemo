@@ -1,7 +1,12 @@
-/* TITLE */
+/* TOP BAR */
 .top_bar {
 	margin-bottom:15px;
 }
+.top_bar .dummy_elm_to_add_auto_save_options {
+	display:none;
+}
+
+/* RELATIONSHIP */
 .edit_hbn_obj .data_access_obj {
 	width:100%;
 	min-width:640px;

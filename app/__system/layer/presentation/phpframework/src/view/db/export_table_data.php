@@ -50,8 +50,8 @@ relationship.prepend(html);
 save_data_access_object_url = remove_data_access_object_url = null;
 
 //change save function to export function
-var top_bar_dropdown = $(".top_bar ul");
-top_bar_dropdown.find(".save, .toggle_ids").remove();
+var top_bar_dropdown = $(".top_bar ul").first();
+top_bar_dropdown.find(".save, .toggle_ids, .sub_menu").remove();
 top_bar_dropdown.append(\'<li class="export" title="Export"><a onclick="exportTable()"><i class="icon continue"></i> Export</a></li>\');
 
 saveQueryObject = function() {

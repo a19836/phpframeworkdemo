@@ -136,9 +136,10 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 			<div class="title">
 				Edit Test: \'' . pathinfo($path, PATHINFO_FILENAME) . '\'
 			</div>
-			<!--ul class="dropdown">
-				<li class="save" title="Save"><a class="save" onClick="saveTest()">Save</a></li>
-			</ul-->
+			<ul>
+				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
+				<li class="save" title="Save"><a onClick="saveTest()"><i class="icon save"></i> Save</a></li>
+			</ul>
 		</header>
 	</div>'; if ($obj_data) { $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml(null, null, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $db_brokers, $data_access_brokers, $ibatis_brokers, $hibernate_brokers, $business_logic_brokers, $presentation_brokers); $main_content .= '
 	<div class="edit_test with_top_bar_tab">
@@ -149,7 +150,7 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 		
 		<div id="settings" class="settings collapsed">
 			<div class="settings_header">
-				Settings
+				Main Settings
 				<div class="icon maximize" onClick="toggleSettingsPanel(this)">Toggle</div>
 			</div>
 			<div class="enabled">

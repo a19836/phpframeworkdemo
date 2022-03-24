@@ -28,7 +28,7 @@ $(function() {
 		try {
 			iframe[0].contentWindow.$.ajaxSetup({
 				complete: function(jqXHR, textStatus) {
-					if (jqXHR.status == 200 && jqXHR.responseText.indexOf('<div class="login">') > 0 && jqXHR.responseText.indexOf('<h1>Login</h1>') > 0) 
+					if (jqXHR.status == 200 && jqXHR.responseText.indexOf('<div class="login">') > 0 && jqXHR.responseText.indexOf('<div id="layoutAuthentication">') > 0) 
 						document.location = win_url;
 			    	}
 			});
@@ -40,7 +40,7 @@ $(function() {
 	//prepare redirect when user is logged out
 	$.ajaxSetup({
 		complete: function(jqXHR, textStatus) {
-			if (jqXHR.status == 200 && jqXHR.responseText.indexOf('<div class="login">') > 0 && jqXHR.responseText.indexOf('<h1>Login</h1>') > 0)
+			if (jqXHR.status == 200 && jqXHR.responseText.indexOf('<div class="login">') > 0 && jqXHR.responseText.indexOf('<div id="layoutAuthentication">') > 0)
 				document.location = win_url;
 	    	}
 	});
@@ -318,6 +318,9 @@ function initContextMenus() {
 			initPresentationContextMenu(item);
 		}
 		else {
+			obj = item.find("li.main_node_lib");
+			initLibContextMenu(obj);
+			
 			obj = item.find("li.main_node_dao");
 			addLiContextMenu(obj.children("a").addClass("link"), "main_dao_group_context_menu", {callback: onDaoContextMenu});
 			initDaoContextMenu(obj);

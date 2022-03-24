@@ -39,11 +39,11 @@
 }
 .mytree i.jstree-themeicon::before {
 	content:"\f07b";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.main_node::before {
 	content:"\f07b";
-	color:#666;
+	color:#888;
 }
 .mytree i.file::before {
 	font:var(--fa-font-regular);
@@ -54,7 +54,7 @@
 }
 .mytree i.folder::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.undefined_file::before {
 	font:var(--fa-font-regular);
@@ -80,7 +80,7 @@
 }
 .mytree i.reserved_folder::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.reserved_folder::after {
 	content:"\f05e";
@@ -90,57 +90,57 @@
 /* ICONS - COMMON */
 .mytree i.cms_common::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.cms_common::after {
 	content:"\f187";
-	color:#666;
+	color:#888;
 }
 .mytree i.cms_module::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.cms_module::after {
 	content:"\f61f";
-	color:#666;
+	color:#888;
 }
 .mytree i.cms_program::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.cms_program::after {
 	content:"\f51f";
-	color:#666;
+	color:#888;
 }
 .mytree i.cms_folder::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.cms_folder::after {
 	content:"\f49e";
-	color:#666;
+	color:#888;
 }
 .mytree i.referenced_folder::before {
 	content:"\2a";
-	color:#f5df86;
+	color:#d3b12a;
 }
 
 /* ICONS - PRESENTATION */
 .mytree i.main_node_presentation_layers::before {
 	content:"\f5fd";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.main_node_presentation_layers::after {
 	content:"\f0ac";
-	color:#666;
+	color:#888;
 }
 .mytree i.main_node_presentation::before {
 	content:"\f07b";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.main_node_presentation::after {
 	content:"\f233";
-	color:#666;
+	color:#888;
 }
 .mytree i.project::before {
 	content:"\f0a0";
@@ -148,11 +148,11 @@
 }
 .mytree i.project_folder::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.project_folder::after {
 	content:"\f0a0";
-	color:#666;
+	color:#888;
 }
 .mytree i.project_common::before {
 	content:"\f0a0";
@@ -164,11 +164,11 @@
 }
 .mytree i.configs_folder::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.configs_folder::after {
 	content:"\f013";
-	color:#666;
+	color:#888;
 }
 .mytree i.config_file::before {
 	font:var(--fa-font-regular);
@@ -179,15 +179,15 @@
 }
 .mytree i.config_file::after {
 	content:"\f013";
-	color:#666;
+	color:#888;
 }
 .mytree i.entities_folder::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.entities_folder::after {
 	content:"\f0ac";
-	color:#666;
+	color:#888;
 }
 .mytree i.entity_file::before {
 	font:var(--fa-font-regular);
@@ -198,15 +198,15 @@
 }
 .mytree i.entity_file::after {
 	content:"\f0ac";
-	color:#666;
+	color:#888;
 }
 .mytree i.views_folder::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.views_folder::after {
 	content:"\f03e";
-	color:#666;
+	color:#888;
 }
 .mytree i.view_file::before {
 	font:var(--fa-font-regular);
@@ -217,27 +217,27 @@
 }
 .mytree i.view_file::after {
 	content:"\f03e";
-	color:#666;
+	color:#888;
 }
 .mytree i.templates_folder::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.templates_folder::after {
 	font:var(--fa-font-brands);
 	font-size:16px;
 	content:"\f13b";
-	color:#666;
+	color:#888;
 }
 .mytree i.template_folder::before {
 	content:"\f802";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.template_folder::after {
 	font:var(--fa-font-brands);
 	font-size:16px;
 	content:"\f13b";
-	color:#666;
+	color:#888;
 }
 .mytree i.template_file::before {
 	font:var(--fa-font-regular);
@@ -250,15 +250,15 @@
 	font:var(--fa-font-brands);
 	font-size:16px;
 	content:"\f13b";
-	color:#666;
+	color:#888;
 }
 .mytree i.blocks_folder::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.blocks_folder::after {
 	content:"\f1b3";
-	color:#666;
+	color:#888;
 }
 .mytree i.block_file::before {
 	font:var(--fa-font-regular);
@@ -269,15 +269,15 @@
 }
 .mytree i.block_file::after {
 	content:"\f1b3";
-	color:#666;
+	color:#888;
 }
 .mytree i.utils_folder::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.utils_folder::after {
 	content:"\f121";
-	color:#666;
+	color:#888;
 }
 .mytree i.util_file::before {
 	font:var(--fa-font-regular);
@@ -288,7 +288,7 @@
 }
 .mytree i.util_file::after {
 	content:"\f121";
-	color:#666;
+	color:#888;
 }
 .mytree i.class::before {
 	content:"\f121";
@@ -296,11 +296,11 @@
 }
 .mytree i.class::after {
 	content:"\f468";
-	color:#666;
+	color:#888;
 }
 .mytree i.webroot_folder::before {
 	content:"\f0ac";
-	color:#666;
+	color:#888;
 }
 .mytree i.webroot_file::before {
 	font:var(--fa-font-regular);
@@ -311,11 +311,11 @@
 }
 .mytree i.webroot_file::after {
 	content:"\f0ac";
-	color:#666;
+	color:#888;
 }
 .mytree i.img_file::before {
 	content:"\f1c5";
-	color:#666;
+	color:#888;
 }
 .mytree i.php_file::before,
   .mytree i.css_file::before,
@@ -337,7 +337,7 @@
 	font-family:var(--icon-font-family);
 	font-size:8px;
 	font-weight:bold;
-	background:#f5df8688;
+	background:#d3b12a88;
 	display:inline-block;
 	padding:1px 3px;
 }
@@ -356,15 +356,15 @@
 
 .mytree i.properties::before {
 	content:"\f802";
-	color:#666;
+	color:#888;
 }
 .mytree i.controllers_folder::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.controllers_folder::after {
 	content:"\f1e6";
-	color:#666;
+	color:#888;
 }
 .mytree i.controller_file::before {
 	font:var(--fa-font-regular);
@@ -375,15 +375,15 @@
 }
 .mytree i.controller_file::after {
 	content:"\f1e6";
-	color:#666;
+	color:#888;
 }
 .mytree i.caches_folder::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.caches_folder::after {
 	content:"\f0c7";
-	color:#666;
+	color:#888;
 }
 .mytree i.cache_file::before {
 	font:var(--fa-font-regular);
@@ -394,11 +394,11 @@
 }
 .mytree i.cache_file::after {
 	content:"\f0c7";
-	color:#666;
+	color:#888;
 }
 .mytree i.wordpress_folder::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.wordpress_folder::after {
 	font:var(--fa-font-brands);
@@ -414,7 +414,7 @@
 }
 .mytree i.module_folder::before {
 	content:"\f61f";
-	color:#666;
+	color:#888;
 }
 .mytree i.module_file::before {
 	font:var(--fa-font-regular);
@@ -425,33 +425,33 @@
 }
 .mytree i.module_file::after {
 	content:"\f61f";
-	color:#666;
+	color:#888;
 }
 
 /* ICONS - BUSINESS LOGIC */
 .mytree i.main_node_business_logic_layers::before {
 	content:"\f5fd";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.main_node_business_logic_layers::after {
 	content:"\e13b";
-	color:#666;
+	color:#888;
 	-webkit-transform: scaleY(-1);
 	transform: scaleY(-1);
 }
 .mytree i.main_node_businesslogic::before {
 	content:"\f07b";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.main_node_businesslogic::after {
 	content:"\e13b";
-	color:#666;
+	color:#888;
 	-webkit-transform: scaleY(-1);
 	transform: scaleY(-1);
 }
 .mytree i.service::before {
 	content:"\f468";
-	color:#666;
+	color:#888;
 }
 .mytree i.method::before {
 	content:"\f121";
@@ -459,7 +459,7 @@
 }
 .mytree i.method::after {
 	content:"\e13b";
-	color:#666;
+	color:#888;
 	-webkit-transform: scaleY(-1);
 	transform: scaleY(-1);
 }
@@ -469,7 +469,7 @@
 }
 .mytree i.function::after {
 	content:"\e13b";
-	color:#666;
+	color:#888;
 	-webkit-transform: scaleY(-1);
 	transform: scaleY(-1);
 	margin-left:-10px;
@@ -478,27 +478,27 @@
 /* ICONS - DATA-ACCESS */
 .mytree i.main_node_data_access_layers::before {
 	content:"\f5fd";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.main_node_data_access_layers::after {
 	content:"\f1c0";
-	color:#666;
+	color:#888;
 }
 .mytree i.main_node_hibernate::before {
 	content:"\f07b";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.main_node_hibernate::after {
 	content:"\f0fd";
-	color:#666;
+	color:#888;
 }
 .mytree i.main_node_ibatis::before {
 	content:"\f07b";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.main_node_ibatis::after {
 	content:"\f121";
-	color:#666;
+	color:#888;
 }
 .mytree i.obj::before {
 	content:"\f1c0";
@@ -506,7 +506,7 @@
 }
 .mytree i.obj::after {
 	content:"\f1b2";
-	color:#666;
+	color:#888;
 }
 .mytree i.query::before {
 	content:"\f1c0";
@@ -514,7 +514,7 @@
 }
 .mytree i.query::after {
 	content:"\f121";
-	color:#666;
+	color:#888;
 }
 .mytree i.relationship::before {
 	content:"\f1c0";
@@ -522,7 +522,7 @@
 }
 .mytree i.relationship::after {
 	content:"\f1e0";
-	color:#666;
+	color:#888;
 }
 .mytree i.hbn_native::before {
 	content:"\f1c0";
@@ -530,7 +530,7 @@
 }
 .mytree i.hbn_native::after {
 	content:"\f192";
-	color:#666;
+	color:#888;
 }
 .mytree i.map::before {
 	content:"\f1c0";
@@ -538,7 +538,7 @@
 }
 .mytree i.map::after {
 	content:"\f279";
-	color:#666;
+	color:#888;
 }
 .mytree i.import::before {
 	content:"\f56f";
@@ -552,19 +552,19 @@
 /* ICONS - DB */
 .mytree i.main_node_db_layers::before {
 	content:"\f51e";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.main_node_db_layers::after {
 	content:"\f1c0";
-	color:#666;
+	color:#888;
 }
 .mytree i.main_node_db::before {
 	content:"\f51e";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.main_node_db::after {
 	content:"\f1e6";
-	color:#666;
+	color:#888;
 	-webkit-transform:rotate(45deg);
 	transform:rotate(45deg);
 }
@@ -589,23 +589,37 @@
 	color:#aab2c0;
 }
 
+/* ICONS - LIBRARY */
+.mytree i.main_node_library::before {
+	content:"\f518";
+	color:#d3b12a;
+}
+.mytree i.main_node_lib::before {
+	content:"\f02d";
+	color:#d3b12a;
+}
+.mytree i.main_node_other::before {
+	content:"\f86d";
+	color:#d3b12a;
+}
+
 /* ICONS - VENDOR */
 .mytree i.main_node_vendor::before {
 	content:"\f2a1";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.main_node_dao::before {
 	/*content:"\f5fd";*/
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.main_node_dao::after {
 	content:"\f247";
-	color:#666;
+	color:#888;
 }
 .mytree i.dao::before {
 	content:"\f247";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.objtype::before {
 	font:var(--fa-font-brands);
@@ -615,7 +629,7 @@
 }
 .mytree i.objtype::after {
 	content:"\f304";
-	color:#666;
+	color:#888;
 }
 .mytree i.hibernatemodel::before {
 	content:"\f0fd";
@@ -623,59 +637,59 @@
 }
 .mytree i.hibernatemodel::after {
 	content:"\f304";
-	color:#666;
+	color:#888;
 }
 .mytree i.code_workflow_editor::before {
 	content:"\f0e8";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.code_workflow_editor::after {
 	content:"\f304";
-	color:#666;
+	color:#888;
 }
 .mytree i.code_workflow_editor_task::before {
 	font:var(--fa-font-brands);
 	font-size:16px;
 	content:"\f174";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.code_workflow_editor_task::after {
 	content:"\f304";
-	color:#666;
+	color:#888;
 }
 .mytree i.layout_ui_editor::before {
 	content:"\f53f";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.layout_ui_editor::after {
 	content:"\f304";
-	color:#666;
+	color:#888;
 }
 .mytree i.layout_ui_editor_widget::before {
 	content:"\f0c8";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.layout_ui_editor_widget::after {
 	content:"\f304";
-	color:#666;
+	color:#888;
 }
 .mytree i.test_unit::before {
 	content:"\f07c";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.test_unit::after {
 	content:"\f0ae";
-	color:#666;
+	color:#888;
 }
 .mytree i.test_unit_obj::before {
 	content:"\f0ae";
-	color:#666;
+	color:#888;
 }
 
 /* ICONS - MANAGEMENT */
 .mytree i.main_node_management::before {
 	content:"\f7d9";
-	color:#f5df86;
+	color:#d3b12a;
 }
 .mytree i.main_node_admin_simple_ui::before {
 	content:"\f5c3";
@@ -720,11 +734,6 @@
 .mytree i.main_node_diff_files::before {
 	content:"\f24d";
 	color:#da77fc;
-	color:#999;
-}
-.mytree i.main_node_other::before {
-	content:"\f86d";
-	color:#edc336;
 	color:#999;
 }
 .mytree i.main_node_flush_cache::before {

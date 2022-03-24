@@ -17,12 +17,6 @@ $(function () {
 	$("#code > .code_menu").addClass("top_bar_menu");
 	$("#code > .layout_ui_editor").addClass("with_top_bar_menu");
 	
-	//init auto save
-	enableAutoSave(onTogglePHPCodeAutoSave);
-	enableAutoConvert(onTogglePHPCodeAutoConvert);
-	initAutoSave("#code > .code_menu li.save a");
-	auto_save = false;
-	
 	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
@@ -79,17 +73,14 @@ $(function () {
 	if (view_obj[0]) {
 		view_obj.tabs({active:1});
 		
-		initCodeLayoutUIEditor(view_obj, saveView);
-		
-		//add auto_save and auto_convert options to layout ui editor
-		var lue_auto_save_icon = $("#code > .code_menu li.auto_save_convert_settings").first().clone().addClass("option");
-		$("#code > .layout_ui_editor > .options .full-screen").before(lue_auto_save_icon);
-		
 		//load workflow
 		onLoadTaskFlowChartAndCodeEditor();
 		
-		//select layout view. Needs to be inside of settimeout otherwise the layout ui editor will not be inited correctly
-		setTimeout(function() {
+		//set saved_layout_ui_editor_code_id
+		saved_layout_ui_editor_code_id = getViewLayoutUIEditorCodeObjId();
+		
+		//init ui layout editor
+		initCodeLayoutUIEditor(view_obj, saveView, function() {
 			var luie = view_obj.find("#code > .layout_ui_editor");
 			
 			//show view layout panel instead of code
@@ -101,13 +92,23 @@ $(function () {
 			//show php widgets
 			luie.find(" > .template-widgets-options .show-php input").attr("checked", "checked").prop("checked", true).trigger("click").attr("checked", "checked").prop("checked", true);
 			
-			auto_save = true;
-		}, 500);
-		
-		//set saved_layout_ui_editor_code_id
-		saved_layout_ui_editor_code_id = getViewLayoutUIEditorCodeObjId();
+			//init auto save
+			enableAutoSave(onTogglePHPCodeAutoSave);
+			enableAutoConvert(onTogglePHPCodeAutoConvert);
+			initAutoSave("#code > .code_menu li.save a");
+			
+			//add auto_save and auto_convert options to layout ui editor
+			var lue_auto_save_icon = $("#code > .code_menu li.auto_save_convert_settings").first().clone().addClass("option");
+			$("#code > .layout_ui_editor > .options .full-screen").before(lue_auto_save_icon);
+		});
 	}
 });
+
+//To be used in the toggleFullScreen function
+function onToggleFullScreen(in_full_screen) {
+	var view_obj = $(".view_obj");
+	onToggleCodeEditorFullScreen(in_full_screen, view_obj);
+}
 
 function getViewLayoutUIEditorCodeObjId() {
 	var view_obj = $(".view_obj");

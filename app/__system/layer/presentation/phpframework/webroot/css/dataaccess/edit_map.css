@@ -1,10 +1,13 @@
-/* TITLE */
+/* TOP BAR */
 .edit_map > .top_bar {
 	margin-bottom:20px;
 }
 .edit_map > .top_bar .title .map_name {
 	width:200px;
 	display:inline-block;
+}
+.edit_map > .top_bar .dummy_elm_to_add_auto_save_options {
+	display:none;
 }
 
 /* RELATIONSHIP */

@@ -126,8 +126,9 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 		<header>
 			<div class="title">Edit Entity "' . basename($path) . '"</div>
 			<ul>
-				<li class="view_project_page" title="View project page"><a href="' . $view_project_url . '" target="project"><i class="icon view"></i> View project page</a></li>
 				<li class="simple_editor" title="Switch to Template Editor"><a href="?' . $query_string . '&edit_entity_type=simple&show_templates_only=1"><i class="icon show_simple_ui"></i> Switch to Template Editor</a></li>
+				<li class="view_project_page" title="View project page"><a href="' . $view_project_url . '" target="project"><i class="icon view"></i> View project page</a></li>
+				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save Entity"><a onClick="saveEntity()"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>

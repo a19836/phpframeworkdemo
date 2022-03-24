@@ -2,6 +2,9 @@
 .top_bar {
 	margin-bottom:10px;
 }
+.top_bar header > ul {
+	right:145px;
+}
 
 /* UTIL OBJ */
 .global_vars_obj {
@@ -16,6 +19,9 @@
   .global_vars_obj #ui .taskflowchart .workflow_menu.top_bar_menu,
   .global_vars_obj #form_global_vars .code_menu.top_bar_menu {
 	right:135px;
+}
+.global_vars_obj #form_global_vars .code_menu.top_bar_menu {
+	text-align:left;
 }
 
 /* To print the workflow */

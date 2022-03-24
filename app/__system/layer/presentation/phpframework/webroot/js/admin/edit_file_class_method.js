@@ -208,8 +208,8 @@ function resizeSettingsPanel(settings, top) {
 	settings.removeClass("resizing");
 	settings.css({top: "", left: "", bottom: ""}); //remove top, left and bottom from style attribute in #settings_header
 	
-	if (top < 30) { //30 is the size of #top_bar (30px)
-		height = wh - 30;
+	if (top < 40) { //40 is the size of #top_bar (40px)
+		height = wh - 40;
 		
 		settings.css("height", height + "px");
 	}

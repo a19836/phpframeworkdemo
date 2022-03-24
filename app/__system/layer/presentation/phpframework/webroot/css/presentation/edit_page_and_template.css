@@ -19,7 +19,7 @@
 	bottom:0;
 	overflow:auto;
 	box-sizing:border-box;
-	z-index:2;
+	z-index:3;
 	background:#fff;
 }
 .regions_blocks_includes_settings:not(.resizing) {
@@ -42,33 +42,38 @@
 	overflow:hidden;
 	cursor:ns-resize;
 	z-index:1051;
-	border-top:1px solid #eee;
 	
-	background: -moz-linear-gradient(top, #eee 50%, #f7f7f7 100%);
+	font-weight:bold;
+	color:var(--main-template-color);
+	background:var(--icon-hover-color);
+	/*background: -moz-linear-gradient(top, #eee 50%, #f7f7f7 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #f7f7f7));
 	background: -webkit-linear-gradient(top, #eee 50%, #f7f7f7 100%);
 	background: -o-linear-gradient(top, #eee 50%, #f7f7f7 100%);
 	background: -ms-linear-gradient(top, #eee 50%, #f7f7f7 100%);
 	background: linear-gradient(to bottom, #eee 50%, #f7f7f7 100%);
+	border-top:1px solid #eee;*/
 }
 .regions_blocks_includes_settings.collapsed .settings_header {
 	margin-top:-20px;
 	border:0;
 	
-	background: -moz-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	/*background: -moz-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(50%, #eee), color-stop(100%, #ffffff73));
 	background: -webkit-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
 	background: -o-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
 	background: -ms-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
-	background: linear-gradient(to top, #eee 50%, #ffffff73 100%);
+	background: linear-gradient(to top, #eee 50%, #ffffff73 100%);*/
 }
 .regions_blocks_includes_settings .settings_header .icon {
-	margin:0 5px 0 0;
+	height:16px;
+	margin:2px 5px 0 0;
 	float:right;
 	font-size:16px;
+	color:var(--main-template-color);
 }
-.regions_blocks_includes_settings .settings_header .icon.minimize {
-	margin-top:-3px;
+.regions_blocks_includes_settings .settings_header .icon::before {
+    vertical-align:top;
 }
 
 .regions_blocks_includes_settings .invisible {
@@ -161,7 +166,7 @@
 }
 .regions_blocks_includes_settings .region_blocks .items .item > input,
   .regions_blocks_includes_settings .other_region_blocks .items .item > input {
-	width:200px;
+	width:202px;
 	text-align:left;
 	/*direction:rtl; - Cannot change the directio to right, otherwise the blocks like "_login" will appear "login_" */
 }
@@ -179,6 +184,7 @@
 	background:white;
 	vertical-align:middle;
 	border-color:#eee;
+	border-radius:2px;
 }
 .regions_blocks_includes_settings .items .item > .pretty_block_options_button:hover {
 	border-color:#eee;
@@ -289,12 +295,13 @@
 	color:#666;
 }
 .regions_blocks_includes_settings .items .item > .block_html > .block_html_editor {
-	width:540px;
+	width:100%;
+	min-width:540px;
 	height:auto;
 	min-height:100px;
 	background:#fff;
 	border:1px solid #eee;
-	border-radius:4px;
+	border-radius:2px;
 }
 .regions_blocks_includes_settings .items .item > .block_params > .block_param select, 
    .regions_blocks_includes_settings .includes .item > select, 
@@ -364,7 +371,7 @@ body > .dragging_menu_item {
 }
 
 .tab_content_template_layout {
-	height:calc(100vh - 55px); /* Toolbar and settings height */
+	height:calc(100vh - 35px); /* Toolbar and settings height */
 	padding:0 0 30px !important;
 	position:relative;
 	background:#ddd !important; /* very important bc when the iframe is smartphone responsive, we loose track of the iframe borders. The background will help to detect this. */
@@ -397,21 +404,57 @@ body > .dragging_menu_item {
 .tab_content_template_layout .iframe_toolbar {
 	text-align:right;
 	position:fixed;
-	top:5px;
-	right:205px;
+	top:9px;
+	right:102px;
 	color:#999;
 	font-size:10px;
 	z-index:4;
 }
+.tab_content_template_layout .iframe_toolbar:not(:hover) {
+	width:16px;
+	height:16px;
+	text-indent:20px;
+	overflow:hidden;
+	white-space:nowrap;
+}
+.tab_content_template_layout .iframe_toolbar:hover {
+	margin-top:20px;
+	margin-right:-10px;
+	padding:10px;
+	background:#eee;
+	border-bottom-left-radius:3px;
+	border-bottom-right-radius:3px;
+	border-left:1px solid #ddd;
+	border-right:1px solid #ddd;
+	border-bottom:1px solid #ddd;
+}
+.tab_content_template_layout .iframe_toolbar:before {
+	width:16px;
+	height:20px;
+	content:"\f3cd";
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	font-size:16px;
+	color:#666;
+	text-indent:0;
+	position:absolute;
+	top:0;
+	right:0;
+	cursor:pointer;
+}
+.tab_content_template_layout .iframe_toolbar:hover:before {
+	top:-20px;
+	right:9px; /*bc of the margin-right (10px) and border-right (1px) of the .iframe_toolbar: 10px - 1px = 9px */
+	color:var(--icon-hover-color);
+}
+.tab_content_template_layout .iframe_toolbar:not(:hover) * {
+	display:none;
+}
 .tab_content_template_layout .iframe_toolbar .view_template_samples {
-	margin-left:5px;
-	font-size:var(--icon-font-size);
-}
-.tab_content_template_layout .iframe_toolbar .view_template_samples::before {
-	content:"\f1b3";
-}
-.tab_content_template_layout .iframe_toolbar .view_template_samples::after {
-	content:"\f06e";
+	/*margin-left:5px;
+	font-size:var(--icon-font-size);*/
+	display:none;
 }
 .tab_content_template_layout .iframe_toolbar select {
 	color:#666;
@@ -420,6 +463,7 @@ body > .dragging_menu_item {
 	box-sizing:border-box;
 	text-align:center;
 	font-size:inherit;
+	vertical-align:unset;
 }
 .tab_content_template_layout .iframe_toolbar input {
 	width:35px;
@@ -430,6 +474,7 @@ body > .dragging_menu_item {
 	box-sizing:border-box;
 	text-align:center;
 	font-size:inherit;
+	vertical-align:unset;
 }
 .tab_content_template_layout .iframe_toolbar .dimension,
   .tab_content_template_layout .iframe_toolbar .orientation {
@@ -452,9 +497,9 @@ body > .dragging_menu_item {
 	height:auto;
 	margin:0;
 	position:fixed;
-	top:30px;
+	top:35px;
 	right:0;
-	bottom:25px;
+	bottom:30px;
 	background:#fff;
 	text-align:left;
 	
@@ -510,6 +555,9 @@ body > .dragging_menu_item {
 	max-height:none;
 	margin:0;
 	border:0;
+}
+.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree > li:first-child {
+	padding-top:10px;
 }
 .tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .icon {	
 	margin-left:5px;
@@ -715,34 +763,9 @@ body > .dragging_menu_item {
 	border-spacing:2px;
 }
 
-.code_layout_ui_editor .layout_ui_editor > .options > .options-left,
-  .code_layout_ui_editor .layout_ui_editor > .options > .options-center,
-  .code_layout_ui_editor .layout_ui_editor > .options > .options-right,
-  .code_layout_ui_editor .layout_ui_editor > .options > .options-right-2,
-  .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-left,
-  .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-center,
-  .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-right,
-  .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-right-2 {
-	padding-top:7px;
-}
-.code_layout_ui_editor .layout_ui_editor > .options > .options-right,
-  .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-right {
-	direction:rtl;
-}
-.code_layout_ui_editor .layout_ui_editor > .options .option,
-  .template_region_block_html_editor_popup .layout_ui_editor > .options .option {
-	opacity:1;
-}
-.code_layout_ui_editor .layout_ui_editor > .options .option.show-full-source,
-  .template_region_block_html_editor_popup .layout_ui_editor > .options .option.show-full-source,
-  .template_region_block_html_editor_popup .layout_ui_editor > .options .option.full-screen {
-	display:none !important;
-}
-.code_layout_ui_editor .layout_ui_editor .option,
-  .code_layout_ui_editor .layout_ui_editor .move,
+.code_layout_ui_editor .layout_ui_editor .move,
   .code_layout_ui_editor .layout_ui_editor .add,
   .code_layout_ui_editor .layout_ui_editor .delete,
-  .template_region_block_html_editor_popup .layout_ui_editor.option,
   .template_region_block_html_editor_popup .layout_ui_editor .move,
   .template_region_block_html_editor_popup .layout_ui_editor .add,
   .template_region_block_html_editor_popup .layout_ui_editor .delete {
@@ -768,12 +791,6 @@ body > .dragging_menu_item {
 .code_layout_ui_editor .layout_ui_editor .tabs .tab.view-page {
 	display:none; /* disable view tab bc does not parse PHP */
 }
-
-.code_layout_ui_editor .layout_ui_editor > .template-widgets-options > .options > .show-ptl,
-  .template_region_block_html_editor_popup .layout_ui_editor > .template-widgets-options > .options > .show-php,
-  .template_region_block_html_editor_popup .layout_ui_editor > .template-widgets-options > .options > .show-ptl {
-	display:none;
-}
 .code_layout_ui_editor .layout_ui_editor > .template-widgets .widget-header,
   .code_layout_ui_editor .layout_ui_editor > .template-widgets > .droppable-header {
 	background-color:#eee;
@@ -782,18 +799,72 @@ body > .dragging_menu_item {
 	background-color:#f7f7f7;
 }
 
-/* CODE - ELS UI - LAYOUT UI EDITOR - TOP BAR MENU */
-.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options {
-	width:150px;
-	position:absolute;
-	right:0;
+/* CODE - ELS UI - OPTIONS */
+.code_layout_ui_editor .layout_ui_editor > .options > .options-left,
+  .code_layout_ui_editor .layout_ui_editor > .options > .options-center,
+  .code_layout_ui_editor .layout_ui_editor > .options > .options-right,
+  .code_layout_ui_editor .layout_ui_editor > .options > .options-right-2,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-left,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-center,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-right,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-right-2 {
+	padding-top:7px;
+}
+.code_layout_ui_editor .layout_ui_editor > .options > .options-right,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options > .options-right {
+	direction:rtl;
+}
+.code_layout_ui_editor .layout_ui_editor > .options .option,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options .option {
+	opacity:1;
+}
+.code_layout_ui_editor .layout_ui_editor > .options .option.show-full-source,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options .option.show-full-source,
+  .template_region_block_html_editor_popup .layout_ui_editor > .options .option.full-screen {
+	display:none !important;
+}
+.code_layout_ui_editor .layout_ui_editor .option,
+  .template_region_block_html_editor_popup .layout_ui_editor .option {
+	background-image:none;
+}
+.code_layout_ui_editor .layout_ui_editor > .template-widgets-options > .options > .show-ptl,
+  .template_region_block_html_editor_popup .layout_ui_editor > .template-widgets-options > .options > .show-php,
+  .template_region_block_html_editor_popup .layout_ui_editor > .template-widgets-options > .options > .show-ptl {
+	display:none;
+}
+
+/* CODE - ELS UI - LAYOUT UI EDITOR - TOP BAR MENU - OPTIONS */
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-left {
+	height:30px;
+	padding:5px;
+	top:0;
+	left:0;
+	right:70%;
+	box-sizing:border-box;
+	background:var(--main-template-bg);
+	white-space:nowrap;
 	z-index:3;
 }
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.reverse > .options > .options-left {
+	left:70%;
+	right:0;
+	text-align:right;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-left .option {
+	color:var(--main-template-color);
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .options-left .option.option-disabled {
+	opacity:.35 !important;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .options-left .option:hover:after {
+	margin-top:5px;
+}
+
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center {
 	width:170px;
 	padding:0 60px 0 0;
 	position:fixed;
-	top:6px;
+	top:8px;
 	left:auto;
 	right:285px;
 	bottom:auto;
@@ -817,10 +888,10 @@ body > .dragging_menu_item {
 	vertical-align:middle;
 }
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right {
-	width:250px;
+	width:200px;
 	padding:0;
 	position:fixed;
-	top:6px;
+	top:8px;
 	left:auto;
 	right:25px;
 	bottom:auto;
@@ -836,9 +907,98 @@ body > .dragging_menu_item {
 }
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.save {
 	position:fixed;
-	top:9px;
+	top:10px;
 	right:0;
 }
+
+/* CODE - ELS UI - LAYOUT UI EDITOR - TOP BAR MENU - OPTIONS - AUTO-SAVE */
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.auto_save_convert_settings {
+	direction:ltr;
+	font-family:var(--icon-font-family);
+	font-size:12px;
+	text-align:left;
+	color:#444;
+	
+	position:absolute;
+	right:-70px;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.auto_save_convert_settings:before {
+	width:16px;
+	height:16px;
+	padding-top:4px;
+	display:block;
+	content:"\f141";
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	cursor:pointer;
+	color:#222;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.auto_save_convert_settings:hover:before {
+	color:var(--icon-hover-color);
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.auto_save_convert_settings > a,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.auto_save_convert_settings > ul {
+	width:200px;
+	padding:0;
+	position:absolute;
+	top:20px;
+	right:-350px;
+	background:#eee;
+	border-left:1px solid #ddd;
+	border-right:1px solid #ddd;
+	cursor:default;
+	transition:.5s all;
+	opacity:0;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.auto_save_convert_settings > a {
+	padding:7px 10px;
+	box-sizing:border-box;
+	color:#444;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.auto_save_convert_settings > ul {
+	margin-top:30px;
+	border-bottom-left-radius:3px;
+	border-bottom-right-radius:3px;
+	border-bottom:1px solid #ddd;
+	box-sizing:border-box;
+	overflow:hidden;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.auto_save_convert_settings:hover > a,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.auto_save_convert_settings:hover > ul {
+	display:block;
+	right:0;
+	opacity:1;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.auto_save_convert_settings > a {
+	white-space:nowrap;
+	overflow:hidden;
+	position:relative;
+	display:inline-block;
+	color:inherit;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.auto_save_convert_settings > a:hover {
+	text-decoration:none;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.auto_save_convert_settings > a .icon {
+	width:20px;
+	height:20px;
+	vertical-align:top;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.auto_save_convert_settings ul li {
+	margin:0;
+	display:block;
+	padding:7px 10px 7px 45px;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.auto_save_convert_settings ul li:hover {
+	background:#ddd;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.auto_save_convert_settings ul li input {
+	position:absolute;
+	right:10px;
+}
+
+/* CODE - ELS UI - LAYOUT UI EDITOR - TOP BAR MENU - PANELS */
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .resize-panels,
   .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .template-source,
   .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .template-full-source,
@@ -854,6 +1014,8 @@ body > .dragging_menu_item {
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .menu-layers {
 	padding-top:10px;
 }
+
+/* CODE - ELS UI - LAYOUT UI EDITOR - TOP BAR MENU - PROPERTIES */
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.fixed_properties.menu-settings-shown > .template-widgets,
   .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.fixed_properties.menu-settings-shown > .menu-widgets, 
   .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.fixed_properties.menu-settings-shown > .menu-layers,
@@ -981,7 +1143,7 @@ body > .dragging_menu_item {
 	min-height:auto;
 	max-height:none;
 	margin:0;
-	padding:0 0 0 5pxs;
+	padding:0 0 0 5px;
 	border:0;
 	overflow:visible;
 }
@@ -993,6 +1155,9 @@ body > .dragging_menu_item {
 }
 .code_layout_ui_editor .layout_ui_editor_right_container .mytree .template-widget {
 	display:none;
+}
+.code_layout_ui_editor .layout_ui_editor_right_container .mytree > li:first-child {
+	padding-top:10px;
 }
 
 /* TEMPLATE REGION BLOCK HTML EDITOR POPUP */

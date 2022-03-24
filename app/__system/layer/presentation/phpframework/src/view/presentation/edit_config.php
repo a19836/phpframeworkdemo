@@ -54,9 +54,10 @@ FunctionUtilObj.create_workflow_file_from_code_url = create_workflow_file_from_c
 	<div class="top_bar">
 		<header>
 			<div class="title">Edit Config' . ($config_file_name ? ' "' . $config_file_name . '"' : '') . ' for project "' . $selected_project_id . '"</div>
-			<!--ul class="dropdown">
-				<li class="save" title="Save Config"><a class="save" onClick="saveConfig()">Save</a></li>
-			</ul-->
+			<ul>
+				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
+				<li class="save" title="Save"><a onClick="saveConfig()"><i class="icon save"></i> Save</a></li>
+			</ul>
 		</header>
 	</div>'; if ($obj_data) { $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, null, null, null, null, null, $presentation_brokers); $main_content .= '
 	<div class="config_obj with_top_bar_tab">

@@ -65,6 +65,10 @@ var available_templates_props = ' . json_encode($available_templates_props) . ';
 <div class="top_bar">
 	<header>
 		<div class="title">Project Global Variables for project "' . $selected_project_id . '"</div>
+		<ul>
+			<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
+			<li class="save" title="Save"><a onClick="saveGlobalVariables()"><i class="icon save"></i> Save</a></li>
+		</ul>
 	</header>
 </div>
 <div class="global_vars_obj with_top_bar_tab">

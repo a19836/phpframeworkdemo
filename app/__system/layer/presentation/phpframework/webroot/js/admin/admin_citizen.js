@@ -19,7 +19,7 @@ $(function() {
 		try {
 			iframe[0].contentWindow.$.ajaxSetup({
 				complete: function(jqXHR, textStatus) {
-					if (jqXHR.status == 200 && jqXHR.responseText.indexOf('<div class="login">') > 0 && jqXHR.responseText.indexOf('<h1>Login</h1>') > 0) 
+					if (jqXHR.status == 200 && jqXHR.responseText.indexOf('<div class="login">') > 0 && jqXHR.responseText.indexOf('<div id="layoutAuthentication">') > 0) 
 						document.location = win_url;
 			    	}
 			});
@@ -31,7 +31,7 @@ $(function() {
 	//prepare redirect when user is logged out
 	$.ajaxSetup({
 		complete: function(jqXHR, textStatus) {
-			if (jqXHR.status == 200 && jqXHR.responseText.indexOf('<div class="login">') > 0 && jqXHR.responseText.indexOf('<h1>Login</h1>') > 0)
+			if (jqXHR.status == 200 && jqXHR.responseText.indexOf('<div class="login">') > 0 && jqXHR.responseText.indexOf('<div id="layoutAuthentication">') > 0)
 				document.location = win_url;
 	    	}
 	});

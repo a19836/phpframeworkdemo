@@ -16,12 +16,6 @@ $(function () {
 	$(".code_editor_body > .code_menu").addClass("top_bar_menu");
 	$(".code_editor_body > .layout_ui_editor").addClass("with_top_bar_menu");
 	
-	//init auto save
-	addAutoSaveMenu(".top_bar li.save");
-	enableAutoSave(onToggleAutoSave); //only for testing
-	initAutoSave(".top_bar li.save a");
-	auto_save = false;
-	
 	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
@@ -85,32 +79,7 @@ $(function () {
 			createCodeEditor(textarea, {save_func: saveTemplate, no_height: true});
 		
 		//init ui layout editor
-		initCodeLayoutUIEditor(template_obj, saveTemplate);
-		var luie = template_obj.find(".code_editor_body > .layout_ui_editor");
-		var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
-		
-		if (PtlLayoutUIEditor)
-			PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorWithRightContainer;
-		
-		initPageAndTemplateLayout(template_obj, template_obj, function() {
-			update_settings_from_layout_iframe_func = function() {
-				updateCodeEditorSettingsFromLayout(template_obj);
-			};
-			update_layout_iframe_from_settings_func = function() {
-				updateCodeEditorLayoutFromSettings(template_obj);
-			};
-			
-			//waits until the load params and joinpoints gets loaded
-			setTimeout(function() {
-				//set saved_template_obj_id
-				saved_template_obj_id = getTemplateCodeObjId();
-				
-				auto_save = true;
-			}, 2000);
-		});
-		
-		//select layout view. Needs to be inside of settimeout otherwise the layout ui editor will not be inited correctly
-		setTimeout(function() {
+		initCodeLayoutUIEditor(template_obj, saveTemplate, function() {
 			//show view layout panel instead of code
 			var view_layout = luie.find(" > .tabs > .view-layout");
 			view_layout.addClass("do-not-confirm");
@@ -119,7 +88,34 @@ $(function () {
 			
 			//show php widgets
 			luie.find(" > .template-widgets-options .show-php input").attr("checked", "checked").prop("checked", true).trigger("click").attr("checked", "checked").prop("checked", true);
-		}, 500);
+		});
+		
+		var luie = template_obj.find(".code_editor_body > .layout_ui_editor");
+		var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
+		
+		if (PtlLayoutUIEditor)
+			PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorWithRightContainer;
+		
+		//init page template layout
+		initPageAndTemplateLayout(template_obj, template_obj, function() {
+			update_settings_from_layout_iframe_func = function() {
+				updateCodeEditorSettingsFromLayout(template_obj);
+			};
+			update_layout_iframe_from_settings_func = function() {
+				updateCodeEditorLayoutFromSettings(template_obj, true);
+			};
+			
+			//waits until the load params and joinpoints gets loaded
+			setTimeout(function() {
+				//set saved_template_obj_id
+				saved_template_obj_id = getTemplateCodeObjId();//only for testing. Then uncomment this line!
+				
+				//init auto save
+				addAutoSaveMenu(".top_bar li.dummy_elm_to_add_auto_save_options");
+				enableAutoSave(onToggleAutoSave);//only for testing. Then activate auto_save here by uncommenting this line!
+				initAutoSave(".top_bar li.save a");
+			}, 2000);
+		});
 	}
 	
 	MyFancyPopup.hidePopup();
@@ -127,8 +123,10 @@ $(function () {
 
 //To be used in the toggleFullScreen function
 function onToggleFullScreen(in_full_screen) {
+	var template_obj = $(".template_obj");
+	onToggleCodeEditorFullScreen(in_full_screen, template_obj);
+	
 	setTimeout(function() {
-		var template_obj = $(".template_obj");
 		var top = parseInt(template_obj.find(".regions_blocks_includes_settings").css("top"));
 		
 		resizeSettingsPanel(template_obj, top);
@@ -221,7 +219,7 @@ function updateCodeEditorLayoutFromMainTab(elm) {
 	}
 }
 
-function updateCodeEditorLayoutFromSettings(template_obj) {
+function updateCodeEditorLayoutFromSettings(template_obj, do_not_update_from_body_editor) {
 	if (template_obj[0]) {
 		var regions_blocks_includes_settings = template_obj.find(".regions_blocks_includes_settings");
 		
@@ -235,7 +233,8 @@ function updateCodeEditorLayoutFromSettings(template_obj) {
 		updateRegionsBlocksJoinPointsSettingsLatestObjs(regions_blocks_includes_settings);
 		
 		//updates the last regions and params. This is very important. otherwise the template preview won't show the latest regions and params from the html.
-		updateRegionsFromBodyEditor(false);
+		if (!do_not_update_from_body_editor)
+			updateRegionsFromBodyEditor(false);
 		
 		if (!template_obj.hasClass("inactive")) {
 			var iframe = template_obj.find(".code_editor_layout iframe");
@@ -379,9 +378,6 @@ function getTemplateCodeForSaving(without_regions_blocks_and_includes) {
 		updateCodeEditorSettingsFromLayout(template_obj);
 	}*/
 	
-	//update settings from body
-	updateRegionsFromBodyEditor(false);
-	
 	//preparing new code
 	var status = true;
 	var code = "";
@@ -395,6 +391,9 @@ function getTemplateCodeForSaving(without_regions_blocks_and_includes) {
 	}
 	
 	if (!without_regions_blocks_and_includes) {
+		//update settings from body
+		updateRegionsFromBodyEditor(false);
+		
 		var obj = getRegionsBlocksAndIncludesObjToSave();
 		
 		$.ajax({

@@ -1,4 +1,4 @@
-/* TITLE */
+/* TOP BAR */
 .edit_relationship > .top_bar {
 	margin-bottom:15px;
 }
@@ -93,6 +93,7 @@
 	box-sizing:border-box;
 	padding-top:10px;
 	border-radius:0;
+	border-top:0;
 }
 .edit_relationship .relationship .query .query_settings .query_settings_tab {
 	height:calc(100vh - 100px);

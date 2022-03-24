@@ -39,6 +39,9 @@ function initContextMenus() {
 	addLiContextMenu(obj.children("a").addClass("link"), "main_presentation_group_context_menu", {callback: onPresentationContextMenu});
 	initPresentationContextMenu(obj);
 	
+	obj = file_tree.find("li.main_node_lib");
+	initLibContextMenu(obj);
+	
 	obj = file_tree.find("li.main_node_dao");
 	addLiContextMenu(obj.children("a").addClass("link"), "main_dao_group_context_menu", {callback: onDaoContextMenu});
 	initDaoContextMenu(obj);
@@ -154,6 +157,20 @@ function initHibernateContextMenu(elm) {
 	elm.find("li i.hbn_native").each(function(idx, node) {
 		$(node).parent().parent().remove();
 	});
+}
+
+function initLibContextMenu(elm) {
+	var folders = elm.find("li i.folder");
+	var files = elm.find("li i.file");
+	var zip_files = elm.find("li i.zip_file");
+	
+	folders.parent().addClass("link");
+	files.parent().addClass("link");
+	zip_files.parent().addClass("link");
+
+	addLiContextMenu(folders.parent(), "lib_group_context_menu", {callback: onLibContextMenu});
+	addLiContextMenu(files.parent(), "lib_file_context_menu", {callback: onLibContextMenu});
+	addLiContextMenu(zip_files.parent(), "zip_file_context_menu", {callback: onLibContextMenu});
 }
 
 function initDaoContextMenu(elm) {
@@ -510,6 +527,15 @@ function onPresentationContextMenu(target, contextmenu, originalEvent) {
 	contextmenu.find(".class_function a").attr("add_class_func_url", a.attr("add_class_func_url"));
 	contextmenu.find(".class_method a").attr("add_class_method_url", a.attr("add_class_method_url"));
 	contextmenu.find(".manage_includes a").attr("manage_includes_url", a.attr("manage_includes_url"));
+	
+	return onContextMenu(target, contextmenu, originalEvent);
+}
+
+function onLibContextMenu(target, contextmenu, originalEvent) {
+	var a = $(originalEvent.target.parentNode);
+	
+	contextmenu.find(".view_docbook a").attr("view_docbook_url", a.attr("view_docbook_url"));
+	contextmenu.find(".view_code a").attr("view_code_url", a.attr("view_code_url"));
 	
 	return onContextMenu(target, contextmenu, originalEvent);
 }

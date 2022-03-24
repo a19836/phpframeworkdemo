@@ -1,3 +1,7 @@
+body > .cke_screen_reader_only { /* cke editor creates this automatically */
+	position:fixed;
+}
+
 .block_obj {
 	margin-bottom:0;
 }

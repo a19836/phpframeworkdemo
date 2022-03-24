@@ -2,8 +2,17 @@
 .top_bar {
 	margin-bottom:10px;
 }
+.top_bar header {
+	z-index:4;
+}
 .top_bar header > ul {
-	right:130px;
+	right:133px;
+}
+.top_bar li.dummy_elm_to_add_auto_save_options {
+	display:none;
+}
+.with_top_bar_tab > .tabs {
+	z-index:4;
 }
 
 /* GENERIC */
@@ -48,7 +57,7 @@
 
 /* Template Preview */
 .template_obj #preview {
-	height:calc(100vh - 33px);
+	height:calc(100vh - 40px);
 	min-height:300px;
 	padding:0 !important;
 	position:relative;
@@ -63,19 +72,19 @@
 
 /* Code Editor - Contents */
 .template_obj .code_editor_layout {
-	height:calc(100vh - 33px);
+	height:calc(100vh - 65px);
 	min-height:300px;
 	padding:0 !important;
 	position:relative;
 	border:0;
 }
 .template_obj .code_editor_layout.tab_content_template_layout .iframe_toolbar {
-	right:285px;
+	right:210px;
 }
 
 /* Code Editor - Body */
 .template_obj .code_editor_body {
-	height:calc(100vh - 33px);
+	height:calc(100vh - 65px);
 	min-height:300px;
 	padding:0 !important;
 	position:relative;
@@ -93,21 +102,32 @@
 /* Code Editor - Body - ELS UI */
 .template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu > .options .options-right {
 	width:200px;
-	right:252px;
+	right:203px;
+	z-index:5;
 }
 .template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu > .options > .options-center {
-	right:450px;
+	right:400px;
+	z-index:5;
 }
 .template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu > .options .options-left .option.save,
   .template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu > .options .options-right .option.full-screen {
 	display:none !important;
 }
+.template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu.fixed_properties > .menu-settings {
+	z-index:5;
+}
+.template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu.fixed_properties.menu-settings-shown > .template-widgets,
+  .template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu.fixed_properties.menu-settings-shown > .menu-widgets, 
+  .template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu.fixed_properties.menu-settings-shown > .menu-layers,
+  .template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu.fixed_properties.menu-settings-shown > .template-widgets-options {
+	margin-bottom:0;
+}
 
 /* Settings */
 .template_obj .regions_blocks_includes_settings .update_automatically:not(.icon) {
 	width:250px;
-	margin-top:20px;
-	float:right;
+	position:absolute;
+	right:5px;
 	color:#777;
 	font-size:90%;
 	text-align:right;

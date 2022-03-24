@@ -35,6 +35,10 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHan
 	<div class="top_bar">
 		<header>
 			<div class="title">Tables Diagram from DB: \'' . $bean_name . '\'</div>
+			<ul>
+				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
+				<li class="save" title="Save"><a onClick="saveDBDiagram()"><i class="icon save"></i> Save</a></li>
+			</ul>
 		</header>
 	</div>'; $main_content .= $WorkFlowUIHandler->getContent(); if ($DBDriver) $main_content .= '<script>
 			DBTableTaskPropertyObj.column_types = ' . json_encode($DBDriver->getDBColumnTypes()) . ';

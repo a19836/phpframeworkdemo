@@ -91,13 +91,21 @@ var show_templates_only = ' . ($_GET["show_templates_only"] ? 1 : 0) . '; //This
 		<header>
 			<div class="title">Edit Page "<span class="file_name" title="' . $entity_view_code . '">' . $entity_view_code . '</span>"</div>
 			<ul>
-				<li class="update_layout_from_settings" title="Update Settings to Layout UI"><a onClick="updateLayoutFromSettings( $(\'.entity_obj\') )"><i class="icon update_layout_from_settings"></i> Update Settings to Layout UI</a></li>
-				<li class="advanced_editor" title="Switch to Free Html Editor"><a href="?' . $query_string . '&edit_entity_type=advanced"><i class="icon show_advanced_ui"></i> Switch to Free Html Editor</a></li>
 				<li class="view_project_page" title="View Project Page"><a href="' . $view_project_url . '" target="project"><i class="icon view"></i></a></li>
-				<li class="preview" title="Preview & Test Page"><a onClick="preview()"><i class="icon preview_file"></i> Preview & Test Page</a></li>
 				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save Page"><a onClick="' . ($confirm_save ? 'confirmSave' : 'save') . '()"><i class="icon save"></i> Save</a></li>
-				<li class="save_preview" title="Save & Preview Page"><a onClick="saveAndPreview(' . ($confirm_save ? 'true' : 'false') . ');"><i class="icon save_preview_file"></i> Save & Preview Page</a></li>
+				
+				<li class="sub_menu">
+					<i class="icon sub_menu"></i>
+					<ul>
+						<li class="advanced_editor" title="Switch to Free Html Editor"><a href="?' . $query_string . '&edit_entity_type=advanced"><i class="icon show_advanced_ui"></i> Switch to Free Html Editor</a></li>
+						<li class="update_layout_from_settings" title="Update Settings to Layout UI"><a onClick="updateLayoutFromSettings( $(\'.entity_obj\') )"><i class="icon update_layout_from_settings"></i> Update Settings to Layout UI</a></li>
+						<li class="view_template_samples" title="View Template Samples"><a onClick="openTemplateSamples()"><i class="icon view_template_samples"></i> View Template Samples</a></li>
+						<li class="preview" title="Preview & Test Page"><a onClick="preview()"><i class="icon preview_file"></i> Preview & Test Page</a></li>
+						<li class="save_preview" title="Save & Preview Page"><a onClick="saveAndPreview(' . ($confirm_save ? 'true' : 'false') . ');"><i class="icon save_preview_file"></i> Save & Preview Page</a></li>
+						<li class="dummy_elm_to_add_auto_save_options"></li>
+					</ul>
+				</li>
 			</ul>
 		</header>
 	</div>'; if ($obj_data) { $code_exists = !empty(trim($obj_data["code"])); $main_content .= '
@@ -113,7 +121,7 @@ var show_templates_only = ' . ($_GET["show_templates_only"] ? 1 : 0) . '; //This
 		<div class="button">
 			<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
 		</div>
-	</div>'; $main_content .= '<div class="entity_obj inactive">
+	</div>'; $main_content .= '<div class="entity_obj inactive' . ($is_external_template ? ' is_external_template' : '') . '">
 		' . getTemplatesHtml($set_template, $selected_template, $available_templates, $installed_wordpress_folders_name) . '
 		
 		<div class="entity_obj_tabs">
@@ -125,7 +133,7 @@ var show_templates_only = ' . ($_GET["show_templates_only"] ? 1 : 0) . '; //This
 			<div class="regions_blocks_includes_settings_overlay"></div>
 			<div class="entity_template_settings regions_blocks_includes_settings collapsed" id="entity_template_settings">
 				<div class="settings_header">
-					Settings
+					Main Settings
 					<div class="icon maximize" onClick="toggleSettingsPanel(this)" title="Toggle Settings">Toggle</i></div>
 				</div>
 				
@@ -162,6 +170,7 @@ var show_templates_only = ' . ($_GET["show_templates_only"] ? 1 : 0) . '; //This
 				<option value="url"' . ($pa1cddb9c == 'url' ? ' selected' : '') . '>Template from an URL</option>
 				<option value="wordpress_template"' . ($pa1cddb9c == 'wordpress_template' ? ' selected' : '') . '>WordPress Template</option>
 			</select>
+			<span class="icon minimize external_template_params_toggle_btn" onClick="toggleExternalTemplateParams(this)"></span>
 		</div>
 		
 		<div class="template_id project_param"' . ($pa1cddb9c == 'project' ? '' : ' style="display:none"') . '>

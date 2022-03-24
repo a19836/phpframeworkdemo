@@ -24,64 +24,63 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_advanced
 	</script>'; die(); } $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_advanced.css" type="text/css" charset="utf-8" />
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_advanced.js"></script>'; $main_content = AdminMenuUIHandler::getContextMenus($exists_db_drivers); $main_content .= '
-<div id="menu_panel">
-	<ul>
-		<li class="icon home" title="Go to Home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/admin_home?admin_type=advanced"></li>
-		<li class="icon docbook" title="Internal Library" onClick="goTo(this, \'docbook_url\', event)" docbook_url="' . $project_url_prefix . 'docbook/"></li>
-		' . ($is_flush_cache_allowed ? '<li class="icon flush_cache" title="Flush Cache" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\')"></li>' : '') . '
-		<li class="icon refresh" onClick="refreshIframe()" title="Refresh"></li>
-		<li class="icon toggle_tree_layout" title="Toggle Layout" onClick="toggleTreeLayout(this, \'' . ($left_panel_tree_layout_class == "left_panel_with_tabs" ? "left_panel_without_tabs" : "left_panel_with_tabs") . '\')"></li>
-		
-		<li class="icon expand_left_panel" title="Expand Left Panel" onClick="expandLeftPanel(this)"></li>
-		<li class="icon collapse_left_panel" title="Collapse Left Panel" onClick="collapseLeftPanel(this)"></li>
-		
-		<span class="login_info" title="Logged as \'' . $logged_name . '\' user."><i class="icon user"></i> ' . $logged_name . '</span>
-	</ul>
-</div>
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_advanced.js"></script>
 
-<div id="left_panel" class="' . $left_panel_tree_layout_class . '">
-	<div class="filter_by_layout">
-		<label>Project: </label>
-		<select onChange="filterByLayout(this)">
-			<option value="">- All -</option>'; foreach ($presentation_projects_by_layer_label as $layer_label => $projs) { $main_content .= '<optgroup label="' . $layer_label . '">'; foreach ($projs as $proj_id => $proj_name) $main_content .= '<option value="' . $proj_id . '" ' . ($filter_by_layout == $proj_id ? ' selected' : '') . '>' . $proj_name . '</option>'; $main_content .= '</optgroup>'; } foreach ($non_projects_layout_types as $lname => $lid) $main_content .= '<option value="' . $lname . '" ' . ($filter_by_layout == $lname ? ' selected' : '') . '>' . $lname . '</option>'; $main_content .= '	</select>
-	</div>
-	
-	<div class="file_tree_root"></div>
-	<div id="file_tree" class="mytree hidden">
-		<ul>'; $main_layers_properties = array(); $main_content .= AdminMenuUIHandler::getLayersGroup("presentation_layers", $layers["presentation_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("business_logic_layers", $layers["business_logic_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("data_access_layers", $layers["data_access_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("db_layers", $layers["db_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= isset($layers["vendors"]["vendor"]) ? AdminMenuUIHandler::getLayer("vendor", $layers["vendors"]["vendor"], $main_layers_properties, $project_url_prefix) : ''; $main_content .= '
-			<li class="management jstree-open" data-jstree=\'{"icon":"main_node main_node_management"}\'>
-				<label>Management</label>
+<script>
+var path_to_filter = "' . $filter_by_layout . '";
+</script>'; $main_content = AdminMenuUIHandler::getContextMenus($exists_db_drivers); $main_content .= '
+	<div id="menu_panel" class="' . $theme_layout . '">
+		<ul class="left">
+			<li class="logo"></li>
+			
+			<li class="icon sub_menu">
 				<ul>
-					' . ($is_switch_admin_ui_allowed ? '<li data-jstree=\'{"icon":"main_node_admin_simple_ui"}\'><a class="link" href="' . $project_url_prefix . 'admin/admin_uis" onClick="document.location=this.href"><label>Switch Workspace</label></a></li>' : '') . '
-					<!--li data-jstree=\'{"icon":"main_node_admin_simple_ui"}\'><a class="link" href="' . $project_url_prefix . 'admin/choose_available_tool" onClick="document.location=this.href"><label>Switch Project</label></a></li-->
-					<li data-jstree=\'{"icon":"main_node_admin_simple_ui"}\'><a class="link" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&is_popup=1" . '\')"><label>Choose Tool</label></a></li>
-					' . ($is_manage_users_allowed ? '<li data-jstree=\'{"icon":"main_node_user_management"}\'><a class="link" onClick="goTo(this,\'url\', event)" url="' . $project_url_prefix . 'user/manage_users"><label>Users Management</label></a></li>' : '') . '
-					' . ($is_manage_layers_allowed ? '<li data-jstree=\'{"icon":"main_node_layers_management"}\'><a class="link" onClick="goTo(this,\'url\', event)" url="' . $project_url_prefix . 'setup?step=3.1&iframe=1&hide_setup=1"><label>Layers Management</label></a></li>' : '') . '
-					' . ($is_manage_modules_allowed ? '<li data-jstree=\'{"icon":"main_node_modules_management"}\'><a class="link" onClick="goTo(this,\'url\', event)" url="' . $project_url_prefix . 'phpframework/admin/manage_modules"><label>Modules Management</label></a></li>' : '') . '
-					' . ($is_manage_projects_allowed ? '<li data-jstree=\'{"icon":"main_node_projects_management"}\'><a class="link" onClick="goTo(this,\'url\', event)" url="' . $project_url_prefix . 'phpframework/presentation/manage_projects"><label>Projects Management</label></a></li>' : '') . '
-					' . ($is_testunits_allowed ? '<li data-jstree=\'{"icon":"main_node_testunit_management"}\'><a class="link" onClick="goTo(this,\'url\', event)" url="' . $project_url_prefix . 'phpframework/testunit/"><label>Test-Units Management</label></a></li>' : '') . '
-					' . ($is_deployment_allowed ? '<li data-jstree=\'{"icon":"main_node_deployment_management"}\'><a class="link" onClick="goTo(this,\'url\', event)" url="' . $project_url_prefix . 'phpframework/deployment/"><label>Deployments Management</label></a></li>' : '') . '
-					' . ($is_program_installation_allowed ? '<li data-jstree=\'{"icon":"main_node_program_installation"}\'><a class="link" onClick="goTo(this,\'url\', event)" url="' . $project_url_prefix . 'phpframework/admin/install_program"><label>Install a Program</label></a></li>' : '') . '
-					' . ($is_diff_files_allowed ? '<li data-jstree=\'{"icon":"main_node_diff_files"}\'><a class="link" onClick="goTo(this,\'url\', event)" url="' . $project_url_prefix . 'phpframework/diff/"><label>Diff Files</label></a></li>' : '') . '
-					' . ($layers["others"]["other"] ? AdminMenuUIHandler::getLayer("other", $layers["others"]["other"], $main_layers_properties, $project_url_prefix) : '') . '
-					' . ($is_flush_cache_allowed ? '<li data-jstree=\'{"icon":"main_node_flush_cache"}\'><a class="link" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\');"><label>Flush Cache</label></a></li>' : '') . '
-					<li data-jstree=\'{"icon":"main_node_logout"}\'><a class="link" href="' . $project_url_prefix . 'auth/logout" onClick="document.location=this.href"><label>Logout</label></a></li>
-					<li data-jstree=\'{"icon":"main_node_about"}\'><a class="link" onClick="goTo(this,\'url\', event)" url="' . $project_url_prefix . 'phpframework/admin/about"><label>About</label></a></li>
+					<li><a onClick="toggleAdvancedLevel(this)"><i class="icon enable"></i> <span>' . ($advanced_level == "advanced_level" ? "Show basic items" : "Show advanced items") . '</span></a></li>
+					<li><a onClick="toggleTreeLayout(this)"><i class="icon toggle_tree_layout"></i> <span>' . ($tree_layout == "left_panel_with_tabs" ? "Show vertical layout" : "Show horizontal layout") . '</span></a></li>
+					<li><a onClick="toggleThemeLayout(this)"><i class="icon toggle_theme_layout"></i> <span>' . ($theme_layout == "dark_theme" ? "Show light theme" : "Show dark theme") . '</span></a></li>
 				</ul>
 			</li>
+			
+			<li class="filter_by_layout">
+				<label>Project: </label>
+				<select onChange="filterByLayout(this)">
+					<option value="">- All -</option>'; foreach ($presentation_projects_by_layer_label_and_folders as $layer_label => $projs) { $main_content .= '<optgroup label="' . $layer_label . '">'; $main_content .= getProjectsHtml($projs, $filter_by_layout); $main_content .= '</optgroup>'; } foreach ($non_projects_layout_types as $lname => $lid) $main_content .= '<option value="' . $lname . '" ' . ($filter_by_layout == $lname ? ' selected' : '') . '>' . $lname . '</option>'; $main_content .= '	</select>
+			</li>
+		</ul>
+		<ul class="right">
+			<li class="icon home" title="Go Home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/admin_home?admin_type=advanced"></li>
+			' . ($is_flush_cache_allowed ? '<li class="icon flush_cache" title="Flush Cache" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\')"></li>' : '') . '
+			<li class="icon refresh" onClick="refreshIframe()" title="Refresh"></li>
+			<li class="icon tools" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&is_popup=1" . '\')" title="Choose a Tool"></li>
+			
+			<!--li class="icon expand_left_panel" title="Expand Left Panel" onClick="expandLeftPanel(this)"></li>
+			<li class="icon collapse_left_panel" title="Collapse Left Panel" onClick="collapseLeftPanel(this)"></li-->
+			
+			<li class="login_info" title="Logged as \'' . $logged_name . '\' user."><i class="icon user"></i> ' . $logged_name . '</li>
+			<li class="icon logout" title="Logout" onClick="document.location=this.getAttribute(\'logout_url\')" logout_url="' . $project_url_prefix . 'auth/logout"></li>
 		</ul>
 	</div>
-</div>
-<script>
-	main_layers_properties = ' . json_encode($main_layers_properties) . ';
-</script>
-<div id="hide_panel">
-	<div class="button minimize" onClick="toggleLeftPanel(this)"></div>
-</div>
-<div id="right_panel">
-	<iframe src="' . $project_url_prefix . 'admin/admin_home?admin_type=advanced"></iframe>
-	<div class="iframe_overlay">
-		<div class="iframe_loading">Loading...</div>
+
+	<div id="left_panel" class="' . $tree_layout . ' ' . $advanced_level . ' ' . $theme_layout . '">
+		<div class="file_tree_root"></div>
+		<div id="file_tree" class="mytree' . ($theme_layout == "dark_theme" ? " jstree-default-light" : "") . ' hidden">
+			<ul>'; $main_layers_properties = array(); $main_content .= AdminMenuUIHandler::getLayersGroup("presentation_layers", $layers["presentation_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("business_logic_layers", $layers["business_logic_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("data_access_layers", $layers["data_access_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("db_layers", $layers["db_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= '
+				<li class="main_node_library jstree-open" data-jstree=\'{"icon":"main_node main_node_library"}\'>
+					<label>Library</label>
+					<ul>'; $main_content .= isset($layers["libs"]["lib"]) ? AdminMenuUIHandler::getLayer("lib", $layers["libs"]["lib"], $main_layers_properties, $project_url_prefix) : ''; $main_content .= isset($layers["vendors"]["vendor"]) ? AdminMenuUIHandler::getLayer("vendor", $layers["vendors"]["vendor"], $main_layers_properties, $project_url_prefix) : ''; $main_content .= $layers["others"]["other"] ? AdminMenuUIHandler::getLayer("other", $layers["others"]["other"], $main_layers_properties, $project_url_prefix) : ''; $main_content .= '
+					</ul>
+				</li>'; $main_content .= '</ul>
+		</div>
 	</div>
-</div>'; if ($default_page) $main_content .= '<script>$("iframe")[0].src = \'' . $default_page . '\';</script>'; ?>
+	<script>
+		main_layers_properties = ' . json_encode($main_layers_properties) . ';
+	</script>
+	<div id="hide_panel">
+		<div class="button minimize" onClick="toggleLeftPanel(this)"></div>
+	</div>
+	<div id="right_panel">
+		<iframe src="' . $project_url_prefix . 'admin/admin_home?admin_type=advanced"></iframe>
+		<div class="iframe_overlay">
+			<div class="iframe_loading">Loading...</div>
+		</div>
+	</div>'; if ($default_page) $main_content .= '<script>$("iframe")[0].src = \'' . $default_page . '\';</script>'; function getProjectsHtml($v12ed481092, $pb154d332, $pdcf670f6 = "") { $pf8ed4912 = ""; if (is_array($v12ed481092)) foreach ($v12ed481092 as $pcfd27d54 => $v5c37a7b23d) { if (is_array($v5c37a7b23d)) $pf8ed4912 .= '<option disabled>' . $pdcf670f6 . $pcfd27d54 . '</option>' . getProjectsHtml($v5c37a7b23d, $pb154d332, $pdcf670f6 . "&nbsp;&nbsp;&nbsp;"); else $pf8ed4912 .= '<option value="' . $pcfd27d54 . '" ' . ($pb154d332 == $pcfd27d54 ? ' selected' : '') . '>' . $pdcf670f6 . $v5c37a7b23d . '</option>'; } return $pf8ed4912; } ?>

@@ -424,7 +424,7 @@ function createRegionsBlocksHtmlEditor(elms) {
 	};
 }
 
-function createRegionBlockHtmlEditor(block_html) {
+function createRegionBlockHtmlEditor(block_html, opts) {
 	var textarea = filterSelectorInNodes(block_html.childNodes, "textarea");
 	textarea.style.display = "none";
 	
@@ -439,7 +439,7 @@ function createRegionBlockHtmlEditor(block_html) {
 	
 	editor_elm.innerHTML = textarea.value;
 	
-	var tinymce_opts = parent.getTinyMCEOptions(block_html);
+	var tinymce_opts = parent.getTinyMCEOptions(block_html, opts);
 	tinymce_opts["target"] = editor_elm;
 	tinymce_opts["selector"] = null;
 	delete tinymce_opts["selector"];

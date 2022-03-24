@@ -35,7 +35,7 @@ $(function () {
 				item_type = first_node_to_load["item_type"];
 				is_special_vendor = true;
 			}
-			else if (!bean_name && (item_type == "vendor" || item_type == "other"))
+			else if (!bean_name && (item_type == "vendor" || item_type == "other" || item_type == "lib"))
 				bean_name = item_type;
 			
 			if (bean_name == first_node_to_load["bean_name"] && a.attr("bean_file_name") == first_node_to_load["bean_file_name"] && item_type == first_node_to_load["item_type"]) {

@@ -82,10 +82,15 @@ var load_module_settings_function = null;
 		<header>
 			<div class="title">' . $title . '</div>
 			<ul>
-				<li class="toggle_module_data" title="Toggle Module Info"><a class="toggle_icon" onClick="showOrHideModuleData(this)"><i class="icon toggle_module_data"></i> Toggle Module Info</a></li>
-				' . $title_icons . '
 				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save Block"><a onClick="saveBlock()"><i class="icon save"></i> Save</a></li>
+				<li class="sub_menu">
+					<i class="icon sub_menu"></i>
+					<ul>
+						<li class="toggle_module_data" title="Toggle Module Info"><a class="toggle_icon" onClick="showOrHideModuleData(this)"><i class="icon toggle_module_data"></i> Toggle Module Info</a></li>
+						' . $title_icons . '
+					</ul>
+				</li>
 			</ul>
 		</header>
 	</div>'; if ($module) { if (!$module["enabled"]) $main_content .='<div class="invalid">Warning: This module is currently DISABLED!</div>'; if ($hard_coded) $main_content .='<div class="invalid">Alert: The system detected that the block id is different than the current file name. We advise you to edit this file with the Advanced UI, otherwise you may overwrite other people\'s changes...</div>'; $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, null, null, null, null, null, $presentation_brokers); $main_content .= '

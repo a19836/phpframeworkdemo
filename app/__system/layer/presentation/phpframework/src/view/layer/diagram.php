@@ -34,6 +34,10 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); $WorkFlowUIHandler = new WorkFlo
 	<div class="top_bar">
 		<header>
 			<div class="title">Layers Diagram</div>
+			<ul>
+				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
+				<li class="save" title="Save"><a onClick="saveLayersDiagram()"><i class="icon save"></i> Save</a></li>
+			</ul>
 		</header>
 	</div>'; $main_content .= $WorkFlowUIHandler->getContent(); $main_content .= '
 <script>

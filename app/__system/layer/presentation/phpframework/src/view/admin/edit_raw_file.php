@@ -62,9 +62,14 @@ var readonly = ' . ($readonly ? "true" : "false") . ';
 </script>'; $main_content .= '
 	<div class="top_bar">
 		<header>
-			<div class="title">Edit File "' . $path . '"</div>'; if ($editor_code_type) { $main_content .= '<ul>'; if ($editor_code_type == "php") $main_content .= '<li class="pretty_print" title="Pretty Print Code"><a onClick="prettyPrintCode()"><i class="icon pretty_print"></i> Pretty Print Code</a></li>'; $main_content .= '	<li class="set_word_wrap" title="Toggle Word Wrap"><a onClick="setWordWrap(this)" wrap="0"><i class="icon word_wrap"></i> Word Wrap</a></li>
-					<li class="editor_settings" title="Open Editor Setings"><a onClick="openEditorSettings()"><i class="icon settings"></i> Open Editor Setings</a></li>
-					<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>'; if (!$readonly) $main_content .= '<li class="save" title="Save File"><a onClick="save(false)"><i class="icon full_screen"></i> Save</a></li>'; $main_content .= '</ul>'; } $main_content .= '
+			<div class="title">Edit File "' . $path . '"</div>'; if ($editor_code_type) { $main_content .= '<ul>'; $main_content .= '	<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>'; if (!$readonly) $main_content .= '<li class="save" title="Save File"><a onClick="save(false)"><i class="icon save"></i> Save</a></li>'; $main_content .= '	<li class="sub_menu">
+						<i class="icon sub_menu"></i>
+						<ul>'; if ($editor_code_type == "php") $main_content .= '		<li class="pretty_print" title="Pretty Print Code"><a onClick="prettyPrintCode()"><i class="icon pretty_print"></i> Pretty Print Code</a></li>'; $main_content .= '			<li class="set_word_wrap" title="Toggle Word Wrap"><a onClick="setWordWrap(this)" wrap="0"><i class="icon word_wrap"></i> Word Wrap</a></li>
+							<li class="editor_settings" title="Open Editor Setings"><a onClick="openEditorSettings()"><i class="icon settings"></i> Open Editor Setings</a></li>
+							<li class="dummy_elm_to_add_auto_save_options"></li>
+						</ul>
+					</li>
+				</ul>'; } $main_content .= '
 		</header>
 	</div>'; if ($editor_code_type) { $main_content .= '
 	<div class="code_area">

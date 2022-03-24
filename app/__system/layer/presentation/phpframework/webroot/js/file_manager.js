@@ -293,6 +293,8 @@ function initUlChildsContextMenu(ul, main_layer_properties) {
 			initIbatisContextMenu(ul);
 		else if (layer_type == "hibernate" && typeof initHibernateContextMenu == "function")
 			initHibernateContextMenu(ul);
+		else if (layer_type == "lib" && typeof initLibContextMenu == "function")
+			initLibContextMenu(ul);
 		else if (layer_type == "dao" && typeof initDaoContextMenu == "function")
 			initDaoContextMenu(ul);
 		else if (layer_type == "vendor" && typeof initVendorContextMenu == "function")

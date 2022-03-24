@@ -1,3 +1,7 @@
+.top_bar header {
+	z-index:4;
+}
+
 .block_obj {
 	width:100%;
 	margin-bottom:0;
@@ -27,7 +31,9 @@
 }
 .module_workflow_settings #code .code_menu,
   .module_workflow_settings #ui .taskflowchart .workflow_menu {
-	right:120px;
+	margin-top:-25px;
+	top:auto;
+	right:260px;
 	z-index:999999;
 }
 .module_workflow_settings #code .code_menu > ul > .save,
@@ -44,6 +50,7 @@
 }
 .module_workflow_settings #code .code_menu > ul > .editor_settings .icon.settings {
 	margin:0;
+	min-height:auto;
 }
 
 .module_workflow_settings #external_vars {

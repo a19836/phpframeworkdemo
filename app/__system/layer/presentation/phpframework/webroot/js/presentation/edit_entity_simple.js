@@ -14,7 +14,7 @@ $(function () {
 	});
 	
 	//init auto save
-	addAutoSaveMenu(".top_bar li.save");
+	addAutoSaveMenu(".top_bar li.dummy_elm_to_add_auto_save_options");
 	enableAutoSave(onToggleAutoSave); //only for testing
 	initAutoSave(".top_bar li.save a");
 	
@@ -139,6 +139,7 @@ function onChangeTemplateGenre(elm) {
 	var template_value = null;
 	
 	if (!is_external_template) {
+		entity_obj.removeClass("is_external_template");
 		template_value = select.val();
 		
 		select.show();
@@ -148,6 +149,7 @@ function onChangeTemplateGenre(elm) {
 		updateTemplateLayout(entity_obj);
 	}
 	else {
+		entity_obj.addClass("is_external_template");
 		select.hide();
 		external_template_params.show();
 		
@@ -217,12 +219,23 @@ function onChooseAvailableTemplate(elm, show_templates_only) {
 	} );
 }
 
+function toggleExternalTemplateParams(elm) {
+	elm = $(elm);
+	elm.toggleClass("minimize maximize");
+	elm.parent().closest(".external_template_params").toggleClass("collapsed");
+}
+
 function onChangeExternalTemplateType(elm) {
 	elm = $(elm);
 	var external_template_type = elm.val();
 	var external_template_params = elm.parent().parent();
 	
 	external_template_params.children(":not(.external_template_type)").hide();
+	
+	if (external_template_type)
+		external_template_params.find(".external_template_params_toggle_btn").show();
+	else
+		external_template_params.find(".external_template_params_toggle_btn").hide();
 	
 	if (external_template_type == "project")
 		external_template_params.children(".project_param").show();

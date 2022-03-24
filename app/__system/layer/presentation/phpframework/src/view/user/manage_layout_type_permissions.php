@@ -79,7 +79,7 @@ var get_layout_type_permissions_url = \'' . $project_url_prefix . 'user/get_layo
 			<div class="layout_type">
 				<label>Layout Type: </label>
 				<select name="type_id" onChange="onChangeLayoutType(this)">'; foreach ($available_types as $tid => $tname) $main_content .= '<option value="' . $tid . '" ' . ($type_id == $tid ? ' selected' : '') . '>' . $tname . '</option>'; $main_content .= '	</select>
-				<select name="layout_type_id" onChange="updateLayoutTypePermissions(this)">'; if ($type_id == 0) foreach ($presentation_projects as $layer_label => $projs) { $main_content .= '<optgroup label="' . $layer_label . '">'; foreach ($projs as $proj_id => $proj_name) $main_content .= '<option value="' . $proj_id . '" ' . ($layout_type_id == $proj_id ? ' selected' : '') . '>' . $proj_name . '</option>'; $main_content .= '</optgroup>'; } foreach ($layout_types as $lname => $lid) $main_content .= '<option value="' . $lid . '" ' . ($layout_type_id == $lid ? ' selected' : '') . '>' . $lname . '</option>'; $main_content .= '	</select>
+				<select name="layout_type_id" onChange="updateLayoutTypePermissions(this)">'; if ($type_id == 0) foreach ($presentation_projects_by_folders as $layer_label => $projs) { $main_content .= '<optgroup label="' . $layer_label . '">'; $main_content .= getProjectsHtml($projs, $layout_type_id); $main_content .= '</optgroup>'; } foreach ($layout_types as $lname => $lid) $main_content .= '<option value="' . $lid . '" ' . ($layout_type_id == $lid ? ' selected' : '') . '>' . $lname . '</option>'; $main_content .= '	</select>
 			</div>
 			
 			<div class="layout_type_permissions_content">
@@ -109,7 +109,7 @@ var get_layout_type_permissions_url = \'' . $project_url_prefix . 'user/get_layo
 			</div>
 		</form>
 	</div>
-</div>'; function getLayersHtml($v2635bad135, $v830cc461b7, $pbffdab91, $paeab4070, $v9bfd456213, $pf7b73b3a, $v0a035c60aa, $pb76ee81a, $pf3f2367a) { $pf8ed4912 = ''; foreach ($v2635bad135 as $v43974ff697 => $pfd248cca) { $pf8ed4912 .= '<li id="file_tree_' . $pb76ee81a . '_' . $v43974ff697 . '" class="mytree">
+</div>'; function getProjectsHtml($v12ed481092, $v1a222c94d4, $pdcf670f6 = "") { $pf8ed4912 = ""; if (is_array($v12ed481092)) foreach ($v12ed481092 as $v5c37a7b23d => $pcfd27d54) { if (is_array($pcfd27d54)) $pf8ed4912 .= '<option disabled>' . $pdcf670f6 . $v5c37a7b23d . '</option>' . getProjectsHtml($pcfd27d54, $v1a222c94d4, $pdcf670f6 . "&nbsp;&nbsp;&nbsp;"); else $pf8ed4912 .= '<option value="' . $pcfd27d54 . '" ' . ($v1a222c94d4 == $pcfd27d54 ? ' selected' : '') . '>' . $pdcf670f6 . $v5c37a7b23d . '</option>'; } return $pf8ed4912; } function getLayersHtml($v2635bad135, $v830cc461b7, $pbffdab91, $paeab4070, $v9bfd456213, $pf7b73b3a, $v0a035c60aa, $pb76ee81a, $pf3f2367a) { $pf8ed4912 = ''; foreach ($v2635bad135 as $v43974ff697 => $pfd248cca) { $pf8ed4912 .= '<li id="file_tree_' . $pb76ee81a . '_' . $v43974ff697 . '" class="mytree">
 					<label><i class="icon main_node main_node_' . $v43974ff697 . '"></i> ' . strtoupper(str_replace("_", " ", $v43974ff697)) . '</label>
 					<ul>'; if ($pfd248cca) foreach ($pfd248cca as $v0a5deb92d8 => $v4a24304713) { $v54307eb686 = $v830cc461b7[$v43974ff697][$v0a5deb92d8]; $v3fab52f440 = "$v9bfd456213/" . $pbffdab91[$v43974ff697][$v0a5deb92d8]; $pf8ed4912 .= '<li data-jstree=\'{"icon":"main_node_' . $v54307eb686["item_type"] . '"}\'>
 							<label>

@@ -14,9 +14,10 @@ $(function () {
 	});
 	
 	//init auto save
-	addAutoSaveMenu(".top_bar li.save");
+	/* No need for this bc this file includes the edit_file_includes.js which already does this code.
+	addAutoSaveMenu(".top_bar li.dummy_elm_to_add_auto_save_options");
 	enableAutoSave(onToggleAutoSave);
-	initAutoSave(".top_bar li.save a");
+	initAutoSave(".top_bar li.save a");*/
 	
 	//init trees
 	classesTree = new MyTree({

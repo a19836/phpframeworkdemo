@@ -49,6 +49,12 @@ var old_obj_id = null;
 			<ul>
 				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save Includes"><a onClick="saveIbatisObject()"><i class="icon save"></i> Save</a></li>
+				<li class="sub_menu">
+					<i class="icon sub_menu"></i>
+					<ul>
+						<li class="dummy_elm_to_add_auto_save_options"></li>
+					</ul>
+				</li>
 			</ul>
 		</header>
 	</div>'; $main_content .= $WorkFlowQueryHandler->getChooseIncludeFromFileManagerHtml($get_dao_sub_files_url, "choose_include_from_file_manager"); $main_content .= '

@@ -136,7 +136,7 @@
 	float:none !important;
 	padding:3px 5px !important;
 	border:1px outset;
-	background: #d5e3e4;
+	background: #eee;
 	
 	-moz-border-radius:0.5em; 
 	-webkit-border-radius:0.5em;
@@ -561,11 +561,13 @@
 }
 .relationship .query .taskflowchart .workflow_menu li .icon {
 	width:auto;
-	height:23px;
+	height:20px;
 }
 .relationship .query .taskflowchart .workflow_menu li .icon::before {
-	margin-right:5px;
-	vertical-align:baseline;
+	height:16px;
+	margin-right:10px;
+	vertical-align:bottom;
+	display:inline-block;
 }
 .relationship .query .taskflowchart .workflow_menu li.add_new_table .icon::before {
 	content:"\f0fe";
