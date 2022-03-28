@@ -80,7 +80,7 @@
 	color:#666;
 	font-style:italic;
 	font-weight:bold;
-	font-family:verdana,arial,courier;
+	font-family:var(--main-font-family);
 }
 #main_menu .dropdown > li > a {
 	/*border-left:1px solid #eee;*/

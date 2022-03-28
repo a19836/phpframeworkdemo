@@ -65,7 +65,7 @@ $(function () {
 				updateSettingsFromLayout(entity_obj);
 			};
 			update_layout_iframe_from_settings_func = function() {
-				updateLayoutFromSettings(entity_obj);
+				updateLayoutFromSettings(entity_obj, false);
 			};
 			
 			/*setTimeout(function(){
@@ -168,9 +168,9 @@ function onChooseAvailableTemplate(elm, show_templates_only) {
 			if (active_tab == 1) {
 				entity_obj_tabs.tabs('option', 'active', 0);
 				
-				updateLayoutFromSettings(entity_obj_elm);
+				updateLayoutFromSettings(entity_obj_elm, true);
 			}*/
-			updateLayoutFromSettings(entity_obj_elm);
+			updateLayoutFromSettings(entity_obj_elm, true);
 		}
 	};
 	var available_projects_templates_props = {};
@@ -426,7 +426,7 @@ function updateTemplateLayout(entity_obj) {
 						}
 					}
 				
-				updateLayoutIframeFromSettings(iframe, {
+				reloadLayoutIframeFromSettings(iframe, {
 					"template": template,
 					"template_regions" : template_regions,
 					"template_params": template_params_values_list,
@@ -452,7 +452,7 @@ function updateTemplateLayout(entity_obj) {
 	else {
 		//update new template
 		updateSelectedTemplateRegionsBlocks(entity_obj, null);
-		updateLayoutIframeFromSettings(iframe, {"template": ""});
+		reloadLayoutIframeFromSettings(iframe, {"template": ""});
 			
 		//sets back synchronization functions
 		update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
@@ -460,7 +460,7 @@ function updateTemplateLayout(entity_obj) {
 	}
 }
 
-function updateLayoutFromSettings(entity_obj) {
+function updateLayoutFromSettings(entity_obj, reload_iframe) {
 	if (entity_obj[0] && !entity_obj.hasClass("inactive")) {
 		var orig_template_params_values_list = JSON.stringify(template_params_values_list);
 		
@@ -482,15 +482,19 @@ function updateLayoutFromSettings(entity_obj) {
 		if (are_different /*&& confirm("Do you wish to convert the template settings to the layout panel?")*/) {
 			var template = getSelectedTemplate(entity_obj);
 			var iframe = entity_obj.find(".entity_template_layout iframe");
-			
-			updateLayoutIframeFromSettings(iframe, {
+			var iframe_data = {
 				"template": template,
 				"template_regions" : data["template_regions"],
 				"template_params": data["params"],
 				"template_includes": data["includes"],
 				"is_external_template": entity_obj.find(" > .template > select[name=template_genre]").val() ? 1 : 0,
 				"external_template_params": getExternalSetTemplateParams(entity_obj)
-			});
+			};
+			
+			if (reload_iframe)
+				reloadLayoutIframeFromSettings(iframe, iframe_data);
+			else
+				updateLayoutIframeFromSettings(iframe, iframe_data);
 			
 			//update regions_blocks_list
 			regions_blocks_list = data["regions_blocks"];

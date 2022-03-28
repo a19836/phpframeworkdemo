@@ -25,8 +25,8 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilP
 <!-- Add Icons CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
-<!-- Top-Bar CSS file -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+<!--Add Layout CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
 
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/create_presentation_uis_automatically.css" type="text/css" charset="utf-8" />
@@ -81,9 +81,13 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilP
 		<link rel="stylesheet" href="' . $project_url_prefix . 'css/file_manager.css" type="text/css" charset="utf-8" />
 		<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/file_manager.js"></script>
 		
+		<!-- Add Icons CSS file -->
 		<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+		
+		<!-- Add Layout JS file -->
+		<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/layout.js"></script>
+		
 		<link rel="stylesheet" href="' . $project_url_prefix . 'css/edit_php_code.css" type="text/css" charset="utf-8" />
-		<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_code.js"></script>
 		<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_php_code.js"></script>	
 		
 		<!-- Add PHPJS Functions -->

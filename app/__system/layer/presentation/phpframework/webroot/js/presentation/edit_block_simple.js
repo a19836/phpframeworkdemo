@@ -72,7 +72,7 @@ function openModuleAdminPanelPopup() {
 	var popup = $(".module_admin_panel_popup");
 	
 	if (!popup[0]) {
-		popup = $('<div class="myfancypopup module_admin_panel_popup"><iframe src="' + module_admin_panel_url + '"></iframe></div>');
+		popup = $('<div class="myfancypopup' + (is_popup ? " in_popup" : "") + ' module_admin_panel_popup"><iframe src="' + module_admin_panel_url + '"></iframe></div>');
 		$(document.body).append(popup);
 	}
 	

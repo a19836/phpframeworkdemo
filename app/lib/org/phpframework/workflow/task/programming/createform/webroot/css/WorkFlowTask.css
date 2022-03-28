@@ -216,7 +216,7 @@
 	display:none;
 }
 .create_form_task_html .ptl_settings > .ptl_external_vars {
-	width:260px;
+	width:265px;
 	margin:5px 15px 10px;
 }
 .create_form_task_html .ptl_settings .ptl_external_vars .group_add,
@@ -253,6 +253,15 @@
 	border:1px solid #eee;
 	z-index:9999;
 }
+.create_form_task_html .ptl_settings > .layout_ui_editor > .menu-widgets, 
+  .create_form_task_html .ptl_settings > .layout_ui_editor > .menu-layers, 
+  .create_form_task_html .ptl_settings > .layout_ui_editor > .menu-settings, 
+  .create_form_task_html .ptl_settings > .layout_ui_editor > .template-widgets-options,
+  .create_form_task_html .ptl_settings > .layout_ui_editor > .template-widgets,
+  .create_form_task_html .ptl_settings > .layout_ui_editor > .resize-panels,
+  .create_form_task_html .ptl_settings > .layout_ui_editor > .messages {
+	bottom:0 !important;
+}
 .create_form_task_html .ptl_settings > .layout_ui_editor > .template-source > textarea,
   .create_form_task_html .ptl_settings > .layout_ui_editor > .template-source > .ace_editor {
 	width:100%;
@@ -269,76 +278,19 @@
 .create_form_task_html .ptl_settings > .layout_ui_editor > .tabs {
 	background:#fff;
 }
-.create_form_task_html .ptl_settings > .layout_ui_editor > .menu-settings table {
-	border-collapse:separate;
-	border-spacing:2px;
-}
-.create_form_task_html .ptl_settings > .layout_ui_editor > .menu-settings table th {
-	font-weight:bold;
-}
-.create_form_task_html .ptl_settings > .layout_ui_editor > .menu-settings input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .menu-settings select {
-	height:2.5em;
-}
-.create_form_task_html .ptl_settings > .layout_ui_editor > .menu-settings label {
-	height:auto;
-	line-height:initial;
-}
-.create_form_task_html .ptl_settings > .layout_ui_editor > .menu-settings .settings-margin > label,
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .menu-settings .settings-padding > label,
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .menu-settings .settings-bg > label,
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .menu-settings .settings-border-radius > label,
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .menu-settings .settings-border > label {
-	float:none;
-}
-.create_form_task_html .ptl_settings > .layout_ui_editor > .menu-settings .settings-info {
-	height:2em;
-}
-.create_form_task_html .ptl_settings > .layout_ui_editor > .menu-settings .settings-info > label,
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .menu-settings .settings-classes > label {
-	float:none;
-}
-
 .create_form_task_html .ptl_settings > .layout_ui_editor > .options .options-left,
   .create_form_task_html .ptl_settings > .layout_ui_editor > .options .options-center,
   .create_form_task_html .ptl_settings > .layout_ui_editor > .options .options-right,
   .create_form_task_html .ptl_settings > .layout_ui_editor > .options .options-right-2 {
 	padding-top:7px;
 }
-.create_form_task_html .ptl_settings > .layout_ui_editor > .options input {
-	display:inline;
-	float:none;
-}
-.create_form_task_html .ptl_settings > .layout_ui_editor > .options .option {
-	height:20px;
-}
 .create_form_task_html .ptl_settings > .layout_ui_editor > .options .option.option-screen-width, 
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .options .option.option-screen-height {
+  .create_form_task_html .ptl_settings > .layout_ui_editor > .options .option.option-screen-height,
+  .create_form_task_html .ptl_settings > .layout_ui_editor > .options .option.option-px,
+  .create_form_task_html .ptl_settings > .layout_ui_editor > .options .option.option-x {
 	height:auto;
-	font-size:70%;
-	vertical-align:middle;
+	font-size:10px;
 	display:none;
-}
-.create_form_task_html .ptl_settings > .layout_ui_editor > .options .option.option-screen-width {
-	margin-left:0;
-}
-.create_form_task_html .ptl_settings > .layout_ui_editor > .options .option.option-px {
-	margin-top:0;
-}
-.create_form_task_html .ptl_settings > .layout_ui_editor > .options .option.option-x {
-	font-size:70%;
-}
-.create_form_task_html .ptl_settings > .layout_ui_editor .option,
-  .create_form_task_html .ptl_settings > .layout_ui_editor .move,
-  .create_form_task_html .ptl_settings > .layout_ui_editor .add,
-  .create_form_task_html .ptl_settings > .layout_ui_editor .delete {
-	background-image:none;
-}
-.create_form_task_html .ptl_settings > .layout_ui_editor label {
-	font-style:inherit;
-	font-weight:inherit;
-	color:inherit;
-	font-family:inherit;
 }
 .create_form_task_html .ptl_settings > .layout_ui_editor > .tabs .tab.view-page {
 	opacity:.4;

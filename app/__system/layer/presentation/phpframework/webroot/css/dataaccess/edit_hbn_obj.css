@@ -2,6 +2,9 @@
 .top_bar {
 	margin-bottom:15px;
 }
+.top_bar header {
+	z-index:1501;
+}
 .top_bar .dummy_elm_to_add_auto_save_options {
 	display:none;
 }
@@ -20,7 +23,7 @@
 	position:fixed;
 	top:7px;
 	left:140px;
-	z-index:2;
+	z-index:1502;
 }
 .edit_hbn_obj .data_access_obj > .name label {
 	display:none;

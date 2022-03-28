@@ -27,15 +27,17 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); $filter_by_layout_url_query = La
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/file_manager.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/file_manager.js"></script>
 
+<!-- Add Layout CSS and JS files -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/layout.js"></script>
+
+<!-- Edit HBN OBJ JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/dataaccess/edit_hbn_obj.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/edit_hbn_obj.js"></script>
 
 <!-- Edit QUERY JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/dataaccess/edit_query.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/edit_query.js"></script>
-
-<!-- Top-Bar CSS file -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
 
 <!-- Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/dataaccess/edit_relationship.css" type="text/css" charset="utf-8" />

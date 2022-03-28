@@ -56,6 +56,11 @@
 			vertical-align:middle;
 			cursor:pointer;
 		}
+		.layout_ui_editor > .menu-settings.menu-settings-container-3-3-3-3 .settings-properties table .container-col-icon {
+			width:20px;
+			font-size:14px;
+			text-align:center;
+		}
 	]]></menu_css>
 	<!--template_css><![CDATA[
 		.template-widget.template-widget-container-3-3-3-3 {

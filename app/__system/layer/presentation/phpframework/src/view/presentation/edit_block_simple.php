@@ -36,12 +36,12 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); $filter_by_layout
 <!-- Add Icons CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
-<!-- Top-Bar CSS file -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+<!-- Add Layout CSS and JS files -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/layout.js"></script>
 
 <!-- Add PHP CODE CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/edit_php_code.css" type="text/css" charset="utf-8" />
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_code.js"></script>
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_php_code.js"></script>
 
 <!-- Add PHPJS Functions -->
@@ -77,8 +77,9 @@ var templates_regions_html_url = \'' . $templates_regions_html_url . '\'; //used
 
 var block_settings_obj = ' . json_encode($block_settings_obj) . ';
 var load_module_settings_function = null;
+var is_popup = ' . ($popup ? "1" : "0") . ';
 '; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= '</script>'; $head .= CMSPresentationLayerJoinPointsUIHandler::getHeader(); $head .= LayoutTypeProjectUIHandler::getHeader(); $main_content = '
-	<div class="top_bar">
+	<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 		<header>
 			<div class="title">' . $title . '</div>
 			<ul>

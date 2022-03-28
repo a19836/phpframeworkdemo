@@ -149,6 +149,7 @@
 	bottom:0;
 	right:0;
 	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family:var(--main-font-family);
 }
 .server_task_html .template_workflow > .taskflowchart > .tasks_flow {
 	

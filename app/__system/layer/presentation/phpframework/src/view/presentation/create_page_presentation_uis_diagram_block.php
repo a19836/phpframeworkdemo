@@ -20,10 +20,6 @@
 
 include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($new_path) { $page_name = $db_table . "_" . $task_tag . ($task_tag_action ? "_" . $task_tag_action : ""); $head .= '
 	<style>
-	.top_bar li.continue {
-		margin-right:25px;
-	}
-	
 	.taskflowchart .tasks_menu_hide,
 	  .taskflowchart .workflow_menu {
 		display:none !important;
@@ -31,7 +27,7 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 	.taskflowchart.with_top_bar_menu .tasks_menu, 
 	  .taskflowchart.with_top_bar_menu .tasks_menu_hide, 
 	  .taskflowchart.with_top_bar_menu .tasks_flow {
-		top:30px;
+		top:60px;
 	}
 	.taskflowchart .selected_task_properties {
 		font-size:11px;
@@ -41,7 +37,7 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 	}
 	.taskflowchart.fixed_properties .selected_task_properties.maximize_properties, 
 	  .taskflowchart.fixed_properties .selected_connection_properties.maximize_properties {
-		top:30px !important;
+		top:60px !important;
 	}
 	
 	.taskflowchart:not(.with_top_bar_menu):not(.reverse) .tasks_menu {
@@ -270,4 +266,6 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 		else
 			jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please create some tasks first...");
 	}
+	</script>'; $main_content .= '<script>
+	$(".top_bar").addClass("in_popup");
 	</script>'; } ?>

@@ -33,8 +33,8 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); $choose_lib_files_from
 <!-- Add Icons CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
-<!-- Top-Bar CSS file -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+<!-- Add Layout CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
 
 <!-- Add local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/docbook/index.css" type="text/css" charset="utf-8" />

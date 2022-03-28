@@ -34,17 +34,15 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 <link rel="stylesheet" href="' . $peb014cfd . 'css/file_manager.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $peb014cfd . 'js/file_manager.js"></script>
 
-<!-- Edit code JS -->
-<script language="javascript" type="text/javascript" src="' . $peb014cfd . 'js/edit_code.js"></script>
-
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $v37d269c4fa . 'vendor/fontawesome/css/all.min.css">
 
 <!-- Icons CSS file -->
 <link rel="stylesheet" href="' . $peb014cfd . 'css/icons.css" type="text/css" charset="utf-8" />
 
-<!-- Top-Bar CSS file -->
-<link rel="stylesheet" href="' . $peb014cfd . 'css/top_bar.css" type="text/css" charset="utf-8" />
+<!-- Add Layout CSS and JS files -->
+<link rel="stylesheet" href="' . $peb014cfd . 'css/layout.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $peb014cfd . 'js/layout.js"></script>
 
 <!-- Add Admin Menu JS and CSS files -->
 <link rel="stylesheet" href="' . $peb014cfd . 'css/admin/admin_menu.css" type="text/css" charset="utf-8" />
@@ -489,7 +487,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 	<li class="edit_project_global_variables"><a onClick="return goTo(this, \'edit_project_global_variables_url\', event)">Edit Project Global Variables</a></li>
 	<li class="edit_config"><a onClick="return goTo(this, \'edit_config_url\', event)">Edit Config</a></li>
 	<li class="edit_init"><a onClick="return goTo(this, \'edit_init_url\', event)">Edit Init - Advanced</a></li>
-	<li class="manage_references"><a onClick="return goToPopup(this, \'manage_references_url\', event)">Manage References</a></li>
+	<li class="manage_references"><a onClick="return goTo(this, \'manage_references_url\', event)">Manage References</a></li>
 	<li class="line_break"></li>
 	<li class="view_project"><a onClick="return openWindow(this, \'view_project_url\', \'project\')">View Project</a></li>
 	<li class="test_project"><a onClick="return openWindow(this, \'test_project_url\', \'project\')">Test Project</a></li>
@@ -544,7 +542,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 	<li class="paste"><a onClick="return manageFile(this, \'paste_url\', \'paste\')">Paste</a></li>
 	<li class="line_break"></li>
 	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\', managePresentationFile)">Add Folder</a></li>
-	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', managePresentationFile)">Add File</a></li>
+	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', managePresentationFile)">Add Page</a></li>
 	<li class="line_break"></li>
 	<li class="view_project"><a onClick="return openWindow(this, \'view_project_url\', \'project\')">View Project</a></li>
 	<li class="test_project"><a onClick="return openWindow(this, \'test_project_url\', \'project\')">Test Project</a></li>
@@ -566,7 +564,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 	<li class="properties"><a onClick="return showProperties(this)">Properties</a></li>
 	<li class="line_break"></li>
 	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\', managePresentationFile)">Add Sub-Group</a></li>
-	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', managePresentationFile)">Add File</a></li>
+	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', managePresentationFile)">Add Page</a></li>
 	<li class="line_break"></li>
 	<li class="view_project"><a onClick="return openWindow(this, \'view_project_url\', \'project\')">View Project</a></li>
 	<li class="test_project"><a onClick="return openWindow(this, \'test_project_url\', \'project\')">Test Project</a></li>

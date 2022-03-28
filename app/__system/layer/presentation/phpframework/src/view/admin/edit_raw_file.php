@@ -38,17 +38,15 @@ $head = '
 <!-- Add MD5 JS File -->
 <script src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>
 
-<!-- Edit code JS -->
-<script src="' . $project_url_prefix . 'js/edit_code.js"></script>
-
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
 <!-- Icons CSS file -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
-<!-- Top-Bar CSS file -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+<!-- Add Layout CSS and JS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
+<script src="' . $project_url_prefix . 'js/layout.js"></script>
 
 <!-- Add local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/edit_raw_file.css" type="text/css" charset="utf-8" />

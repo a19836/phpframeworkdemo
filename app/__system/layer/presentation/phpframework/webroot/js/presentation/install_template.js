@@ -41,6 +41,7 @@ function installStoreTemplatePopup() {
 				type : "get",
 				url : get_store_templates_url,
 				dataType : "json",
+				crossDomain: true,
 				success : function(data, textStatus, jqXHR) {
 					//console.log(data);
 					var html = '';

@@ -1,24 +1,71 @@
+.login.with_popup .container .admin-page-content {
+	padding:0;
+}
 .login:not(.with_popup) .container .card {
 	box-shadow:0px 0px 80px 10px rgba(173,173,173,0.5) !important;
+	margin-top:calc((100vh - 350px) / 2);
+}
+.login .container .card .card-header {
+	background:#181818;
+	color:#FAB12B;
+	border-bottom:3px solid #ff0000;
 }
 .login:not(.with_popup) .container .card .card-header {
-	background:#222;
-	color:#fff;
 	border-bottom:3px solid #ff0000;
+}
+.login .container .card .card-header {
 	text-align:center;
 }
-.login:not(.with_popup) .container .card .card-header img {
+.login .container .card .card-header img {
 	margin:20px auto 30px;
 	display:inline-block;
 }
-.login:not(.with_popup) .container .card .card-header h5 {
-	margin:0;
-	color:#ff0000;
+.login .container .card .card-header h5 {
+	margin-bottom:0;
 }
 
-.form_fields { width:320px; margin:0 auto; }
-.form_fields .form_field label { width:100px; margin-right:10px; font-weight:normal; }
-.form_fields .form_field input { width:200px; display:inline-block; }
+.form_fields { width:320px; margin:10px auto 0; }
+.form_fields .form_field { position:relative; padding:7px 0; color:#555; }
+.form_fields .form_field input { 
+	width:100%; 
+	display:block;
+	font-family:inherit;
+	font-size:inherit;
+	color:inherit;
+	letter-spacing:inherit;
+	word-spacing:inherit;
+}
+.form_fields .form_field label {
+	margin:0;
+	position:absolute;
+	left:0;
+	font-family:inherit;
+	
+	pointer-events:none;
+	-webkit-transition:.3s ease all;
+	-o-transition:.3s ease all;
+	transition:.3s ease all;
+}
+.form_fields .form_field input:focus ~ label, 
+  .form_fields .form_field input:-webkit-autofill ~ label,
+  .form_fields .form_field input:not(:placeholder-shown) ~ label {
+	top:-.8rem;
+	left:0;
+	font-size:80%;
+	color:#aaa;
+}
+.form_fields .form_field input:focus ~ label:after, 
+  .form_fields .form_field input:-webkit-autofill ~ label:after,
+  .form_fields .form_field input:not(:placeholder-shown) ~ label:after {
+	content:":";
+}
+.form_fields .form_field input ~ label {
+	top:.9rem;
+	left:.75rem;
+	font-size:inherit;
+	color:inherit;
+}
 
-.buttons { text-align:center; }
+.buttons { width:320px; margin:20px auto 0; text-align:center; }
+.buttons input { width:100%; font-weight:600; }
 

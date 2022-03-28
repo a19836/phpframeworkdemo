@@ -19,8 +19,8 @@
  */
 
 include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $head = $WorkFlowUIHandler->getHeader(); $head .= '
-	<!-- Top-Bar CSS file -->
-	<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+	<!-- Add Layout CSS file -->
+	<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
 	
 	<!-- Add Local JS and CSS files -->
 	<link rel="stylesheet" href="' . $project_url_prefix . 'css/db/diagram.css" type="text/css" charset="utf-8" />

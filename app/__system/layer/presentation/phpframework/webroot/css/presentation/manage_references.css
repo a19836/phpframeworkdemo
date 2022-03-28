@@ -2,6 +2,10 @@
 .top_bar {
 	margin-bottom:10px;
 }
+.top_bar header {
+    width: auto;
+    right:0;
+}
 
 /* REFERENCES */
 #content {

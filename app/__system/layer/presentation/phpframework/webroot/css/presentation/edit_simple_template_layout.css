@@ -63,9 +63,6 @@ body.mobile_cursor,
 .template_region > .items > .item.active {
 	opacity:1 !important;
 }
-.template_region > .items > .item.invalid {
-	opacity:.5 !important;
-}
 .template_region.item-light > .items > .item {
 	border:1px dotted #eee !important;
 	border-bottom:0 !important;
@@ -140,6 +137,7 @@ body.mobile_cursor,
 .template_region > .items > .item:hover > select.region_block_type,
   .template_region > .items > .item.item-hover > select.region_block_type {
 	display:inline-block !important;
+	outline:none !important;
 }
 .template_region > .items > .item > .icon {
 	margin:0 !important;
@@ -192,6 +190,13 @@ body:not(.mobile_cursor) .template_region > .items > .item > .icon {
 	display:none !important;
 }
 
+.template_region > .items > .item.invalid > .pretty_block_options_button,
+  .template_region > .items > .item.invalid > input.block,
+  .template_region > .items > .item.invalid > .block_text,
+  .template_region > .items > .item.invalid > .block_html,
+  .template_region > .items > .item.invalid > .block_simulated_html {
+	opacity:.5 !important;
+}
 .template_region > .items > .item > select.block_options,
   .template_region > .items > .item > .pretty_block_options_button,
   .template_region > .items > .item > input.block {

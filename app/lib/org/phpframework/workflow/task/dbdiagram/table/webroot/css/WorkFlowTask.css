@@ -248,7 +248,7 @@
 	font-size:10px;
 }
 .selected_task_properties .db_table_task_html thead .add {
-	margin-left:22px;
+	margin:auto;
 }
 .selected_task_properties .db_table_task_html tbody td {
 	height:20px;

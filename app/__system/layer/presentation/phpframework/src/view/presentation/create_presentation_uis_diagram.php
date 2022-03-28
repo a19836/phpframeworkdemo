@@ -41,11 +41,11 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); $filter_by_layout_ur
 	<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/phpjs/functions/strings/stripslashes.js"></script>
 	<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/phpjs/functions/strings/addcslashes.js"></script>
 	
-	<!-- Top-Bar CSS file -->
-	<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+	<!-- Add Layout CSS and JS files -->
+	<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
+	<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/layout.js"></script>
 	
 	<!-- Add EDIT PHP CODE file -->
-	<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_code.js"></script>
 	<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_php_code.js"></script>
 	
 	<!-- Add CodeHighLight CSS and JS -->
@@ -169,7 +169,7 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); $filter_by_layout_ur
 			</div>
 		</div>
 		
-		<div id="create_uis_files" class="myfancypopup create_uis_files">
+		<div id="create_uis_files" class="myfancypopup with_title create_uis_files">
 			<h3 class="title">UIs Creation</h3>
 			
 			<div class="step step_1">

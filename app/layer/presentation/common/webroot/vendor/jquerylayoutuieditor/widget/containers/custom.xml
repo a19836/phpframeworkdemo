@@ -45,6 +45,11 @@
 			vertical-align:middle;
 			cursor:pointer;
 		}
+		.layout_ui_editor > .menu-settings.menu-settings-custom-container .settings-properties table .container-col-icon {
+			width:20px;
+			font-size:14px;
+			text-align:center;
+		}
 	]]></menu_css>
 	<menu_js><![CDATA[
 		function CustomContainerWidget(ui_creator, menu_widget) {

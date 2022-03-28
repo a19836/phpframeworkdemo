@@ -43,6 +43,7 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 );
 	
 	font-family: Verdana,Arial,sans-serif;
+	font-family:var(--main-font-family);
 	color:#555555;
 	font-weight:normal;
 	text-align:center;
@@ -65,6 +66,7 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e6e6e6', endColorstr='#c0c0c0',GradientType=0 );
 	
 	font-family: Verdana,Arial,sans-serif;
+	font-family:var(--main-font-family);
 	color:#555555;
 	font-weight:normal;
 	text-align:center;
@@ -87,6 +89,7 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebecda', endColorstr='#ceceb7',GradientType=0 );
 	
 	font-family: Verdana,Arial,sans-serif;
+	font-family:var(--main-font-family);
 	color:#555555;
 	font-weight:normal;
 	text-align:center;	
@@ -109,6 +112,7 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 );
 	
 	font-family: Verdana,Arial,sans-serif;
+	font-family:var(--main-font-family);
 	color:#555555;
 	font-weight:normal;
 	text-align:center;

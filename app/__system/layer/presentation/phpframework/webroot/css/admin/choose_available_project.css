@@ -32,7 +32,7 @@
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
 	content:"\f07c";
-	color:#d3b12a;
+	color:#e0a800;
 }
 .choose_available_project > .loading_projects {
 	display:block;
@@ -120,7 +120,7 @@
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
 	content:"\f07c";
-	color:#d3b12a;
+	color:#e0a800;
 }
 .choose_available_project li.back {
 	padding-top:15px;

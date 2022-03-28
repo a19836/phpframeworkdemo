@@ -30,22 +30,19 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); $filter_by_layout
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/file_manager.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/file_manager.js"></script>
 
-<!-- Edit Code JS file -->
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_code.js"></script>
-
-<!-- Edit PHP Code JS file -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/edit_php_code.css" type="text/css" charset="utf-8" />
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_php_code.js"></script>
-
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
 <!-- Icons CSS file -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
-<!-- Top-Bar CSS file -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+<!-- Add Layout CSS and JS files -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/layout.js"></script>
 
+<!-- Edit PHP Code JS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/edit_php_code.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_php_code.js"></script>
 <!-- Edit File Includes JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/edit_file_includes.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/edit_file_includes.js"></script>

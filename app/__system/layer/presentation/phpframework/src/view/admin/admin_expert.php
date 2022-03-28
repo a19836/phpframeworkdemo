@@ -18,22 +18,10 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-if (!$is_admin_ui_expert_allowed) { echo '<script>
+include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_expert_allowed) { echo '<script>
 		alert("You don\'t have permission to access this Workspace!");
 		document.location="' . $project_url_prefix . 'auth/logout";
-	</script>'; die(); } $head = '
-<!-- Add Fontawsome Icons CSS -->
-<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
-
-<!-- Add Icon CSS -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
-
-<!-- Edit code JS -->
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_code.js"></script>
-
-<!-- Add Admin Menu JS and CSS files -->
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_menu.js"></script>
-
+	</script>'; die(); } $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head = '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_expert.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_expert.js"></script>

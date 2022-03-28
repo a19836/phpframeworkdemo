@@ -87,7 +87,7 @@
 	
 }
 .regions_blocks_includes_settings input, .regions_blocks_includes_settings select, .regions_blocks_includes_settings textarea {
-	font-family: Verdana,Arial,sans-serif;
+	font-family:var(--main-font-family);
 	font-size: 0.9em;
 	/*background:#eee;
 	border: 1px inset #eee;*/
@@ -340,7 +340,7 @@
 	width:90%;
 	height:90%;
 }
-.template_region_info_popup iframe {
+.template_region_info_popup > iframe {
 	width:100%;
 	height:100%;
 }
@@ -609,13 +609,10 @@ body > .dragging_menu_item {
 	left:20px !important;
 	right:20px !important;
 	bottom:20px !important;
-	padding:0;
 	
-	/* need this otherwise the popup will appear short and weird in the edit_template_simple.php */
-	min-width:calc(100% - 40px) !important;
-	min-height:calc(100% - 40px) !important;
-	box-sizing:border-box !important;
-	overflow:visible !important;
+	padding:0;
+	box-sizing:border-box;
+	overflow:hidden;
 }
 .tab_content_template_layout .tab_content_template_layout_tasks > .popup_close {
 	/* need this otherwise the close button will appear transparent and on the left side in the edit_template_simple.php */
@@ -712,6 +709,7 @@ body > .dragging_menu_item {
 	border-right-color:#fff;
 }
 
+
 /* CODE - MENU - TOP BAR MENU */
 .code_layout_ui_editor .code_menu.top_bar_menu {
 	z-index:2;
@@ -749,6 +747,11 @@ body > .dragging_menu_item {
 	border:1px solid var(--menu-settings-input-border, transparent);
     
 }
+.code_layout_ui_editor .layout_ui_editor > .menu-settings {
+	/* This is very important otherwise the layout_ui_editor_right_container will appear in the background of the menu-settings */
+	background:#fff;
+	z-index:1;
+}
 .template_region_block_html_editor_popup .layout_ui_editor > .menu-widgets > li:first-child {
 	display:none; /*hide code group menu bc ptl and php are not allowed in the template_region_block_html_editor_popup */
 }
@@ -756,11 +759,6 @@ body > .dragging_menu_item {
   .template_region_block_html_editor_popup .layout_ui_editor > .menu-widgets li.menu-widget-ptl,
   .template_region_block_html_editor_popup .layout_ui_editor > .menu-widgets li.menu-widget-php {
 	display:none !important;
-}
-.code_layout_ui_editor .layout_ui_editor > .menu-settings table,
-  .template_region_block_html_editor_popup .layout_ui_editor > .menu-settings table {
-	border-collapse:separate;
-	border-spacing:2px;
 }
 
 .code_layout_ui_editor .layout_ui_editor .move,
@@ -914,7 +912,7 @@ body > .dragging_menu_item {
 /* CODE - ELS UI - LAYOUT UI EDITOR - TOP BAR MENU - OPTIONS - AUTO-SAVE */
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.auto_save_convert_settings {
 	direction:ltr;
-	font-family:var(--icon-font-family);
+	font-family:var(--main-font-family);
 	font-size:12px;
 	text-align:left;
 	color:#444;
@@ -1124,7 +1122,7 @@ body > .dragging_menu_item {
 	display:none;
 	box-sizing:border-box;
 	
-	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family:var(--main-font-family);
 	color:#666;
 	font-size:13px;
 }

@@ -114,12 +114,12 @@
 .module_join_points .join_points .join_point > span.add,
    .regions_blocks_includes_settings .region_blocks .items .item .module_join_points .join_points .join_point > span.add {
 	float:right;
-	margin:-22px 30px 0 0;
+	margin:-22px 27px 0 0;
 }
 .module_join_points .join_points .join_point > span.info,
    .regions_blocks_includes_settings .region_blocks .items .item .module_join_points .join_points .join_point > span.info {
 	float:right;
-	margin:-22px 50px 0 0;
+	margin:-22px 48px 0 0;
 }
 .module_join_points .join_points .join_point .join_point_active,
    .regions_blocks_includes_settings .region_blocks .items .item .module_join_points .join_points .join_point .join_point_active {
@@ -342,7 +342,7 @@
    .regions_blocks_includes_settings .region_blocks .items .item .module_join_points .join_points .join_point .join_point_method .method_args table .value,
    .regions_blocks_includes_settings .region_blocks .items .item .module_join_points .join_points .join_point .join_point_method .output_mapping table .method_output,
    .regions_blocks_includes_settings .region_blocks .items .item .module_join_points .join_points .join_point .join_point_method .output_mapping table .join_point_output {
-	width:205px;
+	width:210px;
 	overflow:hidden;
 }
 .module_join_points .join_points .join_point .join_point_method .input_mapping table td.join_point_input,

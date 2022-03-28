@@ -131,7 +131,7 @@
 .menu_settings .els .import_template_ptl {
 	position:absolute;
 	right:10px;
-	margin-top:-20px;
+	margin-top:-40px;
 }
 .menu_settings .els .ptl .ptl_external_vars > .items {
 	border:0;
@@ -312,7 +312,7 @@
 } 
 .menu_settings .item .menu_title, 
    .menu_settings .item .menu_class {
-   	width:275px;
+   	width:280px;
    	height:25px;
    	margin-top:2px;
    	margin-left:20px;
@@ -337,15 +337,15 @@
 .menu_settings .item .menu_attrs input,
    .menu_settings .item .menu_previous_html input,
    .menu_settings .item .menu_next_html input {
-	width:495px;
+	width:500px;
 }
 .menu_settings .item .menu_url input {
-	width:477px;
+	width:483px;
 	padding-right:20px;
 }
 .menu_settings .item .menu_previous_html textarea,
    .menu_settings .item .menu_next_html textarea {
-	width:495px;
+	width:503px;
 	height:45px;
 
 }

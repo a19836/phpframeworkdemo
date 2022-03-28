@@ -117,7 +117,7 @@
 .module_manage_user_type_activity_objects table th {
 	min-height:20px;
 	padding:2px 4px;
-	font-family: Verdana,Arial,sans-serif;
+	font-family:var(--main-font-family);
 	color:#555555;
 	text-align:center;
 	border-bottom:1px solid #ccc;

@@ -147,9 +147,11 @@
 }
 .icon.maximize::before {
 	content:"\f31e";
+	margin-left:1px;
 }
 .icon.minimize::before {
 	content:"\f78c";
+	margin-left:1px;
 }
 .icon.add_variable:not(.search_variable)::before {
 	content:"\f688";
@@ -167,10 +169,12 @@
 .icon.move_up::before,
   .icon.up::before {
 	content:"\f0aa";
+	margin-left:1px;
 }
 .icon.move_down::before,
   .icon.down::before {
 	content:"\f0ab";
+	margin-left:1px;
 }
 .icon.view::before {
 	content:"\f06e";
@@ -258,6 +262,7 @@
 .icon.full_screen::before {
 	content:"\f065";
 	font-size:16px;
+	margin-left:1px;
 }
 .icon.save::before {
 	font:var(--fa-font-regular);
@@ -381,6 +386,7 @@
 }
 .icon.show_simple_ui::before {
 	content:"\f1b3";
+	line-height:16px;
 }
 .icon.show_simple_ui::after {
 	content:"\f303";
@@ -447,7 +453,7 @@
 }
 .icon.folder::before {
 	content:"\f07c";
-	color:#d3b12a;
+	color:#e0a800;
 }
 .icon.enable {
 	color:green;

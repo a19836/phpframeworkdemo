@@ -3,45 +3,45 @@
 	--menu-panel-bg:var(--main-template-bg);
 	--menu-panel-color:var(--main-template-color);
 	--menu-panel-log-info-border:#555;
-	--menu-panel-sub-menu-bg:#181818;
-	--menu-panel-sub-menu-border:#333;
+	--menu-panel-sub-menu-bg:var(--main-template-bg);
+	--menu-panel-sub-menu-border:#151515;
 	--menu-panel-sub-menu-item-active-bg:#000;
-	--menu-panel-sub-menu-item-bg:#333;
+	--menu-panel-sub-menu-item-bg:#282828;
 	--menu-panel-sub-menu-item-color:#ccc;
 	
-	--left-panel-bg:#181818;
-	--left-panel-color:#fff;
+	--left-panel-bg:var(--main-template-bg);
+	--left-panel-color:var(--main-template-color);
 	--left-panel-tree-item-hover-shadow:#000;
 	--left-panel-tree-item-hovered-bg:#555;
-	--left-panel-tree-item-clicked-bg:#000;
+	--left-panel-tree-item-clicked-bg:#181818;
 	--left-panel-tree-item-clicked-shadow:#000;
 	--left-panel-tree-sub-group-color:inherit;
-	--left-panel-tree-sub-group-bg:#333;
+	--left-panel-tree-sub-group-bg:#252525;
 	--left-panel-tree-sub-group-hover-bg:var(--left-panel-tree-item-hovered-bg);
 	--left-panel-tree-sub-group-sub-menu-icon-color:#aaa;
-	--left-panel-tree-entities-folder-bg:#777;
+	--left-panel-tree-entities-folder-bg:var(--left-panel-tree-item-clicked-bg);
 }
 .light_theme {
 	--menu-panel-bg:var(--main-template-bg);
 	--menu-panel-color:var(--main-template-color);
 	--menu-panel-log-info-border:#ddd;
-	--menu-panel-sub-menu-bg:#f7f7f7;
+	--menu-panel-sub-menu-bg:var(--main-template-bg);
 	--menu-panel-sub-menu-border:#ddd;
 	--menu-panel-sub-menu-item-active-bg:#eee;
-	--menu-panel-sub-menu-item-bg:transparent;
+	--menu-panel-sub-menu-item-bg:#e5e5e5;
 	--menu-panel-sub-menu-item-color:#666;
 	
-	--left-panel-bg:#f7f7f7;
-	--left-panel-color:#333;
+	--left-panel-bg:var(--main-template-bg);
+	--left-panel-color:var(--main-template-color);
 	--left-panel-tree-item-hover-shadow:#999;
 	--left-panel-tree-item-hovered-bg:#ddd;
-	--left-panel-tree-item-clicked-bg:#ddd;
+	--left-panel-tree-item-clicked-bg:#aaa;
 	--left-panel-tree-item-clicked-shadow:#999;
 	--left-panel-tree-sub-group-color:inherit;
-	--left-panel-tree-sub-group-bg:#eee;
+	--left-panel-tree-sub-group-bg:#ccc;
 	--left-panel-tree-sub-group-hover-bg:var(--left-panel-tree-item-hovered-bg);
 	--left-panel-tree-sub-group-sub-menu-icon-color:#aaa;
-	--left-panel-tree-entities-folder-bg:#ccc;
+	--left-panel-tree-entities-folder-bg:var(--left-panel-tree-item-clicked-bg);
 }
 
 /* GENERIC */
@@ -74,7 +74,7 @@
 #menu_panel ul {display:inline; margin-top:4px;}
 #menu_panel ul.left {float:left;}
 #menu_panel ul.right {float:right;}
-#menu_panel li {cursor:pointer; margin:0 3px; display:inline-block; font-size:14px;}
+#menu_panel li {cursor:pointer; margin:0 3px; display:inline-block;}
 
 #menu_panel .logo {width:80px; height:15px; margin:0 10px 0 0; background:url(../../img/logo_full_white.png) left center no-repeat; background-size:contain; vertical-align:middle; cursor:default;}
 #menu_panel.light_theme .logo {background-image:url(../../img/logo_full.png);}
@@ -172,7 +172,7 @@
 	background:var(--menu-panel-sub-menu-item-active-bg);
 }
 
-#menu_panel .filter_by_layout {margin:0 5px; text-align:center;}
+#menu_panel .filter_by_layout {margin:0 5px; text-align:center; font-size:14px;}
 #menu_panel .filter_by_layout label {display:inline-block; font-size:80%; font-weight:normal; font-style:normal; vertical-align:middle;}
 #menu_panel .filter_by_layout select {width:auto; display:inline-block; background:var(--menu-panel-bg); border:0; color:inherit; font-size:80%; vertical-align:baseline; cursor:pointer;}
 
@@ -224,7 +224,7 @@
 }
 
 /* LEFT PANEL */
-#left_panel .file_tree_root {width:24px; height:24px; background: url("../../img/icons.png") -202px -47px no-repeat !important;}
+#left_panel .file_tree_root {width:24px; height:24px; background: url("../../img/icons.png") -202px -47px no-repeat !important; display:none;}
 #left_panel .mytree li {
 	background-color:transparent;
 }
@@ -264,9 +264,10 @@
 #left_panel.left_panel_with_tabs .tabs .tab_main_node_management {float:right;}
 #left_panel.left_panel_with_tabs .tabs .tab_main_node a {padding:0;}
 #left_panel.left_panel_with_tabs .tabs .tab_main_node a .tab_icon {display:inline-block;}
-#left_panel.left_panel_with_tabs .tabs .tab_main_node a .icon.sub_menu {width:5px; margin-left:5px;}
+#left_panel.left_panel_with_tabs .tabs .tab_main_node a .icon.sub_menu {width:5px; margin-left:5px; vertical-align:bottom; font-size:16px; color:var(--icon-hover-color);}
 #left_panel.left_panel_with_tabs .tabs .tab_main_node:not(.ui-state-active) a .icon.sub_menu {display:none;}
 #left_panel.left_panel_with_tabs .tabs .tab_main_node a .icon.sub_menu::before {content:"\f142";}
+#left_panel.left_panel_with_tabs .tabs .tab_main_node a .icon.sub_menu:hover::after {content:"Click me"; position:fixed; top:auto; left:auto; margin:20px 0 0 -30px; color:var(--main-template-color); font: initial; font-family:var(--main-font-family); font-size:8px; }
 #left_panel.left_panel_with_tabs .main_tree_node {padding:0 0 0 15px; background:transparent; color:inherit;}
 #left_panel.left_panel_with_tabs .main_tree_node > a > label, #left_panel .main_tree_node > a > label > label {font-style:normal; opacity:.9;}
 #left_panel.left_panel_with_tabs .main_tree_node > ul {background:transparent;}

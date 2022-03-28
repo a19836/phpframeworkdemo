@@ -54,8 +54,8 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 <!-- Add Icons CSS files -->
 <link rel="stylesheet" href="' . $this->pcd2aca48 . 'css/icons.css" type="text/css" charset="utf-8" />
 
-<!-- Edit Code JS files -->
-<script type="text/javascript" src="' . $this->pcd2aca48 . 'js/edit_code.js"></script>
+<!-- Edit Layout JS files -->
+<script type="text/javascript" src="' . $this->pcd2aca48 . 'js/layout.js"></script>
 '; if ($v5d3813882f["ui_editor"] || $this->pecad7cca->getTasksByPrefix("createform", 1)) $v0a9dad1fe0 .= '
 <!-- Layout UI Editor - MD5 -->
 <script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jquery/js/jquery.md5.js"></script>

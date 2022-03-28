@@ -42,8 +42,8 @@ $manage_record_action_url = $project_url_prefix . "phpframework/db/manage_record
 <!-- Icons CSS file -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
-<!-- Top-Bar CSS file -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+<!-- Add Layout CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
 
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/db/manage_record.css" charset="utf-8" />
@@ -53,10 +53,10 @@ $manage_record_action_url = $project_url_prefix . "phpframework/db/manage_record
 var manage_record_action_url = \'' . $manage_record_action_url . '\';
 var is_popup = ' . ($popup ? 1 : 0) . ';
 </script>'; $main_content .= '
-<div class="manage_record">
-	<div class="top_bar">
+<div class="manage_record' . ($popup ? ' in_popup' : '') . '">
+	<div class="top_bar' . ($popup ? ' in_popup' : '') . '">
 		<header>
-			<div class="title">Manage Record for table: "' . $table . '"</div>
+			<div class="title">' . (!empty($results) ? "Edit" : "Add") . ' Record for table: "' . $table . '"</div>
 			<ul>'; if ($action == "insert") $main_content .= '<li class="save" title="Add"><a onClick="addRecord(this)"><i class="icon save"></i> Save</a></li>'; else $main_content .= '
 					<li class="delete" title="Delete"><a onClick="deleteRecord(this)"><i class="icon delete"></i> Delete</a></li>
 					<li class="save" title="Save"><a onClick="saveRecord(this)"><i class="icon save"></i> Save</a></li>'; $main_content .= '	

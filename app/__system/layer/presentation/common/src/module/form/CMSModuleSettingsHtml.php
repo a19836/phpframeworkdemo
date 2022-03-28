@@ -155,10 +155,10 @@ if ($PEVC) {
 	$head = WorkFlowPresentationHandler::getHeader($project_url_prefix, $project_common_url_prefix, $WorkFlowUIHandler, $set_workflow_file_url, true, true);
 	$head .= LayoutTypeProjectUIHandler::getHeader();
 	
-	//must have the top_bar after this, bc the getHeader method loads the common/vendor/jquerytaskflowchart/css/style.css which will overwrite the previous loaded top_bar.css styles. So we must re-add it here again.
+	//must have the layout after this, bc the getHeader method loads the common/vendor/jquerytaskflowchart/css/style.css which will overwrite the previous loaded layout.css styles. So we must re-add it here again.
 	$head .= '
-<!-- Top-Bar CSS file -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+<!-- Layout CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
 ';
 	
 	$js_head = '

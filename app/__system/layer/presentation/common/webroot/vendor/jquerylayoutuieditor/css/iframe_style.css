@@ -1,4 +1,10 @@
 /* UI */
+:root {
+	--html-element-top-spacing:10px;
+	--html-element-left-spacing:10px;
+	--html-element-right-spacing:10px;
+	--html-element-bottom-spacing:10px;
+}
 
 html {
 	/* min-width and min-height are for firefox, bc the html doesn't have full height, so we need to force it */
@@ -209,7 +215,10 @@ body > .droppable.borders p,
   body > .droppable.borders dl {
 	background-repeat:no-repeat;
 	border:1px dashed #bbb;
-	margin-left:3px;
+	margin-top:var(--html-element-top-spacing);
+	margin-left:var(--html-element-left-spacing);
+	margin-right:var(--html-element-right-spacing);
+	margin-bottom:var(--html-element-bottom-spacing);
 	padding-top:10px;
 }
 body > .droppable.borders br,
@@ -317,7 +326,10 @@ body > .droppable.borders span,
   body > .droppable.borders tt,
   body > .droppable.borders xmp {
 	border:1px dashed #bbb;
-	margin-left:3px;
+	margin-top:var(--html-element-top-spacing);
+	margin-left:var(--html-element-left-spacing);
+	margin-right:var(--html-element-right-spacing);
+	margin-bottom:var(--html-element-bottom-spacing);
 }
 body > .droppable.borders:not([dir=rtl]) p,
   body > .droppable.borders:not([dir=rtl]) h1,
@@ -441,7 +453,10 @@ body > .droppable.borders:not([dir=rtl]) p,
   body > .droppable.borders:not([dir=rtl]) strike,
   body > .droppable.borders:not([dir=rtl]) tt,
   body > .droppable.borders:not([dir=rtl]) xmp {
-	margin-left: 3px;
+	margin-top:var(--html-element-top-spacing);
+	margin-left:var(--html-element-left-spacing);
+	margin-right:var(--html-element-right-spacing);
+	margin-bottom:var(--html-element-bottom-spacing);
 }
 body > .droppable.borders:not([dir=rtl]) .container.row,
   body > .droppable.borders:not([dir=rtl]) .container.row > div.droppable {
@@ -572,7 +587,10 @@ body > .droppable.borders[dir=rtl] p,
   body > .droppable.borders[dir=rtl] tt,
   body > .droppable.borders[dir=rtl] xmp {
 	background-position-x: right;
-	margin-right: 3px;
+	margin-top:var(--html-element-top-spacing);
+	margin-left:var(--html-element-left-spacing);
+	margin-right:var(--html-element-right-spacing);
+	margin-bottom:var(--html-element-bottom-spacing);
 }
 body > .droppable.borders:not([dir=rtl]) .container.row,
   body > .droppable.borders:not([dir=rtl]) .container.row > div.droppable {
@@ -653,6 +671,8 @@ body > .droppable.borders .template-widget.widget-over:not(.widget-active):not(i
 	background:#3b97e3;
 	color:#fff;
 	font-size:8px;
+	font-weight:normal;
+	font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 	text-transform:uppercase;
 	overflow:hidden;
 	white-space:nowrap;

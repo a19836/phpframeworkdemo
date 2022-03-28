@@ -498,50 +498,58 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		},
 		
 		onProgrammingTaskChooseCreatedVariable : function(elm) {
-			if (typeof this.on_programming_task_choose_created_variable_callback == "function") {
-				this.on_programming_task_choose_created_variable_callback(elm);
+			//Do not use "this.", but "ProgrammingTaskUtil." instead, bc if we assign this function to a variable (var x = ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl), the "this." will not work.
+			if (typeof ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback == "function") {
+				ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback(elm);
 			}
 		},
 	
 		onProgrammingTaskChooseObjectProperty : function(elm) {
-			if (typeof this.on_programming_task_choose_object_property_callback == "function") {
-				this.on_programming_task_choose_object_property_callback(elm);
+			//Do not use "this.", but "ProgrammingTaskUtil." instead, bc if we assign this function to a variable (var x = ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl), the "this." will not work.
+			if (typeof ProgrammingTaskUtil.on_programming_task_choose_object_property_callback == "function") {
+				ProgrammingTaskUtil.on_programming_task_choose_object_property_callback(elm);
 			}
 		},
 	
 		onProgrammingTaskChooseObjectMethod : function(elm) {
-			if (typeof this.on_programming_task_choose_object_method_callback == "function") {
-				this.on_programming_task_choose_object_method_callback(elm);
+			//Do not use "this.", but "ProgrammingTaskUtil." instead, bc if we assign this function to a variable (var x = ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl), the "this." will not work.
+			if (typeof ProgrammingTaskUtil.on_programming_task_choose_object_method_callback == "function") {
+				ProgrammingTaskUtil.on_programming_task_choose_object_method_callback(elm);
 			}
 		},
 	
 		onProgrammingTaskChooseFunction : function(elm) {
-			if (typeof this.on_programming_task_choose_function_callback == "function") {
-				this.on_programming_task_choose_function_callback(elm);
+			//Do not use "this.", but "ProgrammingTaskUtil." instead, bc if we assign this function to a variable (var x = ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl), the "this." will not work.
+			if (typeof ProgrammingTaskUtil.on_programming_task_choose_function_callback == "function") {
+				ProgrammingTaskUtil.on_programming_task_choose_function_callback(elm);
 			}
 		},
 		
 		onProgrammingTaskChooseClassName : function(elm) {
-			if (typeof this.on_programming_task_choose_class_name_callback == "function") {
-				this.on_programming_task_choose_class_name_callback(elm);
+			//Do not use "this.", but "ProgrammingTaskUtil." instead, bc if we assign this function to a variable (var x = ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl), the "this." will not work.
+			if (typeof ProgrammingTaskUtil.on_programming_task_choose_class_name_callback == "function") {
+				ProgrammingTaskUtil.on_programming_task_choose_class_name_callback(elm);
 			}
 		},
 		
 		onProgrammingTaskChooseFilePath : function(elm) {
-			if (typeof this.on_programming_task_choose_file_path_callback == "function") {
-				this.on_programming_task_choose_file_path_callback(elm);
+			//Do not use "this.", but "ProgrammingTaskUtil." instead, bc if we assign this function to a variable (var x = ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl), the "this." will not work.
+			if (typeof ProgrammingTaskUtil.on_programming_task_choose_file_path_callback == "function") {
+				ProgrammingTaskUtil.on_programming_task_choose_file_path_callback(elm);
 			}
 		},
 		
 		onProgrammingTaskChoosePageUrl : function(elm) {
-			if (typeof this.on_programming_task_choose_page_url_callback == "function") {
-				this.on_programming_task_choose_page_url_callback(elm);
+			//Do not use "this.", but "ProgrammingTaskUtil." instead, bc if we assign this function to a variable (var x = ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl), the "this." will not work.
+			if (typeof ProgrammingTaskUtil.on_programming_task_choose_page_url_callback == "function") {
+				ProgrammingTaskUtil.on_programming_task_choose_page_url_callback(elm);
 			}
 		},
 		
 		onProgrammingTaskChooseImageUrl : function(elm) {
-			if (typeof this.on_programming_task_choose_image_url_callback == "function") {
-				this.on_programming_task_choose_image_url_callback(elm);
+			//Do not use "this.", but "ProgrammingTaskUtil." instead, bc if we assign this function to a variable (var x = ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl), the "this." will not work.
+			if (typeof ProgrammingTaskUtil.on_programming_task_choose_image_url_callback == "function") {
+				ProgrammingTaskUtil.on_programming_task_choose_image_url_callback(elm);
 			}
 		},
 	};

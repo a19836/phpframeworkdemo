@@ -1,5 +1,4 @@
 body {
-	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
 	font-size:13px;
 	font-weight:400;
 }
@@ -119,7 +118,7 @@ body {
 }
 #left_panel > .tabs a i.main_node_db_layers::before {
 	content:"\f51e";
-	color:#d3b12a;
+	color:#e0a800;
 }
 #left_panel > .tabs a i.main_node_db_layers::after {
 	content:"\f1e6";
@@ -129,7 +128,7 @@ body {
 }
 #left_panel > .tabs a i.main_node_data_access_layers::before {
 	content:"\f5fd";
-	color:#d3b12a;
+	color:#e0a800;
 }
 #left_panel > .tabs a i.main_node_data_access_layers::after {
 	content:"\f1c0";
@@ -137,7 +136,7 @@ body {
 }
 #left_panel > .tabs a i.main_node_business_logic_layers::before {
 	content:"\f5fd";
-	color:#d3b12a;
+	color:#e0a800;
 }
 #left_panel > .tabs a i.main_node_business_logic_layers::after {
 	content:"\e13b";
@@ -147,7 +146,7 @@ body {
 }
 #left_panel > .tabs a i.main_node_presentation_layers::before {
 	content:"\f5fd";
-	color:#d3b12a;
+	color:#e0a800;
 }
 #left_panel > .tabs a i.main_node_presentation_layers::after {
 	content:"\f0ac";
@@ -155,15 +154,15 @@ body {
 }
 #left_panel > .tabs a i.main_node_library::before {
 	content:"\f518";
-	color:#d3b12a;
+	color:#e0a800;
 }
 #left_panel > .tabs a i.main_node_vendors::before {
 	content:"\f2a1";
-	color:#d3b12a;
+	color:#e0a800;
 }
 #left_panel > .tabs a i.main_node_settings::before {
 	content:"\f7d9";
-	color:#d3b12a;
+	color:#e0a800;
 }
 
 /* LEFT PANEL - TREE */

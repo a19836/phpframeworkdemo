@@ -25,8 +25,8 @@ $upload_url = $project_url_prefix . "admin/manage_file?bean_name=$bean_name&bean
 <!-- Add Icon CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
-<!-- Top-Bar CSS file -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+<!-- Add Layout CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
 
 <!-- Adding DropZone plugin -->
 <script src="' . $project_common_url_prefix . 'vendor/dropzone/dropzone.js"></script>

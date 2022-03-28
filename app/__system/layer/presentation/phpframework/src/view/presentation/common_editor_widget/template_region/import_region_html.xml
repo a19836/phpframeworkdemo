@@ -46,10 +46,10 @@
 		}
 		.show_templates_regions_html_popup iframe {
 			width:100%;
-			height:calc(100% - 50px);
+			height:100%;
 		}
 		.show_templates_regions_html_popup .button {
-			margin-top:20px;
+			margin-top:15px;
 			text-align:center;
 		}
 	]]></menu_css>
@@ -76,7 +76,10 @@
 					var button = popup.children(".button");
 					
 					if (!popup[0]) {
-						popup = $('<div class="myfancypopup show_templates_regions_html_popup"><iframe src="' + templates_regions_html_url + '"></iframe><div class="button"><input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" /></div></div>');
+						var url = templates_regions_html_url;
+						url += (url.indexOf("?") == -1 ? "?" : "&") + "popup=1";
+						
+						popup = $('<div class="myfancypopup with_iframe_title show_templates_regions_html_popup"><iframe src="' + url + '"></iframe><div class="button"><input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" /></div></div>');
 						$("body").append(popup);
 					
 						iframe = popup.children("iframe");

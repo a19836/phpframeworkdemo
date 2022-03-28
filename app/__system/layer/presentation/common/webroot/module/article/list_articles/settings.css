@@ -130,7 +130,7 @@
 }
 
 .list_settings .list_articles_fields_label {
-	font-family:verdana,arial,courier;
+	font-family:var(--main-font-family);
 	font-style:italic;
 	font-weight:bold;
 	color:#333;

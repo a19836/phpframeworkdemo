@@ -65,33 +65,3 @@ body > .cke_screen_reader_only { /* cke editor creates this automatically */
   .echostr_settings .layout_ui_editor > .messages {
 	bottom:0 !important;
 }
-/*
-.echostr_settings .layout_ui_editor > .menu-settings table {
-	border-collapse:separate;
-	border-spacing:2px;
-}
-.echostr_settings .layout_ui_editor > .options .option {
-	height:20px;
-}
-.echostr_settings .layout_ui_editor > .options .option.option-screen-width {
-	margin-left:0;
-}
-.echostr_settings .layout_ui_editor > .options .option.option-px {
-	margin-top:0;
-}
-.echostr_settings .layout_ui_editor .option,
-  .echostr_settings .layout_ui_editor .move,
-  .echostr_settings .layout_ui_editor .add,
-  .echostr_settings .layout_ui_editor .delete {
-	background-image:none;
-}
-.echostr_settings .layout_ui_editor label {
-	font-style:inherit;
-	font-weight:inherit;
-	color:inherit;
-	font-family:inherit;
-}
-.echostr_settings .layout_ui_editor .template-source textarea,
-   .echostr_settings .layout_ui_editor .template-source .ace_editor {
-	height:100%;
-}*/

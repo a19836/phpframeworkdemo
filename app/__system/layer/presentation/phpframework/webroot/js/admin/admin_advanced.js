@@ -469,7 +469,7 @@ function toggleAdvancedLevel(elm) {
 	var left_panel = $("#left_panel");
 	var advanced_level = left_panel.hasClass("advanced_level") ? "simple_level" : "advanced_level";
 	
-	MyJSLib.CookieHandler.setCookie('advanced_level', advanced_level, 0, "/__system/admin");
+	MyJSLib.CookieHandler.setCookie('advanced_level', advanced_level, 0, "/");
 	left_panel.toggleClass("simple_level").toggleClass("advanced_level");
 	
 	$(elm).children("span").html(advanced_level == "advanced_level" ? "Show basic items" : "Show advanced items");
@@ -490,11 +490,34 @@ function toggleThemeLayout(elm) {
 	var left_panel = $("#left_panel");
 	var theme_layout = left_panel.hasClass("light_theme") ? "dark_theme" : "light_theme";
 	
-	MyJSLib.CookieHandler.setCookie('theme_layout', theme_layout, 0, "/__system/admin");
+	MyJSLib.CookieHandler.setCookie('theme_layout', theme_layout, 0, "/");
 	left_panel.toggleClass("dark_theme").toggleClass("light_theme");
 	$("#menu_panel").toggleClass("dark_theme").toggleClass("light_theme");
 	
 	$(elm).children("span").html(theme_layout == "dark_theme" ? "Show light theme" : "Show dark theme");
+	
+	updateThemeLayoutInIframes( $("iframe"), theme_layout);
+}
+
+function updateThemeLayoutInIframes(iframes, theme_layout) {
+	iframes.each(function(idx, iframe) {
+		//Note that if the iframe is from other domain, we cannot edit the iframe's html. So we need to have this enclosed in a try and catch.
+		//Another situation that it can throw an exception, is if the iframe is not loaded yet.
+		try { 
+			var iframe_window = iframe.contentWindow; //we can get the reference to the inner window
+			var iframe_doc = iframe.contentDocument || iframe_window.document; //...but we cannot get the reference to the document inside of an iframe from a different domain. By doing this code, it will launch an exception, not executing the rest of the code.
+			var iframe_body = $(iframe_doc.body);
+			//var iframe_body = $(iframe).contents().find("body");
+			
+			iframe_body.removeClass(theme_layout == "dark_theme" ? "light_theme" : "dark_theme").addClass(theme_layout);
+			
+			if (iframe_body.hasClass(theme_layout)) //be sure that the body has the class and that we can really edit the iframe body, bc if the iframe is from other domain, we cannot edit the iframe's html.
+				updateThemeLayoutInIframes(iframe_body.find("iframes"), theme_layout);
+		}
+		catch(e) {
+			console.log(e);
+		};
+	});
 }
 
 function filterByLayout(elm) {

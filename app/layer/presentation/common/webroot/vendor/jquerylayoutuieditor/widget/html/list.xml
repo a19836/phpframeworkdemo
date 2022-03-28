@@ -39,6 +39,12 @@
 		.layout_ui_editor > .template-widgets > .droppable-header.droppable-header-list {
 			margin-top:-1rem;
 		}
+		
+		.layout_ui_editor > .menu-settings.menu-settings-list .settings-properties table .container-col-icon {
+			width:20px;
+			font-size:14px;
+			text-align:center;
+		}
 	]]></menu_css>
 	<menu_js><![CDATA[
 		function ListWidget(ui_creator, menu_widget) {

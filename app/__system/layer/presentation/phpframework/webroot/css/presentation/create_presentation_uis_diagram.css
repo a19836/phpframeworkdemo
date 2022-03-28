@@ -14,6 +14,8 @@
 .icon.create_ui_files::before {
 	font:var(--fa-font-regular);
 	content:"\f0c5";
+	margin-top:1px;
+	display:block;
 }
 .icon.create_ui_files::after {
 	content:"\f0fe";
@@ -21,6 +23,8 @@
 .icon.load_new_existent_files::before {
 	font:var(--fa-font-regular);
 	content:"\f0c5";
+	margin-top:1px;
+	display:block;
 }
 .icon.load_new_existent_files::after {
 	content:"\f2f1";
@@ -121,6 +125,12 @@
 .create_uis_files {
 	min-width:calc(90vw - 50px);
 	height:auto !important;
+}
+.create_uis_files.with_title {
+	padding:20px;
+}
+.create_uis_files.with_title > .title {
+	margin:-20px -20px 20px;
 }
 .create_uis_files .loading {
 	text-align:left;
@@ -560,7 +570,7 @@
 }
 .create_uis_files .existent_tasks ul .files_statuses > label {
 	font-style:normal;
-	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family:var(--main-font-family);
 	color:#666;
 }
 .create_uis_files .existent_tasks ul .files_statuses > table {

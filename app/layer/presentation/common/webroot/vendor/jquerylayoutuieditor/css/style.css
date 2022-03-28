@@ -1218,6 +1218,10 @@ body > .menu-widget.ui-draggable-dragging {
 	display:block;
 	margin:0 auto 5px;
 }
+.layout_ui_editor > .menu-settings table {
+    border-collapse:separate;
+    border-spacing:2px;
+}
 
 .layout_ui_editor > .menu-settings .settings-info {
 	text-align:center;
@@ -1490,7 +1494,7 @@ body > .menu-widget.ui-draggable-dragging {
 .layout_ui_editor.fixed_properties > .menu-settings li.group li {
 	display:inline-block;
 	margin:5px 20px;
-	width:200px;
+	width:220px;
 	vertical-align:top;
 	text-align:left;
 }

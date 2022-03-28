@@ -30,7 +30,7 @@ $head = '
 		white-space:pre;
 		white-space:pre-wrap;
 		overflow-wrap:break-word;
-		font-family:monospace;
+		font-family:var(--main-font-family);
 	}
 	.diff td:first-child {
 		border-right:1px solid #ccc;

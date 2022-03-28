@@ -25,8 +25,8 @@ include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler"); $form_se
 <!-- Icons CSS file -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
-<!-- Top-Bar CSS file -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+<!-- Add Layout CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
 
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/db/set_db_settings.css" type="text/css" charset="utf-8" />

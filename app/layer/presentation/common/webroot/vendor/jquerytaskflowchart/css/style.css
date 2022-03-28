@@ -671,13 +671,13 @@
 
 .taskflowchart.fixed_properties .selected_task_properties > .title, 
   .taskflowchart.fixed_properties .selected_connection_properties .title {
-	width: auto;
-	min-width: auto;
+	width:auto;
+	min-width:auto;
 	height:20px;
-	min-height: auto;
-	line-height:normal;
+	min-height:auto;
+	line-height:20px;
 	position: absolute;
-	top:7px;
+	top:5px;
 	left:5px;
 	margin: 0;
 	text-align: left;
@@ -770,7 +770,7 @@
 	margin:0;
 	display:inline-block;
 	position:absolute;
-	top:7px;
+	top:5px;
 	left:105px;
 	font-size:inherit;
 	text-align:left;

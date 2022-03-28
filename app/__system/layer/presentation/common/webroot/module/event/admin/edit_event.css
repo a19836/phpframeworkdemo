@@ -85,7 +85,7 @@
 }
 .module_edit .form_fields .form_field.event_attachments .module_edit_object_attachments .title {
 	color:#333;
-	font-family:Verdana, Arial, Courier;
+	font-family:var(--main-font-family);
 	font-style:italic;
 }
 .module_edit .form_fields .form_field.event_attachments .module_edit_object_attachments table th {

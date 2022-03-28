@@ -25,6 +25,7 @@ var resize_iframe_timeout = null;
 var init_page_and_template_layout_interval_id = null;
 var init_page_and_template_layout_timeout_id = null;
 
+var update_layout_iframe_field_html_value_from_settings_func = null;
 var update_layout_iframe_from_settings_func = null;
 var update_settings_from_layout_iframe_func = null;
 
@@ -323,12 +324,13 @@ function openTemplateSamples() {
 	
 	if (template) {
 		var url = template_samples_url.replace("#template#", template);
+		url += (url.indexOf("?") == -1 ? "?" : "&") + "popup=1";
 		
 		//get popup
 		var popup = $("body > .template_region_info_popup");
 		
 		if (!popup[0]) {
-			popup = $('<div class="myfancypopup template_region_info_popup"></div>');
+			popup = $('<div class="myfancypopup with_iframe_title template_region_info_popup"></div>');
 			$(document.body).append(popup);
 		}
 		
@@ -406,6 +408,7 @@ function createRegionBlockHtmlEditor(block_html, opts) {
 
 function getTinyMCEOptions(block_html, opts) {
 	block_html = block_html instanceof jQuery ? block_html[0] : block_html;
+	var textarea = filterSelectorInNodes(block_html.childNodes, "textarea");
 	
 	return {
 		//theme: 'modern',
@@ -442,20 +445,22 @@ function getTinyMCEOptions(block_html, opts) {
 				//all your after init logics here.
 				block_html.setAttribute("tinymce_inited", 1);
 				
+				//remove textarea onBlur attribute, bc we will use the tinymce onChange event instead.
+				textarea.removeAttribute("onBlur");
+				
 				if (opts && typeof opts.ready_func == "function")
 					opts.ready_func();
 			});
 			
 			editor.on('change', function(e) {
 				//Note that this method will execute inside of the iframe too, so we must call the right onBlurRegionBlock
-				var textarea = filterSelectorInNodes(block_html.childNodes, "textarea");
 				var doc = block_html.ownerDocument || document;
 				var win = doc.defaultView || doc.parentWindow;
 				var str = getRegionBlockHtmlEditorValue(block_html);
 				
 				textarea.value = str;
 				
-				win.onBlurRegionBlock(textarea);
+				win.onChangeRegionBlockEditor(textarea, str);
 			});
 		},
 	};
@@ -464,6 +469,19 @@ function getTinyMCEOptions(block_html, opts) {
 function hasRegionBlockHtmlEditor(block_html) {
 	block_html = block_html instanceof jQuery ? block_html : $(block_html);
 	return block_html.attr("tinymce_inited");
+}
+
+function removeRegionBlockHtmlEditorInstance(block_html) {
+	block_html = block_html instanceof jQuery ? block_html : $(block_html);
+	var id = block_html.children(".block_html_editor").attr("id");
+	var doc = block_html[0].ownerDocument;
+	var win = doc.defaultView || doc.parentWindow;
+	var editor = win.tinymce.get(id);
+	
+	if (editor) {
+		editor.destroy();
+		editor.remove();
+	}
 }
 
 function getRegionBlockHtmlEditorValue(block_html) {
@@ -789,7 +807,7 @@ function openPretifyRegionBlockComboBoxImportModuleBlockOptionPopup(select_elm, 
 	var popup= $(".choose_module_block_popup");
 	
 	if (!popup[0]) {
-		popup = $('<div class="myfancypopup choose_module_block_popup"></div>');
+		popup = $('<div class="myfancypopup with_iframe_title choose_module_block_popup"></div>');
 		$(document.body).append(popup);
 	}
 	
@@ -797,6 +815,8 @@ function openPretifyRegionBlockComboBoxImportModuleBlockOptionPopup(select_elm, 
 	
 	//prepare popup iframe
 	var iframe = popup.children("iframe");
+	
+	url += (url.indexOf("?") != -1 ? "&" : "?") + "popup=1";
 	iframe.attr("src", url);
 	
 	if (select_elm) 
@@ -924,6 +944,10 @@ function addRegionBlockOption(select_elm, block, project) {
 }
 
 function updateSelectedTemplateRegionsBlocks(p, data) {
+	//BACKING UP GLOBAL VARS - bc the getRegionBlockHtml triggers the onChange events which changes then these global vars, if the synchronization with the template layout is active...
+	var regions_blocks_list_clone = JSON.parse(JSON.stringify(regions_blocks_list)); //cannot use Object.assign bc regions_blocks_list is an array
+	var template_params_values_list_clone = Object.assign({}, template_params_values_list);
+	
 	//PREPARING TEMPLATE REGIONS
 	var regions = data && data.regions ? data.regions : [];
 	
@@ -931,6 +955,11 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 	var other_region_blocks = p.find(".other_region_blocks .items");
 	var region_blocks_no_items = p.find(".region_blocks .no_items");
 	var other_region_blocks_no_items = p.find(".other_region_blocks .no_items");
+	
+	//clean tinymce instances before it empty the html from region_blocks. This is very important, otherwise the tinymce is overloading the browser memory with too many instances...
+	var blocks_html = region_blocks.find(".block_html");
+	for (var i = 0; i < blocks_html.length; i++)
+		removeRegionBlockHtmlEditorInstance(blocks_html[i]);
 	
 	region_blocks.html("");
 	other_region_blocks.html("");
@@ -945,8 +974,8 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 		region_blocks_no_items.hide();
 		
 		//prepare rb_indexes
-		for (var i = 0; i < regions_blocks_list.length; i++) {
-			var rbl = regions_blocks_list[i];
+		for (var i = 0; i < regions_blocks_list_clone.length; i++) {
+			var rbl = regions_blocks_list_clone[i];
 			var region = rbl[0];
 			var block = rbl[1];
 			var proj = rbl[2];
@@ -963,8 +992,8 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 		for (var i = 0; i < regions.length; i++) {
 			var region = regions[i];
 			
-			for (var j = 0; j < regions_blocks_list.length; j++) {
-				var rbl = regions_blocks_list[j];
+			for (var j = 0; j < regions_blocks_list_clone.length; j++) {
+				var rbl = regions_blocks_list_clone[j];
 				
 				if (rbl[0] == region) {
 					var block = rbl[1];
@@ -1004,9 +1033,10 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 	}
 	
 	//prepare other regions
-	var exists = false;
-	for (var i = 0; i < regions_blocks_list.length; i++) {
-		var rbl = regions_blocks_list[i];
+	var other_regions_exists = false;
+	
+	for (var i = 0; i < regions_blocks_list_clone.length; i++) {
+		var rbl = regions_blocks_list_clone[i];
 		
 		var region = rbl[0];
 		var block = rbl[1];
@@ -1028,13 +1058,13 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 			}
 			
 			var rb_html = getRegionBlockHtml(region, block, proj, is_html, rb_index);
-			
 			other_region_blocks.append(rb_html);
-			exists = true;
+			
+			other_regions_exists = true;
 		}
 	}
 	
-	if (exists) 
+	if (other_regions_exists) 
 		other_region_blocks_no_items.hide();
 	
 	pretifyRegionsBlocksComboBox(p);
@@ -1064,8 +1094,8 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 			var param_value = null;
 			
 			if (param && !existent_params.hasOwnProperty(param)) {
-				if (template_params_values_list.hasOwnProperty(param))
-					param_value = template_params_values_list[param];
+				if (template_params_values_list_clone.hasOwnProperty(param))
+					param_value = template_params_values_list_clone[param];
 				
 				var param_html = getTemplateParamHtml(param, param_value);
 				template_params.append(param_html);
@@ -1075,9 +1105,9 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 	}
 	
 	var exists = false;
-	for (var param in template_params_values_list) {
+	for (var param in template_params_values_list_clone) {
 		if (param && !existent_params.hasOwnProperty(param)) {
-			var param_value = template_params_values_list[param];
+			var param_value = template_params_values_list_clone[param];
 			var param_html = getTemplateParamHtml(param, param_value);
 	
 			other_template_params.append(param_html);
@@ -1089,6 +1119,10 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 		other_template_params_no_items.hide();
 	
 	//resizeAllLabels();
+	
+	//setting again the global vars with the correct values, bc if the synchronization with the template layout is active, it will change these global vars
+	regions_blocks_list = regions_blocks_list_clone;
+	template_params_values_list = template_params_values_list_clone;
 }
 
 function getRegionBlockHtml(region, block, block_project, is_html, rb_index) {
@@ -1296,6 +1330,20 @@ function editRegionBlock(elm, opts) {
 		
 		TemplateRegionBlockHtmlEditorFancyPopup.showPopup();
 	}
+}
+
+function onChangeRegionBlockEditor(elm, html) {
+	var main_p = $(elm).parent().closest(".template_region, .regions_blocks_includes_settings");
+	
+	//if we are in settings panel and not in the template layout.
+	if (main_p.hasClass("regions_blocks_includes_settings")) {
+		//set handler to update directly the the html in the template layout without refreshing the entire layout.
+		
+		if (typeof update_layout_iframe_field_html_value_from_settings_func == "function")
+			update_layout_iframe_field_html_value_from_settings_func(elm, html);
+	}
+	
+	onBlurRegionBlock(elm);
 }
 
 function onBlurRegionBlock(elm) {
@@ -2177,7 +2225,7 @@ function areLayoutAndSettingsDifferent(iframe, settings_elm) {
 			var is_template_region = $.inArray(region, orig_template_regions) != -1;
 			
 			if (is_template_region) {
-				regions_count++;
+				regions_count += $.isArray(aux) ? aux.length : 1;
 				
 				if ($.inArray(region, iframe_data["regions"]) == -1) {
 					are_different = true;
@@ -2341,6 +2389,57 @@ function updateSettingsFromLayoutIframeField() {
 	}
 }
 
+function updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField(elm, html, iframe) {
+	//set handler to update directly the the html in the template layout without refreshing the entire layout.
+	var item = $(elm).parent().closest(".item");
+	var item_data = getSettingsTemplateRegionBlockValues(item);
+	var region = item_data["region"];
+	var item_index = -1;
+	
+	var siblings = item.parent().children(".item");
+	for (var i = 0; i < siblings.length; i++) {
+		var sibling = $(siblings[i]);
+		var sibling_data = getSettingsTemplateRegionBlockValues(sibling);
+		
+		if (region == sibling_data["region"]) {
+			item_index++;
+			
+			if (item[0] == sibling[0]) 
+				break;
+		}
+	}
+	
+	if (item_index > -1) {
+		var iframe_body = iframe.contents().find("body");
+		var iframe_items = iframe_body.find(".template_region[region='" + region + "']").first();
+		var iframe_item = iframe_items.find(" > .items > .item")[item_index];
+		
+		if (iframe_item) {
+			iframe_item = $(iframe_item);
+			
+			var iframe_item_data = getSettingsTemplateRegionBlockValues(iframe_item);
+			
+			if (iframe_item_data["type"] == "html" && iframe_item_data["type"] == item_data["type"] && iframe_item_data["project"] == item_data["project"] && iframe_item_data["block"] != item_data["block"]) {
+				//save synchronization functions
+				var update_settings_from_layout_iframe_func_bkp = update_settings_from_layout_iframe_func;
+				var update_layout_iframe_from_settings_func_bkp = update_layout_iframe_from_settings_func;
+				
+				//disable synchronization functions in case some call recursively by mistake
+				update_settings_from_layout_iframe_func = null;
+				update_layout_iframe_from_settings_func = null;
+				
+				//update value
+				var iframe_block_html = iframe_item.children(".block_html");
+				setRegionBlockHtmlEditorValue(iframe_block_html, html);
+				
+				//sets back synchronization functions
+				update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
+				update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
+			}
+		}
+	}
+}
+
 function updateLayoutIframeFromSettingsField() {
 	if (typeof update_layout_iframe_from_settings_func == "function") {
 		//save synchronization functions
@@ -2361,6 +2460,13 @@ function updateLayoutIframeFromSettingsField() {
 }
 
 function updateLayoutIframeFromSettings(iframe, data, iframe_html_to_parse) {
+	//TODO: For now call the reloadLayoutIframeFromSettings method, but in the future, the idea is to update only the different regions, without reloading the full iframe which gives a weird user experience and not user-friendly.
+	reloadLayoutIframeFromSettings(iframe, data, iframe_html_to_parse);
+	
+	//TODO: find the elements that are different and update only that ones. Not sure if this is possible bc of the region params... Or even if it makes sense anymore... Test first and see if I still need to do this,
+}
+
+function reloadLayoutIframeFromSettings(iframe, data, iframe_html_to_parse) {
 	var iframe_parent = iframe.parent().closest(".tab_content_template_layout");
 	var iframe_url = iframe.attr("orig_src");
 	
@@ -2438,7 +2544,7 @@ function updateLayoutIframeFromSettings(iframe, data, iframe_html_to_parse) {
 			error: function (jqXHR, textStatus, errorThrown) {
 				tabs.find("li a").removeClass("inactive");
 				
-				var msg = "Couldn't preview template. Error in updateLayoutIframeFromSettings() function. Please try again...";
+				var msg = "Couldn't preview template. Error in reloadLayoutIframeFromSettings() function. Please try again...";
 				alert(msg);
 				
 				if (jqXHR.responseText)
@@ -2536,12 +2642,13 @@ function openTemplateRegionInfoPopup(elm) {
 	
 	if (template) {
 		var url = template_region_info_url.replace("#template#", template).replace("#region#", region);
+		url += (url.indexOf("?") == -1 ? "?" : "&") + "popup=1";
 		
 		//get popup
 		var popup = $("body > .template_region_info_popup");
 		
 		if (!popup[0]) {
-			popup = $('<div class="myfancypopup template_region_info_popup"></div>');
+			popup = $('<div class="myfancypopup with_iframe_title template_region_info_popup"></div>');
 			$(document.body).append(popup);
 		}
 		
@@ -2580,6 +2687,12 @@ function initPageAndTemplateLayout(main_parent_elm, main_layout_elm, on_ready_ca
 	onLoadRegionBlocksParams(regions_blocks_items);
 	
 	if (iframe[0]) {
+		//set handler to update directly the the html in the template layout without refreshing the entire layout.
+		update_layout_iframe_field_html_value_from_settings_func = function(elm, html) {
+			updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField(elm, html, iframe);
+		};
+		
+		//prepare iframe
 		var iframe_unload_func = function () {
 			main_parent_elm.addClass("inactive");
 		};
@@ -3174,7 +3287,7 @@ function onClickLayoutEditorUITaskWorkflowTab(elm) {
 
 /* CODE LAYOUT UI EDITOR */
 
-function initCodeLayoutUIEditor(main_obj, save_func, ready_func) {
+function initCodeLayoutUIEditor(main_obj, opts) {
 	chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree = new MyTree({
 		multiple_selection : false,
 		ajax_callback_before : prepareLayerNodes1,
@@ -3201,7 +3314,8 @@ function initCodeLayoutUIEditor(main_obj, save_func, ready_func) {
 	chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer.init("layout_ui_editor_right_container");
 	
 	var textarea = main_obj.find(".layout_ui_editor textarea")[0];
-	var editor = createCodeLayoutUIEDitorEditor(textarea, {save_func: save_func, ready_func: ready_func});
+	var editor = createCodeLayoutUIEDitorEditor(textarea, opts);
+	
 	if (editor)
 		editor.focus();
 }
@@ -3372,7 +3486,7 @@ function chooseCodeLayoutUIEditorImportModulePopup(url) {
 	var popup= $(".choose_module_block_popup");
 	
 	if (!popup[0]) {
-		popup = $('<div class="myfancypopup choose_module_block_popup"></div>');
+		popup = $('<div class="myfancypopup with_iframe_title choose_module_block_popup"></div>');
 		$(document.body).append(popup);
 	}
 	
@@ -3380,7 +3494,10 @@ function chooseCodeLayoutUIEditorImportModulePopup(url) {
 	
 	//prepare popup iframe
 	var iframe = popup.children("iframe");
+	
+	url += (url.indexOf("?") != -1 ? "&" : "?") + "popup=1";
 	iframe.attr("src", url);
+	
 	iframe.load(function() {
 		this.contentWindow.$.ajaxSetup({
 			complete: function(jqXHR, textStatus) {

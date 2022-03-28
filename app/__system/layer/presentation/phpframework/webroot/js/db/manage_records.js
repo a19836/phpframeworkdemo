@@ -323,7 +323,7 @@ function editRow(elm) {
 		var popup = $(".manage_record_popup");
 		
 		if (!popup[0]) {
-			popup = $('<div class="myfancypopup manage_record_popup"></div>');
+			popup = $('<div class="myfancypopup with_iframe_title manage_record_popup"></div>');
 			$(document.body).append(popup);
 		}
 		
@@ -333,6 +333,7 @@ function editRow(elm) {
 		
 		//prepare url
 		var url = manage_record_url;
+		url += (url.indexOf("?") == -1 ? "?" : "&") + "popup=1"
 		
 		if (is_insert)
 			url += "&action=insert";

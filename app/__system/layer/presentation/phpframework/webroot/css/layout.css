@@ -1,30 +1,11 @@
-:root,
-  .dark_theme {
-	/* used in admin_advanced.css */
-	--main-template-border:transparent;
-	--main-template-bg:#181818;
-	--main-template-color:#ddd;
-	
-	/* used in icons.css */
-	--icon-font-size:14px;
-	--icon-hover-color:#ff0000;
-	--icon-font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-.light_theme {
-	--main-template-border:transparent;
-	--main-template-bg:#f7f7f7;
-	--main-template-color:#555;
-}
-
-#main_column {
-	background:#fff; /* bc of the full screen otherwise it shows a black screen */
-	min-height:100vh;
-}
-
+/* TOP BAR */
 .top_bar {
 	width:100%;
 	height:35px;
 	box-sizing:border-box;
+}
+.top_bar.in_popup {
+	height:60px;
 }
 .top_bar header {
 	width:100%;
@@ -45,8 +26,16 @@
 	
 	background: linear-gradient(to bottom, #f7f7f7 0%, #eee 95%, #ffffff73 100%);
 }
+.top_bar.in_popup header {
+	height:60px;
+	margin:0;
+	padding:20px;
+	background:var(--main-template-bg);
+	color:var(--main-template-color);
+	text-align:left;
+}
 
-/* TITLE */
+/* TOP BAR - TITLE */
 .top_bar .title {
 	width:auto;
 	height:auto;
@@ -56,6 +45,9 @@
 	font-weight:inherit;
 	margin:0;
 	padding:0;
+}
+.top_bar.in_popup header .title {
+	font-size:16px;
 }
 .top_bar .title input,
   .top_bar .title select {
@@ -79,12 +71,19 @@
 	line-height:21px;
 }
 
-/* TOP BAR DROPDOWN */
+/* TOP BAR - DROPDOWN */
 .top_bar header > ul {
 	display:inline-block;
 	position:absolute;
 	top:9px;
 	right:3px;
+}
+.top_bar.in_popup header > ul {
+	top:20px;
+	right:40px;
+}
+.top_bar.in_popup header > ul .icon {
+	color:var(--main-template-color);
 }
 .top_bar li {
 	margin:0;
@@ -113,9 +112,13 @@
 	border-bottom-right-radius:5px;
 	font-weight:normal;
 	font-size:12px;
-	font-family:var(--icon-font-family);
+	font-family:var(--main-font-family);
 	color:#666;
 	cursor:auto;
+}
+.top_bar.in_popup header > ul > li:hover:after {
+	background:var(--main-template-bg);
+	color:var(--main-template-color);
 }
 .top_bar li a {
 	font-weight:normal;
@@ -150,6 +153,11 @@
 	opacity:0;
 	transition:.5s all;
 }
+.top_bar.in_popup header > ul > li > ul {
+	background:var(--main-template-bg);
+	color:var(--main-template-color);
+	border-color:var(--main-template-border);
+}
 .top_bar header > ul > li:hover > ul {
 	right:0;
 	opacity:1;
@@ -162,24 +170,30 @@
 	border-left:1px solid #ddd;
 	border-right:1px solid #ddd;
 }
+.top_bar.in_popup header > ul > li > ul > li {
+	border-color:var(--main-template-border);
+}
 .top_bar li ul li {
 	width:100%;
 	display:block !important;
 	padding:0 !important;
 	border-bottom:none;
 	font-size:12px;
-	font-family:var(--icon-font-family);
+	font-family:var(--main-font-family);
 	color:#444;
 	box-sizing:border-box;
 }
 .top_bar li ul li:hover {
-	background:#ddd;
+	background:rgba(0, 0, 0, .1);
 }
 .top_bar li ul li a {
 	padding:7px 10px;
 	display:block;
 	white-space:nowrap;
 	color:#444;
+}
+.top_bar.in_popup li ul li a {
+	color:var(--main-template-color);
 }
 .top_bar li ul li a:hover {
 	color:var(--icon-hover-color);
@@ -189,10 +203,10 @@
 	border-bottom-right-radius:5px;
 }
 .top_bar li ul li ul li:hover {
-	background:#ccc;
+	background:rgba(0, 0, 0, .1);
 }
 
-/* TOP BAR DROPDOWN - SUB MENU */
+/* TOP BAR - DROPDOWN - SUB MENU */
 .top_bar li.sub_menu > .icon {
 	height:16px;
 	padding-top:2px;
@@ -214,7 +228,7 @@
 	padding-left:45px !important;
 }
 
-/* TOP BAR DROPDOWN - AUTO SAVE */
+/* TOP BAR - DROPDOWN - AUTO SAVE */
 .top_bar li.auto_save_convert_settings {
 	position:relative;
 }
@@ -224,6 +238,9 @@
 .top_bar li.auto_save_convert_settings > a:hover {
 	color:inherit;
 	cursor:default;
+}
+.top_bar.in_popup li.auto_save_convert_settings > a:hover {
+	color:var(--icon-hover-color);
 }
 .top_bar li.auto_save_convert_settings ul {
 	width:auto;
@@ -236,12 +253,15 @@
 	color:#666;
 	cursor:default;
 }
+.top_bar.in_popup li.auto_save_convert_settings ul li {
+	color:var(--main-template-color);
+}
 .top_bar li.auto_save_convert_settings ul li input {
 	position:absolute;
 	right:10px;
 }
 
-/* TOP BAR MENU DROPDOWN */
+/* TOP BAR - MENU DROPDOWN */
 .top_bar_menu {
 	display:inline-block;
 	position:fixed;
@@ -292,7 +312,7 @@
 	color:#444;
 	box-sizing:border-box;
 	position:relative;
-	font-family:var(--icon-font-family);
+	font-family:var(--main-font-family);
 }
 .top_bar_menu li:hover {
 	background:#ddd;
@@ -330,7 +350,7 @@
 	background:#ccc;
 }
 
-/* TOP BAR MENU DROPDOWN - AUTO SAVE */
+/* TOP BAR - MENU DROPDOWN - AUTO SAVE */
 .top_bar_menu li.auto_save_convert_settings > a:hover {
 	color:inherit;
 	cursor:default;
@@ -358,6 +378,10 @@
   .taskflowchart.with_top_bar_menu .tasks_flow .selected_connection_properties {
 	background:#fff !important;
 	border-radius:0;
+}
+.taskflowchart.with_top_bar_menu .tasks_flow .selected_task_properties.maximize_properties,
+  .taskflowchart.with_top_bar_menu .tasks_flow .selected_connection_properties.maximize_properties {
+	z-index:9999 !important;
 }
 .taskflowchart.with_top_bar_menu .tasks_flow .selected_task_properties:before,
   .taskflowchart.with_top_bar_menu .tasks_flow .selected_connection_properties:before {
@@ -448,6 +472,7 @@
 	top:7px;
 	left:auto;
 	right:5px;
+	z-index:9999;
 }
 .with_top_bar_tab .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu {
 	right:95px;
@@ -719,6 +744,7 @@ body .connection_context_menu .delete a {
 	text-rendering:auto;
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
+	line-height:16px;
 	content:"\f31e";
 }
 .selected_task_properties.maximize_properties .maximize_minimize_icon, 
@@ -727,11 +753,6 @@ body .connection_context_menu .delete a {
 }
 .selected_task_properties.maximize_properties .maximize_minimize_icon::before, 
   .selected_connection_properties.maximize_properties .maximize_minimize_icon::before {
-	width:18px;
-	display:inline-block;
-	text-rendering:auto;
-	-webkit-font-smoothing:antialiased;
-	font:var(--fa-font-solid);
 	content:"\f78c";
 }
 .taskflowchart.fixed_properties .selected_task_properties .expand_collapse_icon, 
@@ -744,11 +765,12 @@ body .connection_context_menu .delete a {
 }
 .selected_task_properties .expand_collapse_icon::before, 
   .selected_connection_properties .expand_collapse_icon::before {
-	width:18px;
+	width:15px;
 	display:inline-block;
 	text-rendering:auto;
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
+	line-height:16px;
 	content:"\f2d1";
 }
 .selected_task_properties.collapsed_properties .expand_collapse_icon, 
@@ -757,11 +779,6 @@ body .connection_context_menu .delete a {
 }
 .selected_task_properties.collapsed_properties .expand_collapse_icon::before, 
   .selected_connection_properties.collapsed_properties .expand_collapse_icon::before {
-	width:15px;
-	display:inline-block;
-	text-rendering:auto;
-	-webkit-font-smoothing:antialiased;
-	font:var(--fa-font-solid);
 	content:"\f2d0";
 }
 
@@ -995,7 +1012,7 @@ body .layout_ui_editor > .resize-panels {
 	font-weight:normal;
 	cursor:auto;
 	font-size:13px;
-	font-family:var(--icon-font-family);
+	font-family:var(--main-font-family);
 }
 .layout_ui_editor.with_top_bar_menu > .options .option.save,
   .layout_ui_editor.with_top_bar_menu > .options .option.full-screen {
@@ -1089,4 +1106,43 @@ body .layout_ui_editor > .resize-panels {
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
 	content:"\f057";
+	line-height:16px;
+}
+
+.myfancypopup.with_title,
+  .myfancypopup.with_iframe_title {
+	padding:0;
+	overflow:hidden;
+}
+.myfancypopup.with_title > .popup_close,
+  .myfancypopup.with_iframe_title > .popup_close {
+	top:20px !important;
+	right:20px !important;
+	color:var(--main-template-color);
+	font-size:20px;
+}
+.myfancypopup.with_title > .title {
+	margin:0;
+	padding:20px;
+	background:var(--main-template-bg);
+	color:var(--main-template-color);
+	text-align:left;
+	font-size:16px;
+}
+
+/* ajax_login_popup */
+.ajax_login_popup.myfancypopup {
+	border:0;
+}
+
+/* IN POPUP TITLE */
+.inside_popup_title {
+	width:auto !important;
+	margin:0 !important;
+	padding:20px !important;
+	background:var(--main-template-bg) !important;
+	color:var(--main-template-color) !important;
+	text-align:left !important;
+	font-size:16px !important;
+	font-weight:normal !important;
 }

@@ -8,6 +8,9 @@
 	min-height: 25px;
 }
 
+.template_samples_obj {
+	padding:10px;
+}
 .template_samples_obj .no_template_samples {
 	text-align:center;
 	color:#999;

@@ -25,13 +25,16 @@ $head = '
 <!-- Add Icons CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
+<!-- Add Layout CSS -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
+
 <!-- Add local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/templates_regions_html.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/templates_regions_html.js"></script>
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/responsive_iframe.js"></script>
 
 <script>
-</script>'; $main_content = '<div class="title">Templates Regions Html</div>
+</script>'; $main_content = '<div class="title' . ($popup ? " inside_popup_title" : "") . '">Templates Regions Html</div>
 <div class="templates_regions_html_obj">'; if ($available_templates_regions) { $main_content .= '<ul>'; foreach ($available_templates_regions as $template => $regions) { $template_samples_url = $project_url_prefix . "phpframework/presentation/template_samples?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$selected_project_id/src/template/" . $template . ".php"; $main_content .= '
 		<li class="template">
 			<div class="header"><span class="icon view" onClick="openTemplateSamples(this)" title="View Template" template_samples_url="' . $template_samples_url . '">Info</span> ' . $template . ' <span class="icon maximize" onClick="toggleContent(this)">Maximize</span></div>

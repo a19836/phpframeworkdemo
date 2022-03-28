@@ -115,29 +115,32 @@ $(function () {
 		saved_layout_ui_editor_code_id = getEntityLayoutUIEditorCodeObjId();
 		
 		//init ui layout editor
-		initCodeLayoutUIEditor(entity_obj, saveEntity, function() {
-			var luie = entity_obj.find("#code > .layout_ui_editor");
-			
-			//show view layout panel instead of code
-			/*var view_layout = luie.find(" > .tabs > .view-layout");
-			view_layout.addClass("do-not-confirm");
-			entity_obj.find(" > .tabs #visual_editor_tab a").trigger("click");
-			view_layout.removeClass("do-not-confirm");*/
-			
-			//show php widgets
-			luie.find(" > .template-widgets-options .show-php input").attr("checked", "checked").prop("checked", true).trigger("click").attr("checked", "checked").prop("checked", true);
-			
-			//init auto save
-			enableAutoSave(onTogglePHPCodeAutoSave);
-			enableAutoConvert(onTogglePHPCodeAutoConvert);
-			initAutoSave("#code > .code_menu li.save a");
-			
-			//add auto_save and auto_convert options to layout ui editor
-			var lue_auto_save_icon = $("#code > .code_menu li.auto_save_convert_settings").first().clone().addClass("option");
-			$("#code > .layout_ui_editor > .options .full-screen").before(lue_auto_save_icon);
-			
-			if (!luie.find(" > .tabs > .tab.tab-active").is(".view-layout"))
-				lue_auto_save_icon.addClass("hidden"); //bc the LayoutUIEditor is not inited at start, we need to hide this new icon. The others are already hidden by default.
+		initCodeLayoutUIEditor(entity_obj, {
+			save_func: saveEntity, 
+			ready_func: function() {
+				var luie = entity_obj.find("#code > .layout_ui_editor");
+				
+				//show view layout panel instead of code
+				/*var view_layout = luie.find(" > .tabs > .view-layout");
+				view_layout.addClass("do-not-confirm");
+				entity_obj.find(" > .tabs #visual_editor_tab a").trigger("click");
+				view_layout.removeClass("do-not-confirm");*/
+				
+				//show php widgets
+				luie.find(" > .template-widgets-options .show-php input").attr("checked", "checked").prop("checked", true).trigger("click").attr("checked", "checked").prop("checked", true);
+				
+				//init auto save
+				enableAutoSave(onTogglePHPCodeAutoSave);
+				enableAutoConvert(onTogglePHPCodeAutoConvert);
+				initAutoSave("#code > .code_menu li.save a");
+				
+				//add auto_save and auto_convert options to layout ui editor
+				var lue_auto_save_icon = $("#code > .code_menu li.auto_save_convert_settings").first().clone().addClass("option");
+				$("#code > .layout_ui_editor > .options .full-screen").before(lue_auto_save_icon);
+				
+				if (!luie.find(" > .tabs > .tab.tab-active").is(".view-layout"))
+					lue_auto_save_icon.addClass("hidden"); //bc the LayoutUIEditor is not inited at start, we need to hide this new icon. The others are already hidden by default.
+			}
 		});
 	}
 });

@@ -174,6 +174,9 @@ function prepareRegionBlockSimulatedHtml(item) {
 						//console.log(response_obj);
 						
 						if (typeof response_obj == "object" && response_obj && response_obj.hasOwnProperty("html") && response_obj["html"]) { //response_obj could be null. Null is an object!
+							if (item.classList.contains("invalid"))
+								item.classList.remove("invalid")
+							
 							var simulated_html = response_obj["html"];
 				  			
 				  			//prepare block_simulated_html div
@@ -469,6 +472,10 @@ function onChangeRegionBlock(elm) {
 	
 	//simulate block html
 	prepareRegionBlockSimulatedHtml(item);
+}
+
+function onChangeRegionBlockEditor(elm, str) {
+	onBlurRegionBlock(elm);
 }
 
 function onBlurRegionBlock(elm) {

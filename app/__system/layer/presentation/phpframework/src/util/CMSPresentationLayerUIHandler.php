@@ -18,22 +18,18 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC->getUtilPath("CMSPresentationLayerHandler"); include_once $EVC->getUtilPath("CMSPresentationLayerJoinPointsUIHandler"); include_once $EVC->getUtilPath("WorkFlowUIHandler"); include_once $EVC->getUtilPath("CMSPresentationUIAutomaticFilesHandler"); class CMSPresentationLayerUIHandler { public static function getHeader($peb014cfd, $v37d269c4fa, $v7577b57ccf, $pef9e169d, $v304acc4dcf, $v5aaf0d3496, $v2b1e634696, $peb496cef, $pf9d1c559, $v1fb4b254d3, $v2508589a4c, $v62ed6d4992 = false) { $pf8ed4912 = '
-		<!-- Add PHPJS functions -->
-		<script type="text/javascript" src="' . $v37d269c4fa . 'vendor/phpjs/functions/strings/parse_str.js"></script>
-		<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/phpjs/functions/strings/stripslashes.js"></script>
-		<script type="text/javascript" src="' . $v37d269c4fa . 'vendor/phpjs/functions/strings/addcslashes.js"></script>
-		
-		<!-- Add MD5 JS Files -->
-		<script type="text/javascript" src="' . $v37d269c4fa . 'vendor/jquery/js/jquery.md5.js"></script>
-		
-		<!-- Add Droppable Iframe Js - to be used by the .tab_content_template_layout  -->
-		<script type="text/javascript" src="' . $v37d269c4fa . 'vendor/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/jquery-ui-droppable-iframe-fix.js"></script>	
-		
-		<!-- Add TinyMCE JS Files  -->
-		<script type="text/javascript" src="' . $v37d269c4fa . 'vendor/tinymce/js/tinymce/tinymce.min.js"></script>	
-		<script type="text/javascript" src="' . $v37d269c4fa . 'vendor/tinymce/js/tinymce/jquery.tinymce.min.js"></script>	
-        	
+include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC->getUtilPath("CMSPresentationLayerHandler"); include_once $EVC->getUtilPath("CMSPresentationLayerJoinPointsUIHandler"); include_once $EVC->getUtilPath("WorkFlowUIHandler"); include_once $EVC->getUtilPath("CMSPresentationUIAutomaticFilesHandler"); class CMSPresentationLayerUIHandler { public static function getHeader($peb014cfd, $v37d269c4fa, $v7577b57ccf, $pef9e169d, $v304acc4dcf, $v5aaf0d3496, $v2b1e634696, $peb496cef, $pf9d1c559, $v1fb4b254d3, $v2508589a4c, $v62ed6d4992 = false, $v2de4fbd75c = "") { $pf8ed4912 = ''; if (strpos($v2de4fbd75c, 'vendor/phpjs/functions/strings/parse_str.js') === false) $pf8ed4912 .= '
+			<!-- Add PHPJS functions -->
+			<script type="text/javascript" src="' . $v37d269c4fa . 'vendor/phpjs/functions/strings/parse_str.js"></script>'; if (strpos($v2de4fbd75c, 'vendor/phpjs/functions/strings/stripslashes.js') === false) $pf8ed4912 .= '
+			<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/phpjs/functions/strings/stripslashes.js"></script>
+			<script type="text/javascript" src="' . $v37d269c4fa . 'vendor/phpjs/functions/strings/addcslashes.js"></script>'; if (strpos($v2de4fbd75c, 'vendor/jquery/js/jquery.md5.js') === false) $pf8ed4912 .= '
+			<!-- Add MD5 JS Files -->
+			<script type="text/javascript" src="' . $v37d269c4fa . 'vendor/jquery/js/jquery.md5.js"></script>'; if (strpos($v2de4fbd75c, 'vendor/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/jquery-ui-droppable-iframe-fix.js') === false) $pf8ed4912 .= '
+			<!-- Add Droppable Iframe Js - to be used by the .tab_content_template_layout  -->
+			<script type="text/javascript" src="' . $v37d269c4fa . 'vendor/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/jquery-ui-droppable-iframe-fix.js"></script>'; if (strpos($v2de4fbd75c, 'vendor/tinymce/js/tinymce/tinymce.min.js') === false) $pf8ed4912 .= '
+			<!-- Add TinyMCE JS Files  -->
+			<script type="text/javascript" src="' . $v37d269c4fa . 'vendor/tinymce/js/tinymce/tinymce.min.js"></script>	
+			<script type="text/javascript" src="' . $v37d269c4fa . 'vendor/tinymce/js/tinymce/jquery.tinymce.min.js"></script>'; $pf8ed4912 .= '
 		<script>
 		var get_available_blocks_list_url = \'' . $v7577b57ccf . '\';
 		var get_block_params_url = \'' . $pef9e169d . '\';
@@ -255,6 +251,6 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC
 		
 		<iframe src="' . $v338a2c14a6 . '" orig_src="' . $pfc22cc08 . '"></iframe>
 		
-		<div class="myfancypopup tab_content_template_layout_tasks" create_page_presentation_uis_diagram_block_url="' . $pd0054995 . '">
+		<div class="myfancypopup with_iframe_title tab_content_template_layout_tasks" create_page_presentation_uis_diagram_block_url="' . $pd0054995 . '">
 			<iframe></iframe>
 		</div>'; return $pf8ed4912; } } ?>

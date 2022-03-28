@@ -25,12 +25,15 @@ $sample_url = $project_url_prefix . "phpframework/presentation/template_region_s
 <!-- Add Icons CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
+<!-- Add Layout CSS -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
+
 <!-- Add local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/template_region_info.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/template_region_info.js"></script>
 
 <script>
-</script>'; $main_content = '<div class="title">Template Region Samples for "' . $region . '"</div>
+</script>'; $main_content = '<div class="title' . ($popup ? " inside_popup_title" : "") . '">Template Region Samples for "' . $region . '"</div>
 <div class="template_region_obj">'; if ($sample_files) { $main_content .= '<ul>'; foreach ($sample_files as $sample_file) { $main_content .= '<li>
 		<div class="header">' . pathinfo($sample_file, PATHINFO_FILENAME) . ' <span class="icon maximize" onClick="toggleSampleContent(this)">Maximize</span></div>
 		

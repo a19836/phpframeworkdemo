@@ -5,7 +5,6 @@
 	short_open_tag = On
 	max_execution_time = 1000
 	variables_order = "EGPCS"
-	upload_tmp_dir = /tmp
 	upload_max_filesize = 50M
 	post_max_size = 50M
 	date.timezone = Europe/Lisbon

@@ -79,15 +79,18 @@ $(function () {
 			createCodeEditor(textarea, {save_func: saveTemplate, no_height: true});
 		
 		//init ui layout editor
-		initCodeLayoutUIEditor(template_obj, saveTemplate, function() {
-			//show view layout panel instead of code
-			var view_layout = luie.find(" > .tabs > .view-layout");
-			view_layout.addClass("do-not-confirm");
-			view_layout.trigger("click");
-			view_layout.removeClass("do-not-confirm");
-			
-			//show php widgets
-			luie.find(" > .template-widgets-options .show-php input").attr("checked", "checked").prop("checked", true).trigger("click").attr("checked", "checked").prop("checked", true);
+		initCodeLayoutUIEditor(template_obj, {
+			save_func: saveTemplate, 
+			ready_func: function() {
+				//show view layout panel instead of code
+				var view_layout = luie.find(" > .tabs > .view-layout");
+				view_layout.addClass("do-not-confirm");
+				view_layout.trigger("click");
+				view_layout.removeClass("do-not-confirm");
+				
+				//show php widgets
+				luie.find(" > .template-widgets-options .show-php input").attr("checked", "checked").prop("checked", true).trigger("click").attr("checked", "checked").prop("checked", true);
+			},
 		});
 		
 		var luie = template_obj.find(".code_editor_body > .layout_ui_editor");
@@ -102,7 +105,7 @@ $(function () {
 				updateCodeEditorSettingsFromLayout(template_obj);
 			};
 			update_layout_iframe_from_settings_func = function() {
-				updateCodeEditorLayoutFromSettings(template_obj, true);
+				updateCodeEditorLayoutFromSettings(template_obj, false, true);
 			};
 			
 			//waits until the load params and joinpoints gets loaded
@@ -215,11 +218,11 @@ function updateCodeEditorLayoutFromMainTab(elm) {
 	var selected_tab = template_obj.children("ul").find("li.ui-tabs-selected, li.ui-tabs-active").first();
 	
 	if (selected_tab.attr("id") == "code_editor_body") {
-		updateCodeEditorLayoutFromSettings(template_obj);
+		updateCodeEditorLayoutFromSettings(template_obj, true, false);
 	}
 }
 
-function updateCodeEditorLayoutFromSettings(template_obj, do_not_update_from_body_editor) {
+function updateCodeEditorLayoutFromSettings(template_obj, reload_iframe, do_not_update_from_body_editor) {
 	if (template_obj[0]) {
 		var regions_blocks_includes_settings = template_obj.find(".regions_blocks_includes_settings");
 		
@@ -234,7 +237,7 @@ function updateCodeEditorLayoutFromSettings(template_obj, do_not_update_from_bod
 		
 		//updates the last regions and params. This is very important. otherwise the template preview won't show the latest regions and params from the html.
 		if (!do_not_update_from_body_editor)
-			updateRegionsFromBodyEditor(false);
+			updateRegionsFromBodyEditor(false, true);
 		
 		if (!template_obj.hasClass("inactive")) {
 			var iframe = template_obj.find(".code_editor_layout iframe");
@@ -266,7 +269,10 @@ function updateCodeEditorLayoutFromSettings(template_obj, do_not_update_from_bod
 				var current_html = getTemplateCodeForSaving(true);
 				MyFancyPopup.hidePopup();
 				
-				updateLayoutIframeFromSettings(iframe, iframe_data, current_html);
+				if (reload_iframe)
+					reloadLayoutIframeFromSettings(iframe, iframe_data, current_html);
+				else
+					updateLayoutIframeFromSettings(iframe, iframe_data, current_html);
 			}
 		}
 	}
@@ -274,7 +280,7 @@ function updateCodeEditorLayoutFromSettings(template_obj, do_not_update_from_bod
 
 function updateCodeEditorSettingsFromLayout(template_obj) {
 	//updates the last regions and params. This is very important. otherwise the template preview won't show the latest regions and params from the html.
-	updateRegionsFromBodyEditor(false);
+	updateRegionsFromBodyEditor(false, true);
 	
 	if (!template_obj.hasClass("inactive")) {
 		var iframe = template_obj.find(".code_editor_layout iframe");
@@ -295,7 +301,16 @@ function updateCodeEditorSettingsFromLayout(template_obj) {
 	}
 }
 
-function updateRegionsFromBodyEditor(show_info_message) {
+function updateRegionsFromBodyEditor(show_info_message, do_not_update_layout) {
+	//save synchronization functions
+	var update_settings_from_layout_iframe_func_bkp = update_settings_from_layout_iframe_func;
+	var update_layout_iframe_from_settings_func_bkp = update_layout_iframe_from_settings_func;
+	
+	//disable synchronization functions bc the updateSelectedTemplateRegionsBlocks calls the sync func, when it triggers the on change event from the blok_type in the getRegionBlockHtml
+	update_settings_from_layout_iframe_func = null;
+	update_layout_iframe_from_settings_func = null;
+	
+	//update regions blocks
 	var regions_blocks_includes_settings = $(".template_obj .regions_blocks_includes_settings");
 	
 	var settings = getSettingsTemplateRegionsBlocks(regions_blocks_includes_settings);
@@ -309,6 +324,13 @@ function updateRegionsFromBodyEditor(show_info_message) {
 		"regions": regions,
 		"params": params,
 	});
+	
+	//sets back synchronization functions
+	update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
+	update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
+	
+	if (!do_not_update_layout)
+		updateLayoutIframeFromSettingsField(); //then reload the layout again
 	
 	if (show_info_message && regions.length == 0)
 		StatusMessageHandler.showMessage("No regions to be updated...");
@@ -392,7 +414,7 @@ function getTemplateCodeForSaving(without_regions_blocks_and_includes) {
 	
 	if (!without_regions_blocks_and_includes) {
 		//update settings from body
-		updateRegionsFromBodyEditor(false);
+		updateRegionsFromBodyEditor(false, true);
 		
 		var obj = getRegionsBlocksAndIncludesObjToSave();
 		
@@ -482,7 +504,7 @@ function saveTemplate() {
 			var template_obj = $(".template_obj");
 			var active_tab = template_obj.tabs('option', 'active');
 			if (active_tab == 0) {
-				updateCodeEditorLayoutFromSettings(template_obj);
+				updateCodeEditorLayoutFromSettings(template_obj, false, true);
 			}*/
 			
 			if (code != null) {

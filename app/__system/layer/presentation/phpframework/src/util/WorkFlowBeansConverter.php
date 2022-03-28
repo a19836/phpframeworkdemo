@@ -375,6 +375,7 @@ include_once get_lib("org.phpframework.util.xml.MyXML"); include_once get_lib("o
 			<item name="log_css"><![CDATA[
 				.log_handler {
 					font-family: verdana,arial,courier;
+					font-family: var(--main-font-family);
 					font-size: 11px;
 					color: #666;
 					font-style: italic;

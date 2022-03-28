@@ -229,7 +229,7 @@ function showAjaxLoginPopup(login_url, urls_to_match, success_func) {
 	urls_to_match = $.isArray(urls_to_match) ? urls_to_match : [urls_to_match];
 	var auto_save_bkp = auto_save;
 	
-	var popup = $('#ajax_login_popup');
+	var popup = $('.ajax_login_popup');
 	var iframe = popup.children("iframe");
 	var iframe_on_load_func = function() {
 		var current_iframe_url = decodeURI(this.contentWindow.location.href);
@@ -244,14 +244,15 @@ function showAjaxLoginPopup(login_url, urls_to_match, success_func) {
 				success_func();
 		}
 		else {
-			var contents = $(this).contents();
+			/*var contents = $(this).contents();
 			var w = contents.width();
 			var h = contents.height();
 			
 			w = w > 380 ? w : 380;
 			h = h > 280 ? h : 280;
 			
-			iframe.css({width: w + "px", height: h + "px"});
+			iframe.css({width: w + "px", height: h + "px"});*/
+			iframe.css({width: "380px", height: "280px"});
 		}
 	};
 	

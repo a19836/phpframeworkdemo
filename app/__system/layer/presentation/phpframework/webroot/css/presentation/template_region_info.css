@@ -3,6 +3,9 @@
 	text-align: center;
 }
 
+.template_region_obj {
+	padding:10px;
+}
 .template_region_obj .no_template_regions {
 	text-align:center;
 	color:#999;

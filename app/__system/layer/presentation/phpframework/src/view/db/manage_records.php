@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$manage_records_url = $project_url_prefix . "phpframework/db/manage_records?layer_bean_folder_name=$layer_bean_folder_name&bean_name=$bean_name&bean_file_name=$bean_file_name&table=#table#&db_type=$db_type"; $manage_record_url = $project_url_prefix . "phpframework/db/manage_record?layer_bean_folder_name=$layer_bean_folder_name&bean_name=$bean_name&bean_file_name=$bean_file_name&table=$table&db_type=$db_type&popup=1"; $manage_record_action_url = $project_url_prefix . "phpframework/db/manage_record_action?layer_bean_folder_name=$layer_bean_folder_name&bean_name=$bean_name&bean_file_name=$bean_file_name&table=$table"; $head = '
+$manage_records_url = $project_url_prefix . "phpframework/db/manage_records?layer_bean_folder_name=$layer_bean_folder_name&bean_name=$bean_name&bean_file_name=$bean_file_name&table=#table#&db_type=$db_type"; $manage_record_url = $project_url_prefix . "phpframework/db/manage_record?layer_bean_folder_name=$layer_bean_folder_name&bean_name=$bean_name&bean_file_name=$bean_file_name&table=$table&db_type=$db_type"; $manage_record_action_url = $project_url_prefix . "phpframework/db/manage_record_action?layer_bean_folder_name=$layer_bean_folder_name&bean_name=$bean_name&bean_file_name=$bean_file_name&table=$table"; $head = '
 <!-- TimePicker -->
 <link rel="stylesheet" media="all" type="text/css" href="' . $project_common_url_prefix . 'vendor/jquerytimepickeraddon/dist/jquery-ui-timepicker-addon.min.css" />
 <script src="' . $project_common_url_prefix . 'vendor/jquerytimepickeraddon/dist/jquery-ui-timepicker-addon.min.js" type="text/javascript"></script>
@@ -39,8 +39,8 @@ $manage_records_url = $project_url_prefix . "phpframework/db/manage_records?laye
 <!-- Add Icons CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
-<!-- Top-Bar CSS file -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+<!-- Add Layout CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
 
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/db/manage_records.css" charset="utf-8" />

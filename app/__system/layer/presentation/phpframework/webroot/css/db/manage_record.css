@@ -7,6 +7,9 @@
 .manage_record {
 	padding:0 10px;
 }
+.manage_record.in_popup {
+	padding:0 20px 10px;
+}
 
 /* TABLE */
 .manage_record table {
@@ -27,17 +30,6 @@
   .manage_record table select {
 	width:100%;
 	box-sizing:border-box;
-}
-
-/* BUTTONS */
-.manage_record .buttons {
-	width:100%;
-	height:25px;
-	text-align:center;
-	margin:10px 0 0 0;
-}
-.manage_record .buttons input {
-	padding:3px 5px !important;
 }
 
 /* ERROR */

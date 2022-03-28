@@ -189,10 +189,11 @@
 }
 #content .user_type_permissions_list table .icon {
 	width:24px;
-	height:24px;
+	height:20px;
 	display:inline-block;
 	float:none;
-	vertical-align:middle;
+	vertical-align:top;
+	font-size:16px;
 }
 #content .user_type_permissions_list .user_type_permissions_content {
 	border:0;
@@ -210,19 +211,15 @@
 	overflow:auto;
 	position:relative;
 }
+#content .user_type_permissions_list .user_type_permissions_content #layers_permissions_list table td {
+	padding:3px 0;
+}
 #content .user_type_permissions_list .user_type_permissions_content #layers_permissions_list table td.main_node {
 	text-align:left;
 }
 #content .user_type_permissions_list .user_type_permissions_content #layers_permissions_list table td.object_id {
 	text-align:left;
 	padding-left:20px;
-}
-#content .user_type_permissions_list .user_type_permissions_content #layers_permissions_list table .icon {
-	width:24px;
-	height:24px;
-	float:none;
-	display:inline-block;
-	vertical-align:middle;
 }
 #content .user_type_permissions_list .buttons {
 	 display:none;
@@ -262,11 +259,12 @@
 }
 #content .layout_type_permissions_list .mytree .icon.main_node {
 	width:24px;
-	height:24px;
+	height:20px;
 	margin-left:15px;
 	display:inline-block;
 	float:none;
-	vertical-align:middle;
+	vertical-align:top;
+	font-size:16px;
 }
 #content .layout_type_permissions_list .buttons {
 	 display:none;

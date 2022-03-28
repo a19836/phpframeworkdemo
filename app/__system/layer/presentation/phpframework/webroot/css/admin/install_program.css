@@ -171,7 +171,7 @@
 .install_program .step_3 > .users_permissions .info {
 	margin-top:10px;
 	display:block;
-	font-family:verdana,arial,courier;
+	font-family:var(--main-font-family);
 }
 .install_program .step_3 > .users_permissions .info img {
 	vertical-align:middle;

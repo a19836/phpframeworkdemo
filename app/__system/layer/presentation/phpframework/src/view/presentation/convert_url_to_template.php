@@ -25,8 +25,8 @@ $head = '
 <!-- Add Icon CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
-<!-- Top-Bar CSS file -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/top_bar.css" type="text/css" charset="utf-8" />
+<!-- Add Layout CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
 
 <!-- Layout UI Editor - Add Html/CSS/JS Beautify code -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jsbeautify/js/lib/beautify.js"></script>
@@ -48,13 +48,17 @@ $head = '
 				<input type="text" name="template_name" placeHolder="Template name" />
 			</div>
 			<ul>
-				<li class="convert_to_region" title="Convert to Region"><a onClick="convertToRegion()"><i class="icon convert_to_region"></i> Convert to Region</a></li>
-				<li class="convert_to_param" title="Convert to Param"><a onClick="convertToParam()"><i class="icon convert_to_param"></i> Convert to Param</a></li>
+				<!--li class="convert_to_region" title="Convert to Region"><a onClick="convertToRegion()"><i class="icon convert_to_region"></i> Convert to Region</a></li>
+				<li class="convert_to_param" title="Convert to Param"><a onClick="convertToParam()"><i class="icon convert_to_param"></i> Convert to Param</a></li-->
 				<li class="save" title="Save as Template"><a onClick="saveTemplate()"><i class="icon save"></i> Save as Template</a></li>
 			</ul>
 		</header>
 	</div>'; $main_content .= '
 	<div class="page_html">
 		<iframe></iframe>
+		<div class="buttons">
+			<button class="convert_to_region" title="Convert to Region" onClick="convertToRegion()">Convert to Region</button>
+			<button class="convert_to_param" title="Convert to Param" onClick="convertToParam()">Convert to Param</button>
+		</div>
 	</div>
 </div>'; ?>

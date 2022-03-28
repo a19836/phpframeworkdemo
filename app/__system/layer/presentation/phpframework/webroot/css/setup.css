@@ -46,7 +46,7 @@
 		progid:DXImageTransform.Microsoft.Shadow(Color=#aaaaaa, Strength=2, Direction=180),
 		progid:DXImageTransform.Microsoft.Shadow(Color=#aaaaaa, Strength=2, Direction=270);
 		
-	font-family: Verdana,Arial,sans-serif;
+	font-family:var(--main-font-family);
 	color:#555555;
 	font-weight:normal;
 	text-align:center;

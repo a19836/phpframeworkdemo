@@ -52,7 +52,6 @@ $dir_path = str_replace(DIRECTORY_SEPARATOR, "/", __DIR__) . "/"; $main_status =
 			<li>short_open_tag = On</li>
 			<li>max_execution_time = 1000</li>
 			<li>variables_order = \"EGPCS\"</li>
-			<li>upload_tmp_dir = /tmp</li>
 			<li>upload_max_filesize = 64M</li>
 			<li>post_max_size = 64M</li>
 			<li>date.timezone = Europe/Lisbon</li>

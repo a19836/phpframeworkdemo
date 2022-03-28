@@ -47,8 +47,8 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				<!-- Add Icons CSS file -->
 				<link rel="stylesheet" href="' . $peb014cfd . 'css/icons.css" type="text/css" charset="utf-8" />
 				
-				<!-- Add Edit Code JS file -->
-				<script language="javascript" type="text/javascript" src="' . $peb014cfd . 'js/edit_code.js"></script>
+				<!-- Add Layout JS file -->
+				<script language="javascript" type="text/javascript" src="' . $peb014cfd . 'js/layout.js"></script>
 				'; $pf8ed4912 .= '
 			<!-- Add Edit PHP Code JS and CSS files -->
 			<link rel="stylesheet" href="' . $peb014cfd . 'css/edit_php_code.css" type="text/css" charset="utf-8" />
