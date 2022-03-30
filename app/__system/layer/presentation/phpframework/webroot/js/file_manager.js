@@ -6,6 +6,7 @@ var last_selected_node_parent_id= null;
 var mytree = new MyTree({
 	multiple_selection : false,
 	toggle_selection : false,
+	toggle_chils_on_click : true,
 	ajax_callback_before : prepareLayerNodes1,
 	ajax_callback_after : prepareLayerNodes2,
 	ajax_callback_error : validateLayerNodesRequest,

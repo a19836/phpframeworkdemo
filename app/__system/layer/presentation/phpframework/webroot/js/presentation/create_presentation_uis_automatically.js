@@ -16,6 +16,7 @@ function onChangeDBDriver(elm) {
 function onLoadTableSettings() {
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
 	});
@@ -23,6 +24,7 @@ function onLoadTableSettings() {
 	
 	chooseBusinessLogicFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 	});
@@ -30,6 +32,7 @@ function onLoadTableSettings() {
 	
 	chooseQueryFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeParametersAndResultMapsFromTree,
 	});
@@ -37,6 +40,7 @@ function onLoadTableSettings() {
 	
 	chooseHibernateObjectMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeParametersAndResultMapsFromTree,
 	});

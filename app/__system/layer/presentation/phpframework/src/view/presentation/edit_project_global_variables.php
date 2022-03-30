@@ -74,9 +74,9 @@ var available_templates_props = ' . json_encode($available_templates_props) . ';
 </div>
 <div class="global_vars_obj with_top_bar_tab">
 	<ul class="tabs tabs_transparent tabs_right tabs_icons">
-		<li id="code_editor_tab" title="Code"><a href="#code" onClick="onClickGlobalVariablesCodeEditorTab(this);return false;"><i class="icon code_editor_tab"></i> Code</a></li>
-		<li id="tasks_flow_tab" title="Workflow"><a href="#ui" onClick="onClickGlobalVariablesTaskWorkflowTab(this);return false;"><i class="icon tasks_flow_tab"></i> Workflow</a></li>
-		<li id="form_global_vars_tab" title="Simple Global Variables UI"><a href="#form_global_vars" onClick="onClickGlobalVariablesSimpleFormTab(this);return false;"><i class="icon form_global_vars_tab"></i> Simple Global Variables UI</a></li>
+		<li id="code_editor_tab" title="Code"><a href="#code" onClick="onClickGlobalVariablesCodeEditorTab(this);return false;"><i class="icon code_editor_tab"></i> Code Editor</a></li>
+		<li id="tasks_flow_tab" title="Workflow"><a href="#ui" onClick="onClickGlobalVariablesTaskWorkflowTab(this);return false;"><i class="icon tasks_flow_tab"></i> Workflow Editor</a></li>
+		<li id="form_global_vars_tab" title="Simple Global Variables UI"><a href="#form_global_vars" onClick="onClickGlobalVariablesSimpleFormTab(this);return false;"><i class="icon form_global_vars_tab"></i> Form Editor</a></li>
 	</ul>
 	
 	<div id="code">

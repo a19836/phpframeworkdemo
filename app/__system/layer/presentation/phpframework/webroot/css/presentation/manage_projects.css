@@ -9,9 +9,11 @@
 
 /* PROJECTS */
 .projects_list {
-	width:550px;
-	margin:0 auto;
 	margin-bottom:20px;
+	text-align:center;
+}
+.projects_list .layer_projects {
+	display:inline-block;
 }
 
 .projects_list table {

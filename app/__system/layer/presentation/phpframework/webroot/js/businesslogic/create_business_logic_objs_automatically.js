@@ -3,6 +3,7 @@ var chooseQueriesFromFileManagerTree = null;
 $(function () {
 	chooseQueriesFromFileManagerTree = new MyTree({
 		multiple_selection : true,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeQueriesAndMapsAndOtherHbnNodesFromTree,
 		on_select_callback : checkIfIsFileOrHbnObj,

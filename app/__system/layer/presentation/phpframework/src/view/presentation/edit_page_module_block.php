@@ -23,6 +23,6 @@ $(function () {
 	$(window).unbind("beforeunload");
 	
 	disableAutoSave(onToggleAutoSave);
-	$(".top_bar li.auto_save_convert_settings").remove();
+	$(".top_bar").find("li.auto_save_activation").remove();
 });
 </script>'; ?>

@@ -26,10 +26,6 @@ $head = '
 <!--link rel="stylesheet" href="' . $project_url_prefix . 'vendor/jquery-ui/jquery-ui.min.css" type="text/css" /-->
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'vendor/jquery-ui/jquery-ui.min.js"></script>
 
-<!-- Bootstrap core -->
-<link href="' . $project_url_prefix . 'vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<script src="' . $project_url_prefix . 'vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 <!-- Core plugin JavaScript-->
 <script src="' . $project_url_prefix . 'vendor/jquery-easing/jquery.easing.min.js"></script>
 
@@ -45,23 +41,42 @@ $head = '
 </script>
 <!-- //for-mobile-apps -->
 
-<!-- Custom fonts for this template-->
-<link href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">
-<!--script src="' . $project_common_url_prefix . 'vendor/fontawesome/js/all.min.js"></script-->
+<!-- Add Fontawsome Icons CSS -->
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
+
+<!-- Add Icons CSS -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
+
+<!-- Add Layout CSS -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
 
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_home.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_home.js"></script>
-'; $main_content = '<h4 class="text-center mt-3"><small>Admin Panel</small></h4>'; if ($project) $main_content .= '<small class="text-center text-muted d-block">Selected project: "' . $project . '"</small>'; $main_content .= '
-<div class="admin_panel mt-3 border-0">
+'; $main_content = '
+<div class="admin_panel">
+	<div class="title">Dashboard</div>
+	<!--small class="text-center text-muted d-block">Selected project: "' . $project . '"</small-->
+	
 	<ul>
+		<li><a href="#projects">Projects</a></li>
 		<li><a href="#tutorials">Tutorials</a></li>
 		<li><a href="#how_it_works">How it works?</a></li>
-		<li><a href="#projects">Projects</a></li>
 	</ul>
 	
 	<div id="projects" class="projects">
-		TODO: show list of projects...
+		<div class="projects_list_type">
+			<a href="javascript:void(0)" onClick="toggleProjectsListType(\'block_view\')"><span class="icon block_view"></span></a>
+			<a href="javascript:void(0)" onClick="toggleProjectsListType(\'list_view\')"><span class="icon list_view"></span></a>
+		</div>
+		
+		<div class="new_project">
+			<div class="title">Create Your First Project!</div>
+			<div class="description">Soon this space will be filled with your projects.<br/>Create a new project to get started.</div>
+			<div class="button">
+				<button onClick="createNewProject()">Create New Project</button>
+			</div>
+		</div>
 	</div>
 	
 	<div id="how_it_works" class="how_it_works">
@@ -93,7 +108,7 @@ $head = '
 	</div>
 </div>
 
-<div class="modal fade modal_video text-center" id="modal-video-01" tabindex="-1" role="dialog" aria-hidden="true">
+<!--div class="modal fade modal_video text-center" id="modal-video-01" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog d-inline-block" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -108,4 +123,4 @@ $head = '
 			</div>
 		</div>
 	</div>
-</div>'; ?>
+</div-->'; ?>

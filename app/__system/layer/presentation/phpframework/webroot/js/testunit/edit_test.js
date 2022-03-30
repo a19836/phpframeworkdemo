@@ -23,6 +23,7 @@ $(function () {
 	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
 	});
@@ -30,6 +31,7 @@ $(function () {
 	
 	chooseMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
 	});
@@ -37,6 +39,7 @@ $(function () {
 	
 	chooseFunctionFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
 	});
@@ -44,6 +47,7 @@ $(function () {
 	
 	chooseFileFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 	});
@@ -51,6 +55,7 @@ $(function () {
 	
 	chooseBusinessLogicFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 	});
@@ -58,6 +63,7 @@ $(function () {
 	
 	chooseQueryFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeParametersAndResultMapsFromTree,
 	});
@@ -65,6 +71,7 @@ $(function () {
 	
 	chooseHibernateObjectFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeQueriesAndMapsAndOtherHbnNodesFromTree,
 	});
@@ -72,6 +79,7 @@ $(function () {
 	
 	chooseHibernateObjectMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeParametersAndResultMapsFromTree,
 	});
@@ -79,6 +87,7 @@ $(function () {
 	
 	choosePresentationFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
 	});
@@ -86,6 +95,7 @@ $(function () {
 	
 	chooseBlockFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotBlocksFromTree,
 	});
@@ -93,6 +103,7 @@ $(function () {
 	
 	choosePageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
 	});
@@ -100,6 +111,7 @@ $(function () {
 	
 	chooseImageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
 	});
@@ -177,7 +189,7 @@ function onToggleFullScreen(in_full_screen) {
 }
 
 function resizeSettingsPanel(settings, top) {
-	var icon = settings.find(".settings_header .icon");
+	var icon = settings.find(" > .settings_header .icon");
 	var wh = $(window).height();
 	var height = 0;
 	

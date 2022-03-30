@@ -1,12 +1,59 @@
+/* ADMIN PANEL */
 .admin_panel {
-	font-size:80%;
+	border:0;
+	font-size:12px;
+	font-family:inherit;
+}
+.admin_panel > .title {
+	margin:20px 0 0;
+	font-weight:bold;
+	text-align:center;
+	font-size:24px;
 }
 .admin_panel > ul {
-	background: none;
-	border-top: 0;
-	border-left: 0;
-	border-right: 0;
-	border-radius: 0;
+	background:none;
+	border:0;
+	text-align:center;
+}
+.admin_panel > ul li {
+	background:none !important;
+	border:none !important;
+	display:inline-block;
+	float:none !important;
+}
+.admin_panel > ul li:not(:first-child) {
+	border-left:1px solid #eee !important;
+}
+.admin_panel > ul li.ui-state-active {
+	font-weight:bold;
+	border-bottom:1px solid var(--icon-hover-color) !important;
+}
+
+/* PROJECTS */
+.projects .projects_list_type {
+	text-align:center;
+}
+.projects .projects_list_type .icon {
+	font-size:16px;
+	color:#000;
+}
+.projects .projects_list_type .icon:hover {
+	color:var(--icon-hover-color);
+}
+
+.projects .new_project {
+	margin:40px 20px;
+	text-align:center;
+}
+.projects .new_project .title {
+	font-size:18px;
+	font-weight:bold;
+}
+.projects .new_project .description {
+	margin-top:5px;
+}
+.projects .new_project .button {
+	margin-top:20px;
 }
 
 /* HOW IT WORKS */

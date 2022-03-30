@@ -62,11 +62,11 @@
 .entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right {
 	right:250px;
 }
-.entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.auto_save_convert_settings {
+.entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.sub_menu {
 	right:-120px;
 }
 .entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center {
-	right:448px;
+	right:368px;
 }
 .entity_obj.project_with_auto_view.view_file_exists .code_menu.top_bar_menu,
   .entity_obj.project_with_auto_view.view_file_exists .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu {
@@ -76,7 +76,7 @@
 	right:293px;
 }
 .entity_obj.project_with_auto_view.view_file_exists .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center {
-	right:490px;
+	right:410px;
 }
 .entity_obj.project_with_auto_view:not(.view_file_exists) .code_menu.top_bar_menu,
   .entity_obj.project_with_auto_view:not(.view_file_exists) .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu {
@@ -86,10 +86,7 @@
 	right:307px;
 }
 .entity_obj.project_with_auto_view:not(.view_file_exists) .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center {
-	right:505px;
-}
-.entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right {
-	width:200px;
+	right:425px;
 }
 
 .entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.save,

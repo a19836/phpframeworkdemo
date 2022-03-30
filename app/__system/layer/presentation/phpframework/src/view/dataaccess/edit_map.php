@@ -55,7 +55,6 @@ var old_obj_id = \'' . $map_id . '\';
 					<i class="icon sub_menu"></i>
 					<ul>
 						<li class="update_automatically" title="Create Map Automatically"><a onClick="createSingleMapParameterOrResultMapAutomatically()"><i class="icon update_automatically"></i> Update Automatically</a></li>
-						<li class="toggle_ids" title="Toggle Map Class"><a class="toggle_icon" onClick="toggleMapClass(this, \'.edit_map\')"><i class="icon toggle_ids"></i> Toggle Map Class</a></li>
 						<li class="dummy_elm_to_add_auto_save_options"></li>
 					</ul>
 				</li>

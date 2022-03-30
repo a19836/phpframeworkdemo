@@ -28,10 +28,13 @@ $head = '
 <!-- Add Layout CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
 
+<!-- Add local Responsive Iframe CSS and JS -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/responsive_iframe.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/responsive_iframe.js"></script>
+
 <!-- Add local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/templates_regions_html.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/templates_regions_html.js"></script>
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/responsive_iframe.js"></script>
 
 <script>
 </script>'; $main_content = '<div class="title' . ($popup ? " inside_popup_title" : "") . '">Templates Regions Html</div>
@@ -51,21 +54,8 @@ $head = '
 						</ul>
 						
 						<div id="view_ui">
-							<div class="iframe_toolbar">
-								Screen size: 
-								<select class="type" onChange="onChangeTemplateLayoutScreenSize(this)">
-									<option>auto</option>
-									<option>tablet</option>
-									<option>smartphone</option>
-									<option>responsive</option>
-								</select>
-								<select class="orientation" onChange="onChangeTemplateLayoutScreenSize(this)">
-									<option>vertical</option>
-									<option>horizontal</option>
-								</select>
-								<span class="dimension">
-									<input class="width" name="width" placeHolder="Width" onKeyUp="onChangeTemplateLayoutScreenSize(this)" />px <input class="height" name="height" placeHolder="Height" onKeyUp="onChangeTemplateLayoutScreenSize(this)" />px
-								</span>
+							<div class="iframe_toolbar desktop">
+								' . CMSPresentationLayerUIHandler::getTabContentTemplateLayoutIframeToolbarContentsHtml() . '
 							</div>
 							<iframe orig_src="' . $sample_url . '"></iframe>
 						</div>

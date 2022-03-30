@@ -27,7 +27,7 @@ $(function () {
 /* AUTO SAVE & CONVERT FUNCTIONS */
 
 function onTogglePHPCodeAutoSave() {
-	var inputs = $("#code .code_menu ul li.auto_save_convert_settings ul .auto_save_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_convert_settings ul .auto_save_activation input, #code .layout_ui_editor > .options .option.auto_save_convert_settings ul li.auto_save_activation input");
+	var inputs = $("#code .code_menu ul li.auto_save_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_activation input, #code .layout_ui_editor > .options .option.auto_save_activation input");
 	
 	if (auto_save) {
 		jsPlumbWorkFlow.jsPlumbTaskFile.auto_save = false; //should be false bc the saveObj calls the getCodeForSaving method which already saves the workflow by default, and we don't need 2 saves at the same time.
@@ -46,7 +46,7 @@ function onTogglePHPCodeAutoSave() {
 }
 
 function onTogglePHPCodeAutoConvert() {
-	var inputs = $("#code .code_menu ul li.auto_save_convert_settings ul .auto_convert_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_convert_settings ul .auto_convert_activation input, #code .layout_ui_editor > .options .option.auto_save_convert_settings ul li.auto_convert_activation input");
+	var inputs = $("#code .code_menu ul li.auto_convert_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation input, #code .layout_ui_editor > .options .option.auto_convert_activation input");
 	
 	if (auto_convert) {
 		inputs.attr("checked", "checked").prop("checked", true);

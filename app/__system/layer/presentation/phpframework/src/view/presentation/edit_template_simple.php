@@ -45,10 +45,13 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); $filter_by_layout_ur
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/codehighlight/styles/default.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/codehighlight/highlight.pack.js"></script>
 
+<!-- Add local Responsive Iframe CSS and JS -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/responsive_iframe.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/responsive_iframe.js"></script>
+
 <!-- Add local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/edit_page_and_template.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/edit_page_and_template.js"></script>
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/responsive_iframe.js"></script>
 
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/edit_template_simple.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/edit_template_simple.js"></script>
@@ -79,6 +82,7 @@ var template_preview_html_url = \'' . $template_preview_html_url . '\';
 		<header>
 			<div class="title">Edit Template "' . pathinfo($path, PATHINFO_FILENAME) . '"</div>
 			<ul>
+				<li class="preview" title="Preview Template"><a onClick="preview()"><i class="icon view"></i> Preview Template</a></li>
 				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save Template"><a onClick="saveTemplate()"><i class="icon save"></i> Save</a></li>
 				<li class="sub_menu">
@@ -87,6 +91,7 @@ var template_preview_html_url = \'' . $template_preview_html_url . '\';
 						<li class="show_advanced_ui" title="Switch to Advanced UI"><a href="?' . $query_string . '&edit_template_type=advanced"><i class="icon show_advanced_ui"></i> Switch to Advanced UI</a></li>
 						<li class="update_layout_from_settings" title="Update Settings to Layout UI"><a onClick="updateCodeEditorLayoutFromSettings( $(\'.template_obj\') )"><i class="icon update_layout_from_settings"></i> Update Settings to Layout UI</a></li>
 						<li class="view_template_samples" title="View Template Samples"><a onClick="openTemplateSamples()"><i class="icon view_template_samples"></i> View Template Samples</a></li>
+						<li class="preview" title="Preview"><a onClick="preview()"><i class="icon view"></i> Preview Template</a></li>
 						<li class="dummy_elm_to_add_auto_save_options"></li>
 					</ul>
 				</li>
@@ -95,9 +100,8 @@ var template_preview_html_url = \'' . $template_preview_html_url . '\';
 	</div>'; if ($obj_data) { $code = $obj_data["code"]; $doc_type_props = WorkFlowPresentationHandler::getHtmlTagProps($code, "!DOCTYPE"); $html_props = WorkFlowPresentationHandler::getHtmlTagProps($code, "html"); $head_props = WorkFlowPresentationHandler::getHtmlTagProps($code, "head", array("get_inline_code" => true)); $body_props = WorkFlowPresentationHandler::getHtmlTagProps($code, "body", array("get_inline_code" => true)); $code_exists = !empty(trim($code)); if ($code_exists && !$html_props["inline_code"] && !$head_props["inline_code"] && !$body_props["inline_code"]) $body_props["inline_code"] = $code; $is_code_valid = !$code_exists || $html_props["inline_code"] || $html_props["html_attributes"] || $head_props["inline_code"] || $head_props["html_attributes"] || $body_props["inline_code"] || $body_props["html_attributes"]; $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, null, null, null, null, null, $presentation_brokers); $main_content .= CMSPresentationLayerUIHandler::getChoosePresentationIncludeFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $presentation_brokers); $common_webroot_path = $EVC->getWebrootPath($EVC->getCommonProjectName()); $ui_menu_widgets_html = WorkFlowPresentationHandler::getUIEditorWidgetsHtml($common_webroot_path, $project_common_url_prefix, $webroot_cache_folder_path, $webroot_cache_folder_url); $ui_menu_widgets_html .= WorkFlowPresentationHandler::getExtraUIEditorWidgetsHtml($common_webroot_path, $EVC->getViewsPath() . "presentation/common_editor_widget/", $project_url_prefix . "widget/", $webroot_cache_folder_path, $webroot_cache_folder_url); $ui_menu_widgets_html .= WorkFlowPresentationHandler::getUserUIEditorWidgetsHtml($common_webroot_path, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $template_region_block_html_editor_ui_menu_widgets_html = $ui_menu_widgets_html; $ui_menu_widgets_html .= WorkFlowPresentationHandler::getExtraUIEditorWidgetsHtml($common_webroot_path, $EVC->getViewsPath() . "presentation/view_editor_widget/", $project_url_prefix . "widget/", $webroot_cache_folder_path, $webroot_cache_folder_url); $ui_menu_widgets_html .= WorkFlowPresentationHandler::getExtraUIEditorWidgetsHtml($common_webroot_path, $EVC->getViewsPath() . "presentation/template_editor_widget/", $project_url_prefix . "widget/", $webroot_cache_folder_path, $webroot_cache_folder_url); $main_content .= CMSPresentationLayerUIHandler::getTemplateRegionBlockHtmlEditorPopupHtml($template_region_block_html_editor_ui_menu_widgets_html); $main_content .= '
 	<div class="template_obj with_top_bar_tab inactive">
 		<ul class="tabs tabs_transparent tabs_right tabs_icons">
-			<li id="code_editor_layout_tab" title="Code Layout Editor"><a href="#code_editor_layout" onclick="updateCodeEditorLayoutFromMainTab(this);"><i class="icon code_editor_layout_tab"></i> Code Layout Editor</a></li>
-			<li id="code_editor_body_tab" title="Visual Editor"><a href="#code_editor_body"><i class="icon code_editor_body_tab"></i> Visual Editor</a></li>
-			<li id="preview_tab" title="Preview"><a href="#preview" onClick="onClickPreviewTab(this);return false;"><i class="icon preview_tab"></i> Preview</a></li>
+			<li id="code_editor_layout_tab" title="Code Layout Editor"><a href="#code_editor_layout" onclick="updateCodeEditorLayoutFromMainTab(this);"><i class="icon code_editor_layout_tab"></i> Default Content Editor</a></li>
+			<li id="code_editor_body_tab" title="Visual Editor"><a href="#code_editor_body"><i class="icon code_editor_body_tab"></i> Structure Editor</a></li>
 		</ul>
 		
 		<script>
@@ -118,7 +122,7 @@ var template_preview_html_url = \'' . $template_preview_html_url . '\';
 			' . CMSPresentationLayerUIHandler::getTabContentTemplateLayoutHtml($user_global_variables_file_path, $user_beans_folder_path, $PEVC, $UserAuthenticationHandler, $bean_name, $bean_file_name, $iframe_url, $edit_simple_template_layout_url, $choose_bean_layer_files_from_file_manager_url, $get_db_data_url, $create_page_presentation_uis_diagram_block_url, "iframeModulesBlocksToolbarTree") . '
 		</div>
 		
-		<div id="preview"><iframe orig_src="' . $template_preview_html_url . '"></iframe></div>
+		<div id="preview" class="myfancypopup"><iframe orig_src="' . $template_preview_html_url . '"></iframe></div>
 		
 		<div class="regions_blocks_includes_settings_overlay"></div>
 		<div class="code_editor_settings regions_blocks_includes_settings collapsed" id="code_editor_settings">

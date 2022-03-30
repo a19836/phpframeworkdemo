@@ -26,7 +26,7 @@
 .file_class_obj > .name {
 	width:210px;
 	position:fixed;
-	top:7px;
+	top:5px;
 	left:75px;
 	z-index:2;
 }
@@ -36,7 +36,7 @@
 .file_class_obj > .name input {
 	width:200px;
 	border:1px solid #ccc;
-	color:#000;
+	background:transparent;
 }
 .file_class_obj .abstract {
 	width:100%;

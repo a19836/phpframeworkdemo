@@ -136,9 +136,9 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 		' . (!$view_file_exists ? '<li id="add_view_tab" title="Add View"><a href="#view" onClick="onClickNewViewTab(this, \'' . $add_view_file_url . '\');return false;"><i class="icon add"></i><i class="icon view_tab"></i> View</a></li>' : ''); $main_content .= '
 	<div class="entity_obj with_top_bar_tab ' . ($project_with_auto_view ? "project_with_auto_view" . ($view_file_exists ? " view_file_exists" : "") : "") . '">
 		<ul class="tabs tabs_transparent tabs_right tabs_icons">
-			<li id="visual_editor_tab" title="Visual UI"><a href="#code" onClick="onClickLayoutEditorUIVisualTab(this);return false;"><i class="icon visual_editor_tab"></i> Visual</a></li>
-			<li id="code_editor_tab" title="Code"><a href="#code" onClick="onClickLayoutEditorUICodeTab(this);return false;"><i class="icon code_editor_tab"></i> Code</a></li>
-			<li id="tasks_flow_tab" title="Workflow"><a href="#ui" onClick="onClickLayoutEditorUITaskWorkflowTab(this);return false;"><i class="icon tasks_flow_tab"></i> Workflow</a></li>
+			<li id="visual_editor_tab" title="Visual UI"><a href="#code" onClick="onClickLayoutEditorUIVisualTab(this);return false;"><i class="icon visual_editor_tab"></i> Structure Editor</a></li>
+			<li id="code_editor_tab" title="Code"><a href="#code" onClick="onClickLayoutEditorUICodeTab(this);return false;"><i class="icon code_editor_tab"></i> Code Editor</a></li>
+			<li id="tasks_flow_tab" title="Workflow"><a href="#ui" onClick="onClickLayoutEditorUITaskWorkflowTab(this);return false;"><i class="icon tasks_flow_tab"></i> Workflow Editor</a></li>
 			' . $view_file_tab . '
 		</ul>
 		

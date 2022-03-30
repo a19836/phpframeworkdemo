@@ -365,10 +365,10 @@ if ($PEVC) {
 	<?php
 	echo '	<div id="ui">' . WorkFlowPresentationHandler::getTaskFlowContentHtml($WorkFlowUIHandler, array(
 		"save_func" => "saveModuleFormSettings", 
-		"generate_code_from_tasks_flow_label" => "Generate Groups From Tasks' Flow", 
+		"generate_code_from_tasks_flow_label" => "Generate Groups from Diagram", 
 		"generate_code_from_tasks_flow_func" => "generateGroupsFromTasksFlow", 
+		"generate_tasks_flow_from_code_label" => "Generate Diagram from Groups",
 		"generate_tasks_flow_from_code_func" => "generateTasksFlowFromGroups", 
-		"generate_tasks_flow_from_code_label" => "Update Tasks' Flow from Groups"
 	)) . '</div>';
 	
 	echo CommonModuleSettingsUI::getCssFieldsHtml();

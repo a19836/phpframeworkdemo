@@ -11,5 +11,8 @@ $(function() {
 	
 	$(".hbn_obj_relationships .advanced_query_settings").click();
 	//$(".hbn_obj_relationships .advanced_query_settings").html("Show More Settings");
+	
+	//init main settings panel
+	initMainSettingsPanel();
 });
 

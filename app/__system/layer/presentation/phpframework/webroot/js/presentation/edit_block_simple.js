@@ -20,6 +20,7 @@ $(function () {
 	//init trees
 	choosePageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
 	});
@@ -27,6 +28,7 @@ $(function () {
 	
 	chooseImageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
 	});

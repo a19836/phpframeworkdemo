@@ -20,6 +20,7 @@ $(function () {
 	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
 	});
@@ -27,6 +28,7 @@ $(function () {
 	
 	chooseMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
 	});
@@ -34,6 +36,7 @@ $(function () {
 	
 	chooseFunctionFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
 	});
@@ -41,6 +44,7 @@ $(function () {
 	
 	chooseFileFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 	});
@@ -48,6 +52,7 @@ $(function () {
 	
 	chooseBusinessLogicFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 	});
@@ -55,6 +60,7 @@ $(function () {
 	
 	chooseQueryFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeParametersAndResultMapsFromTree,
 	});
@@ -62,6 +68,7 @@ $(function () {
 	
 	chooseHibernateObjectFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeQueriesAndMapsAndOtherHbnNodesFromTree,
 	});
@@ -69,6 +76,7 @@ $(function () {
 	
 	chooseHibernateObjectMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeParametersAndResultMapsFromTree,
 	});
@@ -76,6 +84,7 @@ $(function () {
 	
 	choosePresentationFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
 	});
@@ -83,6 +92,7 @@ $(function () {
 	
 	chooseBlockFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotBlocksFromTree,
 	});
@@ -90,6 +100,7 @@ $(function () {
 	
 	choosePageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
 	});
@@ -97,6 +108,7 @@ $(function () {
 	
 	chooseImageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
 	});
@@ -135,11 +147,14 @@ $(function () {
 				initAutoSave("#code > .code_menu li.save a");
 				
 				//add auto_save and auto_convert options to layout ui editor
-				var lue_auto_save_icon = $("#code > .code_menu li.auto_save_convert_settings").first().clone().addClass("option");
-				$("#code > .layout_ui_editor > .options .full-screen").before(lue_auto_save_icon);
+				var sub_menu = $('<i class="icon sub_menu option"><ul></ul></i>');
+				$("#code > .layout_ui_editor > .options .full-screen").before(sub_menu);
+				var lue_auto_save_icon = $("#code > .code_menu li.auto_save_activation").first().clone().removeClass("hidden");
+				var lue_auto_convert_icon = $("#code > .code_menu li.auto_convert_activation").first().clone().removeClass("hidden");
+				sub_menu.children("ul").append(lue_auto_save_icon).append(lue_auto_convert_icon);
 				
 				if (!luie.find(" > .tabs > .tab.tab-active").is(".view-layout"))
-					lue_auto_save_icon.addClass("hidden"); //bc the LayoutUIEditor is not inited at start, we need to hide this new icon. The others are already hidden by default.
+					sub_menu.addClass("hidden"); //bc the LayoutUIEditor is not inited at start, we need to hide this new icon. The others are already hidden by default.
 			}
 		});
 	}

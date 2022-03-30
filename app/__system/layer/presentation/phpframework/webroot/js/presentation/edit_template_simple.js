@@ -1,4 +1,5 @@
 var saved_template_obj_id = null;
+var MyFancyPopupTemplatePreview = new MyFancyPopupClass();
 
 $(function () {
 	$(window).bind('beforeunload', function () {
@@ -19,6 +20,7 @@ $(function () {
 	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
 	});
@@ -26,6 +28,7 @@ $(function () {
 	
 	chooseMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
 	});
@@ -33,6 +36,7 @@ $(function () {
 	
 	chooseFunctionFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
 	});
@@ -40,6 +44,7 @@ $(function () {
 	
 	chooseFileFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 	});
@@ -47,6 +52,7 @@ $(function () {
 	
 	choosePresentationFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
 	});
@@ -54,6 +60,7 @@ $(function () {
 	
 	choosePageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
 	});
@@ -61,6 +68,7 @@ $(function () {
 	
 	chooseImageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
 	});
@@ -136,9 +144,23 @@ function onToggleFullScreen(in_full_screen) {
 	}, 500);
 }
 
-function onClickPreviewTab(elm) {
-	elm = $(elm);
+function preview() {
+	//prepare popup
+	preparePreviewPopup();
 	
+	//get popup
+	var popup= $(".template_obj > #preview");
+	
+	//open popup
+	MyFancyPopupTemplatePreview.init({
+		elementToShow: popup,
+		parentElement: document,
+	});
+	
+	MyFancyPopupTemplatePreview.showPopup();
+}
+
+function preparePreviewPopup() {
 	var code = getTemplateCodeForSaving();
 	MyFancyPopup.hidePopup();
 	
@@ -185,7 +207,7 @@ function onClickPreviewTab(elm) {
 				});
 		},
 		error: function (jqXHR, textStatus, errorThrown) {
-			var msg = "Couldn't preview template. Error in onClickPreviewTab() function. Please try again...";
+			var msg = "Couldn't preview template. Error in preparePreviewPopup() function. Please try again...";
 			alert(msg);
 			
 			if (jqXHR.responseText)

@@ -864,6 +864,85 @@
   	display:block !important;
 }
 
+/** RELATIONSHIPS RELS: SETTINGS **/
+.relationship .settings {
+	height:120px;
+	margin:0 auto;
+	padding:40px 10px 10px;
+	position:fixed;
+	left:0;
+	right:0;
+	bottom:0;
+	overflow:auto;
+	box-sizing:border-box;
+	z-index:1050;
+	background:#fff;
+}
+.relationship .settings:not(.resizing) {
+	transition:.5s all;
+}
+.relationship .settings.collapsed {
+	height:25px !important;
+	padding-top:20px;
+	overflow:hidden;
+}
+
+.relationship .settings .settings_header {
+	height:30px;
+	line-height:25px;
+	margin-top:-40px;
+	padding:5px;
+	position:fixed;
+	left:0;
+	right:0;
+	box-sizing:border-box;
+	overflow:hidden;
+	cursor:ns-resize;
+	z-index:1051;
+	
+	/*font-weight:bold;*/
+	color:var(--main-template-color);
+	background:url(../../img/back_frame_open_close_horizontal_red.gif) repeat-x var(--main-template-bg);
+	/*background: -moz-linear-gradient(top, #eee 50%, #f7f7f7 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #f7f7f7));
+	background: -webkit-linear-gradient(top, #eee 50%, #f7f7f7 100%);
+	background: -o-linear-gradient(top, #eee 50%, #f7f7f7 100%);
+	background: -ms-linear-gradient(top, #eee 50%, #f7f7f7 100%);
+	background: linear-gradient(to bottom, #eee 50%, #f7f7f7 100%);
+	border-top:1px solid #eee;*/
+}
+.relationship .settings.collapsed .settings_header {
+	margin-top:-20px;
+	border:0;
+		
+	/*background: -moz-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(50%, #eee), color-stop(100%, #ffffff73));
+	background: -webkit-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	background: -o-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	background: -ms-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
+	background: linear-gradient(to top, #eee 50%, #ffffff73 100%);*/
+}
+.relationship .settings .settings_header .icon {
+	width:34px;
+	height:20px;
+	position:absolute;
+	top:0;
+	left:45%;
+	left:calc(50% - 17px);
+	text-indent:-9999px;
+	cursor:pointer;
+	opacity:1;
+}
+.relationship .settings .settings_header .icon.maximize {
+	background:url(../../img/tool_frame_top.gif) no-repeat;
+}
+.relationship .settings .settings_header .icon.minimize {
+	background:url(../../img/tool_frame_bottom.gif) no-repeat;
+}
+.relationship .settings .settings_header .icon::before {
+    display:none;
+}
+
 /* POPUP */
 .choose_table_or_attribute {
 	width:340px;

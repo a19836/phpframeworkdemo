@@ -33,11 +33,11 @@ a:hover {
 }
 
 input, select, textarea {
-	font-family:verdana,arial,courier;
+	font-family:inherit;
 }
 
 label {
-	font-family:verdana,arial,courier;
+	font-family:inherit;
 }
 
 iframe {

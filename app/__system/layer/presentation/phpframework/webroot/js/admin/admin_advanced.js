@@ -37,6 +37,13 @@ $(function() {
 	    	}
 	});
 	
+	//prepare filter by layout field
+	var select = $(".filter_by_layout select");
+	var temp_elm = $("<span>" + select.find("option:selected").text() + "</span>");
+	$("body").append(temp_elm);
+	select.width(temp_elm.width() + 25);
+	temp_elm.remove();
+	
 	//prepare hide_panel
 	$("#hide_panel").draggable({
 		axis: "x",
@@ -120,7 +127,10 @@ $(function() {
 		file_tree_ul.children("li.main_tree_node").each(function(idx, item) {
 			item = $(item);
 			item.addClass("hide_tree_item");
-				
+			
+			var main_tree_node_label = item.find(" > a > label").text();
+			item.prepend('<div class="title">' + main_tree_node_label + '</div>');
+			
 			var main_ul = item.children("ul");
 			var children = main_ul.children("li");
 			
@@ -173,11 +183,15 @@ $(function() {
 				if (sub_children.length == 0)
 					mytree.refreshNodeChilds(child, {ajax_callback_last: function(ul, data) {
 						//if path_to_filter exists and is main_node_presentation, the submenu is already inited with the right project node.
-						if (!child.is(".main_node_presentation") || !path_to_filter_exists)
+						if (!child.is(".main_node_presentation") || !path_to_filter_exists) {
 							iniSubMenu(child);
+							//console.log(child[0]);
+						}
 					}});
-				else if (!child.is(".main_node_presentation") || !path_to_filter_exists) //if path_to_filter exists and is main_node_presentation, the submenu is already inited with the right project node.
+				else if (!child.is(".main_node_presentation") || !path_to_filter_exists) { //if path_to_filter exists and is main_node_presentation, the submenu is already inited with the right project node.
 					iniSubMenu(child);
+					//console.log(child[0]);
+				}
 			}
 			else 
 				item.addClass("with_sub_groups");
@@ -375,11 +389,8 @@ function iniSubMenu(tree_item_li) {
 		//console.log(main_tree_node[0]);
 		//console.log(tab_link[0]);
 		
-		var sub_menu_icon = $('<span class="icon sub_menu" title="Open context menu"></span>');
-		
-		tab_link.append(sub_menu_icon);
-		
-		sub_menu_icon.click(function(e) {
+		var html = '<span class="icon sub_menu" title="Open context menu"></span>';
+		var func = function(e) {
 			e.preventDefault();
 			e.stopPropagation();
 			
@@ -392,7 +403,15 @@ function iniSubMenu(tree_item_li) {
 			}
 			
 			return false;
-		});
+		};
+		
+		var sub_menu_icon_1 = $(html);
+		tab_link.parent().append(sub_menu_icon_1);
+		sub_menu_icon_1.click(func);
+		
+		var sub_menu_icon_2 = $(html);
+		main_tree_node.children(".title").append(sub_menu_icon_2);
+		sub_menu_icon_2.click(func);
 		
 		/*if (tree_item_li.find(" > a > i").is(".project, .project_common")) {
 			var level_menu = $('<li class="level">'
@@ -493,6 +512,7 @@ function toggleThemeLayout(elm) {
 	MyJSLib.CookieHandler.setCookie('theme_layout', theme_layout, 0, "/");
 	left_panel.toggleClass("dark_theme").toggleClass("light_theme");
 	$("#menu_panel").toggleClass("dark_theme").toggleClass("light_theme");
+	$("body").removeClass(theme_layout == "dark_theme" ? "light_theme" : "dark_theme").addClass(theme_layout);
 	
 	$(elm).children("span").html(theme_layout == "dark_theme" ? "Show light theme" : "Show dark theme");
 	
@@ -521,6 +541,7 @@ function updateThemeLayoutInIframes(iframes, theme_layout) {
 }
 
 function filterByLayout(elm) {
+	$(elm).css("width", "");
 	var proj_id = $(elm).val();
 	var url = ("" + document.location);
 	url = url.replace(/(&?)filter_by_layout=[^&]*/g, "");

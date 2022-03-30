@@ -19,6 +19,7 @@ $(function () {
 	//init trees
 	includesTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeHbnObjectFromTree,
 	});
@@ -26,6 +27,7 @@ $(function () {
 	
 	daoObjsTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 	});
 	daoObjsTree.init("choose_dao_object_from_file_manager");
@@ -1970,6 +1972,89 @@ function toggleParameterAndResultFields(elm, prefix_class) {
 			data_access_obj.addClass("with_parameter_and_result_fields");
 		}
 	});
+}
+
+function toggleMainSettingsPanel(elm, prefix_class) {
+	elm = $(elm);
+	var selector = (prefix_class ? prefix_class : "") + " .data_access_obj";
+	var data_access_obj = $(selector);
+	var settings = data_access_obj.find(".relationship").find(".settings");
+	
+	settings.toggleClass("collapsed");
+	
+	if (elm.parent().hasClass("settings_header"))
+		elm.toggleClass("maximize").toggleClass("minimize");
+	
+	$(".top_bar header ul li.toggle_main_settings > a.toggle_icon").toggleClass("active");
+}
+
+function initMainSettingsPanel() {
+	var settings = $(".data_access_obj .relationship .settings");
+	
+	settings.draggable({
+		axis: "y",
+		appendTo: 'body',
+		cursor: 'move',
+          tolerance: 'pointer',
+          handle: ' > .settings_header',
+    		cancel: '.icon', //this means that is inside of .settings_header
+		start: function(event, ui) {
+			settings.addClass("resizing").removeClass("collapsed");
+			settings.find(" > .settings_header .icon").addClass("minimize").removeClass("maximize");
+			$(".top_bar header ul li.toggle_main_settings > a.toggle_icon").addClass("active");
+			
+			return true;
+		},
+		drag: function(event, ui) {
+			var h = $(window).height() - (ui.offset.top - $(window).scrollTop());
+			
+			settings.css({
+				height: h + "px",
+				top: "", 
+				left: "", 
+				bottom: ""
+			});
+		},
+		stop: function(event, ui) {
+			var top = parseInt(ui.helper.css("top"));//Do not use ui.offset.top bc if the window has scrollbar, it will get the wrong top for the calculations inside of resizeSettingsPanel
+			resizeSettingsPanel(settings, top);
+		},
+	});
+}
+
+//To be used in the toggleFullScreen function
+function onToggleFullScreen(in_full_screen) {
+	setTimeout(function() {
+		var settings = $(".data_access_obj .relationship .settings");
+		var top = parseInt(settings.css("top"));
+		
+		resizeSettingsPanel(settings, top);
+	}, 500);
+}
+
+function resizeSettingsPanel(settings, top) {
+	var icon = settings.find(" > .settings_header .icon");
+	var wh = $(window).height();
+	var height = 0;
+	
+	settings.removeClass("resizing");
+	settings.css({top: "", left: "", bottom: ""}); //remove top, left and bottom from style attribute in #settings_header
+	
+	if (top < 40) { //40 is the size of #top_bar (40px)
+		height = wh - 40;
+		
+		settings.css("height", height + "px");
+	}
+	else if (top > wh - 25) { //25 is the size of #settings .settings_header when collapsed
+		icon.addClass("maximize").removeClass("minimize");
+		$(".top_bar header ul li.toggle_main_settings > a.toggle_icon").removeClass("active");
+		settings.addClass("collapsed");
+		
+		settings.css("height", ""); //remove height from style attribute in #settings
+	}
+	else {
+		settings.css("height", (wh - top) + "px");
+	}
 }
 
 function toggleQuery(elm) {

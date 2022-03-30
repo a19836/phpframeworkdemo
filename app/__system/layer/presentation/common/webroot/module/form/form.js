@@ -15,11 +15,11 @@ $(function () {
 	});
 	
 	//prepare top_bar
-	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu").find("li.save, li.auto_save_convert_settings, li.tasks_flow_full_screen").remove();
+	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu").find("li.save, li.auto_save_activation, li.auto_convert_activation, li.tasks_flow_full_screen").remove();
 	
 	//change the toggle Auto save handler bc the edit_query task
 	if (typeof onToggleQueryAutoSave == "function")
-		$(".top_bar li.auto_save_convert_settings li.auto_save_activation input").attr("onChange", "").unbind("change").bind("change", function() {
+		$(".top_bar li.auto_save_activation input").attr("onChange", "").unbind("change").bind("change", function() {
 			toggleAutoSaveCheckbox(this, onToggleQueryAutoSave);
 		});
 	
@@ -43,6 +43,7 @@ $(function () {
 	/* This is already executed in the common/settings.js, so we cannot executed again.
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
 	});
@@ -50,6 +51,7 @@ $(function () {
 	
 	chooseBusinessLogicFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 	});
@@ -57,6 +59,7 @@ $(function () {
 	
 	chooseQueryFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeParametersAndResultMapsFromTree,
 	});
@@ -64,6 +67,7 @@ $(function () {
 	
 	chooseHibernateObjectMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeParametersAndResultMapsFromTree,
 	});
@@ -71,6 +75,7 @@ $(function () {
 	
 	chooseBlockFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotBlocksFromTree,
 	});

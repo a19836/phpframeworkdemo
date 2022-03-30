@@ -223,8 +223,16 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC
 			<span class="icon add_variable search_variable" onclick="onPresentationProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Search Variable</span>
 			<span class="icon delete" onClick="removeTemplateParam(this);">Remove</span>
 			<div class="template_param_text' . (strpos($v67db1bd535, "\n") === false ? ' hidden' : '') . '"><textarea onBlur="onBlurTemplateParam(this)">' . htmlspecialchars($v956913c90f, ENT_NOQUOTES) . '</textarea></div>
-		</div>'; } public static function getTabContentTemplateLayoutHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v338a2c14a6, $pfc22cc08, $pf7b73b3a, $pe6619ae3, $pd0054995, $v9106c07f80) { $pf8ed4912 .= '
-		<div class="iframe_toolbar">
+		</div>'; } public static function getTabContentTemplateLayoutIframeToolbarContentsHtml() { $pf8ed4912 = '
+			<i class="icon desktop active" title="Show in Desktop" onClick="onChangeTemplateLayoutScreenToDesktop(this)"></i>
+			<i class="icon mobile" title="Show in Mobile" onClick="onChangeTemplateLayoutScreenToMobile(this)"></i>
+			<input class="width" title="Screen Width" value="320" maxlength="4" onKeyUp="onChangeTemplateLayoutScreenSize(this)">
+			<span class="px">px</span>
+			<span class="x"> x </span>
+			<input class="height" title="Screen Height" value="568" maxlength="4" onKeyUp="onChangeTemplateLayoutScreenSize(this)">
+			<span class="px">px</span>
+			
+			<!--
 			Screen size: 
 			<select class="type" onChange="onChangeTemplateLayoutScreenSize(this)">
 				<option>auto</option>
@@ -238,7 +246,8 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC
 			</select>
 			<span class="dimension">
 				<input class="width" name="width" placeHolder="Width" onKeyUp="onChangeTemplateLayoutScreenSize(this)" />px <input class="height" name="height" placeHolder="Height" onKeyUp="onChangeTemplateLayoutScreenSize(this)" />px
-			</span>
+			</span-->'; return $pf8ed4912; } public static function getTabContentTemplateLayoutHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v338a2c14a6, $pfc22cc08, $pf7b73b3a, $pe6619ae3, $pd0054995, $v9106c07f80) { $pf8ed4912 = '<div class="iframe_toolbar desktop">
+			' . self::getTabContentTemplateLayoutIframeToolbarContentsHtml() . '
 			
 			<a class="icon view_template_samples" href="javascript:void(0)" onClick="openTemplateSamples()" title="View Template Samples">View Template Samples</a>
 		</div>

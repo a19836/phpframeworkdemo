@@ -228,8 +228,8 @@ ProgrammingTaskUtil.on_programming_task_choose_file_path_callback = onIncludeFil
 	echo '
 	<div class="module_workflow_content">
 		<ul class="tabs tabs_transparent tabs_right">
-			<li id="code_editor_tab"><a href="#code" onClick="onClickCodeEditorTab(this);return false;">Code</a></li>
-			<li id="tasks_flow_tab"><a href="#ui" onClick="onClickTaskWorkflowTab(this);return false;">Workflow</a></li>
+			<li id="code_editor_tab"><a href="#code" onClick="onClickCodeEditorTab(this);return false;">Code Editor</a></li>
+			<li id="tasks_flow_tab"><a href="#ui" onClick="onClickTaskWorkflowTab(this);return false;">Workflow Editor</a></li>
 			<li id="external_vars_tab"><a href="#external_vars">External Vars</a></li>
 		</ul>
 	

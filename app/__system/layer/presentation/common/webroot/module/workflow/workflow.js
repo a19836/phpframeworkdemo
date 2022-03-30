@@ -30,6 +30,7 @@ $(function () {
 	//prepare trees file managers
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
 	});
@@ -39,6 +40,7 @@ $(function () {
 	if (!chooseMethodFromFileManagerTree) {
 		chooseMethodFromFileManagerTree = new MyTree({
 			multiple_selection : false,
+			toggle_chils_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
 			ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
 		});
@@ -49,6 +51,7 @@ $(function () {
 	if (!chooseFunctionFromFileManagerTree) {
 		chooseFunctionFromFileManagerTree = new MyTree({
 			multiple_selection : false,
+			toggle_chils_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
 			ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
 		});
@@ -59,6 +62,7 @@ $(function () {
 	if (!chooseFileFromFileManagerTree) {
 		chooseFileFromFileManagerTree = new MyTree({
 			multiple_selection : false,
+			toggle_chils_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
 			ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 		});
@@ -67,6 +71,7 @@ $(function () {
 	
 	chooseBusinessLogicFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 	});
@@ -74,6 +79,7 @@ $(function () {
 	
 	chooseQueryFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeParametersAndResultMapsFromTree,
 	});
@@ -81,6 +87,7 @@ $(function () {
 	
 	chooseHibernateObjectFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeQueriesAndMapsAndOtherHbnNodesFromTree,
 	});
@@ -88,6 +95,7 @@ $(function () {
 	
 	chooseHibernateObjectMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeParametersAndResultMapsFromTree,
 	});
@@ -95,6 +103,7 @@ $(function () {
 	
 	choosePresentationFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
 	});
@@ -102,6 +111,7 @@ $(function () {
 	
 	chooseBlockFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotBlocksFromTree,
 	});
@@ -121,8 +131,8 @@ $(function () {
 	}
 	
 	//add auto_save and auto_convert options
-	$("#code .code_menu ul li.auto_save_convert_settings ul .auto_save_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_convert_settings ul .auto_save_activation input").attr("onChange", "toggleAutoSaveCheckbox(this, onToggleModuleWorkflowAutoSave)");
-	$("#code .code_menu ul li.auto_save_convert_settings ul .auto_convert_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_convert_settings ul .auto_convert_activation input").attr("onChange", "toggleAutoConvertCheckbox(this, onToggleModuleWorkflowAutoConvert)");
+	$("#code .code_menu ul li.auto_save_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_activation input").attr("onChange", "toggleAutoSaveCheckbox(this, onToggleModuleWorkflowAutoSave)");
+	$("#code .code_menu ul li.auto_convert_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation input").attr("onChange", "toggleAutoConvertCheckbox(this, onToggleModuleWorkflowAutoConvert)");
 	
 	if (auto_save)
 		enableAutoSave(onToggleModuleWorkflowAutoSave);
@@ -131,9 +141,10 @@ $(function () {
 	
 	enableAutoConvert(onToggleModuleWorkflowAutoConvert);
 	
-	$(".top_bar li.auto_save_convert_settings").remove(); //remove auto_save_menu bc we will add another one below...
-	var auto_save_icon = $("#code > .code_menu li.auto_save_convert_settings").clone();
-	$(".top_bar li.show_advanced_ui").after(auto_save_icon);
+	$(".top_bar li.auto_save_activation, .top_bar li.auto_convert_activation").remove(); //remove auto_save_menu bc we will add another one below...
+	var auto_save_icon = $("#code > .code_menu li.auto_save_activation").clone();
+	var auto_convert_icon = $("#code > .code_menu li.auto_convert_activation").clone();
+	$(".top_bar li.show_advanced_ui").after(auto_save_icon).after(auto_convert_icon);
 	
 	//load workflow
 	onLoadTaskFlowChartAndCodeEditor();
@@ -158,7 +169,7 @@ $(function () {
 function onToggleModuleWorkflowAutoSave() {
 	onTogglePHPCodeAutoSave();
 	
-	var inputs = $(".top_bar li.auto_save_convert_settings ul li.auto_save_activation input");
+	var inputs = $(".top_bar li.auto_save_activation input");
 	
 	if (auto_save)
 		inputs.attr("checked", "checked").prop("checked", true);
@@ -169,7 +180,7 @@ function onToggleModuleWorkflowAutoSave() {
 function onToggleModuleWorkflowAutoConvert() {
 	onTogglePHPCodeAutoConvert();
 	
-	var inputs = $(".top_bar li.auto_save_convert_settings ul li.auto_convert_activation input");
+	var inputs = $(".top_bar li.auto_convert_activation input");
 	
 	if (auto_convert)
 		inputs.attr("checked", "checked").prop("checked", true);

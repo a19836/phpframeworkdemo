@@ -122,6 +122,7 @@ var get_layout_type_permissions_url = \'' . $project_url_prefix . 'user/get_layo
 					<script>				
 						var layerFromFileManagerTree_' . $pb76ee81a . '_' . $v43974ff697 . ' = new MyTree({
 							multiple_selection : true,
+							toggle_chils_on_click : true,
 							ajax_callback_before : prepareLayerNodes1,
 							ajax_callback_after : ' . $pf3f2367a . ',
 							on_select_callback : toggleFileTreeCheckbox,

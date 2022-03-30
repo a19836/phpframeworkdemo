@@ -24,6 +24,9 @@ $(function() {
 	
 	relationship.css("display", "block");
 	
+	//init main settings panel
+	initMainSettingsPanel();
+	
 	//load sql
 	var a = $(".query_tabs .query_sql_tab a").first();
 	a.attr("not_create_sql_from_ui", 1);

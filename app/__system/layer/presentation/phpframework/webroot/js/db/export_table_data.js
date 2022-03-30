@@ -3,7 +3,7 @@ $(function() {
 	
 	disableAutoSave(onToggleAutoSave);
 	
-	$(".top_bar ul .auto_save_convert_settings").remove();
+	$(".top_bar ul .auto_save_activation").remove();
 });
 
 function exportTable() {

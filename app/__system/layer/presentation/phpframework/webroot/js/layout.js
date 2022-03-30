@@ -21,35 +21,19 @@ if (typeof _orgAjax == "undefined") { //this avoids the infinit loop if this fil
 function addAutoSaveMenu(selector, callback) {
 	var elm = $(selector);
 	var p = elm.parent();
-	var item = p.children(".auto_save_convert_settings");
+	var item = p.children(".auto_save_activation");
 	
 	if (!item[0]) {
 		if (!callback)
 			callback = "onToggleAutoSave";
 		
-		item = $('<li class="auto_save_convert_settings" title="Auto Save Settings">'
-					+ '<a onclick="javascript:void(0)">'
-						+ '<i class="icon auto_save_convert_settings"></i> Auto Save Settings'
-					+ '</a>'
-					+ '<ul>'
-						+ '<li class="auto_save_activation" title="Is Auto Save Active">'
-							+ 'Auto Save On: '
-							+ '<input type="checkbox" onChange="toggleAutoSaveCheckbox(this, ' + callback + ')" value="1">'
-						+ '</li>'
-					+ '</ul>'
-				+ '</li>');
-		
-		elm.before(item);
-	}
-	else if (item.find(".auto_save_activation").length == 0) {
-		var html = $('<li class="auto_save_activation" title="Is Auto Save Active">'
+		item = $('<li class="auto_save_activation" title="Is Auto Save Active">'
+					+ '<i class="icon auto_save_activation"></i>'
 					+ 'Auto Save On: '
 					+ '<input type="checkbox" onChange="toggleAutoSaveCheckbox(this, ' + callback + ')" value="1">'
 				+ '</li>');
 		
-		item.children("ul").prepend(html);
-		item.attr("title", "Auto Save & Convert Settings");
-		item.children("a").html('<i class="icon auto_save_convert_settings"></i> Auto Save & Convert Settings');
+		elm.before(item);
 	}
 	
 	return item;
@@ -96,7 +80,7 @@ function disableAutoSave(callback) {
 		callback();
 }
 function onToggleAutoSave() {
-	var inputs = $(".top_bar li.auto_save_convert_settings ul .auto_save_activation input");
+	var inputs = $(".top_bar li.auto_save_activation input");
 	
 	if (auto_save) {
 		inputs.attr("checked", "checked").prop("checked", true);
@@ -106,7 +90,7 @@ function onToggleAutoSave() {
 	}
 }
 function onToggleWorkflowAutoSave() {
-	var inputs = $(".taskflowchart .workflow_menu ul.dropdown li.auto_save_convert_settings ul .auto_save_activation input");
+	var inputs = $(".taskflowchart .workflow_menu ul.dropdown li.auto_save_activation input");
 	
 	if (auto_save) {
 		jsPlumbWorkFlow.jsPlumbTaskFile.auto_save = false; //should be false bc the saveObj calls the getCodeForSaving method which already saves the workflow by default, and we don't need 2 saves at the same time.
@@ -141,35 +125,19 @@ function prepareAutoSaveVars() {
 function addAutoConvertMenu(selector, callback) {
 	var elm = $(selector);
 	var p = elm.parent();
-	var item = p.children(".auto_save_convert_settings");
+	var item = p.children(".auto_convert_activation");
 	
 	if (!item[0]) {
 		if (!callback)
 			callback = "onToggleAutoConvert";
 		
-		item = $('<li class="auto_save_convert_settings" title="Auto Convert Settings">'
-					+ '<a onclick="javascript:void(0)">'
-						+ '<i class="icon auto_save_convert_settings"></i> Auto Convert Settings'
-					+ '</a>'
-					+ '<ul>'
-						+ '<li class="auto_convert_activation" title="Is Auto Convert Active">'
-							+ 'Auto Convert On: '
-							+ '<input type="checkbox" onchange="toggleAutoConvertCheckbox(this, ' + callback + ')" value="1">'
-						+ '</li>'
-					+ '</ul>'
-				+ '</li>');
-		
-		elm.before(item);
-	}
-	else if (item.find(".auto_convert_activation").length == 0) {
-		var html = $('<li class="auto_convert_activation" title="Is Auto Convert Active">'
+		item = $('<li class="auto_convert_activation" title="Is Auto Convert Active">'
+					+ '<i class="icon auto_convert_activation"></i>'
 					+ 'Auto Convert On: '
 					+ '<input type="checkbox" onchange="toggleAutoConvertCheckbox(this, ' + callback + ')" value="1">'
 				+ '</li>');
 		
-		item.children("ul").append(html);
-		item.attr("title", "Auto Save & Convert Settings");
-		item.children("a").html('<i class="icon auto_save_convert_settings"></i> Auto Save & Convert Settings');
+		elm.before(item);
 	}
 	
 	return item;
@@ -200,7 +168,7 @@ function disableAutoConvert(callback) {
 		callback();
 }
 function onToggleAutoConvert() {
-	var inputs = $(".top_bar li.auto_save_convert_settings ul .auto_convert_activation input");
+	var inputs = $(".top_bar li.auto_convert_activation input");
 	
 	if (auto_convert) {
 		inputs.attr("checked", "checked").prop("checked", true);
@@ -210,7 +178,7 @@ function onToggleAutoConvert() {
 	}
 }
 function onToggleWorkflowAutoConvert() {
-	var inputs = $(".taskflowchart .workflow_menu ul.dropdown li.auto_save_convert_settings ul .auto_convert_activation input");
+	var inputs = $(".taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation input");
 	
 	if (auto_convert) {
 		inputs.attr("checked", "checked").prop("checked", true);

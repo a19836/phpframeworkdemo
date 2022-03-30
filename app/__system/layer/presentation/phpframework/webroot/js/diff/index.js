@@ -1,5 +1,6 @@
 var mytree = new MyTree({
 	multiple_selection : true,
+	toggle_chils_on_click : true,
 	ajax_callback_before : prepareLayerNodesForDiffFiles,
 	ajax_callback_after : removeFileContentsFromTreeForVariables,
 	on_select_callback : selectLayerNode,

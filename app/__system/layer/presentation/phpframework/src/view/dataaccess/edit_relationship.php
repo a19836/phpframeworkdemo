@@ -59,13 +59,13 @@ var old_obj_type = \'' . $query_type . '\';
 				<li class="sub_menu">
 					<i class="icon sub_menu"></i>
 					<ul>
-						<li class="toggle_ids" title="Toggle Ids"><a class="toggle_icon" onClick="toggleParameterAndResultFields(this, \'.edit_relationship\')"><i class="icon toggle_ids"></i> Toggle Ids</a></li>
+						<li class="toggle_main_settings" title="Toggle Main Settings"><a class="toggle_icon" onClick="toggleMainSettingsPanel(this, \'.edit_relationship\')"><i class="icon toggle_ids"></i> Toggle Main Settings</a></li>
 						<li class="dummy_elm_to_add_auto_save_options"></li>
 					</ul>
 				</li>
 			</ul>
 		</header>
-	</div>'; if ($obj_data || !$query_id) { $main_content .= $WorkFlowQueryHandler->getChooseQueryTableOrAttributeHtml("choose_db_table_or_attribute"); $main_content .= $WorkFlowQueryHandler->getChooseDAOObjectFromFileManagerHtml("choose_dao_object_from_file_manager"); $main_content .= $WorkFlowQueryHandler->getChooseAvailableMapIdHtml("choose_map_id"); $sql_html = $WorkFlowQueryHandler->getQueriesBlockHtml(array($obj_data), true, $obj_data["name"], false); $main_content .= '
+	</div>'; if ($obj_data || !$query_id) { $main_content .= $WorkFlowQueryHandler->getChooseQueryTableOrAttributeHtml("choose_db_table_or_attribute"); $main_content .= $WorkFlowQueryHandler->getChooseDAOObjectFromFileManagerHtml("choose_dao_object_from_file_manager"); $main_content .= $WorkFlowQueryHandler->getChooseAvailableMapIdHtml("choose_map_id"); $settings = array( "encapsulate_parameter_and_result_settings" => true, ); $sql_html = $WorkFlowQueryHandler->getQueriesBlockHtml(array($obj_data), true, $obj_data["name"], false, $settings); $main_content .= '
 <div class="data_access_obj">	
 	<div class="hbn_obj_relationships">
 		<div class="relationships">

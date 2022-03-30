@@ -15,6 +15,7 @@ $(function () {
 	if (!chooseFileFromFileManagerTree) {
 		chooseFileFromFileManagerTree = new MyTree({
 			multiple_selection : false,
+			toggle_chils_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
 			ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 		});
@@ -24,6 +25,7 @@ $(function () {
 	if (!chooseMethodFromFileManagerTree) {
 		chooseMethodFromFileManagerTree = new MyTree({
 			multiple_selection : false,
+			toggle_chils_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
 			ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
 		});
@@ -33,6 +35,7 @@ $(function () {
 	if (!chooseFunctionFromFileManagerTree) {
 		chooseFunctionFromFileManagerTree = new MyTree({
 			multiple_selection : false,
+			toggle_chils_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
 			ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
 		});

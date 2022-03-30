@@ -34,6 +34,7 @@ var update_settings_from_layout_iframe_func = null;
 function createChoosePresentationIncludeFromFileManagerTree() {
 	choosePresentationIncludeFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllInvalidPresentationIncludePagesFromTree,
 	});
@@ -43,6 +44,7 @@ function createChoosePresentationIncludeFromFileManagerTree() {
 function createIframeModulesBlocksToolbarTree() {
 	iframeModulesBlocksToolbarTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : function(ul, data) {
 			removeAllThatIsNotBlocksOrModulesFromTree(ul, data, iframeModulesBlocksToolbarTree);
@@ -2791,7 +2793,7 @@ function resizeSettingsPanel(main_parent_elm, top) {
 	var settings = main_parent_elm.find(".regions_blocks_includes_settings");
 	var settings_overlay = main_parent_elm.find(".regions_blocks_includes_settings_overlay");
 	var iframe = main_parent_elm.find(".tab_content_template_layout iframe");
-	var icon = settings.children(".settings_header .icon");
+	var icon = settings.find(" > .settings_header .icon");
 	
 	var wh = $(window).height();
 	var height = 0;
@@ -2833,7 +2835,7 @@ function onLoadIframeTabContentTemplateLayout() {
 	//iframe.parent().css("height", (iframe_body.scrollHeight + 40) + 'px'); //no need to do this anymore bc the height is now fixed bc of the top bar.
 	
 	//prepare responsive size
-	onChangeTemplateLayoutScreenSize( iframe.parent().find(" > .iframe_toolbar > select")[0] );
+	onChangeTemplateLayoutScreenSize( iframe.parent().find(" > .iframe_toolbar > input")[0] );
 	
 	disableLinksAndButtonClickEvent(iframe_body);
 	initIframeModulesBlocksDroppableRegions();
@@ -3290,6 +3292,7 @@ function onClickLayoutEditorUITaskWorkflowTab(elm) {
 function initCodeLayoutUIEditor(main_obj, opts) {
 	chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : function(ul, data) {
 			removeAllThatIsNotBlocksOrModulesFromTree(ul, data, chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree);
@@ -3299,6 +3302,7 @@ function initCodeLayoutUIEditor(main_obj, opts) {
 	
 	chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : function(ul, data) {
 			removeAllThatIsNotBlocksOrModulesFromTree(ul, data, chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer);

@@ -204,6 +204,12 @@
 .icon.sub_menu::before {
 	content:"\f141";
 }
+.icon.sub_menu_vertical {
+	width:5px;
+}
+.icon.sub_menu_vertical::before {
+	content:"\f142";
+}
 
 .icon.update_automatically {
 	width:23px;
@@ -254,7 +260,7 @@
 	content:"\f5c3";
 }
 .icon.tools::before {
-	content:"\f7d9";
+	content:"\f013";
 }
 .icon.close::before {
 	content:"\f057";
@@ -299,16 +305,19 @@
 	content:"\f35a";
 	font-size:10px;
 }
-.icon.auto_save_convert_settings {
+.icon.auto_save_activation,
+  .icon.auto_convert_activation {
 	width:20px;
 	height:20px;
 }
-.icon.auto_save_convert_settings::before {
+.icon.auto_save_activation::before,
+  .icon.auto_convert_activation::before {
 	font:var(--fa-font-regular);
 	content:"\f0c7";
 	font-size:16px;
 }
-.icon.auto_save_convert_settings::after {
+.icon.auto_save_activation::after,
+  .icon.auto_convert_activation::after {
 	content:"\f013";
 	font-size:10px;
 }
@@ -528,6 +537,24 @@
 }
 .icon.view_tab::after {
 	content:"\f06e";
+}
+
+.icon.list_view::before {
+	content:"\f7a4";
+}
+.icon.block_view::before {
+	content:"\f58e";
+}
+
+.icon.desktop {
+	width:20px;
+}
+.icon.desktop::before {
+	content:"\f390";
+	margin-left:1px;
+}
+.icon.mobile::before {
+	content:"\f3cd";
 }
 
 /* LOADING ICON */

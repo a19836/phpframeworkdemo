@@ -6,13 +6,18 @@
 	z-index:4;
 }
 .top_bar header > ul {
-	right:133px;
+	right:95px;
 }
 .top_bar li.dummy_elm_to_add_auto_save_options {
 	display:none;
 }
 .with_top_bar_tab > .tabs {
 	z-index:4;
+}
+
+.top_bar li.preview .icon.view::before {
+	margin-top:1px;
+	display:block;
 }
 
 /* GENERIC */
@@ -57,15 +62,18 @@
 
 /* Template Preview */
 .template_obj #preview {
-	height:calc(100vh - 40px);
-	min-height:300px;
+	width:auto !important;
+	height:auto !important;
+	position:fixed !important;
+	top:5px !important;
+	left:5px !important;
+	right:5px !important;
+	bottom:5px !important;
 	padding:0 !important;
-	position:relative;
 }
 .template_obj #preview iframe {
 	width:100%;
 	height:100%;
-	min-height:400px;
 	box-sizing:border-box;
 	border:none;
 }
@@ -79,7 +87,7 @@
 	border:0;
 }
 .template_obj .code_editor_layout.tab_content_template_layout .iframe_toolbar {
-	right:210px;
+	right:187px;
 }
 
 /* Code Editor - Body */
@@ -94,19 +102,18 @@
 	right:227px;
 }
 .template_obj .code_editor_body .code_menu.top_bar_menu li.editor_full_screen,
-  .template_obj .code_editor_body .code_menu.top_bar_menu li.auto_save_convert_settings,
+  .template_obj .code_editor_body .code_menu.top_bar_menu li.sub_menu,
   .template_obj .code_editor_body .code_menu.top_bar_menu li.save {
 	display:none;
 }
 
 /* Code Editor - Body - ELS UI */
 .template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu > .options .options-right {
-	width:200px;
-	right:203px;
+	right:190px;
 	z-index:5;
 }
 .template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu > .options > .options-center {
-	right:400px;
+	right:305px;
 	z-index:5;
 }
 .template_obj .code_editor_body .layout_ui_editor.with_top_bar_menu > .options .options-left .option.save,

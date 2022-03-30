@@ -23,6 +23,7 @@ $(function () {
 	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
 	});
@@ -30,6 +31,7 @@ $(function () {
 	
 	chooseMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
 	});
@@ -37,6 +39,7 @@ $(function () {
 	
 	chooseFunctionFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
 	});
@@ -44,6 +47,7 @@ $(function () {
 	
 	chooseFileFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 	});
@@ -52,6 +56,7 @@ $(function () {
 	if (layer_type == "pres" || layer_type == "bl") {
 		chooseBusinessLogicFromFileManagerTree = new MyTree({
 			multiple_selection : false,
+			toggle_chils_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
 			ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 		});
@@ -59,6 +64,7 @@ $(function () {
 		
 		chooseQueryFromFileManagerTree = new MyTree({
 			multiple_selection : false,
+			toggle_chils_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
 			ajax_callback_after : removeParametersAndResultMapsFromTree,
 		});
@@ -66,6 +72,7 @@ $(function () {
 		
 		chooseHibernateObjectFromFileManagerTree = new MyTree({
 			multiple_selection : false,
+			toggle_chils_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
 			ajax_callback_after : removeQueriesAndMapsAndOtherHbnNodesFromTree,
 		});
@@ -73,6 +80,7 @@ $(function () {
 		
 		chooseHibernateObjectMethodFromFileManagerTree = new MyTree({
 			multiple_selection : false,
+			toggle_chils_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
 			ajax_callback_after : removeParametersAndResultMapsFromTree,
 		});
@@ -81,6 +89,7 @@ $(function () {
 		if (layer_type == "pres") {
 			choosePresentationFromFileManagerTree = new MyTree({
 				multiple_selection : false,
+				toggle_chils_on_click : true,
 				ajax_callback_before : prepareLayerNodes1,
 				ajax_callback_after : removeAllThatIsNotPagesFromTree,
 			});
@@ -88,6 +97,7 @@ $(function () {
 			
 			chooseBlockFromFileManagerTree = new MyTree({
 				multiple_selection : false,
+				toggle_chils_on_click : true,
 				ajax_callback_before : prepareLayerNodes1,
 				ajax_callback_after : removeAllThatIsNotBlocksFromTree,
 			});
@@ -95,6 +105,7 @@ $(function () {
 			
 			choosePageUrlFromFileManagerTree = new MyTree({
 				multiple_selection : false,
+				toggle_chils_on_click : true,
 				ajax_callback_before : prepareLayerNodes1,
 				ajax_callback_after : removeAllThatIsNotPagesFromTree,
 			});
@@ -102,6 +113,7 @@ $(function () {
 	
 			chooseImageUrlFromFileManagerTree = new MyTree({
 				multiple_selection : false,
+				toggle_chils_on_click : true,
 				ajax_callback_before : prepareLayerNodes1,
 				ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
 			});

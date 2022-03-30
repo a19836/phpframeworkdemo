@@ -33,13 +33,15 @@
   .module_workflow_settings #ui .taskflowchart .workflow_menu {
 	margin-top:-25px;
 	top:auto;
-	right:260px;
+	right:335px;
 	z-index:999999;
 }
 .module_workflow_settings #code .code_menu > ul > .save,
   .module_workflow_settings #ui .taskflowchart .workflow_menu > .dropdown > .save,
-  .module_workflow_settings #code .code_menu > ul > .auto_save_convert_settings,
-  .module_workflow_settings #ui .taskflowchart .workflow_menu > .dropdown > .auto_save_convert_settings,
+  .module_workflow_settings #code .code_menu > ul > .auto_save_activation,
+  .module_workflow_settings #code .code_menu > ul > .auto_convert_activation,
+  .module_workflow_settings #ui .taskflowchart .workflow_menu > .dropdown > .auto_save_activation,
+  .module_workflow_settings #ui .taskflowchart .workflow_menu > .dropdown > .auto_convert_activation,
   .module_workflow_settings #code .code_menu > ul > .editor_full_screen,
   .module_workflow_settings #ui .taskflowchart .workflow_menu > .dropdown > .tasks_flow_full_screen {
 	display:none;

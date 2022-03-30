@@ -17,12 +17,13 @@ $(function () {
 	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu");
 	
 	//init auto save
-	var auto_save_icon = $("#code > .code_menu li.auto_save_convert_settings").first().clone();
-	$("#form_global_vars .code_menu.top_bar_menu ul li.save").before(auto_save_icon);
+	var auto_save_icon = $("#code > .code_menu li.auto_save_activation").first().clone();
+	var auto_convert_icon = $("#code > .code_menu li.auto_convert_activation").first().clone();
+	$("#form_global_vars .code_menu.top_bar_menu ul li.save").before(auto_save_icon).before(auto_convert_icon);
 	
-	$("#code .code_menu.top_bar_menu ul li.auto_save_convert_settings ul .auto_save_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_convert_settings ul .auto_save_activation input").attr("onChange", "toggleAutoSaveCheckbox(this, onToggleGlobalVariablesAutoSave)");
+	$("#code .code_menu.top_bar_menu ul li.auto_save_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_activation input").attr("onChange", "toggleAutoSaveCheckbox(this, onToggleGlobalVariablesAutoSave)");
 	
-	$("#code .code_menu.top_bar_menu li.auto_save_convert_settings ul .auto_convert_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_convert_settings ul .auto_convert_activation input").attr("onChange", "toggleAutoConvertCheckbox(this, onToggleGlobalVariablesAutoConvert)");
+	$("#code .code_menu.top_bar_menu li.auto_convert_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation input").attr("onChange", "toggleAutoConvertCheckbox(this, onToggleGlobalVariablesAutoConvert)");
 	
 	enableAutoSave(onToggleGlobalVariablesAutoSave);
 	enableAutoConvert(onToggleGlobalVariablesAutoConvert);
@@ -33,6 +34,7 @@ $(function () {
 	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
 	});
@@ -40,6 +42,7 @@ $(function () {
 	
 	chooseMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
 	});
@@ -47,6 +50,7 @@ $(function () {
 	
 	chooseFunctionFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
 	});
@@ -54,6 +58,7 @@ $(function () {
 	
 	chooseFileFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_chils_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 	});
@@ -108,7 +113,7 @@ $(function () {
 function onToggleGlobalVariablesAutoSave() {
 	onTogglePHPCodeAutoSave();
 	
-	var inputs = $("#form_global_vars .code_menu.top_bar_menu ul li.auto_save_convert_settings ul .auto_save_activation input");
+	var inputs = $("#form_global_vars .code_menu.top_bar_menu ul li.auto_save_activation input");
 	
 	if (auto_save) 
 		inputs.attr("checked", "checked").prop("checked", true);
@@ -119,7 +124,7 @@ function onToggleGlobalVariablesAutoSave() {
 function onToggleGlobalVariablesAutoConvert() {
 	onTogglePHPCodeAutoConvert();
 	
-	var inputs = $("#form_global_vars .code_menu.top_bar_menu ul li.auto_save_convert_settings ul .auto_convert_activation input");
+	var inputs = $("#form_global_vars .code_menu.top_bar_menu ul li.auto_convert_activation input");
 	
 	if (auto_convert) 
 		inputs.attr("checked", "checked").prop("checked", true);

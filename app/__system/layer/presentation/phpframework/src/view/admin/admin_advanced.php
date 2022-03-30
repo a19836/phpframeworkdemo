@@ -33,14 +33,6 @@ var path_to_filter = "' . $filter_by_layout . '";
 		<ul class="left">
 			<li class="logo"></li>
 			
-			<li class="icon sub_menu">
-				<ul>
-					<li><a onClick="toggleAdvancedLevel(this)"><i class="icon enable"></i> <span>' . ($advanced_level == "advanced_level" ? "Show basic items" : "Show advanced items") . '</span></a></li>
-					<li><a onClick="toggleTreeLayout(this)"><i class="icon toggle_tree_layout"></i> <span>' . ($tree_layout == "left_panel_with_tabs" ? "Show vertical layout" : "Show horizontal layout") . '</span></a></li>
-					<li><a onClick="toggleThemeLayout(this)"><i class="icon toggle_theme_layout"></i> <span>' . ($theme_layout == "dark_theme" ? "Show light theme" : "Show dark theme") . '</span></a></li>
-				</ul>
-			</li>
-			
 			<li class="filter_by_layout">
 				<label>Project: </label>
 				<select onChange="filterByLayout(this)">
@@ -48,20 +40,41 @@ var path_to_filter = "' . $filter_by_layout . '";
 			</li>
 		</ul>
 		<ul class="right">
-			<li class="icon home" title="Go Home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/admin_home?admin_type=advanced"></li>
+			<li class="icon home" title="Home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/admin_home?admin_type=advanced"></li>
 			' . ($is_flush_cache_allowed ? '<li class="icon flush_cache" title="Flush Cache" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\')"></li>' : '') . '
 			<li class="icon refresh" onClick="refreshIframe()" title="Refresh"></li>
-			<li class="icon tools" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&is_popup=1" . '\')" title="Choose a Tool"></li>
+			<!--li class="icon tools" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&is_popup=1" . '\')" title="Tools"></li-->
 			
 			<!--li class="icon expand_left_panel" title="Expand Left Panel" onClick="expandLeftPanel(this)"></li>
 			<li class="icon collapse_left_panel" title="Collapse Left Panel" onClick="collapseLeftPanel(this)"></li-->
 			
-			<li class="login_info" title="Logged as \'' . $logged_name . '\' user."><i class="icon user"></i> ' . $logged_name . '</li>
-			<li class="icon logout" title="Logout" onClick="document.location=this.getAttribute(\'logout_url\')" logout_url="' . $project_url_prefix . 'auth/logout"></li>
+			<li class="sub_menu sub_menu_user">
+				<i class="icon user"></i>
+				<ul>
+					<li class="login_info" title="Logged as \'' . $logged_name . '\' user."><i class="icon user"></i> Logged as "' . $logged_name . '"</li>
+					<li title="Logout"><a onClick="document.location=this.getAttribute(\'logout_url\')" logout_url="' . $project_url_prefix . 'auth/logout"><i class="icon logout"></i> Logout</a></li>
+				</ul>
+			</li>
+			
+			<li class="sub_menu sub_menu_others">
+				<i class="icon sub_menu_vertical"></i>
+				<ul>
+					<li title="Toggle Theme"><a onClick="toggleThemeLayout(this)"><i class="icon toggle_theme_layout"></i> <span>' . ($theme_layout == "dark_theme" ? "Show light theme" : "Show dark theme") . '</span></a></li>
+					<li title="Show Tools"><a onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&is_popup=1" . '\')"><i class="icon tools"></i> Show Tools</a></li>
+					<li class="about" title="About"><a onClick="goTo(this, \'about_url\', event)" about_url="' . $project_url_prefix . 'admin/about"><i class="icon info"></i> About</a></li>
+				</ul>
+			</li>
 		</ul>
 	</div>
 
 	<div id="left_panel" class="' . $tree_layout . ' ' . $advanced_level . ' ' . $theme_layout . '">
+		<div class="icon sub_menu">
+			<ul>
+				<li><a onClick="toggleAdvancedLevel(this)"><i class="icon enable"></i> <span>' . ($advanced_level == "advanced_level" ? "Show basic items" : "Show advanced items") . '</span></a></li>
+				<li><a onClick="toggleTreeLayout(this)"><i class="icon toggle_tree_layout"></i> <span>' . ($tree_layout == "left_panel_with_tabs" ? "Show vertical layout" : "Show horizontal layout") . '</span></a></li>
+			</ul>
+		</div>
+		
 		<div class="file_tree_root"></div>
 		<div id="file_tree" class="mytree' . ($theme_layout == "dark_theme" ? " jstree-default-light" : "") . ' hidden">
 			<ul>'; $main_layers_properties = array(); $main_content .= AdminMenuUIHandler::getLayersGroup("presentation_layers", $layers["presentation_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("business_logic_layers", $layers["business_logic_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("data_access_layers", $layers["data_access_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("db_layers", $layers["db_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= '

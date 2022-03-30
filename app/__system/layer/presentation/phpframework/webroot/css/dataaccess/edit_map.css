@@ -39,12 +39,12 @@
 	width:210px;
 	margin:0;
 	position:fixed;
-	top:7px;
-	left:130px;
+	top:5px;
+	left:140px;
 	z-index:2;
 }
 .edit_map .results_maps.map .map_id {
-	left:105px;
+	left:110px;
 }
 .edit_map .map .map_id label {
 	display:none;
@@ -57,7 +57,6 @@
 }
 .edit_map .data_access_obj .relationships .map .map_class {
 	margin-left:10px;
-	display:none;
 }
 .data_access_obj .relationships .map .map_class label {
 	font-weight:normal;

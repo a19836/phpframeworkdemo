@@ -215,7 +215,7 @@
 	display:none;
 }
 .selected_task_properties .settings .actions li > .advanced_action_settings label {
-	width:160px;
+	width:155px;
 }
 .selected_task_properties .settings .actions li > .advanced_action_settings input {
 	min-width:280px;

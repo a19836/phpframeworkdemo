@@ -88,6 +88,11 @@
 	color:#ff0000;
 }
 
+.mytree li[data-jstree='{"icon":"reserved_folder"}'] > a,
+  .mytree li[data-jstree='{"icon":"reserved_file"}'] > a {
+	opacity:.7
+}
+
 /* ICONS - COMMON */
 .mytree i.cms_common::before {
 	content:"\f07c";
@@ -187,7 +192,7 @@
 	color:#e0a800;
 }
 .mytree i.entities_folder::after {
-	content:"\f0ac";
+	content:"\f15b";
 	color:#888;
 }
 .mytree i.entity_file::before {
@@ -198,7 +203,7 @@
 	color:#ccc;
 }
 .mytree i.entity_file::after {
-	content:"\f0ac";
+	content:"\f15b";
 	color:#888;
 }
 .mytree i.views_folder::before {
@@ -225,9 +230,8 @@
 	color:#e0a800;
 }
 .mytree i.templates_folder::after {
-	font:var(--fa-font-brands);
-	font-size:16px;
-	content:"\f13b";
+	font-size:13px;
+	content:"\f815";
 	color:#888;
 }
 .mytree i.template_folder::before {
@@ -235,9 +239,8 @@
 	color:#e0a800;
 }
 .mytree i.template_folder::after {
-	font:var(--fa-font-brands);
-	font-size:16px;
-	content:"\f13b";
+	font-size:13px;
+	content:"\f815";
 	color:#888;
 }
 .mytree i.template_file::before {
@@ -248,9 +251,8 @@
 	color:#ccc;
 }
 .mytree i.template_file::after {
-	font:var(--fa-font-brands);
-	font-size:16px;
-	content:"\f13b";
+	font-size:13px;
+	content:"\f815";
 	color:#888;
 }
 .mytree i.blocks_folder::before {
@@ -258,7 +260,7 @@
 	color:#e0a800;
 }
 .mytree i.blocks_folder::after {
-	content:"\f1b3";
+	content:"\f1b2";
 	color:#888;
 }
 .mytree i.block_file::before {
@@ -269,7 +271,7 @@
 	color:#ccc;
 }
 .mytree i.block_file::after {
-	content:"\f1b3";
+	content:"\f1b2";
 	color:#888;
 }
 .mytree i.utils_folder::before {
@@ -300,6 +302,10 @@
 	color:#888;
 }
 .mytree i.webroot_folder::before {
+	content:"\f07c";
+	color:#e0a800;
+}
+.mytree i.webroot_folder::after {
 	content:"\f0ac";
 	color:#888;
 }
@@ -356,7 +362,11 @@
 }
 
 .mytree i.properties::before {
-	content:"\f802";
+	content:"\f07c";
+	color:#e0a800;
+}
+.mytree i.properties::after {
+	content:"\f055";
 	color:#888;
 }
 .mytree i.controllers_folder::before {
