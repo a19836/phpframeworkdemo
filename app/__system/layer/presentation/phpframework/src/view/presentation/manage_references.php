@@ -57,9 +57,9 @@ if ($layout_type_id) { include $EVC->getUtilPath("WorkFlowPresentationHandler");
 		var layer_object_type_id = ' . $layer_object_type_id . ';
 		var loaded_layout_type_permissions = {};
 		var layout_type_id = ' . $layout_type_id . ';
-	</script>'; $main_content = '
+	</script>'; $main_content = ''; if ($_POST && !$error_message) { $on_success_js_func = $on_success_js_func ? $on_success_js_func : "refreshLastNodeParentChilds"; $main_content .= "<script>if (typeof window.parent.$on_success_js_func == 'function') window.parent.$on_success_js_func();</script>"; } $main_content .= '
 	<div id="content">
-		<div class="top_bar">
+		<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 			<header>
 				<div class="title">Manage References for project "' . $path . '"</div>
 				<ul>
@@ -95,7 +95,7 @@ if ($layout_type_id) { include $EVC->getUtilPath("WorkFlowPresentationHandler");
 					<script>				
 						var layerFromFileManagerTree_' . $pb76ee81a . '_' . $v43974ff697 . ' = new MyTree({
 							multiple_selection : true,
-							toggle_chils_on_click : true,
+							toggle_children_on_click : true,
 							ajax_callback_before : prepareLayerNodes1,
 							ajax_callback_after : ' . $pf3f2367a . ',
 							on_select_callback : toggleFileTreeCheckbox,

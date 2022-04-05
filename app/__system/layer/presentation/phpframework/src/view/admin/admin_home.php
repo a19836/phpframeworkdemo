@@ -18,65 +18,22 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$head = '
-<!-- Jquery core JavaScript-->
-<script src="' . $project_url_prefix . 'vendor/jquery/jquery.min.js"></script>
-
-<!-- Add Jquery UI JS and CSS files -->
-<!--link rel="stylesheet" href="' . $project_url_prefix . 'vendor/jquery-ui/jquery-ui.min.css" type="text/css" /-->
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'vendor/jquery-ui/jquery-ui.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="' . $project_url_prefix . 'vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!--[if lt IE 7 ]>
-  <script src="' . $project_url_prefix . 'vendor/drewdiller/dd_belatedpng.js"></script>
-  <script>DD_belatedPNG.fix("img, .png_bg"); // Fix any <img> or .png_bg bg-images. Also, please read goo.gl/mZiyb </script>
-<![endif]-->
-
-<!-- for-mobile-apps -->
-<script type="application/x-javascript"> 
-	addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
-	function hideURLbar(){ window.scrollTo(0,1); } 
-</script>
-<!-- //for-mobile-apps -->
-
-<!-- Add Fontawsome Icons CSS -->
-<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
-
-<!-- Add Icons CSS -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
-
-<!-- Add Layout CSS -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
-
+include $EVC->getViewPath("admin/choose_available_project"); $projects_html = $main_content; $head .= '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_home.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_home.js"></script>
 '; $main_content = '
 <div class="admin_panel">
 	<div class="title">Dashboard</div>
-	<!--small class="text-center text-muted d-block">Selected project: "' . $project . '"</small-->
 	
 	<ul>
-		<li><a href="#projects">Projects</a></li>
+		<li><a href="#projs">Projects</a></li>
 		<li><a href="#tutorials">Tutorials</a></li>
 		<li><a href="#how_it_works">How it works?</a></li>
 	</ul>
 	
-	<div id="projects" class="projects">
-		<div class="projects_list_type">
-			<a href="javascript:void(0)" onClick="toggleProjectsListType(\'block_view\')"><span class="icon block_view"></span></a>
-			<a href="javascript:void(0)" onClick="toggleProjectsListType(\'list_view\')"><span class="icon list_view"></span></a>
-		</div>
-		
-		<div class="new_project">
-			<div class="title">Create Your First Project!</div>
-			<div class="description">Soon this space will be filled with your projects.<br/>Create a new project to get started.</div>
-			<div class="button">
-				<button onClick="createNewProject()">Create New Project</button>
-			</div>
-		</div>
+	<div id="projs" class="projs">
+		' . $projects_html . '
 	</div>
 	
 	<div id="how_it_works" class="how_it_works">

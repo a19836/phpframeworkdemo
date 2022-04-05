@@ -101,7 +101,7 @@ var show_templates_only = ' . ($_GET["show_templates_only"] ? 1 : 0) . '; //This
 				<li class="sub_menu">
 					<i class="icon sub_menu"></i>
 					<ul>
-						<li class="advanced_editor" title="Switch to Free Html Editor"><a href="?' . $query_string . '&edit_entity_type=advanced"><i class="icon show_advanced_ui"></i> Switch to Free Html Editor</a></li>
+						<li class="advanced_editor" title="Switch to Advanced Workspace"><a href="?' . $query_string . '&edit_entity_type=advanced"><i class="icon show_advanced_ui"></i> Switch to Advanced Workspace</a></li>
 						<li class="update_layout_from_settings" title="Update Settings to Layout UI"><a onClick="updateLayoutFromSettings( $(\'.entity_obj\') )"><i class="icon update_layout_from_settings"></i> Update Settings to Layout UI</a></li>
 						<li class="view_template_samples" title="View Template Samples"><a onClick="openTemplateSamples()"><i class="icon view_template_samples"></i> View Template Samples</a></li>
 						<li class="preview" title="Preview & Test Page"><a onClick="preview()"><i class="icon preview_file"></i> Preview & Test Page</a></li>

@@ -53,7 +53,7 @@
 .add_template_region_block_task_html .region,
    .add_template_region_block_task_html .block {
 	width:100%;
-	height:20px;
+	min-height:20px;
 }
 .add_template_region_block_task_html .region label,
    .add_template_region_block_task_html .block label,

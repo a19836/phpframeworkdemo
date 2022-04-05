@@ -60,7 +60,7 @@ input:not([type]),
   select, 
   textarea {
 	/* bc of firefox that has a different style for select fields */
-	background:#fff;
+	background-color:#fff;
 	border:1px solid #eee;
 	border-radius:2px;
 }
@@ -155,7 +155,7 @@ input[type=submit],
 	border-radius: 0.2rem;
 	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 	
-	background:#FAB12B;
+	background-color:#FAB12B;
 	color:#000;
 	
 }

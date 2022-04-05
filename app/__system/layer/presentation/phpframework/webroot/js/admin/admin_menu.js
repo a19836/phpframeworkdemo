@@ -703,7 +703,7 @@ function openWindow(a, attr_name, tab) {
 	}
 }
 
-function goToPopup(a, attr_name, originalEvent) {
+function goToPopup(a, attr_name, originalEvent, popup_class_name, on_success_popup_action_handler) {
 	var url = a.getAttribute(attr_name);
 	//console.log(attr_name+":"+url);
 	
@@ -711,23 +711,52 @@ function goToPopup(a, attr_name, originalEvent) {
 		var popup = $(".go_to_popup");
 		
 		if (!popup[0]) {
-			popup = $('<div class="myfancypopup go_to_popup"></div>');
+			popup = $('<div class="myfancypopup go_to_popup ' + (popup_class_name ? popup_class_name : "") + '"></div>');
 			$(document.body).append(popup);
 		}
+		else
+			popup[0].className = 'myfancypopup go_to_popup ' + (popup_class_name ? popup_class_name : "");
 		
 		popup.html('<iframe src="' + url + '"></iframe>');
 		
 		MyFancyPopup.init({
 			elementToShow: popup,
 			//parentElement: document,
+			
+			on_success_popup_action_handler: on_success_popup_action_handler,
 		});
 		MyFancyPopup.showPopup();
+		
+		var j_a = $(a);
+		if (j_a.hasClass("jstree-anchor")) 
+			last_selected_node_id = j_a.parent().attr("id");
+		else 
+			last_selected_node_id = j_a.parent().parent().attr("last_selected_node_id");
 	}
 	
 	return false;
 }
 
-function manageFile(a, attr_name, action, on_success_callback) {
+function onSuccessfullPopupAction() {
+	if (MyFancyPopup.settings && typeof MyFancyPopup.settings.on_success_popup_action_handler == "function")
+		MyFancyPopup.settings.on_success_popup_action_handler();
+	
+	MyFancyPopup.hidePopup();
+}
+
+function refreshLastNodeParentChildsIfNotTreeLayoutAndMainTreeNode() {
+	var pid = getLastNodeParentId();
+	
+	if (pid && $("#left_panel").is(".left_panel_with_tabs") && $("#left_panel .mytree #" + pid).is(".hide_tree_item"))
+		return ;
+	
+	if (last_selected_node_id && $("#" + last_selected_node_id + " > a > i.project")[0])
+		refreshLastNodeParentChilds();
+	else
+		refreshLastNodeChilds();
+}
+
+function manageFile(a, attr_name, action, on_success_callbacks) {
 	var url = a.getAttribute(attr_name);
 	//console.log(attr_name+":"+url);
 	
@@ -749,7 +778,7 @@ function manageFile(a, attr_name, action, on_success_callback) {
 				var file_type = jstree_attr == '{"icon":"project"}' ? "project" : (jstree_attr == '{"icon":"project_folder"}' ? "projects folder" : null);
 				
 				if (file_type)
-					status = confirm("Do you wish to remove the " + file_type + ": '" + file_name + "'?") && confirm("If you delete this " + file_type + ", you will loose all the created pages and other files inside of this " + file_type + "!\nDo you wish to continue?") && confirm("LAST WARNING:\n\tIf you proceed, you cannot undo this deletion!\nAre you sure you wish to remove this " + file_type + "?");
+					status = confirm("Do you wish to remove the " + file_type + ": '" + file_name + "'?") && confirm("If you delete this " + file_type + ", you will loose all the created pages and other files inside of this " + file_type + "!\nDo you wish to continue?") && confirm("LAST WARNING:\nIf you proceed, you cannot undo this deletion!\nAre you sure you wish to remove this " + file_type + "?");
 				else
 					status = confirm("Do you wish to remove the file '" + file_name + "'?");
 				
@@ -768,7 +797,10 @@ function manageFile(a, attr_name, action, on_success_callback) {
 					var base_name = file_name.substr(0, pos);
 					var extension = file_name.substr(pos + 1);
 					status = (new_file_name = prompt("Please write the new name:", base_name));
-					new_file_name += "." + extension;
+					new_file_name = ("" + new_file_name).replace(/^\s+/g, "").replace(/\s+$/g, ""); //trim name
+					
+					if (status && new_file_name)
+						new_file_name += "." + extension;
 				}
 				else
 					status = (new_file_name = prompt("Please write the new name:", base_name));
@@ -821,7 +853,8 @@ function manageFile(a, attr_name, action, on_success_callback) {
 					var has_spaces = new_file_name.match(/\s+/g);
 					var has_upper_case = !allow_upper_case && new_file_name.toLowerCase() != new_file_name;
 					//var has_weird_chars = new_file_name.match(/([\p{L}\w\.]+)/giu).join("") != new_file_name; // \. is very important bc the new_file_name is the complete filename with the extension. \p{L} and /../u is to get parameters with accents and ç. Already includes the a-z. Cannot use this bc it does not work in IE.
-					var has_weird_chars = new_file_name.match(/([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC\.]+)/gi).join("") != new_file_name; // \. is very important bc the new_file_name is the complete filename with the extension. '\w' means all words with '_' and 'u' means with accents and ç too.
+					var has_weird_chars = new_file_name.match(/([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC\.]+)/gi);
+					has_weird_chars = has_weird_chars && has_weird_chars.join("") != new_file_name; // \. is very important bc the new_file_name is the complete filename with the extension. '\w' means all words with '_' and 'u' means with accents and ç too.
 					
 					if ((has_accents || has_spaces || has_upper_case || has_weird_chars) && confirm("Is NOT advisable to have file names with spaces, dashes, letters with accents, upper case letters or weird characters.\nYou should only use the following letters: A-Z, 0-9 and '_'.\nCan I normalize this name and convert it to a proper name?")) {
 						if (typeof new_file_name.normalize == "function") //This doesn't work in IE11
@@ -852,7 +885,7 @@ function manageFile(a, attr_name, action, on_success_callback) {
 						if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 							showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
 								StatusMessageHandler.removeLastShownMessage("error");
-								manageFile(a, attr_name, original_action, on_success_callback);
+								manageFile(a, attr_name, original_action, on_success_callbacks);
 							});
 						else if (data == "1") {
 							if (action == "create_folder" || action == "create_file" || action == "paste" || action == "paste_and_remove")
@@ -863,8 +896,10 @@ function manageFile(a, attr_name, action, on_success_callback) {
 							
 							StatusMessageHandler.showMessage("The file was " + str + (action == "unzip" || action == "zip" ? "pe" : "") + "d correctly");
 							
-							if (typeof on_success_callback == "function")
-								on_success_callback(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated);
+							on_success_callbacks = $.isArray(on_success_callbacks) ? on_success_callbacks : [on_success_callbacks];
+							for (var i = 0; i < on_success_callbacks.length; i++)
+								if (typeof on_success_callbacks[i] == "function")
+									on_success_callbacks[i](a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated);
 							
 							if (action == "remove" || action == "paste_and_remove") {
 								var li = $("#" + (action == "remove" ? tree_node_id_to_be_updated : copy_or_cut_tree_node_id));
@@ -896,11 +931,33 @@ function renameProject(a, attr_name, action, new_file_name, url, tree_node_id_to
 	StatusMessageHandler.showMessage("Please don't forget to go to the permissions panel and update the correspondent permissions...");
 }
 
-function manageBusinessLogicObject(a, attr_name, action) {
-	manageFile(a, attr_name, action, function(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated) {
-		var file_node_id = getNodeParentIdByNodeId(tree_node_id_to_be_updated);
-		refreshNodeChildsByNodeId(file_node_id);
-	});
+function triggerFileNodeAfterCreateFile(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated) {
+	var node = $("#" + tree_node_id_to_be_updated);
+	
+	if (node[0])
+		mytree.refreshNodeChilds(node[0], {
+			ajax_callback_last: function(ul, data) {
+				$(ul).find(" > li > a > label").each(function(idx, item) {
+					item = $(item);
+					
+					if (item.text() == new_file_name) {
+						var a = item.parent();
+						
+						if (a.attr("onClick")) {
+							try {
+								a.trigger("click");
+							}
+							catch(e) {
+								if (console && console.log)
+									console.log(e);
+							}
+						}
+						
+						return false;
+					}
+				});
+			},
+		});
 }
 
 function managePresentationFile(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated) {
@@ -1018,6 +1075,13 @@ function managePresentationFile(a, attr_name, action, new_file_name, url, tree_n
 			$.ajax(options);
 		}
 	}
+}
+
+function manageBusinessLogicObject(a, attr_name, action) {
+	manageFile(a, attr_name, action, function(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated) {
+		var file_node_id = getNodeParentIdByNodeId(tree_node_id_to_be_updated);
+		refreshNodeChildsByNodeId(file_node_id);
+	});
 }
 
 function removeItem(a, attr_name, on_success_callback) {

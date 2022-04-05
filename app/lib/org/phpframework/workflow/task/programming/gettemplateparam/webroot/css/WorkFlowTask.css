@@ -51,7 +51,7 @@
 .get_template_param_task_html .name,
    .get_template_param_task_html .type {
 	width:100%;
-	height:20px;
+	min-height:20px;
 }
 .get_template_param_task_html .name label,
    .get_template_param_task_html .type label,

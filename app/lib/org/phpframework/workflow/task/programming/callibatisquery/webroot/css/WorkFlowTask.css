@@ -33,7 +33,7 @@
    .call_ibatis_query_task_html .service_type,
    .call_ibatis_query_task_html .service_id {
 	width:430px;
-	height:20px;
+	min-height:20px;
 	margin:0 auto;
 }
 .call_ibatis_query_task_html .module_id, 

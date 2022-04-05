@@ -1,6 +1,6 @@
 .selected_task_properties .broker_method_obj {
 	width:430px;
-	height:45px;
+	min-height:45px;
 	margin:0 auto 5px auto;
 }
 .selected_task_properties .broker_method_obj label {

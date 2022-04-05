@@ -33,7 +33,7 @@
   .module_workflow_settings #ui .taskflowchart .workflow_menu {
 	margin-top:-25px;
 	top:auto;
-	right:335px;
+	right:327px;
 	z-index:999999;
 }
 .module_workflow_settings #code .code_menu > ul > .save,

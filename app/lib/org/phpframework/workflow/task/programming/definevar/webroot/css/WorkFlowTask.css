@@ -46,7 +46,7 @@
 }
 .define_var_task_html .name, .define_var_task_html .value, .define_var_task_html .type {
 	width:100%;
-	height:20px;
+	min-height:20px;
 }
 .define_var_task_html .name label, .define_var_task_html .value label, .define_var_task_html .type label {
 	width:70px;

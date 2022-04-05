@@ -45,7 +45,7 @@
 .set_presentation_view_task_html .value,
    .set_presentation_view_task_html .type {
 	width:430px;
-	height:20px;
+	min-height:20px;
 }
 .set_presentation_view_task_html .value label,
    .set_presentation_view_task_html .type label,

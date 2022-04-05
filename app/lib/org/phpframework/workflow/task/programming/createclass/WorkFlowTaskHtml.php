@@ -55,14 +55,16 @@
 					<th class="static table_header">Static</th>
 					<th class="var_type table_header">Var Type</th>
 					<th class="comments table_header">Comments</th>
-					<th class="icon_cell table_header"><span class="icon add" onClick="CreateClassTaskPropertyObj.addNewProperty(this)">Add Property</span></th>
+					<th class="icon_cell table_header"><span class="icon add" onClick="CreateClassTaskPropertyObj.addProperty(this)">Add Property</span></th>
 				</tr>
 			</thead>
-			<tbody index_prefix="properties"></tbody>
+			<tbody index_prefix="properties">
+				<tr class="empty"><td colspan="7">There are no properties...</td></tr>
+			</tbody>
 		</table>
 	</div>
 	<div class="methods">
-		<label>Methods: <span class="icon add" onClick="CreateClassTaskPropertyObj.addNewMethod(this)">Add Method</span></label>
+		<label>Methods: <span class="icon add" onClick="CreateClassTaskPropertyObj.addMethod(this)">Add Method</span></label>
 		<ul index_prefix="methods"></ul>
 	</div>
 	

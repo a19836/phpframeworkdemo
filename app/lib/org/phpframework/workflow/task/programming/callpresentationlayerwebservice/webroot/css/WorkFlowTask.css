@@ -43,7 +43,7 @@
    .call_presentation_layer_web_service_task_html .project,
    .call_presentation_layer_web_service_task_html .page {
 	width:430px;
-	height:20px;
+	min-height:20px;
 	margin:0 auto 5px;
 }
 .call_presentation_layer_web_service_task_html .get_automatically {

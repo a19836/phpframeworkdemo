@@ -108,8 +108,8 @@ var step = ' . ($step ? $step : 0) . ';
 			</table>
 			
 			<div class="save_button">
-				' . ($table ? '<input type="submit" name="update" value="update" />
-				<input class="delete" type="submit" name="delete" value="delete" onClick="return onDeleteButton(this);" />' : '<input type="submit" name="add" value="add" />') . '
+				' . ($table ? '<input class="delete" type="submit" name="delete" value="delete" onClick="return onDeleteButton(this);" />
+				<input type="submit" name="update" value="update" />' : '<input type="submit" name="add" value="add" />') . '
 			</div>
 		</form>
 	</div>

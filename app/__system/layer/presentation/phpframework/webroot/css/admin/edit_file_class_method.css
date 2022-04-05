@@ -119,20 +119,23 @@
 .file_class_method_obj #settings .name {
 	margin-top:10px;
 }
-.file_class_method_obj #settings .name, .file_class_method_obj .type {
+.file_class_method_obj #settings .name, 
+  .file_class_method_obj #settings .type {
 	width:100%;
 	margin-bottom:5px;
 }
 .file_class_method_obj #settings .name input {
 	width:230px;
 }
-.file_class_method_obj #settings .abstract, .file_class_method_obj .static {
+.file_class_method_obj #settings .abstract, 
+  .file_class_method_obj #settings .static {
 	width:100%;
 }
-.file_class_method_obj .static {
+.file_class_method_obj #settings .static {
 	padding-bottom:20px;
 }
-.file_class_method_obj #settings .abstract input, .file_class_method_obj .static input {
+.file_class_method_obj #settings .abstract input, 
+  .file_class_method_obj #settings .static input {
 	margin-left:0;
 }
 
@@ -165,7 +168,8 @@
 	margin:auto 5px;
 	font-size:14px;
 }
-.file_class_method_obj #settings .arguments tbody input, .file_class_method_obj .arguments tbody select {
+.file_class_method_obj #settings .arguments tbody input, 
+  .file_class_method_obj #settings .arguments tbody select {
 	border:0;
 	background-color:transparent;
 	float:none;

@@ -57,7 +57,7 @@ var auto_increment_db_attributes_types = ' . json_encode(DB::getAllColumnAutoInc
 					<i class="icon sub_menu"></i>
 					<ul>
 						<li class="update_automatically" title="Update Automatically"><a onClick="createHibernateObjectAutomatically(this)"><i class="icon update_automatically"></i> Update Automatically</a></li>
-						<li class="toggle_advanced_settings" title="Toggle Advanced Settings"><a class="toggle_icon" onClick="toggleHbnObjAdvancedSettings(this)"><i class="icon toggle_ids"></i> Toggle Advanced Settings</a></li>
+						<li class="toggle_advanced_settings" title="Toggle Advanced Settings"><a onClick="toggleHbnObjAdvancedSettings(this)"><i class="icon toggle_ids"></i> Show Advanced Settings <input type="checkbox"/></a></li>
 						<li class="dummy_elm_to_add_auto_save_options"></li>
 					</ul>
 				</li>

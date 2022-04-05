@@ -8,7 +8,7 @@
 	right:215px;
 }
 .top_bar header > ul > li:hover:after {	
-	right:220px;
+	
 }
 
 /* USER */
@@ -207,7 +207,7 @@
 }
 #content .user_type_permissions_list .user_type_permissions_content #pages_permissions_list,
   #content .user_type_permissions_list .user_type_permissions_content #layers_permissions_list {
-	max-height:calc(100vh - 165px);
+	max-height:calc(100vh - 175px);
 	overflow:auto;
 	position:relative;
 }

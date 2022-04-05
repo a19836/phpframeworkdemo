@@ -51,7 +51,7 @@
    .call_object_method_task_html .method_name,
    .call_object_method_task_html .method_static {
 	width:100%;
-	height:20px;
+	min-height:20px;
 	margin-bottom:5px;
 }
 .call_object_method_task_html .method_obj_name label,

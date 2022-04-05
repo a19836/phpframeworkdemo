@@ -118,6 +118,10 @@
 	background:transparent;
 	color:#999;
 }
+.create_class_task_html > .properties table .empty td {
+	text-align:center;
+	color:#ccc;
+}
 
 .create_class_task_html > .methods {
 	margin-top:20px;
@@ -144,7 +148,8 @@
 	border:1px solid #eee;
 	margin-bottom:10px;
 }
-.create_class_task_html > .methods li > .icon.update {
+.create_class_task_html > .methods li > .icon.update,
+  .create_class_task_html > .methods li > .icon.remove {
 	margin-bottom:10px;
 	float:right;
 }

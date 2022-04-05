@@ -27,7 +27,7 @@
 	background-position:0px 20px;
 }
 .top_bar li.dummy_elm_to_add_auto_save_options {
-	display:none;
+	display:none !important;
 }
 
 /* GENERIC */

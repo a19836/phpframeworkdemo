@@ -30,7 +30,7 @@
 
 .switch_task_html .object_var, .switch_task_html .object_type {
 	width:100%;
-	height:20px;
+	min-height:20px;
 }
 .switch_task_html .object_var {
 	margin-top:15px;

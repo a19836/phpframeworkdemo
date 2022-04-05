@@ -74,6 +74,9 @@ IncludeBlockTaskPropertyObj.projects_options = ' . json_encode($available_projec
 GetBeanObjectTaskPropertyObj.phpframeworks_options = ' . json_encode($phpframeworks_options) . ';
 GetBeanObjectTaskPropertyObj.bean_names_options = ' . json_encode($bean_names_options) . ';
 
+CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
+InlineHTMLTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
+
 SetPresentationTemplateTaskPropertyObj.brokers_options = ' . json_encode(array("default" => '$EVC')) . ';
 '; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= '</script>'; $main_content = '
 	<div class="top_bar">
@@ -87,9 +90,9 @@ SetPresentationTemplateTaskPropertyObj.brokers_options = ' . json_encode(array("
 	</div>'; if ($obj_data) { $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, null, null, null, null, null, $presentation_brokers); $common_webroot_path = $EVC->getWebrootPath($EVC->getCommonProjectName()); $ui_menu_widgets_html = WorkFlowPresentationHandler::getUIEditorWidgetsHtml($common_webroot_path, $project_common_url_prefix, $webroot_cache_folder_path, $webroot_cache_folder_url); $ui_menu_widgets_html .= WorkFlowPresentationHandler::getExtraUIEditorWidgetsHtml($common_webroot_path, $EVC->getViewsPath() . "presentation/view_editor_widget/", $project_url_prefix . "widget/", $webroot_cache_folder_path, $webroot_cache_folder_url); $ui_menu_widgets_html .= WorkFlowPresentationHandler::getExtraUIEditorWidgetsHtml($common_webroot_path, $EVC->getViewsPath() . "presentation/common_editor_widget/", $project_url_prefix . "widget/", $webroot_cache_folder_path, $webroot_cache_folder_url); $ui_menu_widgets_html .= WorkFlowPresentationHandler::getUserUIEditorWidgetsHtml($common_webroot_path, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $main_content .= '
 	<div class="view_obj with_top_bar_tab">
 		<ul class="tabs tabs_transparent tabs_right tabs_icons">
-			<li id="visual_editor_tab" title="Visual UI"><a href="#code" onClick="onClickLayoutEditorUIVisualTab(this);return false;"><i class="icon visual_editor_tab"></i> Struture Editor</a></li>
-			<li id="code_editor_tab" title="Code"><a href="#code" onClick="onClickLayoutEditorUICodeTab(this);return false;"><i class="icon code_editor_tab"></i> Code Editor</a></li>
-			<li id="tasks_flow_tab" title="Workflow"><a href="#ui" onClick="onClickLayoutEditorUITaskWorkflowTab(this);return false;"><i class="icon tasks_flow_tab"></i> Workflow Editor</a></li>
+			<li id="visual_editor_tab" title="Design Editor"><a href="#code" onClick="onClickLayoutEditorUIVisualTab(this);return false;"><i class="icon visual_editor_tab"></i> Design Editor</a></li>
+			<li id="code_editor_tab" title="Code Editor"><a href="#code" onClick="onClickLayoutEditorUICodeTab(this);return false;"><i class="icon code_editor_tab"></i> Code Editor</a></li>
+			<li id="tasks_flow_tab" title="Diagram Editor"><a href="#ui" onClick="onClickLayoutEditorUITaskWorkflowTab(this);return false;"><i class="icon tasks_flow_tab"></i> Diagram Editor</a></li>
 		</ul>
 		
 		<div id="code" class="code_layout_ui_editor">

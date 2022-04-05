@@ -1,4 +1,9 @@
 /* TOP BAR */
+.top_bar li.toggle_main_settings > a > input {
+	position:absolute;
+	right:10px;
+}
+
 .icon.update_tables_attributes::before {
 	content:"\f00b";
 }

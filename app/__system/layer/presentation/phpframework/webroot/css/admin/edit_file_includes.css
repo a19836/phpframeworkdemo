@@ -3,7 +3,7 @@
 	margin-bottom:10px;
 }
 .top_bar .dummy_elm_to_add_auto_save_options {
-	display:none;
+	display:none !important;
 }
 
 /* FILE INCLUDES */

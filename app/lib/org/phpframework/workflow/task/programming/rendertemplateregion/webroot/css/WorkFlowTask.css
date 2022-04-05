@@ -52,7 +52,7 @@
 .render_template_region_task_html .region,
    .render_template_region_task_html .type {
 	width:100%;
-	height:20px;
+	min-height:20px;
 }
 .render_template_region_task_html .region label,
    .render_template_region_task_html .type label,

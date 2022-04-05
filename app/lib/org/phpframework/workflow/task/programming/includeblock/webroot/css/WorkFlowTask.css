@@ -55,7 +55,7 @@
    .include_block_task_html div.block,
    .include_block_task_html .once {
 	width:100%;
-	height:20px;
+	min-height:20px;
 }
 .include_block_task_html .project label,
    .include_block_task_html .block label,

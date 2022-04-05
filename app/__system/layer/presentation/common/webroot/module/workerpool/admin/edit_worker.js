@@ -15,7 +15,7 @@ $(function () {
 	//prepare trees
 	chooseMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : function(ul, data) {
 			prepareLayerFileNodes1(ul, data, chooseMethodFromFileManagerTree);
 		},
@@ -28,7 +28,7 @@ $(function () {
 	
 	chooseFunctionFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : function(ul, data) {
 			prepareLayerFileNodes1(ul, data, chooseFunctionFromFileManagerTree);
 		},
@@ -41,7 +41,7 @@ $(function () {
 	
 	chooseFileFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : function(ul, data) {
 			prepareLayerFileNodes1(ul, data, chooseFileFromFileManagerTree);
 		},

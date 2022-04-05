@@ -32,7 +32,7 @@
    .call_hibernate_method_task_html .service_method,
    .call_hibernate_method_task_html .service_method_args {
 	width:430px;
-	height:20px;
+	min-height:20px;
 	margin:0 auto;
 }
 .call_hibernate_method_task_html .service_method_args {

@@ -1,3 +1,13 @@
+function toggleProjectsListType(elm, type) {
+	elm = $(elm);
+	var p = elm.parent();
+	
+	p.find(".icon").removeClass("active");
+	elm.find(".icon").addClass("active");
+	
+	p.closest(".choose_available_project").removeClass(type == "block_view" ? "list_view" : "block_view").addClass(type == "block_view" ? "block_view" : "list_view");
+}
+
 function updateLayerProjects(folder_to_filter) {
 	var option = $(".choose_available_project > .layer select option:selected");
 	var bean_name = option.attr("bean_name");
@@ -8,7 +18,9 @@ function updateLayerProjects(folder_to_filter) {
 
 function prepareChooseAvailableProjectsHtml(layer_projects, folder_to_filter) {
 	var aps = getAvailableProjectsConvertedWithFolders(layer_projects, folder_to_filter);
-	var html = '';
+	var go_up_html = '';
+	var folders_html = '';
+	var projects_html = '';
 	
 	if (folder_to_filter) {
 		folder_to_filter = folder_to_filter.replace(/[\/]+/, "/").replace(/[\/]+$/, "");
@@ -16,7 +28,7 @@ function prepareChooseAvailableProjectsHtml(layer_projects, folder_to_filter) {
 		dirs.pop();
 		var parent_folder = dirs.join("/");
 		
-		html += '<li class="back" onClick="updateLayerProjects(\'' + parent_folder + '\');">Go Up</li>';
+		go_up_html += '<a onClick="updateLayerProjects(\'' + parent_folder + '\');"><i class="icon go_up"></i> Go to parent folder</a>';
 	}
 	
 	if (!$.isEmptyObject(aps)) {
@@ -26,23 +38,36 @@ function prepareChooseAvailableProjectsHtml(layer_projects, folder_to_filter) {
 				var is_project = $.isPlainObject(aps[k]) && aps[k]["is_project"] === true;
 				
 				if (!is_project) {
-					html += getChooseAvailableProjectHtml(folder_to_filter, k, aps[k]);
+					folders_html += getChooseAvailableProjectHtml(folder_to_filter, k, aps[k]);
 					
 					aps[k] = null;
 				}
 			}
-		
+	}
+	
+	if (folders_html == '')
+		folders_html += '<li class="no_projects">There are no folders' + (folder_to_filter ? ' inside of "' + folder_to_filter + '".' : '.') + '</li>';
+	
+	if (!$.isEmptyObject(aps)) {
 		//add files 
 		for (var k in aps) 
 			if (aps[k])
-				html += getChooseAvailableProjectHtml(folder_to_filter, k, aps[k]);
+				projects_html += getChooseAvailableProjectHtml(folder_to_filter, k, aps[k]);
 	}
 	else
-		html += '<li class="no_projects">There are no available projects...<br/>Please create a new project by clicking <a href="javascript:void(0)" onClick="addProject();">here</a>.</li>';
+		projects_html += '<li class="no_projects">There are no available projects...</li>';
 	
 	var choose_available_project = $(".choose_available_project");
-	choose_available_project.children(".current_project_folder").html(folder_to_filter ? '<span class="folder"></span> ' + folder_to_filter + "/" : "").attr("folder_to_filter", folder_to_filter);
-	choose_available_project.children("ul").html(html);
+	var group_folders = choose_available_project.children(".group.folders");
+	var group_projects = choose_available_project.children(".group.projects");
+	
+	group_folders.children("ul").html(folders_html);
+	group_projects.children("ul").html(projects_html);
+	
+	choose_available_project.find(".current_project_folder").html(folder_to_filter ? '<span class="folder"></span> ' + folder_to_filter + "/" : "").attr("folder_to_filter", folder_to_filter);
+	
+	choose_available_project.find(".project_folder_go_up").html(go_up_html);
+	
 	choose_available_project.children(".loading_projects").hide();
 }
 
@@ -51,24 +76,24 @@ function getChooseAvailableProjectHtml(folder_to_filter, fp, project_props) {
 	
 	var is_project = $.isPlainObject(project_props) && project_props["is_project"] === true;
 	var project_id = (folder_to_filter ? folder_to_filter + "/" : "") + fp;
-	var project_logo_url = $.isPlainObject(project_props) && project_props["logo"] ? project_props["logo"] : null;
+	var project_logo_url = $.isPlainObject(project_props) && project_props["logo_url"] ? project_props["logo_url"] : null;
 	var label = fp.replace("/_/g", " ");
 	label = label.charAt(0).toUpperCase() + label.substr(1, label.length - 1);
 	
 	if (is_project)
-		html += '<li class="project ' + (!folder_to_filter && project_id == "common" ? "project_common" : "") + '" onClick="selectAvailableProject(\'' + project_id + '\', event);">'
+		html += '<li class="project ' + (!folder_to_filter && project_id == "common" ? "project_common" : "") + '" onClick="selectAvailableProject(\'' + project_id + '\', event);" title="' + label + '">';
 	else
-		html += '<li class="folder" onClick="updateLayerProjects(\'' + project_id + '\');">'
-	
-	html += '	<label>' + label + '</label>';
+		html += '<li class="folder" onClick="updateLayerProjects(\'' + project_id + '\');" title="' + label + '">';
 	
 	if (project_logo_url)
 		html += '	<div class="image">' + (project_logo_url ? '<img src="' + project_logo_url + '" onError="$(this).parent().removeClass("image").addClass("photo");$(this).remove();" />' : '') + '</div>';
 	else
 		html += '	<div class="photo"></div>';
 	
-	if (!is_project) //if is folder
-		html += '<a href="javascript:void(0)">View Projects in this folder</a>';
+	html += '	<label>' + label + '</label>';
+	
+	/*if (!is_project) //if is folder
+		html += '<a href="javascript:void(0)">View Projects in this folder</a>';*/
 	
 	html += '</li>';
 	
@@ -79,7 +104,8 @@ function selectAvailableProject(project_id, originalEvent) {
 	var option = $(".choose_available_project > .layer select option:selected");
 	var bean_name = option.attr("bean_name");
 	var bean_file_name = option.attr("bean_file_name");
-	var url = select_project_url.replace("#bean_name#", bean_name).replace("#bean_file_name#", bean_file_name).replace("#project#", project_id);
+	var layer_bean_folder_name = option.attr("layer_bean_folder_name");
+	var url = select_project_url.replace("#bean_name#", bean_name).replace("#bean_file_name#", bean_file_name).replace("#project#", project_id).replace("#filter_by_layout#", layer_bean_folder_name + "/" + project_id);
 	
 	//if ctrl key is pressed
 	if (originalEvent && (originalEvent.ctrlKey || originalEvent.keyCode == 65)) {
@@ -89,7 +115,7 @@ function selectAvailableProject(project_id, originalEvent) {
 			win.focus();
 	}
 	else if (is_popup) { //if is popup
-		if (typeof window.parent.MyFancyPopupProjects != "undefined" && typeof window.parent.MyFancyPopupProjects.settings.goTo == "function")
+		if (typeof window.parent.MyFancyPopupProjects != "undefined" && window.parent.MyFancyPopupProjects.settings && typeof window.parent.MyFancyPopupProjects.settings.goTo == "function")
 			window.parent.MyFancyPopupProjects.settings.goTo(url, originalEvent);
 		else
 			window.parent.document.location = url;
@@ -127,7 +153,9 @@ function getAvailableProjectsConvertedWithFolders(layer_projects, folder_to_filt
 					obj = obj[dir];
 				}
 				
-				project_props["is_project"] = true;
+				if (project_props["item_type"] != "project_folder")
+					project_props["is_project"] = true;
+				
 				obj[file_name] = project_props;
 			}
 		}
@@ -136,45 +164,45 @@ function getAvailableProjectsConvertedWithFolders(layer_projects, folder_to_filt
 }
 
 function addProject() {
-	var project_name = prompt("Please write the new project name:");
+	var choose_available_project= $(".choose_available_project");
+	var option = choose_available_project.find(" > .layer select option:selected").first();
+	var folder_to_filter = choose_available_project.find(".current_project_folder").attr("folder_to_filter");
+	var bean_name = option.attr("bean_name");
+	var bean_file_name = option.attr("bean_file_name");
+	var path = folder_to_filter ? folder_to_filter + "/" : "";
+	var url = add_project_url.replace("#bean_name#", bean_name).replace("#bean_file_name#", bean_file_name).replace("#path#", path);
 	
-	if (project_name) {
-		MyFancyPopup.showOverlay();
-		MyFancyPopup.showLoading();
-		
-		var choose_available_project= $(".choose_available_project");
-		var option = choose_available_project.find(" > .layer select option:selected").first();
-		var folder_to_filter = choose_available_project.children(".current_project_folder").attr("folder_to_filter");
-		var extra = (folder_to_filter ? folder_to_filter + "/" : "") + project_name;
-		var url = add_project_url.replace("#extra#", extra).replace("#bean_name#", option.attr("bean_name")).replace("#bean_file_name#", option.attr("bean_file_name"));
-		
-		$.ajax({
-			type : "get",
-			url : url,
-			dataType : "text",
-			success : function(data, textStatus, jqXHR) {
-				if (data == "1") {
-					var url = "" + document.location;
-					url = url.indexOf("#") != -1 ? url.substr(0, url.indexOf("#")) : url; //remove # so it can refresh page
-					
-					if (folder_to_filter)
-						url += "&folder_to_filter=" + folder_to_filter;
-					
-					document.location = url
-				}
-				else
-					StatusMessageHandler.showError("Error: Project not created! Please try again." + (data ? "\n" + data : ""));
-			},
-			error : function(jqXHR, textStatus, errorThrown) { 
-				if (jqXHR.responseText);
-					StatusMessageHandler.showError(jqXHR.responseText);
-			}
-		}).always(function() {
-			MyFancyPopup.hidePopup();
-		});
+	//get popup
+	var popup = $("body > .edit_project_details_popup");
+	
+	if (!popup[0]) {
+		popup = $('<div class="myfancypopup with_iframe_title edit_project_details_popup"></div>');
+		$(document.body).append(popup);
 	}
-	else if (project_name != null) {
-		StatusMessageHandler.showError("Error: Project name cannot be empty");
-	}
+	
+	popup.html('<iframe></iframe>'); //cleans the iframe so we don't see the previous html
+	
+	//prepare popup iframe
+	var iframe = popup.children("iframe");
+	iframe.attr("src", url);
+	
+	//open popup
+	MyFancyPopup.init({
+		elementToShow: popup,
+		parentElement: document,
+	});
+	
+	MyFancyPopup.showPopup();
 }
 
+function onSucccessfullAddProject() {
+	var choose_available_project= $(".choose_available_project");
+	var folder_to_filter = choose_available_project.find(".current_project_folder").attr("folder_to_filter");
+	var url = "" + document.location;
+	url = url.indexOf("#") != -1 ? url.substr(0, url.indexOf("#")) : url; //remove # so it can refresh page
+	
+	if (folder_to_filter)
+		url += "&folder_to_filter=" + folder_to_filter;
+	
+	document.location = url;
+}

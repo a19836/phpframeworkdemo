@@ -63,8 +63,8 @@ FunctionUtilObj.create_workflow_file_from_code_url = create_workflow_file_from_c
 	</div>'; if ($obj_data) { $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, null, null, null, null, null, $presentation_brokers); $main_content .= '
 	<div class="config_obj with_top_bar_tab">
 		<ul class="tabs tabs_transparent tabs_right tabs_icons">
-			<li id="code_editor_tab" title="Code"><a href="#code" onClick="onClickCodeEditorTab(this);return false;"><i class="icon code_editor_tab"></i> Code Editor</a></li>
-			<li id="tasks_flow_tab" title="Workflow"><a href="#ui" onClick="onClickTaskWorkflowTab(this);return false;"><i class="icon tasks_flow_tab"></i> Workflow Editor</a></li>
+			<li id="code_editor_tab" title="Code Editor"><a href="#code" onClick="onClickCodeEditorTab(this);return false;"><i class="icon code_editor_tab"></i> Code Editor</a></li>
+			<li id="tasks_flow_tab" title="Diagram Editor"><a href="#ui" onClick="onClickTaskWorkflowTab(this);return false;"><i class="icon tasks_flow_tab"></i> Diagram Editor</a></li>
 		</ul>
 		<div id="code">
 			<div class="code_menu top_bar_menu">

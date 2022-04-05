@@ -20,7 +20,7 @@ $(function () {
 	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
 	});
@@ -28,7 +28,7 @@ $(function () {
 	
 	chooseMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
 	});
@@ -36,7 +36,7 @@ $(function () {
 	
 	chooseFunctionFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
 	});
@@ -44,7 +44,7 @@ $(function () {
 	
 	chooseFileFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 	});
@@ -52,7 +52,7 @@ $(function () {
 	
 	choosePresentationFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
 	});
@@ -60,7 +60,7 @@ $(function () {
 	
 	choosePageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
 	});
@@ -68,7 +68,7 @@ $(function () {
 	
 	chooseImageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
 	});
@@ -142,6 +142,20 @@ function onToggleFullScreen(in_full_screen) {
 		
 		resizeSettingsPanel(template_obj, top);
 	}, 500);
+}
+
+function toggleContentEditor(elm) {
+	var template_obj = $(".template_obj");
+	var top_bar = $(".top_bar");
+	var input = top_bar.find("header ul li.toggle_content_editor > a input");
+	
+	template_obj.toggleClass("content_editor_shown");
+	top_bar.toggleClass("content_editor_shown");
+	
+	if (template_obj.hasClass("content_editor_shown"))
+		input.prop("checked", true).attr("checked", "checked");
+	else
+		input.prop("checked", false).removeAttr("checked");
 }
 
 function preview() {

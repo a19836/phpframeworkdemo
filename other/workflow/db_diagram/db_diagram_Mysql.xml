@@ -5,49 +5,49 @@
 		<id><![CDATA[school]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>78</offset_left>
-		<offset_top>37</offset_top>
+		<offset_left>72</offset_left>
+		<offset_top>33</offset_top>
 		<width>160.3</width>
 		<height>58.3</height>
 		<properties>
 			<exits>
 				<layer_exit>
-					<color><![CDATA[rgb(0,0,0)]]></color>
+					<color><![CDATA[#000]]></color>
 					<type><![CDATA[Flowchart]]></type>
 					<overlay><![CDATA[No Arrows]]></overlay>
 				</layer_exit>
 			</exits>
 			<table_charset></table_charset>
 			<table_collation><![CDATA[utf8_general_ci]]></table_collation>
-			<table_storage_engine><![CDATA[InnoDB]]></table_storage_engine>
-			<table_attr_primary_keys><![CDATA[true]]></table_attr_primary_keys>
-			<table_attr_primary_keys><![CDATA[false]]></table_attr_primary_keys>
+			<table_storage_engine><![CDATA[innodb]]></table_storage_engine>
+			<table_attr_primary_keys>1</table_attr_primary_keys>
+			<table_attr_primary_keys></table_attr_primary_keys>
 			<table_attr_names><![CDATA[school_id]]></table_attr_names>
 			<table_attr_names><![CDATA[name]]></table_attr_names>
 			<table_attr_types><![CDATA[bigint]]></table_attr_types>
 			<table_attr_types><![CDATA[varchar]]></table_attr_types>
 			<table_attr_lengths>20</table_attr_lengths>
 			<table_attr_lengths>50</table_attr_lengths>
-			<table_attr_nulls><![CDATA[false]]></table_attr_nulls>
-			<table_attr_nulls><![CDATA[false]]></table_attr_nulls>
-			<table_attr_unsigneds><![CDATA[true]]></table_attr_unsigneds>
-			<table_attr_unsigneds><![CDATA[false]]></table_attr_unsigneds>
-			<table_attr_uniques><![CDATA[true]]></table_attr_uniques>
-			<table_attr_uniques><![CDATA[false]]></table_attr_uniques>
-			<table_attr_auto_increments><![CDATA[true]]></table_attr_auto_increments>
-			<table_attr_auto_increments><![CDATA[false]]></table_attr_auto_increments>
-			<table_attr_has_defaults><![CDATA[false]]></table_attr_has_defaults>
-			<table_attr_has_defaults><![CDATA[false]]></table_attr_has_defaults>
+			<table_attr_nulls></table_attr_nulls>
+			<table_attr_nulls></table_attr_nulls>
+			<table_attr_unsigneds>1</table_attr_unsigneds>
+			<table_attr_unsigneds></table_attr_unsigneds>
+			<table_attr_uniques>1</table_attr_uniques>
+			<table_attr_uniques></table_attr_uniques>
+			<table_attr_auto_increments>1</table_attr_auto_increments>
+			<table_attr_auto_increments></table_attr_auto_increments>
+			<table_attr_has_defaults></table_attr_has_defaults>
+			<table_attr_has_defaults></table_attr_has_defaults>
 			<table_attr_defaults></table_attr_defaults>
 			<table_attr_defaults></table_attr_defaults>
 			<table_attr_extras><![CDATA[auto_increment]]></table_attr_extras>
 			<table_attr_extras></table_attr_extras>
 			<table_attr_charsets></table_attr_charsets>
 			<table_attr_charsets><![CDATA[utf8]]></table_attr_charsets>
-			<table_attr_comments></table_attr_comments>
-			<table_attr_comments></table_attr_comments>
 			<table_attr_collations></table_attr_collations>
 			<table_attr_collations><![CDATA[utf8_general_ci]]></table_attr_collations>
+			<table_attr_comments></table_attr_comments>
+			<table_attr_comments></table_attr_comments>
 		</properties>
 	</task>
 	<task>
@@ -55,8 +55,8 @@
 		<id><![CDATA[student]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>77</offset_left>
-		<offset_top>198</offset_top>
+		<offset_left>72</offset_left>
+		<offset_top>183</offset_top>
 		<width>160.3</width>
 		<height>74.3</height>
 		<properties>
@@ -132,8 +132,8 @@
 		<id><![CDATA[teacher]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>374</offset_left>
-		<offset_top>108</offset_top>
+		<offset_left>313</offset_left>
+		<offset_top>90</offset_top>
 		<width>160.3</width>
 		<height>92.3</height>
 		<properties>

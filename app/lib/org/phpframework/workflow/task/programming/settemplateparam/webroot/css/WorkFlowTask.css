@@ -55,7 +55,7 @@
 .set_template_param_task_html .name,
    .set_template_param_task_html .value {
 	width:440px;
-	height:20px;
+	min-height:20px;
 }
 .set_template_param_task_html .name label,
    .set_template_param_task_html .value label,

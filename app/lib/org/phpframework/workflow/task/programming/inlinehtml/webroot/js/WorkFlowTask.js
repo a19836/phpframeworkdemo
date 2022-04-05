@@ -20,6 +20,7 @@
 var InlineHTMLTaskPropertyObj = {
 	editor_save_func: null,
 	is_code_html_base : true, //This means that the base is html and not php
+	layout_ui_editor_menu_widgets_elm_selector : null,
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		//console.log(properties_html_elm);
@@ -34,6 +35,23 @@ var InlineHTMLTaskPropertyObj = {
 		//console.log(layout_ui_editor_elm.data("LayoutUIEditor"));
 		
 		if (layout_ui_editor_elm[0] && !layout_ui_editor_elm.data("LayoutUIEditor") && typeof LayoutUIEditor == "function") {
+			//add InlineHTMLTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector in <ul class="menu-widgets hidden"></ul>
+			if (InlineHTMLTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector) {
+				var mwb = $(InlineHTMLTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector);
+				
+				if (mwb[0]) {
+					var menu_widgets = layout_ui_editor_elm.children(".menu-widgets");
+					
+					if (!menu_widgets[0]) {
+						menu_widgets = $('<ul class="menu-widgets hidden"></ul>');
+						layout_ui_editor_elm.append(menu_widgets);
+					}
+				
+					menu_widgets.append( mwb.contents().clone() );
+				}
+			}
+			
+			//init LayoutUIEditor
 			var ptl_ui_creator_var_name = "PTLLayoutUIEditor_" + Math.floor(Math.random() * 1000);
 			var PtlLayoutUIEditor = new LayoutUIEditor();
 			PtlLayoutUIEditor.options.ui_element = layout_ui_editor_elm;

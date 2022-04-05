@@ -1,5 +1,6 @@
 /* ADMIN PANEL */
 .admin_panel {
+	padding:0 20px;
 	border:0;
 	font-size:12px;
 	font-family:inherit;
@@ -29,31 +30,12 @@
 	border-bottom:1px solid var(--icon-hover-color) !important;
 }
 
-/* PROJECTS */
-.projects .projects_list_type {
-	text-align:center;
+/* PROJS */
+.projs > .choose_available_project > .title {
+	display:none;
 }
-.projects .projects_list_type .icon {
-	font-size:16px;
-	color:#000;
-}
-.projects .projects_list_type .icon:hover {
-	color:var(--icon-hover-color);
-}
-
-.projects .new_project {
-	margin:40px 20px;
-	text-align:center;
-}
-.projects .new_project .title {
-	font-size:18px;
-	font-weight:bold;
-}
-.projects .new_project .description {
-	margin-top:5px;
-}
-.projects .new_project .button {
-	margin-top:20px;
+.projs > .choose_available_project > .selected_project {
+	margin-top:-10px;
 }
 
 /* HOW IT WORKS */

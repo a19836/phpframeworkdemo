@@ -18,4 +18,4 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include_once $EVC->getUtilPath("WorkFlowTasksFileHandler"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $path = WorkFlowTasksFileHandler::getTaskFilePathByPath($workflow_paths_id, $_GET["path"], $_GET["path_extra"]); $WorkFlowTasksFileHandler = new WorkFlowTasksFileHandler($path); $WorkFlowTasksFileHandler->init(); $tasks = $WorkFlowTasksFileHandler->getWorkflowData(); ?>
+include_once $EVC->getUtilPath("WorkFlowTasksFileHandler"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $path = $_GET["path"]; $path_extra = $_GET["path_extra"]; $path = str_replace("../", "", $path);$path_extra = str_replace("../", "", $path_extra); $path = WorkFlowTasksFileHandler::getTaskFilePathByPath($workflow_paths_id, $path, $path_extra); $WorkFlowTasksFileHandler = new WorkFlowTasksFileHandler($path); $WorkFlowTasksFileHandler->init(); $tasks = $WorkFlowTasksFileHandler->getWorkflowData(); ?>

@@ -40,7 +40,7 @@
 }
 .include_file_task_html .file_path, .include_file_task_html .type, .include_file_task_html .once {
 	width:100%;
-	height:20px;
+	min-height:20px;
 }
 .include_file_task_html .file_path label, .include_file_task_html .type label, .include_file_task_html .once label {
 	width:100px;

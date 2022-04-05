@@ -88,35 +88,44 @@ function deleteProject(elm, url) {
 }
 
 function addProject(elm, url) {
-	var project_name = prompt("Please write the new project name:");
+	var choose_available_project= $(".choose_available_project");
+	var option = choose_available_project.find(" > .layer select option:selected").first();
+	var folder_to_filter = choose_available_project.find(".current_project_folder").attr("folder_to_filter");
+	var bean_name = option.attr("bean_name");
+	var bean_file_name = option.attr("bean_file_name");
+	var path = folder_to_filter ? folder_to_filter + "/" : "";
+	url = url.replace("#bean_name#", bean_name).replace("#bean_file_name#", bean_file_name).replace("#path#", path);
 	
-	if (project_name) {
-		MyFancyPopup.showOverlay();
-		MyFancyPopup.showLoading();
-		
-		$.ajax({
-			type : "get",
-			url : url.replace("#extra#", project_name),
-			dataType : "text",
-			success : function(data, textStatus, jqXHR) {
-				if (data == "1") {
-					url = document.location;
-					document.location = url;
-				}
-				else
-					StatusMessageHandler.showError("Error: Project not created! Please try again." + (data ? "\n" + data : ""));
-			},
-			error : function(jqXHR, textStatus, errorThrown) { 
-				if (jqXHR.responseText);
-					StatusMessageHandler.showError(jqXHR.responseText);
-			}
-		}).always(function() {
-			MyFancyPopup.hidePopup();
-		});
+	//get popup
+	var popup = $("body > .edit_project_details_popup");
+	
+	if (!popup[0]) {
+		popup = $('<div class="myfancypopup with_iframe_title edit_project_details_popup"></div>');
+		$(document.body).append(popup);
 	}
-	else if (project_name != null) {
-		StatusMessageHandler.showError("Error: Project name cannot be empty");
-	}
+	
+	popup.html('<iframe></iframe>'); //cleans the iframe so we don't see the previous html
+	
+	//prepare popup iframe
+	var iframe = popup.children("iframe");
+	iframe.attr("src", url);
+	
+	//open popup
+	MyFancyPopup.init({
+		elementToShow: popup,
+		parentElement: document,
+	});
+	
+	MyFancyPopup.showPopup();
+}
+
+function editProject(elm, url) {
+	addProject(elm, url);
+}
+
+function onSucccessfullAddProject() {
+	url = document.location;
+	document.location = url;
 }
 
 function goTo(elm, url) {

@@ -23,7 +23,7 @@ $(function () {
 	
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
 	});
@@ -31,7 +31,7 @@ $(function () {
 	
 	chooseBlockFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotBlocksFromTree,
 	});
@@ -39,7 +39,7 @@ $(function () {
 	
 	choosePageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
 	});
@@ -47,7 +47,7 @@ $(function () {
 	
 	chooseImageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
 	});
@@ -55,7 +55,7 @@ $(function () {
 	
 	chooseProjectTemplateUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotTemplatesFromTree,
 	});

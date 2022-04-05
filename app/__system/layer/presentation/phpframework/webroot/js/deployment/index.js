@@ -34,7 +34,7 @@ $(function() {
 	//init trees
 	chooseTemplateTaskLayerFileFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllInvalidTemplateTaskLayerFilesFromTree,
 	});
@@ -42,7 +42,7 @@ $(function() {
 	
 	chooseTestUnitsFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllInvalidTestUnitsFromTree,
 	});

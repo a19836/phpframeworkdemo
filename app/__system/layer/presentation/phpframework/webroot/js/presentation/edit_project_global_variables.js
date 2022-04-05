@@ -34,7 +34,7 @@ $(function () {
 	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
 	});
@@ -42,7 +42,7 @@ $(function () {
 	
 	chooseMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
 	});
@@ -50,7 +50,7 @@ $(function () {
 	
 	chooseFunctionFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
 	});
@@ -58,7 +58,7 @@ $(function () {
 	
 	chooseFileFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 	});
@@ -68,14 +68,14 @@ $(function () {
 	var global_vars_obj = $(".global_vars_obj");
 	
 	if (global_vars_obj[0]) {
-		active_tab = is_code_valid ? 2 : 0;
+		active_tab = is_code_valid ? 0 : 1;
 		
 		global_vars_obj.tabs({
-			active: show_low_code_first ? 1 : active_tab, //show workflow tab
+			active: show_low_code_first ? 2 : active_tab, //show workflow tab
 		});
 		
 		if (!is_code_valid)
-			global_vars_obj.tabs("disable" , 2); //disable simple form tab
+			global_vars_obj.tabs("disable" , 0); //disable simple form tab
 		
 		var textarea = $("#code textarea")[0];
 		if (textarea) {
@@ -94,7 +94,7 @@ $(function () {
 				saved_simple_form_settings_id = getSimpleFormSettingsObjId();
 				
 				if (is_code_valid)
-					global_vars_obj.tabs("option", "active", 2);
+					global_vars_obj.tabs("option", "active", 0);
 				
 				auto_save = true;
 			},

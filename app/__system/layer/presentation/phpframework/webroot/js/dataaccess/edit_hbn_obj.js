@@ -44,15 +44,16 @@ function toggleHbnObjAdvancedSettings(elm) {
 	elm = $(elm);
 	var advanced_settings = $(".advanced_settings");
 	var simple_settings = $(".simple_settings");
-	var is_shown = elm.hasClass("active");
+	var input = elm.children("input");
+	var is_shown = advanced_settings.is(":visible");
 	
 	if (is_shown) {
-		elm.removeClass("active");
+		input.prop("checked", false).removeAttr("checked");
 		advanced_settings.hide();
 		simple_settings.show();
 	}
 	else {
-		elm.addClass("active");
+		input.prop("checked", true).attr("checked", "checked");
 		advanced_settings.show();
 		simple_settings.hide();
 	}

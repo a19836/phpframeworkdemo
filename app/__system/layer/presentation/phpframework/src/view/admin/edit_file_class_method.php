@@ -63,6 +63,9 @@ FunctionUtilObj.set_tmp_workflow_file_url = set_tmp_workflow_file_url;
 FunctionUtilObj.get_tmp_workflow_file_url = get_tmp_workflow_file_url;
 FunctionUtilObj.create_code_from_workflow_file_url = create_code_from_workflow_file_url;
 FunctionUtilObj.create_workflow_file_from_code_url = create_workflow_file_from_code_url;
+
+CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
+InlineHTMLTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
 '; if ($item_type == "presentation") $head .= '
 ProgrammingTaskUtil.on_programming_task_choose_file_path_callback = onIncludeFileTaskChooseFile;
 ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
@@ -155,11 +158,11 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 				<li class="save" title="Save"><a onClick="' . $js_save_func_name . '()"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>
-	</div>'; if ($obj_data || (!$method_id && $ft == "class_method") || (!$function_id && $ft == "function")) { $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $db_brokers, $data_access_brokers, $ibatis_brokers, $hibernate_brokers, $business_logic_brokers, $presentation_brokers); $main_content .= '
+	</div>'; if ($obj_data || (!$method_id && $ft == "class_method") || (!$function_id && $ft == "function")) { $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $db_brokers, $data_access_brokers, $ibatis_brokers, $hibernate_brokers, $business_logic_brokers, $presentation_brokers); $common_webroot_path = $EVC->getWebrootPath($EVC->getCommonProjectName()); $ui_menu_widgets_html = WorkFlowPresentationHandler::getUIEditorWidgetsHtml($common_webroot_path, $project_common_url_prefix, $webroot_cache_folder_path, $webroot_cache_folder_url); $ui_menu_widgets_html .= WorkFlowPresentationHandler::getUserUIEditorWidgetsHtml($common_webroot_path, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $main_content .= '
 	<div class="file_class_method_obj with_top_bar_tab">
 		<ul class="tabs tabs_transparent tabs_right tabs_icons">
-			<li id="code_editor_tab" title="Code"><a href="#code" onClick="onClickCodeEditorTab(this);return false;"><i class="icon code_editor_tab"></i> Code Editor</a></li>
-			<li id="tasks_flow_tab" title="Workflow"><a href="#ui" onClick="onClickTaskWorkflowTab(this);return false;"><i class="icon tasks_flow_tab"></i> Workflow Editor</a></li>
+			<li id="code_editor_tab" title="Code Editor"><a href="#code" onClick="onClickCodeEditorTab(this);return false;"><i class="icon code_editor_tab"></i> Code Editor</a></li>
+			<li id="tasks_flow_tab" title="Diagram Editor"><a href="#ui" onClick="onClickTaskWorkflowTab(this);return false;"><i class="icon tasks_flow_tab"></i> Diagram Editor</a></li>
 		</ul>
 		
 		<div id="settings" class="' . $ft . '_settings collapsed">
@@ -231,5 +234,9 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 		</div>
 		
 		<div id="ui">' . WorkFlowPresentationHandler::getTaskFlowContentHtml($WorkFlowUIHandler, array("save_func" => $js_save_func_name)) . '</div>
+		
+		<div class="ui-menu-widgets-backup hidden">
+			' . $ui_menu_widgets_html . '
+		</div>
 	</div>
 	<div class="big_white_panel"></div>'; } else $main_content .= '<div class="error">Error: The system couldn\'t detect the selected object. Please refresh and try again...</div>'; ?>

@@ -71,7 +71,7 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_simple_a
 		</li>
 		<li class="buttons">
 			<span class="project">Selected project: "' . $project . '"</span>
-			<span class="icon home" onClick="goTo(this, \'home_url\', event)" home_url="' . "{$project_url_prefix}admin/admin_home?admin_type=simple&bean_name=$bean_name&bean_file_name=$bean_file_name&project=$project" . '" title="Go Home"></span>
+			<span class="icon home" onClick="goTo(this, \'home_url\', event)" home_url="' . "{$project_url_prefix}admin/admin_home" . '" title="Go Home"></span>
 			<span class="icon refresh" onClick="refreshIframe()" title="Refresh"></span>
 			<span class="icon go_back" onClick="goBack()" title="Go Back"></span>
 		</li>
@@ -81,5 +81,5 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_simple_a
 	<div class="iframe_overlay">
 		<div class="iframe_loading">Loading...</div>
 	</div>
-	<iframe src="' . "{$project_url_prefix}admin/admin_home?admin_type=simple&bean_name=$bean_name&bean_file_name=$bean_file_name&project=$project" . '"></iframe>
+	<iframe src="' . "{$project_url_prefix}admin/admin_home" . '"></iframe>
 </div>'; if ($default_page) { $main_content .= '<script>$("iframe")[0].src = \'' . $default_page . '\';</script>'; } ?>

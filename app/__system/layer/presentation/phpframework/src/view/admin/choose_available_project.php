@@ -18,14 +18,14 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include_once $EVC->getUtilPath("AdminMenuUIHandler"); $add_project_url = $project_url_prefix . "phpframework/presentation/manage_file?bean_name=#bean_name#&bean_file_name=#bean_file_name#&action=create_folder&item_type=presentation&extra=#extra#&path=&folder_type=project"; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
+include_once $EVC->getUtilPath("AdminMenuUIHandler"); $add_project_url = $project_url_prefix . "phpframework/presentation/edit_project_details?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&popup=1&on_success_js_func=onSucccessfullAddProject"; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/choose_available_project.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/choose_available_project.js"></script>
 
 <script>
 var add_project_url = "' . $add_project_url . '";
-var select_project_url = "' . $project_url_prefix . $redirect_path . (strpos($redirect_path, "?") !== false ? '&' : '?') . 'bean_name=#bean_name#&bean_file_name=#bean_file_name#&project=#project#";
+var select_project_url = "' . $project_url_prefix . $redirect_path . (strpos($redirect_path, "?") !== false ? '&' : '?') . 'bean_name=#bean_name#&bean_file_name=#bean_file_name#&project=#project#&filter_by_layout=#filter_by_layout#";
 var layers_props = ' . json_encode($layers_projects) . ';
 var is_popup = ' . ($is_popup ? 1 : 0) . ';
 
@@ -33,15 +33,48 @@ $(function () {
 	updateLayerProjects("' . $folder_to_filter . '");
 });
 </script>'; $main_content = '
-<div class="choose_available_project">
-	<div class="title">Please choose a project</div>'; if ($layers_projects) { $main_content .= '
-	<div class="layer">
-		<label' . (count($layers_projects) == 1 ? ' class="hidden"' : '') . '>Presentation Layer:</label>
-		<select' . (count($layers_projects) == 1 ? ' class="hidden"' : '') . ' onChange="updateLayerProjects(this)">'; foreach ($layers_projects as $bean_name => $layer_props) { $main_content .= '<option bean_name="' . $bean_name . '" bean_file_name="' . $layer_props["bean_file_name"] . '">' . $layer_props["item_label"] . '</option>'; } $main_content .= '
-		</select>
-		<a class="create_project" href="javascript:void(0)" onClick="addProject();" title="Click here to add a new project"><span class="icon add"></span> Add Project</a>
-	</div>'; } $main_content .= '
-	<div class="current_project_folder"></div>
+<div class="choose_available_project block_view' . (count($layers_projects) == 1 ? ' single_presentation_layer' : '') . ($projects_exists ? '' : ' no_projects') . '">
+	<div class="title">Choose a Project</div>'; if ($filter_by_layout) $main_content .= '
+		<div class="selected_project">Your current selected project is the: "' . $filter_by_layout . '".</div>'; if ($layers_projects) { $main_content .= '
+		<div class="layer">
+			<label>Presentation Layer:</label>
+			<select onChange="updateLayerProjects(this)">'; foreach ($layers_projects as $bean_name => $layer_props) { $main_content .= '
+				<option bean_name="' . $bean_name . '" bean_file_name="' . $layer_props["bean_file_name"] . '" layer_bean_folder_name="' . $layer_props["layer_bean_folder_name"] . '">' . $layer_props["item_label"] . '</option>'; } $main_content .= '
+			</select>
+		</div>'; } $main_content .= '
+		<div class="projects_list_type">
+			<a href="javascript:void(0)" onClick="toggleProjectsListType(this, \'block_view\')"><span class="icon block_view active"></span></a>
+			<a href="javascript:void(0)" onClick="toggleProjectsListType(this, \'list_view\')"><span class="icon list_view"></span></a>
+		</div>
+		<div class="clearfix"></div>'; if ($projects_exists) $main_content .= '
+		<div class="new_project">
+			<div class="title">Create Your First Project!</div>
+			<div class="description">Soon this space will be filled with your projects.<br/>Create a new project to get started.</div>
+			<div class="button">
+				<button onClick="addProject();">Create New Project</button>
+			</div>
+		</div>'; else $main_content .= '
+		<div class="new_project">
+			<div class="title">Create a New Project!</div>
+			<div class="description">Or select an existing project from the list below to get started.</div>
+			<div class="button">
+				<button onClick="addProject();">Create New Project</button>
+			</div>
+		</div>'; $main_content .= '
 	<div class="loading_projects"><span class="icon loading"></span> Loading projects...</div>
-	<ul></ul>
+	
+	<div class="group folders">
+		<div class="title">
+			<label>Folders:</label>
+			<div class="current_project_folder"></div>
+			<div class="project_folder_go_up"></div>
+		</div>
+		<ul></ul>
+	</div>
+	<div class="group projects">
+		<div class="title">
+			<label>Projects:</label>
+		</div>
+		<ul></ul>
+	</div>
 </div>'; ?>

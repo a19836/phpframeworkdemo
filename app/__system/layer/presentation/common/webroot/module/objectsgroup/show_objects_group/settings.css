@@ -262,22 +262,25 @@
 }
 
 /* OBJECT TO OBJECTS FIELDS */
-.module_settings .settings div .action_settings .object_to_objects {
-	width:675px;
-	margin:10px auto 0 auto;
+.module_settings .settings .module_show_objects_group_settings .action_settings .object_to_objects {
+	min-width:675px;
+	margin:20px auto 0 auto;
 	padding:5px 5px 2px 5px;
 	background-color:#eee;
 	border:0;
 }
-.module_show_objects_group_settings .action_settings .object_to_objects div {
+.module_settings .settings .module_show_objects_group_settings .action_settings .object_to_objects div {
 	margin-bottom:0;
 }
-.module_settings .settings div .object_to_objects .object_to_objects_main_label {
+.module_settings .settings .module_show_objects_group_settings .object_to_objects .object_to_objects_main_label {
 	margin-bottom:5px;
 	color:#666;
 }
-.module_settings .settings div .object_to_objects .object_type_id label, 
-   .module_settings .settings div .object_to_objects .object_id label {
+.module_settings .settings .module_show_objects_group_settings .object_to_objects_settings .add {
+	margin:-22px 0 0 255px;
+}
+.module_settings .settings .module_show_objects_group_settings .object_to_objects .object_type_id label, 
+   .module_settings .settings .module_show_objects_group_settings .object_to_objects .object_id label {
 	width:80px;
 	display:inline-block;
 }

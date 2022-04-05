@@ -118,7 +118,7 @@ body {
 }
 #left_panel > .tabs a i.main_node_db_layers::before {
 	content:"\f51e";
-	color:#e0a800;
+	color:#FAB12B;
 }
 #left_panel > .tabs a i.main_node_db_layers::after {
 	content:"\f1e6";
@@ -128,7 +128,7 @@ body {
 }
 #left_panel > .tabs a i.main_node_data_access_layers::before {
 	content:"\f5fd";
-	color:#e0a800;
+	color:#FAB12B;
 }
 #left_panel > .tabs a i.main_node_data_access_layers::after {
 	content:"\f1c0";
@@ -136,7 +136,7 @@ body {
 }
 #left_panel > .tabs a i.main_node_business_logic_layers::before {
 	content:"\f5fd";
-	color:#e0a800;
+	color:#FAB12B;
 }
 #left_panel > .tabs a i.main_node_business_logic_layers::after {
 	content:"\e13b";
@@ -146,7 +146,7 @@ body {
 }
 #left_panel > .tabs a i.main_node_presentation_layers::before {
 	content:"\f5fd";
-	color:#e0a800;
+	color:#FAB12B;
 }
 #left_panel > .tabs a i.main_node_presentation_layers::after {
 	content:"\f0ac";
@@ -154,15 +154,15 @@ body {
 }
 #left_panel > .tabs a i.main_node_library::before {
 	content:"\f518";
-	color:#e0a800;
+	color:#FAB12B;
 }
 #left_panel > .tabs a i.main_node_vendors::before {
 	content:"\f2a1";
-	color:#e0a800;
+	color:#FAB12B;
 }
 #left_panel > .tabs a i.main_node_settings::before {
 	content:"\f7d9";
-	color:#e0a800;
+	color:#FAB12B;
 }
 
 /* LEFT PANEL - TREE */

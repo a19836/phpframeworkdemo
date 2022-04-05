@@ -123,8 +123,8 @@ var FunctionUtilObj = {
 				+ '								<li class="sort_tasks"><a onclick="FunctionUtilObj.sortWorkflowTask(this, 4);return false;"><i class="icon sort"></i> Sort Type 4</a></li>'
 				+ '							</ul>'
 				+ '						</li>'
-				+ '						' + (this.create_workflow_file_from_code_url && this.get_tmp_workflow_file_url ? '<li class="generate_tasks_flow_from_code" title="Update Tasks\' Flow from Code"><a onclick="FunctionUtilObj.generateTasksFlowFromCode(this);return false;"><i class="icon generate_tasks_flow_from_code"></i> Update Tasks\' Flow from Code</a></li>' : '')
-				+ '						' + (this.create_code_from_workflow_file_url && this.set_tmp_workflow_file_url ? '<li class="generate_code_from_tasks_flow" title="Generate Code From Tasks\' Flow"><a onclick="FunctionUtilObj.generateCodeFromTasksFlow(this);return false;"><i class="icon generate_code_from_tasks_flow"></i> Generate Code From Tasks\' Flow</a></li>' : '')
+				+ '						' + (this.create_workflow_file_from_code_url && this.get_tmp_workflow_file_url ? '<li class="generate_tasks_flow_from_code" title="Generate Diagram from Code"><a onclick="FunctionUtilObj.generateTasksFlowFromCode(this);return false;"><i class="icon generate_tasks_flow_from_code"></i> Generate Diagram from Code</a></li>' : '')
+				+ '						' + (this.create_code_from_workflow_file_url && this.set_tmp_workflow_file_url ? '<li class="generate_code_from_tasks_flow" title="Generate Code From Diagram"><a onclick="FunctionUtilObj.generateCodeFromTasksFlow(this);return false;"><i class="icon generate_code_from_tasks_flow"></i> Generate Code From Diagram</a></li>' : '')
 				+ '					</ul>'
 				+ '				</div>'
 				+ '				'

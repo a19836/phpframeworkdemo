@@ -93,7 +93,7 @@
 }
 .choose_available_tool li.manage_projects > .photo::before {
 	content:"\f233";
-	color:#fb5c5c;
+	color:#999;
 }
 .choose_available_tool li.manage_layers > .photo::before {
 	content:"\f5fd";

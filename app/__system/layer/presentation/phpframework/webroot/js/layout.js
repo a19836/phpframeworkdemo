@@ -27,10 +27,10 @@ function addAutoSaveMenu(selector, callback) {
 		if (!callback)
 			callback = "onToggleAutoSave";
 		
-		item = $('<li class="auto_save_activation" title="Is Auto Save Active">'
+		item = $('<li class="auto_save_activation" title="Is Auto Save Active" onClick="toggleAutoSaveCheckbox(this, ' + callback + ')">'
 					+ '<i class="icon auto_save_activation"></i>'
 					+ 'Auto Save On: '
-					+ '<input type="checkbox" onChange="toggleAutoSaveCheckbox(this, ' + callback + ')" value="1">'
+					+ '<input type="checkbox" value="1">'
 				+ '</li>');
 		
 		elm.before(item);
@@ -58,10 +58,7 @@ function resetAutoSave() {
 }
 function toggleAutoSaveCheckbox(elm, callback) {
 	setTimeout(function() {
-		if ($(elm).is(":checked")) 
-			auto_save = true;
-		else
-			auto_save = false;
+		auto_save = !auto_save;
 		
 		if (typeof callback == "function")
 			callback();
@@ -131,10 +128,10 @@ function addAutoConvertMenu(selector, callback) {
 		if (!callback)
 			callback = "onToggleAutoConvert";
 		
-		item = $('<li class="auto_convert_activation" title="Is Auto Convert Active">'
+		item = $('<li class="auto_convert_activation" title="Is Auto Convert Active" onClick="toggleAutoConvertCheckbox(this, ' + callback + ')">'
 					+ '<i class="icon auto_convert_activation"></i>'
 					+ 'Auto Convert On: '
-					+ '<input type="checkbox" onchange="toggleAutoConvertCheckbox(this, ' + callback + ')" value="1">'
+					+ '<input type="checkbox" value="1">'
 				+ '</li>');
 		
 		elm.before(item);
@@ -143,13 +140,8 @@ function addAutoConvertMenu(selector, callback) {
 	return item;
 }
 function toggleAutoConvertCheckbox(elm, callback) {
-	elm = $(elm);
-	
 	setTimeout(function() {
-		if (elm.is(":checked")) 
-			auto_convert = true;
-		else
-			auto_convert = false;
+		auto_convert = !auto_convert;
 		
 		if (typeof callback == "function")
 			callback();

@@ -68,7 +68,7 @@
 .loop_task_html .init_counters .fields li, .loop_task_html .increment_counters .fields li {
 	float:none;
 	clear:left;
-	height:20px;
+	min-height:20px;
 	margin-bottom:5px;
 }
 

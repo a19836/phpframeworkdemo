@@ -54,7 +54,7 @@
    .set_template_region_block_param_task_html .param_name, 
    .set_template_region_block_param_task_html .param_value {
 	width:440px;
-	height:20px;
+	min-height:20px;
 }
 .set_template_region_block_param_task_html .region label, 
    .set_template_region_block_param_task_html .block label, 

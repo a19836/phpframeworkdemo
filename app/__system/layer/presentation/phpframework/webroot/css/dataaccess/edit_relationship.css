@@ -10,6 +10,12 @@
 	width:200px;
 	display:inline-block;
 }
+.edit_relationship > .top_bar li.sub_menu > ul {
+	min-width:200px;
+}
+.edit_relationship > .top_bar li.auto_convert_activation {
+	display:none !important;
+}
 
 /* RELATIONSHIP */
 .edit_relationship .data_access_obj {

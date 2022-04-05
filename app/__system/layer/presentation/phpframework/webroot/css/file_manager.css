@@ -40,7 +40,7 @@
 }
 .mytree i.jstree-themeicon::before {
 	content:"\f07b";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.main_node::before {
 	content:"\f07b";
@@ -55,7 +55,7 @@
 }
 .mytree i.folder::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.undefined_file::before {
 	font:var(--fa-font-regular);
@@ -81,7 +81,7 @@
 }
 .mytree i.reserved_folder::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.reserved_folder::after {
 	content:"\f05e";
@@ -96,7 +96,7 @@
 /* ICONS - COMMON */
 .mytree i.cms_common::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.cms_common::after {
 	content:"\f187";
@@ -104,7 +104,7 @@
 }
 .mytree i.cms_module::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.cms_module::after {
 	content:"\f61f";
@@ -112,7 +112,7 @@
 }
 .mytree i.cms_program::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.cms_program::after {
 	content:"\f51f";
@@ -120,7 +120,7 @@
 }
 .mytree i.cms_folder::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.cms_folder::after {
 	content:"\f49e";
@@ -128,13 +128,13 @@
 }
 .mytree i.referenced_folder::before {
 	content:"\2a";
-	color:#e0a800;
+	color:#FAB12B;
 }
 
 /* ICONS - PRESENTATION */
 .mytree i.main_node_presentation_layers::before {
 	content:"\f5fd";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.main_node_presentation_layers::after {
 	content:"\f0ac";
@@ -142,7 +142,7 @@
 }
 .mytree i.main_node_presentation::before {
 	content:"\f07b";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.main_node_presentation::after {
 	content:"\f233";
@@ -154,7 +154,7 @@
 }
 .mytree i.project_folder::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.project_folder::after {
 	content:"\f0a0";
@@ -170,7 +170,7 @@
 }
 .mytree i.configs_folder::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.configs_folder::after {
 	content:"\f013";
@@ -189,7 +189,7 @@
 }
 .mytree i.entities_folder::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.entities_folder::after {
 	content:"\f15b";
@@ -208,7 +208,7 @@
 }
 .mytree i.views_folder::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.views_folder::after {
 	content:"\f03e";
@@ -227,7 +227,7 @@
 }
 .mytree i.templates_folder::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.templates_folder::after {
 	font-size:13px;
@@ -236,7 +236,7 @@
 }
 .mytree i.template_folder::before {
 	content:"\f802";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.template_folder::after {
 	font-size:13px;
@@ -257,7 +257,7 @@
 }
 .mytree i.blocks_folder::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.blocks_folder::after {
 	content:"\f1b2";
@@ -276,7 +276,7 @@
 }
 .mytree i.utils_folder::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.utils_folder::after {
 	content:"\f121";
@@ -303,7 +303,7 @@
 }
 .mytree i.webroot_folder::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.webroot_folder::after {
 	content:"\f0ac";
@@ -344,7 +344,7 @@
 	font-family:var(--main-font-family);
 	font-size:8px;
 	font-weight:bold;
-	background:#e0a80088;
+	background:#FAB12B88;
 	display:inline-block;
 	padding:1px 3px;
 }
@@ -363,7 +363,7 @@
 
 .mytree i.properties::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.properties::after {
 	content:"\f055";
@@ -371,7 +371,7 @@
 }
 .mytree i.controllers_folder::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.controllers_folder::after {
 	content:"\f1e6";
@@ -390,7 +390,7 @@
 }
 .mytree i.caches_folder::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.caches_folder::after {
 	content:"\f0c7";
@@ -409,7 +409,7 @@
 }
 .mytree i.wordpress_folder::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.wordpress_folder::after {
 	font:var(--fa-font-brands);
@@ -442,7 +442,7 @@
 /* ICONS - BUSINESS LOGIC */
 .mytree i.main_node_business_logic_layers::before {
 	content:"\f5fd";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.main_node_business_logic_layers::after {
 	content:"\e13b";
@@ -452,7 +452,7 @@
 }
 .mytree i.main_node_businesslogic::before {
 	content:"\f07b";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.main_node_businesslogic::after {
 	content:"\e13b";
@@ -489,7 +489,7 @@
 /* ICONS - DATA-ACCESS */
 .mytree i.main_node_data_access_layers::before {
 	content:"\f5fd";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.main_node_data_access_layers::after {
 	content:"\f1c0";
@@ -497,7 +497,7 @@
 }
 .mytree i.main_node_hibernate::before {
 	content:"\f07b";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.main_node_hibernate::after {
 	content:"\f0fd";
@@ -505,7 +505,7 @@
 }
 .mytree i.main_node_ibatis::before {
 	content:"\f07b";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.main_node_ibatis::after {
 	content:"\f121";
@@ -563,7 +563,7 @@
 /* ICONS - DB */
 .mytree i.main_node_db_layers::before {
 	content:"\f51e";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.main_node_db_layers::after {
 	content:"\f1c0";
@@ -571,7 +571,7 @@
 }
 .mytree i.main_node_db::before {
 	content:"\f51e";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.main_node_db::after {
 	content:"\f1e6";
@@ -603,26 +603,26 @@
 /* ICONS - LIBRARY */
 .mytree i.main_node_library::before {
 	content:"\f518";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.main_node_lib::before {
 	content:"\f02d";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.main_node_other::before {
 	content:"\f86d";
-	color:#e0a800;
+	color:#FAB12B;
 }
 
 /* ICONS - VENDOR */
 .mytree i.main_node_vendor::before {
 	content:"\f2a1";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.main_node_dao::before {
 	/*content:"\f5fd";*/
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.main_node_dao::after {
 	content:"\f247";
@@ -630,7 +630,7 @@
 }
 .mytree i.dao::before {
 	content:"\f247";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.objtype::before {
 	font:var(--fa-font-brands);
@@ -652,7 +652,7 @@
 }
 .mytree i.code_workflow_editor::before {
 	content:"\f0e8";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.code_workflow_editor::after {
 	content:"\f304";
@@ -662,7 +662,7 @@
 	font:var(--fa-font-brands);
 	font-size:16px;
 	content:"\f174";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.code_workflow_editor_task::after {
 	content:"\f304";
@@ -670,7 +670,7 @@
 }
 .mytree i.layout_ui_editor::before {
 	content:"\f53f";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.layout_ui_editor::after {
 	content:"\f304";
@@ -678,7 +678,7 @@
 }
 .mytree i.layout_ui_editor_widget::before {
 	content:"\f0c8";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.layout_ui_editor_widget::after {
 	content:"\f304";
@@ -686,7 +686,7 @@
 }
 .mytree i.test_unit::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.test_unit::after {
 	content:"\f0ae";
@@ -700,7 +700,7 @@
 /* ICONS - MANAGEMENT */
 .mytree i.main_node_management::before {
 	content:"\f7d9";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .mytree i.main_node_admin_simple_ui::before {
 	content:"\f5c3";

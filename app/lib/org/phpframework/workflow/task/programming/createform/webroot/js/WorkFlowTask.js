@@ -19,6 +19,7 @@
 
 var CreateFormTaskPropertyObj = {
 	editor_save_func: null,
+	layout_ui_editor_menu_widgets_elm_selector : null,
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		//console.log(properties_html_elm);
@@ -274,6 +275,23 @@ var CreateFormTaskPropertyObj = {
 				var ui = ptl_settings_elm.children(".layout_ui_editor");
 				
 				if (ui[0] && !ui.data("LayoutUIEditor") && typeof LayoutUIEditor == "function") {
+					//add CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector in <ul class="menu-widgets hidden"></ul>
+					if (CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector) {
+						var mwb = $(CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector);
+						
+						if (mwb[0]) {
+							var menu_widgets = ui.children(".menu-widgets");
+							
+							if (!menu_widgets[0]) {
+								menu_widgets = $('<ul class="menu-widgets hidden"></ul>');
+								ui.append(menu_widgets);
+							}
+						
+							menu_widgets.append( mwb.contents().clone() );
+						}
+					}
+					
+					//init LayoutUIEditor
 					var ptl_ui_creator_var_name = "PTLLayoutUIEditor_" + Math.floor(Math.random() * 1000);
 					var PtlLayoutUIEditor = new LayoutUIEditor();
 					PtlLayoutUIEditor.options.ui_element = ui;

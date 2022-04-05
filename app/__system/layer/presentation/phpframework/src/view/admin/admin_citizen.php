@@ -55,7 +55,7 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 			</ul>
 		</li>
 		<li class="dashboard">
-			<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}admin/admin_home?admin_type=citizen&bean_name=$bean_name&bean_file_name=$bean_file_name&project=$project" . '" title="Go Home">
+			<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}admin/admin_home" . '" title="Go Home">
 				<span class="fas fa-tachometer-alt logo"></span>
 				<label>Dashboard</label>
 			</a>
@@ -285,10 +285,10 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 	<span class="login_info"><i class="icon user"></i>  "' . $logged_name . '"</span>
 	<span class="icon go_back" onClick="goBack()" title="Go Back"></span>
 	<span class="icon refresh" onClick="refreshIframe()" title="Refresh"></span>
-	<span class="icon home" onClick="goTo(this, \'home_url\', event)" home_url="' . "{$project_url_prefix}admin/admin_home?admin_type=citizen&bean_name=$bean_name&bean_file_name=$bean_file_name&project=$project" . '" title="Go Home"></span>
+	<span class="icon home" onClick="goTo(this, \'home_url\', event)" home_url="' . "{$project_url_prefix}admin/admin_home" . '" title="Go Home"></span>
 </div>
 <div id="right_panel">
-	<iframe src="' . "{$project_url_prefix}admin/admin_home?admin_type=citizen&bean_name=$bean_name&bean_file_name=$bean_file_name&project=$project" . '"></iframe>
+	<iframe src="' . "{$project_url_prefix}admin/admin_home" . '"></iframe>
 	<div class="iframe_overlay">
 		<div class="iframe_loading">Loading...</div>
 	</div>

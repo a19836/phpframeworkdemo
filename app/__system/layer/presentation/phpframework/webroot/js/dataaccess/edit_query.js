@@ -19,7 +19,7 @@ $(function () {
 	//init trees
 	includesTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeHbnObjectFromTree,
 	});
@@ -27,7 +27,7 @@ $(function () {
 	
 	daoObjsTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 	});
 	daoObjsTree.init("choose_dao_object_from_file_manager");
@@ -1979,13 +1979,15 @@ function toggleMainSettingsPanel(elm, prefix_class) {
 	var selector = (prefix_class ? prefix_class : "") + " .data_access_obj";
 	var data_access_obj = $(selector);
 	var settings = data_access_obj.find(".relationship").find(".settings");
+	var input = $(".top_bar header ul li.toggle_main_settings > a input");
 	
 	settings.toggleClass("collapsed");
+	settings.children(".settings_header").children(".icon.minimize, .icon.maximize").toggleClass("maximize").toggleClass("minimize");
 	
-	if (elm.parent().hasClass("settings_header"))
-		elm.toggleClass("maximize").toggleClass("minimize");
-	
-	$(".top_bar header ul li.toggle_main_settings > a.toggle_icon").toggleClass("active");
+	if (settings.hasClass("collapsed"))
+		input.prop("checked", false).removeAttr("checked");
+	else
+		input.prop("checked", true).attr("checked", "checked");
 }
 
 function initMainSettingsPanel() {

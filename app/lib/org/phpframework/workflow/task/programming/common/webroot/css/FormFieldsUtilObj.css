@@ -89,7 +89,7 @@
 	position:relative;
 }
 .selected_task_properties .form_containers .fields .add_variable {
-	margin-top:2px;
+	margin-top:3px;
 }
 .selected_task_properties .form_containers .fields .field .label_settings,
    .selected_task_properties .form_containers .fields .field .input_settings {
@@ -338,11 +338,13 @@
 }
 .selected_task_properties .form_containers .fields .field .remove_field {
 	position:absolute;
+	margin-top:3px;
 	margin-left:685px;
 	left:0;
 }
 .selected_task_properties .form_containers .fields .field .minimize_field {
 	position:absolute;
+	margin-top:3px;
 	margin-left:665px;
 	left:0;
 }
@@ -360,6 +362,7 @@
 }
 .selected_task_properties .form_containers .fields .field .move {
 	position:absolute;
+	margin-top:3px;
 	margin-left:645px;
 	left:0;
 }
@@ -375,6 +378,7 @@
 }
 .selected_task_properties .form_containers .fields .field .move_down {
 	position:absolute;
+	margin-top:3px;
 	margin-left:645px;
 	left:0;
 }
@@ -390,6 +394,7 @@
 }
 .selected_task_properties .form_containers .fields .field .move_up {
 	position:absolute;
+	margin-top:3px;
 	margin-left:625px;
 	left:0;
 }

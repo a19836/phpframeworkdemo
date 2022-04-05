@@ -34,7 +34,7 @@ var update_settings_from_layout_iframe_func = null;
 function createChoosePresentationIncludeFromFileManagerTree() {
 	choosePresentationIncludeFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllInvalidPresentationIncludePagesFromTree,
 	});
@@ -44,7 +44,7 @@ function createChoosePresentationIncludeFromFileManagerTree() {
 function createIframeModulesBlocksToolbarTree() {
 	iframeModulesBlocksToolbarTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : function(ul, data) {
 			removeAllThatIsNotBlocksOrModulesFromTree(ul, data, iframeModulesBlocksToolbarTree);
@@ -3292,7 +3292,7 @@ function onClickLayoutEditorUITaskWorkflowTab(elm) {
 function initCodeLayoutUIEditor(main_obj, opts) {
 	chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : function(ul, data) {
 			removeAllThatIsNotBlocksOrModulesFromTree(ul, data, chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree);
@@ -3302,7 +3302,7 @@ function initCodeLayoutUIEditor(main_obj, opts) {
 	
 	chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : function(ul, data) {
 			removeAllThatIsNotBlocksOrModulesFromTree(ul, data, chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer);
@@ -3655,7 +3655,8 @@ function createCodeLayoutUIEDitorEditor(textarea, opts) {
 				options.find(".full-screen").click(function() {
         				toggleEditorFullScreen();
 	        			
-	        			PtlLayoutUIEditor.showFixedMenuSettings();
+	        			if (menu_settings.is(":visible"))
+		        			PtlLayoutUIEditor.showFixedMenuSettings();
         				
         				/*if (luie.hasClass("full-screen")) {
         					var z_index = luie.css("z-index");
@@ -3703,7 +3704,11 @@ function createCodeLayoutUIEDitorEditor(textarea, opts) {
 function onToggleCodeEditorFullScreen(in_full_screen, main_obj) {
 	setTimeout(function() {
 		var PtlLayoutUIEditor = main_obj.find(".layout_ui_editor").data("LayoutUIEditor");
-		PtlLayoutUIEditor.showFixedMenuSettings();
+		var menu_settings = PtlLayoutUIEditor.getMenuSettings();
+		
+		if (menu_settings.is(":visible"))
+			PtlLayoutUIEditor.showFixedMenuSettings();
+		
 		PtlLayoutUIEditor.MyTextSelection.refreshMenu();
 	}, 500);
 }

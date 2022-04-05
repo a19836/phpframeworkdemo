@@ -405,7 +405,7 @@
 }
 .create_uis_files .existent_tasks ul .services_and_rules .services_and_rules_body .table_ui .table_header .icon {
 	float:right;
-	margin:0 0 0 10px;
+	margin:0 0 0 5px;
 }
 .create_uis_files .existent_tasks ul .services_and_rules .services_and_rules_body .table_ui:last-child {
 	margin-bottom:10px;

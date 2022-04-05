@@ -79,6 +79,9 @@ echo '
 
 ' . $head . '
 
+<!-- Add Common Settings JS -->
+<script type="text/javascript" src="' . $project_common_url_prefix . 'module/common/settings.js"></script>
+
 <!-- Add Other Settings CSS and JS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'module/common/other_settings.css" type="text/css" charset="utf-8" />
 <script type="text/javascript" src="' . $project_common_url_prefix . 'module/common/other_settings.js"></script>
@@ -89,6 +92,8 @@ var create_form_settings_code_url = \'' . $project_url_prefix . 'module/objectsg
 
 ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
 ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
+
+CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
 </script>';
 ?>
 <link rel="stylesheet" href="<?= $module["webroot_url"]; ?>settings.css" type="text/css" charset="utf-8" />
@@ -110,12 +115,6 @@ ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeIma
 		echo $ui_menu_widgets_html;
 		?>
 	</div>
-	<script>
-		var mwb = $(".module_show_objects_group_settings > .ui-menu-widgets-backup");
-		$(".module_show_objects_group_settings .create_form_task_html .ptl_settings > .layout_ui_editor > .menu-widgets").append( mwb.contents().clone() );
-		$(".module_show_objects_group_settings .inlinehtml_task_html > .layout_ui_editor > .menu-widgets").append( mwb.contents() );
-		mwb.remove();
-	</script>
 	
 	<div class="action_settings">
 		<label class="input_settings_label">Input Data Settings: </label>

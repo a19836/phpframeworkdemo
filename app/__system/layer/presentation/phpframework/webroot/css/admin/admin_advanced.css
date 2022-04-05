@@ -437,10 +437,10 @@
 
 /* LEFT PANEL - SUB MENUS */
 #left_panel > .sub_menu {
-	width:5px;
+	width:10px;
 	position:absolute;
 	top:12px;
-	right:7px;
+	right:5px;
 	z-index:1;
 	overflow:visible;
 	color:inherit;
@@ -451,6 +451,7 @@
 }
 #left_panel.left_panel_with_tabs > .sub_menu:before {
 	content:"\f142";
+	margin-left:3px;
 }
 #left_panel > .sub_menu:before {
 	/*color:inherit;*/

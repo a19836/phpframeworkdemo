@@ -121,3 +121,11 @@
 	width:100%;
 	height:100%;
 }
+.edit_project_details_popup {
+	top:auto;
+	left:auto;
+	right:auto;
+	bottom:auto;
+	width:580px;
+	height:430px;
+}

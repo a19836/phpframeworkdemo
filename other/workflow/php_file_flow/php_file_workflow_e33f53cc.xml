@@ -2,7 +2,7 @@
 <tasks>
 	<task start="1">
 		<label><![CDATA[Return]]></label>
-		<id><![CDATA[d1e9c332_98ec2871_524]]></id>
+		<id><![CDATA[d1e9c332_98ec2871_868]]></id>
 		<type><![CDATA[d1e9c332]]></type>
 		<tag><![CDATA[return]]></tag>
 		<offset_left>21</offset_left>
@@ -12,6 +12,7 @@
 		<properties>
 			<value><![CDATA[true]]></value>
 			<type></type>
+			<exits></exits>
 		</properties>
 	</task>
 </tasks>

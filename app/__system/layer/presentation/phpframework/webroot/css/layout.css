@@ -809,9 +809,9 @@ body .layout_ui_editor {
 	/* tabs */
 	--tabs-bg:#fff;
 	--tabs-item-border:#ccc;
-	--tabs-item-bg:#fff;
+	--tabs-item-bg:#eee;
 	--tabs-item-active-border:#ccc;
-	--tabs-item-active-bg:#eee;
+	--tabs-item-active-bg:#fff;
 	--tabs-item-hover-color:#333;
 	
 	/* menu-widgets */

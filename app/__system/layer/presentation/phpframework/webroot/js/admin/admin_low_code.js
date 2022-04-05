@@ -184,7 +184,7 @@ function initFileTreeMenu() {
 		var item_tree = new MyTree({
 			multiple_selection : false,
 			toggle_selection : false,
-			toggle_chils_on_click : true,
+			toggle_children_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
 			ajax_callback_after : prepareLayerNodes2,
 			ajax_callback_error : validateLayerNodesRequest,

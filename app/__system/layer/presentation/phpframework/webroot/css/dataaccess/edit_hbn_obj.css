@@ -1,11 +1,18 @@
 /* TOP BAR */
-.top_bar {
+.edit_hbn_obj .top_bar {
 	margin-bottom:15px;
 }
-.top_bar header {
+.edit_hbn_obj .top_bar header {
 	z-index:1501;
 }
-.top_bar .dummy_elm_to_add_auto_save_options {
+.edit_hbn_obj .top_bar li.sub_menu > ul {
+	min-width:250px;
+}
+.edit_hbn_obj .top_bar li.toggle_advanced_settings > a > input {
+	position:absolute;
+	right:10px;
+}
+.edit_hbn_obj .top_bar .dummy_elm_to_add_auto_save_options {
 	display:none;
 }
 

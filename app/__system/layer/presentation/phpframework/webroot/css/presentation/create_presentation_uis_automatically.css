@@ -245,7 +245,7 @@
 }
 .table_group .table_header .icon {
 	float:right;
-	margin:0 5px;
+	margin:0 0 0 5px;
 }
 .table_group .table_panel {
 	display:none;

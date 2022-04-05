@@ -125,6 +125,7 @@
 	display:inline-block;
 	float:none;
 	clear:both;
+	margin:-22px 0 0 130px;
 }
 .module_edit .form_fields .form_field.args > div.selected_task_properties > .args_code {
 	width:100%;
@@ -133,7 +134,7 @@
 	clear:both;
 }
 .module_edit .form_fields .form_field.args > div.selected_task_properties > .set_array_task_html > .array_items > .items {
-	margin:-20px 0 0 220px;
+	margin:-25px 0 0 220px;
 	display:inline-block;
 }
 .module_edit .form_fields .form_field.args > div.selected_task_properties > .set_array_task_html > .array_items > .items > label {

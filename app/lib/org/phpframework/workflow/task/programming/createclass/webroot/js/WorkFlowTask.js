@@ -31,7 +31,7 @@ var CreateClassTaskPropertyObj = {
 				task_property_values["properties"] = [ task_property_values["properties"] ];
 			
 			$.each(task_property_values["properties"], function(idx, prop) {
-				var new_item = CreateClassTaskPropertyObj.addNewProperty(add_icon[0]);
+				var new_item = CreateClassTaskPropertyObj.addProperty(add_icon[0]);
 				
 				new_item.find(".name input").val(prop["name"]);
 				new_item.find(".value input").val(prop["value"]);
@@ -51,7 +51,7 @@ var CreateClassTaskPropertyObj = {
 				task_property_values["methods"] = [ task_property_values["methods"] ];
 			
 			$.each(task_property_values["methods"], function(idx, method) {
-				var new_item = CreateClassTaskPropertyObj.addNewMethod(add_icon[0]);
+				var new_item = CreateClassTaskPropertyObj.addMethod(add_icon[0]);
 				
 				new_item.find("input.name").val(method["name"]);
 				new_item.find("select.type").val(method["type"]);
@@ -106,7 +106,7 @@ var CreateClassTaskPropertyObj = {
 		return (task_property_values["abstract"] ? "abstract " : "") + (task_property_values["interface"] ? "interface" : "class") + " " + task_property_values["name"] + (task_property_values["extends"] ? " extends " + task_property_values["extends"] : "") + (task_property_values["implements"] ? " implements " + task_property_values["implements"] : "");
 	},
 	
-	addNewProperty : function(elm) {
+	addProperty : function(elm) {
 		var types = ["public", "private", "protected", "const"];
 		var var_types = {"string": "string", "": "default"};
 		var tbody = $(elm).parent().closest("table").children("tbody");
@@ -141,17 +141,27 @@ var CreateClassTaskPropertyObj = {
 				+ '	<td class="comments">'
 				+ '		<input class="task_property_field" name="properties[' + idx + '][comments]" type="text" value="" />'
 				+ '	</td>'
-				+ '	<td class="icon_cell table_header"><span class="icon delete" onClick="$(this).parent().parent().remove();">Remove</span></td>'
+				+ '	<td class="icon_cell table_header"><span class="icon delete" onClick="CreateClassTaskPropertyObj.removeProperty(this)">Remove</span></td>'
 				+ '</tr>';
 		
 		var new_item = $(html);
 		
 		tbody.append(new_item);
+		tbody.find(".empty").hide();
 		
 		return new_item;
 	},
 	
-	addNewMethod : function(elm) {
+	removeProperty : function(elm) {
+		var tr = $(elm).parent().closest("tr");
+		var tbody = tr.parent();
+		tr.remove();
+		
+		if (tbody.children("tr:not(.empty)").length == 0)
+			tbody.children(".empty").show();
+	},
+	
+	addMethod : function(elm) {
 		var types = ["public", "private", "protected"];
 		var ul = $(elm).parent().closest(".methods").children("ul");
 		var idx = getListNewIndex(ul);
@@ -172,6 +182,7 @@ var CreateClassTaskPropertyObj = {
 			+ '		<option value="0"></option>'
 			+ '		<option value="1">Static</option>'
 			+ '	</select>'
+			+ '	<span class="icon remove" onClick="CreateClassTaskPropertyObj.removeMethod(this)">Remove Method</span>'
 			+ '	<span class="icon update" onClick="FunctionUtilObj.editMethodCode(this)">Edit Code</span>'
 			+ '	<table class="function_args">'
 			+ '		<thead>'
@@ -197,5 +208,10 @@ var CreateClassTaskPropertyObj = {
 		ul.append(new_item);
 		
 		return new_item;
+	},
+	
+	removeMethod : function(elm) {
+		if (confirm("Do you wish to remove this method?"))
+			$(elm).parent().closest("li").remove();
 	},
 };

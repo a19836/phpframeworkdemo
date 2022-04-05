@@ -21,7 +21,7 @@
 include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_advanced_allowed) { echo '<script>
 		alert("You don\'t have permission to access this Workspace!");
 		document.location="' . $project_url_prefix . 'auth/logout";
-	</script>'; die(); } $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
+	</script>'; die(); } $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_advanced.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_advanced.js"></script>
@@ -40,7 +40,7 @@ var path_to_filter = "' . $filter_by_layout . '";
 			</li>
 		</ul>
 		<ul class="right">
-			<li class="icon home" title="Home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/admin_home?admin_type=advanced"></li>
+			<li class="icon home" title="Home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/' . ($filter_by_layout_url_query ? "admin_home_project?$filter_by_layout_url_query" : "admin_home") . '"></li>
 			' . ($is_flush_cache_allowed ? '<li class="icon flush_cache" title="Flush Cache" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\')"></li>' : '') . '
 			<li class="icon refresh" onClick="refreshIframe()" title="Refresh"></li>
 			<!--li class="icon tools" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&is_popup=1" . '\')" title="Tools"></li-->
@@ -92,7 +92,7 @@ var path_to_filter = "' . $filter_by_layout . '";
 		<div class="button minimize" onClick="toggleLeftPanel(this)"></div>
 	</div>
 	<div id="right_panel">
-		<iframe src="' . $project_url_prefix . 'admin/admin_home?admin_type=advanced"></iframe>
+		<iframe src="' . $project_url_prefix . 'admin/' . ($filter_by_layout_url_query ? "admin_home_project?$filter_by_layout_url_query" : "admin_home") . '"></iframe>
 		<div class="iframe_overlay">
 			<div class="iframe_loading">Loading...</div>
 		</div>

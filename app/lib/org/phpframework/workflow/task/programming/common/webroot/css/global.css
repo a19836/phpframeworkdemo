@@ -94,7 +94,7 @@
 }
 .selected_task_properties .result .result_var_type {
 	width:100%;
-	height:20px;
+	min-height:20px;
 }
 .selected_task_properties .result .result_var_type label {
 	width:265px;
@@ -113,7 +113,7 @@
 .selected_task_properties .result .type_variable .result_var_name,
    .selected_task_properties .result .type_variable .result_var_assignment {
 	width:100%;
-	height:20px;
+	min-height:20px;
 	margin-top:5px;
 }
 .selected_task_properties .result .type_variable label {
@@ -137,7 +137,7 @@
    .selected_task_properties .result .type_obj_prop .result_static, 
    .selected_task_properties .result .type_obj_prop .result_prop_assignment {
 	width:100%;
-	height:20px;
+	min-height:20px;
 	margin-top:5px;
 }
 .selected_task_properties .result .type_obj_prop .result_obj_name label,

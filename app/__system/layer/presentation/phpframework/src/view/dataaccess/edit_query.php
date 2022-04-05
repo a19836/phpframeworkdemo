@@ -69,7 +69,7 @@ var is_covertable_sql = ' . ($is_covertable_sql ? 1 : 0) . ';
 						
 						<li class="create_sql_from_ui" title="Generate SQL From Diagram"><a onClick="autoUpdateSqlFromUI(' . $rand . ')"><i class="icon create_sql_from_ui"></i> Generate SQL From Diagram</a></li>
 						<li class="create_ui_from_sql" title="Generate Diagram From Settings"><a onClick="autoUpdateUIFromSql(' . $rand . ')"><i class="icon create_ui_from_sql"></i> Generate Diagram From Settings</a></li>
-						<li class="toggle_main_settings" title="Toggle Main Settings"><a class="toggle_icon" onClick="toggleMainSettingsPanel(this, \'.edit_single_query\')"><i class="icon toggle_ids"></i> Toggle Main Settings</a></li>
+						<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleMainSettingsPanel(this, \'.edit_single_query\')"><i class="icon toggle_ids"></i> Show Main Settings <input type="checkbox"/></a></li>
 						<li class="dummy_elm_to_add_auto_save_options"></li>
 					</ul>
 				</li>

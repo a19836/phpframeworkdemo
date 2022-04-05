@@ -1,0 +1,276 @@
+.admin_panel {
+	
+}
+
+/* HEADER LINKS */
+.admin_panel .header_links {
+	padding:20px;
+}
+.admin_panel .header_links li {
+	display:inline-block;
+	margin-right:5px;
+}
+.admin_panel .header_links li:not(:last-child)::after {
+	width:20px;
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f054";
+	margin-left:5px;
+}
+.admin_panel .header_links li a {
+	color:#333;
+}
+.admin_panel .header_links li:not(:last-child) a:hover {
+	color:var(--icon-hover-color);
+}
+.admin_panel .header_links li:first-child a {
+	font-weight:bold;
+}
+.admin_panel .header_links li:last-child a {
+	cursor:default;
+	text-decoration:none;
+}
+
+/* PROJECT */
+.admin_panel .project {
+	margin:0 20px;
+	padding:20px;
+	background:var(--main-template-bg);
+	color:var(--main-template-color);
+	border-radius:5px;
+}
+.admin_panel .project .image {
+	width:100px;
+	height:100px;
+	margin-right:20px;
+	display:inline-block;
+	vertical-align:top;
+	background:#fff;
+	border-radius:5px;
+}
+.admin_panel .project .image img,
+  .admin_panel .project .image .no_logo {
+	width:100%;
+	height:100%;
+}
+.admin_panel .project .image .no_logo::before {
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	font: var(--fa-font-solid);
+	font-size:90px;
+	display:block;
+	margin-top:5px;
+	margin-left:5px;
+	content:"\f0a0";
+	color:#999;
+}
+.admin_panel .project .details {
+	width:calc(100% - 130px);
+	display:inline-block;
+}
+.admin_panel .project .details .name {
+	margin-bottom:10px;
+	font-size:16px;
+	text-transform:capitalize;
+}
+.admin_panel .project .details .description {
+	max-height:100px;
+	margin-bottom:10px;
+	font-size:10px;
+	overflow-y:auto;
+}
+.admin_panel .project .details .buttons > a {
+	margin-right:10px;
+	cursor:pointer;
+	color:inherit;
+}
+.admin_panel .project .details .buttons > a:hover {
+	color:var(--icon-hover-color);
+}
+.admin_panel .project .details .buttons .icon {
+	color:inherit;
+}
+.admin_panel .project .details .buttons > div.sub_menu {
+	display:inline-block;
+}
+.admin_panel .project .details .buttons > div.sub_menu:hover > ul {
+	display:block;
+	visibility:visible;
+	top:auto;
+	left:auto;
+}
+
+
+/* PROJECT TABS */
+.admin_panel .project_files {
+	margin:20px;
+	border:0;
+	font-size:10px;
+}
+.admin_panel .project_files .tabs {
+}
+.admin_panel .project_files .ui-tabs-panel {
+	border-left:1px solid #eee;
+	border-right:1px solid #eee;
+	border-bottom:1px solid #eee;
+	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 20%);
+}
+.admin_panel .project_files .ui-tabs-panel button {
+	margin:0 10px;
+	float:right;
+}
+.admin_panel .project_files .ui-tabs-panel button.create_folder:not(:hover),
+  .admin_panel .project_files .ui-tabs-panel button.import_template:not(:hover) {
+	border:1px solid #FAB12B;
+	background:transparent;
+}
+.admin_panel .project_files .ui-tabs-panel .folder_go_up {
+	margin:10px 0 0 10px;
+	display:block;
+	font-weight:bold;
+	color:#FAB12B;
+	cursor:pointer;
+}
+.admin_panel .project_files .ui-tabs-panel .folder_go_up .go_up {
+	transform:scaleX(-1);
+	color:inherit;
+}
+.admin_panel .project_files .ui-tabs-panel .folder_go_up .go_up::before {
+    content: "\f3bf";
+}
+
+.admin_panel .project_files .ui-tabs-panel .mytree {
+	display:block;
+	clear:both;
+}
+.admin_panel .project_files .mytree > li {
+	margin:0;
+}
+.admin_panel .project_files .mytree > li > a,
+  .admin_panel .project_files .mytree > li > i {
+	display:none;
+}
+.admin_panel .project_files .mytree > li > ul {
+	white-space:normal;
+}
+.admin_panel .project_files .mytree > li > ul > li {
+	width:200px;
+	height:130px;
+	margin:20px;
+	padding:0;
+	display:inline-block;
+	background:none;
+	text-align:center;
+	border:1px solid #eee;
+	border-radius:5px;
+	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 20%);
+	white-space:normal;
+	position:relative;
+	box-sizing:border-box;
+}
+.admin_panel .project_files .mytree > li > ul > li > i.jstree-icon {
+	display:none;
+}
+.admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor {
+	width:auto;
+	height:100%;
+	padding:25px 10px 10px;
+	box-sizing:border-box;
+	display:block;
+}
+.admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor.jstree-clicked {
+	background-color:transparent !important;
+	box-shadow:none !important;
+}
+.admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor  > i {
+	width:60px;
+	height:auto;
+	font-size:50px;
+}
+.admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor > i::before {
+	font-size:inherit;
+}
+.admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor > i::after {
+	font-size:20px;
+	margin-top:-20px;
+}
+.admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor > label {
+	position:absolute;
+	left:10px;
+	right:10px;
+	bottom:10px;
+	display:block;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	overflow:hidden;
+	direction:rtl;
+	font-size:10px;
+}
+.admin_panel .project_files .mytree > li > ul > li > a.edit,
+  .admin_panel .project_files .mytree > li > ul > li > a.preview,
+  .admin_panel .project_files .mytree > li > ul > li > div.sub_menu {
+	position:absolute;
+	left:5px;
+	bottom:-25px;
+	display:inline-block;
+	font-size:10px;
+	color:#999;
+}
+.admin_panel .project_files .mytree > li > ul > li > a.preview {
+	left:60px;
+}
+.admin_panel .project_files .mytree > li > ul > li > div.sub_menu {
+	left:auto;
+	right:5px;
+}
+.admin_panel .project_files .mytree > li > ul > li > a.edit:hover,
+  .admin_panel .project_files .mytree > li > ul > li > a.preview:hover,
+  .admin_panel .project_files .mytree > li > ul > li > div.sub_menu:hover {
+	color:var(--icon-hover-color);
+}
+.admin_panel .project_files .mytree > li > ul > li > a.edit > .icon,
+  .admin_panel .project_files .mytree > li > ul > li > a.preview > .icon,
+  .admin_panel .project_files .mytree > li > ul > li > div.sub_menu > .icon {
+	width:13px;
+	font-size:inherit;
+}
+.admin_panel .project_files .mytree > li > ul > li > div.sub_menu > .icon {
+	width:20px;
+	height:20px;
+	padding:5px 0 0 5px;
+}
+.admin_panel .project_files .mytree > li > ul > li > div.sub_menu > .icon::before {
+	margin-top:2px;
+	margin-left:5px;
+	display:block;
+}
+.admin_panel .project_files .mytree > li > ul > li > div.sub_menu:hover::after {
+	display:none;
+}
+.admin_panel .project_files .mytree > li > ul > li > div.sub_menu:hover > ul {
+	margin-top:-7px;
+	display:block !important;
+	visibility:visible;
+	top:auto;
+	left:auto;
+	right:0;
+	bottom:20px;
+	text-align:left;
+	white-space:nowrap;
+}
+
+/* POPUP */
+.edit_project_details_popup {
+	/*position:fixed !important;
+	top:5px !important;
+	left:5px !important;
+	right:5px !important;
+	bottom:5px !important;*/
+	width:580px;
+	height:430px;
+}
+.edit_project_details_popup iframe {
+	width:100%;
+	height:100%;
+}

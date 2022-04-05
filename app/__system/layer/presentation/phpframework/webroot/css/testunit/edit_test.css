@@ -162,7 +162,7 @@
 	margin:auto 5px;
 	font-size:14px;
 }
-.edit_test #settings .global_variables_files_path tbody input, .edit_test .annotations tbody select {
+.edit_test #settings .global_variables_files_path tbody input {
 	border:0;
 	background-color:transparent;
 	float:none;
@@ -205,7 +205,8 @@
 	margin:auto 5px;
 	font-size:14px;
 }
-.edit_test #settings .annotations tbody input, .edit_test .annotations tbody select {
+.edit_test #settings .annotations tbody input, 
+  .edit_test #settings .annotations tbody select {
 	border:0;
 	background-color:transparent;
 	float:none;

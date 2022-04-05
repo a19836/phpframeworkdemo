@@ -170,6 +170,9 @@ ProgrammingTaskUtil.on_programming_task_choose_file_path_callback = onIncludeFil
 	GetBeanObjectTaskPropertyObj.phpframeworks_options = ' . json_encode($phpframeworks_options) . ';
 	GetBeanObjectTaskPropertyObj.bean_names_options = ' . json_encode($bean_names_options) . ';
 	
+	CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
+	InlineHTMLTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
+	
 	if (typeof CallBusinessLogicTaskPropertyObj != "undefined" && CallBusinessLogicTaskPropertyObj) {
 		CallBusinessLogicTaskPropertyObj.on_choose_business_logic_callback = onBusinessLogicTaskChooseBusinessLogic;
 		CallBusinessLogicTaskPropertyObj.brokers_options = ' . json_encode($business_logic_brokers_obj) . ';
@@ -229,7 +232,7 @@ ProgrammingTaskUtil.on_programming_task_choose_file_path_callback = onIncludeFil
 	<div class="module_workflow_content">
 		<ul class="tabs tabs_transparent tabs_right">
 			<li id="code_editor_tab"><a href="#code" onClick="onClickCodeEditorTab(this);return false;">Code Editor</a></li>
-			<li id="tasks_flow_tab"><a href="#ui" onClick="onClickTaskWorkflowTab(this);return false;">Workflow Editor</a></li>
+			<li id="tasks_flow_tab"><a href="#ui" onClick="onClickTaskWorkflowTab(this);return false;">Diagram Editor</a></li>
 			<li id="external_vars_tab"><a href="#external_vars">External Vars</a></li>
 		</ul>
 	
@@ -245,12 +248,6 @@ ProgrammingTaskUtil.on_programming_task_choose_file_path_callback = onIncludeFil
 		<div class="ui-menu-widgets-backup hidden">
 			' . $ui_menu_widgets_html . '
 		</div>
-		<script>
-			var mwb = $(".module_workflow_settings > .module_workflow_content > .ui-menu-widgets-backup");
-			$(".module_workflow_settings > .module_workflow_content > #ui > .taskflowchart > .tasks_properties > .task_properties > .create_form_task_html > .ptl_settings > .layout_ui_editor > .menu-widgets").append( mwb.contents().clone() );
-			$(".module_workflow_settings > .module_workflow_content > #ui > .taskflowchart > .tasks_properties > .task_properties > .inlinehtml_task_html > .layout_ui_editor > .menu-widgets").append( mwb.contents() );
-			mwb.remove();
-		</script>
 		
 		<div id="external_vars">
 			<label>External Vars:</label>

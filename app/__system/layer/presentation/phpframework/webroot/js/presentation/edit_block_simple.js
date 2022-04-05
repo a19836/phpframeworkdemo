@@ -13,14 +13,14 @@ $(function () {
 	});
 	
 	//init auto save
-	addAutoSaveMenu(".top_bar li.toggle_module_data");
+	addAutoSaveMenu(".top_bar li.dummy_elm_to_add_auto_save_options");
 	enableAutoSave(onToggleAutoSave);
 	initAutoSave(".top_bar li.save a");
 	
 	//init trees
 	choosePageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
 	});
@@ -28,7 +28,7 @@ $(function () {
 	
 	chooseImageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
 	});

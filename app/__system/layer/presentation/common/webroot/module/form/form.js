@@ -43,7 +43,7 @@ $(function () {
 	/* This is already executed in the common/settings.js, so we cannot executed again.
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
 	});
@@ -51,7 +51,7 @@ $(function () {
 	
 	chooseBusinessLogicFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 	});
@@ -59,7 +59,7 @@ $(function () {
 	
 	chooseQueryFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeParametersAndResultMapsFromTree,
 	});
@@ -67,7 +67,7 @@ $(function () {
 	
 	chooseHibernateObjectMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeParametersAndResultMapsFromTree,
 	});
@@ -75,7 +75,7 @@ $(function () {
 	
 	chooseBlockFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotBlocksFromTree,
 	});

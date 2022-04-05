@@ -188,6 +188,8 @@ if ($PEVC) {
 	ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
 	ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
 	
+	CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
+	
 	if (typeof LayerOptionsUtilObj != "undefined" && LayerOptionsUtilObj)
 		LayerOptionsUtilObj.on_choose_db_driver_callback = onChooseDBDriver;
 	
@@ -338,8 +340,8 @@ if ($PEVC) {
 		
 		<div class="module_form_contents">
 			<ul class="tabs tabs_transparent">
-				<li id="groups_flow_tab"><a href="#groups_flow">By Groups</a></li>
-				<li id="tasks_flow_tab"><a href="#ui" onClick="onClickTaskWorkflowTab(this);return false;">By Workflow</a></li>
+				<li id="groups_flow_tab"><a href="#groups_flow">By Groups - Sequential Logic</a></li>
+				<li id="tasks_flow_tab"><a href="#ui" onClick="onClickTaskWorkflowTab(this);return false;">By Diagram</a></li>
 			</ul>
 			
 			<div id="groups_flow">

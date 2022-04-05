@@ -6,7 +6,7 @@ var last_selected_node_parent_id= null;
 var mytree = new MyTree({
 	multiple_selection : false,
 	toggle_selection : false,
-	toggle_chils_on_click : true,
+	toggle_children_on_click : true,
 	ajax_callback_before : prepareLayerNodes1,
 	ajax_callback_after : prepareLayerNodes2,
 	ajax_callback_error : validateLayerNodesRequest,
@@ -372,7 +372,8 @@ function triggerUlChildLinkContextMenu(a, originalEvent) {
 
 function getNodeParentIdByNodeId(node_id) {
 	var node = $("#" + node_id).first();
-	if (node) {
+	
+	if (node[0]) {
 		var next_node = node;
 		var node_id = null;
 		var ul = null;
@@ -381,7 +382,8 @@ function getNodeParentIdByNodeId(node_id) {
 			node_id = next_node.attr("id");
 			ul = next_node.parent();
 			next_node = ul.parent();
-		} while (ul[0] && !ul[0].hasAttribute("url"));
+		} 
+		while (ul[0] && !ul.is("body") && !ul[0].hasAttribute("url"));
 		
 		return next_node.attr("id");
 	}
@@ -389,13 +391,14 @@ function getNodeParentIdByNodeId(node_id) {
 
 function getLastNodeGrantParentId() {
 	var pid = getLastNodeParentId();
+	
 	if (pid) {
 		return getNodeParentIdByNodeId(pid);
 	}
 }
 
 function getLastNodeParentId() {
-	if (last_selected_node_id && $("#" + last_selected_node_id).first()) {
+	if (last_selected_node_id && $("#" + last_selected_node_id)[0]) {
 		return getNodeParentIdByNodeId(last_selected_node_id);
 	}
 	else if (last_selected_node_parent_id) {

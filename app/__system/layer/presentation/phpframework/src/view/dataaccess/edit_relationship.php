@@ -59,7 +59,7 @@ var old_obj_type = \'' . $query_type . '\';
 				<li class="sub_menu">
 					<i class="icon sub_menu"></i>
 					<ul>
-						<li class="toggle_main_settings" title="Toggle Main Settings"><a class="toggle_icon" onClick="toggleMainSettingsPanel(this, \'.edit_relationship\')"><i class="icon toggle_ids"></i> Toggle Main Settings</a></li>
+						<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleMainSettingsPanel(this, \'.edit_relationship\')"><i class="icon toggle_ids"></i> Show Main Settings <input type="checkbox"/></a></li>
 						<li class="dummy_elm_to_add_auto_save_options"></li>
 					</ul>
 				</li>

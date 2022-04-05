@@ -205,10 +205,11 @@
 	content:"\f141";
 }
 .icon.sub_menu_vertical {
-	width:5px;
+	width:10px;
 }
 .icon.sub_menu_vertical::before {
 	content:"\f142";
+	margin-left:3px;
 }
 
 .icon.update_automatically {
@@ -462,7 +463,7 @@
 }
 .icon.folder::before {
 	content:"\f07c";
-	color:#e0a800;
+	color:#FAB12B;
 }
 .icon.enable {
 	color:green;
@@ -544,6 +545,7 @@
 }
 .icon.block_view::before {
 	content:"\f58e";
+	margin-left:3px;
 }
 
 .icon.desktop {

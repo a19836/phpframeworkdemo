@@ -81,6 +81,9 @@ IncludeBlockTaskPropertyObj.projects_options = ' . json_encode($available_projec
 GetBeanObjectTaskPropertyObj.phpframeworks_options = ' . json_encode($phpframeworks_options) . ';
 GetBeanObjectTaskPropertyObj.bean_names_options = ' . json_encode($bean_names_options) . ';
 
+CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
+InlineHTMLTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
+
 if (typeof LayerOptionsUtilObj != "undefined" && LayerOptionsUtilObj)
 	LayerOptionsUtilObj.on_choose_db_driver_callback = onChooseDBDriver;
 
@@ -126,7 +129,7 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 		<header>
 			<div class="title">Edit Entity "' . basename($path) . '"</div>
 			<ul>
-				<li class="simple_editor" title="Switch to Template Editor"><a href="?' . $query_string . '&edit_entity_type=simple&show_templates_only=1"><i class="icon show_simple_ui"></i> Switch to Template Editor</a></li>
+				<li class="simple_editor" title="Switch to Simple Workspace"><a href="?' . $query_string . '&edit_entity_type=simple&show_templates_only=1"><i class="icon show_simple_ui"></i> Switch to Simple Workspace</a></li>
 				<li class="view_project_page" title="View project page"><a href="' . $view_project_url . '" target="project"><i class="icon view"></i> View project page</a></li>
 				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save Entity"><a onClick="saveEntity()"><i class="icon save"></i> Save</a></li>
@@ -136,9 +139,9 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 		' . (!$view_file_exists ? '<li id="add_view_tab" title="Add View"><a href="#view" onClick="onClickNewViewTab(this, \'' . $add_view_file_url . '\');return false;"><i class="icon add"></i><i class="icon view_tab"></i> View</a></li>' : ''); $main_content .= '
 	<div class="entity_obj with_top_bar_tab ' . ($project_with_auto_view ? "project_with_auto_view" . ($view_file_exists ? " view_file_exists" : "") : "") . '">
 		<ul class="tabs tabs_transparent tabs_right tabs_icons">
-			<li id="visual_editor_tab" title="Visual UI"><a href="#code" onClick="onClickLayoutEditorUIVisualTab(this);return false;"><i class="icon visual_editor_tab"></i> Structure Editor</a></li>
-			<li id="code_editor_tab" title="Code"><a href="#code" onClick="onClickLayoutEditorUICodeTab(this);return false;"><i class="icon code_editor_tab"></i> Code Editor</a></li>
-			<li id="tasks_flow_tab" title="Workflow"><a href="#ui" onClick="onClickLayoutEditorUITaskWorkflowTab(this);return false;"><i class="icon tasks_flow_tab"></i> Workflow Editor</a></li>
+			<li id="visual_editor_tab" title="Design Editor"><a href="#code" onClick="onClickLayoutEditorUIVisualTab(this);return false;"><i class="icon visual_editor_tab"></i> Design Editor</a></li>
+			<li id="code_editor_tab" title="Code Editor"><a href="#code" onClick="onClickLayoutEditorUICodeTab(this);return false;"><i class="icon code_editor_tab"></i> Code Editor</a></li>
+			<li id="tasks_flow_tab" title="Diagram Editor"><a href="#ui" onClick="onClickLayoutEditorUITaskWorkflowTab(this);return false;"><i class="icon tasks_flow_tab"></i> Diagram Editor</a></li>
 			' . $view_file_tab . '
 		</ul>
 		

@@ -21,13 +21,14 @@ $(function () {
 		$(document.body).append( $(choose_from_file_manager_popup_html).children("#choose_property_variable_from_file_manager") );
 	}
 	
+	/* This is already done in the common/settings.js
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
-		toggle_chils_on_click : true,
+		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
 	});
-	choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");
+	choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");*/
 	
 	//set saved settings id
 	saved_settings_id = getModuleShowObjectsGroupSettingsId();
@@ -370,7 +371,7 @@ function getModuleShowObjectsGroupSettings() {
 	}
 	else if (settings["form_settings_data_type"] == "ptl") {
 		var ptl_settings = create_form_task_html.find(".ptl_settings");
-		var code =   getPtlElementTemplateSourceEditorValue(ptl_settings, true);
+		var code = getPtlElementTemplateSourceEditorValue(ptl_settings, true);
 		var external_vars = {};
 		
 		$.each( ptl_settings.find(" > .ptl_external_vars .item"), function (idx, item) {

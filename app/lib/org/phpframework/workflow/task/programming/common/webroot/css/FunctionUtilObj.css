@@ -51,7 +51,7 @@
 .taskflowchart .edit_function_code > #code,
   .taskflowchart .edit_function_code > #ui {
 	height:80%;
-	height:calc(100% - 60px);
+	height:calc(100% - 80px);
 	padding:0;
 }
 .taskflowchart .edit_function_code > #code .code_menu.top_bar_menu,
@@ -61,21 +61,15 @@
 }
 .taskflowchart .edit_function_code > #code .code_menu.top_bar_menu li,
   .taskflowchart .edit_function_code > #ui .taskflowchart .workflow_menu.top_bar_menu li {
-	padding:0 3px;
-	float:left;
+	
 }
 .taskflowchart .edit_function_code > #code .code_menu.top_bar_menu > ul > li > a,
   .taskflowchart .edit_function_code > #ui .taskflowchart .workflow_menu.top_bar_menu > ul > li > a {
-	width:20px;
-	height:20px;
-	white-space:nowrap;
-	overflow:hidden;
-	position:relative;
+	
 }
 .taskflowchart .edit_function_code > #code .code_menu.top_bar_menu > ul > li > a .icon,
   .taskflowchart .edit_function_code > #ui .taskflowchart .workflow_menu.top_bar_menu > ul > li > a .icon {
-	width:20px;
-	height:20px;
+	
 }
 .taskflowchart .edit_function_code > #ui .taskflowchart .workflow_menu .sort_tasks:hover > ul {
 	width:120px;
@@ -90,7 +84,7 @@
 	margin:0;
 }
 .taskflowchart .edit_function_code > .button {
-	margin-top:10px;
+	margin-top:15px;
 	text-align:center;
 }
 .taskflowchart .edit_function_code > #ui .taskflowchart {
@@ -106,7 +100,8 @@
 .taskflowchart .edit_function_code > #ui .taskflowchart > .tasks_menu,
   .taskflowchart .edit_function_code > #ui .taskflowchart > .tasks_menu_hide,
   .taskflowchart .edit_function_code > #ui .taskflowchart > .tasks_flow {
-	top:30px;
+	top:0 !important;
+	bottom:0 !important;
 }
 .taskflowchart .edit_function_code > #ui .taskflowchart > .tasks_flow > .selected_task_properties,
   .taskflowchart .edit_function_code > #ui .taskflowchart > .tasks_flow > .selected_connection_properties,

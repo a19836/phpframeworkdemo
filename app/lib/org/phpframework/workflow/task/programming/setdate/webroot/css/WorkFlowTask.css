@@ -33,7 +33,7 @@
 
 .set_date_task_html .format {
 	width:100%;
-	height:20px;
+	min-height:20px;
 	margin-top:15px;
 	margin-bottom:20px;
 }
