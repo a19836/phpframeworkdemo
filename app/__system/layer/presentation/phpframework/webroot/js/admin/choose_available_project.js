@@ -64,10 +64,13 @@ function prepareChooseAvailableProjectsHtml(layer_projects, folder_to_filter) {
 	group_folders.children("ul").html(folders_html);
 	group_projects.children("ul").html(projects_html);
 	
-	choose_available_project.find(".current_project_folder").html(folder_to_filter ? '<span class="folder"></span> ' + folder_to_filter + "/" : "").attr("folder_to_filter", folder_to_filter);
+	if (folder_to_filter)
+		choose_available_project.addClass("in_sub_folder");
+	else
+		choose_available_project.removeClass("in_sub_folder");
 	
+	choose_available_project.find(".current_project_folder").html(folder_to_filter ? '<span onClick="updateLayerProjects(\'\')" class="folder"></span> ' + getChooseAvailableProjectCurrentFolderHtml(folder_to_filter) : "").attr("folder_to_filter", folder_to_filter);
 	choose_available_project.find(".project_folder_go_up").html(go_up_html);
-	
 	choose_available_project.children(".loading_projects").hide();
 }
 
@@ -96,6 +99,25 @@ function getChooseAvailableProjectHtml(folder_to_filter, fp, project_props) {
 		html += '<a href="javascript:void(0)">View Projects in this folder</a>';*/
 	
 	html += '</li>';
+	
+	return html;
+}
+
+function getChooseAvailableProjectCurrentFolderHtml(current_path) {
+	current_path = current_path.replace(/^\/+/g, "").replace(/\/+$/g, "");
+	var dirs = current_path.split("/");
+	var html = '';
+	var parent_folder = "";
+	
+	for (var i = 0; i < dirs.length; i++) {
+		var dir = dirs[i];
+		
+		if (dir) {
+			parent_folder += (parent_folder ? "/" : "") + dir;
+			
+			html += '<span class="path_parts" onClick="updateLayerProjects(\'' + parent_folder + '\');">' + dir + '</span>';
+		}
+	}
 	
 	return html;
 }

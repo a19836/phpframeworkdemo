@@ -559,6 +559,20 @@
 	content:"\f3cd";
 }
 
+.icon.go_up {
+	transform:scaleX(-1);
+}
+.icon.go_up::before {
+    content: "\f3bf";
+}
+
+.icon.palette::before {
+    content: "\f53f";
+}
+.icon.project::before {
+    content: "\f0a0";
+}
+
 /* LOADING ICON */
 .loading {
 	background:url("../common/img/loading.gif") no-repeat scroll 0 0;

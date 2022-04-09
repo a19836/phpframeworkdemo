@@ -24,7 +24,7 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); $head = AdminMenuUIHandler
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/choose_available_tool.js"></script>
 
 <script>
-var is_popup = ' . ($is_popup ? 1 : 0) . ';
+var is_popup = ' . ($popup ? 1 : 0) . ';
 </script>'; $main_content = '<div class="choose_available_tool">
 	<div class="title">Tools</div>
 	<ul>

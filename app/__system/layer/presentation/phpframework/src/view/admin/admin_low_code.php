@@ -35,15 +35,15 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 </div>
 
 <div id="menu_panel">
-	<a class="selected_project" href="#" onClick="chooseAvailableProject(\'' . $project_url_prefix . 'admin/choose_available_project?redirect_path=admin&is_popup=1\');" title="Selected Project: \'' . $project . '\'. Please click here to choose another project.">' . $project . '</a>
+	<a class="selected_project" href="#" onClick="chooseAvailableProject(\'' . $project_url_prefix . 'admin/choose_available_project?redirect_path=admin&popup=1\');" title="Selected Project: \'' . $project . '\'. Please click here to choose another project.">' . $project . '</a>
 	<span class="icon logout" title="Logout" onClick="document.location=this.getAttribute(\'logout_url\')" logout_url="' . $project_url_prefix . 'auth/logout"></span>
 	<span class="login_info" title="Logged as \'' . $logged_name . '\' user."><i class="icon user"></i> ' . $logged_name . '</span>
 	
 	<!--span class="icon go_back" onClick="goBack()" title="Go Back"></span-->
-	<span class="icon tools" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&is_popup=1" . '\')" title="Choose a Tool"></span>
+	<span class="icon tools" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&popup=1" . '\')" title="Choose a Tool"></span>
 	<span class="icon refresh" onClick="refreshIframe()" title="Refresh"></span>
 	' . ($is_flush_cache_allowed ? '<span class="icon flush_cache" title="Flush Cache" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\')"></span>' : '') . '
-	<span class="icon home" onClick="goTo(this, \'home_url\', event)" home_url="' . "{$project_url_prefix}admin/admin_home" . '" title="Go Home"></span>
+	<span class="icon home" onClick="goTo(this, \'home_url\', event)" home_url="' . "{$project_url_prefix}admin/admin_home?selected_layout_project=$filter_by_layout" . '" title="Go Home"></span>
 </div>
 
 <div id="left_panel">
@@ -69,7 +69,7 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 	<div class="button minimize" onClick="toggleLeftPanel(this)"></div>
 </div>
 <div id="right_panel">
-	<iframe src="' . "{$project_url_prefix}admin/admin_home" . '"></iframe>
+	<iframe src="' . "{$project_url_prefix}admin/" . ($filter_by_layout ? "admin_home_project?$filter_by_layout_url_query" : "admin_home?selected_layout_project=$filter_by_layout") . '"></iframe>
 	<div class="iframe_overlay">
 		<div class="iframe_loading">Loading...</div>
 	</div>

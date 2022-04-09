@@ -2,6 +2,9 @@
 .top_bar {
 	margin-bottom:20px;
 }
+.top_bar li.save {
+	display:none;
+}
 
 /* CREATE PROJECT */
 .edit_project_details {

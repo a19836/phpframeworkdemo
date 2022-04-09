@@ -40,26 +40,24 @@ include $EVC->getViewPath("admin/choose_available_project"); $projects_html = $m
 		' . $presentation . '
 	</div>
 	
-	<div id="tutorials" class="tutorials card-columns">'; foreach ($tutorials as $tutorial) { $main_content .= '
-	<div class="card shadow ' . ($tutorial["items"] && !$tutorial["video"] ? "border_bottom" : "") . '">'; if ($tutorial["image"]) $main_content .= '
-		<div class="card-header">
-			<img class="card-img-top" src="' . $tutorial["image"] . '" alt="Card image cap" onError="$(this).parent().remove()">
-		</div>'; $main_content .= '
-		<div class="card-body">
-			<p class="card-title mb-0">' . $tutorial["title"] . '</p>
-			' . ($tutorial["description"] ? '<p class="card-text mt-2 text-muted">' . $tutorial["description"] . '</p>' : '') . '
-		</div>'; if ($tutorial["items"]) { $main_content .= '<ul class="list-group list-group-flush mb-1">'; foreach ($tutorial["items"] as $sub_tutorial) { $id = md5($sub_tutorial["title"]); $main_content .= '<li class="list-group-item p-0">
-				<button class="btn btn-link w-100 text-left pr-4 collapsed" type="button" data-toggle="collapse" data-target="#sub_' . $id . '" aria-expanded="false" aria-controls="sub_' . $id . '">
+	<div id="tutorials" class="tutorials">'; foreach ($tutorials as $tutorial) { $main_content .= '
+	<div class="card shadow ' . ($tutorial["items"] && !$tutorial["video"] ? "border_bottom" : "") . '">
+		<div class="card_header">'; if ($tutorial["image"]) $main_content .= '<img class="card_img_top" src="' . $tutorial["image"] . '" alt="Card image cap" onError="$(this).parent().remove()">'; $main_content .= '</div>
+		<div class="card_body">
+			<p class="card_title mb-0">' . $tutorial["title"] . '</p>
+			' . ($tutorial["description"] ? '<p class="card_description">' . $tutorial["description"] . '</p>' : '') . '
+		</div>'; if ($tutorial["items"]) { $main_content .= '<ul class="list_group list_group_flush">'; foreach ($tutorial["items"] as $sub_tutorial) { $id = md5($sub_tutorial["title"]); $main_content .= '<li class="list_group_item collapsed">
+				<div class="list_group_item_header" onClick="$(this).parent().toggleClass(\'collapsed\')">
 
 					' . $sub_tutorial["title"] . '
-					<span class="dropdown-toggle"></span>
-				</button>
+					<span class="dropdown_toggle"></span>
+				</div>
 				
-				<div id="sub_' . $id . '" class="collapse pl-3 pr-3 pb-2 text-muted">'; if ($sub_tutorial["image"]) $main_content .= '<img class="mr-2 mb-2 border border-muted col-6 align-top" src="' . $sub_tutorial["image"] . '" alt="Card image cap" onError="$(this).remove()">'; if ($sub_tutorial["description"]) $main_content .= '<span class="description">' . $sub_tutorial["description"] . '</span>'; if ($sub_tutorial["video"]) $main_content .= '<a class="video_link mt-2 d-block text-secondary text-right" href="javascript:void(0)" onClick="openVideoPopup(this)" video_url="' . $sub_tutorial["video"] . '"><small>Watch video</small></a>'; $main_content .= '
+				<div class="list_group_item_body">'; if ($sub_tutorial["image"]) $main_content .= '<img class="card_img" src="' . $sub_tutorial["image"] . '" alt="Card image cap" onError="$(this).remove()">'; if ($sub_tutorial["description"]) $main_content .= '<span class="description">' . $sub_tutorial["description"] . '</span>'; if ($sub_tutorial["video"]) $main_content .= '<a class="video_link" href="javascript:void(0)" onClick="openVideoPopup(this)" video_url="' . $sub_tutorial["video"] . '"><small>Watch video</small></a>'; $main_content .= '
 				</div>
 			</li>'; } $main_content .= '</ul>'; } if ($tutorial["video"]) $main_content .= '
-		<div class="card-footer text-right">
-			<a class="video_link text-secondary" href="javascript:void(0)" onClick="openVideoPopup(this)" video_url="' . $tutorial["video"] . '"><small>Watch video</small></a>
+		<div class="card_footer">
+			<a class="video_link" href="javascript:void(0)" onClick="openVideoPopup(this)" video_url="' . $tutorial["video"] . '"><small>Watch video</small></a>
 		</div>'; $main_content .= '
 	</div>'; } $main_content .= '
 	</div>

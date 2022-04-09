@@ -19,6 +19,10 @@
  */
 
 $head = '
+<!-- Add Ace Editor CSS and JS -->
+<script src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ace.js"></script>
+<script src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
+
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -38,7 +42,7 @@ $head = '
 
 <script>
 </script>'; $main_content = '<div class="title' . ($popup ? " inside_popup_title" : "") . '">Templates Regions Html</div>
-<div class="templates_regions_html_obj">'; if ($available_templates_regions) { $main_content .= '<ul>'; foreach ($available_templates_regions as $template => $regions) { $template_samples_url = $project_url_prefix . "phpframework/presentation/template_samples?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$selected_project_id/src/template/" . $template . ".php"; $main_content .= '
+<div class="templates_regions_html_obj' . ($popup ? " in_popup" : "") . '">'; if ($available_templates_regions) { $main_content .= '<ul>'; foreach ($available_templates_regions as $template => $regions) { $template_samples_url = $project_url_prefix . "phpframework/presentation/template_samples?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$selected_project_id/src/template/" . $template . ".php"; $main_content .= '
 		<li class="template">
 			<div class="header"><span class="icon view" onClick="openTemplateSamples(this)" title="View Template" template_samples_url="' . $template_samples_url . '">Info</span> ' . $template . ' <span class="icon maximize" onClick="toggleContent(this)">Maximize</span></div>
 			<ul class="content">'; foreach ($regions as $region_name => $region_samples) { $main_content .= '
@@ -53,12 +57,14 @@ $head = '
 							<li><a href="#view_source">HTML Source</a></li>
 						</ul>
 						
-						<div id="view_ui">
+						<div id="view_ui" class="view_ui">
 							<div class="iframe_toolbar desktop">
 								' . CMSPresentationLayerUIHandler::getTabContentTemplateLayoutIframeToolbarContentsHtml() . '
 							</div>
 							<iframe orig_src="' . $sample_url . '"></iframe>
 						</div>
-						<textarea id="view_source">' . htmlspecialchars($html, ENT_NOQUOTES) . '</textarea>
+						<div id="view_source" class="view_source">
+							<textarea>' . htmlspecialchars($html, ENT_NOQUOTES) . '</textarea>
+						</div>
 					</div>
 				</li>'; } $main_content .= '</ul></li>'; } $main_content .= '</ul></li>'; } $main_content .= '</ul>'; } else $main_content .= '<div class="no_templates_regions_html">There are no templates regions html!</div>'; $main_content .= '</div>'; ?>

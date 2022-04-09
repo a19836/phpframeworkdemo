@@ -1,4 +1,5 @@
 var active_tab = null;
+var active_tabs_ids = null;
 var saved_simple_form_settings_id = null;
 
 $(function () {
@@ -17,13 +18,13 @@ $(function () {
 	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu");
 	
 	//init auto save
+	$("#code .code_menu.top_bar_menu ul li.auto_save_activation, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_activation a").attr("onClick", "toggleAutoSaveCheckbox(this, onToggleGlobalVariablesAutoSave)");
+	
+	$("#code .code_menu.top_bar_menu li.auto_convert_activation, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation a").attr("onClick", "toggleAutoConvertCheckbox(this, onToggleGlobalVariablesAutoConvert)");
+	
 	var auto_save_icon = $("#code > .code_menu li.auto_save_activation").first().clone();
 	var auto_convert_icon = $("#code > .code_menu li.auto_convert_activation").first().clone();
 	$("#form_global_vars .code_menu.top_bar_menu ul li.save").before(auto_save_icon).before(auto_convert_icon);
-	
-	$("#code .code_menu.top_bar_menu ul li.auto_save_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_activation input").attr("onChange", "toggleAutoSaveCheckbox(this, onToggleGlobalVariablesAutoSave)");
-	
-	$("#code .code_menu.top_bar_menu li.auto_convert_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation input").attr("onChange", "toggleAutoConvertCheckbox(this, onToggleGlobalVariablesAutoConvert)");
 	
 	enableAutoSave(onToggleGlobalVariablesAutoSave);
 	enableAutoConvert(onToggleGlobalVariablesAutoConvert);
@@ -68,15 +69,24 @@ $(function () {
 	var global_vars_obj = $(".global_vars_obj");
 	
 	if (global_vars_obj[0]) {
-		active_tab = is_code_valid ? 0 : 1;
+		//prepare active_tabs_ids
+		active_tabs_ids = {};
+		var tabs_lis = global_vars_obj.find(" > ul.tabs > li");
 		
+		for (var i = 0; i < tabs_lis.length; i++)
+			active_tabs_ids[ tabs_lis[i].id ] = i;
+		
+		active_tab = is_code_valid ? active_tabs_ids["form_global_vars_tab"] : active_tabs_ids["code_editor_tab"];
+		
+		//prpeare active tabs
 		global_vars_obj.tabs({
-			active: show_low_code_first ? 2 : active_tab, //show workflow tab
+			active: show_low_code_first ? active_tabs_ids["tasks_flow_tab"] : active_tab, //show workflow tab
 		});
 		
 		if (!is_code_valid)
 			global_vars_obj.tabs("disable" , 0); //disable simple form tab
 		
+		//prpeare code editor
 		var textarea = $("#code textarea")[0];
 		if (textarea) {
 			var editor = createCodeEditor(textarea, {save_func: saveGlobalVariables});
@@ -94,7 +104,7 @@ $(function () {
 				saved_simple_form_settings_id = getSimpleFormSettingsObjId();
 				
 				if (is_code_valid)
-					global_vars_obj.tabs("option", "active", 0);
+					global_vars_obj.tabs("option", "active", active_tabs_ids["form_global_vars_tab"]);
 				
 				auto_save = true;
 			},
@@ -212,32 +222,34 @@ function onChooseAvailableTemplate(elm) {
 	
 	chooseAvailableTemplate( $(elm).parent().parent().find(" > .var_value select")[0], {
 		available_projects_templates_props: available_projects_templates_props,
+		get_available_templates_props_url: get_available_templates_props_url,
 		install_template_url: install_template_url,
 		show_templates_only: true,
 		hide_choose_different_editor: true,
+		hide_choose_different_project: true,
 	} );
 }
 
 function onClickGlobalVariablesCodeEditorTab(elm) {
-	if (auto_convert && active_tab == 2) {
+	if (auto_convert && active_tab == active_tabs_ids["form_global_vars_tab"]) {
 		var code = convertSimpleFormIntoCode();
 		setEditorCodeRawValue(code);
 	}
 	else
 		onClickCodeEditorTab(elm);
 	
-	active_tab = 0;
+	active_tab = active_tabs_ids["code_editor_tab"];
 }
 
 function onClickGlobalVariablesTaskWorkflowTab(elm) {
-	if (auto_convert && active_tab == 2) {
+	if (auto_convert && active_tab == active_tabs_ids["form_global_vars_tab"]) {
 		var code = convertSimpleFormIntoCode();
 		setEditorCodeRawValue(code);
 	}
 	
 	onClickTaskWorkflowTab(elm);
 	
-	active_tab = 1;
+	active_tab = active_tabs_ids["tasks_flow_tab"];
 }
 
 function onClickGlobalVariablesSimpleFormTab(elm) {
@@ -248,9 +260,9 @@ function onClickGlobalVariablesSimpleFormTab(elm) {
 			loadSimpleFormWithNewVars(vars); //load new vars with addNewVariable
 		};
 		
-		if (active_tab == 0)
+		if (active_tab == active_tabs_ids["code_editor_tab"])
 			convert_code_to_vars_func();
-		else if (active_tab == 1) {
+		else if (active_tab == active_tabs_ids["tasks_flow_tab"]) {
 			//close properties popup in case the auto_save be active on close task properties popup
 			if (auto_save && jsPlumbWorkFlow.jsPlumbProperty.auto_save) {
 				if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedTaskPropertiesOpen())
@@ -289,7 +301,7 @@ function onClickGlobalVariablesSimpleFormTab(elm) {
 		}
 	}
 	
-	active_tab = 2;
+	active_tab = active_tabs_ids["form_global_vars_tab"];
 }
 
 function loadSimpleFormWithNewVars(vars) {
@@ -368,7 +380,14 @@ function convertSimpleFormIntoCode() {
 		var var_value = settings["vars_value"][i];
 		
 		if (var_name) {
-			var quotes = $.isNumeric(var_value) ? '' : '"';
+			var var_value_lower = ("" + var_value).toLowerCase();
+			var quotes = '"';
+			
+			if ($.isNumeric(var_value) || var_value_lower == "true" || var_value_lower == "false" || var_value_lower == "null") {
+				var_value = var_value_lower;
+				quotes = '';
+			}
+			
 			code += '$' + var_name + ' = ' + quotes + var_value + quotes + ';' + "\n";
 		}
 	}
@@ -427,7 +446,7 @@ function getGlobalVariablesCodeObj() {
 	var active_tab = global_vars_obj.tabs('option', 'active');
 	
 	//if simple vars
-	if (active_tab == 2) {
+	if (active_tab == active_tabs_ids["form_global_vars_tab"]) {
 		prepareAutoSaveVars();
 		
 		var obj = getSimpleFormSettings();
@@ -443,7 +462,7 @@ function getGlobalVariablesCodeObj() {
 
 function getGlobalVariablesSaveUrl() {
 	var active_tab = $(".global_vars_obj").tabs('option', 'active');
-	return active_tab == 2 ? save_object_simple_url : save_object_advanced_url;
+	return active_tab == active_tabs_ids["form_global_vars_tab"] ? save_object_simple_url : save_object_advanced_url;
 }
 
 function saveGlobalVariables() {

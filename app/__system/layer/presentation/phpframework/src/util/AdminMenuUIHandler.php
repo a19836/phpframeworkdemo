@@ -405,8 +405,8 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="business_logic_object_context_menu" class="jqcontextmenu">
-	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Simple Workspace)</a></li>
-	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Advanced Workspace)</a></li>
+	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Visual Workspace)</a></li>
+	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Code Workspace)</a></li>
 	<li class="rename"><a onClick="return manageBusinessLogicObject(this, \'rename_url\', \'rename\')" allow_upper_case="1">Rename File</a></li>
 	<!--li class="rename"><a onClick="return manageBusinessLogicObject(this, \'rename_url\', \'rename_name\')" allow_upper_case="1">Rename Name</a></li-->
 	<li class="remove"><a onClick="return removeBusinessLogicObject(this, \'remove_url\')">Remove</a></li>
@@ -588,8 +588,8 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="presentation_page_file_context_menu" class="jqcontextmenu">
-	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Simple Workspace)</a></li>
-	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Advanced Workspace)</a></li>
+	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Visual Workspace)</a></li>
+	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Code Workspace)</a></li>
 	<li class="rename"><a onClick="return manageFile(this, \'rename_url\', \'rename\', managePresentationFile)">Rename File</a></li>
 	<li class="rename"><a onClick="return manageFile(this, \'rename_url\', \'rename_name\', managePresentationFile)">Rename Name</a></li>
 	<li class="remove"><a onClick="return manageFile(this, \'remove_url\', \'remove\', managePresentationFile)">Remove</a></li>
@@ -605,8 +605,8 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="presentation_template_file_context_menu" class="jqcontextmenu">
-	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Simple Workspace)</a></li>
-	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Advanced Workspace)</a></li>
+	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Visual Workspace)</a></li>
+	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Code Workspace)</a></li>
 	<li class="rename"><a onClick="return manageFile(this, \'rename_url\', \'rename\', managePresentationFile)">Rename File</a></li>
 	<li class="rename"><a onClick="return manageFile(this, \'rename_url\', \'rename_name\', managePresentationFile)">Rename Name</a></li>
 	<li class="remove"><a onClick="return manageFile(this, \'remove_url\', \'remove\', managePresentationFile)">Remove</a></li>
@@ -619,8 +619,8 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="presentation_block_file_context_menu" class="jqcontextmenu">
-	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Simple Workspace)</a></li>
-	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Advanced Workspace)</a></li>
+	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Visual Workspace)</a></li>
+	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Code Workspace)</a></li>
 	<li class="rename"><a onClick="return manageFile(this, \'rename_url\', \'rename\', managePresentationFile)">Rename File</a></li>
 	<li class="rename"><a onClick="return manageFile(this, \'rename_url\', \'rename_name\', managePresentationFile)">Rename Name</a></li>
 	<li class="remove"><a onClick="return manageFile(this, \'remove_url\', \'remove\', managePresentationFile)">Remove</a></li>
@@ -650,8 +650,8 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="presentation_util_object_context_menu" class="jqcontextmenu">
-	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Simple Workspace)</a></li>
-	<!--li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Advanced Workspace)</a></li-->
+	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Visual Workspace)</a></li>
+	<!--li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Code Workspace)</a></li-->
 	<li class="remove"><a onClick="return manageFile(this, \'remove_url\', \'remove\')">Remove</a></li>
 	<li class="properties"><a onClick="return showProperties(this)">Properties</a></li>
 	<li class="line_break"></li>
@@ -749,8 +749,8 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="test_unit_obj_context_menu" class="jqcontextmenu">
-	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Simple Workspace)</a></li>
-	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Advanced Workspace)</a></li>
+	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Visual Workspace)</a></li>
+	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Code Workspace)</a></li>
 	<li class="rename"><a onClick="return manageFile(this, \'rename_url\', \'rename\')" allow_upper_case="1">Rename File</a></li>
 	<li class="rename"><a onClick="return manageFile(this, \'rename_url\', \'rename_name\')" allow_upper_case="1">Rename Name</a></li>
 	<li class="remove"><a onClick="return manageFile(this, \'remove_url\', \'remove\')">Remove</a></li>

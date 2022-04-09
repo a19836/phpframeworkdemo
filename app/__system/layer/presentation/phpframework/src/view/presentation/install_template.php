@@ -33,9 +33,11 @@ $head = '
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/install_template.js"></script>
 
 <script>
-	var get_store_templates_url = "' . $get_store_templates_url . '";
+var get_store_templates_url = "' . $get_store_templates_url . '"; //This is a global var
+var is_popup = ' . ($popup ? 1 : 0) . ';
+var open_store = ' . ($open_store ? 1 : 0) . ';
 </script>'; $main_content = '
-	<div class="top_bar">
+	<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 		<header>
 			<div class="title">Install New Template</div>
 			<ul>

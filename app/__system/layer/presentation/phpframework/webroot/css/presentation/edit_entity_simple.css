@@ -118,15 +118,16 @@
 	background:#eee;
 	z-index:7;
 	overflow:hidden;
+	font-size:11px;
 }
 .entity_obj .external_template_params.collapsed {
 	height:40px;
 }
-.entity_obj .external_template_params .external_template_params_toggle_btn {
-	
+.entity_obj .external_template_params.collapsed .external_template_type {
+	margin-bottom:20px;
 }
 .entity_obj .external_template_params > div {
-	margin:10px auto;
+	margin:5px auto;
 	width:500px;
 }
 .entity_obj .external_template_params > div > label {
@@ -139,6 +140,7 @@
 	box-sizing:border-box;
 	background:#fff;
 	border:1px solid #ccc;
+	font-size:inherit;
 }
 .entity_obj .external_template_params > .template_id > input,
   .entity_obj .external_template_params > .block_id > input,
@@ -149,7 +151,7 @@
 	position: absolute;
 }
 .entity_obj .external_template_params .search {
-	margin:0 0 auto -18px;
+	margin:3px 0 auto -18px;
 	position: absolute;
 }
 .entity_obj .external_template_params .info {

@@ -2973,7 +2973,7 @@ function saveObjCode(save_object_url, obj, opts) {
 function saveObj(save_object_url, obj, opts) {
 	opts = opts ? opts : {};
 	
-	var url = save_object_url + (file_modified_time ? (save_object_url.indexOf("?") != -1 ? "&" : "?") + "file_modified_time=" + file_modified_time : "");
+	var url = save_object_url + (typeof file_modified_time != "undefined" && file_modified_time ? (save_object_url.indexOf("?") != -1 ? "&" : "?") + "file_modified_time=" + file_modified_time : "");
 	var url_aux = save_object_url;
 	
 	if (typeof opts.parse_url == "function") {

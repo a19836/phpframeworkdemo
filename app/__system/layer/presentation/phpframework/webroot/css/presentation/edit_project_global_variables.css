@@ -23,6 +23,9 @@
 .global_vars_obj #form_global_vars .code_menu.top_bar_menu {
 	text-align:left;
 }
+.global_vars_obj #form_global_vars .code_menu.top_bar_menu > ul {
+	min-width:200px;
+}
 
 /* To print the workflow */
 @media print {

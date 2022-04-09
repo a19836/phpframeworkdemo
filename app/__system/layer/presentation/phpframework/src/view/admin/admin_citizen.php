@@ -44,7 +44,7 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 			
 			<ul>
 				<li class="choose_another_project" title="Choose a different project">
-					<a class="item_header" href="javascript:void(0)" onClick="chooseAvailableProject(\'' . $project_url_prefix . 'admin/choose_available_project?redirect_path=admin&is_popup=1\');">
+					<a class="item_header" href="javascript:void(0)" onClick="chooseAvailableProject(\'' . $project_url_prefix . 'admin/choose_available_project?redirect_path=admin&popup=1\');">
 						<i class="selected"></i>
 						<span class="fas fa-toggle-on logo"></span>
 						<label>Choose another project</label>
@@ -55,7 +55,7 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 			</ul>
 		</li>
 		<li class="dashboard">
-			<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}admin/admin_home" . '" title="Go Home">
+			<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}admin/admin_home?selected_layout_project=$filter_by_layout" . '" title="Go Home">
 				<span class="fas fa-tachometer-alt logo"></span>
 				<label>Dashboard</label>
 			</a>
@@ -242,7 +242,7 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 					</a>
 				</li>'; } } $main_content .= '
 				<li class="tools">
-					<a class="item_header" href="javascript:void(0)" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$project&selected_db_driver=$db_driver_broker_name&is_popup=1" . '\')">
+					<a class="item_header" href="javascript:void(0)" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$project&selected_db_driver=$db_driver_broker_name&popup=1" . '\')">
 						<i class="selected"></i>
 						<span class="fas fa-tools logo"></span>
 						<label>Tools</label>
@@ -285,10 +285,10 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 	<span class="login_info"><i class="icon user"></i>  "' . $logged_name . '"</span>
 	<span class="icon go_back" onClick="goBack()" title="Go Back"></span>
 	<span class="icon refresh" onClick="refreshIframe()" title="Refresh"></span>
-	<span class="icon home" onClick="goTo(this, \'home_url\', event)" home_url="' . "{$project_url_prefix}admin/admin_home" . '" title="Go Home"></span>
+	<span class="icon home" onClick="goTo(this, \'home_url\', event)" home_url="' . "{$project_url_prefix}admin/admin_home?selected_layout_project=$filter_by_layout" . '" title="Go Home"></span>
 </div>
 <div id="right_panel">
-	<iframe src="' . "{$project_url_prefix}admin/admin_home" . '"></iframe>
+	<iframe src="' . "{$project_url_prefix}admin/" . ($filter_by_layout ? "admin_home_project?$filter_by_layout_url_query" : "admin_home?selected_layout_project=$filter_by_layout") . '"></iframe>
 	<div class="iframe_overlay">
 		<div class="iframe_loading">Loading...</div>
 	</div>

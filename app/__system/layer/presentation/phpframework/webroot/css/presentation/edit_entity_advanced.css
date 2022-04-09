@@ -89,6 +89,10 @@
 	right:425px;
 }
 
+.entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.sub_menu > ul {
+	width:220px;
+}
+
 .entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.save,
   .entity_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.full-screen {
 	display:none !important;

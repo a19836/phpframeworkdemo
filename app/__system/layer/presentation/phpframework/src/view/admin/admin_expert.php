@@ -40,5 +40,5 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_expert_a
 	<!--div class="iframe_overlay">
 		<div class="iframe_loading">Loading...</div>
 	</div>
-	<iframe src="' . "{$project_url_prefix}admin/admin_home" . '"></iframe-->
+	<iframe src="' . "{$project_url_prefix}admin/" . ($filter_by_layout ? "admin_home_project?$filter_by_layout_url_query" : "admin_home?selected_layout_project=$filter_by_layout") . '"></iframe-->
 </div>'; ?>

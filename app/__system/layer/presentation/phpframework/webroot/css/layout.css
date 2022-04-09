@@ -515,7 +515,7 @@
 }
 .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.auto_save_activation,
   .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.auto_convert_activation {
-	padding:7px 10px;
+	/*padding:7px 10px;*/
 }
 
 /* WORKFLOW - ICONS */

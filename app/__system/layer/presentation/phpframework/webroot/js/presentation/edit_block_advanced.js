@@ -11,7 +11,15 @@ $(function () {
 	});
 	
 	//prepare top_bar
-	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu");
+	var taskflowchart = $("#ui > .taskflowchart");
+	var workflow_menu = taskflowchart.children(".workflow_menu");
+	var code_menu = $("#code > .code_menu");
+	var show_simple_ui = $(".top_bar li.show_simple_ui");
+	
+	taskflowchart.addClass("with_top_bar_menu fixed_properties");
+	workflow_menu.addClass("top_bar_menu");
+	workflow_menu.children("ul").prepend( show_simple_ui.clone() );
+	code_menu.children("ul").prepend( show_simple_ui.clone() );
 	
 	//init auto save
 	enableAutoSave(onTogglePHPCodeAutoSave);

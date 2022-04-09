@@ -17,6 +17,7 @@
 	text-align:center;
 }
 .admin_panel > ul li {
+	margin:0 !important;
 	background:none !important;
 	border:none !important;
 	display:inline-block;
@@ -25,9 +26,13 @@
 .admin_panel > ul li:not(:first-child) {
 	border-left:1px solid #eee !important;
 }
-.admin_panel > ul li.ui-state-active {
+.admin_panel > ul li a {
+	margin:0 3px;
+	border-bottom:1px solid transparent !important;
+}
+.admin_panel > ul li.ui-state-active a {
 	font-weight:bold;
-	border-bottom:1px solid var(--icon-hover-color) !important;
+	border-bottom-color:var(--icon-hover-color) !important;
 }
 
 /* PROJS */
@@ -51,32 +56,93 @@
 
 /* TUTORIALS */
 .admin_panel .tutorials .card {
-	border-left:1px solid #ff0000aa;
-	border-right:1px solid #ff0000aa;
+	width:300px;
+	min-height:200px;
+	margin:20px;
+	padding:20px;
+	display:inline-block;
+	border:1px solid #eee;
+	border-radius:5px;
+	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 20%);
 	box-sizing:border-box;
+	float:left;
 }
-.admin_panel .tutorials .card.border_bottom {
-	border-bottom:.15rem solid #ddd;
+.admin_panel .tutorials .card a:hover {
+	color:var(--icon-hover-color);
 }
-.admin_panel .tutorials .card .list-group-item > button .dropdown-toggle {
-	position: absolute;
-	right: 10px;
-	top: 15px;
+.admin_panel .tutorials .card .card_header {
+	height:150px;
+	margin-bottom:10px;
+	border-radius:2px;
 }
-.admin_panel .tutorials .card .list-group-item > button:not(.collapsed) .dropdown-toggle:after {
-	display: inline-block;
-	width: 0;
-	height: 0;
-	margin-left: .255em;
-	vertical-align: .255em;
-	content: "";
-	border-top: 0;
-	border-right: .3em solid transparent;
-	border-bottom: .3em solid;
-	border-left: .3em solid transparent;
+.admin_panel .tutorials .card .card_header:empty {
+	background:#eee;
 }
-.admin_panel .btn-link {
-	color:#ff0000;
+.admin_panel .tutorials .card .card_header:empty:before {
+	content:"No Image";
+	line-height:150px;
+	display:block;
+	text-align:center;
+	color:#ccc;
+}
+.admin_panel .tutorials .card .card_header img {
+	width:100%;
+	height:100%;
+}
+.admin_panel .tutorials .card .card_title {
+	font-size:11px;
+	margin-bottom:10px;
+}
+.admin_panel .tutorials .card .card_description {
+	font-size:10px;
+	color:#666;
+}
+.admin_panel .tutorials .card .video_link {
+	display:block;
+	text-align:right;
+	color:var(--icon-hover-color);
+}
+.admin_panel .tutorials .card .card_footer {
+	margin-top:10px;
+}
+.admin_panel .tutorials .card .list_group {
+	font-size:10px;
+}
+.admin_panel .tutorials .card .list_group .list_group_item {
+	background:#eee;
+	border:1px solid #ccc;
+}
+.admin_panel .tutorials .card .list_group .list_group_item:first-child {
+	border-top-left-radius:2px;
+	border-top-right-radius:2px;
+}
+.admin_panel .tutorials .card .list_group .list_group_item:last-child {
+	border-bottom-left-radius:2px;
+	border-bottom-right-radius:2px;
+}
+.admin_panel .tutorials .card .list_group .list_group_item > .list_group_item_header {
+	padding:10px;
+	background:#ddd;
+	cursor:pointer;
+	position:relative;
+}
+.admin_panel .tutorials .card .list_group .list_group_item > .list_group_item_header::after {
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f106";
+	position:absolute;
+	top:13px;
+	right:10px;
+}
+.admin_panel .tutorials .card .list_group .list_group_item.collapsed > .list_group_item_header::after {
+	content:"\f107";
+}
+.admin_panel .tutorials .card .list_group .list_group_item > .list_group_item_body {
+	padding:10px;
+}
+.admin_panel .tutorials .card .list_group .list_group_item.collapsed > .list_group_item_body {
+	display:none;
 }
 
 /* MODAL VIDEO */

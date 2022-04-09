@@ -8,6 +8,9 @@ $(function () {
 		MyFancyPopupInstallStoreTemplate.updatePopup();
 		MyFancyPopupViewTemplate.updatePopup();
 	});
+	
+	if (open_store)
+		installStoreTemplatePopup();
 });
 
 function toggleLayerAndProject() {
@@ -34,7 +37,9 @@ function installStoreTemplatePopup() {
 		var popup = $(".install_store_template_popup");
 		
 		if (!popup[0]) {
-			popup = $('<div class="myfancypopup install_store_template_popup"><div class="title">Choose a template to install</div><ul><li class="loading">Loading templates...</li></ul></div>');
+			var in_popup = $(".top_bar").is(".in_popup");
+			
+			popup = $('<div class="myfancypopup with_title install_store_template_popup' + (is_popup ? " in_popup" : "") + (open_store ? " open_store" : "") + '"><div class="title">Choose a template to install</div><ul><li class="loading">Loading templates...</li></ul></div>');
 			$(document.body).append(popup);
 			
 			$.ajax({
@@ -47,13 +52,13 @@ function installStoreTemplatePopup() {
 					var html = '';
 					
 					$.each(data, function(idx, item) {
-						html += '<li class="template">'
-								+ (item["file"] ? '<a class="img_label" href="javascript:void(0)" onClick="viewStoreTemplate(\'' + item["file"] + '\')">' : '')
+						html += '<li class="template" title="' + item["label"] + '">'
+								+ (item["file"] ? '<a class="img_label" href="javascript:void(0)" onClick="viewStoreTemplate(\'' + item["file"] + '\', \'' + item["zip"] + '\')">' : '')
 									+ (item["logo"] ? '<img src="' + item["logo"] + '" />' : '')
 									+ '<label>' + item["label"] + '</label>'
 								+ (item["file"] ? '</a>' : '')
-								+ (item["zip"] ? '<a class="choose_template" href="javascript:void(0)" onClick="chooseStoreTemplate(\'' + item["zip"] + '\')">Choose</a>' : '')
-								+ (item["file"] ? '<a class="view_template" href="javascript:void(0)" onClick="viewStoreTemplate(\'' + item["file"] + '\')">View</a>' : '')
+								+ (item["zip"] ? '<a class="choose_template" href="javascript:void(0)" onClick="chooseStoreTemplate(\'' + item["zip"] + '\')"><i class="icon save"></i> Install</a>' : '')
+								+ (item["file"] ? '<a class="view_template" href="javascript:void(0)" onClick="viewStoreTemplate(\'' + item["file"] + '\', \'' + item["zip"] + '\')"><i class="icon view"></i> Preview</a>' : '')
 							+ '</li>';
 					});
 					
@@ -74,16 +79,18 @@ function installStoreTemplatePopup() {
 	}
 }
 
-function viewStoreTemplate(url) {
-	if (url) {
+function viewStoreTemplate(preview_url, zip_url) {
+	if (preview_url) {
 		var popup = $(".view_store_template_popup");
 		
 		if (!popup[0]) {
-			popup = $('<div class="myfancypopup view_store_template_popup"></div>');
+			popup = $('<div class="myfancypopup with_title view_store_template_popup' + (is_popup ? " in_popup" : "") + '"></div>');
 			$(document.body).append(popup);
 		}
 		
-		popup.html('<iframe src="' + url + '"></iframe>');
+		var html = '<div class="title">Template Preview <button class="install_template" onClick="chooseStoreTemplate(\'' + zip_url + '\')">Install this template</button></div>'
+				+ '<iframe src="' + preview_url + '"></iframe>';
+		popup.html(html);
 		
 		MyFancyPopupViewTemplate.init({
 			elementToShow: popup,
@@ -97,6 +104,10 @@ function viewStoreTemplate(url) {
 
 function chooseStoreTemplate(url) {
 	if (url) {
+		MyFancyPopupViewTemplate.hidePopup(); //in case it comes from the preview popup
+		
+		StatusMessageHandler.showMessage("Download and installing template... Please be patient...");
+		
 		var upload_url = $('<div class="upload_url"><label>Url:</label><input type="text" name="zip_url" value="' + url + '"><span class="icon delete" onClick="removeStoreTemplateUrl(this);"></span></div>');
 		
 		var upload_file = $(".file_upload form .upload_file");
@@ -105,6 +116,9 @@ function chooseStoreTemplate(url) {
 		upload_file.remove();
 		
 		MyFancyPopupInstallStoreTemplate.hidePopup();
+		
+		//install template
+		installTemplate( $(".top_bar li.continue > a")[0] );
 	}
 	else
 		alert("Error: You cannot choose this template. Please contact the sysadmin.");

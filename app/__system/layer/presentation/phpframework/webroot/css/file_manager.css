@@ -244,15 +244,8 @@
 	color:#888;
 }
 .mytree i.template_file::before {
-	font:var(--fa-font-regular);
-	font-size:16px;
 	margin-left:-5px;
-	content:"\f15b";
-	color:#ccc;
-}
-.mytree i.template_file::after {
-	font-size:13px;
-	content:"\f815";
+	content:"\f570";
 	color:#888;
 }
 .mytree i.blocks_folder::before {

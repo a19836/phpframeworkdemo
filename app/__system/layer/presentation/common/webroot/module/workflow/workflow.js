@@ -131,8 +131,8 @@ $(function () {
 	}
 	
 	//add auto_save and auto_convert options
-	$("#code .code_menu ul li.auto_save_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_activation input").attr("onChange", "toggleAutoSaveCheckbox(this, onToggleModuleWorkflowAutoSave)");
-	$("#code .code_menu ul li.auto_convert_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation input").attr("onChange", "toggleAutoConvertCheckbox(this, onToggleModuleWorkflowAutoConvert)");
+	$("#code .code_menu ul li.auto_save_activation, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_activation a").attr("onClick", "toggleAutoSaveCheckbox(this, onToggleModuleWorkflowAutoSave)");
+	$("#code .code_menu ul li.auto_convert_activation, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation a").attr("onClick", "toggleAutoConvertCheckbox(this, onToggleModuleWorkflowAutoConvert)");
 	
 	if (auto_save)
 		enableAutoSave(onToggleModuleWorkflowAutoSave);

@@ -1,9 +1,10 @@
 var pagesFromFileManagerTree = null;
 var templatesFromFileManagerTree = null;
+var default_available_templates = ["empty", "ajax", "default"];
 
 $(function() {
 	var project_files = $(".admin_panel .project_files");
-	project_files.tabs();
+	project_files.tabs({active: active_tab});
 	
 	pagesFromFileManagerTree = new MyTree({
 		multiple_selection : false,
@@ -33,6 +34,12 @@ $(function() {
 	templatesFromFileManagerTree.refreshNodeChilds( project_files.find(".templates > .mytree > li")[0] );
 	
 	onClickPagesTab();
+	
+	$(window).resize(function() {
+		MyFancyPopup.updatePopup();
+	});
+	
+	MyFancyPopup.hidePopup();
 });
 
 function prepareProjectLayerNodes2(ul, data) {
@@ -51,8 +58,37 @@ function prepareProjectLayerNodes2(ul, data) {
 			li.attr("title", a.children("label").text());
 	});
 	
+	//prepare folders
+	var folders = ul.find("i.folder, i.template_folder")
+	
+	if (folders.length > 0) {
+		for (var i = folders.length; i >= 0; i--) {
+			var elm = $(folders[i]);
+			var a = elm.parent();
+			var li = a.parent();
+			var file_path = a.attr("folder_path");
+			var is_template_folder = elm.is("i.template_folder");
+			
+			var html = '<div class="sub_menu">'
+						+ '<i class="icon sub_menu"></i>'
+						+ '<ul class="jqcontextmenu">'
+							+ '<li class="rename"><a onclick="return manageFile(this, \'folder\', \'rename\', \'' + file_path + '\', onSucccessfullRenameFile)">Rename</a></li>'
+							+ '<li class="remove"><a onclick="return manageFile(this, \'folder\', \'remove\', \'' + file_path + '\', ' + (is_template_folder ? 'onSucccessfullRemoveTemplateFolder' : 'onSucccessfullRemoveFile') + ')">Delete</a></li>'
+						+ '</ul>'
+					+ '</div>';
+			
+			a.after(html);
+			
+			ul.prepend(li);
+		};
+		
+		ul.prepend('<li class="separator">Folders:</li>');
+	}
+	
 	//prepare page files
-	ul.find("i.entity_file").each(function(idx, elm) {
+	var entities = ul.find("i.entity_file");
+	entities.first().parent().closest("li").before('<li class="separator">Pages:</li>');
+	entities.each(function(idx, elm) {
 		elm = $(elm);
 		var a = elm.parent();
 		var li = a.parent();
@@ -65,7 +101,7 @@ function prepareProjectLayerNodes2(ul, data) {
 					+ '<i class="icon sub_menu"></i>'
 					+ '<ul class="jqcontextmenu">'
 						+ '<li class="rename"><a onclick="return manageFile(this, \'file\', \'rename\', \'' + file_path + '\', onSucccessfullRenameFile)">Rename</a></li>'
-						+ '<li class="remove"><a onclick="return manageFile(this, \'file\', \'remove\', \'' + file_path + '\', onSucccessfullRemoveFile)">Remove</a></li>'
+						+ '<li class="remove"><a onclick="return manageFile(this, \'file\', \'remove\', \'' + file_path + '\', onSucccessfullRemoveFile)">Delete</a></li>'
 					+ '</ul>'
 				+ '</div>';
 		
@@ -73,41 +109,72 @@ function prepareProjectLayerNodes2(ul, data) {
 	});
 	
 	//prepare template files
-	ul.find("i.template_file").each(function(idx, elm) {
+	var default_templates_lis = {};
+	
+	var templates = ul.find("i.template_file");
+	templates.first().parent().closest("li").before('<li class="separator">Installed Templates:</li>');
+	templates.each(function(idx, elm) {
 		elm = $(elm);
 		var a = elm.parent();
 		var li = a.parent();
 		var file_path = a.attr("file_path");
-		var view_url = edit_template_url.replace(/#path#/g, file_path);
-		var html = '<a href="' + view_url + '" class="edit" title="Edit page"><i class="icon edit"></i> Edit</a>'
+		var edit_url = edit_template_url.replace(/#path#/g, file_path);
+		var html = '<a href="' + edit_url + '" class="edit" title="Edit page"><i class="icon edit"></i> Edit</a>'
 				+ '<div class="sub_menu">'
 					+ '<i class="icon sub_menu"></i>'
 					+ '<ul class="jqcontextmenu">'
+						+ '<li class="set_default"><a onclick="return setTemplateAsDefault(this, \'' + file_path + '\')">Set as Default</a></li>'
 						+ '<li class="rename"><a onclick="return manageFile(this, \'file\', \'rename\', \'' + file_path + '\', onSucccessfullRenameFile)">Rename</a></li>'
-						+ '<li class="remove"><a onclick="return manageFile(this, \'file\', \'remove\', \'' + file_path + '\', onSucccessfullRemoveFile)">Remove</a></li>'
+						+ '<li class="remove"><a onclick="return manageFile(this, \'file\', \'remove\', \'' + file_path + '\', onSucccessfullRemoveFile)">Delete</a></li>'
 					+ '</ul>'
 				+ '</div>';
 		
 		a.after(html);
-	});
-	
-	//prepare folders
-	ul.find("i.folder, i.template_folder").each(function(idx, elm) {
-		elm = $(elm);
-		var a = elm.parent();
-		var li = a.parent();
-		var file_path = a.attr("folder_path");
-		var is_template_folder = elm.is("i.template_folder");
 		
-		var html = '<div class="sub_menu">'
-					+ '<i class="icon sub_menu"></i>'
-					+ '<ul class="jqcontextmenu">'
-						+ '<li class="rename"><a onclick="return manageFile(this, \'folder\', \'rename\', \'' + file_path + '\', onSucccessfullRenameFile)">Rename</a></li>'
-						+ '<li class="remove"><a onclick="return manageFile(this, \'folder\', \'remove\', \'' + file_path + '\', ' + (is_template_folder ? 'onSucccessfullRemoveTemplateFolder' : 'onSucccessfullRemoveFile') + ')">Remove</a></li>'
-					+ '</ul>'
-				+ '</div>';
+		var pos = file_path.indexOf("/src/template/");
 		
-		a.after(html);
+		if (pos != -1) {
+			pos += "/src/template/".length
+			var template_id = file_path.substr(pos, file_path.length - pos - 4);
+			
+			//check if template has a default image in available_templates_props
+			if (available_templates_props && !$.isEmptyObject(available_templates_props)) {
+				var template_props = available_templates_props[template_id];
+				var logo = template_props ? template_props["logo"] : null;
+				
+				if (logo) {
+					var img = $("<img />");
+					img.attr("src", logo);
+					img.on("error", function() {
+						$(this).remove();
+					});
+					
+					a.children("i").append(img);
+				}
+			}
+			
+			if ($.inArray(template_id, default_available_templates) != -1) {
+				li.addClass("template_" + template_id);
+				
+				default_templates_lis[template_id] = li[0];
+			}
+						
+			if (template_id == project_default_template) {
+				ul.find("li.default_template").removeClass("default_template");
+				li.addClass("default_template");
+			}
+		}
+	}).promise().done(function() {
+		if (!$.isEmptyObject(default_templates_lis)) {
+			for (var i = default_available_templates.length; i >= 0; i--) {
+				var template_id = default_available_templates[i];
+				
+				if (default_templates_lis.hasOwnProperty(template_id))
+					ul.prepend( default_templates_lis[template_id] );
+			}
+			
+			ul.prepend('<li class="separator">Default Templates:</li>');
+		}
 	});
 }
 
@@ -122,13 +189,23 @@ function selectMyTreeNode(node) {
 		if (path)
 			refreshTreeWithNewPath(node, path);
 	}
+	else if (i.is(".entity_file")) {
+		var path = a.attr("file_path");
+		document.location = edit_entity_url.replace(/#path#/g, path);
+	}
+	else if (i.is(".template_file")) {
+		var path = a.attr("file_path");
+		document.location = edit_template_url.replace(/#path#/g, path);
+	}
 	
 	return false;
 }
 
 function refreshTreeWithNewPath(elm, path) {
 	elm = $(elm);
-	var mytree = elm.is(".folder_go_up") ? elm.parent().children(".mytree") : elm.parent().closest(".mytree");
+	var mytree = elm.is(".folder_go_up") ? elm.parent().children(".mytree") : (
+		elm.parent().is(".current_project_folder") ? elm.parent().parent().children(".mytree") : elm.parent().closest(".mytree")
+	);
 	var mytree_parent = mytree.parent();
 	var mytree_main_li = mytree.children("li");
 	var mytree_main_ul = mytree_main_li.children("ul");
@@ -137,14 +214,20 @@ function refreshTreeWithNewPath(elm, path) {
 	path = ("" + path).replace(/\/+/g, "/").replace(/^\/+/g, "").replace(/\/+$/g, ""); //remove duplicates, start and end slash
 	root_path = ("" + root_path).replace(/\/+/g, "/").replace(/^\/+/g, "").replace(/\/+$/g, ""); //remove duplicates, start and end slash
 	
-	mytree_parent.children(".folder_go_up").remove(); //remove old folder_go_up btn
+	mytree_parent.children(".current_project_folder, .folder_go_up").remove(); //remove old folder_go_up btn
 	
 	if (path != root_path) {
 		var pos = path.lastIndexOf("/");
 		var parent_path = pos != -1 ? path.substr(0, pos) + "/" : "";
-		var folder_go_up = '<a class="folder_go_up" onClick="refreshTreeWithNewPath(this, \'' + parent_path + '\')"><i class="icon go_up"></i> Go to parent folder</a>';
+		var current_path = path.substr(root_path.length + 1);
+		var str = mytree_parent.is(".pages") ? "/src/entity/" : "/src/template/";
+		var pos = path.indexOf(str);
+		var prefix_path = path.substr(0, pos + str.length);
 		
-		mytree.before(folder_go_up); //add new folder_go_up btn
+		var current_project_folder = '<div class="current_project_folder" title="Current folder"><span onClick="refreshTreeWithNewPath(this, \'' + prefix_path + '\')" class="icon folder"></span> ' + getProjectCurrentFolderHtml(current_path, prefix_path) + '</div>';
+		var folder_go_up = '<div class="folder_go_up" onClick="refreshTreeWithNewPath(this, \'' + parent_path + '\')"><i class="icon go_up"></i> Go to parent folder</div>';
+		
+		mytree.before(folder_go_up).before(current_project_folder); //add new current_project_folder and folder_go_up btn
 	}
 	
 	//replace new path in path url in ul
@@ -156,6 +239,25 @@ function refreshTreeWithNewPath(elm, path) {
 	
 	//refresh ul childs
 	refreshAndShowNodeChilds(mytree_main_li);
+}
+
+function getProjectCurrentFolderHtml(current_path, prefix_path) {
+	current_path = current_path.replace(/^\/+/g, "").replace(/\/+$/g, "");
+	var dirs = current_path.split("/");
+	var html = '';
+	var parent_folder = "";
+	
+	for (var i = 0; i < dirs.length; i++) {
+		var dir = dirs[i];
+		
+		if (dir) {
+			parent_folder += (parent_folder ? "/" : "") + dir;
+			
+			html += '<span class="path_parts" onClick="refreshTreeWithNewPath(this, \'' + prefix_path + parent_folder + '\');">' + dir + '</span>';
+		}
+	}
+	
+	return html;
 }
 
 function onClickPagesTab() {
@@ -224,9 +326,9 @@ function manageFile(elm, type, action, path, handler) {
 		var action_label = action;
 		
 		if (type == "project" && action == "remove") 
-			status = confirm("Do you wish to remove this project?") && confirm("If you delete this project, you will loose all the created pages and other files inside of this project!\nDo you wish to continue?") && confirm("LAST WARNING:\nIf you proceed, you cannot undo this deletion!\nAre you sure you wish to remove this project?");
+			status = confirm("Do you wish to delete this project?") && confirm("If you delete this project, you will loose all the created pages and other files inside of this project!\nDo you wish to continue?") && confirm("LAST WARNING:\nIf you proceed, you cannot undo this deletion!\nAre you sure you wish to delete this project?");
 		else if (action == "remove") 
-			status = confirm("Do you wish to remove this file?")
+			status = confirm("Do you wish to delete this file?")
 		else if (action == "rename") {
 			var pos = path.lastIndexOf(".");
 			var dir_pos = path.lastIndexOf("/");
@@ -285,13 +387,57 @@ function manageFile(elm, type, action, path, handler) {
 	}
 }
 
+function setTemplateAsDefault(elm, path) {
+	var node = $(elm).parent().closest(".sub_menu").parent().closest("li");
+	var file_path = node.children("a").attr("file_path");
+	var pos = file_path.indexOf("/src/template/");
+	
+	if (pos != -1) {
+		pos += "/src/template/".length
+		var template_id = file_path.substr(pos, file_path.length - pos - 4);
+		
+		if (template_id != project_default_template) {
+			StatusMessageHandler.showMessage("Setting default template... Loading...");
+			
+			var obj = {
+				project_default_template: template_id,
+			};
+			var opts = {
+				success: function(data, textStatus, jqXHR) {
+					StatusMessageHandler.removeLastShownMessage("info");
+					
+					var mytree = node.parent().closest(".mytree");
+					var main_div = mytree.parent();
+					
+					mytree.find("li.default_template").removeClass("default_template");
+					node.addClass("default_template");
+					main_div.find(" > .project_default_template > span").html(template_id);
+					
+					project_default_template = template_id;
+					
+					StatusMessageHandler.showMessage("Default template set successfully");
+				},
+				error: function(jqXHR, textStatus, data) {
+					StatusMessageHandler.showError("There was a problem trying to set this template as default. Please try again...") + (data ? "\n" + data : "");
+				},
+			};
+			
+			saveObj(save_project_default_template_url, obj, opts);
+		}
+		else
+			StatusMessageHandler.showMessage("This template is already the default template!");
+	}
+	else
+		StatusMessageHandler.showError("This template cannot be set as default!");
+}
+
 function refreshNodeParentChildsOnSucccessfullAction(elm) {
 	var node_id = $(elm).parent().closest(".sub_menu").parent().closest("li").attr("id");
 	refreshNodeParentChildsByChildId(node_id);
 }
 function onSucccessfullRemoveProject(elm, type, action, path, new_file_name) {
 	//show project list page
-	document.location = admin_home_page;
+	document.location = admin_home_page_url;
 }
 function onSucccessfullRemoveFile(elm, type, action, path, new_file_name) {
 	refreshNodeParentChildsOnSucccessfullAction(elm);
@@ -339,8 +485,44 @@ function onSucccessfullCreateFolder(elm, type, action, path, new_file_name) {
 }
 
 function browseTemplates() {
-	//TODO: Open popup with choose template panel
+	importTemplates(true);
 }
-function importTemplates() {
-	//TODO: open popup with the install template panel
+
+function importTemplates(open_store) {
+	var url = install_template_url;
+	
+	if (open_store)
+		url += "&open_store=1";
+	
+	//get popup
+	var popup = $("body > .import_templates_popup");
+	
+	if (!popup[0]) {
+		popup = $('<div class="myfancypopup with_iframe_title import_templates_popup' + (open_store ? " open_store" : "") + '"></div>');
+		$(document.body).append(popup);
+	}
+	
+	popup.html('<iframe scrolling="no"></iframe>'); //cleans the iframe so we don't see the previous html
+	
+	//prepare popup iframe
+	var iframe = popup.children("iframe");
+	iframe.attr("src", url);
+	
+	//open popup
+	MyFancyPopup.init({
+		elementToShow: popup,
+		parentElement: document,
+	});
+	
+	MyFancyPopup.showPopup();
 }
+function onSucccessfullInstallTemplate() {
+	StatusMessageHandler.showMessage("Refreshing templates...");
+	
+	var url = "" + document.location;
+	url = url.replace(/&active_tab=[^&]*/g, "");
+	url += "&active_tab=1";
+	
+	document.location = url;
+}
+

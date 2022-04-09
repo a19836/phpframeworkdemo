@@ -1,28 +1,5 @@
 :root,
-  .dark_theme {
-	--menu-panel-bg:var(--main-template-bg);
-	--menu-panel-color:var(--main-template-color);
-	--menu-panel-log-info-border:#555;
-	--menu-panel-sub-menu-bg:var(--main-template-bg);
-	--menu-panel-sub-menu-border:#000;
-	--menu-panel-sub-menu-item-bg:#222;
-	--menu-panel-sub-menu-item-color:#eee;
-	--menu-panel-sub-menu-item-active-bg:#000;
-	--menu-panel-sub-menu-item-hover-bg:#000;
-	
-	--left-panel-bg:var(--main-template-bg);
-	--left-panel-color:var(--main-template-color);
-	--left-panel-tree-item-hover-shadow:#000;
-	--left-panel-tree-item-hovered-bg:#555;
-	--left-panel-tree-item-clicked-bg:#181818;
-	--left-panel-tree-item-clicked-shadow:#000;
-	--left-panel-tree-sub-group-color:inherit;
-	--left-panel-tree-sub-group-bg:#252525;
-	--left-panel-tree-sub-group-hover-bg:var(--left-panel-tree-item-hovered-bg);
-	--left-panel-tree-sub-group-sub-menu-icon-color:#aaa;
-	--left-panel-tree-entities-folder-bg:var(--left-panel-tree-item-clicked-bg);
-}
-.light_theme {
+  .light_theme {
 	--menu-panel-bg:var(--main-template-bg);
 	--menu-panel-color:var(--main-template-color);
 	--menu-panel-log-info-border:#ddd;
@@ -41,6 +18,29 @@
 	--left-panel-tree-item-clicked-shadow:#999;
 	--left-panel-tree-sub-group-color:inherit;
 	--left-panel-tree-sub-group-bg:#ccc;
+	--left-panel-tree-sub-group-hover-bg:var(--left-panel-tree-item-hovered-bg);
+	--left-panel-tree-sub-group-sub-menu-icon-color:#aaa;
+	--left-panel-tree-entities-folder-bg:var(--left-panel-tree-item-clicked-bg);
+}
+.dark_theme {
+	--menu-panel-bg:var(--main-template-bg);
+	--menu-panel-color:var(--main-template-color);
+	--menu-panel-log-info-border:#555;
+	--menu-panel-sub-menu-bg:var(--main-template-bg);
+	--menu-panel-sub-menu-border:#000;
+	--menu-panel-sub-menu-item-bg:#222;
+	--menu-panel-sub-menu-item-color:#eee;
+	--menu-panel-sub-menu-item-active-bg:#000;
+	--menu-panel-sub-menu-item-hover-bg:#000;
+	
+	--left-panel-bg:var(--main-template-bg);
+	--left-panel-color:var(--main-template-color);
+	--left-panel-tree-item-hover-shadow:#000;
+	--left-panel-tree-item-hovered-bg:#555;
+	--left-panel-tree-item-clicked-bg:#181818;
+	--left-panel-tree-item-clicked-shadow:#000;
+	--left-panel-tree-sub-group-color:inherit;
+	--left-panel-tree-sub-group-bg:#252525;
 	--left-panel-tree-sub-group-hover-bg:var(--left-panel-tree-item-hovered-bg);
 	--left-panel-tree-sub-group-sub-menu-icon-color:#aaa;
 	--left-panel-tree-entities-folder-bg:var(--left-panel-tree-item-clicked-bg);
@@ -101,6 +101,9 @@
 	border-bottom:1px solid var(--menu-panel-sub-menu-border);
 	border-bottom-left-radius:5px;
 	border-bottom-right-radius:5px;
+}
+#menu_panel .icon.full_screen {
+	vertical-align:text-bottom;
 }
 
 #menu_panel > ul > li.sub_menu {
@@ -431,7 +434,8 @@
 
 /* LEFT PANEL - TREE ICONS */
 #left_panel:not(.light_theme) .mytree i.jstree-themeicon:not(.reserved_file):not(.reserved_folder):not(.undefined_file)::after, 
-  #left_panel:not(.light_theme) .mytree i.tab_icon::after {
+  #left_panel:not(.light_theme) .mytree i.tab_icon::after, 
+  #left_panel:not(.light_theme) .mytree i.jstree-themeicon.template_file::before {
 	color:#fff;
 }
 

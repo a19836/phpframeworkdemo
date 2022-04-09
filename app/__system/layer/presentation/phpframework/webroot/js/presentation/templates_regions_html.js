@@ -21,6 +21,22 @@ function toggleContent(elm) {
 					});
 				});
 			}
+			
+			var view_source = content.children(".view_source");
+			var textarea = view_source.children("textarea")[0];
+			
+			if (textarea) {
+				ace.require("ace/ext/language_tools");
+				
+				var editor = ace.edit(textarea);
+				editor.setTheme("ace/theme/chrome");
+				editor.session.setMode("ace/mode/html");
+				editor.setOption("wrap", true);
+				
+				view_source.find("textarea.ace_text-input").removeClass("ace_text-input"); //fixing problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.
+				
+				view_source.data("editor", editor);
+			}
 		}
 		
 		content.show();

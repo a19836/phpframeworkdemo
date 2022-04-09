@@ -40,10 +40,11 @@ var path_to_filter = "' . $filter_by_layout . '";
 			</li>
 		</ul>
 		<ul class="right">
-			<li class="icon home" title="Home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/' . ($filter_by_layout_url_query ? "admin_home_project?$filter_by_layout_url_query" : "admin_home") . '"></li>
+			<li class="icon full_screen" title="Toggle Full Screen" onClick="toggleFullScreen(this)"></li>
+			<li class="icon home" title="Home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/admin_home?selected_layout_project=' . $filter_by_layout . '"></li>
 			' . ($is_flush_cache_allowed ? '<li class="icon flush_cache" title="Flush Cache" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\')"></li>' : '') . '
 			<li class="icon refresh" onClick="refreshIframe()" title="Refresh"></li>
-			<!--li class="icon tools" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&is_popup=1" . '\')" title="Tools"></li-->
+			<!--li class="icon tools" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&popup=1" . '\')" title="Tools"></li-->
 			
 			<!--li class="icon expand_left_panel" title="Expand Left Panel" onClick="expandLeftPanel(this)"></li>
 			<li class="icon collapse_left_panel" title="Collapse Left Panel" onClick="collapseLeftPanel(this)"></li-->
@@ -60,7 +61,7 @@ var path_to_filter = "' . $filter_by_layout . '";
 				<i class="icon sub_menu_vertical"></i>
 				<ul>
 					<li title="Toggle Theme"><a onClick="toggleThemeLayout(this)"><i class="icon toggle_theme_layout"></i> <span>' . ($theme_layout == "dark_theme" ? "Show light theme" : "Show dark theme") . '</span></a></li>
-					<li title="Show Tools"><a onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&is_popup=1" . '\')"><i class="icon tools"></i> Show Tools</a></li>
+					<li title="Show Tools"><a onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&popup=1" . '\')"><i class="icon tools"></i> Show Tools</a></li>
 					<li class="about" title="About"><a onClick="goTo(this, \'about_url\', event)" about_url="' . $project_url_prefix . 'admin/about"><i class="icon info"></i> About</a></li>
 				</ul>
 			</li>
@@ -92,7 +93,7 @@ var path_to_filter = "' . $filter_by_layout . '";
 		<div class="button minimize" onClick="toggleLeftPanel(this)"></div>
 	</div>
 	<div id="right_panel">
-		<iframe src="' . $project_url_prefix . 'admin/' . ($filter_by_layout_url_query ? "admin_home_project?$filter_by_layout_url_query" : "admin_home") . '"></iframe>
+		<iframe src="' . $project_url_prefix . 'admin/' . ($filter_by_layout ? "admin_home_project?$filter_by_layout_url_query" : "admin_home?selected_layout_project=$filter_by_layout") . '"></iframe>
 		<div class="iframe_overlay">
 			<div class="iframe_loading">Loading...</div>
 		</div>

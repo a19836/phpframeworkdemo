@@ -5,31 +5,30 @@
 /* HEADER LINKS */
 .admin_panel .header_links {
 	padding:20px;
+	font-size:11px;
 }
 .admin_panel .header_links li {
 	display:inline-block;
-	margin-right:5px;
+	margin-right:2px;
 }
 .admin_panel .header_links li:not(:last-child)::after {
-	width:20px;
+	width:10px;
+	margin-left:2px;
+	display:inline-block;
 	text-rendering:auto;
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
 	content:"\f054";
-	margin-left:5px;
 }
 .admin_panel .header_links li a {
 	color:#333;
+	display:inline-block;
 }
-.admin_panel .header_links li:not(:last-child) a:hover {
+.admin_panel .header_links li a:hover {
 	color:var(--icon-hover-color);
 }
 .admin_panel .header_links li:first-child a {
 	font-weight:bold;
-}
-.admin_panel .header_links li:last-child a {
-	cursor:default;
-	text-decoration:none;
 }
 
 /* PROJECT */
@@ -95,7 +94,7 @@
 	display:inline-block;
 }
 .admin_panel .project .details .buttons > div.sub_menu:hover > ul {
-	display:block;
+	display:block !important;
 	visibility:visible;
 	top:auto;
 	left:auto;
@@ -116,28 +115,87 @@
 	border-bottom:1px solid #eee;
 	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 20%);
 }
+.admin_panel .project_files .ui-tabs-panel > .project_default_template {
+	margin:0 0 0 10px;
+	position:absolute;
+	left:20px;
+	display:inline-block;
+	color:#666;
+	font-size:9px;
+}
+.admin_panel .project_files .ui-tabs-panel > .project_default_template span {
+	color:#FAB12B;
+	font-weight:bold;
+}
+.admin_panel .project_files .ui-tabs-panel > .project_default_template .icon {
+	font-size:14px;
+	cursor:default;
+	color:inherit;
+}
+.admin_panel .project_files .ui-tabs-panel > .project_default_template .icon::before {
+	content:"\f570";
+}
 .admin_panel .project_files .ui-tabs-panel button {
-	margin:0 10px;
-	float:right;
+	position:absolute;
+	right:20px;
+}
+.admin_panel .project_files .ui-tabs-panel button.create_folder {
+	right:160px;
+}
+.admin_panel .project_files .ui-tabs-panel button.import_templates {
+	right:155px;
 }
 .admin_panel .project_files .ui-tabs-panel button.create_folder:not(:hover),
-  .admin_panel .project_files .ui-tabs-panel button.import_template:not(:hover) {
+  .admin_panel .project_files .ui-tabs-panel button.import_templates:not(:hover) {
 	border:1px solid #FAB12B;
-	background:transparent;
+	background:#fff;
 }
-.admin_panel .project_files .ui-tabs-panel .folder_go_up {
+
+.admin_panel .project_files .ui-tabs-panel .current_project_folder {
 	margin:10px 0 0 10px;
-	display:block;
+	display:inline-block;
+	position:absolute;
+	top:0;
+	left:135px;
+	font-size:11px;
+}
+.admin_panel .project_files .ui-tabs-panel .current_project_folder .icon,
+  .admin_panel .project_files .ui-tabs-panel .current_project_folder .path_parts {
+	cursor:pointer;
+}
+.admin_panel .project_files .ui-tabs-panel .current_project_folder .icon:hover::before,
+  .admin_panel .project_files .ui-tabs-panel .current_project_folder .path_parts:hover {
+	color:var(--icon-hover-color);
+}
+.admin_panel .project_files .ui-tabs-panel .current_project_folder .path_parts:not(:last-child) {
+	margin-right:5px;
+}
+.admin_panel .project_files .ui-tabs-panel .current_project_folder .path_parts:not(:last-child)::after {
+	margin-left:5px;
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f105";
+	vertical-align:middle;
+}
+
+.admin_panel .project_files .ui-tabs-panel .folder_go_up {
+	margin:9px 10px 0 0;
+	display:inline-block;
+	position:absolute;
+	top:0;
+	right:0;
 	font-weight:bold;
+	font-size:11px;
 	color:#FAB12B;
 	cursor:pointer;
 }
-.admin_panel .project_files .ui-tabs-panel .folder_go_up .go_up {
-	transform:scaleX(-1);
-	color:inherit;
+.admin_panel .project_files .ui-tabs-panel .folder_go_up:hover {
+	color:var(--icon-hover-color);
+	text-decoration:none;
 }
-.admin_panel .project_files .ui-tabs-panel .folder_go_up .go_up::before {
-    content: "\f3bf";
+.admin_panel .project_files .ui-tabs-panel .folder_go_up .go_up {
+	color:inherit;
 }
 
 .admin_panel .project_files .ui-tabs-panel .mytree {
@@ -152,9 +210,10 @@
 	display:none;
 }
 .admin_panel .project_files .mytree > li > ul {
+	margin-top:40px;
 	white-space:normal;
 }
-.admin_panel .project_files .mytree > li > ul > li {
+.admin_panel .project_files .mytree > li > ul > li:not(.separator) {
 	width:200px;
 	height:130px;
 	margin:20px;
@@ -162,12 +221,35 @@
 	display:inline-block;
 	background:none;
 	text-align:center;
+	vertical-align:top;
 	border:1px solid #eee;
 	border-radius:5px;
 	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 20%);
 	white-space:normal;
 	position:relative;
 	box-sizing:border-box;
+}
+.admin_panel .project_files .mytree > li > ul > li.separator {
+	margin:40px 20px 10px;
+	display:block;
+	border-bottom:1px solid #eee;
+}
+.admin_panel .project_files .templates .mytree > li > ul > li.separator:first-child {
+	margin-top:60px;
+}
+.admin_panel .project_files .mytree > li > ul > li.default_template {
+	border:2px solid var(--icon-hover-color, #ff0000);
+	box-shadow:0px 0px 5px 4px #ff000033;
+}
+.admin_panel .project_files .mytree > li > ul > li.default_template::before {
+	content:"This is the default template";
+	color:var(--icon-hover-color, #ff0000);
+	position:absolute;
+	top:-22px;
+	left:0;
+	right:0;
+	text-align:center;
+	font-size:10px;
 }
 .admin_panel .project_files .mytree > li > ul > li > i.jstree-icon {
 	display:none;
@@ -178,12 +260,34 @@
 	padding:25px 10px 10px;
 	box-sizing:border-box;
 	display:block;
+	cursor:pointer;
+}
+.admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor:hover {
+	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 70%);
 }
 .admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor.jstree-clicked {
 	background-color:transparent !important;
 	box-shadow:none !important;
 }
-.admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor  > i {
+.admin_panel .project_files .mytree > li > ul > li[data-jstree='{"icon":"entity_file"}'] > a.jstree-anchor:hover::before,
+  .admin_panel .project_files .mytree > li > ul > li[data-jstree='{"icon":"template_file"}'] > a.jstree-anchor:hover::before,
+  .admin_panel .project_files .mytree > li > ul > li[data-jstree='{"icon":"folder"}'] > a.jstree-anchor:hover::before,
+  .admin_panel .project_files .mytree > li > ul > li[data-jstree='{"icon":"template_folder"}'] > a.jstree-anchor:hover::before {
+	content:"Click to edit file";
+	position:absolute;
+	top:-22px;
+	left:0;
+	font-size:8px;
+	color:#999;
+}
+.admin_panel .project_files .mytree > li > ul > li[data-jstree='{"icon":"folder"}'] > a.jstree-anchor:hover::before,
+  .admin_panel .project_files .mytree > li > ul > li[data-jstree='{"icon":"template_folder"}'] > a.jstree-anchor:hover::before {
+	content:"Click to open folder";
+}
+.admin_panel .project_files .mytree > li > ul > li.default_template > a.jstree-anchor:hover::before {
+	top:-35px;
+}
+.admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor  > i:empty {
 	width:60px;
 	height:auto;
 	font-size:50px;
@@ -191,21 +295,55 @@
 .admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor > i::before {
 	font-size:inherit;
 }
+.admin_panel .project_files .mytree > li > ul > li.template_ajax > a.jstree-anchor > i::before {
+	content:"\f7c0";
+}
+.admin_panel .project_files .mytree > li > ul > li.template_empty > a.jstree-anchor > i::before {
+	content:"\f15b";
+}
+.admin_panel .project_files .mytree > li > ul > li.template_default > a.jstree-anchor > i::before {
+	content:"\f570";
+}
 .admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor > i::after {
 	font-size:20px;
 	margin-top:-20px;
 }
-.admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor > label {
+.admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor > i:not(:empty)::before,
+  .admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor > i:not(:empty)::after {
+	display:none;
+}
+.admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor > i:not(:empty) {
+	width:auto;
+	height:auto;
+	margin:0;
 	position:absolute;
-	left:10px;
-	right:10px;
-	bottom:10px;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	border-radius:5px;
+	overflow:hidden;
+}
+.admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor > i:not(:empty) img {
+	width:100%;
+	height:100%;
+}
+.admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor > label {
+	padding:5px 10px;
+	position:absolute;
+	left:0;
+	right:0;
+	bottom:0;
 	display:block;
 	white-space:nowrap;
 	text-overflow:ellipsis;
 	overflow:hidden;
 	direction:rtl;
 	font-size:10px;
+}
+.admin_panel .project_files .mytree > li > ul > li[data-jstree='{"icon":"template_file"}'] > a.jstree-anchor > i:not(:empty) + label {
+	background:rgba(0, 0, 0, .8);
+	color:#fff;
 }
 .admin_panel .project_files .mytree > li > ul > li > a.edit,
   .admin_panel .project_files .mytree > li > ul > li > a.preview,
@@ -217,8 +355,12 @@
 	font-size:10px;
 	color:#999;
 }
+.admin_panel .project_files .mytree > li > ul > li > a.edit {
+	text-decoration:underline;
+}
 .admin_panel .project_files .mytree > li > ul > li > a.preview {
 	left:60px;
+	text-decoration:underline;
 }
 .admin_panel .project_files .mytree > li > ul > li > div.sub_menu {
 	left:auto;
@@ -234,6 +376,7 @@
   .admin_panel .project_files .mytree > li > ul > li > div.sub_menu > .icon {
 	width:13px;
 	font-size:inherit;
+	color:inherit;
 }
 .admin_panel .project_files .mytree > li > ul > li > div.sub_menu > .icon {
 	width:20px;
@@ -254,10 +397,13 @@
 	visibility:visible;
 	top:auto;
 	left:auto;
-	right:0;
+	right:-5px;
 	bottom:20px;
 	text-align:left;
 	white-space:nowrap;
+}
+.admin_panel .project_files .mytree > li > ul > li > div.sub_menu:hover > ul li.set_default::before {
+	content:"\f08d";
 }
 
 /* POPUP */
@@ -270,7 +416,19 @@
 	width:580px;
 	height:430px;
 }
-.edit_project_details_popup iframe {
+.import_templates_popup {
+	position:fixed !important;
+	top:5px !important;
+	left:5px !important;
+	right:5px !important;
+	bottom:5px !important;
+}
+.edit_project_details_popup iframe,
+  .import_templates_popup iframe {
 	width:100%;
 	height:100%;
+}
+.import_templates_popup.open_store .popup_close {
+	top:21px !important;
+	right:21px !important;
 }

@@ -13,9 +13,19 @@ $(function () {
 	});
 	
 	//prepare top_bar
-	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu");
-	$("#code > .code_menu").addClass("top_bar_menu");
-	$("#code > .layout_ui_editor").addClass("with_top_bar_menu");
+	var taskflowchart = $("#ui > .taskflowchart");
+	var workflow_menu = taskflowchart.children(".workflow_menu");
+	var code_menu = $("#code > .code_menu");
+	var show_simple_ui = $(".top_bar li.show_simple_ui");
+	var layout_ui_editor = $("#code > .layout_ui_editor");
+	
+	taskflowchart.addClass("with_top_bar_menu fixed_properties");
+	workflow_menu.addClass("top_bar_menu");
+	code_menu.addClass("top_bar_menu");
+	layout_ui_editor.addClass("with_top_bar_menu");
+	
+	workflow_menu.children("ul").prepend( show_simple_ui.clone() );
+	code_menu.children("ul").prepend( show_simple_ui.clone() );
 	
 	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
@@ -130,7 +140,7 @@ $(function () {
 		initCodeLayoutUIEditor(entity_obj, {
 			save_func: saveEntity, 
 			ready_func: function() {
-				var luie = entity_obj.find("#code > .layout_ui_editor");
+				var luie = layout_ui_editor;
 				
 				//show view layout panel instead of code
 				var view_layout = luie.find(" > .tabs > .view-layout");
@@ -151,7 +161,10 @@ $(function () {
 				$("#code > .layout_ui_editor > .options .full-screen").before(sub_menu);
 				var lue_auto_save_icon = $("#code > .code_menu li.auto_save_activation").first().clone().removeClass("hidden");
 				var lue_auto_convert_icon = $("#code > .code_menu li.auto_convert_activation").first().clone().removeClass("hidden");
-				sub_menu.children("ul").append(lue_auto_save_icon).append(lue_auto_convert_icon);
+				var sub_menu_ul = sub_menu.children("ul")
+				sub_menu_ul.append(lue_auto_save_icon).append(lue_auto_convert_icon);
+				
+				sub_menu_ul.prepend( show_simple_ui.clone() );
 				
 				if (!luie.find(" > .tabs > .tab.tab-active").is(".view-layout"))
 					sub_menu.addClass("hidden"); //bc the LayoutUIEditor is not inited at start, we need to hide this new icon. The others are already hidden by default.

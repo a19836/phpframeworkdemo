@@ -1,14 +1,18 @@
-.jqcontextmenu {background-color:#f7f7f7; color:#999; border:1px solid #ccc; border-radius:5px;}
-.jqcontextmenu li {background-color:#f7f7f7;}
+.jqcontextmenu {
+	background-color:var(--main-template-bg, #f7f7f7); 
+	color:var(--main-template-color, #999); 
+	border:1px solid var(--main-template-border, #ccc);
+	border-radius:5px;
+}
+.jqcontextmenu li {background-color:var(--main-template-bg, #f7f7f7);}
 .jqcontextmenu li:first-child {border-top-left-radius:5px; border-top-right-radius:5px;}
 .jqcontextmenu li:last-child {border-bottom-left-radius:5px; border-bottom-right-radius:5px;}
-.jqcontextmenu li:hover {background-color:#eee !important;}
-.jqcontextmenu li a {margin-left:5px; padding:4px 5px 4px 2px; cursor:pointer; background-color:#f7f7f7; color:#666; display:inline-block;}
+.jqcontextmenu li:hover {opacity:.7;}
+.jqcontextmenu li a {margin-left:5px; padding:4px 5px 4px 2px; cursor:pointer; background-color:var(--main-template-bg, #f7f7f7); color:var(--main-template-color, #999); display:inline-block;}
 .jqcontextmenu li:first-child a {border-top-left-radius:5px; border-top-right-radius:5px;}
 .jqcontextmenu li:last-child a {border-bottom-left-radius:5px; border-bottom-right-radius:5px;}
-.jqcontextmenu li a:hover {text-decoration:none;}
-.jqcontextmenu li:hover a {background-color:#eee;}
-.jqcontextmenu .line_break {height:0px; border-top:1px solid #CCC; margin:0 3px; padding:0;}
+.jqcontextmenu li a:hover {text-decoration:none; background-color:var(--main-template-bg, #f7f7f7);}
+.jqcontextmenu .line_break {height:0px; border-top:1px solid var(--main-template-border, #ccc); margin:0 3px; padding:0;}
 
 .jqcontextmenu li::before {
 	text-rendering:auto;

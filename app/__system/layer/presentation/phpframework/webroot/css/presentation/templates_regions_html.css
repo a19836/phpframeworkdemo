@@ -11,6 +11,14 @@
 .templates_regions_html_obj {
 	padding:10px;
 }
+.templates_regions_html_obj.in_popup {
+	position:absolute;
+	top:62px;
+	left:0;
+	right:0;
+	bottom:0;
+	overflow:auto;
+}
 .templates_regions_html_obj .no_templates_regions_html_regions {
 	text-align:center;
 	color:#999;

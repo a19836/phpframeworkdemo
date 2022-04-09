@@ -114,7 +114,7 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 		<header>
 			<div class="title">Edit Block "' . basename($path) . '"</div>
 			<ul>
-				<li class="show_simple_ui" title="Switch to Simple Workspace"><a href="?' . $query_string . '&edit_block_type=simple"><i class="icon show_simple_ui"></i> Switch to Simple Workspace</a></li>
+				<li class="show_simple_ui" title="Switch to Visual Workspace"><a href="?' . $query_string . '&edit_block_type=simple"><i class="icon show_simple_ui"></i> Switch to Visual Workspace</a></li>
 				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save Block"><a onClick="saveBlock()"><i class="icon save"></i> Save</a></li>
 			</ul>

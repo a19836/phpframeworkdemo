@@ -60,9 +60,9 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_simple_a
 					<li class="delimiter"></li>
 				' : '') . '
 				' . ($is_switch_admin_ui_allowed ? '<li><a href="' . $project_url_prefix . 'admin/admin_uis">Switch Workspace</a></li>' : '') . '
-				<li><a href="javascript:void(0)" onClick="chooseAvailableProject(\'' . $project_url_prefix . 'admin/choose_available_project?redirect_path=admin&is_popup=1\')">Switch Project</a></li>
+				<li><a href="javascript:void(0)" onClick="chooseAvailableProject(\'' . $project_url_prefix . 'admin/choose_available_project?redirect_path=admin&popup=1\')">Switch Project</a></li>
 				<li class="delimiter"></li>
-				<li><a href="javascript:void(0)" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?element_type=util&bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$project&is_popup=1" . '\')">Other Tools</a></li>
+				<li><a href="javascript:void(0)" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?element_type=util&bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$project&popup=1" . '\')">Other Tools</a></li>
 				' . ($is_flush_cache_allowed ? '<li><a href="javascript:void(0)" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\');">Flush Cache</a></li>' : '') . '
 				<li><a href="' . $project_url_prefix . 'auth/logout">Logout</a></li>
 				<li><a href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . $project_url_prefix . 'admin/about">About</a></li>
@@ -71,7 +71,7 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_simple_a
 		</li>
 		<li class="buttons">
 			<span class="project">Selected project: "' . $project . '"</span>
-			<span class="icon home" onClick="goTo(this, \'home_url\', event)" home_url="' . "{$project_url_prefix}admin/admin_home" . '" title="Go Home"></span>
+			<span class="icon home" onClick="goTo(this, \'home_url\', event)" home_url="' . "{$project_url_prefix}admin/admin_home?selected_layout_project=$filter_by_layout" . '" title="Go Home"></span>
 			<span class="icon refresh" onClick="refreshIframe()" title="Refresh"></span>
 			<span class="icon go_back" onClick="goBack()" title="Go Back"></span>
 		</li>
@@ -81,5 +81,5 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_simple_a
 	<div class="iframe_overlay">
 		<div class="iframe_loading">Loading...</div>
 	</div>
-	<iframe src="' . "{$project_url_prefix}admin/admin_home" . '"></iframe>
+	<iframe src="' . "{$project_url_prefix}admin/" . ($filter_by_layout ? "admin_home_project?$filter_by_layout_url_query" : "admin_home?selected_layout_project=$filter_by_layout") . '"></iframe>
 </div>'; if ($default_page) { $main_content .= '<script>$("iframe")[0].src = \'' . $default_page . '\';</script>'; } ?>

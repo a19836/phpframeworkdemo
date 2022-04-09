@@ -46,7 +46,7 @@
 		}
 		.show_templates_regions_html_popup iframe {
 			width:100%;
-			height:100%;
+			height:calc(100% - 60px);
 		}
 		.show_templates_regions_html_popup .button {
 			margin-top:15px;
@@ -79,7 +79,7 @@
 						var url = templates_regions_html_url;
 						url += (url.indexOf("?") == -1 ? "?" : "&") + "popup=1";
 						
-						popup = $('<div class="myfancypopup with_iframe_title show_templates_regions_html_popup"><iframe src="' + url + '"></iframe><div class="button"><input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" /></div></div>');
+						popup = $('<div class="myfancypopup with_iframe_title show_templates_regions_html_popup"><iframe src="' + url + '"></iframe><div class="button"><input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" /></div></div>');
 						$("body").append(popup);
 					
 						iframe = popup.children("iframe");
@@ -101,11 +101,18 @@
 						updateFunction: function() {
 							button.hide();
 							
-							var iframe_body = $(iframe[0].contentWindow.document.body);
+							//var iframe_body = $(iframe[0].contentWindow.document.body);
+							var iframe_body = iframe.contents().find("body");
 							var li = iframe_body.find(".templates_regions_html_obj input[name='template_region']:checked").parent().closest("li");
 							
 							if (li[0]) {
-								var region_html = li.find("textarea").val();
+								//getting editor inside of the iframe
+								var iframe_jquery_obj = iframe[0].contentWindow.$;
+								var view_source = li.find(" > .content > .view_source");
+								var editor = iframe_jquery_obj.data(view_source[0], "editor");
+								
+								//getting html
+								var region_html = editor ? editor.getValue() : view_source.children("textarea").val();
 								
 								me.setTemplateRegionHtml(widget, region_html);
 								MyFancyPopup.hidePopup();
