@@ -52,6 +52,19 @@ $(function () {
 	});
 });
 
+function onToggleFullScreen(in_full_screen) {
+	setTimeout(function() {
+		var main_obj = $(".echostr_settings > #layoutui_content");
+		var PtlLayoutUIEditor = main_obj.find(".layout_ui_editor").data("LayoutUIEditor");
+		var menu_settings = PtlLayoutUIEditor.getMenuSettings();
+		
+		if (menu_settings.is(":visible"))
+			PtlLayoutUIEditor.showFixedMenuSettings();
+		
+		PtlLayoutUIEditor.MyTextSelection.refreshMenu();
+	}, 500);
+}
+
 function loadEchoStrBlockSettings(settings_elm, settings_values) {
 	//console.log(settings_values);
 	var echostr_settings = settings_elm.children(".echostr_settings");
@@ -74,7 +87,7 @@ function createLayoutUIEditor(textarea) {
 			var ui = parent.children(".layout_ui_editor");
 			
 			if (!ui[0]) {
-				ui = $('<div class="layout_ui_editor reverse fixed_properties"><ul class="menu-widgets"></ul><div class="template-source"></div></div>');
+				ui = $('<div class="layout_ui_editor reverse fixed_side_properties"><ul class="menu-widgets"></ul><div class="template-source"></div></div>');
 				parent.append(ui);
 			}
 			else if (ui.data("LayoutUIEditor")) 

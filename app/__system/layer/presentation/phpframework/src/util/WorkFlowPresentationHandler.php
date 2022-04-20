@@ -326,7 +326,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					<select></select>
 				</div>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>'; } if (isset($v9fda9fad47)) { $pf8ed4912 .='<div id="choose_db_driver" class="myfancypopup">
 				<div class="broker">
@@ -339,7 +339,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					<select></select>
 				</div>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>'; } if (isset($pf864769c)) { $pf8ed4912 .='<div id="choose_query_from_file_manager" class="myfancypopup choose_from_file_manager">
 				<div class="broker">
@@ -366,7 +366,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					</li>
 				</ul>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>'; } if (isset($paf75a67c)) { $pc37695cb = count($paf75a67c); $pf8ed4912 .='<div id="choose_hibernate_object_from_file_manager" class="myfancypopup choose_from_file_manager">
 				<div class="broker">
@@ -385,7 +385,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					</li>
 				</ul>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 			
@@ -414,7 +414,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					</li>
 				</ul>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>'; } if (isset($v6e9af47944)) { $pf8ed4912 .='<div id="choose_business_logic_from_file_manager" class="myfancypopup choose_from_file_manager">
 				<div class="broker">
@@ -433,7 +433,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					<select></select>
 				</div>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>'; } if (isset($pb0e92e25)) { $pf8ed4912 .='<div id="choose_presentation_from_file_manager" class="myfancypopup choose_from_file_manager">
 				<div class="broker">
@@ -448,7 +448,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					</li>
 				</ul>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>'; $pf8ed4912 .= self::f15bc1b79f6($pf7b73b3a, $pb0e92e25); } return $pf8ed4912; } private static function me4f1b76bfe10($v8ffce2a791, $pa0462a8e, $pf7b73b3a, $v54c4a1fbb7, $pe2f0f7f1, $v828ff69e5c, $v5483bfa973, $v9fda9fad47, $pf864769c, $paf75a67c, $v6e9af47944, $pb0e92e25) { $pdf10c8d2 = self::f7b6f77050d($v8ffce2a791, $pa0462a8e, $v6e9af47944, $v9fda9fad47, $pf864769c, $paf75a67c, $pb0e92e25); $v195d5f6856 = '
 			<ul class="mytree">
@@ -511,7 +511,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					</div>
 				</div>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 	
@@ -522,7 +522,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					<select></select>
 				</div>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 	
@@ -533,14 +533,14 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					<select></select>
 				</div>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 	
 			<div id="choose_file_from_file_manager" class="myfancypopup choose_from_file_manager">
 				' . $v195d5f6856 . '
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 	
@@ -552,7 +552,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					</li>
 				</ul>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>'; return $pf8ed4912; } private static function f2ad93f0276($v8ffce2a791, $pa0462a8e, $pf7b73b3a, $v54c4a1fbb7, $pe2f0f7f1, $v828ff69e5c, $v5483bfa973, $v9fda9fad47, $pf864769c, $paf75a67c, $v6e9af47944, $pb0e92e25) { $v195d5f6856 = '
 			<ul class="mytree">'; if (isset($v6e9af47944)) foreach ($v6e9af47944 as $v7aeaf992f5) { $v195d5f6856 .= '
@@ -619,7 +619,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					</div>
 				</div>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 	
@@ -630,7 +630,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					<select></select>
 				</div>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 	
@@ -641,14 +641,14 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					<select></select>
 				</div>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 	
 			<div id="choose_file_from_file_manager" class="myfancypopup choose_from_file_manager">
 				' . $v195d5f6856 . '
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 	
@@ -660,7 +660,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					</li>'; } $pf8ed4912 .= '
 				</ul>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>'; return $pf8ed4912; } private static function f7b6f77050d($v8ffce2a791, $pa0462a8e, $v6e9af47944, $v9fda9fad47, $pf864769c, $paf75a67c, $pb0e92e25) { $pec746181 = array($v6e9af47944, $v9fda9fad47, $pf864769c, $paf75a67c, $pb0e92e25); foreach ($pec746181 as $pa8b0de28) if ($pa8b0de28) foreach ($pa8b0de28 as $v1e79db4422) { $v2b2cf4c0eb = $v1e79db4422[0]; $pf2073d1f = $v1e79db4422[1]; $pef1b7ad7 = $v1e79db4422[2]; if ($pf2073d1f == $pa0462a8e && $pef1b7ad7 == $v8ffce2a791) return $v2b2cf4c0eb; } return $v8ffce2a791; } private static function f15bc1b79f6($pf7b73b3a, $pb0e92e25) { $pf8ed4912 = ''; if (isset($pb0e92e25)) { $pf8ed4912 .='<div id="choose_page_url_from_file_manager" class="myfancypopup choose_from_file_manager">
 				<div class="broker">
@@ -675,7 +675,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					</li>
 				</ul>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 			
@@ -692,15 +692,18 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					</li>
 				</ul>
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>'; } return $pf8ed4912; } public static function getCodeEditorMenuHtml($v5d3813882f) { $v2101769c38 = $v5d3813882f["show_pretty_print"] ? $v5d3813882f["show_pretty_print"] : true; $pe7b2a888 = $v5d3813882f["generate_tasks_flow_from_code_label"] ? $v5d3813882f["generate_tasks_flow_from_code_label"] : "Generate Diagram from Code"; $pd880cf7e = $v5d3813882f["generate_tasks_flow_from_code_func"] ? $v5d3813882f["generate_tasks_flow_from_code_func"] : "generateTasksFlowFromCode"; $v13b5585fac = $v5d3813882f["generate_code_from_tasks_flow_label"] ? $v5d3813882f["generate_code_from_tasks_flow_label"] : "Generate Code From Diagram"; $v0fa2a905e0 = $v5d3813882f["generate_code_from_tasks_flow_func"] ? $v5d3813882f["generate_code_from_tasks_flow_func"] : "generateCodeFromTasksFlow"; return '<ul>
 			<li class="editor_settings" title="Open Editor Setings"><a onClick="openEditorSettings()"><i class="icon settings"></i> Open Editor Setings</a></li>
 			' . ($v2101769c38 ? '<li class="pretty_print" title="Pretty Print Code"><a onClick="prettyPrintCode()"><i class="icon pretty_print"></i> Pretty Print Code</a></li>' : '') . '
 			<li class="set_word_wrap" title="Set Word Wrap"><a onClick="setWordWrap(this)" wrap="0"><i class="icon word_wrap"></i> Word Wrap</i></a></li>
+			<li class="separator"></li>
 			<li class="generate_tasks_flow_from_code" title="' . $pe7b2a888 . '"><a onClick="' . $pd880cf7e . '(true, {force: true});return false;"><i class="icon generate_tasks_flow_from_code"></i> ' . $pe7b2a888 . '</a></li>
 			<li class="generate_code_from_tasks_flow" title="' . $v13b5585fac . '"><a onClick="' . $v0fa2a905e0 . '(true, {force: true});return false;"><i class="icon generate_code_from_tasks_flow"></i> ' . $v13b5585fac . '</a></li>
-			<li class="editor_full_screen" title="Toggle Full Screen"><a onClick="toggleCodeEditorFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
+			<li class="separator"></li>
+			<li class="editor_full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleCodeEditorFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
+			<li class="separator"></li>
 			<li class="auto_save_activation" title="Is Auto Save Active" onClick="toggleAutoSaveCheckbox(this, onTogglePHPCodeAutoSave)"><i class="icon auto_save_activation"></i> Auto Save On: <input type="checkbox" value="1" /></li>
 			<li class="auto_convert_activation" title="Is Auto Convert Active" onClick="toggleAutoConvertCheckbox(this, onTogglePHPCodeAutoConvert)"><i class="icon auto_convert_activation"></i> Auto Convert On: <input type="checkbox" value="1" /></li>
 			<li class="save" title="Save"><a onClick="' . $v5d3813882f["save_func"] . '()"><i class="icon save"></i> Save</a></li>
@@ -708,7 +711,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 			<div class="code_menu">
 				' . self::getCodeEditorMenuHtml($v48e4e778a5) . '
 			</div>
-			<div class="layout_ui_editor reverse fixed_properties">
+			<div class="layout_ui_editor reverse fixed_side_properties">
 				<textarea' . ($v5988353a93 ? ' class="full-source"' : '') . '>' . htmlspecialchars($v067674f4e4, ENT_NOQUOTES) . '</textarea>
 				
 				<div class="layout-ui-menu-widgets-backup hidden">
@@ -723,7 +726,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				' . self::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, "chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree") . '
 				
 				<div class="button">
-					<input type="button" value="UPDATE" onClick="MyCodeLayoutUIEditorFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="MyCodeLayoutUIEditorFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 			
@@ -776,4 +779,4 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 						<label>' . ucwords(str_replace("_", " ", $v5ba36af525)) . ' (Rest)</label>
 					</li>'; } $pf8ed4912 .= '</ul>
 			</li>
-		</ul>'; return $pf8ed4912; } public static function getTaskFlowContentHtml($pcfdeae4e, $v5d3813882f) { $pe7b2a888 = $v5d3813882f["generate_tasks_flow_from_code_label"] ? $v5d3813882f["generate_tasks_flow_from_code_label"] : "Generate Diagram from Code"; $pd880cf7e = $v5d3813882f["generate_tasks_flow_from_code_func"] ? $v5d3813882f["generate_tasks_flow_from_code_func"] : "generateTasksFlowFromCode"; $v13b5585fac = $v5d3813882f["generate_code_from_tasks_flow_label"] ? $v5d3813882f["generate_code_from_tasks_flow_label"] : "Generate Code From Diagram"; $v0fa2a905e0 = $v5d3813882f["generate_code_from_tasks_flow_func"] ? $v5d3813882f["generate_code_from_tasks_flow_func"] : "generateCodeFromTasksFlow"; $v243e50bc1d = array( "Sort Tasks" => array( "class" => "sort_tasks", "html" => '<a onClick="sortWorkflowTask();return false;"><i class="icon sort"></i> Sort Tasks</a>', "childs" => array( "Sort Type 1" => array( "class" => "sort_tasks", "click" => "sortWorkflowTask(1);return false;" ), "Sort Type 2" => array( "class" => "sort_tasks", "click" => "sortWorkflowTask(2);return false;" ), "Sort Type 3" => array( "class" => "sort_tasks", "click" => "sortWorkflowTask(3);return false;" ), "Sort Type 4" => array( "class" => "sort_tasks", "click" => "sortWorkflowTask(4);return false;" ), ) ), "Flush Cache" => array( "class" => "flush_cache", "html" => '<a onClick="flushCache();return false;"><i class="icon flush_cache"></i> Flush Cache</a>', ), "Empty Diagram" => array( "class" => "empty_diagram", "html" => '<a onClick="emptyDiagam();return false;"><i class="icon empty_diagram"></i> Empty Diagram</a>', ), $pe7b2a888 => array( "class" => "generate_tasks_flow_from_code", "html" => '<a onClick="' . $pd880cf7e . '(true, {force: true});return false;"><i class="icon generate_tasks_flow_from_code"></i> ' . $pe7b2a888 . '</a>', ), $v13b5585fac => array( "class" => "generate_code_from_tasks_flow", "html" => '<a onClick="' . $v0fa2a905e0 . '(true, {force: true});return false;"><i class="icon generate_code_from_tasks_flow"></i> ' . $v13b5585fac . '</a>', ), "Toggle Full Screen" => array( "class" => "tasks_flow_full_screen", "html" => '<a onClick="toggleTaskFlowFullScreen(this);return false;"><i class="icon full_screen"></i> Full Screen</a>', ), "Auto Save On" => array( "class" => "auto_save_activation", "title" => "Is Auto Save Active", "html" => '<a onClick="toggleAutoSaveCheckbox(this, onTogglePHPCodeAutoSave)"><i class="icon auto_save_activation"></i> Auto Save On: <input type="checkbox" value="1" /></a>' ), "Auto Convert On" => array( "class" => "auto_convert_activation", "title" => "Is Auto Convert Active", "html" => '<a onClick="toggleAutoConvertCheckbox(this, onTogglePHPCodeAutoConvert)"><i class="icon auto_convert_activation"></i> Auto Convert On: <input type="checkbox" value="1" /></a>' ), "Save" => array( "class" => "save", "html" => '<a onClick="' . $v5d3813882f["save_func"] . '();return false;"><i class="icon save"></i> Save</a>', ), ); $pcfdeae4e->setMenus($v243e50bc1d); return $pcfdeae4e->getContent(); } public static function validateHtmlTagsBeforeConvertingToCodeTags($v067674f4e4) { $v446afd1219 = true; preg_match_all("/(<style|<\/style|<script|<\/script|<\?|\?>)/i", $v067674f4e4, $pbae7526c); $pbae7526c = $pbae7526c[0]; $v664387d23c = $v7f8da6644e = $v226207be64 = false; $pc37695cb = count($pbae7526c); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v6107abf109 = $pbae7526c[$v43dd7d0051]; if (strpos($v6107abf109, "<?") !== false) { $v664387d23c = true; if ($v7f8da6644e || $v226207be64) { $v446afd1219 = false; break; } } else if (strpos($v6107abf109, "?>") !== false) { $v664387d23c = false; } else if (strpos($v6107abf109, "<style") !== false) { $v7f8da6644e = true; if ($v664387d23c || $v226207be64) { $v446afd1219 = false; break; } } else if (strpos($v6107abf109, "</style") !== false) { $v7f8da6644e = false; } else if (strpos($v6107abf109, "<script") !== false) { $v226207be64 = true; if ($v7f8da6644e || $v664387d23c) { $v446afd1219 = false; break; } } else if (strpos($v6107abf109, "</script") !== false) { $v226207be64 = false; } } if ($v446afd1219) { preg_match("/<([\w]+)([^>]*)(<\?)(.+)(\?>)([^>]*)>/u", $v067674f4e4, $pbae7526c); $v446afd1219 = count($pbae7526c) == 0; } return $v446afd1219; } public static function convertHtmlTagsToCodeTags($v067674f4e4) { $v067674f4e4 = preg_replace("/<([\w]+)([^>]*)(<\?)(.+)(\?>)([^>]*)>/u", "<$1$2&lt; ?$4? &gt;$6>", $v067674f4e4); $v067674f4e4 = preg_replace("/<script\s+([^>]*)src=(\"|')([^\"']+)(\"|')([^>]*)>(.*)<\/script>/iu", '<pre><code class="language-html">&lt; script $1src=$2$3$4$5&gt;$6&lt; /script&gt;</code></pre>', $v067674f4e4); $v067674f4e4 = str_replace("?>", '</code></pre>', str_replace(array("<? ", "<?php "), '<pre><code class="language-php">', str_replace("<?=", '<pre><code class="language-php">echo ', $v067674f4e4))); $v067674f4e4 = preg_replace("/<\/style>/i", '</code></pre>', preg_replace("/<style([^>]*)>/i", '<pre><code class="language-css">', $v067674f4e4)); $v067674f4e4 = preg_replace("/<\/script>/i", '</code></pre>', preg_replace("/<script([^>]*)>/i", '<pre><code class="language-javascript">', $v067674f4e4)); return $v067674f4e4; } public static function convertCodeTagsToHtmlTags($pf8ed4912) { $pf8ed4912 = preg_replace("/<pre>\s+<code\s+/i", "<pre><code ", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-html">(&lt;|<)(\s*)script\s+([^>]*)src=("|\')([^"\']+)("|\')([^>]*)(&gt;|>)(.*)(&lt;|<)(\s*)\/script(\s*)(&gt;|>)<\/code><\/pre>/iu', '<script $3src=$4$5$6$7>$9</script>', $pf8ed4912); $pf8ed4912 = preg_replace("/<([\w]+)([^>]*)((&lt;|<)(\s*)\?)(.+)(\?(\s*)(&gt;|>))([^>]*)>/u", "<$1$2<?$6?>$10>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-php">(.*)<\/code><\/pre>/iu', "<? $1 ?>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-css">(.*)<\/code><\/pre>/iu', "<style>\n$1\n</style>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-javascript">(.*)<\/code><\/pre>/iu', "<script>\n$1\n</script>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-php">([^<]+)/iu', "<? $1 ?>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-css">([^<]+)/iu', "<style>\n$1\n</style>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-javascript">([^<]+)/iu', "<script>\n$1\n</script>", $pf8ed4912); $pf8ed4912 = str_replace('</code></pre>', "", $pf8ed4912); $pf8ed4912 = str_replace('&gt;', ">", $pf8ed4912); $pf8ed4912 = str_replace('&lt;', "<", $pf8ed4912); return $pf8ed4912; } public static function getHtmlTagProps($v067674f4e4, $pf4b9d8e6, $v5d3813882f = false) { $v9073377656 = array( "html_attributes" => "", "inline_code" => "", ); $v4430104888 = stripos($v067674f4e4, "<$pf4b9d8e6>"); if ($v4430104888 !== false) { $v7db54bb786 = ""; $pbaeb17fb = $v4430104888 + strlen($pf4b9d8e6) + 1; } else { $v4430104888 = stripos($v067674f4e4, "<$pf4b9d8e6 "); if ($v4430104888 === false) { $v7db54bb786 = ""; $pbaeb17fb = false; } else { $v619a1c0905 = $v4430104888 + strlen($pf4b9d8e6) + 2; $pbaeb17fb = strpos($v067674f4e4, ">", $v619a1c0905); $v95a4985a1d = strpos($v067674f4e4, "<?", $v619a1c0905); if ($v95a4985a1d !== false && $v95a4985a1d < $pbaeb17fb) { $pf33edf1c = strpos($v067674f4e4, "?>", $v95a4985a1d + 2); $pbaeb17fb = $pf33edf1c !== false ? strpos($v067674f4e4, ">", $pf33edf1c + 2) : false; } $v7db54bb786 = $pbaeb17fb !== false && $pbaeb17fb > $v619a1c0905 ? substr($v067674f4e4, $v619a1c0905, $pbaeb17fb - $v619a1c0905) : ""; $v9073377656["html_attributes"] = $v7db54bb786; } } if ($v5d3813882f["get_inline_code"]) { if ($v4430104888 !== false && $pbaeb17fb !== false) { $pacc959a1 = strripos($v067674f4e4, "</$pf4b9d8e6>", $pbaeb17fb + 1); if ($pacc959a1 !== false) { $pb757efe0 = substr($v067674f4e4, $pbaeb17fb + 1, $pacc959a1 - $pbaeb17fb - 1); $v9073377656["inline_code"] = $pb757efe0; } } } return $v9073377656; } } ?>
+		</ul>'; return $pf8ed4912; } public static function getTaskFlowContentHtml($pcfdeae4e, $v5d3813882f) { $pe7b2a888 = $v5d3813882f["generate_tasks_flow_from_code_label"] ? $v5d3813882f["generate_tasks_flow_from_code_label"] : "Generate Diagram from Code"; $pd880cf7e = $v5d3813882f["generate_tasks_flow_from_code_func"] ? $v5d3813882f["generate_tasks_flow_from_code_func"] : "generateTasksFlowFromCode"; $v13b5585fac = $v5d3813882f["generate_code_from_tasks_flow_label"] ? $v5d3813882f["generate_code_from_tasks_flow_label"] : "Generate Code From Diagram"; $v0fa2a905e0 = $v5d3813882f["generate_code_from_tasks_flow_func"] ? $v5d3813882f["generate_code_from_tasks_flow_func"] : "generateCodeFromTasksFlow"; $v243e50bc1d = array( "Sort Tasks" => array( "class" => "sort_tasks", "html" => '<a onClick="sortWorkflowTask();return false;"><i class="icon sort"></i> Sort Tasks</a>', "childs" => array( "Sort Type 1" => array( "class" => "sort_tasks", "click" => "sortWorkflowTask(1);return false;" ), "Sort Type 2" => array( "class" => "sort_tasks", "click" => "sortWorkflowTask(2);return false;" ), "Sort Type 3" => array( "class" => "sort_tasks", "click" => "sortWorkflowTask(3);return false;" ), "Sort Type 4" => array( "class" => "sort_tasks", "click" => "sortWorkflowTask(4);return false;" ), ) ), 1 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Flush Cache" => array( "class" => "flush_cache", "html" => '<a onClick="flushCache();return false;"><i class="icon flush_cache"></i> Flush Cache</a>', ), "Empty Diagram" => array( "class" => "empty_diagram", "html" => '<a onClick="emptyDiagam();return false;"><i class="icon empty_diagram"></i> Empty Diagram</a>', ), 2 => array( "class" => "separator", "title" => " ", "html" => " ", ), $pe7b2a888 => array( "class" => "generate_tasks_flow_from_code", "html" => '<a onClick="' . $pd880cf7e . '(true, {force: true});return false;"><i class="icon generate_tasks_flow_from_code"></i> ' . $pe7b2a888 . '</a>', ), $v13b5585fac => array( "class" => "generate_code_from_tasks_flow", "html" => '<a onClick="' . $v0fa2a905e0 . '(true, {force: true});return false;"><i class="icon generate_code_from_tasks_flow"></i> ' . $v13b5585fac . '</a>', ), 3 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Maximize/Minimize Editor Screen" => array( "class" => "tasks_flow_full_screen", "html" => '<a onClick="toggleTaskFlowFullScreen(this);return false;"><i class="icon full_screen"></i> Maximize Editor Screen</a>', ), 4 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Auto Save On" => array( "class" => "auto_save_activation", "title" => "Is Auto Save Active", "html" => '<a onClick="toggleAutoSaveCheckbox(this, onTogglePHPCodeAutoSave)"><i class="icon auto_save_activation"></i> Auto Save On: <input type="checkbox" value="1" /></a>' ), "Auto Convert On" => array( "class" => "auto_convert_activation", "title" => "Is Auto Convert Active", "html" => '<a onClick="toggleAutoConvertCheckbox(this, onTogglePHPCodeAutoConvert)"><i class="icon auto_convert_activation"></i> Auto Convert On: <input type="checkbox" value="1" /></a>' ), "Save" => array( "class" => "save", "html" => '<a onClick="' . $v5d3813882f["save_func"] . '();return false;"><i class="icon save"></i> Save</a>', ), ); $pcfdeae4e->setMenus($v243e50bc1d); return $pcfdeae4e->getContent(); } public static function validateHtmlTagsBeforeConvertingToCodeTags($v067674f4e4) { $v446afd1219 = true; preg_match_all("/(<style|<\/style|<script|<\/script|<\?|\?>)/i", $v067674f4e4, $pbae7526c); $pbae7526c = $pbae7526c[0]; $v664387d23c = $v7f8da6644e = $v226207be64 = false; $pc37695cb = count($pbae7526c); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v6107abf109 = $pbae7526c[$v43dd7d0051]; if (strpos($v6107abf109, "<?") !== false) { $v664387d23c = true; if ($v7f8da6644e || $v226207be64) { $v446afd1219 = false; break; } } else if (strpos($v6107abf109, "?>") !== false) { $v664387d23c = false; } else if (strpos($v6107abf109, "<style") !== false) { $v7f8da6644e = true; if ($v664387d23c || $v226207be64) { $v446afd1219 = false; break; } } else if (strpos($v6107abf109, "</style") !== false) { $v7f8da6644e = false; } else if (strpos($v6107abf109, "<script") !== false) { $v226207be64 = true; if ($v7f8da6644e || $v664387d23c) { $v446afd1219 = false; break; } } else if (strpos($v6107abf109, "</script") !== false) { $v226207be64 = false; } } if ($v446afd1219) { preg_match("/<([\w]+)([^>]*)(<\?)(.+)(\?>)([^>]*)>/u", $v067674f4e4, $pbae7526c); $v446afd1219 = count($pbae7526c) == 0; } return $v446afd1219; } public static function convertHtmlTagsToCodeTags($v067674f4e4) { $v067674f4e4 = preg_replace("/<([\w]+)([^>]*)(<\?)(.+)(\?>)([^>]*)>/u", "<$1$2&lt; ?$4? &gt;$6>", $v067674f4e4); $v067674f4e4 = preg_replace("/<script\s+([^>]*)src=(\"|')([^\"']+)(\"|')([^>]*)>(.*)<\/script>/iu", '<pre><code class="language-html">&lt; script $1src=$2$3$4$5&gt;$6&lt; /script&gt;</code></pre>', $v067674f4e4); $v067674f4e4 = str_replace("?>", '</code></pre>', str_replace(array("<? ", "<?php "), '<pre><code class="language-php">', str_replace("<?=", '<pre><code class="language-php">echo ', $v067674f4e4))); $v067674f4e4 = preg_replace("/<\/style>/i", '</code></pre>', preg_replace("/<style([^>]*)>/i", '<pre><code class="language-css">', $v067674f4e4)); $v067674f4e4 = preg_replace("/<\/script>/i", '</code></pre>', preg_replace("/<script([^>]*)>/i", '<pre><code class="language-javascript">', $v067674f4e4)); return $v067674f4e4; } public static function convertCodeTagsToHtmlTags($pf8ed4912) { $pf8ed4912 = preg_replace("/<pre>\s+<code\s+/i", "<pre><code ", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-html">(&lt;|<)(\s*)script\s+([^>]*)src=("|\')([^"\']+)("|\')([^>]*)(&gt;|>)(.*)(&lt;|<)(\s*)\/script(\s*)(&gt;|>)<\/code><\/pre>/iu', '<script $3src=$4$5$6$7>$9</script>', $pf8ed4912); $pf8ed4912 = preg_replace("/<([\w]+)([^>]*)((&lt;|<)(\s*)\?)(.+)(\?(\s*)(&gt;|>))([^>]*)>/u", "<$1$2<?$6?>$10>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-php">(.*)<\/code><\/pre>/iu', "<? $1 ?>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-css">(.*)<\/code><\/pre>/iu', "<style>\n$1\n</style>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-javascript">(.*)<\/code><\/pre>/iu', "<script>\n$1\n</script>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-php">([^<]+)/iu', "<? $1 ?>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-css">([^<]+)/iu', "<style>\n$1\n</style>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-javascript">([^<]+)/iu', "<script>\n$1\n</script>", $pf8ed4912); $pf8ed4912 = str_replace('</code></pre>', "", $pf8ed4912); $pf8ed4912 = str_replace('&gt;', ">", $pf8ed4912); $pf8ed4912 = str_replace('&lt;', "<", $pf8ed4912); return $pf8ed4912; } public static function getHtmlTagProps($v067674f4e4, $pf4b9d8e6, $v5d3813882f = false) { $v9073377656 = array( "html_attributes" => "", "inline_code" => "", ); $v4430104888 = stripos($v067674f4e4, "<$pf4b9d8e6>"); if ($v4430104888 !== false) { $v7db54bb786 = ""; $pbaeb17fb = $v4430104888 + strlen($pf4b9d8e6) + 1; } else { $v4430104888 = stripos($v067674f4e4, "<$pf4b9d8e6 "); if ($v4430104888 === false) { $v7db54bb786 = ""; $pbaeb17fb = false; } else { $v619a1c0905 = $v4430104888 + strlen($pf4b9d8e6) + 2; $pbaeb17fb = strpos($v067674f4e4, ">", $v619a1c0905); $v95a4985a1d = strpos($v067674f4e4, "<?", $v619a1c0905); if ($v95a4985a1d !== false && $v95a4985a1d < $pbaeb17fb) { $pf33edf1c = strpos($v067674f4e4, "?>", $v95a4985a1d + 2); $pbaeb17fb = $pf33edf1c !== false ? strpos($v067674f4e4, ">", $pf33edf1c + 2) : false; } $v7db54bb786 = $pbaeb17fb !== false && $pbaeb17fb > $v619a1c0905 ? substr($v067674f4e4, $v619a1c0905, $pbaeb17fb - $v619a1c0905) : ""; $v9073377656["html_attributes"] = $v7db54bb786; } } if ($v5d3813882f["get_inline_code"]) { if ($v4430104888 !== false && $pbaeb17fb !== false) { $pacc959a1 = strripos($v067674f4e4, "</$pf4b9d8e6>", $pbaeb17fb + 1); if ($pacc959a1 !== false) { $pb757efe0 = substr($v067674f4e4, $pbaeb17fb + 1, $pacc959a1 - $pbaeb17fb - 1); $v9073377656["inline_code"] = $pb757efe0; } } } return $v9073377656; } } ?>

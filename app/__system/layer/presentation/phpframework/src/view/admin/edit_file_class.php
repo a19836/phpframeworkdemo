@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#$filter_by_layout_url_query&path=#path#"; $choose_dao_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=dao&path=#path#"; $choose_lib_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=lib&path=#path#"; $choose_vendor_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=vendor&path=#path#"; $class_id_for_js = addcslashes(preg_replace("/\\+/", "\\", $class_id), '\\'); $head = '
+include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#$filter_by_layout_url_query&path=#path#"; $choose_dao_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=dao&path=#path#"; $choose_lib_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=lib&path=#path#"; $choose_vendor_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=vendor&path=#path#"; $class_id_for_js = addcslashes(preg_replace("/\\+/", "\\", $class_id), '\\'); $head = '
 <!-- Add MD5 JS File -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>
 
@@ -43,6 +43,7 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); $filter_by_layout
 <!-- Edit PHP Code JS file -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/edit_php_code.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_php_code.js"></script>
+
 <!-- Edit File Includes JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/edit_file_includes.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/edit_file_includes.js"></script>
@@ -65,24 +66,25 @@ var new_property_html = \'' . str_replace("'", "\\'", str_replace("\n", "", Work
 	<div class="top_bar">
 		<header>
 			<div class="title">
-				' . ($class_id ? "Edit" : "Add") . ' Class: <span class="class_name"></span>
+				' . ($class_id ? "Edit" : "Add") . ' Class <span class="class_name"></span> in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($is_class_equal_to_file_name ? dirname($file_path) : $file_path, $obj, $is_class_equal_to_file_name) . '
 			</div>
 			<ul>
-				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save"><a onClick="saveFileClass({on_success: replaceNewNameInUrl, class_url_attr_name: \'service\'})"><i class="icon save"></i> Save</a></li>
 				<li class="sub_menu">
 					<i class="icon sub_menu"></i>
 					<ul>
-						<li class="dummy_elm_to_add_auto_save_options"></li>
+						<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onclick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
+						<li class="separator"></li>
+						<li class="save" title="Save"><a onClick="saveFileClass({on_success: replaceNewNameInUrl, class_url_attr_name: \'service\'})"><i class="icon save"></i> Save</a></li>
 					</ul>
 				</li>
 			</ul>
 		</header>
 	</div>'; $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $db_brokers, $data_access_brokers, $ibatis_brokers, $hibernate_brokers, $business_logic_brokers, $presentation_brokers); if ($obj_data || !$class_id) { $get_layer_sub_files_url = str_replace("#bean_name#", $bean_name, str_replace("#bean_file_name#", $bean_file_name, $choose_bean_layer_files_from_file_manager_url)); $main_content .= WorkFlowPHPFileHandler::getChoosePHPClassFromFileManagerHtml($get_layer_sub_files_url); $extends = is_array($obj_data["extends"]) ? implode(", ", $obj_data["extends"]) : $obj_data["extends"]; $implements = is_array($obj_data["implements"]) ? implode(", ", $obj_data["implements"]) : $obj_data["implements"]; $main_content .= '
-	<div class="includes_obj file_class_obj">
+	<div class="includes_obj file_class_obj with_top_bar_section">
 		<div class="name">
 			<label>Name:</label>
-			<input type="text" value="' . $obj_data["name"] . '" placeHolder="Class Name" />
+			<input type="text" value="' . $obj_data["name"] . '" placeHolder="Class Name" title="Class Name" />
 		</div>
 		<div class="extend">
 			<label>Extends:</label>

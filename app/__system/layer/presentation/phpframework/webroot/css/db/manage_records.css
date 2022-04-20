@@ -1,11 +1,6 @@
-/* TOP BAR */
-.top_bar {
-	margin-bottom:20px;
-}
-
 /* MANAGE RECORDS */
 .manage_records .db_type {
-	margin-left:5px;s
+	margin-left:5px;
 }
 
 /* TABLE */
@@ -225,11 +220,15 @@
 .manage_records .conditions .delete {
 	vertical-align:middle;
 }
+.manage_records .conditions input[type=button] {
+	font-size:8pt;
+}
 .manage_records .conditions input:not([type=button]),
   .manage_records .conditions select {
 	background:transparent;
 	border:1px solid #ccc;
 	border-radius:3px;
+	font-size:8pt;
 }
 .manage_records .conditions > label select {
 	margin-left:5px;
@@ -265,7 +264,7 @@
 /* BUTTONS */
 .manage_records .buttons {
 	width:100%;
-	height:25px;
+	min-height:25px;
 	text-align:center;
 	margin:10px 0 0 0;
 	clear:both;

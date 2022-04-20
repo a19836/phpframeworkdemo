@@ -1,15 +1,7 @@
-/* TOP BAR */
-.top_bar {
-	margin-bottom:10px;
-}
-.top_bar .dummy_elm_to_add_auto_save_options {
-	display:none !important;
-}
-
 /* FILE INCLUDES */
 .includes_obj {
-	margin:0;
-	padding:10px;
+	font-size:8pt;
+	overflow:auto;
 }
 .includes_obj div {
 	float:none;
@@ -23,11 +15,11 @@
 }
 .includes_obj input {
 	display:inline-block;
-	font-size:12px;
+	font-size:8pt;
 }
 .includes_obj select {
 	display:inline-block;
-	font-size:12px;
+	font-size:8pt;
 }
 
 .includes_obj .namespace {
@@ -97,7 +89,7 @@
 	margin-top:10px;
 }
 .myfancypopup .button input {
-	font-size:12px;
+	font-size:8pt;
 	display:inline;
 	float:none;
 }

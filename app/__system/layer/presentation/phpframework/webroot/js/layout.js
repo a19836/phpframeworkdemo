@@ -28,8 +28,7 @@ function addAutoSaveMenu(selector, callback) {
 			callback = "onToggleAutoSave";
 		
 		item = $('<li class="auto_save_activation" title="Is Auto Save Active" onClick="toggleAutoSaveCheckbox(this, ' + callback + ')">'
-					+ '<i class="icon auto_save_activation"></i>'
-					+ 'Auto Save On: '
+					+ '<i class="icon auto_save_activation"></i> Auto Save On: '
 					+ '<input type="checkbox" value="1">'
 				+ '</li>');
 		
@@ -129,8 +128,7 @@ function addAutoConvertMenu(selector, callback) {
 			callback = "onToggleAutoConvert";
 		
 		item = $('<li class="auto_convert_activation" title="Is Auto Convert Active" onClick="toggleAutoConvertCheckbox(this, ' + callback + ')">'
-					+ '<i class="icon auto_convert_activation"></i>'
-					+ 'Auto Convert On: '
+					+ '<i class="icon auto_convert_activation"></i> Auto Convert On: '
 					+ '<input type="checkbox" value="1">'
 				+ '</li>');
 		
@@ -258,16 +256,19 @@ function isInFullScreen() {
 
 function toggleFullScreen(elm) {
 	elm = $(elm);
+	var html = elm.html();
 	
 	var in_full_screen = isInFullScreen();
 	
 	if (in_full_screen) {
 		closeFullscreen();
 		elm.removeClass("active");
+		elm.html( html.replace("Minimize", "Maximize") );
 	}
 	else {
 		openFullscreen();
 		elm.addClass("active");
+		elm.html( html.replace("Maximize", "Minimize") );
 	}
 	
 	if (typeof onToggleFullScreen == "function")
@@ -288,9 +289,9 @@ function openFullscreen(elm) {
 
 function closeFullscreen() {
 	try {
-		if (document.exitFullscreen)
+		if (document.exitFullscreen && (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement))
 			document.exitFullscreen();
-		else if (document.webkitExitFullscreen) /* Safari */
+		else if (document.webkitExitFullscreen && document.webkitFullscreenElement) /* Safari */
 			document.webkitExitFullscreen();
 		else if (document.msExitFullscreen) /* IE11 */
 			document.msExitFullscreen();

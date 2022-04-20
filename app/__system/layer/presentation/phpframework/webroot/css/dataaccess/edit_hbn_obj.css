@@ -1,42 +1,35 @@
 /* TOP BAR */
-.edit_hbn_obj .top_bar {
-	margin-bottom:15px;
-}
 .edit_hbn_obj .top_bar header {
 	z-index:1501;
+}
+.edit_hbn_obj .top_bar header > .title .query_name {
+	width:110px;
+	display:inline-block;
 }
 .edit_hbn_obj .top_bar li.sub_menu > ul {
 	min-width:250px;
 }
-.edit_hbn_obj .top_bar li.toggle_advanced_settings > a > input {
-	position:absolute;
-	right:10px;
-}
-.edit_hbn_obj .top_bar .dummy_elm_to_add_auto_save_options {
-	display:none;
-}
 
 /* RELATIONSHIP */
 .edit_hbn_obj .data_access_obj {
-	width:100%;
 	min-width:640px;
-	margin-top:0;
-	padding:0 10px 10px;
 	box-sizing:border-box;
+	font-size:8pt;
+	overflow:auto;
 }
 .edit_hbn_obj .data_access_obj > .name {
-	width:210px;
+	width:110px;
 	margin:0;
 	position:fixed;
-	top:5px;
-	left:150px;
+	top:6px;
+	left:130px;
 	z-index:1502;
 }
 .edit_hbn_obj .data_access_obj > .name label {
 	display:none;
 }
 .edit_hbn_obj .data_access_obj > .name input {
-	width:200px;
+	width:100px;
 	border:1px solid #ccc;
 	color:#000;
 	background:transparent;

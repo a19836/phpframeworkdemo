@@ -27,7 +27,7 @@ $(function () {
 /* AUTO SAVE & CONVERT FUNCTIONS */
 
 function onTogglePHPCodeAutoSave() {
-	var inputs = $("#code .code_menu ul li.auto_save_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_activation input, #code .layout_ui_editor > .options .option.auto_save_activation input");
+	var inputs = $("#code .code_menu ul li.auto_save_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_activation input, #code .layout_ui_editor > .options li.auto_save_activation input");
 	
 	if (auto_save) {
 		jsPlumbWorkFlow.jsPlumbTaskFile.auto_save = false; //should be false bc the saveObj calls the getCodeForSaving method which already saves the workflow by default, and we don't need 2 saves at the same time.
@@ -46,7 +46,7 @@ function onTogglePHPCodeAutoSave() {
 }
 
 function onTogglePHPCodeAutoConvert() {
-	var inputs = $("#code .code_menu ul li.auto_convert_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation input, #code .layout_ui_editor > .options .option.auto_convert_activation input");
+	var inputs = $("#code .code_menu ul li.auto_convert_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation input, #code .layout_ui_editor > .options li.auto_convert_activation input");
 	
 	if (auto_convert) {
 		inputs.attr("checked", "checked").prop("checked", true);
@@ -2086,7 +2086,7 @@ function resizeCodeEditor(code_elm) {
 function getTaskFlowChartHeight() {
 	var taskflowchart = $(".taskflowchart");
 	var offset = taskflowchart.offset();
-	var top = parseInt(offset.top);
+	var top = parseInt(offset.top) + 2;
 	
 	return parseInt( $(window).height() ) - top;
 }
@@ -2094,7 +2094,7 @@ function getTaskFlowChartHeight() {
 function getCodeEditorHeight(code_editor_parent) {
 	if (code_editor_parent[0]) {
 		var offset = code_editor_parent.offset();
-		var top = parseInt(offset.top + 1);
+		var top = parseInt(offset.top) + 2;
 		
 		var code_menu = code_editor_parent.children(".code_menu:not(.top_bar_menu)");
 		top += (code_menu[0] ? code_menu.height() : 0) + 10;
@@ -2159,7 +2159,7 @@ function toggleEditorFullScreen(elm) {
 	var ui = $("#ui");
 	var code = $("#code");
 	
-	toggleFullScreen();
+	toggleFullScreen(elm);
 	
 	if (in_full_screen) {
 		code.removeClass("editor_full_screen");
@@ -3179,7 +3179,7 @@ function showConfirmationCodePopup(old_code, new_code, opts) {
 	
 	//prepare buttons
 	var buttons = confirm_save_elm.find(".buttons");
-	buttons.html('<input class="cancel" type="button" name="cancel" value="CANCEL" /><input class="save" type="button" name="save" value="SAVE" />'); //be sure that everytime the popup is open has new buttons with new handlers
+	buttons.html('<input class="cancel" type="button" name="cancel" value="Cancel" /><input class="save" type="button" name="save" value="Save" />'); //be sure that everytime the popup is open has new buttons with new handlers
 	
 	buttons.children(".save").on("click", function(ev) {
 		if (typeof opts.save != "function" || opts.save())

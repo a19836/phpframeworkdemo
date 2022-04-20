@@ -1,3 +1,8 @@
+body,
+  #main_column {
+	background:#fff !important;
+}
+
 #title {
 	color:#666;
 	font-size: 16px;

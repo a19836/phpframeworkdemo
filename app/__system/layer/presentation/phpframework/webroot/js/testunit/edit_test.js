@@ -15,6 +15,8 @@ $(function () {
 	//prepare top_bar
 	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu");
 	
+	$("#code > .code_menu > ul, #ui > .taskflowchart > .workflow_menu > ul").prepend('<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleSettingsPanel(this)"><i class="icon toggle_main_settings"></i> Toggle Main Settings <input type="checkbox"/></a></li><li class="separator"></li>');
+	
 	//init auto save
 	enableAutoSave(onTogglePHPCodeAutoSave);
 	enableAutoConvert(onTogglePHPCodeAutoConvert);
@@ -212,11 +214,17 @@ function resizeSettingsPanel(settings, top) {
 }
 
 function toggleSettingsPanel(elm) {
-	elm = $(elm);
-	elm.toggleClass("maximize").toggleClass("minimize");
+	var settings = $("#settings");
+	var inputs = $("#code > .code_menu > ul li.toggle_main_settings input, #ui > .taskflowchart > .workflow_menu > ul li.toggle_main_settings input");
+	var icon = settings.find(" > .settings_header > .icon").filter(".maximize, .minimize");
 	
-	var settings = elm.parent().closest('#settings');
+	icon.toggleClass("maximize").toggleClass("minimize");
 	settings.toggleClass("collapsed");
+	
+	if (settings.hasClass("collapsed"))
+		inputs.removeAttr("checked").prop("checked", false);
+	else
+		inputs.attr("checked", "checked").prop("checked", true);
 }
 
 function addNewGlobalVariableFilePath(elm) {

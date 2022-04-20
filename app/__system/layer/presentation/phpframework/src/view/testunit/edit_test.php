@@ -140,7 +140,6 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 				Edit Test: \'' . pathinfo($path, PATHINFO_FILENAME) . '\'
 			</div>
 			<ul>
-				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save"><a onClick="saveTest()"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>

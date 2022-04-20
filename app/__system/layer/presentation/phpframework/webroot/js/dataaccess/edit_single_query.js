@@ -2,8 +2,8 @@ $(function() {
 	var edit_single_query = $(".edit_single_query");
 	
 	//init auto save
-	addAutoSaveMenu(".top_bar li.dummy_elm_to_add_auto_save_options", "onToggleQueryAutoSave");
-	addAutoConvertMenu(".top_bar li.dummy_elm_to_add_auto_save_options", "onToggleQueryAutoConvert");
+	addAutoSaveMenu(".top_bar li.sub_menu li.save", "onToggleQueryAutoSave");
+	addAutoConvertMenu(".top_bar li.sub_menu li.save", "onToggleQueryAutoConvert");
 	enableAutoSave(onToggleQueryAutoSave);
 	
 	if (is_covertable_sql)
@@ -90,6 +90,7 @@ function updateSingleQueryRelationshipType(elm, rand_number) {
 
 function showOrHideSingleQuerySettings(elm, rand_number) {
 	elm = $(elm);
+	var input = elm.children("input");
 	var query_select = $(".edit_single_query .data_access_obj .relationships .relationship .query .query_select");
 	var settings = query_select.find(".query_settings");
 	
@@ -97,6 +98,8 @@ function showOrHideSingleQuerySettings(elm, rand_number) {
 		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
 		
 		if(settings.css("display") == "none") {//show
+			input.attr("checked", "checked").prop("checked", true);
+			
 			settings.slideDown("slow", function() {
 				elm.addClass("active");
 				query_select.removeClass("hide_query_settings");
@@ -106,6 +109,8 @@ function showOrHideSingleQuerySettings(elm, rand_number) {
 			});
 		}
 		else {//hide
+			input.removeAttr("checked").prop("checked", false);
+			
 			settings.slideUp("slow", function() {
 				elm.removeClass("active");
 				query_select.addClass("hide_query_settings");
@@ -119,16 +124,20 @@ function showOrHideSingleQuerySettings(elm, rand_number) {
 
 function showOrHideSingleQueryUI(elm, rand_number) {
 	elm = $(elm);
+	var input = elm.children("input");
 	var query_select = $(".edit_single_query .data_access_obj .relationships .relationship .query .query_select");
 	var a = query_select.find(".query_ui .taskflowchart .workflow_menu .toggle_ui a")[0];
 	var is_shown = elm.hasClass("active");
 	
 	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
 	
-	if (is_shown)
+	if (is_shown) {
 		elm.removeClass("active");
+		input.removeAttr("checked").prop("checked", false);
+	}
 	else {
 		elm.addClass("active");
+		input.attr("checked", "checked").prop("checked", true);
 		query_select.removeClass("hide_taskflowchart");
 		
 		MyFancyPopup.updatePopup();
@@ -161,9 +170,14 @@ function onToggleFullScreen(in_full_screen) {
 function onChangeIsConvertableSQL(elm) {
 	elm = $(elm);
 	var edit_single_query = $(".edit_single_query");
+	var input = elm.find("input");
 	
-	if (elm.is(":checked")) {
-		edit_single_query.addClass("covertable_sql");
+	edit_single_query.toggleClass("covertable_sql");
+	
+	var is_covertable_sql = edit_single_query.is(".covertable_sql");
+	
+	if (is_covertable_sql) {
+		input.attr("checked", "checked").prop("checked", true);
 		
 		if (elm.attr("previous_auto_convert") == 1) {
 			enableAutoConvert(onToggleQueryAutoConvert);
@@ -176,9 +190,8 @@ function onChangeIsConvertableSQL(elm) {
 		}
 	}
 	else {
+		input.removeAttr("checked", "checked").prop("checked", false);
 		elm.attr("previous_auto_convert", auto_convert ? 1 : 0);
-		
-		edit_single_query.removeClass("covertable_sql");
 		disableAutoConvert(onToggleQueryAutoConvert);
 	}
 }

@@ -48,6 +48,9 @@
 	
 	display:block;
 }
+.taskflowchart .tasks_menu:not(.resizing) {
+	transition:.2s all;
+}
 .taskflowchart.reverse .tasks_menu {
 	left:auto;
 	right:0;
@@ -75,6 +78,9 @@
 	display:block; 
 	overflow-y:scroll;
 	overflow-x:scroll;
+}
+.taskflowchart .tasks_flow:not(.resizing) {
+	transition:.2s all;
 }
 .taskflowchart.reverse .tasks_flow {
 	left:0;
@@ -106,6 +112,9 @@
 	background:url("../img/back_frame_open_close_vertical.gif") repeat-y;
 	
 	display:block;
+}
+.taskflowchart .tasks_menu_hide:not(.resizing) {
+	transition:.2s all;
 }
 .taskflowchart.reverse .tasks_menu_hide {
 	left:auto;
@@ -579,7 +588,7 @@
 	margin-left:5px !important;
 	display:inline !important;
 	float:none !important;
-	font-size:12px;
+	font-size:8pt;
 }
 
 /* PROPERTIES */
@@ -821,7 +830,7 @@
 	margin-left:5px !important;
 	display:inline !important;
 	float:none !important;
-	font-size:12px;
+	font-size:8pt;
 }
 
 /* FILE UPDATE PANEL */
@@ -858,7 +867,7 @@
 }
 .tasks_flow_update_panel_confirmation .buttons input {
 	margin-right:20px;
-	font-size:12px;
+	font-size:8pt;
 }
 
 .tasks_flow_update_panel_confirmation .content .updated_task {

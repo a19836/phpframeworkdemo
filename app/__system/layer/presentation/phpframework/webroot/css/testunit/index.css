@@ -1,5 +1,6 @@
-#main_column {
-	background:transparent;
+body,
+  #main_column {
+	background:#fff !important;
 }
 
 /* TEST UNITS */

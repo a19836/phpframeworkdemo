@@ -1,18 +1,12 @@
 /* TOP BAR */
-.top_bar {
-	margin-bottom:10px;
-}
 .top_bar .title .class_name {
-	width:200px;
+	width:110px;
 	display:inline-block;
 }
 
 /* FILE CLASS */
 .file_class_obj {
-	width:100%;
-	margin:0;
-	padding:10px;
-	box-sizing:border-box;
+	font-size:8pt;
 }
 .file_class_obj div .add {
 	margin:3px 0 0 0;
@@ -24,17 +18,17 @@
 }
 
 .file_class_obj > .name {
-	width:210px;
+	width:110px;
 	position:fixed;
-	top:5px;
-	left:75px;
+	top:6px;
+	left:70px;
 	z-index:2;
 }
 .file_class_obj > .name label {
 	display:none;
 }
 .file_class_obj > .name input {
-	width:200px;
+	width:100px;
 	border:1px solid #ccc;
 	background:transparent;
 }

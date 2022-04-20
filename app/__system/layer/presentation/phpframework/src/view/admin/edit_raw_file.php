@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$head = '
+include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 <!-- Add CodeHighLight CSS and JS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/codehighlight/styles/default.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/codehighlight/highlight.pack.js"></script>
@@ -60,17 +60,20 @@ var readonly = ' . ($readonly ? "true" : "false") . ';
 </script>'; $main_content .= '
 	<div class="top_bar">
 		<header>
-			<div class="title">Edit File "' . $path . '"</div>'; if ($editor_code_type) { $main_content .= '<ul>'; $main_content .= '	<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>'; if (!$readonly) $main_content .= '<li class="save" title="Save File"><a onClick="save(false)"><i class="icon save"></i> Save</a></li>'; $main_content .= '	<li class="sub_menu">
+			<div class="title">Edit File: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj) . '</div>'; if ($editor_code_type) { $main_content .= '<ul>'; if (!$readonly) $main_content .= '<li class="save" title="Save File"><a onClick="save(false)"><i class="icon save"></i> Save</a></li>'; $main_content .= '	<li class="sub_menu">
 						<i class="icon sub_menu"></i>
-						<ul>'; if ($editor_code_type == "php") $main_content .= '		<li class="pretty_print" title="Pretty Print Code"><a onClick="prettyPrintCode()"><i class="icon pretty_print"></i> Pretty Print Code</a></li>'; $main_content .= '			<li class="set_word_wrap" title="Toggle Word Wrap"><a onClick="setWordWrap(this)" wrap="0"><i class="icon word_wrap"></i> Word Wrap</a></li>
-							<li class="editor_settings" title="Open Editor Setings"><a onClick="openEditorSettings()"><i class="icon settings"></i> Open Editor Setings</a></li>
-							<li class="dummy_elm_to_add_auto_save_options"></li>
+						<ul>
+							<li class="editor_settings" title="Open Editor Setings"><a onClick="openEditorSettings()"><i class="icon settings"></i> Open Editor Setings</a></li>'; if ($editor_code_type == "php") $main_content .= '		<li class="pretty_print" title="Pretty Print Code"><a onClick="prettyPrintCode()"><i class="icon pretty_print"></i> Pretty Print Code</a></li>'; $main_content .= '			<li class="set_word_wrap" title="Toggle Word Wrap"><a onClick="setWordWrap(this)" wrap="0"><i class="icon word_wrap"></i> Word Wrap</a></li>
+							<li class="separator"></li>
+							<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
+							<li class="separator"></li>
+							<li class="dummy_elm_to_add_auto_save_options"></li>'; if (!$readonly) $main_content .= '<li class="save" title="Save File"><a onClick="save(false)"><i class="icon save"></i> Save</a></li>'; $main_content .= '
 						</ul>
 					</li>
 				</ul>'; } $main_content .= '
 		</header>
 	</div>'; if ($editor_code_type) { $main_content .= '
-	<div class="code_area">
+	<div class="code_area with_top_bar_section">
 		<textarea>' . "\n" . htmlspecialchars($code, ENT_NOQUOTES) . '</textarea>
 	</div>'; if (!$readonly) $main_content .= '
 	<div class="confirm_save hidden">
@@ -88,8 +91,8 @@ var readonly = ' . ($readonly ? "true" : "false") . ';
 		</div>
 		
 		<div class="buttons">
-			<input type="button" name="cancel" value="CANCEL" onClick="cancelSave();" />
-			<input type="button" name="save" value="SAVE" onClick="save(true);" />
+			<input type="button" name="cancel" value="Cancel" onClick="cancelSave();" />
+			<input type="button" name="save" value="Save" onClick="save(true);" />
 		</div>
 		
 		<div class="disable_auto_scroll" onClick="enableDisableAutoScroll(this);">Click here to disable auto scroll.</div>

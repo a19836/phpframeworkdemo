@@ -4,6 +4,7 @@ html, body, #main_column {
 .test_project {
 	height:100%;
 	text-align:center;
+	background:#fff;
 }
 .test_project.hide_settings > .title,
   .test_project.hide_settings > .sub_title,
@@ -19,6 +20,7 @@ html, body, #main_column {
 }
 .test_project > .title {
 	margin-bottom:0;
+	padding-top:10px;
 }
 .test_project > iframe {
 	width:100%;
@@ -29,7 +31,7 @@ html, body, #main_column {
 	height:100%;
 }
 .test_project form {
-	margin:20px 0 10px;
+	margin:20px 0 0;
 	padding-bottom:10px;
 	border-bottom:1px solid #ccc;
 }
@@ -66,4 +68,7 @@ html, body, #main_column {
 .test_project form .vars table .icon {
 	margin:0 auto;
 	float:none;
+}
+.test_project form .buttons input {
+	font-size:inherit;
 }

@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-if ($layout_type_id) { include $EVC->getUtilPath("WorkFlowPresentationHandler"); $choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#"; $head = '
+if ($layout_type_id) { include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#"; $head = '
 	<!-- Add MD5 JS File -->
 	<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>
 
@@ -61,7 +61,7 @@ if ($layout_type_id) { include $EVC->getUtilPath("WorkFlowPresentationHandler");
 	<div id="content">
 		<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 			<header>
-				<div class="title">Manage References for project "' . $path . '"</div>
+				<div class="title">Manage References for project: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($layer_path . $selected_project_id, $P) . '</div>
 				<ul>
 					<li class="save" title="Save"><a onclick="submitForm(this)"><i class="icon save"></i> Save</a>
 				</ul>

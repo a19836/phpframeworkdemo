@@ -1,13 +1,3 @@
-/* TOP BAR */
-.top_bar {
-	margin-bottom:20px;
-}
-
-/* DB DUMP */
-.db_dump {
-	margin:0 10px 20px;
-}
-
 .db_dump .tables ul {
 	margin-top:10px;
 }

@@ -1,6 +1,6 @@
 $(function() {
 	//init auto save
-	addAutoSaveMenu(".top_bar li.dummy_elm_to_add_auto_save_options");
+	addAutoSaveMenu(".top_bar li.sub_menu li.save");
 	enableAutoSave(onToggleAutoSave);
 	initAutoSave(".top_bar li.save a");
 });

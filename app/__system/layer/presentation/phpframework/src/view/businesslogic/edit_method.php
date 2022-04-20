@@ -29,5 +29,5 @@ $ft = str_replace("edit_file_", "", $file_type); $path_extra = hash('crc32b', "$
 				<option value="0"' . ($obj_data["is_business_logic_service"] || $show_business_logic_service_first ? "" : " selected") . '>Is regular function</option>
 			</select>'; $main_content .= '
 <script>
-	$(".top_bar .title").append(\'' . str_replace("'", "\\'", str_replace("\n", "", $is_bl_service_select_html)) . '\');
+	$(".top_bar .title input").after(\'' . str_replace("'", "\\'", str_replace("\n", "", $is_bl_service_select_html)) . '\');
 </script>'; ?>

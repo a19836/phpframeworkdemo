@@ -1,18 +1,12 @@
 /* TOP BAR */
-.edit_map > .top_bar {
-	margin-bottom:20px;
-}
 .edit_map > .top_bar .title .map_name {
-	width:200px;
+	width:160px;
 	display:inline-block;
-}
-.edit_map > .top_bar .dummy_elm_to_add_auto_save_options {
-	display:none;
 }
 
 /* RELATIONSHIP */
 .edit_map .data_access_obj {
-	width:100%;
+	overflow:auto;
 }
 .edit_map .map {
 	margin:0 !important;
@@ -36,21 +30,21 @@
 	display:none;
 }
 .edit_map .map .map_id {
-	width:210px;
+	width:160px;
 	margin:0;
 	position:fixed;
-	top:5px;
-	left:140px;
+	top:6px;
+	left:125px;
 	z-index:2;
 }
 .edit_map .results_maps.map .map_id {
-	left:110px;
+	left:102px;
 }
 .edit_map .map .map_id label {
 	display:none;
 }
 .edit_map .map .map_id input {
-	width:200px;
+	width:150px;
 	border:1px solid #ccc;
 	color:#000;
 	background:transparent;

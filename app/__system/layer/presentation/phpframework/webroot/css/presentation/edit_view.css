@@ -6,7 +6,7 @@
 	z-index:4;
 }
 .top_bar header > ul {
-	right:151px;
+	right:142px;
 }
 .with_top_bar_tab > .tabs {
 	z-index:4;
@@ -30,19 +30,18 @@
 
 .view_obj .code_layout_ui_editor .code_menu.top_bar_menu,
   .view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right,
-  .view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center,
-  .view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.fixed_properties > .menu-settings {
+  .view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center {
 	z-index:5;
 }
 .view_obj .code_menu.top_bar_menu,
   .view_obj .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu {
-	right:140px;
+	right:130px;
 }
 .view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center {
-	right:318px;
+	right:235px;
 }
 .view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right {
-	right:200px;
+	right:168px;
 }
 .view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.save,
   .view_obj .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.full-screen {

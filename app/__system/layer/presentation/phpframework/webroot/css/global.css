@@ -8,6 +8,10 @@
   	--main-font-family:"Poppins-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
   	--main-font-family:"Poppins-Regular",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",Helvetica,Arial,sans-serif;
 	
+	--resize-bar-bg:#83889E;
+	--resize-bar-vertical-img:url(../img/back_frame_open_close_vertical_red.gif);
+	--resize-bar-horizontal-img:url(../../img/back_frame_open_close_horizontal_red.gif);
+	
 	/* used in icons.css */
 	--icon-font-size:14px;
 	--icon-hover-color:#ff0000;
@@ -15,8 +19,8 @@
 :root,
   .light_theme {
 	--main-template-border:transparent;
-	--main-template-bg:#eee;
-	--main-template-color:#555;
+	--main-template-bg:#F8F9FC;
+	--main-template-color:#585B69;
 }
 .dark_theme {
 	/* used in admin_advanced.css */
@@ -29,9 +33,12 @@ body {
 	background: #fff repeat-x 0 0;
 	font-family:var(--main-font-family);
 	color: #666;
-	font-size: 13px;
+	font-size:8pt;
 	margin: 0;
 	height:100%;
+}
+body:not(.in_popup) {
+	background:#DFE1ED;
 }
 
 label,
@@ -156,21 +163,25 @@ input[type=submit],
 	border-radius: 0.2rem;
 	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 	
-	background-color:#FAB12B;
+	/*background-color:#FAB12B;*/
+	background-color:#DFE1ED;
 	color:#000;
 	
 }
 input[type=submit]:hover, 
   input[type=button]:hover, 
   button:hover {
-    color:#212529;
-    background-color:#edb200;
-    border-color:#d39e00;
+	color:#212529;
+	/*background-color:#edb200;*/
+	background-color:#c8cad5;
+	/*border-color:#d39e00;*/
+	border-color:#aaa;
 }
 input[type=submit]:focus, 
   input[type=button]:focus, 
   button:focus {
-    box-shadow: 0 0 0 0.2rem rgb(255 193 7 / 50%);
+	/*box-shadow:0 0 0 0.2rem rgb(255 193 7 / 50%);*/
+	box-shadow:0 0 0 0.2rem rgb(200 202 213 / 50%);
 }
 input[type=submit]:not(:disabled), 
   input[type=button]:not(:disabled), 
@@ -235,6 +246,9 @@ input[type=submit]:not(:disabled),
 #main_column {
 	background:#fff; /* bc of the full screen otherwise it shows a black screen */
 	min-height:100vh;
+}
+body:not(.in_popup) #main_column {
+	background:#DFE1ED;
 }
 
 

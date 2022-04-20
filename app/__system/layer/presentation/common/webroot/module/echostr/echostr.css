@@ -3,7 +3,7 @@ body > .cke_screen_reader_only { /* cke editor creates this automatically */
 }
 
 .block_obj {
-	margin-bottom:0;
+	
 }
 .block_obj .module_settings,
   .block_obj .module_settings .settings {
@@ -23,7 +23,7 @@ body > .cke_screen_reader_only { /* cke editor creates this automatically */
 }
 .echostr_settings > .editor {
 	width:100%;
-	height:calc(100vh - 100px);
+	height:calc(100vh - 120px);
 	min-height:350px;
 	padding:0;
 }
@@ -63,5 +63,5 @@ body > .cke_screen_reader_only { /* cke editor creates this automatically */
   .echostr_settings .layout_ui_editor > .template-widgets,
   .echostr_settings .layout_ui_editor > .resize-panels,
   .echostr_settings .layout_ui_editor > .messages {
-	bottom:0 !important;
+	bottom:0;
 }

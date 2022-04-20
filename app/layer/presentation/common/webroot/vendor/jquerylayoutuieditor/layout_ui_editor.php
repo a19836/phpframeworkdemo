@@ -161,7 +161,7 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 			--menu-settings-user-class-color:#333;
 			
 			--menu-settings-group-color:#485152;
-			--menu-settings-group-list-bg:#d5e3e4;
+			--menu-settings-group-list-bg:transparent;
 			--menu-settings-group-block-list-border:transparent;
 			--menu-settings-group-block-list-bg:#ccc;
 			
@@ -308,13 +308,13 @@ if ($_SERVER["HTTP_HOST"] != "jplpinto.localhost")
 		</ul>
 	</div>
 	
-	<div class="layout_ui_editor layout_ui_editor_3">
+	<div class="layout_ui_editor reverse fixed_properties layout_ui_editor_3">
 		<ul class="menu-widgets hidden">
 			<? echo $menu_widgets_html; ?>
 		</ul>
 	</div>
 	
-	<div class="layout_ui_editor reverse fixed_properties layout_ui_editor_4">
+	<div class="layout_ui_editor reverse fixed_side_properties layout_ui_editor_4">
 		<ul class="menu-widgets hidden">
 			<? echo $menu_widgets_html; ?>
 		</ul>

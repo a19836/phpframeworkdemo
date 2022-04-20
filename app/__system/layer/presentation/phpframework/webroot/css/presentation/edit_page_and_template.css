@@ -12,7 +12,7 @@
 .regions_blocks_includes_settings {
 	height:300px;
 	margin:0 auto;
-	padding:40px 10px 20px;
+	padding:40px 10px 10px;
 	position:fixed;
 	left:0;
 	right:0;
@@ -21,15 +21,16 @@
 	box-sizing:border-box;
 	z-index:3;
 	background:#fff;
+	font-size:8pt;
 }
 .regions_blocks_includes_settings:not(.resizing) {
-	transition:.5s all;
+	transition:.2s all;
 }
 .regions_blocks_includes_settings.collapsed {
 	height:25px !important;
 	padding-top:20px;
-	padding-bottom:10px;
 	overflow:hidden;
+	bottom:-10px;
 }
 .regions_blocks_includes_settings .settings_header {
 	height:30px;
@@ -46,25 +47,37 @@
 	
 	/*font-weight:bold;*/
 	color:var(--main-template-color);
-	background:url(../../img/back_frame_open_close_horizontal_red.gif) repeat-x var(--main-template-bg);
-	/*background: -moz-linear-gradient(top, #eee 50%, #f7f7f7 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #f7f7f7));
-	background: -webkit-linear-gradient(top, #eee 50%, #f7f7f7 100%);
-	background: -o-linear-gradient(top, #eee 50%, #f7f7f7 100%);
-	background: -ms-linear-gradient(top, #eee 50%, #f7f7f7 100%);
-	background: linear-gradient(to bottom, #eee 50%, #f7f7f7 100%);
+	background: inherit;
+	/*background: -moz-linear-gradient(top, #DFE1ED 50%, #f7f7f7 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #DFE1ED), color-stop(100%, #f7f7f7));
+	background: -webkit-linear-gradient(top, #DFE1ED 50%, #f7f7f7 100%);
+	background: -o-linear-gradient(top, #DFE1ED 50%, #f7f7f7 100%);
+	background: -ms-linear-gradient(top, #DFE1ED 50%, #f7f7f7 100%);
+	background: linear-gradient(to bottom, #DFE1ED 50%, #f7f7f7 100%);
 	border-top:1px solid #eee;*/
 }
 .regions_blocks_includes_settings.collapsed .settings_header {
-	margin-top:-20px;
+	margin-top:-30px;
 	border:0;
 	
-	/*background: -moz-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(50%, #eee), color-stop(100%, #ffffff73));
-	background: -webkit-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
-	background: -o-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
-	background: -ms-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
-	background: linear-gradient(to top, #eee 50%, #ffffff73 100%);*/
+	/*background: -moz-linear-gradient(bottom, #DFE1ED 50%, #ffffff73 100%);
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(50%, #DFE1ED), color-stop(100%, #ffffff73));
+	background: -webkit-linear-gradient(bottom, #DFE1ED 50%, #ffffff73 100%);
+	background: -o-linear-gradient(bottom, #DFE1ED 50%, #ffffff73 100%);
+	background: -ms-linear-gradient(bottom, #DFE1ED 50%, #ffffff73 100%);
+	background: linear-gradient(to top, #DFE1ED 50%, #ffffff73 100%);*/
+}
+.regions_blocks_includes_settings .settings_header::before {
+	content:"";
+	height:5px;
+	display:block;
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	
+	background:var(--resize-bar-bg);
+	/*background:var(--resize-bar-horizontal-img) repeat-x var(--main-template-bg);*/
 }
 .regions_blocks_includes_settings .settings_header .icon {
 	width:34px;
@@ -382,8 +395,7 @@ body > .dragging_menu_item {
 }
 
 .tab_content_template_layout {
-	height:calc(100vh - 35px); /* Toolbar and settings height */
-	padding:0 0 30px !important;
+	height:calc(100vh - 75px); /* Toolbar and settings height */
 	position:relative;
 	background:#f5f5f5 !important; /* very important bc when the iframe is smartphone responsive, we loose track of the iframe borders. The background will help to detect this. */
 	box-sizing: border-box;
@@ -391,15 +403,15 @@ body > .dragging_menu_item {
 	overflow:auto;
 }
 .tab_content_template_layout:not(.resizing) {
-	transition:all 1s;
+	transition:all .2s;
 }
 .tab_content_template_layout.toolbar_open {
 	width:75%;
-	width:calc(100% - 250px);
+	width:calc(100% - 270px);
 }
 .tab_content_template_layout:not(.toolbar_open) {
 	width:99% !important;
-	width:calc(100% - 5px) !important;
+	width:calc(100% - 25px) !important;
 }
 .tab_content_template_layout.resizing:after {
 	content:"";
@@ -413,25 +425,48 @@ body > .dragging_menu_item {
 }
 
 .tab_content_template_layout .iframe_toolbar {
-	width:170px;
-	padding:0 55px 0 0;
+	width:180px;
+	padding:0 60px 0 0;
 	position:fixed;
 	top:9px;
-	right:95px;
+	right:72px;
 	color:#999;
 	box-sizing:border-box;
-	text-align:right;
 	z-index:6;
 }
 .tab_content_template_layout .iframe_toolbar .icon.desktop {
 	position:absolute;
 	top:1px;
 	right:0px;
+	margin-right:5px;
+	padding-right:8px;
+	border-right:1px solid rgba(0, 0, 0, .1);
 }
 .tab_content_template_layout .iframe_toolbar .icon.mobile {
 	position:absolute;
 	top:1px;
-	right:25px;
+	right:35px;
+}
+.tab_content_template_layout .iframe_toolbar .icon:hover:after,
+  .tab_content_template_layout .iframe_toolbar .icon:active:after,
+  .tab_content_template_layout .iframe_toolbar .icon:focus:after {
+	content:attr(title);
+	margin-top:5px;
+	padding:5px 10px;
+	display:block;
+	position:fixed;
+	top:auto;
+	left:auto;
+	right:auto;
+	text-align:right;
+	white-space:nowrap;
+	background:#DFE1ED;
+	color:#666;
+	border-radius:3px;
+	font-weight:normal;
+	cursor:auto;
+	font-size:8pt;
+	font-family:var(--main-font-family);
 }
 .tab_content_template_layout .iframe_toolbar input,
   .tab_content_template_layout .iframe_toolbar .px,
@@ -453,7 +488,7 @@ body > .dragging_menu_item {
 	border:none;
 	background:#fff; /* when is smartphone responsive we loose the track of the iframe borders. The background will help to detect this. */
 	
-	transition:all 1s;
+	transition:all .2s;
 }
 
 .tab_content_template_layout .iframe_modules_blocks_toolbar {
@@ -461,15 +496,16 @@ body > .dragging_menu_item {
 	margin:0;
 	position:fixed;
 	top:35px;
-	right:0;
-	bottom:30px;
+	right:10px;
+	bottom:40px;
 	background:#f5f5f5;
+	border:1px solid #aaa;
 	text-align:left;
 	
 	overflow:hidden;
 }
 .tab_content_template_layout:not(.resizing) .iframe_modules_blocks_toolbar {
-	transition:width 1s;
+	transition:width .2s;
 }
 .tab_content_template_layout.toolbar_open .iframe_modules_blocks_toolbar {
 	width:25%;
@@ -487,7 +523,9 @@ body > .dragging_menu_item {
 	bottom:0;
 	cursor:ew-resize;
 	overflow:hidden;
-	background:url("../../img/back_frame_open_close_vertical_red.gif") repeat-y;
+	
+	background:var(--resize-bar-bg);
+	/*background:var(--resize-bar-vertical-img) repeat-y var(--main-template-bg);*/
 }
 .tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle .button {
 	width:5px;
@@ -678,7 +716,7 @@ body > .dragging_menu_item {
 	z-index:2;
 }
 .code_layout_ui_editor .code_menu.top_bar_menu > ul {
-	border:0;
+	/*border:0;*/
 }
 
 /* CODE - ELS UI */
@@ -691,7 +729,8 @@ body > .dragging_menu_item {
 	right:0;
 	bottom:0px;
 	margin:0;
-	background:#f5f5f5;
+	background:var(--main-template-bg);
+	color:var(--main-template-color);
 }
 .template_region_block_html_editor_popup .layout_ui_editor {
 	background:transparent; /* in firefox this editor appears with a bigger z-index than the popup close icon. so we must put the bg transparent so we can see the popup close btn */
@@ -700,7 +739,6 @@ body > .dragging_menu_item {
   .template_region_block_html_editor_popup .layout_ui_editor.full-screen {
 	position: absolute !important; /* overwrite the css from jquerylayoutuieditor/style.css */
 	bottom: 0px !important;
-	z-index:1;
 }
 .code_layout_ui_editor .layout_ui_editor > .tabs,
   .template_region_block_html_editor_popup .layout_ui_editor > .tabs {
@@ -823,15 +861,14 @@ body > .dragging_menu_item {
 }
 
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center {
-	width:170px;
-	padding:0 55px 0 0;
+	width:158px;
+	padding:0 50px 0 0;
 	position:fixed;
 	top:8px;
 	left:auto;
 	right:285px;
 	bottom:auto;
 	box-sizing:border-box;
-	text-align:right;
 	z-index:1;
 }
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-center .layout-in-desktop {
@@ -853,7 +890,7 @@ body > .dragging_menu_item {
 	color:#999;
 }
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right {
-	width:120px;
+	width:70px;
 	padding:0;
 	position:fixed;
 	top:8px;
@@ -866,6 +903,68 @@ body > .dragging_menu_item {
 }
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option:not(input) {
 	width:auto;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .sub-options.zooms {
+	margin-left:5px;
+	padding-left:8px;
+	border-left:1px solid rgba(0, 0, 0, .1);
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .sub-options.toggles {
+	margin-right:5px;
+	padding-right:10px;
+	border-right:1px solid rgba(0, 0, 0, .1);
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .sub-options ul {
+	min-width:120px;
+	padding-top:10px;
+	background:#DFE1ED;
+	font-size:8pt;
+	direction:ltr;
+	border-bottom:1px solid #aaa;
+	border-bottom-left-radius:3px;
+	border-bottom-right-radius:3px;
+	color:#444;
+	right:-1000px;
+	left:auto;
+	display:block;
+	transition:.5s all;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .sub-options:hover ul {
+	right:0;
+	left:auto;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .sub-options ul li {
+	line-height:20px;
+	padding:5px 5px 5px 10px;
+	border-left:1px solid #aaa;
+	border-right:1px solid #aaa;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .sub-options ul li:first-child {
+	border-top:1px solid #aaa;
+	border-top-left-radius:3px;
+	border-top-right-radius:3px;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .sub-options ul li:hover {
+	color:var(--icon-hover-color);
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .sub-options ul li i {
+	width:15px;
+	visibility:hidden;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .sub-options ul li.zoom-range input {
+	width:calc(100% - 30px);
+	margin-left:20px;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .sub-options ul li.toggle-background,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .sub-options ul li.toggle-borders,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .sub-options ul li.auto-resize {
+	padding-left:30px;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .sub-options ul li.toggle-background input,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .sub-options ul li.toggle-borders input,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .sub-options ul li.auto-resize input {
+	position:absolute;
+	left:5px;
 }
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu:not(.layout-shown) > .options .option.full-screen {
 	display:none;
@@ -887,27 +986,32 @@ body > .dragging_menu_item {
 	overflow:visible;
 	
 	position:absolute;
-	right:-70px;
+	right:-47px;
 }
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.sub_menu:before {
-	width:16px;
+	width:13px;
 	height:16px;
-	padding-top:4px;
+	/*padding-top:4px;*/
 	display:block;
 	cursor:pointer;
-	color:#222;
+	color:#555;
+	font-size:14px;
+	
+	padding-top:2px;
+	content:"\f142";
+	text-indent:2px;
 }
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.sub_menu:hover:before {
 	color:var(--icon-hover-color);
 }
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options > .options-right .option.sub_menu > ul {
 	width:200px;
-	padding:5px 0 0;
+	padding:7px 0 0;
 	position:absolute;
 	top:20px;
 	right:-350px;
 	background:transparent;
-	border-bottom:1px solid #ddd;
+	border-bottom:1px solid #aaa;
 	border-bottom-left-radius:3px;
 	border-bottom-right-radius:3px;
 	cursor:default;
@@ -926,18 +1030,42 @@ body > .dragging_menu_item {
 	display:block;
 	padding:7px 10px;
 	position:relative;
-	background:#eee;
+	background:#DFE1ED;
 	color:#444;
 	font-style:normal;
-	border-left:1px solid #ddd;
-	border-right:1px solid #ddd;
+	font-size:8pt;
+	border-left:1px solid #aaa;
+	border-right:1px solid #aaa;
+	cursor:pointer;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.sub_menu ul li:first-child {
+	border-top:1px solid #aaa;
+	border-top-left-radius:3px;
+	border-top-right-radius:3px;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.sub_menu ul li.without_padding {
+	padding:0;
 }
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.sub_menu ul li:hover {
-	background:#ddd;
+	background:#c8cad5;
+	color:var(--icon-hover-color);
 }
-.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.sub_menu ul li input {
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.sub_menu ul li input[type=checkbox] {
 	position:absolute;
-	right:10px;
+	left:5px;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.sub_menu ul li a {
+	padding:5px;
+	display:block;
+	color:inherit;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.sub_menu ul li a > .icon {
+	width:20px;
+	height:20px;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.sub_menu ul li .icon::before,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.sub_menu ul li .icon::after {
+	display:none !important;
 }
 
 /* CODE - ELS UI - LAYOUT UI EDITOR - TOP BAR MENU - PANELS */
@@ -956,21 +1084,22 @@ body > .dragging_menu_item {
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .menu-layers {
 	padding-top:10px;
 }
+.code_layout_ui_editor .layout_ui_editor.fixed_side_properties > .menu-settings.full-screen {
+	top:30px !important;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .template-source,
+  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .template-full-source {
+	border:0;
+}
 
 /* CODE - ELS UI - LAYOUT UI EDITOR - TOP BAR MENU - PROPERTIES */
-.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.fixed_properties.menu-settings-shown > .template-widgets,
-  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.fixed_properties.menu-settings-shown > .menu-widgets, 
-  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.fixed_properties.menu-settings-shown > .menu-layers,
-  .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu.fixed_properties.menu-settings-shown > .template-widgets-options {
-	margin-bottom:25px;
-}
-.code_layout_ui_editor .layout_ui_editor.fixed_properties > .menu-settings .settings-info {
-	background: -moz-linear-gradient(top, #eee 50%, #ffffff73 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #ffffff73));
-	background: -webkit-linear-gradient(top, #eee 50%, #ffffff73 100%);
-	background: -o-linear-gradient(top, #eee 50%, #ffffff73 100%);
-	background: -ms-linear-gradient(top, #eee 50%, #ffffff73 100%);
-	background: linear-gradient(to bottom, #eee 50%, #ffffff73 100%);
+.code_layout_ui_editor .layout_ui_editor.fixed_side_properties > .menu-settings .settings-info {
+	background: -moz-linear-gradient(top, #DFE1ED 50%, #ffffff73 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #DFE1ED), color-stop(100%, #ffffff73));
+	background: -webkit-linear-gradient(top, #DFE1ED 50%, #ffffff73 100%);
+	background: -o-linear-gradient(top, #DFE1ED 50%, #ffffff73 100%);
+	background: -ms-linear-gradient(top, #DFE1ED 50%, #ffffff73 100%);
+	background: linear-gradient(to bottom, #DFE1ED 50%, #ffffff73 100%);
 }
 
 /* CODE - MYTREE */
@@ -1069,6 +1198,10 @@ body > .dragging_menu_item {
 	font-family:var(--main-font-family);
 	color:#666;
 	font-size:13px;
+	transition:.2s all;
+}
+.code_layout_ui_editor .layout_ui_editor.with_minimized_panels > .layout_ui_editor_right_container {
+	left:100%;
 }
 .code_layout_ui_editor .layout_ui_editor_right_container a {
 	color:#666;

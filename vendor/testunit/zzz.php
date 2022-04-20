@@ -18,10 +18,8 @@ class zzz extends TestUnit {
 	 * @depends (path=sub_folder/ddff) 
 	 */
 	public function execute () {
-		//START: task[setvar][Set Var]
 		$name = "Joao P. Pinto";
 		
-		//START: task[return][Return]
 		return $name;
 	}
 }

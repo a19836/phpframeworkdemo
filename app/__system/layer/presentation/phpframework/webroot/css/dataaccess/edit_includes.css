@@ -1,13 +1,5 @@
-/* TOP BAR */
-.edit_includes > .top_bar .dummy_elm_to_add_auto_save_options {
-	display:none;
-}
-
 /* RELATIONSHIP */
 .edit_includes .data_access_obj {
-	width:100%;
-	margin:0;
-	padding:10px;
 	box-sizing:border-box;
 	z-index:0;
 }

@@ -50,7 +50,7 @@
 	--menu-settings-user-class-color:#ab7a90;
 	
 	--menu-settings-group-color:#b9a5a6;
-	--menu-settings-group-list-bg:#463a3c;
+	--menu-settings-group-list-bg:transparent;
 	--menu-settings-group-block-list-border:#b9a5a6;
 	--menu-settings-group-block-list-bg:#ccc;
 	
@@ -118,10 +118,12 @@
 	--text-selection-menu-item-hover-color:#ab7a90;
 	--text-selection-menu-item-active-border:#463a3c22;
 	--text-selection-menu-item-active-color:#222;
+	--text-selection-menu-item-size:16px;
 	
 	--text-selection-menu-input-border:#796669;
 	--text-selection-menu-input-bg:#32292b;
 	--text-selection-menu-input-color:#b9a5a6;
+	--text-selection-menu-input-size:10px;
 	--text-selection-menu-select-option-disabled-bg:#463a3c;
 	--text-selection-menu-select-option-disabled-color:#b9a5a6;
 	--text-selection-menu-icon-color:#ab7a90;
@@ -239,7 +241,7 @@
 /* TEXT SELECTION MENU */
 
 .layout_ui_editor .text-selection-menu {
-	padding:2px;
+	padding:2px 40px 2px 2px;
 	position:absolute;
 	top:0;
 	left:0;
@@ -249,6 +251,10 @@
 	border-radius:3px;
 	box-sizing:border-box;
 }
+.layout_ui_editor .text-selection-menu:not(.maximized-menu) {
+	height:32px;
+	overflow:hidden;
+}
 .layout_ui_editor .text-selection-menu.sticky-text-selection-menu {
 	position:initial;
 	border-radius:0;
@@ -256,11 +262,12 @@
 .layout_ui_editor .text-selection-menu .separator {
 	margin:0 5px;
 	opacity:.5;
+	font-style:normal;
 }
 .layout_ui_editor .text-selection-menu .text-selection-item {
 	margin:2px 0;
 	padding:.1em 5px 0;
-	display:inline-block;
+	display:inline-flex;
 	border:1px solid transparent;
 	vertical-align:middle;
 	box-sizing:border-box;
@@ -271,7 +278,7 @@
 }
 .layout_ui_editor .text-selection-menu .text-selection-item:not(.no-tooltip):not(.unselect):hover:after {
 	content:attr(title);
-	margin:0;
+	margin:15px 0 0;
 	padding:3px 5px;
 	position:absolute;
 	display:block;
@@ -287,14 +294,54 @@
 	border:1px solid var(--text-selection-menu-item-active-border, #463a3c22);
 	color:var(--text-selection-menu-item-active-color, #000);
 }
+.layout_ui_editor .text-selection-menu .text-selection-item.format-block,
+  .layout_ui_editor .text-selection-menu .text-selection-item.bold,
+  .layout_ui_editor .text-selection-menu:not(.maximized-menu) .text-selection-item.align-left,
+  .layout_ui_editor .text-selection-menu:not(.maximized-menu) .text-selection-item.link {
+	margin-left:10px;
+}
+.layout_ui_editor .text-selection-menu .text-selection-item i {
+	font-size:var(--text-selection-menu-item-size);
+}
+.layout_ui_editor .text-selection-menu .text-selection-item.bold i,
+  .layout_ui_editor .text-selection-menu .text-selection-item.italic i {
+	font-size:115%;
+}
+.layout_ui_editor .text-selection-menu .text-selection-item.underline i {
+	font-size:110%;
+}
+.layout_ui_editor .text-selection-menu .text-selection-item.underline i::before {
+	margin-top:2px;
+	display:block;
+}
+.layout_ui_editor .text-selection-menu .text-selection-item.strikethrough i {
+	font-size:90%;
+}
+.layout_ui_editor .text-selection-menu .text-selection-item.text-color i {
+	font-size:95%;
+}
+.layout_ui_editor .text-selection-menu .text-selection-item.back-color i {
+	font-size:85%;
+}
+.layout_ui_editor .text-selection-menu .text-selection-item.subscript,
+  .layout_ui_editor .text-selection-menu .text-selection-item.superscript {
+	font-size:var(--text-selection-menu-input-size);
+}
+.layout_ui_editor .text-selection-menu .text-selection-item.toggle-menu i {
+	font-size:120%;
+}
+.layout_ui_editor .text-selection-menu.maximized-menu .text-selection-item.toggle-menu i::before {
+	content:"\f2fc";
+}
 .layout_ui_editor .text-selection-menu:not(.maximized-menu) .text-selection-item:not(.show-first),
-  .layout_ui_editor .text-selection-menu:not(.maximized-menu) .separator {
+  .layout_ui_editor .text-selection-menu:not(.maximized-menu) .separator,
+  .layout_ui_editor .text-selection-menu:not(.maximized-menu) br {
 	display:none;
 }
 .layout_ui_editor .text-selection-menu .text-selection-item input,
   .layout_ui_editor .text-selection-menu .text-selection-item textarea,
   .layout_ui_editor .text-selection-menu .text-selection-item select {
-	font-size:inherit;
+	font-size:var(--text-selection-menu-input-size);
 }
 .layout_ui_editor .text-selection-menu .text-selection-item select {
 	background:inherit;
@@ -309,7 +356,7 @@
   .layout_ui_editor .text-selection-menu .text-selection-item.font-family select,
   .layout_ui_editor .text-selection-menu .text-selection-item.font-size select {
 	padding:.3em;
-	font-size:80%;
+	font-size:var(--text-selection-menu-input-size);
 }
 
 .layout_ui_editor .text-selection-menu .menu-item-popup {
@@ -556,6 +603,7 @@
 	vertical-align:middle;
 	text-align:center;
   	opacity:.5;
+  	position:relative;
 }
 .layout_ui_editor > .options .option.option-active {
 	color:var(--option-active-color, #000) !important;
@@ -577,6 +625,57 @@
 	vertical-align:middle;
 	margin-left:5px;
 	padding:0; /* IE gives some padding to the range buttons */
+}
+.layout_ui_editor > .options .sub-options ul {
+	position:absolute;
+	margin:0;
+	padding:10px 0 0;
+	right:0;
+	list-style:none;
+	font-size:70%;
+	white-space:nowrap;
+	text-align:left;
+	border-bottom:1px solid rgba(0, 0, 0, .1);
+	border-bottom-left-radius:3px;
+	border-bottom-right-radius:3px;
+	background:var(--main-editor-bg, #463a3c);
+	color:var(--main-editor-color, #b9a5a6);
+	font-family:var(--main-editor-font-family);
+	z-index:1;
+}
+.layout_ui_editor.reverse > .options .sub-options ul {
+	left:0;
+	right:auto;
+}
+.layout_ui_editor > .options .sub-options:not(:hover) ul {
+	display:none;
+}
+.layout_ui_editor > .options .sub-options ul li {
+	padding:5px;
+	display:block;
+	box-sizing:border-box;
+	border-left:1px solid rgba(0, 0, 0, .1);
+	border-right:1px solid rgba(0, 0, 0, .1);
+}
+.layout_ui_editor > .options .sub-options ul li:first-child {
+	/*border-top:1px solid rgba(0, 0, 0, .1);
+	border-top-left-radius:3px;
+	border-top-right-radius:3px;*/
+}
+.layout_ui_editor > .options .sub-options ul li:hover {
+	background:rgba(0, 0, 0, .1);
+}
+.layout_ui_editor > .options .sub-options ul li.zoom-range {
+	border-top:1px solid rgba(0, 0, 0, .1);
+}
+.layout_ui_editor > .options .sub-options ul li.zoom-range input {
+	width:calc(100% - 10px);
+	min-width:60px;
+}
+.layout_ui_editor > .options .sub-options ul li i.zmdi {
+	width:15px;
+	margin-left:5px;
+	font-size:110%;
 }
 
 .layout_ui_editor > .options .option.option-screen-width,
@@ -618,9 +717,6 @@
 	color:var(--option-label-hover-color, #000) !important;
 }
 
-.layout_ui_editor > .options .zoom-range {
-	width:50px;
-}
 
 /* MAIN TABS */
 
@@ -779,7 +875,7 @@
 }
 .layout_ui_editor.reverse.with_minimized_panels > .template-widgets {
 	left:0 !important;
-	right:0 !important;
+	right:5px !important;
 }
 
 .layout_ui_editor.resizing > .template-widgets:after {
@@ -809,8 +905,9 @@
 	border:1px solid var(--template-widgets-droppable-border, #463a3c);
 	background:var(--template-widgets-droppable-bg, #fff);
 	box-sizing:border-box;
-	
-	transition:all 1s ease-in-out; /* bc of the resize the iframe when responsive layout */
+}
+.layout_ui_editor:not(.resizing_fixed_properties):not(.resizing) > .template-widgets > .template-widgets-droppable { 
+	transition:all .2s ease-in-out; /* bc of the resize the iframe when responsive layout */
 }
 
 /* MENU WIDGETS */
@@ -837,6 +934,12 @@
 	-moz-box-sizing:border-box;
 	-webkit-box-sizing:border-box;
 	box-sizing:border-box;
+}
+.layout_ui_editor:not(.resizing_fixed_properties):not(.resizing) > .menu-widgets,
+  .layout_ui_editor:not(.resizing_fixed_properties):not(.resizing) > .menu-layers,
+  .layout_ui_editor:not(.resizing_fixed_properties):not(.resizing) > .menu-settings:not(.fixed_properties),
+  .layout_ui_editor:not(.resizing_fixed_properties):not(.resizing) > .template-widgets-options { 
+	transition:all .2s ease-in-out;
 }
 .layout_ui_editor.reverse > .menu-widgets,
   .layout_ui_editor.reverse > .menu-layers,
@@ -1443,27 +1546,49 @@ body > .menu-widget.ui-draggable-dragging {
 }
 
 /* MENU SETTINGS - FIXED PROPERTIES */
-.layout_ui_editor.fixed_properties > .menu-settings {
+.layout_ui_editor.fixed_properties > .menu-settings,
+  .layout_ui_editor.fixed_side_properties > .menu-settings {
 	height:300px;
 	padding-top:30px;
+	box-sizing:border-box;
+	background:var(--menu-settings-bg, #fff);
+	z-index:3;
+}
+.layout_ui_editor.fixed_properties > .menu-settings {
 	position:fixed;
 	top:auto;
 	left:0;
 	right:0;
 	bottom:0;
-	background:var(--menu-settings-bg, #fff);
-	z-index:3;
+}
+.layout_ui_editor.fixed_side_properties > .menu-settings {
+	position:absolute;
+	top:auto;
+	left:0;
+	right:70%;
+	bottom:0;
+}
+.layout_ui_editor.fixed_side_properties > .menu-settings.collapsed {
+	overflow-x:hidden;
+}
+.layout_ui_editor.reverse.fixed_side_properties > .menu-settings {
+	position:absolute;
+	top:auto;
+	left:70%;
+	right:0;
+	bottom:0;
 }
 .layout_ui_editor.fixed_properties > .menu-settings.full-screen {
 	height:auto !important;
 	top:0 !important;
 }
-.layout_ui_editor.fixed_properties > .menu-settings .settings-info {
+.layout_ui_editor.fixed_side_properties > .menu-settings.full-screen {
+	height:auto !important;
+	top:2.5em !important;
+}
+.layout_ui_editor.fixed_properties > .menu-settings .settings-info,
+  .layout_ui_editor.fixed_side_properties > .menu-settings .settings-info {
 	height:30px;
-	margin-top:-30px;
-	position:fixed;
-	left:0;
-	right:0;
 	box-sizing:border-box;
 	text-align:left;
 	padding:5px;
@@ -1472,24 +1597,43 @@ body > .menu-widget.ui-draggable-dragging {
 	background:var(--menu-settings-info-bg, #463a3c);
 	z-index:1;
 }
-.layout_ui_editor.fixed_properties > .menu-settings:not(.full-screen) .settings-info {
+.layout_ui_editor.fixed_properties > .menu-settings .settings-info {
+	margin-top:-30px;
+	position:fixed;
+	left:0;
+	right:0;
+}
+.layout_ui_editor.fixed_side_properties > .menu-settings .settings-info {
+	margin-top:-30px;
+	position:sticky;
+	top:-30px;
+	left:0;
+	right:0;
+}
+.layout_ui_editor.fixed_properties > .menu-settings:not(.full-screen) .settings-info,
+  .layout_ui_editor.fixed_side_properties > .menu-settings:not(.full-screen) .settings-info {
 	cursor:ns-resize;
 }
-.layout_ui_editor.fixed_properties > .menu-settings .settings-info label {
+.layout_ui_editor.fixed_properties > .menu-settings .settings-info label,
+  .layout_ui_editor.fixed_side_properties > .menu-settings .settings-info label {
 	padding:0;
 }
-.layout_ui_editor.fixed_properties > .menu-settings:not(.full-screen) .settings-info label {
+.layout_ui_editor.fixed_properties > .menu-settings:not(.full-screen) .settings-info label,
+  .layout_ui_editor.fixed_side_properties > .menu-settings:not(.full-screen) .settings-info label {
 	cursor:ns-resize;
 }
 .layout_ui_editor.fixed_properties > .menu-settings .settings-info .close,
-  .layout_ui_editor.fixed_properties > .menu-settings .settings-info .full-screen {
+  .layout_ui_editor.fixed_properties > .menu-settings .settings-info .full-screen,
+  .layout_ui_editor.fixed_side_properties > .menu-settings .settings-info .close,
+  .layout_ui_editor.fixed_side_properties > .menu-settings .settings-info .full-screen {
 	display:inline-block;
 	position:absolute;
 	top:10px;
 	right:10px;
 	cursor:pointer;
 }
-.layout_ui_editor.fixed_properties > .menu-settings .settings-info .full-screen {
+.layout_ui_editor.fixed_properties > .menu-settings .settings-info .full-screen,
+  .layout_ui_editor.fixed_side_properties > .menu-settings .settings-info .full-screen {
 	right:30px;
 }
 .layout_ui_editor.fixed_properties > .menu-settings li.group li {
@@ -1502,10 +1646,6 @@ body > .menu-widget.ui-draggable-dragging {
 .layout_ui_editor.fixed_properties > .menu-settings li.group li ul.group-block li {
 	width:180px;
 	margin:5px 0;
-}
-.layout_ui_editor.fixed_properties > .menu-settings .group ul:not(.group-block) {
-	background:none;
-	/*text-align:center;*/
 }
 .layout_ui_editor.fixed_properties > .menu-settings li.group li.settings-style,
   .layout_ui_editor.fixed_properties > .menu-settings li.group li.settings-attributes {
@@ -1555,6 +1695,9 @@ body > .menu-widget.ui-draggable-dragging {
 	background:var(--resize-panel-bg); /*#796669 or image*/
 	z-index:2;
 	cursor:ew-resize;
+}
+.layout_ui_editor:not(.resizing_fixed_properties):not(.resizing) > .resize-panels {
+	transition:.2s all;
 }
 .layout_ui_editor.reverse > .resize-panels {
 	left:auto;

@@ -122,7 +122,7 @@ $(function () {
 				saved_template_obj_id = getTemplateCodeObjId();//only for testing. Then uncomment this line!
 				
 				//init auto save
-				addAutoSaveMenu(".top_bar li.dummy_elm_to_add_auto_save_options");
+				addAutoSaveMenu(".top_bar li.sub_menu li.save");
 				enableAutoSave(onToggleAutoSave);//only for testing. Then activate auto_save here by uncommenting this line!
 				initAutoSave(".top_bar li.save a");
 			}, 2000);
@@ -167,6 +167,25 @@ function toggleAdvancedItems(elm) {
 		
 		if (is_content_editor_tab_shown)
 			ul.find(" > #code_editor_body_tab > a").trigger("click");
+	}
+}
+
+function toggleWidgetSettings(elm) {
+	var code_editor_body = $(".template_obj .code_editor_body");
+	var PtlLayoutUIEditor = code_editor_body.find(".layout_ui_editor").data("LayoutUIEditor");
+	var input = $(".top_bar li.toggle_widget_settings input");
+	
+	if (PtlLayoutUIEditor) {
+		if (PtlLayoutUIEditor.isMenuSettingsVisible()) {
+			PtlLayoutUIEditor.hideFixedMenuSettings();
+			input.removeAttr("checked").prop("checked", false);
+		}
+		else if (PtlLayoutUIEditor.isMenuSettingsEnabled()) {
+			PtlLayoutUIEditor.showFixedMenuSettings();
+			input.attr("checked", "checked").prop("checked", true);
+		}
+		else
+			StatusMessageHandler.showMessage("Please select a widget first...");
 	}
 }
 

@@ -29,25 +29,13 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_advanced
 <script>
 var path_to_filter = "' . $filter_by_layout . '";
 </script>'; $main_content = AdminMenuUIHandler::getContextMenus($exists_db_drivers); $main_content .= '
-	<div id="menu_panel" class="' . $theme_layout . '">
+	<div id="first_top_panel" class="top_panel ' . $theme_layout . '">
 		<ul class="left">
 			<li class="logo"></li>
-			
-			<li class="filter_by_layout">
-				<label>Project: </label>
-				<select onChange="filterByLayout(this)">
-					<option value="">- All -</option>'; foreach ($presentation_projects_by_layer_label_and_folders as $layer_label => $projs) { $main_content .= '<optgroup label="' . $layer_label . '">'; $main_content .= getProjectsHtml($projs, $filter_by_layout); $main_content .= '</optgroup>'; } foreach ($non_projects_layout_types as $lname => $lid) $main_content .= '<option value="' . $lname . '" ' . ($filter_by_layout == $lname ? ' selected' : '') . '>' . $lname . '</option>'; $main_content .= '	</select>
-			</li>
 		</ul>
 		<ul class="right">
 			<li class="icon full_screen" title="Toggle Full Screen" onClick="toggleFullScreen(this)"></li>
-			<li class="icon home" title="Home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/admin_home?selected_layout_project=' . $filter_by_layout . '"></li>
-			' . ($is_flush_cache_allowed ? '<li class="icon flush_cache" title="Flush Cache" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\')"></li>' : '') . '
-			<li class="icon refresh" onClick="refreshIframe()" title="Refresh"></li>
-			<!--li class="icon tools" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&popup=1" . '\')" title="Tools"></li-->
-			
-			<!--li class="icon expand_left_panel" title="Expand Left Panel" onClick="expandLeftPanel(this)"></li>
-			<li class="icon collapse_left_panel" title="Collapse Left Panel" onClick="collapseLeftPanel(this)"></li-->
+			<li class="icon info" title="About" onClick="goTo(this, \'about_url\', event)" about_url="' . $project_url_prefix . 'admin/about"></li>
 			
 			<li class="sub_menu sub_menu_user">
 				<i class="icon user"></i>
@@ -57,12 +45,35 @@ var path_to_filter = "' . $filter_by_layout . '";
 				</ul>
 			</li>
 			
+		</ul>
+	</div>
+	<div id="second_top_panel" class="top_panel ' . $theme_layout . '">
+		<ul class="left">
+			<li class="filter_by_layout">
+				<label>Project: </label>
+				<select onChange="filterByLayout(this)">
+					<option value="">- All -</option>'; $selected_project_name = ""; foreach ($presentation_projects_by_layer_label_and_folders as $layer_label => $projs) { $main_content .= '<optgroup label="' . $layer_label . '">'; $main_content .= getProjectsHtml($projs, $filter_by_layout); $main_content .= '</optgroup>'; if ($filter_by_layout && $presentation_projects_by_layer_label[$layer_label][$filter_by_layout]) $selected_project_name = $presentation_projects_by_layer_label[$layer_label][$filter_by_layout]; } foreach ($non_projects_layout_types as $lname => $lid) $main_content .= '<option value="' . $lname . '" ' . ($filter_by_layout == $lname ? ' selected' : '') . '>' . $lname . '</option>'; $main_content .= '	</select>
+					<span class="icon project" onClick="chooseAvailableProject(\'' . $project_url_prefix . 'admin/choose_available_project?redirect_path=admin&popup=1\');" title="' . ($selected_project_name ? 'Selected Project: \'' . $selected_project_name . '\'. ' : '') . 'Please click here to choose another project."></span>
+			</li>
+		</ul>
+		<ul class="right">
+			<li class="icon go_back" onClick="goBack()" title="Go Back"></li>
+			<li class="separator">|</li>
+			' . ($is_flush_cache_allowed ? '<li class="icon flush_cache" title="Flush Cache" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\')"></li>' : '') . '
+			<li class="icon refresh" onClick="refreshIframe()" title="Refresh"></li>
+			<li class="separator">|</li>
+			
+			<li class="icon home" title="Home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/admin_home?selected_layout_project=' . $filter_by_layout . '"></li>
+			<li class="icon tools" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&popup=1" . '\')" title="Tools"></li>
+			<li class="icon question" onClick="chooseAvailableTutorial(\'' . $project_url_prefix . 'admin/choose_available_tutorial?popup=1\');" title="Tutorials - How To?"></li>
+			
+			<!--li class="icon expand_left_panel" title="Expand Left Panel" onClick="expandLeftPanel(this)"></li>
+			<li class="icon collapse_left_panel" title="Collapse Left Panel" onClick="collapseLeftPanel(this)"></li-->
+			
 			<li class="sub_menu sub_menu_others">
 				<i class="icon sub_menu_vertical"></i>
 				<ul>
 					<li title="Toggle Theme"><a onClick="toggleThemeLayout(this)"><i class="icon toggle_theme_layout"></i> <span>' . ($theme_layout == "dark_theme" ? "Show light theme" : "Show dark theme") . '</span></a></li>
-					<li title="Show Tools"><a onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&popup=1" . '\')"><i class="icon tools"></i> Show Tools</a></li>
-					<li class="about" title="About"><a onClick="goTo(this, \'about_url\', event)" about_url="' . $project_url_prefix . 'admin/about"><i class="icon info"></i> About</a></li>
 				</ul>
 			</li>
 		</ul>

@@ -1,9 +1,4 @@
 /* TOP BAR */
-.top_bar li.toggle_main_settings > a > input {
-	position:absolute;
-	right:10px;
-}
-
 .icon.update_tables_attributes::before {
 	content:"\f00b";
 }
@@ -46,7 +41,7 @@
 
 /* GENERIC */
 .data_access_obj {
-	margin:10px auto;
+	
 }
 
 .data_access_obj .icon {
@@ -80,7 +75,7 @@
 	padding:5px 5px;
 	background-color:#F2F2F2;
 	border:1px solid #D7D7D7;
-	font-size:12px;
+	font-size:8pt;
 	font-style:italic;
 }
 
@@ -115,6 +110,7 @@
 	margin-left:0px;
 }
 .data_access_obj .icon_cell {
+	width:20px;
 	border:0;
 }
 
@@ -176,7 +172,7 @@
 .data_access_obj .includes .include label.include_path {
 	margin-right:10px;
 	margin-bottom:0px;
-	font-size:13px;
+	font-size:8pt;
 }
 .data_access_obj .includes .include input.include_path {
 	width:200px;
@@ -185,7 +181,7 @@
 .data_access_obj .includes .include label.is_include_relative {
 	margin:0px 0px 0px 30px;
 	margin-bottom:0px;
-	font-size:13px;
+	font-size:8pt;
 }
 .data_access_obj .includes .include input.is_include_relative {
 	margin:auto 25px auto 5px;
@@ -303,7 +299,7 @@
 /* RESULTS MAP */
 .data_access_obj .results .type label, .data_access_obj .results .class label, .data_access_obj .results .map label {
 	width:100px;
-	font-size:13px;
+	font-size:8pt;
 }
 .data_access_obj .results .type select, .data_access_obj .results .class input {
 	margin-top:3px;
@@ -377,7 +373,7 @@
 	margin-top:0;
 }
 .data_access_obj .relationships div label {
-	font-size:13px;
+	/*font-size:13px;*/
 }
 .data_access_obj .relationships .map label {
 	margin-bottom:7px;
@@ -393,6 +389,7 @@
 .data_access_obj .relationships .results_maps .map, 
    .data_access_obj .relationships .parameters_maps .map {
    	border:1px solid #eee;
+   	background:#fff;
 	padding:10px 10px 20px;
 	width:625px;
 	margin:10px auto 30px;
@@ -882,14 +879,16 @@
 	box-sizing:border-box;
 	z-index:1050;
 	background:#fff;
+	font-size:8pt;
 }
 .relationship .settings:not(.resizing) {
-	transition:.5s all;
+	transition:.2s all;
 }
 .relationship .settings.collapsed {
 	height:25px !important;
-	padding-top:20px;
+	padding-top:25px;
 	overflow:hidden;
+	bottom:-5px;
 }
 
 .relationship .settings .settings_header {
@@ -907,7 +906,7 @@
 	
 	/*font-weight:bold;*/
 	color:var(--main-template-color);
-	background:url(../../img/back_frame_open_close_horizontal_red.gif) repeat-x var(--main-template-bg);
+	background: inherit;
 	/*background: -moz-linear-gradient(top, #eee 50%, #f7f7f7 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #f7f7f7));
 	background: -webkit-linear-gradient(top, #eee 50%, #f7f7f7 100%);
@@ -917,7 +916,7 @@
 	border-top:1px solid #eee;*/
 }
 .relationship .settings.collapsed .settings_header {
-	margin-top:-20px;
+	margin-top:-25px;
 	border:0;
 		
 	/*background: -moz-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
@@ -926,6 +925,18 @@
 	background: -o-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
 	background: -ms-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
 	background: linear-gradient(to top, #eee 50%, #ffffff73 100%);*/
+}
+.relationship .settings .settings_header::before {
+	content:"";
+	height:5px;
+	display:block;
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	
+	background:var(--resize-bar-bg);
+	/*background:var(--resize-bar-horizontal-img) repeat-x var(--main-template-bg);*/
 }
 .relationship .settings .settings_header .icon {
 	width:34px;
@@ -951,6 +962,7 @@
 /* POPUP */
 .choose_table_or_attribute {
 	width:340px;
+	font-size:8pt;
 }
 .choose_table_or_attribute .contents div {
 	width:100%;
@@ -959,9 +971,8 @@
 	clear:left;
 }
 .choose_table_or_attribute .contents div label {
-	display:block;
+	display:inline-block;
 	width:100px;
-	float:left;
 }
 .choose_table_or_attribute .contents div.db_broker, 
    .choose_table_or_attribute .contents div.db_driver, 
@@ -983,8 +994,7 @@
    .choose_table_or_attribute .map_option label {
 	width:100px;
 	margin-right:10px;
-	display:block;
-	float:left;
+	display:inline-block;
 }
 .choose_table_or_attribute .contents .db_broker select,
    .choose_table_or_attribute .contents .db_driver select,
@@ -992,6 +1002,7 @@
    .choose_table_or_attribute .contents .db_table select,
    .choose_table_or_attribute .contents .db_attribute select {
 	width:200px;
+	font-size:inherit;
 }
 
 #choose_map_id .contents .map .refresh {
@@ -1003,7 +1014,7 @@
 	margin-top:10px;
 }
 .myfancypopup .button input {
-	font-size:12px;
+	font-size:8pt;
 	display:inline;
 	float:none;
 }

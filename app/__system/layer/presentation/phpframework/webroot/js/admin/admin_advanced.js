@@ -53,7 +53,7 @@ $(function() {
 		cancel: '.button',
 		start : function(event, ui) {
 			if ($(this).children(".button").hasClass("minimize")) {
-				$('#right_panel').addClass("dragging"); // We need to hide the iframe bc the draggable event has some problems with iframes
+				$('#left_panel, #hide_panel, #right_panel').addClass("dragging"); // We need to hide the iframe bc the draggable event has some problems with iframes
 				return true;
 			}
 			return false;
@@ -63,7 +63,7 @@ $(function() {
 		},
 		stop : function(event, ui) {
 			updatePanelsAccordingWithHidePanel();
-			$('#right_panel').removeClass("dragging");
+			$('#left_panel, #hide_panel, #right_panel').removeClass("dragging");
 		}
 	});
 	
@@ -109,8 +109,20 @@ $(function() {
 			var m = djst.match(/"icon"\s*:\s*"(.*)"/);
 			var classes = m[1];
 			var tab_classes = "tab_main_node tab_" + classes.split(" ").join(" tab_");
+			var tab_label = "";
 			
-			tabs_html	+= '<li class="' + tab_classes + '"><a href="#' + id + '" title="' + label + '"><i class="tab_icon ' + classes + '"></i></a></li>';
+			if (classes.indexOf("main_node_presentation_layers") != -1)
+				tab_label = "Interface";
+			else if (classes.indexOf("main_node_business_logic_layers") != -1)
+				tab_label = "Logic";
+			else if (classes.indexOf("main_node_data_access_layers") != -1)
+				tab_label = "SQL";
+			else if (classes.indexOf("main_node_db_layers") != -1)
+				tab_label = "DB";
+			else if (classes.indexOf("main_node_library") != -1)
+				tab_label = "Library";
+			
+			tabs_html	+= '<li class="' + tab_classes + '"><a href="#' + id + '" title="' + tab_label + '"><i class="tab_icon ' + classes + '"></i><span class="tab_label">' + tab_label + '</span></a></li>';
 			
 			li.addClass("main_tree_node");
 		});
@@ -129,6 +141,12 @@ $(function() {
 			item.addClass("hide_tree_item");
 			
 			var main_tree_node_label = item.find(" > a > label").text();
+			
+			if (item.is(".presentation_layers"))
+				main_tree_node_label = "Interface - " + main_tree_node_label;
+			else if (item.is(".data_access_layers"))
+				main_tree_node_label = "SQL - " + main_tree_node_label;
+			
 			item.prepend('<div class="title">' + main_tree_node_label + '</div>');
 			
 			var main_ul = item.children("ul");
@@ -492,6 +510,14 @@ function toggleAdvancedLevel(elm) {
 	left_panel.toggleClass("simple_level").toggleClass("advanced_level");
 	
 	$(elm).children("span").html(advanced_level == "advanced_level" ? "Show basic items" : "Show advanced items");
+	
+	//check if active tab is a hidden tab
+	var tabs_parent = left_panel.find(" > .mytree > ul");
+	var active_tab = tabs_parent.tabs("option", "active");
+	var li = $(tabs_parent.find(" > ul > li")[active_tab]);
+	
+	if (!li.is(":visible"))
+		tabs_parent.tabs("option", "active", tabs_parent.find(" > ul > li:visible").first().index());
 }
 
 function toggleTreeLayout(elm) {
@@ -511,7 +537,7 @@ function toggleThemeLayout(elm) {
 	
 	MyJSLib.CookieHandler.setCookie('theme_layout', theme_layout, 0, "/");
 	left_panel.toggleClass("dark_theme").toggleClass("light_theme");
-	$("#menu_panel").toggleClass("dark_theme").toggleClass("light_theme");
+	$(".top_panel").toggleClass("dark_theme").toggleClass("light_theme");
 	$("body").removeClass(theme_layout == "dark_theme" ? "light_theme" : "dark_theme").addClass(theme_layout);
 	
 	$(elm).children("span").html(theme_layout == "dark_theme" ? "Show light theme" : "Show dark theme");

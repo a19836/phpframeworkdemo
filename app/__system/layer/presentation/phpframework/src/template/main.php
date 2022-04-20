@@ -53,7 +53,7 @@
 	
 	<? echo $head; ?>
 </head>
-<body<?= ' class="' . $_COOKIE["theme_layout"] . '"'; ?>>
+<body<?= ' class="' . $_COOKIE["theme_layout"] . ($_GET["popup"] ? " in_popup" : "") . '"'; ?>>
 	<div id="main_column"><? 
 		include $EVC->getTemplatePath("message");
 		

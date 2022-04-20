@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include $EVC->getUtilPath("WorkFlowUIHandler"); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $get_layer_sub_files_url = $project_url_prefix . "admin/get_sub_files?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=#path#"; $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $WorkFlowQueryHandler = new WorkFlowQueryHandler($WorkFlowUIHandler, $project_url_prefix, $project_common_url_prefix, $db_drivers, $selected_db_broker, $selected_db_driver, $selected_type, $selected_table, $selected_tables_name, $selected_table_attrs, $map_php_types, $map_db_types); $head = $WorkFlowUIHandler->getHeader(); $head .= LayoutTypeProjectUIHandler::getHeader(); $head .= '
+include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $get_layer_sub_files_url = $project_url_prefix . "admin/get_sub_files?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=#path#"; $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $WorkFlowQueryHandler = new WorkFlowQueryHandler($WorkFlowUIHandler, $project_url_prefix, $project_common_url_prefix, $db_drivers, $selected_db_broker, $selected_db_driver, $selected_type, $selected_table, $selected_tables_name, $selected_table_attrs, $map_php_types, $map_db_types); $head = $WorkFlowUIHandler->getHeader(); $head .= LayoutTypeProjectUIHandler::getHeader(); $head .= '
 <!-- Add MyTree main JS and CSS files -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerymytree/css/style.min.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerymytree/js/mytree.js"></script>
@@ -45,23 +45,25 @@ var old_obj_id = \'' . $map_id . '\';
 	<div class="top_bar">
 		<header>
 			<div class="title">
-				' . ($map_id ? "Edit" : "Add") . ' ' . ($query_type == "parameter_map" ? "Parameter" : "Result") . ' Map: <span class="map_name"></span>
+				' . ($map_id ? "Edit" : "Add") . ' ' . ($query_type == "parameter_map" ? "Parameter" : "Result") . ' Map: <span class="map_name"></span> in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($is_hbn_obj_equal_to_file_name ? dirname($file_path) . "/$hbn_obj_id" : $file_path, $obj, $is_hbn_obj_equal_to_file_name) . '
 			</div>
 			
 			<ul>
-				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save Map"><a onClick="saveMapObject()"><i class="icon save"></i> Save</a></li>
 				<li class="sub_menu">
 					<i class="icon sub_menu"></i>
 					<ul>
-						<li class="update_automatically" title="Create Map Automatically"><a onClick="createSingleMapParameterOrResultMapAutomatically()"><i class="icon update_automatically"></i> Update Automatically</a></li>
-						<li class="dummy_elm_to_add_auto_save_options"></li>
+						<li class="update_automatically" title="Create Map Automatically"><a onClick="createSingleMapParameterOrResultMapAutomatically()"><i class="icon update_automatically"></i> Create Map Automatically</a></li>
+						<li class="separator"></li>
+						<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
+						<li class="separator"></li>
+						<li class="save" title="Save Map"><a onClick="saveMapObject()"><i class="icon save"></i> Save</a></li>
 					</ul>
 				</li>
 			</ul>
 		</header>
 	</div>'; if ($obj_data || !$map_id) { $main_content .= $WorkFlowQueryHandler->getChooseQueryTableOrAttributeHtml("choose_db_table_or_attribute"); $main_content .= $WorkFlowQueryHandler->getChooseDAOObjectFromFileManagerHtml("choose_dao_object_from_file_manager"); $obj_html = $query_type == "parameter_map" ? $WorkFlowQueryHandler->getParameterMapHTML("map", $obj_data, $map_php_types, $map_db_types) : $WorkFlowQueryHandler->getResultMapHTML("map", $obj_data, $map_php_types, $map_db_types); $main_content .= '
-<div class="data_access_obj">	
+<div class="data_access_obj with_top_bar_section">	
 	<div class="relationships">
 		<div class="' . ($query_type == "parameter_map" ? 'parameters_maps' : 'results_maps') .' map">
 			<div class="' . ($query_type == "parameter_map" ? 'parameters' : 'results') .' map">

@@ -1,5 +1,5 @@
 .block_obj {
-	width:735px;
+	min-width:735px;
 }
 .block_obj .module_settings {
 	width:100%;
@@ -66,13 +66,13 @@
 .settings_props .settings_prop_default_value label,
    .settings_props .settings_prop_search_value label {
 	font-weight:normal;
-	font-size:10px;
+	font-size:8pt;
 	color:#888;
 }
 .settings_props .settings_prop_default_value input,
    .settings_props .settings_prop_search_value input {
 	width:80px;
-	font-size:11px;
+	font-size:8pt;
 	color:#888;
 }
 
@@ -108,14 +108,14 @@
 	padding-left:7px;
 }
 .selected_task_properties .form_containers .fields .field label {
-	font-size:12px;
+	font-size:8pt;
 	font-weight:normal;
 	font-style:none;
 }
 .selected_task_properties .form_containers .fields .field input,
    .selected_task_properties .form_containers .fields .field select,
    .selected_task_properties .form_containers .fields .field textarea {
-	font-size:12px;
+	font-size:8pt;
 }
 .selected_task_properties .form_containers .fields .field > .remove_field,
    .selected_task_properties .form_containers .fields .field > .minimize_field,
@@ -179,7 +179,7 @@
 
 /* PTL */
 .settings .ptl {
-	padding:0 5px 1em;
+	padding:1em 5px;
 }
 .settings .ptl .layout_ui_editor.full-screen {
 	top:45px !important;
@@ -194,7 +194,7 @@
   .settings .ptl .layout_ui_editor > .template-widgets,
   .settings .ptl .layout_ui_editor > .resize-panels,
   .settings .ptl .layout_ui_editor > .messages {
-	bottom:0 !important;
+	bottom:0;
 }
 .settings .ptl .layout_ui_editor .tabs .tab.view-page {
 	opacity:.4;

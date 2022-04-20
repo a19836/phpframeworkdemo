@@ -2,8 +2,14 @@
 .top_bar {
 	margin-bottom:10px;
 }
+.top_bar header > .title > input {
+	width:100px;
+}
+.top_bar header > .title > .class_name {
+	color:#666;
+}
 .top_bar header > ul {
-	right:105px;
+	right:104px;
 }
 
 /* FILE CLASS METHOD */
@@ -30,14 +36,16 @@
 	box-sizing:border-box;
 	z-index:1050;
 	background:#fff;
+	font-size:8pt;
 }
 .file_class_method_obj #settings:not(.resizing) {
-	transition:.5s all;
+	transition:.2s all;
 }
 .file_class_method_obj #settings.collapsed {
 	height:25px !important;
-	padding-top:20px;
+	padding-top:25px;
 	overflow:hidden;
+	bottom:-5px;
 }
 
 .file_class_method_obj #settings div {
@@ -75,7 +83,7 @@
 	
 	/*font-weight:bold;*/
 	color:var(--main-template-color);
-	background:url(../../img/back_frame_open_close_horizontal_red.gif) repeat-x var(--main-template-bg);
+	background: inherit;
 	/*background: -moz-linear-gradient(top, #eee 50%, #f7f7f7 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #f7f7f7));
 	background: -webkit-linear-gradient(top, #eee 50%, #f7f7f7 100%);
@@ -85,7 +93,7 @@
 	border-top:1px solid #eee;*/
 }
 .file_class_method_obj #settings.collapsed .settings_header {
-	margin-top:-20px;
+	margin-top:-25px;
 	border:0;
 		
 	/*background: -moz-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
@@ -94,6 +102,18 @@
 	background: -o-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
 	background: -ms-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
 	background: linear-gradient(to top, #eee 50%, #ffffff73 100%);*/
+}
+.file_class_method_obj #settings .settings_header::before {
+	content:"";
+	height:5px;
+	display:block;
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	
+	background:var(--resize-bar-bg);
+	/*background:var(--resize-bar-horizontal-img) repeat-x var(--main-template-bg);*/
 }
 .file_class_method_obj #settings .settings_header .icon {
 	width:34px;
@@ -308,13 +328,14 @@
 
 /* CODE */
 .file_class_method_obj #code > textarea,
-  .file_class_method_obj #code .ace_editor {
-	height:calc(100vh - 55px) !important;
+  .file_class_method_obj #code .ace_editor,
+  .file_class_method_obj > #ui .taskflowchart {
+	height:calc(100vh - 75px) !important;
 }
 .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu .tasks_menu:not(.task_properties_shown):not(.connection_properties_shown), 
   .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu .tasks_menu_hide:not(.task_properties_shown):not(.connection_properties_shown), 
   .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu .tasks_flow:not(.task_properties_shown):not(.connection_properties_shown) {
-	bottom:30px;
+	/*bottom:0;*/
 }
 
 /* To print the workflow */

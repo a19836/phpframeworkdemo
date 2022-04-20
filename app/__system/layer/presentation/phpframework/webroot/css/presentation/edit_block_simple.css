@@ -12,9 +12,6 @@
 }
 
 /* TOP BAR */
-.top_bar {
-	margin-bottom:10px;
-}
 .top_bar header {
 	z-index:999999;
 }
@@ -38,7 +35,7 @@
 
 /* BLOCK OBJ */
 .block_obj {
-	margin:0 auto 20px;
+	
 }
 
 /* MODULE DATA */

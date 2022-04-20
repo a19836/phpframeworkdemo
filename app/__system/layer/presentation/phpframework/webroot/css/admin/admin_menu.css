@@ -2,7 +2,9 @@
 	background-color:var(--main-template-bg, #f7f7f7); 
 	color:var(--main-template-color, #999); 
 	border:1px solid var(--main-template-border, #ccc);
+	font-family:inherit;
 	border-radius:5px;
+	font-size:8pt;
 }
 .jqcontextmenu li {background-color:var(--main-template-bg, #f7f7f7);}
 .jqcontextmenu li:first-child {border-top-left-radius:5px; border-top-right-radius:5px;}
@@ -18,21 +20,21 @@
 	text-rendering:auto;
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
-	font-size:16px;
-	width:20px;
+	font-size:inherit;
+	width:15px;
 	display:inline-block;
 	margin-top:4px;
-	margin-left:4px;
+	margin-left:10px;
 }
 .jqcontextmenu li::after {
 	text-rendering:auto;
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
-	font-size:12px;
+	font-size:80%;
 	display:inline-block;
 	color:#666;
 	position:absolute;
-	left:7px;
+	left:12px;
 	top:10px;
 }
 .jqcontextmenu .edit::before {content:"\f303";}
@@ -50,7 +52,7 @@
 .jqcontextmenu .cut::before {content:"\f0c4";}
 .jqcontextmenu .paste::before {content:"\f0ea";}
 .jqcontextmenu .zip::before {content:"\f1c6";}
-.jqcontextmenu .unzip::before {content:"\f1c6"; font:var(--fa-font-regular); font-size:12px;}
+.jqcontextmenu .unzip::before {content:"\f1c6"; font:var(--fa-font-regular); font-size:110%;}
 .jqcontextmenu .diff_file::before {content:"\f53e";}
 .jqcontextmenu .add_table::before {content:"\f0db";}
 .jqcontextmenu .db_dump::before {content:"\f093";}
@@ -86,7 +88,7 @@
 .jqcontextmenu .service_function::before {content:"\e13b"; -webkit-transform:scaleY(-1); transform:scaleY(-1);}
 .jqcontextmenu .hbnt_obj::before {content:"\f0fd"; color:#999;}
 .jqcontextmenu .hbnt_obj::after {content:"\f304";}
-.jqcontextmenu .objt_obj::before {content:"\f174"; color:#999; font:var(--fa-font-brands); font-size:16px;}
+.jqcontextmenu .objt_obj::before {content:"\f174"; color:#999; font:var(--fa-font-brands); font-size:120%;}
 .jqcontextmenu .objt_obj::after {content:"\f304";}
 .jqcontextmenu .edit_project_global_variables::before {content:"\f0ac"; color:#999;}
 .jqcontextmenu .edit_project_global_variables::after {content:"\f304";}
@@ -98,10 +100,10 @@
 .jqcontextmenu .test_project::before {content:"\f06e";}
 .jqcontextmenu .add_project::before {content:"\f65e";}
 .jqcontextmenu .manage_modules::before {content:"\f61f";}
-.jqcontextmenu .manage_wordpress::before {content:"\f19a"; font:var(--fa-font-brands); font-size:16px;}
+.jqcontextmenu .manage_wordpress::before {content:"\f19a"; font:var(--fa-font-brands); font-size:120%;}
 .jqcontextmenu .install_program::before {content:"\f51f";}
-.jqcontextmenu .install_template::before {content:"\f13b"; font:var(--fa-font-brands); font-size:16px;}
-.jqcontextmenu .convert_template::before {content:"\f13b"; font:var(--fa-font-brands); font-size:16px;}
+.jqcontextmenu .install_template::before {content:"\f13b"; font:var(--fa-font-brands); font-size:120%;}
+.jqcontextmenu .convert_template::before {content:"\f13b"; font:var(--fa-font-brands); font-size:120%;}
 .jqcontextmenu .test_unit_obj::before {content:"\f0ae"; color:#aaa;}
 .jqcontextmenu .test_unit_obj::after {content:"\2b"; margin-left:7px;}
 .jqcontextmenu .manage_test_units::before {content:"\f0ae";}
@@ -113,6 +115,7 @@
 
 .choose_available_tool_popup,
   .choose_available_project_popup,
+  .choose_available_tutorial_popup,
   .go_to_popup {
 	top:10px;
 	left:10px;
@@ -121,6 +124,7 @@
 }
 .choose_available_tool_popup iframe,
   .choose_available_project_popup iframe,
+  .choose_available_tutorial_popup iframe,
   .go_to_popup iframe {
 	width:100%;
 	height:100%;

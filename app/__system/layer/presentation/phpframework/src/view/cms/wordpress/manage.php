@@ -36,7 +36,7 @@ $head = '
 		<div class="title">Manage WordPress</div>
 	</header>
 </div>
-<div class="manage_wordpress">
+<div class="manage_wordpress with_top_bar_section">
 	<form method="post">'; if (is_array($projects)) { $main_content .= '
 		<div class="project">
 			<label>Please choose a Project:</label>

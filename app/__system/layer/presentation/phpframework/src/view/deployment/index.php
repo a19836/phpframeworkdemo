@@ -99,12 +99,11 @@ var wordpress_installations_relative_path = "' . $EVC->getCommonProjectName() . 
 					
 					if (!main_layers_properties.' . $l[2] . '.ui.project.attributes.hasOwnProperty("file_path"))
 						main_layers_properties.' . $l[2] . '.ui.project.attributes.file_path = "#path#";'; $head .= '
-				}'; } } $head .= '</script>'; $menus = array( "Flush Cache" => array( "class" => "flush_cache", "html" => '<a onClick="return flushCache();"><i class="icon flush_cache"></i> Flush Cache</a>', ), "Empty Diagram" => array( "class" => "empty_diagram", "html" => '<a onClick="emptyDiagam();return false;"><i class="icon empty_diagram"></i> Empty Diagram</a>', ), "Add new Server" => array( "class" => "add_new_server", "html" => '<a onClick="addNewServer();return false;"><i class="icon add"></i> Add new Server</a>', ), "Save" => array( "class" => "save", "html" => '<a onClick="return saveDeploymentDiagram();"><i class="icon save"></i> Save</a>', ), ); $WorkFlowUIHandler->setMenus($menus); $main_content = '
+				}'; } } $head .= '</script>'; $menus = array( "Flush Cache" => array( "class" => "flush_cache", "html" => '<a onClick="return flushCache();"><i class="icon flush_cache"></i> Flush Cache</a>', ), "Empty Diagram" => array( "class" => "empty_diagram", "html" => '<a onClick="emptyDiagam();return false;"><i class="icon empty_diagram"></i> Empty Diagram</a>', ), 0 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Add new Server" => array( "class" => "add_new_server", "html" => '<a onClick="addNewServer();return false;"><i class="icon add"></i> Add new Server</a>', ), 1 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Maximize/Minimize Editor Screen" => array( "class" => "tasks_flow_full_screen", "html" => '<a onClick="toggleFullScreen(this);return false;"><i class="icon full_screen"></i> Maximize Editor Screen</a>', ), 2 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Save" => array( "class" => "save", "html" => '<a onClick="return saveDeploymentDiagram();"><i class="icon save"></i> Save</a>', ), ); $WorkFlowUIHandler->setMenus($menus); $main_content = '
 	<div class="top_bar">
 		<header>
 			<div class="title">Deployment</div>
 			<ul>
-				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save"><a onClick="saveDeploymentDiagram()"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>
@@ -123,7 +122,7 @@ var wordpress_installations_relative_path = "' . $EVC->getCommonProjectName() . 
 			</li>
 		</ul>
 		<div class="button">
-			<input type="button" value="UPDATE" onClick="MyDeploymentUIFancyPopup.settings.updateFunction(this)" />
+			<input type="button" value="Update" onClick="MyDeploymentUIFancyPopup.settings.updateFunction(this)" />
 		</div>
 	</div>'; $main_content .= '
 	<div id="choose_test_units_from_file_manager" class="myfancypopup choose_from_file_manager">
@@ -134,6 +133,6 @@ var wordpress_installations_relative_path = "' . $EVC->getCommonProjectName() . 
 			</li>
 		</ul>
 		<div class="button">
-			<input type="button" value="UPDATE" onClick="MyDeploymentUIFancyPopup.settings.updateFunction(this)" />
+			<input type="button" value="Update" onClick="MyDeploymentUIFancyPopup.settings.updateFunction(this)" />
 		</div>
 	</div>'; $main_content .= $WorkFlowUIHandler->getContent(); $main_content .= '<div class="loading_panel"></div>'; function getTemplateWorklowHtml($v8685d1ca97, $peb014cfd) { $v243e50bc1d = array( "Set Global Vars" => array( "class" => "set_global_vars", "html" => '<a onClick="return ServerTaskPropertyObj.openTemplateGlobalVarsOrSettingsPopup(this, \'' . $peb014cfd . 'phpframework/layer/list_global_vars\');"><i class="icon global_vars"></i> Globar Vars</a>', ), "Set Global Settings" => array( "class" => "set_global_settings", "html" => '<a onClick="return ServerTaskPropertyObj.openTemplateGlobalVarsOrSettingsPopup(this, \'' . $peb014cfd . 'phpframework/layer/list_global_settings\');"><i class="icon global_settings"></i> Global Settings</a>', ), ); $v8685d1ca97->setMenus($v243e50bc1d); $pf8ed4912 = $v8685d1ca97->getContent("taskflowchart_#rand#"); return $pf8ed4912; } ?>

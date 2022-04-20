@@ -1,12 +1,6 @@
-/* TOP BAR */
-.top_bar {
-	margin-bottom:20px;
-}
-
 /* WORDPRESS */
 .manage_wordpress {
-	width:400px;
-	margin:0 auto;
+	min-width:400px;
 }
 .manage_wordpress .project,
   .manage_wordpress .db_driver {

@@ -11,6 +11,10 @@ body {
 	margin: 0;
 	height:100%;
 }
+body,
+  #main_column {
+	background:#fff !important;
+}
 
 input, select, textarea {
 	color:#555555;
@@ -21,9 +25,8 @@ input, select, textarea {
 	margin:100px;
 }
 .main_content .homepage h1 {
-	font-size:26px;
+	font-size:16px;
 	text-align:center;
-	font-weight:bold;
 }
 .main_content .content {
 	margin-top:30px;
@@ -45,45 +48,49 @@ input, select, textarea {
 	z-index:1500;
 	padding: 0px;
 	
-	border-top:2px solid #ff0000;
+	background:#DFE1ED;
+	/*background: linear-gradient(to bottom, #f7f7f7 0%, #eee 95%, #ffffff73 100%);*/
+	/*border-top:2px solid #ff0000;
 	background: -moz-linear-gradient(top, #eee 50%, #ffffff73 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #ffffff73));
 	background: -webkit-linear-gradient(top, #eee 50%, #ffffff73 100%);
 	background: -o-linear-gradient(top, #eee 50%, #ffffff73 100%);
 	background: -ms-linear-gradient(top, #eee 50%, #ffffff73 100%);
-	background: linear-gradient(to bottom, #eee 50%, #ffffff73 100%);
+	background: linear-gradient(to bottom, #eee 50%, #ffffff73 100%);*/
 }
 .main_content .menu ul.dropdown li {
 	background:none;
 	padding:4px 8px;
+	font-weight:normal;
 }
 .main_content .menu ul.dropdown li a {
 	font-size:10px;
 	vertical-align:middle;
 }
 .main_content .menu ul.dropdown li ul {
-	background:#eee;
+	background:#DFE1ED;
 	min-width:150px;
 }
 .main_content .menu ul.dropdown li.large ul {
 	min-width:250px;
 }
 .main_content .menu ul.dropdown li ul li:hover {
-	background:#ddd;
+	background:rgba(0, 0, 0, .1);
 }
 .main_content .menu ul.dropdown li ul li.highlight {
 	border-top:1px inset #FFF;
-	background:#ddd;
+	background:rgba(0, 0, 0, .1);
 }
 .main_content .menu ul.dropdown li ul li.highlight:hover {
-	background:#ccc;
+	background:rgba(0, 0, 0, .2);
 }
 
 .main_content .menu ul.dropdown li.other_modules {
 	float:right;
 }
 .main_content .menu ul.dropdown li.other_modules ul {
-	margin-left:-50px;
+	left:auto;
+	right:0;
 }
 .main_content .menu ul.dropdown li.other_modules ul li {
 	text-align:right;
@@ -106,8 +113,7 @@ input, select, textarea {
 	text-align:center;
 	margin-top:20px;
 	margin-bottom:10px;
-	font-size:20px;
-	font-weight:bold;
+	font-size:15px;
 }
 
 /* MESSAGES */
@@ -231,6 +237,7 @@ input, select, textarea {
 	margin:0 auto;
 	float:none;
 	clear:both;
+	font-size:8pt;
 }
 .module_edit a {
 	color:#999;
@@ -285,6 +292,9 @@ input, select, textarea {
 	margin:0 10px;
 	display:inline-block;
 }
+.module_edit .buttons .submit_button input {
+	font-size:inherit;
+}
 /*.module_edit .buttons {
 	width:auto;
 	min-height:20px;
@@ -317,6 +327,7 @@ input, select, textarea {
 .module_list {
 	float:none;
 	clear:both;
+	font-size:8pt;
 }
 .module_list td.created_date {
 	width:130px;

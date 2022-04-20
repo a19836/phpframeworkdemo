@@ -19,14 +19,22 @@
  */
 
 $head = '
+<!-- Add Layout CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
+
 <!-- Add Local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/module_admin.css" type="text/css" charset="utf-8" />
-'; $main_content = '<div class="title">"' . ucwords($group_module_id) . '" Module Admin Panel</div>
+'; $main_content = '
+<div class="top_bar">
+	<header>
+		<div class="title">"' . ucwords($group_module_id) . '" Module Admin Panel</div>
+	</header>
+</div>
 <div class="module_admin">
 	<label>Please choose a project:</label>
 	
 	<form method="post">
-		<select name="project">'; if ($projects) { foreach ($projects as $project_name => $project) { if ($project["item_type"] != "project_common") $main_content .= '<option value="' . $project_name . '">' . strtoupper($project_name) . '</option>'; } } $main_content .= '</select>
+		<select name="project">'; if ($projects) { foreach ($projects as $project_name => $project) { if ($project["item_type"] != "project_common") $main_content .= '<option value="' . $project_name . '">' . $project_name . '</option>'; } } $main_content .= '</select>
 		
 		<input class="button" type="submit" value="Go to Module Admin Panel" name="submit">
 	</form>

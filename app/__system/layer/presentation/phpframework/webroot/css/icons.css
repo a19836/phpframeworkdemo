@@ -98,11 +98,15 @@
 
 /* SOME DEFAULT ICONS */
 
+.icon.question::before {
+	content:"\f059";
+}
 .icon.logout::before {
 	content:"\f2f5";
 }
 .icon.search::before {
 	content:"\f002";
+	margin-left:1px;
 }
 .icon.search_page {
 	margin-right:5px;
@@ -232,8 +236,12 @@
 .icon.sort::before {
 	content:"\f884";
 }
+.icon.go_back {
+	width:5px;
+}
 .icon.go_back::before {
-	content:"\f55a";
+	/*content:"\f55a";*/
+	content:"\f053";
 }
 .icon.home::before {
 	content:"\f015";
@@ -510,28 +518,29 @@
 	content:"\f121";
 }
 .icon.code_editor_tab::after {
-	content:"\f303";
+	/*content:"\f303";*/
 }
 .icon.tasks_flow_tab::before {
 	content:"\f126";
 	-webkit-transform:rotate(180deg);
 	transform:rotate(180deg);
 	position:absolute;
+	margin-left:2px;
 }
 .icon.tasks_flow_tab::after {
-	content:"\f303";
+	/*content:"\f303";*/
 }
 .icon.visual_editor_tab::before {
 	content:"\f53f";
 }
 .icon.visual_editor_tab::after {
-	content:"\f1fc";
+	/*content:"\f1fc";*/
 }
 .icon.form_global_vars_tab::before {
 	content:"\f0ac";
 }
 .icon.form_global_vars_tab::after {
-	content:"\f303";
+	/*content:"\f303";*/
 }
 .icon.view_tab::before {
 	content:"\f03e";

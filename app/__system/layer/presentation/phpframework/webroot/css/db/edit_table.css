@@ -8,7 +8,8 @@
 	text-align:center;
 }
 .edit_table > h3 {
-	background:#eee;
+	background:var(--main-template-bg);
+	color:var(--main-template-color);
 	border:0;
 	border-radius:0;
 }
@@ -247,6 +248,9 @@
 	padding-top:20px;
 	text-align:center !important;
 }
+.save_button input {
+	font-size:8pt;
+}
 .save_button input.delete {
 	margin-left:20px;
 	/*background:red;
@@ -257,6 +261,11 @@
 }
 .save_button input.back {
 	/*background:#ccc;*/
+}
+
+/* BUTTONS */
+.buttons input {
+	font-size:8pt;
 }
 
 /* ERROR */

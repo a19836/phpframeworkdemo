@@ -1,3 +1,8 @@
+body,
+  #main_column {
+	background:#fff !important;
+}
+
 /* TOP BAR */
 .top_bar {
 	margin-bottom:20px;
@@ -24,13 +29,13 @@
 	text-align:right;
 	z-index:1;
 	
-	background-color:#eee;
-	background: -moz-linear-gradient(right, #eee 97%, #ffffff73 100%);
-	background: -webkit-gradient(linear, right top, right bottom, color-stop(97%, #eee), color-stop(100%, #ffffff73));
-	background: -webkit-linear-gradient(right, #eee 97%, #ffffff73 100%);
-	background: -o-linear-gradient(right, #eee 97%, #ffffff73 100%);
-	background: -ms-linear-gradient(right, #eee 97%, #ffffff73 100%);
-	background: linear-gradient(to left, #eee 97%, #ffffff73 100%);
+	background-color:#DFE1ED;
+	background: -moz-linear-gradient(right, #DFE1ED 97%, #ffffff73 100%);
+	background: -webkit-gradient(linear, right top, right bottom, color-stop(97%, #DFE1ED), color-stop(100%, #ffffff73));
+	background: -webkit-linear-gradient(right, #DFE1ED 97%, #ffffff73 100%);
+	background: -o-linear-gradient(right, #DFE1ED 97%, #ffffff73 100%);
+	background: -ms-linear-gradient(right, #DFE1ED 97%, #ffffff73 100%);
+	background: linear-gradient(to left, #DFE1ED 97%, #ffffff73 100%);
 }
 #menu ul {
 	/*border-top:1px dashed #FFF;*/
@@ -57,7 +62,8 @@
 	color:#999;
 	font-size:90%;
 	
-	background: linear-gradient(to bottom, #f7f7f7 0%, #eee 95%, #ffffff73 100%);
+	background:#DFE1ED;
+	/*background: linear-gradient(to bottom, #f7f7f7 0%, #DFE1ED 95%, #ffffff73 100%);*/
 }
 #menu li.manage_menu_item {
 	border-top:1px dashed #FFF;
@@ -122,22 +128,22 @@
 #content table .buttons .update {}
 
 #content div.user_type { width:310px; margin:0 auto 20px auto; float:none; clear:left;}
-#content div.user_type label { display:block; float:left; width:100px; }
-#content div.user_type select { width:200px; text-align:center; }
+#content div.user_type label { display:inline-block; width:100px; }
+#content div.user_type select { width:200px; text-align:center; font-size:inherit; }
 
 #content div.layout_type { width:430px; margin:0 auto 20px auto; float:none; clear:left;}
-#content div.layout_type label { display:block; float:left; width:100px; }
-#content div.layout_type select[name=type_id] { width:110px; }
-#content div.layout_type select[name=layout_type_id] { width:200px; }
+#content div.layout_type label { display:inline-block; width:100px; }
+#content div.layout_type select[name=type_id] { width:110px; font-size:inherit; }
+#content div.layout_type select[name=layout_type_id] { width:200px; font-size:inherit; }
 
 #content .edit_layout_type div.type { height:auto; }
 #content .edit_layout_type div.type select[name=choose_project] { width:205px; margin-top:5px; margin-left:80px; background:#fff; color:#999; }
 
 #content .form_fields { width:310px; margin:0 auto; }
-#content .form_fields .form_field { float:none; clear:left; height:20px; margin-bottom:7px; }
-#content .form_fields .form_field label { width:80px; display:block; float:left; font-weight:normal; }
-#content .form_fields .form_field input { width:200px; }
-#content .form_fields .form_field select { width:205px; }
+#content .form_fields .form_field { float:none; clear:left; margin-bottom:7px; }
+#content .form_fields .form_field label { width:80px; display:inline-block; font-weight:normal; }
+#content .form_fields .form_field input { width:200px; font-size:inherit; }
+#content .form_fields .form_field select { width:205px; font-size:inherit; }
 #content .buttons { width:150px; height:20px; margin:15px auto 20px auto; float:none; clear:left; }
 #content .buttons .submit_button { float:left; width:70px; text-align:center; }
 #content .buttons .submit_button input { font-size:10px; font-weight:bold; height:20px; line-height:15px; }

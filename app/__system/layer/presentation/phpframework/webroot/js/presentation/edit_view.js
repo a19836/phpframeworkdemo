@@ -91,6 +91,10 @@ $(function () {
 			save_func: saveView, 
 			ready_func: function() {
 				var luie = view_obj.find("#code > .layout_ui_editor");
+				var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
+				
+				if (PtlLayoutUIEditor)
+					PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorWithRightContainer;
 				
 				//show view layout panel instead of code
 				var view_layout = luie.find(" > .tabs > .view-layout");
@@ -109,9 +113,11 @@ $(function () {
 				//add auto_save and auto_convert options to layout ui editor
 				var sub_menu = $('<i class="icon sub_menu option"><ul></ul></i>');
 				$("#code > .layout_ui_editor > .options .full-screen").before(sub_menu);
+				var lue_full_screen_icon = $("#code > .code_menu li.editor_full_screen").first().clone().removeClass("hidden").addClass("without_padding");
+				var lue_save_icon = $("#code > .code_menu li.save").first().clone().removeClass("hidden").addClass("without_padding");
 				var lue_auto_save_icon = $("#code > .code_menu li.auto_save_activation").first().clone().removeClass("hidden");
 				var lue_auto_convert_icon = $("#code > .code_menu li.auto_convert_activation").first().clone().removeClass("hidden");
-				sub_menu.children("ul").append(lue_auto_save_icon).append(lue_auto_convert_icon);
+				sub_menu.children("ul").append(lue_full_screen_icon).append('<li class="separator"></li>').append(lue_auto_save_icon).append(lue_auto_convert_icon).append(lue_save_icon);
 				
 				if (!luie.find(" > .tabs > .tab.tab-active").is(".view-layout"))
 					sub_menu.addClass("hidden"); //bc the LayoutUIEditor is not inited at start, we need to hide this new icon. The others are already hidden by default.

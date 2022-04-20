@@ -14,18 +14,19 @@
 	right:0;
 	bottom:0;
 	overflow:auto;*/
+	padding:0;
 }
 .code_area .ace_editor, .code_area textarea {
-	height:400px;
-	min-height:calc(100vh - 35px);
+	height:calc(100vh - 50px);
 	width:100%;
 	border-bottom:3px inset #CCC;
 	margin:0;
+	overflow-y:auto;
 }
 .code_area textarea {
 	position:fixed !important; /* 2021-02-08 JP: this is very important bc is fixing the problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.*/
 }
-.code_area .ace_scrollbar {
+/*.code_area .ace_scrollbar {
     -webkit-transition: opacity .3s ease-in-out;
        -moz-transition: opacity .3s ease-in-out;
         -ms-transition: opacity .3s ease-in-out;
@@ -35,13 +36,17 @@
 }
 .code_area .ace_editor .ace_scrollbar:hover {
     opacity: 1;
-}
+}*/
 .code_area .ace_editor .ace_search {
 	position:fixed; /* must be position fiuxedotherwise when we search for something the search popup will disappear. */
 	top:33px;
 }
 .code_area .ace_editor .ace_search .ace_search_field {
 	background-color:#fff;
+}
+#ace_settingsmenu, #kbshortcutmenu {
+	height:calc(100vh - 70px);
+	margin-top:35px !important;
 }
 
 .error {

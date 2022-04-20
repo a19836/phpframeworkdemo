@@ -1,9 +1,5 @@
-/* TOP BAR */
-.top_bar {
-	margin-bottom:20px;
-}
 .top_bar .title {
-	width:625px !important;
+	width:560px !important;
 }
 .top_bar .title .export_type {
 	width:225px;
@@ -31,8 +27,11 @@
 	width:150px;
   	position:absolute;
   	top:5px;
-  	left:445px;
+  	left:418px;
   	z-index:9999;
   	border:1px solid #ccc;
   	background:transparent;
+}
+.relationship .settings {
+	display:none;
 }

@@ -26,7 +26,7 @@ include_once get_lib("org.phpframework.phpscript.PHPCodePrintingHandler"); inclu
 				</li>
 			</ul>
 			<div class="button">
-				<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+				<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 			</div>
 		</div>'; return $pf8ed4912; } public static function getUseHTML($v1578057dc9 = false, $v7c3c74d27f = false) { return '
 			<div class="use">

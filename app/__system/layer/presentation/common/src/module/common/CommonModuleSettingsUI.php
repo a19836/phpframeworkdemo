@@ -60,7 +60,7 @@ class CommonModuleSettingsUI {
 		
 			<div id="els_ptl" class="ptl">
 				<!-- LAYOUT UI EDITOR -->
-				<div class="layout_ui_editor els_ui reverse fixed_properties">
+				<div class="layout_ui_editor els_ui reverse fixed_side_properties">
 					<ul class="menu-widgets hidden">
 						' . self::getLayoutUIEditorMenuWidgetsHtml($settings) . '
 					</ul>

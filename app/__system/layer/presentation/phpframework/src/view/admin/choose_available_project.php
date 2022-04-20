@@ -34,7 +34,7 @@ $(function () {
 });
 </script>'; $main_content = '
 <div class="choose_available_project block_view' . (count($layers_projects) == 1 ? ' single_presentation_layer' : '') . ($projects_exists ? '' : ' no_projects') . '">
-	<div class="title">Choose a Project</div>'; if ($selected_layout_project) $main_content .= '
+	<div class="title' . ($popup ? " inside_popup_title" : "") . '">Choose a Project</div>'; if ($selected_layout_project) $main_content .= '
 		<div class="selected_project">Your current selected project is: "<a href="' . $admin_home_project_page_url . '">' . $selected_layout_project . '</a>".</div>'; if ($layers_projects) { $main_content .= '
 		<div class="layer">
 			<label>Presentation Layer:</label>

@@ -1,13 +1,10 @@
 /* TOP BAR */
-.edit_relationship > .top_bar {
-	margin-bottom:15px;
-}
 .edit_relationship > .top_bar .title .query_type {
 	width:120px;
 	display:inline-block;
 }
 .edit_relationship > .top_bar .title .query_name {
-	width:200px;
+	width:210px;
 	display:inline-block;
 }
 .edit_relationship > .top_bar li.sub_menu > ul {
@@ -19,7 +16,7 @@
 
 /* RELATIONSHIP */
 .edit_relationship .data_access_obj {
-	width:100%;
+	
 }
 .edit_relationship .data_access_obj.with_parameter_and_result_fields {
 	
@@ -37,7 +34,7 @@
 	margin:0;
 	position:fixed;
 	top:5px;
-	left:35px;
+	left:40px;
 	z-index:1503;
 }
 .edit_relationship .relationship .rel_type label {
@@ -54,7 +51,7 @@
 	margin:0;
 	position:fixed;
 	top:5px;
-	left:243px;
+	left:230px;
 	z-index:1503;
 }
 .edit_relationship .relationship .rel_name label {

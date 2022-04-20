@@ -28,13 +28,13 @@
 	font-size:11px;
 	cursor:pointer;
 }
-.choose_available_template_popup.with_title > .install_template {
+.choose_available_template_popup.with_title > .choose_different_editor {
 	left:auto;
-	right:230px;
+	right:175px;
 }
-.choose_available_template_popup.with_title > .install_template:not(:hover) {
+.choose_available_template_popup.with_title > .choose_different_editor:not(:hover) {
 	background-color:#fff;
-	border:1px solid #FAB12B;
+	border:1px solid var(--icon-folder-color);
 }
 .choose_available_template_popup > .choose_different_editor .icon {
 	color:inherit;
@@ -90,7 +90,7 @@
 	right:10px;
 	font-weight:bold;
 	font-size:11px;
-	color:#FAB12B;
+	color:var(--icon-folder-color);
 	cursor:pointer;
 }
 .choose_available_template_popup > .content .back:hover {
@@ -111,6 +111,9 @@
 .choose_available_template_popup > .content .current_template_folder .icon,
   .choose_available_template_popup > .content .current_template_folder .path_parts {
 	cursor:pointer;
+}
+.choose_available_template_popup > .content .current_template_folder .icon::before {
+	color:var(--icon-folder-color);
 }
 .choose_available_template_popup > .content .current_template_folder .icon:hover::before,
   .choose_available_template_popup > .content .current_template_folder .path_parts:hover {
@@ -347,7 +350,7 @@
 }
 .choose_available_template_popup > .content li.folder > .photo::before {
 	content:"\f07c";
-	color:#FAB12B;
+	color:var(--icon-folder-color);
 }
 .choose_available_template_popup > .content li.project {
 	padding-top:15px;

@@ -26,7 +26,7 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); $head = AdminMenuUIHandler
 <script>
 var is_popup = ' . ($popup ? 1 : 0) . ';
 </script>'; $main_content = '<div class="choose_available_tool">
-	<div class="title">Tools</div>
+	<div class="title' . ($popup ? " inside_popup_title" : "") . '">Tools</div>
 	<ul>
 		' . ($is_switch_admin_ui_allowed ? '<li class="switch_admin_ui" onClick="return goTo(\'' . $project_url_prefix . 'admin/admin_uis\', event, 1)">
 			<label>Switch Workspace</label>

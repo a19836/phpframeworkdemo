@@ -39,7 +39,7 @@ $head = '
 			</ul>
 		</header>
 	</div>'; if ($_POST && $error_messsage) $main_content .= '<div class="error">' . $error_messsage . '</div>'; $main_content .= '	
-	<form method="post">
+	<form class="with_top_bar_section" method="post">
 		<div class="tables">
 			<label>Select the tables you wish to dump:</label>
 			<div class="select_buttons">

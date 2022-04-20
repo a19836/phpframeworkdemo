@@ -140,7 +140,6 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); $filter_by_layout_ur
 			<div class="title">Presentation UIs Diagram in \'' . $path . '\'</div>
 			<ul>
 				<li class="create_ui_files" title="Create UI Files"><a onClick="createUIFiles(this)"><i class="icon create_ui_files"></i> Create UI Files</a></li>
-				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save"><a onClick="saveUIsDiagramFlow()"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>
@@ -153,7 +152,7 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); $filter_by_layout_ur
 				</li>
 			</ul>
 			<div class="button">
-				<input type="button" value="UPDATE" onClick="MyDiagramUIFancyPopup.settings.updateFunction(this)" />
+				<input type="button" value="Update" onClick="MyDiagramUIFancyPopup.settings.updateFunction(this)" />
 			</div>
 		</div>
 		
@@ -165,7 +164,7 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); $filter_by_layout_ur
 				</li>
 			</ul>
 			<div class="button">
-				<input type="button" value="UPDATE" onClick="MyDiagramUIFancyPopup.settings.updateFunction(this)" />
+				<input type="button" value="Update" onClick="MyDiagramUIFancyPopup.settings.updateFunction(this)" />
 			</div>
 		</div>
 		
@@ -327,7 +326,7 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); $filter_by_layout_ur
 					<input type="button" value="Close" onClick="goToStepAutomaticCreation(this, 6)" />
 				</div>
 			</div>
-		</div>'; $menus = array( "Flush Cache" => array( "class" => "flush_cache", "html" => '<a onClick="return flushCache();"><i class="icon flush_cache"></i> Flush Cache</a>', ), "Empty Diagram" => array( "class" => "empty_diagram", "html" => '<a onClick="emptyDiagam();return false;"><i class="icon empty_diagram"></i> Empty Diagram</a>', ), "Create UI Files" => array( "class" => "create_ui_files", "html" => '<a onClick="createUIFiles();return false;"><i class="icon create_ui_files"></i> Create UI Files</a>', ), "Load New Files" => array( "class" => "load_new_existent_files", "html" => '<a onClick="loadNewExistentFiles();return false;"><i class="icon load_new_existent_files"></i> Load New Files</a>', ), "Save" => array( "class" => "save", "html" => '<a onClick="saveUIsDiagramFlow();return false;"><i class="icon save"></i> Save</a>', ), ); $WorkFlowUIHandler->setMenus($menus); $main_content .= $WorkFlowUIHandler->getContent(); $main_content .= '
+		</div>'; $menus = array( "Flush Cache" => array( "class" => "flush_cache", "html" => '<a onClick="return flushCache();"><i class="icon flush_cache"></i> Flush Cache</a>', ), "Empty Diagram" => array( "class" => "empty_diagram", "html" => '<a onClick="emptyDiagam();return false;"><i class="icon empty_diagram"></i> Empty Diagram</a>', ), 0 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Create UI Files" => array( "class" => "create_ui_files", "html" => '<a onClick="createUIFiles();return false;"><i class="icon create_ui_files"></i> Create UI Files</a>', ), "Load New Files" => array( "class" => "load_new_existent_files", "html" => '<a onClick="loadNewExistentFiles();return false;"><i class="icon load_new_existent_files"></i> Load New Files</a>', ), 1 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Maximize/Minimize Editor Screen" => array( "class" => "tasks_flow_full_screen", "html" => '<a onClick="toggleFullScreen(this);return false;"><i class="icon full_screen"></i> Maximize Editor Screen</a>', ), 2 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Save" => array( "class" => "save", "html" => '<a onClick="saveUIsDiagramFlow();return false;"><i class="icon save"></i> Save</a>', ), ); $WorkFlowUIHandler->setMenus($menus); $main_content .= $WorkFlowUIHandler->getContent(); $main_content .= '
 	<div class="confirm_save hidden">
 		<div class="title">Please confirm if the code is correct and if it is, click on the checked button...</div>
 		
@@ -343,8 +342,8 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); $filter_by_layout_ur
 		</div>
 		
 		<div class="buttons">
-			<input type="button" name="cancel" value="CANCEL" onClick="cancelCheckedFileCode();" />
-			<input type="button" name="save" value="CHECKED" onClick="validateCheckedFileCode();" />
+			<input type="button" name="cancel" value="Cancel" onClick="cancelCheckedFileCode();" />
+			<input type="button" name="save" value="Checked" onClick="validateCheckedFileCode();" />
 		</div>
 		
 		<div class="disable_auto_scroll" onClick="enableDisableAutoScroll(this);">Click here to disable auto scroll.</div>

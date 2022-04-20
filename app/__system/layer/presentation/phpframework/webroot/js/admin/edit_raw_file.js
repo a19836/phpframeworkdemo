@@ -51,11 +51,11 @@ $(function () {
 		editor.setTheme("ace/theme/chrome");
 		editor.session.setMode("ace/mode/" + editor_code_type);
 		editor.setAutoScrollEditorIntoView(true);
-		editor.setOption("maxLines", "Infinity");
+		//editor.setOption("maxLines", "Infinity");
 		editor.setOption("minLines", 30);
 		editor.setOption("wrap", true);
 		editor.setOptions(options);
-		editor.$blockScrolling = "Infinity";
+		//editor.$blockScrolling = "Infinity";
 		
 		if (readonly)
 			editor.renderer.$cursorLayer.element.style.opacity = 0

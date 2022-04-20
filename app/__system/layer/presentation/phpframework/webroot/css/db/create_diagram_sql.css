@@ -10,6 +10,7 @@
 	min-height:400px;
 	width:100%;
 	margin:0;
+	font-size:8pt;
 }
 
 .create_diagram_sql .status_ok, .status_error {

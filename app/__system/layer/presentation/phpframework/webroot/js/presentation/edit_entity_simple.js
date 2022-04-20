@@ -14,7 +14,7 @@ $(function () {
 	});
 	
 	//init auto save
-	addAutoSaveMenu(".top_bar li.dummy_elm_to_add_auto_save_options");
+	addAutoSaveMenu(".top_bar li.sub_menu li.save");
 	enableAutoSave(onToggleAutoSave); //only for testing
 	initAutoSave(".top_bar li.save a");
 	
@@ -139,12 +139,14 @@ function onChangeTemplateGenre(elm) {
 	var is_external_template = elm.val() ? true : false;
 	var p = elm.parent();
 	var entity_obj = p.parent();
+	var top_bar = $(".top_bar");
 	var select = p.children("select[name=template]");
 	var external_template_params = entity_obj.children(".external_template_params");
 	var template_value = null;
 	
 	if (!is_external_template) {
 		entity_obj.removeClass("is_external_template");
+		top_bar.removeClass("is_external_template");
 		template_value = select.val();
 		
 		select.show();
@@ -155,6 +157,7 @@ function onChangeTemplateGenre(elm) {
 	}
 	else {
 		entity_obj.addClass("is_external_template");
+		top_bar.addClass("is_external_template");
 		select.hide();
 		external_template_params.show();
 		

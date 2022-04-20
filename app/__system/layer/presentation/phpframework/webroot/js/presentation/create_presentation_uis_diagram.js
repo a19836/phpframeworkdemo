@@ -26,6 +26,8 @@ $(function () {
 	enableAutoSave(onToggleWorkflowAutoSave);
 	initAutoSave(".taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.save a");
 	
+	$(".taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.auto_save_activation").addClass("with_padding");
+	
 	//init workflow
 	jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_connector = "Straight";
 	jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_overlay = "Forward Arrow";

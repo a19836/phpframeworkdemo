@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include $EVC->getUtilPath("WorkFlowUIHandler"); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $get_layer_sub_files_url = $project_url_prefix . "admin/get_sub_files?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=#path#"; $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $WorkFlowQueryHandler = new WorkFlowQueryHandler($WorkFlowUIHandler, $project_url_prefix, $project_common_url_prefix, $db_drivers, $selected_db_broker, $selected_db_driver, $selected_type, $selected_table, $selected_tables_name, $selected_table_attrs, $map_php_types, $map_db_types); $head = $WorkFlowUIHandler->getHeader(); $head .= LayoutTypeProjectUIHandler::getHeader(); $head .= '
+include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $get_layer_sub_files_url = $project_url_prefix . "admin/get_sub_files?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=#path#"; $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $WorkFlowQueryHandler = new WorkFlowQueryHandler($WorkFlowUIHandler, $project_url_prefix, $project_common_url_prefix, $db_drivers, $selected_db_broker, $selected_db_driver, $selected_type, $selected_table, $selected_tables_name, $selected_table_attrs, $map_php_types, $map_db_types); $head = $WorkFlowUIHandler->getHeader(); $head .= LayoutTypeProjectUIHandler::getHeader(); $head .= '
 <!-- Add MyTree main JS and CSS files -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerymytree/css/style.min.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerymytree/js/mytree.js"></script>
@@ -53,30 +53,34 @@ var is_covertable_sql = ' . ($is_covertable_sql ? 1 : 0) . ';
 	<div class="top_bar">
 		<header>
 			<div class="title">
-				' . ($query_id ? "Edit" : "Add") . ' <span class="query_type"></span> SQL Query: <span class="query_name"></span>
-				<input class="is_convertable_sql" type="checkbox" title="Is SQL convertable"' . ($is_covertable_sql ? " checked" : "") . ' onChange="onChangeIsConvertableSQL(this)" previous_auto_convert="1" />
+				' . ($query_id ? "Edit" : "Add") . ' <span class="query_type"></span> SQL Query: <span class="query_name"></span> in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($is_hbn_obj_equal_to_file_name ? dirname($file_path) . "/$hbn_obj_id" : $file_path, $obj, $is_hbn_obj_equal_to_file_name) . '
 			</div>
 			<ul>
-				<li class="full_screen" title="Toggle Full Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Full Screen</a></li>
 				<li class="save" title="Save Query"><a onClick="saveQueryObject(onSuccessSingleQuerySave)"><i class="icon save"></i> Save</a></li>
 				<li class="sub_menu">
 					<i class="icon sub_menu"></i>
 					<ul>
 						<li class="add_new_table select_query" title="Add new Table"><a onclick="return addNewTask(' . $rand . ');"><i class="icon add"></i> Add Table</a></li>
 						<li class="update_tables_attributes select_query" title="Update Tables\' Attributes"><a onclick="return updateQueryDBBroker(' . $rand . ', false);"><i class="icon update_tables_attributes"></i> Update Tables\' Attributes</a></li>
-						<li class="toggle_ui select_query" title="Toggle Query Diagram"><a class="toggle_icon active" onclick="return showOrHideSingleQueryUI(this, ' . $rand . ');"><i class="icon toggle_ui"></i> Toggle Query Diagram</a></li>
-						<li class="toggle_settings select_query" title="Toggle Query Settings"><a class="toggle_icon active" onclick="return showOrHideSingleQuerySettings(this, ' . $rand . ');"><i class="icon toggle_settings"></i> Toggle Query Settings</a></li>
-						
+						<li class="separator"></li>
+						<li class="is_convertable_sql" title="Is SQL convertable"><a onClick="onChangeIsConvertableSQL(this)" previous_auto_convert="1"><i class="icon toggle_ids"></i> Is SQL convertable <input type="checkbox"' . ($is_covertable_sql ? " checked" : "") . '/></a></li>
+						<li class="separator"></li>
+						<li class="toggle_ui select_query" title="Toggle Query Diagram"><a class="toggle_icon active" onclick="return showOrHideSingleQueryUI(this, ' . $rand . ');"><i class="icon toggle_ui"></i> Toggle Query Diagram <input type="checkbox" checked/></a></li>
+						<li class="toggle_settings select_query" title="Toggle Query Settings"><a class="toggle_icon active" onclick="return showOrHideSingleQuerySettings(this, ' . $rand . ');"><i class="icon toggle_settings"></i> Toggle Query Settings <input type="checkbox" checked/></a></li>
+						<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleMainSettingsPanel(this, \'.edit_single_query\')"><i class="icon toggle_ids"></i> Toggle Main Settings <input type="checkbox"/></a></li>
+						<li class="separator"></li>
 						<li class="create_sql_from_ui" title="Generate SQL From Diagram"><a onClick="autoUpdateSqlFromUI(' . $rand . ')"><i class="icon create_sql_from_ui"></i> Generate SQL From Diagram</a></li>
 						<li class="create_ui_from_sql" title="Generate Diagram From Settings"><a onClick="autoUpdateUIFromSql(' . $rand . ')"><i class="icon create_ui_from_sql"></i> Generate Diagram From Settings</a></li>
-						<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleMainSettingsPanel(this, \'.edit_single_query\')"><i class="icon toggle_ids"></i> Show Main Settings <input type="checkbox"/></a></li>
-						<li class="dummy_elm_to_add_auto_save_options"></li>
+						<li class="separator"></li>
+						<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
+						<li class="separator"></li>
+						<li class="save" title="Save Query"><a onClick="saveQueryObject(onSuccessSingleQuerySave)"><i class="icon save"></i> Save</a></li>
 					</ul>
 				</li>
 			</ul>
 		</header>
 	</div>'; if ($obj_data || !$query_id) { $main_content .= $WorkFlowQueryHandler->getChooseQueryTableOrAttributeHtml("choose_db_table_or_attribute"); $main_content .= $WorkFlowQueryHandler->getChooseDAOObjectFromFileManagerHtml("choose_dao_object_from_file_manager"); $main_content .= $WorkFlowQueryHandler->getChooseAvailableMapIdHtml("choose_map_id"); $data = array( "type" => $rel_type, "name" => $name, "parameter_class" => $parameter_class, "parameter_map" => $parameter_map, "result_class" => $result_class, "result_map" => $result_map, "sql" => $sql ); $settings = array( "init_ui" => true, "encapsulate_parameter_and_result_settings" => true, ); $sql_html = $WorkFlowQueryHandler->getQueryBlockHtml(false, $settings, $data); $sql_html = str_replace("#rand#", $rand, $sql_html); $main_content .= '
-<div class="data_access_obj">	
+<div class="data_access_obj with_top_bar_section">	
 	<div class="relationships">
 		<div class="rels">
 			' . $sql_html . '

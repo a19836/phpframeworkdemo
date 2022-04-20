@@ -1214,7 +1214,7 @@ function chooseAvailableTool(url) {
 	var popup = $(".choose_available_tool_popup");
 	
 	if (!popup[0]) {
-		popup = $('<div class="myfancypopup choose_available_tool_popup"><iframe src="' + url + '"></iframe></div>');
+		popup = $('<div class="myfancypopup with_iframe_title choose_available_tool_popup"><iframe src="' + url + '"></iframe></div>');
 		$(document.body).append(popup);
 	}
 	
@@ -1239,7 +1239,34 @@ function chooseAvailableProject(url) {
 	var popup = $(".choose_available_project_popup");
 	
 	if (!popup[0]) {
-		popup = $('<div class="myfancypopup choose_available_project_popup"><iframe src="' + url + '"></iframe></div>');
+		popup = $('<div class="myfancypopup with_iframe_title choose_available_project_popup"><iframe src="' + url + '"></iframe></div>');
+		$(document.body).append(popup);
+	}
+	
+	MyFancyPopupProjects.init({
+		elementToShow: popup,
+		parentElement: document,
+		
+		goTo: function(url, originalEvent) {
+			MyFancyPopupProjects.hidePopup();
+			MyFancyPopupProjects.showOverlay();
+			MyFancyPopupProjects.showLoading();
+			
+			setTimeout(function() {
+				document.location = url;
+			}, 300);
+		},
+	});
+	MyFancyPopupProjects.showPopup();
+	
+	return false;
+}
+
+function chooseAvailableTutorial(url) {
+	var popup = $(".choose_available_tutorial_popup");
+	
+	if (!popup[0]) {
+		popup = $('<div class="myfancypopup with_iframe_title choose_available_tutorial_popup"><iframe src="' + url + '"></iframe></div>');
 		$(document.body).append(popup);
 	}
 	

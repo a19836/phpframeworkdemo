@@ -1,3 +1,8 @@
+body,
+  #main_column {
+	background:#fff !important;
+}
+
 /* DROPDOWN */
 .top_bar {
 	margin-bottom:20px;
@@ -231,13 +236,12 @@
 	float:none;
 }
 .table_group .table_header {
-	height:20px;
 	text-align:left;
-	padding:0 5px;
+	padding:5px;
 	clear:both;
 	float:none;
 	background:#eee;
-	border:1px outset #eee;
+	border-bottom:1px solid #aaa;
 }
 .table_group .table_header label {
 	font-weight:normal;

@@ -1,6 +1,9 @@
 body {
 	font-family:var(--main-font-family);
 }
+.login {
+	font-size:8pt;
+}
 .login.with_popup .container .admin-page-content {
 	padding:0;
 }
@@ -9,8 +12,8 @@ body {
 	margin-top:calc((100vh - 350px) / 2);
 }
 .login .container .card .card-header {
-	background:#181818;
-	color:#FAB12B;
+	background:#2C2D34;
+	color:#BFC4DB;
 	border-bottom:3px solid #ff0000;
 }
 .login:not(.with_popup) .container .card .card-header {
@@ -95,5 +98,5 @@ body {
 }
 
 .buttons { width:320px; margin:20px auto 0; text-align:center; }
-.buttons input { width:100%; font-weight:600; }
+.buttons input { width:100%; font-weight:600; font-size:8pt;}
 

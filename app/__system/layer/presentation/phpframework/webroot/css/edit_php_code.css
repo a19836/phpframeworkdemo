@@ -129,12 +129,6 @@
 	position:relative;
 	overflow:hidden;
 }
-#ui .taskflowchart .tasks_menu {
-	background-color:#f5f5f5;
-}
-#ui .taskflowchart .tasks_flow {
-	background-color:#fff;
-}
 
 #ui .taskflowchart .workflow_menu {
 	display:none;
@@ -280,6 +274,7 @@
   #choose_db_driver_table .button input  {
 	display:inline;
 	float:none;
+	font-size:inherit;
 }
 
 #choose_db_driver,

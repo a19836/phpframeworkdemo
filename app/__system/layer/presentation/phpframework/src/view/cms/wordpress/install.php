@@ -36,7 +36,7 @@ $head = '
 		<div class="title">Install WordPress</div>
 	</header>
 </div>
-<div class="install_wordpress">
+<div class="install_wordpress with_top_bar_section">
 	<label>The DB Driver "' . $db_driver . '" ' . $msg . '</label>
 	
 	<form method="post">

@@ -44,7 +44,7 @@ var column_attributes_html = \'' . str_replace("'", "\\'", str_replace("\n", "",
 	</header>
 </div>
 
-<div class="import_table_data">'; if ($error_message) $main_content .= '<div class="error">' . $error_message . ($errors ? '<br/>Please see errors bellow...' : '') . '</div>'; $main_content .= '
+<div class="import_table_data with_top_bar_section">'; if ($error_message) $main_content .= '<div class="error">' . $error_message . ($errors ? '<br/>Please see errors bellow...' : '') . '</div>'; $main_content .= '
 	<form method="post" enctype="multipart/form-data">
 		<div class="file_type">
 			<label>File Type: </label>

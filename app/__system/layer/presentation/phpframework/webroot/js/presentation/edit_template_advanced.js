@@ -18,8 +18,8 @@ $(function () {
 	
 	taskflowchart.addClass("with_top_bar_menu fixed_properties");
 	workflow_menu.addClass("top_bar_menu");
-	workflow_menu.children("ul").prepend( show_simple_ui.clone() );
-	code_menu.children("ul").prepend( show_simple_ui.clone() );
+	workflow_menu.children("ul").prepend('<li class="separator"></li>').prepend( show_simple_ui.clone() );
+	code_menu.children("ul").prepend('<li class="separator"></li>').prepend( show_simple_ui.clone() );
 	
 	//init auto save
 	enableAutoSave(onTogglePHPCodeAutoSave);

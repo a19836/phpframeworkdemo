@@ -2819,11 +2819,17 @@ function resizeSettingsPanel(main_parent_elm, top) {
 }
 
 function toggleSettingsPanel(elm) {
-	elm = $(elm);
-	elm.toggleClass("maximize").toggleClass("minimize");
+	var settings = $(".regions_blocks_includes_settings");
+	var input = $(".top_bar li.toggle_main_settings input");
+	var icon = settings.find(" > .settings_header > .icon").filter(".maximize, .minimize");
 	
-	var settings = elm.parent().closest('.regions_blocks_includes_settings');
+	icon.toggleClass("maximize").toggleClass("minimize");
 	settings.toggleClass("collapsed");
+	
+	if (settings.hasClass("collapsed"))
+		input.removeAttr("checked").prop("checked", false);
+	else
+		input.attr("checked", "checked").prop("checked", true);
 }
 
 function onLoadIframeTabContentTemplateLayout() {
@@ -2898,7 +2904,7 @@ function initIframeModulesBlocksToolbarTree() {
 			return false;
 		},
 		drag : function(event, ui) {
-			var w = $(window).width() - (ui.offset.left - $(window).scrollLeft());
+			var w = $(window).width() - (ui.offset.left - $(window).scrollLeft()) - 20; //20 is bc the margin-left and margin-right of ".with_top_bar_tab > .ui-tabs-panel", which is 10px each.
 			
 			iframe_modules_blocks_toolbar.css({
 				width: w + "px",
@@ -3613,14 +3619,14 @@ function createCodeLayoutUIEDitorEditor(textarea, opts) {
 					options.find(".show-widgets, .show-layers, .show-layout-options").removeClass("option-active");
 					$(this).addClass("option-active");
 					
-					if (!luie.hasClass("fixed_properties")) {
+					if (!luie.hasClass("fixed_properties") && !luie.hasClass("fixed_side_properties")) {
 						menu_settings.fadeOut("slow");
 						options.find(".show-settings").removeClass("option-active");
 					}
         			});
         			options.find(".show-widgets").before(right_container_icon);
         			
-        			options.find(".show-widgets, .show-layers, .show-layout-options" + (!luie.hasClass("fixed_properties") ? ", .show-settings" : "")).click(function() {
+        			options.find(".show-widgets, .show-layers, .show-layout-options" + (!luie.hasClass("fixed_properties") && !luie.hasClass("fixed_side_properties") ? ", .show-settings" : "")).click(function() {
         				right_container_icon.removeClass("option-active");
         				right_container.fadeOut("slow");
         			});
@@ -3656,7 +3662,7 @@ function createCodeLayoutUIEDitorEditor(textarea, opts) {
         				toggleEditorFullScreen();
 	        			
 	        			if (menu_settings.is(":visible"))
-		        			PtlLayoutUIEditor.showFixedMenuSettings();
+		        			PtlLayoutUIEditor.showFixedMenuSettings(true);
         				
         				/*if (luie.hasClass("full-screen")) {
         					var z_index = luie.css("z-index");

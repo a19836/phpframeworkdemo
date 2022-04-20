@@ -3,7 +3,7 @@
 	z-index:5;
 }
 .top_bar header > ul {
-	right:15px;
+	right:30px;
 }
 
 /* TASKS FLOW CHART */
@@ -40,8 +40,8 @@
 .taskflowchart.with_top_bar_menu .workflow_menu ul.dropdown li.layers_settings ul {
 	width:250px;
 }
-.taskflowchart.with_top_bar_menu .workflow_menu ul.dropdown li.layers_settings ul li:nth-child(even) {
-	border-bottom:1px solid #ccc;
+.taskflowchart.with_top_bar_menu .workflow_menu ul.dropdown li.layers_settings ul li:nth-child(even):not(:last-child) {
+	border-bottom:1px solid #eee;
 }
 .taskflowchart.with_top_bar_menu .workflow_menu ul.dropdown li.layers_settings ul li .icon {
 	margin:0;

@@ -1,3 +1,8 @@
+body,
+  #main_column {
+	background:#fff;
+}
+
 /* TOP BAR */
 .top_bar {
 	margin-bottom:20px;
@@ -62,16 +67,21 @@
 }
 .edit_project_details .details input {
 	width:250px;
+	font-size:inherit;
 }
 .edit_project_details .details textarea {
 	width:250px;
 	height:100px;
+	font-size:inherit;
 }
 .edit_project_details.single_presentation_layer .details .layer {
 	display:none;
 }
 .edit_project_details .buttons {
 	margin-top:10px;
+}
+.edit_project_details .buttons input {
+	font-size:inherit;
 }
 .edit_project_details .buttons input.loading {
 	padding-left:25px;

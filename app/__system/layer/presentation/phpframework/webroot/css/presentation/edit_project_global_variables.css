@@ -3,7 +3,7 @@
 	margin-bottom:10px;
 }
 .top_bar header > ul {
-	right:145px;
+	right:140px;
 }
 
 /* UTIL OBJ */
@@ -18,13 +18,20 @@
 .global_vars_obj #code .code_menu.top_bar_menu,
   .global_vars_obj #ui .taskflowchart .workflow_menu.top_bar_menu,
   .global_vars_obj #form_global_vars .code_menu.top_bar_menu {
-	right:135px;
+	right:125px;
 }
 .global_vars_obj #form_global_vars .code_menu.top_bar_menu {
 	text-align:left;
 }
 .global_vars_obj #form_global_vars .code_menu.top_bar_menu > ul {
 	min-width:200px;
+}
+
+.global_vars_obj #code textarea, 
+  .global_vars_obj #code .ace_editor,
+  .global_vars_obj #ui .taskflowchart,
+  .global_vars_obj #form_global_vars {
+	height:calc(100vh - 45px) !important;
 }
 
 /* To print the workflow */
@@ -36,11 +43,11 @@
 }
 
 #form_global_vars {
-	width:750px; 
 	min-height:230px; 
 	text-align:center; 
 	padding-top:20px; 
-	margin:0px auto;
+	overflow:auto;
+	box-sizing:border-box;
 }
 
 #form_global_vars .vars {
@@ -48,7 +55,13 @@
 	margin:0px auto;
 }
 #form_global_vars .vars .buttons .icon {
-	margin:auto 5px;
+	margin:auto;
+}
+#form_global_vars .vars .buttons .icon.add {
+	margin-left:2px;
+}
+#form_global_vars .vars .buttons .icon.delete {
+	margin-left:5px;
 }
 #form_global_vars .vars th {
 	text-align:center; 

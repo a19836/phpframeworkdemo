@@ -51,7 +51,7 @@ var add_project_url = \'' . $add_project_url . '\';
 			</li>
 		</ul>
 		<div class="button">
-			<input type="button" value="UPDATE" onClick="MyFancyPopup.settings.updateFunction(this)" />
+			<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 		</div>
 	</div>
 	
