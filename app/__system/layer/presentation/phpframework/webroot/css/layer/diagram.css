@@ -45,6 +45,7 @@
 }
 .taskflowchart.with_top_bar_menu .workflow_menu ul.dropdown li.layers_settings ul li .icon {
 	margin:0;
+	display:none;
 }
 
 .taskflowchart .tasks_flow {

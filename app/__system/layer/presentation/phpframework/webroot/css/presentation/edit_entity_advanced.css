@@ -3,7 +3,7 @@
 	margin-bottom:10px;
 }
 .top_bar header {
-	z-index:3;
+	z-index:4;
 }
 .top_bar header > ul {
 	right:145px;
@@ -15,7 +15,7 @@
 	right:198px;
 }
 .with_top_bar_tab > .tabs {
-	z-index:3;
+	z-index:4;
 }
 
 

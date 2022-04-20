@@ -40,9 +40,7 @@ $head = '
 	<header>
 		<div class="title">Install New Module</div>
 		<ul>
-			<li class="install" title="Install Now">
-				<a onclick="onSubmitButtonClick(this);"><i class="icon continue"></i> Install Now</a>
-			</li>
+			<li class="install" data-title="Install Now"><a onclick="onSubmitButtonClick(this);"><i class="icon continue"></i> Install Now</a></li>
 		</ul>
 	</header>
 </div>

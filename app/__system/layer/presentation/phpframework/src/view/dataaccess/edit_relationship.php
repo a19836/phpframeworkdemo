@@ -54,11 +54,11 @@ var old_obj_type = \'' . $query_type . '\';
 			</div>
 			
 			<ul>
-				<li class="save" title="Save Relationship"><a onClick="saveQueryObject(onSuccessSingleQuerySave)"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save Relationship"><a onClick="saveQueryObject(onSuccessSingleQuerySave)"><i class="icon save"></i> Save</a></li>
 				<li class="sub_menu">
 					<i class="icon sub_menu"></i>
 					<ul>
-						<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleMainSettingsPanel(this, \'.edit_relationship\')"><i class="icon toggle_ids"></i> Toggle Main Settings <input type="checkbox"/></a></li>
+						<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleMainSettingsPanel(this, \'.edit_relationship\')"><i class="icon toggle_ids"></i> <span>Show Main Settings</span> <input type="checkbox"/></a></li>
 						<li class="separator"></li>
 						<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
 						<li class="separator"></li>

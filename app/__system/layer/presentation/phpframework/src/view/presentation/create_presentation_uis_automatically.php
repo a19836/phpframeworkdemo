@@ -36,7 +36,7 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilP
 			<header>
 				<div class="title">Automatic creation in \'' . $path . '\'. Statuses:</div>
 				<ul>
-					<!--li class="go_back" title="Go Back"><a onClick="history.go(-1);"><i class="icon go_back"></i></a></li-->
+					<!--li class="go_back" data-title="Go Back"><a onClick="history.go(-1);"><i class="icon go_back"></i></a></li-->
 				</ul>
 			</header>
 		</div>
@@ -166,8 +166,8 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilP
 				<header>
 					<div class="title">Automatic creation in \'' . $path . '\'. Please check the following table\'s settings:</div>
 					<ul>
-						<!--li class="go_back" title="Go Back"><a onClick="history.go(-1);"><i class="icon go_back"></i></a></li-->
-						<li class="continue" title="Continue"><a onClick="save(this)"><i class="icon continue"></i> Continue</a></li>
+						<!--li class="go_back" data-title="Go Back"><a onClick="history.go(-1);"><i class="icon go_back"></i></a></li-->
+						<li class="continue" data-title="Continue"><a onClick="save(this)"><i class="icon continue"></i> Continue</a></li>
 					</ul>
 				</header>
 			</div>
@@ -192,8 +192,8 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilP
 			<header>
 				<div class="title">Automatic creation in \'' . $path . '\'. Please select the table objects that you wish to create:</div>
 				<ul>
-					<!--li class="go_back" title="Go Back"><a onClick="history.go(-1);"><i class="icon go_back"></i></a></li-->
-					<li class="continue" title="Continue"><a onClick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
+					<!--li class="go_back" data-title="Go Back"><a onClick="history.go(-1);"><i class="icon go_back"></i></a></li-->
+					<li class="continue" data-title="Continue"><a onClick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
 			</header>
 		</div>
@@ -303,7 +303,7 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilP
 			<header>
 				<div class="title">Automatic creation in \'' . $path . '\'. Please select the DB Driver and click continue:</div>
 				<ul>
-					<li class="continue" title="Continue"><a onClick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
+					<li class="continue" data-title="Continue"><a onClick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
 			</header>
 		</div>

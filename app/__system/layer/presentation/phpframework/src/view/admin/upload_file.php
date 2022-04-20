@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$upload_url = $project_url_prefix . "admin/manage_file?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path&action=upload&item_type=$item_type"; $head = '
+include $EVC->getUtilPath("BreadCrumbsUIHandler"); $upload_url = $project_url_prefix . "admin/manage_file?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path&action=upload&item_type=$item_type"; $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -56,7 +56,7 @@ $(function() {
 </script>'; $main_content .= '
 <div class="top_bar">
 	<header>
-		<div class="title">Upload Files into "' . $path . '"</div>
+		<div class="title">Upload Files into  in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj) . '</div>
 	</header>
 </div>
 

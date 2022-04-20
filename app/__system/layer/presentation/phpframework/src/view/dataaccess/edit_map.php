@@ -49,7 +49,7 @@ var old_obj_id = \'' . $map_id . '\';
 			</div>
 			
 			<ul>
-				<li class="save" title="Save Map"><a onClick="saveMapObject()"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save Map"><a onClick="saveMapObject()"><i class="icon save"></i> Save</a></li>
 				<li class="sub_menu">
 					<i class="icon sub_menu"></i>
 					<ul>

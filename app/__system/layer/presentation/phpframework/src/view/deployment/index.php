@@ -104,7 +104,7 @@ var wordpress_installations_relative_path = "' . $EVC->getCommonProjectName() . 
 		<header>
 			<div class="title">Deployment</div>
 			<ul>
-				<li class="save" title="Save"><a onClick="saveDeploymentDiagram()"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save"><a onClick="saveDeploymentDiagram()"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>
 	</div>

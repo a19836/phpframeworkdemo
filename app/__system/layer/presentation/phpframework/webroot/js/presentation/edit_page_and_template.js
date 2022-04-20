@@ -2820,16 +2820,23 @@ function resizeSettingsPanel(main_parent_elm, top) {
 
 function toggleSettingsPanel(elm) {
 	var settings = $(".regions_blocks_includes_settings");
-	var input = $(".top_bar li.toggle_main_settings input");
+	var toggle_main_settings = $(".top_bar li.toggle_main_settings");
+	var input = toggle_main_settings.find("input");
+	var span = toggle_main_settings.find("span");
 	var icon = settings.find(" > .settings_header > .icon").filter(".maximize, .minimize");
 	
 	icon.toggleClass("maximize").toggleClass("minimize");
 	settings.toggleClass("collapsed");
+	toggle_main_settings.toggleClass("active");
 	
-	if (settings.hasClass("collapsed"))
+	if (settings.hasClass("collapsed")) {
 		input.removeAttr("checked").prop("checked", false);
-	else
+		span.html("Show Main Settings");
+	}
+	else {
 		input.attr("checked", "checked").prop("checked", true);
+		span.html("Hide Main Settings");
+	}
 }
 
 function onLoadIframeTabContentTemplateLayout() {

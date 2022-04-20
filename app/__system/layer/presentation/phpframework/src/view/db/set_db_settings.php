@@ -44,7 +44,7 @@ include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler"); $form_se
 		<header>
 			<div class="title">DataBase Settings for "' . $bean_name . '"</div>
 			<ul>
-				<li class="save" title="Save"><a onClick="submitForm(this)"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save"><a onClick="submitForm(this)"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>
 	</div>'; $main_content .= !empty($error) ? "<h2>$error</h2>" : HtmlFormHandler::createHtmlForm($form_settings, $db_settings); $main_content .= '</div>'; $main_content .= '<script>

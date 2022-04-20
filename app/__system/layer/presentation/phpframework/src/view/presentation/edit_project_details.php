@@ -33,7 +33,7 @@ var add_project_url = \'' . $add_project_url . '\';
 	<header>
 		<div class="title">' . ($is_existent_project ? 'Edit' : 'Create') . ' Project</div>
 		<ul>
-			<li class="save" title="Save Project"><a onclick="submitForm(this)"><i class="icon save"></i> Save Project</a>
+			<li class="save" data-title="Save Project"><a onclick="submitForm(this)"><i class="icon save"></i> Save Project</a>
 		</ul>
 	</header>
 </div>

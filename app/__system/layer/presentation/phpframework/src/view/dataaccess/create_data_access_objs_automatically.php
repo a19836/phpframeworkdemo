@@ -55,7 +55,7 @@ $head = '
 			<header>
 				<div class="title">Automatic creation in \'' . $path . '\'. Please select the table objects that you wish to create:</div>
 				<ul>
-					<li class="continue" title="Continue"><a onClick="submitForm(this, checkSelectedTables);"><i class="icon continue"></i> Continue</a></li>
+					<li class="continue" data-title="Continue"><a onClick="submitForm(this, checkSelectedTables);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
 			</header>
 		</div>
@@ -91,7 +91,7 @@ $head = '
 			<header>
 				<div class="title">Automatic creation in \'' . $path . '\'. Please select the DB Driver:</div>
 				<ul>
-					<li class="continue" title="Continue"><a onClick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
+					<li class="continue" data-title="Continue"><a onClick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
 			</header>
 		</div>

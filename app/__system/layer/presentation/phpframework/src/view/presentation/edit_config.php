@@ -56,7 +56,7 @@ FunctionUtilObj.create_workflow_file_from_code_url = create_workflow_file_from_c
 		<header>
 			<div class="title">Edit Config' . ($config_file_name ? ' "' . $config_file_name . '"' : '') . ' for project: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($layer_path . $selected_project_id, $P) . '</div>
 			<ul>
-				<li class="save" title="Save"><a onClick="saveConfig()"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save"><a onClick="saveConfig()"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>
 	</div>'; if ($obj_data) { $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, null, null, null, null, null, $presentation_brokers); $main_content .= '

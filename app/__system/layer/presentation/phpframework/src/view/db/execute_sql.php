@@ -43,7 +43,7 @@ $head = '
 		<header>
 			<div class="title">Execute SQL</div>
 			<ul>
-				<li class="execute" title="Execute"><a onClick="execute()"><i class="icon continue"></i> Execute</a></li>
+				<li class="execute" data-title="Execute"><a onClick="execute()"><i class="icon continue"></i> Execute</a></li>
 			</ul>
 		</header>
 	</div>

@@ -56,18 +56,18 @@ var is_covertable_sql = ' . ($is_covertable_sql ? 1 : 0) . ';
 				' . ($query_id ? "Edit" : "Add") . ' <span class="query_type"></span> SQL Query: <span class="query_name"></span> in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($is_hbn_obj_equal_to_file_name ? dirname($file_path) . "/$hbn_obj_id" : $file_path, $obj, $is_hbn_obj_equal_to_file_name) . '
 			</div>
 			<ul>
-				<li class="save" title="Save Query"><a onClick="saveQueryObject(onSuccessSingleQuerySave)"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save Query"><a onClick="saveQueryObject(onSuccessSingleQuerySave)"><i class="icon save"></i> Save</a></li>
 				<li class="sub_menu">
 					<i class="icon sub_menu"></i>
 					<ul>
 						<li class="add_new_table select_query" title="Add new Table"><a onclick="return addNewTask(' . $rand . ');"><i class="icon add"></i> Add Table</a></li>
 						<li class="update_tables_attributes select_query" title="Update Tables\' Attributes"><a onclick="return updateQueryDBBroker(' . $rand . ', false);"><i class="icon update_tables_attributes"></i> Update Tables\' Attributes</a></li>
 						<li class="separator"></li>
-						<li class="is_convertable_sql" title="Is SQL convertable"><a onClick="onChangeIsConvertableSQL(this)" previous_auto_convert="1"><i class="icon toggle_ids"></i> Is SQL convertable <input type="checkbox"' . ($is_covertable_sql ? " checked" : "") . '/></a></li>
+						<li class="is_convertable_sql" title="Is SQL convertable"><a onClick="onChangeIsConvertableSQL(this)" previous_auto_convert="1"><i class="icon toggle_ids"></i> <span>' . ($is_covertable_sql ? "Dis" : "En") . 'able SQL convertable</span> <input type="checkbox"' . ($is_covertable_sql ? " checked" : "") . '/></a></li>
 						<li class="separator"></li>
-						<li class="toggle_ui select_query" title="Toggle Query Diagram"><a class="toggle_icon active" onclick="return showOrHideSingleQueryUI(this, ' . $rand . ');"><i class="icon toggle_ui"></i> Toggle Query Diagram <input type="checkbox" checked/></a></li>
-						<li class="toggle_settings select_query" title="Toggle Query Settings"><a class="toggle_icon active" onclick="return showOrHideSingleQuerySettings(this, ' . $rand . ');"><i class="icon toggle_settings"></i> Toggle Query Settings <input type="checkbox" checked/></a></li>
-						<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleMainSettingsPanel(this, \'.edit_single_query\')"><i class="icon toggle_ids"></i> Toggle Main Settings <input type="checkbox"/></a></li>
+						<li class="toggle_ui select_query" title="Toggle Query Diagram"><a class="toggle_icon active" onclick="return showOrHideSingleQueryUI(this, ' . $rand . ');"><i class="icon toggle_ui"></i> <span>Hide Query Diagram</span> <input type="checkbox" checked/></a></li>
+						<li class="toggle_settings select_query" title="Toggle Query Settings"><a class="toggle_icon active" onclick="return showOrHideSingleQuerySettings(this, ' . $rand . ');"><i class="icon toggle_settings"></i> <span>Hide Query Settings</span> <input type="checkbox" checked/></a></li>
+						<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleMainSettingsPanel(this, \'.edit_single_query\')"><i class="icon toggle_ids"></i> <span>Show Main Settings</span> <input type="checkbox"/></a></li>
 						<li class="separator"></li>
 						<li class="create_sql_from_ui" title="Generate SQL From Diagram"><a onClick="autoUpdateSqlFromUI(' . $rand . ')"><i class="icon create_sql_from_ui"></i> Generate SQL From Diagram</a></li>
 						<li class="create_ui_from_sql" title="Generate Diagram From Settings"><a onClick="autoUpdateUIFromSql(' . $rand . ')"><i class="icon create_ui_from_sql"></i> Generate Diagram From Settings</a></li>

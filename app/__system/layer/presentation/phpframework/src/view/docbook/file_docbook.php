@@ -31,9 +31,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 '; $main_content = '
 	<div class="top_bar">
 		<header>
-			<div class="title">
-				Docbook in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj) . '
-			</div>
+			<div class="title">Docbook in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj) . '</div>
 		</header>
 	</div>'; if ($file_exists) { $main_content .= '<div class="file_docbook with_top_bar_section">'; if ($is_docbook_allowed) { if ($classes_properties) { foreach ($classes_properties as $class_name => $class) { $is_class = $class_name !== 0; $props = $class["props"]; $methods = $class["methods"]; if ($is_class) $main_content .= '<div class="class">
 						<label>' . $class_name . '</label>'; if ($props) { $main_content .= '<ul class="props">

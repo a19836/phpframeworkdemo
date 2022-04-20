@@ -35,7 +35,7 @@ $head = '
 		<header>
 			<div class="title">DB Dump</div>
 			<ul>
-				<li class="execute" title="Execute Dump"><a onClick="submitForm(this)"><i class="icon continue"></i> Execute Dump</a></li>
+				<li class="execute" data-title="Execute Dump"><a onClick="submitForm(this)"><i class="icon continue"></i> Execute Dump</a></li>
 			</ul>
 		</header>
 	</div>'; if ($_POST && $error_messsage) $main_content .= '<div class="error">' . $error_messsage . '</div>'; $main_content .= '	

@@ -39,7 +39,7 @@ var column_attributes_html = \'' . str_replace("'", "\\'", str_replace("\n", "",
 	<header>
 		<div class="title">Import Data to Table \'' . $table . '\'</div>
 		<ul>
-			<li class="import" title="Import"><a onClick="submitForm(this)"><i class="icon continue"></i> Import</a></li>
+			<li class="import" data-title="Import"><a onClick="submitForm(this)"><i class="icon continue"></i> Import</a></li>
 		</ul>
 	</header>
 </div>

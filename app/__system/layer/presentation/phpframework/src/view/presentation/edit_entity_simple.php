@@ -92,17 +92,17 @@ var show_templates_only = ' . ($_GET["show_templates_only"] ? 1 : 0) . '; //This
 '; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= '</script>'; $head .= CMSPresentationLayerUIHandler::getHeader($project_url_prefix, $project_common_url_prefix, $get_available_blocks_list_url, $get_block_params_url, $create_entity_code_url, $available_blocks_list, $regions_blocks_list, $block_params_values_list, $blocks_join_points, $template_params_values_list, $selected_project_id, true); $head .= LayoutTypeProjectUIHandler::getHeader(); $confirm_save = $obj_data["code"] && $cached_modified_date != $file_modified_time; $query_string = str_replace(array("&edit_entity_type=advanced", "&edit_entity_type=simple"), "", $_SERVER["QUERY_STRING"]); $main_content = '
 	<div class="top_bar">
 		<header>
-			<div class="title">Edit Page <span class="template_fields"></span> at: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $P, true) . '</div>
+			<div class="title">Edit Page (Visual Workspace) <span class="template_fields"></span> at: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $P, true) . '</div>
 			<ul>
-				<li class="view_project_page" title="View Project Page"><a href="' . $view_project_url . '" target="project"><i class="icon view"></i></a></li>
-				<li class="save" title="Save Page"><a onClick="' . ($confirm_save ? 'confirmSave' : 'save') . '()"><i class="icon save"></i> Save</a></li>
+				<li class="view_project_page" data-title="View Project Page"><a href="' . $view_project_url . '" target="project"><i class="icon view"></i></a></li>
+				<li class="save" data-title="Save Page"><a onClick="' . ($confirm_save ? 'confirmSave' : 'save') . '()"><i class="icon save"></i> Save</a></li>
 				
 				<li class="sub_menu">
 					<i class="icon sub_menu"></i>
 					<ul>
 						<li class="advanced_editor" title="Switch to Code Workspace"><a href="?' . $query_string . '&edit_entity_type=advanced"><i class="icon show_advanced_ui"></i> Switch to Code Workspace</a></li>
 						<li class="separator"></li>
-						<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleSettingsPanel(this)"><i class="icon toggle_main_settings"></i> Toggle Main Settings <input type="checkbox"/></a></li>
+						<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleSettingsPanel(this)"><i class="icon toggle_main_settings"></i> <span>Show Main Settings</span> <input type="checkbox"/></a></li>
 						<li class="separator"></li>
 						<li class="update_layout_from_settings" title="Update Main Settings to Layout UI"><a onClick="updateLayoutFromSettings( $(\'.entity_obj\') )"><i class="icon update_layout_from_settings"></i> Update Main Settings to Layout Area</a></li>
 						<li class="separator"></li>

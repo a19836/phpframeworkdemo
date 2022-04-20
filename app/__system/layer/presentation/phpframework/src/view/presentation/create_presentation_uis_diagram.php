@@ -139,8 +139,8 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); $filter_by_layout_ur
 		<header>
 			<div class="title">Presentation UIs Diagram in \'' . $path . '\'</div>
 			<ul>
-				<li class="create_ui_files" title="Create UI Files"><a onClick="createUIFiles(this)"><i class="icon create_ui_files"></i> Create UI Files</a></li>
-				<li class="save" title="Save"><a onClick="saveUIsDiagramFlow()"><i class="icon save"></i> Save</a></li>
+				<li class="create_ui_files" data-title="Create UI Files"><a onClick="createUIFiles(this)"><i class="icon create_ui_files"></i> Create UI Files</a></li>
+				<li class="save" data-title="Save"><a onClick="saveUIsDiagramFlow()"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>
 	</div>'; $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $db_brokers, $data_access_brokers, $ibatis_brokers, $hibernate_brokers, $business_logic_brokers, $presentation_brokers); $main_content .= CMSPresentationLayerUIHandler::getChoosePresentationIncludeFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $presentation_brokers, "MyDiagramUIFancyPopup"); $main_content .= '

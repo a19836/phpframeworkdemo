@@ -397,7 +397,7 @@ body > .dragging_menu_item {
 .tab_content_template_layout {
 	height:calc(100vh - 75px); /* Toolbar and settings height */
 	position:relative;
-	background:#f5f5f5 !important; /* very important bc when the iframe is smartphone responsive, we loose track of the iframe borders. The background will help to detect this. */
+	background:var(--main-template-bg) !important; /* very important bc when the iframe is smartphone responsive, we loose track of the iframe borders. The background will help to detect this. */
 	box-sizing: border-box;
 	text-align:center;
 	overflow:auto;
@@ -450,7 +450,7 @@ body > .dragging_menu_item {
 .tab_content_template_layout .iframe_toolbar .icon:hover:after,
   .tab_content_template_layout .iframe_toolbar .icon:active:after,
   .tab_content_template_layout .iframe_toolbar .icon:focus:after {
-	content:attr(title);
+	content:attr(data-title);
 	margin-top:5px;
 	padding:5px 10px;
 	display:block;
@@ -490,6 +490,10 @@ body > .dragging_menu_item {
 	
 	transition:all .2s;
 }
+.tab_content_template_layout .iframe_toolbar:not(.desktop) ~ iframe {
+	border:5px solid var(--resize-bar-bg);
+	border-radius:10px;
+}
 
 .tab_content_template_layout .iframe_modules_blocks_toolbar {
 	height:auto;
@@ -498,7 +502,7 @@ body > .dragging_menu_item {
 	top:35px;
 	right:10px;
 	bottom:40px;
-	background:#f5f5f5;
+	background:var(--main-template-bg);
 	border:1px solid #aaa;
 	text-align:left;
 	
@@ -965,6 +969,7 @@ body > .dragging_menu_item {
   .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .sub-options ul li.auto-resize input {
 	position:absolute;
 	left:5px;
+	opacity:.1;
 }
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu:not(.layout-shown) > .options .option.full-screen {
 	display:none;
@@ -1028,7 +1033,7 @@ body > .dragging_menu_item {
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.sub_menu ul li {
 	margin:0;
 	display:block;
-	padding:7px 10px;
+	padding:5px;
 	position:relative;
 	background:#DFE1ED;
 	color:#444;
@@ -1048,16 +1053,18 @@ body > .dragging_menu_item {
 }
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.sub_menu ul li:hover {
 	background:#c8cad5;
-	color:var(--icon-hover-color);
+	/*color:var(--icon-hover-color);*/
 }
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.sub_menu ul li input[type=checkbox] {
 	position:absolute;
 	left:5px;
+	opacity:.1;
 }
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.sub_menu ul li a {
 	padding:5px;
 	display:block;
 	color:inherit;
+	text-decoration:none;
 }
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .options .option.sub_menu ul li a > .icon {
 	width:20px;
@@ -1090,6 +1097,9 @@ body > .dragging_menu_item {
 .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .template-source,
   .code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .template-full-source {
 	border:0;
+}
+.code_layout_ui_editor .layout_ui_editor.with_top_bar_menu > .template-widgets > .template-widgets-droppable {
+	border-color:var(--resize-bar-bg) !important;
 }
 
 /* CODE - ELS UI - LAYOUT UI EDITOR - TOP BAR MENU - PROPERTIES */

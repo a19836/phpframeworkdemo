@@ -148,6 +148,8 @@ function toggleAdvancedItems(elm) {
 	var template_obj = $(".template_obj");
 	var top_bar = $(".top_bar");
 	var toggle_advanced_items_a = top_bar.find("header ul li.toggle_advanced_items > a");
+	var input = toggle_advanced_items_a.children("input");
+	var span = toggle_advanced_items_a.children("span");
 	
 	template_obj.toggleClass("advanced_items_shown");
 	top_bar.toggleClass("advanced_items_shown");
@@ -157,13 +159,15 @@ function toggleAdvancedItems(elm) {
 	var is_content_editor_tab_shown = active_tab.attr("id") == "code_editor_layout_tab";
 	
 	if (template_obj.hasClass("advanced_items_shown")) {
-		toggle_advanced_items_a.children("input").prop("checked", true).attr("checked", "checked");
+		input.prop("checked", true).attr("checked", "checked");
+		span.html("Hide Advanced Items");
 		
 		if (!is_content_editor_tab_shown)
 			ul.find(" > #code_editor_layout_tab > a").trigger("click");
 	}
 	else {
-		toggle_advanced_items_a.children("input").prop("checked", false).removeAttr("checked");
+		input.prop("checked", false).removeAttr("checked");
+		span.html("Show Advanced Items");
 		
 		if (is_content_editor_tab_shown)
 			ul.find(" > #code_editor_body_tab > a").trigger("click");
@@ -173,16 +177,20 @@ function toggleAdvancedItems(elm) {
 function toggleWidgetSettings(elm) {
 	var code_editor_body = $(".template_obj .code_editor_body");
 	var PtlLayoutUIEditor = code_editor_body.find(".layout_ui_editor").data("LayoutUIEditor");
-	var input = $(".top_bar li.toggle_widget_settings input");
+	var toggle_widget_settings = $(".top_bar li.toggle_widget_settings");
+	var input = toggle_widget_settings.find("input");
+	var span = toggle_widget_settings.find("span");
 	
 	if (PtlLayoutUIEditor) {
 		if (PtlLayoutUIEditor.isMenuSettingsVisible()) {
 			PtlLayoutUIEditor.hideFixedMenuSettings();
 			input.removeAttr("checked").prop("checked", false);
+			span.html("Show Widget Settings");
 		}
 		else if (PtlLayoutUIEditor.isMenuSettingsEnabled()) {
 			PtlLayoutUIEditor.showFixedMenuSettings();
 			input.attr("checked", "checked").prop("checked", true);
+			span.html("Hide Widget Settings");
 		}
 		else
 			StatusMessageHandler.showMessage("Please select a widget first...");

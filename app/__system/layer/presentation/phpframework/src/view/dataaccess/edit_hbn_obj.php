@@ -51,13 +51,13 @@ var auto_increment_db_attributes_types = ' . json_encode(DB::getAllColumnAutoInc
 				' . ($hbn_obj_id ? "Edit" : "Add") . ' Hibernate Object <span class="query_name"></span> in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($is_hbn_obj_equal_to_file_name ? dirname($file_path) : $file_path, $obj, $is_hbn_obj_equal_to_file_name) . '
 			</div>
 			<ul>
-				<li class="save" title="Save Query"><a onClick="saveHibernateObject()"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save Query"><a onClick="saveHibernateObject()"><i class="icon save"></i> Save</a></li>
 				<li class="sub_menu">
 					<i class="icon sub_menu"></i>
 					<ul>
 						<li class="update_automatically" title="Update Automatically"><a onClick="createHibernateObjectAutomatically(this)"><i class="icon update_automatically"></i> Create Automatically</a></li>
 						<li class="separator"></li>
-						<li class="toggle_advanced_settings" title="Toggle Advanced Settings"><a onClick="toggleHbnObjAdvancedSettings(this)"><i class="icon toggle_ids"></i> Toggle Advanced Settings <input type="checkbox"/></a></li>
+						<li class="toggle_advanced_settings" title="Toggle Advanced Settings"><a onClick="toggleHbnObjAdvancedSettings(this)"><i class="icon toggle_ids"></i> <span>Show Advanced Settings</span> <input type="checkbox"/></a></li>
 						<li class="separator"></li>
 						<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
 						<li class="separator"></li>

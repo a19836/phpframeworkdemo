@@ -68,8 +68,8 @@ $(function() {
 			<header>
 				<div class="title">' . ($layout_type_id ? 'Edit' : 'Add') . ' Layout Type</div>
 				<ul>
-					<li class="delete" title="Delete"><a onClick="submitForm(this, \'delete\')"><i class="icon delete"></i> Delete</a></li>
-					<li class="save" title="Save"><a onClick="submitForm(this, \'save\')"><i class="icon save"></i> Save</a></li>
+					<li class="delete" data-title="Delete"><a onClick="submitForm(this, \'delete\')"><i class="icon delete"></i> Delete</a></li>
+					<li class="save" data-title="Save"><a onClick="submitForm(this, \'save\')"><i class="icon save"></i> Save</a></li>
 				</ul>
 			</header>
 		</div>'; $main_content .= HtmlFormHandler::createHtmlForm($form_settings, $layout_type_data); $main_content .= '</div>

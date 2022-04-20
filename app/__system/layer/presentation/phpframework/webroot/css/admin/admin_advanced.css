@@ -103,7 +103,7 @@
 	background:var(--menu-panel-bg);
 	color:var(--menu-panel-color);
 }
-#left_panel {position:absolute; left:0px; top:60px; width:300px; bottom:0px; overflow-y:scroll; overflow-x:auto; z-index:1; background:var(--left-panel-bg); color:var(--left-panel-color);}
+#left_panel {position:absolute; left:0px; top:60px; width:300px; bottom:0px; overflow:hidden; z-index:1; background:var(--left-panel-bg); color:var(--left-panel-color);}
 #hide_panel {position:absolute; left:300px; top:60px; width:5px; bottom:0px; overflow:hidden; background:#83889E; /*background:url("../../img/back_frame_open_close_vertical_red.gif") repeat-y; background-size:contain*/; cursor:ew-resize; z-index:3;}
 #right_panel {position:absolute; left:305px; top:60px; right:0px; bottom:0px; z-index:1;}
 
@@ -117,7 +117,7 @@
 #first_top_panel ul.right {margin-top:0; margin-right:5px;}
 #second_top_panel ul.right {margin-top:2px; font-size:10pt;}
 .top_panel li {cursor:pointer; margin:0 3px; display:inline-block;}
-.top_panel li.separator {margin:0 5px; opacity:.5; font-style:normal; vertical-align:middle;}
+.top_panel li.separator {margin:0 5px; cursor:default; opacity:.5; font-style:normal; vertical-align:middle;}
 
 .top_panel .logo {width:80px; height:15px; margin:0 10px 0 0; background:url(../../img/logo_full_white.png) left center no-repeat; background-size:contain; vertical-align:middle; cursor:default;}
 
@@ -126,7 +126,7 @@
 .top_panel .icon:hover:after,
   .top_panel .icon:active:after,
   .top_panel .icon:focus:after {
-	content:attr(title);
+	content:attr(data-title);
 	margin-left:-10px;
 	padding:5px;
 	position:fixed;
@@ -139,7 +139,7 @@
 	border-bottom-right-radius:3px;
 }
 #first_top_panel .icon:hover:after {
-	margin-top:4px;
+	margin-top:8px;
 	color:var(--top-panel-color);
 	background:var(--top-panel-sub-menu-bg);
 	border-left:1px solid var(--top-panel-sub-menu-border);
@@ -176,18 +176,21 @@
 	position:fixed;
 	right:-500px;
 	background:transparent;
-	border-bottom:1px solid var(--menu-panel-sub-menu-border);
-	border-bottom-left-radius:3px;
-	border-bottom-right-radius:3px;
 	overflow:hidden;
 	display:block;
 	transition:.5s all;
 }
 #first_top_panel > ul > li.sub_menu ul {
 	padding-top:5px;
+	border-bottom:0;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
 }
 #second_top_panel > ul > li.sub_menu ul {
 	padding-top:7px;
+	border-bottom:1px solid var(--menu-panel-sub-menu-border);
+	border-bottom-left-radius:3px;
+	border-bottom-right-radius:3px;
 }
 .top_panel > ul > li.sub_menu:hover {
 	opacity:1;
@@ -215,7 +218,6 @@
 	color:var(--top-panel-sub-menu-item-color);
 }
 #second_top_panel > ul > li.sub_menu ul li {
-	
 	border-left:1px solid var(--menu-panel-sub-menu-border);
 	border-right:1px solid var(--menu-panel-sub-menu-border);
 	background:var(--menu-panel-sub-menu-item-bg);
@@ -235,13 +237,25 @@
 	font-size:8pt;
 }
 
-.top_panel > ul > li.sub_menu.sub_menu_user ul li.login_info {
-	padding:10px 10px;
+.top_panel > ul > li.sub_menu.sub_menu_user > .icon {
+	cursor:default;
+	opacity:.3;
+}
+.top_panel > ul > li.sub_menu.sub_menu_user > .icon:hover {
+	color:inherit;
+}
+.top_panel > ul > li.sub_menu.sub_menu_user > ul li.login_info {
+	padding:5px;
 	border-bottom:1px solid var(--menu-panel-sub-menu-border);
 	cursor:default;
 }
-.top_panel > ul > li.sub_menu.sub_menu_user ul li.login_info:hover {
-	background:var(--menu-panel-sub-menu-item-bg);
+.top_panel > ul > li.sub_menu.sub_menu_user > ul li.login_info:hover {
+	background:var(--top-panel-sub-menu-item-bg) !important;
+}
+.top_panel > ul > li.sub_menu.sub_menu_user > ul li .icon:hover {
+	color:inherit;
+	cursor:default;
+	opacity:.8;
 }
 
 .top_panel .filter_by_layout {margin:0; text-align:center; font-size:14px;}
@@ -372,7 +386,7 @@
 #left_panel.left_panel_with_tabs .tabs .tab_main_node:not(.ui-state-active) .icon.sub_menu {display:none;}
 #left_panel.left_panel_with_tabs .tabs .tab_main_node .icon.sub_menu::before {content:"\f142";}
 #left_panel.left_panel_with_tabs .tabs .tab_main_node .icon.sub_menu:hover::after {content:"Click me"; position:fixed; top:auto; left:auto; margin:20px 0 0 -30px; color:var(--main-template-color); font: initial; font-family:var(--main-font-family); font-size:8px; }
-#left_panel.left_panel_with_tabs .main_tree_node {padding:0 0 0 15px; background:transparent; color:inherit;}
+#left_panel.left_panel_with_tabs .main_tree_node {height: calc(100vh - 100px); padding:0 0 0 15px; background:transparent; color:inherit; overflow: auto; box-sizing:border-box;}
 #left_panel.left_panel_with_tabs .main_tree_node > a > label, #left_panel .main_tree_node > a > label > label {font-style:normal; opacity:.9;}
 #left_panel.left_panel_with_tabs .main_tree_node > ul {background:transparent;}
 
@@ -399,8 +413,14 @@
 #left_panel .with_sub_groups > ul > li.jstree-closed > .jstree-icon {
 	background-position:-3px 0;
 }
+#left_panel .with_sub_groups > ul > li.jstree-closed > .jstree-icon::before {
+	margin-top:12px;
+}
 #left_panel .with_sub_groups > ul > li.jstree-open > .jstree-icon {
 	background-position:-35px 0;
+}
+#left_panel .with_sub_groups > ul > li.jstree-open > .jstree-icon::before {
+	margin-top:12px;
 }
 #left_panel .with_sub_groups > ul > li.jstree-loading > .jstree-icon {
 	background-position:5px 8px;
@@ -476,6 +496,11 @@
 #left_panel.left_panel_without_tabs {
 	padding-top:30px;
 }
+#left_panel.left_panel_without_tabs .mytree {
+	height:calc(100vh - 90px);
+	margin-bottom:0;
+	overflow:auto;
+}
 #left_panel.left_panel_without_tabs .mytree > ul {
 	border-bottom:1px solid var(--left-panel-tree-sub-group-border);
 }
@@ -491,8 +516,14 @@
 #left_panel.left_panel_without_tabs .mytree > ul > li.jstree-closed > .jstree-icon {
 	background-position:-3px 0;
 }
+#left_panel.left_panel_without_tabs .mytree > ul > li.jstree-closed > .jstree-icon::before {
+	margin-top:12px;
+}
 #left_panel.left_panel_without_tabs .mytree > ul > li.jstree-open > .jstree-icon {
 	background-position:-35px 0;
+}
+#left_panel.left_panel_without_tabs .mytree > ul > li.jstree-open > .jstree-icon::before {
+	margin-top:12px;
 }
 #left_panel.left_panel_without_tabs .mytree > ul > li.jstree-loading > .jstree-icon {
 	background-position:5px 8px;
@@ -578,7 +609,7 @@
 	width:0px;
 	height:0px;
 	margin:0 -10px 0 0;
-	padding-top:10px;
+	padding-top:13px;
 	position:absolute;
 	right:2px;
 	background:transparent;
@@ -593,9 +624,6 @@
 #left_panel.left_panel_without_tabs > .sub_menu ul {
 	margin-right:-12px;
 	padding-top:0;
-	border-top:1px solid var(--menu-panel-sub-menu-border);
-	border-top-left-radius:3px;
-	border-top-right-radius:3px;
 }
 #left_panel > .sub_menu:hover {
 	opacity:1;

@@ -146,7 +146,7 @@
 .top_bar header > ul > li:hover:after,
   .top_bar header > ul > li:active:after,
   .top_bar header > ul > li:focus:after {
-	content:attr(title);
+	content:attr(data-title);
 	margin-top:0;
 	padding:5px 10px;
 	display:block;
@@ -250,7 +250,7 @@
 	color:var(--main-template-color);
 }
 .top_bar li ul li a:hover {
-	color:var(--icon-hover-color);
+	/*color:var(--icon-hover-color);*/
 }
 .top_bar li ul li:last-child {
 	border-bottom-left-radius:3px;
@@ -293,6 +293,7 @@
   .top_bar li input[type=checkbox] {
 	position:absolute;
 	left:5px;
+	opacity:.1;
 }
 
 /* TOP BAR - DROPDOWN - AUTO SAVE */
@@ -371,7 +372,7 @@
 }
 .top_bar_menu li:hover {
 	background:#c8cad5;
-	color:var(--icon-hover-color);
+	/*color:var(--icon-hover-color);*/
 }
 .top_bar_menu li.separator {
 	height:1px;
@@ -396,7 +397,7 @@
 }
 .top_bar_menu li a:hover {
 	text-decoration:none;
-	color:var(--icon-hover-color);
+	/*color:var(--icon-hover-color);*/
 }
 .top_bar_menu li a .icon {
 	width:20px;
@@ -422,6 +423,7 @@
   .top_bar_menu li input[type=checkbox] {
 	position:absolute;
 	left:5px;
+	opacity:.1;
 }
 
 /* TOP BAR - MENU DROPDOWN - AUTO SAVE */
@@ -576,7 +578,7 @@
 	color:inherit;
 }
 .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li a:hover {
-	color:var(--icon-hover-color);
+	/*color:var(--icon-hover-color);*/
 }
 .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li a .icon {
 	font-size:var(--icon-font-size);
@@ -599,8 +601,7 @@
 	background:#DFE1ED;
 }
 .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li ul li a {
-	/*padding-left:45px;*/
-	padding-left:25px;
+	padding-left:45px;
 }
 .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.auto_save_activation.with_padding,
   .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.auto_convert_activation.with_padding {
@@ -886,6 +887,7 @@ body .workflow_message .status span,
 /* CODE EDITOR - MENU */
 .with_top_bar_tab .code_menu.top_bar_menu {
 	right:90px;
+	z-index:9999;
 }
 
 /* LAYOUT CODE EDITOR */
@@ -1202,6 +1204,9 @@ body .layout_ui_editor > .resize-panels {
 .with_top_bar_tab > .tabs.tabs_icons li:not(.ui-tabs-active) {
 	height:calc(100% - 1px);
 }
+.with_top_bar_tab > .tabs.tabs_icons li.ui-tabs-active:not(#code_editor_tab) {
+	background:var(--main-template-bg);
+}
 .with_top_bar_tab > .tabs.tabs_icons li a {
 	width:15px;
 	padding:.6em 1em 0;
@@ -1213,14 +1218,18 @@ body .layout_ui_editor > .resize-panels {
 	margin-right:20px;
 	font-size:12px;
 }
+.with_top_bar_tab > .tabs.tabs_icons li a .icon:hover {
+	color:inherit;
+}
 .with_top_bar_tab > .tabs.tabs_icons li a .icon::after {
 	color:#999;
+	display:none;
 }
 .with_top_bar_tab > .ui-tabs-panel {
 	margin-left:10px;
 	margin-right:10px;
 	border:1px solid #aaa;
-	background:#fff;
+	background:var(--main-template-bg);
 }
 
 /* SECTION */

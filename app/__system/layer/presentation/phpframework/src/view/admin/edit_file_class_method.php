@@ -154,7 +154,7 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 				' . $title . ' <input class="name" type="text" value="' . ($obj_data ? $obj_data["name"] : "") . '" placeHolder="Name" title="Function/Method Name" /> in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($is_class_equal_to_file_name ? dirname($file_path) : $file_path, $obj, $is_class_equal_to_file_name) . '
 			</div>
 			<ul>
-				<li class="save" title="Save"><a onClick="' . $js_save_func_name . '()"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save"><a onClick="' . $js_save_func_name . '()"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>
 	</div>'; if ($obj_data || (!$method_id && $ft == "class_method") || (!$function_id && $ft == "function")) { $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $db_brokers, $data_access_brokers, $ibatis_brokers, $hibernate_brokers, $business_logic_brokers, $presentation_brokers); $common_webroot_path = $EVC->getWebrootPath($EVC->getCommonProjectName()); $ui_menu_widgets_html = WorkFlowPresentationHandler::getUIEditorWidgetsHtml($common_webroot_path, $project_common_url_prefix, $webroot_cache_folder_path, $webroot_cache_folder_url); $ui_menu_widgets_html .= WorkFlowPresentationHandler::getUserUIEditorWidgetsHtml($common_webroot_path, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $main_content .= '

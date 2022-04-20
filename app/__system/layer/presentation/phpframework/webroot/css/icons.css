@@ -522,8 +522,8 @@
 }
 .icon.tasks_flow_tab::before {
 	content:"\f126";
-	-webkit-transform:rotate(180deg);
-	transform:rotate(180deg);
+	-webkit-transform:rotate(180deg) scaleX(-1);
+	transform:rotate(180deg) scaleX(-1);
 	position:absolute;
 	margin-left:2px;
 }

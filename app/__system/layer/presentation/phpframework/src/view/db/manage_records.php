@@ -55,7 +55,7 @@ var table_fks = ' . json_encode($fks) . ';
 var table_extra_fks = ' . json_encode($extra_fks) . ';
 var new_row_html = \'' . addcslashes(str_replace("\n", "", getRowHtml("#idx#", $table_fields, $table_fields_types, $pks, $fks, $extra_fks, $manage_records_url)), "\\'") . '\';
 var new_condition_html = \'' . addcslashes(str_replace("\n", "", getConditionHtml("#field_name#")), "\\'") . '\';
-</script>'; $back_icon = strpos($_SERVER["HTTP_REFERER"], "/db/manage_records?") !== false ? '<li class="back" title="Back Page"><a class="icon go_back" onClick="goBackPage(this)">Go Back</a></li>' : ''; $main_content .= '
+</script>'; $back_icon = strpos($_SERVER["HTTP_REFERER"], "/db/manage_records?") !== false ? '<li class="back" data-title="Back Page"><a class="icon go_back" onClick="goBackPage(this)">Go Back</a></li>' : ''; $main_content .= '
 <div class="top_bar">
 	<header>
 		<div class="title">
@@ -67,7 +67,7 @@ var new_condition_html = \'' . addcslashes(str_replace("\n", "", getConditionHtm
 		</div>
 		<ul>
 			' . $back_icon . '
-			<li class="refresh" title="Refresh Page"><a class="icon refresh" onClick="refreshPage(this)">Refresh</a></li>
+			<li class="refresh" data-title="Refresh Page"><a class="icon refresh" onClick="refreshPage(this)">Refresh</a></li>
 		</ul>
 	</header>
 </div>

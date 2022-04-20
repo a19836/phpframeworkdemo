@@ -48,7 +48,7 @@ var first_node_to_load = ' . json_encode($_GET) . ';
 	<header>
 		<div class="title">Files diff</div>
 		<ul>
-			<li class="execute_diff" title="Execute Diff"><a onclick="diff();"><i class="icon continue"></i> Execute diff</a></li>
+			<li class="execute_diff" data-title="Execute Diff"><a onclick="diff();"><i class="icon continue"></i> Execute diff</a></li>
 		</ul>
 	</header>
 </div>

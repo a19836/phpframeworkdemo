@@ -68,7 +68,7 @@ var available_templates_props = ' . json_encode($available_templates_props) . ';
 	<header>
 		<div class="title">Project Global Variables for project: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($layer_path . $selected_project_id, $P) . '</div>
 		<ul>
-			<li class="save" title="Save"><a onClick="saveGlobalVariables()"><i class="icon save"></i> Save</a></li>
+			<li class="save" data-title="Save"><a onClick="saveGlobalVariables()"><i class="icon save"></i> Save</a></li>
 		</ul>
 	</header>
 </div>

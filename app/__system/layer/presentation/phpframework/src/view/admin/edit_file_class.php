@@ -69,7 +69,7 @@ var new_property_html = \'' . str_replace("'", "\\'", str_replace("\n", "", Work
 				' . ($class_id ? "Edit" : "Add") . ' Class <span class="class_name"></span> in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($is_class_equal_to_file_name ? dirname($file_path) : $file_path, $obj, $is_class_equal_to_file_name) . '
 			</div>
 			<ul>
-				<li class="save" title="Save"><a onClick="saveFileClass({on_success: replaceNewNameInUrl, class_url_attr_name: \'service\'})"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save"><a onClick="saveFileClass({on_success: replaceNewNameInUrl, class_url_attr_name: \'service\'})"><i class="icon save"></i> Save</a></li>
 				<li class="sub_menu">
 					<i class="icon sub_menu"></i>
 					<ul>

@@ -38,8 +38,8 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 		<div class="top_bar">
 			<header>
 				<div class="title">Program Installation</div>
-				<ul class="dropdown" style="display:none;">
-					<li class="continue" title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
+				<ul style="display:none;">
+					<li class="continue" data-title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
 			</header>
 		</div>'; if ($errors) { $main_content .= '<label class="error">There were some erros installing this program, this is:</label>
@@ -88,7 +88,7 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 			<header>
 				<div class="title">Program Installation</div>
 				<ul>
-					<li class="continue" title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
+					<li class="continue" data-title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
 			</header>
 		</div>'; if ($db_drivers) $main_content .= '<div class="db_drivers"><label>The DBs where the program will be installed: </label>' . implode(", ", $db_drivers) . '</div>'; $main_content .= '<div class="layers">
@@ -113,7 +113,7 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 			<header>
 				<div class="title">Program Installation</div>
 				<ul>
-					<li class="continue" title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
+					<li class="continue" data-title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
 			</header>
 		</div>'; if ($info && $info["description"]) $main_content .= '<div class="info"><pre>' . ($info["label"] ? $info["label"] . " - " : "") . str_replace("\n", "<br/>", $info["description"]) . '</pre></div>'; $main_content .= '
@@ -152,7 +152,7 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 			<header>
 				<div class="title">Program Installation</div>
 				<ul>
-					<li class="continue" title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
+					<li class="continue" data-title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
 			</header>
 		</div>

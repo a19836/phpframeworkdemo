@@ -22,6 +22,7 @@ function onChangeTemplateLayoutScreenToMobile(elm) {
 
 function onChangeTemplateLayoutScreenSize(elm) {
 	var p = $(elm).parent().closest(".iframe_toolbar");
+	var main_parent = p.parent();
 	var is_desktop = p.hasClass("desktop");
 	var width = "";
 	var height = "";
@@ -32,7 +33,22 @@ function onChangeTemplateLayoutScreenSize(elm) {
 		height = p.children(".height").val();
 	}
 	
-	var iframe = p.parent().children("iframe");
+	var max_width = main_parent.width();
+	var max_height = main_parent.height();
+	
+	if ($.isNumeric(width) && width > max_width) {
+		StatusMessageHandler.showError("Width of " + width + "px exceeds the maximum width of " + max_width + "px!");
+		width = max_width;
+		p.children(".width").val(width);
+	}
+	
+	if ($.isNumeric(height) && height > max_height) {
+		StatusMessageHandler.showError("Height of " + height + "px exceeds the maximum height of " + max_height + "px!");
+		height = max_height;
+		p.children(".height").val(height);
+	}
+	
+	var iframe = main_parent.children("iframe");
 	var iframe_body = $(iframe[0].contentWindow.document.body);
 	iframe.css({"width": width, "height": height});
 	

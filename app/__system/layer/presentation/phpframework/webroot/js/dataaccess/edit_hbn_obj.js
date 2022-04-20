@@ -45,15 +45,18 @@ function toggleHbnObjAdvancedSettings(elm) {
 	var advanced_settings = $(".advanced_settings");
 	var simple_settings = $(".simple_settings");
 	var input = elm.children("input");
+	var span = elm.children("span");
 	var is_shown = advanced_settings.is(":visible");
 	
 	if (is_shown) {
-		input.prop("checked", false).removeAttr("checked");
+		input.removeAttr("checked").prop("checked", false);
+		span.html("Show Advanced Settings");
 		advanced_settings.hide();
 		simple_settings.show();
 	}
 	else {
-		input.prop("checked", true).attr("checked", "checked");
+		input.attr("checked", "checked").prop("checked", true);
+		span.html("Hide Advanced Settings");
 		advanced_settings.show();
 		simple_settings.hide();
 	}

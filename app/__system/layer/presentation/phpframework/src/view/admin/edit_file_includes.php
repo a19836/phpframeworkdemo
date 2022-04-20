@@ -60,7 +60,7 @@ var new_include_html = \'' . str_replace("'", "\\'", str_replace("\n", "", WorkF
 		<header>
 			<div class="title">Manage Includes in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj, true) . '</div>
 			<ul>
-				<li class="save" title="Save"><a onClick="saveIncludes()"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save"><a onClick="saveIncludes()"><i class="icon save"></i> Save</a></li>
 				<li class="sub_menu">
 					<i class="icon sub_menu"></i>
 					<ul>

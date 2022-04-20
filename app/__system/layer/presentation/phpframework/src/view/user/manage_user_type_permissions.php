@@ -48,7 +48,7 @@ var get_user_type_permissions_url = \'' . $project_url_prefix . 'user/get_user_t
 		<header>
 			<div class="title">Manage User Type Permissions</div>
 			<ul>
-				<li class="save" title="Save"><a onClick="submitForm(this)"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save"><a onClick="submitForm(this)"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>
 	</div>

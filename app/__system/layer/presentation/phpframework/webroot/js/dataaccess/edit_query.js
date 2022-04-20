@@ -1979,15 +1979,21 @@ function toggleMainSettingsPanel(elm, prefix_class) {
 	var selector = (prefix_class ? prefix_class : "") + " .data_access_obj";
 	var data_access_obj = $(selector);
 	var settings = data_access_obj.find(".relationship").find(".settings");
-	var input = $(".top_bar header ul li.toggle_main_settings > a input");
+	var toggle_main_settings = $(".top_bar header ul li.toggle_main_settings");
+	var input = toggle_main_settings.find("input");
+	var span = toggle_main_settings.find("span");
 	
 	settings.toggleClass("collapsed");
 	settings.children(".settings_header").children(".icon.minimize, .icon.maximize").toggleClass("maximize").toggleClass("minimize");
 	
-	if (settings.hasClass("collapsed"))
+	if (settings.hasClass("collapsed")) {
 		input.prop("checked", false).removeAttr("checked");
-	else
+		span.html("Show Main Settings");
+	}
+	else {
 		input.prop("checked", true).attr("checked", "checked");
+		span.html("Hide Main Settings");
+	}
 }
 
 function initMainSettingsPanel() {

@@ -102,7 +102,7 @@ $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQu
 			<header>
 				<div class="title">Automatic Create Business Logic Files in \'' . $path . '\':</div>
 				<ul>
-					<li class="continue" title="Continue"><a onClick="submitForm(this, checkChooseFiles);"><i class="icon continue"></i> Continue</a></li>
+					<li class="continue" data-title="Continue"><a onClick="submitForm(this, checkChooseFiles);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
 			</header>
 		</div>

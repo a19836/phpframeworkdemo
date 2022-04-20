@@ -45,7 +45,7 @@ var old_obj_id = null;
 		<header>
 			<div class="title">Manage Includes in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj) . '</div>
 			<ul>
-				<li class="save" title="Save Includes"><a onClick="saveIbatisObject()"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save Includes"><a onClick="saveIbatisObject()"><i class="icon save"></i> Save</a></li>
 				<li class="sub_menu">
 					<i class="icon sub_menu"></i>
 					<ul>

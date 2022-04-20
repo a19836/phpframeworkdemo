@@ -91,6 +91,7 @@ function updateSingleQueryRelationshipType(elm, rand_number) {
 function showOrHideSingleQuerySettings(elm, rand_number) {
 	elm = $(elm);
 	var input = elm.children("input");
+	var span = elm.children("span");
 	var query_select = $(".edit_single_query .data_access_obj .relationships .relationship .query .query_select");
 	var settings = query_select.find(".query_settings");
 	
@@ -99,6 +100,7 @@ function showOrHideSingleQuerySettings(elm, rand_number) {
 		
 		if(settings.css("display") == "none") {//show
 			input.attr("checked", "checked").prop("checked", true);
+			span.html("Hide Query Settings");
 			
 			settings.slideDown("slow", function() {
 				elm.addClass("active");
@@ -110,6 +112,7 @@ function showOrHideSingleQuerySettings(elm, rand_number) {
 		}
 		else {//hide
 			input.removeAttr("checked").prop("checked", false);
+			span.html("Show Query Settings");
 			
 			settings.slideUp("slow", function() {
 				elm.removeClass("active");
@@ -125,6 +128,7 @@ function showOrHideSingleQuerySettings(elm, rand_number) {
 function showOrHideSingleQueryUI(elm, rand_number) {
 	elm = $(elm);
 	var input = elm.children("input");
+	var span = elm.children("span");
 	var query_select = $(".edit_single_query .data_access_obj .relationships .relationship .query .query_select");
 	var a = query_select.find(".query_ui .taskflowchart .workflow_menu .toggle_ui a")[0];
 	var is_shown = elm.hasClass("active");
@@ -134,10 +138,12 @@ function showOrHideSingleQueryUI(elm, rand_number) {
 	if (is_shown) {
 		elm.removeClass("active");
 		input.removeAttr("checked").prop("checked", false);
+		span.html("Show Query Diagram");
 	}
 	else {
 		elm.addClass("active");
 		input.attr("checked", "checked").prop("checked", true);
+		span.html("Hide Query Diagram");
 		query_select.removeClass("hide_taskflowchart");
 		
 		MyFancyPopup.updatePopup();
@@ -171,6 +177,7 @@ function onChangeIsConvertableSQL(elm) {
 	elm = $(elm);
 	var edit_single_query = $(".edit_single_query");
 	var input = elm.find("input");
+	var span = elm.find("span");
 	
 	edit_single_query.toggleClass("covertable_sql");
 	
@@ -178,6 +185,7 @@ function onChangeIsConvertableSQL(elm) {
 	
 	if (is_covertable_sql) {
 		input.attr("checked", "checked").prop("checked", true);
+		span.html("Disable SQL convertable");
 		
 		if (elm.attr("previous_auto_convert") == 1) {
 			enableAutoConvert(onToggleQueryAutoConvert);
@@ -191,6 +199,7 @@ function onChangeIsConvertableSQL(elm) {
 	}
 	else {
 		input.removeAttr("checked", "checked").prop("checked", false);
+		span.html("Enable SQL convertable");
 		elm.attr("previous_auto_convert", auto_convert ? 1 : 0);
 		disableAutoConvert(onToggleQueryAutoConvert);
 	}

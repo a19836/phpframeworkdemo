@@ -51,7 +51,7 @@ var create_test_url = "' . $create_test_url . '";
 		<header>
 			<div class="title">Manage Test Units</div>
 			<ul>
-				<li class="execute" title="Execute Selected Tests"><a onClick="executeSelectedTests(true)"><i class="icon continue"></i> Execute Selected Tests</a></li>
+				<li class="execute" data-title="Execute Selected Tests"><a onClick="executeSelectedTests(true)"><i class="icon continue"></i> Execute Selected Tests</a></li>
 			</ul>
 		</header>
 	</div>

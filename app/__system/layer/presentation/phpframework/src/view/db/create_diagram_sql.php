@@ -39,7 +39,7 @@ $head = '
 		<header>
 			<div class="title">DB Diagram\'s SQL</div>
 			<ul>
-				<li class="execute" title="Execute SQL"><a onClick="execute()"><i class="icon continue"></i> Execute</a></li>
+				<li class="execute" data-title="Execute SQL"><a onClick="execute()"><i class="icon continue"></i> Execute</a></li>
 			</ul>
 		</header>
 	</div>'; if ($_POST) { $main_content .= '

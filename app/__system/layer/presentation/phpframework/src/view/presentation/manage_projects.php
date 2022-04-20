@@ -44,7 +44,7 @@ $head = '
 			<span class="info">' . ($default_layer == $bean_folder ? 'This is the default layer' : 'This is NOT the default layer') . '</span>
 		</div>
 		<ul>
-			<li class="save" title="Save"><a onClick="submitForm(this)"><i class="icon save"></i> Save</a>
+			<li class="save" data-title="Save"><a onClick="submitForm(this)"><i class="icon save"></i> Save</a>
 		</ul>
 	</header>
 </div>

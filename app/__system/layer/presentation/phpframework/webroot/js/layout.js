@@ -28,7 +28,8 @@ function addAutoSaveMenu(selector, callback) {
 			callback = "onToggleAutoSave";
 		
 		item = $('<li class="auto_save_activation" title="Is Auto Save Active" onClick="toggleAutoSaveCheckbox(this, ' + callback + ')">'
-					+ '<i class="icon auto_save_activation"></i> Auto Save On: '
+					+ '<i class="icon auto_save_activation"></i>'
+					+ ' <span>Enable Auto Save</span> ' //space is very important here, otherwise the label won't be aligned with the other submenus
 					+ '<input type="checkbox" value="1">'
 				+ '</li>');
 		
@@ -76,31 +77,43 @@ function disableAutoSave(callback) {
 		callback();
 }
 function onToggleAutoSave() {
-	var inputs = $(".top_bar li.auto_save_activation input");
+	var li = $(".top_bar li.auto_save_activation");
+	var input = li.find("input");
+	var span = li.find("span");
 	
 	if (auto_save) {
-		inputs.attr("checked", "checked").prop("checked", true);
+		li.addClass("active");
+		input.attr("checked", "checked").prop("checked", true);
+		span.html("Disable Auto Save");
 	}
 	else {
-		inputs.removeAttr("checked").prop("checked", false);
+		li.removeClass("active");
+		input.removeAttr("checked").prop("checked", false);
+		span.html("Enable Auto Save");
 	}
 }
 function onToggleWorkflowAutoSave() {
-	var inputs = $(".taskflowchart .workflow_menu ul.dropdown li.auto_save_activation input");
+	var li = $(".taskflowchart .workflow_menu ul.dropdown li.auto_save_activation");
+	var input = li.find("input");
+	var span = li.find("span");
 	
 	if (auto_save) {
 		jsPlumbWorkFlow.jsPlumbTaskFile.auto_save = false; //should be false bc the saveObj calls the getCodeForSaving method which already saves the workflow by default, and we don't need 2 saves at the same time.
 		jsPlumbWorkFlow.jsPlumbProperty.auto_save = true;
 		$(".taskflowchart").removeClass("auto_save_disabled");
 		
-		inputs.attr("checked", "checked").prop("checked", true);
+		li.addClass("active");
+		input.attr("checked", "checked").prop("checked", true);
+		span.html("Disable Auto Save");
 	}
 	else {
 		jsPlumbWorkFlow.jsPlumbTaskFile.auto_save = false;
 		jsPlumbWorkFlow.jsPlumbProperty.auto_save = false;
 		$(".taskflowchart").addClass("auto_save_disabled");
 		
-		inputs.removeAttr("checked").prop("checked", false);
+		li.removeClass("active");
+		input.removeAttr("checked").prop("checked", false);
+		span.html("Enable Auto Save");
 	}
 }
 function prepareAutoSaveVars() {
@@ -128,7 +141,8 @@ function addAutoConvertMenu(selector, callback) {
 			callback = "onToggleAutoConvert";
 		
 		item = $('<li class="auto_convert_activation" title="Is Auto Convert Active" onClick="toggleAutoConvertCheckbox(this, ' + callback + ')">'
-					+ '<i class="icon auto_convert_activation"></i> Auto Convert On: '
+					+ '<i class="icon auto_convert_activation"></i>'
+					+ ' <span>Enable Auto Convert</span> ' //space is very important here, otherwise the label won't be aligned with the other submenus
 					+ '<input type="checkbox" value="1">'
 				+ '</li>');
 		
@@ -158,23 +172,35 @@ function disableAutoConvert(callback) {
 		callback();
 }
 function onToggleAutoConvert() {
-	var inputs = $(".top_bar li.auto_convert_activation input");
+	var li = $(".top_bar li.auto_convert_activation");
+	var input = li.find("input");
+	var span = li.find("span");
 	
 	if (auto_convert) {
-		inputs.attr("checked", "checked").prop("checked", true);
+		li.addClass("active");
+		input.attr("checked", "checked").prop("checked", true);
+		span.html("Disable Auto Convert");
 	}
 	else {
-		inputs.removeAttr("checked").prop("checked", false);
+		li.removeClass("active");
+		input.removeAttr("checked").prop("checked", false);
+		span.html("Enable Auto Convert");
 	}
 }
 function onToggleWorkflowAutoConvert() {
-	var inputs = $(".taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation input");
+	var li = $(".taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation");
+	var input = li.find("input");
+	var span = li.find("span");
 	
 	if (auto_convert) {
-		inputs.attr("checked", "checked").prop("checked", true);
+		li.addClass("active");
+		input.attr("checked", "checked").prop("checked", true);
+		span.html("Disable Auto Convert");
 	}
 	else {
-		inputs.removeAttr("checked").prop("checked", false);
+		li.removeClass("active");
+		input.removeAttr("checked").prop("checked", false);
+		span.html("Enable Auto Convert");
 	}
 }
 

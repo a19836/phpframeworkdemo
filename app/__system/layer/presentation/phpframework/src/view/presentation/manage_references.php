@@ -63,7 +63,7 @@ if ($layout_type_id) { include $EVC->getUtilPath("WorkFlowPresentationHandler");
 			<header>
 				<div class="title">Manage References for project: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($layer_path . $selected_project_id, $P) . '</div>
 				<ul>
-					<li class="save" title="Save"><a onclick="submitForm(this)"><i class="icon save"></i> Save</a>
+					<li class="save" data-title="Save"><a onclick="submitForm(this)"><i class="icon save"></i> Save</a>
 				</ul>
 			</header>
 		</div>

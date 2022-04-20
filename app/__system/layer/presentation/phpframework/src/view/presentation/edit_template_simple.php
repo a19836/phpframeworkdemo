@@ -82,18 +82,18 @@ var layer_default_template = \'' . $selected_template . '\';
 '; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= '</script>'; $head .= CMSPresentationLayerUIHandler::getHeader($project_url_prefix, $project_common_url_prefix, $get_available_blocks_list_url, $get_block_params_url, $create_entity_code_url, $available_blocks_list, $regions_blocks_list, $block_params_values_list, $blocks_join_points, $template_params_values_list, $selected_project_id, true); $head .= LayoutTypeProjectUIHandler::getHeader(); $query_string = str_replace(array("&edit_template_type=advanced", "&edit_template_type=simple"), "", $_SERVER["QUERY_STRING"]); $main_content = '
 	<div class="top_bar">
 		<header>
-			<div class="title">Edit Template: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $P, true) . '</div>
+			<div class="title">Edit Template (Visual Workspace): ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $P, true) . '</div>
 			<ul>
-				<li class="preview" title="Preview Template"><a onClick="preview()"><i class="icon view"></i> Preview Template</a></li>
-				<li class="save" title="Save Template"><a onClick="saveTemplate()"><i class="icon save"></i> Save</a></li>
+				<li class="preview" data-title="Preview Template"><a onClick="preview()"><i class="icon view"></i> Preview Template</a></li>
+				<li class="save" data-title="Save Template"><a onClick="saveTemplate()"><i class="icon save"></i> Save</a></li>
 				<li class="sub_menu">
 					<i class="icon sub_menu"></i>
 					<ul>
 						<li class="show_advanced_ui" title="Switch to Code Workspace"><a href="?' . $query_string . '&edit_template_type=advanced"><i class="icon show_advanced_ui"></i> Switch to Code Workspace</a></li>
 						<li class="separator"></li>
-						<li class="toggle_advanced_items" title="Toggle Advanced Items"><a onClick="toggleAdvancedItems(this)"><i class="icon toggle_advanced_items"></i> Toggle Advanced Items <input type="checkbox"/></a></li>
-						<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleSettingsPanel(this)"><i class="icon toggle_main_settings"></i> Toggle Main Settings <input type="checkbox"/></a></li>
-						<!--li class="toggle_widget_settings" title="Toggle Widget Settings"><a onClick="toggleWidgetSettings(this)"><i class="icon toggle_widget_settings"></i> Toggle Widget Settings <input type="checkbox"/></a></li-->
+						<li class="toggle_advanced_items" title="Toggle Advanced Items"><a onClick="toggleAdvancedItems(this)"><i class="icon toggle_advanced_items"></i> <span>Show Advanced Items</span> <input type="checkbox"/></a></li>
+						<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleSettingsPanel(this)"><i class="icon toggle_main_settings"></i> <span>Show Main Settings</span> <input type="checkbox"/></a></li>
+						<!--li class="toggle_widget_settings" title="Toggle Widget Settings"><a onClick="toggleWidgetSettings(this)"><i class="icon toggle_widget_settings"></i> <span>Show Widget Settings</span> <input type="checkbox"/></a></li-->
 						<li class="separator"></li>
 						<li class="update_layout_from_settings" title="Update Settings to Layout UI"><a onClick="updateCodeEditorLayoutFromSettings( $(\'.template_obj\') )"><i class="icon update_layout_from_settings"></i> Update Settings to Layout UI</a></li>
 						<li class="separator"></li>

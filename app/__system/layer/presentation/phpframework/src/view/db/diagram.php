@@ -36,7 +36,7 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHan
 		<header>
 			<div class="title">Tables Diagram from DB: \'' . $bean_name . '\'</div>
 			<ul>
-				<li class="save" title="Save"><a onClick="saveDBDiagram()"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save"><a onClick="saveDBDiagram()"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>
 	</div>'; $main_content .= $WorkFlowUIHandler->getContent(); if ($DBDriver) $main_content .= '<script>

@@ -27,32 +27,44 @@ $(function () {
 /* AUTO SAVE & CONVERT FUNCTIONS */
 
 function onTogglePHPCodeAutoSave() {
-	var inputs = $("#code .code_menu ul li.auto_save_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_activation input, #code .layout_ui_editor > .options li.auto_save_activation input");
+	var lis = $("#code .code_menu ul li.auto_save_activation, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_activation, #code .layout_ui_editor > .options li.auto_save_activation");
+	var inputs = lis.find("input");
+	var spans = lis.find("span");
 	
 	if (auto_save) {
 		jsPlumbWorkFlow.jsPlumbTaskFile.auto_save = false; //should be false bc the saveObj calls the getCodeForSaving method which already saves the workflow by default, and we don't need 2 saves at the same time.
 		jsPlumbWorkFlow.jsPlumbProperty.auto_save = true;
 		$(".taskflowchart").removeClass("auto_save_disabled");
 		
+		lis.addClass("active");
 		inputs.attr("checked", "checked").prop("checked", true);
+		spans.html("Disable Auto Save");
 	}
 	else {
 		jsPlumbWorkFlow.jsPlumbTaskFile.auto_save = false;
 		jsPlumbWorkFlow.jsPlumbProperty.auto_save = false;
 		$(".taskflowchart").addClass("auto_save_disabled");
 		
+		lis.removeClass("active");
 		inputs.removeAttr("checked", "checked").prop("checked", false);
+		spans.html("Enable Auto Save");
 	}
 }
 
 function onTogglePHPCodeAutoConvert() {
-	var inputs = $("#code .code_menu ul li.auto_convert_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation input, #code .layout_ui_editor > .options li.auto_convert_activation input");
+	var lis = $("#code .code_menu ul li.auto_convert_activation, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation, #code .layout_ui_editor > .options li.auto_convert_activation");
+	var inputs = lis.find("input");
+	var spans = lis.find("span");
 	
 	if (auto_convert) {
+		lis.addClass("active");
 		inputs.attr("checked", "checked").prop("checked", true);
+		spans.html("Disable Auto Convert");
 	}
 	else {
+		lis.removeClass("active");
 		inputs.removeAttr("checked").prop("checked", false);
+		spans.html("Enable Auto Convert");
 	}
 	
 	var PtlLayoutUIEditor = $(".layout_ui_editor").data("LayoutUIEditor");
