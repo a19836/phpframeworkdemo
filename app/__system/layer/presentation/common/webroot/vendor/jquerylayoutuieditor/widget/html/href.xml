@@ -22,7 +22,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-href,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-href,
 		  body > .menu-widget.menu-widget-href.ui-draggable-dragging {
 			height:auto;
 			display:inline-block;
@@ -31,22 +31,22 @@
 			color:inherit;
 			overflow:hidden;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-href i,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-href i,
 		  body > .menu-widget.menu-widget-href.ui-draggable-dragging i {
 			font-size:300%;
 		}
 		
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-href {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-href {
 			border-radius:0 5px 5px 0;
 		}
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-href .options .option.toggle {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-href .options .option.toggle {
 			display:none;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-href > .settings-properties .href.with-search-icon input {
+		.layout-ui-editor > .menu-settings.menu-settings-href > .settings-properties .href.with-search-icon input {
 			padding-right:20px;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-href > .settings-properties .href .search {
+		.layout-ui-editor > .menu-settings.menu-settings-href > .settings-properties .href .search {
 			display:inline-block;
 			float:none;
 			clear:both;

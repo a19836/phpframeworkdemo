@@ -33,15 +33,13 @@
 	background:url("../img/disable_icon.png") 4px 4px no-repeat;
 }
 
-.jsplumbtaskworkflow .selected_task_properties, 
-  .jsplumbtaskworkflow .selected_connection_properties {
+.selected_task_properties, 
+  .selected_connection_properties {
 	height:auto !important; /* important must be here and height must be auto bc if we change the connection properties to REST and add multiple options the popup height will be increased and must get updated accordingly */
 }
-.jsplumbtaskworkflow .selected_task_properties > .maximize_minimize_icon, 
-  .jsplumbtaskworkflow .selected_connection_properties > .maximize_minimize_icon,
-  .jsplumbtaskworkflow .selected_task_properties > .expand_collapse_icon, 
-  .jsplumbtaskworkflow .selected_connection_properties > .expand_collapse_icon {
-	display:none;
+.selected_task_properties > .maximize_minimize_icon, 
+  .selected_connection_properties > .maximize_minimize_icon {
+	display:none !important;
 }
 
 /* TASK BROKER SERVERS PROPERTIES */

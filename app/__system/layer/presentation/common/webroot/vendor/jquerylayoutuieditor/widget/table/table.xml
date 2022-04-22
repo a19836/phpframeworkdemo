@@ -41,7 +41,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-table,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-table,
 		  body > .menu-widget.menu-widget-table.ui-draggable-dragging {
 			height:4.5em;
 			display:inline-block;
@@ -50,7 +50,7 @@
 			color:inherit;
 			overflow:hidden;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-table i,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-table i,
 		  body > .menu-widget.menu-widget-table.ui-draggable-dragging i {
 			font-size:450%;
 		}

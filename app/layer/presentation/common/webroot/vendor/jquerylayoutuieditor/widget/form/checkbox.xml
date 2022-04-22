@@ -25,7 +25,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-checkbox,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-checkbox,
 		  body > .menu-widget.menu-widget-checkbox.ui-draggable-dragging {
 			width:25px;
 			height:25px;
@@ -34,17 +34,17 @@
 			border:none;
 		}
 		
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-checkbox > span,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-checkbox > span,
 		  body > .menu-widget.menu-widget-checkbox.ui-draggable-dragging > span {
 			font-size:25px;
 			color:#999;
 		}
 		
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-checkbox {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-checkbox {
 			border-radius:0 5px 5px 0;
 		}
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-checkbox > label,
-		  .layout_ui_editor > .template-widgets .widget-header.widget-header-checkbox .options .option.toggle {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-checkbox > label,
+		  .layout-ui-editor > .template-widgets .widget-header.widget-header-checkbox .options .option.toggle {
 			display:none;
 		}
 	]]></menu_css>

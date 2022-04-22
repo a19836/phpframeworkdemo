@@ -1279,7 +1279,7 @@ function editRegionBlock(elm, opts) {
 		var html = getRegionBlockHtmlEditorValue(block_html);
 		
 		var popup = $(".template_region_block_html_editor_popup");
-		var layout_ui_editor_elm = popup.children(".layout_ui_editor");
+		var layout_ui_editor_elm = popup.children(".layout-ui-editor");
 		var PtlLayoutUIEditor = null;
 		
 		if (!layout_ui_editor_elm[0].hasAttribute("inited")) {
@@ -3256,7 +3256,7 @@ function updateModuleInfoData(module_info_tooltip, data) {
 function onClickLayoutEditorUICodeTab(elm) {
 	onClickCodeEditorTab(elm);
 	
-	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout_ui_editor").data("LayoutUIEditor");
+	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 	
 	if (PtlLayoutUIEditor) {
 		var luie = PtlLayoutUIEditor.getUI();
@@ -3270,7 +3270,7 @@ function onClickLayoutEditorUICodeTab(elm) {
 function onClickLayoutEditorUIVisualTab(elm) {
 	onClickCodeEditorTab(elm);
 	
-	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout_ui_editor").data("LayoutUIEditor");
+	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 	
 	if (PtlLayoutUIEditor) {
 		var luie = PtlLayoutUIEditor.getUI();
@@ -3288,7 +3288,7 @@ function onClickLayoutEditorUITaskWorkflowTab(elm) {
 		var previous_active_tab = ul.children(".ui-state-active");
 		
 		if (previous_active_tab.attr("id") == "visual_editor_tab") {
-			var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout_ui_editor").data("LayoutUIEditor");
+			var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 			
 			if (PtlLayoutUIEditor) {
 				//convert visual to code
@@ -3330,7 +3330,7 @@ function initCodeLayoutUIEditor(main_obj, opts) {
 	});
 	chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer.init("layout_ui_editor_right_container");
 	
-	var textarea = main_obj.find(".layout_ui_editor textarea")[0];
+	var textarea = main_obj.find(".layout-ui-editor textarea")[0];
 	var editor = createCodeLayoutUIEDitorEditor(textarea, opts);
 	
 	if (editor)
@@ -3340,7 +3340,7 @@ function initCodeLayoutUIEditor(main_obj, opts) {
 function setCodeLayoutUIEditorTreeItemsDraggableEvent(ul) {
 	ul = $(ul);
 	
-	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout_ui_editor").data("LayoutUIEditor");
+	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 	var cmob = PtlLayoutUIEditor.getMenuWidgets().find(".menu-widget-call-tree-module-or-block");
 	var cmob_attributes = cmob[0].attributes;
 	var cmob_template_widget = cmob.children(".template-widget");
@@ -3384,7 +3384,7 @@ function onCodeLayoutUIEditorModuleBlockWidgetDragAndDrop(widget, tree_obj) {
 		},
 		onClose: function() {
 			//update menu layer
-			var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout_ui_editor").data("LayoutUIEditor");
+			var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 			
 			if (PtlLayoutUIEditor)
 				PtlLayoutUIEditor.deleteTemplateWidget(widget); //update menu layer from layout ui editor
@@ -3530,7 +3530,7 @@ function chooseCodeLayoutUIEditorImportModulePopup(url) {
 						else {
 							alert("Error trying to create block! Please try again...");
 							
-							var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout_ui_editor").data("LayoutUIEditor");
+							var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 							if (PtlLayoutUIEditor)
 								PtlLayoutUIEditor.deleteTemplateWidget(widget); //update menu layer from layout ui editor
 						}
@@ -3556,7 +3556,7 @@ function chooseCodeLayoutUIEditorImportModulePopup(url) {
 }
 
 function updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block_id, project) {
-	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout_ui_editor").data("LayoutUIEditor");
+	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 	
 	if (PtlLayoutUIEditor) {
 		var TemplateCallModuleOrBlockWidgetObj = PtlLayoutUIEditor.menu_widgets_objs["call-module-or-block"];
@@ -3626,17 +3626,19 @@ function createCodeLayoutUIEDitorEditor(textarea, opts) {
 					options.find(".show-widgets, .show-layers, .show-layout-options").removeClass("option-active");
 					$(this).addClass("option-active");
 					
-					if (!luie.hasClass("fixed_properties") && !luie.hasClass("fixed_side_properties")) {
+					if (!luie.hasClass("fixed-properties") && !luie.hasClass("fixed-side-properties")) {
 						menu_settings.fadeOut("slow");
 						options.find(".show-settings").removeClass("option-active");
 					}
         			});
         			options.find(".show-widgets").before(right_container_icon);
         			
-        			options.find(".show-widgets, .show-layers, .show-layout-options" + (!luie.hasClass("fixed_properties") && !luie.hasClass("fixed_side_properties") ? ", .show-settings" : "")).click(function() {
+        			options.find(".show-widgets, .show-layers, .show-layout-options" + (!luie.hasClass("fixed-properties") && !luie.hasClass("fixed-side-properties") ? ", .show-settings" : "")).click(function() {
         				right_container_icon.removeClass("option-active");
         				right_container.fadeOut("slow");
         			});
+        			
+        			options.find(".show-option-panel").append('<option value="show-right-container">Modules, Blocks and DB Drivers</option>');
 				
 				//prepare save button
         			var code_layout_ui_editor = $(".code_layout_ui_editor");
@@ -3716,7 +3718,7 @@ function createCodeLayoutUIEDitorEditor(textarea, opts) {
 //To be used in the toggleFullScreen function
 function onToggleCodeEditorFullScreen(in_full_screen, main_obj) {
 	setTimeout(function() {
-		var PtlLayoutUIEditor = main_obj.find(".layout_ui_editor").data("LayoutUIEditor");
+		var PtlLayoutUIEditor = main_obj.find(".layout-ui-editor").data("LayoutUIEditor");
 		var menu_settings = PtlLayoutUIEditor.getMenuSettings();
 		
 		if (menu_settings.is(":visible"))
@@ -3789,7 +3791,7 @@ function onResizeCodeLayoutUIEditorWithRightContainer(props) {
 }*/
 
 function getCodeLayoutUIEditorCode(main_obj) {
-	var PtlLayoutUIEditor = main_obj.find(".layout_ui_editor").data("LayoutUIEditor");
+	var PtlLayoutUIEditor = main_obj.find(".layout-ui-editor").data("LayoutUIEditor");
 	var code = null;
 	
 	if (PtlLayoutUIEditor) {
@@ -3816,11 +3818,11 @@ function getCodeLayoutUIEditorCode(main_obj) {
 	}
 	
 	var editor = main_obj.data("editor");
-	return editor ? editor.getValue() : main_obj.find(".layout_ui_editor > .template-source > textarea").first().val();
+	return editor ? editor.getValue() : main_obj.find(".layout-ui-editor > .template-source > textarea").first().val();
 }
 
 function setCodeLayoutUIEditorCode(main_obj, code) {
-	var PtlLayoutUIEditor = main_obj.find(".layout_ui_editor").data("LayoutUIEditor");
+	var PtlLayoutUIEditor = main_obj.find(".layout-ui-editor").data("LayoutUIEditor");
 	
 	if (PtlLayoutUIEditor) {
 		PtlLayoutUIEditor.forceTemplateSourceConversionAutomatically(); //Be sure that the template source is selected
@@ -3832,5 +3834,5 @@ function setCodeLayoutUIEditorCode(main_obj, code) {
 	}
 	
 	var editor = PtlLayoutUIEditor.data("editor");
-	return editor ? editor.setValue(code) : main_obj.find(".layout_ui_editor > .template-source > textarea").first().val(code);
+	return editor ? editor.setValue(code) : main_obj.find(".layout-ui-editor > .template-source > textarea").first().val(code);
 }

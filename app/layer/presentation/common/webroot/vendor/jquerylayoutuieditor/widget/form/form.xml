@@ -35,7 +35,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-form,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-form,
 		  body > .menu-widget.menu-widget-form.ui-draggable-dragging {
 			height:3em;
 			padding:1.3em 0 0;
@@ -46,10 +46,10 @@
 			overflow:hidden;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-form > .settings-properties .action.with-search-icon input {
+		.layout-ui-editor > .menu-settings.menu-settings-form > .settings-properties .action.with-search-icon input {
 			padding-right:20px;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-form > .settings-properties .action .search {
+		.layout-ui-editor > .menu-settings.menu-settings-form > .settings-properties .action .search {
 			display:inline-block;
 			float:none;
 			clear:both;

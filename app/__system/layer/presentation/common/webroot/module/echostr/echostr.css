@@ -35,33 +35,33 @@ body > .cke_screen_reader_only { /* cke editor creates this automatically */
 	display:none;
 } 
 
-/* layout_ui_editor */
-.echostr_settings .layout_ui_editor {
+/* layout-ui-editor */
+.echostr_settings .layout-ui-editor {
 	height:calc(100% - 40px);
 	min-height:315px;
 	border:1px solid #ccc;
 	z-index:101;
 }
-.echostr_settings .layout_ui_editor > .options .options-left,
-  .echostr_settings .layout_ui_editor > .options .options-center,
-  .echostr_settings .layout_ui_editor > .options .options-right,
-  .echostr_settings .layout_ui_editor > .options .options-right-2 {
+.echostr_settings .layout-ui-editor > .options .options-left,
+  .echostr_settings .layout-ui-editor > .options .options-center,
+  .echostr_settings .layout-ui-editor > .options .options-right,
+  .echostr_settings .layout-ui-editor > .options .options-right-2 {
 	padding-top:7px;
 }
-.echostr_settings .layout_ui_editor > .options .option.show-full-source,
-  .echostr_settings .layout_ui_editor > .options .option.full-screen {
+.echostr_settings .layout-ui-editor > .options .option.show-full-source,
+  .echostr_settings .layout-ui-editor > .options .option.full-screen {
 	display:none !important;
 }
-.echostr_settings .layout_ui_editor .tabs .tab.view-page {
+.echostr_settings .layout-ui-editor .tabs .tab.view-page {
 	opacity:.4;
 	float:left;
 }
-.echostr_settings .layout_ui_editor > .menu-widgets, 
-  .echostr_settings .layout_ui_editor > .menu-layers, 
-  .echostr_settings .layout_ui_editor > .menu-settings, 
-  .echostr_settings .layout_ui_editor > .template-widgets-options,
-  .echostr_settings .layout_ui_editor > .template-widgets,
-  .echostr_settings .layout_ui_editor > .resize-panels,
-  .echostr_settings .layout_ui_editor > .messages {
+.echostr_settings .layout-ui-editor > .menu-widgets, 
+  .echostr_settings .layout-ui-editor > .menu-layers, 
+  .echostr_settings .layout-ui-editor > .menu-settings, 
+  .echostr_settings .layout-ui-editor > .template-widgets-options,
+  .echostr_settings .layout-ui-editor > .template-widgets,
+  .echostr_settings .layout-ui-editor > .resize-panels,
+  .echostr_settings .layout-ui-editor > .messages {
 	bottom:0;
 }

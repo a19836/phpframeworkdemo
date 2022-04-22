@@ -11,7 +11,7 @@
 	]]></template_widget>
 	<properties></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-region-param,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-region-param,
 		  body > .menu-widget.menu-widget-region-param.ui-draggable-dragging {
 			height:auto;
 			background:#333;
@@ -22,23 +22,23 @@
 			font-size:16px;
 		}
 		
-		.layout_ui_editor > .template-widgets > .widget-header.widget-header-region-param .options .props,
-		   .layout_ui_editor > .template-widgets > .widget-header.widget-header-region-param .options .toggle {
+		.layout-ui-editor > .template-widgets > .widget-header.widget-header-region-param .options .props,
+		   .layout-ui-editor > .template-widgets > .widget-header.widget-header-region-param .options .toggle {
 			display:none !important;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-region-param .settings-id,
-		   .layout_ui_editor > .menu-settings.menu-settings-region-param .settings-classes,
-		   .layout_ui_editor > .menu-settings.menu-settings-region-param .settings-properties,
-		   .layout_ui_editor > .menu-settings.menu-settings-region-param .settings-general,
-		   .layout_ui_editor > .menu-settings.menu-settings-region-param .settings-dimension,
-		   .layout_ui_editor > .menu-settings.menu-settings-region-param .settings-typography,
-		   .layout_ui_editor > .menu-settings.menu-settings-region-param .settings-decorations,
-		   .layout_ui_editor > .menu-settings.menu-settings-region-param .settings-extra {
+		.layout-ui-editor > .menu-settings.menu-settings-region-param .settings-id,
+		   .layout-ui-editor > .menu-settings.menu-settings-region-param .settings-classes,
+		   .layout-ui-editor > .menu-settings.menu-settings-region-param .settings-properties,
+		   .layout-ui-editor > .menu-settings.menu-settings-region-param .settings-general,
+		   .layout-ui-editor > .menu-settings.menu-settings-region-param .settings-dimension,
+		   .layout-ui-editor > .menu-settings.menu-settings-region-param .settings-typography,
+		   .layout-ui-editor > .menu-settings.menu-settings-region-param .settings-decorations,
+		   .layout-ui-editor > .menu-settings.menu-settings-region-param .settings-extra {
 			display:none;
 		}
 		
-		.layout_ui_editor > .menu-layers .group.group-region-param > ul {
+		.layout-ui-editor > .menu-layers .group.group-region-param > ul {
 			display:none !important;
 		}
 	]]></menu_css>

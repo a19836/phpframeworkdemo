@@ -34,8 +34,12 @@
 }
 
 /* BLOCK OBJ */
-.block_obj {
-	
+.block_obj.with_top_bar_section {
+	margin-left:auto;
+	margin-right:auto;
+}
+.block_obj:not(.with_top_bar_section) {
+	padding:20px;
 }
 
 /* MODULE DATA */

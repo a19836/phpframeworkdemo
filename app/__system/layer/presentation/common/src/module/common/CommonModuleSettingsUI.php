@@ -60,7 +60,7 @@ class CommonModuleSettingsUI {
 		
 			<div id="els_ptl" class="ptl">
 				<!-- LAYOUT UI EDITOR -->
-				<div class="layout_ui_editor els_ui reverse fixed_side_properties">
+				<div class="layout-ui-editor els_ui reverse fixed-side-properties hide-template-widgets-options">
 					<ul class="menu-widgets hidden">
 						' . self::getLayoutUIEditorMenuWidgetsHtml($settings) . '
 					</ul>
@@ -315,7 +315,7 @@ class CommonModuleSettingsUI {
 							<pre>ptl:block:' . $ptl_code_prefix . ':' . $name . '</pre>
 						</div>
 						<style>
-						.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-ptl.menu-widget-block-' . $class_suffix . ',
+						.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-ptl.menu-widget-block-' . $class_suffix . ',
 						  body > .menu-widget.menu-widget-ptl.menu-widget-block-' . $class_suffix . '.ui-draggable-dragging {
 							font-size:100%;
 						}

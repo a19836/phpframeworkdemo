@@ -538,9 +538,9 @@ function toggleThemeLayout(elm) {
 	MyJSLib.CookieHandler.setCookie('theme_layout', theme_layout, 0, "/");
 	left_panel.toggleClass("dark_theme").toggleClass("light_theme");
 	$(".top_panel").toggleClass("dark_theme").toggleClass("light_theme");
-	$("body").removeClass(theme_layout == "dark_theme" ? "light_theme" : "dark_theme").addClass(theme_layout);
+	$("body").removeClass(theme_layout == "light_theme" ? "dark_theme" : "light_theme").addClass(theme_layout);
 	
-	$(elm).children("span").html(theme_layout == "dark_theme" ? "Show light theme" : "Show dark theme");
+	$(elm).children("span").html(theme_layout == "light_theme" ? "Show dark theme" : "Show light theme");
 	
 	updateThemeLayoutInIframes( $("iframe"), theme_layout);
 }
@@ -555,7 +555,7 @@ function updateThemeLayoutInIframes(iframes, theme_layout) {
 			var iframe_body = $(iframe_doc.body);
 			//var iframe_body = $(iframe).contents().find("body");
 			
-			iframe_body.removeClass(theme_layout == "dark_theme" ? "light_theme" : "dark_theme").addClass(theme_layout);
+			iframe_body.removeClass(theme_layout == "light_theme" ? "dark_theme" : "light_theme").addClass(theme_layout);
 			
 			if (iframe_body.hasClass(theme_layout)) //be sure that the body has the class and that we can really edit the iframe body, bc if the iframe is from other domain, we cannot edit the iframe's html.
 				updateThemeLayoutInIframes(iframe_body.find("iframes"), theme_layout);

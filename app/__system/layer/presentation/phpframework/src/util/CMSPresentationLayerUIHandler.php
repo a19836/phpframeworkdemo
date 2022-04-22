@@ -115,7 +115,7 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC
 				<input type="button" value="Update" onClick="' . $v8aefdcedb9 . '.settings.updateFunction(this)" />
 			</div>
 		</div>'; } public static function getTemplateRegionBlockHtmlEditorPopupHtml($pefdd2109) { return '<div class="template_region_block_html_editor_popup myfancypopup">
-			<div class="layout_ui_editor reverse fixed_side_properties">
+			<div class="layout-ui-editor reverse fixed-side-properties hide-template-widgets-options">
 				<ul class="menu-widgets hidden">
 					' . $pefdd2109 . '
 				</ul>

@@ -93,8 +93,10 @@
 	top:0;
 	display:block !important;
 }
-.taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_task_properties .properties_task_id, 
-  .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_connection_properties .properties_task_id {
+.taskflowchart.fixed_properties .selected_task_properties .properties_task_id, 
+  .taskflowchart.fixed_properties .selected_connection_properties .properties_task_id,
+  .taskflowchart.fixed_side_properties .selected_task_properties .properties_task_id, 
+  .taskflowchart.fixed_side_properties .selected_connection_properties .properties_task_id {
 	width:auto;
 }
 

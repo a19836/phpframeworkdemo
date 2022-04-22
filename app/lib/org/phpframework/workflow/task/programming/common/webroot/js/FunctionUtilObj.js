@@ -111,7 +111,7 @@ var FunctionUtilObj = {
 				+ '		</div>'
 				+ '		'
 				+ '		<div id="ui">'
-				+ '			<div id="' + main_div_id + '" class="taskflowchart reverse with_top_bar_menu fixed_properties">'
+				+ '			<div id="' + main_div_id + '" class="taskflowchart reverse with_top_bar_menu fixed_side_properties">'
 				+ '				<div id="workflow_menu" class="workflow_menu top_bar_menu">'
 				+ '					<ul class="dropdown">'
 				+ '						<li class="sort_tasks" title="Sort Tasks">'
@@ -176,6 +176,7 @@ var FunctionUtilObj = {
 		this.EditFunctionCodeMyFancyPopupObject.init({
 			elementToShow: popup,
 			parentElement: main_tasks_flow_parent,
+			popup_class: "edit_function_popup",
 			onOpen: function() {
 				popup.off().removeClass("ui-draggable ui-draggable-handle");
 				
@@ -503,6 +504,7 @@ var FunctionUtilObj = {
 		
 		WF.getMyFancyPopupObj().init({
 			parentElement: $(elm).closest(".edit_function_code").find("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id),
+			popup_class: "edit_function_popup",
 		});
 		WF.getMyFancyPopupObj().showOverlay();
 		WF.getMyFancyPopupObj().showLoading();

@@ -18,7 +18,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-iframe,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-iframe,
 		  body > .menu-widget.menu-widget-iframe.ui-draggable-dragging {
 			height:auto;
 			display:inline-block;
@@ -26,19 +26,19 @@
 			color:inherit;
 			overflow:hidden;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-iframe i,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-iframe i,
 		  body > .menu-widget.menu-widget-iframe.ui-draggable-dragging i {
 			font-size:300%;
 		}
 		
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-iframe .options .option.toggle {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-iframe .options .option.toggle {
 			display:none;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-iframe > .settings-properties .src.with-search-icon input {
+		.layout-ui-editor > .menu-settings.menu-settings-iframe > .settings-properties .src.with-search-icon input {
 			padding-right:20px;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-iframe > .settings-properties .src .search {
+		.layout-ui-editor > .menu-settings.menu-settings-iframe > .settings-properties .src .search {
 			display:inline-block;
 			float:none;
 			clear:both;

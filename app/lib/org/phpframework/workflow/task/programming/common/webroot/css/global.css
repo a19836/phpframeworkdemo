@@ -5,7 +5,7 @@
 }
 
 /* START - FIX PROPERTIES TO BOTTOM */
-.taskflowchart:not(.fixed_properties) .selected_task_properties:not(.maximize_properties) {
+.taskflowchart:not(.fixed_properties):not(.fixed_side_properties) .selected_task_properties:not(.maximize_properties) {
 	width:auto;
 	height:auto;
 	max-height:70%;
@@ -21,14 +21,14 @@
 	border-radius:0;
 	overflow:auto;
 }
-.taskflowchart:not(.fixed_properties).reverse .selected_task_properties:not(.maximize_properties) {
+.taskflowchart:not(.fixed_properties):not(.fixed_side_properties).reverse .selected_task_properties:not(.maximize_properties) {
 	left:0 !important;
 	right:255px !important;
 }
-.taskflowchart:not(.fixed_properties):not(.reverse) .selected_task_properties.tasks_menu_hidden {
+.taskflowchart:not(.fixed_properties):not(.fixed_side_properties):not(.reverse) .selected_task_properties.tasks_menu_hidden {
 	left:5px !important;
 }
-.taskflowchart:not(.fixed_properties).reverse .selected_task_properties.tasks_menu_hidden {
+.taskflowchart:not(.fixed_properties):not(.fixed_side_properties).reverse .selected_task_properties.tasks_menu_hidden {
 	right:5px !important;
 }
 .selected_task_properties > .content > div {
@@ -44,7 +44,7 @@
 	opacity:1;
 }
 
-.taskflowchart:not(.fixed_properties) .selected_task_properties > .generic_buttons {
+.taskflowchart:not(.fixed_properties):not(.fixed_side_properties) .selected_task_properties > .generic_buttons {
 	position:relative;
 	margin-top:30px;
 }
@@ -226,9 +226,20 @@
 }
 
 .jsplumbtaskworkflow .task {
+	width:120px !important;
 	min-width:120px !important;
 	min-height:50px !important;
 	padding:0 !important;
+}
+.jsplumbtaskworkflow .task:hover .full_info {
+	padding:2px 10px;
+	position:absolute;
+	top:-35px;
+	display:block;
+	border-radius:3px;
+	background:rgba(0, 0, 0, .3);
+	color:#000;
+	white-space:nowrap;
 }
 .jsplumbtaskworkflow .task .tag_info {
 	top:-17px;
@@ -242,6 +253,8 @@
 	width:auto;
 	height:20px;
 	line-height:20px;
+	white-space:nowrap;
+	text-overflow:ellipsis;
 	overflow:hidden;
 }
 .jsplumbtaskworkflow .task .eps {

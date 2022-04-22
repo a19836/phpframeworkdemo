@@ -199,7 +199,7 @@ var menu_item_html = \'' . addcslashes(str_replace("\n", "", $menu_item_html), "
 		
 		<div id="els_ptl" class="ptl">
 			<!-- LAYOUT UI EDITOR -->
-			<div class="layout_ui_editor els_ui reverse fixed_side_properties">
+			<div class="layout-ui-editor els_ui reverse fixed-side-properties hide-template-widgets-options">
 				<ul class="menu-widgets hidden">
 					<? 
 					$common_webroot_path = $EVC->getWebrootPath($EVC->getCommonProjectName());

@@ -15,7 +15,7 @@ $(function () {
 	});
 	
 	//prepare top_bar
-	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu");
+	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_side_properties").children(".workflow_menu").addClass("top_bar_menu");
 	
 	//init auto save
 	$("#code .code_menu.top_bar_menu ul li.auto_save_activation, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_activation a").attr("onClick", "toggleAutoSaveCheckbox(this, onToggleGlobalVariablesAutoSave)");

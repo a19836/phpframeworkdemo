@@ -39,7 +39,7 @@
 		<textarea class="task_property_field"></textarea><!-- Name will be defined via javascript otherwise it will give an exception when creating the createform task -->
 		
 		<!-- MY LAYOUT UI EDITOR -->
-		<div class="layout_ui_editor ptl_ui reverse fixed_properties with_top_bar_menu">
+		<div class="layout-ui-editor ptl_ui reverse fixed-properties hide-template-widgets-options with_top_bar_menu">
 			<ul class="menu-widgets hidden"></ul><!--  Menu widgets will be added later -->
 			<div class="template-source"><textarea></textarea></div>
 		</div>

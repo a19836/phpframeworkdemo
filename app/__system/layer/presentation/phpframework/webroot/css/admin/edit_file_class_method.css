@@ -328,14 +328,26 @@
 
 /* CODE */
 .file_class_method_obj #code > textarea,
-  .file_class_method_obj #code .ace_editor,
-  .file_class_method_obj > #ui .taskflowchart {
-	height:calc(100vh - 75px) !important;
+  .file_class_method_obj #code .ace_editor {
+	height:calc(100vh - 70px) !important;
 }
 .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu .tasks_menu:not(.task_properties_shown):not(.connection_properties_shown), 
   .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu .tasks_menu_hide:not(.task_properties_shown):not(.connection_properties_shown), 
-  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu .tasks_flow:not(.task_properties_shown):not(.connection_properties_shown) {
-	/*bottom:0;*/
+  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu .tasks_flow:not(.task_properties_shown):not(.connection_properties_shown),
+  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_side_properties .tasks_menu, 
+  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_side_properties .tasks_menu_hide, 
+  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_side_properties .tasks_flow, 
+  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_task_properties, 
+  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_connection_properties {
+	margin-bottom:30px;
+}
+.file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu.task_properties_shown, 
+  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu.connection_properties_shown, 
+  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu_hide.task_properties_shown, 
+  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu_hide.connection_properties_shown, 
+  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_flow.task_properties_shown, 
+  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_flow.connection_properties_shown {
+	margin-bottom:0;
 }
 
 /* To print the workflow */

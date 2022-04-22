@@ -30,7 +30,7 @@ $(function () {
 	
 	//select layout view. Needs to be inside of settimeout otherwise the layout ui editor will not be inited correctly
 	setTimeout(function() {
-		var luie = echostr_settings.find("#layoutui_content > .layout_ui_editor");
+		var luie = echostr_settings.find("#layoutui_content > .layout-ui-editor");
 		
 		//show view layout panel instead of code
 		var view_layout = luie.find(" > .tabs > .view-layout");
@@ -38,8 +38,14 @@ $(function () {
 		view_layout.trigger("click");
 		view_layout.removeClass("do-not-confirm");
 		
-		//show php widgets
-		luie.find(" > .template-widgets-options .show-php input").attr("checked", "checked").prop("checked", true).trigger("click").attr("checked", "checked").prop("checked", true);
+		//show php widgets, borders and background
+		var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
+		
+		if (PtlLayoutUIEditor) {
+			PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();
+			PtlLayoutUIEditor.showTemplateWidgetsBorders();
+			PtlLayoutUIEditor.showTemplatePHPWidgets();
+		}
 	}, 500);
 	
 	$(window).resize(function() {
@@ -55,7 +61,7 @@ $(function () {
 function onToggleFullScreen(in_full_screen) {
 	setTimeout(function() {
 		var main_obj = $(".echostr_settings > #layoutui_content");
-		var PtlLayoutUIEditor = main_obj.find(".layout_ui_editor").data("LayoutUIEditor");
+		var PtlLayoutUIEditor = main_obj.find(".layout-ui-editor").data("LayoutUIEditor");
 		var menu_settings = PtlLayoutUIEditor.getMenuSettings();
 		
 		if (menu_settings.is(":visible"))
@@ -84,10 +90,10 @@ function createLayoutUIEditor(textarea) {
 		var parent = $(textarea).parent();
 		
 		if (typeof LayoutUIEditor == "function") {
-			var ui = parent.children(".layout_ui_editor");
+			var ui = parent.children(".layout-ui-editor");
 			
 			if (!ui[0]) {
-				ui = $('<div class="layout_ui_editor reverse fixed_side_properties"><ul class="menu-widgets"></ul><div class="template-source"></div></div>');
+				ui = $('<div class="layout-ui-editor reverse fixed-side-properties hide-template-widgets-options"><ul class="menu-widgets"></ul><div class="template-source"></div></div>');
 				parent.append(ui);
 			}
 			else if (ui.data("LayoutUIEditor")) 
@@ -251,7 +257,7 @@ function getActiveEditorValue() {
 	
 	if (active_tab == 0) {
 		var editor_elm = echostr_settings.children("#layoutui_content");
-		var PtlLayoutUIEditor = editor_elm.find(".layout_ui_editor").data("LayoutUIEditor");
+		var PtlLayoutUIEditor = editor_elm.find(".layout-ui-editor").data("LayoutUIEditor");
 		
 		if (PtlLayoutUIEditor) {
 			//converts visual into code if visual tab is selected

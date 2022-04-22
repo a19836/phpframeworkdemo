@@ -12,7 +12,7 @@
 	]]></template_widget>
 	<properties></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-ptl,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-ptl,
 		  body > .menu-widget.menu-widget-ptl.ui-draggable-dragging {
 			height:auto;
 			background:rgba(0, 0, 0, .2);
@@ -23,26 +23,26 @@
 			font-size:16px;
 		}
 		
-		.layout_ui_editor > .template-widgets > .widget-header.widget-header-ptl .options .props,
-		   .layout_ui_editor > .template-widgets > .widget-header.widget-header-ptl .options .toggle {
+		.layout-ui-editor > .template-widgets > .widget-header.widget-header-ptl .options .props,
+		   .layout-ui-editor > .template-widgets > .widget-header.widget-header-ptl .options .toggle {
 			display:none !important;
 		}
-		.layout_ui_editor > .template-widgets > .droppable-header.droppable-header-ptl {
+		.layout-ui-editor > .template-widgets > .droppable-header.droppable-header-ptl {
 			display:none !important;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-ptl .settings-id,
-		   .layout_ui_editor > .menu-settings.menu-settings-ptl .settings-classes,
-		   .layout_ui_editor > .menu-settings.menu-settings-ptl .settings-properties,
-		   .layout_ui_editor > .menu-settings.menu-settings-ptl .settings-general,
-		   .layout_ui_editor > .menu-settings.menu-settings-ptl .settings-dimension,
-		   .layout_ui_editor > .menu-settings.menu-settings-ptl .settings-typography,
-		   .layout_ui_editor > .menu-settings.menu-settings-ptl .settings-decorations,
-		   .layout_ui_editor > .menu-settings.menu-settings-ptl .settings-extra {
+		.layout-ui-editor > .menu-settings.menu-settings-ptl .settings-id,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-classes,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-properties,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-general,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-dimension,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-typography,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-decorations,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-extra {
 			display:none;
 		}
 		
-		.layout_ui_editor > .menu-layers .group.group-ptl > ul {
+		.layout-ui-editor > .menu-layers .group.group-ptl > ul {
 			display:none !important;
 		}
 	]]></menu_css>

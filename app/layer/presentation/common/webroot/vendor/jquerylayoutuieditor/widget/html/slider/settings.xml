@@ -93,7 +93,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-slider,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-slider,
 		  body > .menu-widget.menu-widget-slider.ui-draggable-dragging {
 			height:3rem;
 			padding:0;
@@ -102,14 +102,14 @@
 			border:0;
 			border-radius:3px;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-slider span:first-child,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-slider span:first-child,
 		  body > .menu-widget.menu-widget-slider.ui-draggable-dragging span:first-child {
 		  	margin-top:1.9rem;
 		  	display:block;
 		  	font-size:80%;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-slider > .settings-properties .style textarea {
+		.layout-ui-editor > .menu-settings.menu-settings-slider > .settings-properties .style textarea {
 			height:300px !important;
 			text-align:left;
 		}

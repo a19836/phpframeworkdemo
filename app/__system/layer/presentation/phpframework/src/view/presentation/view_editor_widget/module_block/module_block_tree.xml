@@ -12,7 +12,7 @@
 		<pre></pre>
 	]]></template_widget>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-call-tree-module-or-block {
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-call-tree-module-or-block {
 			display:none !important;
 		}
 	]]></menu_css>

@@ -181,22 +181,22 @@
 .settings .ptl {
 	padding:1em 5px;
 }
-.settings .ptl .layout_ui_editor.full-screen {
+.settings .ptl .layout-ui-editor.full-screen {
 	top:45px !important;
 }
-.settings .ptl .layout_ui_editor .tabs {
+.settings .ptl .layout-ui-editor .tabs {
 	border-top:1px solid #eee;
 }
-.settings .ptl .layout_ui_editor > .menu-widgets, 
-  .settings .ptl .layout_ui_editor > .menu-layers, 
-  .settings .ptl .layout_ui_editor > .menu-settings, 
-  .settings .ptl .layout_ui_editor > .template-widgets-options,
-  .settings .ptl .layout_ui_editor > .template-widgets,
-  .settings .ptl .layout_ui_editor > .resize-panels,
-  .settings .ptl .layout_ui_editor > .messages {
+.settings .ptl .layout-ui-editor > .menu-widgets, 
+  .settings .ptl .layout-ui-editor > .menu-layers, 
+  .settings .ptl .layout-ui-editor > .menu-settings, 
+  .settings .ptl .layout-ui-editor > .template-widgets-options,
+  .settings .ptl .layout-ui-editor > .template-widgets,
+  .settings .ptl .layout-ui-editor > .resize-panels,
+  .settings .ptl .layout-ui-editor > .messages {
 	bottom:0;
 }
-.settings .ptl .layout_ui_editor .tabs .tab.view-page {
+.settings .ptl .layout-ui-editor .tabs .tab.view-page {
 	opacity:.4;
 	float:left;
 }

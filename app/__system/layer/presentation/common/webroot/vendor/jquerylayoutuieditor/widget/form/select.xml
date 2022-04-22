@@ -33,7 +33,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-select,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-select,
 		  body > .menu-widget.menu-widget-select.ui-draggable-dragging {
 			height:1.5em;
 			display:inline-block;
@@ -43,7 +43,7 @@
 			color:inherit;
 			overflow:hidden;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-select > i,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-select > i,
 		  body > .menu-widget.menu-widget-select.ui-draggable-dragging > i {
 			width:1em;
 			height:1em;
@@ -52,50 +52,50 @@
 			float:right;
 		}
 		
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-select .options .option.toggle {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-select .options .option.toggle {
 			display:none;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options {
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options {
 			margin-bottom:0;
 			max-width:none;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > .col-form-label {
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > .col-form-label {
 			max-width:none;
 			display:block;
 			padding-right:0;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > .col-form-label > .reset-option-selection {
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > .col-form-label > .reset-option-selection {
 			margin:2px 5px 0 0;
 			float:left;
 			cursor:pointer;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > .col-form-label > .add-option {
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > .col-form-label > .add-option {
 			margin:3px 0 0 10px;
 			float:right;
 			cursor:pointer;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > .dd-empty {
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > .dd-empty {
 			display:none;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul {
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul {
 			display:block;
 			width:100%;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul > .empty-options {
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul > .empty-options {
 			text-align:center;
 			padding-top:2.5em;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li,
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li,
 		   .settings-properties-select-options-li li {
 			min-height:30px;
 			margin:.5em 0;
 			text-align:right;
 			display:block;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .dd-collapse,
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .dd-collapse,
 		   .settings-properties-select-options-li .dd-collapse,
-		   .layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .dd-expand,
+		   .layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .dd-expand,
 		   .settings-properties-select-options-li .dd-expand {
 			width:15px;
 			height:30px;
@@ -105,25 +105,25 @@
 			background:none;
 			border:none;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group > .dd-collapse,
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group > .dd-collapse,
 		   .settings-properties-select-options-li li.option-group > .dd-collapse,
-		   .layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group > .dd-expand,
+		   .layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group > .dd-expand,
 		   .settings-properties-select-options-li li.option-group > .dd-expand {
 			visibility:visible;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .select-option,
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .select-option,
 		   .settings-properties-select-options-li .select-option {
 			position:absolute;
 			margin-top:auto;
 			padding:5px 0;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .select-option input,
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .select-option input,
 		   .settings-properties-select-options-li .select-option input {
 		   	margin-left:2px;
 		   	vertical-align:middle;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .dd-handle,
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .dd-handle,
 		   .settings-properties-select-options-li .dd-handle {
 			position:absolute;
 			margin:0 0 0 32px;
@@ -133,15 +133,15 @@
 			color:white;
 			cursor:move;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .option-value,
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .option-value,
 		   .settings-properties-select-options-li .option-value,
-		   .layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .option-label,
+		   .layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .option-label,
 		   .settings-properties-select-options-li .option-label {
 			width:30%;
 			width:calc((100% - 80px) / 2);
 			display:inline-block;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .remove-option,
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .remove-option,
 		   .settings-properties-select-options-li .remove-option {
 			width:20px;
 			padding:7px 0;
@@ -149,17 +149,17 @@
 			cursor:pointer;
 			vertical-align:top;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group:not(.dd-collapsed),
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group:not(.dd-collapsed),
 		   .settings-properties-select-options-li li.option-group:not(.dd-collapsed) {
 			margin-bottom:0;   
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group > .select-option,
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group > .select-option,
 		   .settings-properties-select-options-li li.option-group > .select-option,
-		   .layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group > .option-value,
+		   .layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group > .option-value,
 		   .settings-properties-select-options-li li.option-group > .option-value {
 			display:none;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group > .option-label,
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group > .option-label,
 		   .settings-properties-select-options-li li.option-group > .option-label {
 			width:calc(100% - 80px);
 		}

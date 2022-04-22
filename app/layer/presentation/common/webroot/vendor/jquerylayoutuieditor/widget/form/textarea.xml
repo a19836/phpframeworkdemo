@@ -24,7 +24,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-textarea,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-textarea,
 		  body > .menu-widget.menu-widget-textarea.ui-draggable-dragging {
 			height:3.5em;
 			padding:1em 0 0;
@@ -36,7 +36,7 @@
 			overflow:hidden;
 		}
 		
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-textarea .options .option.toggle {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-textarea .options .option.toggle {
 			display:none;
 		}
 	]]></menu_css>

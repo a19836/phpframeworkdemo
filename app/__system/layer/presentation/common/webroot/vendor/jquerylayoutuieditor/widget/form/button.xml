@@ -30,7 +30,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-button,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-button,
 		  body > .menu-widget.menu-widget-button.ui-draggable-dragging {
 			height:1.5em;
 			display:inline-block;
@@ -46,10 +46,10 @@
 			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff', endColorstr='#ddd', GradientType=0); /* IE6-9 */
 		}
 		
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-button {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-button {
 			border-radius:0 5px 5px 0;
 		}
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-button .options .option.toggle {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-button .options .option.toggle {
 			display:none;
 		}
 	]]></menu_css>

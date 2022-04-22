@@ -28,7 +28,7 @@
 .taskflowchart .tasks_flow .task.task_server:hover {
 	opacity:.8 !important;
 }
-.taskflowchart .tasks_flow .selected_task_properties {
+.taskflowchart .selected_task_properties {
 	width:auto !important;
 	height:auto !important;
 }

@@ -272,7 +272,7 @@ var CreateFormTaskPropertyObj = {
 			if (!ptl_settings_elm[0].hasAttribute("data-already-initialized")) {
 				ptl_settings_elm.attr("data-already-initialized", 1);
 				
-				var ui = ptl_settings_elm.children(".layout_ui_editor");
+				var ui = ptl_settings_elm.children(".layout-ui-editor");
 				
 				if (ui[0] && !ui.data("LayoutUIEditor") && typeof LayoutUIEditor == "function") {
 					//add CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector in <ul class="menu-widgets hidden"></ul>
@@ -306,6 +306,11 @@ var CreateFormTaskPropertyObj = {
 						
 						//hide php menu widget bc it doesn't apply here
 						PtlLayoutUIEditor.getMenuWidgets().find(".menu-widget-php").hide();
+						
+						//show php widgets, borders and background
+						PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();
+						PtlLayoutUIEditor.showTemplateWidgetsBorders();
+						PtlLayoutUIEditor.showTemplatePHPWidgets();
 					};
 					window[ptl_ui_creator_var_name] = PtlLayoutUIEditor;
 					PtlLayoutUIEditor.init(ptl_ui_creator_var_name);
@@ -528,7 +533,7 @@ var CreateFormTaskPropertyObj = {
 			if (editor)
 				editor.setValue(value, -1);
 			else 
-				ptl_settings_elm.find(" > .layout_ui_editor > .template-source > textarea").val(value);
+				ptl_settings_elm.find(" > .layout-ui-editor > .template-source > textarea").val(value);
 		}
 	},
 	
@@ -545,7 +550,7 @@ var CreateFormTaskPropertyObj = {
 		
 		var editor = ptl_settings_elm.data("editor");
 		
-		return editor ? editor.getValue() : ptl_settings_elm.find(" > .layout_ui_editor > .template-source > textarea").val();
+		return editor ? editor.getValue() : ptl_settings_elm.find(" > .layout-ui-editor > .template-source > textarea").val();
 	},
 	
 	createCodeEditor : function(textarea, type, save_func) {

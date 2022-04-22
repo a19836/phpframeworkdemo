@@ -11,7 +11,7 @@
 	<template_widget></template_widget>
 	<properties></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-user-widget-1,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-user-widget-1,
 		  body > .menu-widget.menu-widget-user-widget-1.ui-draggable-dragging {
 			height:auto;
 			background:url(#widget_webroot_url#img/bg.gif) #333 center center no-repeat;
@@ -23,11 +23,11 @@
 			font-size:16px;
 		}
 		
-		.layout_ui_editor > .template-widgets > .widget-header.widget-header-user-widget-1 .options .toggle {
+		.layout-ui-editor > .template-widgets > .widget-header.widget-header-user-widget-1 .options .toggle {
 			display:none !important;
 		}
 		
-		.layout_ui_editor > .menu-layers .group.group-user-widget-1 > ul {
+		.layout-ui-editor > .menu-layers .group.group-user-widget-1 > ul {
 			display:none !important;
 		}
 	]]></menu_css>

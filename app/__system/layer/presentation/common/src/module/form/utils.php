@@ -212,8 +212,8 @@ function getFormGroupItemHtml($EVC, $project_url_prefix, $project_common_url_pre
 			<script>
 				var mwb = $(".module_form_settings .ui-menu-widgets-backup");
 				var create_form_task_html = $(".module_form_settings .create_form_task_html");
-				create_form_task_html.find(".ptl_settings > .layout_ui_editor > .menu-widgets").append( mwb.contents().clone() );
-				$(".module_form_settings .inlinehtml_task_html > .layout_ui_editor > .menu-widgets").append( mwb.contents() );
+				create_form_task_html.find(".ptl_settings > .layout-ui-editor > .menu-widgets").append( mwb.contents().clone() );
+				$(".module_form_settings .inlinehtml_task_html > .layout-ui-editor > .menu-widgets").append( mwb.contents() );
 				mwb.remove();
 				
 					create_form_task_html.children(".separate_settings_from_input, .form_input, .form_input_data, .separate_input_from_result, .result, .task_property_exit").remove();

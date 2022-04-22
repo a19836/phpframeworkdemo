@@ -17,7 +17,7 @@
 	]]></template_widget>
 	<properties><![CDATA[]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-navmenu,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-navmenu,
 		  body > .menu-widget.menu-widget-navmenu.ui-draggable-dragging {
 			height:auto;
 			display:inline-block;
@@ -26,16 +26,16 @@
 			color:inherit;
 			overflow:hidden;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-navmenu i,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-navmenu i,
 		  body > .menu-widget.menu-widget-navmenu.ui-draggable-dragging i {
 			font-size:300%;
 		}
 		
-		.layout_ui_editor > .template-widgets > .droppable-header.droppable-header-navmenu {
+		.layout-ui-editor > .template-widgets > .droppable-header.droppable-header-navmenu {
 			margin-top:-1rem;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-navmenu .settings-properties table .container-col-icon {
+		.layout-ui-editor > .menu-settings.menu-settings-navmenu .settings-properties table .container-col-icon {
 			width:20px;
 			font-size:14px;
 			text-align:center;

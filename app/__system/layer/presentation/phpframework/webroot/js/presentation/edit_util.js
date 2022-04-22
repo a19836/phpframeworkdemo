@@ -11,7 +11,7 @@ $(function () {
 	});
 	
 	//prepare top_bar
-	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu");
+	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_side_properties").children(".workflow_menu").addClass("top_bar_menu");
 	
 	//init auto save
 	enableAutoSave(onTogglePHPCodeAutoSave);

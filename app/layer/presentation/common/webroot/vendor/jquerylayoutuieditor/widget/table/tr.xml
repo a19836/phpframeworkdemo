@@ -10,7 +10,7 @@
 	<template_widget></template_widget>
 	<properties></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-table-row,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-table-row,
 		  body > .menu-widget.menu-widget-table-row.ui-draggable-dragging {
 			height:70px;
 			padding-top:10px;
@@ -21,7 +21,7 @@
 			overflow:hidden;
 			font-size:200%;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-table-row i,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-table-row i,
 		  body > .menu-widget.menu-widget-table-row.ui-draggable-dragging i {
 			font-size:450%;
 		}

@@ -9,7 +9,7 @@
 	<template_widget></template_widget>
 	<properties></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-user-widget-2,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-user-widget-2,
 		  body > .menu-widget.menu-widget-user-widget-2.ui-draggable-dragging {
 			height:auto;
 			background:#333;
@@ -20,23 +20,23 @@
 			font-size:16px;
 		}
 		
-		.layout_ui_editor > .template-widgets > .widget-header.widget-header-user-widget-2 .options .props,
-		   .layout_ui_editor > .template-widgets > .widget-header.widget-header-user-widget-2 .options .toggle {
+		.layout-ui-editor > .template-widgets > .widget-header.widget-header-user-widget-2 .options .props,
+		   .layout-ui-editor > .template-widgets > .widget-header.widget-header-user-widget-2 .options .toggle {
 			display:none !important;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-user-widget-2 .settings-id,
-		   .layout_ui_editor > .menu-settings.menu-settings-user-widget-2 .settings-classes,
-		   .layout_ui_editor > .menu-settings.menu-settings-user-widget-2 .settings-properties,
-		   .layout_ui_editor > .menu-settings.menu-settings-user-widget-2 .settings-general,
-		   .layout_ui_editor > .menu-settings.menu-settings-user-widget-2 .settings-dimension,
-		   .layout_ui_editor > .menu-settings.menu-settings-user-widget-2 .settings-typography,
-		   .layout_ui_editor > .menu-settings.menu-settings-user-widget-2 .settings-decorations,
-		   .layout_ui_editor > .menu-settings.menu-settings-user-widget-2 .settings-extra {
+		.layout-ui-editor > .menu-settings.menu-settings-user-widget-2 .settings-id,
+		   .layout-ui-editor > .menu-settings.menu-settings-user-widget-2 .settings-classes,
+		   .layout-ui-editor > .menu-settings.menu-settings-user-widget-2 .settings-properties,
+		   .layout-ui-editor > .menu-settings.menu-settings-user-widget-2 .settings-general,
+		   .layout-ui-editor > .menu-settings.menu-settings-user-widget-2 .settings-dimension,
+		   .layout-ui-editor > .menu-settings.menu-settings-user-widget-2 .settings-typography,
+		   .layout-ui-editor > .menu-settings.menu-settings-user-widget-2 .settings-decorations,
+		   .layout-ui-editor > .menu-settings.menu-settings-user-widget-2 .settings-extra {
 			display:none;
 		}
 		
-		.layout_ui_editor > .menu-layers .group.group-user-widget-2 > ul {
+		.layout-ui-editor > .menu-layers .group.group-user-widget-2 > ul {
 			display:none !important;
 		}
 	]]></menu_css>

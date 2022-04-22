@@ -75,7 +75,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-tabs,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-tabs,
 		  body > .menu-widget.menu-widget-tabs.ui-draggable-dragging {
 			height:2rem;
 			padding:0;
@@ -84,14 +84,14 @@
 			border:0;
 			border-radius:3px;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-tabs span:first-child,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-tabs span:first-child,
 		  body > .menu-widget.menu-widget-tabs.ui-draggable-dragging span:first-child {
 		  	display:block;
 		  	margin-top:.5rem;
 		  	font-size:80%;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-tabs > .settings-properties .style textarea {
+		.layout-ui-editor > .menu-settings.menu-settings-tabs > .settings-properties .style textarea {
 			height:300px !important;
 			text-align:left;
 		}

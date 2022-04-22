@@ -87,30 +87,30 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 	<script language="javascript" type="text/javascript" src="js/script.js"></script>
 	
 	<style>
-		.layout_ui_editor.layout_ui_editor_1 {
+		.layout-ui-editor.layout-ui-editor-1 {
 			width:90%;
 			margin:0 auto;
 		}
 		
-		.layout_ui_editor.layout_ui_editor_2 {
+		.layout-ui-editor.layout-ui-editor-2 {
 			width:80%;
 			margin:100px auto 0 auto;
 			background:#333;
 		}
-		.layout_ui_editor.layout_ui_editor_2 > .options > .options-center {
+		.layout-ui-editor.layout-ui-editor-2 > .options > .options-center {
 			background:#333;
 		}
 		
-		.layout_ui_editor.layout_ui_editor_3 {
+		.layout-ui-editor.layout-ui-editor-3 {
 			width:80%;
 			margin:100px auto 0 auto;
 			background:#660000;
 		}
-		.layout_ui_editor.layout_ui_editor_3 > .options > .options-center {
+		.layout-ui-editor.layout-ui-editor-3 > .options > .options-center {
 			background:#660000;
 		}
 		
-		.layout_ui_editor.layout_ui_editor_4 {
+		.layout-ui-editor.layout-ui-editor-4 {
 			margin:100px auto 0 auto;
 			
 			/* generic */
@@ -143,6 +143,8 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 			
 			/* menu-settings */
 			--menu-settings-bg:#fff;
+			
+			--menu-settings-resize-bg:#bcd4d6;
 			
 			--menu-settings-input-border:transparent;
 			--menu-settings-input-bg:#d5e3e4;
@@ -274,19 +276,19 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 			--editor-error-msg-bg:rgba(255, 0, 0, 0.8);
 			--editor-error-msg-color:#fff;
 		}
-		.layout_ui_editor.layout_ui_editor_4 > .menu-widgets, 
-		  .layout_ui_editor.layout_ui_editor_4 > .menu-layers, 
-		  .layout_ui_editor.layout_ui_editor_4 > .menu-settings, 
-		  .layout_ui_editor.layout_ui_editor_4 > .template-widgets-options {
+		.layout-ui-editor.layout-ui-editor-4 > .menu-widgets, 
+		  .layout-ui-editor.layout-ui-editor-4 > .menu-layers, 
+		  .layout-ui-editor.layout-ui-editor-4 > .menu-settings, 
+		  .layout-ui-editor.layout-ui-editor-4 > .template-widgets-options {
 			border:0;
 		}
-		.layout_ui_editor.layout_ui_editor_4 > .menu-settings .group ul.group-block,
-		  .layout_ui_editor.layout_ui_editor_4 > .menu-settings .settings-classes .user-classes {
+		.layout-ui-editor.layout-ui-editor-4 > .menu-settings .group ul.group-block,
+		  .layout-ui-editor.layout-ui-editor-4 > .menu-settings .settings-classes .user-classes {
 			background:rgba(0,0,0,0.05);
 		}
-		.layout_ui_editor.layout_ui_editor_4 > .menu-settings input,
-		  .layout_ui_editor.layout_ui_editor_4 > .menu-settings select,
-		  .layout_ui_editor.layout_ui_editor_4 > .menu-settings textarea {
+		.layout-ui-editor.layout-ui-editor-4 > .menu-settings input,
+		  .layout-ui-editor.layout-ui-editor-4 > .menu-settings select,
+		  .layout-ui-editor.layout-ui-editor-4 > .menu-settings textarea {
 			color:#485152 !important;
 		}
 	</style>
@@ -296,25 +298,25 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 if ($_SERVER["HTTP_HOST"] != "jplpinto.localhost")
 	echo("<script>alert('Please configure your computer to point the host jplpinto.localhost to this IP, otherwise the layout ui editor won't work with the FormFieldsUtilObj!');</script>");
 ?>
-	<div class="layout_ui_editor reverse layout_ui_editor_1">
+	<div class="layout-ui-editor reverse layout-ui-editor-1">
 		<ul class="menu-widgets hidden">
 			<? echo $menu_widgets_html; ?>
 		</ul>
 	</div>
 	
-	<div class="layout_ui_editor layout_ui_editor_2">
+	<div class="layout-ui-editor layout-ui-editor-2">
 		<ul class="menu-widgets hidden">
 			<? echo $menu_widgets_html; ?>
 		</ul>
 	</div>
 	
-	<div class="layout_ui_editor reverse fixed_properties layout_ui_editor_3">
+	<div class="layout-ui-editor reverse fixed-properties layout-ui-editor-3">
 		<ul class="menu-widgets hidden">
 			<? echo $menu_widgets_html; ?>
 		</ul>
 	</div>
 	
-	<div class="layout_ui_editor reverse fixed_side_properties layout_ui_editor_4">
+	<div class="layout-ui-editor reverse fixed-side-properties hide-template-widgets-options layout-ui-editor-4">
 		<ul class="menu-widgets hidden">
 			<? echo $menu_widgets_html; ?>
 		</ul>

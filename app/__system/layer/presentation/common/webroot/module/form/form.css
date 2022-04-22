@@ -1,6 +1,6 @@
 /* TOP BAR */
 .top_bar > header {
-	z-index:5;
+	z-index:1000000;
 }
 
 /* BLOCK OBJ */
@@ -503,7 +503,7 @@
 }
 
 /* LAYOUT UI EDITOR */
-.module_form_settings .create_form_task_html .layout_ui_editor > .menu-settings select {
+.module_form_settings .create_form_task_html .layout-ui-editor > .menu-settings select {
 	font-size:80%;
 }
 .module_form_settings .create_form_task_html .ptl_settings > .ptl_external_vars {
@@ -1184,10 +1184,10 @@
 	position:initial !important;
 	max-height:none;
 }
-.module_form_settings .jsplumbtaskworkflow .workflow_message {
+.module_form_settings .workflow_message {
 	position:absolute;
 }
-.module_form_settings .jsplumbtaskworkflow .error {
+.module_form_settings .error {
 	height:auto;
 	font-size:100%;
 }
@@ -1206,31 +1206,34 @@
   .module_form_settings .taskflowchart.with_top_bar_menu .tasks_flow.connection_properties_shown {
 	bottom:0 !important;
 }
-.module_form_settings .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_task_properties > .maximize_minimize_icon,
-  .module_form_settings .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_connection_properties > .maximize_minimize_icon,
-  .module_form_settings .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_task_properties > .expand_collapse_icon,
-  .module_form_settings .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_connection_properties > .expand_collapse_icon {
+.module_form_settings .taskflowchart:not(.fixed_properties) .selected_task_properties > .maximize_minimize_icon,
+  .module_form_settings .taskflowchart:not(.fixed_properties) .selected_connection_properties > .maximize_minimize_icon {
 	display:none;
 }
-.module_form_settings .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_task_properties > .generic_buttons,
-  .module_form_settings .taskflowchart:not(.fixed_properties) .jsplumbtaskworkflow .selected_connection_properties > .generic_buttons {
+.module_form_settings .taskflowchart:not(.fixed_properties) .selected_task_properties > .generic_buttons,
+  .module_form_settings .taskflowchart:not(.fixed_properties) .selected_connection_properties > .generic_buttons {
 	right:30px !important;
 }
 
-.module_form_settings .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_task_properties.maximize_properties, 
-  .module_form_settings .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_connection_properties.maximize_properties {
+.module_form_settings .taskflowchart.fixed_properties .selected_task_properties, 
+  .module_form_settings .taskflowchart.fixed_properties .selected_connection_properties {
 	z-index:999999 !important;
 }
-.module_form_settings .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_task_properties .form-group-item {
+.module_form_settings .taskflowchart.fixed_properties .selected_task_properties > .resize_properties_panel .button, 
+  .module_form_settings .taskflowchart.fixed_properties .selected_connection_properties .resize_properties_panel .button {
+	margin:0;
+}
+.module_form_settings .taskflowchart.fixed_properties .selected_task_properties .form-group-item {
 	margin-bottom:0;
 }
-.module_form_settings .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_task_properties .form-group-item:after {
+.module_form_settings .taskflowchart.fixed_properties .selected_task_properties .form-group-item:after {
 	display:none;
 }
-.module_form_settings .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_task_properties .form-group-item .selected_task_properties {
+.module_form_settings .taskflowchart.fixed_properties .selected_task_properties .form-group-item .selected_task_properties {
 	height:auto !important;
+	position:relative !important;
 }
-.module_form_settings .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_task_properties .form-group-item .selected_task_properties::before,
-  .module_form_settings .taskflowchart.fixed_properties .jsplumbtaskworkflow .selected_task_properties .form-group-item .selected_connection_properties::before {
+.module_form_settings .taskflowchart.fixed_properties .selected_task_properties .form-group-item .selected_task_properties::before,
+  .module_form_settings .taskflowchart.fixed_properties .selected_task_properties .form-group-item .selected_connection_properties::before {
 	display:none;
 }

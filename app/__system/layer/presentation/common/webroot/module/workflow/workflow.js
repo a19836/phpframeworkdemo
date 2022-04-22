@@ -15,7 +15,7 @@ $(function () {
 	});
 	
 	$(".top_bar .save a").attr("onClick", "saveModuleWorkflowSettings(this);");
-	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu");
+	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_side_properties").children(".workflow_menu").addClass("top_bar_menu");
 	
 	//remove duplicated choose_from_file_manager bc of them were already created in the edit_block_simple.php
 	var cfm = $(".choose_from_file_manager");

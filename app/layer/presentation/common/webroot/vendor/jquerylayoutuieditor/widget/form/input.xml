@@ -46,7 +46,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-input,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-input,
 		  body > .menu-widget.menu-widget-input.ui-draggable-dragging {
 			height:1.5em;
 			display:inline-block;
@@ -57,7 +57,7 @@
 			overflow:hidden;
 		}
 		
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-input .options .option.toggle {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-input .options .option.toggle {
 			display:none;
 		}
 	]]></menu_css>

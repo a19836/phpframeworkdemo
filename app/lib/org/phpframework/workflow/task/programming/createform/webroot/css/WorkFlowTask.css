@@ -249,44 +249,44 @@
 }
 
 /* UI EDITOR */
-.create_form_task_html .ptl_settings > .layout_ui_editor {
+.create_form_task_html .ptl_settings > .layout-ui-editor {
 	border:1px solid #eee;
 	z-index:9999;
 }
-.create_form_task_html .ptl_settings > .layout_ui_editor > .menu-widgets, 
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .menu-layers, 
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .menu-settings, 
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .template-widgets-options,
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .template-widgets,
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .resize-panels,
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .messages {
+.create_form_task_html .ptl_settings > .layout-ui-editor > .menu-widgets, 
+  .create_form_task_html .ptl_settings > .layout-ui-editor > .menu-layers, 
+  .create_form_task_html .ptl_settings > .layout-ui-editor > .menu-settings, 
+  .create_form_task_html .ptl_settings > .layout-ui-editor > .template-widgets-options,
+  .create_form_task_html .ptl_settings > .layout-ui-editor > .template-widgets,
+  .create_form_task_html .ptl_settings > .layout-ui-editor > .resize-panels,
+  .create_form_task_html .ptl_settings > .layout-ui-editor > .messages {
 	bottom:0 !important;
 }
-.create_form_task_html .ptl_settings > .layout_ui_editor > .template-source > textarea,
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .template-source > .ace_editor {
+.create_form_task_html .ptl_settings > .layout-ui-editor > .template-source > textarea,
+  .create_form_task_html .ptl_settings > .layout-ui-editor > .template-source > .ace_editor {
 	
 }
-.create_form_task_html .ptl_settings > .layout_ui_editor > .template-source > textarea {
+.create_form_task_html .ptl_settings > .layout-ui-editor > .template-source > textarea {
 	min-height:200px;
 }
-.create_form_task_html .ptl_settings > .layout_ui_editor > .tabs {
+.create_form_task_html .ptl_settings > .layout-ui-editor > .tabs {
 	background:#fff;
 }
-.create_form_task_html .ptl_settings > .layout_ui_editor > .options .options-left,
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .options .options-center,
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .options .options-right,
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .options .options-right-2 {
+.create_form_task_html .ptl_settings > .layout-ui-editor > .options .options-left,
+  .create_form_task_html .ptl_settings > .layout-ui-editor > .options .options-center,
+  .create_form_task_html .ptl_settings > .layout-ui-editor > .options .options-right,
+  .create_form_task_html .ptl_settings > .layout-ui-editor > .options .options-right-2 {
 	padding-top:7px;
 }
-.create_form_task_html .ptl_settings > .layout_ui_editor > .options .option.option-screen-width, 
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .options .option.option-screen-height,
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .options .option.option-px,
-  .create_form_task_html .ptl_settings > .layout_ui_editor > .options .option.option-x {
+.create_form_task_html .ptl_settings > .layout-ui-editor > .options .option.option-screen-width, 
+  .create_form_task_html .ptl_settings > .layout-ui-editor > .options .option.option-screen-height,
+  .create_form_task_html .ptl_settings > .layout-ui-editor > .options .option.option-px,
+  .create_form_task_html .ptl_settings > .layout-ui-editor > .options .option.option-x {
 	height:auto;
 	font-size:10px;
 	display:none;
 }
-.create_form_task_html .ptl_settings > .layout_ui_editor > .tabs .tab.view-page {
+.create_form_task_html .ptl_settings > .layout-ui-editor > .tabs .tab.view-page {
 	opacity:.4;
 	float:left;
 }

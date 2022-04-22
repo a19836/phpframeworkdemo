@@ -73,7 +73,7 @@ var path_to_filter = "' . $filter_by_layout . '";
 			<li class="sub_menu sub_menu_others">
 				<i class="icon sub_menu_vertical"></i>
 				<ul>
-					<li title="Toggle Theme"><a onClick="toggleThemeLayout(this)"><i class="icon toggle_theme_layout"></i> <span>' . ($theme_layout == "dark_theme" ? "Show light theme" : "Show dark theme") . '</span></a></li>
+					<li title="Toggle Theme"><a onClick="toggleThemeLayout(this)"><i class="icon toggle_theme_layout"></i> <span>' . ($theme_layout == "light_theme" ? "Show dark theme" : "Show light theme") . '</span></a></li>
 				</ul>
 			</li>
 		</ul>
@@ -88,7 +88,7 @@ var path_to_filter = "' . $filter_by_layout . '";
 		</div>
 		
 		<div class="file_tree_root"></div>
-		<div id="file_tree" class="mytree' . ($theme_layout == "dark_theme" ? " jstree-default-light" : "") . ' hidden">
+		<div id="file_tree" class="mytree' . ($theme_layout == "light_theme" ? "" : " jstree-default-light") . ' hidden">
 			<ul>'; $main_layers_properties = array(); $main_content .= AdminMenuUIHandler::getLayersGroup("presentation_layers", $layers["presentation_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("business_logic_layers", $layers["business_logic_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("data_access_layers", $layers["data_access_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("db_layers", $layers["db_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= '
 				<li class="main_node_library jstree-open" data-jstree=\'{"icon":"main_node main_node_library"}\'>
 					<label>Library</label>

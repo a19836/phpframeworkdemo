@@ -27,7 +27,7 @@ $(function () {
 /* AUTO SAVE & CONVERT FUNCTIONS */
 
 function onTogglePHPCodeAutoSave() {
-	var lis = $("#code .code_menu ul li.auto_save_activation, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_activation, #code .layout_ui_editor > .options li.auto_save_activation");
+	var lis = $("#code .code_menu ul li.auto_save_activation, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_activation, #code .layout-ui-editor > .options li.auto_save_activation");
 	var inputs = lis.find("input");
 	var spans = lis.find("span");
 	
@@ -52,7 +52,7 @@ function onTogglePHPCodeAutoSave() {
 }
 
 function onTogglePHPCodeAutoConvert() {
-	var lis = $("#code .code_menu ul li.auto_convert_activation, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation, #code .layout_ui_editor > .options li.auto_convert_activation");
+	var lis = $("#code .code_menu ul li.auto_convert_activation, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation, #code .layout-ui-editor > .options li.auto_convert_activation");
 	var inputs = lis.find("input");
 	var spans = lis.find("span");
 	
@@ -67,7 +67,7 @@ function onTogglePHPCodeAutoConvert() {
 		spans.html("Enable Auto Convert");
 	}
 	
-	var PtlLayoutUIEditor = $(".layout_ui_editor").data("LayoutUIEditor");
+	var PtlLayoutUIEditor = $(".layout-ui-editor").data("LayoutUIEditor");
 	
 	if (PtlLayoutUIEditor) 
 		PtlLayoutUIEditor.options.auto_convert = auto_convert;
@@ -2088,7 +2088,7 @@ function resizeCodeEditor(code_elm) {
 	if (editor_elm[0])
 		editor_elm.css("height", height + "px");
 	else
-		code_elm.find(" > textarea, > .layout_ui_editor > textarea").css("height", getCodeEditorHeight(code_elm) + "px");
+		code_elm.find(" > textarea, > .layout-ui-editor > textarea").css("height", getCodeEditorHeight(code_elm) + "px");
 	
 	var editor = code_elm.data("editor");
 	if (editor)
@@ -2181,8 +2181,8 @@ function toggleEditorFullScreen(elm) {
 		ui.find(" > .taskflowchart > .workflow_menu > .dropdown > .tasks_flow_full_screen a").removeClass("active");
 		
 		//bc of the LayoutUIEditor
-		code.children(".layout_ui_editor, .layout_ui_editor_right_container").removeClass("full-screen");
-	   	code.find(".layout_ui_editor .options .full-screen").removeClass("zmdi-fullscreen-exit").addClass("zmdi-fullscreen");
+		code.children(".layout-ui-editor, .layout_ui_editor_right_container").removeClass("full-screen");
+	   	code.find(".layout-ui-editor .options .full-screen").removeClass("zmdi-fullscreen-exit").addClass("zmdi-fullscreen");
 	}
 	else {
 		code.addClass("editor_full_screen");
@@ -2192,8 +2192,8 @@ function toggleEditorFullScreen(elm) {
 		ui.find(" > .taskflowchart > .workflow_menu > .dropdown > .tasks_flow_full_screen a").addClass("active");
 		
 		//bc of the LayoutUIEditor
-		code.children(".layout_ui_editor, .layout_ui_editor_right_container").addClass("full-screen");
-	   	code.find(".layout_ui_editor .options .full-screen").addClass("zmdi-fullscreen-exit").removeClass("zmdi-fullscreen");
+		code.children(".layout-ui-editor, .layout_ui_editor_right_container").addClass("full-screen");
+	   	code.find(".layout-ui-editor .options .full-screen").addClass("zmdi-fullscreen-exit").removeClass("zmdi-fullscreen");
 	}
 }
 

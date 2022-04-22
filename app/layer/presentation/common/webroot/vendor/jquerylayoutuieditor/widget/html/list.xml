@@ -22,7 +22,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-list,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-list,
 		  body > .menu-widget.menu-widget-list.ui-draggable-dragging {
 			height:auto;
 			display:inline-block;
@@ -31,16 +31,16 @@
 			color:inherit;
 			overflow:hidden;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-list i,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-list i,
 		  body > .menu-widget.menu-widget-list.ui-draggable-dragging i {
 			font-size:300%;
 		}
 		
-		.layout_ui_editor > .template-widgets > .droppable-header.droppable-header-list {
+		.layout-ui-editor > .template-widgets > .droppable-header.droppable-header-list {
 			margin-top:-1rem;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-list .settings-properties table .container-col-icon {
+		.layout-ui-editor > .menu-settings.menu-settings-list .settings-properties table .container-col-icon {
 			width:20px;
 			font-size:14px;
 			text-align:center;

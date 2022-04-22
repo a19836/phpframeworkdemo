@@ -31,7 +31,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-script,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-script,
 		  body > .menu-widget.menu-widget-script.ui-draggable-dragging {
 			display:inline-block;
 			background:rgba(0, 0, 0, .2);
@@ -40,23 +40,23 @@
 			color:inherit;
 			overflow:hidden;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-script i,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-script i,
 		  body > .menu-widget.menu-widget-script.ui-draggable-dragging i {
 			font-size:450%;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-script li.group.settings-properties > ul .settings-property.content .form-control {
+		.layout-ui-editor > .menu-settings.menu-settings-script li.group.settings-properties > ul .settings-property.content .form-control {
 			text-align:left;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-script li.group.settings-general,
-		  .layout_ui_editor > .menu-settings.menu-settings-script li.group.settings-dimension,
-		  .layout_ui_editor > .menu-settings.menu-settings-script li.group.settings-typography,
-		  .layout_ui_editor > .menu-settings.menu-settings-script li.group.settings-decorations,
-		  .layout_ui_editor > .menu-settings.menu-settings-script li.group.settings-extra .settings-style {
+		.layout-ui-editor > .menu-settings.menu-settings-script li.group.settings-general,
+		  .layout-ui-editor > .menu-settings.menu-settings-script li.group.settings-dimension,
+		  .layout-ui-editor > .menu-settings.menu-settings-script li.group.settings-typography,
+		  .layout-ui-editor > .menu-settings.menu-settings-script li.group.settings-decorations,
+		  .layout-ui-editor > .menu-settings.menu-settings-script li.group.settings-extra .settings-style {
 			display:none;
 		}
 		
-		.layout_ui_editor > .menu-layers .group.group-script > ul {
+		.layout-ui-editor > .menu-layers .group.group-script > ul {
 			display:none !important;
 		}
 	]]></menu_css>

@@ -22,7 +22,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-map,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-map,
 		  body > .menu-widget.menu-widget-map.ui-draggable-dragging {
 			height:3em;
 			display:inline-block;
@@ -30,15 +30,15 @@
 			color:inherit;
 			overflow:hidden;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-map i,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-map i,
 		  body > .menu-widget.menu-widget-map.ui-draggable-dragging i {
 			font-size:300%;
 		}
 		
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-map {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-map {
 			border-radius:0 5px 5px 0;
 		}
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-map .options .option.toggle {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-map .options .option.toggle {
 			display:none;
 		}
 	]]></menu_css>

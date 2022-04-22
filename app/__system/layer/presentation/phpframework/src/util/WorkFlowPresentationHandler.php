@@ -711,7 +711,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 			<div class="code_menu">
 				' . self::getCodeEditorMenuHtml($v48e4e778a5) . '
 			</div>
-			<div class="layout_ui_editor reverse fixed_side_properties">
+			<div class="layout-ui-editor reverse fixed-side-properties hide-template-widgets-options">
 				<textarea' . ($v5988353a93 ? ' class="full-source"' : '') . '>' . htmlspecialchars($v067674f4e4, ENT_NOQUOTES) . '</textarea>
 				
 				<div class="layout-ui-menu-widgets-backup hidden">

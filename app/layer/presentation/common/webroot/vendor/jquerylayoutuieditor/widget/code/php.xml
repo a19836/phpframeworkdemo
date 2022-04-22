@@ -11,7 +11,7 @@
 	]]></template_widget>
 	<properties></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-php,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-php,
 		  body > .menu-widget.menu-widget-php.ui-draggable-dragging {
 			height:auto;
 			background:#eee;
@@ -22,23 +22,23 @@
 			font-size:16px;
 		}
 		
-		.layout_ui_editor > .template-widgets > .widget-header.widget-header-php .options .props,
-		   .layout_ui_editor > .template-widgets > .widget-header.widget-header-php .options .toggle {
+		.layout-ui-editor > .template-widgets > .widget-header.widget-header-php .options .props,
+		   .layout-ui-editor > .template-widgets > .widget-header.widget-header-php .options .toggle {
 			display:none !important;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-php .settings-id,
-		   .layout_ui_editor > .menu-settings.menu-settings-php .settings-classes,
-		   .layout_ui_editor > .menu-settings.menu-settings-php .settings-properties,
-		   .layout_ui_editor > .menu-settings.menu-settings-php .settings-general,
-		   .layout_ui_editor > .menu-settings.menu-settings-php .settings-dimension,
-		   .layout_ui_editor > .menu-settings.menu-settings-php .settings-typography,
-		   .layout_ui_editor > .menu-settings.menu-settings-php .settings-decorations,
-		   .layout_ui_editor > .menu-settings.menu-settings-php .settings-extra {
+		.layout-ui-editor > .menu-settings.menu-settings-php .settings-id,
+		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-classes,
+		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-properties,
+		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-general,
+		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-dimension,
+		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-typography,
+		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-decorations,
+		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-extra {
 			display:none;
 		}
 		
-		.layout_ui_editor > .menu-layers .group.group-php > ul {
+		.layout-ui-editor > .menu-layers .group.group-php > ul {
 			display:none !important;
 		}
 	]]></menu_css>

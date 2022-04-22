@@ -61,7 +61,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-countdown,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-countdown,
 		  body > .menu-widget.menu-widget-countdown.ui-draggable-dragging {
 			height:3rem;
 			padding:0;
@@ -69,14 +69,14 @@
 			background-size:1.8rem;
 			border:0;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-countdown span:first-child,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-countdown span:first-child,
 		  body > .menu-widget.menu-widget-countdown.ui-draggable-dragging span:first-child {
 		  	margin-top:1.9rem;
 		  	display:block;
 		  	font-size:80%;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-countdown > .settings-properties .style textarea {
+		.layout-ui-editor > .menu-settings.menu-settings-countdown > .settings-properties .style textarea {
 			height:300px !important;
 			text-align:left;
 		}

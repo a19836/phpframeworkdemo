@@ -105,7 +105,7 @@ button.tooltip-component[title] {
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-tooltip,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-tooltip,
 		  body > .menu-widget.menu-widget-tooltip.ui-draggable-dragging {
 			height:2rem;
 			padding:0;
@@ -114,14 +114,14 @@ button.tooltip-component[title] {
 			border:0;
 			border-radius:3px;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-tooltip span:first-child,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-tooltip span:first-child,
 		  body > .menu-widget.menu-widget-tooltip.ui-draggable-dragging span:first-child {
 		  	display:block;
 		  	margin-top:.1rem;
 		  	font-size:80%;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-tooltip > .settings-properties .style textarea {
+		.layout-ui-editor > .menu-settings.menu-settings-tooltip > .settings-properties .style textarea {
 			height:300px !important;
 			text-align:left;
 		}

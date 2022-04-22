@@ -29,7 +29,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-blockquote,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-blockquote,
 		  body > .menu-widget.menu-widget-blockquote.ui-draggable-dragging {
 			height:3em;
 			display:inline-block;
@@ -37,19 +37,19 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 			color:inherit;
 			overflow:hidden;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-blockquote i,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-blockquote i,
 		  body > .menu-widget.menu-widget-blockquote.ui-draggable-dragging i {
 			font-size:300%;
 		}
 		
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-blockquote {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-blockquote {
 			border-radius:0 5px 5px 0;
 		}
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-blockquote .options .option.toggle {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-blockquote .options .option.toggle {
 			display:none;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-blockquote > .settings-properties .style textarea {
+		.layout-ui-editor > .menu-settings.menu-settings-blockquote > .settings-properties .style textarea {
 			text-align:left;
 		}
 	]]></menu_css>

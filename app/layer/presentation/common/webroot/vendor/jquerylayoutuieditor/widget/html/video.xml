@@ -26,7 +26,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-video,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-video,
 		  body > .menu-widget.menu-widget-video.ui-draggable-dragging {
 			height:auto;
 			display:inline-block;
@@ -35,15 +35,15 @@
 			color:inherit;
 			overflow:hidden;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-video i,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-video i,
 		  body > .menu-widget.menu-widget-video.ui-draggable-dragging i {
 			font-size:300%;
 		}
 		
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-video {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-video {
 			border-radius:0 5px 5px 0;
 		}
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-video .options .option.toggle {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-video .options .option.toggle {
 			display:none;
 		}
 	]]></menu_css>

@@ -153,14 +153,4 @@ var layer_default_template = \'' . $selected_template . '\';
 				<textarea>' . htmlspecialchars(trim($head_props["inline_code"]), ENT_NOQUOTES) . '</textarea>
 			</div>
 		</div>
-		
-		<div class="ui-menu-widgets-backup hidden">
-			' . $ui_menu_widgets_html . '
-		</div>
-		<script>
-			var mwb = $(".template_obj > .ui-menu-widgets-backup");
-			$(".template_obj > #ui > .taskflowchart > .tasks_properties > .task_properties > .create_form_task_html > .ptl_settings > .layout_ui_editor > .menu-widgets").append( mwb.contents().clone() );
-			$(".template_obj > #ui > .taskflowchart > .tasks_properties > .task_properties > .inlinehtml_task_html > .layout_ui_editor > .menu-widgets").append( mwb.contents() );
-			mwb.remove();
-		</script>
 	</div>'; } else $main_content .= '<div class="error">Error: The system couldn\'t detect the selected file. Please refresh and try again...</div>'; ?>

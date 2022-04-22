@@ -13,9 +13,9 @@ $(function () {
 	});
 	
 	//prepare top_bar
-	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu");
+	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_side_properties").children(".workflow_menu").addClass("top_bar_menu");
 	$("#code > .code_menu").addClass("top_bar_menu");
-	$("#code > .layout_ui_editor").addClass("with_top_bar_menu");
+	$("#code > .layout-ui-editor").addClass("with_top_bar_menu");
 	
 	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
@@ -90,7 +90,7 @@ $(function () {
 		initCodeLayoutUIEditor(view_obj, {
 			save_func: saveView, 
 			ready_func: function() {
-				var luie = view_obj.find("#code > .layout_ui_editor");
+				var luie = view_obj.find("#code > .layout-ui-editor");
 				var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
 				
 				if (PtlLayoutUIEditor)
@@ -102,8 +102,10 @@ $(function () {
 				view_obj.find(" > .tabs #visual_editor_tab a").trigger("click");
 				view_layout.removeClass("do-not-confirm");
 				
-				//show php widgets
-				luie.find(" > .template-widgets-options .show-php input").attr("checked", "checked").prop("checked", true).trigger("click").attr("checked", "checked").prop("checked", true);
+				//show php widgets, borders and background
+				PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();
+				PtlLayoutUIEditor.showTemplateWidgetsBorders();
+				PtlLayoutUIEditor.showTemplatePHPWidgets();
 				
 				//init auto save
 				enableAutoSave(onTogglePHPCodeAutoSave);
@@ -112,7 +114,7 @@ $(function () {
 				
 				//add auto_save and auto_convert options to layout ui editor
 				var sub_menu = $('<i class="icon sub_menu option"><ul></ul></i>');
-				$("#code > .layout_ui_editor > .options .full-screen").before(sub_menu);
+				$("#code > .layout-ui-editor > .options .full-screen").before(sub_menu);
 				var lue_full_screen_icon = $("#code > .code_menu li.editor_full_screen").first().clone().removeClass("hidden").addClass("without_padding");
 				var lue_save_icon = $("#code > .code_menu li.save").first().clone().removeClass("hidden").addClass("without_padding");
 				var lue_auto_save_icon = $("#code > .code_menu li.auto_save_activation").first().clone().removeClass("hidden");

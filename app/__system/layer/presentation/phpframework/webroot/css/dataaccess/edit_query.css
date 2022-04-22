@@ -594,11 +594,11 @@
 	content:"\f06e";
 }
 
-.relationship .query .taskflowchart .tasks_flow .popup_overlay {
+.relationship .query .taskflowchart .popup_overlay {
 	display:none !important;
 }
-.relationship .query .taskflowchart:not(.auto_save_disabled) .tasks_flow .selected_task_properties .generic_buttons, 
-  .relationship .query .taskflowchart:not(.auto_save_disabled) .tasks_flow .selected_connection_properties .generic_buttons {
+.relationship .query .taskflowchart:not(.auto_save_disabled) .selected_task_properties .generic_buttons, 
+  .relationship .query .taskflowchart:not(.auto_save_disabled) .selected_connection_properties .generic_buttons {
 	display:none;
 }
 

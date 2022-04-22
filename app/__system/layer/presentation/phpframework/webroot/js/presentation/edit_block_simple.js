@@ -56,15 +56,22 @@ $(function () {
 function showOrHideModuleData(elm) {
 	elm = $(elm);
 	var module_data = $(".block_obj > .module_data");
+	var p = elm.parent();
+	var input = p.find("input");
+	var span = p.find("span");
 	
 	if (module_data[0]) {
-		if(module_data.css("display") == "none") {//show
+		if (module_data.css("display") == "none") {//show
 			module_data.slideDown("slow");
 			elm.addClass("active");
+			input.attr("checked", "checked").prop("checked", true);
+			span.html("Hide Module Info");
 		}
 		else {//hide
 			module_data.slideUp("slow");
 			elm.removeClass("active");
+			input.removeAttr("checked").prop("checked", false);
+			span.html("Show Module Info");
 		}
 	}
 }

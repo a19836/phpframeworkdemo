@@ -45,7 +45,7 @@ function initObjectBlockSettings(class_name, save_func, save_func_name) {
 	MyHtmlBeautify.single_ptl_tags.push("block:button:");
 	
 	//Preparing UI - LayoutUIEditor
-	var layout_ui_editor_elm = ptl.children(".layout_ui_editor");
+	var layout_ui_editor_elm = ptl.children(".layout-ui-editor");
 	
 	if (layout_ui_editor_elm[0] && !layout_ui_editor_elm.data("LayoutUIEditor") && typeof LayoutUIEditor == "function") {
 		var els_ui_creator_var_name = "ElsLayoutUIEditor_" + Math.abs(("" + class_name).hashCode()); //Be sure that the hasCode is positive with Math.abs
@@ -539,7 +539,7 @@ function createObjectItemCodeEditor(textarea, type, save_func) {
 }
 
 function setPtlElementTemplateSourceEditorValue(ptl, value, force) {
-	var PtlLayoutUIEditor = ptl.children(".layout_ui_editor").data("LayoutUIEditor");
+	var PtlLayoutUIEditor = ptl.children(".layout-ui-editor").data("LayoutUIEditor");
 	
 	if (PtlLayoutUIEditor) {
 		if (force) {
@@ -562,12 +562,12 @@ function setPtlElementTemplateSourceEditorValue(ptl, value, force) {
 			editor.focus();
 		}
 		else 
-			ptl.find(" > .layout_ui_editor > .template-source > textarea").val(value);
+			ptl.find(" > .layout-ui-editor > .template-source > textarea").val(value);
 	}
 }
 
 function getPtlElementTemplateSourceEditorValue(ptl, force) {
-	var PtlLayoutUIEditor = ptl.children(".layout_ui_editor").data("LayoutUIEditor");
+	var PtlLayoutUIEditor = ptl.children(".layout-ui-editor").data("LayoutUIEditor");
 	
 	if (PtlLayoutUIEditor) {
 		if (force) {
@@ -584,7 +584,7 @@ function getPtlElementTemplateSourceEditorValue(ptl, force) {
 	}
 	
 	var editor = ptl.data("editor");
-	return editor ? editor.getValue() : ptl.find(" > .layout_ui_editor > .template-source > textarea").val();
+	return editor ? editor.getValue() : ptl.find(" > .layout-ui-editor > .template-source > textarea").val();
 }
 
 function importTemplatePTLCode(elm, module) {

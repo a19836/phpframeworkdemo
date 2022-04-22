@@ -11,7 +11,7 @@
 	]]></template_widget>
 	<properties></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-call-module-or-block,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-call-module-or-block,
 		  body > .menu-widget.menu-widget-call-module-or-block.ui-draggable-dragging {
 			height:auto;
 			background:#333;
@@ -22,23 +22,23 @@
 			font-size:16px;
 		}
 		
-		.layout_ui_editor > .template-widgets > .widget-header.widget-header-call-module-or-block .options .props,
-		   .layout_ui_editor > .template-widgets > .widget-header.widget-header-call-module-or-block .options .toggle {
+		.layout-ui-editor > .template-widgets > .widget-header.widget-header-call-module-or-block .options .props,
+		   .layout-ui-editor > .template-widgets > .widget-header.widget-header-call-module-or-block .options .toggle {
 			display:none !important;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-call-module-or-block .settings-id,
-		   .layout_ui_editor > .menu-settings.menu-settings-call-module-or-block .settings-classes,
-		   .layout_ui_editor > .menu-settings.menu-settings-call-module-or-block .settings-properties,
-		   .layout_ui_editor > .menu-settings.menu-settings-call-module-or-block .settings-general,
-		   .layout_ui_editor > .menu-settings.menu-settings-call-module-or-block .settings-dimension,
-		   .layout_ui_editor > .menu-settings.menu-settings-call-module-or-block .settings-typography,
-		   .layout_ui_editor > .menu-settings.menu-settings-call-module-or-block .settings-decorations,
-		   .layout_ui_editor > .menu-settings.menu-settings-call-module-or-block .settings-extra {
+		.layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-id,
+		   .layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-classes,
+		   .layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-properties,
+		   .layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-general,
+		   .layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-dimension,
+		   .layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-typography,
+		   .layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-decorations,
+		   .layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-extra {
 			display:none;
 		}
 		
-		.layout_ui_editor > .menu-layers .group.group-call-module-or-block > ul {
+		.layout-ui-editor > .menu-layers .group.group-call-module-or-block > ul {
 			display:none !important;
 		}
 	]]></menu_css>

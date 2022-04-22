@@ -30,7 +30,7 @@ var InlineHTMLTaskPropertyObj = {
 		code = typeof code != "undefined" ? code : "";
 		
 		var inlinehtml_task_html = $(properties_html_elm).find(".inlinehtml_task_html");
-		var layout_ui_editor_elm = inlinehtml_task_html.children(".layout_ui_editor");
+		var layout_ui_editor_elm = inlinehtml_task_html.children(".layout-ui-editor");
 		//console.log(layout_ui_editor_elm[0]);
 		//console.log(layout_ui_editor_elm.data("LayoutUIEditor"));
 		
@@ -74,6 +74,11 @@ var InlineHTMLTaskPropertyObj = {
 					var LayoutUIEditorFormFieldUtilObj = new LayoutUIEditorFormFieldUtil(PtlLayoutUIEditor);
 					LayoutUIEditorFormFieldUtilObj.initFormFieldsSettings();
 				}
+				
+				//show php widgets, borders and background
+				PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();
+				PtlLayoutUIEditor.showTemplateWidgetsBorders();
+				PtlLayoutUIEditor.showTemplatePHPWidgets();
 			};
 			window[ptl_ui_creator_var_name] = PtlLayoutUIEditor;
 			PtlLayoutUIEditor.init(ptl_ui_creator_var_name);

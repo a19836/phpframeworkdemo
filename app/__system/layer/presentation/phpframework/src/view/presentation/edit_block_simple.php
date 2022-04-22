@@ -76,7 +76,7 @@ var presentation_project_common_webroot_url = \'' . $presentation_project_common
 var system_project_webroot_url = \'' . $project_url_prefix . '\';
 var system_project_common_webroot_url = \'' . $project_common_url_prefix . '\';
 
-var templates_regions_html_url = \'' . $templates_regions_html_url . '\'; //used in widget: src/view/presentation/common_editor_widget/template_region/import_region_html.xml
+var templates_regions_html_url = \'' . $templates_regions_html_url . '\';  //used in widget: src/view/presentation/common_editor_widget/template_region/import_region_html.xml and in the Layout_ui_editor from the taskflowchart->inlinehtml and createform tasks, for the workflow module.
 
 var block_settings_obj = ' . json_encode($block_settings_obj) . ';
 var load_module_settings_function = null;
@@ -92,7 +92,7 @@ var is_popup = ' . ($popup ? 1 : 0) . ';
 					<ul>
 						' . $title_icons . '
 						<li class="separator"></li>
-						<li class="toggle_module_data" title="Toggle Module Info"><a class="toggle_icon" onClick="showOrHideModuleData(this)"><i class="icon toggle_module_data"></i> Toggle Module Info</a></li>
+						<li class="toggle_module_data" title="Toggle Module Info"><a class="toggle_icon" onClick="showOrHideModuleData(this)"><i class="icon toggle_module_data"></i> <span>Show Module Info</span> <input type="checkbox" /></a></li>
 						<li class="separator"></li>
 						<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
 						<li class="separator"></li>
@@ -102,7 +102,7 @@ var is_popup = ' . ($popup ? 1 : 0) . ';
 			</ul>
 		</header>
 	</div>'; if ($module) { if (!$module["enabled"]) $main_content .='<div class="invalid">Warning: This module is currently DISABLED!</div>'; if ($hard_coded) $main_content .='<div class="invalid">Alert: The system detected that the block id is different than the current file name. We advise you to edit this file with the Advanced UI, otherwise you may overwrite other people\'s changes...</div>'; $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, null, null, null, null, null, $presentation_brokers); $main_content .= '
-	<div class="block_obj with_top_bar_section">
+	<div class="block_obj' . (!$popup ? " with_top_bar_section" : "") . '">
 		<div class="module_data">
 			<input type="hidden" name="module_id" value="' . $module_id . '" />
 			<div class="module_img">' . ($module["images"][0]["url"] ? '<img src="' . $module["images"][0]["url"] . '" />' : '<span class="no_photo">No Photo</span>') . '</div>

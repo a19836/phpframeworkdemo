@@ -33,6 +33,14 @@
   .global_vars_obj #form_global_vars {
 	height:calc(100vh - 45px) !important;
 }
+.global_vars_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu.task_properties_shown, 
+  .global_vars_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu.connection_properties_shown, 
+  .global_vars_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu_hide.task_properties_shown, 
+  .global_vars_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu_hide.connection_properties_shown, 
+  .global_vars_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_flow.task_properties_shown, 
+  .global_vars_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_flow.connection_properties_shown {
+	margin-bottom:-10px;
+}
 
 /* To print the workflow */
 @media print {

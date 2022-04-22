@@ -16,7 +16,7 @@ $(function () {
 	var code_menu = $("#code > .code_menu");
 	var show_simple_ui = $(".top_bar li.show_simple_ui");
 	
-	taskflowchart.addClass("with_top_bar_menu fixed_properties");
+	taskflowchart.addClass("with_top_bar_menu fixed_side_properties");
 	workflow_menu.addClass("top_bar_menu");
 	workflow_menu.children("ul").prepend('<li class="separator"></li>').prepend( show_simple_ui.clone() );
 	code_menu.children("ul").prepend('<li class="separator"></li>').prepend( show_simple_ui.clone() );

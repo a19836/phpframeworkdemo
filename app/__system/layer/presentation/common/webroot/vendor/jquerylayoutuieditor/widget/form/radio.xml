@@ -25,7 +25,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-radiobox,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-radiobox,
 		  body > .menu-widget.menu-widget-radiobox.ui-draggable-dragging {
 			width:25px;
 			height:25px;
@@ -34,17 +34,17 @@
 			border:none;
 		}
 		
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-radiobox > span,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-radiobox > span,
 		  body > .menu-widget.menu-widget-radiobox.ui-draggable-dragging > span {
 			font-size:25px;
 			color:#999;
 		}
 		
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-radiobox {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-radiobox {
 			border-radius:5px;
 		}
-		.layout_ui_editor > .template-widgets .widget-header.widget-header-radiobox > label,
-		  .layout_ui_editor > .template-widgets .widget-header.widget-header-radiobox .options .option.toggle {
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-radiobox > label,
+		  .layout-ui-editor > .template-widgets .widget-header.widget-header-radiobox .options .option.toggle {
 			display:none;
 		}
 	]]></menu_css>

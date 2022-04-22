@@ -48,7 +48,7 @@ var create_page_module_block_url = \'' . $create_page_module_block_url . '\';
 var add_block_url = \'' . $add_block_url . '\';
 var edit_block_url = \'' . $edit_block_url . '\';
 var get_module_info_url = \'' . $get_module_info_url . '\';
-var templates_regions_html_url = \'' . $templates_regions_html_url . '\';
+var templates_regions_html_url = \'' . $templates_regions_html_url . '\'; //used in widget: src/view/presentation/common_editor_widget/template_region/import_region_html.xml which is used in the Layout_ui_editor from the taskflowchart->inlinehtml and createform tasks.
 
 var new_argument_html = \'' . str_replace("'", "\\'", str_replace("\n", "", WorkFlowPHPFileHandler::getArgumentHTML())) .'\';
 var new_annotation_html = \'' . str_replace("'", "\\'", str_replace("\n", "", WorkFlowPHPFileHandler::getAnnotationHTML())) .'\';

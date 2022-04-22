@@ -50,7 +50,7 @@ var add_block_url = \'' . $add_block_url . '\';
 var edit_block_url = \'' . $edit_block_url . '\';
 var get_module_info_url = \'' . $get_module_info_url . '\';
 
-var templates_regions_html_url = \'' . $templates_regions_html_url . '\'; //used in widget: src/view/presentation/common_editor_widget/template_region/import_region_html.xml
+var templates_regions_html_url = \'' . $templates_regions_html_url . '\'; //used in widget: src/view/presentation/common_editor_widget/template_region/import_region_html.xml and in the Layout_ui_editor from the taskflowchart->inlinehtml and createform tasks.
 
 ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback = onProgrammingTaskChooseCreatedVariable;
 ProgrammingTaskUtil.on_programming_task_choose_object_property_callback = onProgrammingTaskChooseObjectProperty;
@@ -153,12 +153,7 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 		<div class="ui-menu-widgets-backup hidden">
 			' . $ui_menu_widgets_html . '
 		</div>
-		<script>
-			var mwb = $(".entity_obj > .ui-menu-widgets-backup");
-			$(".entity_obj > #ui > .taskflowchart > .tasks_properties > .task_properties > .create_form_task_html > .ptl_settings > .layout_ui_editor > .menu-widgets").append( mwb.contents().clone() );
-			$(".entity_obj > #ui > .taskflowchart > .tasks_properties > .task_properties > .inlinehtml_task_html > .layout_ui_editor > .menu-widgets").append( mwb.contents() );
-			mwb.remove();
-		</script>'; $main_content .= '
+		
 		<div id="view"></div>
 	</div>
 	<div class="big_white_panel"></div>'; } else $main_content .= '<div class="error">Error: The system couldn\'t detect the selected file. Please refresh and try again...</div>'; ?>

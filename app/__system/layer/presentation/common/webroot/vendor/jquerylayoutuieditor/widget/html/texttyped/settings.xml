@@ -49,7 +49,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-texttyped,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-texttyped,
 		  body > .menu-widget.menu-widget-texttyped.ui-draggable-dragging {
 			height:2rem;
 			padding:0;
@@ -58,7 +58,7 @@
 			border:0;
 			border-radius:3px;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-texttyped span:first-child,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-texttyped span:first-child,
 		  body > .menu-widget.menu-widget-texttyped.ui-draggable-dragging span:first-child {
 		  	display:block;
 		  	margin-top:.5rem;

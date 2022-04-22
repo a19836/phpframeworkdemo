@@ -48,7 +48,7 @@ function setDefaultTemplatePTL() {
 		"\n" + '	<ptl:getMenusHTML_' + r + ' \\$input_data>' +
 		"\n" + '</ul>';
 	
-	$(".menu_settings .els > .ptl > .layout_ui_editor > .template-source > textarea").text(ptl);
+	$(".menu_settings .els > .ptl > .layout-ui-editor > .template-source > textarea").text(ptl);
 }
 
 function loadShowMenuBlockSettings(settings_elm, settings_values) {

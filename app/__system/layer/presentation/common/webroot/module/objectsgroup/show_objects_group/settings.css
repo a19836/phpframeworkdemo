@@ -60,7 +60,7 @@
 }
 
 /* PTL UI */
-.module_show_objects_group_settings .create_form_task_html > .ptl_settings > .layout_ui_editor > .options .option.show-full-source {
+.module_show_objects_group_settings .create_form_task_html > .ptl_settings > .layout-ui-editor > .options .option.show-full-source {
 	display:none !important;
 } 
 

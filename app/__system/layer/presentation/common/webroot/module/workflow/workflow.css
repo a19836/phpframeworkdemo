@@ -3,7 +3,9 @@
 }
 
 .block_obj {
-	
+	margin-left:10px !important;
+	margin-right:10px !important;
+	padding-bottom:0;
 }
 .block_obj .module_settings {
 	width:auto;
@@ -27,13 +29,17 @@
   .module_workflow_settings #code > textarea,
   .module_workflow_settings #code .ace_editor,
   .module_workflow_settings #external_vars {
-	height:calc(100vh - 130px) !important;
+	height:calc(100vh - 105px) !important;
+}
+.module_workflow_settings #ui .taskflowchart {
+	overflow:visible;
 }
 .module_workflow_settings #code .code_menu,
   .module_workflow_settings #ui .taskflowchart .workflow_menu {
-	margin-top:-25px;
+	margin-top:-23px;
+	position:absolute;
 	top:auto;
-	right:295px;
+	right:265px;
 	z-index:999999;
 }
 .module_workflow_settings #code .code_menu > ul > .save,
@@ -84,10 +90,10 @@
 }
 
 /* WORKFLOW */
-.module_workflow_settings .jsplumbtaskworkflow .workflow_message {
+.module_workflow_settings .workflow_message {
 	position:absolute;
 }
-.module_workflow_settings .jsplumbtaskworkflow .error {
+.module_workflow_settings .error {
 	height:auto;
 	font-size:100%;
 }

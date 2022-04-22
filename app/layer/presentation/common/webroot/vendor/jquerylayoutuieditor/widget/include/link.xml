@@ -31,7 +31,7 @@
 		</div>
 	]]></properties>
 	<menu_css><![CDATA[
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-link,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-link,
 		  body > .menu-widget.menu-widget-link.ui-draggable-dragging {
 			padding-top:.3em;
 			display:inline-block;
@@ -45,24 +45,24 @@
 			text-transform:uppercase;
 			overflow:hidden;
 		}
-		.layout_ui_editor > .menu-widgets .menu-widget.menu-widget-link i,
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-link i,
 		  body > .menu-widget.menu-widget-link.ui-draggable-dragging i {
 			display:block;
 			font-size:250%;
 		}
 		
-		.layout_ui_editor > .menu-settings.menu-settings-link li.group.settings-properties > ul .settings-property .form-control {
+		.layout-ui-editor > .menu-settings.menu-settings-link li.group.settings-properties > ul .settings-property .form-control {
 			width:70%;
 		}
-		.layout_ui_editor > .menu-settings.menu-settings-link li.group.settings-general,
-		  .layout_ui_editor > .menu-settings.menu-settings-link li.group.settings-dimension,
-		  .layout_ui_editor > .menu-settings.menu-settings-link li.group.settings-typography,
-		  .layout_ui_editor > .menu-settings.menu-settings-link li.group.settings-decorations,
-		  .layout_ui_editor > .menu-settings.menu-settings-link li.group.settings-extra .settings-style {
+		.layout-ui-editor > .menu-settings.menu-settings-link li.group.settings-general,
+		  .layout-ui-editor > .menu-settings.menu-settings-link li.group.settings-dimension,
+		  .layout-ui-editor > .menu-settings.menu-settings-link li.group.settings-typography,
+		  .layout-ui-editor > .menu-settings.menu-settings-link li.group.settings-decorations,
+		  .layout-ui-editor > .menu-settings.menu-settings-link li.group.settings-extra .settings-style {
 			display:none;
 		}
 		
-		.layout_ui_editor > .menu-layers .group.group-link > ul {
+		.layout-ui-editor > .menu-layers .group.group-link > ul {
 			display:none !important;
 		}
 	]]></menu_css>

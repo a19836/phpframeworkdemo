@@ -15,7 +15,7 @@ $(function () {
 	
 	//prepare top_bar
 	$(".code_editor_body > .code_menu").addClass("top_bar_menu");
-	$(".code_editor_body > .layout_ui_editor").addClass("with_top_bar_menu");
+	$(".code_editor_body > .layout-ui-editor").addClass("with_top_bar_menu");
 	
 	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
@@ -96,12 +96,14 @@ $(function () {
 				view_layout.trigger("click");
 				view_layout.removeClass("do-not-confirm");
 				
-				//show php widgets
-				luie.find(" > .template-widgets-options .show-php input").attr("checked", "checked").prop("checked", true).trigger("click").attr("checked", "checked").prop("checked", true);
+				//show php widgets, borders and background
+				PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();
+				PtlLayoutUIEditor.showTemplateWidgetsBorders();
+				PtlLayoutUIEditor.showTemplatePHPWidgets();
 			},
 		});
 		
-		var luie = template_obj.find(".code_editor_body > .layout_ui_editor");
+		var luie = template_obj.find(".code_editor_body > .layout-ui-editor");
 		var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
 		
 		if (PtlLayoutUIEditor)
@@ -176,7 +178,7 @@ function toggleAdvancedItems(elm) {
 
 function toggleWidgetSettings(elm) {
 	var code_editor_body = $(".template_obj .code_editor_body");
-	var PtlLayoutUIEditor = code_editor_body.find(".layout_ui_editor").data("LayoutUIEditor");
+	var PtlLayoutUIEditor = code_editor_body.find(".layout-ui-editor").data("LayoutUIEditor");
 	var toggle_widget_settings = $(".top_bar li.toggle_widget_settings");
 	var input = toggle_widget_settings.find("input");
 	var span = toggle_widget_settings.find("span");
@@ -276,7 +278,7 @@ function getTemplateHeadEditorCode() {
 
 function getTemplateBodyEditorCode() {
 	var code_editor_body = $(".template_obj .code_editor_body");
-	var PtlLayoutUIEditor = code_editor_body.find(".layout_ui_editor").data("LayoutUIEditor");
+	var PtlLayoutUIEditor = code_editor_body.find(".layout-ui-editor").data("LayoutUIEditor");
 	
 	if (PtlLayoutUIEditor) {
 		var luie = PtlLayoutUIEditor.getUI();
