@@ -2571,6 +2571,10 @@ function updateQueryUITableFromQuerySettings(rand_number, main_table) {
 			
 				existent_tasks[table_name] = false;
 				task_ids[table_name] = task.attr("id");
+				
+				//in case the settings panel contains something like 'count(*)' where there is no table name, we must add it manually here, otherwise that table will be deleted on the code below. Here is a query example of a sql where this happens: "SELECT count(*) FROM item".
+				if (task.is(".is_start_task") && !tables.hasOwnProperty(table_name))
+					tables[table_name] = {};
 			}
 			//console.log("tables:");
 			//console.log(tables);
