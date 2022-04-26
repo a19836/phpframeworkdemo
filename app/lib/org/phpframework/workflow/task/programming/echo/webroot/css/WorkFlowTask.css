@@ -1,11 +1,23 @@
 .jsplumbtaskmenu .task.task_echo {
-	background-image:url('../img/bg.gif');
-	text-align:left;
+	background-image:url('../img/bg.svg');
+	overflow:visible;
+	margin-bottom:30px;
 }
 .jsplumbtaskmenu .task.task_echo span {
+	width:100%;
+	max-height:20px;
+	line-height:initial;
 	display:block;
-	margin-left:11px;
-	margin-top:14px;
+	position:absolute;
+	left:0;
+	top:53px;
+	color:#426efa;
+	font-size:7px;
+	font-weight:normal;
+	letter-spacing:.5px;
+	text-align:center;
+	overflow:hidden;
+	text-overflow:ellipsis;
 }
 .jsplumbtaskworkflow .task.task_echo {
 	/*background-image:url('../img/bg.gif');
@@ -30,7 +42,7 @@
 	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
 }
 .jsplumbtaskworkflow .task.task_echo .info span {
-	color:#dca80a;
+	color:#426efa;
 }
 
 .echo_task_html {

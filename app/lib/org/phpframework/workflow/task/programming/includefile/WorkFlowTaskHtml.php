@@ -36,5 +36,5 @@
 		<input type="checkbox" class="task_property_field" name="once" value="1" title="Include Once" />
 	</div>
 	
-	<div class="task_property_exit" exit_id="default_exit" exit_color="#f08807"></div>
+	<div class="task_property_exit" exit_id="default_exit" exit_color="#426efa"></div>
 </div>

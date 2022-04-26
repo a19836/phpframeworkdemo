@@ -32,6 +32,6 @@
 		<input type="text" class="task_property_field" name="value" />
 	</div>
 	
-	<div class="task_property_exit" exit_id="start_exit" exit_color="#5b9b2a"></div>
+	<div class="task_property_exit" exit_id="start_exit" exit_color="#426efa"></div>
 	<div class="task_property_exit" exit_id="default_exit" exit_color="#000"></div>
 </div>

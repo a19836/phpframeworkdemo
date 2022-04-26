@@ -203,6 +203,8 @@ var SwitchTaskPropertyObj = {
 			ProgrammingTaskUtil.updateTaskExitsLabels(task_id, labels);
 		
 			onEditLabel(task_id);
+			
+			ProgrammingTaskUtil.onTaskCreation(task_id);
 		}, 100);
 	},
 	

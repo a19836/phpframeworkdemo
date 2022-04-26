@@ -197,5 +197,5 @@
 	
 	<?php include dirname(dirname($file_path)) . "/common/ResultVariableHtml.php"; ?>
 		
-	<div class="task_property_exit" exit_id="default_exit" exit_color="#2dccff"></div>
+	<div class="task_property_exit" exit_id="default_exit" exit_color="#426efa"></div>
 </div>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <task>
-	<label>Soap Connector</label>
+	<label>Connect with SOAP Web-Service</label>
 	<tag>soapconnector</tag>
 	<files>
 		<task_properties_html>WorkFlowTaskHtml.php</task_properties_html>

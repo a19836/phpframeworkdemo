@@ -50,7 +50,7 @@
 }
 /* END - FIX PROPERTIES TO BOTTOM */
 
-
+/* TASK PROPERTIES */
 .selected_task_properties div {
 	float:none;
 	clear:left;
@@ -225,13 +225,19 @@
 	margin-left:-18px;
 }
 
+/* FLOW TASKS */
+.jsplumbtaskworkflow .connector_overlay_add_icon {
+	background:url('../img/add_middle_task.svg') 0 0 no-repeat !important;
+}
 .jsplumbtaskworkflow .task {
-	width:120px !important;
 	min-width:120px !important;
 	min-height:50px !important;
 	padding:0 !important;
 }
-.jsplumbtaskworkflow .task:hover .full_info {
+.jsplumbtaskworkflow .task.logic_task {
+	width:120px !important;
+}
+.jsplumbtaskworkflow .task:hover > .full_info {
 	padding:2px 10px;
 	position:absolute;
 	top:-35px;

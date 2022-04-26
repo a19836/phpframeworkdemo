@@ -1,3 +1,14 @@
+body,
+  #main_column {
+	background:#fff !important;
+}
+
+input, 
+  textarea, 
+  select {
+	font-size:inherit;
+}
+
 /* DROPDOWN */
 .top_bar {
 	margin-bottom:20px;
@@ -50,8 +61,6 @@
 	display:block;
 	float:left;
 	width:200px;
-	height:20px;
-	line-height:20px;
 	margin-bottom:5px;
 }
 .select_options .choose_from_file_manager .tables ul {

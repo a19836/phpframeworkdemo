@@ -51,5 +51,5 @@
 		<input type="checkbox" class="task_property_field" name="once" value="1" />
 	</div>
 	
-	<div class="task_property_exit" exit_id="default_exit" exit_color="#999999"></div>
+	<div class="task_property_exit" exit_id="default_exit" exit_color="#426efa"></div>
 </div>

@@ -23,5 +23,5 @@
 		<input type="text" class="task_property_field" name="value" />
 	</div>
 	
-	<div class="task_property_exit" exit_id="default_exit" exit_color="#b56b64"></div>
+	<div class="task_property_exit" exit_id="default_exit" exit_color="#426efa"></div>
 </div>

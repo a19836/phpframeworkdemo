@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <task>
-	<label>Call Hibernate Method</label>
+	<label>Call Hibernate Obj Method</label>
 	<tag>callhibernatemethod</tag>
 	<files>
 		<task_properties_html>WorkFlowTaskHtml.php</task_properties_html>

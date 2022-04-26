@@ -1,3 +1,14 @@
+body,
+  #main_column {
+	background:#fff !important;
+}
+
+input, 
+  textarea, 
+  select {
+	font-size:inherit;
+}
+
 /* DROPDOWN */
 .top_bar {
 	margin-bottom:20px;

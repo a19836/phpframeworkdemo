@@ -1,5 +1,23 @@
 .jsplumbtaskmenu .task.task_setdate {
-	background-image:url('../img/bg.gif');
+	background-image:url('../img/bg.svg');
+	overflow:visible;
+	margin-bottom:30px;
+}
+.jsplumbtaskmenu .task.task_setdate span {
+	width:100%;
+	max-height:20px;
+	line-height:initial;
+	display:block;
+	position:absolute;
+	left:0;
+	top:53px;
+	color:#426efa;
+	font-size:7px;
+	font-weight:normal;
+	letter-spacing:.5px;
+	text-align:center;
+	overflow:hidden;
+	text-overflow:ellipsis;
 }
 .jsplumbtaskworkflow .task.task_setdate {
 	/*background-image:url('../img/bg.gif');
@@ -24,7 +42,7 @@
 	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
 }
 .jsplumbtaskworkflow .task.task_setdate .info span {
-	color:#a5a98e;
+	color:#426efa;
 }
 
 .set_date_task_html {

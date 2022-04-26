@@ -1,3 +1,8 @@
+body,
+  #main_column {
+	background:#fff !important;
+}
+
 /* TOP BAR */
 .top_bar .title input[name=page_url] {
 	width:300px;

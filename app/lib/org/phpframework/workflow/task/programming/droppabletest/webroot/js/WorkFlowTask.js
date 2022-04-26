@@ -73,5 +73,7 @@ var DroppableTestTaskPropertyObj = {
 		
 		WF.jsPlumbContextMenu.prepareTaskDroppables(j_task);
 		WF.jsPlumbTaskFlow.resizeTaskParentTask(droppable1, true);
+		
+		ProgrammingTaskUtil.onTaskCreation(task_id);
 	},
 };

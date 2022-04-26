@@ -1,11 +1,23 @@
 .jsplumbtaskmenu .task.task_usertask4 {
 	background-image:url('../img/bg.gif');
-	line-height:10px;
+	overflow:visible;
+	margin-bottom:30px;
 }
 .jsplumbtaskmenu .task.task_usertask4 span {
-	/*display:none;*/
-	margin-top: 1rem;
-    display: block;
+	width:100%;
+	max-height:20px;
+	line-height:initial;
+	display:block;
+	position:absolute;
+	left:0;
+	top:53px;
+	color:#426efa;
+	font-size:7px;
+	font-weight:normal;
+	letter-spacing:.5px;
+	text-align:center;
+	overflow:hidden;
+	text-overflow:ellipsis;
 }
 .jsplumbtaskworkflow .task.task_usertask4 {
 	/*background-image:url('../img/bg.gif');
@@ -35,8 +47,8 @@
 	width:100%;
 	height:100%;
 	min-height:50px;
-	background:#990000;
-	opacity:.8;
+	background:#426efa;
+	opacity:.6;
 	
 	-webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
 	clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
@@ -53,7 +65,7 @@
 	color:#000;*/
 }
 .jsplumbtaskworkflow .task.task_usertask4 .info span {
-	color:#fff;
+	color:#000;
 }
 .jsplumbtaskworkflow .task.task_usertask4 .eps {
 	display:none;

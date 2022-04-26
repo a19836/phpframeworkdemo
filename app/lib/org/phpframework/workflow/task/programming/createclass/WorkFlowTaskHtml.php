@@ -68,5 +68,5 @@
 		<ul index_prefix="methods"></ul>
 	</div>
 	
-	<div class="task_property_exit" exit_id="default_exit" exit_color="#004480"></div>
+	<div class="task_property_exit" exit_id="default_exit" exit_color="#426efa"></div>
 </div>

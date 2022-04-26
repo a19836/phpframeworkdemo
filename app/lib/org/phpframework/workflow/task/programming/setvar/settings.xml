@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <task>
-	<label>Set Var</label>
+	<label>Define Local Variable</label>
 	<tag>setvar</tag>
 	<files>
 		<task_properties_html>WorkFlowTaskHtml.php</task_properties_html>

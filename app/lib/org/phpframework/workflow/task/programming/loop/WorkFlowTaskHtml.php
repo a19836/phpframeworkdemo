@@ -53,6 +53,6 @@
 		</div>
 	</div>
 	
-	<div class="task_property_exit" exit_id="start_exit" exit_color="#2a679b"></div>
+	<div class="task_property_exit" exit_id="start_exit" exit_color="#426efa"></div>
 	<div class="task_property_exit" exit_id="default_exit" exit_color="#000"></div>
 </div>

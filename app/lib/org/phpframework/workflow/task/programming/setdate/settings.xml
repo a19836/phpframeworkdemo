@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <task>
-	<label>Set Date</label>
+	<label>Define a Date Variable</label>
 	<tag>setdate</tag>
 	<files>
 		<task_properties_html>WorkFlowTaskHtml.php</task_properties_html>

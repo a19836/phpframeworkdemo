@@ -1,11 +1,23 @@
 .jsplumbtaskmenu .task.task_callobjectmethod {
-	background-image:url('../img/bg.gif');
+	background-image:url('../img/bg.svg');
+	overflow:visible;
+	margin-bottom:30px;
 }
 .jsplumbtaskmenu .task.task_callobjectmethod span {
-	line-height:13px;
+	width:100%;
+	max-height:20px;
+	line-height:initial;
 	display:block;
-	margin-top:5px;
-	color:#FFF;
+	position:absolute;
+	left:0;
+	top:53px;
+	color:#426efa;
+	font-size:7px;
+	font-weight:normal;
+	letter-spacing:.5px;
+	text-align:center;
+	overflow:hidden;
+	text-overflow:ellipsis;
 }
 .jsplumbtaskworkflow .task.task_callobjectmethod {
 	/*background-image:url('../img/bg.gif');
@@ -13,7 +25,6 @@
 	-webkit-background-size:100% 100%;
 	-moz-background-size:100% 100%;
 	background-size:100% 100%; */
-	background:#ddd;
 	
 	/* in IE */
 	-ms-background-size:100% 100%;
@@ -31,13 +42,7 @@
 	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
 }
 .jsplumbtaskworkflow .task.task_callobjectmethod .info span {
-	color:#0a376a;
-	/*color:#FFF;
-	background-color:#000;
-	
-	opacity:0.7;
-	-ms-filter: alpha(opacity=70);
-	filter: alpha(opacity=70);*/
+	color:#426efa;
 }
 
 .call_object_method_task_html {

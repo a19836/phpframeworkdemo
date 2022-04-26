@@ -28,5 +28,5 @@
 	
 	<textarea class="task_property_field" name="code" style="display:none"></textarea>
 	
-	<div class="task_property_exit" exit_id="default_exit" exit_color="#6ea935"></div>
+	<div class="task_property_exit" exit_id="default_exit" exit_color="#426efa"></div>
 </div>

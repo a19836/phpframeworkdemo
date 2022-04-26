@@ -873,6 +873,9 @@ body .connection_context_menu .delete a {
 	content:"\f78c";
 }
 
+body .workflow_message {
+	font-size:8pt;
+}
 body .workflow_message .status span, 
   body .workflow_message .error span {
 	display:inline-block;

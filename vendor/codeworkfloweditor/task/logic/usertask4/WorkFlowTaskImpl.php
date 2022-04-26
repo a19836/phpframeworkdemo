@@ -30,7 +30,7 @@ class WorkFlowTaskImpl extends \WorkFlowTask {
 				"type" => self::getConfiguredParsedType($type),
 				"exits" => array(
 					/*self::DEFAULT_EXIT_ID => array(
-						"color" => "#990000",
+						"color" => "#426efa",
 					),*/
 				),
 			);

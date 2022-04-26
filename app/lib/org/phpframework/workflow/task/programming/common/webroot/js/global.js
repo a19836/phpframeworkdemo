@@ -34,6 +34,13 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		
 		connections_to_add_after_deletion: null,
 		
+		onTaskCreation : function(task_id) {
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+			
+			task.addClass("logic_task");
+		},
+		
 		createTaskLabelField : function(properties_html_elm, task_id) {
 			var label = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
 			label = label ? label.replace(/"/g, "&quot;") : "";

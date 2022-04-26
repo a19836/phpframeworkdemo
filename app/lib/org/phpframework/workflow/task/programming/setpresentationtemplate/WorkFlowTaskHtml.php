@@ -38,5 +38,5 @@
 		</select>
 	</div>
 		
-	<div class="task_property_exit" exit_id="default_exit" exit_color="#b70608"></div>
+	<div class="task_property_exit" exit_id="default_exit" exit_color="#426efa"></div>
 </div>

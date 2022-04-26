@@ -28,6 +28,6 @@
 		<input type="text" class="task_property_field" name="var_name" />
 	</div>
 	
-	<div class="task_property_exit" exit_id="try" exit_color="#009900"></div>
+	<div class="task_property_exit" exit_id="try" exit_color="#426efa"></div>
 	<div class="task_property_exit" exit_id="catch" exit_color="#c00000"></div>
 </div>

@@ -92,6 +92,8 @@ var ThrowExceptionTaskPropertyObj = {
 			}
 		
 			onEditLabel(task_id);
+			
+			ProgrammingTaskUtil.onTaskCreation(task_id);
 		}, 100);
 	},
 	

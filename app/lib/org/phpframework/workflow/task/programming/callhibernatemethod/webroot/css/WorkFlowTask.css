@@ -1,11 +1,23 @@
 .jsplumbtaskmenu .task.task_callhibernatemethod {
-	background-image:url('../img/bg.gif');
+	background-image:url('../img/bg.svg');
+	overflow:visible;
+	margin-bottom:30px;
 }
 .jsplumbtaskmenu .task.task_callhibernatemethod span {
+	width:100%;
+	max-height:20px;
+	line-height:initial;
 	display:block;
-	line-height:13px;
-	margin-top:5px;
-	background-color:rgba(255, 255, 255,.5);
+	position:absolute;
+	left:0;
+	top:53px;
+	color:#426efa;
+	font-size:7px;
+	font-weight:normal;
+	letter-spacing:.5px;
+	text-align:center;
+	overflow:hidden;
+	text-overflow:ellipsis;
 }
 .jsplumbtaskworkflow .task.task_callhibernatemethod {
 	/*background-image:url('../img/bg.gif');
@@ -20,7 +32,7 @@
 	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='contain');*/
 }
 .jsplumbtaskworkflow .task.task_callhibernatemethod .info span {
-	color:#2dccff;
+	color:#426efa;
 }
 
 .call_hibernate_method_task_html {

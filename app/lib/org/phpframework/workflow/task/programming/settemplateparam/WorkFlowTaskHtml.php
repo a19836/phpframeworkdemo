@@ -46,5 +46,5 @@
 		<span class="icon search" onclick="ProgrammingTaskUtil.onProgrammingTaskChoosePageUrl(this)" title="Search Page">Search page</span>
 	</div>
 		
-	<div class="task_property_exit" exit_id="default_exit" exit_color="#b70608"></div>
+	<div class="task_property_exit" exit_id="default_exit" exit_color="#426efa"></div>
 </div>

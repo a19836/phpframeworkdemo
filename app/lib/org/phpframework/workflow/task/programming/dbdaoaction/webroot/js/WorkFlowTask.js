@@ -223,6 +223,8 @@ var DBDAOActionTaskPropertyObj = {
 			var default_method_obj_str = BrokerOptionsUtilObj.getDefaultBroker(DBDAOActionTaskPropertyObj.brokers_options);
 			if (!task_property_values["method_obj"] && default_method_obj_str)
 				myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id]["method_obj"] = default_method_obj_str;
+			
+			ProgrammingTaskUtil.onTaskCreation(task_id);
 		}, 30);
 	},
 	

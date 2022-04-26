@@ -142,6 +142,8 @@ var GetBeanObjectTaskPropertyObj = {
 			var default_phpframework_obj_str = BrokerOptionsUtilObj.getDefaultBroker(GetBeanObjectTaskPropertyObj.phpframeworks_options);
 			if (!task_property_values["phpframework_obj"] && default_phpframework_obj_str)
 				myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id]["phpframework_obj"] = default_phpframework_obj_str;
+			
+			ProgrammingTaskUtil.onTaskCreation(task_id);
 		}, 30);
 	},
 	

@@ -46,5 +46,5 @@
 		<textarea class="task_property_field function_code" name="code" /></textarea>
 	</div>
 	
-	<div class="task_property_exit" exit_id="default_exit" exit_color="#6492b5"></div>
+	<div class="task_property_exit" exit_id="default_exit" exit_color="#426efa"></div>
 </div>
