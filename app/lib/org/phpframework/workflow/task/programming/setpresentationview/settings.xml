@@ -26,12 +26,15 @@
 			
 			<on_complete_task_label>SetPresentationViewTaskPropertyObj.onCompleteLabel</on_complete_task_label>
 			
-			<on_success_task_cloning>onTaskCloning</on_success_task_cloning>
+			<on_success_task_cloning>ProgrammingTaskUtil.onTaskCloning</on_success_task_cloning>
 			<on_success_task_creation>SetPresentationViewTaskPropertyObj.onTaskCreation</on_success_task_creation>
 			<on_check_task_deletion>ProgrammingTaskUtil.onBeforeTaskDeletion</on_check_task_deletion>
 			<on_success_task_deletion>ProgrammingTaskUtil.onAfterTaskDeletion</on_success_task_deletion>
 			
+			<on_success_task_between_connection>ProgrammingTaskUtil.onSuccessTaskBetweenConnection</on_success_task_between_connection>
 			<on_success_connection_drag>onlyAllowOneConnectionPerExitAndNotToItSelf</on_success_connection_drag>
+			
+			<on_show_task_menu>ProgrammingTaskUtil.addCodeMenuOnShowTaskMenu</on_show_task_menu>
 			
 			<on_click_task>showTaskPropertiesIfExists</on_click_task>
 		</callback>

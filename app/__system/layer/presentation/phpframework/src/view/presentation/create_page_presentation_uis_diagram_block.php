@@ -70,7 +70,7 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 		border:0;
 		background:transparent;
 	}
-	.taskflowchart .tasks_flow .task_page > .tag_info,
+	.taskflowchart .tasks_flow .task_page > .task_info,
 	  .taskflowchart .tasks_flow .task_page > .info,
 	  .taskflowchart .tasks_flow .task_page > .eps,
 	  .taskflowchart .tasks_flow .task:hover:after {

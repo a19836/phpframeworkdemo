@@ -2,11 +2,14 @@
 .top_bar {
 	margin-bottom:10px;
 }
+.top_bar header > .title {
+	max-width:calc(100% - 140px);
+}
 .top_bar header > .title > input {
 	width:100px;
 }
 .top_bar header > .title > .class_name {
-	color:#666;
+	color:var(--main-template-color);
 }
 .top_bar header > ul {
 	right:104px;
@@ -82,8 +85,8 @@
 	z-index:1051;
 	
 	/*font-weight:bold;*/
-	color:var(--main-template-color);
-	background: inherit;
+	color:var(--main-iframe-color);
+	background:var(--main-iframe-bg);
 	/*background: -moz-linear-gradient(top, #eee 50%, #f7f7f7 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #f7f7f7));
 	background: -webkit-linear-gradient(top, #eee 50%, #f7f7f7 100%);
@@ -95,7 +98,9 @@
 .file_class_method_obj #settings.collapsed .settings_header {
 	margin-top:-25px;
 	border:0;
-		
+	
+	color:inherit;
+	background:transparent;
 	/*background: -moz-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(50%, #eee), color-stop(100%, #ffffff73));
 	background: -webkit-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
@@ -105,13 +110,15 @@
 }
 .file_class_method_obj #settings .settings_header::before {
 	content:"";
-	height:5px;
+	height:4px;
 	display:block;
 	position:absolute;
 	top:0;
 	left:0;
 	right:0;
 	
+	border-top:1px solid var(--resize-bar-border);
+	border-bottom:1px solid var(--resize-bar-border);
 	background:var(--resize-bar-bg);
 	/*background:var(--resize-bar-horizontal-img) repeat-x var(--main-template-bg);*/
 }
@@ -331,22 +338,22 @@
   .file_class_method_obj #code .ace_editor {
 	height:calc(100vh - 70px) !important;
 }
-.file_class_method_obj > #ui .taskflowchart.with_top_bar_menu .tasks_menu:not(.task_properties_shown):not(.connection_properties_shown), 
-  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu .tasks_menu_hide:not(.task_properties_shown):not(.connection_properties_shown), 
-  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu .tasks_flow:not(.task_properties_shown):not(.connection_properties_shown),
-  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_side_properties .tasks_menu, 
-  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_side_properties .tasks_menu_hide, 
-  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_side_properties .tasks_flow, 
-  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_task_properties, 
-  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_connection_properties {
+.file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu > .tasks_menu:not(.task_properties_shown):not(.connection_properties_shown), 
+  .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu > .tasks_menu_hide:not(.task_properties_shown):not(.connection_properties_shown), 
+  .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu > .tasks_flow:not(.task_properties_shown):not(.connection_properties_shown),
+  .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_side_properties > .tasks_menu, 
+  .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_side_properties > .tasks_menu_hide, 
+  .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_side_properties > .tasks_flow, 
+  .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_side_properties > .selected_task_properties, 
+  .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_side_properties > .selected_connection_properties {
 	margin-bottom:30px;
 }
-.file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu.task_properties_shown, 
-  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu.connection_properties_shown, 
-  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu_hide.task_properties_shown, 
-  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu_hide.connection_properties_shown, 
-  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_flow.task_properties_shown, 
-  .file_class_method_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_flow.connection_properties_shown {
+.file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_menu.task_properties_shown, 
+  .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_menu.connection_properties_shown, 
+  .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_menu_hide.task_properties_shown, 
+  .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_menu_hide.connection_properties_shown, 
+  .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_flow.task_properties_shown, 
+  .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_flow.connection_properties_shown {
 	margin-bottom:0;
 }
 

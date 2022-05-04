@@ -20,23 +20,31 @@
 	text-overflow:ellipsis;
 }
 .jsplumbtaskworkflow .task.task_createclassobject {
-	/*background-image:url('../img/bg.gif');
-	-o-background-size:contain;
-	-webkit-background-size:contain;
-	-moz-background-size:contain;
-	background-size:contain; */
-	
-	/* in IE */
-	-ms-background-size:contain;
-	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='contain')";
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='contain');*/
+	width:70px !important;
+	height:70px !important;
+	padding:20px 0 0;
+	box-sizing:border-box;
 }
 .jsplumbtaskworkflow .task.task_createclassobject .info span {
 	color:#426efa;
 }
+.jsplumbtaskworkflow .task.task_createclassobject .eps {
+	width:65px;
+	height:50px;
+	margin:0 auto;
+	background:url('../img/bg.svg') center bottom no-repeat;
+	background-size:100% 100%;
+}
+.jsplumbtaskworkflow .task.task_createclassobject .ep {
+	border-color:transparent !important;
+	background-color:transparent !important;
+}
 
 .create_class_object_task_html {
 	width:390px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .create_class_object_task_html {
+	width:100%;
 }
 
 .create_class_object_task_html .class_name {
@@ -48,8 +56,14 @@
 .create_class_object_task_html .class_name label {
 	width:135px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .create_class_object_task_html .class_name label {
+	width:65px;
+}
 .create_class_object_task_html .class_name input {
 	width:200px;   
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .create_class_object_task_html .class_name input {
+	width:calc(100% - 100px);   
 }
 
 

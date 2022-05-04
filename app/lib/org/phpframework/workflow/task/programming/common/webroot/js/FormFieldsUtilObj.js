@@ -869,6 +869,7 @@ var FormFieldsUtilObj = {
 		//HTML
 		var html = 
 			'<div class="field" prefix="' + prefix + '">' +
+			'	<label>Field:</label>' + 
 			'	<span class="icon remove remove_field" onClick="$(this).parent().remove()" title="Remove Field">remove field</span>' +
 			'	<span class="icon maximize minimize_field" onClick="FormFieldsUtilObj.minimizeField(this)" title="Minimize/Maximize">minimize field</span>' +
 			'	<span class="icon move_up" onClick="FormFieldsUtilObj.moveUp(this)" title="Move Up Field">move up field</span>' +
@@ -1796,6 +1797,7 @@ var FormFieldsUtilObj = {
 		
 		var html = 
 		'<div class="pagination" prefix="' + prefix + '">' +
+			'<label>Pagination: </label>' +
 			'<span class="icon remove" onClick="$(this).parent().remove()" title="Remove Pagination">remove pagination</span>' + 
 			'<div class="pagination_template">' +
 			'	<label>Pagination Template:</label>' +
@@ -1887,7 +1889,7 @@ var FormFieldsUtilObj = {
 		
 		var html = 
 		'<div class="table" prefix="' + prefix + '">' + 
-		'	<label>Table with class name: </label>' +
+		'	<label>Table: </label>' +
 		'	<span class="icon group_add" onClick="FormFieldsUtilObj.addContainer(this, \'[elements]\');" title="Add Sub Container">add sub container</span>' + 
 		'	<span class="icon item_add" onClick="FormFieldsUtilObj.addInputField(this, \'[elements]\');" title="Add Input Field">add input</span>' + 
 		'	<span class="icon pagination_add" onClick="FormFieldsUtilObj.addPagination(this, \'[elements]\');" title="Add Pagination">add pagination</span>' + 
@@ -1974,7 +1976,7 @@ var FormFieldsUtilObj = {
 		
 		var html = 
 		'<div class="tree" prefix="' + prefix + '">' + 
-		'	<label>Tree with class name: </label>' +
+		'	<label>Tree: </label>' +
 		'	<select class="task_property_field ordered" name="' + prefix + '[ordered]">' + 
 		'		<option value="0">Unordered</option>' + 
 		'		<option value="1"' + (ordered == 1 ? ' selected' : '') + '>Ordered</option>' + 

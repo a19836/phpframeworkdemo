@@ -8,9 +8,28 @@
 	min-height:50px !important;
 	padding:0 !important;
 }
-.jsplumbtaskworkflow .task .tag_info {
+.jsplumbtaskworkflow .task:hover:before {
+	display:none !important;
+}
+.jsplumbtaskworkflow .task:hover:after {
+	bottom:-20px !important;
+	left:-5px !important;
+	background:none !important;
+}
+.jsplumbtaskworkflow .task:hover .short_actions {
+	padding:10px;
+	top:-30px;
+	right:-5px;
+	color:#ccc;
+}
+.jsplumbtaskworkflow .task .task_info {
 	top:-17px;
 	font-size:10px;
+	background:none;
+	color:#ccc;
+	width:auto;
+	left:0;
+	padding:0;
 }
 .jsplumbtaskworkflow .task .info {
 	position:absolute;

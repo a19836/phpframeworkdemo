@@ -30,6 +30,9 @@ var callPresentationLayerWebServiceTaskPropertyObj = {
 		
 		ProgrammingTaskUtil.setResultVariableType(task_property_values, task_html_elm);
 		
+		if (typeof ProgrammingTaskUtil.on_programming_task_choose_page_url_callback == "function")
+			task_html_elm.find(".get_automatically").removeClass("disabled");
+		
 		var project = task_property_values["project"] ? "" + task_property_values["project"] + "" : "";
 		project = task_property_values["project_type"] == "variable" && project.trim().substr(0, 1) == '$' ? project.trim().substr(1) : project;
 		task_html_elm.find(".project input").val(project);

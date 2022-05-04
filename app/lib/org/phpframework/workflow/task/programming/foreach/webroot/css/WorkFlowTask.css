@@ -20,40 +20,77 @@
 	text-overflow:ellipsis;
 }
 .jsplumbtaskworkflow .task.task_foreach {
-	/*background-image:url('../img/bg.gif');
-	-o-background-size:100% 100%;
-	-webkit-background-size:100% 100%;
-	-moz-background-size:100% 100%;
-	background-size:100% 100%; */
-	
-	/* in IE */
-	-ms-background-size:100% 100%;
-	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
-	
-	border-radius:100%;
-	/*border-width:3px;
-	border:none;
-	box-shadow:none;
-	-o-box-shadow:none;
-	-webkit-box-shadow:none;
-	-moz-box-shadow:none;*/
-    	
-	/* For IE */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
-	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+	width:70px !important;
+	height:70px !important;
+	padding:20px 0 0;
+	box-sizing:border-box;
 }
 .jsplumbtaskworkflow .task.task_foreach .info span {
 	color:#426efa;
+}
+.jsplumbtaskworkflow .task.task_foreach .eps {
+	width:65px;
+	height:50px;
+	margin:0 auto;
+	background:url('../img/bg.svg') center bottom no-repeat;
+	background-size:100% 100%;
+}
+.jsplumbtaskworkflow .task.task_foreach .ep {
+	width:auto;
+	height:auto;
+	position:absolute;
+	top:0;
+	bottom:-10px;
+	display:inline-block;
+	border:0;
+	text-align:center;
+	border-color:transparent !important;
+	background-color:transparent !important;
+}
+.jsplumbtaskworkflow .task.task_foreach:hover .ep:nth-child(1) {
+	left:-55px;
+	right:50%;
+	background:#426efaaa !important;
+}
+.jsplumbtaskworkflow .task.task_foreach:hover .ep:nth-child(2) {
+	left:50%;
+	right:-55px;
+	background:#333333aa !important;
+}
+.jsplumbtaskworkflow .task.task_foreach:hover .ep span {
+	width:auto;
+	height:auto;
+	max-width:none;
+	line-height:normal;
+	margin:0;
+	padding:0;
+	display:inline-block;
+	position:relative;
+	top:25px;
+	left:0;
+	border:0;
+	background:transparent;
+	color:#fff !important;
+	font-weight:bold;
+	white-space:nowrap;
+	overflow:hidden;
+	box-sizing:border-box;
 }
 
 .foreach_task_html {
 	width:360px;
 	min-width:350px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .foreach_task_html {
+	width:100%;
+	min-width:auto;
+}
 
 .foreach_task_html .obj {
 	margin-top:10px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .foreach_task_html .obj {
+	margin-top:0;
 }
 .foreach_task_html .obj,
    .foreach_task_html .key,
@@ -67,8 +104,18 @@
    .foreach_task_html .value label {
 	width:140px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .foreach_task_html .obj label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .foreach_task_html .key label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .foreach_task_html .value label {
+	width:90px;
+}
 .foreach_task_html .obj input,
    .foreach_task_html .key input,
    .foreach_task_html .value input {
 	width:200px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .foreach_task_html .obj input,
+   .taskflowchart.fixed_side_properties .selected_task_properties .foreach_task_html .key input,
+   .taskflowchart.fixed_side_properties .selected_task_properties .foreach_task_html .value input {
+	width:calc(100% - 110px);
 }

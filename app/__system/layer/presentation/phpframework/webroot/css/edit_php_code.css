@@ -236,6 +236,7 @@
 	display:inline-block;
 	width:250px;
 	margin-bottom:5px;
+	font-size:inherit;
 }
 .choose_from_file_manager .new_var input {
 	box-sizing: border-box;

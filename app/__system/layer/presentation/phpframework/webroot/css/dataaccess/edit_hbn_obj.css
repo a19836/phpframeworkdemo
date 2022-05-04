@@ -2,6 +2,12 @@
 .edit_hbn_obj .top_bar header {
 	z-index:1501;
 }
+.edit_hbn_obj .top_bar header > ul {
+	right:2px;
+}
+.top_bar header > .title {
+	max-width:calc(100% - 60px);
+}
 .edit_hbn_obj .top_bar header > .title .query_name {
 	width:110px;
 	display:inline-block;

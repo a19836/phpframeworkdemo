@@ -20,35 +20,33 @@
 	text-overflow:ellipsis;
 }
 .jsplumbtaskworkflow .task.task_createform {
-	/*background-image:url('../img/bg.gif');
-	-o-background-size:100% 100%;
-	-webkit-background-size:100% 100%;
-	-moz-background-size:100% 100%;
-	background-size:100% 100%; */
-	
-	/* in IE */
-	-ms-background-size:100% 100%;
-	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
-	
-	/*border:none;
-	box-shadow:none;
-	-o-box-shadow:none;
-	-webkit-box-shadow:none;
-	-moz-box-shadow:none;*/
-    	
-	/* For IE */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
-	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+	width:70px !important;
+	height:70px !important;
+	padding:20px 0 0;
+	box-sizing:border-box;
 }
 .jsplumbtaskworkflow .task.task_createform .info span {
 	color:#426efa;
+}
+.jsplumbtaskworkflow .task.task_createform .eps {
+	width:65px;
+	height:50px;
+	margin:0 auto;
+	background:url('../img/bg.svg') center bottom no-repeat;
+	background-size:100% 100%;
+}
+.jsplumbtaskworkflow .task.task_createform .ep {
+	border-color:transparent !important;
+	background-color:transparent !important;
 }
 
 .create_form_task_html {
 	width:760px;
 	margin-top:20px;
 	position:relative;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html {
+	width:100%;
 }
 .create_form_task_html .form_settings, .create_form_task_html .form_input {
 	width:100%;
@@ -58,8 +56,14 @@
 .create_form_task_html .form_settings label {
 	width:115px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_settings label {
+	width:100px;
+}
 .create_form_task_html .form_input label {
 	width:120px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_input label {
+	width:100px;
 }
 .create_form_task_html .form_action .search {
 	display:none;
@@ -69,9 +73,18 @@
 	width:200px;
 	margin-right:5px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_settings input, 
+  .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_input input {
+	width:calc(100% - 175px);
+	margin:0;
+}
 .create_form_task_html .form_settings select, .create_form_task_html .form_input select {
 	display:inline-block;
 	float:none;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_settings select, 
+  .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_input select {
+	width:60px;
 }
 .create_form_task_html .form_settings .add_variable, .create_form_task_html .form_input .add_variable {
 	margin-left:-23px;
@@ -97,13 +110,17 @@
 /* PREPARING ARRAY SETTINGS */
 .create_form_task_html .form_settings_data .items {
 	margin-top:-25px;
-	margin-left:185px;
+	margin-left:160px;
 	position:absolute;
 }
 .create_form_task_html .form_input_data .items {
 	margin-top:-32px;
 	margin-left:215px;
 	position:absolute;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_input_data .items {
+	margin-top:-24px;
+	margin-left:160px;
 }
 .create_form_task_html .form_settings_data li .items, .create_form_task_html .form_input_data li .items {
 	margin-top:0;
@@ -136,6 +153,12 @@
 	clear:both;
 	float:none;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_css textarea.editor, 
+   .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_js textarea.editor,
+   .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_css .ace_editor,
+   .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_js .ace_editor {
+	width:100%;
+}
 .create_form_task_html .form_css textarea.task_property_field, 
    .create_form_task_html .form_js textarea.task_property_field {
 	display:none;
@@ -161,12 +184,18 @@
 .create_form_task_html .with_form {
 	width:100px;
 	min-height:20px;
-	margin-top:-28px;
+	margin-top:-25px;
 	margin-left:190px;
 	margin-bottom:5px;
 	position:absolute;
 	clear:none;
 	float:left;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .with_form {
+	width:100%;
+	float:none;
+	position:static;
+	margin:0 0 5px 0;
 }
 .create_form_task_html .form_id,
    .create_form_task_html .form_class {
@@ -176,6 +205,10 @@
 	clear:none;
 	float:left;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_id,
+   .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_class {
+	width:100%;
+}
 .create_form_task_html .form_method,
    .create_form_task_html .form_type {
 	width:390px;
@@ -183,6 +216,10 @@
 	margin-bottom:5px;
 	clear:none;
 	float:left;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_method,
+   .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_type {
+	width:100%;
 }
 .create_form_task_html .form_on_submit,
    .create_form_task_html .form_action {
@@ -199,6 +236,10 @@
 	width:150px;
 	display:none;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .with_form label {
+	width:100px;
+	display:inline-block;
+}
 .create_form_task_html .form_id label,
    .create_form_task_html .form_class label,
    .create_form_task_html .form_action label,
@@ -207,6 +248,14 @@
 }
 .create_form_task_html .form_method label,
    .create_form_task_html .form_type label {
+	width:100px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_id label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_class label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_action label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_on_submit label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_method label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_type label {
 	width:100px;
 }
 .create_form_task_html .form_id input,
@@ -219,8 +268,17 @@
 	width:585px;
 	padding-right:20px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_id input,
+   .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_class input,
+   .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_on_submit input,
+   .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_action input {
+	width:calc(100% - 130px);
+}
 .create_form_task_html .form_action .add_variable {
 	margin-left:-22px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_action .add_variable {
+	margin-left:-18px;
 }
 .create_form_task_html .form_action .search {
 	display:none;
@@ -233,6 +291,14 @@
 .create_form_task_html .ptl_settings > .ptl_external_vars {
 	width:265px;
 	margin:5px 15px 10px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .ptl_settings > .ptl_external_vars {
+	width:100%;
+	margin-left:0;
+	margin-right:0;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .ptl_settings > .ptl_external_vars ul {
+	min-width:auto;
 }
 .create_form_task_html .ptl_settings .ptl_external_vars .group_add,
   .create_form_task_html .ptl_settings .ptl_external_vars .key_type,

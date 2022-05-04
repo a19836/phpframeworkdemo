@@ -1,9 +1,12 @@
 /* TOP BAR */
-.top_bar header {
+.edit_single_query > .top_bar header {
 	z-index:9999;
 }
+.edit_single_query > .top_bar header > ul {
+	right:2px;
+}
 .edit_single_query > .top_bar .title { 
-	width:440px;
+	max-width:calc(100% - 70px);
 	z-index:1;
 	position:absolute;
 }
@@ -115,7 +118,7 @@
 }
 .edit_single_query:not(.covertable_sql) .data_access_obj .relationship .query .sql_text_area textarea, 
   .edit_single_query:not(.covertable_sql) .data_access_obj .relationship .query .ace_editor {
-	height:calc(100vh - 65px);
+	height:calc(100vh - 75px);
 }
 .edit_single_query:not(.covertable_sql) .relationship .query .query_select {
 	display:none !important;
@@ -145,7 +148,7 @@
 	box-sizing:border-box;
 }
 .edit_single_query .relationship .query .query_select.hide_query_settings .taskflowchart .tasks_flow {
-	height:calc(100vh - 170px);
+	height:calc(100vh - 175px);
 }
 .edit_single_query .relationship .query .query_select .taskflowchart .workflow_menu {
 	display:none;
@@ -158,8 +161,8 @@
 .edit_single_query .relationship.query_insert .query_insert_update_delete, 
   .edit_single_query .relationship.query_update .query_insert_update_delete, 
   .edit_single_query .relationship.query_delete .query_insert_update_delete {
-	height:calc(100vh - 170px);
-	padding-bottom:50px;
+	height:calc(100vh - 185px);
+	padding-bottom:40px;
 	border:0;
 	box-sizing:border-box;
 }
@@ -170,22 +173,22 @@
 	text-align:left;
 }
 .edit_single_query .relationship .query .query_insert_update_delete .query_insert_update_delete_tab {
-	height:calc(100% - 30px);
+	height:calc(100% - 75px);
 	overflow:auto;
 }
 .edit_single_query .relationship.query_select .query_select {
 	border:0;
 }
 .edit_single_query .relationship .query .query_select .query_settings {
-	height:calc(50vh - 80px);
+	height:calc(50vh - 95px);
 	padding-top:10px;
-	padding-bottom:50px;
+	padding-bottom:40px;
 	border-top:1px solid #000;
 	border-radius:0;
 	box-sizing:border-box;
 }
 .edit_single_query .relationship .query .query_select.hide_taskflowchart .query_settings {
-	height:calc(100vh - 160px);
+	height:calc(100vh - 175px);
 	border-top:0;
 }
 .edit_single_query .relationship .query .query_select .query_settings .query_settings_tab {
@@ -194,6 +197,7 @@
 }
 .edit_single_query .relationship .query .query_select .query_settings .advanced_query_settings {
 	margin-top:auto;
+	right:10px;
 	bottom:20px;
 }
 .edit_single_query .relationship .query .query_select .query_settings > .query_settings_tabs {

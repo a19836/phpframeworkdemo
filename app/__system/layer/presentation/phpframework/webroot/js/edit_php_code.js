@@ -2707,6 +2707,10 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 							else {
 								jsPlumbWorkFlow.jsPlumbTaskSort.sortTasks();
 								
+								setTimeout(function() { //must be in timeout otherwise the connections will appear weird
+									jsPlumbWorkFlow.jsPlumbTaskFlow.repaintAllTasks();
+								}, 5);
+								
 								$("#code").attr("generated_code_id", new_code_id);
 								$("#ui").attr("code_id", new_code_id);
 								$("#ui").attr("workflow_id", getCurrentWorkFlowId());
@@ -2862,7 +2866,7 @@ function getCodeForSaving(parent_elm, options) {
 				status = jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
 					overwrite: true, 
 					silent: true, 
-					do_not_silent_errors: true,
+					do_not_silent_errors: !is_from_auto_save, //only show errors if not from auto_save
 					success: jsPlumbWorkFlow.jsPlumbTaskFile.save_options["success"], 
 				});
 			
@@ -2935,7 +2939,7 @@ function getCodeForSaving(parent_elm, options) {
 				status = jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
 					overwrite: true, 
 					silent: true, 
-					do_not_silent_errors: true,
+					do_not_silent_errors: !is_from_auto_save, //only show errors if not from auto_save
 					success: jsPlumbWorkFlow.jsPlumbTaskFile.save_options["success"], 
 				});
 			

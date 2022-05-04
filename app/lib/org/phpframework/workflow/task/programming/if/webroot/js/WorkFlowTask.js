@@ -84,6 +84,15 @@ var IfTaskPropertyObj = {
 	},
 	
 	getExitLabels : function(task_property_values) {
-		return {"true": "True", "false": "False"};
+		var labels = {"true": "True", "false": "False"}; //bc of old diagrams where task_property_values["exits"] don't have the labels.
+		
+		if (task_property_values && task_property_values["exits"]) {
+			var exits = task_property_values["exits"];
+			labels["true"] = exits["true"] && exits["true"]["label"] ? exits["true"]["label"] : labels["true"];
+			labels["false"] = exits["false"] && exits["false"]["label"] ? exits["false"]["label"] : labels["false"];
+		}
+		//console.log(labels);
+		
+		return labels;
 	},
 };

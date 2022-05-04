@@ -20,29 +20,24 @@
 	text-overflow:ellipsis;
 }
 .jsplumbtaskworkflow .task.task_soapconnector {
-	/*background-image:url('../img/bg.gif');
-	-o-background-size:100% 100%;
-	-webkit-background-size:100% 100%;
-	-moz-background-size:100% 100%;
-	background-size:100% 100%; */
-	
-	/* in IE */
-	-ms-background-size:100% 100%;
-	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
-	
-	/*border:none;
-	box-shadow:none;
-	-o-box-shadow:none;
-	-webkit-box-shadow:none;
-	-moz-box-shadow:none;*/
-    	
-	/* For IE */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
-	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+	width:70px !important;
+	height:70px !important;
+	padding:20px 0 0;
+	box-sizing:border-box;
 }
 .jsplumbtaskworkflow .task.task_soapconnector .info span {
 	color:#426efa;
+}
+.jsplumbtaskworkflow .task.task_soapconnector .eps {
+	width:65px;
+	height:50px;
+	margin:0 auto;
+	background:url('../img/bg.svg') center bottom no-repeat;
+	background-size:100% 100%;
+}
+.jsplumbtaskworkflow .task.task_soapconnector .ep {
+	border-color:transparent !important;
+	background-color:transparent !important;
 }
 
 .soap_connector_task_html {
@@ -67,6 +62,10 @@
    	margin-top:20px;
 	padding-top:20px;
 	border-top:1px solid #ddd;
+	position:relative;
+}
+.soap_connector_task_html .remote_function_arguments {
+	position:relative;
 }
 .soap_connector_task_html .data > .add_variable,
   .soap_connector_task_html > .type > .add_variable,
@@ -83,9 +82,18 @@
   .soap_connector_task_html .wsdl_url > label {
 	width:110px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .data > label,
+  .taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html > .type > label,
+  .taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .wsdl_url > label {
+	width:40px;
+}
 .soap_connector_task_html .remote_function_name > label,
   .soap_connector_task_html .remote_function_arguments > label {
 	width:170px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .remote_function_name > label,
+  .taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .remote_function_arguments > label {
+	width:115px;
 }
 .soap_connector_task_html .data > input,
   .soap_connector_task_html > .type > input,
@@ -98,8 +106,26 @@
 	margin-right:5px;
 	padding-right:20px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .data > input,
+  .taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html > .type > input,
+  .taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .wsdl_url > input {
+	width:calc(100% - 140px);
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .client_headers > input,
+  .taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .client_options > input {
+	width:calc(100% - 170px);
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .remote_function_name > input,
+  .taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .remote_function_arguments > input {
+	width:calc(100% - 27px);
+	margin-top:5px;
+	display:block;
+}
 .soap_connector_task_html > .type > select.type_options {
 	margin-right:5px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html > .type > select.type_options {
+	width:calc(100% - 115px);
 }
 .soap_connector_task_html .data > select,
   .soap_connector_task_html > .type > select.type_type,
@@ -121,10 +147,27 @@
 	display:inline-block;
 	margin-bottom:0;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .remote_function_name > select {
+	position:absolute;
+	top:15px;
+	left:115px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .remote_function_arguments > select {
+	position:absolute;
+	top:-4px;
+	left:115px;
+}
 .soap_connector_task_html .remote_function_arguments > .remote_function_args.array_items > .items {
 	float:left;
 	margin-top:-21px;
 	margin-left:240px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .remote_function_arguments > .remote_function_args.array_items > .items {
+	margin-top:-16px;
+	margin-left:180px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .remote_function_arguments > .remote_function_args.array_items > .items > .group_add {
+	margin-left:0;
 }
 
 .soap_connector_task_html .client_options {
@@ -132,6 +175,9 @@
 }
 .soap_connector_task_html .client_options > label {
 	width:110px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .client_options > label {
+	width:70px;
 }
 .soap_connector_task_html .client_options table {
 	float:none;
@@ -176,6 +222,9 @@
 .soap_connector_task_html .client_headers > label {
 	width:110px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .client_headers > label {
+	width:70px;
+}
 .soap_connector_task_html .client_headers > .icon.add {
 	margin-left:10px;
 	float:none;
@@ -193,14 +242,26 @@
 	background-color:#eee;
 	border:1px solid #ddd;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .client_headers > ul > li {
+	padding:5px 5px 5px 10px;
+}
 .soap_connector_task_html .client_headers > ul > li > .icon.delete {
 	float:right;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .client_headers > ul > li > .icon.delete {
+	margin:-2px -5px 5px 0;
 }
 .soap_connector_task_html .client_headers > ul > li > div {
 	min-height:20px;
 }
 .soap_connector_task_html .client_headers > ul > li > div > label {
 	width:130px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .client_headers > ul > li > div > label {
+	width:60px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .client_headers > ul > li > div.client_header_must_understand > label {
+	width:auto;
 }
 .soap_connector_task_html .client_headers > ul > li > div > select {
 	width:60px;
@@ -214,8 +275,18 @@
 .soap_connector_task_html .client_headers > ul > li > div > input[type=text] {
 	padding-right:20px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .client_headers > ul > li > div > input[type=text] {
+	width:calc(100% - 155px);
+}
 .soap_connector_task_html .client_headers > ul > li > div.client_header_must_understand > input[type=text] {
 	display:none;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .client_headers > ul > li > div.client_header_must_understand > input[type=text] {
+	width:calc(100% - 175px);
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .client_headers > ul > li > div.client_header_must_understand > select {
+	margin-right:5px;
+	float:right;
 }
 .soap_connector_task_html .client_headers > ul > li > div.client_header_parameters > .parameters.array_items > .items {
 	float:left;
@@ -243,6 +314,10 @@
   	line-height:21px;
   	box-sizing:border-box;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .result_type select[name=result_type],
+  .taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .result_type input {
+	width:calc(100% - 135px);
+}
 .soap_connector_task_html .result_type input {
 	padding-right:20px;
 }
@@ -253,7 +328,7 @@
 	text-align:center;
 	font-size:9px;
 	width:60px;
-	height:19px;
+	height:21px;
 }
 .soap_connector_task_html .result_type .add_variable {
 	margin-left:-26px;

@@ -60,22 +60,54 @@ if(typeof getContrast50 !== 'function') {
 }
 
 if(typeof hexToRgb !== 'function') {
-	//alert( hexToRgb("#0033ff").g ); // "51";
-	//alert( hexToRgb("#03f").g ); // "51";
+	//console.log( hexToRgb("#0033ff") ); // {r: 0, g: 51, b: 255};
+	//console.log( hexToRgb("#03f") ); // {r: 0, g: 51, b: 255};
+	//console.log( hexToRgb("#03faa") ); // {r: 0, g: 51, b: 255, a: 0.667};
+	//console.log( hexToRgb("#ff0000aa") ); // {r: 255, g: 0, b: 0, a: 0.667};
 	function hexToRgb(hex) {
-	    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-	    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-	    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-		return r + r + g + g + b + b;
-	    });
-
-	    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-	    
-	    return result ? {
-		r: parseInt(result[1], 16),
-		g: parseInt(result[2], 16),
-		b: parseInt(result[3], 16)
-	    } : null;
+	    	if (hex.substr(0, 1) != "#")
+	    		hex = "#" + hex;
+	    	
+	    	//Expand shorthand form (e.g. "#03F") to full form (e.g. "#0033FF")
+		if (hex.length == 4) {
+			var shorthandRegex = /^#([a-f\d])([a-f\d])([a-f\d])$/i;
+			
+			hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+				return "#" + r + r + g + g + b + b;
+		    	});
+	    	}
+	    	
+	    	//Expand shorthand form (e.g. "#03Faa") to full form (e.g. "#0033FFaa")
+		if (hex.length == 6) {
+			var shorthandRegex = /^#([a-f\d])([a-f\d])([a-f\d])([a-f\d])([a-f\d])$/i;
+			
+			hex = hex.replace(shorthandRegex, function(m, r, g, b, z, x) {
+				return "#" + r + r + g + g + b + b + z + x;
+		    	});
+		}
+		
+		//in case opacity exists: #0033FFaa
+		if (hex.length == 9) {
+			var result = /^#([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+			var opacity = "0x" + result[4];
+			opacity = +(opacity / 255).toFixed(3);
+			
+			return result ? {
+				r: parseInt(result[1], 16),
+				g: parseInt(result[2], 16),
+				b: parseInt(result[3], 16),
+				a: opacity
+		    	} : null;
+		}
+		
+		//in case of #0033FF
+	    	var result = /^#([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+		
+	    	return result ? {
+			r: parseInt(result[1], 16),
+			g: parseInt(result[2], 16),
+			b: parseInt(result[3], 16)
+	    	} : null;
 	}
 }
 
@@ -85,17 +117,37 @@ if(typeof rgbToHex !== 'function') {
 		return hex.length == 1 ? "0" + hex : hex;
 	}
 
-	//alert( rgbToHex(0, 51, 255) ); // #0033ff
-	function rgbToHex(r, g, b) {
-		return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+	//console.log("rgbToHex(0, 51, 255) => " + rgbToHex(0, 51, 255) ); // #0033ff
+	//console.log("rgbToHex(0, 51, 255, .5) => " + rgbToHex(0, 51, 255, .5) ); // #0033ff80
+	//console.log("rgbToHex(0, 51, 255, 40%) => " + rgbToHex(0, 51, 255, "40%") ); // #0033ff66
+	function rgbToHex(r, g, b, a) {
+		var opacity = "";
+		
+		if (typeof a != undefined && a != null) {
+			if (("" + a).indexOf("%") != -1) //in case the a is a percentage
+     			a = a.substr(0, a.length - 1) / 100;
+			
+			//convert a value to letters
+			opacity = Math.round(a * 255).toString(16);
+			
+			if (opacity.length == 1)
+	    			opacity = "0" + opacity;
+		}
+		
+		return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b) + opacity;
 	}
 }
 
 if(typeof backgroundRgbToHex !== 'function') {
 	//alert( backgroundRgbToHex("rgb(0, 51, 255)") ); // #0033ff
 	function backgroundRgbToHex(bg) {
-		bg = bg.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-		return rgbToHex(bg[1], bg[2], bg[3]);
+		var m = bg.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+		
+		if (!m)
+			m = bg.match(/^rgba\((\d+),\s*(\d+),\s*(\d+),\s*(\d+)\)$/);
+			
+		if (m)
+			return rgbToHex(m[1], m[2], m[3], m[4]);
 	}
 }
 

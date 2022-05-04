@@ -20,35 +20,68 @@
 	text-overflow:ellipsis;
 }
 .jsplumbtaskworkflow .task.task_loop {
-	/*background-image:url('../img/bg.gif');
-	-o-background-size:100% 100%;
-	-webkit-background-size:100% 100%;
-	-moz-background-size:100% 100%;
-	background-size:100% 100%; */
-	
-	/* in IE */
-	-ms-background-size:100% 100%;
-	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
-	
-	border-radius:100%;
-	/*border-width:3px;
-	border:none;
-	box-shadow:none;
-	-o-box-shadow:none;
-	-webkit-box-shadow:none;
-	-moz-box-shadow:none;*/
-    	
-	/* For IE */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
-	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+	width:70px !important;
+	height:70px !important;
+	padding:20px 0 0;
+	box-sizing:border-box;
 }
 .jsplumbtaskworkflow .task.task_loop .info span {
 	color:#426efa;
 }
+.jsplumbtaskworkflow .task.task_loop .eps {
+	width:65px;
+	height:50px;
+	margin:0 auto;
+	background:url('../img/bg.svg') center bottom no-repeat;
+	background-size:100% 100%;
+}
+.jsplumbtaskworkflow .task.task_loop .ep {
+	width:auto;
+	height:auto;
+	position:absolute;
+	top:0;
+	bottom:-10px;
+	display:inline-block;
+	border:0;
+	text-align:center;
+	border-color:transparent !important;
+	background-color:transparent !important;
+}
+.jsplumbtaskworkflow .task.task_loop:hover .ep:nth-child(1) {
+	left:-55px;
+	right:50%;
+	background:#426efaaa !important;
+}
+.jsplumbtaskworkflow .task.task_loop:hover .ep:nth-child(2) {
+	left:50%;
+	right:-55px;
+	background:#333333aa !important;
+}
+.jsplumbtaskworkflow .task.task_loop:hover .ep span {
+	width:auto;
+	height:auto;
+	max-width:none;
+	line-height:normal;
+	margin:0;
+	padding:0;
+	display:inline-block;
+	position:relative;
+	top:25px;
+	left:0;
+	border:0;
+	background:transparent;
+	color:#fff !important;
+	font-weight:bold;
+	white-space:nowrap;
+	overflow:hidden;
+	box-sizing:border-box;
+}
 
 .loop_task_html {
 	min-width:665px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .loop_task_html {
+	min-width:auto;
 }
 
 .loop_task_html .init_counters {
@@ -80,6 +113,11 @@
 .loop_task_html .increment_counters .fields ul {
 	width:360px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .loop_task_html .init_counters .fields ul,
+  .taskflowchart.fixed_side_properties .selected_task_properties .loop_task_html .increment_counters .fields ul {
+	width:100%;
+	box-sizing:border-box;
+}
 .loop_task_html .init_counters .fields li, .loop_task_html .increment_counters .fields li {
 	float:none;
 	clear:left;
@@ -87,15 +125,44 @@
 	margin-bottom:5px;
 }
 
+.taskflowchart.fixed_side_properties .selected_task_properties .loop_task_html .init_counters .fields li.variable,
+  .taskflowchart.fixed_side_properties .selected_task_properties .loop_task_html .increment_counters .fields li.variable {
+	position:relative;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .loop_task_html .init_counters .fields li.variable:hover:before {
+	content:" ";
+	width:calc(100% - 86px);
+	height:24px;
+	position:absolute;
+	top:calc(100% - 2px);
+	left:55px;
+	clear:both;
+	background:#f7f7f7;
+	border:1px solid #eee;
+}
 .loop_task_html .init_counters .fields li.variable label.var_name, .loop_task_html .increment_counters .fields li.variable label.var_name {
 	width:80px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .loop_task_html .init_counters .fields li.variable label.var_name, 
+  .taskflowchart.fixed_side_properties .selected_task_properties .loop_task_html .increment_counters .fields li.variable label.var_name {
+	width:55px;
 }
 .loop_task_html .init_counters .fields li.variable input, .loop_task_html .increment_counters .fields li.variable input {
 	width:100px;
 	margin-right:5px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .loop_task_html .init_counters .fields li.variable input {
+	width:calc(50% - 70px);
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .loop_task_html .increment_counters .fields li.variable input {
+	width:calc(50% - 100px);
+}
 .loop_task_html .init_counters .fields li.variable label.var_value, .loop_task_html .increment_counters .fields li.variable label.inc_type {
 	width:50px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .loop_task_html .init_counters .fields li.variable label.var_value, 
+  .taskflowchart.fixed_side_properties .selected_task_properties .loop_task_html .increment_counters .fields li.variable label.inc_type {
+	width:35px;
 }
 .loop_task_html .init_counters .fields li.variable select {
 	background-color:#FFF;
@@ -107,8 +174,17 @@
 	height:19px;
 }
 .loop_task_html .increment_counters .fields li.variable select {
-	width:90px;
+	width:75px;
 	margin-right:5px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .loop_task_html .init_counters .fields li.variable select {
+	display:none;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .loop_task_html .init_counters .fields li.variable:hover select {
+	position:absolute;
+	top:calc(100% + 2px);
+	right:33px;
+	display:block;
 }
 .loop_task_html .init_counters .fields li.code label, .loop_task_html .increment_counters .fields li.code label {
 	width:80px;
@@ -117,7 +193,7 @@
 	width:328px;
 }
 .loop_task_html .increment_counters .fields li.code input {
-	width:245px;
+	width:230px;
 	margin-right:5px;
 }
 
@@ -126,6 +202,9 @@
 }
 .loop_task_html .other_settings .execute_first_iteration label {
 	width:230px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .loop_task_html .other_settings .execute_first_iteration label {
+	width:auto;
 }
 
 .loop_task_html .variable_add::before {

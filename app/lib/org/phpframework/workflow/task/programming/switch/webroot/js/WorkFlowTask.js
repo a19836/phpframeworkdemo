@@ -19,6 +19,7 @@
 
 var SwitchTaskPropertyObj = {
 	properties_html_elm : null,
+	previous_task_property_values : null,
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		//console.debug(properties_html_elm);
@@ -61,11 +62,11 @@ var SwitchTaskPropertyObj = {
 	
 			var idx = 0;
 			if (c.hasOwnProperty('value')) {//case singular
-				html += SwitchTaskPropertyObj.getCaseHtml(task_property_values, c, idx);
+				html += SwitchTaskPropertyObj.getCaseHtml(task_property_values, c, idx, "#426efa");
 			}
 			else {//case multiple
 				for (var i in c) {
-					html += SwitchTaskPropertyObj.getCaseHtml(task_property_values, c[i], idx);
+					html += SwitchTaskPropertyObj.getCaseHtml(task_property_values, c[i], idx, idx == 0 ? "#426efa" : "");
 					idx++;
 				}
 			}
@@ -83,8 +84,8 @@ var SwitchTaskPropertyObj = {
 		$(properties_html_elm).find('.switch_task_html .default_exit').attr('exit_color', default_color);
 	},
 
-	getCaseHtml : function(task_property_values, case_item, idx) {
-		var case_color = this.getExitColor(task_property_values, case_item.exit);
+	getCaseHtml : function(task_property_values, case_item, idx, case_color) {
+		var case_color = case_color ? case_color : this.getExitColor(task_property_values, case_item.exit);
 		var case_value = case_item.value ? case_item.value.replace(/"/g, "&quot;") : "";
 
 		return '<li>' +
@@ -176,6 +177,8 @@ var SwitchTaskPropertyObj = {
 	},
 	
 	onSubmitTaskProperties : function(properties_html_elm, task_id, task_property_values) {
+		SwitchTaskPropertyObj.previous_task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+		
 		ProgrammingTaskUtil.saveTaskLabelField(properties_html_elm, task_id);
 		
 		return true;
@@ -185,6 +188,36 @@ var SwitchTaskPropertyObj = {
 		if (status) {
 			var labels = SwitchTaskPropertyObj.getExitLabels(task_property_values);
 			ProgrammingTaskUtil.updateTaskExitsLabels(task_id, labels);
+			
+			//update labels on all connections but without user label, for only the cases exits
+			if (labels) {
+				var previous_task_property_values = SwitchTaskPropertyObj.previous_task_property_values;
+				var prev_cases = previous_task_property_values["cases"] && previous_task_property_values["cases"]["case"] ? previous_task_property_values["cases"]["case"] : null;
+				
+				if (prev_cases) {
+					//prepare cases in case not being an array
+					if (prev_cases["exit"])
+						prev_cases = [prev_cases];
+					
+					//checks which exits were changed
+					var labels_to_update = {};
+					
+					for (var i in prev_cases) {
+						var c = prev_cases[i];
+						var exit_id = c["exit"];
+						
+						if (exit_id && exit_id != "default_exit") {
+							var prev_exit_value = typeof c["value"] != "undefined" || typeof c["value"] != null ? c["value"] : "";
+							
+							if (labels.hasOwnProperty(exit_id) && labels[exit_id] != prev_exit_value)
+								labels_to_update[exit_id] = labels[exit_id];
+						}
+					}
+					
+					//update exits that were changed
+					ProgrammingTaskUtil.updateTaskExitsConnectionsLabels(task_id, labels_to_update);
+				}
+			}
 		}
 	},
 	
@@ -209,7 +242,12 @@ var SwitchTaskPropertyObj = {
 	},
 	
 	getExitLabels : function(task_property_values) {
-		var labels = {"default_exit": "Default"};
+		var labels = {"default_exit": "Default"}; //bc of old diagrams where task_property_values["exits"] don't have the labels.
+		
+		if (task_property_values && task_property_values["exits"]) {
+			var exits = task_property_values["exits"];
+			labels["default_exit"] = exits["default_exit"] && exits["default_exit"]["label"] ? exits["default_exit"]["label"] : labels["default_exit"];
+		}
 		
 		var cases = task_property_values["cases"] && task_property_values["cases"]["case"] ? task_property_values["cases"]["case"] : null;
 		if (cases) {
@@ -226,6 +264,7 @@ var SwitchTaskPropertyObj = {
 				}
 			}
 		}
+		//console.log(labels);
 		
 		return labels;
 	},

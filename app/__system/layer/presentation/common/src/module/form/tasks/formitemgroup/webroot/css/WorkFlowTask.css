@@ -27,7 +27,7 @@
 .jsplumbtaskworkflow .task.task_formitemgroup .info span {
 	white-space:nowrap;
 }
-.jsplumbtaskworkflow .task.task_formitemgroup .tag_info {
+.jsplumbtaskworkflow .task.task_formitemgroup .task_info {
 	display:block;
 }
 .jsplumbtaskworkflow .task.task_formitemgroup .ep {

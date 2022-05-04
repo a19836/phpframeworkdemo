@@ -20,35 +20,31 @@
 	text-overflow:ellipsis;
 }
 .jsplumbtaskworkflow .task.task_settemplateregionblockparam {
-	/*background-image:url('../img/bg.gif');
-	background-color:#FF0F0F;
-	-o-background-size:100% 100%;
-	-webkit-background-size:100% 100%;
-	-moz-background-size:100% 100%;
-	background-size:100% 100%; */
-	
-	/* in IE */
-	-ms-background-size:100% 100%;
-	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
-	
-	/*border:none;
-	box-shadow:none;
-	-o-box-shadow:none;
-	-webkit-box-shadow:none;
-	-moz-box-shadow:none;*/
-    	
-	/* For IE */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
-	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+	width:70px !important;
+	height:70px !important;
+	padding:20px 0 0;
+	box-sizing:border-box;
 }
 .jsplumbtaskworkflow .task.task_settemplateregionblockparam .info span {
 	color:#426efa;
 }
-
+.jsplumbtaskworkflow .task.task_settemplateregionblockparam .eps {
+	width:65px;
+	height:50px;
+	margin:0 auto;
+	background:url('../img/bg.svg') center bottom no-repeat;
+	background-size:100% 100%;
+}
+.jsplumbtaskworkflow .task.task_settemplateregionblockparam .ep {
+	border-color:transparent !important;
+	background-color:transparent !important;
+}
 
 .set_template_region_block_param_task_html {
 	width:440px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .set_template_region_block_param_task_html {
+	width:100%;
 }
 .set_template_region_block_param_task_html .region, 
    .set_template_region_block_param_task_html .block, 
@@ -62,17 +58,35 @@
 	width:440px;
 	min-height:20px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .set_template_region_block_param_task_html .region, 
+   .taskflowchart.fixed_side_properties .selected_task_properties .set_template_region_block_param_task_html .block, 
+   .taskflowchart.fixed_side_properties .selected_task_properties .set_template_region_block_param_task_html .param_name, 
+   .taskflowchart.fixed_side_properties .selected_task_properties .set_template_region_block_param_task_html .param_value {
+	width:100%;
+}
 .set_template_region_block_param_task_html .region label, 
    .set_template_region_block_param_task_html .block label, 
    .set_template_region_block_param_task_html .param_name label, 
    .set_template_region_block_param_task_html .param_value label {
 	width:100px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .set_template_region_block_param_task_html .region label, 
+   .taskflowchart.fixed_side_properties .selected_task_properties .set_template_region_block_param_task_html .block label, 
+   .taskflowchart.fixed_side_properties .selected_task_properties .set_template_region_block_param_task_html .param_name label, 
+   .taskflowchart.fixed_side_properties .selected_task_properties .set_template_region_block_param_task_html .param_value label {
+	width:70px;
+}
 .set_template_region_block_param_task_html .region input, 
    .set_template_region_block_param_task_html .block input, 
    .set_template_region_block_param_task_html .param_name input, 
    .set_template_region_block_param_task_html .param_value input {
 	width:230px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .set_template_region_block_param_task_html .region input, 
+   .taskflowchart.fixed_side_properties .selected_task_properties .set_template_region_block_param_task_html .block input, 
+   .taskflowchart.fixed_side_properties .selected_task_properties .set_template_region_block_param_task_html .param_name input, 
+   .taskflowchart.fixed_side_properties .selected_task_properties .set_template_region_block_param_task_html .param_value input {
+	width:calc(100% - 148px);
 }
 .set_template_region_block_param_task_html .region select, 
    .set_template_region_block_param_task_html .block select, 

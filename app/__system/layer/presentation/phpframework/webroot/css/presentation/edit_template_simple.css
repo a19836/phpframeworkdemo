@@ -5,6 +5,9 @@
 .top_bar header {
 	z-index:4;
 }
+.top_bar header .title {
+	max-width:calc(100% - 300px);
+}
 .top_bar.advanced_items_shown header > ul {
 	right:88px;
 }

@@ -21,7 +21,7 @@
 include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_advanced_allowed) { echo '<script>
 		alert("You don\'t have permission to access this Workspace!");
 		document.location="' . $project_url_prefix . 'auth/logout";
-	</script>'; die(); } $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
+	</script>'; die(); } $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $logged_name_initials = explode(" ", $logged_name); $logged_name_initials = strtoupper(substr($logged_name_initials[0], 0, 1) . substr($logged_name_initials[1], 0, 1)); $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_advanced.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_advanced.js"></script>
@@ -36,12 +36,18 @@ var path_to_filter = "' . $filter_by_layout . '";
 		<ul class="right">
 			<li class="icon full_screen" data-title="Toggle Full Screen" onClick="toggleFullScreen(this)"></li>
 			<li class="icon info" data-title="About" onClick="goTo(this, \'about_url\', event)" about_url="' . $project_url_prefix . 'admin/about"></li>
-			<li class="icon logout" data-title="Logout" onClick="document.location=this.getAttribute(\'logout_url\')" logout_url="' . $project_url_prefix . 'auth/logout"></li>
-			<li class="separator">|</li>
+			<!--li class="icon logout" data-title="Logout" onClick="document.location=this.getAttribute(\'logout_url\')" logout_url="' . $project_url_prefix . 'auth/logout"></li-->
+			<!--li class="separator">|</li-->
 			<li class="sub_menu sub_menu_user">
-				<i class="icon user"></i>
+				<span class="logged_user_icon">' . $logged_name_initials . '</span>
+				<!--i class="icon user"></i-->
+				
 				<ul>
-					<li class="login_info" title="Logged as \'' . $logged_name . '\' user."><i class="icon user"></i> Logged as "' . $logged_name . '"</li>
+					<div class="triangle_up"></div>
+					
+					<li class="login_info" title="Logged as \'' . $logged_name . '\' user."><a><span class="logged_user_icon">' . $logged_name_initials . '</span> Logged in as "' . $logged_name . '"</a></li>
+					<li title="Toggle Theme"><a onClick="toggleThemeLayout(this)"><i class="icon toggle_theme_layout"></i> <span>' . ($theme_layout == "light_theme" ? "Show dark theme" : "Show light theme") . '</span></a></li>
+					<li class="logout" title="Logout"><a onClick="document.location=this.getAttribute(\'logout_url\')" logout_url="' . $project_url_prefix . 'auth/logout"><i class="icon logout"></i> Logout</a></li>
 				</ul>
 			</li>
 			
@@ -70,18 +76,20 @@ var path_to_filter = "' . $filter_by_layout . '";
 			<!--li class="icon expand_left_panel" data-title="Expand Left Panel" onClick="expandLeftPanel(this)"></li>
 			<li class="icon collapse_left_panel" data-title="Collapse Left Panel" onClick="collapseLeftPanel(this)"></li-->
 			
-			<li class="sub_menu sub_menu_others">
+			<!--li class="sub_menu sub_menu_others">
 				<i class="icon sub_menu_vertical"></i>
 				<ul>
 					<li title="Toggle Theme"><a onClick="toggleThemeLayout(this)"><i class="icon toggle_theme_layout"></i> <span>' . ($theme_layout == "light_theme" ? "Show dark theme" : "Show light theme") . '</span></a></li>
 				</ul>
-			</li>
+			</li-->
 		</ul>
 	</div>
 
 	<div id="left_panel" class="' . $tree_layout . ' ' . $advanced_level . ' ' . $theme_layout . '">
 		<div class="icon sub_menu">
 			<ul>
+				<div class="triangle_up"></div>
+				
 				<li><a onClick="toggleAdvancedLevel(this)"><i class="icon enable"></i> <span>' . ($advanced_level == "advanced_level" ? "Show basic items" : "Show advanced items") . '</span></a></li>
 				<li><a onClick="toggleTreeLayout(this)"><i class="icon toggle_tree_layout"></i> <span>' . ($tree_layout == "left_panel_with_tabs" ? "Show vertical layout" : "Show horizontal layout") . '</span></a></li>
 			</ul>

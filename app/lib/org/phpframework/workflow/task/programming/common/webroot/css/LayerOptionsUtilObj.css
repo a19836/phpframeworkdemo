@@ -3,10 +3,17 @@
    	min-height:20px;
 	margin:0 auto;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .opts {
+   	width:100%;
+}
 .selected_task_properties .opts .array_items .items {
 	position:absolute;
 	margin-top:-25px;
 	margin-left:175px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .opts > .options > .items {
+	margin-top:-23px;
+	margin-left:115px;
 }
 .selected_task_properties .opts .array_items ul .items {
 	position:static;
@@ -17,10 +24,16 @@
 .selected_task_properties .opts .main_label {
 	width:110px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .opts .main_label {
+	width:55px;
+}
 .selected_task_properties .opts .options_code {
 	width:210px;
 	margin-right:5px;
 	padding-right:20px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .opts .options_code {
+	width:calc(100% - 155px);
 }
 .selected_task_properties .opts .options_type {
 	background-color:#FFF;
@@ -31,8 +44,14 @@
 	width:60px;
 	height:20px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .opts .options .item.option_:hover:before {
+	display:none;
+}
 .selected_task_properties .opts .options .item select.key {
 	width:131px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .opts .options .item select.key {
+	width:68px;
 }
 .selected_task_properties .opts .options .item .search {
 	margin-left:-25px;

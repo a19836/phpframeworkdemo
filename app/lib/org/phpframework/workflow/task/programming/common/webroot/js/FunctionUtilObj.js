@@ -92,9 +92,9 @@ var FunctionUtilObj = {
 		
 		//prepare html
 		var html = '	<div class="myfancypopup edit_function_code">'
-				+ '		<ul class="tabs tabs_transparent tabs_right">'
-				+ '			<li id="code_editor_tab"><a href="#code" onClick="FunctionUtilObj.onClickCodeEditorTab(this);return false;">Code</a></li>'
-				+ '			<li id="tasks_flow_tab"><a href="#ui" onClick="FunctionUtilObj.onClickTaskWorkflowTab(this);return false;">Workflow</a></li>'
+				+ '		<ul class="tabs tabs_transparent tabs_right tabs_icons">'
+				+ '			<li id="code_editor_tab"><a href="#code" onClick="FunctionUtilObj.onClickCodeEditorTab(this);return false;"><i class="icon code_editor_tab"></i> Code Editor</a></li>'
+				+ '			<li id="tasks_flow_tab"><a href="#ui" onClick="FunctionUtilObj.onClickTaskWorkflowTab(this);return false;"><i class="icon tasks_flow_tab"></i> Diagram Editor</a></li>'
 				+ '		</ul>'
 				+ '		'
 				+ '		<span class="message"></span>'

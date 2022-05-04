@@ -1645,8 +1645,8 @@ body > .menu-widget.ui-draggable-dragging {
 .layout-ui-editor:not(.fixed-properties):not(.fixed-side-properties) > .menu-settings > .resize-menu-settings {
 	display:none;
 }
-.layout-ui-editor.fixed-properties > .menu-settings:not(.full-screen) > .resize-menu-settings,
-  .layout-ui-editor.fixed-side-properties > .menu-settings:not(.full-screen) > .resize-menu-settings {
+.layout-ui-editor.fixed-properties > .menu-settings > .resize-menu-settings,
+  .layout-ui-editor.fixed-side-properties > .menu-settings > .resize-menu-settings {
 	cursor:ns-resize;
 }
 .layout-ui-editor > .menu-settings > .resize-menu-settings .button {
@@ -1689,8 +1689,8 @@ body > .menu-widget.ui-draggable-dragging {
 	left:0;
 	right:0;
 }
-.layout-ui-editor.fixed-properties > .menu-settings:not(.full-screen) .settings-info,
-  .layout-ui-editor.fixed-side-properties > .menu-settings:not(.full-screen) .settings-info {
+.layout-ui-editor.fixed-properties > .menu-settings .settings-info,
+  .layout-ui-editor.fixed-side-properties > .menu-settings .settings-info {
 	cursor:ns-resize;
 }
 .layout-ui-editor.fixed-properties > .menu-settings .settings-info label,
@@ -1698,8 +1698,8 @@ body > .menu-widget.ui-draggable-dragging {
 	width:calc(100% - 40px);
 	padding:0;
 }
-.layout-ui-editor.fixed-properties > .menu-settings:not(.full-screen) .settings-info label,
-  .layout-ui-editor.fixed-side-properties > .menu-settings:not(.full-screen) .settings-info label {
+.layout-ui-editor.fixed-properties > .menu-settings .settings-info label,
+  .layout-ui-editor.fixed-side-properties > .menu-settings .settings-info label {
 	cursor:ns-resize;
 }
 .layout-ui-editor.fixed-properties > .menu-settings .settings-info .close,

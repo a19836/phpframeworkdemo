@@ -257,6 +257,14 @@ var LoopTaskPropertyObj = {
 	},
 	
 	getExitLabels : function(task_property_values) {
-		return {"start_exit": "Start Loop", "default_exit": "End Loop"};
+		var labels = {"start_exit": "Start loop", "default_exit": "End loop"}; //bc of old diagrams where task_property_values["exits"] don't have the labels.
+		
+		if (task_property_values && task_property_values["exits"]) {
+			var exits = task_property_values["exits"];
+			labels["start_exit"] = exits["start_exit"] && exits["start_exit"]["label"] ? exits["start_exit"]["label"] : labels["start_exit"];
+			labels["default_exit"] = exits["default_exit"] && exits["default_exit"]["label"] ? exits["default_exit"]["label"] : labels["default_exit"];
+		}
+		
+		return labels;
 	},
 };

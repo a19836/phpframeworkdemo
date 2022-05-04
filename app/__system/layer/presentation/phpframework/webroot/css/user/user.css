@@ -29,13 +29,14 @@ body,
 	text-align:right;
 	z-index:1;
 	
-	background-color:#DFE1ED;
-	background: -moz-linear-gradient(right, #DFE1ED 97%, #ffffff73 100%);
-	background: -webkit-gradient(linear, right top, right bottom, color-stop(97%, #DFE1ED), color-stop(100%, #ffffff73));
-	background: -webkit-linear-gradient(right, #DFE1ED 97%, #ffffff73 100%);
-	background: -o-linear-gradient(right, #DFE1ED 97%, #ffffff73 100%);
-	background: -ms-linear-gradient(right, #DFE1ED 97%, #ffffff73 100%);
-	background: linear-gradient(to left, #DFE1ED 97%, #ffffff73 100%);
+	color:var(--main-iframe-color);
+	background-color:var(--main-iframe-bg);
+	background: -moz-linear-gradient(right, var(--main-iframe-bg) 97%, #ffffff73 100%);
+	background: -webkit-gradient(linear, right top, right bottom, color-stop(97%, var(--main-iframe-bg)), color-stop(100%, #ffffff73));
+	background: -webkit-linear-gradient(right, var(--main-iframe-bg) 97%, #ffffff73 100%);
+	background: -o-linear-gradient(right, var(--main-iframe-bg) 97%, #ffffff73 100%);
+	background: -ms-linear-gradient(right, var(--main-iframe-bg) 97%, #ffffff73 100%);
+	background: linear-gradient(to left, var(--main-iframe-bg) 97%, #ffffff73 100%);
 }
 #menu ul {
 	/*border-top:1px dashed #FFF;*/
@@ -46,10 +47,10 @@ body,
 	padding:3px 10px;
 }
 #menu ul li:hover:not(.current_user) {
-	background-color:#ddd;
+	background-color:rgba(255, 255, 255, .5);
 }
 #menu ul li a {
-	color:#666;
+	color:var(--main-iframe-color);
 	font-size:90%;
 }
 #menu li.current_user {
@@ -62,8 +63,9 @@ body,
 	color:#999;
 	font-size:90%;
 	
-	background:#DFE1ED;
-	/*background: linear-gradient(to bottom, #f7f7f7 0%, #DFE1ED 95%, #ffffff73 100%);*/
+	color:var(--main-iframe-color);
+	background:var(--main-iframe-bg);
+	/*background: linear-gradient(to bottom, #f7f7f7 0%, var(--main-iframe-bg) 95%, #ffffff73 100%);*/
 }
 #menu li.manage_menu_item {
 	border-top:1px dashed #FFF;
@@ -80,7 +82,7 @@ body,
 	border-bottom:1px dashed #FFF;
 }
 #menu li.change_db_keys {
-	background-color:#ddd;
+	background-color:rgba(255, 255, 255, .4);
 }
 
 #content {

@@ -1,4 +1,7 @@
 /* TOP BAR */
+.top_bar header > .title {
+	max-width:calc(100% - 60px);
+}
 .edit_map > .top_bar .title .map_name {
 	width:160px;
 	display:inline-block;

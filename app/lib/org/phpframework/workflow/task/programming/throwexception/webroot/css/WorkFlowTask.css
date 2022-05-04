@@ -20,33 +20,31 @@
 	text-overflow:ellipsis;
 }
 .jsplumbtaskworkflow .task.task_throwexception {
-	/*background-image:url('../img/bg.gif');
-	-o-background-size:100% 100%;
-	-webkit-background-size:100% 100%;
-	-moz-background-size:100% 100%;
-	background-size:100% 100%; */
-	
-	/* in IE */
-	-ms-background-size:100% 100%;
-	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
-	
-	/*border:none;
-	box-shadow:none;
-	-o-box-shadow:none;
-	-webkit-box-shadow:none;
-	-moz-box-shadow:none;*/
-    	
-	/* For IE */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
-	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+	width:70px !important;
+	height:70px !important;
+	padding:20px 0 0;
+	box-sizing:border-box;
 }
 .jsplumbtaskworkflow .task.task_throwexception .info span {
 	color:#426efa;
 }
+.jsplumbtaskworkflow .task.task_throwexception .eps {
+	width:65px;
+	height:50px;
+	margin:0 auto;
+	background:url('../img/bg.svg') center bottom no-repeat;
+	background-size:100% 100%;
+}
+.jsplumbtaskworkflow .task.task_throwexception .ep {
+	border-color:transparent !important;
+	background-color:transparent !important;
+}
 
 .throw_exception_task_html {
 	width:390px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .throw_exception_task_html {
+	width:100%;
 }
 
 .throw_exception_task_html .class_name {
@@ -54,6 +52,9 @@
 	min-height:20px;
 	margin-top:15px;
 	margin-bottom:20px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .throw_exception_task_html .class_name {
+	margin-top:0;
 }
 .throw_exception_task_html hr {
 	float:none;
@@ -67,7 +68,7 @@
 	margin-top:10px;
 }
 .throw_exception_task_html .exception_var_name {
-	margin:10px 0;
+	margin:10px 0 5px;
 	min-height:20px;
 }
 .throw_exception_task_html .exception_type label, 
@@ -76,12 +77,27 @@
 	width:120px;
 	height:20px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .throw_exception_task_html .exception_type label, 
+   .taskflowchart.fixed_side_properties .selected_task_properties .throw_exception_task_html .exception_var_name label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .throw_exception_task_html .exception_var_type label {
+	width:75px;
+}
 .throw_exception_task_html .class_name label {
 	width:160px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .throw_exception_task_html .class_name label {
+	width:110px;
 }
 .throw_exception_task_html .class_name input, 
    .throw_exception_task_html .exception_var_name input {
 	width:190px;   
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .throw_exception_task_html .class_name input {
+	width:calc(100% - 145px);   
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .throw_exception_task_html .exception_var_name input {
+	width:calc(100% - 90px);   
+}
+
 
 

@@ -13,15 +13,23 @@
 .jsplumbtaskworkflow .task.active:hover {
 	opacity:.8 !important;
 }
+.jsplumbtaskworkflow .task:hover:before,
+  .jsplumbtaskworkflow .task .task_info {
+	display:none !important;
+}
+.jsplumbtaskworkflow .task:hover:after {
+	bottom:-20px !important;
+	left:-5px !important;
+	background:none !important;
+}
 .jsplumbtaskworkflow .task .info {
 	font-weight:bold;
 }
-.jsplumbtaskworkflow .task .tag_info {
-	display:none;
-}
 .jsplumbtaskworkflow .task .short_actions {
+	padding:10px;
+	top:-30px;
+	left:-5px;
 	right:auto;
-	left:0;
 }
 
 .task_context_menu .activate_task a,

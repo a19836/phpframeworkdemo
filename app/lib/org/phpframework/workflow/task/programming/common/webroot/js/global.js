@@ -41,6 +41,142 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			task.addClass("logic_task");
 		},
 		
+		onTaskCloning : function(task_id) {
+			onTaskCloning(task_id);
+			
+			//add default label
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			WF.jsPlumbTaskFlow.setTaskLabelByTaskId(task_id, {label: "Add your label"});
+		},
+		
+		onConnectionDrag : function(conn) {
+			if (onlyAllowOneConnectionPerExitAndNotToItSelf(conn)) {
+				var end_point_elm = conn.sourceEndpoint.element[0];
+				var connection_label = $(end_point_elm).children("span").text();
+				connection_label = connection_label ? connection_label : end_point_elm.getAttribute("connection_exit_id");
+				
+				conn.connection.getOverlay("label").setLabel(connection_label);
+				
+				return true;
+			}
+			
+			return false;
+		},
+		
+		addCodeMenuOnShowTaskMenu : function(task_id, j_task, task_context_menu) {
+			var show_code_menu = task_context_menu.children(".show_code");
+			
+			if (!show_code_menu[0]) {
+				var li = $('<li class="show_code"><a href="#">Show Code</a></li>');
+				
+				li.click(function(originalEvent) {
+					var WF = myWFObj.getJsPlumbWorkFlow();
+					var selected_task_id = WF.jsPlumbContextMenu.getContextMenuTaskId();
+					var selected_task = WF.jsPlumbTaskFlow.getTaskById(selected_task_id);
+					var show_code_timeout_id = selected_task.data("show_code_timeout_id");
+					
+					if (show_code_timeout_id)
+						clearTimeout(show_code_timeout_id);
+					
+					selected_task.addClass("show_code");
+					
+					show_code_timeout_id = setTimeout(function() {
+						selected_task.removeClass("show_code");
+					}, 5000);
+					
+					selected_task.data("show_code_timeout_id", show_code_timeout_id);
+				});
+				
+				task_context_menu.children(".delete").before(li);
+			}
+		},
+		
+		removeCodeMenuOnShowTaskMenu : function(task_id, j_task, task_context_menu) {
+			task_context_menu.children(".show_code").remove();
+		},
+		
+		onSuccessTaskBetweenConnection : function(task_id) {
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			
+			//set new created task on the same position than the following task.
+			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+			var extra_top = WF.jsPlumbTaskSort.task_margins_top_and_bottom_average * 2;
+			var parent_connections = WF.jsPlumbTaskFlow.getTargetConnections(task_id);
+			var child_connections = WF.jsPlumbTaskFlow.getSourceConnections(task_id);
+			var pl = parent_connections.length;
+			var cl = child_connections.length;
+			var parent_id = null;
+			var child_id = null;
+			
+			//get parent task id
+			for (var i = 0; i < pl; i++) {
+				parent_id = parent_connections[i].sourceId;
+				
+				if (parent_id)
+					break;
+			}
+			
+			//get child task id
+			for (var i = 0; i < cl; i++) {
+				child_id = child_connections[i].targetId;
+				
+				if (child_id)
+					break;
+			}
+			
+			if (child_id) {
+				var parent_task = WF.jsPlumbTaskFlow.getTaskById(parent_id);
+				var child_task = WF.jsPlumbTaskFlow.getTaskById(child_id);
+				var parent_top = parseInt(parent_task.css("top"));
+				var child_top = parseInt(child_task.css("top"));
+				var push_tasks_down = true;
+				
+				//check if there is enough space between parent and children
+				if (parent_id) {
+					var task_top = parseInt(task.css("top"));
+					
+					//push_tasks_down = child_top - (parent_top + parent_task.height()) < extra_top + task.height() + extra_top; 
+					push_tasks_down = parent_top + parent_task.height() + extra_top + task.height() + extra_top > child_top;
+					
+					//console.log(child_top - (parent_top + parent_task.height()));
+					//console.log(extra_top + task.height() + extra_top);
+					//console.log(push_tasks_down);
+				}
+				
+				//by default, align the new task to the left of the child
+				task.css("left", child_task.css("left"));
+				
+				//pull all children down
+				if (push_tasks_down) {
+					var new_top = parent_top + parent_task.height() + extra_top;
+					task.css("top", new_top + "px");
+					
+					//then push down all following tasks that are connected to this new task.
+					if (child_top > parent_top) {
+						var diff = child_top - parent_top;
+						
+						for (var i = 0; i < cl; i++)
+							ProgrammingTaskUtil.pushDownFollowingTask(child_connections[i].targetId, diff);
+					}
+				}
+				
+				WF.jsPlumbTaskFlow.repaintAllTasks();
+			}
+		},
+		
+		pushDownFollowingTask : function(task_id, extra_top) {
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+			var top = parseInt(task.css("top")) + extra_top;
+			task.css("top", top + "px");
+			
+			var child_connections = WF.jsPlumbTaskFlow.getSourceConnections(task_id);
+			var cl = child_connections.length;
+			
+			for (var i = 0; i < cl; i++)
+				ProgrammingTaskUtil.pushDownFollowingTask(child_connections[i].targetId, extra_top);
+		},
+		
 		createTaskLabelField : function(properties_html_elm, task_id) {
 			var label = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
 			label = label ? label.replace(/"/g, "&quot;") : "";
@@ -392,25 +528,27 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 						//setting text color according with background
 						bg = exit.css("background-color");
 						if (bg) {
-							if (bg.indexOf("rgb") != -1) {
+							if (bg.indexOf("rgb") != -1)
 								bg = backgroundRgbToHex(bg);
-							}
-							span.css("color", getContrastYIQ(bg) == "white" ? "#FFF" : "#000");
+							
+							span.css("color", bg && getContrastYIQ(bg) == "white" ? "#FFF" : "#000");
 						}
 						
 						title = labels[connection_exit_id];
 						
 						exit.html(span);
 						exit.attr("title", title);
+						exit.attr("connection_exit_label", title);
 					}
 					else {
 						exit.html("");
 						exit.attr("title", "");
+						exit.attr("connection_exit_label", "");
 					}
 				}
 			}
 			
-			var height = 28 + (exits.length * 22);
+			var height = 28 + (exits.length * 25);
 			var is_resizable_task = task.attr("is_resizable_task");
 			var resize_height = is_resizable_task ? height > task.height() : height != task.height();
 			
@@ -418,6 +556,22 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 				task.css("height", height + "px");
 			
 				WF.jsPlumbTaskFlow.repaintTask(task);
+			}
+		},
+		
+		updateTaskExitsConnectionsLabels : function(task_id, labels) {
+			//update exits that were changed
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var child_connections = WF.jsPlumbTaskFlow.getSourceConnections(task_id);
+			var cl = child_connections.length;
+			
+			for (var i = 0; i < cl; i++) {
+				var child_connection = child_connections[i];
+				var parameters = child_connection.getParameters();
+				var exit_id = parameters["connection_exit_id"];
+				
+				if (exit_id && labels.hasOwnProperty(exit_id))
+					child_connection.getOverlay("label").setLabel(labels[exit_id]);
 			}
 		},
 		
@@ -464,9 +618,16 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 							var connector_type = parameters.connection_exit_type;
 							var connection_overlay = parameters.connection_exit_overlay;
 							var connection_label = parent_connection.getOverlay("label").getLabel();
+							var connection_color = parameters.connection_exit_color;
+							
+							if (!connection_color) {
+								connection_color = parent_connection.endpoints[0].element[0].getAttribute("connection_exit_color");
+		    						connection_color = connection_color ? connection_color : parent_connection.getPaintStyle().strokeStyle;
+							}
+							
 							var connection_exit_props = {
 								id: parameters.connection_exit_id, 
-								color: parameters.connection_exit_color
+								color: connection_color
 							};
 						
 							this.connections_to_add_after_deletion.push([source_id, target_id, connection_label, connector_type, connection_overlay, connection_exit_props]);

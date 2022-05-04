@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 ?><div class="call_presentation_layer_web_service_task_html">
-	<div class="get_automatically">
+	<div class="get_automatically disabled">
 		<label>Get Page from File Manager: </label>
 		<span class="icon update" onClick="ProgrammingTaskUtil.onProgrammingTaskChoosePageUrl(this)" title="Get page from File Manager">Update</span>
 	</div>

@@ -20,33 +20,32 @@
 	text-overflow:ellipsis;
 }
 .jsplumbtaskworkflow .task.task_setvar {
-	/*background-image:url('../img/bg.gif');
-	-o-background-size:100% 100%;
-	-webkit-background-size:100% 100%;
-	-moz-background-size:100% 100%;
-	background-size:100% 100%; */
-	
-	/* in IE */
-	-ms-background-size:100% 100%;
-	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
-	
-	/*border:none;
-	box-shadow:none;
-	-o-box-shadow:none;
-	-webkit-box-shadow:none;
-	-moz-box-shadow:none;*/
-    	
-	/* For IE */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
-	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+	width:70px !important;
+	height:70px !important;
+	padding:20px 0 0;
+	box-sizing:border-box;
 }
 .jsplumbtaskworkflow .task.task_setvar .info span {
 	color:#426efa;
 }
+.jsplumbtaskworkflow .task.task_setvar .eps {
+	width:65px;
+	height:50px;
+	margin:0 auto;
+	background:url('../img/bg.svg') center bottom no-repeat;
+	background-size:100% 100%;
+}
+.jsplumbtaskworkflow .task.task_setvar .ep {
+	border-color:transparent !important;
+	background-color:transparent !important;
+}
 
 .set_var_task_html {
 	width:390px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .set_var_task_html {
+	width:100%;
+	box-sizing:border-box;
 }
 
 .set_var_task_html .result {
@@ -69,15 +68,24 @@
    .set_var_task_html .var_type label {
 	width:50px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .set_var_task_html .value label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .set_var_task_html .var_type label {
+	width:35px;
+}
 .set_var_task_html .value input {
 	width:270px;
 	margin-right:5px;
 }
-.set_var_task_html .value textarea, .set_var_task_html .value .ace_editor {
+.taskflowchart.fixed_side_properties .selected_task_properties .set_var_task_html .value input {
+	width:calc(100% - 75px);
+}
+.set_var_task_html .value textarea, 
+  .set_var_task_html .value .ace_editor {
 	float:none;
 	clear:left;
-	width:365px;
+	width:100%;
 	height:110px;
+	margin-top:3px;
 	border:1px inset #CCC;
 }
 .set_var_task_html .value .search {

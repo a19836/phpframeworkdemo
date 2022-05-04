@@ -1,3 +1,8 @@
+/* TOP BAR */
+.top_bar header > .title {
+	max-width:calc(100% - 60px);
+}
+
 /* RELATIONSHIP */
 .edit_includes .data_access_obj {
 	box-sizing:border-box;

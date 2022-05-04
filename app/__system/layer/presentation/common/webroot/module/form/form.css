@@ -5,7 +5,7 @@
 
 /* BLOCK OBJ */
 .block_obj {
-	width:825px; /* bc of the createformtask */
+	min-width:825px; /* bc of the createformtask */
 }
 .block_obj .module_data .module_description .convert_to_module_workflow {
 	margin-top:20px;

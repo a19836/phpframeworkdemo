@@ -2,6 +2,9 @@
 .top_bar header {
 	z-index:9999;
 }
+.top_bar header > .title {
+	max-width:calc(100% - 60px);
+}
 .top_bar .dummy_elm_to_add_auto_save_options {
 	display:none !important;
 }

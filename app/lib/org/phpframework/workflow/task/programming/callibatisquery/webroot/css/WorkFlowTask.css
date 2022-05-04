@@ -20,23 +20,31 @@
 	text-overflow:ellipsis;
 }
 .jsplumbtaskworkflow .task.task_callibatisquery {
-	/*background-image:url('../img/bg.gif');
-	-o-background-size:contain;
-	-webkit-background-size:contain;
-	-moz-background-size:contain;
-	background-size:contain;*/ 
-	
-	/* in IE */
-	-ms-background-size:contain;
-	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='contain')";
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='contain');*/
+	width:70px !important;
+	height:70px !important;
+	padding:20px 0 0;
+	box-sizing:border-box;
 }
 .jsplumbtaskworkflow .task.task_callibatisquery .info span {
 	color:#426efa;
 }
+.jsplumbtaskworkflow .task.task_callibatisquery .eps {
+	width:65px;
+	height:50px;
+	margin:0 auto;
+	background:url('../img/bg.svg') center bottom no-repeat;
+	background-size:100% 100%;
+}
+.jsplumbtaskworkflow .task.task_callibatisquery .ep {
+	border-color:transparent !important;
+	background-color:transparent !important;
+}
 
 .call_ibatis_query_task_html {
 	min-width:430px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html {
+	min-width:auto;
 }
 
 .call_ibatis_query_task_html .get_automatically,
@@ -47,6 +55,13 @@
 	width:430px;
 	min-height:20px;
 	margin:0 auto;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html .get_automatically,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html .query_type,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html .module_id,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html .service_type,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html .service_id {
+	width:100%;
 }
 .call_ibatis_query_task_html .module_id, 
   .call_ibatis_query_task_html .service_type, 
@@ -59,6 +74,9 @@
 	margin-top:15px;
 	margin-bottom:5px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html .get_automatically {
+	margin-top:0;
+}
 .call_ibatis_query_task_html .query_type {
 	margin-top:15px;
 }
@@ -66,6 +84,9 @@
    	width:430px;
    	min-height:20px;
 	margin:0 auto 5px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html .params {
+   	width:100%;
 }
 .call_ibatis_query_task_html .params .array_items .items {
 	position:absolute;
@@ -80,6 +101,9 @@
 
 .call_ibatis_query_task_html .get_automatically label {
 	width:200px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html .get_automatically label {
+	width:135px;
 }
 .call_ibatis_query_task_html .get_automatically .icon {
 	width:23px;
@@ -102,8 +126,20 @@
    .call_ibatis_query_task_html .params .main_label {
 	width:110px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html .query_type label {
+	width:75px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html .module_id label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html .service_type label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html .service_id label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html .params .main_label {
+	width:55px;
+}
 .call_ibatis_query_task_html .query_type select {
 	width:235px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html .query_type select {
+	width:calc(100% - 82px);
 }
 .call_ibatis_query_task_html .module_id input,
    .call_ibatis_query_task_html .service_type input,
@@ -113,9 +149,18 @@
 	margin-right:5px;
 	padding-right:20px;
 }
+.call_ibatis_query_task_html .module_id input,
+   .call_ibatis_query_task_html .service_type input,
+   .call_ibatis_query_task_html .service_id input,
+   .call_ibatis_query_task_html .params .parameters_code {
+	width:calc(100% - 155px);
+}
 .call_ibatis_query_task_html .service_type select.service_type_string {
 	width:235px;
 	margin-right:5px;
+}
+.call_ibatis_query_task_html .service_type select.service_type_string {
+	width:calc(100% - 130px);
 }
 .call_ibatis_query_task_html .module_id select,
    .call_ibatis_query_task_html .service_type select.service_type_type,

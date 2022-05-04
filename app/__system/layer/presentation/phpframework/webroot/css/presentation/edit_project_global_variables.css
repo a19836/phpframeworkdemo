@@ -2,6 +2,9 @@
 .top_bar {
 	margin-bottom:10px;
 }
+.top_bar header .title {
+	max-width:calc(100% - 170px);
+}
 .top_bar header > ul {
 	right:140px;
 }
@@ -50,12 +53,17 @@
 	}
 }
 
+.global_vars_obj > ul.tabs > li#form_global_vars_tab.ui-tabs-active {
+	background:#fff;
+}
+
 #form_global_vars {
 	min-height:230px; 
 	text-align:center; 
 	padding-top:20px; 
 	overflow:auto;
 	box-sizing:border-box;
+	background:#fff;
 }
 
 #form_global_vars .vars {

@@ -67,8 +67,9 @@ body,
 	font-size:10px;
 }
 .choose_available_tutorial .card .list_group .list_group_item {
-	background:var(--main-template-bg);
+	background:#f2f5fe;
 	border:1px solid #ccc;
+	border-bottom:0;
 }
 .choose_available_tutorial .card .list_group .list_group_item:first-child {
 	border-top-left-radius:2px;
@@ -77,10 +78,12 @@ body,
 .choose_available_tutorial .card .list_group .list_group_item:last-child {
 	border-bottom-left-radius:2px;
 	border-bottom-right-radius:2px;
+	border-bottom:1px solid #ccc;
 }
 .choose_available_tutorial .card .list_group .list_group_item > .list_group_item_header {
 	padding:10px;
-	background:#DFE1ED;
+	color:var(--main-template-color);
+	background:var(--main-template-bg);
 	cursor:pointer;
 	position:relative;
 }

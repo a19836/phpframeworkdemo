@@ -1,4 +1,7 @@
 /* TOP BAR */
+.edit_relationship > .top_bar header > .title {
+	max-width:calc(100% - 60px);
+}
 .edit_relationship > .top_bar .title .query_type {
 	width:120px;
 	display:inline-block;
@@ -22,6 +25,7 @@
 	
 }
 .edit_relationship .relationship {
+	margin:0;
 	padding:0;
 	border:0;
 	display:none;
@@ -85,14 +89,14 @@
 	border:0;
 }
 .edit_relationship .relationship .query .query_settings {
-	height:calc(100vh - 75px);
+	height:calc(100vh - 95px);
 	box-sizing:border-box;
 	padding-top:10px;
 	border-radius:0;
 	border-top:0;
 }
 .edit_relationship .relationship .query .query_settings .query_settings_tab {
-	height:calc(100vh - 125px);
+	height:calc(100vh - 145px);
 	min-height:100px;
 	padding-bottom:20px;
 	box-sizing:border-box;

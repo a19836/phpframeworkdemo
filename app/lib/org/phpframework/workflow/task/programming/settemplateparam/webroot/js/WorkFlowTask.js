@@ -84,7 +84,7 @@ var SetTemplateParamTaskPropertyObj = {
 	},
 	
 	getDefaultExitLabel : function(task_property_values) {
-		var method_obj = (task_property_values["method_obj"].trim().substr(0, 1) != "$" ? "$" : "") + task_property_values["method_obj"];
+		var method_obj = (task_property_values["method_obj"] && task_property_values["method_obj"].trim().substr(0, 1) != "$" ? "$" : "") + task_property_values["method_obj"];
 		
 		return method_obj + "->setParam(" + ProgrammingTaskUtil.getValueString(task_property_values["name"], task_property_values["name_type"]) + ", " + ProgrammingTaskUtil.getValueString(task_property_values["value"], task_property_values["value_type"]) + ")";
 	},

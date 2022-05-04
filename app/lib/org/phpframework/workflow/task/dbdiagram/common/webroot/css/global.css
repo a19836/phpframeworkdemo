@@ -1,5 +1,16 @@
-.jsplumbtaskworkflow .task .tag_info {
-	display:none;
+.jsplumbtaskworkflow .task:hover:before,
+  .jsplumbtaskworkflow .task .task_info {
+	display:none !important;
+}
+.jsplumbtaskworkflow .task:hover:after {
+	bottom:-25px !important;
+	left:-5px !important;
+	background:none !important;
+}
+.jsplumbtaskworkflow .task:hover .short_actions {
+	padding:10px;
+	top:-30px;
+	right:-5px;
 }
 
 .selected_task_properties, .selected_connection_properties {

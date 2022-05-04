@@ -18,17 +18,17 @@ body,
 	
 	padding: 0px;
 	border: 1px outset #999999;
-	background: #DFE1ED;
+	background: var(--main-iframe-bg);
 	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Q1ZTNlNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQwJSIgc3RvcC1jb2xvcj0iI2NjZGVlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNiM2M4Y2MiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-	background: -moz-linear-gradient(top,  #eee 0%, #DFE1ED 40%, #DFE1ED 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eee), color-stop(40%,#DFE1ED), color-stop(100%,#cccDFE1ED));
-	background: -webkit-linear-gradient(top,  #eee 0%,#DFE1ED 40%,#DFE1ED 100%);
-	background: -o-linear-gradient(top,  #eee 0%,#DFE1ED 40%,#DFE1ED 100%);
-	background: -ms-linear-gradient(top,  #eee 0%,#DFE1ED 40%,#DFE1ED 100%);
-	background: linear-gradient(to bottom,  #eee 0%,#DFE1ED 40%,#DFE1ED 100%);
+	background: -moz-linear-gradient(top,  #eee 0%, var(--main-iframe-bg) 40%, var(--main-iframe-bg) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eee), color-stop(40%,var(--main-iframe-bg)), color-stop(100%,#cccDFE1ED));
+	background: -webkit-linear-gradient(top,  #eee 0%,var(--main-iframe-bg) 40%,var(--main-iframe-bg) 100%);
+	background: -o-linear-gradient(top,  #eee 0%,var(--main-iframe-bg) 40%,var(--main-iframe-bg) 100%);
+	background: -ms-linear-gradient(top,  #eee 0%,var(--main-iframe-bg) 40%,var(--main-iframe-bg) 100%);
+	background: linear-gradient(to bottom,  #eee 0%,var(--main-iframe-bg) 40%,var(--main-iframe-bg) 100%);
 	
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#eee', endColorstr='#DFE1ED',GradientType=0 )";
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eee', endColorstr='#DFE1ED',GradientType=0 );
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#eee', endColorstr='var(--main-iframe-bg)',GradientType=0 )";
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eee', endColorstr='var(--main-iframe-bg)',GradientType=0 );
 	
 	-moz-border-radius:0.5em; 
 	-webkit-border-radius:0.5em;

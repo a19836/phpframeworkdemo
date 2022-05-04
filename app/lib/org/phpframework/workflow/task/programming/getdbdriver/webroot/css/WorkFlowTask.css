@@ -20,23 +20,31 @@
 	text-overflow:ellipsis;
 }
 .jsplumbtaskworkflow .task.task_getdbdriver {
-	/*background-image:url('../img/bg.gif');
-	-o-background-size:contain;
-	-webkit-background-size:contain;
-	-moz-background-size:contain;
-	background-size:contain; */
-	
-	/* in IE */
-	-ms-background-size:contain;
-	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='contain')";
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='contain');*/
+	width:70px !important;
+	height:70px !important;
+	padding:20px 0 0;
+	box-sizing:border-box;
 }
 .jsplumbtaskworkflow .task.task_getdbdriver .info span {
 	color:#426efa;
 }
+.jsplumbtaskworkflow .task.task_getdbdriver .eps {
+	width:65px;
+	height:50px;
+	margin:0 auto;
+	background:url('../img/bg.svg') center bottom no-repeat;
+	background-size:100% 100%;
+}
+.jsplumbtaskworkflow .task.task_getdbdriver .ep {
+	border-color:transparent !important;
+	background-color:transparent !important;
+}
 
 .get_db_driver_task_html {
 	min-width:430px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .get_db_driver_task_html {
+	min-width:auto;
 }
 
 .get_db_driver_task_html .db_driver {
@@ -44,13 +52,22 @@
 	min-height:20px;
 	margin:10px auto 0 auto;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .get_db_driver_task_html .db_driver {
+	width:100%;
+}
 .get_db_driver_task_html .db_driver label {
 	width:110px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .get_db_driver_task_html .db_driver label {
+	width:55px;
 }
 .get_db_driver_task_html .db_driver .db_driver_variable {
 	width:210px;
 	margin-right:5px;
 	padding-right:20px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .get_db_driver_task_html .db_driver .db_driver_variable {
+	width:calc(100% - 164px);
 }
 .get_db_driver_task_html .db_driver input.db_driver_value {
 	display:none;
@@ -58,6 +75,9 @@
 .get_db_driver_task_html .db_driver select.db_driver_options {
 	width:235px;
 	margin-right:5px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .get_db_driver_task_html .db_driver select.db_driver_options {
+	width:calc(100% - 140px);
 }
 .get_db_driver_task_html .db_driver select[name=db_driver_type] {
 	background-color:#FFF;

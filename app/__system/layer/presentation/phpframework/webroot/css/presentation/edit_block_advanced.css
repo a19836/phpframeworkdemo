@@ -2,6 +2,9 @@
 .top_bar {
 	margin-bottom:10px;
 }
+.top_bar header .title {
+	max-width:calc(100% - 160px);
+}
 .top_bar header > ul {
 	right:105px;
 }

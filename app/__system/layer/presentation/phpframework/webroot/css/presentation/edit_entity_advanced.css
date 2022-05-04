@@ -5,6 +5,9 @@
 .top_bar header {
 	z-index:4;
 }
+.top_bar header .title {
+	max-width:calc(100% - 400px);
+}
 .top_bar header > ul {
 	right:145px;
 }

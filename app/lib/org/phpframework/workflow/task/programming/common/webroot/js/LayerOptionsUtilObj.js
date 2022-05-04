@@ -190,15 +190,17 @@ var LayerOptionsUtilObj = {
 
 		if (main_ul) {
 			var idx = $(main_ul).attr('li_counter');
-			if (!idx || idx <= 0) {
+			if (!idx || idx <= 0)
 				idx = $(main_ul).children().length;
-			}
+			
 			++idx;
 			$(main_ul).attr('li_counter', idx);
 
 			var html = this.getOptionHtml(idx, "", "string", "", "string", type);
+			var item = $(html);
+			item.addClass("option_" + (typeof type != "undefined" ? type : ""));
 			
-			$(main_ul).append(html);
+			$(main_ul).append(item);
 		}
 	},
 	
