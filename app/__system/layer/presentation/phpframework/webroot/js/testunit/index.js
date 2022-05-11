@@ -18,6 +18,9 @@ $(function () {
 		
 		var icon = $('<i class="icon refresh" title="Refresh"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			testUnitFilesFromFileManagerTree.refreshNodeChilds(li);
 			li.children(".executed_test_response").hide();
 		});
@@ -25,24 +28,36 @@ $(function () {
 		
 		var icon = $('<i class="icon add_folder" title="Add Group"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			manageFile(this, "create_folder");
 		});
 		elm.append(icon);
 		
 		var icon = $('<i class="icon add_test" title="Add Test-Unit"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			manageFile(this, "create_file");
 		});
 		elm.append(icon);
 		
 		var icon = $('<i class="icon execute" title="Execute"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			executeTests( $(this).parent().closest("li").children(".select_test_unit"), true );
 		});
 		elm.append(icon);
 		
 		var icon = $('<i class="icon info" title="Test Results"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			li.children(".executed_test_response").toggle("fast");
 		});
 		icon.hide();
@@ -67,30 +82,45 @@ function addTestUnitAction(ul, data) {
 		
 		var icon = $('<i class="icon edit" title="Edit"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			openTestUnit(li);
 		});
 		p.append(icon);
 		
 		var icon = $('<i class="icon remove" title="Remove"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			manageFile(this, "remove");
 		});
 		p.append(icon);
 		
 		var icon = $('<i class="icon rename" title="Rename"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			manageFile(this, "rename");
 		});
 		p.append(icon);
 		
 		var icon = $('<i class="icon execute" title="Execute"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			executeTests( $(this).parent().closest("li").children(".select_test_unit"), true );
 		});
 		p.append(icon);
 		
 		var icon = $('<i class="icon info" title="Test Results"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			li.children(".executed_test_response").toggle("fast");
 		});
 		icon.hide();
@@ -112,6 +142,9 @@ function addTestUnitAction(ul, data) {
 		
 		var icon = $('<i class="icon refresh" title="Refresh"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			testUnitFilesFromFileManagerTree.refreshNodeChilds(li);
 			li.children(".executed_test_response").hide();
 		});
@@ -119,36 +152,54 @@ function addTestUnitAction(ul, data) {
 		
 		var icon = $('<i class="icon add_folder" title="Add Sub-Group"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			manageFile(this, "create_folder");
 		});
 		p.append(icon);
 		
 		var icon = $('<i class="icon add_test" title="Add Test-Unit"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			manageFile(this, "create_file");
 		});
 		p.append(icon);
 		
 		var icon = $('<i class="icon remove" title="Remove"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			manageFile(this, "remove");
 		});
 		p.append(icon);
 		
 		var icon = $('<i class="icon rename" title="Rename"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			manageFile(this, "rename");
 		});
 		p.append(icon);
 		
 		var icon = $('<i class="icon execute" title="Execute"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			executeTests( $(this).parent().closest("li").children(".select_test_unit"), true );
 		});
 		p.append(icon);
 		
 		var icon = $('<i class="icon info" title="Test Results"></i>');
 		icon.on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			
 			li.children(".executed_test_response").toggle("fast");
 		});
 		icon.hide();

@@ -14,10 +14,10 @@ body {
 .login .container .card .card-header {
 	background:#2C2D34;
 	color:#BFC4DB;
-	border-bottom:3px solid #ff0000;
+	border-bottom:3px solid #FC3C44;
 }
 .login:not(.with_popup) .container .card .card-header {
-	border-bottom:3px solid #ff0000;
+	border-bottom:3px solid #FC3C44;
 }
 .login .container .card .card-header {
 	text-align:center;
@@ -60,10 +60,10 @@ body {
 	transition:box-shadow .25s linear, border .25s linear, color .25s linear, background-color .25s linear;
 	transition:background 0s ease-out;
 	
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000), to(#ff0000)), -webkit-gradient(linear, left top, left bottom, from(#e0e0e0), to(#000));
-	background-image: -webkit-linear-gradient(#ff0000, #ff0000), -webkit-linear-gradient(#e0e0e0, #000);
-	background-image: -o-linear-gradient(#ff0000, #ff0000), -o-linear-gradient(#e0e0e0, #000);
-	background-image: linear-gradient(#ff0000, #ff0000), linear-gradient(#e0e0e0, #000);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#FC3C44), to(#FC3C44)), -webkit-gradient(linear, left top, left bottom, from(#e0e0e0), to(#000));
+	background-image: -webkit-linear-gradient(#FC3C44, #FC3C44), -webkit-linear-gradient(#e0e0e0, #000);
+	background-image: -o-linear-gradient(#FC3C44, #FC3C44), -o-linear-gradient(#e0e0e0, #000);
+	background-image: linear-gradient(#FC3C44, #FC3C44), linear-gradient(#e0e0e0, #000);
 	border: 0;
 	border-radius: 0;
 	-webkit-box-shadow: none;

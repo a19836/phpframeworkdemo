@@ -15,7 +15,8 @@
 	--tabs-item-hover-color:#ab7a90;
 	
 	/* menu-widgets */
-	--menu-widgets-widget-border:#ccc;
+	--menu-widgets-widget-border:transparent;
+	--menu-widgets-widget-color:#4070FF;
 	--menu-widgets-group-color:#b9a5a6;
 	
 	/* template-source */
@@ -45,7 +46,8 @@
 	--menu-settings-button-border:#463a3c;
 	--menu-settings-button-bg:#796669;
 	--menu-settings-button-color:#463a3c;
-	--menu-settings-button-hover-color:#796669;
+	--menu-settings-button-hover-bg:#796669aa;
+	--menu-settings-button-hover-color:#463a3c;
 	
 	--menu-settings-user-classes-bg:rgba(0,0,0,0.25);
 	--menu-settings-user-class-border:transparent;
@@ -78,14 +80,17 @@
 	--widget-header-bg:#463a3c;
 	--widget-header-color:#b9a5a6;
 	--widget-header-hover-color:#ab7a90;
+	--widget-header-option-color:var(--widget-header-color);
 	
 	/* droppable-header */
 	--droppable-header-border:transparent;
 	--droppable-header-bg:#463a3c;
 	--droppable-header-color:#b9a5a6;
 	--droppable-header-hover-color:#ab7a90;
+	--droppable-header-option-color:var(--droppable-header-color);
 	
 	/* menu-layers */
+	--menu-layers-group-border:transparent;
 	--menu-layers-group-hover-border:#796669;
 	--menu-layers-group-selected-border:#796669;
 	--menu-layers-group-title-border:transparent;
@@ -108,7 +113,8 @@
 
 	/* scrollbar */
 	--scrollbar-track-bg:#555;
-	--scrollbar-thumb-bg:#ccc;
+	--scrollbar-thumb-bg:rgba(0,0,0,0.2);
+	--scrollbar-thumb-hover-bg:rgba(0,0,0,0.5);
 	
 	/* resize-panel */
 	--resize-panel-bg:#796669;
@@ -223,7 +229,9 @@
 /* SCROLLBARS */
 
 .layout-ui-editor :not(.template-widget)::-webkit-scrollbar { /* Let's get this party started */
-    width:7px;
+    width:5px;
+    height:5px;
+	background-color:transparent;
 }
 .layout-ui-editor :not(.template-widget)::-webkit-scrollbar-track { /* Track */
     -webkit-border-radius:0;
@@ -235,10 +243,13 @@
     -webkit-border-radius:5px;
     border-radius:5px;
     background:var(--scrollbar-thumb-bg, #ccc); 
-    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.15); 
+    /*-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.15); */
+}
+.layout-ui-editor :not(.template-widget)::-webkit-scrollbar-thumb:hover {
+    background:var(--scrollbar-thumb-hover-bg);
 }
 .layout-ui-editor :not(.template-widget)::-webkit-scrollbar-thumb:window-inactive {
-	background:rgba(250,250,250,0.8); 
+	/*background:rgba(250,250,250,0.8);*/ 
 }
 
 /* TEXT SELECTION MENU */
@@ -653,6 +664,16 @@
 	margin-left:5px;
 	padding:0; /* IE gives some padding to the range buttons */
 }
+.layout-ui-editor > .options .sub-options {
+	width:30px;
+}
+.layout-ui-editor.reverse > .options .sub-options {
+	direction:ltr;
+}
+.layout-ui-editor > .options .sub-options > .caret-down {
+	margin-left:5px;
+	font-size:80%;
+}
 .layout-ui-editor > .options .sub-options ul {
 	position:absolute;
 	margin:0;
@@ -739,6 +760,11 @@
 	display:none;
 	font-size:10px;
 	padding-right:0;
+}
+.layout-ui-editor > .options .option.option-fit-to-screen {
+	width:auto;
+	margin:0 0 0 10px;
+	display:none;
 }
 .layout-ui-editor > .options .option.option-screen-width:hover,
   .layout-ui-editor > .options .option.option-screen-height:hover,
@@ -888,7 +914,7 @@
 	bottom:0;
 	right:0;
 	display:inline-block;
-	overflow:hidden;
+	overflow:auto; /* inner iframe can be bigger than .template-widgets, if user chooses responsive with a bigger width */
 	
 	-ms-box-sizing:border-box;
 	-moz-box-sizing:border-box;
@@ -1008,19 +1034,28 @@
 	color:var(--menu-widgets-group-color, #b9a5a6);
 }
 .layout-ui-editor > .menu-widgets .group .group-title {
-	margin:10px 5px;
+	margin:10px 5px 5px;
 	padding-bottom:5px;
 	border-bottom:1px dotted rgba(0,0,0,0.15);
 	cursor:pointer;
 	text-align:left;
-	font-size:12px;
-	opacity:.8;
+	font-size:7pt;
+	opacity:.5;
+	color:#ccc;
+}
+.layout-ui-editor > .menu-widgets .group .group-title:hover {
+	color:#aaa !important;
+}
+.layout-ui-editor > .menu-widgets .group ul .group .group-title  {
+	color:#ddd;
+	border-bottom-color:rgba(0,0,0,0.05);
 }
 .layout-ui-editor > .menu-widgets .group .group-title:hover:after {
 	content:"Click to expand";
 	position:absolute;
 	right:5px;
 	display:block;
+	margin-top:5px;
 	padding-left:5px;
 	opacity:.8;
 	font-size:80%;
@@ -1039,8 +1074,8 @@
 	min-height:3em;
 	cursor:default;
 	margin:0;
-	padding:0;
-	text-align:center;
+	padding:0 0 0 20px;
+	text-align:left;
 	/*background:rgba(0,0,0,0.25);*/
 }
 .layout-ui-editor > .menu-widgets .group:not(.group-open) ul {
@@ -1050,22 +1085,55 @@
 	display:inline-block;
 	vertical-align:top;
 }
+.layout-ui-editor > .menu-widgets .group ul .group ul {
+	padding-left:0;
+}
+.layout-ui-editor > .menu-widgets .group ul .group ul .group ul {
+	padding-left:10px;
+}
 .layout-ui-editor > .menu-widgets .menu-widget,
   body > .menu-widget.ui-draggable-dragging { 
-	width:90px; 
-	height:80px; 
-	margin:5px;
-	border:1px solid var(--menu-widgets-widget-border, #ccc);
-	text-align:center;
+	width:40px;
+	min-height:40px;
+	border:0;
+	position:relative;
+	
+	margin:10px;
+	border:1px solid var(--menu-widgets-widget-border, transparent);
 	list-style-type:none;
 	cursor:move;
 	color:inherit;
 }
-.layout-ui-editor > .menu-widgets .menu-widget:hover {
-	opacity:.5;
+.layout-ui-editor > .menu-widgets .menu-widget:before,
+  body > .menu-widget.ui-draggable-dragging:before {
+	content:" ";
+	display:block;
+	width:40px;
+	height:40px;
+	position:absolute;
+	top:0;
+	left:0;
+	background-image:url('../img/default_widget_logo.svg');
+	background-color:#fff;
+	background-position:0 0;
+	background-repeat:no-repeat;
+	background-size:40px 40px;
+}
+.layout-ui-editor > .menu-widgets .menu-widget:hover:before {
+	box-shadow:0 0 10px 0px rgba(0, 0, 0, .2);
 }
 body > .menu-widget.ui-draggable-dragging {
 	z-index:11; /* must be bigger than 10 bc the z-idnex for .layout-ui-editor.full-screen is 10 */
+}
+.layout-ui-editor > .menu-widgets .menu-widget > span:first-child {
+	margin-top:45px;
+	font-size:8px;
+	color:var(--menu-widgets-widget-color, #4070FF);
+	display:block;
+	text-align:center;
+}
+body > .menu-widget.ui-draggable-dragging > span:first-child {
+	display:none;
 }
 
 .layout-ui-editor > .menu-widgets .menu-widget > .template-widget,
@@ -1101,15 +1169,9 @@ body > .menu-widget.ui-draggable-dragging {
 }
 
 /* MENU WIDGETS - HTML TAG */
-.layout-ui-editor > .menu-widgets .menu-widget.html-tag,
-  body > .menu-widget.html-tag.ui-draggable-dragging {
-	height:auto;
-	padding:.7em 0;
-	display:inline-block;
-	border-radius:5px;
-	border:1px dotted rgba(0, 0, 0, .2);
-	color:inherit;
-	overflow:hidden;
+.layout-ui-editor > .menu-widgets .menu-widget.html-tag:before,
+  body > .menu-widget.html-tag.ui-draggable-dragging:before {
+	background-image:url('../img/html_element_logo.svg');
 }
 .layout-ui-editor > .menu-settings.menu-settings-html-tag .settings-properties .settings-property.html-tag input {
 	width:60%;
@@ -1141,15 +1203,9 @@ body > .menu-widget.ui-draggable-dragging {
 }
 
 /* MENU WIDGETS - HTML COMMENT */
-.layout-ui-editor > .menu-widgets .menu-widget.html-comment,
-  body > .menu-widget.html-comment.ui-draggable-dragging {
-	height:auto;
-	display:inline-block;
-	border-radius:5px;
-	border:0;
-	color:inherit;
-	overflow:hidden;
-	font-size:300%;
+.layout-ui-editor > .menu-widgets .menu-widget.html-comment:before,
+  body > .menu-widget.html-comment.ui-draggable-dragging:before {
+	background-image:url('../img/html_comment_logo.svg');
 }
 .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-id,
    .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-classes,
@@ -1181,6 +1237,9 @@ body > .menu-widget.ui-draggable-dragging {
 .layout-ui-editor > .menu-layers > ul {
 	margin-left:0;
 }
+.layout-ui-editor > .menu-layers .group {
+	border:1px solid var(--menu-layers-group-border, transparent);
+}
 .layout-ui-editor > .menu-layers .group.group-over {
 	border:1px solid var(--menu-layers-group-hover-border, #796669);
 }
@@ -1188,11 +1247,13 @@ body > .menu-widget.ui-draggable-dragging {
 	border:1px solid var(--menu-layers-group-selected-border, #796669);
 }
 .layout-ui-editor > .menu-layers .group > .group-title {
-	min-width:200px;
-	border:1px solid var(--menu-layers-group-title-border, transparent);
+	min-width:150px;
+	border:1px solid transparent;
+	/*border-top-color:var(--menu-layers-group-title-border, transparent);*/
+	border-bottom-color:var(--menu-layers-group-title-border, transparent);
 	/*background:rgba(0,0,0,0.15);*/
 	color:var(--menu-layers-group-title-color, #b9a5a6);
-	font-size:12px;
+	font-size:7pt;
 }
 .layout-ui-editor > .menu-layers .group > .group-title:after {
 	content:" ";
@@ -1206,7 +1267,7 @@ body > .menu-widget.ui-draggable-dragging {
 	background:var(--menu-layers-group-selected-title-bg, #b9a5a6);
 	color:var(--menu-layers-group-selected-title-color, #796669);
 }
-.layout-ui-editor > .menu-layers .group.group-open > .group-title {
+.layout-ui-editor > .menu-layers .group.group-open:not(.selected) > .group-title {
 	color:var(--menu-layers-group-open-title-color, #ab7a90);
 }
 .layout-ui-editor > .menu-layers .group.group-disabled > .group-title {
@@ -1343,7 +1404,8 @@ body > .menu-widget.ui-draggable-dragging {
 	font-size:80%;
 }
 .layout-ui-editor > .menu-settings button:hover {
-	color:var(--menu-settings-button-hover-color, #796669);
+	background-color:var(--menu-settings-button-hover-bg, #796669aa);
+	color:var(--menu-settings-button-hover-color, #463a3c);
 }
 .layout-ui-editor > .menu-settings button:active {
 	background-color:rgba(0,0,0,0.4);
@@ -1825,7 +1887,7 @@ body > .menu-widget.ui-draggable-dragging {
 
 .layout-ui-editor > .template-widgets .widget-header {
 	line-height:1.5em;
-	margin:-1.6em 0 0 -2px; /* Header is only shown if widget is clicked, which means the widget will have a border of 2pc */
+	margin:-1.6em 0 0 -4px; /* Header is only shown if widget is clicked, which means the widget will have a border of 2pc */
 	padding:5px;
 	position:absolute;
     	font-size:1em;
@@ -1837,7 +1899,6 @@ body > .menu-widget.ui-draggable-dragging {
 	display:none;
 	
 	font-weight:normal;
-	font-family:Arial;
 }
 .layout-ui-editor > .template-widgets .widget-header.widget-header-top {
 	margin:0;
@@ -1877,12 +1938,12 @@ body > .menu-widget.ui-draggable-dragging {
 	cursor:pointer;
 	vertical-align:baseline;
 	text-align:center;
-  	opacity:.5;
+  	color:var(--widget-header-option-color, #b9a5a6);
 }
 .layout-ui-editor > .template-widgets > .widget-header .options .option:hover, 
   .layout-ui-editor > .template-widgets > .widget-header .options .option:active, 
   .layout-ui-editor > .template-widgets > .widget-header .options .option:focus {
-  	opacity:1;
+  	opacity:.9;
 	color:var(--widget-header-hover-color, #ab7a90);
 }
 .layout-ui-editor > .template-widgets > .widget-header .options .option.delete,
@@ -1892,6 +1953,7 @@ body > .menu-widget.ui-draggable-dragging {
 .layout-ui-editor > .template-widgets > .widget-header .options .option.close {
 	margin-top:3px;
 	padding-right:0;
+	float:right;
 }
 .layout-ui-editor > .template-widgets > .widget-header .options .option.move,
    .layout-ui-editor > .template-widgets > .widget-header .options .option.move-absolute,
@@ -1909,7 +1971,8 @@ body > .menu-widget.ui-draggable-dragging {
 
 .layout-ui-editor > .template-widgets > .droppable-header {
 	line-height:1.5em;
-	margin-top:2px;
+	/*margin-top:2px;*/
+	margin-left:-2px;
 	position:absolute;
 	color:var(--droppable-header-color, #b9a5a6);
 	background:var(--droppable-header-bg, #463a3c);
@@ -1955,17 +2018,18 @@ body > .menu-widget.ui-draggable-dragging {
 	cursor:pointer;
 	vertical-align:baseline;
 	text-align:center;
-  	opacity:.5;
+	color:var(--droppable-header-option-color, #b9a5a6);
 }
 .layout-ui-editor > .template-widgets > .droppable-header .options .option:hover,
   .layout-ui-editor > .template-widgets > .droppable-header .options .option:active,
   .layout-ui-editor > .template-widgets > .droppable-header .options .option:focus {
-  	opacity:1;
+  	opacity:.9;
 	color:var(--droppable-header-hover-color, #ab7a90);
 }
 .layout-ui-editor > .template-widgets > .droppable-header .options .option.close {
 	margin-top:3px;
 	padding-right:0;
+	float:right;
 }
 .layout-ui-editor > .template-widgets > .droppable-header .options .option.move,
    .layout-ui-editor > .template-widgets > .droppable-header .options .option.sort {

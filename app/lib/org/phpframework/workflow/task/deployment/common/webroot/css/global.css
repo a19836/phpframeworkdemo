@@ -1,6 +1,3 @@
-.jsplumbtaskworkflow path { 
-	stroke-width:2px; 
-}
 .jsplumbtaskworkflow .task:hover:before,
   .jsplumbtaskworkflow .task .task_info {
 	display:none !important;

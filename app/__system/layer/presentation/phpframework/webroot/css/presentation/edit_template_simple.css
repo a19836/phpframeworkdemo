@@ -6,7 +6,7 @@
 	z-index:4;
 }
 .top_bar header .title {
-	max-width:calc(100% - 300px);
+	max-width:calc(100% - 370px);
 }
 .top_bar.advanced_items_shown header > ul {
 	right:88px;
@@ -54,7 +54,7 @@
 	width:100%;
 	text-align:center;
 	font-style:italic;
-	color:#FF0000;
+	color:#B51E3F;
 	margin-top:10px;
 	margin-bottom:20px;
 }
@@ -75,12 +75,12 @@
 	right:0;
 	text-align:center;
 	background:#fff;
-	border:1px solid #ff0000;
-	color:#ff0000;
+	border:1px solid #B51E3F;
+	color:#B51E3F;
 	z-index:5;
 }
 .template_obj .invalid a {
-	color:#ff0000;
+	color:#B51E3F;
 	text-decoration:underline;
 }
 .template_obj .invalid .close {
@@ -114,19 +114,19 @@
 
 /* Code Editor - Contents */
 .template_obj .code_editor_layout {
-	height:calc(100vh - 75px);
+	height:calc(100vh - 84px);
 	min-height:300px;
 	padding:0 !important;
 	position:relative;
 	/*border:0;*/
 }
 .template_obj .code_editor_layout.tab_content_template_layout .iframe_toolbar {
-	right:158px;
+	right:165px;
 }
 
 /* Code Editor - Body */
 .template_obj .code_editor_body {
-	height:calc(100vh - 75px);
+	height:calc(100vh - 86px);
 	min-height:300px;
 	padding:0 !important;
 	position:relative;
@@ -143,19 +143,19 @@
 
 /* Code Editor - Body - ELS UI */
 .template_obj.advanced_items_shown .code_editor_body .layout-ui-editor.with_top_bar_menu > .options .options-right {
-	right:160px;
+	right:165px;
 	z-index:5;
 }
 .template_obj:not(.advanced_items_shown) .code_editor_body .layout-ui-editor.with_top_bar_menu > .options .options-right {
-	right:120px;
+	right:125px;
 	z-index:5;
 }
 .template_obj.advanced_items_shown .code_editor_body .layout-ui-editor.with_top_bar_menu > .options > .options-center {
-	right:228px;
+	right:270px;
 	z-index:5;
 }
 .template_obj:not(.advanced_items_shown) .code_editor_body .layout-ui-editor.with_top_bar_menu > .options > .options-center {
-	right:190px;
+	right:195px;
 	z-index:5;
 }
 .template_obj .code_editor_body .layout-ui-editor.with_top_bar_menu > .options .options-left .option.save,

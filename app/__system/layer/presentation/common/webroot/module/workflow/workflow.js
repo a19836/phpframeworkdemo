@@ -14,7 +14,7 @@ $(function () {
 		return null;
 	});
 	
-	$(".top_bar .save a").attr("onClick", "saveModuleWorkflowSettings(this);");
+	$(".top_bar li.save a").attr("onClick", "saveModuleWorkflowSettings(this);");
 	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_side_properties").children(".workflow_menu").addClass("top_bar_menu");
 	
 	//remove duplicated choose_from_file_manager bc of them were already created in the edit_block_simple.php
@@ -144,7 +144,7 @@ $(function () {
 	$(".top_bar li.auto_save_activation, .top_bar li.auto_convert_activation").remove(); //remove auto_save_menu bc we will add another one below...
 	var auto_save_icon = $("#code > .code_menu li.auto_save_activation").clone();
 	var auto_convert_icon = $("#code > .code_menu li.auto_convert_activation").clone();
-	$(".top_bar li.show_advanced_ui").after(auto_convert_icon).after(auto_save_icon);
+	$(".top_bar li.sub_menu li.save").before(auto_save_icon).before(auto_convert_icon);
 	
 	//load workflow
 	onLoadTaskFlowChartAndCodeEditor();
@@ -168,24 +168,12 @@ $(function () {
 
 function onToggleModuleWorkflowAutoSave() {
 	onTogglePHPCodeAutoSave();
-	
-	var inputs = $(".top_bar li.auto_save_activation input");
-	
-	if (auto_save)
-		inputs.attr("checked", "checked").prop("checked", true);
-	else
-		inputs.removeAttr("checked").prop("checked", false);
+	onToggleAutoSave();
 }
 
 function onToggleModuleWorkflowAutoConvert() {
 	onTogglePHPCodeAutoConvert();
-	
-	var inputs = $(".top_bar li.auto_convert_activation input");
-	
-	if (auto_convert)
-		inputs.attr("checked", "checked").prop("checked", true);
-	else
-		inputs.removeAttr("checked").prop("checked", false);
+	onToggleAutoConvert();
 }
 
 function loadModuleWorkflowSettingsBlockSettings(settings_elm, settings_values) {

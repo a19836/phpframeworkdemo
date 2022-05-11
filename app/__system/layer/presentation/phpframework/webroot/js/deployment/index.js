@@ -176,6 +176,7 @@ function chooseFile(elm, treeObj) {
 }
 
 function onOpenServerPropertiesPopup() {
+	//console.log("auto_save 0:"+auto_save);
 	//when auto_save is on and I open a template diagram inside of a server properties, and then the auto save runs, the system is saving the tasks from the layers diagram to the deployment diagram, so we must disable the auto_save until the server properties popup gets closed.	
 	window.auto_save_bkp = auto_save;
 	auto_save = false;
@@ -183,6 +184,8 @@ function onOpenServerPropertiesPopup() {
 
 function onCloseServerPropertiesPopup() {
 	auto_save = window.auto_save_bkp;
+	
+	//console.log("auto_save 1:"+auto_save);
 }
 
 function updateTemplateTaskLayerUrlFileManager(elm) {
@@ -239,10 +242,15 @@ function saveDeploymentDiagram() {
 }
 
 function addNewServer() {
+	var auto_save_bkp = auto_save;
+	
 	var server_task_type_id = ServerTaskPropertyObj.template_tasks_types_by_tag["server"];
 	var task_id = jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByType(server_task_type_id);
 	
 	jsPlumbWorkFlow.jsPlumbTaskFlow.setTaskLabelByTaskId(task_id, {label: null}); //set {label: null}, so the jsPlumbTaskFlow.setTaskLabel method ignores the prompt and adds the default label or an auto generated label.
+	
+	//set auto_save from bkp bc when we call addTaskByType, it will call the loadTaskProperties which then calls the onOpenServerPropertiesPopup, but then it doesn't call the onCloseServerPropertiesPopup, which will return a wrong auto_save value.
+	auto_save = auto_save_bkp;
 	
 	//open properties
 	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);

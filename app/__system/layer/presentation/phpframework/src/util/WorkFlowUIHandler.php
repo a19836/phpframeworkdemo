@@ -119,6 +119,7 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 '; if ($v23b252dead) $v0a9dad1fe0 .= 'jsPlumbWorkFlow.jsPlumbTaskFile.get_tasks_file_url = "' . $this->pcd2aca48 . 'workflow/get_workflow_file?path=' . $v23b252dead . '";'; if ($v10d8a653cc) $v0a9dad1fe0 .= 'jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url = "' . $this->pcd2aca48 . 'workflow/set_workflow_file?path=' . $v10d8a653cc . '";'; if ($pd05429f9) foreach ($pd05429f9 as $pe5c5e2fe => $v956913c90f) $v0a9dad1fe0 .= '
 		jsPlumbWorkFlow.setjsPlumbWorkFlowObjOption("' . $pe5c5e2fe . '", \'' . addcslashes(str_replace(array("\n", "\r"), "", $v956913c90f), "\\'") . '\')'; $v0a9dad1fe0 .= '
 		jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_connector = "Straight";
+		jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_hover_color = null;
 		jsPlumbWorkFlow.jsPlumbTaskFlow.main_tasks_flow_obj_id = "taskflowchart > .tasks_flow";
 		jsPlumbWorkFlow.jsPlumbTaskFlow.main_tasks_properties_obj_id = "taskflowchart > .tasks_properties";
 		jsPlumbWorkFlow.jsPlumbTaskFlow.main_connections_properties_obj_id = "taskflowchart > .connections_properties";

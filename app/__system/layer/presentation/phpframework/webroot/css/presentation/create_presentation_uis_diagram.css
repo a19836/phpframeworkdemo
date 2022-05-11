@@ -35,7 +35,7 @@
 .taskflowchart.with_top_bar_menu .tasks_menu, 
   .taskflowchart.with_top_bar_menu .tasks_menu_hide, 
   .taskflowchart.with_top_bar_menu .tasks_flow {
-	top:37px;
+	top:57px;
 }
 .taskflowchart .tasks_menu {
 	width:130px;
@@ -44,7 +44,11 @@
 	right:130px;
 }
 .taskflowchart.reverse .tasks_flow {
-	right:135px;
+	right:137px;
+}
+
+.taskflowchart .tasks_flow::-webkit-scrollbar {
+	height:10px;
 }
 
 .taskflowchart .workflow_menu:not(.top_bar_menu) ul.dropdown li {
@@ -63,6 +67,10 @@
 }
 
 /* TASK FLOW CHART - TASK PROPERTIES */
+.taskflowchart .selected_task_properties > .content > div,
+  .taskflowchart .selected_task_properties > .content > div .ui-tabs-nav li.ui-tabs-active {
+	background:transparent;
+}
 .taskflowchart .selected_task_properties label, 
   .taskflowchart .selected_task_properties input, 
   .taskflowchart .selected_task_properties textarea, 
@@ -152,7 +160,7 @@
 }
 .create_uis_files .error {
 	margin:20px;
-	color:red;
+	color:#B51E3F;
 	text-align:center;
 }
 .create_uis_files .warning {
@@ -218,7 +226,7 @@
 	font-weight:bold;
 }
 .create_uis_files .files_statuses table td.status.status_error {
-	color:red;
+	color:#B51E3F;
 	font-weight:bold;
 }
 
@@ -373,7 +381,7 @@
 .create_uis_files .existent_tasks ul .services_and_rules > .services_and_rules_body .error {
 	margin:5px;
 	padding:5px;
-	color:red;
+	color:#B51E3F;
 	border:1px solid red;
 	text-align:left;
 }

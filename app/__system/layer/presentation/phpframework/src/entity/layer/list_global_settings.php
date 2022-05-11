@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include_once $EVC->getUtilPath("PHPVariablesFileHandler"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); if (isset($_POST["data"])) { $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "write"); $content = '<?php
+include_once $EVC->getUtilPath("PHPVariablesFileHandler"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $popup = $_GET["popup"]; $deployment = $_GET["deployment"]; if (isset($_POST["data"])) { $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "write"); $content = '<?php
 //[GENERAL SETTINGS]
 $default_timezone = "' . $_POST["data"]["default_timezone"] . '";
 

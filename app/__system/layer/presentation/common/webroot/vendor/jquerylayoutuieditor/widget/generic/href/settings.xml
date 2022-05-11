@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget>
+	<label>Link</label>
+	<tag>href</tag>
+	<settings>
+		<template_class>droppable</template_class>
+		<template_node_name>a</template_node_name>
+		<create_widget_class>HrefWidget</create_widget_class>
+	</settings>
+	<menu_widget></menu_widget>
+	<template_widget></template_widget>
+	<properties><![CDATA[
+		<div class="form-group row settings-property href">
+			<label class="col-md-4 col-sm-5 col-form-label">Url: </label>
+			<input class="col-md-8 col-sm-7 form-control" name="href" />
+		</div>
+		<div class="form-group row settings-property target">
+			<label class="col-md-4 col-sm-5 col-form-label">Target: </label>
+			<input class="col-md-8 col-sm-7 form-control" name="target" />
+		</div>
+	]]></properties>
+	<menu_css><![CDATA[
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-href:before,
+		  body > .menu-widget.menu-widget-href.ui-draggable-dragging:before {
+			background-image:url('#widget_webroot_url#logo.svg');
+		}
+		
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-href {
+			border-radius:0 5px 5px 0;
+		}
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-href .options .option.toggle {
+			display:none;
+		}
+		
+		.layout-ui-editor > .menu-settings.menu-settings-href > .settings-properties .href.with-search-icon input {
+			padding-right:20px;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-href > .settings-properties .href .search {
+			display:inline-block;
+			float:none;
+			clear:both;
+			position:absolute;
+			right:15px;
+			margin:8px 0 0;
+			background:none;
+			cursor:pointer;
+		}
+	]]></menu_css>
+	<menu_js><![CDATA[
+		function HrefWidget(ui_creator, menu_widget) {
+			var me = this;
+			
+			me.init = function() {
+				menu_widget.attr({
+					"data-on-parse-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.href.parseHtml",
+					"data-on-create-template-widget-func": ui_creator.obj_var_name + ".menu_widgets_objs.href.onCreateTemplateWidget",
+				});
+				
+				menu_widget.children(".properties").attr({
+					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.href.saveSettingsField",
+					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.href.parseSettings",
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.href.openSettings",
+				});
+			};
+			
+			me.parseHtml = function(html_element) {
+				if (html_element && html_element.nodeName.toLowerCase() == "a")
+					return {
+						droppable: $(html_element),
+					};
+			};
+			
+			me.openSettings = function(widget, menu_settings) {
+				if (typeof ui_creator.options.on_choose_page_url_func == "function") {
+					var icon = $('<span class="zmdi zmdi-search-in-file search"></span>');
+					icon.on("click", function() {
+						ui_creator.options.on_choose_page_url_func(this);
+					});
+					menu_settings.find(" > .settings-properties .settings-property.href").addClass("with-search-icon").append(icon);
+				}
+			};
+			
+			me.parseSettings = function(widget, widget_settings) {
+				widget_settings["href"] = widget.attr("href");
+				widget_settings["target"] = widget.attr("target");
+			};
+			
+			me.onCreateTemplateWidget = function(widget, html_element) {
+				if (!html_element) 
+					widget.attr("href", "#").append("link text");
+			};
+			
+			me.saveSettingsField = function(field, widget, status) {
+				if (status) {
+					field = $(field);
+					var field_value = field.val();
+					var sprop = field.parent();
+					
+					if (sprop.hasClass("href")) {
+						if (field_value != "") 
+							widget.attr("href", field_value);
+						else 
+							widget.removeAttr("href");
+					}
+					else if (sprop.hasClass("target")) {
+						if (field_value != "")
+							widget.attr("target", field_value);
+						else
+							widget.removeAttr("target");
+					}
+				}
+				
+				return status;
+			};
+		}
+	]]></menu_js>
+</widget>

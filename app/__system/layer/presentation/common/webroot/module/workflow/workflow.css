@@ -29,10 +29,11 @@
   .module_workflow_settings #code > textarea,
   .module_workflow_settings #code .ace_editor,
   .module_workflow_settings #external_vars {
-	height:calc(100vh - 105px) !important;
+	height:calc(100vh - 125px) !important;
+	box-sizing:border-box; /* bc of the .ace_editor */
 }
 .module_workflow_settings #ui .taskflowchart {
-	overflow:visible;
+	overflow:visible !important;
 }
 .module_workflow_settings #code .code_menu,
   .module_workflow_settings #ui .taskflowchart .workflow_menu {
@@ -41,6 +42,19 @@
 	top:auto;
 	right:265px;
 	z-index:999999;
+}
+.module_workflow_settings #code .code_menu {
+	right:267px;
+}
+.module_workflow_settings #ui > .taskflowchart .edit_function_code > #code .code_menu.top_bar_menu {
+	margin-top:-27px;
+	top:auto !important;
+	right:100px !important;
+}
+.module_workflow_settings #ui > .taskflowchart .edit_function_code > #ui .taskflowchart .workflow_menu.top_bar_menu {
+	margin-top:-27px;
+	top:auto !important;
+	right:80px !important;
 }
 .module_workflow_settings #code .code_menu > ul > .save,
   .module_workflow_settings #ui .taskflowchart .workflow_menu > .dropdown > .save,

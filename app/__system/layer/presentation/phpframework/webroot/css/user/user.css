@@ -54,8 +54,8 @@ body,
 	font-size:90%;
 }
 #menu li.current_user {
-	height:37px;
-	line-height:30px;
+	height:50px;
+	line-height:50px;
 	padding:0 10px 0 0;
 	border-bottom:0;
 	font-style:italic;
@@ -178,11 +178,11 @@ body,
 #content .change_auth_settings .label { width:100%; margin:0 auto 20px auto; font-weight:bold; text-align:center; }
 #content .change_auth_settings .buttons { display:none; }
 
-#content .edit_user .error { width:100%; text-align:center; font-weight:bold; color:red; }
+#content .edit_user .error { width:100%; text-align:center; font-weight:bold; color:#B51E3F; }
 
 #content .user_type_permissions_list table {min-width:350px; font-size:80%;}
 #content .user_type_permissions_list table .user_type_permission {width:50px; text-align:center;}
-#content .user_type_permissions_list table .user_type_permission.new:after {content:"new"; color:red; font-weight:bold; margin-left:10px; position:absolute; opacity:0.6;}
+#content .user_type_permissions_list table .user_type_permission.new:after {content:"new"; color:#B51E3F; font-weight:bold; margin-left:10px; position:absolute; opacity:0.6;}
 #content .user_type_permissions_list table .user_type_permission .toggle {
 	display:inline-block;
 	position:absolute;

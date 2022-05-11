@@ -2,38 +2,38 @@
 <tasks>
 	<container>
 		<id><![CDATA[layer_presentations]]></id>
-		<width>649</width>
+		<width>596</width>
 		<height>150</height>
 		<left>1</left>
-		<top>0</top>
+		<top>-1</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_bls]]></id>
-		<width>649</width>
+		<width>596</width>
 		<height>150</height>
 		<left>1</left>
-		<top>150</top>
+		<top>149</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dals]]></id>
-		<width>649</width>
+		<width>596</width>
 		<height>150</height>
 		<left>1</left>
-		<top>299</top>
+		<top>298</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dbs]]></id>
-		<width>649</width>
+		<width>596</width>
 		<height>150</height>
 		<left>1</left>
-		<top>449</top>
+		<top>448</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_drivers]]></id>
-		<width>649</width>
-		<height>160</height>
+		<width>596</width>
+		<height>150</height>
 		<left>1</left>
-		<top>599</top>
+		<top>598</top>
 	</container>
 	<task>
 		<label><![CDATA[mysql]]></label>
@@ -42,8 +42,8 @@
 		<tag><![CDATA[dbdriver]]></tag>
 		<offset_left>281</offset_left>
 		<offset_top>639</offset_top>
-		<width>80.4</width>
-		<height>91.4</height>
+		<width>90.4</width>
+		<height>60.4</height>
 		<properties>
 			<type><![CDATA[mysql]]></type>
 			<extension><![CDATA[mysqli]]></extension>
@@ -67,14 +67,14 @@
 		<id><![CDATA[task_14b5bd7e_523]]></id>
 		<type><![CDATA[14b5bd7e]]></type>
 		<tag><![CDATA[db]]></tag>
-		<offset_left>280</offset_left>
+		<offset_left>281</offset_left>
 		<offset_top>481</offset_top>
-		<width>80.4</width>
-		<height>97.4</height>
+		<width>90.4</width>
+		<height>60.4</height>
 		<properties>
 			<exits>
 				<layer_exit>
-					<color><![CDATA[#1f9506]]></color>
+					<color><![CDATA[#335ACC]]></color>
 					<type></type>
 					<overlay></overlay>
 				</layer_exit>
@@ -87,7 +87,7 @@
 				<label></label>
 				<type><![CDATA[Straight]]></type>
 				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#1f9506]]></color>
+				<color><![CDATA[#335ACC]]></color>
 			</layer_exit>
 		</exits>
 	</task>
@@ -96,14 +96,14 @@
 		<id><![CDATA[task_c9c0af26_1042]]></id>
 		<type><![CDATA[c9c0af26]]></type>
 		<tag><![CDATA[dataaccess]]></tag>
-		<offset_left>121</offset_left>
+		<offset_left>122</offset_left>
 		<offset_top>325</offset_top>
-		<width>80.4</width>
-		<height>83.4</height>
+		<width>90.4</width>
+		<height>60.4</height>
 		<properties>
 			<exits>
 				<layer_exit>
-					<color><![CDATA[#33adff]]></color>
+					<color><![CDATA[#335ACC]]></color>
 					<type><![CDATA[Straight]]></type>
 					<overlay><![CDATA[Forward Arrow]]></overlay>
 				</layer_exit>
@@ -117,7 +117,7 @@
 				<label></label>
 				<type><![CDATA[Straight]]></type>
 				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#33adff]]></color>
+				<color><![CDATA[#335ACC]]></color>
 				<properties>
 					<connection_type></connection_type>
 					<connection_response_type></connection_response_type>
@@ -131,14 +131,14 @@
 		<id><![CDATA[task_c9c0af26_11]]></id>
 		<type><![CDATA[c9c0af26]]></type>
 		<tag><![CDATA[dataaccess]]></tag>
-		<offset_left>396</offset_left>
+		<offset_left>397</offset_left>
 		<offset_top>325</offset_top>
-		<width>80.4</width>
-		<height>83.4</height>
+		<width>90.4</width>
+		<height>60.4</height>
 		<properties>
 			<exits>
 				<layer_exit>
-					<color><![CDATA[#33adff]]></color>
+					<color><![CDATA[#335ACC]]></color>
 					<type><![CDATA[Straight]]></type>
 					<overlay><![CDATA[Forward Arrow]]></overlay>
 				</layer_exit>
@@ -152,7 +152,7 @@
 				<label></label>
 				<type><![CDATA[Straight]]></type>
 				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#33adff]]></color>
+				<color><![CDATA[#335ACC]]></color>
 				<properties>
 					<connection_type></connection_type>
 					<connection_response_type></connection_response_type>
@@ -166,14 +166,14 @@
 		<id><![CDATA[task_9a89b3f5_313]]></id>
 		<type><![CDATA[9a89b3f5]]></type>
 		<tag><![CDATA[businesslogic]]></tag>
-		<offset_left>261</offset_left>
+		<offset_left>262</offset_left>
 		<offset_top>177</offset_top>
-		<width>80.4</width>
-		<height>87.4</height>
+		<width>90.4</width>
+		<height>60.4</height>
 		<properties>
 			<exits>
 				<layer_exit>
-					<color><![CDATA[#000]]></color>
+					<color><![CDATA[#335ACC]]></color>
 					<type><![CDATA[Straight]]></type>
 					<overlay><![CDATA[Forward Arrow]]></overlay>
 				</layer_exit>
@@ -186,7 +186,7 @@
 				<label></label>
 				<type><![CDATA[Straight]]></type>
 				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#000000]]></color>
+				<color><![CDATA[#335ACC]]></color>
 				<properties>
 					<connection_type></connection_type>
 					<connection_response_type></connection_response_type>
@@ -199,7 +199,7 @@
 				<label></label>
 				<type><![CDATA[Straight]]></type>
 				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#000000]]></color>
+				<color><![CDATA[#335ACC]]></color>
 				<properties>
 					<connection_type></connection_type>
 					<connection_response_type></connection_response_type>
@@ -212,7 +212,7 @@
 				<label></label>
 				<type><![CDATA[Straight]]></type>
 				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#000000]]></color>
+				<color><![CDATA[#335ACC]]></color>
 				<properties>
 					<connection_type></connection_type>
 					<connection_response_type></connection_response_type>
@@ -226,14 +226,14 @@
 		<id><![CDATA[task_7cf9ccfb_844]]></id>
 		<type><![CDATA[7cf9ccfb]]></type>
 		<tag><![CDATA[presentation]]></tag>
-		<offset_left>245</offset_left>
+		<offset_left>246</offset_left>
 		<offset_top>21</offset_top>
-		<width>100.4</width>
-		<height>93.4</height>
+		<width>90.4</width>
+		<height>60.4</height>
 		<properties>
 			<exits>
 				<layer_exit>
-					<color><![CDATA[#e1c77e]]></color>
+					<color><![CDATA[#335ACC]]></color>
 					<type><![CDATA[Straight]]></type>
 					<overlay><![CDATA[Forward Arrow]]></overlay>
 				</layer_exit>
@@ -246,7 +246,7 @@
 				<label></label>
 				<type><![CDATA[Straight]]></type>
 				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#e1c77e]]></color>
+				<color><![CDATA[#335ACC]]></color>
 				<properties>
 					<connection_type></connection_type>
 					<connection_response_type></connection_response_type>
@@ -259,7 +259,7 @@
 				<label></label>
 				<type><![CDATA[Straight]]></type>
 				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#e1c77e]]></color>
+				<color><![CDATA[#335ACC]]></color>
 				<properties>
 					<connection_type></connection_type>
 					<connection_response_type></connection_response_type>
@@ -272,7 +272,7 @@
 				<label></label>
 				<type><![CDATA[Straight]]></type>
 				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#e1c77e]]></color>
+				<color><![CDATA[#335ACC]]></color>
 				<properties>
 					<connection_type></connection_type>
 					<connection_response_type></connection_response_type>
@@ -285,7 +285,7 @@
 				<label></label>
 				<type><![CDATA[Straight]]></type>
 				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#e1c77e]]></color>
+				<color><![CDATA[#335ACC]]></color>
 				<properties>
 					<connection_type></connection_type>
 					<connection_response_type></connection_response_type>

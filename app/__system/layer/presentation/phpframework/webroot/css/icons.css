@@ -47,12 +47,12 @@
 	position:absolute;
 	top:7px;
 	left:5px;
-	color:#ff0000;
+	color:#FC3C44;
 	color:var(--icon-hover-color);
 	font-size:10px;
 }
 .icon:hover {
-	color:#ff0000;
+	color:#FC3C44;
 	color:var(--icon-hover-color);
 	text-decoration:none;
 }
@@ -82,7 +82,7 @@
 	left:5px;
 	top:5px;
 	font-size:90%;
-	color:#ff0000;
+	color:#FC3C44;
 	color:var(--icon-hover-color);
 	opacity:.7;
 }
@@ -236,12 +236,10 @@
 .icon.sort::before {
 	content:"\f884";
 }
-.icon.go_back {
-	width:5px;
-}
 .icon.go_back::before {
 	/*content:"\f55a";*/
 	content:"\f053";
+	margin-left:5px;
 }
 .icon.home::before {
 	content:"\f015";
@@ -278,6 +276,9 @@
 	content:"\f065";
 	font-size:16px;
 	margin-left:1px;
+}
+.icon.dropdown_arrow::before {
+	content:"\f107";
 }
 .icon.save::before {
 	font:var(--fa-font-regular);
@@ -580,6 +581,12 @@
 }
 .icon.project::before {
     content: "\f0a0";
+}
+
+.icon.server::before {
+	content:"\f233";
+	margin-top:1px;
+	display:block;
 }
 
 /* LOADING ICON */

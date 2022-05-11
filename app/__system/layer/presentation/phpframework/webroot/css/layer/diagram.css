@@ -10,22 +10,29 @@
 .taskflowchart.with_top_bar_menu .tasks_menu, 
   .taskflowchart.with_top_bar_menu .tasks_menu_hide, 
   .taskflowchart.with_top_bar_menu .tasks_flow {
-	top:37px;
+	top:50px;
 }
 .taskflowchart .tasks_menu {
-	width:160px;
+	width:120px;
 }
 .taskflowchart:not(.reverse) .tasks_flow {
-	left:165px;
+	left:125px;
 }
 .taskflowchart.reverse .tasks_flow {
-	right:165px;
+	right:127px;
 }
 .taskflowchart:not(.reverse) .tasks_menu_hide {
-	left:160px;
+	left:120px;
 }
 .taskflowchart.reverse .tasks_menu_hide {
-	right:160px;
+	right:120px;
+}
+
+.taskflowchart .tasks_flow::-webkit-scrollbar {
+	height:10px;
+}
+.taskflowchart .tasks_menu .tasks_group_tasks {
+	padding:0;
 }
 
 .taskflowchart.with_top_bar_menu .workflow_menu ul.dropdown li.layers_settings:hover:after {
@@ -79,6 +86,11 @@
 	opacity:0.5; 
 	-ms-filter:alpha(opacity=50); 
 	filter:alpha(opacity=50);
+}
+
+.taskflowchart.with_top_bar_menu .selected_task_properties, 
+  .taskflowchart.with_top_bar_menu .selected_connection_properties {
+	background:#fff !important;
 }
 
 .task_context_menu .activate_task a, 

@@ -46,11 +46,11 @@ body,
 .convert_url_to_template .page_html {
 	width:100%;
 	height:300px;
-	height:calc(100vh - 40px);
+	height:calc(100vh - 50px);
 }
 .convert_url_to_template .page_html iframe {
 	width:100%;
-	height:calc(100% - 40px);
+	height:calc(100% - 50px);
 	border:1px inset #ccc;
 	border-top:0;
 	box-sizing: border-box;

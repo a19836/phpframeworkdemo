@@ -20,8 +20,8 @@
 ?><div class="if_task_html">
 	<div class="conditions"></div>
 	
-	<div class="task_property_exit" exit_id="true" exit_color="#00c000" exit_label="True"></div>
-	<div class="task_property_exit" exit_id="false" exit_color="#c00000" exit_label="False"></div>
+	<div class="task_property_exit" exit_id="true" exit_color="#51D87A" exit_label="True"></div>
+	<div class="task_property_exit" exit_id="false" exit_color="#FF4D4D" exit_label="False"></div>
 
 	<?php
  ?>

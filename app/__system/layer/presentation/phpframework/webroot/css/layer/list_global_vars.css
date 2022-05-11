@@ -3,11 +3,10 @@ body,
 	background:#fff !important;
 }
 
-.global_vars {width:500px; min-height:230px; text-align:center; padding-top:20px; margin:0px auto;}
-.global_vars h1 {width:100%; font-weight:bold; font-size:20px; text-align:center; line-height:30px; margin:10px 0px; padding:0px 0px;}
+.global_vars {min-width:500px; min-height:230px; text-align:center; margin:20px auto;}
 .global_vars .add {float: none; display: inline-block; vertical-align: middle; margin: 0; font-size:16px;}
 .global_vars .vars {text-align:left; margin:0px auto;}
 .global_vars .vars th {text-align:center; font-weight:bold;}
 .global_vars .vars input {width:205px; margin-bottom:3px; margin-right:5px;}
 .global_vars .vars .buttons {text-align:left; font-weight:bold;}
-.global_vars .save {margin:10px auto 0;}
+.global_vars .save {margin:10px auto 0; display:none;}

@@ -230,7 +230,8 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC
 			<span class="px">px</span>
 			<span class="x"> x </span>
 			<input class="height" title="Screen Height" value="300" maxlength="4" onKeyUp="onChangeTemplateLayoutScreenSize(this)">
-			<span class="px">px</span>'; return $pf8ed4912; } public static function getTabContentTemplateLayoutHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v338a2c14a6, $pfc22cc08, $pf7b73b3a, $pe6619ae3, $pd0054995, $v9106c07f80) { $pf8ed4912 = '<div class="iframe_toolbar desktop">
+			<span class="px">px</span>
+			<input type="checkbox" class="fit_to_screen" data-title="Fit dimensions to screen" onChange="onChangeTemplateLayoutScreenSize(this)" checked />'; return $pf8ed4912; } public static function getTabContentTemplateLayoutHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v338a2c14a6, $pfc22cc08, $pf7b73b3a, $pe6619ae3, $pd0054995, $v9106c07f80) { $pf8ed4912 = '<div class="iframe_toolbar desktop">
 			' . self::getTabContentTemplateLayoutIframeToolbarContentsHtml() . '
 			
 			<a class="icon view_template_samples" href="javascript:void(0)" onClick="openTemplateSamples()" title="View Template Samples">View Template Samples</a>

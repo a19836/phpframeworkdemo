@@ -181,7 +181,6 @@
 	z-index:5;
 	cursor:pointer;
 	border:0px;
-	opacity:0;
 }
 
 .taskflowchart ._jsPlumb_connector { 
@@ -200,8 +199,8 @@
 	cursor:pointer;
 	margin:10px 5px 5px;
 	padding-bottom:5px;
-	color:#999;
-	opacity:.8;
+	color:#ccc;
+	opacity:.5;
 	border-bottom:1px dotted #ccc;
 	
 	/*border:1px outset #999999;
@@ -217,6 +216,9 @@
 	
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 )";
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3e4', endColorstr='#b3c8cc',GradientType=0 );*/
+}
+.taskflowchart .tasks_menu .tasks_group_label:hover {
+	color:#aaa;
 }
 .taskflowchart .tasks_menu .tasks_group_label:hover:after {
 	content:"Click to collapse or expand";
@@ -348,6 +350,7 @@
 	border:1px solid rgb(0, 0, 0, .2);
 	border-radius:5px;
 	display:none;
+	z-index:0;
 }
 .taskflowchart .tasks_flow .task:hover:not(.dragActive):before {
 	display:block;
@@ -408,16 +411,18 @@
 	
 	z-index:-10;
 }
-.taskflowchart .task.is_start_task:hover .start_task_overlay {
+.taskflowchart .task.is_start_task:hover > .start_task_overlay {
 	opacity:.08;
 }
 
 .taskflowchart .task .task_info {
+	min-height:25px;
 	padding:5px 40px 5px 5px;
 	position:absolute;
-	top:-25px;
+	top:auto;
 	left:0;
 	right:0;
+	bottom:100%;
 	background:rgb(0, 0, 0, .2);
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
@@ -425,14 +430,14 @@
 	overflow:hidden;
 	display:none;
 }
-.taskflowchart .task:hover:not(.dragActive) .task_info {
+.taskflowchart .task:hover:not(.dragActive) > .task_info {
 	display:block;
 }
 .taskflowchart .task .task_info .task_info_tag,
   .taskflowchart .task .task_info .task_info_label {
-	white-space:nowrap;
+	/*white-space:nowrap;
 	text-overflow:ellipsis;
-	overflow:hidden;
+	overflow:hidden;*/
 }
 .taskflowchart .task .task_info .task_info_tag {
 	display:none;
@@ -445,7 +450,7 @@
 	color:rgb(0, 0, 0, .3);
 	display:none;
 }
-.taskflowchart .task:hover:not(.dragActive) .short_actions {
+.taskflowchart .task:hover:not(.dragActive) > .short_actions {
 	display:block;
 }
 .taskflowchart .task .short_actions .move_action {
@@ -471,6 +476,7 @@
 	z-index:4;
 	text-align:center;
 	/*font-weight:bold;*/
+	position:relative; /* very important, otherwise when onhover the task:before will be on top of the .info element */
 	
 	width:100%;
 }
@@ -487,7 +493,7 @@
 	width:1em;
 	height:1em;
 	background-color:#CCC;
-	cursor:pointer;
+	cursor:crosshair;
 	float:left;
 	
 	border:1px solid #CCC;
@@ -512,7 +518,12 @@
 }
 
 .taskflowchart .connector_overlay_label {
+	display:block;
 	z-index:1000;
+	
+	/* very important, othewrwise the cursor caret does not appear in chrome */
+	-webkit-user-select:text;
+	-moz-user-select:text;
 }
 .taskflowchart .connector_overlay_label:hover {
 	color:#000;
@@ -543,7 +554,7 @@
 	cursor:pointer;
 }
 .taskflowchart .tasks_flow:not(.dragging_task) .connector_overlay_add_icon {
-	opacity:.05;
+	opacity:.03;
 }
 .taskflowchart .connector_overlay_add_icon:hover {
 	opacity:1 !important;
@@ -883,9 +894,9 @@
 	min-width:150px;
 }
 .taskflowchart.fixed_properties .selected_task_properties .properties_task_id, 
-  .taskflowchart.fixed_properties .selected_connection_properties .properties_task_id,
+  .taskflowchart.fixed_properties .selected_connection_properties .properties_connection_id,
   .taskflowchart.fixed_side_properties .selected_task_properties .properties_task_id, 
-  .taskflowchart.fixed_side_properties .selected_connection_properties .properties_task_id {
+  .taskflowchart.fixed_side_properties .selected_connection_properties .properties_connection_id {
 	width:calc(100% - 165px);
 	min-width:auto;
 	height:20px;
@@ -898,10 +909,17 @@
 	font-size:inherit;
 	text-align:left;
 }
+.taskflowchart.fixed_properties .selected_task_properties .properties_task_id, 
+  .taskflowchart.fixed_properties .selected_connection_properties .properties_connection_id,
+  .taskflowchart.fixed_side_properties .selected_task_properties .properties_task_id, 
+  .taskflowchart.fixed_side_properties .selected_connection_properties .properties_connection_id {
+	width:calc(100% - 195px);
+	left:125px;
+}
 .taskflowchart.fixed_properties .selected_task_properties .properties_task_id input, 
-  .taskflowchart.fixed_properties .selected_connection_properties .properties_task_id input,
+  .taskflowchart.fixed_properties .selected_connection_properties .properties_connection_id input,
   .taskflowchart.fixed_side_properties .selected_task_properties .properties_task_id input, 
-  .taskflowchart.fixed_side_properties .selected_connection_properties .properties_task_id input {
+  .taskflowchart.fixed_side_properties .selected_connection_properties .properties_connection_id input {
 	width:100%;
 	text-align:left;
 	border:1px solid #ccc;

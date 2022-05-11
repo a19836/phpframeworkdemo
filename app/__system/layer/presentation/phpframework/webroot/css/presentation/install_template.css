@@ -79,7 +79,7 @@ body,
 	font-weight:bold;
 }
 .messages li ul li.error {
-	color:red;
+	color:#B51E3F;
 	font-weight:bold;
 }
 .messages li ul li.info {

@@ -31,5 +31,5 @@
 		<?php include dirname(dirname($file_path)) . "/common/TaskUITabContentHtml.php"; ?>
 	</div>
 	
-	<div class="task_property_exit" exit_id="default_exit" exit_color="#0e1dfb"></div>
+	<div class="task_property_exit" exit_id="default_exit" exit_color="#00DEF2"></div>
 </div>

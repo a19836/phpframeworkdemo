@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tasks>
+	<task start="1">
+		<label><![CDATA[Define var $project_default_template]]></label>
+		<id><![CDATA[6d1db313_34beda2d_756]]></id>
+		<type><![CDATA[6d1db313]]></type>
+		<tag><![CDATA[setvar]]></tag>
+		<offset_left>0</offset_left>
+		<offset_top>0</offset_top>
+		<width>0</width>
+		<height>0</height>
+		<properties>
+			<result_var_name><![CDATA[project_default_template]]></result_var_name>
+			<result_var_assignment></result_var_assignment>
+			<value><![CDATA[default]]></value>
+			<type><![CDATA[string]]></type>
+			<exits>
+				<default_exit>
+					<color><![CDATA[#426efa]]></color>
+				</default_exit>
+			</exits>
+		</properties>
+	</task>
+</tasks>

@@ -3,18 +3,15 @@ body,
 	background:#fff !important;
 }
 
-/* TITLE */
-.title {
-	height:30px;
-	padding:10px 10px 0;
-	color:#ccc;
+/* TOP BAR */
+.top_bar {
+	margin-bottom:20px;
 }
-
-.title .sub_title {
+.top_bar header .title .sub_title {
 	color:#666;
 	margin-left:50px;
 }
-.title .sub_title:hover {
+.top_bar header .title .sub_title:hover {
 	color:#000;
 }
 
@@ -135,7 +132,7 @@ body.no_scroll {
 	margin-left:0;
 }
 
-#file_tree i.project_common.entities_folder {
+/*#file_tree i.project_common.entities_folder {
     background:url("../../img/icons.png") no-repeat -93px -134px !important
 }
 #file_tree i.project.entities_folder {
@@ -149,7 +146,7 @@ body.no_scroll {
 }
 #file_tree i.main_node_test_unit {
     background:url("../../img/db_icons.png") 0px -178px no-repeat;
-}
+}*/
 
 .auxiliar_popup {
 	position:fixed;
@@ -171,6 +168,6 @@ body.no_scroll {
 .error {
 	margin-top:20px;
 	text-align:center;
-	color:red;
+	color:#B51E3F;
 	font-weight:bold;
 }

@@ -29,32 +29,11 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_advanced
 <script>
 var path_to_filter = "' . $filter_by_layout . '";
 </script>'; $main_content = AdminMenuUIHandler::getContextMenus($exists_db_drivers); $main_content .= '
-	<div id="first_top_panel" class="top_panel ' . $theme_layout . '">
+	<div id="top_panel" class="' . $theme_layout . '">
 		<ul class="left">
 			<li class="logo"></li>
 		</ul>
-		<ul class="right">
-			<li class="icon full_screen" data-title="Toggle Full Screen" onClick="toggleFullScreen(this)"></li>
-			<li class="icon info" data-title="About" onClick="goTo(this, \'about_url\', event)" about_url="' . $project_url_prefix . 'admin/about"></li>
-			<!--li class="icon logout" data-title="Logout" onClick="document.location=this.getAttribute(\'logout_url\')" logout_url="' . $project_url_prefix . 'auth/logout"></li-->
-			<!--li class="separator">|</li-->
-			<li class="sub_menu sub_menu_user">
-				<span class="logged_user_icon">' . $logged_name_initials . '</span>
-				<!--i class="icon user"></i-->
-				
-				<ul>
-					<div class="triangle_up"></div>
-					
-					<li class="login_info" title="Logged as \'' . $logged_name . '\' user."><a><span class="logged_user_icon">' . $logged_name_initials . '</span> Logged in as "' . $logged_name . '"</a></li>
-					<li title="Toggle Theme"><a onClick="toggleThemeLayout(this)"><i class="icon toggle_theme_layout"></i> <span>' . ($theme_layout == "light_theme" ? "Show dark theme" : "Show light theme") . '</span></a></li>
-					<li class="logout" title="Logout"><a onClick="document.location=this.getAttribute(\'logout_url\')" logout_url="' . $project_url_prefix . 'auth/logout"><i class="icon logout"></i> Logout</a></li>
-				</ul>
-			</li>
-			
-		</ul>
-	</div>
-	<div id="second_top_panel" class="top_panel ' . $theme_layout . '">
-		<ul class="left">
+		<ul class="center">
 			<li class="filter_by_layout">
 				<label>Project: </label>
 				<select onChange="filterByLayout(this)">
@@ -65,23 +44,36 @@ var path_to_filter = "' . $filter_by_layout . '";
 		<ul class="right">
 			<li class="icon go_back" onClick="goBack()" data-title="Go Back"></li>
 			<li class="separator">|</li>
+			
 			' . ($is_flush_cache_allowed ? '<li class="icon flush_cache" data-title="Flush Cache" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\')"></li>' : '') . '
 			<li class="icon refresh" onClick="refreshIframe()" data-title="Refresh"></li>
 			<li class="separator">|</li>
 			
 			<li class="icon home" data-title="Home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/admin_home?selected_layout_project=' . $filter_by_layout . '"></li>
 			<li class="icon tools" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&popup=1" . '\')" data-title="Tools"></li>
-			<li class="icon question" onClick="chooseAvailableTutorial(\'' . $project_url_prefix . 'admin/choose_available_tutorial?popup=1\');" data-title="Tutorials - How To?"></li>
+			<li class="separator">|</li>
 			
-			<!--li class="icon expand_left_panel" data-title="Expand Left Panel" onClick="expandLeftPanel(this)"></li>
-			<li class="icon collapse_left_panel" data-title="Collapse Left Panel" onClick="collapseLeftPanel(this)"></li-->
+			<li class="icon full_screen" data-title="Toggle Full Screen" onClick="toggleFullScreen(this)"></li>
+			<li class="separator">|</li>
 			
-			<!--li class="sub_menu sub_menu_others">
-				<i class="icon sub_menu_vertical"></i>
+			<li class="sub_menu sub_menu_user">
+				<span class="logged_user_icon">' . $logged_name_initials . '</span>
+				<i class="icon dropdown_arrow"></i>
+				<!--i class="icon user"></i-->
+				
 				<ul>
+					<div class="triangle_up"></div>
+					
+					<li class="login_info" title="Logged as \'' . $logged_name . '\' user."><a><span class="logged_user_icon">' . $logged_name_initials . '</span> Logged in as "' . $logged_name . '"</a></li>
 					<li title="Toggle Theme"><a onClick="toggleThemeLayout(this)"><i class="icon toggle_theme_layout"></i> <span>' . ($theme_layout == "light_theme" ? "Show dark theme" : "Show light theme") . '</span></a></li>
+					<li class="separator"></li>
+					<li class="question" title="Tutorials - How To?"><a onClick="chooseAvailableTutorial(\'' . $project_url_prefix . 'admin/choose_available_tutorial?popup=1\');"><i class="icon question"></i> Tutorials - How To?</a></li>
+					<li class="info" title="About"><a onClick="goTo(this, \'about_url\', event)" about_url="' . $project_url_prefix . 'admin/about"><i class="icon info"></i> About</a></li>
+					<li class="separator"></li>
+					<li class="logout" title="Logout"><a onClick="document.location=this.getAttribute(\'logout_url\')" logout_url="' . $project_url_prefix . 'auth/logout"><i class="icon logout"></i> Logout</a></li>
 				</ul>
-			</li-->
+			</li>
+			
 		</ul>
 	</div>
 

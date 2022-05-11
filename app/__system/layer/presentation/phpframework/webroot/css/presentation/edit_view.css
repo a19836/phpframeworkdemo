@@ -6,10 +6,10 @@
 	z-index:4;
 }
 .top_bar header .title {
-	max-width:calc(100% - 350px);
+	max-width:calc(100% - 400px);
 }
 .top_bar header > ul {
-	right:142px;
+	right:150px;
 }
 .with_top_bar_tab > .tabs {
 	z-index:4;
@@ -25,10 +25,13 @@
 }
 
 .view_obj .code_layout_ui_editor {
-	height:calc(100vh - 40px);
+	height:calc(100vh - 55px);
 	min-height:300px;
 	padding:0 !important;
 	position:relative;
+}
+.view_obj #ui .taskflowchart {
+	height:calc(100vh - 55px) !important;
 }
 
 .view_obj .code_layout_ui_editor .code_menu.top_bar_menu,
@@ -38,13 +41,13 @@
 }
 .view_obj .code_menu.top_bar_menu,
   .view_obj .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu {
-	right:130px;
+	right:135px;
 }
 .view_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center {
-	right:235px;
+	right:285px;
 }
 .view_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right {
-	right:168px;
+	right:181px;
 }
 .view_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .option.save,
   .view_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right .option.full-screen {

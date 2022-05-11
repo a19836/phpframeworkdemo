@@ -7,9 +7,9 @@
 	vertical-align:middle;
 }
 .iframe_toolbar .icon.active {
-	color:var(--icon-hover-color);
+	color:var(--icon-active-color);
 }
-.iframe_toolbar input {
+.iframe_toolbar input:not([type=checkbox]) {
 	width:45px;
 	margin-right:3px;
 	padding:0 15px 0 0;

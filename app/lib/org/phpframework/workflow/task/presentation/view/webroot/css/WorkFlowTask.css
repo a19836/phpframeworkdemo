@@ -1,31 +1,19 @@
 .jsplumbtaskmenu .task.task_view {
-	background-image:url('../img/bg.gif');
+	/*background-image:url('../img/bg.svg');
+	background-image:url('../img/bg.gif');*/
+}
+.jsplumbtaskmenu .task.task_view:before {
+	background-color:#00DEF2;
+}
+.jsplumbtaskmenu .task.task_view:after {
+	background-color:#00DEF266;
 }
 .jsplumbtaskworkflow .task.task_view {
-	background-image:url('../img/bg.gif');
-	-o-background-size:100% 100%;
-	-webkit-background-size:100% 100%;
-	-moz-background-size:100% 100%;
-	background-size:100% 100%; 
-	
-	/* in IE */
-	-ms-background-size:100% 100%;
-	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');
-	
-	/*border:none;*/
-	box-shadow:none;
-	-o-box-shadow:none;
-	-webkit-box-shadow:none;
-	-moz-box-shadow:none;
-    	
-	/* For IE */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
-	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
+	/*background-image:url('../img/bg.svg');
+	background-image:url('../img/bg.gif');*/
 }
-.jsplumbtaskworkflow .task.task_view > .info span {
-	color:#0e1dfb;
-	white-space:nowrap;
+.jsplumbtaskworkflow .task.task_view:before {
+	background-color:#00DEF2;
 }
 .jsplumbtaskworkflow .task.task_view > .task_droppable {
 	min-height:100px;
@@ -35,11 +23,12 @@
 	right:0;
 	bottom:0;
 	box-sizing:border-box;
-	border-top:1px solid #0e1dfb;
+	border-top:1px solid #00DEF2;
+	background-color:#00DEF266;
 }
 .jsplumbtaskworkflow .task.task_view > .task_droppable.task_droppable_over {
 	background:#c5c8f6;
-	background:#0e1dfba3;
+	background:#00DEF2a3;
 }
 .jsplumbtaskworkflow .task.task_view > .short_actions {
 	display:none;

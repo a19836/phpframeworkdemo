@@ -81,6 +81,7 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 	}
 
 	.create_uis_files {
+		top:50px !important;
 		left:15px !important;
 		right:15px !important;
 	}

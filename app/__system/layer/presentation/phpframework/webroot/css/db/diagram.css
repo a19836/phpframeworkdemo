@@ -21,7 +21,7 @@
 .taskflowchart.with_top_bar_menu .tasks_menu, 
   .taskflowchart.with_top_bar_menu .tasks_menu_hide, 
   .taskflowchart.with_top_bar_menu .tasks_flow {
-	top:37px !important;
+	top:57px !important;
 }
 .taskflowchart .tasks_menu {
 	width:0px !important;
@@ -35,6 +35,11 @@
 .taskflowchart .tasks_menu_hide {
 	display:none;
 }
+.taskflowchart .selected_task_properties > .content > div,
+  .taskflowchart .selected_task_properties > .content > div .ui-tabs-nav li.ui-tabs-active {
+	background:transparent;
+}
+
 
 body .task_context_menu .start_task:not(.is_start_task) a,
   body .task_context_menu .start_task:not(.is_start_task) a {

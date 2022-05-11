@@ -152,11 +152,18 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 					task.css("top", new_top + "px");
 					
 					//then push down all following tasks that are connected to this new task.
-					if (child_top > parent_top) {
-						var diff = child_top - parent_top;
+					for (var i = 0; i < cl; i++) {
+						var child_id = child_connections[i].targetId;
+						var child_task = WF.jsPlumbTaskFlow.getTaskById(child_id);
+						var child_top = parseInt(child_task.css("top"));
 						
-						for (var i = 0; i < cl; i++)
-							ProgrammingTaskUtil.pushDownFollowingTask(child_connections[i].targetId, diff);
+						if (child_top > parent_top + parent_task.height()) {
+							//find the top diff to push child tasks down
+							var diff = child_top - (parent_top + parent_task.height()) + task.height();
+							
+							//push children down
+							ProgrammingTaskUtil.pushDownFollowingTask(child_id, diff);
+						}
 					}
 				}
 				
@@ -538,12 +545,10 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 						
 						exit.html(span);
 						exit.attr("title", title);
-						exit.attr("connection_exit_label", title);
 					}
 					else {
 						exit.html("");
 						exit.attr("title", "");
-						exit.attr("connection_exit_label", "");
 					}
 				}
 			}
@@ -556,6 +561,27 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 				task.css("height", height + "px");
 			
 				WF.jsPlumbTaskFlow.repaintTask(task);
+			}
+		},
+		
+		updateTaskExitsConnectionExitLabelAttribute : function(task_id, labels) {
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+			var exits = task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " ." + WF.jsPlumbTaskFlow.task_ep_class_name);
+			
+			var exit, connection_exit_id;
+			
+			for (var i = 0; i < exits.length; i++) {
+				exit = $(exits[i]);
+				
+				connection_exit_id = exit.attr("connection_exit_id");
+				
+				if (connection_exit_id && labels.hasOwnProperty(connection_exit_id)) {
+					if (labels[connection_exit_id])
+						exit.attr("connection_exit_label", labels[connection_exit_id]).attr("title", labels[connection_exit_id]);
+					else
+						exit.attr("connection_exit_label", "").attr("title", "");
+				}
 			}
 		},
 		

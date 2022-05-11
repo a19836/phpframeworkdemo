@@ -19,7 +19,7 @@
 	
 	-moz-border-radius:5px !important; 
 	-webkit-border-radius:5px !important;
-	border-radius:5px !important;
+	border-radius:3px !important;
 	
 	background: #DFE1ED !important;
 	/*background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Q1ZTNlNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQwJSIgc3RvcC1jb2xvcj0iI2NjZGVlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNiM2M4Y2MiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+) !important;*/
@@ -172,7 +172,7 @@
 	width:350px;
 	margin-right:10px;
 	border:1px solid #eee;
-	background:transparent;
+	background:#fff;
 }
 .selected_task_properties .db_table_task_html .simple_attributes > ul li > ul {
 	width:535px;
@@ -222,7 +222,7 @@
 	left:180px;
   	width:205px;
   	border:1px solid #eee;
-  	background:transparent;
+  	background:#fff;
 }
 .selected_task_properties .db_table_task_html .table_charset label, 
   .selected_task_properties .db_table_task_html .table_collation label, 
@@ -255,6 +255,9 @@
 	line-height:20px;
 	border-top:1px solid #eee;
 	border-right:1px solid #eee;
+}
+.selected_task_properties .db_table_task_html tbody td:not(.table_attr_icons) {
+	background:#fff;
 }
 .selected_task_properties .db_table_task_html tbody td input, 
    .selected_task_properties .db_table_task_html tbody td select {
@@ -421,8 +424,6 @@
 }
 .selected_connection_properties .db_table_connection_html .relationship_props .source,
    .selected_connection_properties .db_table_connection_html .relationship_props .target {
-	text-transform:uppercase;
-	font-weight:bold;
 	width:200px;
 	word-break:break-word;
 }
@@ -436,17 +437,16 @@
 	width:115px;
 	border:1px solid #eee;
 	background:transparent;
+	font-size:inherit;
 }
 .selected_connection_properties .db_table_connection_html .buttons {
 	width:100%;
-	margin:10px 0px 5px 0px;
+	margin:20px 0px 5px 0px;
 	float:none;
 	clear:left;
 	text-align:center;
 }
 .selected_connection_properties .db_table_connection_html .buttons label {
-	font-weight:bold;
-	font-style:italic;
 	float:none;
 }
 

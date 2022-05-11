@@ -29,6 +29,9 @@ $var_html = '<tr>
 <!-- Add Icons CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" />
 
+<!-- Add Layout CSS files -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" />
+
 <script>
 if (parent) {
 	parent.workflow_global_variables = ' . json_encode($vars) . ';
@@ -37,9 +40,26 @@ if (parent) {
 function addNewVariable() {
 	$(".global_vars .vars").append(\'' . addcslashes(str_replace(array("#var_name#", "#var_value#", "\n"), "", $var_html), "\\'") . '\');
 }
+function onSubmitButtonClick(elm) {
+	elm = $(elm);
+	
+	var on_click = elm.attr("onClick");
+	elm.addClass("loading").removeAttr("onClick");
+	
+	elm.parent().closest(".top_bar").parent().find(".global_vars form input.save[type=submit]").click();
+}
 </script>
-<link rel="stylesheet" href="' . $project_url_prefix . 'css/layer/list_global_vars.css" type="text/css" charset="utf-8" />'; $main_content = '<div class="global_vars">
-		<h1>Global Variables <a class="icon add" href="javascript:void(0)" onClick="return addNewVariable();" title="Add new variable">Add</a></h1>'; if (is_array($vars)) { $main_content .= '
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layer/list_global_vars.css" type="text/css" charset="utf-8" />'; $main_content = '
+<div class="top_bar' . ($popup ? " in_popup" : "") . '">
+	<header>
+		<div class="title">Global Variables <a class="icon add" href="javascript:void(0)" onClick="return addNewVariable();" title="Add new variable">Add</a></div>
+		<ul>
+			<li class="save" data-title="Save"><a onclick="onSubmitButtonClick(this);"><i class="icon continue"></i> Save</a></li>
+		</ul>
+	</header>
+</div>
+
+<div class="global_vars">'; if (is_array($vars)) { $main_content .= '
 	<form method="post" onSubmit="return MyJSLib.FormHandler.formCheck(this);">
 		<table class="vars">
 			<tr>

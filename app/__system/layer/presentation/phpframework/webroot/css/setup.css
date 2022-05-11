@@ -172,7 +172,7 @@ body,
 .db_settings {width:100%; min-height:300px; text-align:left; padding-top:20px;}
 .db_settings h1 {width:100%; font-weight:bold; font-size:20px; text-align:center; line-height:30px; margin:10px 0px; padding:0px 0px;}
 .db_settings .info {width:100%; font-size:14px; text-align:center; margin-bottom:20px;}
-.db_settings .warning {width:100%; font-size:14px; text-align:center; margin-top:20px; color:red;}
+.db_settings .warning {width:100%; font-size:14px; text-align:center; margin-top:20px; color:#B51E3F;}
 .db_settings .info .advanced {font-weight:bold;}
 .db_settings .form_fields {width:400px; margin:0 auto;}
 .db_settings .form_field {float:none; clear:left; min-height:20px; line-height:20px; margin-bottom:3px;}
@@ -209,9 +209,12 @@ body,
 	display:none;
 }
 #layer_form .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu .set_global_vars {
-	border-left:0;
+	border-top:1px solid var(--main-context-menu-border);
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
 }
-#layer_form .taskflowchart .workflow_menu .flush_cache {
+#layer_form .taskflowchart .workflow_menu .flush_cache,
+  #layer_form .taskflowchart .workflow_menu .flush_cache + .separator {
 	display:none !important; /* Do not allow flush cache when setup otherwise it will delete the file LAYER_CACHE_PATH/default_project_name with the default project name */
 }
 

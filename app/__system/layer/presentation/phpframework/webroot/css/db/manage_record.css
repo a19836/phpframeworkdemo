@@ -34,7 +34,7 @@
 /* ERROR */
 .manage_record .error {
 	margin:20px 0;
-	color:red;
+	color:#B51E3F;
 	text-align:center;
 }
 .manage_record .ok {

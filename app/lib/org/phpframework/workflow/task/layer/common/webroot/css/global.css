@@ -1,37 +1,93 @@
 .jsplumbtaskworkflow path { 
 	stroke-width:2px; 
 }
-.jsplumbtaskworkflow .task {
-	opacity:.3;
+.jsplumbtaskworkflow ._jsPlumb_endpoint {
+	opacity:0;
 }
-.jsplumbtaskworkflow .task:hover {
+
+/* Menu Task */
+.jsplumbtaskmenu .task {
+	width:90px !important;
+	height:60px !important;
+	
+	background-color:#4070FF !important;
+	background-size:22px 26px !important; 
+	background-position:center 15px !important; 
+	
+	border-radius:5px !important;
+	border:0 !important;
+	box-shadow:none !important;
+}
+.jsplumbtaskmenu .task span {
+	line-height:normal;
+	margin-top:40px;
+	display:block;
+	color:#FFF;
+	font-size:11px;
+}
+
+/* Flow Task */
+.jsplumbtaskworkflow .task.layer_task {
+	width:90px !important;
+	height:auto !important;
+	min-height:60px !important;
+	
+	background-color:#4070FF;
+	background-size:22px 26px; 
+	background-position:center 15px; 
+	
+	border-radius:5px;
+	border:0 !important;
+}
+.jsplumbtaskworkflow .task.layer_task:hover {
+	opacity:1 !important;
+	z-index:9999;
+}
+.jsplumbtaskworkflow .task.layer_task:not(.active) {
 	opacity:.3 !important;
 }
-.jsplumbtaskworkflow .task.active {
-	opacity:1;
-}
-.jsplumbtaskworkflow .task.active:hover {
-	opacity:.8 !important;
-}
-.jsplumbtaskworkflow .task:hover:before,
-  .jsplumbtaskworkflow .task .task_info {
+.jsplumbtaskworkflow .task.layer_task:hover:before,
+  .jsplumbtaskworkflow .task.layer_task .task_info {
 	display:none !important;
 }
-.jsplumbtaskworkflow .task:hover:after {
+.jsplumbtaskworkflow .task.layer_task:hover:after {
 	bottom:-20px !important;
 	left:-5px !important;
 	background:none !important;
 }
-.jsplumbtaskworkflow .task .info {
+.jsplumbtaskworkflow .task.layer_task .info {
+	width:100% !important;
+	line-height:normal;
+	margin-top:40px !important;
+	display:block;
+	color:#FFF;
+	font-size:11px;
 	font-weight:bold;
 }
-.jsplumbtaskworkflow .task .short_actions {
+.jsplumbtaskworkflow .task.layer_task .short_actions {
 	padding:10px;
 	top:-30px;
 	left:-5px;
 	right:auto;
 }
+.jsplumbtaskworkflow .task.layer_task .eps {
+	width:100%;
+	height:100%;
+	margin:0 !important;
+	position:absolute;
+	top:0;
+	left:0;
+}
+.jsplumbtaskworkflow .task.layer_task .ep {
+	width:100%;
+	height:100%;
+	margin:0;
+	border-radius:0;
+	background-color:transparent !important;
+	border-color:transparent !important;
+}
 
+/* Contextmenu */
 .task_context_menu .activate_task a,
   .task_context_menu .activate_task a:hover {
 	background:url("../img/enable_icon.png") 4px 4px no-repeat;
@@ -40,6 +96,8 @@
   .task_context_menu .activate_task a.active:hover {
 	background:url("../img/disable_icon.png") 4px 4px no-repeat;
 }
+
+/* Task/Connection Properties */
 
 .selected_task_properties, 
   .selected_connection_properties {

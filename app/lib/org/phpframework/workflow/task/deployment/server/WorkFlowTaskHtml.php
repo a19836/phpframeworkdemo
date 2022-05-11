@@ -27,7 +27,7 @@
 	<div class="details_container" id="details_container">
 		<div class="host">
 			<label>Host:</label>
-			<input class="task_property_field host" type="text" name="host" value="" placeHolder="server domain" /> : <input class="task_property_field port" type="text" name="port" value="" placeHolder="server port" />
+			<input class="task_property_field host" type="text" name="host" value="" placeHolder="server domain" /> : <input class="task_property_field port" type="text" name="port" value="" placeHolder="port" />
 		</div>
 		<div class="username">
 			<label>Username:</label>

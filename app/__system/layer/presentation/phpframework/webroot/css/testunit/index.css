@@ -8,6 +8,10 @@ body,
 	padding-top:10px;
 	padding-left:30px;
 }
+.test_units .test_units_tree li > i,
+  .test_units .test_units_tree li > a {
+	position:relative;
+}
 .test_units .test_units_tree .icon {
 	margin:auto 5px;
 	vertical-align:middle;
@@ -50,7 +54,6 @@ body,
 	left:0;
 	width:100%;
 	height:24px;
-	z-index:-1;
 }
 .test_units .test_units_tree li.success:before {
 	background:green;
@@ -61,7 +64,7 @@ body,
 	background:rgba(255, 165, 0, .4);
 }
 .test_units .test_units_tree li.error:before {
-	background:red;
+	background:#B51E3F;
 	background:rgba(255, 0, 0, .2);
 }
 

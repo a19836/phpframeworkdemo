@@ -31,7 +31,9 @@
 			
 			<on_check_task_label>DataAccessLayerTaskPropertyObj.onCheckLabel</on_check_task_label>
 			<on_cancel_task_label>DataAccessLayerTaskPropertyObj.onCancelLabel</on_cancel_task_label>
+			
 			<on_success_task_cloning>onLayerTaskCloning</on_success_task_cloning>
+			<on_success_task_creation>onLayerTaskCreation</on_success_task_creation>
 			<on_success_connection_drop>onLayerConnectionDrop</on_success_connection_drop>
 			
 			<on_show_task_menu>onShowLayerTaskMenu</on_show_task_menu>

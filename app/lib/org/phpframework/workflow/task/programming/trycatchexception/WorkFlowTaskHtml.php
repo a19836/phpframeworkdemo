@@ -28,6 +28,6 @@
 		<input type="text" class="task_property_field" name="var_name" />
 	</div>
 	
-	<div class="task_property_exit" exit_id="try" exit_color="#00c000" exit_label="No exception"></div>
-	<div class="task_property_exit" exit_id="catch" exit_color="#c00000" exit_label="Exception to catch"></div>
+	<div class="task_property_exit" exit_id="try" exit_color="#51D87A" exit_label="No exception"></div>
+	<div class="task_property_exit" exit_id="catch" exit_color="#FF4D4D" exit_label="Exception to catch"></div>
 </div>

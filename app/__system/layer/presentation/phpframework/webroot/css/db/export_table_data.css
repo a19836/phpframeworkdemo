@@ -17,7 +17,7 @@
 .export_form select[name=export_type] {
   	width:220px;
   	position:absolute;
-  	top:5px;
+  	top:15px;
   	left:50px;
   	z-index:9999;
   	border:1px solid #ccc;
@@ -26,7 +26,7 @@
 .export_form input[name=doc_name] {
 	width:150px;
   	position:absolute;
-  	top:5px;
+  	top:15px;
   	left:418px;
   	z-index:9999;
   	border:1px solid #ccc;
@@ -34,4 +34,7 @@
 }
 .relationship .settings {
 	display:none;
+}
+.edit_single_query:not(.covertable_sql) .data_access_obj .relationship .query .sql_text_area {
+	height:calc(100vh - 60px);
 }

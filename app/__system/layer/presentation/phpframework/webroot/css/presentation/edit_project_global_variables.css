@@ -6,7 +6,7 @@
 	max-width:calc(100% - 170px);
 }
 .top_bar header > ul {
-	right:140px;
+	right:150px;
 }
 
 /* UTIL OBJ */
@@ -21,7 +21,7 @@
 .global_vars_obj #code .code_menu.top_bar_menu,
   .global_vars_obj #ui .taskflowchart .workflow_menu.top_bar_menu,
   .global_vars_obj #form_global_vars .code_menu.top_bar_menu {
-	right:125px;
+	right:135px;
 }
 .global_vars_obj #form_global_vars .code_menu.top_bar_menu {
 	text-align:left;
@@ -34,7 +34,8 @@
   .global_vars_obj #code .ace_editor,
   .global_vars_obj #ui .taskflowchart,
   .global_vars_obj #form_global_vars {
-	height:calc(100vh - 45px) !important;
+	height:calc(100vh - 55px) !important;
+	box-sizing:border-box; /* bc of the ace_editor */
 }
 .global_vars_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu.task_properties_shown, 
   .global_vars_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu.connection_properties_shown, 

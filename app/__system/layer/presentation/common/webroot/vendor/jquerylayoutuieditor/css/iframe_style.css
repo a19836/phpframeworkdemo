@@ -4,6 +4,12 @@
 	--html-element-left-spacing:10px;
 	--html-element-right-spacing:10px;
 	--html-element-bottom-spacing:10px;
+	
+	--html-element-border:.5px dashed #bfc4db;
+	--html-element-active-border:3px dashed #4070ff;
+	--html-element-active-gap:-1px;
+	--html-element-over-border:1px solid #4070ff;
+	--html-element-over-gap:-1px;
 }
 
 html {
@@ -37,10 +43,10 @@ body > .droppable {
 	transition: transform 200ms ease-in-out;
 }
 body > .droppable.with-background { 
-	background-image: -webkit-repeating-radial-gradient(center center, rgba(0,0,0,.1), rgba(0,0,0,.1) 1px, transparent 1px, transparent 100%);
-	background-image: -moz-repeating-radial-gradient(center center, rgba(0,0,0,.1), rgba(0,0,0,.1) 1px, transparent 1px, transparent 100%);
-	background-image: -ms-repeating-radial-gradient(center center, rgba(0,0,0,.1), rgba(0,0,0,.1) 1px, transparent 1px, transparent 100%);
-	background-image: repeating-radial-gradient(center center, rgba(0,0,0,.1), rgba(0,0,0,.1) 1px, transparent 1px, transparent 100%);
+	background-image: -webkit-repeating-radial-gradient(center center, #ecf1ff, #ecf1ff .5px, transparent 1px, transparent 100%);
+	background-image: -moz-repeating-radial-gradient(center center, #ecf1ff, #ecf1ff .5px, transparent 1px, transparent 100%);
+	background-image: -ms-repeating-radial-gradient(center center, #ecf1ff, #ecf1ff .5px, transparent 1px, transparent 100%);
+	background-image: repeating-radial-gradient(center center, #ecf1ff, #ecf1ff .5px, transparent 1px, transparent 100%);
 	
 	-webkit-background-size: 10px 10px;
 	-moz-background-size: 10px 10px;
@@ -100,22 +106,27 @@ body > .droppable.highlight {
 /* SCROLLBARS */
 
 :not(.template-widget)::-webkit-scrollbar { /* Let's get this party started */
-    width:7px;
+    width:5px;
+    height:5px;
+	background-color:transparent;
 }
 :not(.template-widget)::-webkit-scrollbar-track { /* Track */
     -webkit-border-radius:0;
     border-radius:0;
-    background:#555; 
-    -webkit-box-shadow:inset 0 0 6px #555; 
+    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0, 0); /* transparent */
+	background-color:transparent;
 }
 :not(.template-widget)::-webkit-scrollbar-thumb { /* Handle */
     -webkit-border-radius:5px;
     border-radius:5px;
-    background:#ccc; 
-    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.15); 
+    background:rgba(0,0,0,0.2);
+    /*-webkit-box-shadow:inset 0 0 6px rgba(250,250,250,0.8);*/
+}
+:not(.template-widget)::-webkit-scrollbar-thumb:hover {
+    background:rgba(0,0,0,0.5);
 }
 :not(.template-widget)::-webkit-scrollbar-thumb:window-inactive {
-	background:rgba(250,250,250,0.8); 
+	/*background:rgba(0,0,0,0.35);*/
 }
 
 /* TEMPLATE WIDGET */
@@ -125,13 +136,13 @@ body > .droppable.highlight {
 }
 .template-widget.widget-over,
   .droppable.droppable-over {
-	outline:1px solid #3b97e3;
-	outline-offset:-2px;
+	outline:var(--html-element-over-border);
+	outline-offset:var(--html-element-over-gap);
 }
 .template-widget.widget-active,
   .droppable.droppable-active {
-	outline:2px solid #3b97e3;
-	outline-offset:-2px;
+	outline:var(--html-element-active-border);
+	outline-offset:var(--html-element-active-gap);
 }
 .template-widget.widget-hidden,
   .droppable.droppable-hidden {
@@ -214,7 +225,7 @@ body > .droppable.borders p,
   body > .droppable.borders ol,
   body > .droppable.borders dl {
 	background-repeat:no-repeat;
-	border:1px dashed #bbb;
+	border:var(--html-element-border);
 	margin-top:var(--html-element-top-spacing);
 	margin-left:var(--html-element-left-spacing);
 	margin-right:var(--html-element-right-spacing);
@@ -227,7 +238,7 @@ body > .droppable.borders br,
   body > .droppable.borders hr,
   body > .droppable.borders img,
   body > .droppable.borders image {
-	border:1px dashed #bbb;
+	border:var(--html-element-border);
 } 
 body > .droppable.borders span,
   body > .droppable.borders label,
@@ -325,7 +336,7 @@ body > .droppable.borders span,
   body > .droppable.borders strike,
   body > .droppable.borders tt,
   body > .droppable.borders xmp {
-	border:1px dashed #bbb;
+	border:var(--html-element-border);
 	margin-top:var(--html-element-top-spacing);
 	margin-left:var(--html-element-left-spacing);
 	margin-right:var(--html-element-right-spacing);

@@ -104,6 +104,7 @@ var wordpress_installations_relative_path = "' . $EVC->getCommonProjectName() . 
 		<header>
 			<div class="title">Deployment</div>
 			<ul>
+				<li class="add_server" data-title="Add new Server"><a onClick="addNewServer();return false;"><i class="icon server"></i> Add new Server</a>
 				<li class="save" data-title="Save"><a onClick="saveDeploymentDiagram()"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>
@@ -135,4 +136,4 @@ var wordpress_installations_relative_path = "' . $EVC->getCommonProjectName() . 
 		<div class="button">
 			<input type="button" value="Update" onClick="MyDeploymentUIFancyPopup.settings.updateFunction(this)" />
 		</div>
-	</div>'; $main_content .= $WorkFlowUIHandler->getContent(); $main_content .= '<div class="loading_panel"></div>'; function getTemplateWorklowHtml($v8685d1ca97, $peb014cfd) { $v243e50bc1d = array( "Set Global Vars" => array( "class" => "set_global_vars", "html" => '<a onClick="return ServerTaskPropertyObj.openTemplateGlobalVarsOrSettingsPopup(this, \'' . $peb014cfd . 'phpframework/layer/list_global_vars\');"><i class="icon global_vars"></i> Globar Vars</a>', ), "Set Global Settings" => array( "class" => "set_global_settings", "html" => '<a onClick="return ServerTaskPropertyObj.openTemplateGlobalVarsOrSettingsPopup(this, \'' . $peb014cfd . 'phpframework/layer/list_global_settings\');"><i class="icon global_settings"></i> Global Settings</a>', ), ); $v8685d1ca97->setMenus($v243e50bc1d); $pf8ed4912 = $v8685d1ca97->getContent("taskflowchart_#rand#"); return $pf8ed4912; } ?>
+	</div>'; $main_content .= $WorkFlowUIHandler->getContent(); $main_content .= '<div class="loading_panel"></div>'; function getTemplateWorklowHtml($v8685d1ca97, $peb014cfd) { $v243e50bc1d = array( "Set Global Vars" => array( "class" => "set_global_vars", "html" => '<a onClick="return ServerTaskPropertyObj.openTemplateGlobalVarsOrSettingsPopup(this, \'' . $peb014cfd . 'phpframework/layer/list_global_vars?popup=1\');"><i class="icon global_vars"></i> Globar Vars</a>', ), "Set Global Settings" => array( "class" => "set_global_settings", "html" => '<a onClick="return ServerTaskPropertyObj.openTemplateGlobalVarsOrSettingsPopup(this, \'' . $peb014cfd . 'phpframework/layer/list_global_settings?popup=1&deployment=1\');"><i class="icon global_settings"></i> Global Settings</a>', ), ); $v8685d1ca97->setMenus($v243e50bc1d); $pf8ed4912 = $v8685d1ca97->getContent("taskflowchart_#rand#"); return $pf8ed4912; } ?>

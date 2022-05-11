@@ -280,6 +280,9 @@
    .module_form_settings .create_form_task_html .task_property_exit {
 	display:none;
 }
+.module_form_settings .create_form_task_html .with_form {
+	margin-top:-29px !important;
+}
 .module_form_settings .create_form_task_html .form_action .add_variable.inline {
 	margin-left:-22px !important;
 }

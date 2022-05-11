@@ -1,80 +1,69 @@
 .jsplumbtaskmenu .task.task_foreach {
 	background-image:url('../img/bg.svg');
-	overflow:visible;
-	margin-bottom:30px;
-}
-.jsplumbtaskmenu .task.task_foreach span {
-	width:100%;
-	max-height:20px;
-	line-height:initial;
-	display:block;
-	position:absolute;
-	left:0;
-	top:53px;
-	color:#426efa;
-	font-size:7px;
-	font-weight:normal;
-	letter-spacing:.5px;
-	text-align:center;
-	overflow:hidden;
-	text-overflow:ellipsis;
-}
-.jsplumbtaskworkflow .task.task_foreach {
-	width:70px !important;
-	height:70px !important;
-	padding:20px 0 0;
-	box-sizing:border-box;
-}
-.jsplumbtaskworkflow .task.task_foreach .info span {
-	color:#426efa;
 }
 .jsplumbtaskworkflow .task.task_foreach .eps {
-	width:65px;
-	height:50px;
-	margin:0 auto;
-	background:url('../img/bg.svg') center bottom no-repeat;
-	background-size:100% 100%;
+	background-image:url('../img/bg.svg');
+}
+.jsplumbtaskworkflow .task.task_foreach .eps:hover:after {
+	content:"Drag the small circles to link to another box";
 }
 .jsplumbtaskworkflow .task.task_foreach .ep {
 	width:auto;
 	height:auto;
 	position:absolute;
 	top:0;
-	bottom:-10px;
+	bottom:0;
 	display:inline-block;
 	border:0;
-	text-align:center;
 	border-color:transparent !important;
 	background-color:transparent !important;
 }
-.jsplumbtaskworkflow .task.task_foreach:hover .ep:nth-child(1) {
-	left:-55px;
+.jsplumbtaskworkflow .task.task_foreach .ep[connection_exit_id=start_exit] {
+	left:-28px;
 	right:50%;
-	background:#426efaaa !important;
+	text-align:left;
 }
-.jsplumbtaskworkflow .task.task_foreach:hover .ep:nth-child(2) {
+.jsplumbtaskworkflow .task.task_foreach .ep[connection_exit_id=default_exit] {
 	left:50%;
-	right:-55px;
-	background:#333333aa !important;
+	right:-28px;
+	text-align:right;
 }
-.jsplumbtaskworkflow .task.task_foreach:hover .ep span {
-	width:auto;
-	height:auto;
+.jsplumbtaskworkflow .task.task_foreach .ep span {
+	width:30px;
+	min-width:auto;
 	max-width:none;
-	line-height:normal;
+	height:30px;
+	line-height:30px;
 	margin:0;
 	padding:0;
-	display:inline-block;
+	display:inline-block !important;
 	position:relative;
-	top:25px;
+	top:10px;
 	left:0;
 	border:0;
-	background:transparent;
-	color:#fff !important;
+	border-radius:100%;
 	font-weight:bold;
+	font-size:90%;
 	white-space:nowrap;
 	overflow:hidden;
 	box-sizing:border-box;
+	text-align:center;
+}
+.jsplumbtaskworkflow .task.task_foreach .ep[connection_exit_id=start_exit] span {
+	background:#335ACC;
+}
+.jsplumbtaskworkflow .task.task_foreach .ep[connection_exit_id=default_exit] span {
+	background:#2C2D34;
+}
+.jsplumbtaskworkflow .task.task_foreach .ep span:before {
+	display:block;
+	color:#fff;
+}
+.jsplumbtaskworkflow .task.task_foreach .ep[connection_exit_id=start_exit] span:before {
+	content:"Start";
+}
+.jsplumbtaskworkflow .task.task_foreach .ep[connection_exit_id=default_exit] span:before {
+	content:"End";
 }
 
 .foreach_task_html {

@@ -1,61 +1,7 @@
 .jsplumbtaskmenu .task.task_presentation {
-	line-height:86px !important;
+	background-image:url('../img/logo.svg');
 }
-.jsplumbtaskworkflow .task.task_presentation, .jsplumbtaskmenu .task.task_presentation {
-	min-width:100px !important;
-	min-height:86px !important;
-	
-	background-image:url('../img/bg.gif');
-	-o-background-size:100% 100%;
-	-webkit-background-size:100% 100%;
-	-moz-background-size:100% 100%;
-	background-size:100% 100%; 
-	
-	/* in IE */
-	-ms-background-size:100% 100%;
-	/*-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');*/
-	
-	border:0 !important;
-	
-	-moz-border-radius:0 !important; 
-	-webkit-border-radius:0 !important;
-	border-radius:0 !important;
-	
-	box-shadow:none !important;
-	-o-box-shadow:none !important;
-	-webkit-box-shadow:none !important;
-	-moz-box-shadow:none !important;
-	
-	/* For IE */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)" !important;
-	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false) !important;
-}
-.jsplumbtaskworkflow .task.task_presentation .info {
-	width:100% !important;
-}
-.jsplumbtaskworkflow .task.task_presentation .info span, .jsplumbtaskmenu .task.task_presentation span {
-	background-color:#e1c77e;
-	background-color:rgba(225, 199, 126, 0.5);
+.jsplumbtaskworkflow .task.task_presentation {
+	background-image:url('../img/logo.svg');
 }
 
-.jsplumbtaskworkflow .task.task_presentation .eps {
-	width:20px;
-}
-.jsplumbtaskworkflow .task.task_presentation .ep {
-	border:0 !important;
-	-moz-border-radius:4em !important; 
-	-webkit-border-radius:4em !important;
-	border-radius:4em !important;
-	
-	width:40px;
-	height:40px;
-	background:url('../../common/img/link_icon_3.png') no-repeat scroll 3px 5px #e1c77e !important;
-	
-	position:absolute;
-	left:0;
-	top:0;
-	margin-left:35%;
-	margin-top:-10px;
-	z-index:100 !important;
-}

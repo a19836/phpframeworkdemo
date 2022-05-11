@@ -5,7 +5,7 @@ body {
 
 .error {
 	margin-top:20px;
-	color:red;
+	color:#B51E3F;
 	text-align:center;
 }
 
@@ -39,7 +39,7 @@ body {
 	right:0;
 	background:#eee;
 	color:#555;
-	border-top:2px solid #ff0000;
+	border-top:2px solid #FC3C44;
 }
 #left_panel > ul.dropdown-1 > li > .item_header > .sub_menu {
 	right:8px;
@@ -123,7 +123,7 @@ body {
 }
 #left_panel > ul > li.dashboard > .item_header {
 	border-top:1px solid #000;
-	border-bottom:2px solid #ff0000;
+	border-bottom:2px solid #FC3C44;
 	background:#282828;
 	color:#ccc;
 }
@@ -139,7 +139,7 @@ body {
 	bottom:0;
 }
 #left_panel > ul > li:hover > .item_header > .selected {
-	background:#ff0000;
+	background:#FC3C44;
 }
 #left_panel > ul li > .item_header > .logo {
 	width:20px;
@@ -263,10 +263,10 @@ body {
 	height:auto;
 }
 #left_panel > ul > li ul > li:hover > .item_header {
-	background:#ff000077;
+	background:#FC3C4477;
 }
 #left_panel > ul > li.selected_project ul > li.choose_another_project > .item_header {
-	border-bottom:1px solid #ff0000;
+	border-bottom:1px solid #FC3C44;
 	color:#888;
 }
 #left_panel > ul > li.selected_project ul > li.project_folder:hover > .item_header {
@@ -277,7 +277,7 @@ body {
 	cursor:not-allowed;
 }
 #left_panel > ul > li.selected_project ul > li.shown_project:not(:hover) > .item_header {
-	background:#ff0000;
+	background:#FC3C44;
 }
 #left_panel > ul > li ul > li > .item_header > .selected {
 	width:3px;
@@ -287,7 +287,7 @@ body {
 	bottom:0;
 }
 #left_panel > ul > li ul > li:hover > .item_header > .selected {
-	background:#ff0000;
+	background:#FC3C44;
 }
 #left_panel > ul > li ul > li > .item_header > label {
 	font-size:90%;
@@ -300,7 +300,7 @@ body {
 	padding-top:10px;
 }
 #left_panel > ul li > ul > li.tools {
-	border-top:1px solid #ff0000;
+	border-top:1px solid #FC3C44;
 }
 
 /* TOP RIGHT PANEL */
@@ -313,7 +313,7 @@ body {
 	right:0;
 	font-size:14px;
 	
-	border-top:2px solid #ff0000;
+	border-top:2px solid #FC3C44;
 	background: -moz-linear-gradient(top, #eee 50%, #ffffff73 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #ffffff73));
 	background: -webkit-linear-gradient(top, #eee 50%, #ffffff73 100%);

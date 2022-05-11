@@ -5,7 +5,7 @@ body {
 
 .error {
 	margin-top:20px;
-	color:red;
+	color:#B51E3F;
 	text-align:center;
 }
 
@@ -28,7 +28,7 @@ body {
 	overflow:hidden;
 	font-size:14px;
 	
-	border-top:2px solid #ff0000;
+	border-top:2px solid #FC3C44;
 	background: -moz-linear-gradient(top, #eee 50%, #ffffff73 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #ffffff73));
 	background: -webkit-linear-gradient(top, #eee 50%, #ffffff73 100%);

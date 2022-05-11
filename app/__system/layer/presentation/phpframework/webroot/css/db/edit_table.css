@@ -253,7 +253,7 @@
 }
 .save_button input.delete {
 	margin-left:20px;
-	/*background:red;
+	/*background:#B51E3F;
 	color:white;*/
 }
 .save_button input.execute {
@@ -275,6 +275,6 @@
 	margin-top:20px;
 	margin-bottom:20px;
 	text-align:center;
-	color:red;
+	color:#B51E3F;
 	box-sizing:border-box;
 }

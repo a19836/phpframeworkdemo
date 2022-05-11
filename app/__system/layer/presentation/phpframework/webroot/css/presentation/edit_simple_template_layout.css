@@ -1,6 +1,7 @@
 :root {
 	--icon-font-size:14px;
-	--icon-hover-color:#ff0000;
+	--icon-hover-color:#FC3C44;
+	--selection-color:#4070FF;
 }
 
 /* !important in all css items is very important because bootstrap styles overwrite these styles if they don't have the flag: !important*/
@@ -154,7 +155,6 @@ body.mobile_cursor,
 	color:inherit !important;
 }
 .template_region > .items > .item > .icon:hover {
-	color:#ff0000 !important;
 	color:var(--icon-hover-color) !important;
 }
 body:not(.mobile_cursor) .template_region > .items > .item > .icon {
@@ -349,10 +349,10 @@ body.mobile_cursor .pretty_block_options_menu .ui-menu .ui-menu-item {
 }
 .pretty_block_options_menu > ul .ui-menu-item.ui_menu_item_selected {
 	border-color:#fbcb09 !important;
-	border-color:var(--icon-hover-color) !important;
+	border-color:var(--selection-color) !important;
 	background:#ccc !important;
 	color:#c77405 !important;
-	color:var(--icon-hover-color) !important;
+	color:var(--selection-color) !important;
 }
 .pretty_block_options_menu > ul .ui-menu-item.ui-state-focus:not(.ui_menu_item_selected),
   .pretty_block_options_menu > ul .ui-menu-item.ui-state-disabled {
@@ -366,9 +366,9 @@ body.mobile_cursor .pretty_block_options_menu .ui-menu .ui-menu-item {
 	margin:0 !important;
 	background:#dadada !important;
 	border-color:#fbcb09 !important;
-	border-color:var(--icon-hover-color) !important;
+	border-color:var(--selection-color) !important;
 	color:#c77405 !important;
-	color:var(--icon-hover-color) !important;
+	color:var(--selection-color) !important;
 	opacity:.8 !important;
 }
 .pretty_block_options_menu > ul .ui-menu-item:nth-child(2) { /* blank option */
@@ -391,8 +391,7 @@ body.mobile_cursor .pretty_block_options_menu .ui-menu .ui-menu-item {
 	font-weight: inherit;
 	font-family: inherit;
 	vertical-align:middle !important;
-	color:#ff0000 !important;
-	color:var(--icon-hover-color) !important;
+	color:var(--selection-color) !important;
 }
 .pretty_block_options_menu > ul .import_module_block a:hover {
 	color:initial !important;
@@ -400,7 +399,11 @@ body.mobile_cursor .pretty_block_options_menu .ui-menu .ui-menu-item {
 .pretty_block_options_menu > ul .import_module_block a .icon {
 	display:inline-block !important;
 	margin:auto 5px !important;
+	color:inherit !important;
 	z-index:100 !important;
+}
+.pretty_block_options_menu > ul .import_module_block a .icon::before {
+	color:inherit !important;
 }
 body:not(.mobile_cursor) .pretty_block_options_menu > ul .import_module_block a .icon {
 	cursor:pointer !important;

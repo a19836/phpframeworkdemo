@@ -50,6 +50,7 @@ var TryCatchExceptionTaskPropertyObj = {
 					labels_to_update["catch"] = labels["catch"];
 				
 				//update exits that were changed
+				ProgrammingTaskUtil.updateTaskExitsConnectionExitLabelAttribute(task_id, labels_to_update);
 				ProgrammingTaskUtil.updateTaskExitsConnectionsLabels(task_id, labels_to_update);
 			}
 		}
@@ -68,6 +69,7 @@ var TryCatchExceptionTaskPropertyObj = {
 			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
 			var labels = TryCatchExceptionTaskPropertyObj.getExitLabels(task_property_values);
 			ProgrammingTaskUtil.updateTaskExitsLabels(task_id, labels);
+			ProgrammingTaskUtil.updateTaskExitsConnectionExitLabelAttribute(task_id, labels);
 		
 			onEditLabel(task_id);
 			

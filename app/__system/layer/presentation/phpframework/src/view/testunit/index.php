@@ -46,16 +46,16 @@ var execute_tests_url = "' . $execute_tests_url . '";
 var manage_file_url = "' . $manage_file_url . '";
 var create_test_url = "' . $create_test_url . '";
 '; $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_test_units_files_from_file_manager_url, "", "", ""); $head .= '</script>'; $main_content = '
+<div class="top_bar">
+	<header>
+		<div class="title">Manage Test Units</div>
+		<ul>
+			<li class="execute" data-title="Execute Selected Tests"><a onClick="executeSelectedTests(true)"><i class="icon continue"></i> Execute Selected Tests</a></li>
+		</ul>
+	</header>
+</div>
+
 <div class="test_units">
-	<div class="top_bar">
-		<header>
-			<div class="title">Manage Test Units</div>
-			<ul>
-				<li class="execute" data-title="Execute Selected Tests"><a onClick="executeSelectedTests(true)"><i class="icon continue"></i> Execute Selected Tests</a></li>
-			</ul>
-		</header>
-	</div>
-	
 	<div id="test_units_tree" class="test_units_tree">
 		<ul class="mytree">
 			<li>

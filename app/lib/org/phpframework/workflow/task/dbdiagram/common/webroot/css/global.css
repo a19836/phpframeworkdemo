@@ -1,3 +1,8 @@
+.jsplumbtaskworkflow ._jsPlumb_endpoint {
+	opacity:0;
+}
+
+/* Task */
 .jsplumbtaskworkflow .task:hover:before,
   .jsplumbtaskworkflow .task .task_info {
 	display:none !important;

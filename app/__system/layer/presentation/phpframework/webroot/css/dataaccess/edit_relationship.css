@@ -37,7 +37,7 @@
 	width:90px;
 	margin:0;
 	position:fixed;
-	top:5px;
+	top:18px;
 	left:40px;
 	z-index:1503;
 }
@@ -54,7 +54,7 @@
 	width:210px;
 	margin:0;
 	position:fixed;
-	top:5px;
+	top:18px;
 	left:230px;
 	z-index:1503;
 }
@@ -89,14 +89,14 @@
 	border:0;
 }
 .edit_relationship .relationship .query .query_settings {
-	height:calc(100vh - 95px);
+	height:calc(100vh - 115px);
 	box-sizing:border-box;
 	padding-top:10px;
 	border-radius:0;
 	border-top:0;
 }
 .edit_relationship .relationship .query .query_settings .query_settings_tab {
-	height:calc(100vh - 145px);
+	height:calc(100vh - 165px);
 	min-height:100px;
 	padding-bottom:20px;
 	box-sizing:border-box;

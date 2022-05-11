@@ -1176,7 +1176,7 @@ var ServerTaskPropertyObj = {
 			type: "iframe",
 			onOpen: function() {
 				var popup = ServerTaskPropertyObj.TemplatePropertiesGlobalSettingsAndVarsMyFancyPopupObject.getPopup();
-				popup.addClass("server_task_html_template_global_vars_and_settings_popup");
+				popup.addClass("server_task_html_template_global_vars_and_settings_popup with_iframe_title");
 				
 				var close_btn = ServerTaskPropertyObj.TemplatePropertiesGlobalSettingsAndVarsMyFancyPopupObject.getPopupCloseButton();
 				close_btn.off("click");
@@ -1192,7 +1192,7 @@ var ServerTaskPropertyObj = {
 				var iframe_win = iframe[0].contentWindow;
 				var contents = iframe.contents();
 				
-				contents.find("input[type=submit]").remove();
+				contents.find("input[type=submit], .top_bar li.save").remove();
 				
 				contents.find("form").each(function(idx, form) {
 					form = $(form);
@@ -1346,7 +1346,7 @@ var ServerTaskPropertyObj = {
 				var_name = var_name.substr(0, var_name.length - 1); //remove ]
 				
 				if (!global_properties || !global_properties.hasOwnProperty(var_name)) {
-					input.css("background-color", "#ddd");
+					input.css("background-color", "#eeeeeeaa");
 					input.parent().append('<span title="This Global Var contains the default value!" onClick="alert(this.getAttribute(\'title\'));"> default</span>');
 				}
 			});

@@ -1,41 +1,43 @@
 .jsplumbtaskmenu .task.task_server {
-	background-image:url('../img/bg.gif');
-	line-height:80px !important;
+	width:70px !important;
+	height:60px !important;
+	
+	background-image:url('../img/logo.svg');
+	background-color:#4070FF !important;
+	background-size:40px 30px !important; 
+	background-position:center 10px !important; 
+	
+	border-radius:5px !important;
+	border:0 !important;
+	box-shadow:none !important;
 }
 .jsplumbtaskmenu .task.task_server span {
+	line-height:normal;
+	margin-top:40px;
 	display:block;
-	line-height:13px;
-	margin-top:35px;
+	color:#FFF;
+	font-size:11px;
 }
 .jsplumbtaskworkflow .task.task_server {
-	min-width:80px !important;
-	min-height:80px !important;
+	height:auto !important;
+	min-height:60px !important;
 	
-	background-image:url('../img/bg.gif');
-	-o-background-size:100% 100%;
-	-webkit-background-size:100% 100%;
-	-moz-background-size:100% 100%;
-	background-size:100% 100%;
+	background-image:url('../img/logo.svg');
+	background-color:#4070FF;
+	background-size:40px 30px !important; 
+	background-position:center 10px !important; 
 	
-	/* in IE */
-	-ms-background-size:100% 100%;
-	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');
-	
+	border-radius:5px;
 	border:0 !important;
-	
-	box-shadow:none !important;
-	-o-box-shadow:none !important;
-	-webkit-box-shadow:none !important;
-	-moz-box-shadow:none !important;
-    	
-	/* For IE */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
-	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
 }
-.jsplumbtaskworkflow .task.task_server > .info span {
-	color:#000;
-	white-space:nowrap;
+.jsplumbtaskworkflow .task.task_server > .info {
+	width:100% !important;
+	line-height:normal;
+	margin-top:40px !important;
+	display:block;
+	color:#FFF;
+	font-size:11px;
+	font-weight:bold;
 }
 
 .selected_task_properties .properties_task_id, 
@@ -78,7 +80,7 @@
 .server_task_html > .details_container > div > .info {
 	text-align:right;
 	color:#555;
-	font-size:80%;
+	font-size:90%;
 }
 
 /* templates_container */
@@ -105,7 +107,7 @@
 }
 .server_task_html .templates_container > table .created_date span,
   .server_task_html .templates_container > table .modified_date span {
-	font-size:80%
+	font-size:90%
 }
 
 /* templates_container - popup */
@@ -184,8 +186,16 @@
 	-ms-filter:alpha(opacity=50); 
 	filter:alpha(opacity=50);
 }
+.server_task_html .template_workflow > .taskflowchart .tasks_flow .task .ep {
+	cursor:pointer;
+}
 
 /* templates_container - task_context_menu (task_context_menu is a child of body) */
+.task_context_menu, 
+  .connection_context_menu {
+	z-index:9999999999 !important; /* very important otherwise the contextmenus from the layers diagram will not show bc everytime the myfancypopup gets open, it will set the bigger z-index for the popup. So we need to set the contextmenu to a huge number, bc the myfancypopup ignores the contextmenus */
+}
+
 .task_context_menu .activate_task a, 
   .task_context_menu .activate_task a:hover, 
   .task_context_menu .activate_task a.active, 
@@ -248,8 +258,8 @@
 .server_task_html .template_workflow > .taskflowchart .selected_task_properties .presentation_layer_task_html > .wordpress_installations .invalid:after {
 	content:"May not exist anymore...";
 	margin-left:10px;
-	font-size:80%;
-	color:#ff0000;
+	font-size:90%;
+	color:#4070FF;
 }
 
 .server_task_html .template_workflow > .taskflowchart .selected_task_properties .data_access_layer_task_html > .files,
@@ -275,7 +285,7 @@
 .server_task_html .template_workflow > .taskflowchart .selected_task_properties .data_access_layer_task_html > .files > .info,
   .server_task_html .template_workflow > .taskflowchart .selected_task_properties .businesslogic_layer_task_html > .files > .info,
   .server_task_html .template_workflow > .taskflowchart .selected_task_properties .presentation_layer_task_html > .files > .info {
-	font-size:80%;
+	font-size:90%;
 	color:#555;
 }
 .server_task_html .template_workflow > .taskflowchart .selected_task_properties .data_access_layer_task_html > .files > ul,
@@ -322,7 +332,7 @@
 	overflow:auto;
 }
 .server_task_html .template_actions .info {
-	font-size:80%;
+	font-size:90%;
 	color:#555;
 }
 .server_task_html .template_actions .server_installation_folder_path {
@@ -391,14 +401,14 @@
 }
 .server_task_html .template_actions .actions .action.action_copy_layers > .obfuscate_proprietary_php_files {
 	margin-top:20px;
-	font-size:80%;
+	font-size:90%;
 }
 .server_task_html .template_actions .actions .action.action_copy_layers > .obfuscate_proprietary_js_files {
-	font-size:80%;
+	font-size:90%;
 }
 .server_task_html .template_actions .actions .action.action_copy_layers > .create_licence {
 	margin-top:20px;
-	font-size:80%;
+	font-size:90%;
 }
 .server_task_html .template_actions .actions .action.action_copy_layers > .create_licence ul {
 	margin-left:40px;
@@ -435,7 +445,7 @@
 }
 .server_task_html .template_actions .actions .action.action_copy_layers > .allowed_domains {
 	margin-top:20px;
-	font-size:80%;
+	font-size:90%;
 }
 .server_task_html .template_actions .actions .action.action_copy_layers > .allowed_domains label {
 	width:120px;
@@ -449,7 +459,7 @@
 }
 .server_task_html .template_actions .actions .action.action_copy_layers > .check_allowed_domains_port {
 	margin-top:10px;
-	font-size:80%;
+	font-size:90%;
 }
 .server_task_html .template_actions .actions .action.action_copy_files > .files {
 	margin-top:20px;
@@ -487,12 +497,12 @@
 	margin-top:5px;
 	display:block;
 	color:#555;
-	font-size:80%;
+	font-size:90%;
 }
 .server_task_html .deployments_container > table th,
   .server_task_html .deployments_container > table td {
 	text-align:center;
-	font-size:80%;
+	font-size:90%;
 }
 .server_task_html .deployments_container > table .selected {
 	width:20px;

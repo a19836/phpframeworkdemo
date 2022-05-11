@@ -284,109 +284,164 @@
 	margin-left:-18px;
 }
 
+
+/* MENU TASKS */
+.jsplumbtaskmenu .task {
+	overflow:visible !important;
+	margin-bottom:30px !important;
+}
+.jsplumbtaskmenu .task span {
+	width:100%;
+	max-height:20px;
+	line-height:initial;
+	display:block;
+	position:absolute;
+	left:0;
+	top:53px;
+	color:#426efa;
+	font-size:7px;
+	font-weight:normal;
+	letter-spacing:.5px;
+	text-align:center;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+
 /* FLOW TASKS */
 .jsplumbtaskworkflow .connector_overlay_add_icon {
 	background:url('../img/add_middle_task.svg') 0 0 no-repeat !important;
 }
-.jsplumbtaskworkflow .task {
+.jsplumbtaskworkflow .task.logic_task {
+	width:70px !important;
+	height:auto !important;
+	min-height:70px !important;
+	padding:0 !important;
+	box-sizing:border-box;
 	border:0 !important;
 	box-shadow:none !important;
 }
-.jsplumbtaskworkflow .task:hover {
+.jsplumbtaskworkflow .task.logic_task:hover {
 	opacity:1 !important;
 	z-index:9999;
 }
-.jsplumbtaskworkflow .task:hover:before {
+.jsplumbtaskworkflow .task.logic_task:hover:before {
 	width:180px;
 	left:-55px !important;
 	right:auto !important;
 	bottom:-15px !important;
 	border-color:#426efa !important;
-	background:#fff;
+	/*background:#fff;*/
 }
-.jsplumbtaskworkflow .task:hover:after {
+.jsplumbtaskworkflow .task.logic_task:hover:after {
 	background:none !important;
 	left:-55px !important;
 	bottom:-36px !important;
 }
-.jsplumbtaskworkflow .task.is_start_task .start_task_overlay {
-	top:-5px;
-}
-.jsplumbtaskworkflow .task .task_info {
-	width:182px; /*bc box-sizing is border-box, we need to add the borderleft and right widths. */
-	padding-left:5px;
+.jsplumbtaskworkflow .task.logic_task.is_start_task .start_task_overlay {
 	top:-25px;
 	left:-55px;
-	font-size:10px;
+	right:-55px;
+}
+.jsplumbtaskworkflow .task.logic_task .task_info {
+	width:182px; /*bc box-sizing is border-box, we need to add the borderleft and right widths. */
+	left:-55px;
 	background:#426efa;
 	color:#fff;
 	box-sizing:border-box;
-	font-size:80%;
 }
-.jsplumbtaskworkflow .task .info {
+.taskflowchart .task.logic_task .task_info .task_info_tag, .taskflowchart .task .task_info .task_info_label {
+	
+}
+.jsplumbtaskworkflow .task.logic_task .info {
 	width:180px;
-	height:20px;
+	min-height:20px;
 	line-height:20px;
+	margin-left:-55px;
 	padding-left:5px;
 	padding-right:5px;
-	position:absolute;
-	top:0;
-	left:-55px;
-	white-space:nowrap;
-	text-overflow:ellipsis;
-	overflow:hidden;
 	box-sizing:border-box;
 }
-.jsplumbtaskworkflow .task:hover:not(.ui-draggable-dragging):not(.dragActive) > .info {
+.jsplumbtaskworkflow .task.logic_task:hover:not(.ui-draggable-dragging):not(.dragActive) > .info {
 	width:auto;
 	min-width:180px;
 	text-overflow:unset;
 	overflow:visible;
 }
-.jsplumbtaskworkflow .task .short_actions {
-	top:-22px;
-	right:-50px;
+.jsplumbtaskworkflow .task.logic_task .info span {
+	color:#426efa;
+	word-break:break-all;
+}
+.jsplumbtaskworkflow .task.logic_task:hover:not(.ui-draggable-dragging):not(.dragActive) > .info span {
+	color:#585B69;
+}
+.jsplumbtaskworkflow .task.logic_task .short_actions {
+	top:-20px;
+	right:-45px;
 	color:#fff;
 }
-.jsplumbtaskworkflow .task .eps {
-	position:absolute;
+.jsplumbtaskworkflow .task.logic_task .short_actions .move_action {
+	display:none;
+}
+.jsplumbtaskworkflow .task.logic_task .eps {
+	width:65px;
+	height:50px;
+	min-height:20px;
+	margin:0 auto;
+	position:relative;
+	/*position:absolute;
 	top:23px !important;
 	bottom:0;
 	left:0;
-	right:0;
-	width:auto;
-	min-height:20px;
+	right:0;*/
+	background-repeat:no-repeat;
+	background-position:center bottom;
+	background-size:100% 100%;
 }
-.jsplumbtaskworkflow .task.dragActive .eps {
+.jsplumbtaskworkflow .task.logic_task .eps:hover:after {
+	width:175px;
+	content:"Drag the icon to link to another box";
+	position:absolute;
+	bottom:-15px;
+	left:-55px;
+	font-size:80%;
+	color:#999;
+	text-align:center;
+}
+.jsplumbtaskworkflow .task.logic_task.dragActive .eps {
 	box-shadow:0px 0px 20px 5px #ccc !important;
 }
-.jsplumbtaskworkflow .task .ep {
+.jsplumbtaskworkflow .task.logic_task .ep {
 	width:100%;
 	height:100%;
 	margin:0;
 	border:0;
 	border-radius:0;
+	/* Cannot add this here bc the switch uses the border-color and background-color set auytomatically in each ep. This means, that this code MUST be inside of each task.
+	border-color:transparent !important;
+	background-color:transparent !important;*/
 }
-.jsplumbtaskworkflow .task .ep span {
+.jsplumbtaskworkflow .task.logic_task .ep span {
+	min-width:185px;
 	max-width:300px;
-	position:absolute;
-	top:100%;
-	left:0;
-	height:20px;
-	line-height:20px;
 	padding:3px 5px;
+	position:absolute;
+	top:calc(100% + 5px);
+	left:-60px;
+	box-sizing:border-box;
 	border:1px solid #fff;
-	background:#000;
+	border-radius:5px;
+	background:#426efa;
 	color:#fff;
 	font-size:9px;
 	font-family:verdana,courier,arial;
 	font-family:var(--main-font-family);
 	white-space:nowrap;
 	pointer-events:none;
+	z-index:1;
 }
-.jsplumbtaskworkflow .task:not(.show_code) .ep span {
+.jsplumbtaskworkflow .task.logic_task:not(.show_code) .ep span {
 	display:none;
 }
-.jsplumbtaskworkflow .task.show_code:hover:after {
+.jsplumbtaskworkflow .task.logic_task.show_code:hover:after {
 	display:none;
 }

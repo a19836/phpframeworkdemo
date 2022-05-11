@@ -1,32 +1,19 @@
 .jsplumbtaskmenu .task.task_page {
+	background-image:url('../img/bg.svg');
 	background-image:url('../img/bg.gif');
+}
+.jsplumbtaskmenu .task.task_page:before {
+	background-color:#00727C;
+}
+.jsplumbtaskmenu .task.task_page:after {
+	background-color:#00727C66;
 }
 .jsplumbtaskworkflow .task.task_page {
+	background-image:url('../img/bg.svg');
 	background-image:url('../img/bg.gif');
-	background-color:#f7f7f7;
-	-o-background-size:100% 100%;
-	-webkit-background-size:100% 100%;
-	-moz-background-size:100% 100%;
-	background-size:100% 100%;
-	
-	/* in IE */
-	-ms-background-size:100% 100%;
-	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%')";
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='100% 100%');
-	
-	/*border:none;*/
-	box-shadow:none;
-	-o-box-shadow:none;
-	-webkit-box-shadow:none;
-	-moz-box-shadow:none;
-    	
-	/* For IE */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(enabled=false)";
-	filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
 }
-.jsplumbtaskworkflow .task.task_page > .info span {
-	color:#eab34f;
-	white-space:nowrap;
+.jsplumbtaskworkflow .task.task_page:before {
+	background-color:#00727C;
 }
 .jsplumbtaskworkflow .task.task_page > .task_droppable {
 	min-height:100px;
@@ -36,11 +23,12 @@
 	right:0;
 	bottom:0;
 	box-sizing:border-box;
-	border-top:1px solid #eab34f;
+	border-top:1px solid #00727C;
+	background-color:#00727C66;
 }
 .jsplumbtaskworkflow .task.task_page > .task_droppable.task_droppable_over {
-	background:#eab34f;
-	background:#eab34fa3;
+	background:#00727C;
+	background:#00727Ca3;
 }
 
 /* page_task_html */
@@ -60,15 +48,15 @@
 }
 .page_task_html > .invalid_file {
 	text-align:center;
-	color:red;
+	color:#B51E3F;
 	margin-bottom:20px;
 }
 .page_task_html > .invalid_file a {
-	color:#ff0000;
+	color:#B51E3F;
 }
 .page_task_html > .error {
 	text-align:center;
-	color:red;
+	color:#B51E3F;
 	margin-bottom:20px;
 }
 
@@ -100,7 +88,7 @@
 .page_task_html .advanced_settings > a.edit_page {
 	margin-top:20px;
 	text-align:right;
-	color:#ff0000;
+	color:#4070FF;
 }
 .page_task_html .advanced_settings > a .icon.update::before {
 	content:"\f303";

@@ -27,7 +27,7 @@ function updateTableHeight() {
 	var tph = top_pagination.is(":visible") ? top_pagination.height() + parseInt(top_pagination.css("margin-top")) + parseInt(top_pagination.css("margin-bottom")) : 0;
 	var bph = bottom_pagination.is(":visible") ? bottom_pagination.height() + parseInt(bottom_pagination.css("margin-top")) + parseInt(bottom_pagination.css("margin-bottom")) : 0;
 	var ch = conditions.height() + parseInt(conditions.css("margin-top")) + parseInt(conditions.css("margin-bottom"));
-	var h = wh - (120 + tph + bph + ch);
+	var h = wh - (140 + tph + bph + ch);
 	h = h < 200 ? 200 : h;
 	
 	manage_records.find(" > form > .responsive_table").css("height", h + "px");

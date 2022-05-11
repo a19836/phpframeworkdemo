@@ -39,7 +39,7 @@ body,
 .select_layers .error {
 	text-align:center;
 	margin-top:20px;
-	color:red;
+	color:#B51E3F;
 }
 
 /* SELECT TABLES - STEP 1 */
@@ -77,7 +77,7 @@ body,
 .select_tables .error {
 	text-align:center;
 	margin-top:20px;
-	color:red;
+	color:#B51E3F;
 }
 .select_tables .options {
 	margin:0 auto;
@@ -204,7 +204,7 @@ body,
 .main_error {
 	width:100%;
 	margin:10px;
-	color:red;
+	color:#B51E3F;
 	text-align:center;
 	font-weight:bold;
 }

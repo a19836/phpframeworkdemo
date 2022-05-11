@@ -285,6 +285,13 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 		task_context_menu.children(".start_task").children("a").attr("onClick", "return setLayerTaskMenuDefaultLayer();").html("Is Default Layer");
 	}
 	
+	function  onLayerTaskCreation(task_id) {
+		var WF = myWFObj.getJsPlumbWorkFlow();
+		var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+		
+		task.addClass("layer_task");
+	}
+	
 	function onLayerTaskCloning(task_id) {
 		onTaskCloning(task_id);
 		

@@ -51,7 +51,7 @@
 	border:1px solid #efbebe;
 	border-radius:5px;
 	background:#efbebe7a;
-	color:red;
+	color:#B51E3F;
 }
 .install_program .step_0 .install_store_program,
   .install_program .step_0 .go_to_programs_download_page {
@@ -142,7 +142,7 @@
 }
 
 .install_program .step_3 > .error {
-	color:red;
+	color:#B51E3F;
 }
 .install_program .step_3 > .messages_list,
   .install_program .step_3 > .errors_list {

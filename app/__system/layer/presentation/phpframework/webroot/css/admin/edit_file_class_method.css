@@ -12,7 +12,7 @@
 	color:var(--main-template-color);
 }
 .top_bar header > ul {
-	right:104px;
+	right:112px;
 }
 
 /* FILE CLASS METHOD */
@@ -38,7 +38,8 @@
 	overflow:auto;
 	box-sizing:border-box;
 	z-index:1050;
-	background:#fff;
+	color:var(--main-settings-color);
+	background:var(--main-settings-bg);
 	font-size:8pt;
 }
 .file_class_method_obj #settings:not(.resizing) {
@@ -72,10 +73,10 @@
 }
 
 .file_class_method_obj #settings .settings_header {
-	height:30px;
+	height:35px;
 	line-height:25px;
-	margin-top:-40px;
-	padding:5px;
+	margin-top:-45px;
+	padding:8px 5px 5px 10px;
 	position:fixed;
 	left:0;
 	right:0;
@@ -85,8 +86,9 @@
 	z-index:1051;
 	
 	/*font-weight:bold;*/
-	color:var(--main-iframe-color);
-	background:var(--main-iframe-bg);
+	border-bottom:1px solid var(--main-settings-header-border);
+	color:var(--main-settings-color);
+	background:var(--main-settings-bg);
 	/*background: -moz-linear-gradient(top, #eee 50%, #f7f7f7 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #f7f7f7));
 	background: -webkit-linear-gradient(top, #eee 50%, #f7f7f7 100%);
@@ -96,11 +98,9 @@
 	border-top:1px solid #eee;*/
 }
 .file_class_method_obj #settings.collapsed .settings_header {
-	margin-top:-25px;
+	margin-top:-30px;
 	border:0;
 	
-	color:inherit;
-	background:transparent;
 	/*background: -moz-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(50%, #eee), color-stop(100%, #ffffff73));
 	background: -webkit-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
@@ -187,9 +187,11 @@
 .file_class_method_obj #settings .arguments tbody td {
 	border-bottom:1px solid #ccc;
 	border-right:1px solid #f5f5f5;
+	background:#fff;
 }
 .file_class_method_obj #settings .arguments .icon_cell {
 	border:0;
+	background:unset;
 }
 .file_class_method_obj #settings .arguments .icon_cell .icon {
 	margin:auto 5px;
@@ -244,9 +246,11 @@
 .file_class_method_obj #settings .annotations tbody td {
 	border-bottom:1px solid #ccc;
 	border-right:1px solid #f5f5f5;
+	background:#fff;
 }
 .file_class_method_obj #settings .annotations .icon_cell {
 	border:0;
+	background:unset;
 }
 .file_class_method_obj #settings .annotations .icon_cell .icon {
 	margin:auto 5px;
@@ -346,7 +350,7 @@
   .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_side_properties > .tasks_flow, 
   .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_side_properties > .selected_task_properties, 
   .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_side_properties > .selected_connection_properties {
-	margin-bottom:30px;
+	margin-bottom:35px;
 }
 .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_menu.task_properties_shown, 
   .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_menu.connection_properties_shown, 

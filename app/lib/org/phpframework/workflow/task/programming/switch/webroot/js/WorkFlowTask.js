@@ -21,6 +21,8 @@ var SwitchTaskPropertyObj = {
 	properties_html_elm : null,
 	previous_task_property_values : null,
 	
+	available_default_colors : ["#46F4A0", "#99F2FA", "#33ADB7", "#AAAAFD", "#FF83B4", "#FF9B6F", "#F2EC22", "#B9BF15", "#7B800E", "#00727C", "#29B473", "#00DEF2", "#7171FB", "#BF4B79", "#FF590F", "#124DB5", "#99D6DB", "#A3FAD0", "#FFC1DA", "#FCFFA4"],
+	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		//console.debug(properties_html_elm);
 		//console.debug(task_id);
@@ -118,10 +120,12 @@ var SwitchTaskPropertyObj = {
 		
 			var new_exit_color;
 			var status;
+			var idx = 0;
 		
 			do {
-				new_exit_color = nextColor();
-			
+				//get first default colors and after create new colors.
+				new_exit_color = this.available_default_colors && this.available_default_colors.length > idx ? this.available_default_colors[idx] : nextColor();
+				
 				status = new_exit_color != "rgb(0,0,0)";
 				for (var i = 0; status && i < total; i++) {
 					if ($(items[i]).attr('exit_color') == new_exit_color) {
@@ -129,6 +133,8 @@ var SwitchTaskPropertyObj = {
 						break;
 					}
 				}
+				
+				idx++;
 			} while (!status);
 		
 			return new_exit_color;
@@ -215,6 +221,7 @@ var SwitchTaskPropertyObj = {
 					}
 					
 					//update exits that were changed
+					ProgrammingTaskUtil.updateTaskExitsConnectionExitLabelAttribute(task_id, labels_to_update);
 					ProgrammingTaskUtil.updateTaskExitsConnectionsLabels(task_id, labels_to_update);
 				}
 			}
@@ -234,7 +241,8 @@ var SwitchTaskPropertyObj = {
 			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
 			var labels = SwitchTaskPropertyObj.getExitLabels(task_property_values);
 			ProgrammingTaskUtil.updateTaskExitsLabels(task_id, labels);
-		
+			ProgrammingTaskUtil.updateTaskExitsConnectionExitLabelAttribute(task_id, labels);
+			
 			onEditLabel(task_id);
 			
 			ProgrammingTaskUtil.onTaskCreation(task_id);

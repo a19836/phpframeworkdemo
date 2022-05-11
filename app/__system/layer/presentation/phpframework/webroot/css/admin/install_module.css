@@ -102,7 +102,7 @@ body,
 	border:1px solid #efbebe;
 	border-radius:5px;
 	background:#efbebe7a;
-	color:red;
+	color:#B51E3F;
 }
 
 .install_store_module,
@@ -148,7 +148,7 @@ body,
 	font-weight:bold;
 }
 .messages li ul li.error {
-	color:red;
+	color:#B51E3F;
 	font-weight:bold;
 }
 .messages li ul li.alert {

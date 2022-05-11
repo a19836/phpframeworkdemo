@@ -8,7 +8,6 @@ include $EVC->getConfigPath("config");
 //Set common webroot path for the ui editors in CommonModuleSettingsUI::getLayoutUIEditorMenuWidgetsHtml
 CommonModuleSettingsUI::$COMMON_WEBROOT_PATH = $EVC->getWebrootPath($common_project_name);
 CommonModuleSettingsUI::$COMMON_WEBROOT_URL = $project_common_url_prefix;
-CommonModuleSettingsUI::$LAYOUT_UI_EDITOR_PRESENTATION_COMMON_WIDGETS_URL = $project_url_prefix . "widget/";
 CommonModuleSettingsUI::$LAYOUT_UI_EDITOR_PRESENTATION_COMMON_WIDGETS_FOLDER_PATH = $EVC->getViewsPath() . "presentation/common_editor_widget/";
 CommonModuleSettingsUI::$LAYOUT_UI_EDITOR_USER_WIDGET_FOLDERS_PATH = $layout_ui_editor_user_widget_folders_path;
 CommonModuleSettingsUI::$WEBROOT_CACHE_FOLDER_PATH = $webroot_cache_folder_path;

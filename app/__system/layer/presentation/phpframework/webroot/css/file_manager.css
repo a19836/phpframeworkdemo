@@ -1,7 +1,8 @@
 :root {
   	/*--icon-folder-color:#FAB12B;*/
   	--icon-folder-color:#83889E;
-  	--icon-file-color:#BFC4DB;
+  	--icon-file-color:#83889E; /*#BFC4DB*/
+  	--icon-alert-color:#FC3C44;/*#FF0000*/
 }
 
 .mytree {margin-bottom:20px;}
@@ -36,7 +37,7 @@
 .mytree .jstree-anchor {cursor:default; vertical-align:middle;}
 .mytree a.link * {cursor:pointer;}
 .mytree li > .sub_menu {margin-left:5px; color:#ccc;}
-.mytree li > .sub_menu:hover::after {content:"Click me"; position:fixed; top:auto; left:auto; margin:-8px 0 0 -28px; color:var(--main-template-color); font: initial; font-family:var(--main-font-family); font-size:8px; }
+.mytree li > .sub_menu:hover::after {content:"Click me"; position:fixed; top:auto; left:auto; margin:-8px 0 0 -40px; color:var(--main-template-color); font: initial; font-family:var(--main-font-family); font-size:8px; }
 
 .mytree li.disabled > a {opacity:.3;}
 .mytree li.module_folder_disabled > a, .mytree li.module_folder_disabled > ul {opacity:.3;}
@@ -97,7 +98,7 @@
 }
 .mytree i.undefined_file::after {
 	content:"\3f";
-	color:#ff0000;
+	color:var(--icon-alert-color);
 }
 .mytree i.reserved_file::before {
 	font:var(--fa-font-regular);
@@ -108,7 +109,7 @@
 }
 .mytree i.reserved_file::after {
 	content:"\f05e";
-	color:#ff0000;
+	color:var(--icon-alert-color);
 }
 .mytree i.reserved_folder::before {
 	content:"\f07c";
@@ -116,11 +117,12 @@
 }
 .mytree i.reserved_folder::after {
 	content:"\f05e";
-	color:#ff0000;
+	color:var(--icon-alert-color);
 }
 
 .mytree li[data-jstree='{"icon":"reserved_folder"}'] > a,
-  .mytree li[data-jstree='{"icon":"reserved_file"}'] > a {
+  .mytree li[data-jstree='{"icon":"reserved_file"}'] > a,
+  .mytree li[data-jstree='{"icon":"attribute"}'] > a {
 	opacity:.7
 }
 
@@ -665,7 +667,7 @@
 	/*content:"\f247";
 	color:#888;*/
 	content: "\f05e";
-	color:#ff0000;
+	color:var(--icon-alert-color);
 }
 .mytree i.dao::before {
 	/*content:"\f247";*/
@@ -674,7 +676,7 @@
 }
 .mytree i.dao::after {
 	content: "\f05e";
-	color:#ff0000;
+	color:var(--icon-alert-color);
 }
 .mytree i.objtype::before {
 	font:var(--fa-font-brands);
@@ -703,7 +705,7 @@
 	/*content:"\f304";
 	color:#888;*/
 	content: "\f05e";
-	color:#ff0000;
+	color:var(--icon-alert-color);
 }
 .mytree i.code_workflow_editor_task::before {
 	/*font:var(--fa-font-brands);
@@ -716,7 +718,7 @@
 	/*content:"\f304";
 	color:#888;*/
 	content: "\f05e";
-	color:#ff0000;
+	color:var(--icon-alert-color);
 }
 .mytree i.layout_ui_editor::before {
 	/*content:"\f53f";*/
@@ -727,7 +729,7 @@
 	/*content:"\f304";
 	color:#888;*/
 	content: "\f05e";
-	color:#ff0000;
+	color:var(--icon-alert-color);
 }
 .mytree i.layout_ui_editor_widget::before {
 	/*content:"\f0c8";*/
@@ -738,7 +740,7 @@
 	/*content:"\f304";
 	color:#888;*/
 	content: "\f05e";
-	color:#ff0000;
+	color:var(--icon-alert-color);
 }
 .mytree i.test_unit::before {
 	/*content:"\f07c";*/
@@ -749,7 +751,7 @@
 	/*content:"\f0ae";
 	color:#888;*/
 	content: "\f05e";
-	color:#ff0000;
+	color:var(--icon-alert-color);
 }
 .mytree i.test_unit_obj::before {
 	content:"\f0ae";

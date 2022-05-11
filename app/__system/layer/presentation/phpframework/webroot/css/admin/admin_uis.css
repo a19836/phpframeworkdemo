@@ -1,6 +1,7 @@
 body,
   #main_column {
 	background:#fff !important;
+	min-height:auto;
 }
 
 #title {

@@ -5,19 +5,57 @@ include_once $main_app_folder_path . "/lib/org/phpframework/util/web/html/CssAnd
 
 $GLOBALS["layout_ui_editor_widgets_files_included"] = array();
 
+function getDefaultWidgetsPriorityFiles() {
+	return array(
+		"containers", 
+		"generic" => array("href", "image", "video", "list", "iframe"), 
+		"table" => array("table", "thead", "tbody", "tfoot", "tr", "th", "td"), 
+		"form" => array("form", "input", "textarea", "select", "checkbox", "radio"), 
+		"advanced" => array(
+			"combined_html" => array(),
+			"include" => array("link", "style", "script"),
+			"code" => array("php", "ptl"),
+		),
+	);
+}
+
 function scanWidgets($dir, $options = null) {
 	$result = array(); 
 	
 	if ($dir && is_dir($dir)) {
-		$cdir = scandir($dir);
+		$files = scandir($dir);
 		
-		foreach ($cdir as $key => $value)
-			if (!in_array($value, array(".", ".."))) { 
+		//sort files
+		if ($options && $options["priority_files"]) {
+			$priority_files = $options["priority_files"];
+			$new_files = array();
+			
+			foreach ($priority_files as $k => $v) {
+				$file_name = is_numeric($k) ? $v : $k;
+				
+				if ($file_name) {
+					$index = array_search($file_name, $files);
+					
+					if (is_numeric($index)) {
+						$new_files[] = $files[$index];
+						$files[$index] = null;
+					}
+				}
+			}
+			
+			$files = array_merge($new_files, $files);
+		}
+		
+		foreach ($files as $idx => $value)
+			if ($value && !in_array($value, array(".", ".."))) { 
 				if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
 					if (file_exists($dir . DIRECTORY_SEPARATOR . $value . DIRECTORY_SEPARATOR . "settings.xml")) 
 						$result[$value] = $dir . DIRECTORY_SEPARATOR . $value . DIRECTORY_SEPARATOR . "settings.xml";
 					else {
-						$sub_result = scanWidgets($dir . DIRECTORY_SEPARATOR . $value, $options); 
+						$sub_options = $options;
+						$sub_options["priority_files"] = $priority_files ? $priority_files[$value] : null;
+						
+						$sub_result = scanWidgets($dir . DIRECTORY_SEPARATOR . $value, $sub_options); 
 						
 						if ($sub_result)
 							$result[$value] = $sub_result;

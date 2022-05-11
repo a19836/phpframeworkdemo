@@ -147,7 +147,7 @@
 /* ERROR */
 .error {
 	text-align:center;
-	color:red;
+	color:#B51E3F;
 }
 
 /* INCLUDES */
@@ -878,7 +878,8 @@
 	overflow:auto;
 	box-sizing:border-box;
 	z-index:1050;
-	background:#fff;
+	color:var(--main-settings-color);
+	background:var(--main-settings-bg);
 	font-size:8pt;
 }
 .relationship .settings:not(.resizing) {
@@ -892,10 +893,10 @@
 }
 
 .relationship .settings .settings_header {
-	height:30px;
+	height:35px;
 	line-height:25px;
-	margin-top:-40px;
-	padding:5px;
+	margin-top:-45px;
+	padding:8px 5px 5px 10px;
 	position:fixed;
 	left:0;
 	right:0;
@@ -905,8 +906,9 @@
 	z-index:1051;
 	
 	/*font-weight:bold;*/
-	color:var(--main-iframe-color);
-	background:var(--main-iframe-bg);
+	border-bottom:1px solid var(--main-settings-header-border);
+	color:var(--main-settings-color);
+	background:var(--main-settings-bg);
 	/*background: -moz-linear-gradient(top, #eee 50%, #f7f7f7 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #f7f7f7));
 	background: -webkit-linear-gradient(top, #eee 50%, #f7f7f7 100%);
@@ -916,11 +918,9 @@
 	border-top:1px solid #eee;*/
 }
 .relationship .settings.collapsed .settings_header {
-	margin-top:-25px;
+	margin-top:-30px;
 	border:0;
 	
-	color:inherit;
-	background:transparent;
 	/*background: -moz-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(50%, #eee), color-stop(100%, #ffffff73));
 	background: -webkit-linear-gradient(bottom, #eee 50%, #ffffff73 100%);
