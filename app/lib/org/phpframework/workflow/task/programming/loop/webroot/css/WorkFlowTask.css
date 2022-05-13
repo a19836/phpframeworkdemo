@@ -50,7 +50,7 @@
 	text-align:center;
 }
 .jsplumbtaskworkflow .task.task_loop .ep[connection_exit_id=start_exit] span {
-	background:#335ACC;
+	background:#31498f;
 }
 .jsplumbtaskworkflow .task.task_loop .ep[connection_exit_id=default_exit] span {
 	background:#2C2D34;

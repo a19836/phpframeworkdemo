@@ -107,7 +107,7 @@ body,
 	margin-bottom:20px;
 }
 #terms_and_conditions .title h1 {
-	font-size:20px;
+	font-size:16px;
 	margin:0;
 	padding:0;
 }
@@ -149,7 +149,7 @@ body,
 	margin-bottom:20px;
 }
 #project_name .title h1 {
-	font-size:20px;
+	font-size:16px;
 	margin:0;
 	padding:0;
 	text-align:center;
@@ -170,7 +170,7 @@ body,
 
 /* DB */
 .db_settings {width:100%; min-height:300px; text-align:left; padding-top:20px;}
-.db_settings h1 {width:100%; font-weight:bold; font-size:20px; text-align:center; line-height:30px; margin:10px 0px; padding:0px 0px;}
+.db_settings h1 {width:100%; font-size:16px; text-align:center; line-height:30px; margin:10px 0px; padding:0px 0px;}
 .db_settings .info {width:100%; font-size:14px; text-align:center; margin-bottom:20px;}
 .db_settings .warning {width:100%; font-size:14px; text-align:center; margin-top:20px; color:#B51E3F;}
 .db_settings .info .advanced {font-weight:bold;}
@@ -230,7 +230,7 @@ body,
 	margin-bottom:20px;
 }
 #end .title h1 {
-	font-size:20px;
+	font-size:16px;
 	margin:0;
 	padding:0;
 }

@@ -55,6 +55,7 @@
 }
 .module_form_settings #ui > .taskflowchart {
 	min-height:400px;
+	max-height:calc(100vh - 60px);
 	overflow:visible;
 }
 .module_form_settings #ui.tasks_flow_full_screen > .taskflowchart {
@@ -1225,6 +1226,14 @@
 .module_form_settings .taskflowchart.fixed_properties .selected_task_properties > .resize_properties_panel .button, 
   .module_form_settings .taskflowchart.fixed_properties .selected_connection_properties .resize_properties_panel .button {
 	margin:0;
+}
+.module_form_settings .taskflowchart.fixed_properties .selected_task_properties > .toggle_properties_side_icon, 
+  .module_form_settings .taskflowchart.fixed_properties .selected_connection_properties .toggle_properties_side_icon {
+	display:none;
+}
+.module_form_settings .taskflowchart.fixed_properties .selected_task_properties > .generic_buttons, 
+  .module_form_settings .taskflowchart.fixed_properties .selected_connection_properties .generic_buttons {
+	right:55px;
 }
 .module_form_settings .taskflowchart.fixed_properties .selected_task_properties .form-group-item {
 	margin-bottom:0;

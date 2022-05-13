@@ -29,7 +29,7 @@ var DBQueryTaskPropertyObj = {
 	on_complete_select_start_task : null,
 	
 	connection_exit_props : {
-		color: "#000",
+		color: "#31498f",
 		id: "layer_exit",
 		overlay: "No Arrows",
 		type: "Straight"
@@ -49,33 +49,28 @@ var DBQueryTaskPropertyObj = {
 				onEditLabel(task_id);
 				WF.jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
 		
-				var attributes_elm = task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " .attributes");
+				var attributes_elm = task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " .table_attrs");
 				if (!attributes_elm[0]) {
-					task.children("." + WF.jsPlumbTaskFlow.task_eps_class_name).append('<div class="attributes"></div>');
-					attributes_elm = task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " .attributes");
+					attributes_elm = $('<table class="table_attrs"></table>');
+					task.children("." + WF.jsPlumbTaskFlow.task_eps_class_name).append(attributes_elm);
 				}
 			
 				var attr_names = data.table_attr_names;
 			
 				if (attr_names) {
 					//PREPARE ATTRIBUTES
-					var html_checks = "";
-					var html_names = "";
+					var html = "";
 					var count = 0;
 					for (var attr_name in attr_names) {
 						var checked = checkIfValueIsTrue(attr_names[attr_name]);
 						attr_name = attr_name ? attr_name : "";
 					
-						html_names += '<div class="table_attr"><span class="check"></span><span class="name"><p>' + attr_name + '</p></span></div>';
-					
-						html_checks += '<div class="table_attr"><span class="check"><input type="checkbox" name="query_attributes[' + table_name +  '][' + attr_name + ']" value="1" ' + (checked ? "checked" : "") + ' attribute="' + attr_name + '" /></span></div>';
+						html += '<tr class="table_attr"><td class="check"><input type="checkbox" name="query_attributes[' + table_name +  '][' + attr_name + ']" value="1" ' + (checked ? "checked" : "") + ' attribute="' + attr_name + '" /></td><td class="name">' + attr_name + '</td></tr>';
 					
 						count++;
 					}
 			
-					task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " ." + WF.jsPlumbTaskFlow.task_ep_class_name).html(html_names);
-					
-					attributes_elm.html(html_checks);
+					attributes_elm.html(html);
 					
 					attributes_elm.find(".check input").click(function(originalEvent) {
 						if (originalEvent && originalEvent.stopPropagation) originalEvent.stopPropagation();//bc checkbox is inside of eps and task, we should avoid the click of the eps and task to be trigger
@@ -198,26 +193,24 @@ var DBQueryTaskPropertyObj = {
 		var source_table = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(connection.sourceId);
 		var target_table = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(connection.targetId);
 		
-		var attrs = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id + " #" + connection.sourceId + " > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " .attributes .table_attr .check input");
+		var attrs = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id + " #" + connection.sourceId + " > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " .table_attrs .table_attr .check input");
 		
 		var source_attributes = [];
 		for (var i = 0; i < attrs.length; i++) {
 			var attr = $(attrs[i]).attr("attribute");
 			
-			if (attr != "*") {
+			if (attr != "*") 
 				source_attributes.push(attr);
-			}
 		}
 		
-		attrs = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id + " #" + connection.targetId + " > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " .attributes .table_attr .check input");
+		attrs = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id + " #" + connection.targetId + " > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " .table_attrs .table_attr .check input");
 		
 		var target_attributes = [];
 		for (var i = 0; i < attrs.length; i++) {
 			var attr = $(attrs[i]).attr("attribute");
 			
-			if (attr != "*") {
+			if (attr != "*") 
 				target_attributes.push(attr);
-			}
 		}
 		
 		DBQueryTaskPropertyObj.selected_connection_properties_data = {

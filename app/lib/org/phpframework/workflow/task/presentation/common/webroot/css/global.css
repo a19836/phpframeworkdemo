@@ -157,8 +157,10 @@
 	width:auto; /* bc of the ui html be dynamic, we must set the width to auto. Otherwise the task properties popup will appear with the wrong width. */
 	height:auto; /* bc of the ui html be dynamic, we must set the height to auto. Otherwise the task properties popup will appear with the wrong height. */
 }
-.selected_task_properties .properties_task_id {
-	display:none;
+.selected_task_properties .properties_task_id,
+  .selected_task_properties > .toggle_properties_side_icon, 
+  .selected_connection_properties > .toggle_properties_side_icon {
+	display:none !important;
 }
 
 /* Task Properties - settings */

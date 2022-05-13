@@ -35,6 +35,7 @@ body,
 }
 .select_layers .db_layer select, .select_layers .db_driver select, .select_layers .type select, .select_layers .authenticated_template select {
 	width:180px;
+	font-size:inherit;
 }
 .select_layers .error {
 	text-align:center;

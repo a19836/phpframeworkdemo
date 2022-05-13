@@ -31,9 +31,11 @@ body,
 	min-width:100%;
 	max-width:100%;
 	margin-bottom:10px;
+	font-size:inherit;
 }
 .file_upload select[name=db_driver] {
 	max-width:calc(100% - 30px);
+	font-size:inherit;
 }
 .file_upload select {
 	/*text-align:center;*/
@@ -47,6 +49,7 @@ body,
 	border:1px solid #eee;
 	border-radius:3px;
 	direction:rtl;
+	font-size:inherit;
 }
 .file_upload .upload_file .delete {
 	margin:0 0 0 5px;
@@ -74,6 +77,7 @@ body,
 	border:1px solid #eee;
 	border-radius:3px;
 	direction:rtl;
+	font-size:inherit;
 }
 .file_upload .upload_url .delete {
 	margin:0 0 0 10px;

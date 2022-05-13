@@ -13,7 +13,7 @@ $(function () {
 	});
 	
 	//prepare top_bar
-	$(".taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu");
+	$(".taskflowchart").addClass("with_top_bar_menu fixed_side_properties").children(".workflow_menu").addClass("top_bar_menu");
 	
 	//init auto save
 	addAutoSaveMenu(".taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.save", "onToggleWorkflowAutoSave");
@@ -192,7 +192,7 @@ function createDiagamSQL() {
 	var popup = $('.create_diagram_sql_popup');
 	
 	if (!popup[0]) {
-		popup = $('<div class="create_diagram_sql_popup myfancypopup"><iframe></iframe></div>');
+		popup = $('<div class="create_diagram_sql_popup with_iframe_title myfancypopup"><iframe></iframe></div>');
 		$("body").append(popup);
 	}
 	else {

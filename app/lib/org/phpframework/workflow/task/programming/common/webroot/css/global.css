@@ -5,7 +5,7 @@
 }
 
 /* START - FIX PROPERTIES TO BOTTOM */
-.taskflowchart:not(.fixed_properties):not(.fixed_side_properties) .selected_task_properties:not(.maximize_properties) {
+/*.taskflowchart:not(.fixed_properties):not(.fixed_side_properties) .selected_task_properties:not(.maximize_properties) {
 	width:auto;
 	height:auto;
 	max-height:70%;
@@ -23,13 +23,16 @@
 }
 .taskflowchart:not(.fixed_properties):not(.fixed_side_properties).reverse .selected_task_properties:not(.maximize_properties) {
 	left:0 !important;
-	right:255px !important;
+	right:0 !important;
 }
 .taskflowchart:not(.fixed_properties):not(.fixed_side_properties):not(.reverse) .selected_task_properties.tasks_menu_hidden {
 	left:5px !important;
 }
 .taskflowchart:not(.fixed_properties):not(.fixed_side_properties).reverse .selected_task_properties.tasks_menu_hidden {
 	right:5px !important;
+}*/
+.taskflowchart:not(.fixed_properties):not(.fixed_side_properties) .popup_overlay {
+	height:auto !important;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties > .content {
 	padding:5px 5px 5px 7px;
@@ -289,6 +292,7 @@
 .jsplumbtaskmenu .task {
 	overflow:visible !important;
 	margin-bottom:30px !important;
+	background-image:url('../img/user_generated_task_bg.svg');
 }
 .jsplumbtaskmenu .task span {
 	width:100%;
@@ -393,6 +397,7 @@
 	bottom:0;
 	left:0;
 	right:0;*/
+	background-image:url('../img/user_generated_task_bg.svg');
 	background-repeat:no-repeat;
 	background-position:center bottom;
 	background-size:100% 100%;

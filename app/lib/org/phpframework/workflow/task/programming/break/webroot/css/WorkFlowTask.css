@@ -7,6 +7,9 @@
 .jsplumbtaskworkflow .task.task_break .eps .ep {
 	display:none;
 }
+.jsplumbtaskworkflow .task.task_break:hover:after {
+	content:"Click to view menu or move. Linking to boxes is not allowed!";
+}
 
 .break_task_html {
 	width:295px;

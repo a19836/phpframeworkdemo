@@ -30,7 +30,7 @@ DBTableTaskPropertyObj.table_collations = DBTableTaskPropertyObj.table_collation
 DBTableTaskPropertyObj.column_collations = DBTableTaskPropertyObj.column_collations ? DBTableTaskPropertyObj.column_collations : ' . json_encode($column_collations) . ';
 DBTableTaskPropertyObj.table_storage_engines = DBTableTaskPropertyObj.table_storage_engines ? DBTableTaskPropertyObj.table_storage_engines : ' . json_encode($table_storage_engines) . ';
 </script>'; ?>
-<div class="db_table_task_html">
+<div class="db_table_task_html simple_ui_shown attributes_table_shown">
 	<div class="table_name">
 		<label>Table Name:</label>
 		<input type="text" name="table_name" value="" />
@@ -68,35 +68,39 @@ DBTableTaskPropertyObj.table_storage_engines = DBTableTaskPropertyObj.table_stor
 		</div>
 		
 		<div class="attributes">
-			<label>Table Attributes: <a class="icon add" onClick="DBTableTaskPropertyObj.addTableAttribute(this)">ADD</a></label>
+			<label>Table Attributes: <a class="icon add" onClick="DBTableTaskPropertyObj.addTableAttribute(this)" title="Add new attribute">ADD</a> <a class="icon view" onClick="DBTableTaskPropertyObj.toggleTableAndListView(this)" title="toggle from table to list view and vice-versa">CONVERT</a></label>
 		</div>
 		
-		<table>
-			<thead>
-				<tr>
-					<th class="table_attr_primary_key table_header">PK</th>
-					<th class="table_attr_name table_header">Name</th>
-					<th class="table_attr_type table_header">Type</th>
-					<th class="table_attr_length table_header">Length</th>
-					<th class="table_attr_null table_header">Null</th>
-					<th class="table_attr_unsigned table_header">Unsigned</th>
-					<th class="table_attr_unique table_header">Unique</th>
-					<th class="table_attr_auto_increment table_header">Auto Increment</th>
-					<th colspan="2" class="table_attr_default table_header">Default</th>
-					<th class="table_attr_extra table_header">Extra</th>
-					<th class="table_attr_charset table_header">Charset</th>
-					<th class="table_attr_collation table_header">Collation</th>
-					<th class="table_attr_comment table_header">Comments</th>
-					<th class="table_attr_icons">
-						<a class="icon add" onClick="DBTableTaskPropertyObj.addTableAttribute(this)">ADD</a>
-					</th>
-				</tr>
-			</thead>
-			<tbody class="table_attrs">
-			
-			</tbody>
-		</table>
+		<div class="responsive_table">
+			<table>
+				<thead>
+					<tr>
+						<th class="table_attr_primary_key table_header">PK</th>
+						<th class="table_attr_name table_header">Name</th>
+						<th class="table_attr_type table_header">Type</th>
+						<th class="table_attr_length table_header">Length</th>
+						<th class="table_attr_null table_header">Null</th>
+						<th class="table_attr_unsigned table_header">Unsigned</th>
+						<th class="table_attr_unique table_header">Unique</th>
+						<th class="table_attr_auto_increment table_header">Auto Increment</th>
+						<th colspan="2" class="table_attr_default table_header">Default</th>
+						<th class="table_attr_extra table_header">Extra</th>
+						<th class="table_attr_charset table_header">Charset</th>
+						<th class="table_attr_collation table_header">Collation</th>
+						<th class="table_attr_comment table_header">Comments</th>
+						<th class="table_attr_icons">
+							<a class="icon add" onClick="DBTableTaskPropertyObj.addTableAttribute(this)">ADD</a>
+						</th>
+					</tr>
+				</thead>
+				<tbody class="table_attrs"></tbody>
+			</table>
+		</div>
+		
+		<div class="list_attributes">
+			<ul class="list_attrs"></ul>
+		</div>
 	</div>
 	
-	<div class="task_property_exit" exit_id="layer_exit" exit_color="#000" exit_type="Flowchart" exit_overlay="No Arrows"></div>
+	<div class="task_property_exit" exit_id="layer_exit" exit_color="#31498f" exit_type="Flowchart" exit_overlay="No Arrows"></div>
 </div>

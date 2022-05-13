@@ -52,6 +52,11 @@ var DBTableTaskPropertyObj = {
 		
 		task_html_elm.tabs();
 		
+		task_html_elm.find(" > ul > li > a").click(function(ev) {
+			var tab_panel_id = $(this).attr("href").replace("#", "");
+			task_html_elm.removeClass("simple_ui_shown advanced_ui_shown").addClass(tab_panel_id + "_shown");
+		});
+		
 		var charsets = $.isPlainObject(DBTableTaskPropertyObj.table_charsets) ? DBTableTaskPropertyObj.table_charsets : {};
 		var collations = $.isPlainObject(DBTableTaskPropertyObj.table_collations) ? DBTableTaskPropertyObj.table_collations : {};
 		var storage_engines = $.isPlainObject(DBTableTaskPropertyObj.table_storage_engines) ? DBTableTaskPropertyObj.table_storage_engines : {};
@@ -176,12 +181,19 @@ var DBTableTaskPropertyObj = {
 		
 		if (simple_attributes_html)
 			task_html_elm.find(".simple_attributes > ul > .no_simple_attributes").hide();
+		
+		//converts table to list by default if taskflowchart is fixed_side_properties
+		var is_fixed_properties_panel = $("#" + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().closest(".taskflowchart").hasClass("fixed_side_properties");
+		
+		if (is_fixed_properties_panel)
+			DBTableTaskPropertyObj.convertTableToList( task_html_elm.find(".attributes .view")[0] );
 	},
 	
 	onSubmitTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		var task_html_elm = properties_html_elm.find('.db_table_task_html');
 		var task_label = task_html_elm.find(".table_name input").val();
 		var label_obj = {label: task_label};
+		var is_attributes_list_shown = task_html_elm.hasClass("attributes_list_shown");
 		
 		//check which tab is selected and if is Simple UI tab, convert the attributes to advanced UI
 		var active_tab = task_html_elm.tabs('option', 'active');
@@ -193,6 +205,10 @@ var DBTableTaskPropertyObj = {
 			else
 				return false;
 		}
+		
+		//converts list to table first, if apply
+		if (is_attributes_list_shown)
+			DBTableTaskPropertyObj.convertListToTable( task_html_elm.find(".attributes .view")[0] );
 		
 		//PREPARE has_default checkboxes according with the default values:
 		var has_defaults = task_html_elm.find(".table_attr_has_default .task_property_field");
@@ -252,6 +268,11 @@ var DBTableTaskPropertyObj = {
 			
 			return true;
 		}
+		
+		//converts back table to list
+		if (is_attributes_list_shown)
+			DBTableTaskPropertyObj.convertTableToList( task_html_elm.find(".attributes .view")[0] );
+		
 		return false;
 	},
 	
@@ -306,12 +327,12 @@ var DBTableTaskPropertyObj = {
 			var lengths = data.table_attr_lengths;
 			var uks = data.table_attr_uniques;
 			
-			var html = "";
-			
 			if (names) {
 				var column_types_ignored_props = $.isPlainObject(DBTableTaskPropertyObj.column_types_ignored_props) ? DBTableTaskPropertyObj.column_types_ignored_props : {};
 				
 				//PREPARE ATTRIBUTES
+				var html = '<table class="table_attrs">';
+				
 				for (var i = 0; i < names.length; i++) {
 					var name = names[i] && names[i].nodeName && names[i].nodeName.toLowerCase() == "input" ? $(names[i]).val() : names[i];
 					var primary_key = primary_keys[i] && primary_keys[i].nodeName && primary_keys[i].nodeName.toLowerCase() == "input" ? $(primary_keys[i]).is(":checked") : primary_keys[i];
@@ -331,10 +352,14 @@ var DBTableTaskPropertyObj = {
 					var name_title = "Attribute Name: " + name.replace(/"/g, "&quot;");
 					var type_title = "Attribute Type: " + type + "\nAttribute Length: " + length;
 					
-					html += '<div class="table_attr"><span class="primary_key" title="' + primary_key_title + '"><p>' + primary_key + '</p></span><span class="name" title="' + name_title + '"><p>' + name + '</p></span><span class="type" title="' + type_title + '"><p>' + type + (length ? " (" + length + ")" : "") + '</p></span></div>';
+					html += '<tr class="table_attr"><td class="primary_key" title="' + primary_key_title + '">' + primary_key + '</td><td class="name" title="' + name_title + '">' + name + '</td><td class="type" title="' + type_title + '">' + type + (length ? " (" + length + ")" : "") + '</td></tr>';
 				}
-			
-				task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " ." + WF.jsPlumbTaskFlow.task_ep_class_name).html(html);
+				
+				html += "</table>";
+				
+				var eps = task.children("." + WF.jsPlumbTaskFlow.task_eps_class_name);
+				eps.children(".table_attrs").remove();
+				eps.append(html);
 	
 				this.prepareTableForeignKeys(task_id);
 				
@@ -358,8 +383,8 @@ var DBTableTaskPropertyObj = {
 			var fks = this.getTaskForeignKeys(task_id);
 			var task = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskById(task_id);
 			
-			var primary_keys = task.find(" > ." + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.task_eps_class_name + " ." + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.task_ep_class_name + " .table_attr .primary_key p");
-			var names = task.find(" > ." + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.task_eps_class_name + " ." + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.task_ep_class_name + " .table_attr .name p");
+			var primary_keys = task.find(" > ." + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.task_eps_class_name + " .table_attrs .table_attr .primary_key");
+			var names = task.find(" > ." + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.task_eps_class_name + " .table_attrs .table_attr .name");
 		
 			if (names) {
 				for (var i = 0; i < names.length; i++) {
@@ -387,7 +412,7 @@ var DBTableTaskPropertyObj = {
 						case "FUK": title = "Foreign and Unique Key"; break;
 					}
 					
-					j_primary_key.parent().attr("title", title);
+					j_primary_key.attr("title", title);
 					j_primary_key.html(str);
 				}
 			}
@@ -696,9 +721,15 @@ var DBTableTaskPropertyObj = {
 	
 	addTableAttribute : function(elm) {
 		var html = DBTableTaskPropertyObj.getTableAttributeHtml();
+		var task_html_elm = $(elm).parent().closest('.db_table_task_html');
+		//var task_html_elm = $("#" + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.main_tasks_flow_obj_id + " .db_table_task_html");
 		
-		$(elm).parent().closest(".db_table_task_html").find(".table_attrs").append(html);
-		//$("#" + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.main_tasks_flow_obj_id + " .db_table_task_html .table_attrs").append(html);
+		if (task_html_elm.hasClass("attributes_list_shown")) {
+			var column_names = DBTableTaskPropertyObj.getTableColumnNames( task_html_elm.find("table") );
+			DBTableTaskPropertyObj.convertTableRowToListItem(task_html_elm.find(".list_attrs"), $(html), column_names);
+		}
+		else
+			task_html_elm.find(".table_attrs").append(html);
 	},
 	
 	removeTableAttribute : function(elm) {
@@ -1075,7 +1106,7 @@ var DBTableTaskPropertyObj = {
 						+ '<li' + ($.inArray("default", column_types_hidden_props) != -1 ? ' style="display:none;"' : '') + '>'
 							+ '<label>Default Value:</label>'
 							+ '<input type="checkbox" class="simple_attr_has_default" ' + (has_default ? 'checked="checked"' : '') + ' value="1" ' + (is_default_disabled ? 'disabled="disabled"' : '') + ' onClick="DBTableTaskPropertyObj.onClickSimpleAttributeHasDefaultCheckBox(this)" title="Enable/Disable Default value" />'
-							+ '<input type="text" class="simple_attr_default" value="' + default_value + '" placeHolder="write default value" ' + (has_default && !is_default_disabled ? '' : 'disabled="disabled"') + ' />'
+							+ '<input type="text" class="simple_attr_default" value="' + default_value + '" placeHolder="write default value" title="write default value" ' + (has_default && !is_default_disabled ? '' : 'disabled="disabled"') + ' />'
 						+ '</li>'
 					+ '</ul>'
 					+ '<input type="hidden" class="simple_attr_primary_key" value="' + (primary_key ? '1' : '') + '" />'
@@ -1829,5 +1860,111 @@ var DBTableTaskPropertyObj = {
 					task_property_values["table_attr_" + prop_name + "s"][i] = null;
 			}
 		});
+	},
+	
+	toggleTableAndListView : function(elm) {
+		var task_html_elm = $(elm).parent().closest('.db_table_task_html');
+		
+		if (task_html_elm.hasClass("attributes_list_shown"))
+			this.convertListToTable(elm);
+		else
+			this.convertTableToList(elm);
+	},
+	
+	convertTableToList : function(elm) {
+		elm = $(elm);
+		var task_html_elm = elm.parent().closest('.db_table_task_html');
+		var table = task_html_elm.find("table");
+		var ul = task_html_elm.find(".list_attributes > ul.list_attrs");
+		var rows = table.find("tbody.table_attrs tr");
+		var column_names = this.getTableColumnNames(table);
+		
+		ul.html("");
+		
+		for (var i = 0 ; i < rows.length; i++)
+			this.convertTableRowToListItem(ul, $(rows[i]), column_names);
+		
+		task_html_elm.removeClass("attributes_table_shown").addClass("attributes_list_shown");
+	},
+	
+	getTableColumnNames : function(table) {
+		var column_names = [];
+		var ths = table.find("thead tr th");
+		
+		for (var i = 0 ; i < ths.length; i++) {
+			th = $(ths[i]);
+			column_names.push( th.html() );
+			
+			if (th[0].hasAttribute("colspan")) {
+				var length = parseInt( th.attr("colspan") );
+				
+				if ($.isNumeric(length) && length > 0)
+					for (var j = 0; j < length - 1; j++)
+						column_names.push( th.html() );
+			}
+		}
+		
+		return column_names;
+	},
+	
+	convertTableRowToListItem : function(ul, row, column_names) {
+		var columns = row.children("td");
+		var li = document.createElement("LI");
+		li = $(li);
+		li.attr("class", row.attr("class") );
+		ul.append(li);
+		
+		for (var i = 0 ; i < columns.length; i++) {
+			column = $(columns[i]);
+			var column_name = column_names[i];
+			var div = document.createElement("DIV");
+			div = $(div);
+			
+			div.attr("class", column.attr("class"));
+			div.attr("style", column.attr("style"));
+			
+			if (!column.hasClass("table_attr_icons"))
+				div.append('<label>' + column_name + ':</label>');
+			
+			div.append( column.children() );
+			
+			li.append(div);
+		}
+	},
+	
+	convertListToTable : function(elm) {
+		elm = $(elm);
+		var task_html_elm = elm.parent().closest('.db_table_task_html');
+		var tbody = task_html_elm.find("table tbody.table_attrs");
+		var lis = task_html_elm.find(".list_attributes > ul.list_attrs > li");
+		
+		tbody.html("");
+		
+		for (var i = 0 ; i < lis.length; i++) {
+			li = $(lis[i]);
+			var columns = li.children("div");
+			var tr = document.createElement("TR");
+			tr = $(tr);
+			tr.attr("class", li.attr("class") );
+			tbody.append(tr);
+			
+			for (var j = 0 ; j < columns.length; j++) {
+				column = $(columns[j]);
+				var td = document.createElement("TD");
+				td = $(td);
+				
+				td.attr("class", column.attr("class"));
+				td.attr("style", column.attr("style"));
+				
+				if (!column.hasClass("table_attr_icons"))
+					column.children("label").first().remove();
+				
+				td.append( column.children() );
+				
+				tr.append(td);
+			}
+		}
+		
+		task_html_elm.removeClass("attributes_list_shown").addClass("attributes_table_shown");
 	},
 };

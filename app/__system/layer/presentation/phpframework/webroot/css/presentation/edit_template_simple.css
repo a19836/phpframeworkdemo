@@ -18,7 +18,7 @@
   .top_bar:not(.advanced_items_shown) li.update_layout_from_settings + .separator {
 	display:none !important;
 }
-.top_bar li.sub_menu > ul {
+.top_bar li.sub_menu:hover > ul {
 	min-width:200px !important;
 }
 .top_bar li.toggle_main_settings .icon.toggle_main_settings::before {

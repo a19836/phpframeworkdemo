@@ -67,6 +67,12 @@
 }
 
 /* TASK FLOW CHART - TASK PROPERTIES */
+.taskflowchart.with_top_bar_menu.fixed_properties .selected_task_properties .generic_buttons, 
+  .taskflowchart.with_top_bar_menu.fixed_properties .selected_connection_properties .generic_buttons, 
+  .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_task_properties .generic_buttons, 
+  .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_connection_properties .generic_buttons {
+	right:55px;
+}
 .taskflowchart .selected_task_properties > .content > div,
   .taskflowchart .selected_task_properties > .content > div .ui-tabs-nav li.ui-tabs-active {
 	background:transparent;

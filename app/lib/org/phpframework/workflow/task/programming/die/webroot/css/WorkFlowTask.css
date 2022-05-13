@@ -8,6 +8,9 @@
 	border-color:transparent !important;
 	background-color:transparent !important;
 }
+.jsplumbtaskworkflow .task.task_exit:hover:after {
+	content:"Click to view menu or move. Linking to boxes is not allowed!";
+}
 
 .exit_task_html {
 	width:295px;

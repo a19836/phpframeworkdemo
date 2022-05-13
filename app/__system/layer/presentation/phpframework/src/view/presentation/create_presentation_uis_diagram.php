@@ -55,7 +55,7 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); $filter_by_layout_ur
 	<!-- Add Local JS and CSS files -->
 	<link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/create_presentation_uis_diagram.css" type="text/css" charset="utf-8" />
 	<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/create_presentation_uis_diagram.js"></script>
-	'; $head .= $tasks_head; $head .= $WorkFlowUIHandler->printTasksCSSAndJS(); $head .= $WorkFlowUIHandler->getJS($workflow_path_id, false, array("selected_task_properties_resizable" => true, "selected_connection_properties_resizable" => true)); $diagram_relative_folder_path = trim(substr($path, strpos($path, "/src/entity/") + strlen("/src/entity/"))); $diagram_relative_folder_path .= substr($diagram_relative_folder_path, -1) != "/" ? "/" : ""; $head .= '<script>
+	'; $head .= $tasks_head; $head .= $WorkFlowUIHandler->printTasksCSSAndJS(); $head .= $WorkFlowUIHandler->getJS($workflow_path_id, false, array("resizable_task_properties" => true, "resizable_connection_properties" => true)); $diagram_relative_folder_path = trim(substr($path, strpos($path, "/src/entity/") + strlen("/src/entity/"))); $diagram_relative_folder_path .= substr($diagram_relative_folder_path, -1) != "/" ? "/" : ""; $head .= '<script>
 		var layer_type = "pres";
 		var selected_project_id = "' . $selected_project_id . '";
 		

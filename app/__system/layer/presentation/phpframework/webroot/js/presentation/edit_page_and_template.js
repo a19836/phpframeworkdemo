@@ -2911,7 +2911,7 @@ function initIframeModulesBlocksToolbarTree() {
 			return false;
 		},
 		drag : function(event, ui) {
-			var w = $(window).width() - (ui.offset.left - $(window).scrollLeft()) - 20; //20 is bc the margin-left and margin-right of ".with_top_bar_tab > .ui-tabs-panel", which is 10px each.
+			var w = $(window).width() - (ui.offset.left - $(window).scrollLeft());
 			
 			iframe_modules_blocks_toolbar.css({
 				width: w + "px",

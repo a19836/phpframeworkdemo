@@ -219,14 +219,14 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 					alert("Block created successfully");
 				
 				//Refreshing entities and blocks folder in main tree of the admin advanced panel
-				if (window.parent && window.parent.parent && window.parent.parent.refreshLastNodeChilds && window.parent.parent.mytree && window.parent.parent.mytree.tree_elm) {
+				if (window.parent && window.parent.parent && window.parent.parent.refreshAndShowLastNodeChilds && window.parent.parent.mytree && window.parent.parent.mytree.tree_elm) {
 					var project = window.parent.parent.$("#" + window.parent.parent.last_selected_node_id).parent().closest("li[data-jstree=\'{\"icon\":\"project\"}\']");
 					
 					var entities_folder_id = project.children("ul").children("li[data-jstree=\'{\"icon\":\"entities_folder\"}\']").attr("id");
-					window.parent.parent.refreshNodeChildsByNodeId(entities_folder_id);
+					window.parent.parent.refreshAndShowNodeChildsByNodeId(entities_folder_id);
 					
 					var blocks_folder_id = project.children("ul").children("li[data-jstree=\'{\"icon\":\"blocks_folder\"}\']").attr("id");
-					window.parent.parent.refreshNodeChildsByNodeId(blocks_folder_id);
+					window.parent.parent.refreshAndShowNodeChildsByNodeId(blocks_folder_id);
 				}
 			}, 500); //setTimeout is to show the the popup with the step_5 info
 		}

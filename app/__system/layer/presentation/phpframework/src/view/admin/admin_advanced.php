@@ -43,6 +43,7 @@ var path_to_filter = "' . $filter_by_layout . '";
 		</ul>
 		<ul class="right">
 			<li class="icon go_back" onClick="goBack()" data-title="Go Back"></li>
+			<li class="icon go_forward" onClick="goForward()" data-title="Go Forward"></li>
 			<li class="separator">|</li>
 			
 			' . ($is_flush_cache_allowed ? '<li class="icon flush_cache" data-title="Flush Cache" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\')"></li>' : '') . '

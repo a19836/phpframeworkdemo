@@ -132,8 +132,10 @@ $(function() {
 		file_tree_ul.prepend(tabs_html);
 		file_tree_ul.tabs();
 		
-		file_tree_ul.find(" > ul.tabs > .tab_main_node a").click(function(idx, a){
+		file_tree_ul.find(" > ul.tabs > .tab_main_node a").click(function(originalEvent){
 			$(".jqcontextmenu").hide();
+			
+			prepareLayerActiveTab( $(this).parent() );
 		});
 		
 		file_tree_ul.children("li.main_tree_node").each(function(idx, item) {
@@ -216,6 +218,23 @@ $(function() {
 		});
 	}
 });
+
+function prepareLayerActiveTab(li) {
+	var ul = li.parent();
+	ul.children("li").removeClass("prev_tab");
+	
+	do {
+		var prev = li.prev("li");
+		
+		if (prev.is(":visible")) {
+			prev.addClass("prev_tab");
+			break;
+		}
+		else
+			li = prev;
+	}
+	while (prev[0]);
+}
 
 function prepareLayerFileNodes1(ul, data) {
 	//filter data by path
@@ -516,8 +535,13 @@ function toggleAdvancedLevel(elm) {
 	var active_tab = tabs_parent.tabs("option", "active");
 	var li = $(tabs_parent.find(" > ul > li")[active_tab]);
 	
-	if (!li.is(":visible"))
-		tabs_parent.tabs("option", "active", tabs_parent.find(" > ul > li:visible").first().index());
+	if (!li.is(":visible")) {
+		li = tabs_parent.find(" > ul > li:visible").first();
+		
+		tabs_parent.tabs("option", "active", li.index());
+	}
+	
+	prepareLayerActiveTab(li);
 }
 
 function toggleTreeLayout(elm) {
@@ -599,6 +623,14 @@ function goBack() {
 	
 	if (win)
 		win.history.go(-1);
+}
+
+function goForward() {
+	var iframe = $("#right_panel iframe")[0];
+	var win = iframe.contentWindow;
+	
+	if (win)
+		win.history.go(1);
 }
 
 function refreshIframe() {

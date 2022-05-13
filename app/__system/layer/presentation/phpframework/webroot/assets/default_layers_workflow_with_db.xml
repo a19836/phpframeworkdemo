@@ -70,7 +70,7 @@
 		<properties>
 			<exits>
 				<layer_exit>
-					<color><![CDATA[#1f9506]]></color>
+					<color><![CDATA[#31498f]]></color>
 					<type></type>
 					<overlay></overlay>
 				</layer_exit>
@@ -83,7 +83,7 @@
 				<label></label>
 				<type><![CDATA[Straight]]></type>
 				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#1f9506]]></color>
+				<color><![CDATA[#31498f]]></color>
 			</layer_exit>
 		</exits>
 	</task>
@@ -97,7 +97,7 @@
 		<properties>
 			<exits>
 				<layer_exit>
-					<color><![CDATA[#33adff]]></color>
+					<color><![CDATA[#31498f]]></color>
 					<type><![CDATA[Straight]]></type>
 					<overlay><![CDATA[Forward Arrow]]></overlay>
 				</layer_exit>
@@ -129,7 +129,7 @@
 		<properties>
 			<exits>
 				<layer_exit>
-					<color><![CDATA[#33adff]]></color>
+					<color><![CDATA[#31498f]]></color>
 					<type><![CDATA[Straight]]></type>
 					<overlay><![CDATA[Forward Arrow]]></overlay>
 				</layer_exit>
@@ -161,7 +161,7 @@
 		<properties>
 			<exits>
 				<layer_exit>
-					<color><![CDATA[#000]]></color>
+					<color><![CDATA[#31498f]]></color>
 					<type><![CDATA[Straight]]></type>
 					<overlay><![CDATA[Forward Arrow]]></overlay>
 				</layer_exit>
@@ -216,7 +216,7 @@
 		<properties>
 			<exits>
 				<layer_exit>
-					<color><![CDATA[#e1c77e]]></color>
+					<color><![CDATA[#31498f]]></color>
 					<type><![CDATA[Straight]]></type>
 					<overlay><![CDATA[Forward Arrow]]></overlay>
 				</layer_exit>

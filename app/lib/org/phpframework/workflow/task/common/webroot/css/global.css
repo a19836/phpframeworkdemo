@@ -19,6 +19,7 @@
   .selected_connection_properties .icon.add::before {
 	vertical-align:text-top;
 	font-size:16px;
+	margin-left:1px;
 }
 .jsplumbtaskworkflow .icon.textarea::before,
   .selected_task_properties .icon.textarea::before,

@@ -59,6 +59,8 @@ var UserTask3TaskPropertyObj = {
 			myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskById(task_id).attr("title", label).find(".info span").html(label);
 		
 			onEditLabel(task_id);
+			
+			ProgrammingTaskUtil.onTaskCreation(task_id);
 		}, 100);
 	},
 	

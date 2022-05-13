@@ -2658,17 +2658,17 @@ function saveUISFiles(elm, settings) {
 			updateMyDiagramUIFancyPopup();
 			
 			//Refreshing folder in main tree of the admin advanced panel
-			if (window.parent.refreshLastNodeChilds && window.parent.mytree && window.parent.mytree.tree_elm) { //it could be a poopup inside of a popup in case this file gets called by the create_page_presentation_uis_diagram_block.php
+			if (window.parent.refreshAndShowLastNodeChilds && window.parent.mytree && window.parent.mytree.tree_elm) { //it could be a poopup inside of a popup in case this file gets called by the create_page_presentation_uis_diagram_block.php
 				//Refreshing last node clicked in the entities folder.
-				//window.parent.refreshLastNodeChilds();
+				//window.parent.refreshAndShowLastNodeChilds();
 				
 				//Refreshing blocks folder
 				var project = window.parent.$("#" + window.parent.last_selected_node_id).parent().closest("li[data-jstree=\'{\"icon\":\"project\"}\']");
 				var entities_folder_id = project.children("ul").children("li[data-jstree=\'{\"icon\":\"entities_folder\"}\']").attr("id");
-				window.parent.refreshNodeChildsByNodeId(entities_folder_id);
+				window.parent.refreshAndShowNodeChildsByNodeId(entities_folder_id);
 				
 				var blocks_folder_id = project.children("ul").children("li[data-jstree=\'{\"icon\":\"blocks_folder\"}\']").attr("id");
-				window.parent.refreshNodeChildsByNodeId(blocks_folder_id);
+				window.parent.refreshAndShowNodeChildsByNodeId(blocks_folder_id);
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {

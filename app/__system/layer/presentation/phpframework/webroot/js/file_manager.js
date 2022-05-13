@@ -417,6 +417,10 @@ function refreshLastNodeChilds() {
 	refreshNodeChildsByNodeId(last_selected_node_id);
 }
 
+function refreshAndShowLastNodeChilds() {
+	refreshAndShowNodeChildsByNodeId(last_selected_node_id);
+}
+
 function refreshNodeChildsByNodeId(node_id) {
 	mytree.refreshNodeChildsByNodeId(node_id);
 }

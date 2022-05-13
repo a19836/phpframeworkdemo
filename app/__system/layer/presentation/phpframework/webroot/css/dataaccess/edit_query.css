@@ -930,7 +930,7 @@
 }
 .relationship .settings .settings_header::before {
 	content:"";
-	height:4px;
+	height:5px;
 	display:block;
 	position:absolute;
 	top:0;
@@ -941,10 +941,11 @@
 	border-bottom:1px solid var(--resize-bar-border);
 	background:var(--resize-bar-bg);
 	/*background:var(--resize-bar-horizontal-img) repeat-x var(--main-template-bg);*/
+	box-sizing:border-box;
 }
 .relationship .settings .settings_header .icon {
 	width:34px;
-	height:20px;
+	height:10px;
 	position:absolute;
 	top:0;
 	left:45%;

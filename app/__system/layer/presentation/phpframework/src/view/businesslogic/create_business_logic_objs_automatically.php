@@ -57,8 +57,8 @@ $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQu
 		</tr>'; if ($s[2]) { $exists_any_status_ok = true; } } $main_content .= '
 		</table>
 	</div>'; if ($exists_any_status_ok) $main_content .= '<script>
-		if (window.parent && typeof window.parent.refreshLastNodeChilds == "function")
-			window.parent.refreshLastNodeChilds();
+		if (window.parent && typeof window.parent.refreshAndShowLastNodeChilds == "function")
+			window.parent.refreshAndShowLastNodeChilds();
 		</script>'; } else { $head .= '<script>
 	var brokers_db_drivers_name = ' . json_encode($brokers_db_drivers_name) . ';'; if ($related_brokers) foreach ($related_brokers as $b) if ($b[2]) { $get_sub_files_url = str_replace("#bean_file_name#", $b[1], str_replace("#bean_name#", $b[2], $choose_queries_from_file_manager_url)); $head .= 'main_layers_properties.' . $b[2] . ' = {ui: {
 					folder: {

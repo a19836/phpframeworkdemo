@@ -241,6 +241,10 @@
 	content:"\f053";
 	margin-left:5px;
 }
+.icon.go_forward::before {
+	content:"\f054";
+	margin-left:5px;
+}
 .icon.home::before {
 	content:"\f015";
 }

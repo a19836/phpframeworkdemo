@@ -104,7 +104,9 @@
 	height:auto !important; /* important must be here and height must be auto bc if we change the connection properties to REST and add multiple options the popup height will be increased and must get updated accordingly */
 }
 .selected_task_properties > .maximize_minimize_icon, 
-  .selected_connection_properties > .maximize_minimize_icon {
+  .selected_connection_properties > .maximize_minimize_icon,
+  .selected_task_properties > .toggle_properties_side_icon, 
+  .selected_connection_properties > .toggle_properties_side_icon {
 	display:none !important;
 }
 

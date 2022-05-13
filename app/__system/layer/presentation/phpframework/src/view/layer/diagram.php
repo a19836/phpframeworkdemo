@@ -40,11 +40,11 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); $WorkFlowUIHandler = new WorkFlo
 		</header>
 	</div>'; $main_content .= $WorkFlowUIHandler->getContent(); $main_content .= '
 <script>
-	$(".tasks_flow #layer_presentations").html("<span class=\"layer_title\">PRESENTATION LAYERS</span>");
-	$(".tasks_flow #layer_bls").html("<span class=\"layer_title\">BUSINESS LOGIC LAYERS</span>");
-	$(".tasks_flow #layer_dals").html("<span class=\"layer_title\">DATA ACCESS LAYERS</span>");
-	$(".tasks_flow #layer_dbs").html("<span class=\"layer_title\">DB LAYERS</span>");
-	$(".tasks_flow #layer_drivers").html("<span class=\"layer_title\">DB DRIVERS</span>");
+	$(".tasks_flow #layer_presentations").html("<span class=\"layer_title\">Presentation Layers</span>");
+	$(".tasks_flow #layer_bls").html("<span class=\"layer_title\">Business Logic Layers</span>");
+	$(".tasks_flow #layer_dals").html("<span class=\"layer_title\">Data-Access Layers (SQL)</span>");
+	$(".tasks_flow #layer_dbs").html("<span class=\"layer_title\">DB Layers</span>");
+	$(".tasks_flow #layer_drivers").html("<span class=\"layer_title\">DB Drivers</span>");
 	
 	//allow_connections_to_multiple_levels = false; //allow connections to only 1 level below.
 	

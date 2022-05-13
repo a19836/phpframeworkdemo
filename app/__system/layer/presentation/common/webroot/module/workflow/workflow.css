@@ -25,6 +25,10 @@
 .module_workflow_settings .module_workflow_content {
 	border:0;
 }
+.module_workflow_settings .module_workflow_content > .tabs > #tasks_flow_tab.ui-tabs-active {
+	background:var(--main-template-bg);
+}
+
 .module_workflow_settings #ui .taskflowchart,
   .module_workflow_settings #code > textarea,
   .module_workflow_settings #code .ace_editor,
@@ -34,6 +38,9 @@
 }
 .module_workflow_settings #ui .taskflowchart {
 	overflow:visible !important;
+}
+.module_workflow_settings #ui .taskflowchart.fixed_properties {
+	height:calc(100vh - 110px) !important;
 }
 .module_workflow_settings #code .code_menu,
   .module_workflow_settings #ui .taskflowchart .workflow_menu {

@@ -409,16 +409,16 @@ function saveTemplate() {
 					if (status == 1) {
 						alert("Template Saved!");
 						
-						if (window.parent.refreshLastNodeChilds) {
+						if (window.parent.refreshAndShowLastNodeChilds) {
 							//Refreshing last node clicked in the entities folder.
-							window.parent.refreshLastNodeChilds();
+							window.parent.refreshAndShowLastNodeChilds();
 							
 							//Refreshing templates and webroot folder
 							var project = window.parent.$("#" + window.parent.last_selected_node_id).parent().closest("li[data-jstree=\'{\"icon\":\"project\"}\']");
 							var templates_folder_id = project.children("ul").children("li[data-jstree=\'{\"icon\":\"templates_folder\"}\']").attr("id");
 							var webroot_folder_id = project.children("ul").children("li[data-jstree=\'{\"icon\":\"webroot_folder\"}\']").attr("id");
-							window.parent.refreshNodeChildsByNodeId(templates_folder_id);
-							window.parent.refreshNodeChildsByNodeId(webroot_folder_id);
+							window.parent.refreshAndShowNodeChildsByNodeId(templates_folder_id);
+							window.parent.refreshAndShowNodeChildsByNodeId(webroot_folder_id);
 						}
 					}
 					else

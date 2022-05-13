@@ -98,5 +98,6 @@ body {
 }
 
 .buttons { width:320px; margin:20px auto 0; text-align:center; }
-.buttons input { width:100%; font-weight:600; font-size:8pt;}
+.buttons input { width:100%; font-weight:600; font-size:8pt; background:#2C2D34; color:#fff; }
+.buttons input:hover { background:#2C2D34dd; color:#fff; }
 

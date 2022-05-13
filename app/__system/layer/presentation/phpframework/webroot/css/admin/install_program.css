@@ -29,6 +29,7 @@
 .install_program .step_0 .upload_file {
 	display:block;
 	margin:10px auto 0 auto;
+	font-size:inherit;
 }
 .install_program .step_0 .upload_url {
 	margin:10px auto 0 auto;

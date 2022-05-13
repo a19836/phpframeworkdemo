@@ -5,9 +5,9 @@
 	--html-element-right-spacing:10px;
 	--html-element-bottom-spacing:10px;
 	
-	--html-element-border:.5px dashed #bfc4db;
-	--html-element-active-border:3px dashed #4070ff;
-	--html-element-active-gap:-1px;
+	--html-element-border:2px dashed #bfc4db;
+	--html-element-active-border:2pt dashed #4070ff;
+	--html-element-active-gap:-2px;
 	--html-element-over-border:1px solid #4070ff;
 	--html-element-over-gap:-1px;
 }

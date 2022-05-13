@@ -2879,8 +2879,8 @@ function getQuerySqlEditorValue(selector) {
 /** START: QUERY - UTILS FOR THE DBQUERYTABLEHANDLER **/	
 function onClickQueryAtributeCheckBox(checkbox, WF, rand_number) {
 	checkbox = $(checkbox);
-	var task = checkbox.parent().parent().parent().parent().parent();
-	var settings = task.parent().parent().parent().parent().children(".query_settings")[0];
+	var task = checkbox.parent().closest(".task");
+	var settings = task.parent().closest(".taskflowchart").parent().parent().children(".query_settings")[0];
 	
 	var table_name = WF.jsPlumbTaskFlow.getTaskLabel(task);
 	var attribute_name = checkbox.attr("attribute");
@@ -3433,7 +3433,7 @@ function getTasksByTableName(table_name, WF) {
 }
 
 function getTaskTableAttributes(task, WF) {
-	var db_attrs = task.find("." + WF.jsPlumbTaskFlow.task_eps_class_name + " .attributes .table_attr .check input");
+	var db_attrs = task.find("." + WF.jsPlumbTaskFlow.task_eps_class_name + " .table_attrs .table_attr .check input");
 	
 	var attrs = {};	
 	for (var j = 0; j < db_attrs.length; j++) {

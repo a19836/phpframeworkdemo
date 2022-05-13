@@ -50,7 +50,7 @@ $head = '
 			</tr>'; if ($data[2]) { $exists_any_status_ok = true; } } if (empty($selected_tables)) { $main_content .= '<tr><td colspan="3" style="text-align:center;">No elements available</td></tr>'; } $main_content .= '
 		</table>
 		<div class="desc">If any of the statuses is equal to <span class="status_error">ERROR</span>, please try again for the correspondent table...</div>
-	</div>'; if ($exists_any_status_ok) $main_content .= '<script>if (window.parent.refreshLastNodeChilds) window.parent.refreshLastNodeChilds();</script>'; } else if ($_POST["step_1"]) { $main_content .= '<div class="select_tables">
+	</div>'; if ($exists_any_status_ok) $main_content .= '<script>if (window.parent.refreshAndShowLastNodeChilds) window.parent.refreshAndShowLastNodeChilds();</script>'; } else if ($_POST["step_1"]) { $main_content .= '<div class="select_tables">
 		<div class="top_bar">
 			<header>
 				<div class="title">Automatic creation in \'' . $path . '\'. Please select the table objects that you wish to create:</div>
