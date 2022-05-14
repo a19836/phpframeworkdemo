@@ -30,8 +30,9 @@ body,
 	margin:5px auto;
 }
 .file_upload div label {
-	width:60px;
+	width:30px;
 	font-weight:normal;
+	display:inline-block;
 }
 .file_upload div select {
 	width:250px;
@@ -40,12 +41,14 @@ body,
 .file_upload .upload_file {
 	display:block;
 	margin:10px auto 0 auto;
+	font-size:inherit;
 }
 .file_upload .upload_url {
 	margin:10px auto 0 auto;
 }
 .file_upload .upload_url input {
 	width:calc(100% - 100px);
+	font-size:inherit;
 }
 .file_upload .upload_url .icon {
 	height:16px;

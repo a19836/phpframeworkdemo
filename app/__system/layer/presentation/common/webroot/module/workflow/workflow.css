@@ -53,15 +53,22 @@
 .module_workflow_settings #code .code_menu {
 	right:267px;
 }
+.module_workflow_settings #ui > .taskflowchart .edit_function_code > .tabs {
+	height:35px;
+}
 .module_workflow_settings #ui > .taskflowchart .edit_function_code > #code .code_menu.top_bar_menu {
 	margin-top:-27px;
 	top:auto !important;
-	right:100px !important;
+	right:110px !important;
 }
 .module_workflow_settings #ui > .taskflowchart .edit_function_code > #ui .taskflowchart .workflow_menu.top_bar_menu {
 	margin-top:-27px;
 	top:auto !important;
-	right:80px !important;
+	right:90px !important;
+}
+.module_workflow_settings #ui > .taskflowchart .edit_function_code > #code > .ace_editor, 
+  .module_workflow_settings #ui > .taskflowchart .edit_function_code > #code > textarea {
+	border-top:0;
 }
 .module_workflow_settings #code .code_menu > ul > .save,
   .module_workflow_settings #ui .taskflowchart .workflow_menu > .dropdown > .save,

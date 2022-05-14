@@ -215,7 +215,7 @@
    .module_join_points .join_points .join_point .join_point_method div select,
    .regions_blocks_includes_settings .region_blocks .items .item .module_join_points .join_points .join_point .join_point_method div input,
    .regions_blocks_includes_settings .region_blocks .items .item .module_join_points .join_points .join_point .join_point_method div select {
-	font-size:12px;
+	/*font-size:12px;*/
 }
 .module_join_points .join_points .join_point > span.icon, 
    .module_join_points .join_points .join_point .join_point_method,

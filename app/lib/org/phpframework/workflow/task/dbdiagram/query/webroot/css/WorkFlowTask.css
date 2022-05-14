@@ -109,7 +109,21 @@
 
 /* START: SELECTED CONNECTION PROPERTIES */
 .selected_connection_properties {
+	width:auto;
+	height:auto;
 	min-height:160px !important;
+	max-height:70%;
+	max-height:calc(100% - 40px);
+	padding-bottom:10px;
+	box-sizing:border-box;
+	
+	position:fixed;
+	left:0px !important;
+	top:auto !important;
+	bottom:0px !important;
+	right:0px !important;
+	border-radius:0;
+	overflow:auto;
 }
 .selected_connection_properties .title, 
   .selected_connection_properties .properties_connection_id, 

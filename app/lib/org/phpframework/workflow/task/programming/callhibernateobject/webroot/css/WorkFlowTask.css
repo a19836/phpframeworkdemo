@@ -10,10 +10,10 @@
 }
 
 .call_hibernate_object_task_html {
-	min-width:430px;
+	width:430px;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_object_task_html {
-	min-width:auto;
+	width:auto;
 }
 
 .call_hibernate_object_task_html .get_automatically,
@@ -74,7 +74,7 @@
 }
 .call_hibernate_object_task_html .module_id input,
    .call_hibernate_object_task_html .service_id input {
-	width:230px;
+	width:227px;
 	margin-right:5px;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_object_task_html .module_id input,

@@ -560,7 +560,7 @@ body > .dragging_menu_item {
 	box-sizing:border-box;
 }
 .tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle .button {
-	width:5px;
+	width:10px;
 	height:34px;
 	position:absolute;
 	left:-1px;

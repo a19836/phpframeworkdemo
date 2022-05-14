@@ -27,10 +27,10 @@
 .module_form_settings label {
 	font-style:normal;
 	font-weight:normal;
-	font-size:12px;
+	/*font-size:12px;*/
 }
 .module_form_settings input:not([type=submit]):not([type=button]), .module_form_settings select, .module_form_settings textarea {
-	font-size:12px;
+	/*font-size:12px;*/
 	background-color:#fff;
 }
 
@@ -207,8 +207,8 @@
 	background:#ccc;
 }
 .module_form_settings .form-group-item > .form-group-header > .form-group-sub-header > .condition-type {
-	width:358px;
-	margin-left:32px;
+	width:360px;
+	margin-left:29px;
 }
 .module_form_settings .form-group-item > .form-group-header > .form-group-sub-header > .condition-value {
 	width:calc(100% - 490px);
@@ -434,7 +434,9 @@
 	background:#fff;
 }
 .module_form_settings .database-action-body .relationship .query .query_settings .advanced_query_settings {
-	margin-top:187px;
+	margin-top:177px;
+	font-size:inherit;
+	text-align:right;
 }
 .module_form_settings .database-action-body .relationship .query .query_settings .query_settings_tab {
 	border-top:1px solid #ccc;
@@ -516,7 +518,7 @@
 
 /* BROKERS PANELS */
 .module_form_settings .broker-action-body > div {
-	margin-top:0;
+	margin:0 auto;
 }
 .module_form_settings .broker-action-body > div:after {
 	content:" ";
@@ -553,7 +555,7 @@
 	padding-right:20px;
 }
 .module_form_settings .message-action-body > .redirect-url .search {
-	margin:-3px 0 auto -16px;
+	margin:-3px 0 auto -18px;
 }
 .module_form_settings .message-action-body > .redirect-url .search::before {
 	font-size:16px;

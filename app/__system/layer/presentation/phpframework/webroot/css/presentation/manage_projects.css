@@ -16,6 +16,9 @@
 .projects_list .default_project {
 	margin:20px 0;
 }
+.projects_list .default_project select {
+	font-size:inherit;
+}
 
 .projects_list table {
 	width:100%;

@@ -40,11 +40,11 @@
 		.template-widget.template-widget-php {
 			margin:5px !important; /* !important is bc of the css when .borders is active */
 			padding:5px !important; /* !important is bc of the css when .borders is active */
-			border:1px outset #20b727 !important; /* !important is bc of the css when .borders is active */
+			border:1px solid #000 !important; /* !important is bc of the css when .borders is active */
 			background-image:none !important; /* !important is bc of the css when .borders is active */
-			border-radius:5px;
-			background:#333;
-			color:#20b727;
+			border-radius:3px;
+			background:#f7f7f7;
+			color:#000;
 			vertical-align:middle;
 			display:block;
 			word-break:break-all;
@@ -68,8 +68,13 @@
 			text-align:left;
 			overflow:auto;
 		}
+		.template-widget.template-widget-php > pre:focus-visible {
+			outline:none;
+		}
 		.template-widget.template-widget-php > pre::-webkit-scrollbar {
-			height:7px;
+			width:5px;
+			height:5px;
+			background-color:transparent;
 		}
 		body > .droppable.borders .template-widget.template-widget-php > pre:before {
 			content:"";

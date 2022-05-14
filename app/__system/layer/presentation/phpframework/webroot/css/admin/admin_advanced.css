@@ -370,7 +370,7 @@
 	position:absolute;
 	top:45%;
 	top:calc(50% - 17px);
-	width:5px;
+	width:10px;
 	height:34px;
 	left:-1px;
 	cursor:pointer;
@@ -388,11 +388,9 @@
 }*/
 #hide_panel .button.maximize {
 	background:url("../../img/tool_frame_right.gif") no-repeat; 
-	background-size:100% 100%;
 }
 #hide_panel .button.minimize {
-	background:url("../../img/tool_frame_left.gif") no-repeat; 
-	background-size:100% 100%;
+	background:url("../../img/tool_frame_left.gif") no-repeat;
 }
 
 /* RIGHT PANEL */

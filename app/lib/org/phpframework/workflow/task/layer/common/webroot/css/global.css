@@ -109,6 +109,14 @@
   .selected_connection_properties > .toggle_properties_side_icon {
 	display:none !important;
 }
+.selected_task_properties input,
+  .selected_task_properties select,
+  .selected_task_properties textarea,
+  .selected_connection_properties input,
+  .selected_connection_properties select,
+  .selected_connection_properties textarea {
+	font-size:inherit;
+}
 
 /* TASK BROKER SERVERS PROPERTIES */
 
@@ -146,6 +154,7 @@
 	width:250px;
 	margin-left:5px;
 	box-sizing: border-box;
+	font-size:inherit;
 }
 .selected_task_properties .layer_rest_server_html > div.with_toggle_icon > input,
   .selected_task_properties .layer_rest_server_html > div.with_toggle_icon > select,
@@ -223,7 +232,6 @@
 	width:100%;
 }
 .selected_connection_properties .layer_connection_html .connection_settings table td {
-	padding-bottom:5px;
 	border-top:1px solid #eee;
 	border-right:1px solid #eee;
 }

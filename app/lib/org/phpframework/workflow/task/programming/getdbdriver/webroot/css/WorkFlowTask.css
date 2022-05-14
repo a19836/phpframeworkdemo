@@ -10,10 +10,10 @@
 }
 
 .get_db_driver_task_html {
-	min-width:430px;
+	width:430px;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .get_db_driver_task_html {
-	min-width:auto;
+	width:auto;
 }
 
 .get_db_driver_task_html .db_driver {

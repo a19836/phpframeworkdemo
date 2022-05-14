@@ -10,10 +10,10 @@
 }
 
 .call_presentation_layer_web_service_task_html {
-	min-width:430px;
+	width:430px;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .call_presentation_layer_web_service_task_html {
-	min-width:auto;
+	width:auto;
 }
 
 .call_presentation_layer_web_service_task_html .get_automatically,

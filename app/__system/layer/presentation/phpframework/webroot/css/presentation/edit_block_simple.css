@@ -45,6 +45,12 @@
 	padding:20px;
 }
 
+.block_obj input,
+  .block_obj select,
+  .block_obj textarea {
+	font-size:inherit;
+}
+
 /* MODULE DATA */
 .block_obj .module_data {
 	width:100%;

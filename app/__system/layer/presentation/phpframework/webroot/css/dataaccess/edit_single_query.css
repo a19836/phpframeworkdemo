@@ -201,7 +201,7 @@
 .edit_single_query .relationship .query .query_select .query_settings .advanced_query_settings {
 	margin-top:auto;
 	right:10px;
-	bottom:20px;
+	bottom:10px;
 }
 .edit_single_query .relationship .query .query_select .query_settings > .query_settings_tabs {
 	border-top-left-radius:0;
@@ -219,5 +219,5 @@
 }
 
 .edit_single_query .relationship .query .query_select .taskflowchart .selected_connection_properties {
-	min-height:calc(50vh - 75px) !important;
+	min-height:calc(50vh - 55px) !important;
 }

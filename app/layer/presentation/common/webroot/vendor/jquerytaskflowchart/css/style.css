@@ -125,7 +125,6 @@
 	bottom:0px;
 	width:5px;
 	cursor:ew-resize;
-	overflow:hidden;
 	background:url("../img/back_frame_open_close_vertical.gif") repeat-y;
 	z-index:2;
 	
@@ -154,7 +153,7 @@
 }
 
 .taskflowchart .tasks_menu_hide .button {
-	width:5px;
+	width:10px;
 	height:34px;
 	position:absolute;
 	left:0;
@@ -169,10 +168,10 @@
 	background:url("../img/tool_frame_right.gif") no-repeat;
 }
 .taskflowchart.reverse .tasks_menu_hide .button {
-	background-image:url("../img/tool_frame_right.gif");
+	background:url("../img/tool_frame_right.gif") no-repeat;
 }
 .taskflowchart.reverse .tasks_menu_hide.tasks_menu_hidden .button {
-	background-image:url("../img/tool_frame_left.gif");
+	background:url("../img/tool_frame_left.gif") no-repeat;
 }
 
 .taskflowchart .dragActive { 
@@ -807,7 +806,6 @@
 	right:0;
 	bottom:auto;
 	cursor:ns-resize;
-	overflow:hidden;
 	background:url("../img/back_frame_open_close_horizontal.gif") repeat-x;
 	display:none;
 }
@@ -820,7 +818,7 @@
 .taskflowchart .selected_task_properties > .resize_properties_panel .button, 
   .taskflowchart .selected_connection_properties .resize_properties_panel .button {
 	width:34px;
-	height:5px;
+	height:10px;
 	position:absolute;
 	top:0;
 	left:45%;

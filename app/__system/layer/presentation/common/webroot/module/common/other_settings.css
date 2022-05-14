@@ -63,13 +63,13 @@
 }
 .module_settings .settings div .object_to_objects_settings .object_type_id select {
 	width:130px;
-	font-size:12px;
+	/*font-size:12px;*/
 }
 .module_settings .settings div .object_to_objects_settings .object_id input {
 	width:150px;
-	font-size:11px;
+	/*font-size:11px;*/
 }
 .module_settings .settings div .object_to_objects_settings .object_group input {
 	width:70px;
-	font-size:11px;
+	/*font-size:11px;*/
 }

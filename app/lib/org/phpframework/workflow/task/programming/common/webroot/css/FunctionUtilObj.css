@@ -44,9 +44,12 @@
 
 /* EDIT CODE POPUP */
 .taskflowchart .edit_function_code {
-	width:90vw;
-	height:90vh;
-	position:fixed;
+	width:calc(100vw - 20px);
+	height:calc(100vh - 20px);
+	position:fixed !important;
+	top:10px !important;
+	left:10px !important;
+	box-sizing:border-box;
 }
 .taskflowchart .edit_function_code > .message {
 	position:absolute;
@@ -135,7 +138,9 @@
 .taskflowchart .edit_function_code > #ui .taskflowchart > .selected_task_properties .create_function_task_html > .code > textarea {
 	width:100%;
 	height:100px;
+	margin-bottom:10px;
 	display:block;
+	box-sizing:border-box;
 }
 .taskflowchart .edit_function_code > #ui .taskflowchart > .selected_task_properties .create_class_task_html > .methods li > .function_code {
 	width:100%;

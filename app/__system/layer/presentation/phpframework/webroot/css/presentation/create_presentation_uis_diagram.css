@@ -62,11 +62,21 @@
 	display:block;
 }
 
+.taskflowchart .tasks_menu .task {
+	background-image:none;
+}
+
 .task_context_menu .start_task {
 	display:none !important;
 }
 
 /* TASK FLOW CHART - TASK PROPERTIES */
+.taskflowchart.with_top_bar_menu.fixed_properties .selected_task_properties, 
+  .taskflowchart.with_top_bar_menu.fixed_properties .selected_connection_properties, 
+  .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_task_properties, 
+  .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_connection_properties {
+	z-index:3 !important;
+}
 .taskflowchart.with_top_bar_menu.fixed_properties .selected_task_properties .generic_buttons, 
   .taskflowchart.with_top_bar_menu.fixed_properties .selected_connection_properties .generic_buttons, 
   .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_task_properties .generic_buttons, 
@@ -103,11 +113,26 @@
 }
 
 /* This is for the .page_task_html, listing_task_html, form_task_html and all the other tasks */
-.taskflowchart .selected_task_properties .users_management_admin_panel > .users_management_admin_panel_popup {
-	z-index:3001 !important;
+.taskflowchart .selected_task_properties .users_management_admin_panel > .users_management_admin_panel_popup,
+  .taskflowchart .selected_task_properties .page_task_html .edit_page_admin_panel_popup {
+	width:calc(100vw - 20px);
+	height:calc(100vh - 80px);
+	position:fixed;
+	left:10px !important;
+	top:60px !important;
+	box-sizing:border-box;
+	padding:0;
+	border-radius:5px;
+	overflow:auto;
+	z-index:10006 !important;
 }
-.taskflowchart .selected_task_properties .users_management_admin_panel > .popup_overlay {
-	z-index:3000 !important;
+.taskflowchart .selected_task_properties .users_management_admin_panel > .popup_overlay,
+  .taskflowchart .selected_task_properties .page_task_html > .popup_overlay {
+	z-index:10005 !important;
+	display:block !important;
+}
+.taskflowchart .selected_task_properties .ui_table_attribute_properties_popup {
+	margin-top:50px;
 }
 
 /* CHOOSE FROM FILE MANAGER */

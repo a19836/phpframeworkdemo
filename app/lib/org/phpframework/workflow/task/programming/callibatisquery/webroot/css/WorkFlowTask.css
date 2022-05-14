@@ -10,10 +10,10 @@
 }
 
 .call_ibatis_query_task_html {
-	min-width:430px;
+	width:430px;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html {
-	min-width:auto;
+	width:auto;
 }
 
 .call_ibatis_query_task_html .get_automatically,
@@ -122,14 +122,14 @@
    .call_ibatis_query_task_html .service_type input,
    .call_ibatis_query_task_html .service_id input,
    .call_ibatis_query_task_html .params .parameters_code {
-	width:calc(100% - 155px);
+	width:calc(100% - 220px);
 }
 .call_ibatis_query_task_html .service_type select.service_type_string {
 	width:235px;
 	margin-right:5px;
 }
 .call_ibatis_query_task_html .service_type select.service_type_string {
-	width:calc(100% - 130px);
+	width:calc(100% - 195px);
 }
 .call_ibatis_query_task_html .module_id select,
    .call_ibatis_query_task_html .service_type select.service_type_type,

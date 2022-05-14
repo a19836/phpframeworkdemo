@@ -141,13 +141,16 @@
 /* EDIT PAGE ADMIN PANEL POPUP */
 
 .page_task_html .edit_page_admin_panel_popup {
-	width:100vw;
-	height:100vh;
+	width:calc(100vw - 20px);
+	height:calc(100vh - 80px);
 	position:fixed;
-	left:0 !important;
-	top:0 !important;
+	left:10px !important;
+	top:60px !important;
 	z-index:2005 !important; /* Must be !important bc for some reason when the myfancypopup calculates the z-index, is giving a z-index smaller than main popup close button... */
 	box-sizing:border-box;
+	padding:0;
+	border-radius:5px;
+	overflow:auto;
 }
 .page_task_html .edit_page_admin_panel_popup > iframe {
 	width:100% !important;

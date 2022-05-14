@@ -34,7 +34,7 @@ body,
   .edit_project_details .image .no_logo {
 	width:100px;
 	height:100px;
-	margin:40px auto;
+	margin:48px auto;
 	display:inline-block;
 	border:1px solid #eee;
 }
@@ -54,6 +54,9 @@ body,
 	margin:0 auto;
 	display:block;
 	text-align:left;
+}
+.edit_project_details .image input {
+	font-size:inherit;
 }
 .edit_project_details .details {
 	text-align:left;

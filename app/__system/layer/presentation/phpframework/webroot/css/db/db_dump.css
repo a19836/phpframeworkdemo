@@ -1,3 +1,7 @@
+.db_dump input, 
+  .db_dump select {
+	font-size:inherit;
+}
 .db_dump .tables ul {
 	margin-top:10px;
 }

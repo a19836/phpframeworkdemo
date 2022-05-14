@@ -1717,7 +1717,7 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	left:45%;
 	left:calc(50% - 17px);
 	width:34px;
-	height:5px;
+	height:10px;
 	cursor:pointer;
 }
 .layout-ui-editor > .menu-settings > .resize-menu-settings .button {
@@ -1866,7 +1866,7 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	top:45%;
 	top:calc(50% - 17px);
 	left:0;
-	width:5px;
+	width:10px;
 	height:34px;
 	cursor:pointer;
 }

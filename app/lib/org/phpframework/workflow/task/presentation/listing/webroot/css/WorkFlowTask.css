@@ -55,6 +55,7 @@
 }
 .listing_task_html .ui.table .ui_html > table .ui_table_attribute_value {
 	padding:0 !important;
+	background:#fff;
 }
 .listing_task_html .ui.table .ui_html > table .ui_table_attribute_value .icon {
 	margin:3px;

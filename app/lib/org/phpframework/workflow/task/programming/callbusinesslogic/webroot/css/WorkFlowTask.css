@@ -10,10 +10,10 @@
 }
 
 .call_business_logic_task_html {
-	min-width:430px;
+	width:430px;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .call_business_logic_task_html {
-	min-width:auto;
+	width:auto;
 }
 
 .call_business_logic_task_html .get_automatically,

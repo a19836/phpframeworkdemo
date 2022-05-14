@@ -5,14 +5,14 @@
 		<id><![CDATA[school]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>57</offset_left>
-		<offset_top>44</offset_top>
+		<offset_left>52</offset_left>
+		<offset_top>35</offset_top>
 		<width>198</width>
 		<height>73</height>
 		<properties>
 			<exits>
 				<layer_exit>
-					<color><![CDATA[rgb(0,0,0)]]></color>
+					<color><![CDATA[#31498f]]></color>
 					<type><![CDATA[Flowchart]]></type>
 					<overlay><![CDATA[No Arrows]]></overlay>
 				</layer_exit>
@@ -55,14 +55,14 @@
 		<id><![CDATA[student]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>58</offset_left>
-		<offset_top>229</offset_top>
+		<offset_left>53</offset_left>
+		<offset_top>205</offset_top>
 		<width>198</width>
 		<height>96</height>
 		<properties>
 			<exits>
 				<layer_exit>
-					<color><![CDATA[rgb(0,0,0)]]></color>
+					<color><![CDATA[#31498f]]></color>
 					<type><![CDATA[Flowchart]]></type>
 					<overlay><![CDATA[No Arrows]]></overlay>
 				</layer_exit>
@@ -119,7 +119,7 @@
 				<label></label>
 				<type><![CDATA[Straight]]></type>
 				<overlay><![CDATA[Many To One]]></overlay>
-				<color><![CDATA[rgb(0,0,0)]]></color>
+				<color><![CDATA[#31498f]]></color>
 				<properties>
 					<source_columns><![CDATA[school_id]]></source_columns>
 					<target_columns><![CDATA[school_id]]></target_columns>
@@ -132,14 +132,14 @@
 		<id><![CDATA[teacher]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>338</offset_left>
-		<offset_top>92</offset_top>
+		<offset_left>327</offset_left>
+		<offset_top>118</offset_top>
 		<width>198</width>
 		<height>119</height>
 		<properties>
 			<exits>
 				<layer_exit>
-					<color><![CDATA[rgb(0,0,0)]]></color>
+					<color><![CDATA[#31498f]]></color>
 					<type><![CDATA[Flowchart]]></type>
 					<overlay><![CDATA[No Arrows]]></overlay>
 				</layer_exit>
@@ -210,7 +210,7 @@
 				<label></label>
 				<type><![CDATA[Flowchart]]></type>
 				<overlay><![CDATA[Many To One]]></overlay>
-				<color><![CDATA[rgb(0,0,0)]]></color>
+				<color><![CDATA[#31498f]]></color>
 				<properties>
 					<source_columns><![CDATA[school_id]]></source_columns>
 					<target_columns><![CDATA[school_id]]></target_columns>

@@ -324,6 +324,7 @@
 .selected_task_properties .settings .links table td:not(.actions) {
 	border-top:1px solid #eee;
 	border-right:1px solid #eee;
+	background:#fff;
 }
 .selected_task_properties .settings .links table .actions {
 	width:23px;

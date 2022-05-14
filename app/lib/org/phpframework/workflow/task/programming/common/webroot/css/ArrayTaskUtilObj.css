@@ -128,4 +128,5 @@
 .selected_task_properties .array_items .items .item_add::before {
 	content:"\f0fe";
 	font-size:16px;
+	margin-left:1px;
 }

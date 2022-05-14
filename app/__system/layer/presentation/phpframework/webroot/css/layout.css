@@ -997,23 +997,23 @@ body .connection_context_menu .delete a {
 	margin-right:5px;
 }
 
-.taskflowchart.fixed_properties .selected_task_properties .popup_close,
-  .taskflowchart.fixed_properties .selected_connection_properties .popup_close,
-  .taskflowchart.fixed_side_properties .selected_task_properties .popup_close,
-  .taskflowchart.fixed_side_properties .selected_connection_properties .popup_close {
+.taskflowchart.fixed_properties .selected_task_properties > .popup_close,
+  .taskflowchart.fixed_properties .selected_connection_properties > .popup_close,
+  .taskflowchart.fixed_side_properties .selected_task_properties > .popup_close,
+  .taskflowchart.fixed_side_properties .selected_connection_properties > .popup_close {
 	color:var(--main-template-color);
 	top:12px !important;
 }
-.taskflowchart:not(.fixed_properties):not(.fixed_side_properties) .selected_task_properties .popup_close,
-  .taskflowchart:not(.fixed_properties):not(.fixed_side_properties) .selected_connection_properties .popup_close {
+.taskflowchart:not(.fixed_properties):not(.fixed_side_properties) .selected_task_properties > .popup_close,
+  .taskflowchart:not(.fixed_properties):not(.fixed_side_properties) .selected_connection_properties > .popup_close {
 	opacity:1;
 }
-.taskflowchart:not(.fixed_properties):not(.fixed_side_properties):not(.auto_save_disabled) .selected_task_properties .popup_close::before,
-  .taskflowchart:not(.fixed_properties):not(.fixed_side_properties):not(.auto_save_disabled) .selected_connection_properties .popup_close::before,
-  .taskflowchart.with_top_bar_menu.fixed_properties:not(.auto_save_disabled) .selected_task_properties .popup_close::before, 
-  .taskflowchart.with_top_bar_menu.fixed_properties:not(.auto_save_disabled) .selected_connection_properties .popup_close::before,
-  .taskflowchart.with_top_bar_menu.fixed_side_properties:not(.auto_save_disabled) .selected_task_properties .popup_close::before, 
-  .taskflowchart.with_top_bar_menu.fixed_side_properties:not(.auto_save_disabled) .selected_connection_properties .popup_close::before {
+.taskflowchart:not(.fixed_properties):not(.fixed_side_properties):not(.auto_save_disabled) .selected_task_properties > .popup_close::before,
+  .taskflowchart:not(.fixed_properties):not(.fixed_side_properties):not(.auto_save_disabled) .selected_connection_properties > .popup_close::before,
+  .taskflowchart.with_top_bar_menu.fixed_properties:not(.auto_save_disabled) .selected_task_properties > .popup_close::before, 
+  .taskflowchart.with_top_bar_menu.fixed_properties:not(.auto_save_disabled) .selected_connection_properties > .popup_close::before,
+  .taskflowchart.with_top_bar_menu.fixed_side_properties:not(.auto_save_disabled) .selected_task_properties > .popup_close::before, 
+  .taskflowchart.with_top_bar_menu.fixed_side_properties:not(.auto_save_disabled) .selected_connection_properties > .popup_close::before {
 	font: var(--fa-font-regular);
 	content:"\f0c7";
 	font-size:16px;
@@ -1145,13 +1145,19 @@ body .workflow_message .status span,
 	top:27px;
 	right:130px;
 }
+.with_top_bar_tab #ui > .taskflowchart .edit_function_code > .tabs {
+	height:35px;
+}
 .with_top_bar_tab #ui > .taskflowchart .edit_function_code > #code .code_menu.top_bar_menu, 
   .with_top_bar_tab #ui > .taskflowchart .edit_function_code > #ui .taskflowchart .workflow_menu.top_bar_menu {
-	
+	top:30px;
+	right:120px;
 }
 
 .with_top_bar_tab #ui > .taskflowchart #code > .ace_editor,
-  .with_top_bar_tab #ui > .taskflowchart #code > textarea {
+  .with_top_bar_tab #ui > .taskflowchart #code > textarea,
+  .with_top_bar_tab #ui > .taskflowchart .edit_function_code > #code > .ace_editor, 
+  .with_top_bar_tab #ui > .taskflowchart .edit_function_code > #code > textarea {
 	border-top:0;
 }
 

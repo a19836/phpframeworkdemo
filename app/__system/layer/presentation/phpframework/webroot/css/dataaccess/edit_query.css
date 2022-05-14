@@ -64,7 +64,7 @@
 }
 .data_access_obj input, .data_access_obj select, .data_access_obj textarea {
 	display:inline-block;
-	font-size:11px;
+	font-size:inherit;
 }
 .data_access_obj input:not([type=submit]):not([type=button]) {
 	padding-left:3px;
@@ -635,7 +635,7 @@
 	border-top: 1px solid #aaaaaa;
 }
 .relationship .query .query_settings .ui-tabs-nav { 
-	height:33px;
+	height:28px;
 	position: absolute; 
 	left: 0.25em; 
 	right: 0.25em; 

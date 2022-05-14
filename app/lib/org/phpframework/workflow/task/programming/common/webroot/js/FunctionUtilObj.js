@@ -304,12 +304,12 @@ var FunctionUtilObj = {
 				WF.resizePanels();
 			}, 500);
 		}
-		else if (this.auto_convert) {
-			this.generateTasksFlowFromCode(elm, true);
-		}
 		
 		//set the new JsPlumbWorkFlow
 		myWFObj.setJsPlumbWorkFlow(WF);
+		
+		if (this.auto_convert)
+			this.generateTasksFlowFromCode(elm, true);
 		
 		//prepare some z-index bc of the popup
 		var zindex = $(elm).closest(".edit_function_code").css("z-index");
