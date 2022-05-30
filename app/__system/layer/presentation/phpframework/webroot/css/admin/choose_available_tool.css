@@ -22,11 +22,13 @@
 	border:1px solid #eee;
 	border-radius:5px;
 	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 20%);
+	color:var(--icon-folder-color);
 	cursor:pointer;
 	overflow:hidden;
 }
 .choose_available_tool li:hover {
 	box-shadow:0px 0px 10px 10px rgb(200 200 200 / 20%);
+	color:var(--icon-hover-color);
 	opacity:.9;
 }
 .choose_available_tool li.delimiter {
@@ -43,7 +45,6 @@
 	margin-top:10px;
 	display:block;
 	text-align:center;
-	color:#999;
 	cursor:pointer;
 }
 .choose_available_tool li > .description {
@@ -78,6 +79,10 @@
 	background-size:100% 100% !important;
 	cursor:pointer;
 	font-size:50px;
+}
+.choose_available_tool li > .photo::before,
+  .choose_available_tool li > .photo::after {
+	color:inherit !important;
 }
 .choose_available_tool li > .photo::before {
 	text-rendering:auto;
@@ -137,15 +142,18 @@
 	color:#b4c0d7;
 }
 .choose_available_tool li.doc_book > .photo::before {
-	content:"\f02d";
+	/*content:"\f02d";*/
+	content:"\f518";
 	color:#6e2102;
 }
 .choose_available_tool li.other_files > .photo::before {
-	content:"\f86d";
+	/*content:"\f86d";*/
+	content:"\f518";
 	color:#edc336;
 }
 .choose_available_tool li.vendor_files > .photo::before {
-	content:"\f2a1";
+	/*content:"\f2a1";*/
+	content:"\f518";
 	color:#f7a134;
 }
 .choose_available_tool li.dao_files > .photo::before {
@@ -153,7 +161,7 @@
 	color:#f7a134;
 }
 .choose_available_tool li.db_layers > .photo::before {
-	content:"\f1c0";
+	content:"\f51e";
 	color:#aab2c0;
 }
 .choose_available_tool li.data_access_layers_hibernate > .photo,
@@ -163,15 +171,27 @@
 	font-size:25px;
 }
 .choose_available_tool li.data_access_layers_hibernate > .photo::before {
-	content:"Hibernate";
+	content:"\f453";
 	color:#bdaf7b;
 }
+.choose_available_tool li.data_access_layers_hibernate > .photo::after {
+	content:"Hibernate";
+	color:#bdaf7b;
+	margin-left:10px;
+}
 .choose_available_tool li.data_access_layers_ibatis > .photo::before {
-	content:"Ibatis";
+	content:"\f453";
 	color:#debc33;
 }
-.choose_available_tool li.business_logic_layers > .photo::before {
-	content:"\f387";
-	color:#3497d9;
+.choose_available_tool li.data_access_layers_ibatis > .photo::after {
+	content:"Ibatis";
+	color:#debc33;
+	margin-left:10px;
 }
-
+.choose_available_tool li.business_logic_layers > .photo::before {
+	content:"\e13b";
+	color:#3497d9;
+	-webkit-transform:scaleY(-1);
+	transform:scaleY(-1);
+	display:block;
+}

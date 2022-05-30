@@ -99,7 +99,7 @@
 }
 .taskflowchart .edit_function_code > #ui .taskflowchart {
 	width:100%;
-	height:100%;
+	height:100% !important; /* bc of the myfancypopup that changes the height of the popup. */
 	position:relative;
 	overflow:hidden;
 }
@@ -129,6 +129,11 @@
 	border-right:1px solid #eee;
 	border-bottom:1px solid #eee;
 	box-sizing:border-box;
+}
+.taskflowchart .edit_function_code > #ui .taskflowchart:not(.fixed_properties):not(.fixed_side_properties) > .selected_task_properties,
+  .taskflowchart .edit_function_code > #ui .taskflowchart:not(.fixed_properties):not(.fixed_side_properties) > .selected_connection_properties {
+	max-height:100%;
+	overflow:auto;
 }
 /* remove edit button in the function and class task, otherwise the user can call the FunctionUtilObj.editMethodCode again, which will break.*/
 .taskflowchart .edit_function_code > #ui .taskflowchart > .selected_task_properties .create_function_task_html > .code > .icon,

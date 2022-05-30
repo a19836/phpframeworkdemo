@@ -38,11 +38,7 @@ $(function() {
 	});
 	
 	//prepare filter by layout field
-	var select = $(".filter_by_layout select");
-	var temp_elm = $("<span>" + select.find("option:selected").text() + "</span>");
-	$("body").append(temp_elm);
-	select.width(temp_elm.width() + 25);
-	temp_elm.remove();
+	setFilterByLayoutWidth();
 	
 	//prepare hide_panel
 	$("#hide_panel").draggable({
@@ -465,60 +461,43 @@ function iniSubMenu(tree_item_li) {
 	}
 }
 
-function expandLeftPanel(elm) {	
-	var hide_panel = $("#hide_panel");
-	hide_panel.css("left", (parseInt(hide_panel.css("left")) + 50) + "px");
-	
-	updatePanelsAccordingWithHidePanel();
-}
-
-function collapseLeftPanel(elm) {
-	var hide_panel = $("#hide_panel");
-	hide_panel.css("left", (parseInt(hide_panel.css("left")) - 50) + "px");
-	
-	updatePanelsAccordingWithHidePanel();
-}
-
 function updatePanelsAccordingWithHidePanel() {
-	//var menu_panel = $("#menu_panel"); //menu panel is now a fixed top bar
 	var left_panel = $("#left_panel");
 	var hide_panel = $("#hide_panel");
 	var right_panel = $("#right_panel");
+	var is_reverse = $("body").hasClass("main_navigator_reverse");
+	var left_panel_min_width = 150;
+	var hide_panel_width = hide_panel.outerWidth(); //include borders
 	
-	var left = parseInt(hide_panel.css("left"));
-	left = left < 50 ? 50 : (left > $(window).width() - 50 ? $(window).width() - 50 : left);
-	
-	//menu_panel.css("width", left + "px");
-	left_panel.css("width", left + "px");
-	hide_panel.css("left", left + "px");
-	right_panel.css("left", (left + 5) + "px"); //5 is the width of the hide_panel
+	if (is_reverse) {
+		var left = parseInt(hide_panel.offset().left);
+		var right = $(window).width() - left - hide_panel_width;
+		
+		right = right < left_panel_min_width ? left_panel_min_width : (right > $(window).width() - left_panel_min_width ? $(window).width() - left_panel_min_width : right);
+		
+		left_panel.css("width", right + "px");
+		hide_panel.css({"right": right + "px", left: "", top: "", width: ""});
+		right_panel.css({"right": (right + hide_panel_width) + "px", left: ""});
+	}
+	else {
+		var left = parseInt(hide_panel.css("left"));
+		left = left < left_panel_min_width ? left_panel_min_width : (left > $(window).width() - left_panel_min_width ? $(window).width() - left_panel_min_width : left);
+		
+		left_panel.css("width", left + "px");
+		hide_panel.css({"left": left + "px", right: "", top: "", width: ""});
+		right_panel.css({"left": (left + hide_panel_width) + "px", right: ""});
+	}
 }
 
 function toggleLeftPanel(elm) {
 	button = $(elm);
 	
-	//var menu_panel = $("#menu_panel"); //menu panel is now a fixed top bar
-	var left_panel = $("#left_panel");
-	var hide_panel = $("#hide_panel");
-	var right_panel = $("#right_panel");
+	var body = $("body");
 	
-	if (button.hasClass("maximize")) {
-		//menu_panel.show();
-		left_panel.show();
-		hide_panel.css("left", hide_panel.attr("bkp_left"));
-		right_panel.css("left", right_panel.attr("bkp_left"));
-		button.removeClass("maximize").addClass("minimize");
-	}
-	else {
-		hide_panel.attr("bkp_left", hide_panel.css("left"));
-		right_panel.attr("bkp_left", right_panel.css("left"));
-		
-		//menu_panel.hide();
-		left_panel.hide();
-		hide_panel.css("left", "0");
-		right_panel.css("left", "5px");
-		button.removeClass("minimize").addClass("maximize");
-	}
+	if (body.hasClass("left_panel_hidden"))
+		body.removeClass("left_panel_hidden");
+	else
+		body.addClass("left_panel_hidden");
 }
 
 function toggleAdvancedLevel(elm) {
@@ -527,8 +506,6 @@ function toggleAdvancedLevel(elm) {
 	
 	MyJSLib.CookieHandler.setCookie('advanced_level', advanced_level, 0, "/");
 	left_panel.toggleClass("simple_level").toggleClass("advanced_level");
-	
-	$(elm).children("span").html(advanced_level == "advanced_level" ? "Show basic items" : "Show advanced items");
 	
 	//check if active tab is a hidden tab
 	var tabs_parent = left_panel.find(" > .mytree > ul");
@@ -556,17 +533,24 @@ function toggleTreeLayout(elm) {
 }
 
 function toggleThemeLayout(elm) {
-	var left_panel = $("#left_panel");
-	var theme_layout = left_panel.hasClass("light_theme") ? "dark_theme" : "light_theme";
+	var body = $("body");
+	var theme_layout = body.hasClass("light_theme") ? "dark_theme" : "light_theme";
 	
 	MyJSLib.CookieHandler.setCookie('theme_layout', theme_layout, 0, "/");
-	left_panel.toggleClass("dark_theme").toggleClass("light_theme");
-	$(".top_panel").toggleClass("dark_theme").toggleClass("light_theme");
-	$("body").removeClass(theme_layout == "light_theme" ? "dark_theme" : "light_theme").addClass(theme_layout);
-	
-	$(elm).children("span").html(theme_layout == "light_theme" ? "Show dark theme" : "Show light theme");
+	body.toggleClass("light_theme").toggleClass("dark_theme");
 	
 	updateThemeLayoutInIframes( $("iframe"), theme_layout);
+}
+
+function toggleNavigatorSide(elm) {
+	var body = $("body");
+	var main_navigator_side = body.hasClass("main_navigator_reverse") ? "" : "main_navigator_reverse";
+	var url = ("" + document.location);
+	url = url.replace(/(&?)main_navigator_side=[^&]*/g, "");
+	url += (url.indexOf("?") != -1 ? "&" : "?") + "main_navigator_side=" + main_navigator_side;
+	url = url.replace(/[&]+/g, "&");
+	
+	document.location = url;
 }
 
 function updateThemeLayoutInIframes(iframes, theme_layout) {
@@ -590,9 +574,23 @@ function updateThemeLayoutInIframes(iframes, theme_layout) {
 	});
 }
 
+function setFilterByLayoutWidth() {
+	//prepare filter by layout field
+	var select = $(".filter_by_layout select");
+	var temp_elm = $("<span>" + select.find("option:selected").text() + "</span>");
+	select.after(temp_elm);
+	var width = temp_elm.width() + 5;
+	width = width < 50 ? 50 : width;
+	select.width(width);
+	temp_elm.remove();
+}
+
 function filterByLayout(elm) {
 	$(elm).css("width", "");
 	var proj_id = $(elm).val();
+	
+	setFilterByLayoutWidth();
+	
 	var url = ("" + document.location);
 	url = url.replace(/(&?)filter_by_layout=[^&]*/g, "");
 	url += (url.indexOf("?") != -1 ? "&" : "?") + "filter_by_layout=" + proj_id;
@@ -607,6 +605,10 @@ function goToHandler(url, a, attr_name, originalEvent) {
 	
 	setTimeout(function() {
 		try {
+			//save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+			MyJSLib.CookieHandler.setCookie('default_page', url, 0, "/");
+			
+			//open url in right panel
 			$("#right_panel iframe")[0].src = url;
 		}
 		catch(e) {
@@ -621,16 +623,26 @@ function goBack() {
 	var iframe = $("#right_panel iframe")[0];
 	var win = iframe.contentWindow;
 	
-	if (win)
+	if (win) {
+		//get history url and set cookie
+		//TODO: MyJSLib.CookieHandler.setCookie('default_page', url, 0, "/");
+		
+		//loads new page
 		win.history.go(-1);
+	}
 }
 
 function goForward() {
 	var iframe = $("#right_panel iframe")[0];
 	var win = iframe.contentWindow;
 	
-	if (win)
+	if (win) {
+		//get history url and set cookie
+		//TODO: MyJSLib.CookieHandler.setCookie('default_page', url, 0, "/");
+		
+		//loads new page
 		win.history.go(1);
+	}
 }
 
 function refreshIframe() {

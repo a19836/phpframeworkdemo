@@ -93,7 +93,7 @@ function createLayoutUIEditor(textarea) {
 			var ui = parent.children(".layout-ui-editor");
 			
 			if (!ui[0]) {
-				ui = $('<div class="layout-ui-editor reverse fixed-side-properties hide-template-widgets-options"><ul class="menu-widgets"></ul><div class="template-source"></div></div>');
+				ui = $('<div class="layout-ui-editor ' + reverse_class + ' fixed-side-properties hide-template-widgets-options"><ul class="menu-widgets"></ul><div class="template-source"></div></div>');
 				parent.append(ui);
 			}
 			else if (ui.data("LayoutUIEditor")) 

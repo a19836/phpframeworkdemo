@@ -2270,6 +2270,10 @@ function sortWorkflowTask(sort_type) {
 	jsPlumbWorkFlow.getMyFancyPopupObj().hidePopup();
 }
 
+function flipTasksFlowPanelsSide(elm) {
+	jsPlumbWorkFlow.jsPlumbContextMenu.flipPanelsSide();
+}
+
 function toggleHeader(elm) {
 	elm = $(elm);
 	var p = elm.parent();

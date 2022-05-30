@@ -116,10 +116,11 @@ $(function () {
 				var sub_menu = $('<i class="icon sub_menu option"><ul></ul></i>');
 				$("#code > .layout-ui-editor > .options .full-screen").before(sub_menu);
 				var lue_full_screen_icon = $("#code > .code_menu li.editor_full_screen").first().clone().removeClass("hidden").addClass("without_padding");
+				var flip_layout_ui_panels_icon = $('<li class="flip_layout_ui_panels without_padding" title="Flip Layout UI Panels"><a onClick="flipCodeLayoutUIEditorPanelsSide(this)"><i class="icon flip_layout_ui_panels"></i> Flip Layout UI Panels</a></li>');
 				var lue_save_icon = $("#code > .code_menu li.save").first().clone().removeClass("hidden").addClass("without_padding");
 				var lue_auto_save_icon = $("#code > .code_menu li.auto_save_activation").first().clone().removeClass("hidden");
 				var lue_auto_convert_icon = $("#code > .code_menu li.auto_convert_activation").first().clone().removeClass("hidden");
-				sub_menu.children("ul").append(lue_full_screen_icon).append('<li class="separator"></li>').append(lue_auto_save_icon).append(lue_auto_convert_icon).append(lue_save_icon);
+				sub_menu.children("ul").append(flip_layout_ui_panels_icon).append(lue_full_screen_icon).append('<li class="separator"></li>').append(lue_auto_save_icon).append(lue_auto_convert_icon).append(lue_save_icon);
 				
 				if (!luie.find(" > .tabs > .tab.tab-active").is(".view-layout"))
 					sub_menu.addClass("hidden"); //bc the LayoutUIEditor is not inited at start, we need to hide this new icon. The others are already hidden by default.

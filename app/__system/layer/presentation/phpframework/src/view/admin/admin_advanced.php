@@ -29,7 +29,7 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_advanced
 <script>
 var path_to_filter = "' . $filter_by_layout . '";
 </script>'; $main_content = AdminMenuUIHandler::getContextMenus($exists_db_drivers); $main_content .= '
-	<div id="top_panel" class="' . $theme_layout . '">
+	<div id="top_panel">
 		<ul class="left">
 			<li class="logo"></li>
 		</ul>
@@ -39,6 +39,7 @@ var path_to_filter = "' . $filter_by_layout . '";
 				<select onChange="filterByLayout(this)">
 					<option value="">- All -</option>'; $selected_project_name = ""; foreach ($presentation_projects_by_layer_label_and_folders as $layer_label => $projs) { $main_content .= '<optgroup label="' . $layer_label . '">'; $main_content .= getProjectsHtml($projs, $filter_by_layout); $main_content .= '</optgroup>'; if ($filter_by_layout && $presentation_projects_by_layer_label[$layer_label][$filter_by_layout]) $selected_project_name = $presentation_projects_by_layer_label[$layer_label][$filter_by_layout]; } foreach ($non_projects_layout_types as $lname => $lid) $main_content .= '<option value="' . $lname . '" ' . ($filter_by_layout == $lname ? ' selected' : '') . '>' . $lname . '</option>'; $main_content .= '	</select>
 					<!--span class="icon project" onClick="chooseAvailableProject(\'' . $project_url_prefix . 'admin/choose_available_project?redirect_path=admin&popup=1\');" data-title="' . ($selected_project_name ? 'Selected Project: \'' . $selected_project_name . '\'. ' : '') . 'Please click here to choose another project."></span-->
+					<a class="got_to_project_home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/admin_home_project?filter_by_layout=' . $filter_by_layout . '" data-title="Go to project homepage"><span class="icon project_home"></span></a>
 			</li>
 		</ul>
 		<ul class="right">
@@ -66,7 +67,8 @@ var path_to_filter = "' . $filter_by_layout . '";
 					<div class="triangle_up"></div>
 					
 					<li class="login_info" title="Logged as \'' . $logged_name . '\' user."><a><span class="logged_user_icon">' . $logged_name_initials . '</span> Logged in as "' . $logged_name . '"</a></li>
-					<li title="Toggle Theme"><a onClick="toggleThemeLayout(this)"><i class="icon toggle_theme_layout"></i> <span>' . ($theme_layout == "light_theme" ? "Show dark theme" : "Show light theme") . '</span></a></li>
+					<li class="toggle_theme_layout" title="Toggle Theme"><a onClick="toggleThemeLayout(this)"><i class="icon toggle_theme_layout"></i> <span>Show dark theme</span></a></li>
+					<li class="toggle_main_navigator_side" title="Toggle Theme"><a onClick="toggleNavigatorSide(this)"><i class="icon toggle_main_navigator_side"></i> <span>Show navigator on right side</span></a></li>
 					<li class="separator"></li>
 					<li class="question" title="Tutorials - How To?"><a onClick="chooseAvailableTutorial(\'' . $project_url_prefix . 'admin/choose_available_tutorial?popup=1\');"><i class="icon question"></i> Tutorials - How To?</a></li>
 					<li class="info" title="About"><a onClick="goTo(this, \'about_url\', event)" about_url="' . $project_url_prefix . 'admin/about"><i class="icon info"></i> About</a></li>
@@ -78,18 +80,18 @@ var path_to_filter = "' . $filter_by_layout . '";
 		</ul>
 	</div>
 
-	<div id="left_panel" class="' . $tree_layout . ' ' . $advanced_level . ' ' . $theme_layout . '">
+	<div id="left_panel" class="' . $tree_layout . ' ' . $advanced_level . '">
 		<div class="icon sub_menu">
 			<ul>
 				<div class="triangle_up"></div>
 				
-				<li><a onClick="toggleAdvancedLevel(this)"><i class="icon enable"></i> <span>' . ($advanced_level == "advanced_level" ? "Show basic items" : "Show advanced items") . '</span></a></li>
-				<li><a onClick="toggleTreeLayout(this)"><i class="icon toggle_tree_layout"></i> <span>' . ($tree_layout == "left_panel_with_tabs" ? "Show vertical layout" : "Show horizontal layout") . '</span></a></li>
+				<li class="toggle_advanced_level"><a onClick="toggleAdvancedLevel(this)"><i class="icon enable"></i> <span>Show advanced items</span></a></li>
+				<li class="toggle_tree_layout"><a onClick="toggleTreeLayout(this)"><i class="icon toggle_tree_layout"></i> <span>Show vertical layout</span></a></li>
 			</ul>
 		</div>
 		
 		<div class="file_tree_root"></div>
-		<div id="file_tree" class="mytree' . ($theme_layout == "light_theme" ? "" : " jstree-default-light") . ' hidden">
+		<div id="file_tree" class="mytree hidden">
 			<ul>'; $main_layers_properties = array(); $main_content .= AdminMenuUIHandler::getLayersGroup("presentation_layers", $layers["presentation_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("business_logic_layers", $layers["business_logic_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("data_access_layers", $layers["data_access_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("db_layers", $layers["db_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= '
 				<li class="main_node_library jstree-open" data-jstree=\'{"icon":"main_node main_node_library"}\'>
 					<label>Library</label>

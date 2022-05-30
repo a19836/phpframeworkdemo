@@ -68,8 +68,8 @@ body,
 }
 .choose_available_tutorial .card .list_group .list_group_item {
 	background:#f2f5fe;
-	border:1px solid #ccc;
-	border-bottom:0;
+	border:0;
+	border-bottom:1px solid #eee;
 }
 .choose_available_tutorial .card .list_group .list_group_item:first-child {
 	border-top-left-radius:2px;
@@ -78,7 +78,6 @@ body,
 .choose_available_tutorial .card .list_group .list_group_item:last-child {
 	border-bottom-left-radius:2px;
 	border-bottom-right-radius:2px;
-	border-bottom:1px solid #ccc;
 }
 .choose_available_tutorial .card .list_group .list_group_item > .list_group_item_header {
 	padding:10px;

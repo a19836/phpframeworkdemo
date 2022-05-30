@@ -114,8 +114,8 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC
 			<div class="button">
 				<input type="button" value="Update" onClick="' . $v8aefdcedb9 . '.settings.updateFunction(this)" />
 			</div>
-		</div>'; } public static function getTemplateRegionBlockHtmlEditorPopupHtml($pefdd2109) { return '<div class="template_region_block_html_editor_popup myfancypopup">
-			<div class="layout-ui-editor reverse fixed-side-properties hide-template-widgets-options">
+		</div>'; } public static function getTemplateRegionBlockHtmlEditorPopupHtml($pefdd2109) { $v446c479876 = $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse"; return '<div class="template_region_block_html_editor_popup myfancypopup">
+			<div class="layout-ui-editor ' . $v446c479876 . ' fixed-side-properties hide-template-widgets-options">
 				<ul class="menu-widgets hidden">
 					' . $pefdd2109 . '
 				</ul>

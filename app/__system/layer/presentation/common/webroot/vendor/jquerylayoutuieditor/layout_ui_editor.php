@@ -101,9 +101,13 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 			background:#333;
 		}
 		
+		.layout-ui-editor-3-button {
+			margin:100px auto 0 auto;
+			display:block;
+		}
 		.layout-ui-editor.layout-ui-editor-3 {
 			width:80%;
-			margin:100px auto 0 auto;
+			margin:20px auto 0 auto;
 			background:#660000;
 		}
 		.layout-ui-editor.layout-ui-editor-3 > .options > .options-center {
@@ -126,7 +130,7 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 			--tabs-item-hover-color:#333;
 			
 			/* menu-widgets */
-			--menu-widgets-widget-border:#ccc;
+			--menu-widgets-widget-border:transparent;
 			--menu-widgets-group-color:#485152;
 			
 			/* template-source */
@@ -309,6 +313,8 @@ if ($_SERVER["HTTP_HOST"] != "jplpinto.localhost")
 			<? echo $menu_widgets_html; ?>
 		</ul>
 	</div>
+	
+	<button class="layout-ui-editor-3-button" onClick="addTemplateWidgetsDroppable3()">Add another Template Widgets Droppable</button>
 	
 	<div class="layout-ui-editor reverse fixed-properties layout-ui-editor-3">
 		<ul class="menu-widgets hidden">

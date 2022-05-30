@@ -27,7 +27,7 @@ body,
 .diff .mytree .jstree-anchor.jstree-clicked.second_selection,
    .diff .mytree .jstree-anchor.jstree-clicked.jstree-hovered.second_selection, 
    .diff .mytree .jstree-anchor.link.jstree-clicked.jstree-hovered.second_selection {
-	background:#f5beff !important;
+	background:#9fb6fb !important;
 }
 
 .diff .files_selection_info {
@@ -50,7 +50,7 @@ body,
 	background:#c2ffbe !important;
 }
 .diff .files_selection_info .second_selection_info {
-	background:#f5beff !important;
+	background:#9fb6fb !important;
 }
 
 .diff .files_differences {

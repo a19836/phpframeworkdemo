@@ -95,11 +95,6 @@
 }
 
 /* tab_content_template_layout */
-.entity_obj .tab_content_template_layout {
-	margin:0;
-	padding:0;
-	position:initial;
-}
 .entity_obj .tab_content_template_layout .iframe_toolbar {
 	right:85px;
 }

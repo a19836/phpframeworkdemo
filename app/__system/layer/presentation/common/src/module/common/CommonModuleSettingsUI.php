@@ -50,6 +50,8 @@ class CommonModuleSettingsUI {
 		if ($settings["pagination"])
 			$html .= self::getListPaginationSettingsHtml($settings["pagination"]);
 		
+		$reverse_class = $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse";
+				
 		$html .= '
 		<div class="els" isList="' . ($settings["is_list"] ? 1 : 0) . '">
 			<ul class="els_tabs">
@@ -59,7 +61,7 @@ class CommonModuleSettingsUI {
 		
 			<div id="els_ptl" class="ptl">
 				<!-- LAYOUT UI EDITOR -->
-				<div class="layout-ui-editor els_ui reverse fixed-side-properties hide-template-widgets-options">
+				<div class="layout-ui-editor els_ui ' . $reverse_class . ' fixed-side-properties hide-template-widgets-options">
 					<ul class="menu-widgets hidden">
 						' . self::getLayoutUIEditorMenuWidgetsHtml($settings) . '
 					</ul>

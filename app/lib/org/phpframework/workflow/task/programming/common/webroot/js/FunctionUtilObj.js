@@ -90,6 +90,8 @@ var FunctionUtilObj = {
 		
 		this.auto_convert = typeof auto_convert != "undefined" ? auto_convert : false;
 		
+		var is_reverse = main_tasks_flow_parent.is("reverse");
+		
 		//prepare html
 		var html = '	<div class="myfancypopup edit_function_code">'
 				+ '		<ul class="tabs tabs_transparent tabs_right tabs_icons">'
@@ -111,7 +113,7 @@ var FunctionUtilObj = {
 				+ '		</div>'
 				+ '		'
 				+ '		<div id="ui">'
-				+ '			<div id="' + main_div_id + '" class="taskflowchart reverse with_top_bar_menu fixed_side_properties">'
+				+ '			<div id="' + main_div_id + '" class="taskflowchart ' + (is_reverse ? "reverse" : "") + ' with_top_bar_menu fixed_side_properties">'
 				+ '				<div id="workflow_menu" class="workflow_menu top_bar_menu">'
 				+ '					<ul class="dropdown">'
 				+ '						<li class="sort_tasks" title="Sort Tasks">'
@@ -125,6 +127,7 @@ var FunctionUtilObj = {
 				+ '						</li>'
 				+ '						' + (this.create_workflow_file_from_code_url && this.get_tmp_workflow_file_url ? '<li class="generate_tasks_flow_from_code" title="Generate Diagram from Code"><a onclick="FunctionUtilObj.generateTasksFlowFromCode(this);return false;"><i class="icon generate_tasks_flow_from_code"></i> Generate Diagram from Code</a></li>' : '')
 				+ '						' + (this.create_code_from_workflow_file_url && this.set_tmp_workflow_file_url ? '<li class="generate_code_from_tasks_flow" title="Generate Code From Diagram"><a onclick="FunctionUtilObj.generateCodeFromTasksFlow(this);return false;"><i class="icon generate_code_from_tasks_flow"></i> Generate Code From Diagram</a></li>' : '')
+				+ '						<li class="flip_tasks_flow_panels_side" title="Flip Panels Side"><a onclick="FunctionUtilObj.flipTasksFlowPanelsSide(this);return false;"><i class="icon flip_tasks_flow_panels_side"></i> Flip Panels Side</a></li>'
 				+ '					</ul>'
 				+ '				</div>'
 				+ '				'
@@ -518,6 +521,11 @@ var FunctionUtilObj = {
 		}
 		
 		WF.getMyFancyPopupObj().hidePopup();
+	},
+	
+	flipTasksFlowPanelsSide : function(elm) {
+		var WF = myWFObj.getJsPlumbWorkFlow();
+		WF.jsPlumbContextMenu.flipPanelsSide();
 	},
 	
 	createEditor : function(textarea) {

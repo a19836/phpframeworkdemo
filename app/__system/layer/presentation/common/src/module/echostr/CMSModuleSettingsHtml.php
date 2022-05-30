@@ -2,6 +2,8 @@
 include $EVC->getConfigPath("config");
 include_once $EVC->getUtilPath("WorkFlowPresentationHandler");
 
+$reverse_class = $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse";
+
 echo '
 <!-- TinyMCE JS Files  -->
 <script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/tinymce/js/tinymce/tinymce.min.js"></script>	
@@ -64,6 +66,7 @@ echo '
 
 <script>
 var create_echostr_settings_code_url = \'' . $project_url_prefix . 'module/echostr/create_echostr_settings_code\';
+var reverse_class = \'' . $reverse_class . '\';
 </script>';
 
 $common_webroot_path = $EVC->getWebrootPath($EVC->getCommonProjectName());

@@ -2893,13 +2893,13 @@ function initIframeModulesBlocksToolbarTree() {
 	//set iframe_modules_blocks_toolbar_toggle resizable
 	var tab_content_template_layout = $(".tab_content_template_layout");
 	var iframe_modules_blocks_toolbar = tab_content_template_layout.children(".iframe_modules_blocks_toolbar");
+	var iframe_modules_blocks_toolbar_toggle = iframe_modules_blocks_toolbar.children(".iframe_modules_blocks_toolbar_toggle");
 	
-	iframe_modules_blocks_toolbar.draggable({
+	iframe_modules_blocks_toolbar_toggle.draggable({
 		axis: "x",
 		appendTo: 'body',
 		cursor: 'move',
           tolerance: 'pointer',
-          handle: ' > .iframe_modules_blocks_toolbar_toggle',
           cancel: ' > .button', //button is inside of main_tasks_menu_hide_obj_id
           cursor: 'move',
 		start: function(event, ui) {
@@ -2911,28 +2911,45 @@ function initIframeModulesBlocksToolbarTree() {
 			return false;
 		},
 		drag : function(event, ui) {
-			var w = $(window).width() - (ui.offset.left - $(window).scrollLeft());
+			var is_reverse = tab_content_template_layout.hasClass("reverse");
+			var left = ui.offset.left;
+			var w = $(window).width() - (left - $(window).scrollLeft());
 			
-			iframe_modules_blocks_toolbar.css({
-				width: w + "px",
+			if (is_reverse) {
+				tab_content_template_layout.css({
+					width: left + "px",
+				});
+				iframe_modules_blocks_toolbar.css({
+					width: w + "px",
+				});
+			}
+			else {
+				tab_content_template_layout.css({
+					width: w + "px",
+				});
+				iframe_modules_blocks_toolbar.css({
+					width: left + "px",
+				});
+			}
+			
+			iframe_modules_blocks_toolbar_toggle.css({
 				top: "", 
 				left: "", 
 				right: "", 
 				bottom: ""
-			});
-			tab_content_template_layout.css({
-				width: ui.offset.left + "px",
 			});
 		},
 		stop : function(event, ui) {
 			tab_content_template_layout.removeClass("resizing");
 			
-			iframe_modules_blocks_toolbar.css({
+			iframe_modules_blocks_toolbar_toggle.css({
 				top: "", 
 				left: "", 
 				right: "", 
 				bottom: ""
 			});
+			
+			//TODO: change this when is not reverse
 		}
 	});
 }
@@ -3331,7 +3348,7 @@ function initCodeLayoutUIEditor(main_obj, opts) {
 	chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer.init("layout_ui_editor_right_container");
 	
 	var textarea = main_obj.find(".layout-ui-editor textarea")[0];
-	var editor = createCodeLayoutUIEDitorEditor(textarea, opts);
+	var editor = createCodeLayoutUIEditorEditor(textarea, opts);
 	
 	if (editor)
 		editor.focus();
@@ -3564,7 +3581,7 @@ function updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block_id, 
 	}
 }
 
-function createCodeLayoutUIEDitorEditor(textarea, opts) {
+function createCodeLayoutUIEditorEditor(textarea, opts) {
 	if (textarea) {
 		var parent = $(textarea).parent();
 		
@@ -3726,6 +3743,18 @@ function onToggleCodeEditorFullScreen(in_full_screen, main_obj) {
 		
 		PtlLayoutUIEditor.MyTextSelection.refreshMenu();
 	}, 500);
+}
+
+function flipCodeLayoutUIEditorPanelsSide(elm) {
+	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+	PtlLayoutUIEditor.flipPanelsSide();
+	
+	var ui = PtlLayoutUIEditor.getUI();
+	var options_left = ui.find(" > .options > .options-left");
+	var layout_ui_editor_right_container = ui.children(".layout_ui_editor_right_container");
+	
+	options_left.css({"left": "", "right": ""});
+	layout_ui_editor_right_container.css({"left": "", "right": ""});
 }
 
 function onResizeCodeLayoutUIEditorPanels(props) {
