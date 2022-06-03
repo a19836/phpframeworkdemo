@@ -89,15 +89,13 @@ var layer_default_template = \'' . $layer_default_template . '\';
 var available_templates_props = ' . json_encode($available_templates_props) . ';
 var available_projects_props = ' . json_encode($available_projects_props) . ';
 var show_templates_only = ' . ($_GET["show_templates_only"] ? 1 : 0) . '; //This is set when we switch the entity advanced ui to the simple ui.
-
-var confirm_save = ' . ($confirm_save ? 'true' : 'false') . ';
 '; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= '</script>'; $head .= CMSPresentationLayerUIHandler::getHeader($project_url_prefix, $project_common_url_prefix, $get_available_blocks_list_url, $get_block_params_url, $create_entity_code_url, $available_blocks_list, $regions_blocks_list, $block_params_values_list, $blocks_join_points, $template_params_values_list, $selected_project_id, true); $head .= LayoutTypeProjectUIHandler::getHeader(); $confirm_save = $obj_data["code"] && $cached_modified_date != $file_modified_time; $query_string = str_replace(array("&edit_entity_type=advanced", "&edit_entity_type=simple"), "", $_SERVER["QUERY_STRING"]); $main_content = '
 	<div class="top_bar">
 		<header>
 			<div class="title">Edit Page (Visual Workspace) <span class="template_fields"></span> at: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $P, true) . '</div>
 			<ul>
 				<li class="view_project_page" data-title="View Project Page"><a href="' . $view_project_url . '" target="project"><i class="icon view"></i></a></li>
-				<li class="save" data-title="Save Page"><a onClick="saveEntity()"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save Page"><a onClick="' . ($confirm_save ? 'confirmSave' : 'save') . '()"><i class="icon save"></i> Save</a></li>
 				
 				<li class="sub_menu">
 					<i class="icon sub_menu"></i>
@@ -111,11 +109,11 @@ var confirm_save = ' . ($confirm_save ? 'true' : 'false') . ';
 						<li class="view_template_samples" title="View Template Samples"><a onClick="openTemplateSamples()"><i class="icon view_template_samples"></i> View Template Samples</a></li>
 						<li class="separator"></li>
 						<li class="preview" title="Preview & Test Page"><a onClick="preview()"><i class="icon preview_file"></i> Preview & Test Page</a></li>
-						<li class="save_preview" title="Save & Preview Page"><a onClick="saveAndPreview();"><i class="icon save_preview_file"></i> Save & Preview Page</a></li>
+						<li class="save_preview" title="Save & Preview Page"><a onClick="saveAndPreview(' . ($confirm_save ? 'true' : 'false') . ');"><i class="icon save_preview_file"></i> Save & Preview Page</a></li>
 						<li class="separator"></li>
 						<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
 						<li class="separator"></li>
-						<li class="save" title="Save Page"><a onClick="saveEntity()"><i class="icon save"></i> Save</a></li>
+						<li class="save" title="Save Page"><a onClick="' . ($confirm_save ? 'confirmSave' : 'save') . '()"><i class="icon save"></i> Save</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -151,15 +149,9 @@ var confirm_save = ' . ($confirm_save ? 'true' : 'false') . ';
 				
 				' . CMSPresentationLayerUIHandler::getRegionsBlocksAndIncludesHtml($selected_or_default_template, $available_regions_list, $regions_blocks_list, $available_blocks_list, $available_block_params_list, $block_params_values_list, $includes, $available_params_list, $template_params_values_list) . '
 			</div>'; $template_region_blocks = array_map(function($n) { return ""; }, array_flip($available_regions_list)); if ($regions_blocks_list) foreach ($regions_blocks_list as $rbl) { if (!is_array($template_region_blocks[ $rbl[0] ])) $template_region_blocks[ $rbl[0] ] = array(); $template_region_blocks[ $rbl[0] ][] = $rbl; } $template_includes = array_map(function($include) { $inc_path = CMSPresentationLayerHandler::getArgumentCode($include["path"], $include["path_type"]); return array("path" => $inc_path, "once" => $include["once"]); }, $includes); $qs = array( "template" => $selected_or_default_template, "template_regions" => $template_region_blocks, "template_params" => $template_params_values_list, "template_includes" => $template_includes, "is_external_template" => $is_external_template, "external_template_params" => $set_template["template_params"], ); $iframe_url = $edit_simple_template_layout_url . "&data=" . urlencode(json_encode($qs)); $reverse_class = $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse"; $main_content .= '
-			<div id="entity_template_layout" class="entity_template_layout code_layout_ui_editor">
-				' . WorkFlowPresentationHandler::getCodeEditorHtml("", array("save_func" => "saveEntity", "show_pretty_print" => false), $ui_menu_widgets_html, $user_global_variables_file_path, $user_beans_folder_path, $PEVC, $UserAuthenticationHandler, $bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $get_db_data_url, $create_page_presentation_uis_diagram_block_url, "chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer", false, array( 'layout_ui_editor_html' => '
-						<div class="template-widgets">
-							<iframe class="template-widgets-droppable" data-init-src="' . $iframe_url . '"></iframe>
-						</div>' )) . '
-			</div>
-			<!--div class="entity_template_layout tab_content_template_layout ' . $reverse_class . ' toolbar_open with_top_bar_section" id="entity_template_layout">
+			<div class="entity_template_layout tab_content_template_layout ' . $reverse_class . ' toolbar_open with_top_bar_section" id="entity_template_layout">
 				' . CMSPresentationLayerUIHandler::getTabContentTemplateLayoutHtml($user_global_variables_file_path, $user_beans_folder_path, $PEVC, $UserAuthenticationHandler, $bean_name, $bean_file_name, $iframe_url, $edit_simple_template_layout_url, $choose_bean_layer_files_from_file_manager_url, $get_db_data_url, $create_page_presentation_uis_diagram_block_url, "iframeModulesBlocksToolbarTree") . '
-			</div-->
+			</div>
 		</div>
 	</div>
 	

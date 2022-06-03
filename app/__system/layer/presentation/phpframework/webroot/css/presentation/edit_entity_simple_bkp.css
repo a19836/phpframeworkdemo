@@ -6,7 +6,7 @@
 	z-index:6;
 }
 .top_bar header .title {
-	max-width:calc(100% - 320px);
+	max-width:calc(100% - 200px);
 }
 .top_bar .template_fields {
 	width:365px;
@@ -94,41 +94,16 @@
 	color:inherit;
 }
 
-/* entity_template_layout */
-.entity_obj .entity_template_layout {
-	height:calc(100vh - 86px);
-	min-height:300px;
-	padding:0 !important;
-	position:relative;
-	/*border:0;*/
-}
-.entity_obj .entity_template_layout .code_menu.top_bar_menu {
-	right:217px;
-}
-.entity_obj .entity_template_layout .code_menu.top_bar_menu li.editor_full_screen,
-  .entity_obj .entity_template_layout .code_menu.top_bar_menu li.sub_menu,
-  .entity_obj .entity_template_layout .code_menu.top_bar_menu li.save {
-	display:none;
-}
-
-/* entity_template_layout - ELS UI */
-.entity_obj .entity_template_layout .layout-ui-editor.with_top_bar_menu > .options .options-right {
+/* tab_content_template_layout */
+.entity_obj .tab_content_template_layout .iframe_toolbar {
 	right:85px;
-	z-index:7;
 }
-.entity_obj .entity_template_layout .layout-ui-editor.with_top_bar_menu > .options > .options-center {
-	right:190px;
-	z-index:7;
+.entity_obj.is_external_template .tab_content_template_layout .iframe_modules_blocks_toolbar {
+	top:75px;
 }
-.entity_obj .entity_template_layout .layout-ui-editor.with_top_bar_menu > .options .options-left .option.save,
-  .entity_obj .entity_template_layout .layout-ui-editor.with_top_bar_menu > .options .options-right .option.full-screen {
-	display:none !important;
-}
-.entity_obj .entity_template_layout .layout-ui-editor.with_top_bar_menu.fixed-side-properties.menu-settings-shown > .template-widgets,
-  .entity_obj .entity_template_layout .layout-ui-editor.with_top_bar_menu.fixed-side-properties.menu-settings-shown > .menu-widgets, 
-  .entity_obj .entity_template_layout .layout-ui-editor.with_top_bar_menu.fixed-side-properties.menu-settings-shown > .menu-layers,
-  .entity_obj .entity_template_layout .layout-ui-editor.with_top_bar_menu.fixed-side-properties.menu-settings-shown > .template-widgets-options {
-	margin-bottom:0;
+.entity_obj.is_external_template .tab_content_template_layout {
+	height: calc(100vh - 75px);
+	margin-top:40px;
 }
 
 /* EXTERNAL TEMPLATE PARAMS */

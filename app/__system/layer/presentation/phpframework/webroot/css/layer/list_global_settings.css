@@ -2,6 +2,9 @@ body,
   #main_column {
 	background:#fff !important;
 }
+::-webkit-scrollbar-track {
+	background-color:#fff;
+}
 
 .global_settings {min-width:530px; height:200px; text-align:left; margin:0 auto; padding:20px;}
 .global_settings .form_fields {margin:0 auto;}

@@ -1047,14 +1047,14 @@
 	cursor:pointer;
 	text-align:left;
 	font-size:7pt;
-	opacity:.5;
+	opacity:.7;
 	color:#ccc;
 }
 .layout-ui-editor > .menu-widgets .group .group-title:hover {
 	color:#aaa !important;
 }
 .layout-ui-editor > .menu-widgets .group ul .group .group-title  {
-	color:#ddd;
+	/*color:#ddd;*/
 	border-bottom-color:rgba(0,0,0,0.05);
 }
 .layout-ui-editor > .menu-widgets .group .group-title:hover:after {
@@ -1081,7 +1081,7 @@
 	min-height:3em;
 	cursor:default;
 	margin:0;
-	padding:0 0 0 20px;
+	padding:0 0 0 10px;
 	text-align:left;
 	/*background:rgba(0,0,0,0.25);*/
 }
@@ -1185,28 +1185,9 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 }
 
 /* MENU WIDGETS - HTML TEXT */
-.layout-ui-editor > .menu-widgets .menu-widget.html-text,
-  body > .menu-widget.html-text.ui-draggable-dragging {
-	height:auto;
-	display:inline-block;
-	border-radius:5px;
-	border:1px solid rgba(0, 0, 0, .2);
-	color:inherit;
-	overflow:hidden;
-	font-size:300%;
-}
-.layout-ui-editor > .menu-settings.menu-settings-html-text .settings-id,
-   .layout-ui-editor > .menu-settings.menu-settings-html-text .settings-classes,
-   .layout-ui-editor > .menu-settings.menu-settings-html-text .settings-general,
-   .layout-ui-editor > .menu-settings.menu-settings-html-text .settings-dimension,
-   .layout-ui-editor > .menu-settings.menu-settings-html-text .settings-typography,
-   .layout-ui-editor > .menu-settings.menu-settings-html-text .settings-decorations,
-   .layout-ui-editor > .menu-settings.menu-settings-html-text .settings-extra {
-	display:none;
-}
-.layout-ui-editor > .menu-settings.menu-settings-html-text .settings-properties .settings-property.html-text textarea {
-	width:100%;
-	height:100px;
+.layout-ui-editor > .menu-widgets .menu-widget.html-text:before,
+  body > .menu-widget.html-text.ui-draggable-dragging:before {
+	background-image:url('../img/html_text_logo.svg');
 }
 
 /* MENU WIDGETS - HTML COMMENT */
@@ -1935,7 +1916,7 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 
 .layout-ui-editor > .template-widgets .widget-header {
 	line-height:1.5em;
-	margin:-1.6em 0 0 -4px; /* Header is only shown if widget is clicked, which means the widget will have a border of 2pc */
+	margin:-1.6em 0 0 -2px; /* Header is only shown if widget is clicked, which means the widget will have a border of 2pc */
 	padding:5px;
 	position:absolute;
     	font-size:1em;
@@ -1944,6 +1925,7 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	border:1px solid var(--widget-header-border, transparent);
 	border-radius:0 4px 0 0;
 	text-align:left;
+	box-sizing:border-box;
 	display:none;
 	
 	font-weight:normal;
@@ -2027,6 +2009,7 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	border:1px solid var(--droppable-header-border, transparent);
 	border-radius:0 4px 0 0;
 	text-align:left;
+	box-sizing:border-box;
 	display:none;
 	
 	font-weight:normal;

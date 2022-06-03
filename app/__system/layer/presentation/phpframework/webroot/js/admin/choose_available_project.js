@@ -5,7 +5,7 @@ function toggleProjectsListType(elm, type) {
 	p.find(".icon").removeClass("active");
 	elm.find(".icon").addClass("active");
 	
-	p.closest(".choose_available_project").removeClass(type == "block_view" ? "list_view" : "block_view").addClass(type == "block_view" ? "block_view" : "list_view");
+	p.closest(".group").removeClass(type == "block_view" ? "list_view" : "block_view").addClass(type == "block_view" ? "block_view" : "list_view");
 }
 
 function updateLayerProjects(folder_to_filter) {

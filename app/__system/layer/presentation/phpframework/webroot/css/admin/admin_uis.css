@@ -3,6 +3,9 @@ body,
 	background:#fff !important;
 	min-height:auto;
 }
+::-webkit-scrollbar-track {
+	background-color:#fff;
+}
 
 #title {
 	color:#666;

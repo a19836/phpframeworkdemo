@@ -90,6 +90,11 @@ $(function () {
 		initCodeLayoutUIEditor(template_obj, {
 			save_func: saveTemplate, 
 			ready_func: function() {
+				var luie = template_obj.find(".code_editor_body > .layout-ui-editor");
+				var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
+				
+				PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorWithRightContainer;
+				
 				//show view layout panel instead of code
 				var view_layout = luie.find(" > .tabs > .view-layout");
 				view_layout.addClass("do-not-confirm");
@@ -102,12 +107,6 @@ $(function () {
 				PtlLayoutUIEditor.showTemplatePHPWidgets();
 			},
 		});
-		
-		var luie = template_obj.find(".code_editor_body > .layout-ui-editor");
-		var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
-		
-		if (PtlLayoutUIEditor)
-			PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorWithRightContainer;
 		
 		//init page template layout
 		initPageAndTemplateLayout(template_obj, template_obj, function() {
@@ -317,7 +316,7 @@ function updateCodeEditorLayoutFromSettings(template_obj, reload_iframe, do_not_
 			updateRegionsFromBodyEditor(false, true);
 		
 		if (!template_obj.hasClass("inactive")) {
-			var iframe = template_obj.find(".code_editor_layout iframe");
+			var iframe = template_obj.find(".tab_content_template_layout > iframe");//getContentTemplateLayoutIframe(template_obj);
 			var are_different = areLayoutAndSettingsDifferent(iframe, regions_blocks_includes_settings);
 			
 			//get regions and params from settings
@@ -335,7 +334,6 @@ function updateCodeEditorLayoutFromSettings(template_obj, reload_iframe, do_not_
 				template_params_values_list = data["params"];
 				
 				//prepare iframe with new data
-				var iframe = template_obj.find(".code_editor_layout iframe");
 				var iframe_data = {
 					"template_regions" : data["template_regions"],
 					"template_params": data["params"],
@@ -360,7 +358,7 @@ function updateCodeEditorSettingsFromLayout(template_obj) {
 	updateRegionsFromBodyEditor(false, true);
 	
 	if (!template_obj.hasClass("inactive")) {
-		var iframe = template_obj.find(".code_editor_layout iframe");
+		var iframe = template_obj.find(".tab_content_template_layout > iframe");//getContentTemplateLayoutIframe(template_obj);
 		var regions_blocks_includes_settings = template_obj.find(".regions_blocks_includes_settings");
 		var are_different = areLayoutAndSettingsDifferent(iframe, regions_blocks_includes_settings);
 		

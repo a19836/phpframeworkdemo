@@ -1,7 +1,12 @@
+function toggleSubTutorials(elm) {
+	$(elm).parent().closest("li").toggleClass("open");
+}
+
 function openVideoPopup(elm) {
 	elm = $(elm);
-	var popup = $("#modal-video-01");
+	var popup = $(".popup_video");
 	var video_url = elm.attr("video_url");
+	var image_url = elm.attr("image_url");
 	var p = elm.parent().closest("li, .card");
 	var title = "";
 	var description = "";
@@ -12,18 +17,28 @@ function openVideoPopup(elm) {
 		description = p_body.find(".card-text").text();
 	}
 	else {
-		title = p.find("button").text();
-		description = p.find(".description").text();
+		title = p.find(".tutorial_title").text();
+		description = p.find(".tutorial_description").text();
 	}
 	
 	if (description)
-		popup.find(".modal-footer").show();
+		popup.find(".popup_description").show();
 	else
-		popup.find(".modal-footer").hide();
+		popup.find(".popup_description").hide();
 	
-	popup.find(".modal-header .modal-title").html(title);
-	popup.find(".modal-footer .modal-description").html(description);
-	popup.find("iframe").attr("src", video_url);
-	popup.modal('show');
+	popup.find(".popup_title").html(title);
+	popup.find(".popup_description").html(description);
+	popup.find(".popup_img").show().attr("src", image_url);
+	popup.find("iframe").attr("src", video_url).attr("title", title).css("background-image", "url(" + image_url + ")");
+	popup.show();
+}
+
+function closeVideoPopup(elm) {
+	elm = $(elm);
+	var popup = elm.parent().closest(".popup_video");
+	
+	popup.find("iframe").attr("src", "");
+	
+	popup.hide();
 }
 

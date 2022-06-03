@@ -511,13 +511,15 @@
 	height:20px;
 }
 .icon.code_editor_layout_tab::before {
-	content:"\f6e8";
+	/*content:"\f6e8";*/
+	content:"\f044";
 }
 .icon.code_editor_layout_tab::after {
 	content:"\f1fc";
 }
 .icon.code_editor_body_tab::before {
-	content:"\f53f";
+	/*content:"\f53f";*/
+	content:"\f1b2";
 }
 .icon.code_editor_body_tab::after {
 	content:"\f1fc";
@@ -535,6 +537,9 @@
 	/*content:"\f303";*/
 }
 .icon.tasks_flow_tab::before {
+	font-size:15px;
+}
+.icon.tasks_flow_tab::before {
 	content:"\f126";
 	-webkit-transform:rotate(180deg) scaleX(-1);
 	transform:rotate(180deg) scaleX(-1);
@@ -545,7 +550,8 @@
 	/*content:"\f303";*/
 }
 .icon.visual_editor_tab::before {
-	content:"\f53f";
+	/*content:"\f53f";*/
+	content:"\f1b2";
 }
 .icon.visual_editor_tab::after {
 	/*content:"\f1fc";*/
@@ -569,6 +575,9 @@
 .icon.block_view::before {
 	content:"\f58e";
 	margin-left:3px;
+}
+.icon.video::before {
+	content:"\f03d";
 }
 
 .icon.desktop {

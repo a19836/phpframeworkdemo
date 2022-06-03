@@ -15,14 +15,12 @@ $(function () {
 	
 	//init auto save
 	addAutoSaveMenu(".top_bar li.sub_menu li.save");
-	enableAutoSave(onToggleAutoSave);
+	enableAutoSave(onToggleAutoSave); //only for testing
 	initAutoSave(".top_bar li.save a");
 	
-	//prepare top_bar
-	$(".entity_template_layout > .code_menu").addClass("top_bar_menu");
-	$(".entity_template_layout > .layout-ui-editor").addClass("with_top_bar_menu");
-	
 	//init trees
+	createChoosePresentationIncludeFromFileManagerTree();
+	
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
 		toggle_children_on_click : true,
@@ -31,37 +29,13 @@ $(function () {
 	});
 	choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");
 	
-	chooseMethodFromFileManagerTree = new MyTree({
+	chooseBlockFromFileManagerTree = new MyTree({
 		multiple_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
+		ajax_callback_after : removeAllThatIsNotBlocksFromTree,
 	});
-	chooseMethodFromFileManagerTree.init("choose_method_from_file_manager");
-	
-	chooseFunctionFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
-	});
-	chooseFunctionFromFileManagerTree.init("choose_function_from_file_manager");
-	
-	chooseFileFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
-	});
-	chooseFileFromFileManagerTree.init("choose_file_from_file_manager");
-	
-	choosePresentationFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeAllThatIsNotPagesFromTree,
-	});
-	choosePresentationFromFileManagerTree.init("choose_presentation_from_file_manager");
+	chooseBlockFromFileManagerTree.init("choose_block_from_file_manager");
 	
 	choosePageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
@@ -79,14 +53,6 @@ $(function () {
 	});
 	chooseImageUrlFromFileManagerTree.init("choose_image_url_from_file_manager");
 	
-	chooseBlockFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeAllThatIsNotBlocksFromTree,
-	});
-	chooseBlockFromFileManagerTree.init("choose_block_from_file_manager");
-	
 	chooseProjectTemplateUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
 		toggle_children_on_click : true,
@@ -95,34 +61,10 @@ $(function () {
 	});
 	chooseProjectTemplateUrlFromFileManagerTree.init("choose_project_template_url_from_file_manager");
 	
-	createChoosePresentationIncludeFromFileManagerTree();
-	
 	//init ui
 	var entity_obj = $(".entity_obj");
 	
 	if (entity_obj[0]) {
-		//init ui layout editor
-		initCodeLayoutUIEditor(entity_obj, {
-			save_func: saveEntity, 
-			ready_func: function() {
-				var luie = entity_obj.find(".entity_template_layout > .layout-ui-editor");
-				var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
-				
-				PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorWithRightContainer;
-				
-				//show view layout panel instead of code
-				var view_layout = luie.find(" > .tabs > .view-layout");
-				view_layout.addClass("do-not-confirm");
-				view_layout.trigger("click");
-				view_layout.removeClass("do-not-confirm");
-				
-				//show php widgets, borders and background
-				//PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();
-				PtlLayoutUIEditor.showTemplateWidgetsBorders();
-				PtlLayoutUIEditor.showTemplatePHPWidgets();
-			},
-		});
-		
 		initPageAndTemplateLayout(entity_obj, entity_obj.find(".entity_obj_tabs"), function() {
 			update_settings_from_layout_iframe_func = function() {
 				updateSettingsFromLayout(entity_obj);
@@ -130,6 +72,10 @@ $(function () {
 			update_layout_iframe_from_settings_func = function() {
 				updateLayoutFromSettings(entity_obj, false);
 			};
+			
+			/*setTimeout(function(){
+				$(".invalid").first().remove();
+			}, 20000);*/
 		});
 		
 		if (!code_exists)
@@ -423,7 +369,7 @@ function updateTemplateLayout(entity_obj) {
 	update_layout_iframe_from_settings_func = null;
 	
 	//prepare new template load
-	var iframe = getContentTemplateLayoutIframe(entity_obj);
+	var iframe = entity_obj.find(".entity_template_layout iframe");
 	var template = getSelectedTemplate(entity_obj);
 	var is_template_ok = template ? true : false;
 	
@@ -526,7 +472,7 @@ function updateLayoutFromSettings(entity_obj, reload_iframe) {
 	if (entity_obj[0] && !entity_obj.hasClass("inactive")) {
 		var orig_template_params_values_list = JSON.stringify(template_params_values_list);
 		
-		var iframe = getContentTemplateLayoutIframe(entity_obj);
+		var iframe = entity_obj.find(".entity_template_layout iframe");
 		var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
 		
 		updateRegionsBlocksRBIndexIfNotSet(regions_blocks_includes_settings); //very important, otherwise we will loose the region-block params-values and joinpoints for the new regions added dynamically
@@ -543,6 +489,7 @@ function updateLayoutFromSettings(entity_obj, reload_iframe) {
 		
 		if (are_different /*&& confirm("Do you wish to convert the template settings to the layout panel?")*/) {
 			var template = getSelectedTemplate(entity_obj);
+			var iframe = entity_obj.find(".entity_template_layout iframe");
 			var iframe_data = {
 				"template": template,
 				"template_regions" : data["template_regions"],
@@ -582,7 +529,7 @@ function getSelectedTemplate(entity_obj) {
 
 function updateSettingsFromLayout(entity_obj) {
 	if (!entity_obj.hasClass("inactive")) {
-		var iframe = getContentTemplateLayoutIframe(entity_obj);
+		var iframe = entity_obj.find(".entity_template_layout iframe");
 		var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
 		var are_different = areLayoutAndSettingsDifferent(iframe, regions_blocks_includes_settings);
 		
@@ -617,13 +564,6 @@ function isEntityCodeObjChanged() {
 	var new_saved_obj_id = getEntityCodeObjId();
 	
 	return saved_obj_id != new_saved_obj_id;
-}
-
-function saveEntity(opts) {
-	if (confirm_save)
-		confirmSave(opts);
-	else
-		save(opts);
 }
 
 function save(opts) {
@@ -689,7 +629,7 @@ function save(opts) {
 		alert("No entity object to save! Please contact the sysadmin...");
 }
 
-function saveAndPreview() {
+function saveAndPreview(confirm_save) {
 	var opts = {
 		success: function() {
 			//open popup with preview

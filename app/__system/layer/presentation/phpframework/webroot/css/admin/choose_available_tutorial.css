@@ -2,18 +2,79 @@ body,
   #main_column {
 	background:#fff !important;
 }
-
-.choose_available_tutorial {
-	
+::-webkit-scrollbar-track {
+	background-color:#fff;
 }
-.choose_available_tutorial > .title {
+
+.choose_available_tutorial:not(.in_popup) {
+	border:1px solid var(--icon-folder-color);
+	border-radius:2px;
+	box-shadow:3px 3px 4px rgb(0 0 0 / 5%);
+}
+.choose_available_tutorial:not(.in_popup) > .title {
+	padding:5px 20px;
+	background:var(--icon-folder-color);
+	color:#fff;
+	font-size:13px;
+}
+.choose_available_tutorial.in_popup > .title {
+	margin:10px 0 5px 0;
 	height:25px;
 	color:#666;
-	font-size: 16px;
-	margin: 10px 0 5px 0;
-	text-align: center;
+	font-size:16px;
+	text-align:center;
 }
-.choose_available_tutorial .card {
+
+.choose_available_tutorial > ul {
+	padding:20px;
+}
+.choose_available_tutorial.in_popup > ul {
+	height:calc(100vh - 70px);
+	box-sizing:border-box;
+	overflow:auto;
+}
+.choose_available_tutorial > ul li {
+	text-align:left;
+}
+.choose_available_tutorial > ul > li:not(:last-child) {
+	border-bottom:1px solid var(--icon-folder-color);
+}
+.choose_available_tutorial > ul li > .tutorial_header {
+	padding:3px 10px;
+	cursor:pointer;
+	color:#585B69;
+}
+.choose_available_tutorial > ul > li > .tutorial_header {
+	padding:10px;
+	color:inherit;
+}
+.choose_available_tutorial > ul li:hover > .tutorial_header {
+	color:var(--icon-folder-color);
+}
+.choose_available_tutorial > ul li > .tutorial_header > .tutorial_description {
+	display:none;
+}
+.choose_available_tutorial > ul li > .tutorial_header > .tutorial_title .icon {
+	color:#4070FF;
+}
+.choose_available_tutorial > ul li.open.with_sub_tutorials > .tutorial_header > .tutorial_title .icon:not(.dropdown_arrow) {
+	opacity:.5;
+}
+.choose_available_tutorial > ul li.with_sub_tutorials > .tutorial_header > .tutorial_title .icon.dropdown_arrow {
+	margin-top:3px;
+	float:right;
+}
+.choose_available_tutorial > ul li.open.with_sub_tutorials > .tutorial_header > .tutorial_title .icon.dropdown_arrow::before {
+	content:"\f106";
+}
+.choose_available_tutorial > ul li > ul {
+	margin-bottom:10px;
+}
+.choose_available_tutorial > ul li:not(.open) > ul {
+	display:none;
+}
+
+/*.choose_available_tutorial .card {
 	width:300px;
 	min-height:200px;
 	margin:20px;
@@ -103,20 +164,50 @@ body,
 }
 .choose_available_tutorial .card .list_group .list_group_item.collapsed > .list_group_item_body {
 	display:none;
-}
+}*/
 
 /* MODAL VIDEO */
-.choose_available_tutorial .modal_video {
+.choose_available_tutorial .popup_video {
+	padding:20px;
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
 	background-color: rgba(0,0,0,0.8);
+	color:#fff;
+	z-index:1;
+	display:none;
+}
+.choose_available_tutorial .popup_video .popup_header {
+	padding-bottom:15px;
+	border-bottom:1px solid #fff;
+}
+.choose_available_tutorial .popup_video .popup_header .popup_title {
+	display:inline-block;
+}
+.choose_available_tutorial .popup_video .popup_header .close {
+	margin-top:-10px;
+	font-size:20px;
+	font-weight:bold;
 	cursor:pointer;
+	float:right;
 }
-.choose_available_tutorial .modal_video .modal-dialog {
-	max-width:none;
-	cursor:default;
+.choose_available_tutorial .popup_video .popup_body {
+	padding:20px;
+	text-align:center;
 }
-.choose_available_tutorial .modal_video .modal-dialog .close-mo-icon {
-	cursor:pointer;
+.choose_available_tutorial .popup_video .popup_body iframe {
+	max-width:calc(100% - 20px);
+	background-color:#000;
+	background-repeat:no-repeat;
+	background-size:contain;
+	background-position:center;
 }
-.choose_available_tutorial .modal_video .modal-dialog iframe {
-	max-width:80vw;
+.choose_available_tutorial .popup_video .popup_footer img {
+	width:100px;
+	height:100px;
+	margin-right:10px;
+	margin-bottom:10px;
+	float:left;
 }

@@ -143,8 +143,7 @@ $(function () {
 				var luie = layout_ui_editor;
 				var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
 				
-				if (PtlLayoutUIEditor)
-					PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorWithRightContainer;
+				PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorWithRightContainer;
 				
 				//show view layout panel instead of code
 				var view_layout = luie.find(" > .tabs > .view-layout");

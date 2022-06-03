@@ -2,36 +2,36 @@
 <tasks>
 	<container>
 		<id><![CDATA[layer_presentations]]></id>
-		<width>927</width>
+		<width>676</width>
 		<height>150</height>
 		<left>1</left>
-		<top>0</top>
+		<top>-1</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_bls]]></id>
-		<width>927</width>
+		<width>676</width>
 		<height>150</height>
 		<left>1</left>
-		<top>150</top>
+		<top>149</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dals]]></id>
-		<width>927</width>
+		<width>676</width>
 		<height>150</height>
 		<left>1</left>
 		<top>298</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dbs]]></id>
-		<width>927</width>
+		<width>676</width>
 		<height>150</height>
 		<left>1</left>
 		<top>448</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_drivers]]></id>
-		<width>927</width>
-		<height>158</height>
+		<width>676</width>
+		<height>156</height>
 		<left>1</left>
 		<top>598</top>
 	</container>

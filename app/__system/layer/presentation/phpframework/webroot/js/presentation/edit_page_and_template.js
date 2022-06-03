@@ -927,7 +927,7 @@ function addRegionBlockOption(select_elm, block, project) {
 		var doc = select_elm[0].ownerDocument;
 		var win = doc.defaultView || doc.parentWindow;
 		var main_body = $("body");
-		var iframe_body = win == window ? main_body.find(".entity_template_layout, .code_editor_layout").children("iframe")[0].contentWindow.document.body : doc.body;
+		var iframe_body = win == window ? getContentTemplateLayoutIframe(main_body)[0].contentWindow.document.body : doc.body;
 		iframe_body = $(iframe_body);
 		
 		var main_body_items = main_body.find(".regions_blocks_includes_settings .items");
@@ -1235,6 +1235,24 @@ function addOtherRegionBlock(elm) {
 	}
 	else 
 		alert("Error: Region Id cannot be undefined!");
+}
+
+//This function will be used in the edit_simple_template_layout file
+function addFirstRegionBlock(elm) {
+	var template_region = $(elm).parent().closest(".template_region");
+	var region = template_region.attr("region");
+	
+	if (region && region.trim()) {
+		var rb_html = getRegionBlockHtml(region, null, null, false);
+		var items = template_region.children(".items");
+		
+		items.append(rb_html);
+		
+		pretifyRegionBlockComboBox( rb_html.children(".block_options") );
+		//resizeElementLabels(region_blocks);
+	}
+	else 
+		alert("Error trying to add new region!");
 }
 
 function addRepeatedRegionBlock(elm) {
@@ -2469,8 +2487,8 @@ function updateLayoutIframeFromSettings(iframe, data, iframe_html_to_parse) {
 }
 
 function reloadLayoutIframeFromSettings(iframe, data, iframe_html_to_parse) {
-	var iframe_parent = iframe.parent().closest(".tab_content_template_layout");
-	var iframe_url = iframe.attr("orig_src");
+	var iframe_parent = iframe.parent().closest(".tab_content_template_layout, .code_layout_ui_editor");
+	var iframe_url = iframe[0].hasAttribute("orig_src") ? iframe.attr("orig_src") : iframe.attr("data-init-src");
 	
 	if (data) 
 		iframe_url += "&data=" + encodeURIComponent(JSON.stringify(data));
@@ -2480,8 +2498,10 @@ function reloadLayoutIframeFromSettings(iframe, data, iframe_html_to_parse) {
 	//console.log(data);
 	
 	//reset iframe_parent before set the new height. This is bc if the previous loaded template was too long than this new template will stay with the height of the previous one and will not update the correct height from the new iframe body
-	iframe_parent.css("height", ""); 
-	iframe.css("height", "");
+	if (iframe_parent.is(".tab_content_template_layout")) {
+		iframe_parent.css("height", ""); 
+		iframe.css("height", "");
+	}
 	
 	if (!iframe_html_to_parse)
 		iframe.attr("src", iframe_url);
@@ -2630,7 +2650,7 @@ function openTemplateRegionInfoPopup(elm) {
 	
 	elm = $(elm);
 	var p = elm.parent();
-	var region = p.children(".region").val();
+	var region = p.children(".region").length > 0 ? p.children(".region").val() : p.closest(".template_region").attr("region");
 	var region_type = getArgumentType(region);
 	region = region_type == "string" ? region.replace(/"/g, "") : region;
 	
@@ -2674,8 +2694,15 @@ function openTemplateRegionInfoPopup(elm) {
 
 /* TAB CONTENT TEMPLATE LAYOUT */
 
+function getContentTemplateLayoutIframe(main_elm) {
+	if (main_elm)
+		return main_elm.find(".tab_content_template_layout > iframe, .code_layout_ui_editor > .layout-ui-editor > .template-widgets > iframe").first();
+	else
+		return $(".tab_content_template_layout > iframe, .code_layout_ui_editor > .layout-ui-editor > .template-widgets > iframe").first();
+}
+
 function initPageAndTemplateLayout(main_parent_elm, main_layout_elm, on_ready_callback) {
-	var iframe = main_layout_elm.find(" > .tab_content_template_layout > iframe");
+	var iframe = getContentTemplateLayoutIframe(main_layout_elm);
 	
 	prepareRegionsBlocksHtmlValue(main_parent_elm);
 	pretifyRegionsBlocksComboBox(main_parent_elm);
@@ -2698,7 +2725,9 @@ function initPageAndTemplateLayout(main_parent_elm, main_layout_elm, on_ready_ca
 		var iframe_unload_func = function () {
 			main_parent_elm.addClass("inactive");
 		};
-		iframe.load(function() {
+		iframe.load(function() { //for some reason the load is getting called multiple times, so we need to use the load_iframe_tab_content_template_layout attribute to avoid calling multiple times the onLoadIframeTabContentTemplateLayout function. I think it's because the ajax requests of the simulate html for each region block.
+			//console.log("iframe load");
+			
 			$(iframe[0].contentWindow).unload(iframe_unload_func);
 			
 			//remove setTimeout and setInterval bc the on_ready_callback will be called now and don't need to be called in the future!
@@ -2792,7 +2821,7 @@ function initPageAndTemplateLayout(main_parent_elm, main_layout_elm, on_ready_ca
 function resizeSettingsPanel(main_parent_elm, top) {
 	var settings = main_parent_elm.find(".regions_blocks_includes_settings");
 	var settings_overlay = main_parent_elm.find(".regions_blocks_includes_settings_overlay");
-	var iframe = main_parent_elm.find(".tab_content_template_layout iframe");
+	var iframe = getContentTemplateLayoutIframe(main_parent_elm);
 	var icon = settings.find(" > .settings_header .icon");
 	
 	var wh = $(window).height();
@@ -2840,18 +2869,23 @@ function toggleSettingsPanel(elm) {
 }
 
 function onLoadIframeTabContentTemplateLayout() {
-	var tab_content_template_layout = $(".tab_content_template_layout");
-	var iframe = tab_content_template_layout.children("iframe");
+	//console.log("onLoadIframeTabContentTemplateLayout");
+	var iframe = getContentTemplateLayoutIframe();
+	var tab_content_template_layout = iframe.parent().closest(".tab_content_template_layout, .code_layout_ui_editor");
 	
 	//prepare full height
 	var iframe_body = iframe[0].contentWindow.document.body;
-	//iframe.parent().css("height", (iframe_body.scrollHeight + 40) + 'px'); //no need to do this anymore bc the height is now fixed bc of the top bar.
-	
-	//prepare responsive size
-	onChangeTemplateLayoutScreenSize( iframe.parent().find(" > .iframe_toolbar > input")[0] );
 	
 	disableLinksAndButtonClickEvent(iframe_body);
-	initIframeModulesBlocksDroppableRegions();
+	
+	if (tab_content_template_layout.is(".tab_content_template_layout")) {
+		//iframe.parent().css("height", (iframe_body.scrollHeight + 40) + 'px'); //no need to do this anymore bc the height is now fixed bc of the top bar.
+		
+		//prepare responsive size
+		onChangeTemplateLayoutScreenSize( iframe.parent().find(" > .iframe_toolbar > input")[0] );
+		
+		initIframeModulesBlocksDroppableRegions();
+	}
 }
 
 function disableLinksAndButtonClickEvent(parent_elm) {
@@ -2955,7 +2989,7 @@ function initIframeModulesBlocksToolbarTree() {
 }
 
 function initIframeModulesBlocksDroppableRegions() {
-	var iframe = $(".tab_content_template_layout > iframe");
+	var iframe = getContentTemplateLayoutIframe();
 	var iframe_body = $(iframe[0].contentWindow.document.body);
 	
 	//prepare droppables

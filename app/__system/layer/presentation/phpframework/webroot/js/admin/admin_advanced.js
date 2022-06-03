@@ -508,17 +508,19 @@ function toggleAdvancedLevel(elm) {
 	left_panel.toggleClass("simple_level").toggleClass("advanced_level");
 	
 	//check if active tab is a hidden tab
-	var tabs_parent = left_panel.find(" > .mytree > ul");
-	var active_tab = tabs_parent.tabs("option", "active");
-	var li = $(tabs_parent.find(" > ul > li")[active_tab]);
-	
-	if (!li.is(":visible")) {
-		li = tabs_parent.find(" > ul > li:visible").first();
+	if (left_panel.is(".left_panel_with_tabs")) {
+		var tabs_parent = left_panel.find(" > .mytree > ul");
+		var active_tab = tabs_parent.tabs("option", "active");
+		var li = $(tabs_parent.find(" > ul > li")[active_tab]);
 		
-		tabs_parent.tabs("option", "active", li.index());
+		if (!li.is(":visible")) {
+			li = tabs_parent.find(" > ul > li:visible").first();
+			
+			tabs_parent.tabs("option", "active", li.index());
+		}
+		
+		prepareLayerActiveTab(li);
 	}
-	
-	prepareLayerActiveTab(li);
 }
 
 function toggleTreeLayout(elm) {

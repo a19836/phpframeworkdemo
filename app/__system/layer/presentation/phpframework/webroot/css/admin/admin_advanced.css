@@ -2,7 +2,7 @@
   .light_theme {
   	--top-panel-border:#FC3C44;
 	--top-panel-bg:#2C2D34;
-	--top-panel-color:#BFC4DB;
+	--top-panel-color:#DFE1ED;/*#BFC4DB*/
 	--top-panel-sub-menu-bg:var(--top-panel-bg);
 	--top-panel-sub-menu-border:#4e505e;
 	--top-panel-sub-menu-item-bg:var(--top-panel-bg);
@@ -87,10 +87,9 @@
 	z-index:4;
 	box-sizing:border-box;
 	
-	border-top:2px solid var(--top-panel-border);
 	background:var(--top-panel-bg);
 	color:var(--top-panel-color);
-	font-size:15px;
+	font-size:14px;
 	text-align:center;
 }
 #left_panel {
@@ -167,17 +166,17 @@ body.main_navigator_reverse.left_panel_hidden #right_panel {
 	display:inline;
 }
 #top_panel ul.left {
-	margin-top:5px;
+	margin-top:7px;
 	margin-left:10px;
 	float:left;
 	text-align:left;
 }
 #top_panel ul.center {
-	margin-top:6px;
+	margin-top:8px;
 	display:inline-block;
 }
 #top_panel ul.right {
-	margin-top:6px;
+	margin-top:8px;
 	margin-right:5px;
 	float:right;
 	text-align:left;
@@ -583,11 +582,6 @@ body.main_navigator_reverse.left_panel_hidden #hide_panel .button {
 	padding:0 10px 5px;
 	background:var(--left-panel-tree-tabs-bg);
 	color:inherit;
-	border:0;
-	border-top:1px solid var(--left-panel-tree-tabs-border);
-	border-radius:3px;
-	border-bottom-left-radius:0;
-	border-bottom-right-radius:0;
 	position:relative;
 	display:inline-block;
 }
@@ -600,6 +594,9 @@ body.main_navigator_reverse.left_panel_hidden #hide_panel .button {
 	background:var(--left-panel-bg);
 	color:var(--left-panel-tree-tabs-active-color);
 }
+#left_panel.left_panel_with_tabs .tabs .tab_main_node:not(.ui-state-active) {
+	border:0;
+}
 #left_panel.left_panel_with_tabs:not(.advanced_level) .tabs .tab_main_node_data_access_layers {
 	display:none;
 }
@@ -607,6 +604,14 @@ body.main_navigator_reverse.left_panel_hidden #hide_panel .button {
 	display:none;
 }
 
+/*
+#left_panel.left_panel_with_tabs .tabs .tab_main_node {
+	border:0;
+	border-top:1px solid var(--left-panel-tree-tabs-border);
+	border-radius:3px;
+	border-bottom-left-radius:0;
+	border-bottom-right-radius:0;
+}
 #left_panel.left_panel_with_tabs .tabs .tab_main_node:before, 
   #left_panel.left_panel_with_tabs .tabs .tab_main_node:after {
 	content:'';
@@ -649,7 +654,7 @@ body.main_navigator_reverse.left_panel_hidden #hide_panel .button {
 }
 #left_panel.left_panel_with_tabs .tabs .tab_main_node.ui-state-active:after {
 	bottom:0 !important;
-}
+}*/
 
 #left_panel.left_panel_with_tabs .tabs .tab_main_node a {
 	width:100%;

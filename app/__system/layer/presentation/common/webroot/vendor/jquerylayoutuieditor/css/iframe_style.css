@@ -23,7 +23,7 @@ body {
 	min-height:100vh;
 	margin:0;
 }
-body > .droppable {
+body .main-droppable {
 	width:100%; 
 	min-height:100vh; /* this style is for firefox, bc the body doesn't have full height, so we need to force it */
 	padding:.5em;
@@ -42,7 +42,7 @@ body > .droppable {
 	-o-transition: transform 200ms ease-in-out;
 	transition: transform 200ms ease-in-out;
 }
-body > .droppable.with-background { 
+body .main-droppable.with-background { 
 	background-image: -webkit-repeating-radial-gradient(center center, #ecf1ff, #ecf1ff .5px, transparent 1px, transparent 100%);
 	background-image: -moz-repeating-radial-gradient(center center, #ecf1ff, #ecf1ff .5px, transparent 1px, transparent 100%);
 	background-image: -ms-repeating-radial-gradient(center center, #ecf1ff, #ecf1ff .5px, transparent 1px, transparent 100%);
@@ -60,7 +60,7 @@ body > .droppable.with-background {
 }
 
 /* when dropping an element */
-body > .droppable.highlight {
+body .main-droppable.highlight {
 	-ms-box-shadow: inset 0px 0px 10px 5px rgba(0, 0, 0, 0.3) !important;
 	-webkit-box-shadow: inset 0px 0px 10px 5px rgba(0, 0, 0, 0.3) !important;
 	-moz-box-shadow: inset 0px 0px 10px 5px rgba(0, 0, 0, 0.3) !important;
@@ -162,10 +162,10 @@ body > .droppable.highlight {
 	display:block;
 	word-break:break-all;
 }
-body > .droppable:not(.borders) .template-widget.html-comment {
+body .main-droppable:not(.borders) .template-widget.html-comment {
 	display:none;
 }
-body > .droppable.borders .template-widget.html-comment:before {
+body .main-droppable.borders .template-widget.html-comment:before {
 	content:"";
 	border:0;
 	display:none;
@@ -193,7 +193,7 @@ body > .droppable.borders .template-widget.html-comment:before {
 	font-size:80%;
 	color:#ccc;
 }
-body > .droppable.borders .template-widget.html-comment > pre:before {
+body .main-droppable.borders .template-widget.html-comment > pre:before {
 	content:"";
 	border:0;
 	display:none;
@@ -204,26 +204,26 @@ body > .droppable.borders .template-widget.html-comment > pre:before {
 }
 
 /* TEMPLATE WIDGET BORDERS */
-body > .droppable.borders p,
-  body > .droppable.borders h1,
-  body > .droppable.borders h2,
-  body > .droppable.borders h3,
-  body > .droppable.borders h4,
-  body > .droppable.borders h5,
-  body > .droppable.borders h6,
-  body > .droppable.borders div,
-  body > .droppable.borders section,
-  body > .droppable.borders article,
-  body > .droppable.borders blockquote,
-  body > .droppable.borders address,
-  body > .droppable.borders pre,
-  body > .droppable.borders figure,
-  body > .droppable.borders figcaption,
-  body > .droppable.borders hgroup,
-  body > .droppable.borders aside,
-  body > .droppable.borders ul,
-  body > .droppable.borders ol,
-  body > .droppable.borders dl {
+body .main-droppable.borders p.template-widget,
+  body .main-droppable.borders h1.template-widget,
+  body .main-droppable.borders h2.template-widget,
+  body .main-droppable.borders h3.template-widget,
+  body .main-droppable.borders h4.template-widget,
+  body .main-droppable.borders h5.template-widget,
+  body .main-droppable.borders h6.template-widget,
+  body .main-droppable.borders div.template-widget,
+  body .main-droppable.borders section.template-widget,
+  body .main-droppable.borders article.template-widget,
+  body .main-droppable.borders blockquote.template-widget,
+  body .main-droppable.borders address.template-widget,
+  body .main-droppable.borders pre.template-widget,
+  body .main-droppable.borders figure.template-widget,
+  body .main-droppable.borders figcaption.template-widget,
+  body .main-droppable.borders hgroup.template-widget,
+  body .main-droppable.borders aside.template-widget,
+  body .main-droppable.borders ul.template-widget,
+  body .main-droppable.borders ol.template-widget,
+  body .main-droppable.borders dl.template-widget {
 	background-repeat:no-repeat;
 	border:var(--html-element-border);
 	margin-top:var(--html-element-top-spacing);
@@ -232,449 +232,449 @@ body > .droppable.borders p,
 	margin-bottom:var(--html-element-bottom-spacing);
 	padding-top:10px;
 }
-body > .droppable.borders br,
-  body > .droppable.borders wbr,
-  body > .droppable.borders nobr,
-  body > .droppable.borders hr,
-  body > .droppable.borders img,
-  body > .droppable.borders image {
+body .main-droppable.borders br.template-widget,
+  body .main-droppable.borders wbr.template-widget,
+  body .main-droppable.borders nobr.template-widget,
+  body .main-droppable.borders hr.template-widget,
+  body .main-droppable.borders img.template-widget,
+  body .main-droppable.borders image.template-widget {
 	border:var(--html-element-border);
 } 
-body > .droppable.borders span,
-  body > .droppable.borders label,
-  body > .droppable.borders td,
-  body > .droppable.borders th,
-  body > .droppable.borders footer,
-  body > .droppable.borders header,
-  body > .droppable.borders main,
-  body > .droppable.borders nav,
-  body > .droppable.borders dd,
-  body > .droppable.borders dt,
-  body > .droppable.borders li,
-  body > .droppable.borders a,
-  body > .droppable.borders abbr,
-  body > .droppable.borders b,
-  body > .droppable.borders bdi,
-  body > .droppable.borders bdo,
-  body > .droppable.borders cite,
-  body > .droppable.borders code,
-  body > .droppable.borders data,
-  body > .droppable.borders dfn,
-  body > .droppable.borders em,
-  body > .droppable.borders i,
-  body > .droppable.borders kbd,
-  body > .droppable.borders mark,
-  body > .droppable.borders q,
-  body > .droppable.borders rb,
-  body > .droppable.borders rp,
-  body > .droppable.borders rt,
-  body > .droppable.borders rtc,
-  body > .droppable.borders ruby,
-  body > .droppable.borders s,
-  body > .droppable.borders samp,
-  body > .droppable.borders small,
-  body > .droppable.borders strong,
-  body > .droppable.borders sub,
-  body > .droppable.borders sup,
-  body > .droppable.borders time,
-  body > .droppable.borders u,
-  body > .droppable.borders var,
-  body > .droppable.borders area,
-  body > .droppable.borders audio,
-  body > .droppable.borders map,
-  body > .droppable.borders track,
-  body > .droppable.borders video,
-  body > .droppable.borders embed,
-  body > .droppable.borders object,
-  body > .droppable.borders param,
-  body > .droppable.borders picture,
-  body > .droppable.borders source,
-  body > .droppable.borders canvas,
-  body > .droppable.borders noscript,
-  body > .droppable.borders del,
-  body > .droppable.borders ins,
-  body > .droppable.borders col,
-  body > .droppable.borders colgroup,
-  body > .droppable.borders datalist,
-  body > .droppable.borders fieldset,
-  body > .droppable.borders form,
-  body > .droppable.borders legend,
-  body > .droppable.borders meter,
-  body > .droppable.borders output,
-  body > .droppable.borders details,
-  body > .droppable.borders dialog,
-  body > .droppable.borders menu,
-  body > .droppable.borders summary,
-  body > .droppable.borders slot,
-  body > .droppable.borders template,
-  body > .droppable.borders acronym,
-  body > .droppable.borders applet,
-  body > .droppable.borders basefont,
-  body > .droppable.borders bgsound,
-  body > .droppable.borders big,
-  body > .droppable.borders blink,
-  body > .droppable.borders center,
-  body > .droppable.borders command,
-  body > .droppable.borders content,
-  body > .droppable.borders dir,
-  body > .droppable.borders element,
-  body > .droppable.borders font,
-  body > .droppable.borders frame,
-  body > .droppable.borders frameset,
-  body > .droppable.borders isindex,
-  body > .droppable.borders keygen,
-  body > .droppable.borders listing,
-  body > .droppable.borders marquee,
-  body > .droppable.borders menuitem,
-  body > .droppable.borders multicol,
-  body > .droppable.borders nextid,
-  body > .droppable.borders noembed,
-  body > .droppable.borders noframes,
-  body > .droppable.borders plaintext,
-  body > .droppable.borders shadow,
-  body > .droppable.borders spacer,
-  body > .droppable.borders strike,
-  body > .droppable.borders tt,
-  body > .droppable.borders xmp {
+body .main-droppable.borders span.template-widget,
+  body .main-droppable.borders label.template-widget,
+  body .main-droppable.borders td.template-widget,
+  body .main-droppable.borders th.template-widget,
+  body .main-droppable.borders footer.template-widget,
+  body .main-droppable.borders header.template-widget,
+  body .main-droppable.borders main.template-widget,
+  body .main-droppable.borders nav.template-widget,
+  body .main-droppable.borders dd.template-widget,
+  body .main-droppable.borders dt.template-widget,
+  body .main-droppable.borders li.template-widget,
+  body .main-droppable.borders a.template-widget,
+  body .main-droppable.borders abbr.template-widget,
+  body .main-droppable.borders b.template-widget,
+  body .main-droppable.borders bdi.template-widget,
+  body .main-droppable.borders bdo.template-widget,
+  body .main-droppable.borders cite.template-widget,
+  body .main-droppable.borders code.template-widget,
+  body .main-droppable.borders data.template-widget,
+  body .main-droppable.borders dfn.template-widget,
+  body .main-droppable.borders em.template-widget,
+  body .main-droppable.borders i.template-widget,
+  body .main-droppable.borders kbd.template-widget,
+  body .main-droppable.borders mark.template-widget,
+  body .main-droppable.borders q.template-widget,
+  body .main-droppable.borders rb.template-widget,
+  body .main-droppable.borders rp.template-widget,
+  body .main-droppable.borders rt.template-widget,
+  body .main-droppable.borders rtc.template-widget,
+  body .main-droppable.borders ruby.template-widget,
+  body .main-droppable.borders s.template-widget,
+  body .main-droppable.borders samp.template-widget,
+  body .main-droppable.borders small.template-widget,
+  body .main-droppable.borders strong.template-widget,
+  body .main-droppable.borders sub.template-widget,
+  body .main-droppable.borders sup.template-widget,
+  body .main-droppable.borders time.template-widget,
+  body .main-droppable.borders u.template-widget,
+  body .main-droppable.borders var.template-widget,
+  body .main-droppable.borders area.template-widget,
+  body .main-droppable.borders audio.template-widget,
+  body .main-droppable.borders map.template-widget,
+  body .main-droppable.borders track.template-widget,
+  body .main-droppable.borders video.template-widget,
+  body .main-droppable.borders embed.template-widget,
+  body .main-droppable.borders object.template-widget,
+  body .main-droppable.borders param.template-widget,
+  body .main-droppable.borders picture.template-widget,
+  body .main-droppable.borders source.template-widget,
+  body .main-droppable.borders canvas.template-widget,
+  body .main-droppable.borders noscript.template-widget,
+  body .main-droppable.borders del.template-widget,
+  body .main-droppable.borders ins.template-widget,
+  body .main-droppable.borders col.template-widget,
+  body .main-droppable.borders colgroup.template-widget,
+  body .main-droppable.borders datalist.template-widget,
+  body .main-droppable.borders fieldset.template-widget,
+  body .main-droppable.borders form.template-widget,
+  body .main-droppable.borders legend.template-widget,
+  body .main-droppable.borders meter.template-widget,
+  body .main-droppable.borders output.template-widget,
+  body .main-droppable.borders details.template-widget,
+  body .main-droppable.borders dialog.template-widget,
+  body .main-droppable.borders menu.template-widget,
+  body .main-droppable.borders summary.template-widget,
+  body .main-droppable.borders slot.template-widget,
+  body .main-droppable.borders template.template-widget,
+  body .main-droppable.borders acronym.template-widget,
+  body .main-droppable.borders applet.template-widget,
+  body .main-droppable.borders basefont.template-widget,
+  body .main-droppable.borders bgsound.template-widget,
+  body .main-droppable.borders big.template-widget,
+  body .main-droppable.borders blink.template-widget,
+  body .main-droppable.borders center.template-widget,
+  body .main-droppable.borders command.template-widget,
+  body .main-droppable.borders content.template-widget,
+  body .main-droppable.borders dir.template-widget,
+  body .main-droppable.borders element.template-widget,
+  body .main-droppable.borders font.template-widget,
+  body .main-droppable.borders frame.template-widget,
+  body .main-droppable.borders frameset.template-widget,
+  body .main-droppable.borders isindex.template-widget,
+  body .main-droppable.borders keygen.template-widget,
+  body .main-droppable.borders listing.template-widget,
+  body .main-droppable.borders marquee.template-widget,
+  body .main-droppable.borders menuitem.template-widget,
+  body .main-droppable.borders multicol.template-widget,
+  body .main-droppable.borders nextid.template-widget,
+  body .main-droppable.borders noembed.template-widget,
+  body .main-droppable.borders noframes.template-widget,
+  body .main-droppable.borders plaintext.template-widget,
+  body .main-droppable.borders shadow.template-widget,
+  body .main-droppable.borders spacer.template-widget,
+  body .main-droppable.borders strike.template-widget,
+  body .main-droppable.borders tt.template-widget,
+  body .main-droppable.borders xmp.template-widget {
 	border:var(--html-element-border);
 	margin-top:var(--html-element-top-spacing);
 	margin-left:var(--html-element-left-spacing);
 	margin-right:var(--html-element-right-spacing);
 	margin-bottom:var(--html-element-bottom-spacing);
 }
-body > .droppable.borders:not([dir=rtl]) p,
-  body > .droppable.borders:not([dir=rtl]) h1,
-  body > .droppable.borders:not([dir=rtl]) h2,
-  body > .droppable.borders:not([dir=rtl]) h3,
-  body > .droppable.borders:not([dir=rtl]) h4,
-  body > .droppable.borders:not([dir=rtl]) h5,
-  body > .droppable.borders:not([dir=rtl]) h6,
-  body > .droppable.borders:not([dir=rtl]) div,
-  body > .droppable.borders:not([dir=rtl]) section,
-  body > .droppable.borders:not([dir=rtl]) article,
-  body > .droppable.borders:not([dir=rtl]) blockquote,
-  body > .droppable.borders:not([dir=rtl]) address,
-  body > .droppable.borders:not([dir=rtl]) pre,
-  body > .droppable.borders:not([dir=rtl]) figure,
-  body > .droppable.borders:not([dir=rtl]) figcaption,
-  body > .droppable.borders:not([dir=rtl]) hgroup,
-  body > .droppable.borders:not([dir=rtl]) aside,
-  body > .droppable.borders:not([dir=rtl]) ul,
-  body > .droppable.borders:not([dir=rtl]) ol,
-  body > .droppable.borders:not([dir=rtl]) dl,
+body .main-droppable.borders:not([dir=rtl]) p.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) h1.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) h2.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) h3.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) h4.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) h5.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) h6.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) div.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) section.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) article.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) blockquote.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) address.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) pre.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) figure.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) figcaption.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) hgroup.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) aside.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) ul.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) ol.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) dl.template-widget,
   
-  body > .droppable.borders:not([dir=rtl]) br,
-  body > .droppable.borders:not([dir=rtl]) wbr,
-  body > .droppable.borders:not([dir=rtl]) nobr,
-  body > .droppable.borders:not([dir=rtl]) hr,
+  body .main-droppable.borders:not([dir=rtl]) br.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) wbr.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) nobr.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) hr.template-widget,
   
-  body > .droppable.borders:not([dir=rtl]) span,
-  body > .droppable.borders:not([dir=rtl]) label,
-  body > .droppable.borders:not([dir=rtl]) td,
-  body > .droppable.borders:not([dir=rtl]) th,
-  body > .droppable.borders:not([dir=rtl]) footer,
-  body > .droppable.borders:not([dir=rtl]) header,
-  body > .droppable.borders:not([dir=rtl]) main,
-  body > .droppable.borders:not([dir=rtl]) nav,
-  body > .droppable.borders:not([dir=rtl]) dd,
-  body > .droppable.borders:not([dir=rtl]) dt,
-  body > .droppable.borders:not([dir=rtl]) li,
-  body > .droppable.borders:not([dir=rtl]) a,
-  body > .droppable.borders:not([dir=rtl]) abbr,
-  body > .droppable.borders:not([dir=rtl]) b,
-  body > .droppable.borders:not([dir=rtl]) bdi,
-  body > .droppable.borders:not([dir=rtl]) bdo,
-  body > .droppable.borders:not([dir=rtl]) cite,
-  body > .droppable.borders:not([dir=rtl]) code,
-  body > .droppable.borders:not([dir=rtl]) data,
-  body > .droppable.borders:not([dir=rtl]) dfn,
-  body > .droppable.borders:not([dir=rtl]) em,
-  body > .droppable.borders:not([dir=rtl]) i,
-  body > .droppable.borders:not([dir=rtl]) kbd,
-  body > .droppable.borders:not([dir=rtl]) mark,
-  body > .droppable.borders:not([dir=rtl]) q,
-  body > .droppable.borders:not([dir=rtl]) rb,
-  body > .droppable.borders:not([dir=rtl]) rp,
-  body > .droppable.borders:not([dir=rtl]) rt,
-  body > .droppable.borders:not([dir=rtl]) rtc,
-  body > .droppable.borders:not([dir=rtl]) ruby,
-  body > .droppable.borders:not([dir=rtl]) s,
-  body > .droppable.borders:not([dir=rtl]) samp,
-  body > .droppable.borders:not([dir=rtl]) small,
-  body > .droppable.borders:not([dir=rtl]) strong,
-  body > .droppable.borders:not([dir=rtl]) sub,
-  body > .droppable.borders:not([dir=rtl]) sup,
-  body > .droppable.borders:not([dir=rtl]) time,
-  body > .droppable.borders:not([dir=rtl]) u,
-  body > .droppable.borders:not([dir=rtl]) var,
-  body > .droppable.borders:not([dir=rtl]) area,
-  body > .droppable.borders:not([dir=rtl]) audio,
-  body > .droppable.borders:not([dir=rtl]) map,
-  body > .droppable.borders:not([dir=rtl]) track,
-  body > .droppable.borders:not([dir=rtl]) video,
-  body > .droppable.borders:not([dir=rtl]) embed,
-  body > .droppable.borders:not([dir=rtl]) object,
-  body > .droppable.borders:not([dir=rtl]) param,
-  body > .droppable.borders:not([dir=rtl]) picture,
-  body > .droppable.borders:not([dir=rtl]) source,
-  body > .droppable.borders:not([dir=rtl]) canvas,
-  body > .droppable.borders:not([dir=rtl]) noscript,
-  body > .droppable.borders:not([dir=rtl]) del,
-  body > .droppable.borders:not([dir=rtl]) ins,
-  body > .droppable.borders:not([dir=rtl]) col,
-  body > .droppable.borders:not([dir=rtl]) colgroup,
-  body > .droppable.borders:not([dir=rtl]) datalist,
-  body > .droppable.borders:not([dir=rtl]) fieldset,
-  body > .droppable.borders:not([dir=rtl]) form,
-  body > .droppable.borders:not([dir=rtl]) legend,
-  body > .droppable.borders:not([dir=rtl]) meter,
-  body > .droppable.borders:not([dir=rtl]) output,
-  body > .droppable.borders:not([dir=rtl]) details,
-  body > .droppable.borders:not([dir=rtl]) dialog,
-  body > .droppable.borders:not([dir=rtl]) menu,
-  body > .droppable.borders:not([dir=rtl]) summary,
-  body > .droppable.borders:not([dir=rtl]) slot,
-  body > .droppable.borders:not([dir=rtl]) template,
-  body > .droppable.borders:not([dir=rtl]) acronym,
-  body > .droppable.borders:not([dir=rtl]) applet,
-  body > .droppable.borders:not([dir=rtl]) basefont,
-  body > .droppable.borders:not([dir=rtl]) bgsound,
-  body > .droppable.borders:not([dir=rtl]) big,
-  body > .droppable.borders:not([dir=rtl]) blink,
-  body > .droppable.borders:not([dir=rtl]) center,
-  body > .droppable.borders:not([dir=rtl]) command,
-  body > .droppable.borders:not([dir=rtl]) content,
-  body > .droppable.borders:not([dir=rtl]) dir,
-  body > .droppable.borders:not([dir=rtl]) element,
-  body > .droppable.borders:not([dir=rtl]) font,
-  body > .droppable.borders:not([dir=rtl]) frame,
-  body > .droppable.borders:not([dir=rtl]) frameset,
-  body > .droppable.borders:not([dir=rtl]) isindex,
-  body > .droppable.borders:not([dir=rtl]) keygen,
-  body > .droppable.borders:not([dir=rtl]) listing,
-  body > .droppable.borders:not([dir=rtl]) marquee,
-  body > .droppable.borders:not([dir=rtl]) menuitem,
-  body > .droppable.borders:not([dir=rtl]) multicol,
-  body > .droppable.borders:not([dir=rtl]) nextid,
-  body > .droppable.borders:not([dir=rtl]) noembed,
-  body > .droppable.borders:not([dir=rtl]) noframes,
-  body > .droppable.borders:not([dir=rtl]) plaintext,
-  body > .droppable.borders:not([dir=rtl]) shadow,
-  body > .droppable.borders:not([dir=rtl]) spacer,
-  body > .droppable.borders:not([dir=rtl]) strike,
-  body > .droppable.borders:not([dir=rtl]) tt,
-  body > .droppable.borders:not([dir=rtl]) xmp {
+  body .main-droppable.borders:not([dir=rtl]) span.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) label.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) td.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) th.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) footer.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) header.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) main.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) nav.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) dd.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) dt.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) li.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) a.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) abbr.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) b.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) bdi.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) bdo.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) cite.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) code.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) data.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) dfn.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) em.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) i.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) kbd.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) mark.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) q.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) rb.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) rp.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) rt.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) rtc.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) ruby.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) s.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) samp.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) small.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) strong.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) sub.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) sup.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) time.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) u.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) var.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) area.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) audio.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) map.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) track.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) video.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) embed.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) object.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) param.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) picture.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) source.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) canvas.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) noscript.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) del.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) ins.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) col.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) colgroup.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) datalist.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) fieldset.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) form.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) legend.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) meter.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) output.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) details.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) dialog.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) menu.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) summary.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) slot.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) template.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) acronym.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) applet.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) basefont.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) bgsound.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) big.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) blink.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) center.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) command.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) content.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) dir.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) element.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) font.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) frame.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) frameset.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) isindex.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) keygen.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) listing.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) marquee.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) menuitem.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) multicol.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) nextid.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) noembed.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) noframes.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) plaintext.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) shadow.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) spacer.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) strike.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) tt.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) xmp.template-widget {
 	margin-top:var(--html-element-top-spacing);
 	margin-left:var(--html-element-left-spacing);
 	margin-right:var(--html-element-right-spacing);
 	margin-bottom:var(--html-element-bottom-spacing);
 }
-body > .droppable.borders:not([dir=rtl]) .container.row,
-  body > .droppable.borders:not([dir=rtl]) .container.row > div.droppable {
+body .main-droppable.borders:not([dir=rtl]) .container.row.template-widget,
+  body .main-droppable.borders:not([dir=rtl]) .container.row.template-widget > div.droppable {
 	margin-left:0;
   	padding-top:20px;
 }
 
-body > .droppable.borders[dir=rtl] p,
-  body > .droppable.borders[dir=rtl] h1,
-  body > .droppable.borders[dir=rtl] h2,
-  body > .droppable.borders[dir=rtl] h3,
-  body > .droppable.borders[dir=rtl] h4,
-  body > .droppable.borders[dir=rtl] h5,
-  body > .droppable.borders[dir=rtl] h6,
-  body > .droppable.borders[dir=rtl] div,
-  body > .droppable.borders[dir=rtl] section,
-  body > .droppable.borders[dir=rtl] article,
-  body > .droppable.borders[dir=rtl] blockquote,
-  body > .droppable.borders[dir=rtl] address,
-  body > .droppable.borders[dir=rtl] pre,
-  body > .droppable.borders[dir=rtl] figure,
-  body > .droppable.borders[dir=rtl] figcaption,
-  body > .droppable.borders[dir=rtl] hgroup,
-  body > .droppable.borders[dir=rtl] aside,
-  body > .droppable.borders[dir=rtl] ul,
-  body > .droppable.borders[dir=rtl] ol,
-  body > .droppable.borders[dir=rtl] dl,
+body .main-droppable.borders[dir=rtl] p.template-widget,
+  body .main-droppable.borders[dir=rtl] h1.template-widget,
+  body .main-droppable.borders[dir=rtl] h2.template-widget,
+  body .main-droppable.borders[dir=rtl] h3.template-widget,
+  body .main-droppable.borders[dir=rtl] h4.template-widget,
+  body .main-droppable.borders[dir=rtl] h5.template-widget,
+  body .main-droppable.borders[dir=rtl] h6.template-widget,
+  body .main-droppable.borders[dir=rtl] div.template-widget,
+  body .main-droppable.borders[dir=rtl] section.template-widget,
+  body .main-droppable.borders[dir=rtl] article.template-widget,
+  body .main-droppable.borders[dir=rtl] blockquote.template-widget,
+  body .main-droppable.borders[dir=rtl] address.template-widget,
+  body .main-droppable.borders[dir=rtl] pre.template-widget,
+  body .main-droppable.borders[dir=rtl] figure.template-widget,
+  body .main-droppable.borders[dir=rtl] figcaption.template-widget,
+  body .main-droppable.borders[dir=rtl] hgroup.template-widget,
+  body .main-droppable.borders[dir=rtl] aside.template-widget,
+  body .main-droppable.borders[dir=rtl] ul.template-widget,
+  body .main-droppable.borders[dir=rtl] ol.template-widget,
+  body .main-droppable.borders[dir=rtl] dl.template-widget,
   
-  body > .droppable.borders[dir=rtl] br,
-  body > .droppable.borders[dir=rtl] wbr,
-  body > .droppable.borders[dir=rtl] nobr,
-  body > .droppable.borders[dir=rtl] hr,
+  body .main-droppable.borders[dir=rtl] br.template-widget,
+  body .main-droppable.borders[dir=rtl] wbr.template-widget,
+  body .main-droppable.borders[dir=rtl] nobr.template-widget,
+  body .main-droppable.borders[dir=rtl] hr.template-widget,
   
-  body > .droppable.borders[dir=rtl] span,
-  body > .droppable.borders[dir=rtl] label,
-  body > .droppable.borders[dir=rtl] td,
-  body > .droppable.borders[dir=rtl] th,
-  body > .droppable.borders[dir=rtl] footer,
-  body > .droppable.borders[dir=rtl] header,
-  body > .droppable.borders[dir=rtl] main,
-  body > .droppable.borders[dir=rtl] nav,
-  body > .droppable.borders[dir=rtl] dd,
-  body > .droppable.borders[dir=rtl] dt,
-  body > .droppable.borders[dir=rtl] li,
-  body > .droppable.borders[dir=rtl] a,
-  body > .droppable.borders[dir=rtl] abbr,
-  body > .droppable.borders[dir=rtl] b,
-  body > .droppable.borders[dir=rtl] bdi,
-  body > .droppable.borders[dir=rtl] bdo,
-  body > .droppable.borders[dir=rtl] cite,
-  body > .droppable.borders[dir=rtl] code,
-  body > .droppable.borders[dir=rtl] data,
-  body > .droppable.borders[dir=rtl] dfn,
-  body > .droppable.borders[dir=rtl] em,
-  body > .droppable.borders[dir=rtl] i,
-  body > .droppable.borders[dir=rtl] kbd,
-  body > .droppable.borders[dir=rtl] mark,
-  body > .droppable.borders[dir=rtl] q,
-  body > .droppable.borders[dir=rtl] rb,
-  body > .droppable.borders[dir=rtl] rp,
-  body > .droppable.borders[dir=rtl] rt,
-  body > .droppable.borders[dir=rtl] rtc,
-  body > .droppable.borders[dir=rtl] ruby,
-  body > .droppable.borders[dir=rtl] s,
-  body > .droppable.borders[dir=rtl] samp,
-  body > .droppable.borders[dir=rtl] small,
-  body > .droppable.borders[dir=rtl] strong,
-  body > .droppable.borders[dir=rtl] sub,
-  body > .droppable.borders[dir=rtl] sup,
-  body > .droppable.borders[dir=rtl] time,
-  body > .droppable.borders[dir=rtl] u,
-  body > .droppable.borders[dir=rtl] var,
-  body > .droppable.borders[dir=rtl] area,
-  body > .droppable.borders[dir=rtl] audio,
-  body > .droppable.borders[dir=rtl] map,
-  body > .droppable.borders[dir=rtl] track,
-  body > .droppable.borders[dir=rtl] video,
-  body > .droppable.borders[dir=rtl] embed,
-  body > .droppable.borders[dir=rtl] object,
-  body > .droppable.borders[dir=rtl] param,
-  body > .droppable.borders[dir=rtl] picture,
-  body > .droppable.borders[dir=rtl] source,
-  body > .droppable.borders[dir=rtl] canvas,
-  body > .droppable.borders[dir=rtl] noscript,
-  body > .droppable.borders[dir=rtl] del,
-  body > .droppable.borders[dir=rtl] ins,
-  body > .droppable.borders[dir=rtl] col,
-  body > .droppable.borders[dir=rtl] colgroup,
-  body > .droppable.borders[dir=rtl] datalist,
-  body > .droppable.borders[dir=rtl] fieldset,
-  body > .droppable.borders[dir=rtl] form,
-  body > .droppable.borders[dir=rtl] legend,
-  body > .droppable.borders[dir=rtl] meter,
-  body > .droppable.borders[dir=rtl] output,
-  body > .droppable.borders[dir=rtl] details,
-  body > .droppable.borders[dir=rtl] dialog,
-  body > .droppable.borders[dir=rtl] menu,
-  body > .droppable.borders[dir=rtl] summary,
-  body > .droppable.borders[dir=rtl] slot,
-  body > .droppable.borders[dir=rtl] template,
-  body > .droppable.borders[dir=rtl] acronym,
-  body > .droppable.borders[dir=rtl] applet,
-  body > .droppable.borders[dir=rtl] basefont,
-  body > .droppable.borders[dir=rtl] bgsound,
-  body > .droppable.borders[dir=rtl] big,
-  body > .droppable.borders[dir=rtl] blink,
-  body > .droppable.borders[dir=rtl] center,
-  body > .droppable.borders[dir=rtl] command,
-  body > .droppable.borders[dir=rtl] content,
-  body > .droppable.borders[dir=rtl] dir,
-  body > .droppable.borders[dir=rtl] element,
-  body > .droppable.borders[dir=rtl] font,
-  body > .droppable.borders[dir=rtl] frame,
-  body > .droppable.borders[dir=rtl] frameset,
-  body > .droppable.borders[dir=rtl] isindex,
-  body > .droppable.borders[dir=rtl] keygen,
-  body > .droppable.borders[dir=rtl] listing,
-  body > .droppable.borders[dir=rtl] marquee,
-  body > .droppable.borders[dir=rtl] menuitem,
-  body > .droppable.borders[dir=rtl] multicol,
-  body > .droppable.borders[dir=rtl] nextid,
-  body > .droppable.borders[dir=rtl] noembed,
-  body > .droppable.borders[dir=rtl] noframes,
-  body > .droppable.borders[dir=rtl] plaintext,
-  body > .droppable.borders[dir=rtl] shadow,
-  body > .droppable.borders[dir=rtl] spacer,
-  body > .droppable.borders[dir=rtl] strike,
-  body > .droppable.borders[dir=rtl] tt,
-  body > .droppable.borders[dir=rtl] xmp {
+  body .main-droppable.borders[dir=rtl] span.template-widget,
+  body .main-droppable.borders[dir=rtl] label.template-widget,
+  body .main-droppable.borders[dir=rtl] td.template-widget,
+  body .main-droppable.borders[dir=rtl] th.template-widget,
+  body .main-droppable.borders[dir=rtl] footer.template-widget,
+  body .main-droppable.borders[dir=rtl] header.template-widget,
+  body .main-droppable.borders[dir=rtl] main.template-widget,
+  body .main-droppable.borders[dir=rtl] nav.template-widget,
+  body .main-droppable.borders[dir=rtl] dd.template-widget,
+  body .main-droppable.borders[dir=rtl] dt.template-widget,
+  body .main-droppable.borders[dir=rtl] li.template-widget,
+  body .main-droppable.borders[dir=rtl] a.template-widget,
+  body .main-droppable.borders[dir=rtl] abbr.template-widget,
+  body .main-droppable.borders[dir=rtl] b.template-widget,
+  body .main-droppable.borders[dir=rtl] bdi.template-widget,
+  body .main-droppable.borders[dir=rtl] bdo.template-widget,
+  body .main-droppable.borders[dir=rtl] cite.template-widget,
+  body .main-droppable.borders[dir=rtl] code.template-widget,
+  body .main-droppable.borders[dir=rtl] data.template-widget,
+  body .main-droppable.borders[dir=rtl] dfn.template-widget,
+  body .main-droppable.borders[dir=rtl] em.template-widget,
+  body .main-droppable.borders[dir=rtl] i.template-widget,
+  body .main-droppable.borders[dir=rtl] kbd.template-widget,
+  body .main-droppable.borders[dir=rtl] mark.template-widget,
+  body .main-droppable.borders[dir=rtl] q.template-widget,
+  body .main-droppable.borders[dir=rtl] rb.template-widget,
+  body .main-droppable.borders[dir=rtl] rp.template-widget,
+  body .main-droppable.borders[dir=rtl] rt.template-widget,
+  body .main-droppable.borders[dir=rtl] rtc.template-widget,
+  body .main-droppable.borders[dir=rtl] ruby.template-widget,
+  body .main-droppable.borders[dir=rtl] s.template-widget,
+  body .main-droppable.borders[dir=rtl] samp.template-widget,
+  body .main-droppable.borders[dir=rtl] small.template-widget,
+  body .main-droppable.borders[dir=rtl] strong.template-widget,
+  body .main-droppable.borders[dir=rtl] sub.template-widget,
+  body .main-droppable.borders[dir=rtl] sup.template-widget,
+  body .main-droppable.borders[dir=rtl] time.template-widget,
+  body .main-droppable.borders[dir=rtl] u.template-widget,
+  body .main-droppable.borders[dir=rtl] var.template-widget,
+  body .main-droppable.borders[dir=rtl] area.template-widget,
+  body .main-droppable.borders[dir=rtl] audio.template-widget,
+  body .main-droppable.borders[dir=rtl] map.template-widget,
+  body .main-droppable.borders[dir=rtl] track.template-widget,
+  body .main-droppable.borders[dir=rtl] video.template-widget,
+  body .main-droppable.borders[dir=rtl] embed.template-widget,
+  body .main-droppable.borders[dir=rtl] object.template-widget,
+  body .main-droppable.borders[dir=rtl] param.template-widget,
+  body .main-droppable.borders[dir=rtl] picture.template-widget,
+  body .main-droppable.borders[dir=rtl] source.template-widget,
+  body .main-droppable.borders[dir=rtl] canvas.template-widget,
+  body .main-droppable.borders[dir=rtl] noscript.template-widget,
+  body .main-droppable.borders[dir=rtl] del.template-widget,
+  body .main-droppable.borders[dir=rtl] ins.template-widget,
+  body .main-droppable.borders[dir=rtl] col.template-widget,
+  body .main-droppable.borders[dir=rtl] colgroup.template-widget,
+  body .main-droppable.borders[dir=rtl] datalist.template-widget,
+  body .main-droppable.borders[dir=rtl] fieldset.template-widget,
+  body .main-droppable.borders[dir=rtl] form.template-widget,
+  body .main-droppable.borders[dir=rtl] legend.template-widget,
+  body .main-droppable.borders[dir=rtl] meter.template-widget,
+  body .main-droppable.borders[dir=rtl] output.template-widget,
+  body .main-droppable.borders[dir=rtl] details.template-widget,
+  body .main-droppable.borders[dir=rtl] dialog.template-widget,
+  body .main-droppable.borders[dir=rtl] menu.template-widget,
+  body .main-droppable.borders[dir=rtl] summary.template-widget,
+  body .main-droppable.borders[dir=rtl] slot.template-widget,
+  body .main-droppable.borders[dir=rtl] template.template-widget,
+  body .main-droppable.borders[dir=rtl] acronym.template-widget,
+  body .main-droppable.borders[dir=rtl] applet.template-widget,
+  body .main-droppable.borders[dir=rtl] basefont.template-widget,
+  body .main-droppable.borders[dir=rtl] bgsound.template-widget,
+  body .main-droppable.borders[dir=rtl] big.template-widget,
+  body .main-droppable.borders[dir=rtl] blink.template-widget,
+  body .main-droppable.borders[dir=rtl] center.template-widget,
+  body .main-droppable.borders[dir=rtl] command.template-widget,
+  body .main-droppable.borders[dir=rtl] content.template-widget,
+  body .main-droppable.borders[dir=rtl] dir.template-widget,
+  body .main-droppable.borders[dir=rtl] element.template-widget,
+  body .main-droppable.borders[dir=rtl] font.template-widget,
+  body .main-droppable.borders[dir=rtl] frame.template-widget,
+  body .main-droppable.borders[dir=rtl] frameset.template-widget,
+  body .main-droppable.borders[dir=rtl] isindex.template-widget,
+  body .main-droppable.borders[dir=rtl] keygen.template-widget,
+  body .main-droppable.borders[dir=rtl] listing.template-widget,
+  body .main-droppable.borders[dir=rtl] marquee.template-widget,
+  body .main-droppable.borders[dir=rtl] menuitem.template-widget,
+  body .main-droppable.borders[dir=rtl] multicol.template-widget,
+  body .main-droppable.borders[dir=rtl] nextid.template-widget,
+  body .main-droppable.borders[dir=rtl] noembed.template-widget,
+  body .main-droppable.borders[dir=rtl] noframes.template-widget,
+  body .main-droppable.borders[dir=rtl] plaintext.template-widget,
+  body .main-droppable.borders[dir=rtl] shadow.template-widget,
+  body .main-droppable.borders[dir=rtl] spacer.template-widget,
+  body .main-droppable.borders[dir=rtl] strike.template-widget,
+  body .main-droppable.borders[dir=rtl] tt.template-widget,
+  body .main-droppable.borders[dir=rtl] xmp.template-widget {
 	background-position-x: right;
 	margin-top:var(--html-element-top-spacing);
 	margin-left:var(--html-element-left-spacing);
 	margin-right:var(--html-element-right-spacing);
 	margin-bottom:var(--html-element-bottom-spacing);
 }
-body > .droppable.borders:not([dir=rtl]) .container.row,
-  body > .droppable.borders:not([dir=rtl]) .container.row > div.droppable {
+body .main-droppable.borders[dir=rtl] .container.row.template-widget,
+  body .main-droppable.borders[dir=rtl] .container.row.template-widget > div.droppable {
 	margin-right:0;
   	padding-top:20px;
 }
 
-body > .droppable.borders p {
+body .main-droppable.borders p.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhCQAJAJEAAAAAAP///7u7u////yH5BAEAAAMALAAAAAAJAAkAAAIQnG+CqCN/mlyvsRUpThG6AgA7);
 }
-body > .droppable.borders h1 {
+body .main-droppable.borders h1.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhDQAKAIABALu7u////yH5BAEAAAEALAAAAAANAAoAAAIXjI8GybGu1JuxHoAfRNRW3TWXyF2YiRUAOw==);
 }
-body > .droppable.borders h2 {
+body .main-droppable.borders h2.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhDgAKAIABALu7u////yH5BAEAAAEALAAAAAAOAAoAAAIajI8Hybbx4oOuqgTynJd6bGlWg3DkJzoaUAAAOw==);
 }
-body > .droppable.borders h3 {
+body .main-droppable.borders h3.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhDgAKAIABALu7u////yH5BAEAAAEALAAAAAAOAAoAAAIZjI8Hybbx4oOuqgTynJf2Ln2NOHpQpmhAAQA7);
 }
-body > .droppable.borders h4 {
+body .main-droppable.borders h4.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhDgAKAIABALu7u////yH5BAEAAAEALAAAAAAOAAoAAAIajI8HybbxInR0zqeAdhtJlXwV1oCll2HaWgAAOw==);
 }
-body > .droppable.borders h5 {
+body .main-droppable.borders h5.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhDgAKAIABALu7u////yH5BAEAAAEALAAAAAAOAAoAAAIajI8HybbxIoiuwjane4iq5GlW05GgIkIZUAAAOw==);
 }
-body > .droppable.borders h6 {
+body .main-droppable.borders h6.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhDgAKAIABALu7u////yH5BAEAAAEALAAAAAAOAAoAAAIajI8HybbxIoiuwjan04jep1iZ1XRlAo5bVgAAOw==);
 }
-body > .droppable.borders div {
+body .main-droppable.borders div.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhEgAKAIABALu7u////yH5BAEAAAEALAAAAAASAAoAAAIfjI9poI0cgDywrhuxfbrzDEbQM2Ei5aRjmoySW4pAAQA7);
 }
-body > .droppable.borders section {
+body .main-droppable.borders section.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhKAAKAIABALu7u////yH5BAEAAAEALAAAAAAoAAoAAAI5jI+pywcNY3sBWHdNrplytD2ellDeSVbp+GmWqaDqDMepc8t17Y4vBsK5hDyJMcI6KkuYU+jpjLoKADs=);
 }
-body > .droppable.borders article {
+body .main-droppable.borders article.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhKgAKAIABALu7u////yH5BAEAAAEALAAAAAAqAAoAAAI6jI+pywkNY3wG0GBvrsd2tXGYSGnfiF7ikpXemTpOiJScasYoDJJrjsG9gkCJ0ag6KhmaIe3pjDYBBQA7);
 }
-body > .droppable.borders blockquote {
+body .main-droppable.borders blockquote.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhPgAKAIABALu7u////yH5BAEAAAEALAAAAAA+AAoAAAJPjI+py+0Knpz0xQDyuUhvfoGgIX5iSKZYgq5uNL5q69asZ8s5rrf0yZmpNkJZzFesBTu8TOlDVAabUyatguVhWduud3EyiUk45xhTTgMBBQA7);
 }
-body > .droppable.borders address {
+body .main-droppable.borders address.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhLQAKAIABALu7u////yH5BAEAAAEALAAAAAAtAAoAAAI/jI+pywwNozSP1gDyyZcjb3UaRpXkWaXmZW4OqKLhBmLs+K263DkJK7OJeifh7FicKD9A1/IpGdKkyFpNmCkAADs=);
 }
-body > .droppable.borders pre {
+body .main-droppable.borders pre.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhFQAKAIABALu7uwAAACH5BAEAAAEALAAAAAAVAAoAAAIjjI+ZoN0cgDwSmnpz1NCueYERhnibZVKLNnbOq8IvKpJtVQAAOw==);
 }
-body > .droppable.borders figure {
+body .main-droppable.borders figure.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhJAAKAIAAALu7u////yH5BAEAAAEALAAAAAAkAAoAAAI0jI+py+2fwAHUSFvD3RlvG4HIp4nX5JFSpnZUJ6LlrM52OE7uSWosBHScgkSZj7dDKnWAAgA7);
 }
-body > .droppable.borders hgroup {
+body .main-droppable.borders hgroup.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhJwAKAIABALu7uwAAACH5BAEAAAEALAAAAAAnAAoAAAI3jI+pywYNI3uB0gpsRtt5fFnfNZaVSYJil4Wo03Hv6Z62uOCgiXH1kZIIJ8NiIxRrAZNMZAtQAAA7);
 }
-body > .droppable.borders aside {
+body .main-droppable.borders aside.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhHgAKAIABAKqqqv///yH5BAEAAAEALAAAAAAeAAoAAAItjI+pG8APjZOTzgtqy7I3f1yehmQcFY4WKZbqByutmW4aHUd6vfcVbgudgpYCADs=);
 }
-body > .droppable.borders ul {
+body .main-droppable.borders ul.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhDQAKAIAAALu7u////yH5BAEAAAEALAAAAAANAAoAAAIXjI8GybGuYnqUVSjvw26DzzXiqIDlVwAAOw==);
 }
-body > .droppable.borders ol {
+body .main-droppable.borders ol.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhDQAKAIABALu7u////yH5BAEAAAEALAAAAAANAAoAAAIXjI8GybH6HHt0qourxC6CvzXieHyeWQAAOw==);
 }
-body > .droppable.borders dl {
+body .main-droppable.borders dl.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhDQAKAIABALu7u////yH5BAEAAAEALAAAAAANAAoAAAIXjI8GybEOnmOvUoWznTqeuEjNSCqeGRUAOw==);
 }
 
 
-body > .droppable.borders .template-widget:not(input):not(select):not(textarea):not(button):not(progress):not(img):not(image):not(iframe):not(table):not(tbody):not(tfoot):not(thead):not(tr):empty,
-  body > .droppable.borders .droppable:not(input):not(select):not(textarea):not(button):not(progress):not(img):not(image):not(iframe):not(table):not(tbody):not(tfoot):not(thead):not(tr):empty {
+body .main-droppable.borders .template-widget:not(input):not(select):not(textarea):not(button):not(progress):not(img):not(image):not(iframe):not(table):not(tbody):not(tfoot):not(thead):not(tr):empty,
+  body .main-droppable.borders .droppable:not(input):not(select):not(textarea):not(button):not(progress):not(img):not(image):not(iframe):not(table):not(tbody):not(tfoot):not(thead):not(tr):empty {
 	min-width:1em;
 	min-height:1em;
 }
-body > .droppable.borders .template-widget.widget-over:not(.widget-active):not(input):not(select):not(textarea):not(button):not(progress):not(img):not(image):not(iframe):not(table):not(tbody):not(tfoot):not(thead):not(tr):before,
-  body > .droppable.borders .droppable.droppable-over:not(.droppable-active):not(input):not(select):not(textarea):not(button):not(progress):not(img):not(image):not(iframe):not(table):not(tbody):not(tfoot):not(thead):not(tr):before {
+body .main-droppable.borders .template-widget.widget-over:not(.widget-active):not(input):not(select):not(textarea):not(button):not(progress):not(img):not(image):not(iframe):not(table):not(tbody):not(tfoot):not(thead):not(tr):before,
+  body .main-droppable.borders .droppable.droppable-over:not(.droppable-active):not(input):not(select):not(textarea):not(button):not(progress):not(img):not(image):not(iframe):not(table):not(tbody):not(tfoot):not(thead):not(tr):before {
 	height:10px;
 	margin-top:-10px;
 	padding:0 3px;
@@ -689,468 +689,468 @@ body > .droppable.borders .template-widget.widget-over:not(.widget-active):not(i
 	white-space:nowrap;
 }
 
-/*body > .droppable.borders p.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders p.droppable.droppable-over:before {
+/*body .main-droppable.borders p.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders p.droppable.droppable-over:before {
 	content:"p";
 }
-body > .droppable.borders h1.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders h1.droppable.droppable-over:before {
+body .main-droppable.borders h1.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders h1.droppable.droppable-over:before {
 	content:"h1";
 }
-body > .droppable.borders h2.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders h2.droppable.droppable-over:before {
+body .main-droppable.borders h2.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders h2.droppable.droppable-over:before {
 	content:"h2";
 }
-body > .droppable.borders h3.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders h3.droppable.droppable-over:before {
+body .main-droppable.borders h3.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders h3.droppable.droppable-over:before {
 	content:"h3";
 }
-body > .droppable.borders h4.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders h4.droppable.droppable-over:before {
+body .main-droppable.borders h4.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders h4.droppable.droppable-over:before {
 	content:"h4";
 }
-body > .droppable.borders h5.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders h5.droppable.droppable-over:before {
+body .main-droppable.borders h5.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders h5.droppable.droppable-over:before {
 	content:"h5";
 }
-body > .droppable.borders h6.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders h6.droppable.droppable-over:before {
+body .main-droppable.borders h6.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders h6.droppable.droppable-over:before {
 	content:"h6";
 }
-body > .droppable.borders div.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders div.droppable.droppable-over:before {
+body .main-droppable.borders div.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders div.droppable.droppable-over:before {
 	content:"div";
 }
-body > .droppable.borders section.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders section.droppable.droppable-over:before {
+body .main-droppable.borders section.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders section.droppable.droppable-over:before {
 	content:"section";
 }
-body > .droppable.borders article.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders article.droppable.droppable-over:before {
+body .main-droppable.borders article.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders article.droppable.droppable-over:before {
 	content:"article";
 }
-body > .droppable.borders blockquote.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders blockquote.droppable.droppable-over:before {
+body .main-droppable.borders blockquote.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders blockquote.droppable.droppable-over:before {
 	content:"blockquote";
 }
-body > .droppable.borders address.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders address.droppable.droppable-over:before {
+body .main-droppable.borders address.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders address.droppable.droppable-over:before {
 	content:"address";
 }
-body > .droppable.borders pre.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders pre.droppable.droppable-over:before {
+body .main-droppable.borders pre.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders pre.droppable.droppable-over:before {
 	content:"pre";
 }
-body > .droppable.borders figure.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders figure.droppable.droppable-over:before {
+body .main-droppable.borders figure.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders figure.droppable.droppable-over:before {
 	content:"figure";
 }
-body > .droppable.borders figcaption.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders figcaption.droppable.droppable-over:before {
+body .main-droppable.borders figcaption.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders figcaption.droppable.droppable-over:before {
 	content:"figcaption";
 }
-body > .droppable.borders hgroup.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders hgroup.droppable.droppable-over:before {
+body .main-droppable.borders hgroup.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders hgroup.droppable.droppable-over:before {
 	content:"hgroup";
 }
-body > .droppable.borders aside.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders aside.droppable.droppable-over:before {
+body .main-droppable.borders aside.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders aside.droppable.droppable-over:before {
 	content:"aside";
 }
-body > .droppable.borders ul.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders ul.droppable.droppable-over:before {
+body .main-droppable.borders ul.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders ul.droppable.droppable-over:before {
 	content:"ul";
 }
-body > .droppable.borders ol.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders ol.droppable.droppable-over:before {
+body .main-droppable.borders ol.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders ol.droppable.droppable-over:before {
 	content:"ol";
 }
-body > .droppable.borders dl.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders dl.droppable.droppable-over:before {
+body .main-droppable.borders dl.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders dl.droppable.droppable-over:before {
 	content:"dl";
 }*/
 
-body > .droppable.borders span.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders span.droppable.droppable-over:before {
+body .main-droppable.borders span.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders span.droppable.droppable-over:before {
 	content:"span";
 }
-body > .droppable.borders label.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders label.droppable.droppable-over:before {
+body .main-droppable.borders label.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders label.droppable.droppable-over:before {
 	content:"label";
 }
-body > .droppable.borders td.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders td.droppable.droppable-over:before {
+body .main-droppable.borders td.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders td.droppable.droppable-over:before {
 	content:"td";
 }
-body > .droppable.borders th.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders th.droppable.droppable-over:before {
+body .main-droppable.borders th.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders th.droppable.droppable-over:before {
 	content:"th";
 }
-body > .droppable.borders footer.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders footer.droppable.droppable-over:before {
+body .main-droppable.borders footer.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders footer.droppable.droppable-over:before {
 	content:"footer";
 }
-body > .droppable.borders header.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders header.droppable.droppable-over:before {
+body .main-droppable.borders header.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders header.droppable.droppable-over:before {
 	content:"header";
 }
-body > .droppable.borders main.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders main.droppable.droppable-over:before {
+body .main-droppable.borders main.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders main.droppable.droppable-over:before {
 	content:"main";
 }
-body > .droppable.borders nav.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders nav.droppable.droppable-over:before {
+body .main-droppable.borders nav.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders nav.droppable.droppable-over:before {
 	content:"nav";
 }
-body > .droppable.borders dd.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders dd.droppable.droppable-over:before {
+body .main-droppable.borders dd.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders dd.droppable.droppable-over:before {
 	content:"dd";
 }
-body > .droppable.borders dt.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders dt.droppable.droppable-over:before {
+body .main-droppable.borders dt.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders dt.droppable.droppable-over:before {
 	content:"dt";
 }
-body > .droppable.borders li.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders li.droppable.droppable-over:before {
+body .main-droppable.borders li.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders li.droppable.droppable-over:before {
 	content:"li";
 }
-body > .droppable.borders a.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders a.droppable.droppable-over:before {
+body .main-droppable.borders a.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders a.droppable.droppable-over:before {
 	content:"a";
 }
-body > .droppable.borders abbr.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders abbr.droppable.droppable-over:before {
+body .main-droppable.borders abbr.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders abbr.droppable.droppable-over:before {
 	content:"abbr";
 }
-body > .droppable.borders b.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders b.droppable.droppable-over:before {
+body .main-droppable.borders b.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders b.droppable.droppable-over:before {
 	content:"b";
 }
-body > .droppable.borders bdi.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders bdi.droppable.droppable-over:before {
+body .main-droppable.borders bdi.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders bdi.droppable.droppable-over:before {
 	content:"bdi";
 }
-body > .droppable.borders bdo.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders bdo.droppable.droppable-over:before {
+body .main-droppable.borders bdo.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders bdo.droppable.droppable-over:before {
 	content:"bdo";
 }
-body > .droppable.borders cite.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders cite.droppable.droppable-over:before {
+body .main-droppable.borders cite.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders cite.droppable.droppable-over:before {
 	content:"cite";
 }
-body > .droppable.borders code.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders code.droppable.droppable-over:before {
+body .main-droppable.borders code.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders code.droppable.droppable-over:before {
 	content:"code";
 }
-body > .droppable.borders data.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders data.droppable.droppable-over:before {
+body .main-droppable.borders data.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders data.droppable.droppable-over:before {
 	content:"data";
 }
-body > .droppable.borders dfn.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders dfn.droppable.droppable-over:before {
+body .main-droppable.borders dfn.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders dfn.droppable.droppable-over:before {
 	content:"dfn";
 }
-body > .droppable.borders em.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders em.droppable.droppable-over:before {
+body .main-droppable.borders em.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders em.droppable.droppable-over:before {
 	content:"em";
 }
-body > .droppable.borders i.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders i.droppable.droppable-over:before {
+body .main-droppable.borders i.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders i.droppable.droppable-over:before {
 	content:"i";
 }
-body > .droppable.borders kbd.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders kbd.droppable.droppable-over:before {
+body .main-droppable.borders kbd.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders kbd.droppable.droppable-over:before {
 	content:"kbd";
 }
-body > .droppable.borders mark.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders mark.droppable.droppable-over:before {
+body .main-droppable.borders mark.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders mark.droppable.droppable-over:before {
 	content:"mark";
 }
-body > .droppable.borders q.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders q.droppable.droppable-over:before {
+body .main-droppable.borders q.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders q.droppable.droppable-over:before {
 	content:"q";
 }
-body > .droppable.borders rb.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders rb.droppable.droppable-over:before {
+body .main-droppable.borders rb.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders rb.droppable.droppable-over:before {
 	content:"rb";
 }
-body > .droppable.borders rp.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders rp.droppable.droppable-over:before {
+body .main-droppable.borders rp.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders rp.droppable.droppable-over:before {
 	content:"rp";
 }
-body > .droppable.borders rt.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders rt.droppable.droppable-over:before {
+body .main-droppable.borders rt.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders rt.droppable.droppable-over:before {
 	content:"rt";
 }
-body > .droppable.borders rtc.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders rtc.droppable.droppable-over:before {
+body .main-droppable.borders rtc.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders rtc.droppable.droppable-over:before {
 	content:"rtc";
 }
-body > .droppable.borders ruby.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders ruby.droppable.droppable-over:before {
+body .main-droppable.borders ruby.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders ruby.droppable.droppable-over:before {
 	content:"ruby";
 }
-body > .droppable.borders s.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders s.droppable.droppable-over:before {
+body .main-droppable.borders s.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders s.droppable.droppable-over:before {
 	content:"s";
 }
-body > .droppable.borders samp.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders samp.droppable.droppable-over:before {
+body .main-droppable.borders samp.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders samp.droppable.droppable-over:before {
 	content:"samp";
 }
-body > .droppable.borders small.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders small.droppable.droppable-over:before {
+body .main-droppable.borders small.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders small.droppable.droppable-over:before {
 	content:"small";
 }
-body > .droppable.borders strong.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders strong.droppable.droppable-over:before {
+body .main-droppable.borders strong.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders strong.droppable.droppable-over:before {
 	content:"strong";
 }
-body > .droppable.borders sub.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders sub.droppable.droppable-over:before {
+body .main-droppable.borders sub.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders sub.droppable.droppable-over:before {
 	content:"sub";
 }
-body > .droppable.borders sup.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders sup.droppable.droppable-over:before {
+body .main-droppable.borders sup.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders sup.droppable.droppable-over:before {
 	content:"sup";
 }
-body > .droppable.borders time.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders time.droppable.droppable-over:before {
+body .main-droppable.borders time.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders time.droppable.droppable-over:before {
 	content:"time";
 }
-body > .droppable.borders u.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders u.droppable.droppable-over:before {
+body .main-droppable.borders u.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders u.droppable.droppable-over:before {
 	content:"u";
 }
-body > .droppable.borders var.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders var.droppable.droppable-over:before {
+body .main-droppable.borders var.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders var.droppable.droppable-over:before {
 	content:"var";
 }
-body > .droppable.borders area.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders area.droppable.droppable-over:before {
+body .main-droppable.borders area.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders area.droppable.droppable-over:before {
 	content:"area";
 }
-body > .droppable.borders audio.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders audio.droppable.droppable-over:before {
+body .main-droppable.borders audio.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders audio.droppable.droppable-over:before {
 	content:"audio";
 }
-body > .droppable.borders map.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders map.droppable.droppable-over:before {
+body .main-droppable.borders map.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders map.droppable.droppable-over:before {
 	content:"map";
 }
-body > .droppable.borders track.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders track.droppable.droppable-over:before {
+body .main-droppable.borders track.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders track.droppable.droppable-over:before {
 	content:"track";
 }
-body > .droppable.borders video.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders video.droppable.droppable-over:before {
+body .main-droppable.borders video.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders video.droppable.droppable-over:before {
 	content:"video";
 }
-body > .droppable.borders embed.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders embed.droppable.droppable-over:before {
+body .main-droppable.borders embed.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders embed.droppable.droppable-over:before {
 	content:"embed";
 }
-body > .droppable.borders object.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders object.droppable.droppable-over:before {
+body .main-droppable.borders object.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders object.droppable.droppable-over:before {
 	content:"object";
 }
-body > .droppable.borders param.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders param.droppable.droppable-over:before {
+body .main-droppable.borders param.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders param.droppable.droppable-over:before {
 	content:"param";
 }
-body > .droppable.borders picture.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders picture.droppable.droppable-over:before {
+body .main-droppable.borders picture.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders picture.droppable.droppable-over:before {
 	content:"picture";
 }
-body > .droppable.borders source.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders source.droppable.droppable-over:before {
+body .main-droppable.borders source.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders source.droppable.droppable-over:before {
 	content:"source";
 }
-body > .droppable.borders canvas.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders canvas.droppable.droppable-over:before {
+body .main-droppable.borders canvas.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders canvas.droppable.droppable-over:before {
 	content:"canvas";
 }
-body > .droppable.borders noscript.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders noscript.droppable.droppable-over:before {
+body .main-droppable.borders noscript.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders noscript.droppable.droppable-over:before {
 	content:"noscript";
 }
-body > .droppable.borders del.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders del.droppable.droppable-over:before {
+body .main-droppable.borders del.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders del.droppable.droppable-over:before {
 	content:"del";
 }
-body > .droppable.borders ins.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders ins.droppable.droppable-over:before {
+body .main-droppable.borders ins.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders ins.droppable.droppable-over:before {
 	content:"ins";
 }
-body > .droppable.borders col.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders col.droppable.droppable-over:before {
+body .main-droppable.borders col.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders col.droppable.droppable-over:before {
 	content:"col";
 }
-body > .droppable.borders colgroup.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders colgroup.droppable.droppable-over:before {
+body .main-droppable.borders colgroup.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders colgroup.droppable.droppable-over:before {
 	content:"colgroup";
 }
-body > .droppable.borders datalist.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders datalist.droppable.droppable-over:before {
+body .main-droppable.borders datalist.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders datalist.droppable.droppable-over:before {
 	content:"datalist";
 }
-body > .droppable.borders fieldset.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders fieldset.droppable.droppable-over:before {
+body .main-droppable.borders fieldset.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders fieldset.droppable.droppable-over:before {
 	content:"fieldset";
 }
-body > .droppable.borders form.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders form.droppable.droppable-over:before {
+body .main-droppable.borders form.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders form.droppable.droppable-over:before {
 	content:"form";
 }
-body > .droppable.borders legend.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders legend.droppable.droppable-over:before {
+body .main-droppable.borders legend.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders legend.droppable.droppable-over:before {
 	content:"legend";
 }
-body > .droppable.borders meter.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders meter.droppable.droppable-over:before {
+body .main-droppable.borders meter.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders meter.droppable.droppable-over:before {
 	content:"meter";
 }
-body > .droppable.borders output.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders output.droppable.droppable-over:before {
+body .main-droppable.borders output.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders output.droppable.droppable-over:before {
 	content:"output";
 }
-body > .droppable.borders details.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders details.droppable.droppable-over:before {
+body .main-droppable.borders details.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders details.droppable.droppable-over:before {
 	content:"details";
 }
-body > .droppable.borders dialog.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders dialog.droppable.droppable-over:before {
+body .main-droppable.borders dialog.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders dialog.droppable.droppable-over:before {
 	content:"dialog";
 }
-body > .droppable.borders menu.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders menu.droppable.droppable-over:before {
+body .main-droppable.borders menu.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders menu.droppable.droppable-over:before {
 	content:"menu";
 }
-body > .droppable.borders summary.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders summary.droppable.droppable-over:before {
+body .main-droppable.borders summary.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders summary.droppable.droppable-over:before {
 	content:"summary";
 }
-body > .droppable.borders slot.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders slot.droppable.droppable-over:before {
+body .main-droppable.borders slot.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders slot.droppable.droppable-over:before {
 	content:"slot";
 }
-body > .droppable.borders template.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders template.droppable.droppable-over:before {
+body .main-droppable.borders template.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders template.droppable.droppable-over:before {
 	content:"template";
 }
-body > .droppable.borders acronym.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders acronym.droppable.droppable-over:before {
+body .main-droppable.borders acronym.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders acronym.droppable.droppable-over:before {
 	content:"acronym";
 }
-body > .droppable.borders applet.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders applet.droppable.droppable-over:before {
+body .main-droppable.borders applet.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders applet.droppable.droppable-over:before {
 	content:"applet";
 }
-body > .droppable.borders basefont.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders basefont.droppable.droppable-over:before {
+body .main-droppable.borders basefont.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders basefont.droppable.droppable-over:before {
 	content:"basefont";
 }
-body > .droppable.borders bgsound.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders bgsound.droppable.droppable-over:before {
+body .main-droppable.borders bgsound.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders bgsound.droppable.droppable-over:before {
 	content:"bgsound";
 }
-body > .droppable.borders big.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders big.droppable.droppable-over:before {
+body .main-droppable.borders big.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders big.droppable.droppable-over:before {
 	content:"big";
 }
-body > .droppable.borders blink.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders blink.droppable.droppable-over:before {
+body .main-droppable.borders blink.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders blink.droppable.droppable-over:before {
 	content:"blink";
 }
-body > .droppable.borders center.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders center.droppable.droppable-over:before {
+body .main-droppable.borders center.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders center.droppable.droppable-over:before {
 	content:"center";
 }
-body > .droppable.borders command.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders command.droppable.droppable-over:before {
+body .main-droppable.borders command.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders command.droppable.droppable-over:before {
 	content:"command";
 }
-body > .droppable.borders content.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders content.droppable.droppable-over:before {
+body .main-droppable.borders content.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders content.droppable.droppable-over:before {
 	content:"content";
 }
-body > .droppable.borders dir.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders dir.droppable.droppable-over:before {
+body .main-droppable.borders dir.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders dir.droppable.droppable-over:before {
 	content:"dir";
 }
-body > .droppable.borders element.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders element.droppable.droppable-over:before {
+body .main-droppable.borders element.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders element.droppable.droppable-over:before {
 	content:"element";
 }
-body > .droppable.borders font.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders font.droppable.droppable-over:before {
+body .main-droppable.borders font.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders font.droppable.droppable-over:before {
 	content:"font";
 }
-body > .droppable.borders frame.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders frame.droppable.droppable-over:before {
+body .main-droppable.borders frame.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders frame.droppable.droppable-over:before {
 	content:"frame";
 }
-body > .droppable.borders frameset.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders frameset.droppable.droppable-over:before {
+body .main-droppable.borders frameset.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders frameset.droppable.droppable-over:before {
 	content:"frameset";
 }
-body > .droppable.borders isindex.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders isindex.droppable.droppable-over:before {
+body .main-droppable.borders isindex.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders isindex.droppable.droppable-over:before {
 	content:"isindex";
 }
-body > .droppable.borders keygen.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders keygen.droppable.droppable-over:before {
+body .main-droppable.borders keygen.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders keygen.droppable.droppable-over:before {
 	content:"keygen";
 }
-body > .droppable.borders listing.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders listing.droppable.droppable-over:before {
+body .main-droppable.borders listing.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders listing.droppable.droppable-over:before {
 	content:"listing";
 }
-body > .droppable.borders marquee.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders marquee.droppable.droppable-over:before {
+body .main-droppable.borders marquee.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders marquee.droppable.droppable-over:before {
 	content:"marquee";
 }
-body > .droppable.borders menuitem.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders menuitem.droppable.droppable-over:before {
+body .main-droppable.borders menuitem.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders menuitem.droppable.droppable-over:before {
 	content:"menuitem";
 }
-body > .droppable.borders multicol.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders multicol.droppable.droppable-over:before {
+body .main-droppable.borders multicol.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders multicol.droppable.droppable-over:before {
 	content:"multicol";
 }
-body > .droppable.borders nextid.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders nextid.droppable.droppable-over:before {
+body .main-droppable.borders nextid.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders nextid.droppable.droppable-over:before {
 	content:"nextid";
 }
-body > .droppable.borders noembed.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders noembed.droppable.droppable-over:before {
+body .main-droppable.borders noembed.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders noembed.droppable.droppable-over:before {
 	content:"noembed";
 }
-body > .droppable.borders noframes.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders noframes.droppable.droppable-over:before {
+body .main-droppable.borders noframes.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders noframes.droppable.droppable-over:before {
 	content:"noframes";
 }
-body > .droppable.borders plaintext.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders plaintext.droppable.droppable-over:before {
+body .main-droppable.borders plaintext.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders plaintext.droppable.droppable-over:before {
 	content:"plaintext";
 }
-body > .droppable.borders shadow.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders shadow.droppable.droppable-over:before {
+body .main-droppable.borders shadow.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders shadow.droppable.droppable-over:before {
 	content:"shadow";
 }
-body > .droppable.borders spacer.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders spacer.droppable.droppable-over:before {
+body .main-droppable.borders spacer.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders spacer.droppable.droppable-over:before {
 	content:"spacer";
 }
-body > .droppable.borders strike.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders strike.droppable.droppable-over:before {
+body .main-droppable.borders strike.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders strike.droppable.droppable-over:before {
 	content:"strike";
 }
-body > .droppable.borders tt.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders tt.droppable.droppable-over:before {
+body .main-droppable.borders tt.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders tt.droppable.droppable-over:before {
 	content:"tt";
 }
-body > .droppable.borders xmp.template-widget.widget-over:not(.widget-active):before,
-  body > .droppable.borders xmp.droppable.droppable-over:before {
+body .main-droppable.borders xmp.template-widget.widget-over:not(.widget-active):before,
+  body .main-droppable.borders xmp.droppable.droppable-over:before {
 	content:"xmp";
 }

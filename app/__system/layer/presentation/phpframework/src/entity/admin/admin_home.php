@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $_GET["popup"] = 1; include $EVC->getEntityPath("admin/choose_available_project"); include $EVC->getEntityPath("admin/choose_available_tutorial"); $presentation = getPresentation($project_url_prefix); function getPresentation($peb014cfd) { return '<div><img src="' . $peb014cfd . 'img/adminhome/layers_1.png"/></div>
+$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); include $EVC->getEntityPath("admin/choose_available_project"); include $EVC->getEntityPath("admin/choose_available_tutorial"); $presentation = getPresentation($project_url_prefix); function getPresentation($peb014cfd) { return '<div><img src="' . $peb014cfd . 'img/adminhome/layers_1.png"/></div>
 	<div><img src="' . $peb014cfd . 'img/adminhome/full_page_request_flow.png"/></div>
 	<div><img src="' . $peb014cfd . 'img/adminhome/layers_2.png"/></div>
 	<div><img src="' . $peb014cfd . 'img/adminhome/layers_3.png"/></div>

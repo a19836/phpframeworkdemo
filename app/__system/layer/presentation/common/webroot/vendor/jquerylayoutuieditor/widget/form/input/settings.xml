@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget>
-	<label>Text</label>
+	<label>Text Box</label>
 	<tag>input</tag>
 	<settings>
 		<resizable>1</resizable>

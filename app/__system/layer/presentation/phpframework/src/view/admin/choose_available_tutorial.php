@@ -22,6 +22,9 @@ $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
+<!-- Filemanager CSS file -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/file_manager.css" type="text/css" charset="utf-8" />
+
 <!-- Icons CSS file -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
@@ -35,41 +38,26 @@ $head = '
 
 <script>
 var is_popup = ' . ($popup ? 1 : 0) . ';
-</script>'; $main_content = '<div class="choose_available_tutorial">
-	<div class="title' . ($popup ? " inside_popup_title" : "") . '">Learn how to work with this framework by following the tutorials below</div>'; foreach ($tutorials as $tutorial) { $main_content .= '
-	<div class="card shadow ' . ($tutorial["items"] && !$tutorial["video"] ? "border_bottom" : "") . '">
-		<div class="card_header">'; if ($tutorial["image"]) $main_content .= '<img class="card_img_top" src="' . $tutorial["image"] . '" alt="Card image cap" onError="$(this).parent().remove()">'; $main_content .= '</div>
-		<div class="card_body">
-			<p class="card_title mb-0">' . $tutorial["title"] . '</p>
-			' . ($tutorial["description"] ? '<p class="card_description">' . $tutorial["description"] . '</p>' : '') . '
-		</div>'; if ($tutorial["items"]) { $main_content .= '<ul class="list_group list_group_flush">'; foreach ($tutorial["items"] as $sub_tutorial) { $id = md5($sub_tutorial["title"]); $main_content .= '<li class="list_group_item collapsed">
-				<div class="list_group_item_header" onClick="$(this).parent().toggleClass(\'collapsed\')">
-
-					' . $sub_tutorial["title"] . '
-					<span class="dropdown_toggle"></span>
-				</div>
-				
-				<div class="list_group_item_body">'; if ($sub_tutorial["image"]) $main_content .= '<img class="card_img" src="' . $sub_tutorial["image"] . '" alt="Card image cap" onError="$(this).remove()">'; if ($sub_tutorial["description"]) $main_content .= '<span class="description">' . $sub_tutorial["description"] . '</span>'; if ($sub_tutorial["video"]) $main_content .= '<a class="video_link" href="javascript:void(0)" onClick="openVideoPopup(this)" video_url="' . $sub_tutorial["video"] . '"><small>Watch video</small></a>'; $main_content .= '
-				</div>
-			</li>'; } $main_content .= '</ul>'; } if ($tutorial["video"]) $main_content .= '
-		<div class="card_footer">
-			<a class="video_link" href="javascript:void(0)" onClick="openVideoPopup(this)" video_url="' . $tutorial["video"] . '"><small>Watch video</small></a>
-		</div>'; $main_content .= '
-	</div>'; } $main_content .= '
-	<!--div class="modal fade modal_video text-center" id="modal-video-01" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog d-inline-block" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<small class="modal-title">We look for investment</small>
-					<div class="close-mo-icon trans-0-4 c-black" data-dismiss="modal" aria-label="Close">&times;</div>
-				</div>
-				<div class="modal-body">
-					<iframe width="560" height="315" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-				</div>
-				<div class="modal-footer justify-content-start text-muted">
-					<small class="modal-description"></small>
-				</div>
-			</div>
+</script>'; $main_content = '<div class="choose_available_tutorial ' . ($popup ? " in_popup" : "") . '">
+	<div class="title' . ($popup ? " inside_popup_title" : "") . '">Video Tutorials</div>
+	<ul>'; foreach ($tutorials as $tutorial) $main_content .= getTutorialHtml($tutorial); function getTutorialHtml($v20f9a15b0d) { if ($v20f9a15b0d["video"] || $v20f9a15b0d["items"]) { $ped0a6251 = ''; $pf9ed8697 = ''; if ($v20f9a15b0d["items"]) { $ped0a6251 = 'onClick="toggleSubTutorials(this)"'; $pf9ed8697 = '<span class="icon dropdown_arrow"></span>'; } else $ped0a6251 = 'onClick="openVideoPopup(this)" video_url="' . $v20f9a15b0d["video"] . '" image_url="' . $v20f9a15b0d["image"] . '"'; $pf8ed4912 = '<li' . ($v20f9a15b0d["items"] ? ' class="with_sub_tutorials"' : '') . '>
+					<div class="tutorial_header" ' . $ped0a6251 . '>
+						<div class="tutorial_title"><span class="icon video"></span> ' . $v20f9a15b0d["title"] . $pf9ed8697 . '</div>
+						' . ($v20f9a15b0d["description"] ? '<div class="tutorial_description">' . $v20f9a15b0d["description"] . '</div>' : '') . '
+					</div>'; if ($v20f9a15b0d["items"]) { $pf8ed4912 .= '<ul class="sub_tutorials">'; foreach ($v20f9a15b0d["items"] as $v83cf8e0027) $pf8ed4912 .= getTutorialHtml($v83cf8e0027); $pf8ed4912 .= '</ul>'; } $pf8ed4912 .= '</li>'; } return $pf8ed4912; } $main_content .= '
+	</ul>
+	
+	<div class="popup_video" id="modal-video-01">
+		<div class="popup_header">
+			<div class="popup_title"></div>
+			<div class="close" onClick="closeVideoPopup(this)">&times;</div>
 		</div>
-	</div-->
+		<div class="popup_body">
+			<iframe width="560" height="315" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		</div>
+		<div class="popup_footer">
+			<img class="popup_img" alt="Card image cap" onError="$(this).hide()">
+			<div class="popup_description"></div>
+		</div>
+	</div>
 </div>'; ?>

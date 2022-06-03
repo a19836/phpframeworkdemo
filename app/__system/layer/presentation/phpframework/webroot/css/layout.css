@@ -1029,6 +1029,26 @@ body .connection_context_menu .delete a {
 	content:"\f0c7";
 	font-size:16px;
 }
+.taskflowchart:not(.fixed_properties):not(.fixed_side_properties):not(.auto_save_disabled) > .selected_task_properties > .popup_close:hover::after,
+  .taskflowchart:not(.fixed_properties):not(.fixed_side_properties):not(.auto_save_disabled) > .selected_connection_properties > .popup_close:hover::after,
+  .taskflowchart.with_top_bar_menu.fixed_properties:not(.auto_save_disabled) > .selected_task_properties > .popup_close:hover::after, 
+  .taskflowchart.with_top_bar_menu.fixed_properties:not(.auto_save_disabled) > .selected_connection_properties > .popup_close:hover::after,
+  .taskflowchart.with_top_bar_menu.fixed_side_properties:not(.auto_save_disabled) > .selected_task_properties > .popup_close:hover::after, 
+  .taskflowchart.with_top_bar_menu.fixed_side_properties:not(.auto_save_disabled) > .selected_connection_properties > .popup_close:hover::after {
+	content:"Save and Close Properties";
+	position:absolute;
+	right:0;
+	display:block;
+	margin-top:5px;
+	padding:3px 5px;
+	border:1px solid #fff;
+	background:#000;
+	color:#fff;
+	box-shadow:0 0 5px 2px rgb(0, 0, 0, .05);
+	white-space:nowrap;
+	font-family:var(--main-font-family);
+	font-size:8pt;
+}
 
 .selected_task_properties > .maximize_minimize_icon, 
   .selected_connection_properties > .maximize_minimize_icon {
@@ -1345,12 +1365,36 @@ body .layout-ui-editor {
 	--editor-error-msg-bg:rgba(255, 0, 0, 0.8);
 	--editor-error-msg-color:#fff;
 }
+body .layout-ui-editor > .menu-widgets, 
+  body .layout-ui-editor > .menu-layers, 
+  body .layout-ui-editor > .menu-settings, 
+  body .layout-ui-editor > .template-widgets-options,
+  body .layout-ui-editor.fixed-side-properties > .menu-settings {
+	right:calc(100% - 210px);
+}
+body .layout-ui-editor.reverse > .menu-widgets, 
+  body .layout-ui-editor.reverse > .menu-layers, 
+  body .layout-ui-editor.reverse > .menu-settings, 
+  body .layout-ui-editor.reverse > .template-widgets-options,
+  body .layout-ui-editor.reverse.fixed-side-properties > .menu-settings {
+	left:calc(100% - 210px);
+}
+body .layout-ui-editor > .template-widgets {
+	left:215px;
+}
+body .layout-ui-editor.reverse > .template-widgets {
+	right:215px;
+}
 body .layout-ui-editor > .resize-panels {
+	left:210px;
 	border-left:1px solid var(--resize-bar-border);
 	border-right:1px solid var(--resize-bar-border);
 	background:var(--resize-bar-bg);
 	/*background:var(--resize-bar-vertical-img) repeat-x var(--main-template-bg);*/
 	box-sizing:border-box;
+}
+body .layout-ui-editor.reverse > .resize-panels {
+	right:210px;
 }
 body .layout-ui-editor > .resize-panels .button {
 	margin-left:-1px;
@@ -1542,6 +1586,41 @@ body .layout-ui-editor > .menu-widgets .group.group-open > .group-title .toggle:
 	content:"\f78c";
 }
 
+/* LAYOUT CODE EDITOR - WIDGET HEADER */
+.layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.html-source,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.paste,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.cut,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.copy,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.add,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.toggle,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.sort,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options > .option.sort,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options > .option.toggle,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options > .option.add,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options > .option.html-source {
+	font-weight:600;
+}
+.layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.delete::before,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.sort-up::before,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.sort-down::before,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options > .option.sort-right::before,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options > .option.sort-left::before {
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+}
+.layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.delete::before {
+	content:"\f1f8";
+	font-size:90%;
+}
+.layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.sort-up::before,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.sort-down::before,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options > .option.sort-right::before,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options > .option.sort-left::before {
+	content:"\f0a9";
+	font-size:90%;
+}
+
 /* LAYOUT CODE EDITOR - TEXT SELECTION MENU */
 .layout-ui-editor .text-selection-menu .text-selection-item.toggle-menu,
   .layout-ui-editor .text-selection-menu .text-selection-item.close-menu {
@@ -1583,14 +1662,16 @@ body .layout-ui-editor .text-selection-menu .table-props table tbody tr td:not(.
 	z-index:2;
 	border-bottom:0;
 }
+
+/* TABS - TABS ICONS */
 .tabs.tabs_icons li { /* Do not add the ".with_top_bar_tab > ", bc in the workflow the edit_function task will open a popup when edit the code, which will use this styles */
-	height:calc(100% - 5px);
+	height:100%;
 	box-sizing:border-box;
 	margin-right:0;
 	background:none;
 }
 .tabs.tabs_icons li:not(.ui-tabs-active) {
-	height:calc(100% - 6px);
+	border:0;
 }
 .tabs.tabs_icons li.ui-tabs-active {
 	color:var(--icon-active-color);
@@ -1608,7 +1689,7 @@ body .layout-ui-editor .text-selection-menu .table-props table tbody tr td:not(.
 	border-left-color:transparent;
 }
 .tabs.tabs_icons li a {
-	height:calc(100% + 5px);
+	height:100%;
 	padding:.8em 1em 0 !important;
 	display:inline-block;
 	overflow:hidden;
@@ -1618,7 +1699,7 @@ body .layout-ui-editor .text-selection-menu .table-props table tbody tr td:not(.
 	border-top-right-radius:5px;
 }
 .tabs.tabs_icons li.ui-tabs-active a {
-	height:calc(100% + 6px);
+	height:calc(100% + 1px);
 }
 .tabs.tabs_icons li.ui-tabs-active a {
 	background:var(--main-template-bg);
@@ -1628,6 +1709,14 @@ body .layout-ui-editor .text-selection-menu .table-props table tbody tr td:not(.
 }
 .tabs.tabs_icons > li.ui-state-hover:not(.ui-tabs-active) a {
 	color:var(--icon-hover-color);
+}
+
+/* TABS - TABS ICONS - ROUNDED CORNERS */
+/*.tabs.tabs_icons li {
+	height:calc(100% - 5px);
+}
+.tabs.tabs_icons li:not(.ui-tabs-active) {
+	height:calc(100% - 6px);
 }
 .tabs.tabs_icons > li:before,
   .tabs.tabs_icons > li:after {
@@ -1665,6 +1754,13 @@ body .layout-ui-editor .text-selection-menu .table-props table tbody tr td:not(.
 	display:none;
 }
 .tabs.tabs_icons li a {
+	height:calc(100% + 5px);
+}
+.tabs.tabs_icons li.ui-tabs-active a {
+	height:calc(100% + 6px);
+}*/
+
+.tabs.tabs_icons li a {
 	width:36px;
 }
 .tabs.tabs_icons li#code_editor_tab a {
@@ -1674,7 +1770,7 @@ body .layout-ui-editor .text-selection-menu .table-props table tbody tr td:not(.
 	width:16px;
 	margin-top:2px;
 	margin-right:20px;
-	font-size:14px;
+	font-size:16px;
 	color:inherit;
 }
 .tabs.tabs_icons li#code_editor_tab a .icon {

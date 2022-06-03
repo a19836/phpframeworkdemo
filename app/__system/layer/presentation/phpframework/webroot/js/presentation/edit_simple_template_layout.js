@@ -1,4 +1,4 @@
-window.onload = function() {
+window.onload = function() { //for some reason the load is getting called multiple times, so we need to use the is_inited var to avoid calling multiple times the onLoadEditSimpleTemplateLayout function. I think it's because the ajax requests of the simulate html for each region block.
 	onLoadEditSimpleTemplateLayout();
 };
 
@@ -10,6 +10,8 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
 
 //Note that this function is called in the edit_page_and_template.js file too
 function onLoadEditSimpleTemplateLayout() {
+	//console.log("onLoadEditSimpleTemplateLayout");
+	
 	/*if (!window.jQuery) {
 		// jQuery not loaded, load it and when it loads call
 		// noConflict and the callback (if any).
@@ -30,7 +32,7 @@ function onLoadEditSimpleTemplateLayout() {
 	if (typeof parent.pretifyRegionsBlocksComboBox == "function") {
 		parent.disableLinksAndButtonClickEvent(document.body);
 		
-		var items = document.querySelectorAll(".template_region .items");
+		var items = document.querySelectorAll(".template_region > .items");
 		parent.prepareRegionsBlocksHtmlValue(items);
 		parent.pretifyRegionsBlocksComboBox(items);
 		parent.loadAvailableBlocksList(items);
@@ -67,9 +69,17 @@ function prepareRegionsBlocks(elms) {
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
 		
+		prepareRegionBlockConflictsWithLayoutUIEditor(item);
   		prepareRegionBlockOverHandlers(item);
 		prepareRegionBlockSimulatedHtml(item);
 	}
+}
+
+function prepareRegionBlockConflictsWithLayoutUIEditor(item) {
+	//prepare items to don't be in conflict with the layout-ui-editor
+	item.setAttribute("contenteditable", "false");
+	item.setAttribute("spellcheck", "false");
+	item.classList.add("not-widget");
 }
  
 function prepareRegionBlockOverHandlers(item) {
@@ -107,11 +117,20 @@ function prepareRegionBlockOverHandlers(item) {
   	}
 }
 
+function getRegionBlockSimulatedHtmlElm(item) {
+	var elms = filterSelectorAllInNodes(item.childNodes, ".block_simulated_html");
+	
+	if (elms.length > 1)
+		for (var i = 1; i < elms.length; i++)
+			item.removeChild(elms[i]);
+	
+	return elms[0];
+}
+
 function prepareRegionBlockSimulatedHtml(item) {
 	if (item) {
 		//get block_simulated_html div
-		var item_children = item.childNodes;
-		var block_simulated_html = filterSelectorInNodes(item_children, ".block_simulated_html");
+		var block_simulated_html = getRegionBlockSimulatedHtmlElm(item);
 		
 		if (block_simulated_html)
 			block_simulated_html.innerHTML = '';
@@ -174,12 +193,14 @@ function prepareRegionBlockSimulatedHtml(item) {
 						//console.log(response_obj);
 						
 						if (typeof response_obj == "object" && response_obj && response_obj.hasOwnProperty("html") && response_obj["html"]) { //response_obj could be null. Null is an object!
+							//prepare item
 							if (item.classList.contains("invalid"))
 								item.classList.remove("invalid")
 							
-							var simulated_html = response_obj["html"];
+							//prepare block_simulated_html div
+				  			var simulated_html = response_obj["html"];
+				  			var block_simulated_html = getRegionBlockSimulatedHtmlElm(item);
 				  			
-				  			//prepare block_simulated_html div
 				  			if (!block_simulated_html) {
 				  				var doc = item.ownerDocument || document;
 				  				block_simulated_html = doc.createElement("DIV");
@@ -209,6 +230,7 @@ function convertBlockSimulatedHtmlIntoEditableContent(block_simulated_html, resp
 	block_simulated_html.setAttribute("contenteditable", "false");
 	block_simulated_html.setAttribute("spellcheck", "false");
 	
+	//prepare editable settings
 	if (typeof response_obj["editable_settings"] == "object" && response_obj["editable_settings"]) { //it could be null. Null is an object!
 		var editable_settings = response_obj["editable_settings"];
 		var editable_elements = editable_settings["elements"];
@@ -320,6 +342,7 @@ function includeCodeForBlockSimulatedHtmlSetting(block_simulated_html, editable_
 		if ((k == "css" || k == "js") && v) {
 			var doc = block_simulated_html.ownerDocument || document;
 			var created_elm = doc.createElement(k == "css" ? "STYLE" : "SCRIPT");
+			created_elm.classList.add("widget-ignore");
 			created_elm.textContent = v;
     			block_simulated_html.appendChild(created_elm);
 		}
@@ -347,12 +370,14 @@ function includeCodeForBlockSimulatedHtmlSetting(block_simulated_html, editable_
 							
 							if (vk == "css") {
 								created_elm = doc.createElement("LINK");
+								created_elm.classList.add("widget-ignore");
 								created_elm.setAttribute("rel", "stylesheet");
 								created_elm.setAttribute("type", "text/css");
 								created_elm.setAttribute("href", file);
 					    		}
 					    		else {
 					    			created_elm = doc.createElement("SCRIPT");
+					    			created_elm.classList.add("widget-ignore");
 								created_elm.setAttribute("language", "javascript");
 								created_elm.setAttribute("type", "text/javascript");
 								created_elm.setAttribute("src", file);
@@ -524,6 +549,28 @@ function onChangeRegionBlockType(elm) {
 	prepareRegionBlockSimulatedHtml(p);
 }
 
+function addFirstRegionBlock(elm) {
+	//save synchronization function
+	var update_layout_iframe_from_settings_func_bkp = parent.update_layout_iframe_from_settings_func;
+	
+	//disable synchronization function
+	parent.update_layout_iframe_from_settings_func = null;
+	
+	//call parent addFirstRegionBlock
+	parent.addFirstRegionBlock(elm);
+	
+	//prepare new_region element with new handlers
+	var template_region = elm.parentNode.closest(".template_region");
+	var items = filterSelectorInNodes(template_region.childNodes, ".items");
+	var item = filterSelectorAllInNodes(items.childNodes, ".item");
+	var new_region = item.length > 0 ? item[ item.length - 1 ] : null;
+	
+	prepareNewRegion(new_region);
+	
+	//sets back synchronization function
+	parent.update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
+}
+
 function addRepeatedRegionBlock(elm) {
 	//save synchronization function
 	var update_layout_iframe_from_settings_func_bkp = parent.update_layout_iframe_from_settings_func;
@@ -534,7 +581,7 @@ function addRepeatedRegionBlock(elm) {
 	//call parent addRepeatedRegionBlock
 	parent.addRepeatedRegionBlock(elm);
 	
-	//This is very important otherwise these fields will have the handlers from the parent window. The following code makes the handlers to the functions of this file
+	//prepare new_region element with new handlers
 	var item = elm.parentNode.closest(".item");
 	
 	if (item) {
@@ -545,28 +592,34 @@ function addRepeatedRegionBlock(elm) {
 		}
 		while (new_region && !new_region.classList.contains("item"));
 		
-		if (new_region) {
-			var children = new_region.childNodes;
-			var block_text = filterSelectorInNodes(children, ".block_text");
-			
-			filterSelectorInNodes(children, ".block_options").setAttribute("onChange", "onChangeRegionBlock(this)");
-			filterSelectorInNodes(block_text.childNodes, "textarea").setAttribute("onBlur", "onBlurRegionBlock(this)");
-			filterSelectorInNodes(children, ".block").setAttribute("onBlur", "onBlurRegionBlock(this)");
-			filterSelectorInNodes(children, ".region_block_type").setAttribute("onChange", "onChangeRegionBlockType(this)");
-			filterSelectorInNodes(children, ".add").setAttribute("onClick", "addRepeatedRegionBlock(this)");
-			filterSelectorInNodes(children, ".up").setAttribute("onClick", "moveUpRegionBlock(this)");
-			filterSelectorInNodes(children, ".down").setAttribute("onClick", "moveDownRegionBlock(this)");
-			filterSelectorInNodes(children, ".delete").setAttribute("onClick", "deleteRegionBlock(this)");
-			
-			var block_html = filterSelectorInNodes(new_region.childNodes, ".block_html");
-			block_html.classList.remove("editor");
-			
-			prepareRegionBlockOverHandlers(new_region);
-		}
+		prepareNewRegion(new_region);
 	}
 	
 	//sets back synchronization function
 	parent.update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
+}
+
+function prepareNewRegion(new_region) {
+	//This is very important otherwise these fields will have the handlers from the parent window. The following code makes the handlers to the functions of this file
+	if (new_region) {
+		var children = new_region.childNodes;
+		var block_text = filterSelectorInNodes(children, ".block_text");
+		
+		filterSelectorInNodes(children, ".block_options").setAttribute("onChange", "onChangeRegionBlock(this)");
+		filterSelectorInNodes(block_text.childNodes, "textarea").setAttribute("onBlur", "onBlurRegionBlock(this)");
+		filterSelectorInNodes(children, ".block").setAttribute("onBlur", "onBlurRegionBlock(this)");
+		filterSelectorInNodes(children, ".region_block_type").setAttribute("onChange", "onChangeRegionBlockType(this)");
+		filterSelectorInNodes(children, ".add").setAttribute("onClick", "addRepeatedRegionBlock(this)");
+		filterSelectorInNodes(children, ".up").setAttribute("onClick", "moveUpRegionBlock(this)");
+		filterSelectorInNodes(children, ".down").setAttribute("onClick", "moveDownRegionBlock(this)");
+		filterSelectorInNodes(children, ".delete").setAttribute("onClick", "deleteRegionBlock(this)");
+		
+		var block_html = filterSelectorInNodes(new_region.childNodes, ".block_html");
+		block_html.classList.remove("editor");
+		
+		prepareRegionBlockConflictsWithLayoutUIEditor(new_region);
+		prepareRegionBlockOverHandlers(new_region);
+	}
 }
 
 function openTemplateRegionInfoPopup(elm) {
@@ -638,8 +691,9 @@ function deleteRegionBlock(elm) {
 	//disable synchronization function
 	parent.update_layout_iframe_from_settings_func = null;
 	
-	//call parent deleteRegionBlock
-	parent.deleteRegionBlock(elm);
+	//delete item
+	var item = $(elm).parent();
+	item.remove();
 	
 	//sets back synchronization function
 	parent.update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;

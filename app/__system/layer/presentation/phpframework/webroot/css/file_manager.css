@@ -322,8 +322,9 @@
 	color:#888;
 }*/
 .mytree i.class::before {
-	/*content:"\f468";*/
-	content:"\f1b2";
+	/*content:"\f468";
+	content:"\f1b2";*/
+	content:"\f1b3";
 	color:var(--icon-file-color);
 }
 /*.mytree i.class::after {
@@ -493,8 +494,9 @@
 }*/
 .mytree i.service::before {
 	/*content:"\f468";
-	color:#888;*/
-	content:"\f1b2";
+	color:#888;
+	content:"\f1b2";*/
+	content:"\f1b3";
 	color:var(--icon-file-color);
 }
 .mytree i.method::before {
@@ -548,8 +550,9 @@
 	color:#888;
 }*/
 .mytree i.obj::before {
-	/*content:"\f1c0";*/
-	content:"\f1b2";
+	/*content:"\f1c0";
+	content:"\f1b2";*/
+	content:"\f1b3";
 	color:var(--icon-file-color);
 }
 /*.mytree i.obj::after {
