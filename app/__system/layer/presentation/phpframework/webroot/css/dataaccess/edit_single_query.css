@@ -142,7 +142,7 @@
 	position:relative;
 	overflow-y:auto;
 	overflow-x:auto;
-	background:#f7f7f7;
+	background:#fff;
 	box-sizing:border-box;
 }
 .edit_single_query .relationship .query .query_select.hide_query_settings .taskflowchart .tasks_flow {
