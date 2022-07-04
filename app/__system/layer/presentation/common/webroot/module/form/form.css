@@ -282,7 +282,7 @@
 	display:none;
 }
 .module_form_settings .create_form_task_html .with_form {
-	margin-top:-29px !important;
+	margin-top:-25px !important;
 }
 .module_form_settings .create_form_task_html .form_action .add_variable.inline {
 	margin-left:-22px !important;
@@ -509,6 +509,9 @@
 }
 
 /* LAYOUT UI EDITOR */
+.module_form_settings .create_form_task_html .layout-ui-editor > .tabs {
+	font-size:8pt;
+}
 .module_form_settings .create_form_task_html .layout-ui-editor > .menu-settings select {
 	font-size:80%;
 }

@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilPath("WorkFlowUIHandler"); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $head = '
+include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -34,12 +34,13 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilP
 	<div class="statuses">
 		<div class="top_bar">
 			<header>
-				<div class="title">Automatic creation in \'' . $path . '\'. Statuses:</div>
+				<div class="title">Automatic creation in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $P) . '</div>
 				<ul>
 					<!--li class="go_back" data-title="Go Back"><a onClick="history.go(-1);"><i class="icon go_back"></i></a></li-->
 				</ul>
 			</header>
 		</div>
+		<div class="title">Statuses</div>
 		<table>
 			<tr>
 				<th class="table_name table_header">Type</th>
@@ -164,13 +165,14 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilP
 		<div class="tables_settings">
 			<div class="top_bar">
 				<header>
-					<div class="title">Automatic creation in \'' . $path . '\'. Please check the following table\'s settings:</div>
+					<div class="title">Automatic creation in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $P) . '</div>
 					<ul>
 						<!--li class="go_back" data-title="Go Back"><a onClick="history.go(-1);"><i class="icon go_back"></i></a></li-->
 						<li class="continue" data-title="Continue"><a onClick="save(this)"><i class="icon continue"></i> Continue</a></li>
 					</ul>
 				</header>
 			</div>
+			<div class="title">Please check the following table\'s settings</div>
 			<div class="tables_groups">'; $t = count($selected_tables); for ($i = 0; $i < $t; $i++) { $table_name = $selected_tables[$i]; $table = WorkFlowDataAccessHandler::getTableFromTables($tables, $table_name); if ($table) $main_content .= CMSPresentationUIAutomaticFilesHandler::getTableGroupHtml($table_name, $foreign_keys, $tasks_contents, $allowed_tasks, $with_items_list_ui, $with_view_item_ui, $with_insert_item_form_ui, $with_update_item_form_ui, $with_fks_ui, $selected_tables_alias); } $main_content .= '</div>
 			<div class="error">
 				<label>The system tried to detect automatically all table\'s settings, but it couldn\'t for the following ones:</label>
@@ -190,13 +192,14 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilP
 	</script>'; $main_content = '<div class="select_tables">
 		<div class="top_bar">
 			<header>
-				<div class="title">Automatic creation in \'' . $path . '\'. Please select the table objects that you wish to create:</div>
+				<div class="title">Automatic creation in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $P) . '</div>
 				<ul>
 					<!--li class="go_back" data-title="Go Back"><a onClick="history.go(-1);"><i class="icon go_back"></i></a></li-->
 					<li class="continue" data-title="Continue"><a onClick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
 			</header>
 		</div>
+		<div class="title">Please select the table objects that you wish to create</div>
 		<form method="post">
 			<input type="hidden" name="db_layer" value="' . $db_layer . '" />
 			<input type="hidden" name="db_layer_file" value="' . $db_layer_file . '" />
@@ -301,12 +304,13 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilP
 	</div>'; } else { $main_content = '<div class="select_layers">
 		<div class="top_bar">
 			<header>
-				<div class="title">Automatic creation in \'' . $path . '\'. Please select the DB Driver and click continue:</div>
+				<div class="title">Automatic creation in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $P) . '</div>
 				<ul>
 					<li class="continue" data-title="Continue"><a onClick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
 			</header>
 		</div>
+		<div class="title">Please select the DB Driver and click continue</div>
 		<form method="post">'; if (empty($path)) $main_content .= '<div class="error">You cannot execute this action with an undefined path.</div>'; else if (empty($PEVC)) $main_content .= '<div class="error">Bean name doesn\'t exist. If this problem persists, please talk with the sys-admin.</div>'; else if (!is_dir($folder_path)) $main_content .= '<div class="error">You can only execute this action inside of a folder.</div>'; else if (!empty($db_drivers)) { $db_layer = $db_layer_file = null; $main_content .= '
 			<script>
 				var default_db_driver = "' . $default_db_driver . '";

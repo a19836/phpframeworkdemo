@@ -6,7 +6,7 @@
 	z-index:6;
 }
 .top_bar header .title {
-	max-width:calc(100% - 320px);
+	max-width:calc(100% - 290px);
 }
 .top_bar .template_fields {
 	width:365px;
@@ -14,43 +14,6 @@
 }
 .top_bar.is_external_template .template_fields {
 	width:163px;
-}
-.top_bar li.toggle_main_settings .icon.toggle_main_settings::before {
-	content:"\f022";
-}
-.top_bar li.toggle_main_settings .icon.toggle_main_settings::after {
-	content:"\f06e";
-}
-
-/* GENERIC */
-.error {
-	width:100%;
-	text-align:center;
-	font-style:italic;
-	color:#B51E3F;
-	margin-top:10px;
-	margin-bottom:20px;
-}
-
-.invalid {
-	padding:10px;
-	position:absolute;
-	left:0;
-	top:50px;
-	right:0;
-	text-align:center;
-	background:#fff;
-	border:1px solid #B51E3F;
-	color:#B51E3F;
-	z-index:5;
-}
-.invalid a {
-	text-decoration:underline;
-}
-.invalid .close {
-	position:absolute;
-	right:5px;
-	bottom:10px;
 }
 
 /* ENTITY OBJ */
@@ -94,40 +57,40 @@
 	color:inherit;
 }
 
-/* entity_template_layout */
-.entity_obj .entity_template_layout {
+/* Code Editor */
+.entity_obj .code_layout_ui_editor {
 	height:calc(100vh - 86px);
 	min-height:300px;
 	padding:0 !important;
 	position:relative;
 	/*border:0;*/
 }
-.entity_obj .entity_template_layout .code_menu.top_bar_menu {
+.entity_obj .code_layout_ui_editor .code_menu.top_bar_menu {
 	right:217px;
 }
-.entity_obj .entity_template_layout .code_menu.top_bar_menu li.editor_full_screen,
-  .entity_obj .entity_template_layout .code_menu.top_bar_menu li.sub_menu,
-  .entity_obj .entity_template_layout .code_menu.top_bar_menu li.save {
+.entity_obj .code_layout_ui_editor .code_menu.top_bar_menu li.editor_full_screen,
+  .entity_obj .code_layout_ui_editor .code_menu.top_bar_menu li.sub_menu,
+  .entity_obj .code_layout_ui_editor .code_menu.top_bar_menu li.save {
 	display:none;
 }
 
-/* entity_template_layout - ELS UI */
-.entity_obj .entity_template_layout .layout-ui-editor.with_top_bar_menu > .options .options-right {
-	right:85px;
+/* Code Editor - ELS UI */
+.entity_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .options-right {
+	right:91px;
 	z-index:7;
 }
-.entity_obj .entity_template_layout .layout-ui-editor.with_top_bar_menu > .options > .options-center {
-	right:190px;
+.entity_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center {
+	right:224px;
 	z-index:7;
 }
-.entity_obj .entity_template_layout .layout-ui-editor.with_top_bar_menu > .options .options-left .option.save,
-  .entity_obj .entity_template_layout .layout-ui-editor.with_top_bar_menu > .options .options-right .option.full-screen {
+.entity_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .options-left .option.save,
+  .entity_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .options-right .option.full-screen {
 	display:none !important;
 }
-.entity_obj .entity_template_layout .layout-ui-editor.with_top_bar_menu.fixed-side-properties.menu-settings-shown > .template-widgets,
-  .entity_obj .entity_template_layout .layout-ui-editor.with_top_bar_menu.fixed-side-properties.menu-settings-shown > .menu-widgets, 
-  .entity_obj .entity_template_layout .layout-ui-editor.with_top_bar_menu.fixed-side-properties.menu-settings-shown > .menu-layers,
-  .entity_obj .entity_template_layout .layout-ui-editor.with_top_bar_menu.fixed-side-properties.menu-settings-shown > .template-widgets-options {
+.entity_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.fixed-side-properties.menu-settings-shown > .template-widgets,
+  .entity_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.fixed-side-properties.menu-settings-shown > .menu-widgets, 
+  .entity_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.fixed-side-properties.menu-settings-shown > .menu-layers,
+  .entity_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.fixed-side-properties.menu-settings-shown > .template-widgets-options {
 	margin-bottom:0;
 }
 
@@ -181,25 +144,6 @@
 	margin-top:5px;
 	color:#c0c0c0;
 }
-
-/* TABS */
-.entity_obj .entity_obj_tabs {
-	border:0;
-	padding:0;
-}
-/*.entity_obj .entity_obj_tabs > .tabs {
-	text-align:center;
-}
-.entity_obj .entity_obj_tabs > .tabs > li {
-	float:none;
-	display:inline-block;
-	margin:0;
-	padding:0;
-	top:3px;
-}
-.entity_obj .entity_obj_tabs > .tabs > li.ui-state-active {
-	top:4px;
-}*/
 
 /* POPUP: page_preview_popup */
 .page_preview_popup {

@@ -133,11 +133,14 @@ $(function () {
 		if (textarea) {
 			eval("var save_func = " + js_save_func_name + ";");
 			
-			createCodeEditor(textarea, {save_func: save_func});
+			var editor = createCodeEditor(textarea, {save_func: save_func});
+			
+			if (editor)
+				editor.focus();
 		}
 		
 		//load workflow
-		onLoadTaskFlowChartAndCodeEditor();
+		onLoadTaskFlowChartAndCodeEditor({do_not_hide_popup : true});
 		
 		//init tasks flow tab
 		onClickTaskWorkflowTab( file_class_method_obj.find(" > .tabs > #tasks_flow_tab > a")[0], {
@@ -145,6 +148,8 @@ $(function () {
 				//set saved_class_method_settings_id and saved_obj_id
 				saved_class_method_settings_id = getFileClassMethodSettingsId();
 				//saved_obj_id = getFileClassMethodObjId(); //Do not uncomment this code, otherwise the it will save the workflow on page load.
+				
+				MyFancyPopup.hidePopup();
 			},
 			on_error: function() {
 				file_class_method_obj.tabs("option", "active", 0); //show code tab
@@ -152,6 +157,8 @@ $(function () {
 				//set saved_class_method_settings_id and saved_obj_id
 				saved_class_method_settings_id = getFileClassMethodSettingsId();
 				//saved_obj_id = getFileClassMethodObjId(); //Do not uncomment this code, otherwise the it will save the workflow on page load.
+				
+				MyFancyPopup.hidePopup();
 			}
 		});
 		
@@ -202,6 +209,8 @@ $(function () {
 		for (var i = 0; i < annotations_rows.length; i++)
 			onBlurAnnotationName( $(annotations_rows[i]).find(".name input")[0] );
 	}
+	else	//hide loading icon
+		MyFancyPopup.hidePopup();
 });
 
 //To be used in the toggleFullScreen function
@@ -457,26 +466,64 @@ function getFileClassMethodSettingsObj() {
 function saveFileClassMethod() {
 	var file_class_method_obj = $(".file_class_method_obj");
 	
+	prepareAutoSaveVars();
+	
+	var is_from_auto_save_bkp = is_from_auto_save; //backup the is_from_auto_save, bc if there is a concurrent process running at the same time, this other process may change the is_from_auto_save value.
+	
 	if (file_class_method_obj[0]) {
-		prepareAutoSaveVars();
+		if (!window.is_save_func_running) {
+			window.is_save_func_running = true;
 		
-		if (is_from_auto_save && !isClassMethodObjChanged()) {
-			resetAutoSave();
-			return;
+			if (is_from_auto_save_bkp && !isClassMethodObjChanged()) {
+				resetAutoSave();
+				window.is_save_func_running = false;
+				return;
+			}
+			
+			var obj = getFileClassMethodObj();
+			
+			//check if user is logged in
+			//if there was a previous function that tried to execute an ajax request, like the getCodeForSaving method, we detect here if the user needs to login, and if yes, recall the save function again. 
+			//Do not re-call only the ajax request below, otherwise there will be some other files that will not be saved, this is, the getCodeForSaving saves the workflow and if we only call the ajax request below, the workflow won't be saved. To avoid this situation, we call the all save function.
+			if (!is_from_auto_save_bkp && jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL)) {
+				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jquery_native_xhr_object.responseURL, function() {
+					jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+					StatusMessageHandler.removeLastShownMessage("error");
+					
+					window.is_save_func_running = false;
+					saveFileClassMethod();
+				});
+				
+				return;
+			}
+			
+			//call saveFileClassMethodObj
+			saveFileClassMethodObj(obj, {
+				complete: function() {
+					window.is_save_func_running = false;
+				},
+			});
 		}
-		
-		var obj = getFileClassMethodObj();
-		saveFileClassMethodObj(obj);
+		else if (!is_from_auto_save_bkp)
+			StatusMessageHandler.showMessage("There is already a saving process running. Please wait a few seconds and try again...");
 	}
-	else
+	else if (!is_from_auto_save_bkp)
 		alert("No object to save! Please contact the sysadmin...");
 }
 
-function saveFileClassMethodObj(obj) {
+function saveFileClassMethodObj(obj, props) {
 	var save_url = save_object_url.replace("#method_id#", original_method_id);
 	
-	saveObjCode(save_url, obj, {
-		success: function(data, textStatus, jqXHR) {
+	props = props ? props : {};
+	var func = props.success;
+	
+	props.success = function(data, textStatus, jqXHR) {
+		var status = true;
+		
+		if (typeof func == "function")
+			status = func(data, textStatus, jqXHR);
+		
+		if (status) {
 			//update class_method_settings_id
 			saved_class_method_settings_id = getFileClassMethodSettingsId();
 			
@@ -495,8 +542,10 @@ function saveFileClassMethodObj(obj) {
 				url += "&" + (service_exists ? "method" : "function") + "=" + original_method_id;
 				document.location = url;
 			}
-			
-			return true;
-		},
-	});
+		}
+		
+		return status;
+	};
+	
+	saveObjCode(save_url, obj, props);
 }

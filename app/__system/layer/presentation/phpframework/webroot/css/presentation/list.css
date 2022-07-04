@@ -57,26 +57,35 @@ body.no_scroll {
 	float:right;
 }
 #file_tree li > a .icons .icon {
-	margin:4px 0 0 5px;
+	width:16px;
+	height:16px;
+	margin:5px 8px 0 7px;
 	display:inline-block;
 	float:none;
 	vertical-align:middle;
+	text-align:center;
+	overflow:hidden;
+}
+#file_tree li > a .icons .icon.create_file,
+  #file_tree li > a .icons .icon.remove,
+  #file_tree li > a .icons .icon.service_method {
+	width:13px;
+}
+#file_tree li > a .icons .icon.edit_raw_file {
+	width:20px;
 }
 #file_tree li > a .icons .icon:hover {
 	opacity:.6;
 }
-#file_tree li > a .icons .icon {
-	width:20px;
-	height:20px;
-}
 #file_tree li > a .icons .icon::before {
-	font-size:16px;
+	font-size:14px;
 	display:block;
 }
 #file_tree li > a .icons .icon::after {
-	font-size:12px;
+	font-size:10px;
 	display:block;
 	color:#666;
+	top:6px;
 }
 #file_tree li > a .icons .icon div {
 	width:100%;

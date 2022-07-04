@@ -3,7 +3,7 @@ $(function() {
 	/* The edit_relationship page already calls the edit_hbn_obj.js, whch already init the auto save.
 	addAutoSaveMenu(".top_bar li.sub_menu li.save");
 	enableAutoSave(onToggleAutoSave);
-	initAutoSave(".top_bar li.save a");*/
+	initAutoSave(".top_bar li.sub_menu li.save a");*/
 	
 	//init ui
 	$(".relationship").css("display", "block");

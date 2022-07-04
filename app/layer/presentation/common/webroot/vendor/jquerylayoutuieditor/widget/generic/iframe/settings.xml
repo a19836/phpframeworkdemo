@@ -40,8 +40,12 @@
 		}
 	]]></menu_css>
 	<template_css><![CDATA[
+		/* bc of the resize, otherwise will be very dificult to resize this element, bc the focus will be inside of the iframe. */
+		.template-widget.template-widget-iframe {
+			border: 10px solid #f7f7f7; 
+		}
 		.template-widget.template-widget-iframe.widget-active {
-			border: 10px solid #f7f7f7; /* bc of the resize, otherwise will be very dificult to resize the iframe bc the iframe html takes precendent and the resize event for the iframe won't fire. */
+			border:10px solid #f7f7f7 !important;
 		}
 	]]></template_css>
 	<menu_js><![CDATA[

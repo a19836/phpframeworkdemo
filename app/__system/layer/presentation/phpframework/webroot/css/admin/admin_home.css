@@ -25,28 +25,29 @@
 }
 .admin_panel > ul li:not(:first-child) {
 	border-left:1px solid #eee !important;
+	border-radius:0;
 }
 .admin_panel > ul li a {
-	margin:0 3px;
+	margin:0 10px;
 	border-bottom:1px solid transparent !important;
 	color:#83889E;
 }
 .admin_panel > ul li.ui-state-active a {
 	font-weight:bold;
 	border-bottom-color:var(--icon-hover-color) !important;
+	border-bottom-color:var(--icon-active-color) !important;
 	color:#2C2D34;
 }
 
 /* PROJS */
+.projs > .choose_available_project:not(.in_sub_folder) > .top_bar {
+	display:none;
+}
 .projs > .choose_available_project > .title {
 	display:none;
 }
 .projs > .choose_available_project > .selected_project {
 	margin-top:-10px;
-}
-.choose_available_project .sub_folder_info {
-	margin-left:0;
-	margin-right:0;
 }
 .projs > .choose_available_project > .group {
 	margin-left:0;

@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); $entities_get_sub_files_url = $project_url_prefix . "admin/get_sub_files?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . "/src/entity/&item_type=presentation&folder_type=entity"; $templates_get_sub_files_url = $project_url_prefix . "admin/get_sub_files?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . "/src/template/&item_type=presentation&folder_type=template"; $webroot_get_sub_files_url = $project_url_prefix . "admin/get_sub_files?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . "/webroot/&item_type=presentation&folder_type=webroot"; $choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#"; $get_file_properties_url = $project_url_prefix . "phpframework/admin/get_file_properties?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&class_name=#class_name#&type=#type#"; $admin_home_page_url = $project_url_prefix . "admin/admin_home?selected_layout_project=$filter_by_layout"; $edit_project_url = $project_url_prefix . "phpframework/presentation/edit_project_details?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . "&popup=1&on_success_js_func=onSucccessfullEditProject"; $view_entity_url = $project_url_prefix . "phpframework/presentation/view_project?bean_name=$bean_name&bean_file_name=$bean_file_name&path=#path#"; $edit_entity_url = $project_url_prefix . "phpframework/presentation/edit_entity?bean_name=$bean_name&bean_file_name=$bean_file_name&path=#path#&filter_by_layout=" . $project_details["project_id"]; $edit_template_url = $project_url_prefix . "phpframework/presentation/edit_template?bean_name=$bean_name&bean_file_name=$bean_file_name&path=#path#&filter_by_layout=" . $project_details["project_id"]; $manage_file_url = $project_url_prefix . "phpframework/presentation/manage_file?bean_name=$bean_name&bean_file_name=$bean_file_name&path=#path#&action=#action#&item_type=presentation&extra=#extra#"; $save_project_default_template_url = $project_url_prefix . "phpframework/presentation/save_project_default_template?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . "/src/config/pre_init_config.php"; $install_template_url = $project_url_prefix . "phpframework/presentation/install_template?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . "&filter_by_layout=" . $project_details["project_id"] . "&popup=1&on_success_js_func=onSucccessfullInstallTemplate"; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
+include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $entities_get_sub_files_url = $project_url_prefix . "admin/get_sub_files?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . "/src/entity/&item_type=presentation&folder_type=entity"; $templates_get_sub_files_url = $project_url_prefix . "admin/get_sub_files?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . "/src/template/&item_type=presentation&folder_type=template"; $webroot_get_sub_files_url = $project_url_prefix . "admin/get_sub_files?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . "/webroot/&item_type=presentation&folder_type=webroot"; $choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#"; $get_file_properties_url = $project_url_prefix . "phpframework/admin/get_file_properties?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&class_name=#class_name#&type=#type#"; $admin_home_page_url = $project_url_prefix . "admin/admin_home?selected_layout_project=$filter_by_layout"; $edit_project_url = $project_url_prefix . "phpframework/presentation/edit_project_details?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . "&popup=1&on_success_js_func=onSucccessfullEditProject"; $view_entity_url = $project_url_prefix . "phpframework/presentation/view_project?bean_name=$bean_name&bean_file_name=$bean_file_name&path=#path#"; $edit_entity_url = $project_url_prefix . "phpframework/presentation/edit_entity?bean_name=$bean_name&bean_file_name=$bean_file_name&path=#path#&filter_by_layout=" . $project_details["project_id"]; $edit_template_url = $project_url_prefix . "phpframework/presentation/edit_template?bean_name=$bean_name&bean_file_name=$bean_file_name&path=#path#&filter_by_layout=" . $project_details["project_id"]; $manage_file_url = $project_url_prefix . "phpframework/presentation/manage_file?bean_name=$bean_name&bean_file_name=$bean_file_name&path=#path#&action=#action#&item_type=presentation&extra=#extra#"; $save_project_default_template_url = $project_url_prefix . "phpframework/presentation/save_project_default_template?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . "/src/config/pre_init_config.php"; $install_template_url = $project_url_prefix . "phpframework/presentation/install_template?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . "&filter_by_layout=" . $project_details["project_id"] . "&popup=1&on_success_js_func=onSucccessfullInstallTemplate"; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add MD5 JS Files -->
 <script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>
 
@@ -47,37 +47,44 @@ var install_template_url = \'' . $install_template_url . '\';
 var available_templates_props = ' . json_encode($available_templates_props) . ';
 '; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= '</script>'; $main_content = '
 <div class="admin_panel">
-	<ul class="header_links">
-		<li>
-			<a href="' . $admin_home_page_url . '">Projects</a>
-		</li>'; if ($project_details && $project_details["project_id_path_parts"]) { $t = count($project_details["project_id_path_parts"]); $path_prefix = ""; for ($i = 0; $i < $t; $i++) { $part = $project_details["project_id_path_parts"][$i]; $path_prefix .= ($path_prefix ? "/" : "") . $part; $main_content .= '<li class="breadcrumb-item active">'; if ($i == $t - 1) $main_content .= '<a href="javascript:void(0)" onClick="document.location=\'\' + document.location;">' . $part . '</a>'; else $main_content .= '<a href="' . $admin_home_page_url . '&folder_to_filter=' . $path_prefix . '">' . $part . '</a>'; $main_content .= '</li>'; } } $main_content .= '</ul>'; if ($project_details) { $main_content .= '
-	<div class="project">
-		<div class="image">
-			' . ($project_details["logo_url"] ? '<img src="' . $project_details["logo_url"] . '" alt="No Image" />' : '<div class="no_logo"></div>') . '
-		</div>
-		<div class="details">
-			<div class="name">' . basename($project_details["project_id"]) . '</div>
-			<div class="description">' . str_replace("\n", "<br/>", $project_details["description"]) . '</div>
-			<div class="buttons">
-				<a onClick="editProject()"><i class="icon edit"></i> Edit</a>
-				<a href="' . str_replace("#path#", $project_details["project_id"], $view_entity_url) . '" target="project"><i class="icon view"></i> Preview</a>
-				<div class="sub_menu">
-					<i class="icon sub_menu"></i>
-					
-					<ul class="jqcontextmenu">
-						<li class="remove">
-							<a onClick="manageFile(this, \'project\', \'remove\', \'' . $project_details["project_id"] . '\', onSucccessfullRemoveProject)">Delete Project</a>
-						</li>
-						<li class="edit_project_global_variables">
-							<a href="' . $project_url_prefix . "phpframework/presentation/edit_project_global_variables?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . '/src/config/pre_init_config.php">Edit Project Global Variables</a>
-						</li>
-						<li class="install_program">
-							<a href="' . $project_url_prefix . "phpframework/admin/install_program?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . '">Install Program</a>
-						</li>
-					</ul>
-				</div>
+	<div class="top_bar">
+		<header>
+			<div class="title">
+				<div class="breadcrumbs">
+					<span class="breadcrumb-item fixed"><a href="' . $admin_home_page_url . '">Home</a></span>'; if ($project_details && $project_details["project_id"]) { $dirname = dirname($project_details["project_id"]); $basename = basename($project_details["project_id"]); if ($dirname && $dirname != ".") $main_content .= BreadCrumbsUIHandler::getFilePathBreadCrumbsItemsHtml($dirname, null, false, "$admin_home_page_url&folder_to_filter=#path#", "fixed"); $main_content .= '<span class="breadcrumb-item fixed"><a href="javascript:void(0)" onClick="document.location=\'\' + document.location;">' . $basename . '</a></span>'; } $main_content .= '	</div>
 			</div>
+		</header>
+	</div>'; if ($project_details) { $main_content .= '
+	<div class="project' . ($project_details["logo_url"] ? ' with_image' : '') . '">
+		<div class="project_title">
+			<span class="name" onClick="editProject()">' . basename($project_details["project_id"]) . '</span>
+			<span class="sub_menu" onClick="openSubmenu(this)">
+				<i class="icon sub_menu_vertical active"></i>
+				
+				<ul class="jqcontextmenu with_top_right_triangle">
+					<li class="edit">
+						<a onClick="editProject()">Edit Details</a>
+					</li>
+					<li class="view_project">
+						<a href="' . str_replace("#path#", $project_details["project_id"], $view_entity_url) . '" target="project">Preview Project</a>
+					</li>
+					<li class="line_break"></li>
+					<li class="remove">
+						<a onClick="manageFile(this, \'project\', \'remove\', \'' . $project_details["project_id"] . '\', onSucccessfullRemoveProject)">Delete Project</a>
+					</li>
+					<li class="line_break"></li>
+					<li class="edit_project_global_variables">
+						<a href="' . $project_url_prefix . "phpframework/presentation/edit_project_global_variables?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . '/src/config/pre_init_config.php">Edit Project Global Variables</a>
+					</li>
+					<li class="install_program">
+						<a href="' . $project_url_prefix . "phpframework/admin/install_program?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . '">Install Program</a>
+					</li>
+				</ul>
+			</span>
 		</div>
+		
+		' . ($project_details["logo_url"] ? '<div class="project_image" onClick="editProject()"><img src="' . $project_details["logo_url"] . '" alt="No Image" onError="$(this).parent().closest(\'.project\').removeClass(\'with_image\')" /></div>' : '') . '
+		<div class="project_description" onClick="editProject()">' . str_replace("\n", "<br/>", $project_details["description"]) . '</div>
 	</div>
 	
 	<div class="project_files">
@@ -87,10 +94,18 @@ var available_templates_props = ' . json_encode($available_templates_props) . ';
 		</ul>
 		
 		<div id="pages" class="pages" root_path="' . $project_details["project_id"] . '/src/entity/">
-			<button class="create_page" onClick="createFile(this, \'page\', \'create_file\', \'' . $project_details["project_id"] . '/src/entity/\', onSucccessfullCreateFile)">Create a new Page</button>
-			<button class="create_folder" onClick="createFile(this, \'folder\', \'create_folder\', \'' . $project_details["project_id"] . '/src/entity/\', onSucccessfullCreateFolder)">Create a new Folder</button>
+			<div class="projects_list_type">
+				<a href="javascript:void(0)" onclick="toggleProjectsListType(this, \'block_view\')" title="Show blocks view"><span class="icon block_view active"></span></a>
+				<a href="javascript:void(0)" onclick="toggleProjectsListType(this, \'list_view\')" title="Show list view"><span class="icon list_view"></span></a>
+			</div>
 			
-			<ul class="mytree">
+			<button onClick="showCreateFilePopup(this, \'' . $project_details["project_id"] . '/src/entity/\')" title="Create a new folder or page">Add New</button>
+			<span class="search_file">
+				<i class="icon search active"></i>
+				<input placeHolder="Search" onKeyUp="searchFiles(this)" />
+			</span>
+			
+			<ul class="mytree block_view">
 				<li class="jstree-open">
 					<label>Pages</label>
 					<ul url="' . $entities_get_sub_files_url . '"></ul>
@@ -99,20 +114,48 @@ var available_templates_props = ' . json_encode($available_templates_props) . ';
 		</div>
 		
 		<div id="templates" class="templates" root_path="' . $project_details["project_id"] . '/src/template/">
-			<div class="project_default_template">
-				<div>Default template:</div>
-				<i class="icon"></i>
-				<span>' . ($project_default_template ? $project_default_template : '-- none --') . '</span>
+			<div class="projects_list_type">
+				<a href="javascript:void(0)" onclick="toggleProjectsListType(this, \'block_view\')" title="Show blocks view"><span class="icon block_view active"></span></a>
+				<a href="javascript:void(0)" onclick="toggleProjectsListType(this, \'list_view\')" title="Show list view"><span class="icon list_view"></span></a>
 			</div>
-			' . ($get_store_templates_url ? '<button class="browse_templates" onClick="browseTemplates()" title="Choose a template from our store and install it">Browse Templates</button>' : '') . '
-			<button class="import_templates" onClick="importTemplates()" title="Upload and install a new template">Import a Template</button>
 			
-			<ul class="mytree">
+			<button onClick="importTemplates()" title="Upload or choose a template from our store to install it">Add New</button>
+			<span class="search_file">
+				<i class="icon search active"></i>
+				<input placeHolder="Search" onKeyUp="searchFiles(this)" />
+			</span>
+			
+			<div class="project_default_template">
+				Default template: <span class="breadcrumbs">' . ($project_default_template ? BreadCrumbsUIHandler::getFilePathBreadCrumbsItemsHtml($project_default_template) : '-- none --') . '</span>
+			</div>
+			
+			<ul class="mytree block_view">
 				<li class="jstree-open">
 					<label>Templates</label>
 					<ul url="' . $templates_get_sub_files_url . '"></ul>
 				</li>
 			</ul>
+		</div>
+	</div>
+	
+	<div class="myfancypopup with_title create_file_popup">
+		<div class="title">Create new</div>
+		
+		<div class="create_file_popup_content">
+			<div class="type">
+				<label>Type: </label>
+				<select>
+					<option value="page">Page</option>
+					<option value="folder">Folder</option>
+				</select>
+			</div>
+			
+			<div class="name">
+				<label>Name: </label>
+				<input />
+			</div>
+			
+			<button>Create</button>
 		</div>
 	</div>'; } else $main_content .= '<div class="no_project">This project doesn\'t exists.</div>'; $main_content .= '
 </div>'; ?>

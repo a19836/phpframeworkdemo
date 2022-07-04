@@ -11,6 +11,11 @@ body,
 	margin-bottom:20px;
 }
 
+.title {
+	text-align:center;
+	margin-bottom:20px;
+}
+
 /* SELECT LAYERS - STEP 0 */
 .select_layers .db_layer, .select_layers .db_driver, .select_layers .type, .select_layers .authenticated_template, .select_layers .include_db_driver {
 	width:300px;

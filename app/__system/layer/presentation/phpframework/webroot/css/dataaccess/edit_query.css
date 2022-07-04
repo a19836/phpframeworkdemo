@@ -115,7 +115,7 @@
 }
 
 .data_access_obj ul.ui-tabs-nav li a {
-	font-size:12px;
+	font-size:inherit;
 }
 
 .data_access_obj .relationships_tabs {
@@ -448,6 +448,7 @@
 .relationship .query {
 	margin-top:20px;
 	border:0;
+	font-size:inherit;
 }
 .relationship .query .ui-widget-content {
 	background:none;
@@ -990,6 +991,9 @@
 	margin:3px auto;
 	float:none;
 	clear:left;
+}
+.choose_table_or_attribute .contents div.db_broker.single_broker {
+	display:none;
 }
 .choose_table_or_attribute .db_broker label, 
    .choose_table_or_attribute .db_driver label, 

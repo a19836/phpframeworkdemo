@@ -8,7 +8,7 @@ $GLOBALS["layout_ui_editor_widgets_files_included"] = array();
 function getDefaultWidgetsPriorityFiles() {
 	return array(
 		"containers", 
-		"generic" => array("href", "image", "video", "list", "iframe"), 
+		"generic" => array("href", "image", "video", "list", "listitem", "iframe"), 
 		"table" => array("table", "thead", "tbody", "tfoot", "tr", "th", "td"), 
 		"form" => array("form", "input", "textarea", "select", "checkbox", "radio"), 
 		"advanced" => array(
@@ -64,6 +64,7 @@ function scanWidgets($dir, $options = null) {
 				else if (strtolower(substr($value, -4)) == ".xml")
 					$result[$value] = $dir . DIRECTORY_SEPARATOR . $value;
 			}
+		
 	}
 	
 	return $result;

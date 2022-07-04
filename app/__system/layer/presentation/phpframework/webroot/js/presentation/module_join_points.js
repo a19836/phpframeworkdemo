@@ -134,7 +134,7 @@ function onLoadRegionBlocksJoinPoints(region_blocks_elm) {
 	objs = objs[0];
 	//console.log(objs);
 	
-	var items = region_blocks_elm.find(".items .item");
+	var items = region_blocks_elm.find(".template_region_items .template_region_item");
 	//console.log(items);
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
@@ -203,7 +203,6 @@ function onLoadRegionBlockJoinPoints(item, region, block) {
 						delete page_blocks_join_points_htmls_loading[b];
 						
 						handler(data);
-						MyFancyPopup.hidePopup();
 					},
 					error : function(jqXHR, textStatus, errorThrown) { 
 						page_blocks_join_points_htmls_loading[b] = null;
@@ -211,7 +210,6 @@ function onLoadRegionBlockJoinPoints(item, region, block) {
 						
 						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
 						StatusMessageHandler.showError("Error trying to get block join points.\nPlease try again..." + msg);
-						MyFancyPopup.hidePopup();
 					},
 				});
 			}

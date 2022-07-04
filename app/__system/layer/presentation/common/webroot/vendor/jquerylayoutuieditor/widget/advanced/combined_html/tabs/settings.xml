@@ -3,6 +3,7 @@
 	<label>Tabs</label>
 	<tag>tabs</tag>
 	<settings>
+		<resizable>1</resizable>
 		<create_widget_class>TabsWidget</create_widget_class>
 	</settings>
 	<template_widget><![CDATA[
@@ -53,7 +54,7 @@
 .tab.tab-active {
 	opacity:1;
 	background-color:#fff;
-	color:555;
+	color:#555;
 	border:1px solid #eee;
 	border-bottom:0;
 	border-bottom-left-radius:0;

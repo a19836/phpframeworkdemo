@@ -1,5 +1,6 @@
 /* DB SETTINGS */
 .db_settings {width:100%; min-height:300px; text-align:left;}
+.db_settings .with_top_bar_section {overflow:auto;}
 .db_settings .form_fields {width:400px; margin:0 auto;}
 .db_settings .form_field {float:none; clear:left; min-height:20px; line-height:20px; margin-bottom:3px;}
 .db_settings .form_field label {width:150px; text-align:left; display:inline-block;}

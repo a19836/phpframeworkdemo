@@ -7,15 +7,20 @@ body,
 }
 
 .choose_available_tutorial:not(.in_popup) {
-	border:1px solid var(--icon-folder-color);
+	/*border:1px solid var(--icon-folder-color);
 	border-radius:2px;
-	box-shadow:3px 3px 4px rgb(0 0 0 / 5%);
+	box-shadow:3px 3px 4px rgb(0 0 0 / 5%);*/
 }
 .choose_available_tutorial:not(.in_popup) > .title {
-	padding:5px 20px;
+	/*padding:5px 20px;
 	background:var(--icon-folder-color);
 	color:#fff;
-	font-size:13px;
+	font-size:13px;*/
+	
+	color:#ccc;
+	border-bottom:1px solid #ccc;
+	opacity:.5;
+	display:none;
 }
 .choose_available_tutorial.in_popup > .title {
 	margin:10px 0 5px 0;
@@ -26,7 +31,7 @@ body,
 }
 
 .choose_available_tutorial > ul {
-	padding:20px;
+	padding:15px;
 }
 .choose_available_tutorial.in_popup > ul {
 	height:calc(100vh - 70px);
@@ -55,7 +60,8 @@ body,
 	display:none;
 }
 .choose_available_tutorial > ul li > .tutorial_header > .tutorial_title .icon {
-	color:#4070FF;
+	color:var(--icon-active-color);/*#4070FF*/
+	opacity:1;
 }
 .choose_available_tutorial > ul li.open.with_sub_tutorials > .tutorial_header > .tutorial_title .icon:not(.dropdown_arrow) {
 	opacity:.5;
@@ -168,7 +174,7 @@ body,
 
 /* MODAL VIDEO */
 .choose_available_tutorial .popup_video {
-	padding:20px;
+	padding:15px;
 	position:fixed;
 	top:0;
 	left:0;

@@ -35,12 +35,12 @@ body,
 }
 .modules_list .install {
 	position:fixed;
-	top:18px;
+	top:12px;
 	right:5px;
 	z-index:2;
 }
-.modules_list .install a {
-	color:#000;
+.modules_list .install button {
+	font-size:inherit;
 }
 .modules_list .layer_modules {
 	display:none;

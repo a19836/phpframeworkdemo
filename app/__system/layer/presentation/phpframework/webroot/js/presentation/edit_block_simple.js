@@ -15,7 +15,7 @@ $(function () {
 	//init auto save
 	addAutoSaveMenu(".top_bar li.sub_menu li.save");
 	enableAutoSave(onToggleAutoSave);
-	initAutoSave(".top_bar li.save a");
+	initAutoSave(".top_bar li.sub_menu li.save a");
 	
 	//init trees
 	choosePageUrlFromFileManagerTree = new MyTree({
@@ -145,27 +145,41 @@ function saveBlockRawCode(code, opts) {
 }
 
 function saveBlockObj(obj, opts) {
+	opts = opts ? opts : {};
+	
 	var block_obj = $(".block_obj");
 	var status = false;
 	
 	prepareAutoSaveVars();
 	
+	var is_from_auto_save_bkp = is_from_auto_save; //backup the is_from_auto_save, bc if there is a concurrent process running at the same time, this other process may change the is_from_auto_save value.
+	
 	if (block_obj[0]) {
-		saveObj(save_object_url, obj, {
-			success: function(data, textStatus, jqXHR) {
-				var json_data = data && ("" + data).substr(0, 1) == "{" ? JSON.parse(data) : null;
-				status = parseInt(data) == 1 || ($.isPlainObject(json_data) && json_data["status"] == 1);
-				
-				if (opts && typeof opts["success"] == "function")
-					opts["success"]();
-				
-				return true;
-			},
-			async: false,
-		});
+		var success_func = opts.success;
+		opts.success = function(data, textStatus, jqXHR) {
+			var func_status = true;
+			
+			var json_data = data && ("" + data).substr(0, 1) == "{" ? JSON.parse(data) : null;
+			status = parseInt(data) == 1 || ($.isPlainObject(json_data) && json_data["status"] == 1);
+			
+			if (typeof success_func == "function")
+				func_status = success_func(data, textStatus, jqXHR);
+			
+			return func_status;
+		};
+		opts.async = false;
+		
+		saveObj(save_object_url, obj, opts);
 	}
-	else if (!is_from_auto_save)
-		alert("No block object to save! Please contact the sysadmin...");
+	else {
+		if (typeof opts.complete == "function")
+			opts.complete();
+		
+		if (!is_from_auto_save_bkp)
+			alert("No block object to save! Please contact the sysadmin...");
+		else
+			resetAutoSave();
+	}
 	
 	return status;
 }

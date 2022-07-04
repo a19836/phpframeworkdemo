@@ -36,10 +36,16 @@
 			display:none;
 		}
 	]]></menu_css>
+	<template_css><![CDATA[
+		/* bc of the resize, otherwise will be very dificult to resize this element. */
+		.template-widget.template-widget-video.widget-active {
+			border:10px solid #f7f7f7 !important;
+		}
+	]]></template_css>
 	<menu_js><![CDATA[
 		function VideoWidget(ui_creator, menu_widget) {
 			var me = this;
-			var default_src = ui_creator.getLayoutUIEditorFolderPath() + "widget/html/video/video.webm";
+			var default_src = ui_creator.getLayoutUIEditorFolderPath() + "widget/generic/video/video.webm";
 			
 			me.init = function() {
 				menu_widget.attr({

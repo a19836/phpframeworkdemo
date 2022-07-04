@@ -81,7 +81,7 @@ $(function () {
 		view_obj.tabs({active:1});
 		
 		//load workflow
-		onLoadTaskFlowChartAndCodeEditor();
+		onLoadTaskFlowChartAndCodeEditor({do_not_hide_popup : true});
 		
 		//set saved_layout_ui_editor_code_id
 		saved_layout_ui_editor_code_id = getViewLayoutUIEditorCodeObjId();
@@ -112,20 +112,25 @@ $(function () {
 				initAutoSave("#code > .code_menu li.save a");
 				
 				//add auto_save and auto_convert options to layout ui editor
-				var sub_menu = $('<i class="icon sub_menu option"><ul></ul></i>');
+				var sub_menu = $('<i class="icon sub_menu option" onClick="openSubmenu(this)"><ul></ul></i>');
 				$("#code > .layout-ui-editor > .options .full-screen").before(sub_menu);
 				var lue_full_screen_icon = $("#code > .code_menu li.editor_full_screen").first().clone().removeClass("hidden").addClass("without_padding");
 				var flip_layout_ui_panels_icon = $('<li class="flip_layout_ui_panels without_padding" title="Flip Layout UI Panels"><a onClick="flipCodeLayoutUIEditorPanelsSide(this)"><i class="icon flip_layout_ui_panels"></i> Flip Layout UI Panels</a></li>');
 				var lue_save_icon = $("#code > .code_menu li.save").first().clone().removeClass("hidden").addClass("without_padding");
 				var lue_auto_save_icon = $("#code > .code_menu li.auto_save_activation").first().clone().removeClass("hidden");
 				var lue_auto_convert_icon = $("#code > .code_menu li.auto_convert_activation").first().clone().removeClass("hidden");
-				sub_menu.children("ul").append(flip_layout_ui_panels_icon).append(lue_full_screen_icon).append('<li class="separator"></li>').append(lue_auto_save_icon).append(lue_auto_convert_icon).append(lue_save_icon);
+				sub_menu.children("ul").append(flip_layout_ui_panels_icon).append('<li class="separator"></li>').append(lue_full_screen_icon).append('<li class="separator"></li>').append(lue_auto_save_icon).append(lue_auto_convert_icon).append(lue_save_icon);
 				
 				if (!luie.find(" > .tabs > .tab.tab-active").is(".view-layout"))
 					sub_menu.addClass("hidden"); //bc the LayoutUIEditor is not inited at start, we need to hide this new icon. The others are already hidden by default.
+				
+				//hide loading icon
+				MyFancyPopup.hidePopup();
 			}, 
 		});
 	}
+	else	//hide loading icon
+		MyFancyPopup.hidePopup();
 });
 
 //To be used in the toggleFullScreen function
@@ -175,23 +180,51 @@ function saveView() {
 	
 	prepareAutoSaveVars();
 	
+	var is_from_auto_save_bkp = is_from_auto_save; //backup the is_from_auto_save, bc if there is a concurrent process running at the same time, this other process may change the is_from_auto_save value.
+	
 	if (view_obj[0]) {
-		if (is_from_auto_save && !isViewCodeObjChanged()) {
-			resetAutoSave();
-			return;
-		}
-		
-		var obj = getViewCodeObj();
-		
-		saveObjCode(save_object_url, obj, {
-			success: function(data, textStatus, jqXHR) {
-				//update saved_layout_ui_editor_code_id
-				saved_layout_ui_editor_code_id = getViewLayoutUIEditorCodeObjId();
+		if (!window.is_save_func_running) {
+			window.is_save_func_running = true;
+			
+			if (is_from_auto_save_bkp && !isViewCodeObjChanged()) {
+				resetAutoSave();
+				window.is_save_func_running = false;
+				return;
+			}
+			
+			var obj = getViewCodeObj();
+			
+			//check if user is logged in
+			//if there was a previous function that tried to execute an ajax request, like the getCodeForSaving method, we detect here if the user needs to login, and if yes, recall the save function again. 
+			//Do not re-call only the ajax request below, otherwise there will be some other files that will not be saved, this is, the getCodeForSaving saves the workflow and if we only call the ajax request below, the workflow won't be saved. To avoid this situation, we call the all save function.
+			if (!is_from_auto_save_bkp && jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL)) {
+				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jquery_native_xhr_object.responseURL, function() {
+					jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+					StatusMessageHandler.removeLastShownMessage("error");
+					
+					window.is_save_func_running = false;
+					saveView();
+				});
 				
-				return true;
-			},
-		});
+				return;
+			}
+			
+			//call saveObjCode
+			saveObjCode(save_object_url, obj, {
+				success: function(data, textStatus, jqXHR) {
+					//update saved_layout_ui_editor_code_id
+					saved_layout_ui_editor_code_id = getViewLayoutUIEditorCodeObjId();
+					
+					return true;
+				},
+				complete: function() {
+					window.is_save_func_running = false;
+				},
+			});
+		}
+		else if (!is_from_auto_save_bkp)
+			StatusMessageHandler.showMessage("There is already a saving process running. Please wait a few seconds and try again...");
 	}
-	else if (!is_from_auto_save)
+	else if (!is_from_auto_save_bkp)
 		alert("No view object to save! Please contact the sysadmin...");
 }

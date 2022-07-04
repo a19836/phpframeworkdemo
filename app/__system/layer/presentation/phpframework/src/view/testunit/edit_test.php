@@ -195,7 +195,7 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 		</div>
 		
 		<div id="code">
-			<div class="code_menu top_bar_menu">
+			<div class="code_menu top_bar_menu" onClick="openSubmenu(this)">
 				' . WorkFlowPresentationHandler::getCodeEditorMenuHtml(array("save_func" => "saveTest")) . '
 			</div>
 			<textarea>' . "<?php\n" . htmlspecialchars($obj_data["code"], ENT_NOQUOTES) . "\n?>" . '</textarea>

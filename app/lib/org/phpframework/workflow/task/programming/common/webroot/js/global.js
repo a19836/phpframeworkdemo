@@ -536,7 +536,7 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 						bg = exit.css("background-color");
 						if (bg) {
 							if (bg.indexOf("rgb") != -1)
-								bg = backgroundRgbToHex(bg);
+								bg = colorRgbToHex(bg);
 							
 							span.css("color", bg && getContrastYIQ(bg) == "white" ? "#FFF" : "#000");
 						}

@@ -11,7 +11,7 @@ $(function() {
 	else
 		disableAutoConvert(onToggleQueryAutoConvert);
 	
-	initAutoSave(".top_bar li.save a");
+	initAutoSave(".top_bar li.sub_menu li.save a");
 	
 	//init ui
 	var relationship = edit_single_query.find(".data_access_obj .relationships .relationship");

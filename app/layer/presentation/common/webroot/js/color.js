@@ -138,16 +138,30 @@ if(typeof rgbToHex !== 'function') {
 	}
 }
 
-if(typeof backgroundRgbToHex !== 'function') {
-	//alert( backgroundRgbToHex("rgb(0, 51, 255)") ); // #0033ff
-	function backgroundRgbToHex(bg) {
-		var m = bg.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+if(typeof colorRgbToHex !== 'function') {
+	//alert( colorRgbToHex("rgb(0, 51, 255)") ); // #0033ff
+	function colorRgbToHex(color) {
+		var m = color.match(/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
 		
 		if (!m)
-			m = bg.match(/^rgba\((\d+),\s*(\d+),\s*(\d+),\s*(\d+)\)$/);
-			
+			m = color.match(/^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+		
 		if (m)
 			return rgbToHex(m[1], m[2], m[3], m[4]);
+	}
+}
+
+if(typeof colorHexToRgb !== 'function') {
+	//alert( colorHexToRgb("#0033ff") ); // rgb(0, 51, 255)
+	function colorHexToRgb(color) {
+		var rgb = hexToRgb(color);
+		
+		if (rgb) {
+			if (rgb.length == 4)
+				return "rgba(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ", " + rgb[3] + ")";
+			
+			return "rgb(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ")";
+		}
 	}
 }
 

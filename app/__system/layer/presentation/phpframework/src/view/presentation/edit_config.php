@@ -66,7 +66,7 @@ FunctionUtilObj.create_workflow_file_from_code_url = create_workflow_file_from_c
 			<li id="tasks_flow_tab" title="Diagram Editor"><a href="#ui" onClick="onClickTaskWorkflowTab(this);return false;"><i class="icon tasks_flow_tab"></i> Diagram Editor</a></li>
 		</ul>
 		<div id="code">
-			<div class="code_menu top_bar_menu">
+			<div class="code_menu top_bar_menu" onClick="openSubmenu(this)">
 				' . WorkFlowPresentationHandler::getCodeEditorMenuHtml(array("save_func" => "saveConfig")) . '
 			</div>
 			<textarea>' . htmlspecialchars($obj_data["code"], ENT_NOQUOTES) . '</textarea>

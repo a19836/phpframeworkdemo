@@ -34,7 +34,7 @@ $head = '
 	<label>Please choose a project:</label>
 	
 	<form method="post">
-		<select name="project">'; if ($projects) { foreach ($projects as $project_name => $project) { if ($project["item_type"] != "project_common") $main_content .= '<option value="' . $project_name . '">' . $project_name . '</option>'; } } $main_content .= '</select>
+		<select name="project">'; if ($projects) { $previous_folder = null; foreach ($projects as $project_name => $project) { if ($project["item_type"] != "project_common") { $project_folder = dirname($project_name); $project_folder = $project_folder == "." ? "" : $project_folder; if ($project_folder && $project_folder != $previous_folder) { $main_content .= '<option disabled>' . str_repeat("&nbsp;&nbsp;&nbsp;", substr_count($project_folder, '/')) . basename($project_folder) . '</option>'; $previous_folder = $project_folder; } $main_content .= '<option value="' . $project_name . '">' . str_repeat("&nbsp;&nbsp;&nbsp;", substr_count($project_name, '/')) . $project_name . '</option>'; } } } $main_content .= '</select>
 		
 		<input class="button" type="submit" value="Go to Module Admin Panel" name="submit">
 	</form>

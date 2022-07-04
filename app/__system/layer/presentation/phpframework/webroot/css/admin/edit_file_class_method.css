@@ -3,7 +3,7 @@
 	margin-bottom:10px;
 }
 .top_bar header > .title {
-	max-width:calc(100% - 140px);
+	max-width:calc(100% - 170px);
 }
 .top_bar header > .title > input {
 	width:100px;
@@ -12,7 +12,7 @@
 	color:var(--main-template-color);
 }
 .top_bar header > ul {
-	right:112px;
+	right:135px;
 }
 
 /* FILE CLASS METHOD */
@@ -30,7 +30,7 @@
 .file_class_method_obj #settings {
 	height:220px;
 	margin:0 auto;
-	padding:40px 10px 10px;
+	padding:40px 15px 10px;
 	position:fixed;
 	left:0;
 	right:0;
@@ -65,18 +65,16 @@
 }
 .file_class_method_obj #settings input {
 	display:inline-block;
-	font-size:12px;
 }
 .file_class_method_obj #settings select {
 	display:inline-block;
-	font-size:12px;
 }
 
 .file_class_method_obj #settings .settings_header {
 	height:35px;
 	line-height:25px;
 	margin-top:-45px;
-	padding:8px 5px 5px 10px;
+	padding:8px 5px 5px 15px;
 	position:fixed;
 	left:0;
 	right:0;
@@ -180,7 +178,6 @@
 	margin-top:5px;
 }
 .file_class_method_obj #settings .arguments thead th {
-	font-size:10px;
 	border-bottom:1px solid #ccc;
 	border-right:1px solid #f5f5f5;
 	color:#666;
@@ -353,7 +350,7 @@
   .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_side_properties > .selected_connection_properties,
   .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .selected_task_properties, 
   .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .selected_connection_properties {
-	margin-bottom:35px;
+	margin-bottom:33px;
 }
 .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_menu.task_properties_collapsed, 
   .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_menu.connection_properties_collapsed, 
@@ -369,7 +366,7 @@
   .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_menu_hide.connection_properties_shown:not(.connection_properties_collapsed), 
   .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_flow.task_properties_shown:not(.task_properties_collapsed), 
   .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_flow.connection_properties_shown:not(.connection_properties_collapsed) {
-	margin-bottom:35px;
+	margin-bottom:30px;
 }
 .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .selected_task_properties.collapsed_properties, 
   .file_class_method_obj > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .selected_connection_properties.collapsed_properties,

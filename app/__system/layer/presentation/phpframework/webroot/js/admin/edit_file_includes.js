@@ -16,7 +16,7 @@ $(function () {
 	//init auto save
 	addAutoSaveMenu(".top_bar li.sub_menu li.save");
 	enableAutoSave(onToggleAutoSave);
-	initAutoSave(".top_bar li.save a");
+	initAutoSave(".top_bar li.sub_menu li.save a");
 	
 	//init trees
 	includesTree = new MyTree({

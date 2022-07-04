@@ -1,7 +1,12 @@
 var saved_template_obj_id = null;
+var saved_head_code = null;
 var MyFancyPopupTemplatePreview = new MyFancyPopupClass();
+var MyFancyPopupEditWebrootFile = new MyFancyPopupClass();
 
 $(function () {
+	MyFancyPopup.showOverlay();
+	MyFancyPopup.showLoading();
+	
 	$(window).bind('beforeunload', function () {
 		if (isTemplateCodeObjChanged()) {
 			if (window.parent && window.parent.iframe_overlay)
@@ -14,123 +19,93 @@ $(function () {
 	});
 	
 	//prepare top_bar
-	$(".code_editor_body > .code_menu").addClass("top_bar_menu");
-	$(".code_editor_body > .layout-ui-editor").addClass("with_top_bar_menu");
-	
-	//init trees
-	choosePropertyVariableFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
-	});
-	choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");
-	
-	chooseMethodFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
-	});
-	chooseMethodFromFileManagerTree.init("choose_method_from_file_manager");
-	
-	chooseFunctionFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
-	});
-	chooseFunctionFromFileManagerTree.init("choose_function_from_file_manager");
-	
-	chooseFileFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
-	});
-	chooseFileFromFileManagerTree.init("choose_file_from_file_manager");
-	
-	choosePresentationFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeAllThatIsNotPagesFromTree,
-	});
-	choosePresentationFromFileManagerTree.init("choose_presentation_from_file_manager");
-	
-	choosePageUrlFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeAllThatIsNotPagesFromTree,
-	});
-	choosePageUrlFromFileManagerTree.init("choose_page_url_from_file_manager");
-	
-	chooseImageUrlFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
-	});
-	chooseImageUrlFromFileManagerTree.init("choose_image_url_from_file_manager");
-	
-	createChoosePresentationIncludeFromFileManagerTree();
+	$(".code_layout_ui_editor > .code_menu").addClass("top_bar_menu");
+	$(".code_layout_ui_editor > .layout-ui-editor").addClass("with_top_bar_menu");
 	
 	//init ui
 	var template_obj = $(".template_obj");
 	
 	if (template_obj[0]) {
-		template_obj.tabs({active: 1});
+		//prepare main settings tab
+		template_obj.find(".regions_blocks_includes_settings").tabs();
 		
+		//prepare head editor
 		var textarea = template_obj.find(".head textarea")[0];
+		
 		if (textarea)
 			createCodeEditor(textarea, {save_func: saveTemplate, no_height: true});
 		
-		//init ui layout editor
-		initCodeLayoutUIEditor(template_obj, {
+		//init page template layout
+		initPageAndTemplateLayout(template_obj, {
 			save_func: saveTemplate, 
 			ready_func: function() {
-				var luie = template_obj.find(".code_editor_body > .layout-ui-editor");
+				var luie = template_obj.find(".code_layout_ui_editor > .layout-ui-editor");
 				var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
-				
-				PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorWithRightContainer;
-				
-				//show view layout panel instead of code
-				var view_layout = luie.find(" > .tabs > .view-layout");
-				view_layout.addClass("do-not-confirm");
-				view_layout.trigger("click");
-				view_layout.removeClass("do-not-confirm");
-				
-				//show php widgets, borders and background
 				PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();
-				PtlLayoutUIEditor.showTemplateWidgetsBorders();
-				PtlLayoutUIEditor.showTemplatePHPWidgets();
-			},
-		});
-		
-		//init page template layout
-		initPageAndTemplateLayout(template_obj, template_obj, function() {
-			update_settings_from_layout_iframe_func = function() {
-				updateCodeEditorSettingsFromLayout(template_obj);
-			};
-			update_layout_iframe_from_settings_func = function() {
-				updateCodeEditorLayoutFromSettings(template_obj, false, true);
-			};
-			
-			//waits until the load params and joinpoints gets loaded
-			setTimeout(function() {
-				//set saved_template_obj_id
-				saved_template_obj_id = getTemplateCodeObjId();//only for testing. Then uncomment this line!
 				
-				//init auto save
-				addAutoSaveMenu(".top_bar li.sub_menu li.save");
-				enableAutoSave(onToggleAutoSave);//only for testing. Then activate auto_save here by uncommenting this line!
-				initAutoSave(".top_bar li.save a");
-			}, 2000);
+				//set default head code from iframe
+				var head_code = null;
+				
+				if (!code_exists) {
+					head_code = PtlLayoutUIEditor.getTemplateLayoutHeadHtml();
+					setTemplateHeadEditorCode(head_code);
+				}
+				else { //beautify head code
+					head_code = getTemplateHeadEditorCode();
+					head_code = MyHtmlBeautify.beautify(head_code); 
+					setTemplateHeadEditorCode(head_code);
+				}
+				
+				saved_head_code = head_code;
+				
+				//set change event to head editor
+				if (textarea) {
+					var editor = template_obj.find(".code_editor_settings .head").data("editor");
+					
+					if (editor)
+						editor.on("blur", updateCodeEditorLayoutHeadFromSettings);
+					else
+						$(textarea).on("blur", updateCodeEditorLayoutHeadFromSettings);
+				}
+				
+				//waits until the load params and joinpoints gets loaded
+				setTimeout(function() {
+					//set saved_template_obj_id
+					saved_template_obj_id = getTemplateCodeObjId();//only for testing. Then uncomment this line!
+					
+					//init auto save
+					addAutoSaveMenu(".top_bar li.sub_menu li.save");
+					//enableAutoSave(onToggleAutoSave); //Do not enable auto save bc it gets a litte bit slow editing the template.
+					initAutoSave(".top_bar li.sub_menu li.save a");
+					StatusMessageHandler.showMessage("Auto save is disabled for a better user-experience...");
+					
+					//set update handlers
+					var iframe = getContentTemplateLayoutIframe(template_obj);
+					
+					update_settings_from_layout_iframe_func = function() {
+						//console.log("update_settings_from_layout_iframe_func");
+						updateCodeEditorSettingsFromLayout(template_obj);
+					};
+					update_layout_iframe_from_settings_func = function() {
+						//console.log("update_layout_iframe_from_settings_func");
+						updateCodeEditorLayoutFromSettings(template_obj, false, true);
+					};
+					update_layout_iframe_field_html_value_from_settings_func = function(elm, html) { //set handler to update directly the the html in the template layout without refreshing the entire layout.
+						//console.log("update_layout_iframe_field_html_value_from_settings_func");
+						updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField(elm, html, iframe);
+					};
+					
+					//load js and css files
+					loadCodeEditorLayoutJSAndCSSFilesToSettings();
+					
+					//hide loading icon
+					MyFancyPopup.hidePopup();
+					
+					entity_or_template_obj_inited = true;
+				}, 2000);
+			}
 		});
 	}
-	
-	MyFancyPopup.hidePopup();
 });
 
 //To be used in the toggleFullScreen function
@@ -145,58 +120,7 @@ function onToggleFullScreen(in_full_screen) {
 	}, 500);
 }
 
-function toggleAdvancedItems(elm) {
-	var template_obj = $(".template_obj");
-	var top_bar = $(".top_bar");
-	var toggle_advanced_items_a = top_bar.find("header ul li.toggle_advanced_items > a");
-	var input = toggle_advanced_items_a.children("input");
-	var span = toggle_advanced_items_a.children("span");
-	
-	template_obj.toggleClass("advanced_items_shown");
-	top_bar.toggleClass("advanced_items_shown");
-	
-	var ul = template_obj.children("ul");
-	var active_tab = ul.children(".ui-state-active");
-	var is_content_editor_tab_shown = active_tab.attr("id") == "code_editor_layout_tab";
-	
-	if (template_obj.hasClass("advanced_items_shown")) {
-		input.prop("checked", true).attr("checked", "checked");
-		span.html("Hide Advanced Items");
-		
-		if (!is_content_editor_tab_shown)
-			ul.find(" > #code_editor_layout_tab > a").trigger("click");
-	}
-	else {
-		input.prop("checked", false).removeAttr("checked");
-		span.html("Show Advanced Items");
-		
-		if (is_content_editor_tab_shown)
-			ul.find(" > #code_editor_body_tab > a").trigger("click");
-	}
-}
-
-function toggleWidgetSettings(elm) {
-	var code_editor_body = $(".template_obj .code_editor_body");
-	var PtlLayoutUIEditor = code_editor_body.find(".layout-ui-editor").data("LayoutUIEditor");
-	var toggle_widget_settings = $(".top_bar li.toggle_widget_settings");
-	var input = toggle_widget_settings.find("input");
-	var span = toggle_widget_settings.find("span");
-	
-	if (PtlLayoutUIEditor) {
-		if (PtlLayoutUIEditor.isMenuSettingsVisible()) {
-			PtlLayoutUIEditor.hideFixedMenuSettings();
-			input.removeAttr("checked").prop("checked", false);
-			span.html("Show Widget Settings");
-		}
-		else if (PtlLayoutUIEditor.isMenuSettingsEnabled()) {
-			PtlLayoutUIEditor.showFixedMenuSettings();
-			input.attr("checked", "checked").prop("checked", true);
-			span.html("Hide Widget Settings");
-		}
-		else
-			StatusMessageHandler.showMessage("Please select a widget first...");
-	}
-}
+/* PREVIEW FUNCTIONS */
 
 function preview() {
 	//prepare popup
@@ -215,95 +139,77 @@ function preview() {
 }
 
 function preparePreviewPopup() {
-	var code = getTemplateCodeForSaving();
-	MyFancyPopup.hidePopup();
-	
 	var iframe = $(".template_obj > #preview > iframe");
 	var url = iframe.attr("orig_src");
 	var iframe_head = iframe.contents().find("head");
 	var iframe_body = iframe.contents().find("body");
 	
+	//clean iframe first
 	iframe_head.html("");
 	iframe_body.html("");
 	
-	$.ajax({
+	//load new html
+	var code = getTemplateCodeForSaving();
+	var ajax_opts = {
 		url: url,
 		type: 'post',
 		processData: false,
 		contentType: 'text/html',
 		data: code,
 		success: function(parsed_html, textStatus, jqXHR) {
-			//iframe.contents().find("html").html(parsed_html);
-			var head_html = "";
-			var body_html = "";
-			var body_attributes = [];
 			//console.log(parsed_html);
 			
-			if (parsed_html) {
-				if (parsed_html.indexOf("<head") == -1 && parsed_html.indexOf("<body") == -1)
-					body_html = parsed_html;
-				else {
-					head_html = getTemplateHtmlTagContent(parsed_html, "head");
-					body_html = getTemplateHtmlTagContent(parsed_html, "body");
-					
-					body_attributes = getTemplateHtmlTagAttributes(parsed_html, "body");
-				}
-			}
-			
-			//console.log(head_html);
-			iframe_head[0].innerHTML = head_html; //Do not use .html(head_html), bc in some cases it breaks
-			iframe_body[0].innerHTML = body_html; //Do not use .html(body_html), bc in some cases it breaks
-			
-			//set body attributes
-			if (body_attributes)
-				$.each(body_attributes, function(idx, attr) {
-					iframe_body.attr(attr["name"], attr["value"]);
+			//show login popup
+			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL)) {
+				MyFancyPopup.hideLoading();
+				
+				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
+					$.ajax(ajax_opts);
 				});
+			}
+			else {
+				try {
+					var doc = iframe[0].contentDocument ? iframe[0].contentDocument : iframe[0].contentWindow.document;
+					doc.open();
+					doc.write(parsed_html);
+					doc.close();
+				}
+				catch(e) {
+					if (console && console.log) 
+						console.log(e);
+				}
+				
+				//hide loading icon
+				MyFancyPopup.hidePopup();
+			}
 		},
 		error: function (jqXHR, textStatus, errorThrown) {
+			//hide loading icon
+			MyFancyPopup.hidePopup();
+			MyFancyPopupTemplatePreview.hidePopup();
+			
+			//show error msg
 			var msg = "Couldn't preview template. Error in preparePreviewPopup() function. Please try again...";
 			alert(msg);
 			
 			if (jqXHR.responseText)
 				StatusMessageHandler.showError(msg + "\n" + jqXHR.responseText);
 		},
-	});
+	};
+	
+	$.ajax(ajax_opts);
 }
 
-function getTemplateHeadEditorCode() {
-	var editor = $(".template_obj .code_editor_settings .head").data("editor");
-	return editor ? editor.getValue() : $(".template_obj .code_editor_settings .head textarea").first().val();
-}
+/* LAYOUT-SETTINGS-LAYOUT UPDATE FUNCTIONS */
 
-function getTemplateBodyEditorCode() {
-	var code_editor_body = $(".template_obj .code_editor_body");
-	var PtlLayoutUIEditor = code_editor_body.find(".layout-ui-editor").data("LayoutUIEditor");
-	
-	if (PtlLayoutUIEditor) {
-		var luie = PtlLayoutUIEditor.getUI();
-		luie.find(" > .options .option.show-full-source").removeClass("option-active"); //remove active class so the getCodeLayoutUIEditorCode calls the getTemplateSourceEditorValue method, instead of getTemplateFullSourceEditorValue
-	}
-	
-	var code = getCodeLayoutUIEditorCode(code_editor_body);
-	
-	return code;
-}
-
-function updateCodeEditorLayoutFromMainTab(elm) {
-	var template_obj = $(".template_obj");
-	var selected_tab = template_obj.children("ul").find("li.ui-tabs-selected, li.ui-tabs-active").first();
-	
-	if (selected_tab.attr("id") == "code_editor_body") {
-		updateCodeEditorLayoutFromSettings(template_obj, true, false);
-	}
-}
-
-function updateCodeEditorLayoutFromSettings(template_obj, reload_iframe, do_not_update_from_body_editor) {
-	if (template_obj[0]) {
-		var regions_blocks_includes_settings = template_obj.find(".regions_blocks_includes_settings");
-		
+function updateCodeEditorLayoutFromSettings(template_obj, reload_iframe, do_not_update_from_body_editor, force) {
+	if (template_obj[0] && !template_obj.hasClass("inactive") || force) {
 		//must happen before the updateRegionsFromBodyEditor
 		var orig_template_params_values_list = JSON.stringify(template_params_values_list);
+		var orig_includes_list = JSON.stringify(includes_list);
+		
+		var iframe = getContentTemplateLayoutIframe(template_obj);
+		var regions_blocks_includes_settings = template_obj.find(".regions_blocks_includes_settings");
 		
 		updateRegionsBlocksRBIndexIfNotSet(regions_blocks_includes_settings); //very important, otherwise we will loose the region-block params-values and joinpoints for the new regions added dynamically
 		
@@ -315,55 +221,61 @@ function updateCodeEditorLayoutFromSettings(template_obj, reload_iframe, do_not_
 		if (!do_not_update_from_body_editor)
 			updateRegionsFromBodyEditor(false, true);
 		
-		if (!template_obj.hasClass("inactive")) {
-			var iframe = template_obj.find(".tab_content_template_layout > iframe");//getContentTemplateLayoutIframe(template_obj);
-			var are_different = areLayoutAndSettingsDifferent(iframe, regions_blocks_includes_settings);
+		var are_different = areLayoutAndSettingsDifferent(iframe, regions_blocks_includes_settings, true);
+		var data = getSettingsTemplateRegionsBlocks(regions_blocks_includes_settings); //get regions and params from settings
+		//console.log(data);
+		//console.log("are_different:"+are_different);
+		
+		if (!are_different) //if params are different
+			are_different = orig_template_params_values_list != JSON.stringify(data["params"]);
+		
+		if (!are_different) //if includes are different
+			are_different = orig_includes_list != JSON.stringify(data["includes"]);
+		
+		if (!are_different) //if head is different
+			are_different = getTemplateHeadEditorCode() != saved_head_code;
+		
+		if (force || (are_different /*&& confirm("Do you wish to convert the template settings to the layout panel?\n\nNote: You must save the html code first, in order to see the new changes that you made (if you made any).")*/)) {
+			//prepare iframe with new data
+			var iframe_data = {
+				"template_regions" : data["template_regions"],
+				"template_params": data["params"],
+				"template_includes": data["includes"]
+			};
+			//console.log(iframe_data);
 			
-			//get regions and params from settings
-			var data = getSettingsTemplateRegionsBlocks(regions_blocks_includes_settings);
-			//console.log(data);
+			var current_html = getTemplateCodeForSaving(true);
+			MyFancyPopup.hidePopup();
 			
-			if (!are_different)
-				are_different = orig_template_params_values_list != JSON.stringify(data["params"]);
+			if (reload_iframe)
+				reloadLayoutIframeFromSettings(iframe, iframe_data, current_html); //show template preview based in the html source
+			else
+				updateLayoutIframeFromSettings(iframe, iframe_data, data, current_html);
 			
-			if (are_different /*&& confirm("Do you wish to convert the template settings to the layout panel?\n\nNote: You must save the html code first, in order to see the new changes that you made (if you made any).")*/) {
-				//update regions_blocks_list
-				regions_blocks_list = data["regions_blocks"];
-				
-				//update template_params_values_list
-				template_params_values_list = data["params"];
-				
-				//prepare iframe with new data
-				var iframe_data = {
-					"template_regions" : data["template_regions"],
-					"template_params": data["params"],
-					"template_includes": data["includes"]
-				};
-				
-				//show template preview based in the html source
-				var current_html = getTemplateCodeForSaving(true);
-				MyFancyPopup.hidePopup();
-				
-				if (reload_iframe)
-					reloadLayoutIframeFromSettings(iframe, iframe_data, current_html);
-				else
-					updateLayoutIframeFromSettings(iframe, iframe_data, current_html);
-			}
+			//update regions_blocks_list
+			regions_blocks_list = data["regions_blocks"];
+			
+			//update template_params_values_list
+			template_params_values_list = data["params"];
+			
+			//update includes_list
+			includes_list = data["includes"];
 		}
 	}
 }
 
 function updateCodeEditorSettingsFromLayout(template_obj) {
-	//updates the last regions and params. This is very important. otherwise the template preview won't show the latest regions and params from the html.
-	updateRegionsFromBodyEditor(false, true);
-	
 	if (!template_obj.hasClass("inactive")) {
-		var iframe = template_obj.find(".tab_content_template_layout > iframe");//getContentTemplateLayoutIframe(template_obj);
+		//updates the last regions and params. This is very important. otherwise the template preview won't show the latest regions and params from the html.
+		updateRegionsFromBodyEditor(false, true);
+		
+		var iframe = getContentTemplateLayoutIframe(template_obj);
 		var regions_blocks_includes_settings = template_obj.find(".regions_blocks_includes_settings");
-		var are_different = areLayoutAndSettingsDifferent(iframe, regions_blocks_includes_settings);
+		var are_different = areLayoutAndSettingsDifferent(iframe, regions_blocks_includes_settings, true);
 		
 		if (are_different /*&& confirm("Do you wish to convert the template regions to the settings panel?\n\nNote: You must save the html code first, in order to see the new changes that you made (if you made any).")*/) {
 			var data = getIframeTemplateRegionsBlocksForSettings(iframe, regions_blocks_includes_settings);
+			//console.log(data);
 			
 			regions_blocks_list = data["regions_blocks_list"]; //global var
 			template_params_values_list = data["template_params_values_list"]; //global var
@@ -376,14 +288,21 @@ function updateCodeEditorSettingsFromLayout(template_obj) {
 	}
 }
 
+//update regions from layout to main settings
 function updateRegionsFromBodyEditor(show_info_message, do_not_update_layout) {
+	//disable auto_save
+	var auto_save_bkp = auto_save;
+	auto_save = false;
+	
 	//save synchronization functions
 	var update_settings_from_layout_iframe_func_bkp = update_settings_from_layout_iframe_func;
 	var update_layout_iframe_from_settings_func_bkp = update_layout_iframe_from_settings_func;
+	var update_layout_iframe_field_html_value_from_settings_func_bkp = update_layout_iframe_field_html_value_from_settings_func;
 	
 	//disable synchronization functions bc the updateSelectedTemplateRegionsBlocks calls the sync func, when it triggers the on change event from the blok_type in the getRegionBlockHtml
 	update_settings_from_layout_iframe_func = null;
 	update_layout_iframe_from_settings_func = null;
+	update_layout_iframe_field_html_value_from_settings_func = null;
 	
 	//update regions blocks
 	var regions_blocks_includes_settings = $(".template_obj .regions_blocks_includes_settings");
@@ -400,15 +319,192 @@ function updateRegionsFromBodyEditor(show_info_message, do_not_update_layout) {
 		"params": params,
 	});
 	
+	//update js and css files in main settings
+	loadCodeEditorLayoutJSAndCSSFilesToSettings();
+	
 	//sets back synchronization functions
 	update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
 	update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
+	update_layout_iframe_field_html_value_from_settings_func = update_layout_iframe_field_html_value_from_settings_func_bkp;
 	
 	if (!do_not_update_layout)
 		updateLayoutIframeFromSettingsField(); //then reload the layout again
 	
 	if (show_info_message && regions.length == 0)
 		StatusMessageHandler.showMessage("No regions to be updated...");
+	
+	if (auto_save_bkp)
+		auto_save = auto_save_bkp;
+}
+
+function updateCodeEditorLayoutHeadFromSettings(obj) {
+	//for each character changed or writen this function wil be called, so we must add a settimeout and only execute this function when the user finishes to write
+	var head_code = getTemplateHeadEditorCode();
+	
+	if (head_code != saved_head_code) {
+		var template_obj = $(".template_obj");
+		var iframe = getContentTemplateLayoutIframe(template_obj);
+		var iframe_head = iframe.contents().find("head").first();
+		var contains_php = head_code.indexOf("<?") != -1;
+		
+		if (contains_php)
+			updateCodeEditorLayoutFromSettings(template_obj, true);
+		else {
+			//remove old head
+			var nodes = iframe_head.contents();
+			
+			for (var i = 0; i < nodes.length; i++) {
+				var node = nodes[i];
+				
+				if (node.nodeType != Node.ELEMENT_NODE || !node.classList.contains("layout-ui-editor-reserved")) {
+					if (node.nodeType == Node.ELEMENT_NODE && node.classList.contains("template-widget-script"))
+						$(node).children("script").remove();
+					
+					node.parentNode.removeChild(node);
+				}
+			}
+			
+			//add new head
+			var code_layout_ui_editor = template_obj.find(".code_layout_ui_editor");
+			var PtlLayoutUIEditor = code_layout_ui_editor.find(".layout-ui-editor").data("LayoutUIEditor");
+			PtlLayoutUIEditor.parseHtmlSource(head_code, iframe_head);
+		}
+		
+		saved_head_code = head_code;
+	}
+}
+
+function loadCodeEditorLayoutJSAndCSSFilesToSettings() {
+	var js_and_css_files = getCurrentCodeJSAndCSSFiles();
+	var css_files = js_and_css_files["css_files"];
+	var js_files = js_and_css_files["js_files"];
+	var regions_blocks_includes_settings = $(".template_obj .regions_blocks_includes_settings");
+	
+	updateCodeEditorLayoutFilesInSettings(css_files, regions_blocks_includes_settings.find(".css_files > ul"));
+	updateCodeEditorLayoutFilesInSettings(js_files, regions_blocks_includes_settings.find(".js_files > ul"));
+}
+
+function updateCodeEditorLayoutFilesInSettings(files, ul) {
+	//console.log(files);
+	var empty_files_li = ul.children(".empty_files");
+	
+	//remove old files
+	ul.children("li:not(.empty_files)").remove()
+	
+	//prepare new files
+	if (files) {
+		empty_files_li.hide();
+		var html = '';
+		
+		//prepare non https or http urls
+		var selected_project_url_prefix_aux = selected_project_url_prefix.match(/^http:/) ? selected_project_url_prefix.replace(/^http:/, "https:") : selected_project_url_prefix.replace(/^https:/, "http:");
+		var selected_project_common_url_prefix_aux = selected_project_common_url_prefix.match(/^http:/) ? selected_project_common_url_prefix.replace(/^http:/, "https:") : selected_project_common_url_prefix.replace(/^https:/, "http:");
+		
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			var path = null;
+			
+			if (file.indexOf(selected_project_url_prefix) === 0) //checks if file starts with url in vars: selected_project_url_prefix
+				path = selected_project_id + "/webroot/" + file.substr(selected_project_url_prefix.length);
+			else if (file.indexOf(selected_project_common_url_prefix) === 0) //checks if file starts with url in vars: selected_project_common_url_prefix
+				path = common_project_name + "/webroot/" + file.substr(selected_project_common_url_prefix.length);
+			else if (file.indexOf(selected_project_url_prefix_aux) === 0) //checks if file starts with url in vars: selected_project_url_prefix_aux
+				path = selected_project_id + "/webroot/" + file.substr(selected_project_url_prefix_aux.length);
+			else if (file.indexOf(selected_project_common_url_prefix_aux) === 0) //checks if file starts with url in vars: selected_project_common_url_prefix_aux
+				path = common_project_name + "/webroot/" + file.substr(selected_project_common_url_prefix_aux.length);
+			else { //checks if file starts with php code: $project_url_prefix or $project_common_url_prefix
+				var m = /^<\?(|=|php)\s*(|echo)\s*(\$[a-z_]+)\s*;?\s*\?>/g.exec(file);
+				
+				if (m && (m[3] == "$project_url_prefix" || m[3] == "$project_common_url_prefix")) { 
+					var relative_file = file.substr(m[0].length);
+					
+					path = (m[3] == "$project_url_prefix" ? selected_project_id : common_project_name) + "/webroot/" + relative_file;
+				}
+			}
+			
+			var file_name = file.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+			
+			if (path)
+				file_name = '<a href="javascript:void(0)" onClick="editWebrootFile(\'' + path + '\')" title="Click to edit file">' + file_name + '</a>';
+			
+			html += '<li>' + file_name + '</li>';
+		}
+		
+		ul.append(html);
+	}
+	else
+		empty_files_li.show();
+}
+
+function editWebrootFile(path) {
+	//prepare popup
+	var template_obj = $(".template_obj");
+	var popup= template_obj.children("#edit_webroot_file");
+	var iframe = popup.children("iframe");
+	var edit_url = iframe.attr("orig_src").replace("#path#", path);
+	
+	iframe.attr("src", edit_url);
+	
+	//open popup
+	MyFancyPopupEditWebrootFile.init({
+		elementToShow: popup,
+		parentElement: document,
+		
+		onClose: function() {
+			updateCodeEditorLayoutFromSettings(template_obj, true, true, true);
+		},
+	});
+	
+	MyFancyPopupEditWebrootFile.showPopup();
+}
+
+function getCurrentCodeJSAndCSSFiles() {
+	var css_files = [];
+	var js_files = [];
+	var head_code = getTemplateHeadEditorCode();
+	var body_code = getTemplateBodyEditorCode();
+	
+	var code = "<html><head>" + head_code + "</head><body>" + body_code + "</body></html>";
+	var regex = /<(script|link)\s+/gi;
+	var m = regex.exec(code);
+	
+	while (m != null) {
+		var tag_start = m.index;
+		var tag_html = MyHtmlBeautify.getTagHtml(code, tag_start, "");
+		var tag_code = tag_html[0];
+		var tag_end = tag_html[1];
+		
+		/*console.log(m);
+		console.log("tag_code:"+tag_code);
+		console.log("tag_start:"+tag_start);
+		console.log("tag_end:"+tag_end);*/
+		
+		//parse tag_code
+		if (tag_code) {
+			var is_script = m[1].toLowerCase() == "script";
+			var sub_regex = new RegExp("\\s+(" + (is_script ? "src" : "href") + ")\\s*=\\s*(\"|'|)", "gi");
+			var sub_m = sub_regex.exec(tag_code);
+			
+			if (sub_m != null) {
+				var attr_start = sub_m.index + sub_m[0].length;
+				var attr = MyHtmlBeautify.getAttribute(tag_code, attr_start, sub_m[2]);
+				var attr_html = attr[0];
+				var attr_end = attr[1];
+				//console.log("attr_html:"+attr_html);
+				
+				if (attr_html) {
+					if (is_script)
+						js_files.push(attr_html);
+					else
+						css_files.push(attr_html);
+				}
+			}
+		}
+		
+		m = regex.exec(code);
+	}
+	
+	return {"css_files": css_files, "js_files": js_files};
 }
 
 function getCurrentCodeRegions() {
@@ -418,8 +514,9 @@ function getCurrentCodeRegions() {
 	var code = "<html><head>" + head_code + "</head><body>" + body_code + "</body></html>";
 	code = code.replace(/&gt;/gi, ">").replace(/&lt;/gi, "<");
 	
-	var matches = code.match(/\$([^\$]+)([ ]*)->([ ]*)renderRegion([ ]*)\(([ ]*)([^\)]*)([ ]*)\)/gi);
+	var matches = code.match(/\$([^\$]+)([ ]*)->([ ]*)renderRegion([ ]*)\(([ ]*)([^\)]*)([ ]*)\)/gi); //includes the hidden regions, like in the php code camufulated with html comments. Is very important to include the hidden regions, so when the updateRegionsFromBodyEditor method gets executed, we get all the available regions and not only the visible ones.
 	var regions = [];
+	//console.log(matches);
 	
 	if (matches) {
 		for (var i = 0; i < matches.length; i++) {
@@ -441,7 +538,7 @@ function getCurrentCodeParams() {
 	var code = "<html><head>" + head_code + "</head><body>" + body_code + "</body></html>";
 	code = code.replace(/&gt;/gi, ">").replace(/&lt;/gi, "<");
 	
-	var matches = code.match(/\$([^\$]+)([ ]*)->([ ]*)getParam([ ]*)\(([ ]*)([^\)]*)([ ]*)\)/gi);
+	var matches = code.match(/\$([^\$]+)([ ]*)->([ ]*)getParam([ ]*)\(([ ]*)([^\)]*)([ ]*)\)/gi); //includes the hidden params, like in the php code camufulated with html comments. Is very important to include the hidden params, so when the updateRegionsFromBodyEditor method gets executed, we get all the available params and not only the visible ones.
 	var params = [];
 	if (matches) {
 		for (var i = 0; i < matches.length; i++) {
@@ -456,6 +553,46 @@ function getCurrentCodeParams() {
 	return params;
 }
 
+function setTemplateHeadEditorCode(value) {
+	var editor = $(".template_obj .code_editor_settings .head").data("editor");
+	return editor ? editor.setValue(value, 1) : $(".template_obj .code_editor_settings .head textarea").first().val(value);
+}
+
+function getTemplateHeadEditorCode() {
+	var editor = $(".template_obj .code_editor_settings .head").data("editor");
+	return editor ? editor.getValue() : $(".template_obj .code_editor_settings .head textarea").first().val();
+}
+
+function getTemplateBodyEditorCode() {
+	var code_layout_ui_editor = $(".template_obj .code_layout_ui_editor");
+	var PtlLayoutUIEditor = code_layout_ui_editor.find(".layout-ui-editor").data("LayoutUIEditor");
+	
+	if (PtlLayoutUIEditor) {
+		var luie = PtlLayoutUIEditor.getUI();
+		luie.find(" > .options .option.show-full-source").removeClass("option-active"); //remove active class so the getCodeLayoutUIEditorCode calls the getTemplateSourceEditorValue method, instead of getTemplateFullSourceEditorValue
+	}
+	
+	var code = getCodeLayoutUIEditorCode(code_layout_ui_editor);
+	
+	return code;
+}
+
+function getTemplateEditorCode() {
+	var code_layout_ui_editor = $(".template_obj .code_layout_ui_editor");
+	var PtlLayoutUIEditor = code_layout_ui_editor.find(".layout-ui-editor").data("LayoutUIEditor");
+	
+	if (PtlLayoutUIEditor) {
+		var luie = PtlLayoutUIEditor.getUI();
+		luie.find(" > .options .option.show-full-source").addClass("option-active"); //add active class so the getCodeLayoutUIEditorCode calls the getTemplateFullSourceEditorValue method, instead of getTemplateSourceEditorValue
+	}
+	
+	var code = getCodeLayoutUIEditorCode(code_layout_ui_editor);
+	
+	return code;
+}
+
+/* SAVING FUNCTIONS */
+
 function getTemplateCodeForSaving(without_regions_blocks_and_includes) {
 	prepareAutoSaveVars();
 	
@@ -464,16 +601,12 @@ function getTemplateCodeForSaving(without_regions_blocks_and_includes) {
 	//save synchronization function
 	var update_settings_from_layout_iframe_func_bkp = update_settings_from_layout_iframe_func;
 	var update_layout_iframe_from_settings_func_bkp = update_layout_iframe_from_settings_func;
+	var update_layout_iframe_field_html_value_from_settings_func_bkp = update_layout_iframe_field_html_value_from_settings_func;
 	
 	//disable synchronization function
 	update_settings_from_layout_iframe_func = null;
 	update_layout_iframe_from_settings_func = null;
-	
-	//detect selected tab is layout
-	/*var active_tab = template_obj.tabs('option', 'active');
-	if (active_tab == 0) {
-		updateCodeEditorSettingsFromLayout(template_obj);
-	}*/
+	update_layout_iframe_field_html_value_from_settings_func = null;
 	
 	//preparing new code
 	var status = true;
@@ -487,12 +620,15 @@ function getTemplateCodeForSaving(without_regions_blocks_and_includes) {
 		MyFancyPopup.showLoading();
 	}
 	
+	//prepare php code
 	if (!without_regions_blocks_and_includes) {
-		//update settings from body
-		updateRegionsFromBodyEditor(false, true);
+		//DEPRECATED - update settings from body, Do not execute updateRegionsFromBodyEditor here, bc if we add a new repeated-region from settings tab, the auto-save will remove it when we execute updateRegionsFromBodyEditor. The new regions from the layout will be updated automatically on created the new region.
+		//updateRegionsFromBodyEditor(false, true); 
 		
+		//get regions blocks settings
 		var obj = getRegionsBlocksAndIncludesObjToSave();
 		
+		//get php code for regions blocks
 		$.ajax({
 			type : "post",
 			url : create_entity_code_url,
@@ -514,23 +650,32 @@ function getTemplateCodeForSaving(without_regions_blocks_and_includes) {
 			async: false,
 		});
 	}
-		
-	var head_code = getTemplateHeadEditorCode();
-	var body_code = getTemplateBodyEditorCode();
 	
-	code += doc_type_tag_attributes_str ? '<!DOCTYPE ' + doc_type_tag_attributes_str + '>' + "\n" : '';
-	code += (html_tag_attributes_str ? '<html ' + html_tag_attributes_str + '>' : '<html>') + "\n";
-	code += (head_tag_attributes_str ? '<head ' + head_tag_attributes_str + '>' : "<head>") + "\n";
-	code += head_code;
-	code += "\n</head>\n";
-	code += (body_tag_attributes_str ? '<body ' + body_tag_attributes_str + '>' : "<body>") + "\n";
-	code += body_code;
-	code += "\n</body>\n";
-	code += '</html>';
+	//prepare html
+	var doc_type_attributes = template_obj.find(".code_editor_settings .doc_type_attributes input").val();
+	var html_attributes = template_obj.find(".code_editor_settings .html_attributes input").val();
+	var head_attributes = template_obj.find(".code_editor_settings .head_attributes input").val();
+	var head_code = getTemplateHeadEditorCode();
+	var template_code = getTemplateEditorCode();
+	
+	var code_layout_ui_editor = template_obj.find(".code_layout_ui_editor");
+	var PtlLayoutUIEditor = code_layout_ui_editor.find(".layout-ui-editor").data("LayoutUIEditor");
+	
+	template_code = PtlLayoutUIEditor.replaceTagAttributesFromSource(template_code, "!doctype", doc_type_attributes);
+	template_code = PtlLayoutUIEditor.replaceTagAttributesFromSource(template_code, "html", html_attributes);
+	template_code = PtlLayoutUIEditor.replaceTagAttributesFromSource(template_code, "head", head_attributes);
+	template_code = PtlLayoutUIEditor.replaceTagContentFromSource(template_code, "head", head_code);
+	
+	template_code = MyHtmlBeautify.beautify(template_code); //do not beautify the code, bc sometimes it messes the php code and the inner html inside of the addRegionHtml method
+	//console.log(template_code); //already contains the head tags including the scripts.
+	
+	code += template_code;
+	//console.log(code);
 	
 	//sets back synchronization function
 	update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
 	update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
+	update_layout_iframe_field_html_value_from_settings_func = update_layout_iframe_field_html_value_from_settings_func_bkp;
 	
 	return status ? code : null;
 }
@@ -557,98 +702,93 @@ function isTemplateCodeObjChanged() {
 
 function saveTemplate() {
 	var template_obj = $(".template_obj");
-	
+		
 	prepareAutoSaveVars();
 	
 	if (template_obj[0]) {
-		var new_saved_template_obj_id = getTemplateCodeObjId();
-		
-		if (!saved_template_obj_id || saved_template_obj_id != new_saved_template_obj_id) {
+		if (!auto_convert_settings_from_layout) {
 			if (!is_from_auto_save) {
-				var save_btn = $(".top_bar ul li.save a");
-				var on_click = save_btn.attr("onClick");
-				save_btn.addClass("loading").removeAttr("onClick");
-				
-				var scroll_top = $(document).scrollTop();
+				MyFancyPopup.init({
+					parentElement: window,
+				});
+				MyFancyPopup.showOverlay();
+				MyFancyPopup.showLoading();
 			}
 			
-			var code = getTemplateCodeForSaving();
-			
-			//detect selected tab is layout
-			/* This is already executed in the getTemplateCodeForSaving method
-			var template_obj = $(".template_obj");
-			var active_tab = template_obj.tabs('option', 'active');
-			if (active_tab == 0) {
-				updateCodeEditorLayoutFromSettings(template_obj, false, true);
-			}*/
-			
-			if (code != null) {
-				var obj = {"code": code};
+			enableAutoConvertSettingsFromLayout(function() {
+				if (!is_from_auto_save)				
+					MyFancyPopup.hidePopup();
 				
+				save();
+			});
+			disableAutoConvertSettingsFromLayout();
+		}
+		else
+			save();
+	}
+	else if (!is_from_auto_save)
+		alert("No template object to save! Please contact the sysadmin...");
+}
+
+function save() {
+	//console.log("saveTemplate");
+	var template_obj = $(".template_obj");
+	
+	prepareAutoSaveVars();
+	
+	var is_from_auto_save_bkp = is_from_auto_save; //backup the is_from_auto_save, bc if there is a concurrent process running at the same time, this other process may change the is_from_auto_save value.
+	
+	if (template_obj[0]) {
+		if (!window.is_save_func_running) {
+			window.is_save_func_running = true;
+			
+			//prepare save
+			var new_saved_template_obj_id = getTemplateCodeObjId();
+			
+			if (!saved_template_obj_id || saved_template_obj_id != new_saved_template_obj_id) {
+				var save_btn = $(".top_bar ul li.save a");
+				
+				if (!is_from_auto_save_bkp) {
+					save_btn.first().addClass("loading"); //only for the short-action icon
+					
+					var scroll_top = $(document).scrollTop();
+				}
+				
+				var code = getTemplateCodeForSaving();
+				
+				//call saveObjCode
+				var obj = {"code": code};
 				saveObjCode(save_object_url, obj, {
 					success: function(data, textStatus, jqXHR) {
-						if (!is_from_auto_save) {
-							save_btn.removeClass("loading").attr("onClick", on_click);
-							$(document).scrollTop(scroll_top);
-							MyFancyPopup.hidePopup();
-						
-							if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-								showAjaxLoginPopup(jquery_native_xhr_object.responseURL, save_object_url, function() {
-									jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
-									StatusMessageHandler.removeLastShownMessage("error");
-									
-									saveTemplate();
-								});
-							else
-								StatusMessageHandler.removeLastShownMessage("error");
-						}
-						else
-							resetAutoSave();
-						
 						saved_template_obj_id = getTemplateCodeObjId();
 						
 						return true;
 					},
-					error: function(jqXHR, textStatus, errorThrown) {
-						if (!is_from_auto_save) {
-							save_btn.removeClass("loading").attr("onClick", on_click);
+					complete: function() {
+						if (!is_from_auto_save_bkp) {
+							save_btn.removeClass("loading");
 							$(document).scrollTop(scroll_top);
-							MyFancyPopup.hidePopup();
+							//MyFancyPopup.hidePopup(); //the saveObj function already hides the popup
 						}
-						else
-							resetAutoSave();
+						//else
+						//	resetAutoSave(); //the saveObj function already resetAutoSave
 						
-						return true;
+						window.is_save_func_running = false;
 					},
 				});
 			}
-			else if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL)) {
-				if (!is_from_auto_save) {
-					MyFancyPopup.hidePopup();
-					
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, [create_entity_code_url, jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url], function() {
-						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
-						StatusMessageHandler.removeLastShownMessage("error");
-						
-						saveTemplate();
-					});
-				}
+			else {
+				if (!is_from_auto_save_bkp)
+					StatusMessageHandler.showMessage("Nothing to save.");
 				else
 					resetAutoSave();
+				
+				window.is_save_func_running = false;
 			}
-			else if (!is_from_auto_save) {
-				StatusMessageHandler.showError("Error trying to save this file. Please try again...");
-				MyFancyPopup.hidePopup();
-				save_btn.removeClass("loading").attr("onClick", on_click);
-			}
-			else
-				resetAutoSave();
 		}
-		else if (!is_from_auto_save)
-			StatusMessageHandler.showMessage("Nothing to save.");
-		else
-			resetAutoSave();
+		else if (!is_from_auto_save_bkp)
+			StatusMessageHandler.showMessage("There is already a saving process running. Please wait a few seconds and try again...");
 	}
-	else if (!is_from_auto_save)
+	else if (!is_from_auto_save_bkp)
 		alert("No template object to save! Please contact the sysadmin...");
 }

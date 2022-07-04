@@ -9,8 +9,7 @@ $(function () {
 		MyFancyPopupViewTemplate.updatePopup();
 	});
 	
-	if (open_store)
-		installStoreTemplatePopup();
+	initInstallStoreTemplate();
 });
 
 function toggleLayerAndProject() {
@@ -32,51 +31,35 @@ function onChangeLayer(elm) {
 	$("#form_" + bn).show();
 }
 
-function installStoreTemplatePopup() {
-	if (get_store_templates_url) {
-		var popup = $(".install_store_template_popup");
-		
-		if (!popup[0]) {
-			var in_popup = $(".top_bar").is(".in_popup");
-			
-			popup = $('<div class="myfancypopup with_title install_store_template_popup' + (is_popup ? " in_popup" : "") + (open_store ? " open_store" : "") + '"><div class="title">Choose a template to install</div><ul><li class="loading">Loading templates...</li></ul></div>');
-			$(document.body).append(popup);
-			
-			$.ajax({
-				type : "get",
-				url : get_store_templates_url,
-				dataType : "json",
-				crossDomain: true,
-				success : function(data, textStatus, jqXHR) {
-					//console.log(data);
-					var html = '';
-					
-					$.each(data, function(idx, item) {
-						html += '<li class="template" title="' + item["label"] + '">'
-								+ (item["file"] ? '<a class="img_label" href="javascript:void(0)" onClick="viewStoreTemplate(\'' + item["file"] + '\', \'' + item["zip"] + '\')">' : '')
-									+ (item["logo"] ? '<img src="' + item["logo"] + '" />' : '')
-									+ '<label>' + item["label"] + '</label>'
-								+ (item["file"] ? '</a>' : '')
-								+ (item["zip"] ? '<a class="choose_template" href="javascript:void(0)" onClick="chooseStoreTemplate(\'' + item["zip"] + '\')"><i class="icon save"></i> Install</a>' : '')
-								+ (item["file"] ? '<a class="view_template" href="javascript:void(0)" onClick="viewStoreTemplate(\'' + item["file"] + '\', \'' + item["zip"] + '\')"><i class="icon view"></i> Preview</a>' : '')
-							+ '</li>';
-					});
-					
-					popup.children("ul").html(html);
-				},
-				error : function(jqXHR, textStatus, errorThrown) { 
-					if (jqXHR.responseText)
-						StatusMessageHandler.showError(jqXHR.responseText);
-				},
-			});
-		}
-		
-		MyFancyPopupInstallStoreTemplate.init({
-			elementToShow: popup,
-			parentElement: document,
+function initInstallStoreTemplate() {
+	if (get_store_templates_url)
+		$.ajax({
+			type : "get",
+			url : get_store_templates_url,
+			dataType : "json",
+			crossDomain: true,
+			success : function(data, textStatus, jqXHR) {
+				//console.log(data);
+				var html = '';
+				
+				$.each(data, function(idx, item) {
+					html += '<li class="template" title="' + item["label"] + '">'
+							+ (item["file"] ? '<a class="img_label" href="javascript:void(0)" onClick="viewStoreTemplate(\'' + item["file"] + '\', \'' + item["zip"] + '\')">' : '')
+								+ (item["logo"] ? '<img src="' + item["logo"] + '" />' : '')
+								+ '<label>' + item["label"] + '</label>'
+							+ (item["file"] ? '</a>' : '')
+							+ (item["zip"] ? '<a class="choose_template" href="javascript:void(0)" onClick="chooseStoreTemplate(\'' + item["zip"] + '\')"><i class="icon save"></i> Install</a>' : '')
+							+ (item["file"] ? '<a class="view_template" href="javascript:void(0)" onClick="viewStoreTemplate(\'' + item["file"] + '\', \'' + item["zip"] + '\')"><i class="icon view"></i> Preview</a>' : '')
+						+ '</li>';
+				});
+				
+				$(".install_store_template > ul").html(html);
+			},
+			error : function(jqXHR, textStatus, errorThrown) { 
+				if (jqXHR.responseText)
+					StatusMessageHandler.showError(jqXHR.responseText);
+			},
 		});
-		MyFancyPopupInstallStoreTemplate.showPopup();
-	}
 }
 
 function viewStoreTemplate(preview_url, zip_url) {

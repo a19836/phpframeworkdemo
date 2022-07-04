@@ -61,4 +61,8 @@ body,
 .convert_url_to_template .page_html .buttons {
 	margin-top:10px;
 }
+.convert_url_to_template .page_html .buttons button {
+	margin:0 10px;
+	font-size:inherit;
+}
 

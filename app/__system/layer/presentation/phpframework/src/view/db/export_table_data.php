@@ -35,7 +35,7 @@
 </form>'; $main_content .= '
 <script>
 //change title
-$(".top_bar .title").html("Export <span class=\"export_type\"></span>, table \'' . $table . '\' to document <span class=\"doc_name\"></span>");
+$(".top_bar .title").html("Export <span class=\"export_type\"></span> to document <span class=\"doc_name\"></span>, the table \'' . $table . '\' in DB: \'' . $bean_name . '\'");
 
 //remove edit_query fields
 var data_access_obj = $(".data_access_obj");

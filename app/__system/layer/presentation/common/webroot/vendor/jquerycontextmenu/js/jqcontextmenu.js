@@ -2,6 +2,10 @@
 * Created: Dec 16th, 2009 by DynamicDrive.com. This notice must stay intact for usage 
 * Author: Dynamic Drive at http://www.dynamicdrive.com/
 * Visit http://www.dynamicdrive.com/ for full source code
+* 
+* http://www.dynamicdrive.com/dynamicindex1/contextmenu.htm
+* 
+* Some other changes were made by Joao Pinto - jplpinto.com
 */
 
 var jquerycontextmenu = {

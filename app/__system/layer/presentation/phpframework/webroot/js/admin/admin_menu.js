@@ -40,6 +40,7 @@ function initContextMenus() {
 	initPresentationContextMenu(obj);
 	
 	obj = file_tree.find("li.main_node_lib");
+	addLiContextMenu(obj.children("a").addClass("link"), "main_lib_group_context_menu", {callback: onLibContextMenu});
 	initLibContextMenu(obj);
 	
 	obj = file_tree.find("li.main_node_dao");
@@ -534,6 +535,7 @@ function onPresentationContextMenu(target, contextmenu, originalEvent) {
 function onLibContextMenu(target, contextmenu, originalEvent) {
 	var a = $(originalEvent.target.parentNode);
 	
+	contextmenu.find(".manage_docbook a").attr("manage_docbook_url", a.attr("manage_docbook_url"));
 	contextmenu.find(".view_docbook a").attr("view_docbook_url", a.attr("view_docbook_url"));
 	contextmenu.find(".view_code a").attr("view_code_url", a.attr("view_code_url"));
 	

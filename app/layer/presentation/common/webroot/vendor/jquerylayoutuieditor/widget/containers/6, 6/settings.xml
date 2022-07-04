@@ -3,6 +3,7 @@
 	<label>6, 6</label>
 	<tag>container-6-6</tag>
 	<settings>
+		<resizable>1</resizable>
 		<menu_class>container</menu_class>
 		<template_class>container row</template_class>
 		<create_widget_class>CreateWidgetContainerClassObj</create_widget_class>

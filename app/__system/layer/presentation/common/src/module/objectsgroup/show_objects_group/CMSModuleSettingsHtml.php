@@ -11,6 +11,9 @@ $contents = $tasks_data["contents"]["createform"];
 $js_load_function = $tasks_data["js_load_functions"]["createform"];
 
 echo '
+<!-- Layout UI Editor - Color -->
+<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'js/color.js"></script>
+
 <!-- Layout UI Editor - MD5 -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>
 

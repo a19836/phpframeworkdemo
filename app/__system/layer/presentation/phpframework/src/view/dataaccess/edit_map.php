@@ -50,7 +50,7 @@ var old_obj_id = \'' . $map_id . '\';
 			
 			<ul>
 				<li class="save" data-title="Save Map"><a onClick="saveMapObject()"><i class="icon save"></i> Save</a></li>
-				<li class="sub_menu">
+				<li class="sub_menu" onClick="openSubmenu(this)">
 					<i class="icon sub_menu"></i>
 					<ul>
 						<li class="update_automatically" title="Create Map Automatically"><a onClick="createSingleMapParameterOrResultMapAutomatically()"><i class="icon update_automatically"></i> Create Map Automatically</a></li>

@@ -185,6 +185,7 @@
 }
 .icon.info::before {
 	content:"\f05a";
+	margin-left:1px;
 }
 .icon.switch::before {
 	content:"\f074";
@@ -291,6 +292,8 @@
 	font:var(--fa-font-regular);
 	content:"\f0c7";
 	font-size:16px;
+	text-indent:1px;
+	display:block;
 }
 .icon.user::before {
 	content:"\f007";
@@ -317,6 +320,7 @@
 	font:var(--fa-font-regular);
 	content:"\f0c7";
 	font-size:16px;
+	margin-left:1px;
 }
 .icon.continue::after {
 	content:"\f35a";
@@ -436,6 +440,12 @@
 	content:"\f079";
 	font-size:10px;
 }
+.icon.toggle_main_settings::before {
+	content:"\f022";
+}
+.icon.toggle_main_settings::after {
+	content:"\f06e";
+}
 
 .icon.preview_file {
 	width:20px;
@@ -544,7 +554,7 @@
 	-webkit-transform:rotate(180deg) scaleX(-1);
 	transform:rotate(180deg) scaleX(-1);
 	position:absolute;
-	margin-left:2px;
+	margin-left:1px;
 }
 .icon.tasks_flow_tab::after {
 	/*content:"\f303";*/
@@ -602,13 +612,15 @@
 	content: "\f53f";
 }
 .icon.project::before {
-	content: "\f0a0";
+	/*content:"\f0a0";*/
+	content:"\f49e";
 }
 .icon.project_home::before {
 	content: "\e00d";
 }
 .icon.project_home::after {
-	content: "\f0a0";
+	/*content:"\f0a0";*/
+	content:"\f49e";
 	top:4px;
 	left:4px;
 	font-size:8px;

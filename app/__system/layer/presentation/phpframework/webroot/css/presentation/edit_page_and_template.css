@@ -18,7 +18,7 @@
 .regions_blocks_includes_settings {
 	height:300px;
 	margin:0 auto;
-	padding:40px 10px 10px;
+	padding:40px 15px 10px;
 	position:fixed;
 	left:0;
 	right:0;
@@ -43,7 +43,7 @@
 	height:35px;
 	line-height:25px;
 	margin-top:-45px;
-	padding:8px 5px 5px 10px;
+	padding:8px 5px 5px 15px;
 	position:fixed;
 	left:0;
 	right:0;
@@ -133,17 +133,22 @@
 	display:none;
 }
 .regions_blocks_includes_settings .includes .items .item > .search {
-	margin-left:0;
+	margin-left:10px;
 }
 .regions_blocks_includes_settings .icon {
 	display:inline-block;
 	float:none;
-	margin:auto 2px;
+	margin:auto 0 auto 12px;
 	z-index:100;
 	font-size:14px;
 }
+.regions_blocks_includes_settings .icon.add,
+  .regions_blocks_includes_settings .icon.delete {
+	width:13px;
+}
 
-.regions_blocks_includes_settings .items {
+.regions_blocks_includes_settings .items,
+  .regions_blocks_includes_settings .template_region_items {
 	margin-left:20px;
 }
 .regions_blocks_includes_settings .template label {
@@ -163,19 +168,19 @@
    .regions_blocks_includes_settings .other_template_params {
 	margin-left:20px;
 }
-.regions_blocks_includes_settings .region_blocks .items .item, 
-   .regions_blocks_includes_settings .other_region_blocks .items .item,
+.regions_blocks_includes_settings .region_blocks .template_region_items .template_region_item, 
+   .regions_blocks_includes_settings .other_region_blocks .template_region_items .template_region_item,
    .regions_blocks_includes_settings .template_params .items .item,
    .regions_blocks_includes_settings .other_template_params .items .item {
-	width:585px;
+	width:625px;
 	margin-top:10px;
 }
-.regions_blocks_includes_settings .region_blocks .items .item:not(.has_edit) > .edit,
-  .regions_blocks_includes_settings .other_region_blocks .items .item:not(.has_edit) > .edit {
+.regions_blocks_includes_settings .region_blocks .template_region_items .template_region_item:not(.has_edit) > .edit,
+  .regions_blocks_includes_settings .other_region_blocks .template_region_items .template_region_item:not(.has_edit) > .edit {
 	display:none !important;
 }
-.regions_blocks_includes_settings .region_blocks .items .item > label, 
-   .regions_blocks_includes_settings .other_region_blocks .items .item > label, 
+.regions_blocks_includes_settings .region_blocks .template_region_items .template_region_item > label, 
+   .regions_blocks_includes_settings .other_region_blocks .template_region_items .template_region_item > label, 
    .regions_blocks_includes_settings .template_params .items .item > label, 
    .regions_blocks_includes_settings .other_template_params .items .item > label {
 	width:150px;
@@ -186,7 +191,7 @@
 	font-style:normal;
 	white-space:nowrap;
 }
-.regions_blocks_includes_settings .other_region_blocks .items .item > label, 
+.regions_blocks_includes_settings .other_region_blocks .template_region_items .template_region_item > label, 
    .regions_blocks_includes_settings .other_template_params .items .item > label {
 	width:130px;
 }
@@ -199,21 +204,21 @@
 	border-radius:4px;
 	box-sizing:border-box;
 }
-.regions_blocks_includes_settings .region_blocks .items .item > input,
-  .regions_blocks_includes_settings .other_region_blocks .items .item > input {
+.regions_blocks_includes_settings .region_blocks .template_region_items .template_region_item > input,
+  .regions_blocks_includes_settings .other_region_blocks .template_region_items .template_region_item > input {
 	width:202px;
 	text-align:left;
 	/*direction:rtl; - Cannot change the directio to right, otherwise the blocks like "_login" will appear "login_" */
 }
-.regions_blocks_includes_settings .items .item > .block_options,
-   .regions_blocks_includes_settings .items .item > .pretty_block_options_button {
+.regions_blocks_includes_settings .template_region_items .template_region_item > .block_options,
+   .regions_blocks_includes_settings .template_region_items .template_region_item > .pretty_block_options_button {
 	width:200px !important; /* !important must be here bc if block_options is hidden then pretty_block_options_button will have the width:0. so we need to overright this issue! */
 }
 .regions_blocks_includes_settings .template_params .items .item > input,
   .regions_blocks_includes_settings .other_template_params .items .item > input {
 	width:265px;
 }
-.regions_blocks_includes_settings .items .item > .pretty_block_options_button {
+.regions_blocks_includes_settings .template_region_items .template_region_item > .pretty_block_options_button {
 	height:24px;
 	display:inline-block !important;
 	background:white;
@@ -221,13 +226,13 @@
 	border-color:#eee;
 	border-radius:2px;
 }
-.regions_blocks_includes_settings .items .item > .pretty_block_options_button:hover {
+.regions_blocks_includes_settings .template_region_items .template_region_item > .pretty_block_options_button:hover {
 	border-color:#eee;
 }
-.regions_blocks_includes_settings .items .item > .pretty_block_options_button.hidden {
+.regions_blocks_includes_settings .template_region_items .template_region_item > .pretty_block_options_button.hidden {
 	display:none !important;
 }
-.regions_blocks_includes_settings .items .item > .pretty_block_options_button .ui-selectmenu-text {
+.regions_blocks_includes_settings .template_region_items .template_region_item > .pretty_block_options_button .ui-selectmenu-text {
 	line-height:17px;
 	/*direction:rtl; - Cannot change the directio to right, otherwise the blocks like "_login" will appear "login_" */
 }
@@ -293,20 +298,20 @@
 	content:"-- none --";
 }
 
-.regions_blocks_includes_settings .items .item > .region_block_type {
+.regions_blocks_includes_settings .template_region_items .template_region_item > .region_block_type {
 	color:#CCC;
 }
-.regions_blocks_includes_settings .items .item > .block_text,
-   .regions_blocks_includes_settings .items .item > .block_html,
-   .regions_blocks_includes_settings .items .item > .block_params > .block_param .block_param_text,
+.regions_blocks_includes_settings .template_region_items .template_region_item > .block_text,
+   .regions_blocks_includes_settings .template_region_items .template_region_item > .block_html,
+   .regions_blocks_includes_settings .template_region_items .template_region_item > .block_params > .block_param .block_param_text,
    .regions_blocks_includes_settings .items .item > .template_param_text {
 	float:none;
 	clear:left;
 	margin-top:3px;
 }
-.regions_blocks_includes_settings .items .item > .block_text > textarea,
-   .regions_blocks_includes_settings .items .item > .block_html > textarea,
-   .regions_blocks_includes_settings .items .item > .block_params > .block_param .block_param_text > textarea,
+.regions_blocks_includes_settings .template_region_items .template_region_item > .block_text > textarea,
+   .regions_blocks_includes_settings .template_region_items .template_region_item > .block_html > textarea,
+   .regions_blocks_includes_settings .template_region_items .template_region_item > .block_params > .block_param .block_param_text > textarea,
    .regions_blocks_includes_settings .items .item > .template_param_text > textarea {
 	width:100%;
 	height:auto;
@@ -316,7 +321,7 @@
 	border-radius:4px;
 	box-sizing:border-box;
 }
-.regions_blocks_includes_settings .items .item > .block_params > .block_param > label {
+.regions_blocks_includes_settings .template_region_items .template_region_item > .block_params > .block_param > label {
 	width:150px;
 	display:inline-block;
 	font-weight:normal;
@@ -324,11 +329,11 @@
 	color:#666;
 	vertical-align:middle; /* in case the label be in 2 lines bc is too big */
 }
-.regions_blocks_includes_settings .items .item > .block_params > .block_param .block_param_value {
+.regions_blocks_includes_settings .template_region_items .template_region_item > .block_params > .block_param .block_param_value {
 	width:192px;
 	color:#666;
 }
-.regions_blocks_includes_settings .items .item > .block_html > .block_html_editor {
+.regions_blocks_includes_settings .template_region_items .template_region_item > .block_html > .ace_editor {
 	width:100%;
 	min-width:540px;
 	height:auto;
@@ -337,17 +342,17 @@
 	border:1px solid #eee;
 	border-radius:2px;
 }
-.regions_blocks_includes_settings .items .item > .block_params > .block_param select, 
+.regions_blocks_includes_settings .template_region_items .template_region_item > .block_params > .block_param select, 
    .regions_blocks_includes_settings .includes .item > select, 
    .regions_blocks_includes_settings .template_params .item > select, 
    .regions_blocks_includes_settings .other_template_params .item > select {
 	width:70px;
 	color:#CCC;
 }
-.regions_blocks_includes_settings .items .item > .block_params {
+.regions_blocks_includes_settings .template_region_items .template_region_item > .block_params {
 	margin-left:40px;
 }
-.regions_blocks_includes_settings .items .item > .block_params > .block_param {
+.regions_blocks_includes_settings .template_region_items .template_region_item > .block_params > .block_param {
 	margin-top:5px;
 }
 .regions_blocks_includes_settings .no_items {
@@ -402,330 +407,6 @@ body > .dragging_menu_item {
 	border:0;
 	border-radius:5px;
 	text-align:center;
-}
-
-.tab_content_template_layout {
-	height:calc(100vh - 84px); /* Toolbar and settings height */
-	margin:0;
-	padding:0;
-	position:initial; /* must be position initial otherwise in the edit_entity_simple, the iframe_toolbar won't appear */
-	background:var(--main-template-bg) !important; /* very important bc when the iframe is smartphone responsive, we loose track of the iframe borders. The background will help to detect this. */
-	box-sizing: border-box;
-	text-align:center;
-	overflow:auto;
-}
-.tab_content_template_layout:not(.resizing) {
-	transition:all .2s;
-}
-.tab_content_template_layout.toolbar_open {
-	width:75%;
-	width:calc(100% - 250px);
-}
-.tab_content_template_layout:not(.toolbar_open) {
-	width:99% !important;
-	width:calc(100% - 5px) !important;
-}
-.tab_content_template_layout:not(.reverse) {
-	margin-left:auto;
-	margin-right:0;
-}
-.tab_content_template_layout.reverse {
-	margin-left:0;
-	margin-right:auto;
-}
-.tab_content_template_layout.resizing:after {
-	content:"";
-	display:block;
-	position:absolute;
-	top:0;
-	left:0;
-	right:0;
-	bottom:0;
-	background:rgba(0, 0, 0, .5);
-}
-
-.tab_content_template_layout .iframe_toolbar {
-	width:195px;
-	padding:0 60px 0 0;
-	position:fixed;
-	top:20px;
-	right:72px;
-	color:#999;
-	box-sizing:border-box;
-	z-index:6;
-}
-.tab_content_template_layout .iframe_toolbar .icon:not(:hover):not(.active) {
-	color:var(--main-template-color);
-}
-.tab_content_template_layout .iframe_toolbar .icon.desktop {
-	position:absolute;
-	top:1px;
-	right:0px;
-	margin-right:5px;
-	padding-right:8px;
-	border-right:1px solid rgba(0, 0, 0, .1);
-}
-.tab_content_template_layout .iframe_toolbar .icon.mobile {
-	position:absolute;
-	top:1px;
-	right:35px;
-}
-.tab_content_template_layout .iframe_toolbar .icon:hover:after,
-  .tab_content_template_layout .iframe_toolbar .icon:active:after,
-  .tab_content_template_layout .iframe_toolbar .icon:focus:after,
-  .tab_content_template_layout .iframe_toolbar .fit_to_screen:hover:after,
-  .tab_content_template_layout .iframe_toolbar .fit_to_screen:active:after,
-  .tab_content_template_layout .iframe_toolbar .fit_to_screen:focus:after {
-	content:attr(data-title);
-	margin-top:5px;
-	padding:5px 10px;
-	display:block;
-	position:fixed;
-	top:auto;
-	left:auto;
-	right:auto;
-	text-align:right;
-	white-space:nowrap;
-	background:var(--main-iframe-bg);
-	color:var(--main-iframe-color);
-	border-radius:3px;
-	font-weight:normal;
-	cursor:auto;
-	font-size:8pt;
-	font-family:var(--main-font-family);
-}
-.tab_content_template_layout .iframe_toolbar .fit_to_screen:hover:after,
-  .tab_content_template_layout .iframe_toolbar .fit_to_screen:active:after,
-  .tab_content_template_layout .iframe_toolbar .fit_to_screen:focus:after {
-	margin-top:15px;
-}
-.tab_content_template_layout .iframe_toolbar input,
-  .tab_content_template_layout .iframe_toolbar .px,
-  .tab_content_template_layout .iframe_toolbar .x {
-	vertical-align:unset;
-}
-.tab_content_template_layout .iframe_toolbar .fit_to_screen {
-	margin:0 0 0 5px;
-	vertical-align:middle;
-}
-.tab_content_template_layout .iframe_toolbar .view_template_samples {
-	/*margin-left:5px;
-	font-size:var(--icon-font-size);*/
-	display:none;
-}
-
-.tab_content_template_layout iframe {
-	width:100%;
-	height:100%;
-	margin:auto; /* when responsive and iframe has small widtha and height, it should be centered */
-	padding:0;
-	box-sizing:border-box;
-	border:none;
-	background:#fff; /* when is smartphone responsive we loose the track of the iframe borders. The background will help to detect this. */
-	
-	transition:all .2s;
-}
-.tab_content_template_layout .iframe_toolbar:not(.desktop) ~ iframe {
-	border:5px solid var(--resize-bar-border);
-	border-radius:10px;
-}
-
-.tab_content_template_layout .iframe_modules_blocks_toolbar {
-	height:auto;
-	margin:0;
-	position:fixed;
-	top:50px;
-	left:0;
-	bottom:34px;
-	color:var(--main-template-color);
-	background:var(--main-template-bg);
-	border:1px solid #aaa;
-	text-align:left;
-	
-	overflow:hidden;
-}
-.tab_content_template_layout.reverse .iframe_modules_blocks_toolbar {
-	left:auto;
-	right:0;
-}
-.tab_content_template_layout:not(.resizing) .iframe_modules_blocks_toolbar {
-	transition:width .2s;
-}
-.tab_content_template_layout.toolbar_open .iframe_modules_blocks_toolbar {
-	width:25%;
-	width:calc(250px);
-}
-.tab_content_template_layout:not(.toolbar_open) .iframe_modules_blocks_toolbar {
-	width:1% !important;
-	width:calc(5px) !important;
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle {
-	width:5px;
-	position:absolute;
-	top:0;
-	left:auto !important;
-	right:0;
-	bottom:0;
-	cursor:ew-resize;
-	
-	border-left:1px solid var(--resize-bar-border);
-	border-right:1px solid var(--resize-bar-border);
-	background:var(--resize-bar-bg);
-	/*background:var(--resize-bar-vertical-img) repeat-y var(--main-template-bg);*/
-	box-sizing:border-box;
-}
-.tab_content_template_layout.reverse .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle {
-	left:0 !important;
-	right:auto;
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle .button {
-	width:10px;
-	height:34px;
-	margin-left:-1px;
-	position:absolute;
-	left:0;
-	top:45%;
-	top:calc(50% - 17px);
-	cursor:pointer;
-	background-repeat:no-repeat;
-	background-image:url("../../img/tool_frame_right.gif");
-}
-.tab_content_template_layout.toolbar_open .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle .button {
-	background-image:url("../../img/tool_frame_left.gif");
-}
-.tab_content_template_layout.reverse .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle .button {
-	background-image:url("../../img/tool_frame_left.gif");
-}
-.tab_content_template_layout.reverse.toolbar_open .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle .button {
-	background-image:url("../../img/tool_frame_right.gif");
-}
-.tab_content_template_layout:not(.toolbar_open) .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_toggle .button {
-	margin-left:0;
-	margin-right:-1px;
-	left:auto;
-	right:0;
-	background-position:right;
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content {
-	width:100%;
-	width:calc(100% - 5px);
-	height:100%;
-	overflow:auto;
-}
-.tab_content_template_layout.reverse .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content {
-	margin-left:5px;
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree {
-	width:100%;
-	min-width:auto;
-	max-width:none;
-	height:100%;
-	min-height:auto;
-	max-height:none;
-	margin:0;
-	border:0;
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree > li:first-child {
-	padding-top:10px;
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree li a {
-	color:var(--main-template-color);
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree li.draggable_menu_item a {
-	height:26px;
-	cursor:move;
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree li.draggable_menu_item a > .jstree-icon {
-	background:var(--mytree-dragged-widget-bg);
-	color:var(--mytree-dragged-widget-color);
-	border-radius:3px;
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree li.draggable_menu_item a > .jstree-icon::before {
-	color:inherit;
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree li.draggable_menu_item a label {
-	color:var(--mytree-dragged-widget-bg);
-	cursor:move;
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .icon {	
-	margin-left:5px;
-	display:inline-block;
-	vertical-align:middle;
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree li .icon:not(:hover) {
-	color:var(--main-template-color);
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .icon.refresh {	
-	opacity:0;
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .jstree-open > a .icon.refresh {
-	opacity:.7
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .block_file,
-  .tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .module_folder {
-	margin-right:5px;
-	margin-left:-2px;
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .block_file::before {
-	margin-left:0;
-	content:"\f1b2";
-	font:var(--fa-font-solid);
-	font-size:16px;
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-list,
-  .tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-edit,
-  .tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-add,
-  .tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-view {	
-	height:20px;
-	vertical-align:baseline;
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-list::before {	
-	text-rendering:auto;
-	-webkit-font-smoothing:antialiased;
-	font:var(--fa-font-solid);
-	content:"\f00a";
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-edit::before {	
-	text-rendering:auto;
-	-webkit-font-smoothing:antialiased;
-	font:var(--fa-font-solid);
-	content:"\f044";
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-add::before {	
-	text-rendering:auto;
-	-webkit-font-smoothing:antialiased;
-	font:var(--fa-font-solid);
-	content:"\f0fe";
-}
-.tab_content_template_layout .iframe_modules_blocks_toolbar .iframe_modules_blocks_toolbar_content .mytree .table-view::before {	
-	text-rendering:auto;
-	-webkit-font-smoothing:antialiased;
-	font:var(--fa-font-solid);
-	content:"\f06e";
-}
-
-/* TAB CONTENT TEMPLATE LAYOUT - DIAGRAM TASK PROPERTIES */
-.tab_content_template_layout .tab_content_template_layout_tasks {
-	position:fixed !important;
-	top:20px !important;
-	left:20px !important;
-	right:20px !important;
-	bottom:20px !important;
-	
-	padding:0;
-	box-sizing:border-box;
-	overflow:hidden;
-}
-.tab_content_template_layout .tab_content_template_layout_tasks > .popup_close {
-	/* need this otherwise the close button will appear transparent and on the left side in the edit_template_simple.php */
-	opacity:1 !important;
-}
-.tab_content_template_layout .tab_content_template_layout_tasks > iframe {
-	width:100% !important;
-	height:100% !important;
-	position:relative !important;
-	top:0 !important;
-	left:0 !important;
 }
 
 /* MODULE INFO TOOLTIP */
@@ -941,14 +622,14 @@ body > .dragging_menu_item {
 	padding:5px;
 	top:0;
 	left:0;
-	right:calc(100% - 210px);
+	right:calc(100% - 220px);
 	box-sizing:border-box;
 	background:var(--main-template-bg);
 	white-space:nowrap;
 	z-index:3;
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.reverse > .options > .options-left {
-	left:calc(100% - 210px);
+	left:calc(100% - 220px);
 	right:0;
 	text-align:center;
 }
@@ -980,7 +661,7 @@ body > .dragging_menu_item {
 }
 
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center {
-	width:175px;
+	width:185px;
 	padding:0 50px 0 0;
 	position:fixed;
 	top:19px;
@@ -988,6 +669,7 @@ body > .dragging_menu_item {
 	right:285px;
 	bottom:auto;
 	box-sizing:border-box;
+	background:var(--main-iframe-bg);
 	z-index:1;
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center .layout-in-desktop {
@@ -997,6 +679,7 @@ body > .dragging_menu_item {
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center .layout-in-mobile {
 	position:absolute;
 	right:28px;
+	padding-right:10px;
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center .option.option-screen-width, 
   .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center .option.option-screen-height {
@@ -1011,7 +694,7 @@ body > .dragging_menu_item {
 	cursor:not-allowed;
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right {
-	width:105px;
+	width:130px;
 	padding:0;
 	position:fixed;
 	top:19px;
@@ -1027,17 +710,18 @@ body > .dragging_menu_item {
 	color:inherit;
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .sub-options.zooms {
-	margin-left:5px;
-	padding-left:8px;
+	margin-left:0;
+	padding-left:16px;
 	border-left:1px solid rgba(0, 0, 0, .1);
 	
 	margin-right:5px;
-	padding-right:10px;
+	padding-right:16px;
 	border-right:1px solid rgba(0, 0, 0, .1);
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .sub-options.toggles {
 	margin-right:5px;
-	padding-right:10px;
+	padding-left:11px;
+	padding-right:15px;
 	border-right:1px solid rgba(0, 0, 0, .1);
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .sub-options ul {
@@ -1061,13 +745,13 @@ body > .dragging_menu_item {
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .sub-options.zooms ul {
 	min-width:150px;
 }
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .sub-options:not(:hover) ul {
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .sub-options:not(.open) ul {
 	width:0;
 	height:0;
 	overflow:hidden;
 	opacity:0;
 }
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .sub-options:hover > ul:before {
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .sub-options.open > ul:before {
 	content:" ";
 	width:0;
 	height:0;
@@ -1080,7 +764,7 @@ body > .dragging_menu_item {
 	border-bottom:8px solid var(--main-context-menu-border);
 	border-left:8px solid transparent;
 }
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .sub-options:hover > ul:after {
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .sub-options.open > ul:after {
 	content:" ";
 	height:0;
 	width:0;
@@ -1177,12 +861,12 @@ body > .dragging_menu_item {
 	content:"\f142";
 	text-indent:2px;
 }
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right .option.sub_menu:hover:before {
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right .option.sub_menu:hover:before,
+  .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right .option.sub_menu.open:before {
 	color:var(--icon-hover-color);
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right .option.sub_menu > ul {
 	width:auto;
-	min-width:200px;
 	height:auto;
 	padding:13px 0 0;
 	position:absolute;
@@ -1199,13 +883,13 @@ body > .dragging_menu_item {
 	opacity:1;
 	transition:.5s all;
 }
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right .option.sub_menu:not(:hover) > ul {
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right .option.sub_menu:not(.open) > ul {
 	width:0;
 	min-width:auto;
 	height:0;
 	opacity:0;
 }
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right .option.sub_menu:hover > ul:before {
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right .option.sub_menu.open > ul:before {
 	content:" ";
 	width:0;
 	height:0;
@@ -1218,7 +902,7 @@ body > .dragging_menu_item {
 	border-bottom:8px solid var(--main-context-menu-border);
 	border-left:8px solid transparent;
 }
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right .option.sub_menu:hover > ul:after {
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right .option.sub_menu.open > ul:after {
 	content:" ";
 	height:0;
 	width:0;
@@ -1262,7 +946,7 @@ body > .dragging_menu_item {
 	opacity:0;
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .option.sub_menu ul li a {
-	padding:5px;
+	padding:5px 10px 5px 5px;
 	display:block;
 	color:inherit;
 	text-decoration:none;
@@ -1432,10 +1116,10 @@ body > .dragging_menu_item {
 }
 .code_layout_ui_editor .layout-ui-editor:not(.reverse) .layout_ui_editor_right_container {
 	left:0;
-	right:calc(100% - 210px);
+	right:calc(100% - 220px);
 }
 .code_layout_ui_editor .layout-ui-editor.reverse .layout_ui_editor_right_container {
-	left:calc(100% - 210px);
+	left:calc(100% - 220px);
 	right:0;
 }
 .code_layout_ui_editor .layout-ui-editor:not(.reverse).with-minimized-panels > .layout_ui_editor_right_container {
@@ -1537,5 +1221,36 @@ body > .dragging_menu_item {
 	top:15px;
 	left:10px;
 	right:10px;
+	bottom:10px;
+}
+
+/* ERROR and INVALID */
+.error {
+	width:100%;
+	text-align:center;
+	font-style:italic;
+	color:#B51E3F;
+	margin-top:10px;
+	margin-bottom:20px;
+}
+
+.invalid {
+	padding:10px;
+	position:absolute;
+	left:0;
+	top:50px;
+	right:0;
+	text-align:center;
+	background:#fff;
+	border:1px solid #B51E3F;
+	color:#B51E3F;
+	z-index:5;
+}
+.invalid a {
+	text-decoration:underline;
+}
+.invalid .close {
+	position:absolute;
+	right:5px;
 	bottom:10px;
 }

@@ -37,7 +37,7 @@ $head = '
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/db/create_diagram_sql.js"></script>'; $main_content .= '<div class="create_diagram_sql">
 	<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 		<header>
-			<div class="title">DB Diagram\'s SQL</div>
+			<div class="title">DB Diagram\'s SQL for DB: \'' . $bean_name . '\'</div>
 			<ul>
 				<li class="execute" data-title="Execute SQL"><a onClick="execute()"><i class="icon continue"></i> Execute</a></li>
 			</ul>

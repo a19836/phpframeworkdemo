@@ -57,7 +57,7 @@ var is_covertable_sql = ' . ($is_covertable_sql ? 1 : 0) . ';
 			</div>
 			<ul>
 				<li class="save" data-title="Save Query"><a onClick="saveQueryObject(onSuccessSingleQuerySave)"><i class="icon save"></i> Save</a></li>
-				<li class="sub_menu">
+				<li class="sub_menu" onClick="openSubmenu(this)">
 					<i class="icon sub_menu"></i>
 					<ul>
 						<li class="add_new_table select_query" title="Add new Table"><a onclick="return addNewTask(' . $rand . ');"><i class="icon add"></i> Add Table</a></li>

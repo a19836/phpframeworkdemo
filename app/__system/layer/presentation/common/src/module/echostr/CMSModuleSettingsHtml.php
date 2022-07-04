@@ -1,16 +1,37 @@
 <?php
 include $EVC->getConfigPath("config");
+include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler");
+include_once $EVC->getUtilPath("WorkFlowUIHandler");
 include_once $EVC->getUtilPath("WorkFlowPresentationHandler");
 
 $reverse_class = $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse";
+$common_project_name = $EVC->getCommonProjectName();
+$purlp = $project_url_prefix;
+$pcurlp = $project_common_url_prefix;
 
+include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
+$project_url_prefix = $purlp;
+$project_common_url_prefix = $pcurlp;
+
+if ($PEVC) {
+	//load the createform task, so we can load the programming/common/js/FormFieldsUtilObj.js file, bc this file is used in the LayoutUIEditor.js
+	$allowed_tasks_tag = array("createform");
+	$WorkFlowTaskHandler = new WorkFlowTaskHandler($webroot_cache_folder_path, $webroot_cache_folder_url);
+	$WorkFlowTaskHandler->setCacheRootPath(LAYER_CACHE_PATH);
+	$WorkFlowTaskHandler->setAllowedTaskTags($allowed_tasks_tag);
+	
+	$WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url);
+	
+	//load createform js files and load all files for the LayoutUIEditor
+	echo $WorkFlowUIHandler->getHeader(array("tasks_css_and_js" => true, "icons_and_edit_code_already_included" => true, "ui_editor" => true));
+}
+
+include $EVC->getModulePath("common/end_project_module_file", $common_project_name);
+
+/* The code below is already included by the $WorkFlowUIHandler->getHeader(...) method
 echo '
-<!-- TinyMCE JS Files  -->
-<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/tinymce/js/tinymce/tinymce.min.js"></script>	
-<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
-
-<!-- CKEDITOR JS Files  -->
-<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/ckeditor/ckeditor.js"></script>
+<!-- Layout UI Editor - Color -->
+<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'js/color.js"></script>
 
 <!-- Layout UI Editor - Add Jquery Tap-Hold Event JS file -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerytaphold/taphold.js"></script>
@@ -63,6 +84,15 @@ echo '
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/js/LayoutUIEditor.js"></script>
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/js/CreateWidgetContainerClassObj.js"></script>
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/js/LayoutUIEditorFormFieldUtil.js"></script>
+';*/
+
+echo '
+<!-- TinyMCE JS Files  -->
+<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/tinymce/js/tinymce/tinymce.min.js"></script>	
+<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
+
+<!-- CKEDITOR JS Files  -->
+<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/ckeditor/ckeditor.js"></script>
 
 <script>
 var create_echostr_settings_code_url = \'' . $project_url_prefix . 'module/echostr/create_echostr_settings_code\';

@@ -80,7 +80,7 @@ var available_templates_props = ' . json_encode($available_templates_props) . ';
 	</ul>
 	
 	<div id="code">
-		<div class="code_menu top_bar_menu">
+		<div class="code_menu top_bar_menu" onClick="openSubmenu(this)">
 			' . WorkFlowPresentationHandler::getCodeEditorMenuHtml(array("save_func" => "saveGlobalVariables")) . '
 		</div>
 		<textarea>' . htmlspecialchars($obj_data["code"], ENT_NOQUOTES) . '</textarea>
@@ -89,7 +89,7 @@ var available_templates_props = ' . json_encode($available_templates_props) . ';
 	<div id="ui">' . WorkFlowPresentationHandler::getTaskFlowContentHtml($WorkFlowUIHandler, array("save_func" => "saveGlobalVariables")) . '</div>
 	
 	<div id="form_global_vars">
-		<div class="code_menu top_bar_menu">
+		<div class="code_menu top_bar_menu" onClick="openSubmenu(this)">
 			<ul>
 				<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
 				<li class="separator"></li>

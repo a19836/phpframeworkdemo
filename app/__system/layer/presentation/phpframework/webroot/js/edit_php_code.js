@@ -15,6 +15,7 @@ var brokers_db_drivers = {};
 var auto_scroll_active = true;
 var word_wrap_active = false;
 var show_low_code_first = true;
+var running_save_obj_actions_count = 0;
 
 $(function () {
 	MyFancyPopup.init({
@@ -26,6 +27,9 @@ $(function () {
 
 /* AUTO SAVE & CONVERT FUNCTIONS */
 
+function isPHPCodeAutoSaveMenuEnabled() {
+	return $("#code .code_menu ul li.auto_save_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_activation input, #code .layout-ui-editor > .options li.auto_save_activation input").first().is(":checked");
+}
 function onTogglePHPCodeAutoSave() {
 	var lis = $("#code .code_menu ul li.auto_save_activation, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_save_activation, #code .layout-ui-editor > .options li.auto_save_activation");
 	var inputs = lis.find("input");
@@ -51,6 +55,9 @@ function onTogglePHPCodeAutoSave() {
 	}
 }
 
+function isPHPCodeAutoConvertMenuEnabled() {
+	return $("#code .code_menu ul li.auto_convert_activation input, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation input, #code .layout-ui-editor > .options li.auto_convert_activation input").first().is(":checked");
+}
 function onTogglePHPCodeAutoConvert() {
 	var lis = $("#code .code_menu ul li.auto_convert_activation, #ui .taskflowchart .workflow_menu ul.dropdown li.auto_convert_activation, #code .layout-ui-editor > .options li.auto_convert_activation");
 	var inputs = lis.find("input");
@@ -1994,7 +2001,7 @@ function choosePresentation(elm) {
 
 /* UI, TABS, WORKFLOW & CODE EDITOR FUNCTIONS */
 
-function onLoadTaskFlowChartAndCodeEditor() {
+function onLoadTaskFlowChartAndCodeEditor(opts) {
 	if ($(".taskflowchart")[0]) {
 		resizeTaskFlowChart()
 		resizeCodeEditor();
@@ -2021,7 +2028,8 @@ function onLoadTaskFlowChartAndCodeEditor() {
 		}
 	}
 	
-	MyFancyPopup.hidePopup();
+	if (!opts || !opts["do_not_hide_popup"])
+		MyFancyPopup.hidePopup();
 }
 
 function createCodeEditor(textarea, options) {
@@ -2055,6 +2063,9 @@ function createCodeEditor(textarea, options) {
 			},
 		});
 	}
+	
+	if (options && typeof options.change_func == "function")
+		editor.on("change", options.change_func);
 	
 	parent.find("textarea.ace_text-input").removeClass("ace_text-input"); //fixing problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.
 	
@@ -2352,7 +2363,9 @@ function onClickTaskWorkflowTab(elm, options) {
 		workflow_menu.hide();
 		
 		var auto_save_bkp = auto_save;
-		auto_save = false;
+		
+		if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
+			auto_save = false;
 		
 		jsPlumbWorkFlow.jsPlumbTaskFile.read(get_workflow_file_url, {
 			"success": function(data, textStatus, jqXHR) {
@@ -2362,7 +2375,8 @@ function onClickTaskWorkflowTab(elm, options) {
 				workflow_menu.show();
 				jsPlumbWorkFlow.resizePanels();
 				
-				auto_save = auto_save_bkp;
+				if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
+					auto_save = auto_save_bkp;
 				
 				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, get_workflow_file_url, function() {
@@ -2425,7 +2439,8 @@ function onClickTaskWorkflowTab(elm, options) {
 				workflow_menu.show();
 				jsPlumbWorkFlow.resizePanels();
 				
-				auto_save = auto_save_bkp;
+				if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
+					auto_save = auto_save_bkp;
 				
 				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, get_workflow_file_url, function() {
@@ -2682,7 +2697,9 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 			}
 			
 			var auto_save_bkp = auto_save;
-			auto_save = false;
+			
+			if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
+				auto_save = false;
 			
 			$.ajax({
 				type : "post",
@@ -2691,7 +2708,8 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 				dataType : "text",
 				success : function(data, textStatus, jqXHR) {
 					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL)) {
-						auto_save = auto_save_bkp;
+						if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
+							auto_save = auto_save_bkp;
 						
 						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_workflow_file_from_code_url, function() {
 							generateTasksFlowFromCode(true, options);
@@ -2725,7 +2743,8 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 									options["success"]();
 							}
 							
-							auto_save = auto_save_bkp;
+							if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
+								auto_save = auto_save_bkp;
 							
 							//The jsPlumbTaskFile will call after this function the jsPlumbTaskFile.startAutoSave method which updates the jsPlumbTaskFile.saved_data_obj var with the new workflow data obj. So we must execute a setTimeout so we can then update the old value to the jsPlumbTaskFile.saved_data_obj var.
 							setTimeout(function() {
@@ -2738,13 +2757,16 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 						jsPlumbWorkFlow.jsPlumbTaskFile.reload(get_tmp_workflow_file_url, {
 							"async": true,
 							error: function() {
-								auto_save = auto_save_bkp;
+								if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
+									auto_save = auto_save_bkp;
 							}
 						});
 					}
 					else {
 						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again." + (data ? "\n" + data : ""));
-						auto_save = auto_save_bkp;
+						
+						if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
+							auto_save = auto_save_bkp;
 					
 						if (typeof options["error"] == "function")
 							options["error"]();
@@ -2758,7 +2780,8 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 				error : function(jqXHR, textStatus, errorThrown) { 
 					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
 					jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again." + msg);
-					auto_save = auto_save_bkp;
+					if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
+						auto_save = auto_save_bkp;
 					
 					if (typeof options["error"] == "function")
 						options["error"]();
@@ -2913,7 +2936,7 @@ function getCodeForSaving(parent_elm, options) {
 							//enable auto_convert
 							auto_convert = true;
 						}
-						else //remove messages saying there are no changes to save
+						else if (is_from_auto_save) //remove messages saying there are no changes to save, but only if is auto_save, otherwise if manual save, we are removing the message saying "saved successfully"
 							StatusMessageHandler.removeMessages("info");
 					},
 				});
@@ -2974,14 +2997,39 @@ function saveObjCode(save_object_url, obj, opts) {
 	if (obj && obj.code != null)
 		saveObj(save_object_url, obj, opts);
 	else {
+		//prepare and clone opts just in case exists a concurrent process that changes something in the opts.
 		opts = opts ? opts : {};
 		
-		if (typeof opts.error != "function" || opts.error()) {
+		//prepare error func
+		var error_func = typeof opts.error == "function" ? function() {
+			try { //just in case execute the func inside of a try and catch to continue executing code below
+				return opts.error();
+			}
+			catch(e) {
+				if (console && console.log)
+					console.log(e);
+			}
+		} : null;
+		
+		//call error func
+		if (!error_func || error_func()) {
 			if (!is_from_auto_save)
-				StatusMessageHandler.showError("Error trying to generate new code and saving the tasks' flow. Please try again...");
+				StatusMessageHandler.showError("Error trying to save this file. Please try again...");
 		}
 		
-		if (!is_from_auto_save) {
+		//call complete func
+		if (typeof opts.complete == "function") {
+			try { //just in case execute the func inside of a try and catch to continue executing code below
+				opts.complete();
+			}
+			catch(e) {
+				if (console && console.log)
+					console.log(e);
+			}
+		}
+		
+		//hide popup and reset auto save
+		if (!is_from_auto_save_bkp) {
 			MyFancyPopup.hidePopup();
 			$(".workflow_menu").show();
 		}
@@ -2991,127 +3039,281 @@ function saveObjCode(save_object_url, obj, opts) {
 }
 
 function saveObj(save_object_url, obj, opts) {
+	//saves the running_save_obj_actions_count to a local variable before it executes anything else, and then sets it to true.
+	var running_save_obj_actions_count_bkp = running_save_obj_actions_count;
+	//console.log("running_save_obj_actions_count:"+running_save_obj_actions_count_bkp);
+	running_save_obj_actions_count++;
+	
+	//prepare and clone opts just in case exists a concurrent process that changes something in the opts.
 	opts = opts ? opts : {};
 	
-	var url = save_object_url + (typeof file_modified_time != "undefined" && file_modified_time ? (save_object_url.indexOf("?") != -1 ? "&" : "?") + "file_modified_time=" + file_modified_time : "");
-	var url_aux = save_object_url;
+	//backup the is_from_auto_save, just in case there is an auto_save concurrent process running, it will change the value of is_from_auto_save after the ajax request below, so we must save this value to a local variable.
+	var is_from_auto_save_bkp = is_from_auto_save; 
 	
-	if (typeof opts.parse_url == "function") {
-		url = opts.parse_url(url);
-		url_aux = opts.parse_url(url_aux);
-	}
+	//disable auto_save during the saving action
+	var auto_save_bkp = auto_save;
 	
-	var new_saved_obj_id = $.md5(url_aux + JSON.stringify(obj));
+	if (/*!is_from_auto_save_bkp && */auto_save_bkp && (isAutoSaveMenuEnabled() || isPHPCodeAutoSaveMenuEnabled()))
+		auto_save = false;
 	
-	//only saves if object is different
-	if (!saved_obj_id || saved_obj_id != new_saved_obj_id) {
-		var ajax_options = {
-			type : "post",
-			url : url,
-			data : {"object" : obj},
-			dataType : "text",
-			success : function(data, textStatus, jqXHR) {
-				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
-						saveObj(save_object_url, obj, opts);
-					});
-				else {
-					var json_data = data && ("" + data).substr(0, 1) == "{" ? JSON.parse(data) : null;
-					var status = parseInt(data) == 1 || ($.isPlainObject(json_data) && json_data["status"] == 1);
-					var file_was_changed = !status && $.isPlainObject(json_data) && json_data["status"] == "CHANGED";
-					
-					if(status) {
-						if ($.isPlainObject(json_data) && json_data["modified_time"])
-							file_modified_time = json_data["modified_time"];
-						
-						if (typeof opts.success != "function" || opts.success(data, textStatus, jqXHR)) {
-							if (!is_from_auto_save) //only show message if a manual save action
-								StatusMessageHandler.showMessage("Saved successfully.");
-						}
-						
-						//sets new saved_obj_id
-						saved_obj_id = new_saved_obj_id;
-					}
-					else if (file_was_changed) {
-						if (!is_from_auto_save) { 
-							//only show this message if is a manual save, otherwise we don't want to do anything. Otherwise the browser is showing this popup constantly and is annoying for the user.
-							showConfirmationCodePopup(json_data["old_code"], json_data["new_code"], {
-								save: function() {
-									//remove file_modified_time so it doesn't check if the file was changed. 
-									var pu = opts.parse_url;
-									
-									opts.parse_url = function(url) {
-										url = typeof pu == "function" ? pu(url) : url;
-										return url.replace(/(&|\?)file_modified_time=([0-9]*)/g, "");
-									};
-									
-									if (typeof opts.confirmation_save != "function" || opts.confirmation_save(data)) {
-										saveObj(save_object_url, obj, opts);
-										
-										return true;
-									}
-									else if (is_from_auto_save)
-										resetAutoSave();
-								},
-								cancel: function() {
-									if (is_from_auto_save)
-										resetAutoSave();
-									
-									return typeof opts.confirmation_cancel != "function" || opts.confirmation_cancel(data);
-								},
+	//prepare complete func, by resetting the running_save_obj_actions_count var
+	var complete_func = function() {
+		var ret = null;
+		
+		if (typeof opts.complete == "function") {
+			try { //just in case execute the func inside of a try and catch to continue executing code below
+				ret = opts.complete();
+				
+				//Note that if the opts.complete wants to change the value for running_save_obj_actions_count, after some internal action, it should return an object with do_not_update_running_save_obj_actions_count=true.
+			}
+			catch(e) {
+				if (console && console.log)
+					console.log(e);
+			}
+		}
+		
+		//sets auto_save back to its original value
+		if (/*!is_from_auto_save_bkp && */auto_save_bkp && (isAutoSaveMenuEnabled() || isPHPCodeAutoSaveMenuEnabled())) //This must be before the success_func and error_func get executed or before the saveObj
+			auto_save = auto_save_bkp;
+		
+		//hide popup and reset auto save
+		if (!is_from_auto_save_bkp) {
+			MyFancyPopup.hidePopup();
+			$(".workflow_menu").show();
+		}
+		else
+			resetAutoSave();
+		
+		//change running_save_obj_actions_count to false. If the opts.complete wants to change the value for running_save_obj_actions_count, after some internal action, it should return an object with do_not_update_running_save_obj_actions_count=true.
+		if (!ret || !$.isPlainObject(ret) || !ret["do_not_update_running_save_obj_actions_count"]) {
+			running_save_obj_actions_count = running_save_obj_actions_count < 0 ? 0 : running_save_obj_actions_count - 1; //be sure that is never smalled than 0.
+			//console.log("running_save_obj_actions_count:"+running_save_obj_actions_count);
+		}
+	};
+	
+	if (running_save_obj_actions_count_bkp == 0) {
+		//if there was a previous function that tried to execute an ajax request, like the getCodeForSaving method, we detect here if the user needs to login, and if yes, alerts him that needs to login first. 
+		//Do not re-call this method (saveObj) again, otherwise there could be some other files that will not be saved, this is, the getCodeForSaving saves the workflow and if we only call the saveObj method, the workflow won't be saved. To avoid this situation, we simple show a message so the user can execute again the save action manually.
+		var needs_to_login = jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL); 
+		
+		if (!needs_to_login) {
+			//prepare parse_url func
+			var parse_url_func = typeof opts.parse_url == "function" ? function(url) {
+				try { //just in case execute the func inside of a try and catch to continue executing code below
+					return opts.parse_url(url);
+				}
+				catch(e) {
+					if (console && console.log)
+						console.log(e);
+				}
+			} : null;
+			
+			//prepare success func
+			var success_func = typeof opts.success == "function" ? function(data, textStatus, jqXHR) {
+				try { //just in case execute the func inside of a try and catch to continue executing code below
+					return opts.success(data, textStatus, jqXHR);
+				}
+				catch(e) {
+					if (console && console.log)
+						console.log(e);
+				}
+			} : null;
+			
+			//prepare error func
+			var error_func = typeof opts.error == "function" ? function(jqXHR, textStatus, errorThrown) {
+				try { //just in case execute the func inside of a try and catch to continue executing code below
+					return opts.error(jqXHR, textStatus, errorThrown);
+				}
+				catch(e) {
+					if (console && console.log)
+						console.log(e);
+				}
+			} : null;
+			
+			//prepare confirmation_save func
+			var confirmation_save_func = typeof opts.confirmation_save == "function" ? function(data) {
+				try { //just in case execute the func inside of a try and catch to continue executing code below
+					return opts.confirmation_save(data);
+				}
+				catch(e) {
+					if (console && console.log)
+						console.log(e);
+				}
+			} : null;
+			
+			//prepare confirmation_cancel func
+			var confirmation_cancel_func = typeof opts.confirmation_cancel == "function" ? function(data) {
+				try { //just in case execute the func inside of a try and catch to continue executing code below
+					return opts.confirmation_cancel(data);
+				}
+				catch(e) {
+					if (console && console.log)
+						console.log(e);
+				}
+			} : null;
+			
+			//prepare url
+			var url = save_object_url + (typeof file_modified_time != "undefined" && file_modified_time ? (save_object_url.indexOf("?") != -1 ? "&" : "?") + "file_modified_time=" + file_modified_time : "");
+			var url_aux = save_object_url;
+			
+			if (parse_url_func) {
+				url = parse_url_func(url);
+				url_aux = parse_url_func(url_aux);
+			}
+			
+			//Note: DO NOT use the prepareAutoSaveVars bc the auto_save maybe was disable before by a parent function which already called prepareAutoSaveVars before disable the auto_save, like it happens in the edit_template_simple.js and edit_entity_simple.js.
+			
+			var new_saved_obj_id = $.md5(url_aux + JSON.stringify(obj));
+			
+			//only saves if object is different
+			if (!saved_obj_id || saved_obj_id != new_saved_obj_id) {
+				//prepare save ajax settings
+				var ajax_options = {
+					type : "post",
+					url : url,
+					data : {"object" : obj},
+					dataType : "text",
+					success : function(data, textStatus, jqXHR) {
+						//show login popup
+						if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+							showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
+								$.ajax(ajax_options);
 							});
+						else {
+							var json_data = data && ("" + data).substr(0, 1) == "{" ? JSON.parse(data) : null;
+							var status = parseInt(data) == 1 || ($.isPlainObject(json_data) && json_data["status"] == 1);
+							var file_was_changed = !status && $.isPlainObject(json_data) && json_data["status"] == "CHANGED";
+							
+							//if status is true
+							if (status) {
+								//sets new file modified time
+								if ($.isPlainObject(json_data) && json_data["modified_time"])
+									file_modified_time = json_data["modified_time"];
+								
+								//sets new saved_obj_id
+								saved_obj_id = new_saved_obj_id;
+								
+								//call on success 
+								if (!success_func || success_func(data, textStatus, jqXHR)) {
+									if (!is_from_auto_save_bkp) //only show message if a manual save action
+										StatusMessageHandler.showMessage("Saved successfully.");
+								}
+								
+								//call on complete func
+								complete_func();
+							}
+							//if status is FILE CHANGED
+							else if (file_was_changed) {
+								//if manual save, show confirmation popup
+								if (!is_from_auto_save_bkp) { 
+									//hide popup so the user can see the confirmation popup, otherwise it appears bellow the loading icon and correspondent overlay
+									MyFancyPopup.hidePopup();
+									
+									//only show this message if is a manual save, otherwise we don't want to do anything. Otherwise the browser is showing this popup constantly and is annoying for the user.
+									showConfirmationCodePopup(json_data["old_code"], json_data["new_code"], {
+										save: function() {
+											//if confirmation_save is true, shows loading icon again and call saveObj
+											if (!confirmation_save_func || confirmation_save_func(data)) {
+												//show loading icon again
+												MyFancyPopup.showOverlay();
+												MyFancyPopup.showLoading();
+												
+												//prepare url, by removing the file_modified_time from the url, so the ajax request doesn't check if the file was changed. 
+												var ajax_options_clone = Object.assign({}, ajax_options);
+												ajax_options_clone.url = ajax_options_clone.url.replace(/(&|\?)file_modified_time=([0-9]*)/g, "");
+												
+												//call saveObj again
+												$.ajax(ajax_options_clone); //This function will then hide the loading icon, show the workflow_menu and call the complete_func handler
+												
+												return true;
+											}
+											else //Don't do anything, so the confirmation popup continues showing. If the user wants to close it, it needs to click in the cancel button.
+												StatusMessageHandler.showError("Error: cannot proceed with save action!"); //by default the confirmation_save method should show a error message if is false, but in case it gives a javascript error, we show/append this error too.
+										},
+										cancel: function() {
+											//call on complete func
+											complete_func();
+											
+											//call confirmation cancel
+											return !confirmation_cancel_func || confirmation_cancel_func(data);
+										},
+									});
+								}
+								else { //if is auto save
+									//call on complete func
+									complete_func();
+								}
+							}
+							else {
+								//call error func and show error message
+								if (!error_func || error_func(jqXHR, textStatus, data)) {
+									if (!is_from_auto_save_bkp) //only show error if manual save, bc if is auto_save the user shouldn't be bother with errors while is changing the code.
+									StatusMessageHandler.showError("Error trying to save new changes. Please try again..." + (data ? "\n" + data : ""));
+								}
+								
+								//call on complete func
+								complete_func();
+							}
 						}
-						else
-							resetAutoSave();
-					}
-					else if (typeof opts.error != "function" || opts.error(jqXHR, textStatus, data)) {
-						if (!is_from_auto_save) //only show error if manual save, bc if is auto_save the user shouldn't be bother with errors while is changing the code.
-							StatusMessageHandler.showError("Error trying to save new changes. Please try again..." + (data ? "\n" + data : ""));
-					}
-					
-					if (!is_from_auto_save) {
-						MyFancyPopup.hidePopup();
-						$(".workflow_menu").show();
-					}
-					else
-						resetAutoSave();
-				}
-			},
-			error : function(jqXHR, textStatus, errorThrown) { 
-				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
-						saveObj(save_object_url, obj, opts);
-					});
-				else {
-					if (typeof opts.error != "function" || opts.error(jqXHR, textStatus, errorThrown)) 
-						StatusMessageHandler.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to save new changes. Please try again..." + (jqXHR.responseText ? "\n" + jqXHR.responseText : ""));
-					
-					if (!is_from_auto_save) {
-						MyFancyPopup.hidePopup();
-						$(".workflow_menu").show();
-					}
-					else
-						resetAutoSave();
-				}
-			},
-		};
-		
-		if (is_from_auto_save && auto_save_connection_ttl)
-			ajax_options["timeout"] = auto_save_connection_ttl; //add timeout to auto save connection.
-		
-		if (opts.hasOwnProperty("async")) 
-			ajax_options["async"] = opts["async"];
-		
-		$.ajax(ajax_options);
+					},
+					error : function(jqXHR, textStatus, errorThrown) { 
+						//shows login popup
+						if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+							showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
+								$.ajax(ajax_options);
+							});
+						else {
+							//call on error and show error message
+							if (!error_func || error_func(jqXHR, textStatus, errorThrown)) {
+								if (!is_from_auto_save_bkp) //only show error if manual save, bc if is auto_save the user shouldn't be bother with errors while is changing the code.
+									StatusMessageHandler.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to save new changes. Please try again..." + (jqXHR.responseText ? "\n" + jqXHR.responseText : ""));
+							}
+							
+							//call on complete func
+							complete_func();
+						}
+					},
+				};
+				
+				//sets connection ttl
+				if (is_from_auto_save_bkp && auto_save_connection_ttl)
+					ajax_options["timeout"] = auto_save_connection_ttl; //add timeout to auto save connection.
+				
+				//sets assync
+				if (opts.hasOwnProperty("async")) 
+					ajax_options["async"] = opts["async"];
+				
+				//executes ajax
+				$.ajax(ajax_options);
+			}
+			else {
+				//call on complete func
+				complete_func();
+				
+				if (!is_from_auto_save_bkp)
+					StatusMessageHandler.showMessage("Nothing to save.");
+			}
+		}
+		else {
+			//call on complete func
+			complete_func();
+			
+			if (!is_from_auto_save_bkp) {
+				//if there was a previous function that tried to execute an ajax request, like the getCodeForSaving method, we detect here if the user needs to login, and if yes, alerts him that needs to login first. 
+				//Do not re-call this method (saveObj) again, otherwise there could be some other files that will not be saved, this is, the getCodeForSaving saves the workflow and if we only call the saveObj method, the workflow won't be saved. To avoid this situation, we simple show a message so the user can execute again the save action manually.
+				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
+					StatusMessageHandler.showError("The file was not saved previously, but now that you are logged in, please save it again...");
+				});
+			}
+		}
 	}
-	else if (!is_from_auto_save) {
-		StatusMessageHandler.showMessage("Nothing to save.");
+	else {
+		//call on complete func
+		complete_func();
 		
-		MyFancyPopup.hidePopup();
-		$(".workflow_menu").show();
+		if (!is_from_auto_save_bkp)
+			StatusMessageHandler.showMessage("There is already a saving process running. Please wait a few seconds and try again...");
 	}
-	else
-		resetAutoSave();
 }
 
 function showConfirmationCodePopup(old_code, new_code, opts) {

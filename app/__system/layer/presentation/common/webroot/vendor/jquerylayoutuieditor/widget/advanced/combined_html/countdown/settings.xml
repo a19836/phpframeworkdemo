@@ -3,6 +3,7 @@
 	<label>Count Down</label>
 	<tag>countdown</tag>
 	<settings>
+		<resizable>1</resizable>
 		<create_widget_class>CountDownWidget</create_widget_class>
 	</settings>
 	<template_widget><![CDATA[

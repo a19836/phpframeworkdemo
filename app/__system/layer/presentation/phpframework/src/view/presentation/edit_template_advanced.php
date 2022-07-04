@@ -84,7 +84,7 @@ InlineHTMLTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'ui-menu
 		</ul>
 		
 		<div id="code">
-			<div class="code_menu top_bar_menu">
+			<div class="code_menu top_bar_menu" onClick="openSubmenu(this)">
 				' . WorkFlowPresentationHandler::getCodeEditorMenuHtml(array("save_func" => "saveTemplate", "show_pretty_print" => false)) . '
 			</div>
 			<textarea>' . htmlspecialchars($obj_data["code"], ENT_NOQUOTES) . '</textarea>

@@ -2,6 +2,9 @@ var show_popup_interval_id = null;
 var chooseProjectTemplateUrlFromFileManagerTree = null; //used by the create_presentation_uis_diagram.js and module/menu/show_menu/settings.js and others
 
 $(function () {
+	MyFancyPopup.showOverlay();
+	MyFancyPopup.showLoading();
+	
 	$(window).bind('beforeunload', function () {
 		if (isEntityCodeObjChanged()) {
 			if (window.parent && window.parent.iframe_overlay)
@@ -13,72 +16,11 @@ $(function () {
 		return null;
 	});
 	
-	//init auto save
-	addAutoSaveMenu(".top_bar li.sub_menu li.save");
-	enableAutoSave(onToggleAutoSave);
-	initAutoSave(".top_bar li.save a");
-	
 	//prepare top_bar
-	$(".entity_template_layout > .code_menu").addClass("top_bar_menu");
-	$(".entity_template_layout > .layout-ui-editor").addClass("with_top_bar_menu");
+	$(".code_layout_ui_editor > .code_menu").addClass("top_bar_menu");
+	$(".code_layout_ui_editor > .layout-ui-editor").addClass("with_top_bar_menu");
 	
 	//init trees
-	choosePropertyVariableFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
-	});
-	choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");
-	
-	chooseMethodFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
-	});
-	chooseMethodFromFileManagerTree.init("choose_method_from_file_manager");
-	
-	chooseFunctionFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
-	});
-	chooseFunctionFromFileManagerTree.init("choose_function_from_file_manager");
-	
-	chooseFileFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
-	});
-	chooseFileFromFileManagerTree.init("choose_file_from_file_manager");
-	
-	choosePresentationFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeAllThatIsNotPagesFromTree,
-	});
-	choosePresentationFromFileManagerTree.init("choose_presentation_from_file_manager");
-	
-	choosePageUrlFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeAllThatIsNotPagesFromTree,
-	});
-	choosePageUrlFromFileManagerTree.init("choose_page_url_from_file_manager");
-	
-	chooseImageUrlFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
-	});
-	chooseImageUrlFromFileManagerTree.init("choose_image_url_from_file_manager");
-	
 	chooseBlockFromFileManagerTree = new MyTree({
 		multiple_selection : false,
 		toggle_children_on_click : true,
@@ -95,62 +37,69 @@ $(function () {
 	});
 	chooseProjectTemplateUrlFromFileManagerTree.init("choose_project_template_url_from_file_manager");
 	
-	createChoosePresentationIncludeFromFileManagerTree();
-	
 	//init ui
 	var entity_obj = $(".entity_obj");
 	
 	if (entity_obj[0]) {
-		//init ui layout editor
-		initCodeLayoutUIEditor(entity_obj, {
+		//init page template layout
+		initPageAndTemplateLayout(entity_obj, {
 			save_func: saveEntity, 
 			ready_func: function() {
-				var luie = entity_obj.find(".entity_template_layout > .layout-ui-editor");
-				var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
+				//console.log("initPageAndTemplateLayout ready_func");
 				
-				PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorWithRightContainer;
-				
-				//show view layout panel instead of code
-				var view_layout = luie.find(" > .tabs > .view-layout");
-				view_layout.addClass("do-not-confirm");
-				view_layout.trigger("click");
-				view_layout.removeClass("do-not-confirm");
-				
-				//show php widgets, borders and background
-				//PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();
-				PtlLayoutUIEditor.showTemplateWidgetsBorders();
-				PtlLayoutUIEditor.showTemplatePHPWidgets();
-			},
-		});
-		
-		initPageAndTemplateLayout(entity_obj, entity_obj.find(".entity_obj_tabs"), function() {
-			update_settings_from_layout_iframe_func = function() {
-				updateSettingsFromLayout(entity_obj);
-			};
-			update_layout_iframe_from_settings_func = function() {
-				updateLayoutFromSettings(entity_obj, false);
-			};
+				//waits until the load params and joinpoints gets loaded
+				setTimeout(function() {
+					//set saved_obj_id
+					saved_obj_id = getEntityCodeObjId();
+					
+					//init auto save
+					addAutoSaveMenu(".top_bar li.sub_menu li.save");
+					//enableAutoSave(onToggleAutoSave); //Do not enable auto save bc it gets a litte bit slow editing the template.
+					initAutoSave(".top_bar li.sub_menu li.save a");
+					StatusMessageHandler.showMessage("Auto save is disabled for a better user-experience...");
+					
+					//set update handlers
+					var iframe = getContentTemplateLayoutIframe(entity_obj);
+					
+					update_settings_from_layout_iframe_func = function() {
+						//console.log("updateSettingsFromLayout");
+						updateSettingsFromLayout(entity_obj);
+					};
+					update_layout_iframe_from_settings_func = function() {
+						//console.log("updateLayoutFromSettings");
+						updateLayoutFromSettings(entity_obj, false);
+					};
+					update_layout_iframe_field_html_value_from_settings_func = function(elm, html) { //set handler to update directly the the html in the template layout without refreshing the entire layout.
+						//console.log("updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField");
+						updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField(elm, html, iframe);
+					};
+					
+					//hide loading icon
+					MyFancyPopup.hidePopup();
+					
+					entity_or_template_obj_inited = true;
+				}, 2000);
+			}
 		});
 		
 		if (!code_exists)
 			onChooseAvailableTemplate( entity_obj.find(".template .search")[0], show_templates_only ); //open template popup automatically if entity is new
-		
-		//set saved_obj_id
-		saved_obj_id = getEntityCodeObjId();
 	}
-	
-	MyFancyPopup.hidePopup();
 });
 
 //To be used in the toggleFullScreen function
 function onToggleFullScreen(in_full_screen) {
+	var entity_obj = $(".entity_obj");
+	onToggleCodeEditorFullScreen(in_full_screen, entity_obj);
+	
 	setTimeout(function() {
-		var entity_obj = $(".entity_obj");
 		var top = parseInt(entity_obj.find(".regions_blocks_includes_settings").css("top"));
 		
 		resizeSettingsPanel(entity_obj, top);
 	}, 500);
 }
+
+/* CHOOSE TEMPLATE FUNCTIONS */
 
 function removeAllThatIsNotTemplatesFromTree(ul, data) {
 	ul = $(ul);
@@ -224,14 +173,6 @@ function onChooseAvailableTemplate(elm, show_templates_only) {
 	var entity_obj_elm = template_elm.parent();
 	var func = function(selected_template) {
 		if (!code_exists) { //only if file is new
-			/*var entity_obj_tabs = entity_obj_elm.children(".entity_obj_tabs");
-			var active_tab = entity_obj_tabs.tabs('option', 'active');
-			
-			if (active_tab == 1) {
-				entity_obj_tabs.tabs('option', 'active', 0);
-				
-				updateLayoutFromSettings(entity_obj_elm, true);
-			}*/
 			updateLayoutFromSettings(entity_obj_elm, true);
 		}
 	};
@@ -417,10 +358,12 @@ function updateTemplateLayout(entity_obj) {
 	//save synchronization functions
 	var update_settings_from_layout_iframe_func_bkp = update_settings_from_layout_iframe_func;
 	var update_layout_iframe_from_settings_func_bkp = update_layout_iframe_from_settings_func;
+	var update_layout_iframe_field_html_value_from_settings_func_bkp = update_layout_iframe_field_html_value_from_settings_func;
 	
 	//disable synchronization functions in case some call recursively by mistake
 	update_settings_from_layout_iframe_func = null;
 	update_layout_iframe_from_settings_func = null;
+	update_layout_iframe_field_html_value_from_settings_func = null;
 	
 	//prepare new template load
 	var iframe = getContentTemplateLayoutIframe(entity_obj);
@@ -500,6 +443,7 @@ function updateTemplateLayout(entity_obj) {
 				//sets back synchronization functions
 				update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
 				update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
+				update_layout_iframe_field_html_value_from_settings_func = update_layout_iframe_field_html_value_from_settings_func_bkp;
 			},
 			error : function(jqXHR, textStatus, errorThrown) { 
 				if (jqXHR.responseText);
@@ -508,6 +452,7 @@ function updateTemplateLayout(entity_obj) {
 				//sets back synchronization functions
 				update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
 				update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
+				update_layout_iframe_field_html_value_from_settings_func = update_layout_iframe_field_html_value_from_settings_func_bkp;
 			}
 		});
 	}
@@ -515,54 +460,11 @@ function updateTemplateLayout(entity_obj) {
 		//update new template
 		updateSelectedTemplateRegionsBlocks(entity_obj, null);
 		reloadLayoutIframeFromSettings(iframe, {"template": ""});
-			
+		
 		//sets back synchronization functions
 		update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
 		update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
-	}
-}
-
-function updateLayoutFromSettings(entity_obj, reload_iframe) {
-	if (entity_obj[0] && !entity_obj.hasClass("inactive")) {
-		var orig_template_params_values_list = JSON.stringify(template_params_values_list);
-		
-		var iframe = getContentTemplateLayoutIframe(entity_obj);
-		var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
-		
-		updateRegionsBlocksRBIndexIfNotSet(regions_blocks_includes_settings); //very important, otherwise we will loose the region-block params-values and joinpoints for the new regions added dynamically
-		
-		//very important, otherwise we will loose the region-block params-values and joinpoints
-		updateRegionsBlocksParamsLatestValues(regions_blocks_includes_settings); 
-		updateRegionsBlocksJoinPointsSettingsLatestObjs(regions_blocks_includes_settings);
-		
-		var are_different = areLayoutAndSettingsDifferent(iframe, regions_blocks_includes_settings);
-		var data = getSettingsTemplateRegionsBlocks(regions_blocks_includes_settings);
-		
-		if (!are_different)
-			are_different = orig_template_params_values_list != JSON.stringify(data["params"]);
-		
-		if (are_different /*&& confirm("Do you wish to convert the template settings to the layout panel?")*/) {
-			var template = getSelectedTemplate(entity_obj);
-			var iframe_data = {
-				"template": template,
-				"template_regions" : data["template_regions"],
-				"template_params": data["params"],
-				"template_includes": data["includes"],
-				"is_external_template": entity_obj.find(" > .template > select[name=template_genre]").val() ? 1 : 0,
-				"external_template_params": getExternalSetTemplateParams(entity_obj)
-			};
-			
-			if (reload_iframe)
-				reloadLayoutIframeFromSettings(iframe, iframe_data);
-			else
-				updateLayoutIframeFromSettings(iframe, iframe_data);
-			
-			//update regions_blocks_list
-			regions_blocks_list = data["regions_blocks"];
-			
-			//update template_params_values_list
-			template_params_values_list = data["params"];
-		}
+		update_layout_iframe_field_html_value_from_settings_func = update_layout_iframe_field_html_value_from_settings_func_bkp;
 	}
 }
 
@@ -580,11 +482,65 @@ function getSelectedTemplate(entity_obj) {
 	return template;
 }
 
+/* LAYOUT-SETTINGS-LAYOUT UPDATE FUNCTIONS */
+
+function updateLayoutFromSettings(entity_obj, reload_iframe) {
+	if (entity_obj[0] && !entity_obj.hasClass("inactive")) {
+		var orig_template_params_values_list = JSON.stringify(template_params_values_list);
+		var orig_includes_list = JSON.stringify(includes_list);
+		
+		var iframe = getContentTemplateLayoutIframe(entity_obj);
+		var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
+		
+		updateRegionsBlocksRBIndexIfNotSet(regions_blocks_includes_settings); //very important, otherwise we will loose the region-block params-values and joinpoints for the new regions added dynamically
+		
+		//very important, otherwise we will loose the region-block params-values and joinpoints
+		updateRegionsBlocksParamsLatestValues(regions_blocks_includes_settings); 
+		updateRegionsBlocksJoinPointsSettingsLatestObjs(regions_blocks_includes_settings);
+		
+		var are_different = areLayoutAndSettingsDifferent(iframe, regions_blocks_includes_settings, true);
+		var data = getSettingsTemplateRegionsBlocks(regions_blocks_includes_settings);
+		//console.log(data);
+		
+		if (!are_different)
+			are_different = orig_template_params_values_list != JSON.stringify(data["params"]);
+		
+		if (!are_different)
+			are_different = orig_includes_list != JSON.stringify(data["includes"]);
+		
+		if (are_different /*&& confirm("Do you wish to convert the template settings to the layout panel?")*/) {
+			var template = getSelectedTemplate(entity_obj);
+			var iframe_data = {
+				"template": template,
+				"template_regions" : data["template_regions"],
+				"template_params": data["params"],
+				"template_includes": data["includes"],
+				"is_external_template": entity_obj.find(" > .template > select[name=template_genre]").val() ? 1 : 0,
+				"external_template_params": getExternalSetTemplateParams(entity_obj)
+			};
+			
+			if (reload_iframe)
+				reloadLayoutIframeFromSettings(iframe, iframe_data);
+			else
+				updateLayoutIframeFromSettings(iframe, iframe_data, data);
+			
+			//update regions_blocks_list
+			regions_blocks_list = data["regions_blocks"];
+			
+			//update template_params_values_list
+			template_params_values_list = data["params"];
+			
+			//update includes_list
+			includes_list = data["includes"];
+		}
+	}
+}
+
 function updateSettingsFromLayout(entity_obj) {
 	if (!entity_obj.hasClass("inactive")) {
 		var iframe = getContentTemplateLayoutIframe(entity_obj);
 		var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
-		var are_different = areLayoutAndSettingsDifferent(iframe, regions_blocks_includes_settings);
+		var are_different = areLayoutAndSettingsDifferent(iframe, regions_blocks_includes_settings, true);
 		
 		if (are_different /*&& confirm("Do you wish to convert the template regions to the settings panel?")*/) {
 			var data = getIframeTemplateRegionsBlocksForSettings(iframe, regions_blocks_includes_settings);
@@ -620,31 +576,20 @@ function isEntityCodeObjChanged() {
 }
 
 function saveEntity(opts) {
-	if (confirm_save)
-		confirmSave(opts);
-	else
-		save(opts);
-}
-
-function save(opts) {
 	var entity_obj = $(".entity_obj");
 	
 	prepareAutoSaveVars();
-		
+	
 	if (entity_obj[0]) {
-		var obj = getObjToSave();
-		var new_saved_obj_id = $.md5(save_object_url + JSON.stringify(obj)); //Do not use getEntityCodeObjId, so it can be faster...
+		var func = function() {
+			if (confirm_save)
+				confirmSave(opts);
+			else
+				save(opts);
+		};
 		
-		if (!saved_obj_id || saved_obj_id != new_saved_obj_id) {
+		if (!auto_convert_settings_from_layout) {
 			if (!is_from_auto_save) {
-				var save_btn = $(".top_bar ul li.save a");
-				var save_on_click = save_btn.attr("onClick");
-				save_btn.removeAttr("onClick");
-				
-				var save_preview_btn = $(".top_bar ul li.save_preview a");
-				var save_preview_on_click = save_preview_btn.attr("onClick");
-				save_preview_btn.removeAttr("onClick");
-				
 				MyFancyPopup.init({
 					parentElement: window,
 				});
@@ -652,40 +597,76 @@ function save(opts) {
 				MyFancyPopup.showLoading();
 			}
 			
-			saveObj(save_object_url, obj, {
-				success: function(data, textStatus, jqXHR) {
-					if (opts && typeof opts["success"] == "function")
-						opts["success"]();
-					
-					if (!is_from_auto_save) {
-						save_btn.attr("onClick", save_on_click);
-						save_preview_btn.attr("onClick", save_preview_on_click);
-						MyFancyPopup.hidePopup();
-					}
-					else
-						resetAutoSave();
-					
-					return true;
-				},
-				error: function(jqXHR, textStatus, errorThrown) {
-					if (!is_from_auto_save) {
-						save_btn.attr("onClick", save_on_click);
-						save_preview_btn.attr("onClick", save_preview_on_click);
-						MyFancyPopup.hidePopup();
-					}
-					else
-						resetAutoSave();
-					
-					return true;
-				},
+			enableAutoConvertSettingsFromLayout(function() {
+				if (!is_from_auto_save)				
+					MyFancyPopup.hidePopup();
+				
+				func();
 			});
+			disableAutoConvertSettingsFromLayout();
 		}
-		else if (!is_from_auto_save)
-			StatusMessageHandler.showMessage("Nothing to save.");
 		else
-			resetAutoSave();
+			func();
 	}
 	else if (!is_from_auto_save)
+		alert("No entity object to save! Please contact the sysadmin...");
+}
+
+function save(opts) {
+	var entity_obj = $(".entity_obj");
+	
+	prepareAutoSaveVars();
+	
+	var is_from_auto_save_bkp = is_from_auto_save; //backup the is_from_auto_save, bc if there is a concurrent process running at the same time, this other process may change the is_from_auto_save value.
+		
+	if (entity_obj[0]) {
+		if (!window.is_save_func_running) {
+			window.is_save_func_running = true;
+			
+			//prepare save
+			var obj = getObjToSave();
+			var new_saved_obj_id = $.md5(save_object_url + JSON.stringify(obj)); //Do not use getEntityCodeObjId, so it can be faster...
+			
+			if (!saved_obj_id || saved_obj_id != new_saved_obj_id) {
+				var save_btn = $(".top_bar ul li.save a");
+				
+				if (!is_from_auto_save_bkp) {
+					save_btn.first().addClass("loading"); //only for the short-action icon
+					
+					MyFancyPopup.init({
+						parentElement: window,
+					});
+					MyFancyPopup.showOverlay();
+					MyFancyPopup.showLoading();
+				}
+				
+				opts = opts ? opts : {};
+				opts.complete = function() {
+					if (!is_from_auto_save_bkp) {
+						save_btn.removeClass("loading");
+						//MyFancyPopup.hidePopup(); //the saveObj function already hides the popup
+					}
+					//else
+					//	resetAutoSave(); //the saveObj function already resetAutoSave
+					
+					window.is_save_func_running = false;
+				};
+				
+				saveObj(save_object_url, obj, opts);
+			}
+			else {
+				if (!is_from_auto_save_bkp)
+					StatusMessageHandler.showMessage("Nothing to save.");
+				else
+					resetAutoSave();
+				
+				window.is_save_func_running = false;
+			}
+		}
+		else if (!is_from_auto_save_bkp)
+			StatusMessageHandler.showMessage("There is already a saving process running. Please wait a few seconds and try again...");
+	}
+	else if (!is_from_auto_save_bkp)
 		alert("No entity object to save! Please contact the sysadmin...");
 }
 
@@ -718,6 +699,13 @@ function confirmSave(opts) {
 	if (is_from_auto_save)
 		return false;
 	
+	//disable auto_save if manual action
+	var auto_save_bkp = auto_save;
+	
+	if (/*!is_from_auto_save && */auto_save_bkp && isAutoSaveMenuEnabled())
+		auto_save = false;
+	
+	//prepare save
 	var obj = getObjToSave();
 	var new_saved_obj_id = $.md5(save_object_url + JSON.stringify(obj)); //Do not use getEntityCodeObjId, so it can be faster...
 	
@@ -742,8 +730,13 @@ function confirmSave(opts) {
 					//only show this message if is a manual save, otherwise we don't want to do anything. Otherwise the browser is showing this popup constantly and is annoying for the user.
 					var old_code = $(".current_entity_code").text();
 					
+					MyFancyPopup.hidePopup();
+					
 					showConfirmationCodePopup(old_code, data, {
 						save: function() {
+							if (/*!is_from_auto_save && */auto_save_bkp && isAutoSaveMenuEnabled())
+								auto_save = auto_save_bkp;
+							
 							//change save button action to be simply save, otherwise it is always showing the confirmation popup everytime we save the file.
 							if (opts && typeof opts["success"] == "function") {
 								var prev_func = opts["success"];
@@ -754,6 +747,8 @@ function confirmSave(opts) {
 									$(".top_bar li.save a").click(function() { //cannot use the .attr("onClick", "save()") bc it doesn't work, so we must use click(function() {...});
 										save();
 									});
+									
+									return true;
 								}
 							}
 							else {
@@ -764,6 +759,8 @@ function confirmSave(opts) {
 									$(".top_bar li.save a").click(function() { //cannot use the .attr("onClick", "save()") bc it doesn't work, so we must use click(function() {...});
 										save();
 									});
+									
+									return true;
 								}
 							}
 							
@@ -772,19 +769,24 @@ function confirmSave(opts) {
 							return true;
 						},
 						cancel: function() {
-							if (is_from_auto_save)
-								resetAutoSave();
+							if (/*!is_from_auto_save && */auto_save_bkp && isAutoSaveMenuEnabled())
+								auto_save = auto_save_bkp;
 							
 							return typeof opts.confirmation_cancel != "function" || opts.confirmation_cancel(data);
 						},
 					});
-					
-					MyFancyPopup.hidePopup();
 				}
-				else
+				else {
+					if (/*!is_from_auto_save && */auto_save_bkp && isAutoSaveMenuEnabled())
+						auto_save = auto_save_bkp;
+					
 					resetAutoSave();
+				}
 			},
 			error : function(jqXHR, textStatus, errorThrown) { 
+				if (/*!is_from_auto_save && */auto_save_bkp && isAutoSaveMenuEnabled())
+					auto_save = auto_save_bkp;
+				
 				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_entity_code_url, function() {
 						StatusMessageHandler.removeLastShownMessage("error");
@@ -794,19 +796,23 @@ function confirmSave(opts) {
 				else if (!is_from_auto_save) {
 					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
 					StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + msg);
-				}
-				
-				if (!is_from_auto_save) 
+					
 					MyFancyPopup.hidePopup();
+				}
 				else
 					resetAutoSave();
 			},
 		});
 	}
-	else if (!is_from_auto_save)
-		StatusMessageHandler.showMessage("Nothing to save.");
-	else
-		resetAutoSave();
+	else {
+		if (/*!is_from_auto_save && */auto_save_bkp)
+			auto_save = auto_save_bkp;
+		
+		if (!is_from_auto_save)
+			StatusMessageHandler.showMessage("Nothing to save.");
+		else
+			resetAutoSave();
+	}
 }
 
 function preview() {
@@ -904,12 +910,6 @@ function getExternalTemplateParams(entity_obj) {
 
 function getObjToSave() {
 	var entity_obj = $(".entity_obj");
-	
-	//detect selected tab is layout
-	/*var active_tab = entity_obj.children(".entity_obj_tabs").tabs('option', 'active');
-	if (active_tab == 0) 
-		updateSettingsFromLayout(entity_obj);
-	*/
 	
 	var obj = getRegionsBlocksAndIncludesObjToSave();
 	//console.log(obj);

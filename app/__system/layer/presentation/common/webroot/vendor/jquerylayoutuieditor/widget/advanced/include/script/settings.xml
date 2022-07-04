@@ -7,8 +7,8 @@
 	</settings>
 	<menu_widget></menu_widget>
 	<template_widget><![CDATA[
-			<div class="script-file"></div>
-			<pre class="script-content"></pre>
+		<div class="script-file"></div>
+		<pre class="script-content"></pre>
 	]]></template_widget>
 	<properties><![CDATA[
 		<div class="form-group row settings-property src">
@@ -59,9 +59,9 @@
 			background-image:none !important; /* !important is bc of the css when .borders is active */
 			display:block;
 			background:#000;
+			color:#fff;
 			border-radius:5px;
 			border:1px outset #bbb !important; /* !important is bc of the css when .borders is active */
-			color:#666;
 			word-break:break-all;
 		}
 		body > .droppable.borders .template-widget.template-widget-script:before {
@@ -170,25 +170,44 @@
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
-				html_element = $(html_element);
-				var src = html_element.attr("src");
-				var language = html_element.attr("language");
-				var type = html_element.attr("type");
-				var code = html_element.html();
-				
 				var file = widget.children(".script-file");
 				var content = widget.children(".script-content");
 				
-				if (src && src != "")
-					file.html( src.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
-				
-				if (code && code != "")
-					content.html( code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
-				
-				widget.data("widget-props-language", language);
-				widget.data("widget-props-type", type);
-				
-				html_element.remove();
+				if (html_element) {
+					var j_html_element = $(html_element);
+					var src = j_html_element.attr("src");
+					var language = j_html_element.attr("language");
+					var type = j_html_element.attr("type");
+					var code = j_html_element.html();
+					
+					widget[0].appendChild( document.createElement("script") ); //must be appendChild bc append doesn't work
+					var script = widget.children("script");
+					
+					widget.data("widget-props-language", language);
+					widget.data("widget-props-type", type);
+					
+					script.attr("language", language);
+					script.attr("type", type);
+					
+					if (src && src != "") {
+						file.html( src.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
+						
+						script[0].src = src;
+					}
+					
+					if (code && code != "") {
+						//replace php tags
+						if (code.indexOf("<!--?") != -1)
+							code = code.replace(/<!--\?/g, '<?').replace(/\?-->/g, '?>');
+						
+						//show code
+						content.html( code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
+						
+						script[0].textContent = code;
+					}
+					
+					j_html_element.remove();
+				}
 				
 				//prepare .style-content editable
 				widget.attr("contenteditable", "false");
@@ -219,23 +238,39 @@
 					
 					var file = widget.children(".script-file");
 					var content = widget.children(".script-content");
+					var script = widget.children("script");
+					
+					if (!script[0] && (props["src"] != "" || props["content"] != "")) {
+						script = $( document.createElement("script") );
+						widget[0].appendChild(script[0]); //must be appendChild bc append doesn't work
+					}
+					else if (props["src"] == "" && props["content"] == "") {
+						script.remove();
+						script = null;
+					}
 					
 					if (sprop.hasClass("src")) {
-						if (props["src"] != "")
+						if (props["src"] != "") {
 							file.html( ("" + props["src"]).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
+							script[0].src = props["src"];
+						}
 						else
 							file.html("");
 					}
 					else if (sprop.hasClass("content")) {
-						if (props["content"] != "") 
+						if (props["content"] != "") {
 							content.html( ("" + props["content"]).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
-						else if (props["src"] != "")
-							content.html("");
-						else
+							script[0].textContent = props["content"];
+						}
+						else if (props["src"] != "" || props["content"] == "")
 							content.html("");
 					}
-					else //save the other props
+					else { //save the other props
 						widget.data("widget-props-" + field.attr("name"), field.val());
+						
+						if (script && script[0])
+							script.attr(field.attr("name"), field.val());
+					}
 				}
 				
 				return status;

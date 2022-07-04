@@ -2,9 +2,6 @@
 .edit_single_query > .top_bar header {
 	z-index:9999;
 }
-.edit_single_query > .top_bar header > ul {
-	right:2px;
-}
 .edit_single_query > .top_bar .title { 
 	max-width:calc(100% - 70px);
 	z-index:1;
@@ -17,9 +14,6 @@
 .edit_single_query > .top_bar .title .query_name {
 	width:210px;
 	display:inline-block;
-}
-.edit_single_query > .top_bar li.sub_menu > ul {
-	min-width:200px;
 }
 .edit_single_query:not(.covertable_sql) .top_bar li.add_new_table,
   .edit_single_query:not(.covertable_sql) .top_bar li.update_tables_attributes,
@@ -130,6 +124,7 @@
   .edit_single_query .relationship .query .query_select .taskflowchart .tasks_flow,
   .edit_single_query .relationship .query .query_select .taskflowchart .workflow_menu {
 	width:100%;
+	min-width:auto;
 }
 .edit_single_query .relationship .query .query_select .taskflowchart {
 	height:auto !important;
@@ -140,7 +135,7 @@
 	display:none;
 }
 .edit_single_query .relationship .query .query_select .taskflowchart .tasks_flow {
-	height:calc(50vh - 95px);
+	height:calc(50vh - 115px);
 	/*min-height:250px;
 	max-height:350px;*/
 	margin:0;
@@ -151,7 +146,7 @@
 	box-sizing:border-box;
 }
 .edit_single_query .relationship .query .query_select.hide_query_settings .taskflowchart .tasks_flow {
-	height:calc(100vh - 195px);
+	height:calc(100vh - 215px);
 }
 .edit_single_query .relationship .query .query_select .taskflowchart .workflow_menu {
 	display:none;
@@ -164,7 +159,7 @@
 .edit_single_query .relationship.query_insert .query_insert_update_delete, 
   .edit_single_query .relationship.query_update .query_insert_update_delete, 
   .edit_single_query .relationship.query_delete .query_insert_update_delete {
-	height:calc(100vh - 205px);
+	height:calc(100vh - 225px);
 	padding-bottom:40px;
 	border:0;
 	box-sizing:border-box;
@@ -191,7 +186,7 @@
 	box-sizing:border-box;
 }
 .edit_single_query .relationship .query .query_select.hide_taskflowchart .query_settings {
-	height:calc(100vh - 195px);
+	height:calc(100vh - 215px);
 	border-top:0;
 }
 .edit_single_query .relationship .query .query_select .query_settings .query_settings_tab {
@@ -220,4 +215,9 @@
 
 .edit_single_query .relationship .query .query_select .taskflowchart .selected_connection_properties {
 	min-height:calc(50vh - 55px) !important;
+}
+
+/* RELATIONSHIP - MAIN SETTINGS */
+.edit_single_query .relationship .settings {
+	height:150px;
 }

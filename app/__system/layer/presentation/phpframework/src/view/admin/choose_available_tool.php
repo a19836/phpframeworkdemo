@@ -43,7 +43,7 @@ var is_popup = ' . ($popup ? 1 : 0) . ';
 		' . ($is_manage_projects_allowed ? '<li class="manage_projects" onClick="return goTo(\'' . $project_url_prefix . 'phpframework/presentation/manage_projects\', event)">
 			<label>Manage Projects</label>
 			<div class="photo"></div>
-			<div class="description">Create, edit and remove Projects. Set default project...</div>
+			<div class="description">Create, edit or remove Projects. Set default project...</div>
 		</li>' : '') . '
 		' . ($is_manage_layers_allowed ? '<li class="manage_layers" onClick="return goTo(\'' . $project_url_prefix . 'setup?step=3.1&iframe=1&hide_setup=1\', event)">
 			<label>Manage Layers</label>

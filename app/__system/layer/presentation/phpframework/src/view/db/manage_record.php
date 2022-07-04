@@ -56,7 +56,7 @@ var is_popup = ' . ($popup ? 1 : 0) . ';
 <div class="manage_record' . ($popup ? ' in_popup' : '') . '">
 	<div class="top_bar' . ($popup ? ' in_popup' : '') . '">
 		<header>
-			<div class="title">' . (!empty($results) ? "Edit" : "Add") . ' Record for table: "' . $table . '"</div>
+			<div class="title">' . (!empty($results) ? "Edit" : "Add") . ' Record for table: \'' . $table . '\' in DB: \'' . $bean_name . '\'</div>
 			<ul>'; if ($action == "insert") $main_content .= '<li class="save" data-title="Add"><a onClick="addRecord(this)"><i class="icon save"></i> Save</a></li>'; else $main_content .= '
 					<li class="delete" data-title="Delete"><a onClick="deleteRecord(this)"><i class="icon delete"></i> Delete</a></li>
 					<li class="save" data-title="Save"><a onClick="saveRecord(this)"><i class="icon save"></i> Save</a></li>'; $main_content .= '	

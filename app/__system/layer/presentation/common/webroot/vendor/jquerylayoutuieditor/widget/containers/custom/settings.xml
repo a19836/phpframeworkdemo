@@ -3,6 +3,7 @@
 	<label>Custom Container</label>
 	<tag>custom-container</tag>
 	<settings>
+		<resizable>1</resizable>
 		<menu_class>container custom-container</menu_class>
 		<template_class>container custom-container row</template_class>
 		<create_widget_class>CustomContainerWidget</create_widget_class>
@@ -93,7 +94,9 @@
 					var children = html_element.children();
 					
 					if (children) {
-						for (var i = 0; i < children.length; i++) {
+						var t = children.length;
+						
+						for (var i = 0; i < t; i++) {
 							var child = children[i];
 							var matches = ("" + child.className).match(/(^| )col\-[^-]+\-[0-9]+( |$)/g);
 							
@@ -101,7 +104,14 @@
 								return null;
 						}
 						
-						children.addClass("droppable ignore-widget"); //add class ignore-widget, so this children doesn't get converted into a widget.
+						//get only the childNodes that are node.ELEMENT_NODE and check if they belong to another widget.
+						for (var i = 0; i < t; i++) {
+							var child = children[i];
+							
+							//checks if the child is not a template_region or another non-default widget
+							if (!ui_creator.isHtmlElementANonDefaultMenuWidget(child))
+								$(child).addClass("droppable ignore-widget"); //add class ignore-widget, so this children doesn't get converted into a widget.
+						}
 					}
 					
 					return {

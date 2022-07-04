@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $choose_queries_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#$filter_by_layout_url_query&path=#path#"; $head = '
+include $EVC->getUtilPath("BreadCrumbsUIHandler"); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $choose_queries_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#$filter_by_layout_url_query&path=#path#"; $head = '
 <!-- Add MyTree main JS and CSS files -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerymytree/css/style.min.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerymytree/js/mytree.js"></script>
@@ -42,9 +42,10 @@ $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQu
 '; $head .= LayoutTypeProjectUIHandler::getHeader(); if ($_POST["step_1"]) { $exists_any_status_ok = false; $main_content .= '<div class="statuses">
 		<div class="top_bar">
 			<header>
-				<div class="title">Automatic Create Business Logic Files in \'' . $path . '\' - STATUSES:</div>
+				<div class="title">Automatic Create Business Logic Files in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
 			</header>
 		</div>
+		<div class="title">STATUSES</div>
 		<table>
 			<tr>
 				<th class="file_path table_header">File Path</th>
@@ -100,7 +101,7 @@ $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQu
 	<div class="select_options">
 		<div class="top_bar">
 			<header>
-				<div class="title">Automatic Create Business Logic Files in \'' . $path . '\':</div>
+				<div class="title">Automatic Create Business Logic Files in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
 				<ul>
 					<li class="continue" data-title="Continue"><a onClick="submitForm(this, checkChooseFiles);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
@@ -109,7 +110,7 @@ $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQu
 		
 		<form method="post" onSubmit="return checkChooseFiles(this);">
 			<div id="choose_queries_from_file_manager" class="choose_from_file_manager">
-				<div class="broker">
+				<div class="broker' . (count($related_brokers) == 1 ? " single_broker" : "") . '">
 					<label>Broker:</label>
 					<select onChange="onChangeDBBroker(this)">'; if ($related_brokers) foreach ($related_brokers as $b) { $is_db_broker = $db_brokers_bean_file_by_bean_name[ $b[2] ] == $b[1]; $main_content .= '<option bean_file_name="' . $b[1] . '" bean_name="' . $b[2] . '" broker_name="' . $b[0] . '"' . ($is_db_broker ? ' is_db_broker="1"' : '') . '>' . $b[0] . ($b[2] ? '' : ' (Rest)') . '</option>'; } $main_content .= '
 					</select>

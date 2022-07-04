@@ -311,17 +311,17 @@ class CommonModuleSettingsUI {
 				
 				$html .= '
 					<li class="draggable menu-widget menu-widget-ptl menu-widget-block-' . $class_suffix . '" data-tag="' . $tag . '" title="' . $label . '"  data-create-widget-class="' . $js_func . '">
-						' . $label . '
+						<span>' . $label . '</span>
 						<div class="template-widget template-widget-ptl template-widget-block-' . $class_suffix . '" data-label="' . $label . '">
 							<pre>ptl:block:' . $ptl_code_prefix . ':' . $name . '</pre>
-						</div>
-						<style>
+						</div>' . 
+						/*'<style>
 						.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-ptl.menu-widget-block-' . $class_suffix . ',
 						  body > .menu-widget.menu-widget-ptl.menu-widget-block-' . $class_suffix . '.ui-draggable-dragging {
-							font-size:100%;
+							
 						}
-						</style>
-						<script>
+						</style>' . */
+						'<script>
 						function ' . $js_func . '(ui_creator, menu_widget) {
 							var me = this;
 							

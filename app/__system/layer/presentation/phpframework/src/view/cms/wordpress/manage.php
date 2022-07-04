@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$head = '
+include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -33,7 +33,7 @@ $head = '
 '; $main_content = '
 <div class="top_bar">
 	<header>
-		<div class="title">Manage WordPress</div>
+		<div class="title">Manage WordPress in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($selected_project_id, $P) . '</div>
 	</header>
 </div>
 <div class="manage_wordpress with_top_bar_section">

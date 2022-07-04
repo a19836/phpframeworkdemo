@@ -3923,74 +3923,122 @@ function getModuleFormSettingsId() {
 function saveModuleFormSettings(button) {
 	prepareAutoSaveVars();
 	
-	var module_form_settings = $(".block_obj > .module_settings > .settings > .module_form_settings");
-	var settings = getModuleFormSettings(module_form_settings);
-	var new_settings_id = $.isPlainObject(settings) ? $.md5(JSON.stringify(settings)) : null;
+	var is_from_auto_save_bkp = is_from_auto_save; //backup the is_from_auto_save, bc if there is a concurrent process running at the same time, this other process may change the is_from_auto_save value.
 	
-	if (!saved_settings_id || saved_settings_id != new_settings_id) {
-		if (!is_from_auto_save) {
-			MyFancyPopup.showOverlay();
-			MyFancyPopup.showLoading();
+	if (!window.is_save_block_func_running) {
+		window.is_save_block_func_running = true;
+		
+		var module_form_settings = $(".block_obj > .module_settings > .settings > .module_form_settings");
+		var settings = getModuleFormSettings(module_form_settings);
+		var new_settings_id = $.isPlainObject(settings) ? $.md5(JSON.stringify(settings)) : null;
+		
+		if (!saved_settings_id || saved_settings_id != new_settings_id) {
+			//console.log(settings);
+			
+			//check if settings obj is valid
+			if (!$.isPlainObject(settings) || !$.isArray(settings["actions"])) {
+				if (!is_from_auto_save_bkp) {
+					//check if user is logged in
+					//if there was a previous function that tried to execute an ajax request, like the getCodeForSaving method, we detect here if the user needs to login, and if yes, recall the save function again. 
+					//Do not re-call only the ajax request below, otherwise there will be some other files that will not be saved, this is, the getCodeForSaving saves the workflow and if we only call the ajax request below, the workflow won't be saved. To avoid this situation, we call the all save function.
+					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL)) {
+						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jquery_native_xhr_object.responseURL, function() {
+							jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+							StatusMessageHandler.removeLastShownMessage("error");
+							
+							window.is_save_block_func_running = false;
+							saveModuleFormSettings(button);
+						});
+					}
+					else
+						StatusMessageHandler.showError("Error trying to get form settings actions.\nPlease try again...");
+				}
+				else
+					resetAutoSave();
+				
+				window.is_save_block_func_running = false;
+				
+				return;
+			}
+			
+			//show loading icon
+			if (!is_from_auto_save_bkp) {
+				MyFancyPopup.showOverlay();
+				MyFancyPopup.showLoading();
+			}
+			
+			//execute ajax request
+			var ajax_opts = {
+				type : "post",
+				url : create_form_settings_code_url,
+				data : {"settings" : settings},
+				dataType : "json",
+				success : function(data, textStatus, jqXHR) {
+					if (data && data["code"]) {
+						var status = saveBlockRawCode(data["code"], {
+							complete : function() {
+								if (!is_from_auto_save_bkp)
+									MyFancyPopup.hidePopup(); //we still need this here bc the saveBlockObj doesn't hide the popup if the .block_obj doesn't exists.
+								window.is_save_block_func_running = false;
+							},
+						});
+						
+						if (status)
+							saved_settings_id = new_settings_id; //set new saved_settings_id
+					}
+					else {
+						if (!is_from_auto_save_bkp) {
+							MyFancyPopup.hidePopup();
+							StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
+						}
+						else
+							resetAutoSave();
+						
+						window.is_save_block_func_running = false;
+					}
+				},
+				error : function() { 
+					if (!is_from_auto_save_bkp) {
+						//hide popup in case be over of login popup
+						MyFancyPopup.hidePopup();
+						
+						if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+							showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_form_settings_code_url, function() {
+								jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+								StatusMessageHandler.removeLastShownMessage("error");
+								
+								//show loading icon again
+								MyFancyPopup.showOverlay();
+								MyFancyPopup.showLoading();
+								
+								//re-call ajax request
+								$.ajax(ajax_opts);
+							});
+						else {
+							StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
+							window.is_save_block_func_running = false;
+						}
+					}
+					else {
+						resetAutoSave();
+						window.is_save_block_func_running = false;
+					}
+				},
+			};
+			
+			$.ajax(ajax_opts);
 		}
-		
-		//console.log(settings);
-		
-		if (!$.isPlainObject(settings) || !$.isArray(settings["actions"])) {
-			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, [ create_workflow_file_from_settings_url, jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url ], function() {
-					jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
-					StatusMessageHandler.removeLastShownMessage("error");
-					
-					saveModuleFormSettings(button);
-				});
-			else if (!is_from_auto_save)
-				StatusMessageHandler.showError("Error trying to get form settings actions.\nPlease try again...");
+		else {
+			if (!is_from_auto_save_bkp)
+				StatusMessageHandler.showMessage("Nothing to save.");
 			else
 				resetAutoSave();
 			
-			return;
+			window.is_save_block_func_running = false;
 		}
-		
-		$.ajax({
-			type : "post",
-			url : create_form_settings_code_url,
-			data : {"settings" : settings},
-			dataType : "json",
-			success : function(data, textStatus, jqXHR) {
-				if (data && data["code"]) {
-					if (saveBlockRawCode(data["code"]))
-						saved_settings_id = new_settings_id; //set new saved_str_id
-				}
-				else if (!is_from_auto_save)
-					StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
-				
-				if (!is_from_auto_save)
-					MyFancyPopup.hidePopup();
-				else
-					resetAutoSave();
-			},
-			error : function() { 
-				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_form_settings_code_url, function() {
-						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
-						StatusMessageHandler.removeLastShownMessage("error");
-						
-						saveModuleFormSettings(button);
-					});
-				else if (!is_from_auto_save)
-					StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
-				
-				if (!is_from_auto_save)
-					MyFancyPopup.hidePopup();
-				else
-					resetAutoSave();
-			},
-		});
 	}
-	else if (!is_from_auto_save)
-		StatusMessageHandler.showMessage("Nothing to save.");
-	else
-		resetAutoSave();
+	else if (!is_from_auto_save_bkp)
+		StatusMessageHandler.showMessage("There is already a saving process running. Please wait a few seconds and try again...");
 }
 
 function convertModuleFormSettingsToModuleWorkflowSettings(elm) {

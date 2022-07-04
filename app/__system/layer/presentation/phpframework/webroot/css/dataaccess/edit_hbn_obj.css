@@ -2,9 +2,6 @@
 .edit_hbn_obj .top_bar header {
 	z-index:1501;
 }
-.edit_hbn_obj .top_bar header > ul {
-	right:2px;
-}
 .top_bar header > .title {
 	max-width:calc(100% - 60px);
 }
@@ -12,13 +9,10 @@
 	width:110px;
 	display:inline-block;
 }
-.edit_hbn_obj .top_bar li.sub_menu > ul {
-	min-width:250px;
-}
 
 /* RELATIONSHIP */
 .edit_hbn_obj .data_access_obj {
-	min-width:640px;
+	/*min-width:640px;*/
 	box-sizing:border-box;
 	font-size:8pt;
 	overflow:auto;
@@ -41,6 +35,7 @@
 	background:transparent;
 }
 .edit_hbn_obj .data_access_obj #tabs {
+	min-width:640px;
 	margin-top:40px;
 	border:0;
 	display:none;
@@ -88,6 +83,7 @@
 	margin-top:3px;
 }
 .data_access_obj .ids .id {
+	min-width:580px;
 	margin-left:20px;
 }
 .data_access_obj .ids .id label.attr_name {

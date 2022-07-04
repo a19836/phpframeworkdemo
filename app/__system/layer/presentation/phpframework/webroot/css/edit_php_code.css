@@ -198,6 +198,9 @@
 	float:none;
 	clear:left;
 }
+.choose_from_file_manager .mytree {
+	cursor:auto;
+}
 .choose_from_file_manager .type, 
    .choose_from_file_manager .new_var,
    .choose_from_file_manager .existent_var,
@@ -208,6 +211,9 @@
    .choose_from_file_manager .broker, 
    .choose_from_file_manager .db_driver {
    	
+}
+.choose_from_file_manager .broker.single_broker {
+	display:none;
 }
 .choose_from_file_manager .type label, 
    .choose_from_file_manager .new_var label,
@@ -329,7 +335,8 @@
 	right:0;
 	bottom:0;
 	background-color:#FFF;
-	z-index:1501; /*.workflow_menu from tasks workflow has an zindex of 1500. So this zindex must be bigger.*/
+	/*z-index:1501; /*.workflow_menu from tasks workflow has an zindex of 1500. So this zindex must be bigger.*/
+	z-index:10002; /*In edit_template_simple.php, .with_top_bar_tab .code_menu.top_bar_menu has an zindex of 10001. So this zindex must be bigger.*/
 }
 .confirm_save .title {
 	margin:20px auto;

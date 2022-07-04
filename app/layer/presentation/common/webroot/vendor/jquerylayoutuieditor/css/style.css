@@ -702,7 +702,7 @@
 	left:0;
 	right:auto;
 }
-.layout-ui-editor > .options .sub-options:not(:hover) ul {
+.layout-ui-editor > .options .sub-options:not(.open) ul {
 	display:none;
 }
 .layout-ui-editor > .options .sub-options ul li {
@@ -1042,13 +1042,17 @@
 }
 .layout-ui-editor > .menu-widgets .group .group-title {
 	margin:10px 5px 5px;
-	padding-bottom:5px;
-	border-bottom:1px dotted rgba(0,0,0,0.15);
+	padding-top:10px;
+	border-top:1px dashed rgba(0,0,0,0.15);
 	cursor:pointer;
 	text-align:left;
 	font-size:7pt;
 	opacity:.7;
 	color:#ccc;
+}
+.layout-ui-editor > .menu-widgets .group:nth-child(1) .group-title {
+	padding-top:0;
+	border-top:0;
 }
 .layout-ui-editor > .menu-widgets .group .group-title:hover {
 	color:#aaa !important;
@@ -1062,12 +1066,12 @@
 	position:absolute;
 	right:5px;
 	display:block;
-	margin-top:5px;
+	margin-top:-12px;
 	padding-left:5px;
 	opacity:.8;
 	font-size:80%;
 }
-.layout-ui-editor > .menu-widgets .group.group-open .group-title:hover:after {
+.layout-ui-editor > .menu-widgets .group.group-open > .group-title:hover:after {
 	content:"Click to collapse";
 }
 .layout-ui-editor > .menu-widgets .group .group-title .toggle {
@@ -1173,6 +1177,13 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 }
 .layout-ui-editor > .menu-settings .settings-decorations .settings-background-image.with-search-icon .search {
 	display:inline-block;
+}
+
+/* MENU WIDGETS - MAIN HTML TAGS - in the case of the menu-settings for html, head or body tags */
+.layout-ui-editor > .menu-settings.menu-settings-main-html-tag .settings-properties,
+  .layout-ui-editor > .menu-settings.menu-settings-main-html-tag .settings-title,
+  .layout-ui-editor > .menu-settings.menu-settings-main-html-tag .settings-actions .btn:not(.html-source) {
+	display:none;
 }
 
 /* MENU WIDGETS - HTML TAG */
@@ -1453,7 +1464,8 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	display:block;
 }
 .layout-ui-editor > .menu-settings .settings-info .close,
-  .layout-ui-editor > .menu-settings .settings-info .full-screen {
+  .layout-ui-editor > .menu-settings .settings-info .full-screen,
+  .layout-ui-editor > .menu-settings .settings-info .toggle-settings-side {
 	display:none;
 }
 .layout-ui-editor > .menu-settings .settings-id {
@@ -1779,7 +1791,7 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 }
 .layout-ui-editor.fixed-properties > .menu-settings .settings-info label,
   .layout-ui-editor.fixed-side-properties > .menu-settings .settings-info label {
-	width:calc(100% - 40px);
+	width:calc(100% - 60px);
 	padding:0;
 }
 .layout-ui-editor.fixed-properties > .menu-settings .settings-info label,
@@ -1788,8 +1800,10 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 }
 .layout-ui-editor.fixed-properties > .menu-settings .settings-info .close,
   .layout-ui-editor.fixed-properties > .menu-settings .settings-info .full-screen,
+  .layout-ui-editor.fixed-properties > .menu-settings .settings-info .toggle-settings-side,
   .layout-ui-editor.fixed-side-properties > .menu-settings .settings-info .close,
-  .layout-ui-editor.fixed-side-properties > .menu-settings .settings-info .full-screen {
+  .layout-ui-editor.fixed-side-properties > .menu-settings .settings-info .full-screen,
+  .layout-ui-editor.fixed-side-properties > .menu-settings .settings-info .toggle-settings-side {
 	display:inline-block;
 	position:absolute;
 	top:10px;
@@ -1799,6 +1813,15 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 .layout-ui-editor.fixed-properties > .menu-settings .settings-info .full-screen,
   .layout-ui-editor.fixed-side-properties > .menu-settings .settings-info .full-screen {
 	right:30px;
+}
+.layout-ui-editor.fixed-properties > .menu-settings .settings-info .toggle-settings-side,
+  .layout-ui-editor.fixed-side-properties > .menu-settings .settings-info .toggle-settings-side {
+	right:50px;
+}
+.layout-ui-editor.fixed-properties > .menu-settings .settings-info .toggle-settings-side {
+	-webkit-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	transform: rotate(90deg);
 }
 .layout-ui-editor.fixed-side-properties > .menu-settings .settings-id {
 	margin-top:40px;

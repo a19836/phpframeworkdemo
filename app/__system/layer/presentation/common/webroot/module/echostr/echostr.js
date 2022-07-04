@@ -291,62 +291,100 @@ function getActiveEditorValue() {
 function saveEchoStrSettings() {
 	prepareAutoSaveVars();
 	
-	var active_tab = $(".echostr_settings").tabs('option', 'active');
-	var str = getActiveEditorValue();
-	var new_str_id = $.md5(str);
+	var is_from_auto_save_bkp = is_from_auto_save; //backup the is_from_auto_save, bc if there is a concurrent process running at the same time, this other process may change the is_from_auto_save value.
 	
-	if (!saved_str_id || saved_str_id != new_str_id) {
-		if (active_tab == 0) { //is layout ui editor
-			if (!is_from_auto_save) {
-				MyFancyPopup.showOverlay();
-				MyFancyPopup.showLoading();
+	if (!window.is_save_block_func_running) {
+		window.is_save_block_func_running = true;
+		
+		var active_tab = $(".echostr_settings").tabs('option', 'active');
+		var str = getActiveEditorValue();
+		var new_str_id = $.md5(str);
+		
+		if (!saved_str_id || saved_str_id != new_str_id) {
+			if (active_tab == 0) { //is layout ui editor
+				if (!is_from_auto_save_bkp) {
+					MyFancyPopup.showOverlay();
+					MyFancyPopup.showLoading();
+				}
+				
+				var ajax_opts = {
+					type : "post",
+					url : create_echostr_settings_code_url,
+					data : {str: str},
+					dataType : "json",
+					success : function(data, textStatus, jqXHR) {
+						if (data && data["code"]) {
+							var status = saveBlockRawCode(data["code"], {
+								complete : function() {
+									if (!is_from_auto_save_bkp)
+										MyFancyPopup.hidePopup(); //we still need this here bc the saveBlockObj doesn't hide the popup if the .block_obj doesn't exists.
+									window.is_save_block_func_running = false;
+								},
+							});
+							
+							if (status)
+								saved_str_id = new_str_id; //set new saved_str_id
+						}
+						else {
+							if (!is_from_auto_save_bkp) {
+								MyFancyPopup.hidePopup();
+								StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
+							}
+							else
+								resetAutoSave();
+							
+							window.is_save_block_func_running = false;
+						}
+					},
+					error : function() { 
+						if (!is_from_auto_save_bkp) {
+							//hide popup in case be over of login popup
+							MyFancyPopup.hidePopup();
+							
+							if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+								showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_echostr_settings_code_url, function() {
+									//show loading icon again
+									MyFancyPopup.showOverlay();
+									MyFancyPopup.showLoading();
+									
+									//re-call ajax request
+									$.ajax(ajax_opts);
+								});
+							else {
+								StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
+								window.is_save_block_func_running = false;
+							}
+						}
+						else {
+							resetAutoSave();
+							window.is_save_block_func_running = false;
+						}
+					},
+				};
+				
+				$.ajax(ajax_opts);
 			}
-			
-			$.ajax({
-				type : "post",
-				url : create_echostr_settings_code_url,
-				data : {str: str},
-				dataType : "json",
-				success : function(data, textStatus, jqXHR) {
-					if (data && data["code"]) {
-						if (saveBlockRawCode(data["code"]))
-							saved_str_id = new_str_id; //set new saved_str_id
-					}
-					else if (!is_from_auto_save)
-						StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
-					
-					if (!is_from_auto_save)
-						MyFancyPopup.hidePopup();
-					else
-						resetAutoSave();
-				},
-				error : function() { 
-					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_echostr_settings_code_url, function() {
-							saveEchoStrSettings();
-						});
-					else if (!is_from_auto_save)
-						StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
-					
-					if (!is_from_auto_save)
-						MyFancyPopup.hidePopup();
-					else
-						resetAutoSave();
-				},
-			});
+			else {
+				$(".echostr_settings > textarea.module_settings_property").val(str);
+				
+				if (saveBlock())
+					saved_str_id = new_str_id; //set new saved_str_id
+				
+				if (is_from_auto_save_bkp)
+					resetAutoSave();
+				
+				window.is_save_block_func_running = false;
+			}
 		}
 		else {
-			$(".echostr_settings > textarea.module_settings_property").val(str);
-			
-			if (saveBlock())
-				saved_str_id = new_str_id; //set new saved_str_id
-			
-			if (is_from_auto_save)
+			if (!is_from_auto_save_bkp)
+				StatusMessageHandler.showMessage("Nothing to save.");
+			else
 				resetAutoSave();
+			
+			window.is_save_block_func_running = false;
 		}
 	}
-	else if (!is_from_auto_save)
-		StatusMessageHandler.showMessage("Nothing to save.");
-	else
-		resetAutoSave();
+	else if (!is_from_auto_save_bkp)
+		StatusMessageHandler.showMessage("There is already a saving process running. Please wait a few seconds and try again...");
 }

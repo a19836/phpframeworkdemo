@@ -2,11 +2,11 @@ window.onload = function() { //for some reason the load is getting called multip
 	onLoadEditSimpleTemplateLayout();
 };
 
-window.onerror = function(msg, url, lineNo, columnNo, error) {
+window.onerror = function(msg, url, line, col, error) {
 	//alert("Javascript Error was found!");
 	
 	return true; //return true, avoids the error to be shown and other scripts to stop.
-}
+};
 
 //Note that this function is called in the edit_page_and_template.js file too
 function onLoadEditSimpleTemplateLayout() {
@@ -32,54 +32,230 @@ function onLoadEditSimpleTemplateLayout() {
 	if (typeof parent.pretifyRegionsBlocksComboBox == "function") {
 		parent.disableLinksAndButtonClickEvent(document.body);
 		
-		var items = document.querySelectorAll(".template_region > .items");
-		parent.prepareRegionsBlocksHtmlValue(items);
-		parent.pretifyRegionsBlocksComboBox(items);
-		parent.loadAvailableBlocksList(items);
-		createRegionsBlocksHtmlEditor(items);
-		prepareRegionsBlocks(items);
-		
-  		//prepare light class - if background of template_region or its parents is dark, change colors to white colors...
-  		var template_regions = document.querySelectorAll(".template_region");
+		//prepare template_region
+		var template_regions = document.querySelectorAll(".template_region");
 		
 		if (template_regions)
-			for (var i = 0; i < template_regions.length; i++)
-				if (isRegionBlockInDarkBackground(template_regions[i]))
-		  			template_regions[i].classList.add("item-light");
+			for (var i = 0; i < template_regions.length; i++) {
+				var tr = template_regions[i];
+				//console.log(tr.getAttribute("region")+":"+tr.getAttribute("class"));
+				
+				//prepare light class - if background of template_region or its parents is dark, change colors to white colors...
+  				if (isRegionBlockInDarkBackground(tr))
+		  			tr.classList.add("item-light");
+		  		
+		  		var items_elm = filterSelectorAllInNodes(tr.childNodes, ".template_region_items");
+		  		prepareRegionsBlocks(items_elm);
+		  	}
 	}
 	else 
 		alert("This page should be called as an iframe from another page. Should not be called directly as a main window bc it needs some javascript of the parent window.");
 }
 
 function prepareRegionsBlocks(elms) {
+	parent.prepareRegionsBlocksHtmlValue(elms);
+	convertRegionBlocksToSimpleHtml(elms);
+	
+	var items = getRegionsBlocksItemElements(elms);
+	
+	for (var i = 0; i < items.length; i++) {
+		var item = items[i];
+		
+		prepareRegionBlockConflictsWithLayoutUIEditor(item);
+		//createPretifyRegionBlockComboBox(item); //the prepareAvailableBlocksList already calls the parent.pretifyRegionBlockComboBox function
+		prepareAvailableBlocksList(item);
+		prepareRegionBlockHtmlEditor(item);
+  		prepareRegionBlockOverHandlers(item);
+  		prepareRegionBlockMoveHandler(item);
+		prepareRegionBlockSimulatedHtml(item);
+	}
+}
+
+function getRegionsBlocksItemElements(elms) {
 	var items = [];
 	
 	if (elms)
 		for (var i = 0; i < elms.length; i++) {
 			var elm = elms[i];
-			var elm_items = elm.classList.contains("item") ? [elm] : elm.querySelectorAll(".item");
+			var elm_items = elm.classList.contains("template_region_item") ? [elm] : elm.querySelectorAll(".template_region_item");
 			
 			if (elm_items)
 				for (var j = 0; j < elm_items.length; j++)
 					items.push(elm_items[j]);
 		}
 	else
-		items = document.querySelectorAll(".item");
+		items = document.querySelectorAll(".template_region_item");
 	
-	for (var i = 0; i < items.length; i++) {
-		var item = items[i];
+	return items;
+}
+
+function createPretifyRegionBlockComboBox(item) {
+	var block_options = filterSelectorInNodes(item.childNodes, "select.block_options");
+	
+	if (block_options) {
+		parent.pretifyRegionBlockComboBox(block_options, {
+			on_pretify_handler: function(select_elm) {
+				preparePretifyRegionBlockComboBox(item);
+			}
+		});
 		
-		prepareRegionBlockConflictsWithLayoutUIEditor(item);
-  		prepareRegionBlockOverHandlers(item);
-		prepareRegionBlockSimulatedHtml(item);
+		/* The iframe is slow but is not because of the pretty combobox
+		//destroy pretty combobox, bc I think the iframe could be a little bit slow bc of it
+		parent.destroyPretifyRegionBlockComboBox(block_options);
+		
+		//show block_options if region_block_type == options
+		var region_block_type = filterSelectorInNodes(item.childNodes, "select.region_block_type");
+		
+		if (region_block_type.value == "options") {
+			block_options.classList.remove("hidden");
+			block_options.style.display = "block";
+		}
+		
+		//remove invisibles, that are usually removed in parent.pretifyRegionBlockComboBox
+		var invisibles = filterSelectorAllInNodes(item.childNodes, ".invisible");
+		for (var i = 1; i < invisibles.length; i++)
+			invisibles[i].classList.remove("invisible");*/
 	}
 }
 
-function prepareRegionBlockConflictsWithLayoutUIEditor(item) {
-	//prepare items to don't be in conflict with the layout-ui-editor
-	item.setAttribute("contenteditable", "false");
-	item.setAttribute("spellcheck", "false");
-	item.classList.add("not-widget");
+function prepareAvailableBlocksList(item) {
+	//console.log("prepareAvailableBlocksList");
+	
+	parent.loadAvailableBlocksList(item, {
+		on_pretify_handler : function(select_elm) {
+			preparePretifyRegionBlockComboBox(item);
+		},
+	});
+}
+
+function preparePretifyRegionBlockComboBox(item) {
+	var block_options = filterSelectorInNodes(item.childNodes, "select.block_options");
+	
+	if (block_options) {
+		var pretty_select_menu_ul = parent.$(block_options).selectmenu("menuWidget");
+		var pretty_select_menu = pretty_select_menu_ul.parent();
+		
+		pretty_select_menu.addClass("layout-ui-editor-reserved");
+	}
+}
+
+function prepareRegionBlockHtmlEditor(item) {
+	var select = item.querySelector(".region_block_type");
+	
+	if (select) {
+		var type = select.value;
+		
+		if (type == "html") {
+			var block_html = filterSelectorInNodes(item.childNodes, ".block_html");
+			
+			if (block_html && !parent.hasRegionBlockHtmlEditor(block_html))
+				createRegionBlockHtmlEditor(block_html);
+		}
+	}
+}
+
+function convertRegionBlocksToSimpleHtml(elms) {
+	//loop for all the .template_region_items
+	for (var i = 0; i < elms.length; i++) {
+		var template_region_items = elms[i];
+		var items = getRegionsBlocksItemElements( [template_region_items] );
+		var html = "";
+		var first_node = null;
+		
+		//loop for all .template_region_item inside of .template_region_items
+		for (var j = 0; j < items.length; j++) {
+			var item = items[j];
+			var values = parent.getSettingsTemplateRegionBlockValues(item);
+			
+			//prepare main html and remove this item
+			if (values && values["type"] == "html") {
+				var sub_html = values["block"];
+				
+				//add sub_html
+				if (sub_html)
+					html += sub_html;
+					
+				//remove item, bc the sub_html was already inserted before the item
+				item.parentNode.removeChild(item);
+			}
+			else { //for all the other items, create a dummy div to be replaced below
+				var get_html_id = "get_html_id_" + Math.random() + "_" + Math.random() + "_" + Math.random(); //create unique id for each template_region_item
+				get_html_id = get_html_id.replace(/\./g, "_"); //replace "." from Math.random
+				
+				html += '<div id="' + get_html_id + '"></div>';
+				
+				item.get_html_id = get_html_id;
+				
+				if (!first_node)
+					first_node = item;
+			}
+		}
+		
+		//add main html
+		if (first_node)
+			first_node.insertAdjacentHTML("beforebegin", html);
+		else
+			template_region_items.innerHTML = html;
+		
+		//replace .template_region_item in the right html elements
+		for (var j = 0; j < items.length; j++) {
+			var item = items[j];
+			
+			if (item && item.get_html_id) {
+				var dummy_div = template_region_items.querySelector("#" + item.get_html_id);
+				
+				//add .template_region_item before dummy_div and delete dummy_div
+				if (dummy_div) {
+					var p = dummy_div.parentNode;
+					
+					p.insertBefore(item, dummy_div);
+					p.removeChild(dummy_div);
+				}
+				
+				//remove get_html_id
+				item.get_html_id = null;
+				delete item.get_html_id;
+			}
+		}
+		
+		//console.log(template_region_items.innerHTML);
+	}
+}
+
+function prepareRegionBlockConflictsWithLayoutUIEditor(item, force) {
+	if (!item.are_layout_ui_editor_conflicts_fixed || force) { //This method is called from the src/view/presentation/template_editor_widget/advanced/others/region_block.xml too, and so we don't execute this twice for the same item, we set a flag named: are_layout_ui_editor_conflicts_fixed
+		item.are_layout_ui_editor_conflicts_fixed = true;
+		//console.log(item);
+		
+		//prepare items to don't be in conflict with the layout-ui-editor
+		item.setAttribute("contenteditable", "false");
+		item.setAttribute("spellcheck", "false");
+		item.classList.add("not-widget");
+		
+		//avoids when click in the item, to open the .widget-header of the parent.template-widget. Note that the widget-header will always over the item header buttons. So we need to avoid this case, by stopping the propagation of the item.
+		item.addEventListener("click", function(e) {
+			//prevents event to continue with the default.
+			e.stopPropagation();
+			//Do not use return; or preventDefault
+		});
+		
+		//avoids the enter key in the textarea, where it will paste something in the parent element (.template_region_items)
+		var block_html = filterSelectorInNodes(item.childNodes, ".block_html");
+		var block_text = filterSelectorInNodes(item.childNodes, ".block_text");
+		var block_text_area = filterSelectorInNodes(block_text.childNodes, "textarea");
+		
+		block_text_area.addEventListener("keydown", function(e) {
+			//prevents event to continue with the default.
+			e.stopPropagation();
+			//Do not use return; or preventDefault
+		});
+		
+		block_html.addEventListener("keydown", function(e) {
+			//prevents event to continue with the default.
+			e.stopPropagation();
+			//Do not use return; or preventDefault
+		});
+	}
 }
  
 function prepareRegionBlockOverHandlers(item) {
@@ -101,7 +277,7 @@ function prepareRegionBlockOverHandlers(item) {
   			var elm = this;
   			var timeout_id = setTimeout(function() {
   				elm.classList.remove("item-hover");
-  			}, 1000);
+  			}, 500);
   			
   			this["out_timeout_id"] = timeout_id;
   		};
@@ -115,6 +291,98 @@ function prepareRegionBlockOverHandlers(item) {
 		   	item.attachEvent('mouseout', item_mouseout_handler);
   		}
   	}
+}
+
+function prepareRegionBlockMoveHandler(item) {
+	var template_region_items = item.parentNode.closest(".template_region_items");
+	var html = '<span class="icon move" title="Move this region-block">Move</span>';
+	var up = filterSelectorInNodes(item.childNodes, ".up");
+	up.insertAdjacentHTML("beforebegin", html);
+	
+	var move_icon = filterSelectorInNodes(item.childNodes, ".move");
+	var j_move_icon = parent.$(move_icon);
+	var selected_droppable = null;
+	var next_node = null;
+	var item_parent = null;
+	
+	j_move_icon.draggable({
+		//others settings
+	     appendTo: template_region_items,
+		containment: template_region_items,
+		cursor: "move",
+          tolerance: "pointer",
+		//refreshPositions: true, //Do not add this bc of performance
+		
+		/* Cannot set the helper otherwise it will not find the droppable element
+		//helper: "clone",
+		//revertDuration: 300,
+		//revert: true,
+		
+		//or
+		helper: function(event) {
+			var helper = item.ownerDocument.createElement('DIV');
+			helper.className = "dragging_menu_item";
+			helper.innerHTML = "Region-Block Item";
+			//helper.style.width = item.outterWidth + "px";
+			
+			//template_region_items.appendChild(helper);
+			//item.parentNode.insertBefore(helper, item);
+			console.log("START");
+			console.log(helper);
+			console.log(helper.parentNode);
+			
+			return helper;
+		},*/
+		start: function(event, ui_obj) {
+			next_node = item.nextSibling;
+			item_parent = item.parentNode;
+			template_region_items = item_parent.closest(".template_region_items");
+		},
+		drag: function(event, ui_obj) {
+			//prepare old droppable
+			if (selected_droppable)
+				selected_droppable.classList.remove("highlight", "droppable_highlight");
+			
+			selected_droppable = null;
+			
+			//prepare new droppable
+			var droppable = event.toElement ? event.toElement : event.srcElement;
+			//console.log(droppable);
+			
+			if (droppable) {
+				droppable = droppable.closest(".droppable");
+				
+				if (droppable && droppable.closest(".template_region_items") == template_region_items) {
+					droppable.classList.add("highlight", "droppable_highlight");
+					selected_droppable = droppable;
+				}
+			}
+		},
+		stop: function(event, ui_obj) {
+			/*console.log("STOP");
+			console.log(ui_obj.helper);
+			console.log(ui_obj.helper.parentNode);
+			console.log(event);*/
+			//ui_obj.helper.remove();
+			
+			//append item to the selected droppable
+			if (selected_droppable) {
+				selected_droppable.classList.remove("highlight", "droppable_highlight");
+				selected_droppable.appendChild(item);
+				
+				//sync layout with settings
+				parent.updateSettingsFromLayoutIframeField();
+			}
+			else { //put item back where it was
+				if (next_node)
+					item_parent.insertBefore(item, next_node);
+				else
+					item_parent.appendChild(item);
+				
+				showError("Could not drop item here. Please try again...");
+			}
+		},
+	});
 }
 
 function getRegionBlockSimulatedHtmlElm(item) {
@@ -132,8 +400,13 @@ function prepareRegionBlockSimulatedHtml(item) {
 		//get block_simulated_html div
 		var block_simulated_html = getRegionBlockSimulatedHtmlElm(item);
 		
-		if (block_simulated_html)
+		if (block_simulated_html) {
 			block_simulated_html.innerHTML = '';
+			
+			//disable edition in block_simulated_html
+			block_simulated_html.setAttribute("contenteditable", "false");
+			block_simulated_html.setAttribute("spellcheck", "false");
+		}
 		
 		//get block path
 		var values = parent.getSettingsTemplateRegionBlockValues(item);
@@ -158,39 +431,34 @@ function prepareRegionBlockSimulatedHtml(item) {
 			var p = ("" + project).charAt(0) == '"' ? ("" + project).substr(1, ("" + project).length - 2).replace(/\\"/g, '"') : project;
 			p = p ? p : selected_project_id;
 			
-			//preparing params and join points
-			var page_region_block_params = "";
-			var page_region_block_join_points = "";
-			
-			if (typeof parent.getRegionBlockParamValues == "function") {
-				var rb_objs = parent.getRegionBlockParamValues(region, block, rb_index);
-				
-				if (!$.isEmptyObject(rb_objs))
-					page_region_block_params = JSON.stringify(rb_objs);
-			}
-			
-			if (typeof parent.getRegionBlockJoinPoints == "function") {
-				var rb_objs = parent.getRegionBlockJoinPoints(region, block, rb_index);
-				
-				if (!$.isEmptyObject(rb_objs))
-					page_region_block_join_points = JSON.stringify(rb_objs);
-			}
-			
 			//preparing urls
-			var get_url = system_get_page_block_simulated_html_url.replace(/#project#/g, p).replace(/#block#/g, b).replace(/#page_region_block_params#/g, page_region_block_params).replace(/#page_region_block_join_points#/g, page_region_block_join_points);
+			var get_url = system_get_page_block_simulated_html_url.replace(/#project#/g, p).replace(/#block#/g, b);
 			var save_url = system_save_page_block_simulated_html_setting_url.replace(/#project#/g, p).replace(/#block#/g, b);
-  			
-  			//sets back synchronization functions
+  			var post_data = system_get_page_block_simulated_html_data;
+			post_data["page_region_block_params"] = post_data["page_region_block_join_points"] = null;
+			
+  			//preparing params and join points
+			if (typeof parent.getRegionBlockParamValues == "function")
+				post_data["page_region_block_params"] = parent.getRegionBlockParamValues(region, block, rb_index);
+			
+			if (typeof parent.getRegionBlockJoinPoints == "function")
+				post_data["page_region_block_join_points"] = parent.getRegionBlockJoinPoints(region, block, rb_index);
+			
+			//sets back synchronization functions
   			parent.update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
 			parent.update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
 			
 			//getting block html
-			getAjaxRequest({
-				url: get_url, 
-				callback_func: function(XMLRequestObject, response) {
+			parent.$.ajax({
+				url: get_url,
+				type: 'post',
+				processData: false,
+				contentType: 'text/html',
+				data: parent.JSON.stringify(post_data),
+				dataType: 'html',
+				success: function(response, textStatus, jqXHR) {
 					if (response && typeof response == "string" && response.charAt(0) == "{" && response.charAt(response.length - 1) == "}") {
-						var response_obj = JSON.parse(response)
-						//console.log(response_obj);
+						var response_obj = parent.JSON.parse(response)
 						
 						if (typeof response_obj == "object" && response_obj && response_obj.hasOwnProperty("html") && response_obj["html"]) { //response_obj could be null. Null is an object!
 							//prepare item
@@ -297,16 +565,19 @@ function onBlurBlockSimulatedHtmlSetting(e, elm, editable_settings, setting_sele
 			post_data = on_prepare_post_data(elm, post_data);
 		
 		if (post_data) {
-			getAjaxRequest({
-				url: save_url, 
-				method: "POST",
-				data: post_data,
-				callback_func: function(XMLRequestObject, response) {
+			parent.$.ajax({
+				url: save_url,
+				type: 'post',
+				processData: false,
+				contentType: 'text/html',
+				data: parent.JSON.stringify(post_data),
+				dataType: 'html',
+				success: function(response, textStatus, jqXHR) {
 					if (parent.StatusMessageHandler)
 						parent.StatusMessageHandler.removeLastShownMessage("info");
 					
 					if (response && typeof response == "string" && response.charAt(0) == "{" && response.charAt(response.length - 1) == "}") {
-						var response_obj = JSON.parse(response);
+						var response_obj = parent.JSON.parse(response);
 						
 						if (response_obj) {
 							if (response_obj.old_block_code_id == block_code_id && response_obj.old_block_code_time == block_code_time) {
@@ -342,7 +613,7 @@ function includeCodeForBlockSimulatedHtmlSetting(block_simulated_html, editable_
 		if ((k == "css" || k == "js") && v) {
 			var doc = block_simulated_html.ownerDocument || document;
 			var created_elm = doc.createElement(k == "css" ? "STYLE" : "SCRIPT");
-			created_elm.classList.add("widget-ignore");
+			created_elm.classList.add("not-widget");
 			created_elm.textContent = v;
     			block_simulated_html.appendChild(created_elm);
 		}
@@ -370,14 +641,14 @@ function includeCodeForBlockSimulatedHtmlSetting(block_simulated_html, editable_
 							
 							if (vk == "css") {
 								created_elm = doc.createElement("LINK");
-								created_elm.classList.add("widget-ignore");
+								created_elm.classList.add("not-widget");
 								created_elm.setAttribute("rel", "stylesheet");
 								created_elm.setAttribute("type", "text/css");
 								created_elm.setAttribute("href", file);
 					    		}
 					    		else {
 					    			created_elm = doc.createElement("SCRIPT");
-					    			created_elm.classList.add("widget-ignore");
+					    			created_elm.classList.add("not-widget");
 								created_elm.setAttribute("language", "javascript");
 								created_elm.setAttribute("type", "text/javascript");
 								created_elm.setAttribute("src", file);
@@ -425,59 +696,16 @@ function showError(msg) {
 		alert(msg);
 }
 
-function createRegionsBlocksHtmlEditor(elms) {
-	var selects = [];
-	
-	if (elms)
-		for (var i = 0; i < elms.length; i++) {
-			var elm = elms[i];
-			var elm_selects = elm.classList.contains("item") ? elm.querySelectorAll(".region_block_type") : elm.querySelectorAll(".item .region_block_type");
-			
-			if (elm_selects)
-				for (var j = 0; j < elm_selects.length; j++)
-					selects.push(elm_selects[j]);
-		}
-	else
-		selects = document.querySelectorAll(".item .region_block_type");
-	
-	for (var i = 0; i < selects.length; i++) {
-		select = selects[i];
-		
-		if (select) {
-			var type = select.value;
-			
-			if (type == "html")
-				createRegionBlockHtmlEditor( filterSelectorInNodes(select.parentNode.childNodes, ".block_html") );
-		}
-	};
-}
-
 function createRegionBlockHtmlEditor(block_html, opts) {
-	var textarea = filterSelectorInNodes(block_html.childNodes, "textarea");
-	textarea.style.display = "none";
+	var parent_body = block_html.closest("body"); //this is very important, bc if the textarea does not exists yet, this is, if was not added to the DOM yet, does not create the editor. Which means the textarea creation must be done in manually in all the addRepeatedRegionBlock methods.
 	
-	var editor_elm = filterSelectorInNodes(block_html.childNodes, ".block_html_editor");
-	
-	if (!editor_elm) {
-		var doc = block_html.ownerDocument || document;
-		editor_elm = doc.createElement("DIV");
-		editor_elm.className = "block_html_editor";
-		block_html.appendChild(editor_elm);
-	}
-	
-	editor_elm.innerHTML = textarea.value;
-	
-	var tinymce_opts = parent.getTinyMCEOptions(block_html, opts);
-	tinymce_opts["target"] = editor_elm;
-	tinymce_opts["selector"] = null;
-	delete tinymce_opts["selector"];
-	
-	tinyMCE.init(tinymce_opts);
+	if (parent_body)
+		parent.createRegionBlockHtmlWyswygEditor(block_html, opts);
 }
 
 function onChangeRegionBlock(elm) {
 	var p = elm.parentNode
-	var item = p.closest(".item");
+	var item = p.closest(".template_region_item");
 	var opt = elm.querySelector("option:checked");
 	var block = opt ? opt.getAttribute("value") : "";
 	
@@ -506,7 +734,7 @@ function onChangeRegionBlockEditor(elm, str) {
 function onBlurRegionBlock(elm) {
 	var block = elm.value;
 	var p = elm.parentNode
-	var item = p.closest(".item");
+	var item = p.closest(".template_region_item");
 	
 	if (block) 
 		item.classList.add("active");
@@ -530,14 +758,8 @@ function onChangeRegionBlockType(elm) {
 	//call parent onChangeRegionBlockType
 	parent.onChangeRegionBlockType(elm);
 	
-	var p = elm.parentNode.closest(".item");
-	
-	if (elm.value == "html") {
-		var block_html = filterSelectorInNodes(elm.parentNode.childNodes, ".block_html");
-		
-		if (!parent.hasRegionBlockHtmlEditor(block_html))
-			createRegionBlockHtmlEditor(block_html);
-	}
+	var p = elm.parentNode.closest(".template_region_item");
+	prepareRegionBlockHtmlEditor(p);
 	
 	//sets back synchronization function
 	parent.update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
@@ -561,8 +783,8 @@ function addFirstRegionBlock(elm) {
 	
 	//prepare new_region element with new handlers
 	var template_region = elm.parentNode.closest(".template_region");
-	var items = filterSelectorInNodes(template_region.childNodes, ".items");
-	var item = filterSelectorAllInNodes(items.childNodes, ".item");
+	var items = filterSelectorInNodes(template_region.childNodes, ".template_region_items");
+	var item = filterSelectorAllInNodes(items.childNodes, ".template_region_item"); //must be children bc the parent.addFirstRegionBlock method appends a new item to the template_region_item, and we want to get that item.
 	var new_region = item.length > 0 ? item[ item.length - 1 ] : null;
 	
 	prepareNewRegion(new_region);
@@ -582,7 +804,7 @@ function addRepeatedRegionBlock(elm) {
 	parent.addRepeatedRegionBlock(elm);
 	
 	//prepare new_region element with new handlers
-	var item = elm.parentNode.closest(".item");
+	var item = elm.parentNode.closest(".template_region_item");
 	
 	if (item) {
 		var new_region = null;
@@ -590,7 +812,7 @@ function addRepeatedRegionBlock(elm) {
 		do {
 			new_region = item.nextElementSibling;
 		}
-		while (new_region && !new_region.classList.contains("item"));
+		while (new_region && !new_region.classList.contains("template_region_item"));
 		
 		prepareNewRegion(new_region);
 	}
@@ -619,6 +841,8 @@ function prepareNewRegion(new_region) {
 		
 		prepareRegionBlockConflictsWithLayoutUIEditor(new_region);
 		prepareRegionBlockOverHandlers(new_region);
+		prepareRegionBlockMoveHandler(new_region);
+		preparePretifyRegionBlockComboBox(new_region);
 	}
 }
 
@@ -658,7 +882,19 @@ function moveUpRegionBlock(elm) {
 	parent.update_layout_iframe_from_settings_func = null;
 	
 	//call moveUpRegionBlock
-	parent.moveUpRegionBlock(elm);
+	//parent.moveUpRegionBlock(elm); //do not call parent.moveUpRegionBlock bc this ignores the Text nodes.
+	var item = $(elm).parent();
+	var p = item.parent();
+	var contents = p.contents().filter(function() {
+		return this.nodeType === Node.TEXT_NODE || this.nodeType === Node.ELEMENT_NODE;
+	});
+	var index = contents.index(item);
+	
+	//Do not add the this item.prev(), otherwise the system will ignore text nodes.
+	//Do not add the this item.prev(".template-widget"), otherwise if there is an element which is not a template widget like a text node or a bold element, then the sort won't happen for that element.
+	
+	if (index - 1 >= 0)
+		item.insertBefore(contents[index - 1]);
 	
 	//sets back synchronization function
 	parent.update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
@@ -675,7 +911,19 @@ function moveDownRegionBlock(elm) {
 	parent.update_layout_iframe_from_settings_func = null;
 	
 	//call moveUpRegionBlock
-	parent.moveDownRegionBlock(elm);
+	//parent.moveDownRegionBlock(elm); //do not call parent.moveDownRegionBlock bc this ignores the Text nodes.
+	var item = $(elm).parent();
+	var p = item.parent();
+	var contents = p.contents().filter(function() {
+		return this.nodeType === Node.TEXT_NODE || this.nodeType === Node.ELEMENT_NODE;
+	});
+	var index = contents.index(item);
+	
+	//Do not add the this item.next(), otherwise the system will ignore text nodes.
+	//Do not add the this item.next(".template-widget"), otherwise if there is an element which is not a template widget like a text node or a bold element, then the sort won't happen for that element.
+	
+	if (index + 1 < contents.length)
+		item.insertAfter(contents[index + 1]);
 	
 	//sets back synchronization function
 	parent.update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
@@ -685,54 +933,159 @@ function moveDownRegionBlock(elm) {
 }
 
 function deleteRegionBlock(elm) {
-	//save synchronization function
-	var update_layout_iframe_from_settings_func_bkp = parent.update_layout_iframe_from_settings_func;
-	
-	//disable synchronization function
-	parent.update_layout_iframe_from_settings_func = null;
-	
-	//delete item
+	//bc the parent.deleteRegionBlock only deletes if not the last region, we need to hard code the deletion
 	var item = $(elm).parent();
 	item.remove();
-	
-	//sets back synchronization function
-	parent.update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
 	
 	//sync layout with settings
 	parent.updateSettingsFromLayoutIframeField();
 }
 
+//used in the edit_page_and_template.js
+function getAvailableTemplateRegions() {
+	var available_regions = [];
+	var template_regions = document.querySelectorAll(".template_region");
+	
+	for (var i = 0; i < template_regions.length; i++) {
+		var region = template_regions[i].getAttribute("region");
+		
+		available_regions.push(region);
+	}
+	
+	return available_regions;
+}
+
 function getTemplateRegionsBlocks() {
 	var regions = [];
 	var regions_blocks = [];
-	
-	var items = document.querySelectorAll(".template_region > .items > .item");
+	var PtlLayoutUIEditor = parent.$(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+	var items = document.querySelectorAll(".template_region > .template_region_items");
 	//console.log(items);
 	
+	//loop all template_region > .template_region_items
 	for (var i = 0; i < items.length; i++) {
-		var item = items[i];
-		var values = parent.getSettingsTemplateRegionBlockValues(item);
+		//loop all .template_region_items children
+		var template_region_items = items[i];
+		var template_region = template_region_items.parentNode.closest(".template_region");
+		var region = template_region.getAttribute("region");
+		var template_region_items_children = template_region_items.querySelectorAll(".template_region_item");
+		var text_nodes_to_remove = [];
 		
-		if (values) {
-			var region = values["region"];
-			var type = values["type"];
-			var block = values["block"];
-			var project = values["project"];
-			var rb_index = values["rb_index"];
+		//add dummy text nodes
+		for (var j = 0; j < template_region_items_children.length; j++) {
+			var template_region_item = template_region_items_children[j];
+			var get_html_id = "get_html_id_" + Math.random() + "_" + Math.random() + "_" + Math.random(); //create unique id for each template_region_item
+			var text_node = document.createTextNode("#" + get_html_id + "#");
 			
-			regions.push(region);
+			template_region_item.get_html_id = get_html_id;
+			template_region_item.parentNode.insertBefore(text_node, template_region_item);
+			template_region_item.classList.add("layout-ui-editor-reserved");
 			
-			if (block != "")
-				regions_blocks.push([region, block, project, type == "html", rb_index]);
+			text_nodes_to_remove.push(text_node);
+		}
+		
+		//get html
+		var children = Array.from(template_region_items.childNodes);
+		var html = getTemplateRegionContentsHtml(PtlLayoutUIEditor, children);
+		//console.log(html);
+		
+		//remove dummy text nodes
+		for (var j = 0; j < text_nodes_to_remove.length; j++) {
+			var text_node = text_nodes_to_remove[j];
+			text_node.parentNode.removeChild(text_node);
+		}
+		
+		//prepare html and convert it to regions_blocks
+		var start = 0;
+		
+		for (var j = 0; j < template_region_items_children.length; j++) {
+			var template_region_item = template_region_items_children[j];
+			var get_html_id = template_region_item.get_html_id;
+			
+			//remove dummy get_html_id and class
+			template_region_item.classList.remove("layout-ui-editor-reserved");
+			template_region_item.get_html_id = null;
+			delete template_region_item.get_html_id;
+			
+			//slpit and add html
+			var to_search = "#" + get_html_id + "#";
+			var pos = html.indexOf(to_search, start);
+			
+			if (pos != -1) {
+				var sub_html = html.substr(start, pos - start);
+				sub_html = sub_html.replace(/^\s+/g, "").replace(/\s+$/g, "");
+				
+				if (sub_html != "") {
+					regions.push(region);
+					
+					if (block != "")
+						regions_blocks.push([region, sub_html, null, true, 0]);
+				}
+				
+				start = pos + to_search.length;
+			}
+			else
+				alert("Error trying to convert region html into region blocks, in region: " + region); //I could use showError instead of alert, but for now I prefer to use the alert, bc this should NEVER happen and if it does it means this logic is not 100% correct and I should know it.
+			
+			//get and add .template_region_item properties
+			var values = parent.getSettingsTemplateRegionBlockValues(template_region_item);
+			
+			if (values) {
+				var region = values["region"];
+				var type = values["type"];
+				var block = values["block"];
+				var project = values["project"];
+				var rb_index = values["rb_index"];
+				
+				regions.push(region);
+				
+				if (block != "")
+					regions_blocks.push([region, block, project, type == "html", rb_index]);
+			}
+		}
+		
+		//get next html
+		if (start < html.length) {
+			var sub_html = html.substr(start);
+			sub_html = sub_html.replace(/^\s+/g, "").replace(/\s+$/g, "");
+			
+			if (sub_html != "") {
+				regions.push(region);
+				
+				if (block != "")
+					regions_blocks.push([region, sub_html, null, true, 0]);
+			}
 		}
 	}
+	//console.log(regions_blocks);
 	
+	//prepare params
 	var params = [];
 	if (parent.template_params_values_list)
 		for (var k in parent.template_params_values_list) 
 			params.push(k);
 	
 	return {"regions": regions, "regions_blocks": regions_blocks, "params": params};
+}
+
+function getTemplateRegionContentsHtml(PtlLayoutUIEditor, children) {
+	var html = "";
+	
+	if (children.length > 0) {
+		if (PtlLayoutUIEditor) 
+			html = PtlLayoutUIEditor.getElementContentsHtml(children);
+		else
+			for (var w = 0; w < children.length; w++) {
+				var child = children[w];
+				var child_html = child.nodeType == Node.ELEMENT_NODE ? child.outerHTML : child.textContent;
+				var trimmed = child_html.replace(/^\s+/g, "").replace(/\s+$/g, "");
+				
+				if (trimmed != "")
+					html += trimmed;
+			}
+	}
+	
+	return html;
 }
 
 function isRegionBlockInDarkBackground(elm) {
@@ -825,7 +1178,7 @@ function isDarkColor(color) {
 	return hsp > 127.5 ? false : true;
 }
 
-function getAjaxRequest(options) {
+/*function getAjaxRequest(options) {
 	if(!options) 
 		options = {};
 	
@@ -841,16 +1194,16 @@ function getAjaxRequest(options) {
 	if (!url)
 		return false;
 	
-	var XMLRequestObject = null; /* XMLHttpRequest Object */
+	var XMLRequestObject = null; //XMLHttpRequest Object
 	
-	if (window.XMLHttpRequest) { /* Mozilla, Safari,...*/
+	if (window.XMLHttpRequest) { //Mozilla, Safari, ...
 		XMLRequestObject = new XMLHttpRequest();
 		
 		if (XMLRequestObject.overrideMimeType)
 			XMLRequestObject.overrideMimeType("text/xml");
 	
 	} 
-	else if (window.ActiveXObject) { /* IE */
+	else if (window.ActiveXObject) { //IE
 		try {
 			XMLRequestObject = new ActiveXObject("Msxml2.XMLHTTP");
 		} 
@@ -871,14 +1224,12 @@ function getAjaxRequest(options) {
 	if (typeof XMLRequestObject.overrideMimeType == "function")
 		XMLRequestObject.overrideMimeType("text/plain");
 	
-	/*
-	open(method, url, async, user, psw)
-		method: the request type GET or POST
-		url: the file location
-		async: true (asynchronous) or false (synchronous)
-		user: optional user name
-		psw: optional password
-	*/
+	//open(method, url, async, user, psw)
+	//	method: the request type GET or POST
+	//	url: the file location
+	//	async: true (asynchronous) or false (synchronous)
+	//	user: optional user name
+	//	psw: optional password
 	XMLRequestObject.open(method, url, assync, username, password);
 	
 	if(method == "POST") {
@@ -938,4 +1289,4 @@ function convertDataToQueryString(data, prefix) {
 		query_string = data;
 	
 	return query_string;
-}
+}*/

@@ -28,19 +28,33 @@ var add_project_url = "' . $add_project_url . '";
 var select_project_url = "' . $project_url_prefix . $redirect_path . (strpos($redirect_path, "?") !== false ? '&' : '?') . 'bean_name=#bean_name#&bean_file_name=#bean_file_name#&project=#project#&filter_by_layout=#filter_by_layout#";
 var layers_props = ' . json_encode($layers_projects) . ';
 var is_popup = ' . ($popup ? 1 : 0) . ';
+var selected_project_id = "' . $selected_project_id . '";
 
 $(function () {
 	updateLayerProjects("' . $folder_to_filter . '");
 });
 </script>'; $main_content = '
-<div class="choose_available_project' . (count($layers_projects) == 1 ? ' single_presentation_layer' : '') . ($projects_exists ? '' : ' no_projects') . '">
+<div class="choose_available_project' . ($popup ? " in_popup" : "") . '' . (count($layers_projects) == 1 ? ' single_presentation_layer' : '') . ($projects_exists ? '' : ' no_projects') . '">
+	
+	<div class="top_bar">
+		<header>
+			<div class="title">
+				<div class="breadcrumbs"></div>
+			</div>
+		</header>
+	</div>
+	
 	<div class="title' . ($popup ? " inside_popup_title" : "") . '">Choose a Project</div>'; if ($layers_projects) { $main_content .= '
 		<div class="layer">
 			<label>Presentation Layer:</label>
 			<select onChange="updateLayerProjects(this)">'; foreach ($layers_projects as $bean_name => $layer_props) { $main_content .= '
 				<option bean_name="' . $bean_name . '" bean_file_name="' . $layer_props["bean_file_name"] . '" layer_bean_folder_name="' . $layer_props["layer_bean_folder_name"] . '">' . $layer_props["item_label"] . '</option>'; } $main_content .= '
 			</select>
-		</div>'; } if (!$projects_exists) $main_content .= '
+		</div>'; } $main_content .= '
+		<div class="projects_list_type">
+			<a href="javascript:void(0)" onClick="toggleProjectsListType(this, \'block_view\')" title="Show blocks view"><span class="icon block_view active"></span></a>
+			<a href="javascript:void(0)" onClick="toggleProjectsListType(this, \'list_view\')" title="Show list view"><span class="icon list_view"></span></a>
+		</div>'; if (!$projects_exists) $main_content .= '
 		<div class="new_project">
 			<div class="button">
 				<button onClick="addProject();">Create Your First Project!</button>
@@ -55,30 +69,9 @@ $(function () {
 		</div>'; $main_content .= '
 	<div class="loading_projects"><span class="icon loading"></span> Loading projects...</div>
 	
-	<div class="sub_folder_info">
-		<div class="current_project_folder"></div>
-		<div class="project_folder_go_up" title="Current folder"></div>
-	</div>
-	
-	<div class="group folders block_view">
-		<div class="title">
-			<label>Folders:</label>
-			
-			<div class="projects_list_type">
-				<a href="javascript:void(0)" onClick="toggleProjectsListType(this, \'block_view\')" title="Show blocks view"><span class="icon block_view active"></span></a>
-				<a href="javascript:void(0)" onClick="toggleProjectsListType(this, \'list_view\')" title="Show list view"><span class="icon list_view"></span></a>
-			</div>
-		</div>
-		<ul></ul>
-	</div>
 	<div class="group projects block_view">
 		<div class="title">
 			<label>Projects:</label>
-			
-			<div class="projects_list_type">
-				<a href="javascript:void(0)" onClick="toggleProjectsListType(this, \'block_view\')" title="Show blocks view"><span class="icon block_view active"></span></a>
-				<a href="javascript:void(0)" onClick="toggleProjectsListType(this, \'list_view\')" title="Show list view"><span class="icon list_view"></span></a>
-			</div>
 		</div>
 		<ul></ul>
 	</div>

@@ -40,11 +40,11 @@
 		.template-widget.template-widget-region-param {
 			margin:5px !important; /* !important is bc of the css when .borders is active */
 			padding:5px !important; /* !important is bc of the css when .borders is active */
-			border:1px outset #20b727 !important; /* !important is bc of the css when .borders is active */
+			border:1px solid #000 !important; /* !important is bc of the css when .borders is active */
 			background-image:none !important; /* !important is bc of the css when .borders is active */
 			border-radius:5px;
-			background:#333;
-			color:#20b727;
+			background:#f7f7f7;
+			color:#000;
 			vertical-align:middle;
 			display:block;
 			word-break:break-all;
@@ -62,8 +62,9 @@
 			background-image:none !important; /* !important is bc of the css when .borders is active */
 			display:block;
 			color:inherit;
-			font-size:inherit;
-			font-family:inherit;
+			/*font-size:inherit;*/
+			font-size:12px;
+			font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 			overflow:auto;
 		}
 		.template-widget.template-widget-region-param > pre::-webkit-scrollbar {
@@ -78,15 +79,16 @@
 	<menu_js><![CDATA[
 		function TemplateRegionParamWidget(ui_creator, menu_widget) {
 			var me = this;
-			var obj_php_widget = new PHPWidget(ui_creator, menu_widget);
+			var PHPWidgetObj = new PHPWidget(ui_creator, menu_widget);
 			
 			me.init = function() {
-				obj_php_widget.init();
+				PHPWidgetObj.init();
 				
 				menu_widget.removeAttr("data-on-parse-template-widget-html-func");
 				
 				menu_widget.attr({
 					"data-on-create-template-widget-func": ui_creator.obj_var_name + ".menu_widgets_objs['region-param'].onCreateTemplateWidget",
+					"data-on-drag-stop-func": ui_creator.obj_var_name + ".menu_widgets_objs['region-param'].onDropMenuWidget",
 				});
 			};
 			
@@ -97,7 +99,22 @@
 				if (!html_element)
 					html_element = document.createComment('? echo $EVC->getCMSLayer()->getCMSTemplateLayer()->getParam("' + value + '"); ?');
 				
-				obj_php_widget.onCreateTemplateWidget(widget, html_element);
+				PHPWidgetObj.onCreateTemplateWidget(widget, html_element);
+			};
+			
+			//This func will be used when we drop region-param widgets.
+			me.onDropMenuWidget = function(menu_widget, widget, event, ui_obj) {
+				var template_region = widget.parent().closest(".template_region");
+				
+				if (template_region[0]) {
+					widget.hide();
+					
+					ui_creator.showError("You cannot drop this widget inside of a template region.");
+					
+					setTimeout(function() {
+						ui_creator.deleteTemplateWidget(widget);
+					}, 500);
+				}
 			};
 		}
 	]]></menu_js>

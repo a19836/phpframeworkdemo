@@ -49,12 +49,11 @@ function chooseAvailableTemplate(select, options) {
 	MyFancyPopupAvailableTemplate.showPopup();
 }
 
-function installTemplatePopup(project_id, folder_to_filter, open_store) {
+function installTemplatePopup(project_id, folder_to_filter) {
 	var url = MyFancyPopupAvailableTemplate.settings.install_template_url;
 	
 	if (url) {
 		url += (url.indexOf("?") != -1 ? "&" : "?") + "popup=1&on_success_js_func=MyFancyPopupInstallTemplate.hidePopup";
-		url += open_store ? "&open_store=1" : "";
 		
 		var popup = $(".install_template_popup");
 		
@@ -147,11 +146,6 @@ function prepareChooseAvailableTemplateMainProjectHtml(project_id, folder_to_fil
 					+ '<li class="loading_templates"><span class="icon loading"></span> Loading projects...</li>'
 				+ '</ul>'
 			+ '</div>';
-	
-	html += '<div class="browse_templates">'
-				+ '<div>Install new templates from store</div>'
-				+ '<button onClick="installTemplatePopup(\'' + project_id + '\', \'' + folder_to_filter + '\', true)">Browse more templates</button>'
-			+ '</div>';
 		
 	popup_content.html(html).scrollTop(0);
 	
@@ -170,11 +164,9 @@ function prepareChooseAvailableTemplateDefaultHtml(project_id) {
 	var ats = getAvailableFilesPropsConvertedWithFolders(items, "", true);
 	
 	//build default templates html
-	var html = '<li class="project_default_template default_template">'
-			+ '<div class="photo_default" onclick="selectAvailableTemplate(\'' + project_id + '\', \'\')">Default</div>'
+	var html = '<li class="project_default_template default_template" onclick="selectAvailableTemplate(\'' + project_id + '\', \'\')">'
+			+ '<div class="photo_default">' /*+ 'Default'*/ + '</div>'
 			+ '<label>Project default template</label>'
-			+ '<a class="select_template" href="javascript:void(0)" onClick="selectAvailableTemplate(\'' + project_id + '\', \'\')"><span class="icon enable"></span> Select Template</a>'
-			+ '<span class="show_demo">No demo</span>'
 		+ '</li>';
 	
 	for (var i = 0; i < default_available_templates.length; i++) {
@@ -231,7 +223,7 @@ function prepareChooseAvailableTemplateProjectsHtml(folder_to_filter) {
 	
 	ul.html(html);
 	
-	var info = folder_to_filter ? '<span onClick="prepareChooseAvailableTemplateProjectsHtml(\'\')" class="icon project"></span> ' + getChooseAvailableTemplateCurrentProjectHtml(folder_to_filter, false) : '';
+	var info = folder_to_filter ? '<span class="path_parts" onClick="prepareChooseAvailableTemplateProjectsHtml(\'\')">projects</span> ' + getChooseAvailableTemplateCurrentProjectHtml(folder_to_filter, false, false) : '';
 	ul.parent().children(".current_template_folder").html(info);
 	
 	MyFancyPopupAvailableTemplate.updatePopup();
@@ -265,7 +257,7 @@ function prepareChooseAvailableTemplatesHtml(project_id, folder_to_filter) {
 		var exlude_default_templates = !folder_to_filter && !is_external_project;
 		
 		//add folders
-		var folders_exists = false;
+		/*var folders_exists = false;
 		
 		for (var k in ats) 
 			if (ats[k]) { 
@@ -280,7 +272,7 @@ function prepareChooseAvailableTemplatesHtml(project_id, folder_to_filter) {
 		
 		if (folders_exists)
 			html += '<li class="separator"></li>';
-		
+		*/
 		//add files 
 		for (var k in ats) 
 			if (ats[k] && (!exlude_default_templates || !ats[k]["is_default_template"]))
@@ -299,8 +291,10 @@ function prepareChooseAvailableTemplatesHtml(project_id, folder_to_filter) {
 	ul.html(html);
 	
 	var info = '';
-	info += is_external_project ? '<span onClick="prepareChooseAvailableTemplateProjectsHtml(\'\')" class="icon project"></span> ' + getChooseAvailableTemplateCurrentProjectHtml(project_id, true) : "";
-	info += folder_to_filter ? '<span onClick="prepareChooseAvailableTemplatesHtml(\'' + project_id + '\', \'\')" class="icon folder' + (is_external_project ? " with_project" : "") + '"></span> ' + getChooseAvailableTemplateCurrentFolderHtml(project_id, folder_to_filter) : '';
+	info += is_external_project ? '<span class="path_parts" onClick="prepareChooseAvailableTemplateProjectsHtml(\'\')">projects</span> ' + getChooseAvailableTemplateCurrentProjectHtml(project_id, true, folder_to_filter) : "";
+	info += folder_to_filter ? (
+			!is_external_project ? '<span class="path_parts" onClick="prepareChooseAvailableTemplatesHtml(\'' + project_id + '\', \'\')">templates</span> ' : ''
+		) + getChooseAvailableTemplateCurrentFolderHtml(project_id, folder_to_filter) : '';
 	ul.parent().children(".current_template_folder").html(info);
 	
 	MyFancyPopupAvailableTemplate.updatePopup();
@@ -318,7 +312,7 @@ function getChooseAvailableTemplateHtml(project_id, folder_to_filter, fp, templa
 	var is_default_template = !is_external_project ? template_props["is_default_template"] : false;
 	
 	if (is_file)
-		html += '<li class="file' + (is_default_template ? " default_template" : "") + '" title="' + label + '">'
+		html += '<li class="file' + (is_default_template ? " default_template" : "") + '" onClick="selectAvailableTemplate(\'' + project_id + '\', \'' + template_id + '\')" title="' + label + '">'
 	else
 		html += '<li class="folder" onClick="prepareChooseAvailableTemplatesHtml(\'' + project_id + '\', \'' + template_id + '\');" title="' + label + '">'
 	
@@ -327,18 +321,14 @@ function getChooseAvailableTemplateHtml(project_id, folder_to_filter, fp, templa
 		var demo = template_props["demo"];
 		
 		if (logo)
-			html += '<img src="' + logo + '" onClick="selectAvailableTemplate(\'' + project_id + '\', \'' + template_id + '\')" onError="$(this).parent().children(\'.photo\').removeClass(\'hidden\'); $(this).remove();" />';
+			html += '<div class="image"><img src="' + logo + '" onError="$(this).parent().parent().children(\'.photo\').removeClass(\'hidden\'); $(this).parent().remove();" /></div>';
 		
-		html += '<div class="photo' + (fp == "ajax" || fp == "empty" || fp == "default" ? "_" + fp : "") + (logo ? " hidden" : "") + '" onClick="selectAvailableTemplate(\'' + project_id + '\', \'' + template_id + '\')">' + (fp == "empty" ? "Blank" : (fp == "default" ? "Default" : "")) + '</div>';
+		html += '<div class="photo' + (fp == "ajax" || fp == "empty" || fp == "default" ? "_" + fp : "") + (logo ? " hidden" : "") + '">' /*+ (fp == "empty" ? "Blank" : (fp == "default" ? "Default" : ""))*/ + '</div>';
 		
 		html += '<label>' + label + '</label>';
 		
-		html += '<a class="select_template" href="javascript:void(0)" onClick="selectAvailableTemplate(\'' + project_id + '\', \'' + template_id + '\')"><span class="icon enable"></span> Select Template</a>';
-			
 		if (demo)
-			html += '<a class="show_demo" href="javascript:void(0)" onClick="showAvailableTemplateDemo(\'' + demo + '\')"><span class="icon view"></span> View Demo</a>';
-		else /*if (!is_default_template)*/
-			html += '<span class="show_demo">No demo</span>';
+			html += '<div class="show_demo" onClick="showAvailableTemplateDemo(\'' + demo + '\')" title="View Demo"><span class="icon view"></span></div>';
 	}
 	else { //if is folder
 		html += '<div class="photo"></div>';
@@ -365,11 +355,11 @@ function getChooseAvailableTemplateProjectHtml(folder_to_filter, fp, project_pro
 		html += '<li class="folder project_folder" onClick="prepareChooseAvailableTemplateProjectsHtml(\'' + project_id + '\');" title="' + label + '">'
 	
 	if (project_logo_url)
-		html += '	<div class="image">' + (project_logo_url ? '<img src="' + project_logo_url + '" onError="$(this).parent().removeClass("image").addClass("photo");$(this).remove();" />' : '') + '</div>';
+		html += '<div class="image">' + (project_logo_url ? '<img src="' + project_logo_url + '" onError="$(this).parent().removeClass("image").addClass("photo");$(this).remove();" />' : '') + '</div>';
 	else
-		html += '	<div class="photo"></div>';
+		html += '<div class="photo"></div>';
 	
-	html += '	<label>' + label + '</label>';
+	html += '<label>' + label + '</label>';
 	html += '</li>';
 	
 	return html;
@@ -394,7 +384,7 @@ function getChooseAvailableTemplateCurrentFolderHtml(project_id, current_path) {
 	return html;
 }
 
-function getChooseAvailableTemplateCurrentProjectHtml(current_path, is_project) {
+function getChooseAvailableTemplateCurrentProjectHtml(current_path, is_project, with_project) {
 	current_path = current_path.replace(/^\/+/g, "").replace(/\/+$/g, "");
 	var dirs = current_path.split("/");
 	var html = '';
@@ -407,7 +397,7 @@ function getChooseAvailableTemplateCurrentProjectHtml(current_path, is_project) 
 			parent_folder += (parent_folder ? "/" : "") + dir;
 			var is_part_project = i + 1 == dirs.length && is_project;
 			
-			html += '<span class="path_parts' + (is_part_project ? ' path_part_project' : '') + '" onClick="' + (is_part_project ? 'prepareChooseAvailableTemplatesHtml(\'' + parent_folder + '\', \'\');' : 'prepareChooseAvailableTemplateProjectsHtml(\'' + parent_folder + '\');') + '">' + dir + '</span>';
+			html += '<span class="path_parts' + (is_part_project ? ' path_part_project' + (with_project ? ' with_project' : '') : '') + '" onClick="' + (is_part_project ? 'prepareChooseAvailableTemplatesHtml(\'' + parent_folder + '\', \'\');' : 'prepareChooseAvailableTemplateProjectsHtml(\'' + parent_folder + '\');') + '">' + dir + '</span>';
 		}
 	}
 	
@@ -486,6 +476,8 @@ function selectAvailableTemplate(project_id, selected_template) {
 }
 
 function showAvailableTemplateDemo(demo_url) {
+	window.event.stopPropagation(); //prevent the event to fire in the parent "li" html element.
+	
 	var popup = $(".show_available_template_demo_popup");
 	
 	if (!popup[0]) {

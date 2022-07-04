@@ -3,10 +3,11 @@
 }
 
 .block_obj {
-	width:760px;
+	min-width:760px;
 }
 .block_obj .module_settings {
-	width:auto;
+	width:760px;
+	margin:0 auto;
 }
 .block_obj .module_settings .settings {
 	border:0;
@@ -24,10 +25,10 @@
 .module_show_objects_group_settings label {
 	font-style:normal;
 	font-weight:normal;
-	font-size:12px;
+	font-size:inherit;
 }
 .module_show_objects_group_settings input, .module_show_objects_group_settings select, .module_show_objects_group_settings textarea {
-	font-size:12px;
+	font-size:inherit;
 }
 
 /* CREATE FORM TASK HTML */
@@ -62,7 +63,10 @@
 /* PTL UI */
 .module_show_objects_group_settings .create_form_task_html > .ptl_settings > .layout-ui-editor > .options .option.show-full-source {
 	display:none !important;
-} 
+}
+.module_show_objects_group_settings .create_form_task_html > .ptl_settings .layout-ui-editor > .tabs {
+	font-size:8pt;
+}
 
 /* ACTION SETTINGS HTML */
 .module_show_objects_group_settings .action_settings {

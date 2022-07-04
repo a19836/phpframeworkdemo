@@ -37,8 +37,8 @@ $(function() {
 	    	}
 	});
 	
-	//prepare filter by layout field
-	setFilterByLayoutWidth();
+	//set scroll to where the select project is
+	initFilterByLayout();
 	
 	//prepare hide_panel
 	$("#hide_panel").draggable({
@@ -75,10 +75,21 @@ $(function() {
 		//open pages li for the filtered project
 		var file_tree_ul = $("#file_tree > ul");
 		var lis = file_tree_ul.children("li");
-		var item = lis.filter(".presentation_layers");
+		var pres_item = lis.filter(".presentation_layers");
 		
-		if (path_to_filter_exists && item[0])
-			openMainNodeTreeItemByPath(item, path_to_filter + "/src/entity");
+		if (pres_item[0]) {
+			var new_label = "Interface - " + pres_item.find(" > a > label > label").text();
+			pres_item.find(" > a > label > label").text(new_label);
+			
+			if (path_to_filter_exists)
+				openMainNodeTreeItemByPath(pres_item, path_to_filter + "/src/entity");
+		}
+		
+		var da_item = lis.filter(".data_access_layers");
+		if (da_item[0]) {
+			var new_label = "SQL - " + da_item.find(" > a > label > label").text();
+			da_item.find(" > a > label > label").text(new_label);
+		}
 		
 		lis.filter(":not(.presentation_layers)").each(function(idx, li) {
 			$(li).removeClass("jstree-open").addClass("jstree-closed");
@@ -576,29 +587,52 @@ function updateThemeLayoutInIframes(iframes, theme_layout) {
 	});
 }
 
-function setFilterByLayoutWidth() {
-	//prepare filter by layout field
-	var select = $(".filter_by_layout select");
-	var temp_elm = $("<span>" + select.find("option:selected").text() + "</span>");
-	select.after(temp_elm);
-	var width = temp_elm.width() + 5;
-	width = width < 50 ? 50 : width;
-	select.width(width);
-	temp_elm.remove();
+function openFilterByLayoutSubMenu(elm) {
+	openSubmenu(elm);
+	
+	//if ( $(elm).closest(".sub_menu").is(".open") )
+	//	initFilterByLayout();
+}
+function initFilterByLayout() {
+	//set scroll to where the select project is
+	var selected_project_elm = $(".filter_by_layout  > ul > li.scroll li.selected");
+	
+	if (selected_project_elm[0])
+		selected_project_elm[0].scrollIntoView();
 }
 
 function filterByLayout(elm) {
-	$(elm).css("width", "");
-	var proj_id = $(elm).val();
+	elm = $(elm);
+	var filter_by_layout = elm.parent().closest(".filter_by_layout");
+	var current_selected_project = filter_by_layout.attr("current_selected_project");
+	var proj_id = elm.attr("value");
+	var selected_admin_home_project_page_url = admin_home_project_page_url.replace("#filter_by_layout#", proj_id);
 	
-	setFilterByLayoutWidth();
+	if (current_selected_project == proj_id) {
+		if (window.event && (window.event.ctrlKey || window.event.keyCode == 65)) {
+			var win = window.open(selected_admin_home_project_page_url);
+			
+			if(win) //Browser has allowed it to be opened
+				win.focus();
+		}
+		else
+			goToHandler(selected_admin_home_project_page_url);
+	}
+	else {
+		var url = ("" + document.location);
+		url = url.replace(/(&?)(filter_by_layout|default_page)=[^&]*/g, "");
+		url += (url.indexOf("?") != -1 ? "&" : "?") + "filter_by_layout=" + proj_id;
+		
+		//Note that if proj_id is empty, it means that the "ALL PROJECTS" was selected, and in this case we should show not set any default_page, bc it should open the previous opened page.
+		if (proj_id)
+			MyJSLib.CookieHandler.setCookie('default_page', selected_admin_home_project_page_url, 0, "/"); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+		
+		url = url.replace(/[&]+/g, "&");
+		
+		document.location = url;
+	}
 	
-	var url = ("" + document.location);
-	url = url.replace(/(&?)filter_by_layout=[^&]*/g, "");
-	url += (url.indexOf("?") != -1 ? "&" : "?") + "filter_by_layout=" + proj_id;
-	url = url.replace(/[&]+/g, "&");
-	
-	document.location = url;
+	filter_by_layout.removeClass("open");
 }
 
 //is used in the goTo function
@@ -609,6 +643,7 @@ function goToHandler(url, a, attr_name, originalEvent) {
 		try {
 			//save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
 			MyJSLib.CookieHandler.setCookie('default_page', url, 0, "/");
+			//console.log(url);
 			
 			//open url in right panel
 			$("#right_panel iframe")[0].src = url;

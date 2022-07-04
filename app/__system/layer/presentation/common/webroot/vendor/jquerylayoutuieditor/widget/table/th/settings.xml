@@ -3,11 +3,12 @@
 	<label>Table Column Head</label>
 	<tag>table-column-head</tag>
 	<settings>
+		<resizable>1</resizable>
 		<template_class>droppable</template_class>
 		<create_widget_class>TableColumnHeadWidget</create_widget_class>
 	</settings>
 	<menu_widget></menu_widget>
-	<template_widget></template_widget>
+	<template_widget><![CDATA[&nbsp;]]></template_widget>
 	<properties></properties>
 	<menu_css><![CDATA[
 		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-table-column-head:before,
@@ -47,7 +48,11 @@
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
-				if (!html_element) {
+				if (html_element) {
+					if (html_element.childNodes.length == 0)
+						$(html_element).append("&nbsp;"); //add speace by default, like the browsers do by default. This space will be removed on save action.
+				}
+				else {
 					widget.append("&nbsp;");
 					
 					var p = widget.parent();

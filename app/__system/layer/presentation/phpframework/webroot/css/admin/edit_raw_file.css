@@ -19,12 +19,17 @@
 	overflow:auto;*/
 	padding:0;
 }
-.code_area .ace_editor, .code_area textarea {
-	height:calc(100vh - 60px);
+.code_area .ace_editor, 
+  .code_area textarea {
+	height:calc(100vh - 80px);
 	width:100%;
 	border-bottom:3px inset #CCC;
 	margin:0;
 	overflow-y:auto;
+}
+.code_area.in_popup .ace_editor, 
+  .code_area.in_popup textarea {
+	height:calc(100vh - 85px);
 }
 .code_area textarea {
 	position:fixed !important; /* 2021-02-08 JP: this is very important bc is fixing the problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.*/

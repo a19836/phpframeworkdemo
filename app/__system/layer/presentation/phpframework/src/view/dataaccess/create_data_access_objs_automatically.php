@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$head = '
+include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -33,10 +33,10 @@ $head = '
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/create_data_access_objs_automatically.js"></script>'; $main_content = ''; if ($_POST["step_2"]) { $exists_any_status_ok = false; $main_content .= '<div class="statuses">
 		<div class="top_bar">
 			<header>
-				<div class="title">Automatic creation in \'' . $path . '\'. Please check the statuses of the table objects created:</div>
+				<div class="title">Automatic creation in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
 			</header>
 		</div>
-		
+		<div class="title">Please check the statuses of the table objects created</div>
 		<table>
 			<tr>
 				<th class="name">Table Name</th>
@@ -53,12 +53,13 @@ $head = '
 	</div>'; if ($exists_any_status_ok) $main_content .= '<script>if (window.parent.refreshAndShowLastNodeChilds) window.parent.refreshAndShowLastNodeChilds();</script>'; } else if ($_POST["step_1"]) { $main_content .= '<div class="select_tables">
 		<div class="top_bar">
 			<header>
-				<div class="title">Automatic creation in \'' . $path . '\'. Please select the table objects that you wish to create:</div>
+				<div class="title">Automatic creation in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
 				<ul>
 					<li class="continue" data-title="Continue"><a onClick="submitForm(this, checkSelectedTables);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
 			</header>
 		</div>
+		<div class="title">Please select the table objects that you wish to create</div>
 		<form method="post">
 			<input type="hidden" name="db_broker" value="' . $db_broker . '" />
 			<input type="hidden" name="db_driver" value="' . $db_driver . '" />
@@ -89,14 +90,15 @@ $head = '
 	</script>'; $main_content .= '<div class="select_brokers">
 		<div class="top_bar">
 			<header>
-				<div class="title">Automatic creation in \'' . $path . '\'. Please select the DB Driver:</div>
+				<div class="title">Automatic creation in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
 				<ul>
 					<li class="continue" data-title="Continue"><a onClick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
 			</header>
 		</div>
+		<div class="title">Please select the DB Driver</div>
 		<form method="post">'; if (empty($path)) { $main_content .= '<div class="error">You cannot execute this action with an undefined path.</div>'; } else if (empty($obj)) { $main_content .= '<div class="error">Bean name doesn\'t exist. If this problem persists, please talk with the sys-admin.</div>'; } else if (!empty($db_drivers)) { $main_content .= '
-			<div class="db_broker">
+			<div class="db_broker' . (count($db_drivers) == 1 ? " single_broker" : "") . '">
 				<label>DB Broker:</label>
 				<select name="db_broker" onChange="updateDBDrivers(this)">
 					<option></option>'; foreach ($db_drivers as $db_broker => $db_driver_names) { $main_content .= '<option ' . ($selected_db_broker == $db_broker ? 'selected' : '') . '>' . $db_broker . '</option>'; } $main_content .= '

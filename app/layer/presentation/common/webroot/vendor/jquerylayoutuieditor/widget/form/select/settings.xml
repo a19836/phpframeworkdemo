@@ -20,8 +20,8 @@
 		</div>
 		<div class="form-group row dd settings-property options">
 			<label class="col-form-label">
-				Options: 
 				<span class="zmdi zmdi-circle-o reset-option-selection" title="Clear options selection"></span>
+				Options: 
 				<span class="zmdi zmdi-plus-circle add-option" title="Add new option"></span>
 			</label>
 			<ul class="dd-list" options-index="0">
@@ -40,17 +40,19 @@
 		}
 		
 		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options {
+			margin-top:20px;
 			margin-bottom:0;
 			max-width:none;
+			font-size:inherit;
 		}
 		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > .col-form-label {
 			max-width:none;
 			display:block;
-			padding-right:0;
+			padding:0;
+			font-size:inherit;
 		}
 		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > .col-form-label > .reset-option-selection {
-			margin:2px 5px 0 0;
-			float:left;
+			margin-right:5px;
 			cursor:pointer;
 		}
 		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > .col-form-label > .add-option {
@@ -62,6 +64,7 @@
 			display:none;
 		}
 		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul {
+			padding-top:0;
 			display:block;
 			width:100%;
 		}
@@ -113,7 +116,7 @@
 			padding:7px 0;
 			border:none;
 			background:none;
-			color:white;
+			color:var(--menu-settings-group-color, #b9a5a6);
 			cursor:move;
 		}
 		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .option-value,
@@ -191,6 +194,9 @@
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
+				if (!html_element)
+					widget.css({width: "100px", height:"20px"});
+				
 				widget.on("focus", function() {
 					ui_creator.MyTextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
 				});

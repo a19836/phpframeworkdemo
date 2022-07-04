@@ -6,10 +6,10 @@
 	z-index:4;
 }
 .top_bar header .title {
-	max-width:calc(100% - 400px);
+	max-width:calc(100% - 420px);
 }
 .top_bar header > ul {
-	right:150px;
+	right:183px;
 }
 .with_top_bar_tab > .tabs {
 	z-index:4;
@@ -41,13 +41,16 @@
 }
 .view_obj .code_menu.top_bar_menu,
   .view_obj .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu {
-	right:135px;
+	right:165px;
 }
 .view_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center {
-	right:285px;
+	right:350px;
 }
 .view_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right {
-	right:181px;
+	right:217px;
+}
+.view_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right .option.sub_menu {
+	right:-60px;
 }
 .view_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .option.save,
   .view_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right .option.full-screen {

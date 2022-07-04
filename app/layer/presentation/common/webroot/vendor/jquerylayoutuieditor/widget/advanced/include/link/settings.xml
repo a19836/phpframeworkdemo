@@ -58,9 +58,9 @@
 			background-image:none !important; /* !important is bc of the css when .borders is active */
 			display:block;
 			background:#c0c0c0;
+			color:#666;
 			border-radius:5px;
 			border:1px outset #bbb !important; /* !important is bc of the css when .borders is active */
-			color:#666;
 		}
 		body > .droppable.borders .template-widget.template-widget-link:before {
 			content:"";
@@ -135,8 +135,6 @@
 				}
 				else
 					widget.append( document.createElement("link") );
-				
-				
 				
 				//prepare .style-content editable
 				widget.attr("contenteditable", "false");

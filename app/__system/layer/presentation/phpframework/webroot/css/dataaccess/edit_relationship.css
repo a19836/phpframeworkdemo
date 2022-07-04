@@ -10,9 +10,6 @@
 	width:210px;
 	display:inline-block;
 }
-.edit_relationship > .top_bar li.sub_menu > ul {
-	min-width:200px;
-}
 .edit_relationship > .top_bar li.auto_convert_activation {
 	display:none !important;
 }
@@ -89,14 +86,14 @@
 	border:0;
 }
 .edit_relationship .relationship .query .query_settings {
-	height:calc(100vh - 115px);
+	height:calc(100vh - 135px);
 	box-sizing:border-box;
 	padding-top:10px;
 	border-radius:0;
 	border-top:0;
 }
 .edit_relationship .relationship .query .query_settings .query_settings_tab {
-	height:calc(100vh - 165px);
+	height:calc(100vh - 180px);
 	min-height:100px;
 	padding-bottom:20px;
 	box-sizing:border-box;
@@ -104,7 +101,7 @@
 }
 .edit_relationship .relationship .query .query_settings .advanced_query_settings {
 	margin-top:auto;
-	bottom:20px;
+	bottom:10px;
 }
 .edit_relationship .relationship .query .query_settings > .query_settings_tabs {
 	border-top-left-radius:0;

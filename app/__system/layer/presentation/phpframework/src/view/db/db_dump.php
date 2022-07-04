@@ -33,7 +33,7 @@ $head = '
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/db/db_dump.js"></script>'; $main_content .= '<div class="db_dump">
 	<div class="top_bar">
 		<header>
-			<div class="title">DB Dump</div>
+			<div class="title">DB Dump for DB: \'' . $bean_name . '\'</div>
 			<ul>
 				<li class="execute" data-title="Execute Dump"><a onClick="submitForm(this)"><i class="icon continue"></i> Execute Dump</a></li>
 			</ul>

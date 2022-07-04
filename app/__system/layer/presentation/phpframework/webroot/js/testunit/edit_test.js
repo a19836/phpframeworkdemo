@@ -127,22 +127,29 @@ $(function () {
 		
 		var textarea = $("#code textarea")[0];
 		if (textarea) {
-			createCodeEditor(textarea, {save_func: saveTest});
+			var editor = createCodeEditor(textarea, {save_func: saveTest});
+			
+			if (editor)
+				editor.focus();
 		}
 		
-		onLoadTaskFlowChartAndCodeEditor();
+		onLoadTaskFlowChartAndCodeEditor({do_not_hide_popup : true});
 		
 		//init tasks flow tab
 		onClickTaskWorkflowTab( edit_test.find(" > .tabs > #tasks_flow_tab > a")[0], {
 			on_success: function() {
 				//set saved_test_settings_id
 				saved_test_settings_id = getTestSettingsId();
+				
+				MyFancyPopup.hidePopup();
 			},
 			on_error: function() {
 				edit_test.tabs("option", "active", 0); //show code tab
 				
 				//set saved_test_settings_id
 				saved_test_settings_id = getTestSettingsId();
+				
+				MyFancyPopup.hidePopup();
 			}
 		});
 		
@@ -178,6 +185,8 @@ $(function () {
 			},
 		});
 	}
+	else	//hide loading icon
+		MyFancyPopup.hidePopup();
 });
 
 //To be used in the toggleFullScreen function
@@ -322,21 +331,55 @@ function getTestSettings() {
 }
 
 function saveTest() {
-	var obj = getTestObj();
+	var edit_test = $(".edit_test");
 	
-	saveObjCode(save_object_url, obj, {
-		success: function(data, textStatus, jqXHR) {
-			//update test_settings_id
-			saved_test_settings_id = getTestSettingsId();
-		},
-		error: function() {
-			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, [ save_object_url, jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url ], function() {
+	prepareAutoSaveVars();
+	
+	var is_from_auto_save_bkp = is_from_auto_save; //backup the is_from_auto_save, bc if there is a concurrent process running at the same time, this other process may change the is_from_auto_save value.
+	
+	if (edit_test[0]) {
+		if (!window.is_save_func_running) {
+			window.is_save_func_running = true;
+			
+			if (is_from_auto_save_bkp && !isTestObjChanged()) {
+				resetAutoSave();
+				window.is_save_func_running = false;
+				return;
+			}
+			
+			var obj = getTestObj();
+			
+			//check if user is logged in
+			//if there was a previous function that tried to execute an ajax request, like the getCodeForSaving method, we detect here if the user needs to login, and if yes, recall the save function again. 
+			//Do not re-call only the ajax request below, otherwise there will be some other files that will not be saved, this is, the getCodeForSaving saves the workflow and if we only call the ajax request below, the workflow won't be saved. To avoid this situation, we call the all save function.
+			if (!is_from_auto_save_bkp && jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL)) {
+				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jquery_native_xhr_object.responseURL, function() {
 					jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
 					StatusMessageHandler.removeLastShownMessage("error");
 					
+					window.is_save_func_running = false;
 					saveTest();
 				});
-		},
-	});
+				
+				return;
+			}
+			
+			//call saveObjCode
+			saveObjCode(save_object_url, obj, {
+				success: function(data, textStatus, jqXHR) {
+					//update test_settings_id
+					saved_test_settings_id = getTestSettingsId();
+					
+					return true;
+				},
+				complete: function() {
+					window.is_save_func_running = false;
+				},
+			});
+		}
+		else if (!is_from_auto_save_bkp)
+			StatusMessageHandler.showMessage("There is already a saving process running. Please wait a few seconds and try again...");
+	}
+	else if (!is_from_auto_save_bkp)
+		alert("No object to save! Please contact the sysadmin...");
 }

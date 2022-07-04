@@ -2,8 +2,11 @@
 .top_bar {
 	margin-bottom:10px;
 }
+.top_bar header > .title {
+	max-width:calc(100% - 170px);
+}
 .top_bar header > ul {
-	right:112px;
+	right:135px;
 }
 
 /* EDIT TEST */
@@ -27,7 +30,7 @@
 .edit_test #settings {
 	height:220px;
 	margin:0 auto;
-	padding:40px 10px 10px;
+	padding:40px 15px 10px;
 	position:fixed;
 	left:0;
 	right:0;
@@ -73,7 +76,7 @@
 	height:35px;
 	line-height:25px;
 	margin-top:-45px;
-	padding:8px 5px 5px 10px;
+	padding:8px 5px 5px 15px;
 	position:fixed;
 	left:0;
 	right:0;

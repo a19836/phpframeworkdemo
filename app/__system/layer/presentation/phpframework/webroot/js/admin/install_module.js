@@ -7,6 +7,8 @@ $(function () {
 		MyFancyPopupInstallStoreModule.updatePopup();
 		MyFancyPopupViewModule.updatePopup();
 	});
+	
+	initInstallStoreModule();
 });
 
 function addNewFile(elm) {
@@ -71,50 +73,36 @@ function checkUploadedFiles() {
 	return true;
 }
 
-function installStoreModulePopup() {
-	if (get_store_modules_url) {
-		var popup = $(".install_store_module_popup");
-		
-		if (!popup[0]) {
-			popup = $('<div class="myfancypopup install_store_module_popup"><div class="title">Choose a module to install</div><ul><li class="loading">Loading modules...</li></ul></div>');
-			$(document.body).append(popup);
-			
-			$.ajax({
-				type : "get",
-				url : get_store_modules_url,
-				dataType : "json",
-				crossDomain: true,
-				success : function(data, textStatus, jqXHR) {
-					//console.log(data);
-					loaded_modules = data;
-					
-					var html = '';
-					
-					$.each(data, function(label, item) {
-						html += '<li class="module">'
-								+ (item["logo"] ? '<img src="' + item["logo"] + '" />' : '')
-								+ '<label>' + label + '</label>'
-								+ (item["description"] ? '<div>' + item["description"] + '</div>' : '')
-								+ (item["zip"] ? '<a class="choose_module' + (item["modules"] ? ' with_view_module' : '') + '" href="javascript:void(0)" onClick="chooseStoreModule(\'' + item["zip"] + '\')">Choose</a>' : '')
-								+ (item["modules"] ? '<a class="view_module" href="javascript:void(0)" onClick="viewStoreModule(\'' + label + '\')">View</a>' : '')
-							+ '</li>';
-					});
-					
-					popup.children("ul").html(html);
-				},
-				error : function(jqXHR, textStatus, errorThrown) { 
-					if (jqXHR.responseText)
-						StatusMessageHandler.showError(jqXHR.responseText);
-				},
-			});
-		}
-		
-		MyFancyPopupInstallStoreModule.init({
-			elementToShow: popup,
-			parentElement: document,
+function initInstallStoreModule() {
+	if (get_store_modules_url)
+		$.ajax({
+			type : "get",
+			url : get_store_modules_url,
+			dataType : "json",
+			crossDomain: true,
+			success : function(data, textStatus, jqXHR) {
+				//console.log(data);
+				loaded_modules = data;
+				
+				var html = '';
+				
+				$.each(data, function(label, item) {
+					html += '<li class="module">'
+							+ (item["logo"] ? '<img src="' + item["logo"] + '" />' : '')
+							+ '<label>' + label + '</label>'
+							+ (item["description"] ? '<div>' + item["description"] + '</div>' : '')
+							+ (item["zip"] ? '<a class="choose_module' + (item["modules"] ? ' with_view_module' : '') + '" href="javascript:void(0)" onClick="chooseStoreModule(\'' + item["zip"] + '\')">Choose</a>' : '')
+							+ (item["modules"] ? '<a class="view_module" href="javascript:void(0)" onClick="viewStoreModule(\'' + label + '\')">View</a>' : '')
+						+ '</li>';
+				});
+				
+				$(".install_store_module > ul").html(html);
+			},
+			error : function(jqXHR, textStatus, errorThrown) { 
+				if (jqXHR.responseText)
+					StatusMessageHandler.showError(jqXHR.responseText);
+			},
 		});
-		MyFancyPopupInstallStoreModule.showPopup();
-	}
 }
 
 function viewStoreModule(module_label) {
@@ -158,7 +146,7 @@ function chooseStoreModule(url) {
 	if (url) {
 		var upload_url = $('<div class="upload_url"><label>Url:</label><input type="text" name="zip_url[]" value="' + url + '"><span class="icon delete" onClick="removeStoreModuleUrl(this);"></span></div>');
 		
-		var upload_file = $(".file_upload .upload_file").last();
+		var upload_file = $(".file_upload").find(".upload_file, .upload_url").last();
 		upload_file.after(upload_url);
 		
 		MyFancyPopupInstallStoreModule.hidePopup();

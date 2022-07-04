@@ -94,11 +94,13 @@
 	color:#5ed7c0;
 }
 .choose_available_tool li.switch_project > .photo::before {
-	content:"\f0a0";
+	/*content:"\f0a0";*/
+	content:"\f49e";
 	color:#fb5c5c;
 }
 .choose_available_tool li.manage_projects > .photo::before {
-	content:"\f233";
+	/*content:"\f233";*/
+	content:"\f49e";
 	color:#999;
 }
 .choose_available_tool li.manage_layers > .photo::before {

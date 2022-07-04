@@ -49,11 +49,12 @@
 	<menu_js><![CDATA[
 		function ImageWidget(ui_creator, menu_widget) {
 			var me = this;
-			var default_src = ui_creator.getLayoutUIEditorFolderPath() + "widget/html/image/default_image.gif";
+			var default_src = ui_creator.getLayoutUIEditorFolderPath() + "widget/generic/image/default_image.gif";
 			
 			me.init = function() {
 				menu_widget.attr({
 					"data-on-parse-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.image.parseHtml",
+					"data-on-clean-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.image.cleanHtml",
 					"data-on-create-template-widget-func": ui_creator.obj_var_name + ".menu_widgets_objs.image.onCreateTemplateWidget",
 				});
 				
@@ -66,6 +67,18 @@
 			
 			me.parseHtml = function(html_element) {
 				return html_element && html_element.nodeName.toLowerCase() == "img";
+			};
+			
+			me.cleanHtml = function(html_element) {
+				var clone = ui_creator.cloneHtmlElementBeforeCleanIt(html_element);
+				clone.removeAttr("contenteditable", "false");
+				clone.removeAttr("draggable", "false");
+				
+				var html = ui_creator.getCleanedHtmlElement(clone[0]);
+				
+				clone.remove();
+				
+				return html;
 			};
 			
 			me.openSettings = function(widget, menu_settings) {
@@ -81,6 +94,10 @@
 			me.onCreateTemplateWidget = function(widget, html_element) {
 				if (!html_element) 
 					widget.attr("src", default_src);
+				
+				//prepare non editable image
+				widget.attr("contenteditable", "false");
+				widget.attr("draggable", "false");
 			};
 			
 			me.parseSettings = function(widget, widget_settings) {

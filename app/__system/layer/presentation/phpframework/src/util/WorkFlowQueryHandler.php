@@ -192,7 +192,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); class WorkFlowQuery
 		</div>'; return $pf8ed4912; } public function getChooseQueryTableOrAttributeHtml($v1cbfbb49c5 = false, $v8aefdcedb9 = "MyFancyPopup") { $pf8ed4912 = '<div id="' . $v1cbfbb49c5 . '" class="myfancypopup choose_table_or_attribute">
 				<div class="title">DB Table/Attribute Selection</div>
 				<div class="contents">
-					<div class="db_broker">
+					<div class="db_broker' . (count($this->v9b98e0e818) == 1 ? " single_broker" : "") . '">
 						<label>DB Broker:</label>
 						<select onChange="updateDBDrivers(this)">
 							<option></option>'; foreach ($this->v9b98e0e818 as $pab752e34 => $v84bde5f80a) { $pf8ed4912 .= '			<option ' . ($this->v5e788adf08 == $pab752e34 ? 'selected' : '') . '>' . $pab752e34 . '</option>'; } $pf8ed4912 .= '			</select>

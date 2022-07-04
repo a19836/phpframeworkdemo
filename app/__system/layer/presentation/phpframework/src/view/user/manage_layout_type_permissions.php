@@ -77,7 +77,7 @@ var get_layout_type_permissions_url = \'' . $project_url_prefix . 'user/get_layo
 			<div class="layout_type">
 				<label>Layout Type: </label>
 				<select name="type_id" onChange="onChangeLayoutType(this)">'; foreach ($available_types as $tid => $tname) $main_content .= '<option value="' . $tid . '" ' . ($type_id == $tid ? ' selected' : '') . '>' . $tname . '</option>'; $main_content .= '	</select>
-				<select name="layout_type_id" onChange="updateLayoutTypePermissions(this)">'; if ($type_id == 0) foreach ($presentation_projects_by_folders as $layer_label => $projs) { $main_content .= '<optgroup label="' . $layer_label . '">'; $main_content .= getProjectsHtml($projs, $layout_type_id); $main_content .= '</optgroup>'; } foreach ($layout_types as $lname => $lid) $main_content .= '<option value="' . $lid . '" ' . ($layout_type_id == $lid ? ' selected' : '') . '>' . $lname . '</option>'; $main_content .= '	</select>
+				<select name="layout_type_id" onChange="updateLayoutTypePermissions(this)">'; if ($type_id == 0) { $is_single_presentation_layer = count($presentation_projects_by_folders) == 1; foreach ($presentation_projects_by_folders as $layer_label => $projs) { if (!$is_single_presentation_layer) $main_content .= '<optgroup label="' . $layer_label . '">'; $main_content .= getProjectsHtml($projs, $layout_type_id); if (!$is_single_presentation_layer) $main_content .= '</optgroup>'; } } foreach ($layout_types as $lname => $lid) $main_content .= '<option value="' . $lid . '" ' . ($layout_type_id == $lid ? ' selected' : '') . '>' . $lname . '</option>'; $main_content .= '	</select>
 			</div>
 			
 			<div class="layout_type_permissions_content">

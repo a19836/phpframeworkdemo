@@ -58,9 +58,9 @@ var editor_code_type = "' . $editor_code_type . '";
 var code_id = "' . md5($code) . '";
 var readonly = ' . ($readonly ? "true" : "false") . ';
 </script>'; $main_content .= '
-	<div class="top_bar">
+	<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 		<header>
-			<div class="title">Edit File: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj) . '</div>'; if ($editor_code_type) { $main_content .= '<ul>'; if (!$readonly) $main_content .= '<li class="save" data-title="Save File"><a onClick="save(false)"><i class="icon save"></i> Save</a></li>'; $main_content .= '	<li class="sub_menu">
+			<div class="title">Edit File: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj) . '</div>'; if ($editor_code_type) { $main_content .= '<ul>'; if (!$readonly) $main_content .= '<li class="save" data-title="Save File"><a onClick="save(false)"><i class="icon save"></i> Save</a></li>'; $main_content .= '	<li class="sub_menu" onClick="openSubmenu(this)">
 						<i class="icon sub_menu"></i>
 						<ul>
 							<li class="editor_settings" title="Open Editor Setings"><a onClick="openEditorSettings()"><i class="icon settings"></i> Open Editor Setings</a></li>'; if ($editor_code_type == "php") $main_content .= '		<li class="pretty_print" title="Pretty Print Code"><a onClick="prettyPrintCode()"><i class="icon pretty_print"></i> Pretty Print Code</a></li>'; $main_content .= '			<li class="set_word_wrap" title="Toggle Word Wrap"><a onClick="setWordWrap(this)" wrap="0"><i class="icon word_wrap"></i> Word Wrap</a></li>
@@ -73,7 +73,7 @@ var readonly = ' . ($readonly ? "true" : "false") . ';
 				</ul>'; } $main_content .= '
 		</header>
 	</div>'; if ($editor_code_type) { $main_content .= '
-	<div class="code_area with_top_bar_section">
+	<div class="code_area with_top_bar_section' . ($popup ? " in_popup" : "") . '">
 		<textarea>' . "\n" . htmlspecialchars($code, ENT_NOQUOTES) . '</textarea>
 	</div>'; if (!$readonly) $main_content .= '
 	<div class="confirm_save hidden">

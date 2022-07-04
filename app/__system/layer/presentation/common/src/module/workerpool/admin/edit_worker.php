@@ -60,6 +60,9 @@ if ($PEVC) {
 	<!-- Parse_Str -->
 	<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/phpjs/functions/strings/parse_str.js"></script>
 	
+	<!-- Layout UI Editor - Color -->
+	<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'js/color.js"></script>
+	
 	<!-- Layout UI Editor - MD5 -->
 	<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>
 

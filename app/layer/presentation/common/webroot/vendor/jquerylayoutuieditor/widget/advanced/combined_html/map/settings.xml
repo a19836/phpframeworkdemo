@@ -32,6 +32,15 @@
 			display:none;
 		}
 	]]></menu_css>
+	<template_css><![CDATA[
+		/* bc of the resize, otherwise will be very dificult to resize this element, bc the focus will be inside of the iframe. */
+		.template-widget.template-widget-map {
+			border: 10px solid #f7f7f7; 
+		}
+		.template-widget.template-widget-map.widget-active {
+			border:10px solid #f7f7f7 !important;
+		}
+	]]></template_css>
 	<menu_js><![CDATA[
 		function MapWidget(ui_creator, menu_widget) {
 			var me = this;

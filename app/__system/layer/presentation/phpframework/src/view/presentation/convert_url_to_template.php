@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$head = '
+include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -46,6 +46,7 @@ $head = '
 				<a class="icon refresh" onClick="loadUrl(this);" title="Load Url">Load</a>
 				To
 				<input type="text" name="template_name" placeHolder="Template name" />
+				in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($selected_project, $P) . '
 			</div>
 			<ul>
 				<!--li class="convert_to_region" data-title="Convert to Region"><a onClick="convertToRegion()"><i class="icon convert_to_region"></i> Convert to Region</a></li>

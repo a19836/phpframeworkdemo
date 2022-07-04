@@ -135,6 +135,9 @@
 				}
 				
 				ui_creator.refreshElementMenuLayer(widget); //resfresh of a null or non existent element, will force the ui_creator to call the prepareMenuLayers() and refresh all menu layers
+				
+				if (typeof ui_creator.options.on_template_widgets_layout_changed_func == "function")
+					ui_creator.options.on_template_widgets_layout_changed_func(widget);
 			};
 		}
 	]]></menu_js>

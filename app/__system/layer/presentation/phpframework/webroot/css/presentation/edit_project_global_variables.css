@@ -3,10 +3,10 @@
 	margin-bottom:10px;
 }
 .top_bar header .title {
-	max-width:calc(100% - 170px);
+	max-width:calc(100% - 220px);
 }
 .top_bar header > ul {
-	right:150px;
+	right:182px;
 }
 
 /* UTIL OBJ */
@@ -19,15 +19,14 @@
 }
 
 .global_vars_obj #code .code_menu.top_bar_menu,
-  .global_vars_obj #ui .taskflowchart .workflow_menu.top_bar_menu,
-  .global_vars_obj #form_global_vars .code_menu.top_bar_menu {
-	right:135px;
+  .global_vars_obj #ui .taskflowchart .workflow_menu.top_bar_menu {
+	right:164px;
+}
+.global_vars_obj #form_global_vars .code_menu.top_bar_menu {
+	right:156px;
 }
 .global_vars_obj #form_global_vars .code_menu.top_bar_menu {
 	text-align:left;
-}
-.global_vars_obj #form_global_vars .code_menu.top_bar_menu > ul {
-	min-width:200px;
 }
 
 .global_vars_obj #code textarea, 
@@ -85,6 +84,7 @@
 	color:#666;
 }
 #form_global_vars .vars th.buttons {
+	min-width:40px;
 	text-align:left;
 }
 #form_global_vars .vars th.buttons .add {

@@ -55,7 +55,7 @@ var old_obj_type = \'' . $query_type . '\';
 			
 			<ul>
 				<li class="save" data-title="Save Relationship"><a onClick="saveQueryObject(onSuccessSingleQuerySave)"><i class="icon save"></i> Save</a></li>
-				<li class="sub_menu">
+				<li class="sub_menu" onClick="openSubmenu(this)">
 					<i class="icon sub_menu"></i>
 					<ul>
 						<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleMainSettingsPanel(this, \'.edit_relationship\')"><i class="icon toggle_ids"></i> <span>Show Main Settings</span> <input type="checkbox"/></a></li>

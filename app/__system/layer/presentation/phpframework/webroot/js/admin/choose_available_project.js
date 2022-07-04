@@ -5,7 +5,7 @@ function toggleProjectsListType(elm, type) {
 	p.find(".icon").removeClass("active");
 	elm.find(".icon").addClass("active");
 	
-	p.closest(".group").removeClass(type == "block_view" ? "list_view" : "block_view").addClass(type == "block_view" ? "block_view" : "list_view");
+	p.closest(".choose_available_project").children(".projects").removeClass(type == "block_view" ? "list_view" : "block_view").addClass(type == "block_view" ? "block_view" : "list_view");
 }
 
 function updateLayerProjects(folder_to_filter) {
@@ -18,18 +18,15 @@ function updateLayerProjects(folder_to_filter) {
 
 function prepareChooseAvailableProjectsHtml(layer_projects, folder_to_filter) {
 	var aps = getAvailableProjectsConvertedWithFolders(layer_projects, folder_to_filter);
-	var go_up_html = '';
-	var folders_html = '';
-	var projects_html = '';
 	
 	if (folder_to_filter) {
 		folder_to_filter = folder_to_filter.replace(/[\/]+/, "/").replace(/[\/]+$/, "");
 		var dirs = folder_to_filter.split("/");
 		dirs.pop();
 		var parent_folder = dirs.join("/");
-		
-		go_up_html += '<a onClick="updateLayerProjects(\'' + parent_folder + '\');"><i class="icon go_up"></i> Go to parent folder</a>';
 	}
+	
+	/*var folders_html = '';
 	
 	if (!$.isEmptyObject(aps)) {
 		//add folders
@@ -46,7 +43,9 @@ function prepareChooseAvailableProjectsHtml(layer_projects, folder_to_filter) {
 	}
 	
 	if (folders_html == '')
-		folders_html += '<li class="no_projects">There are no folders' + (folder_to_filter ? ' inside of "' + folder_to_filter + '".' : '.') + '</li>';
+		folders_html += '<li class="no_projects">There are no folders' + (folder_to_filter ? ' inside of "' + folder_to_filter + '".' : '.') + '</li>';*/
+	
+	var projects_html = '';
 	
 	if (!$.isEmptyObject(aps)) {
 		//add files 
@@ -58,19 +57,16 @@ function prepareChooseAvailableProjectsHtml(layer_projects, folder_to_filter) {
 		projects_html += '<li class="no_projects">There are no available projects...</li>';
 	
 	var choose_available_project = $(".choose_available_project");
-	var group_folders = choose_available_project.children(".group.folders");
 	var group_projects = choose_available_project.children(".group.projects");
 	
-	group_folders.children("ul").html(folders_html);
-	group_projects.children("ul").html(projects_html);
+	group_projects.children("ul").html(/*folders_html + */projects_html);
 	
 	if (folder_to_filter)
 		choose_available_project.addClass("in_sub_folder");
 	else
 		choose_available_project.removeClass("in_sub_folder");
 	
-	choose_available_project.find(".current_project_folder").html(folder_to_filter ? '<span onClick="updateLayerProjects(\'\')" class="folder"></span> ' + getChooseAvailableProjectCurrentFolderHtml(folder_to_filter) : "").attr("folder_to_filter", folder_to_filter);
-	choose_available_project.find(".project_folder_go_up").html(go_up_html);
+	choose_available_project.find(".top_bar .breadcrumbs").attr("folder_to_filter", folder_to_filter).html(folder_to_filter ? '<span class="breadcrumb-item"><a href="javascript:void(0)" onClick="updateLayerProjects(\'\')">Home</a></span>' + getChooseAvailableProjectCurrentFolderHtml(folder_to_filter) : "");
 	choose_available_project.children(".loading_projects").hide();
 }
 
@@ -84,7 +80,7 @@ function getChooseAvailableProjectHtml(folder_to_filter, fp, project_props) {
 	label = label.charAt(0).toUpperCase() + label.substr(1, label.length - 1);
 	
 	if (is_project)
-		html += '<li class="project ' + (!folder_to_filter && project_id == "common" ? "project_common" : "") + '" onClick="selectAvailableProject(\'' + project_id + '\', event);" title="' + label + '">';
+		html += '<li class="project ' + (!folder_to_filter && project_id == "common" ? "project_common" : "") + (typeof selected_project_id != "undefined" && project_id == selected_project_id ? " selected_project" : "") + '" onClick="selectAvailableProject(\'' + project_id + '\', event);" title="' + label + '">';
 	else
 		html += '<li class="folder" onClick="updateLayerProjects(\'' + project_id + '\');" title="' + label + '">';
 	
@@ -115,7 +111,7 @@ function getChooseAvailableProjectCurrentFolderHtml(current_path) {
 		if (dir) {
 			parent_folder += (parent_folder ? "/" : "") + dir;
 			
-			html += '<span class="path_parts" onClick="updateLayerProjects(\'' + parent_folder + '\');">' + dir + '</span>';
+			html += '<span class="breadcrumb-item"><a href="javascript:void(0)" onClick="updateLayerProjects(\'' + parent_folder + '\');">' + dir + '</a></span>';
 		}
 	}
 	
@@ -188,7 +184,7 @@ function getAvailableProjectsConvertedWithFolders(layer_projects, folder_to_filt
 function addProject() {
 	var choose_available_project= $(".choose_available_project");
 	var option = choose_available_project.find(" > .layer select option:selected").first();
-	var folder_to_filter = choose_available_project.find(".current_project_folder").attr("folder_to_filter");
+	var folder_to_filter = choose_available_project.find(".top_bar .breadcrumbs").attr("folder_to_filter");
 	var bean_name = option.attr("bean_name");
 	var bean_file_name = option.attr("bean_file_name");
 	var path = folder_to_filter ? folder_to_filter + "/" : "";
@@ -219,7 +215,7 @@ function addProject() {
 
 function onSucccessfullAddProject() {
 	var choose_available_project= $(".choose_available_project");
-	var folder_to_filter = choose_available_project.find(".current_project_folder").attr("folder_to_filter");
+	var folder_to_filter = choose_available_project.find(".top_bar .breadcrumbs").attr("folder_to_filter");
 	var url = "" + document.location;
 	url = url.indexOf("#") != -1 ? url.substr(0, url.indexOf("#")) : url; //remove # so it can refresh page
 	

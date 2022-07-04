@@ -37,7 +37,7 @@
 .mytree .jstree-anchor {cursor:default; vertical-align:middle;}
 .mytree a.link * {cursor:pointer;}
 .mytree li > .sub_menu {margin-left:5px; color:#ccc;}
-.mytree li > .sub_menu:hover::after {content:"Click me"; position:fixed; top:auto; left:auto; margin:-8px 0 0 -40px; color:var(--main-template-color); font: initial; font-family:var(--main-font-family); font-size:8px; }
+/*.mytree li > .sub_menu:hover::after {content:"Click me"; position:fixed; top:auto; left:auto; margin:-8px 0 0 -40px; color:var(--main-template-color); font: initial; font-family:var(--main-font-family); font-size:8px; }*/
 
 .mytree li.disabled > a {opacity:.3;}
 .mytree li.module_folder_disabled > a, .mytree li.module_folder_disabled > ul {opacity:.3;}
@@ -178,7 +178,8 @@
 	color:#888;
 }*/
 .mytree i.project::before {
-	content:"\f0a0";
+	/*content:"\f0a0";*/
+	content:"\f49e";
 	color:var(--icon-folder-color);
 }
 .mytree i.project_folder::before {
@@ -187,10 +188,12 @@
 }
 /*.mytree i.project_folder::after {
 	content:"\f0a0";
+	content:"\f49e";
 	color:#888;
 }*/
 .mytree i.project_common::before {
-	content:"\f0a0";
+	/*content:"\f0a0";*/
+	content:"\f49e";
 	color:var(--icon-file-color);
 }
 /*.mytree i.project_common::after {

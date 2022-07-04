@@ -18,7 +18,7 @@ $(function () {
 	addAutoConvertMenu(".top_bar li.sub_menu li.save");
 	enableAutoSave(onToggleQueryAutoSave);
 	enableAutoConvert(onToggleAutoConvert);
-	initAutoSave(".top_bar li.save a");
+	initAutoSave(".top_bar li.sub_menu li.save a");
 	
 	//init ui
 	var relationships_elm = $(".hbn_obj_relationships").children(".relationships");

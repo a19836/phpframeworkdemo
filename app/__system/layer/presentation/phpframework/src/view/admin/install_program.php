@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$head = '
+include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -34,10 +34,10 @@ $head = '
 
 <script>
 var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/manage_modules\';
-</script>'; $main_content = '<div class="install_program">'; if ($step >= 3) { $main_content .= '<div class="step_3">
+</script>'; $main_content = '<div class="install_program">'; $title = "Program Installation" . ($bean_name && $bean_file_name ? ' in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($selected_project_id, $P) : ''); if ($step >= 3) { $main_content .= '<div class="step_3">
 		<div class="top_bar">
 			<header>
-				<div class="title">Program Installation</div>
+				<div class="title">' . $title . '</div>
 				<ul style="display:none;">
 					<li class="continue" data-title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
@@ -86,7 +86,7 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 		</div>'; } if ($messages) $main_content .= '<label class="error">Important messages:</label><ul class="messages_list"><li>' . implode("</li><li>", $messages) . '</li></ul>'; $main_content .= '</div>'; } else if ($step == 2) { $main_content .= '<div class="step_2">
 		<div class="top_bar">
 			<header>
-				<div class="title">Program Installation</div>
+				<div class="title">' . $title . '</div>
 				<ul>
 					<li class="continue" data-title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
@@ -111,7 +111,7 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 	<div class="step_1">
 		<div class="top_bar">
 			<header>
-				<div class="title">Program Installation</div>
+				<div class="title">' . $title . '</div>
 				<ul>
 					<li class="continue" data-title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
@@ -150,7 +150,7 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 	<div class="step_0">
 		<div class="top_bar">
 			<header>
-				<div class="title">Program Installation</div>
+				<div class="title">' . $title . '</div>
 				<ul>
 					<li class="continue" data-title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>

@@ -3716,77 +3716,101 @@ function saveIbatisObject(new_obj_id, options) {
 function saveDataAccessObject(obj, new_obj_id, options) {
 	prepareAutoSaveVars();
 	
-	//console.log(obj);
-	options = typeof options == "object" ? options : {};
+	var is_from_auto_save_bkp = is_from_auto_save; //backup the is_from_auto_save, bc if there is a concurrent process running at the same time, this other process may change the is_from_auto_save value.
 	
-	var new_user_relationships_obj_id = getUserRelationshipsObjId();
-	
-	//only saves if object is different
-	if (saved_user_relationships_obj_id != new_user_relationships_obj_id || options["force"]) {
-		//console.log(obj);
+	if (!window.is_save_func_running) {
+		window.is_save_func_running = true;
 		
-		$.ajax({
-			type : "post",
-			url : save_data_access_object_url,
-			data : {"object" : obj, "overwrite" : 1},
-			dataType : "json",
-			success : function(data, textStatus, jqXHR) {
-				if(data == 1) {
-					if (typeof options["on_success"] == "function")
-						options["on_success"](obj, new_obj_id, data, options);
-					
-					var msg = "Saved successfully.";
-					
-					if (old_obj_id && new_obj_id && old_obj_id.trim() != new_obj_id.trim()) {
-						if (removeDataAccessObject(old_obj_id)) {
-							old_obj_id = new_obj_id.trim();
+		//console.log(obj);
+		options = typeof options == "object" ? options : {};
+		
+		var new_user_relationships_obj_id = getUserRelationshipsObjId();
+		
+		//only saves if object is different
+		if (saved_user_relationships_obj_id != new_user_relationships_obj_id || options["force"]) {
+			//console.log(obj);
+			
+			var ajax_opts = {
+				type : "post",
+				url : save_data_access_object_url,
+				data : {"object" : obj, "overwrite" : 1},
+				dataType : "json",
+				success : function(data, textStatus, jqXHR) {
+					if(data == 1) {
+						if (typeof options["on_success"] == "function")
+							options["on_success"](obj, new_obj_id, data, options);
+						
+						var msg = "Saved successfully.";
+						
+						if (old_obj_id && new_obj_id && old_obj_id.trim() != new_obj_id.trim()) {
+							if (removeDataAccessObject(old_obj_id))
+								old_obj_id = new_obj_id.trim();
+							else {
+								msg += "\nHowever we couldn't replace this object with the new id/name that you inserted, so we created a duplicated object with the new id.\n\nTo remove the old object, please try to save again...";
+							}
+							
+							if (window.parent && typeof window.parent.refreshLastNodeParentChilds == "function")
+								window.parent.refreshLastNodeParentChilds();
 						}
-						else {
-							msg += "\nHowever we couldn't replace this object with the new id/name that you inserted, so we created a duplicated object with the new id.\n\nTo remove the old object, please try to save again...";
+						else if (!old_obj_id) {//it means it is a new object
+							if (window.parent && typeof window.parent.refreshLastNodeParentChilds == "function")
+								window.parent.refreshLastNodeParentChilds();
 						}
 						
-						if (window.parent && typeof window.parent.refreshLastNodeParentChilds == "function")
-							window.parent.refreshLastNodeParentChilds();
+						if (!is_from_auto_save_bkp) //only show message if a manual save action
+							StatusMessageHandler.showMessage(msg);
+						
+						//update saved_user_relationships_obj_id
+						saved_user_relationships_obj_id = new_user_relationships_obj_id;
 					}
-					else if (!old_obj_id) {//it means it is a new object
-						if (window.parent && typeof window.parent.refreshLastNodeParentChilds == "function")
-							window.parent.refreshLastNodeParentChilds();
-					}
+					else
+						StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + (data ? "\n" + data : ""));
 					
-					if (!is_from_auto_save) //only show message if a manual save action
-						StatusMessageHandler.showMessage(msg);
-					
-					//update saved_user_relationships_obj_id
-					saved_user_relationships_obj_id = new_user_relationships_obj_id;
-				}
-				else
-					StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + (data ? "\n" + data : ""));
-				
-				if (is_from_auto_save)
-					resetAutoSave();
-			},
-			error : function(jqXHR, textStatus, errorThrown) { 
-				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, save_data_access_object_url, function() {
-						StatusMessageHandler.removeLastShownMessage("error");
-						saveDataAccessObject(obj, new_obj_id);
-					});
-				else {
-					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-					StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + msg);
-					
-					if (is_from_auto_save)
+					if (is_from_auto_save_bkp)
 						resetAutoSave();
-				}
-			},
-			timeout: is_from_auto_save && auto_save_connection_ttl ? auto_save_connection_ttl : 0,
-		});
+					
+					window.is_save_func_running = false;
+				},
+				error : function(jqXHR, textStatus, errorThrown) { 
+					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL)) {
+						if (!is_from_auto_save_bkp) {
+							showAjaxLoginPopup(jquery_native_xhr_object.responseURL, save_data_access_object_url, function() {
+								StatusMessageHandler.removeLastShownMessage("error");
+								
+								$.ajax(ajax_opts);
+							});
+						}
+						else {
+							resetAutoSave();
+							window.is_save_func_running = false;
+						}
+					}
+					else {
+						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+						StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + msg);
+						
+						if (is_from_auto_save_bkp)
+							resetAutoSave();
+						
+						window.is_save_func_running = false;
+					}
+				},
+				timeout: is_from_auto_save_bkp && auto_save_connection_ttl ? auto_save_connection_ttl : 0,
+			};
+			
+			$.ajax(ajax_opts);
+		}
+		else {
+			if (!is_from_auto_save_bkp)
+				StatusMessageHandler.showMessage("Nothing to save.");
+			else
+				resetAutoSave();
+			
+			window.is_save_func_running = false;
+		}
 	}
-	else if (!is_from_auto_save) {
-		StatusMessageHandler.showMessage("Nothing to save.");
-	}
-	else
-		resetAutoSave();
+	else if (!is_from_auto_save_bkp)
+		StatusMessageHandler.showMessage("There is already a saving process running. Please wait a few seconds and try again...");
 }
 
 function removeDataAccessObject(obj_id) {

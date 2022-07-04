@@ -33,6 +33,9 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 	<!-- Material-design-iconic-font -->
 	<link rel="stylesheet" href="vendor/materialdesigniconicfont/css/material-design-iconic-font.min.css">
 	
+	<!-- Color -->
+	<script language="javascript" type="text/javascript" src="../../js/color.js"></script>
+	
 	<!-- MyJSLib -->
 	<script language="javascript" type="text/javascript" src="../../js/MyJSLib.js"></script>
 	
@@ -80,6 +83,7 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 		<script language="javascript" type="text/javascript" src="js/CreateWidgetContainerClassObj.js"></script>
 		
 		<!-- Layout UI Editor - LayoutUIEditorFormFieldUtil.js is optional, bc it depends of task/programming/common/webroot/js/FormFieldsUtilObj.js -->
+		<script language="javascript" type="text/javascript" src="http://jplpinto.localhost/__system/phpframework/__system/cache/workflow/tasks/default/programming/common/js/global.js"></script><!-- Only exists if phpframework cache was not deleted -->
 		<script language="javascript" type="text/javascript" src="http://jplpinto.localhost/__system/phpframework/__system/cache/workflow/tasks/default/programming/common/js/FormFieldsUtilObj.js"></script><!-- Only exists if phpframework cache was not deleted -->
 		<script language="javascript" type="text/javascript" src="js/LayoutUIEditorFormFieldUtil.js"></script>
 		
@@ -295,6 +299,10 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 		  .layout-ui-editor.layout-ui-editor-4 > .menu-settings textarea {
 			color:#485152 !important;
 		}
+		
+		.layout-ui-editor.layout-ui-editor-5 {
+			margin:100px auto 0 auto;
+		}
 	</style>
 </head>
 <body>
@@ -323,6 +331,16 @@ if ($_SERVER["HTTP_HOST"] != "jplpinto.localhost")
 	</div>
 	
 	<div class="layout-ui-editor reverse fixed-side-properties hide-template-widgets-options layout-ui-editor-4">
+		<ul class="menu-widgets hidden">
+			<? echo $menu_widgets_html; ?>
+		</ul>
+	</div>
+	
+	<div class="layout-ui-editor reverse fixed-side-properties hide-template-widgets-options layout-ui-editor-5">
+		<div class="template-widgets">
+			<iframe class="template-widgets-droppable" data-init-src="layout_ui_editor_iframe.html"></iframe>
+		</div>
+
 		<ul class="menu-widgets hidden">
 			<? echo $menu_widgets_html; ?>
 		</ul>

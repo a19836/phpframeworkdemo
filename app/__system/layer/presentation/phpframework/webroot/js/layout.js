@@ -1,5 +1,6 @@
 var auto_convert = false;
 var auto_save = false;
+var init_auto_save_interval_id = null;
 var last_auto_save_time = null;
 var auto_save_action_interval = 5 * 1000; //5 seconds in milliseconds
 var auto_save_connection_ttl = 30 * 1000; //30 seconds in milliseconds
@@ -39,7 +40,10 @@ function addAutoSaveMenu(selector, callback) {
 	return item;
 }
 function initAutoSave(selector) {
-	setInterval(function() {
+	if (init_auto_save_interval_id)
+		clearInterval(init_auto_save_interval_id);
+	
+	init_auto_save_interval_id = setInterval(function() {
 		if (auto_save) {
 			var time = last_auto_save_time + auto_save_connection_ttl + auto_save_action_interval; //Note that the timeout for the auto save ajax requests is auto_save_connection_ttl, so we add the auto_save_action_interval to the auto_save_connection_ttl so we can have a bigger margin.
 			
@@ -75,6 +79,9 @@ function disableAutoSave(callback) {
 	
 	if (typeof callback == "function")
 		callback();
+}
+function isAutoSaveMenuEnabled() {
+	return $(".top_bar li.auto_save_activation input").is(":checked");
 }
 function onToggleAutoSave() {
 	var li = $(".top_bar li.auto_save_activation");
@@ -171,6 +178,9 @@ function disableAutoConvert(callback) {
 	if (typeof callback == "function")
 		callback();
 }
+function isAutoConvertMenuEnabled() {
+	return $(".top_bar li.auto_convert_activation input").is(":checked");
+}
 function onToggleAutoConvert() {
 	var li = $(".top_bar li.auto_convert_activation");
 	var input = li.find("input");
@@ -210,17 +220,31 @@ function isAjaxReturnedResponseLogin(url) {
 }
 
 function showAjaxLoginPopup(login_url, urls_to_match, success_func) {
+	login_url = login_url + (login_url.indexOf("?") > -1 ? "&" : "?") + "popup=1";
 	urls_to_match = $.isArray(urls_to_match) ? urls_to_match : [urls_to_match];
 	var auto_save_bkp = auto_save;
 	
+	//prepare popup
 	var popup = $('.ajax_login_popup');
+	
+	if (!popup[0]) {
+		popup = $('<div class="ajax_login_popup myfancypopup" style="padding:0; border-radius:5px;"></div>'); //set css here bc there is no css file for this popup.
+		$("body").append(popup);
+	}
+	
+	//reset iframe so we can add the new load handlers
+	popup.children("iframe").remove();
+	popup.html('<iframe style="border-radius:5px;"></iframe>'); //set css here bc there is no css file for this popup.
 	var iframe = popup.children("iframe");
+	
 	var iframe_on_load_func = function() {
 		var current_iframe_url = decodeURI(this.contentWindow.location.href);
 		//console.log(current_iframe_url);
 		//console.log(urls_to_match);
 		
-		if ($.inArray(current_iframe_url, urls_to_match) != -1) {
+		if ($.inArray(current_iframe_url, urls_to_match) != -1 || 
+			(login_url == current_iframe_url && $(this).contents().find("body").html() == "1")
+		) {
 			MyFancyPopupLogin.hidePopup();
 			auto_save = auto_save_bkp;
 			
@@ -239,28 +263,11 @@ function showAjaxLoginPopup(login_url, urls_to_match, success_func) {
 			iframe.css({width: "380px", height: "280px"});
 		}
 	};
-	
-	if (!popup[0]) {
-		popup = $('<div class="ajax_login_popup myfancypopup"><iframe></iframe></div>');
-		iframe = popup.children("iframe");
+	iframe.bind("load", iframe_on_load_func);
+	iframe.bind("unload", function() {
 		iframe.bind("load", iframe_on_load_func);
-		iframe.bind("unload", function() {
-			iframe.bind("load", iframe_on_load_func);
-		});
-		
-		//set css here bc there is no css file for this popup.
-		popup.css({
-			"padding": "0",
-			"border-radius": "5px"
-		});
-		iframe.css({
-			"border-radius": "5px"
-		});
-		
-		$("body").append(popup);
-	}
-	
-	iframe[0].src = login_url + (login_url.indexOf("?") > -1 ? "&" : "?") + "popup=1";
+	});
+	iframe[0].src = login_url;
 	
 	MyFancyPopupLogin.init({
 		elementToShow: popup,
@@ -324,5 +331,39 @@ function closeFullscreen() {
 	}
 	catch(e) {
 		//if no fullscreen and this function gets called, it will give an exception
+	}
+}
+
+/* Submenu Functions */
+
+function openSubmenu(elm) {
+	if (window.event && window.event.target) { //must do this to be sure that the it was a manual click, otherwise it could be an automatic save that was executed by the system and we want to avoid this events!
+		elm = $(elm);
+		var sub_menu = elm.closest(".sub_menu, .top_bar_menu");
+		
+		if (sub_menu[0]) {
+			var open_interval = sub_menu.data("open_interval");
+			
+			sub_menu.toggleClass("open");
+			
+			if (open_interval)
+				clearInterval(open_interval);
+			
+			if (sub_menu.hasClass("open")) {
+				open_interval = setInterval(function() {
+					if (!sub_menu.is(":hover")) {
+						//console.log(window.sub_menu_open_interval);
+						var open_interval = sub_menu.data("open_interval");
+						
+						if (open_interval)
+							clearInterval(open_interval);
+						
+						sub_menu.removeClass("open");
+					}
+				}, 5000);
+				
+				sub_menu.data("open_interval", open_interval);
+			}
+		}
 	}
 }

@@ -3,6 +3,7 @@
 	<label>Nav Bar</label>
 	<tag>navbar</tag>
 	<settings>
+		<resizable>1</resizable>
 		<create_widget_class>NavBarWidget</create_widget_class>
 	</settings>
 	<template_widget><![CDATA[

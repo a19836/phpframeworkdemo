@@ -41,7 +41,7 @@ $head = '
 <script src="' . $project_url_prefix . 'js/db/execute_sql.js"></script>'; $main_content .= '
 	<div class="top_bar">
 		<header>
-			<div class="title">Execute SQL</div>
+			<div class="title">Execute SQL in DB: \'' . $bean_name . '\'</div>
 			<ul>
 				<li class="execute" data-title="Execute"><a onClick="execute()"><i class="icon continue"></i> Execute</a></li>
 			</ul>

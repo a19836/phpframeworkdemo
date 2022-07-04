@@ -37,7 +37,7 @@ var column_attributes_html = \'' . str_replace("'", "\\'", str_replace("\n", "",
 </script>'; $main_content = '
 <div class="top_bar">
 	<header>
-		<div class="title">Import Data to Table \'' . $table . '\'</div>
+		<div class="title">Import Data into Table \'' . $table . '\' in DB: \'' . $bean_name . '\'</div>
 		<ul>
 			<li class="import" data-title="Import"><a onClick="submitForm(this)"><i class="icon continue"></i> Import</a></li>
 		</ul>

@@ -8,10 +8,12 @@
   	--main-font-family:"Poppins-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
   	--main-font-family:"Poppins-Regular",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",Helvetica,Arial,sans-serif;
 	
-	--resize-bar-bg:#fff;/*#83889E;*/
+	--resize-bar-bg:#f7f7f7;/*#83889E;*/
 	--resize-bar-vertical-img:url(../img/back_frame_open_close_vertical_red.gif);
 	--resize-bar-horizontal-img:url(../../img/back_frame_open_close_horizontal_red.gif);
 	--resize-bar-border:#83889E;
+	
+	--link-color:#4070FF;
 	
 	/* used in icons.css */
 	--icon-font-size:14px;
@@ -79,7 +81,7 @@ body:not(.in_popup) {
 }
 
 a {
-	color:#4070FF;
+	color:var(--link-color);
 }
 
 label,
@@ -223,6 +225,7 @@ input[type=submit]:focus,
   button:focus {
 	/*box-shadow:0 0 0 0.2rem rgb(255 193 7 / 50%);*/
 	box-shadow:0 0 0 0.2rem rgb(200 202 213 / 50%);
+	border-color:#aaa;
 }
 input[type=submit]:not(:disabled), 
   input[type=button]:not(:disabled), 

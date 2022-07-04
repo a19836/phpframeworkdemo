@@ -44,7 +44,7 @@ var step = ' . ($step ? $step : 0) . ';
 </script>'; $main_content = '
 <div class="top_bar">
 	<header>
-		<div class="title">' . ($table ? 'Edit Table \'' . $table . '\'' : 'Add Table') . '</div>
+		<div class="title">' . ($table ? 'Edit Table \'' . $table . '\'' : 'Add Table') . ' in DB: \'' . $bean_name . '\'</div>
 	</header>
 </div>
 

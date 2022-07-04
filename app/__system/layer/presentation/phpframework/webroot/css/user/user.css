@@ -69,13 +69,14 @@ body.main_navigator_reverse #menu {
 	height:50px;
 	line-height:50px;
 	padding:0 10px 0 0;
-	border-bottom:0;
 	font-style:italic;
 	text-align:right;
 	color:#999;
 	font-size:90%;
+	box-sizing:border-box;
 	
 	color:var(--main-iframe-color);
+	border-bottom:1px solid #aaa;
 	background:var(--main-iframe-bg);
 	/*background: linear-gradient(to bottom, #f7f7f7 0%, var(--main-iframe-bg) 95%, #ffffff73 100%);*/
 }
@@ -282,6 +283,9 @@ body.main_navigator_reverse #content {
 #content .layout_type_permissions_list .layout_type_permissions_content .mytree li {
 	margin-left:15px;
 	position:relative;
+}
+#content .layout_type_permissions_list .layout_type_permissions_content .mytree > ul > li {
+	margin-left:27px;
 }
 #content .layout_type_permissions_list .layout_type_permissions_content .mytree li label > input[type=checkbox] {
 	position:absolute;

@@ -2,19 +2,222 @@
 	background-color:var(--main-context-menu-bg, #f7f7f7); 
 	color:var(--main-context-menu-color, #999); 
 	border:1px solid var(--main-context-menu-border, #ccc);
+	border-radius:3px;
+	box-shadow:none;
 	font-family:inherit;
-	border-radius:5px;
 	font-size:8pt;
 }
-.jqcontextmenu li {background-color:var(--main-context-menu-bg, #f7f7f7);}
+
+/* triangle */
+.jqcontextmenu.with_top_left_triangle:before,
+  .jqcontextmenu.with_top_center_triangle:before,
+  .jqcontextmenu.with_top_right_triangle:before,
+  .jqcontextmenu.with_left_top_triangle:before,
+  .jqcontextmenu.with_left_center_triangle:before,
+  .jqcontextmenu.with_left_middle_triangle:before,
+  .jqcontextmenu.with_left_bottom_triangle:before,
+  .jqcontextmenu.with_right_top_triangle:before,
+  .jqcontextmenu.with_right_center_triangle:before,
+  .jqcontextmenu.with_right_middle_triangle:before,
+  .jqcontextmenu.with_right_bottom_triangle:before,
+  .jqcontextmenu.with_bottom_left_triangle:before,
+  .jqcontextmenu.with_bottom_center_triangle:before,
+  .jqcontextmenu.with_bottom_right_triangle:before {
+	content:" ";
+	width:0;
+	height:0;
+	position:absolute;
+	border-top:8px solid transparent;
+	border-right:8px solid transparent;
+	border-bottom:8px solid transparent;
+	border-left:8px solid transparent;
+}
+.jqcontextmenu.with_top_left_triangle:before,
+  .jqcontextmenu.with_top_center_triangle:before,
+  .jqcontextmenu.with_top_right_triangle:before {
+	border-bottom-color:var(--main-context-menu-border);
+}
+.jqcontextmenu.with_left_top_triangle:before,
+  .jqcontextmenu.with_left_center_triangle:before,
+  .jqcontextmenu.with_left_middle_triangle:before,
+  .jqcontextmenu.with_left_bottom_triangle:before {
+	border-right-color:var(--main-context-menu-border);
+}
+.jqcontextmenu.with_right_top_triangle:before,
+  .jqcontextmenu.with_right_center_triangle:before,
+  .jqcontextmenu.with_right_middle_triangle:before,
+  .jqcontextmenu.with_right_bottom_triangle:before {
+	border-left-color:var(--main-context-menu-border);
+}
+.jqcontextmenu.with_bottom_left_triangle:before,
+  .jqcontextmenu.with_bottom_center_triangle:before,
+  .jqcontextmenu.with_bottom_right_triangle:before {
+	border-top-color:var(--main-context-menu-border);
+}
+.jqcontextmenu.with_top_left_triangle:after,
+  .jqcontextmenu.with_top_center_triangle:after,
+  .jqcontextmenu.with_top_right_triangle:after,
+  .jqcontextmenu.with_left_top_triangle:after,
+  .jqcontextmenu.with_left_center_triangle:after,
+  .jqcontextmenu.with_left_middle_triangle:after,
+  .jqcontextmenu.with_left_bottom_triangle:after,
+  .jqcontextmenu.with_right_top_triangle:after,
+  .jqcontextmenu.with_right_center_triangle:after,
+  .jqcontextmenu.with_right_middle_triangle:after,
+  .jqcontextmenu.with_right_bottom_triangle:after,
+  .jqcontextmenu.with_bottom_left_triangle:after,
+  .jqcontextmenu.with_bottom_center_triangle:after,
+  .jqcontextmenu.with_bottom_right_triangle:after {
+	content:" ";
+	height:0;
+	width:0;
+	position:absolute;
+	border-top:7px solid transparent;
+	border-right:7px solid transparent;
+	border-bottom:7px solid transparent;
+	border-left:7px solid transparent;
+}
+.jqcontextmenu.with_top_left_triangle:after,
+  .jqcontextmenu.with_top_center_triangle:after,
+  .jqcontextmenu.with_top_right_triangle:after {
+	border-bottom-color:var(--main-context-menu-bg);
+}
+.jqcontextmenu.with_left_top_triangle:after,
+  .jqcontextmenu.with_left_center_triangle:after,
+  .jqcontextmenu.with_left_middle_triangle:after,
+  .jqcontextmenu.with_left_bottom_triangle:after {
+	border-right-color:var(--main-context-menu-bg);
+}
+.jqcontextmenu.with_right_top_triangle:after,
+  .jqcontextmenu.with_right_center_triangle:after,
+  .jqcontextmenu.with_right_middle_triangle:after,
+  .jqcontextmenu.with_right_bottom_triangle:after {
+	border-left-color:var(--main-context-menu-bg);
+}
+.jqcontextmenu.with_bottom_left_triangle:after,
+  .jqcontextmenu.with_bottom_center_triangle:after,
+  .jqcontextmenu.with_bottom_right_triangle:after {
+	border-top-color:var(--main-context-menu-bg);
+}
+
+/* triangle - top */
+.jqcontextmenu.with_top_left_triangle:before {
+	top:-15px;
+	left:15px;
+}
+.jqcontextmenu.with_top_left_triangle:after {
+	top:-13px;
+	left:16px;
+}
+.jqcontextmenu.with_top_center_triangle:before {
+	top:-15px;
+	right:calc(50% - 7px);
+}
+.jqcontextmenu.with_top_center_triangle:after {
+	top:-13px;
+	right:calc(50% - 6px);
+}
+.jqcontextmenu.with_top_right_triangle:before {
+	top:-15px;
+	right:15px;
+}
+.jqcontextmenu.with_top_right_triangle:after {
+	top:-13px;
+	right:16px;
+}
+
+/* triangle - left */
+.jqcontextmenu.with_left_top_triangle:before {
+	top:13px;
+	left:-16px;
+}
+.jqcontextmenu.with_left_top_triangle:after {
+	top:14px;
+	left:-14px;
+}
+.jqcontextmenu.with_left_center_triangle:before,
+  .jqcontextmenu.with_left_middle_triangle:before {
+	top:calc(50% - 8px);
+	left:-16px;
+}
+.jqcontextmenu.with_left_center_triangle:after,
+  .jqcontextmenu.with_left_middle_triangle:after {
+	top:calc(50% - 7px);
+	left:-14px;
+}
+.jqcontextmenu.with_left_bottom_triangle:before {
+	bottom:13px;
+	left:-16px;
+}
+.jqcontextmenu.with_left_bottom_triangle:after {
+	bottom:14px;
+	left:-14px;
+}
+
+/* triangle - right */
+.jqcontextmenu.with_right_top_triangle:before {
+	top:13px;
+	right:-16px;
+}
+.jqcontextmenu.with_right_top_triangle:after {
+	top:14px;
+	right:-14px;
+}
+.jqcontextmenu.with_right_center_triangle:before,
+  .jqcontextmenu.with_right_middle_triangle:before {
+	top:calc(50% - 8px);
+	right:-16px;
+}
+.jqcontextmenu.with_right_center_triangle:after,
+  .jqcontextmenu.with_right_middle_triangle:after {
+	top:calc(50% - 7px);
+	right:-14px;
+}
+.jqcontextmenu.with_right_bottom_triangle:before {
+	bottom:13px;
+	right:-16px;
+}
+.jqcontextmenu.with_right_bottom_triangle:after {
+	bottom:14px;
+	right:-14px;
+}
+
+/* triangle - bottom */
+.jqcontextmenu.with_bottom_left_triangle:before {
+	bottom:-15px;
+	left:15px;
+}
+.jqcontextmenu.with_bottom_left_triangle:after {
+	bottom:-13px;
+	left:16px;
+}
+.jqcontextmenu.with_bottom_center_triangle:before {
+	bottom:-15px;
+	right:calc(50% - 7px);
+}
+.jqcontextmenu.with_bottom_center_triangle:after {
+	bottom:-13px;
+	right:calc(50% - 6px);
+}
+.jqcontextmenu.with_bottom_right_triangle:before {
+	bottom:-15px;
+	right:15px;
+}
+.jqcontextmenu.with_bottom_right_triangle:after {
+	bottom:-13px;
+	right:16px;
+}
+
+/* lis */
+.jqcontextmenu li {background-color:var(--main-context-menu-bg, #f7f7f7); font-size:0;} /* font-size:0: must set the font-size to 0, bc the child "a" is a display inline-block which means that all spaces between the html tags (inside of the LI), will be seen in the browser and show a weird spacing. So we need to set this spaces to 0 and set back the font-size in the child "a" and "::before" */
 .jqcontextmenu li:first-child {border-top-left-radius:5px; border-top-right-radius:5px;}
 .jqcontextmenu li:last-child {border-bottom-left-radius:5px; border-bottom-right-radius:5px;}
-.jqcontextmenu li:hover {opacity:.7; background-color:var(--main-context-menu-hover-bg, #f7f7f7);}
-.jqcontextmenu li a {margin-left:5px; padding:4px 5px 4px 2px; cursor:pointer; background-color:var(--main-context-menu-bg, #f7f7f7); color:var(--main-context-menu-color, #999); display:inline-block;}
+.jqcontextmenu li:hover {background-color:var(--main-context-menu-hover-bg, #f7f7f7);}
+.jqcontextmenu li a {min-width:auto; margin-left:0; padding:4px 10px 4px 30px; cursor:pointer; background-color:var(--main-context-menu-bg, #f7f7f7); color:var(--main-context-menu-color, #999); display:block; font-size:8pt;}
 .jqcontextmenu li:first-child a {border-top-left-radius:5px; border-top-right-radius:5px;}
 .jqcontextmenu li:last-child a {border-bottom-left-radius:5px; border-bottom-right-radius:5px;}
 .jqcontextmenu li:hover a, .jqcontextmenu li a:hover {text-decoration:none; background-color:var(--main-context-menu-hover-bg, #f7f7f7);}
-.jqcontextmenu .line_break {height:0px; border-top:1px solid var(--main-context-menu-border, #ccc); margin:0 3px; padding:0;}
+.jqcontextmenu .line_break {height:0px; border-top:1px solid var(--main-context-menu-border, #ccc); margin:0; padding:0;}
 
 .jqcontextmenu li::before {
 	text-rendering:auto;
@@ -23,20 +226,25 @@
 	font-size:inherit;
 	width:15px;
 	display:inline-block;
-	margin-top:4px;
+	margin-top:6px;
 	margin-left:10px;
+	font-size:8pt;
+	position:absolute;
 }
 .jqcontextmenu li::after {
 	text-rendering:auto;
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
-	font-size:80%;
+	font-size:6pt;
 	display:inline-block;
 	color:#666;
 	position:absolute;
 	left:12px;
 	top:10px;
+	position:absolute;
 }
+
+/* lis - icons */
 .jqcontextmenu .edit::before {content:"\f303";}
 .jqcontextmenu .edit_new::before {content:"\f303";}
 .jqcontextmenu .edit_new::after {content:"\2b";}
@@ -52,7 +260,7 @@
 .jqcontextmenu .cut::before {content:"\f0c4";}
 .jqcontextmenu .paste::before {content:"\f0ea";}
 .jqcontextmenu .zip::before {content:"\f1c6";}
-.jqcontextmenu .unzip::before {content:"\f1c6"; font:var(--fa-font-regular); font-size:110%;}
+.jqcontextmenu .unzip::before {content:"\f1c6"; font:var(--fa-font-regular); font-size:9pt;}
 .jqcontextmenu .diff_file::before {content:"\f53e";}
 .jqcontextmenu .add_table::before {content:"\f0db";}
 .jqcontextmenu .db_dump::before {content:"\f093";}
@@ -88,7 +296,7 @@
 .jqcontextmenu .service_function::before {content:"\e13b"; -webkit-transform:scaleY(-1); transform:scaleY(-1);}
 .jqcontextmenu .hbnt_obj::before {content:"\f0fd"; color:#999;}
 .jqcontextmenu .hbnt_obj::after {content:"\f304";}
-.jqcontextmenu .objt_obj::before {content:"\f174"; color:#999; font:var(--fa-font-brands); font-size:120%;}
+.jqcontextmenu .objt_obj::before {content:"\f174"; color:#999; font:var(--fa-font-brands); font-size:10pt;}
 .jqcontextmenu .objt_obj::after {content:"\f304";}
 .jqcontextmenu .edit_project_global_variables::before {content:"\f0ac"; color:#999;}
 .jqcontextmenu .edit_project_global_variables::after {content:"\f304";}
@@ -100,19 +308,21 @@
 .jqcontextmenu .test_project::before {content:"\f06e";}
 .jqcontextmenu .add_project::before {content:"\f65e";}
 .jqcontextmenu .manage_modules::before {content:"\f61f";}
-.jqcontextmenu .manage_wordpress::before {content:"\f19a"; font:var(--fa-font-brands); font-size:120%;}
+.jqcontextmenu .manage_wordpress::before {content:"\f19a"; font:var(--fa-font-brands); font-size:10pt;}
 .jqcontextmenu .install_program::before {content:"\f51f";}
-.jqcontextmenu .install_template::before {content:"\f13b"; font:var(--fa-font-brands); font-size:120%;}
-.jqcontextmenu .convert_template::before {content:"\f13b"; font:var(--fa-font-brands); font-size:120%;}
+.jqcontextmenu .install_template::before {content:"\f13b"; font:var(--fa-font-brands); font-size:10pt;}
+.jqcontextmenu .convert_template::before {content:"\f13b"; font:var(--fa-font-brands); font-size:10pt;}
 .jqcontextmenu .test_unit_obj::before {content:"\f0ae"; color:#aaa;}
 .jqcontextmenu .test_unit_obj::after {content:"\2b"; margin-left:7px;}
 .jqcontextmenu .manage_test_units::before {content:"\f0ae";}
 .jqcontextmenu .class_obj::before {content:"\f1c9";}
 .jqcontextmenu .class_method::before {content:"\e13b"; -webkit-transform:scaleY(-1); transform:scaleY(-1);}
 .jqcontextmenu .class_function::before {content:"\e13b"; -webkit-transform:scaleY(-1); transform:scaleY(-1);}
+.jqcontextmenu .manage_docbook::before {content:"\f02d"; text-indent: 2px;}
 .jqcontextmenu .view_docbook::before {content:"\f02d"; text-indent: 2px;}
 .jqcontextmenu .view_code::before {content:"\f121";}
 
+/* Popups */
 .choose_available_tool_popup,
   .choose_available_project_popup,
   .choose_available_tutorial_popup,
@@ -134,6 +344,6 @@
 	left:auto;
 	right:auto;
 	bottom:auto;
-	width:580px;
-	height:430px;
+	width:530px;
+	height:380px;
 }

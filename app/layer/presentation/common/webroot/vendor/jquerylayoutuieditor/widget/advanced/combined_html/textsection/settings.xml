@@ -3,6 +3,7 @@
 	<label>Text Section</label>
 	<tag>textsection</tag>
 	<settings>
+		<resizable>1</resizable>
 		<template_node_name>section</template_node_name>
 		<create_widget_class>TextSectionWidget</create_widget_class>
 	</settings>

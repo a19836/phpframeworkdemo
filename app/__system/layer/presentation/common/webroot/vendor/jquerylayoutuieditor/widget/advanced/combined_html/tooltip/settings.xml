@@ -3,6 +3,7 @@
 	<label>Tool Tip</label>
 	<tag>tooltip</tag>
 	<settings>
+		<resizable>1</resizable>
 		<template_node_name>span</template_node_name>
 		<create_widget_class>ToolTipWidget</create_widget_class>
 	</settings>

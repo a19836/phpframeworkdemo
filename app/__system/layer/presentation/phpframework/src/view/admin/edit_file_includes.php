@@ -61,13 +61,12 @@ var new_include_html = \'' . str_replace("'", "\\'", str_replace("\n", "", WorkF
 			<div class="title">Manage Includes in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj, true) . '</div>
 			<ul>
 				<li class="save" data-title="Save"><a onClick="saveIncludes()"><i class="icon save"></i> Save</a></li>
-				<li class="sub_menu">
+				<li class="sub_menu" onClick="openSubmenu(this)">
 					<i class="icon sub_menu"></i>
 					<ul>
 						<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onclick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
 						<li class="separator"></li>
 						<li class="save" title="Save"><a onClick="saveIncludes()"><i class="icon save"></i> Save</a></li>
-						<li class="dummy_elm_to_add_auto_save_options"></li>
 					</ul>
 				</li>
 			</ul>

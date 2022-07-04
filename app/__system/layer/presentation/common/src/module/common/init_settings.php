@@ -37,6 +37,9 @@ ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePage
 ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
 </script>
 
+<!-- Layout UI Editor - Color -->
+<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'js/color.js"></script>
+
 <!-- Layout UI Editor - MD5 -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>
 

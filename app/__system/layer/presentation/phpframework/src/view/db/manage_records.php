@@ -59,7 +59,7 @@ var new_condition_html = \'' . addcslashes(str_replace("\n", "", getConditionHtm
 <div class="top_bar">
 	<header>
 		<div class="title">
-			Manage Records for table: "' . $table . '"
+			Manage Records for table: \'' . $table . '\' in DB: \'' . $bean_name . '\'
 			<select class="db_type" onChange="onDBTypeChange(this)">
 				<option value="db">From DB Server</option>
 				<option value="diagram"' . ($db_type == "diagram" ? ' selected' : '') . '>From DB Diagram</option>

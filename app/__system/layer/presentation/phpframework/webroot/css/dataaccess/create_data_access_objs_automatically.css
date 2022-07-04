@@ -17,6 +17,11 @@ input,
 	margin-bottom:20px;
 }
 
+.title {
+	text-align:center;
+	margin-bottom:20px;
+}
+
 /* SELECT BROKERS */
 .select_brokers .db_broker, .select_brokers .db_driver, .select_brokers .type {
 	width:270px;
@@ -25,6 +30,9 @@ input,
 	margin:7px auto;
 	float:none;
 	clear:left;
+}
+.select_brokers .db_broker.single_broker {
+	display:none;
 }
 .select_brokers .db_broker label, .select_brokers .db_driver label, .select_brokers .type label {
 	width:100px;
@@ -131,7 +139,6 @@ input,
 }
 .statuses .desc {
 	width:100%;
-	font-size:14px;
 	color:#000;
 	text-align:center;
 }

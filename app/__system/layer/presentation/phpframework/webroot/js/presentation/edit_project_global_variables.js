@@ -90,12 +90,13 @@ $(function () {
 		var textarea = $("#code textarea")[0];
 		if (textarea) {
 			var editor = createCodeEditor(textarea, {save_func: saveGlobalVariables});
+			
 			if (editor)
 				editor.focus();
 		}
 		
 		//load workflow
-		onLoadTaskFlowChartAndCodeEditor();
+		onLoadTaskFlowChartAndCodeEditor({do_not_hide_popup : true});
 		
 		//init tasks flow tab
 		onClickTaskWorkflowTab( global_vars_obj.find(" > .tabs > #tasks_flow_tab > a")[0], {
@@ -107,6 +108,8 @@ $(function () {
 					global_vars_obj.tabs("option", "active", active_tabs_ids["form_global_vars_tab"]);
 				
 				auto_save = true;
+				
+				MyFancyPopup.hidePopup();
 			},
 			on_error: function() {
 				global_vars_obj.tabs("option", "active", active_tab); //show previous tab
@@ -115,9 +118,13 @@ $(function () {
 				saved_simple_form_settings_id = getSimpleFormSettingsObjId();
 				
 				auto_save = true;
+				
+				MyFancyPopup.hidePopup();
 			}
 		});
 	}
+	else	//hide loading icon
+		MyFancyPopup.hidePopup();
 });
 
 function onToggleGlobalVariablesAutoSave() {
@@ -470,24 +477,52 @@ function saveGlobalVariables() {
 	
 	prepareAutoSaveVars();
 	
+	var is_from_auto_save_bkp = is_from_auto_save; //backup the is_from_auto_save, bc if there is a concurrent process running at the same time, this other process may change the is_from_auto_save value.
+	
 	if (global_vars_obj[0]) {
-		if (is_from_auto_save && !isGlobalVariablesCodeObjChanged()) {
-			resetAutoSave();
-			return;
-		}
-		
-		var url = getGlobalVariablesSaveUrl();
-		var obj = getGlobalVariablesCodeObj();
-		
-		saveObjCode(url, obj, {
-			success: function(data, textStatus, jqXHR) {
-				//update saved_simple_form_settings_id
-				saved_simple_form_settings_id = getSimpleFormSettingsObjId();
+		if (!window.is_save_func_running) {
+			window.is_save_func_running = true;
+			
+			if (is_from_auto_save_bkp && !isGlobalVariablesCodeObjChanged()) {
+				resetAutoSave();
+				window.is_save_func_running = false;
+				return;
+			}
+			
+			var url = getGlobalVariablesSaveUrl();
+			var obj = getGlobalVariablesCodeObj();
+			
+			//check if user is logged in
+			//if there was a previous function that tried to execute an ajax request, like the getCodeForSaving method, we detect here if the user needs to login, and if yes, recall the save function again. 
+			//Do not re-call only the ajax request below, otherwise there will be some other files that will not be saved, this is, the getCodeForSaving saves the workflow and if we only call the ajax request below, the workflow won't be saved. To avoid this situation, we call the all save function.
+			if (!is_from_auto_save_bkp && jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL)) {
+				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jquery_native_xhr_object.responseURL, function() {
+					jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+					StatusMessageHandler.removeLastShownMessage("error");
+					
+					window.is_save_func_running = false;
+					saveGlobalVariables();
+				});
 				
-				return true;
-			},
-		});
+				return;
+			}
+			
+			//call saveObjCode
+			saveObjCode(url, obj, {
+				success: function(data, textStatus, jqXHR) {
+					//update saved_simple_form_settings_id
+					saved_simple_form_settings_id = getSimpleFormSettingsObjId();
+					
+					return true;
+				},
+				complete: function() {
+					window.is_save_func_running = false;
+				},
+			});
+		}
+		else if (!is_from_auto_save_bkp)
+			StatusMessageHandler.showMessage("There is already a saving process running. Please wait a few seconds and try again...");
 	}
-	else if (!is_from_auto_save)
+	else if (!is_from_auto_save_bkp)
 		alert("No global vars object to save! Please contact the sysadmin...");
 }

@@ -10,6 +10,10 @@ body,
 .top_bar {
 	margin-bottom:20px;
 }
+.top_bar header .icon.info::before {
+	margin-top:2px;
+	display:block;
+}
 
 /* DIFF */
 .file_upload {
@@ -37,6 +41,7 @@ body,
 	font-size:inherit;
 }
 .file_upload select[name=db_driver] {
+	min-width:calc(100% - 30px);
 	max-width:calc(100% - 30px);
 	font-size:inherit;
 }
@@ -48,7 +53,7 @@ body,
 	margin:10px 0;
 }
 .file_upload .upload_file input {
-	width:300px;
+	width:calc(100% - 38px);
 	border:1px solid #eee;
 	border-radius:3px;
 	direction:rtl;
@@ -59,6 +64,7 @@ body,
 	display:inline-block;
 	float:none;
 	vertical-align:middle;
+	font-size:14px;
 }
 .file_upload .add {
 	margin:0 0 0 5px;
@@ -76,17 +82,18 @@ body,
 	display:inline-block;
 }
 .file_upload .upload_url input {
-	width:260px;
+	width:calc(100% - 73px);
 	border:1px solid #eee;
 	border-radius:3px;
 	direction:rtl;
 	font-size:inherit;
 }
 .file_upload .upload_url .delete {
-	margin:0 0 0 10px;
+	margin:0 0 0 8px;
 	display:inline-block;
 	float:none;
 	vertical-align:middle;
+	font-size:14px;
 }
 .file_upload .button {
 	display:block;
@@ -100,11 +107,21 @@ body,
 	margin:10px auto;
 	text-align:center;
 }
+.file_upload:not(.show_info) .info {
+	display:none;
+}
 .file_upload .info {
-	width:100%;
+	position:absolute;
+	top:50px;
+	left:0;
+	right:0;
+	padding:20px;
+	text-align:center;
+	background:#f7f7f7;
+	border-bottom:1px solid #ccc;
 }
 .file_upload .warning {
-	margin:20px;
+	margin-top:20px;
 	padding:20px;
 	border:1px solid #efbebe;
 	border-radius:5px;
@@ -112,18 +129,18 @@ body,
 	color:#B51E3F;
 }
 
-.install_store_module,
-  .go_to_modules_download_page {
+.go_to_modules_download_page {
 	width:100%;
+	margin:20px 0 0;
 	text-align:center;
 	color:#999;
-	margin-bottom:10px;
 }
 .go_back_to_modules_list {
 	width:100%;
 	text-align:center;
 	color:#999;
 	margin-bottom:30px;
+	display:none; /* No need this anymore bc now we have the back button at the top bar of the framework */
 }
 
 .messages {
@@ -170,26 +187,36 @@ body,
 	color:brown;
 }
 
-/* MODULE POPUPS - install_store_module_popup + view_store_module_popup */
+/* MODULE POPUPS - install_store_module + view_store_module_popup */
 
-.install_store_module_popup,
-  .view_store_module_popup {
+.install_store_module {
+	margin:40px 20px 20px;
+}
+.view_store_module_popup {
+	position:fixed;
 	top:10px !important;
 	left:10px !important;
 	right:10px !important;
 	bottom:10px !important;
 }
-.install_store_module_popup ul,
+.install_store_module > .title {
+	text-align:left;
+	padding-bottom:5px;
+	border-bottom:1px solid #ccc;
+}
+.install_store_module ul,
   .view_store_module_popup ul {
-	max-height: calc(100% - 60px);
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: flex-start;
 	padding: 10px;
+}
+.view_store_module_popup ul {
+	max-height: calc(100% - 60px);
 	overflow: auto;
 }
-.install_store_module_popup ul li,
+.install_store_module ul li,
   .view_store_module_popup ul li {
 	flex: 25%;
 	max-width: 200px;
@@ -202,12 +229,12 @@ body,
 	font-size: 80%;
 	text-align:center;
 }
-.install_store_module_popup ul li img,
+.install_store_module ul li img,
   .view_store_module_popup ul li img {
 	width:100%;
 	border-bottom:1px solid #ddd;
 }
-.install_store_module_popup ul li label,
+.install_store_module ul li label,
   .view_store_module_popup ul li label {
 	margin:15px 0 10px;
 	display: block;
@@ -215,7 +242,7 @@ body,
 	font-weight:normal;
 	color:#666;
 }
-.install_store_module_popup ul li div,
+.install_store_module ul li div,
   .view_store_module_popup ul li div {
 	margin:5px 0 10px;
 	display: block;
@@ -223,13 +250,13 @@ body,
 	font-weight:normal;
 	color:#999;
 }
-.install_store_module_popup ul li .choose_module.with_view_module {
+.install_store_module ul li .choose_module.with_view_module {
 	float:left;
 }
-.install_store_module_popup ul li .view_module {
+.install_store_module ul li .view_module {
 	float:right;
 }
-.install_store_module_popup ul li.loading {
+.install_store_module ul li.loading {
 	padding-left:30px;
 	border:none;
 	background:transparent;

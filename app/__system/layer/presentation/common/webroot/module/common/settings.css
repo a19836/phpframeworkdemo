@@ -187,6 +187,7 @@
 }
 .settings .ptl .layout-ui-editor .tabs {
 	border-top:1px solid #eee;
+	font-size:8pt;
 }
 .settings .ptl .layout-ui-editor > .menu-widgets, 
   .settings .ptl .layout-ui-editor > .menu-layers, 

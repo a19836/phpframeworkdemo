@@ -63,7 +63,6 @@ body,
 	border:0;
 	background:0;
 	color:#777;
-	font-weight:bold;
 	font-size:12px;
 	margin:5px 7px;
 	cursor:pointer;
@@ -163,7 +162,6 @@ body,
 #project_name .name {
 	margin-top:20px;
 	text-align:center;
-	font-weight:bold;
 }
 #project_name .name input {
 	width:200px;
@@ -176,7 +174,7 @@ body,
 .db_settings h1 {width:100%; font-size:14px; text-align:center; line-height:30px; margin:10px 0px; padding:0px 0px;}
 .db_settings .info {width:100%; font-size:14px; text-align:center; margin-bottom:20px;}
 .db_settings .warning {width:100%; font-size:14px; text-align:center; margin-top:20px; color:#B51E3F;}
-.db_settings .info .advanced {font-weight:bold;}
+.db_settings .info .advanced {}
 .db_settings .form_fields {width:400px; margin:0 auto;}
 .db_settings .form_field {float:none; clear:left; min-height:20px; line-height:20px; margin-bottom:3px;}
 .db_settings .form_field label {width:150px; float:left; text-align:left;}

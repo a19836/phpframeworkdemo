@@ -35,7 +35,7 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); $WorkFlowUIHandler = new WorkFlo
 		<header>
 			<div class="title">Layers Diagram</div>
 			<ul>
-				<li class="save" data-title="Save"><a onClick="saveLayersDiagram()"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save and Rebuild"><a onClick="saveLayersDiagram()"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>
 	</div>'; $main_content .= $WorkFlowUIHandler->getContent(); $main_content .= '

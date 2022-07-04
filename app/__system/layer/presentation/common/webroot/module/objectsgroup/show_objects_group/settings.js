@@ -404,55 +404,89 @@ function getModuleShowObjectsGroupSettings() {
 function saveModuleShowObjectsGroupSettings(button) {
 	prepareAutoSaveVars();
 	
-	var new_settings_id = getModuleShowObjectsGroupSettingsId();
+	var is_from_auto_save_bkp = is_from_auto_save; //backup the is_from_auto_save, bc if there is a concurrent process running at the same time, this other process may change the is_from_auto_save value.
 	
-	if (!saved_settings_id || saved_settings_id != new_settings_id) {
-		if (!is_from_auto_save) {
-			MyFancyPopup.showOverlay();
-			MyFancyPopup.showLoading();
-		}
+	if (!window.is_save_block_func_running) {
+		window.is_save_block_func_running = true;
 		
-		var settings = getModuleShowObjectsGroupSettings();
+		var new_settings_id = getModuleShowObjectsGroupSettingsId();
 		
-		$.ajax({
-			type : "post",
-			url : create_form_settings_code_url,
-			data : {"settings" : settings},
-			dataType : "json",
-			success : function(data, textStatus, jqXHR) {
-				if (data && data["code"]) {
-					if (saveBlockRawCode(data["code"]))
-						saved_settings_id = new_settings_id; //set new saved_str_id
-				}
-				else if (!is_from_auto_save)
-					StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
-				
-				if (!is_from_auto_save)
-					MyFancyPopup.hidePopup();
-				else
-					resetAutoSave();
-			},
-			error : function() { 
-				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_form_settings_code_url, function() {
-						StatusMessageHandler.removeLastShownMessage("error");
+		if (!saved_settings_id || saved_settings_id != new_settings_id) {
+			if (!is_from_auto_save_bkp) {
+				MyFancyPopup.showOverlay();
+				MyFancyPopup.showLoading();
+			}
+			
+			var settings = getModuleShowObjectsGroupSettings();
+			
+			var ajax_opts = {
+				type : "post",
+				url : create_form_settings_code_url,
+				data : {"settings" : settings},
+				dataType : "json",
+				success : function(data, textStatus, jqXHR) {
+					if (data && data["code"]) {
+						var status = saveBlockRawCode(data["code"], {
+							complete : function() {
+								if (!is_from_auto_save_bkp)
+									MyFancyPopup.hidePopup(); //we still need this here bc the saveBlockObj doesn't hide the popup if the .block_obj doesn't exists.
+								window.is_save_block_func_running = false;
+							},
+						});
 						
-						saveModuleShowObjectsGroupSettings(button);
-					});
-				else if (!is_from_auto_save)
-					StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
-				
-				if (!is_from_auto_save)
-					MyFancyPopup.hidePopup();
-				else
-					resetAutoSave();
-			},
-		});
+						if (status)
+							saved_settings_id = new_settings_id; //set new saved_settings_id
+					}
+					else {
+						if (!is_from_auto_save_bkp) {
+							MyFancyPopup.hidePopup();
+							StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
+						}
+						else
+							resetAutoSave();
+						
+						window.is_save_block_func_running = false;
+					}
+				},
+				error : function() { 
+					if (!is_from_auto_save_bkp) {
+						//hide popup in case be over of login popup
+						MyFancyPopup.hidePopup();
+						
+						if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+							showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_form_settings_code_url, function() {
+								//show loading icon again
+								MyFancyPopup.showOverlay();
+								MyFancyPopup.showLoading();
+								
+								//re-call ajax request
+								$.ajax(ajax_opts);
+							});
+						else {
+							StatusMessageHandler.showError("Error trying to save new settings.\nPlease try again...");
+							window.is_save_block_func_running = false;
+						}
+					}
+					else {
+						resetAutoSave();
+						window.is_save_block_func_running = false;
+					}
+				},
+			};
+			
+			$.ajax(ajax_opts);
+		}
+		else {
+			if (!is_from_auto_save_bkp)
+				StatusMessageHandler.showMessage("Nothing to save.");
+			else
+				resetAutoSave();
+			
+			window.is_save_block_func_running = false;
+		}
 	}
-	else if (!is_from_auto_save)
-		StatusMessageHandler.showMessage("Nothing to save.");
-	else
-		resetAutoSave();
+	else if (!is_from_auto_save_bkp)
+		StatusMessageHandler.showMessage("There is already a saving process running. Please wait a few seconds and try again...");
 }
 
 function parseArray(html_elm) {

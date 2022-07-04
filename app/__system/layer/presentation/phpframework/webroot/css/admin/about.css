@@ -8,14 +8,14 @@ body,
 
 /* TOP BAR */
 .top_bar {
-	margin-bottom:20px;
+	margin-bottom:15px;
 }
 
 /* ABOUT */
 .about {
 	min-width:400px;
 	margin:0 auto;
-	padding:0 20px;
+	padding:0 15px;
 }
 .about > div:not(.top_bar) {
 	margin-bottom:10px;

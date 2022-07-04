@@ -3,10 +3,10 @@
 	margin-bottom:10px;
 }
 .top_bar header .title {
-	max-width:calc(100% - 150px);
+	max-width:calc(100% - 170px);
 }
 .top_bar header > ul {
-	right:112px;
+	right:135px;
 }
 
 /* CONFIG OBJ */

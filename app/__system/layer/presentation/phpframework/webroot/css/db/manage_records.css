@@ -1,3 +1,14 @@
+/* TOP BAR */
+.top_bar header > ul > li.back {
+	width:26px;
+}
+.top_bar header > ul > li.back > a {
+	width:16px;
+}
+.top_bar header > ul > li.back > a > .icon:before {
+	margin-left:0;
+}
+
 /* MANAGE RECORDS */
 .manage_records .db_type {
 	margin-left:5px;

@@ -3,6 +3,7 @@
 	<label>Block Quote</label>
 	<tag>blockquote</tag>
 	<settings>
+		<resizable>1</resizable>
 		<template_node_name>blockquote</template_node_name>
 		<create_widget_class>BlockQuoteWidget</create_widget_class>
 	</settings>

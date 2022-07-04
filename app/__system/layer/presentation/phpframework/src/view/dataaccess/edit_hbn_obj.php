@@ -52,7 +52,7 @@ var auto_increment_db_attributes_types = ' . json_encode(DB::getAllColumnAutoInc
 			</div>
 			<ul>
 				<li class="save" data-title="Save Query"><a onClick="saveHibernateObject()"><i class="icon save"></i> Save</a></li>
-				<li class="sub_menu">
+				<li class="sub_menu" onClick="openSubmenu(this)">
 					<i class="icon sub_menu"></i>
 					<ul>
 						<li class="update_automatically" title="Update Automatically"><a onClick="createHibernateObjectAutomatically(this)"><i class="icon update_automatically"></i> Create Automatically</a></li>

@@ -98,11 +98,13 @@ $(function () {
 		}
 		
 		//init code and task flow editor
-		onLoadTaskFlowChartAndCodeEditor();
+		onLoadTaskFlowChartAndCodeEditor({do_not_hide_popup : true});
 		
 		//set saved_obj_id
 		saved_obj_id = getTemplateCodeObjId();
 	}
+	else	//hide loading icon
+		MyFancyPopup.hidePopup();
 });
 
 function getTemplateCodeObjId() {
@@ -143,16 +145,45 @@ function saveTemplate() {
 	
 	prepareAutoSaveVars();
 	
+	var is_from_auto_save_bkp = is_from_auto_save; //backup the is_from_auto_save, bc if there is a concurrent process running at the same time, this other process may change the is_from_auto_save value.
+	
 	if (template_obj[0]) {
-		if (is_from_auto_save && !isTemplateCodeObjChanged()) {
-			resetAutoSave();
-			return;
+		if (!window.is_save_func_running) {
+			window.is_save_func_running = true;
+			
+			if (is_from_auto_save_bkp && !isTemplateCodeObjChanged()) {
+				resetAutoSave();
+				window.is_save_func_running = false;
+				return;
+			}
+			
+			var obj = getTemplateCodeObj();
+			
+			//check if user is logged in
+			//if there was a previous function that tried to execute an ajax request, like the getCodeForSaving method, we detect here if the user needs to login, and if yes, recall the save function again. 
+			//Do not re-call only the ajax request below, otherwise there will be some other files that will not be saved, this is, the getCodeForSaving saves the workflow and if we only call the ajax request below, the workflow won't be saved. To avoid this situation, we call the all save function.
+			if (!is_from_auto_save_bkp && jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL)) {
+				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jquery_native_xhr_object.responseURL, function() {
+					jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+					StatusMessageHandler.removeLastShownMessage("error");
+					
+					window.is_save_func_running = false;
+					saveTemplate();
+				});
+				
+				return;
+			}
+			
+			//call saveObjCode
+			saveObjCode(save_object_url, obj, {
+				complete: function() {
+					window.is_save_func_running = false;
+				},
+			});
 		}
-		
-		var obj = getTemplateCodeObj();
-		
-		saveObjCode(save_object_url, obj);
+		else if (!is_from_auto_save_bkp)
+			StatusMessageHandler.showMessage("There is already a saving process running. Please wait a few seconds and try again...");
 	}
-	else if (!is_from_auto_save)
+	else if (!is_from_auto_save_bkp)
 		alert("No template object to save! Please contact the sysadmin...");
 }

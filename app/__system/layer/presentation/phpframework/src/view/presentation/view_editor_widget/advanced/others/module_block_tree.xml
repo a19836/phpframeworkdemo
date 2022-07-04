@@ -8,9 +8,7 @@
 		<template_class>template-widget-call-module-or-block</template_class>
 	</settings>
 	<menu_widget></menu_widget>
-	<template_widget><![CDATA[
-		<pre></pre>
-	]]></template_widget>
+	<template_widget></template_widget>
 	<menu_css><![CDATA[
 		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-call-tree-module-or-block {
 			display:none !important;
@@ -19,56 +17,40 @@
 	<menu_js><![CDATA[
 		function TemplateCallTreeModuleOrBlockWidget(ui_creator, menu_widget) {
 			var me = this;
-			var obj_php_widget = new PHPWidget(ui_creator, menu_widget);
+			var TemplateCallModuleOrBlockWidgetObj = new TemplateCallModuleOrBlockWidget(ui_creator, menu_widget);
 			
 			me.init = function() {
-				obj_php_widget.init();
+				TemplateCallModuleOrBlockWidgetObj.init();
 				
 				menu_widget.removeAttr("data-on-parse-template-widget-html-func");
 				
 				menu_widget.attr({
-					"data-on-drag-helper-func": ui_creator.obj_var_name + ".menu_widgets_objs['call-tree-module-or-block'].onDragHelper",
-					"data-on-drag-start-func": ui_creator.obj_var_name + ".menu_widgets_objs['call-tree-module-or-block'].onDragStart",
-					"data-on-drag-stop-func": ui_creator.obj_var_name + ".menu_widgets_objs['call-tree-module-or-block'].onDragStop",
 					"data-on-create-template-widget-func": ui_creator.obj_var_name + ".menu_widgets_objs['call-tree-module-or-block'].onCreateTemplateWidget",
+					"data-on-drag-helper-func": ui_creator.obj_var_name + ".menu_widgets_objs['call-tree-module-or-block'].onDragMenuWidgetHelper",
+					"data-on-drag-start-func": ui_creator.obj_var_name + ".menu_widgets_objs['call-tree-module-or-block'].onDragMenuWidgetStart",
+					"data-on-drag-stop-func": ui_creator.obj_var_name + ".menu_widgets_objs['call-tree-module-or-block'].onDropMenuWidget",
 				});
-			};
-			
-			me.onDragHelper = function(li, event, ui_obj) {
-				li = $(li);
 				
-				var label = li.find(" > a > label").text();
-				var helper = $('<div class="dragging_menu_item">' + label + '</div>');
-				helper.css("width", li.css("width"));
+				//get html from menu-widget-call-module-or-block
+				var call_module_or_block_menu_widget = ui_creator.getMenuWidgets().find('.menu-widget-call-module-or-block').first();
 				
-				return helper;
-			};
-			
-			me.onDragStart = function(li, event, ui_obj) {
-				li = $(li);
-				var tree_item_id = li.attr("id");
-				
-				if (!chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer.isNodeSelected(tree_item_id))
-					chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer.selectNode(tree_item_id);
-				
-				li.data("tree-item-id", tree_item_id);
-				li.attr("id", menu_widget.attr("id"));
-			};
-			
-			me.onDragStop = function(li, event, ui_obj) {
-				li = $(li);
-				li.attr("id", li.data("tree-item-id"));
+				if (call_module_or_block_menu_widget[0]) {
+					var html = call_module_or_block_menu_widget.children(".template-widget").html();
+					menu_widget.children(".template-widget").html(html);
+				}
+				else //if not yet initialized, waits 1 sec and try again...
+					setTimeout(function() {
+						var call_module_or_block_menu_widget = ui_creator.getMenuWidgets().find('.menu-widget-call-module-or-block').first();
+						var html = call_module_or_block_menu_widget.children(".template-widget").html();
+						menu_widget.children(".template-widget").html(html);
+					}, 1000);
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
-				var has_html_element = html_element ? true : false;
+				//this method only gets called when the html_element doesn't exists
+				if (!html_element) {
+					TemplateCallModuleOrBlockWidgetObj.prepareCreatedTemplateWidget(widget, html_element);
 				
-				if (!has_html_element)
-					html_element = document.createComment('? ?');
-				
-				obj_php_widget.onCreateTemplateWidget(widget, html_element);
-				
-				if (!has_html_element) {
 					if (typeof chooseCodeLayoutUIEditorModuleBlock == "function" && MyCodeLayoutUIEditorFancyPopup) {
 						if (!MyCodeLayoutUIEditorFancyPopup.settings)
 							MyCodeLayoutUIEditorFancyPopup.settings = {};
@@ -80,6 +62,34 @@
 					else
 						alert("chooseCodeLayoutUIEditorModuleBlock function does not exist! Please only use this widget in the __system/phpframework/src/view/presentation/edit_view.php file");
 				}
+				else
+					alert("[module_block_tree.xml:me.onCreateTemplateWidget] Error: Something weird happened. The call-tree-module-or-block widget can only be called on drag-and-drop from a tree.");
+			};
+			
+			me.onDragMenuWidgetHelper = function(menu_widget, event, ui_obj) {
+				var li = $(menu_widget);
+				
+				var label = li.find(" > a > label").text();
+				var helper = $('<div class="dragging_menu_item">' + label + '</div>');
+				helper.css("width", li.css("width"));
+				
+				return helper;
+			};
+			
+			me.onDragMenuWidgetStart = function(menu_widget, event, ui_obj) {
+				var li = $(menu_widget);
+				var tree_item_id = li.attr("id");
+				
+				if (!chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer.isNodeSelected(tree_item_id))
+					chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer.selectNode(tree_item_id);
+				
+				li.data("tree-item-id", tree_item_id);
+				li.attr("id", tree_item_id);
+			};
+			
+			me.onDropMenuWidget = function(menu_widget, widget, event, ui_obj) {
+				var li = $(menu_widget);
+				li.attr("id", li.data("tree-item-id"));
 			};
 		}
 	]]></menu_js>

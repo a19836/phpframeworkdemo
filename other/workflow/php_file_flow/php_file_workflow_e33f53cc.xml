@@ -5,14 +5,13 @@
 		<id><![CDATA[d1e9c332_98ec2871_793]]></id>
 		<type><![CDATA[d1e9c332]]></type>
 		<tag><![CDATA[return]]></tag>
-		<offset_left>23</offset_left>
+		<offset_left>29</offset_left>
 		<offset_top>25</offset_top>
 		<width>70</width>
 		<height>70</height>
 		<properties>
 			<value><![CDATA[true]]></value>
 			<type></type>
-			<exits></exits>
 		</properties>
 	</task>
 </tasks>
