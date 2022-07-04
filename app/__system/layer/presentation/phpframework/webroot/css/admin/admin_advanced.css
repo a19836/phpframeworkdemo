@@ -862,7 +862,7 @@ body.main_navigator_reverse.left_panel_hidden #hide_panel .button {
 	right:10px;
 	color:var(--left-panel-tree-sub-group-color);
 }
-#left_panel .with_sub_groups > ul > li > ul {
+#left_panel .with_sub_groups > ul > li > ul:not(:empty) {
 	margin-bottom:10px;
 }
 #left_panel .with_sub_groups > ul > li > ul > li {
