@@ -561,7 +561,7 @@ function loadAvailableBlocksList(parent, opts) {
 				dataType : "json",
 				success : function(data, textStatus, jqXHR) {
 					//set new data
-					available_blocks_list = data;
+					available_blocks_list = data ? data : {};
 					loadAvailableBlocksListOptionsHtml();
 					
 					//clear timeout, otherwise it will execute loadAvailableBlocksListInRegionsBlocks twice 
@@ -573,12 +573,12 @@ function loadAvailableBlocksList(parent, opts) {
 					available_blocks_list_loading = false;
 					
 					//execute loadAvailableBlocksListInRegionsBlocks
-					if (data && $.isPlainObject(data)) {
+					//if (data && $.isPlainObject(data)) {
 						loadAvailableBlocksListInRegionsBlocks(parent, opts);
 						
 						if (opts && typeof opts["on_get_available_blocks_handler"] == "function")
 							opts["on_get_available_blocks_handler"](data);
-					}
+					//}
 					
 					//2020-04-28: DO NOT SHOW ANY ERROR BC IF IT IS A NEW AND ONLY PROJECT, THERE WILL NOT BE ANY BLOCKS CREATED. SO THIS WILL BE EMPTY.
 					//else StatusMessageHandler.showMessage("Error trying to get the available blocks list. Please refresh the page to try again.");
