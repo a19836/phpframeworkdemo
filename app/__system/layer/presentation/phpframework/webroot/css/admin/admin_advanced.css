@@ -188,7 +188,7 @@ body.main_navigator_reverse.left_panel_hidden #right_panel {
 #top_panel li.separator {
 	margin:0 5px;
 	cursor:default;
-	opacity:.2;
+	opacity:.5;
 	font-style:normal;
 	vertical-align:middle;
 }

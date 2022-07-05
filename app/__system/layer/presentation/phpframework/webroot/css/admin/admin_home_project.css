@@ -241,9 +241,9 @@ body,
 	margin-top:60px;
 }
 .admin_panel .project_files .mytree.block_view > li > ul > li.default_template {
-	outline:1px solid var(--icon-active-color, #4070FF);
+	/*outline:1px solid var(--icon-active-color, #4070FF);
 	outline-offset:-1px;
-	border-radius:3px;
+	border-radius:3px;*/
 }
 .admin_panel .project_files .mytree > li > ul > li.default_template::before {
 	content:"Default template";
@@ -254,6 +254,7 @@ body,
 	bottom:-22px;
 	text-align:center;
 	font-size:8px;
+	opacity:.7;
 }
 .admin_panel .project_files .mytree.list_view > li > ul > li.default_template::before {
 	left:auto;
@@ -340,6 +341,9 @@ body,
 	font-size:inherit;
 	margin:0;
 }
+.admin_panel .project_files .mytree > li > ul > li.default_template > a.jstree-anchor > i::before {
+	color:var(--icon-active-color, #4070FF);
+}
 .admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor > i.template_file::before {
 	content:"\f815";
 	font:var(--fa-font-solid);
@@ -364,6 +368,9 @@ body,
 	font-size:15px;
 	margin-top:-15px;
 }
+.admin_panel .project_files .mytree > li > ul > li.default_template > a.jstree-anchor > i::after {
+	color:var(--icon-active-color, #4070FF);
+}
 .admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor > i:not(:empty)::before,
   .admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor > i:not(:empty)::after {
 	display:none;
@@ -385,6 +392,9 @@ body,
 }
 .admin_panel .project_files .mytree.list_view > li > ul > li > a.jstree-anchor > label {
 	cursor:pointer;
+}
+.admin_panel .project_files .mytree > li > ul > li.default_template > a.jstree-anchor > label {
+	color:var(--icon-active-color, #4070FF);
 }
 /*.admin_panel .project_files .mytree > li > ul > li[data-jstree='{"icon":"template_file"}'] > a.jstree-anchor > i:not(:empty) + label {
 	background:rgba(0, 0, 0, .8);

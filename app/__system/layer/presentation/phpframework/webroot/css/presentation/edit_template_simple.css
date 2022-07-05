@@ -101,6 +101,10 @@
 	opacity:1;
 }*/
 
+.template_obj .regions_blocks_includes_settings .content_settings,
+  .template_obj .regions_blocks_includes_settings .design_settings {
+	padding:0;
+}
 .template_obj .regions_blocks_includes_settings .design_settings > div {
 	margin:10px 0;
 }

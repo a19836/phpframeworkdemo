@@ -155,9 +155,9 @@ body,
 	opacity:.5;
 }
 .choose_available_project li.project.selected_project {
-	outline:1px solid var(--icon-active-color, #4070FF);
+	/*outline:1px solid var(--icon-active-color, #4070FF);
 	outline-offset:1px;
-	border-radius:3px;
+	border-radius:3px;*/
 }
 .choose_available_project .group.list_view li.project.selected_project {
 	outline:0;
@@ -172,6 +172,7 @@ body,
 	bottom:-20px;
 	text-align:center;
 	font-size:10px;
+	opacity:.7;
 }
 .choose_available_project .group.list_view li.project.selected_project::before {
 	left:auto;
@@ -209,6 +210,9 @@ body,
 	font-size:10px;
 	cursor:pointer;
 	color:#585B69;
+}
+.choose_available_project .group li.selected_project > label {
+	color:var(--icon-active-color, #4070FF);
 }
 .choose_available_project .group.block_view li > label {
 	display:block;
@@ -273,6 +277,9 @@ body,
 }
 .choose_available_project li.project > .photo {
 	cursor:pointer;
+}
+.choose_available_project .group li.default_template > .photo::before {
+	color:var(--icon-active-color, #4070FF);
 }
 .choose_available_project li.project > .photo::before {
 	text-rendering:auto;

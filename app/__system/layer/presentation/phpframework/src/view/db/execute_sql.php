@@ -1,23 +1,4 @@
 <?php
-/*
- * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
- * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
- * 
- * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
- * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
 $head = '
 <!-- Add ACE editor -->
 <script src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ace.js"></script>
@@ -38,7 +19,9 @@ $head = '
 
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/db/execute_sql.css" charset="utf-8" />
-<script src="' . $project_url_prefix . 'js/db/execute_sql.js"></script>'; $main_content .= '
+<script src="' . $project_url_prefix . 'js/db/execute_sql.js"></script>';
+
+$main_content .= '
 	<div class="top_bar">
 		<header>
 			<div class="title">Execute SQL in DB: \'' . $bean_name . '\'</div>
@@ -52,11 +35,50 @@ $head = '
 		<textarea>' . "\n" . htmlspecialchars($sql, ENT_NOQUOTES) . '</textarea>
 	</div>
 	<div class="sql_results">
-		<table class="display compact">'; $fields = $results["fields"]; $rows = $results["result"]; if ($fields) { $main_content .= '<thead><tr>'; $t = count($fields); for ($i = 0; $i < $t; $i++) { $name = $fields[$i]->name; $main_content .= '<th class="table_header">' . $name . '</th>'; } $main_content .= '</tr></thead>'; } $main_content .= '<tbody>'; if ($_POST) { if (!$is_select_sql) $main_content .= '<tr><td class="empty" colspan="' . ($fields ? count($fields) : 0) . '">' . ($results ? "SQL executed successfully" : "SQL executed unsuccessfully") . '</tr>'; else if (!$results || !is_array($rows) || empty($rows)) $main_content .= '<tr><td class="empty" colspan="' . ($fields ? count($fields) : 0) . '">Empty results...</tr>'; else { $t = count($rows); for ($i = 0; $i < $t; $i++) { $row = $rows[$i]; $main_content .= '<tr>'; foreach ($row as $column_name => $column_value) $main_content .= '<td>' . $column_value . '</td>'; $main_content .= '</tr>'; } } } else $main_content .= '<tr><td class="empty">Click in the "EXECUTE SQL" button to execute the query and show its results...</tr>'; $main_content .= '</tbody>
+		<table class="display compact">';
+
+$fields = $results["fields"];
+$rows = $results["result"];
+
+if ($fields) {
+	$main_content .= '<thead><tr>';
+	$t = count($fields);
+	for ($i = 0; $i < $t; $i++) {
+		$name = $fields[$i]->name;
+	
+		$main_content .= '<th class="table_header">' . $name . '</th>';
+	}
+	$main_content .= '</tr></thead>';
+}
+$main_content .= '<tbody>';
+
+if ($_POST) {
+	if (!$is_select_sql)
+		$main_content .= '<tr><td class="empty" colspan="' . ($fields ? count($fields) : 0) . '">' . ($results ? "SQL executed successfully" : "SQL executed unsuccessfully") . '</tr>';
+	else if (!$results || !is_array($rows) || empty($rows))
+		$main_content .= '<tr><td class="empty" colspan="' . ($fields ? count($fields) : 0) . '">Empty results...</tr>';
+	else {
+		$t = count($rows);
+		for ($i = 0; $i < $t; $i++) {
+			$row = $rows[$i];
+			
+			$main_content .= '<tr>';
+			foreach ($row as $column_name => $column_value)
+				$main_content .= '<td>' . $column_value . '</td>';
+			
+			$main_content .= '</tr>';
+		}
+	}
+}
+else
+	$main_content .= '<tr><td class="empty">Click in the button above to execute the query and show its results...</tr>';
+	
+$main_content .= '</tbody>
 		</table>
 	</div>
 	
 	<script>
 		createSQLEditor();
 	</script>
-'; ?>
+';
+?>
