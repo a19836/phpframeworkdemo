@@ -620,7 +620,7 @@
   .taskflowchart.with_top_bar_menu.fixed_side_properties > .selected_connection_properties.maximize_properties:not(.collapsed_properties) {
 	top:0 !important;
 }
-.taskflowchart.with_top_bar_menu.fixed_xproperties > .selected_task_properties.collapsed_properties,
+.taskflowchart.with_top_bar_menu.fixed_properties > .selected_task_properties.collapsed_properties,
   .taskflowchart.with_top_bar_menu.fixed_properties > .selected_connection_properties.collapsed_properties,
   .taskflowchart.with_top_bar_menu.fixed_side_properties > .selected_task_properties.collapsed_properties,
   .taskflowchart.with_top_bar_menu.fixed_side_properties > .selected_connection_properties.collapsed_properties {
@@ -1255,7 +1255,7 @@ body .layout-ui-editor {
 	--template-widgets-droppable-bg:#fff;
 	
 	/* menu-settings */
-	--menu-settings-bg:#fff;
+	--menu-settings-bg:var(--main-settings-bg);
 	
 	--menu-settings-resize-bg:#666;
 	
@@ -1294,8 +1294,8 @@ body .layout-ui-editor {
 	--menu-settings-color-style-color-code-bg:transparent;
 	--menu-settings-color-style-color-code-border:transparent;
 	
-	--menu-settings-info-border:#eee;
-	--menu-settings-info-bg:#eee;
+	--menu-settings-info-border:var(--main-settings-bg);
+	--menu-settings-info-bg:var(--main-settings-bg);
 	
 	/* widget-header */
 	--widget-header-border:transparent;
@@ -1576,6 +1576,29 @@ body .layout-ui-editor > .menu-widgets .group.group-open > .group-title .toggle:
 }
 
 /* LAYOUT CODE EDITOR - SETTINGS */
+body .layout-ui-editor.fixed-properties > .menu-settings,
+  body .layout-ui-editor.fixed-side-properties > .menu-settings {
+	max-height:calc(100vh - 50px); /* bc of the top bar */
+	color:var(--main-settings-color);
+	border-top:0;
+}
+body .layout-ui-editor.fixed-properties > .menu-settings.full-screen {
+	top:50px !important;
+}
+body .layout-ui-editor.fixed-properties > .menu-settings > .settings-info,
+  body .layout-ui-editor.fixed-side-properties > .menu-settings > .settings-info {
+	border-top:0;
+	border-bottom:1px solid var(--main-settings-header-border);
+	color:var(--main-settings-color);
+}
+body .layout-ui-editor.fixed-properties > .menu-settings > .settings-info {
+	padding-left:15px;
+}
+body .layout-ui-editor.fixed-properties > .menu-settings > .group {
+	margin-left:10px;
+	margin-right:10px;
+	position:relative;
+}
 body .layout-ui-editor.fixed-properties > .menu-settings li,
   body .layout-ui-editor.fixed-side-properties > .menu-settings li {
 	font-size:8pt;
@@ -1677,6 +1700,9 @@ body .layout-ui-editor.fixed-properties > .menu-settings > .resize-menu-settings
 }
 
 /* LAYOUT CODE EDITOR - TEXT SELECTION MENU */
+body .layout-ui-editor .text-selection-menu {
+	padding-left:10px;
+}
 .layout-ui-editor .text-selection-menu .text-selection-item.toggle-menu,
   .layout-ui-editor .text-selection-menu .text-selection-item.close-menu {
 	top:7px !important;

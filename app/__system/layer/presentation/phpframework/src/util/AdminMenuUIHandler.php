@@ -482,7 +482,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="presentation_project_context_menu" class="jqcontextmenu">
-	<li class="edit"><a onClick="return goToPopup(this, \'edit_url\', event, \'with_iframe_title edit_project_details_popup\', refreshLastNodeParentChildsIfNotTreeLayoutAndMainTreeNode)">Edit Project Details</a></li>
+	<li class="edit"><a onClick="return goToPopup(this, \'edit_url\', event, \'with_iframe_title edit_project_details_popup\', onSucccessfullEditProject)">Edit Project Details</a></li>
 	<li class="rename"><a onClick="return manageFile(this, \'rename_url\', \'rename\', renameProject)">Rename</a></li>
 	<li class="remove"><a onClick="return manageFile(this, \'remove_url\', \'remove\', managePresentationFile)">Remove</a></li>
 	<li class="download"><a onClick="return goToNew(this, \'download_url\', event)">Download Folder</a></li>

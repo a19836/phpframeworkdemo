@@ -18,17 +18,26 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); $add_project_url = $project_url_prefix . "phpframework/presentation/manage_file?bean_name=#bean_name#&bean_file_name=#bean_file_name#&action=create_folder&item_type=presentation&extra=#extra#&path=&folder_type=project"; $choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#"; $get_file_properties_url = $project_url_prefix . "phpframework/admin/get_file_properties?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&class_name=#class_name#&type=#type#"; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
+include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); $manage_project_url = $project_url_prefix . "phpframework/presentation/manage_file?bean_name=#bean_name#&bean_file_name=#bean_file_name#&action=#action#&item_type=presentation&extra=#extra#&path=#path#&folder_type=project"; $choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#"; $get_file_properties_url = $project_url_prefix . "phpframework/admin/get_file_properties?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&class_name=#class_name#&type=#type#"; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add PHP CODE CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/edit_php_code.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_php_code.js"></script>
+
+<!-- Add ADMIN MENU JS -->
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_menu.js"></script>
 
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/edit_project_details.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/edit_project_details.js"></script>
 '; $head .= '<script>'; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= '
-var add_project_url = \'' . $add_project_url . '\';
-</script>'; $main_content = ''; if ($_POST) { if (!$status) { $error_message = $error_message ? $error_message : "There was an error trying to create project. Please try again..."; } else { $status_message = 'Project successfully created!'; $on_success_js_func = $on_success_js_func ? $on_success_js_func : "refreshLastNodeParentChilds"; $main_content .= "<script>if (typeof window.parent.$on_success_js_func == 'function') window.parent.$on_success_js_func();</script>"; } } $main_content .= '
+var manage_project_url = \'' . $manage_project_url . '\';
+</script>'; $main_content = ''; if ($_POST) { if (!$status) { $error_message = $error_message ? $error_message : "There was an error trying to " . ($is_rename_project ? "rename" : "create") . " project. Please try again..."; } else { $status_message = "Project successfully " . ($is_rename_project ? "renamed" : "created") . "!"; $on_success_js_func_opts = null; if ($on_success_js_func) { $file_by_layout_prefix = WorkFlowBeansFileHandler::getLayerObjFolderName( $PEVC->getPresentationLayer() ); $old_filter_by_layout = "$file_by_layout_prefix/" . (trim($_POST["old_project_folder"]) ? trim($_POST["old_project_folder"]) . "/" : "") . trim($_POST["old_name"]); $old_filter_by_layout = preg_replace("/[\/]+/", "/", $old_filter_by_layout); $old_filter_by_layout = preg_replace("/[\/]+$/", "", $old_filter_by_layout); $new_filter_by_layout = "$file_by_layout_prefix/$path"; $on_success_js_func_opts = array( "is_rename_project" => $is_rename_project, "layer_bean_folder_name" => $file_by_layout_prefix, "old_filter_by_layout" => $old_filter_by_layout, "new_filter_by_layout" => $new_filter_by_layout, ); } $on_success_js_func = $on_success_js_func ? $on_success_js_func : "refreshLastNodeParentChilds"; $on_success_js_func_opts = $on_success_js_func_opts ? json_encode($on_success_js_func_opts) : ""; $main_content .= "
+		<script>
+			if (typeof window.parent.$on_success_js_func == 'function') 
+				window.parent.$on_success_js_func($on_success_js_func_opts);
+			else if (typeof window.parent.parent.$on_success_js_func == 'function') //could be inside of the admin_home_project.php which is inside of the admin_advanced.php
+				window.parent.parent.$on_success_js_func($on_success_js_func_opts);
+		</script>"; } } $main_content .= '
 <div class="top_bar' . ($popup ? " in_popup" : "") . '">
 	<header>
 		<div class="title">' . ($is_existent_project ? 'Edit' : 'Create') . ' Project</div>

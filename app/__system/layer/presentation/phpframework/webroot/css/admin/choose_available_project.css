@@ -278,7 +278,7 @@ body,
 .choose_available_project li.project > .photo {
 	cursor:pointer;
 }
-.choose_available_project .group li.default_template > .photo::before {
+.choose_available_project .group li.selected_project > .photo::before {
 	color:var(--icon-active-color, #4070FF);
 }
 .choose_available_project li.project > .photo::before {

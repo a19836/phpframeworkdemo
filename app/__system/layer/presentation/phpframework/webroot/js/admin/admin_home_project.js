@@ -336,9 +336,20 @@ function editProject() {
 	MyFancyPopup.showPopup();
 }
 
-function onSucccessfullEditProject() {
+function onSucccessfullEditProject(opts) {
 	var url = "" + document.location;
 	url = url.indexOf("#") != -1 ? url.substr(0, url.indexOf("#")) : url; //remove # so it can refresh page
+	url = url.replace(/[&]+/g, "&");
+	
+	if (opts && opts["is_rename_project"]) {
+		url = url.replace(/(&|\?)filter_by_layout\s*=\s*([^&#]*)/, "");
+		url += (url.indexOf("?") != -1 ? "&" : "?") + "filter_by_layout=" + opts["new_filter_by_layout"];
+		
+		if (window.parent && typeof window.parent.onSucccessfullEditProject == "function") { //if admin_advanced or other admin main page
+			window.parent.onSucccessfullEditProject(opts);
+			return; //avoids executing the code below.
+		}
+	}
 	
 	document.location = url;
 }

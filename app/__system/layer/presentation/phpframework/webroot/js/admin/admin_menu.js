@@ -739,14 +739,45 @@ function goToPopup(a, attr_name, originalEvent, popup_class_name, on_success_pop
 	return false;
 }
 
-function onSuccessfullPopupAction() {
+function onSuccessfullPopupAction(opts) {
 	if (MyFancyPopup.settings && typeof MyFancyPopup.settings.on_success_popup_action_handler == "function")
-		MyFancyPopup.settings.on_success_popup_action_handler();
+		MyFancyPopup.settings.on_success_popup_action_handler(opts);
 	
 	MyFancyPopup.hidePopup();
 }
 
-function refreshLastNodeParentChildsIfNotTreeLayoutAndMainTreeNode() {
+function onSucccessfullEditProject(opts) {
+	if (opts && opts["is_rename_project"]) {
+		var url = "" + document.location;
+		url = url.indexOf("#") != -1 ? url.substr(0, url.indexOf("#")) : url; //remove # so it can refresh page
+		
+		if (url.match(/(&|\?)filter_by_layout\s*=([^&#]+)/)) { //check if parent url has any filter_by_layout
+			url = url.replace(/(&|\?)filter_by_layout\s*=\s*([^&#]*)/, "");
+			
+			if (opts["new_filter_by_layout"])
+				url += (url.indexOf("?") != -1 ? "&" : "?") + "filter_by_layout=" + opts["new_filter_by_layout"];
+		}
+		
+		//get default_page url and check if contains filter_by_layout in the url and if so, replace it with new project name
+		var default_page = MyJSLib.CookieHandler.getCookie('default_page');
+		
+		if (default_page && opts["new_filter_by_layout"]) {
+			if (default_page.match(/(&|\?)filter_by_layout\s*=([^&#]+)/)) { //check if default_page url has any filter_by_layout
+				default_page = default_page.replace(/(&|\?)filter_by_layout\s*=\s*([^&#]*)/, "");
+				default_page += (default_page.indexOf("?") != -1 ? "&" : "?") + "filter_by_layout=" + opts["new_filter_by_layout"];
+			}
+			
+			//set cookie with default page
+			MyJSLib.CookieHandler.setCookie('default_page', default_page, 0, "/"); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+		}
+		
+		document.location = url;
+	}
+	else
+		refreshLastNodeParentChildsIfNotTreeLayoutAndMainTreeNode(opts);
+}
+
+function refreshLastNodeParentChildsIfNotTreeLayoutAndMainTreeNode(opts) {
 	var pid = getLastNodeParentId();
 	
 	if (pid && $("#left_panel").is(".left_panel_with_tabs") && $("#left_panel .mytree #" + pid).is(".hide_tree_item"))
@@ -849,25 +880,8 @@ function manageFile(a, attr_name, action, on_success_callbacks) {
 				new_file_name = ("" + new_file_name).replace(/^\s+/g, "").replace(/\s+$/g, ""); //trim name
 				
 				//normalize new file name
-				if (new_file_name) {
-					var allow_upper_case = a.getAttribute("allow_upper_case") == 1; //in case of businesslogic services class
-					var has_accents = new_file_name.match(/([\x7f-\xff\u1EBD\u1EBC]+)/gi);
-					var has_spaces = new_file_name.match(/\s+/g);
-					var has_upper_case = !allow_upper_case && new_file_name.toLowerCase() != new_file_name;
-					//var has_weird_chars = new_file_name.match(/([\p{L}\w\.]+)/giu).join("") != new_file_name; // \. is very important bc the new_file_name is the complete filename with the extension. \p{L} and /../u is to get parameters with accents and ç. Already includes the a-z. Cannot use this bc it does not work in IE.
-					var has_weird_chars = new_file_name.match(/([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC\.]+)/gi);
-					has_weird_chars = has_weird_chars && has_weird_chars.join("") != new_file_name; // \. is very important bc the new_file_name is the complete filename with the extension. '\w' means all words with '_' and 'u' means with accents and ç too.
-					
-					if ((has_accents || has_spaces || has_upper_case || has_weird_chars) && confirm("Is NOT advisable to have file names with spaces, dashes, letters with accents, upper case letters or weird characters.\nYou should only use the following letters: A-Z, 0-9 and '_'.\nCan I normalize this name and convert it to a proper name?")) {
-						if (typeof new_file_name.normalize == "function") //This doesn't work in IE11
-							new_file_name = new_file_name.normalize("NFD");
-						
-						new_file_name = new_file_name.replace(/[\u0300-\u036f]/g, "").replace(/[\s\-]+/g, "_").match(/[\w\.]+/g).join(""); // \. is very important bc the new_file_name is the complete filename with the extension.
-						
-						if (!allow_upper_case)
-							new_file_name = new_file_name.toLowerCase();
-					}
-				}
+				var allow_upper_case = a.getAttribute("allow_upper_case") == 1; //in case of businesslogic services class
+				new_file_name = normalizeFileName(new_file_name, allow_upper_case);
 			}
 			
 			if (is_file_new_name_action && !new_file_name)
@@ -929,8 +943,74 @@ function manageFile(a, attr_name, action, on_success_callbacks) {
 	return false;
 }
 
+function normalizeFileName(new_file_name, allow_upper_case) {
+	//normalize new file name
+	if (new_file_name) {
+		var has_accents = new_file_name.match(/([\x7f-\xff\u1EBD\u1EBC]+)/gi);
+		var has_spaces = new_file_name.match(/\s+/g);
+		var has_upper_case = !allow_upper_case && new_file_name.toLowerCase() != new_file_name;
+		//var has_weird_chars = new_file_name.match(/([\p{L}\w\.]+)/giu).join("") != new_file_name; // \. is very important bc the new_file_name is the complete filename with the extension. \p{L} and /../u is to get parameters with accents and ç. Already includes the a-z. Cannot use this bc it does not work in IE.
+		var has_weird_chars = new_file_name.match(/([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC\.]+)/gi);
+		has_weird_chars = has_weird_chars && has_weird_chars.join("") != new_file_name; // \. is very important bc the new_file_name is the complete filename with the extension. '\w' means all words with '_' and 'u' means with accents and ç too.
+		
+		if ((has_accents || has_spaces || has_upper_case || has_weird_chars) && confirm("Is NOT advisable to have file names with spaces, dashes, letters with accents, upper case letters or weird characters.\nYou should only use the following letters: A-Z, 0-9 and '_'.\nCan I normalize this name and convert it to a proper name?")) {
+			if (typeof new_file_name.normalize == "function") //This doesn't work in IE11
+				new_file_name = new_file_name.normalize("NFD");
+			
+			new_file_name = new_file_name.replace(/[\u0300-\u036f]/g, "").replace(/[\s\-]+/g, "_").match(/[\w\.]+/g).join(""); // \. is very important bc the new_file_name is the complete filename with the extension.
+			
+			if (!allow_upper_case)
+				new_file_name = new_file_name.toLowerCase();
+		}
+	}
+	
+	return new_file_name;
+}
+
 function renameProject(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated) {
-	StatusMessageHandler.showMessage("Please don't forget to go to the permissions panel and update the correspondent permissions...");
+	alert("Please don't forget to go to the permissions panel and update the correspondent permissions..."); //Do not use StatusMessageHandler.showMessage bc the onSucccessfullEditProject will refresh the main page
+	
+	//refresh page and replace old project in url 
+	var opts = {
+		is_rename_project: true,
+		layer_bean_folder_name: null,
+		old_filter_by_layout: null,
+		new_filter_by_layout: null,
+	};
+	
+	var bean_name = getParameterByName(url, "bean_name");
+	var bean_file_name = getParameterByName(url, "bean_file_name");
+	var file_path = getParameterByName(url, "path");
+	file_path = file_path ? file_path.replace(/\/$/g, "") : ""; //remove last /
+	
+	var file_name = file_path;
+	var folder_path = "";
+	
+	if (file_path.lastIndexOf("/") != -1) {
+		file_name = file_path.substr(file_path.lastIndexOf("/") + 1);
+		folder_path = file_path.substr(0, file_path.lastIndexOf("/") + 1);
+	}
+	
+	var new_file_path = folder_path + new_file_name;
+	
+	if (main_layers_properties)
+		for (var bn in main_layers_properties) {
+			var layer_props = main_layers_properties[bn];
+			
+			if (layer_props["bean_name"] == bean_name && layer_props["bean_file_name"] == bean_file_name) {
+				var layer_bean_folder_name = layer_props["layer_bean_folder_name"];
+				
+				layer_bean_folder_name = layer_bean_folder_name.replace(/\/+/g, "/").replace(/^\//g, "").replace(/\/$/g, ""); //remove duplicated slashes and at the begin and at the end.
+				
+				opts["layer_bean_folder_name"] = layer_bean_folder_name;
+				opts["old_filter_by_layout"] = layer_bean_folder_name + "/" + file_path;
+				opts["new_filter_by_layout"] = layer_bean_folder_name + "/" + new_file_path;
+				break;
+			}
+		}
+	
+	//console.log(opts);
+	onSucccessfullEditProject(opts);
 }
 
 function triggerFileNodeAfterCreateFile(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated) {
@@ -1194,7 +1274,8 @@ function flushCacheFromAdmin(url) {
 
 function getParameterByName(url, name) {
 	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-	var results = ("" + url).match(/[\?&]path=([^&#]*)/i);
+	var regex = new RegExp("[\\?&]" + name + "=([^&#]*)", "i");
+	var results = ("" + url).match(regex);
 	
 	if (results === null || !results[1])
 		return "";

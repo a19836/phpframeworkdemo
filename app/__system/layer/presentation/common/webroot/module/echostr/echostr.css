@@ -66,5 +66,5 @@ body > .cke_screen_reader_only { /* cke editor creates this automatically */
   .echostr_settings .layout-ui-editor > .template-widgets,
   .echostr_settings .layout-ui-editor > .resize-panels,
   .echostr_settings .layout-ui-editor > .messages {
-	bottom:0;
+	bottom:0 !important;
 }

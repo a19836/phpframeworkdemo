@@ -89,22 +89,23 @@ function addProject(oForm) {
 	oForm = $(oForm);
 	var btn = oForm.find(".buttons input");
 	var icon = $(".top_bar header li.save > a");
+	
+	if (btn.hasClass("loading")) {
+		StatusMessageHandler.showMessage("Another saving action is already running. Please wait until it finishes...");
+		return false;
+	}
+	
 	btn.addClass("loading");
 	icon.addClass("loading");
 	
-	if (oForm.attr("project_created") == "1") {
-		setTimeout(function() {
-			btn.removeClass("loading");
-			icon.removeClass("loading");
-		}, 1000);
-		
-		return true;
-	}
-	
+	var is_project_created = oForm.attr("project_created") == "1";
 	var project_name = oForm.find(".name input[name=name]").val();
 	project_name = project_name ? ("" + project_name).replace(/^\s+/g, "").replace(/\s+$/g, "") : "";
 	
 	if (project_name) {
+		project_name = normalizeFileName(project_name, false);
+		oForm.find(".name input[name=name]").val(project_name);
+		
 		MyFancyPopup.showOverlay();
 		MyFancyPopup.showLoading();
 		
@@ -112,8 +113,27 @@ function addProject(oForm) {
 		var option = oForm.find(".layer select option:selected").first();
 		var bean_name = option.attr("bean_name");
 		var bean_file_name = option.attr("bean_file_name");
+		var old_project_name = oForm.find(".name input[name=old_name]").val();
+		var rename_project = is_project_created && old_project_name != project_name;
+		var action = rename_project ? "rename" : "create_folder";
+		var path = "";
 		var extra = (project_folder ? project_folder + "/" : "") + project_name;
-		var url = add_project_url.replace("#extra#", extra).replace("#bean_name#", bean_name).replace("#bean_file_name#", bean_file_name);
+		
+		if (rename_project) {
+			path = (project_folder ? project_folder + "/" : "") + old_project_name;
+			extra = project_name;
+		}
+		
+		var url = manage_project_url.replace("#action#", action).replace("#path#", path).replace("#bean_name#", bean_name).replace("#bean_file_name#", bean_file_name).replace("#extra#", extra);
+		
+		if (is_project_created && !rename_project) {
+			setTimeout(function() {
+				btn.removeClass("loading");
+				icon.removeClass("loading");
+			}, 1000);
+			
+			return true;
+		}
 		
 		$.ajax({
 			type : "get",
@@ -121,16 +141,11 @@ function addProject(oForm) {
 			dataType : "text",
 			success : function(data, textStatus, jqXHR) {
 				if (data == "1") {
-					oForm.attr("project_created", 1);
+					oForm.attr("onSubmit", "");
 					oForm.submit();
 				}
 				else
-					StatusMessageHandler.showError("Error: Project not created! Please try again." + (data ? "\n" + data : ""));
-				
-				setTimeout(function() {
-					btn.removeClass("loading");
-					icon.removeClass("loading");
-				}, 1000);
+					StatusMessageHandler.showError("Error: Project not " + (action == "create_folder" ? "created" : "renamed") + "! Please try again." + (data ? "\n" + data : ""));
 			},
 			error : function(jqXHR, textStatus, errorThrown) { 
 				if (jqXHR.responseText);
@@ -138,6 +153,11 @@ function addProject(oForm) {
 			}
 		}).always(function() {
 			MyFancyPopup.hidePopup();
+			
+			setTimeout(function() {
+				btn.removeClass("loading");
+				icon.removeClass("loading");
+			}, 1000);
 		});
 	}
 	else {

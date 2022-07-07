@@ -196,7 +196,7 @@
   .settings .ptl .layout-ui-editor > .template-widgets,
   .settings .ptl .layout-ui-editor > .resize-panels,
   .settings .ptl .layout-ui-editor > .messages {
-	bottom:0;
+	bottom:0 !important;
 }
 .settings .ptl .layout-ui-editor .tabs .tab.view-page {
 	opacity:.4;

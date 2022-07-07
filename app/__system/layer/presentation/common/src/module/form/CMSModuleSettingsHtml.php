@@ -57,6 +57,7 @@ if ($PEVC) {
 	$hibernate_brokers = $layer_brokers_settings["hibernate_brokers"];
 	$hibernate_brokers_obj = $layer_brokers_settings["hibernate_brokers_obj"];
 	
+	$db_brokers = $layer_brokers_settings["db_brokers"];
 	$db_brokers_obj = $layer_brokers_settings["db_brokers_obj"];
 	
 	$brokers_settings = array(
@@ -304,7 +305,7 @@ if ($PEVC) {
 	$js_head .= WorkFlowPresentationHandler::getBusinessLogicBrokersHtml($business_logic_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url);
 	$js_head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url);
 	$js_head .= WorkFlowPresentationHandler::getDataAccessBrokersHtml($data_access_brokers, $choose_bean_layer_files_from_file_manager_url);
-
+	
 	//prepare available activities and user types
 	$available_user_types = CMSPresentationUIAutomaticFilesHandler::getAvailableUserTypes($PEVC);
 	$available_activities = CMSPresentationUIAutomaticFilesHandler::getAvailableActivities($PEVC);

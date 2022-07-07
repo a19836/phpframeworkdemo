@@ -72,6 +72,17 @@
   .template_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .options-right .option.full-screen {
 	display:none !important;
 }
+.template_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.fixed-properties.menu-settings-shown > .menu-settings {
+	margin-bottom:35px;
+}
+.template_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.fixed-properties.menu-settings-shown > .template-widgets,
+  .template_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.fixed-properties.menu-settings-shown > .menu-widgets, 
+  .template_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.fixed-properties.menu-settings-shown > .menu-layers,
+  .template_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.fixed-properties.menu-settings-shown > .template-widgets-options,
+  .template_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.fixed-properties.menu-settings-shown > .resize-panels,
+  .template_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.fixed-properties.menu-settings-shown > .layout_ui_editor_right_container {
+	margin-bottom:5px;
+}
 .template_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.fixed-side-properties.menu-settings-shown > .template-widgets,
   .template_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.fixed-side-properties.menu-settings-shown > .menu-widgets, 
   .template_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.fixed-side-properties.menu-settings-shown > .menu-layers,

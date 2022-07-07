@@ -622,12 +622,11 @@ function filterByLayout(elm) {
 		var url = ("" + document.location);
 		url = url.replace(/(&?)(filter_by_layout|default_page)=[^&]*/g, "");
 		url += (url.indexOf("?") != -1 ? "&" : "?") + "filter_by_layout=" + proj_id;
+		url = url.replace(/[&]+/g, "&");
 		
 		//Note that if proj_id is empty, it means that the "ALL PROJECTS" was selected, and in this case we should show not set any default_page, bc it should open the previous opened page.
 		if (proj_id)
 			MyJSLib.CookieHandler.setCookie('default_page', selected_admin_home_project_page_url, 0, "/"); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
-		
-		url = url.replace(/[&]+/g, "&");
 		
 		document.location = url;
 	}

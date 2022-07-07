@@ -2,45 +2,45 @@
 <tasks>
 	<container>
 		<id><![CDATA[layer_presentations]]></id>
-		<width>895</width>
+		<width>594</width>
 		<height>150</height>
 		<left>1</left>
-		<top>-3</top>
+		<top>-1</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_bls]]></id>
-		<width>895</width>
+		<width>594</width>
 		<height>150</height>
 		<left>1</left>
-		<top>147</top>
+		<top>149</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dals]]></id>
-		<width>895</width>
+		<width>594</width>
 		<height>150</height>
 		<left>1</left>
-		<top>296</top>
+		<top>297</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dbs]]></id>
-		<width>895</width>
+		<width>594</width>
 		<height>150</height>
 		<left>1</left>
-		<top>446</top>
+		<top>447</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_drivers]]></id>
-		<width>895</width>
+		<width>594</width>
 		<height>152</height>
 		<left>1</left>
-		<top>596</top>
+		<top>597</top>
 	</container>
 	<task>
 		<label><![CDATA[mysql]]></label>
 		<id><![CDATA[task_f99a69c9_955_363549480]]></id>
 		<type><![CDATA[f99a69c9]]></type>
 		<tag><![CDATA[dbdriver]]></tag>
-		<offset_left>283</offset_left>
+		<offset_left>282</offset_left>
 		<offset_top>639</offset_top>
 		<width>90.4</width>
 		<height>60.4</height>
@@ -67,7 +67,7 @@
 		<id><![CDATA[task_14b5bd7e_523]]></id>
 		<type><![CDATA[14b5bd7e]]></type>
 		<tag><![CDATA[db]]></tag>
-		<offset_left>283</offset_left>
+		<offset_left>282</offset_left>
 		<offset_top>481</offset_top>
 		<width>90.4</width>
 		<height>60.4</height>
@@ -96,7 +96,7 @@
 		<id><![CDATA[task_c9c0af26_1042]]></id>
 		<type><![CDATA[c9c0af26]]></type>
 		<tag><![CDATA[dataaccess]]></tag>
-		<offset_left>124</offset_left>
+		<offset_left>123</offset_left>
 		<offset_top>325</offset_top>
 		<width>90.4</width>
 		<height>60.4</height>
@@ -131,7 +131,7 @@
 		<id><![CDATA[task_c9c0af26_11]]></id>
 		<type><![CDATA[c9c0af26]]></type>
 		<tag><![CDATA[dataaccess]]></tag>
-		<offset_left>399</offset_left>
+		<offset_left>398</offset_left>
 		<offset_top>325</offset_top>
 		<width>90.4</width>
 		<height>60.4</height>
@@ -166,7 +166,7 @@
 		<id><![CDATA[task_9a89b3f5_313]]></id>
 		<type><![CDATA[9a89b3f5]]></type>
 		<tag><![CDATA[businesslogic]]></tag>
-		<offset_left>264</offset_left>
+		<offset_left>263</offset_left>
 		<offset_top>177</offset_top>
 		<width>90.4</width>
 		<height>60.4</height>
@@ -226,7 +226,7 @@
 		<id><![CDATA[task_7cf9ccfb_844]]></id>
 		<type><![CDATA[7cf9ccfb]]></type>
 		<tag><![CDATA[presentation]]></tag>
-		<offset_left>248</offset_left>
+		<offset_left>247</offset_left>
 		<offset_top>21</offset_top>
 		<width>90.4</width>
 		<height>60.4</height>

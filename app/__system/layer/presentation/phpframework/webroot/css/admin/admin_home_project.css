@@ -16,18 +16,24 @@ body,
 }
 
 /* PROJECT */
+.admin_panel .no_project {
+	margin:10px 20px 40px;
+	text-align:center;
+}
 .admin_panel .project {
 	margin:10px 20px 40px;
 	text-align:center;
 }
 .admin_panel .project .project_title {
-	margin-bottom:20px;
 	color:var(--icon-folder-color);
 }
 .admin_panel .project .project_title .name {
 	font-size:21px;
 	vertical-align:middle;
 	cursor:pointer;
+}
+.admin_panel .project.project_common .project_title .name {
+	cursor:default;
 }
 .admin_panel .project .project_title .sub_menu {
 	margin-left:5px;
@@ -49,6 +55,7 @@ body,
 .admin_panel .project .project_image {
 	width:100px;
 	height:100px;
+	margin-top:20px;
 	margin-right:20px;
 	display:inline-block;
 	vertical-align:middle;
@@ -68,12 +75,16 @@ body,
 }
 .admin_panel .project .project_description {
 	max-height:150px;
+	margin-top:20px;
 	display:inline-block;
 	font-size:11px;
 	text-align:center;
 	vertical-align:middle;
 	cursor:pointer;
 	overflow:auto;
+}
+.admin_panel .project .project_description:empty {
+	display:none;
 }
 .admin_panel .project.with_image .project_description {
 	max-width:calc(100% - 130px);

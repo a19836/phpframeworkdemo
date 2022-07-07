@@ -93,6 +93,7 @@
 .regions_blocks_includes_settings .settings_header .icon {
 	width:34px;
 	height:10px;
+	margin:0;
 	position:absolute;
 	top:0;
 	left:45%;
@@ -533,7 +534,6 @@ body > .dragging_menu_item {
 }
 .code_layout_ui_editor .layout-ui-editor > .menu-settings {
 	/* This is very important otherwise the layout_ui_editor_right_container will appear in the background of the menu-settings */
-	background:#fff;
 	z-index:1;
 }
 .template_region_block_html_editor_popup .layout-ui-editor > .menu-widgets > li:first-child {
@@ -961,6 +961,9 @@ body > .dragging_menu_item {
 }
 
 /* CODE - ELS UI - LAYOUT UI EDITOR - TOP BAR MENU - PANELS */
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.fixed-properties.menu-settings-shown {
+	bottom:30px;
+}
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .resize-panels,
   .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .template-source,
   .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .template-full-source,
@@ -992,29 +995,20 @@ body > .dragging_menu_item {
 }
 
 /* CODE - ELS UI - LAYOUT UI EDITOR - TOP BAR MENU - PROPERTIES */
-.code_layout_ui_editor .layout-ui-editor.fixed-side-properties > .menu-settings {
-	color:var(--main-settings-color);
-	background:var(--main-settings-bg);
-	border-top:0;
+.code_layout_ui_editor .layout-ui-editor.fixed-properties > .menu-settings,
+  .code_layout_ui_editor .layout-ui-editor.fixed-side-properties > .menu-settings {
+	max-height:calc(100vh - 80px); /* bc of the top bar and the bottom:30px of the .layout-ui-editor */
 }
-.code_layout_ui_editor .layout-ui-editor.fixed-side-properties > .menu-settings > .resize-menu-settings {
+.code_layout_ui_editor .layout-ui-editor.fixed-side-properties > .menu-settings > .resize-menu-settings,
+  .code_layout_ui_editor .layout-ui-editor.fixed-properties > .menu-settings > .resize-menu-settings {
 	/*border-top:1px solid var(--resize-bar-border);
 	border-bottom:1px solid var(--resize-bar-border);
 	background: var(--resize-bar-bg);*/
      /*background: var(--resize-bar-horizontal-img) repeat-x var(--main-template-bg);*/
      z-index:2;
 }
-.code_layout_ui_editor .layout-ui-editor.fixed-side-properties > .menu-settings > .settings-info {
-	border-top:0;
-	border-bottom:1px solid var(--main-settings-header-border);
-	color:var(--main-settings-color);
-	background:var(--main-settings-bg);
-	/*background: -moz-linear-gradient(top, var(--main-settings-bg) 50%, #ffffff73 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, var(--main-settings-bg)), color-stop(100%, #ffffff73));
-	background: -webkit-linear-gradient(top, var(--main-settings-bg) 50%, #ffffff73 100%);
-	background: -o-linear-gradient(top, var(--main-settings-bg) 50%, #ffffff73 100%);
-	background: -ms-linear-gradient(top, var(--main-settings-bg) 50%, #ffffff73 100%);
-	background: linear-gradient(to bottom, var(--main-settings-bg) 50%, #ffffff73 100%);*/
+.code_layout_ui_editor .layout-ui-editor.fixed-properties > .menu-settings.full-screen {
+	z-index:3;
 }
 
 /* CODE - MYTREE */
