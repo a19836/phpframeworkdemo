@@ -21,16 +21,17 @@ body,
 	text-align:center;
 }
 .admin_panel .project {
-	margin:10px 20px 40px;
+	margin:10px 20px 60px;
 	text-align:center;
 }
 .admin_panel .project .project_title {
-	color:var(--icon-folder-color);
+	color:var(--icon-active-color);
 }
 .admin_panel .project .project_title .name {
 	font-size:21px;
 	vertical-align:middle;
 	cursor:pointer;
+	text-transform:capitalize;
 }
 .admin_panel .project.project_common .project_title .name {
 	cursor:default;
@@ -44,7 +45,7 @@ body,
 	color:inherit;
 }
 .admin_panel .project .project_title .sub_menu.open > ul {
-	width:190px;
+	width:210px;
 	display:block !important;
 	visibility:visible;
 	top:auto;
@@ -104,6 +105,7 @@ body,
 	background:none;
 	border:0;
 	text-align:center;
+	font-size:13px;
 }
 .admin_panel .project_files > ul li {
 	margin:0 !important;
@@ -113,29 +115,31 @@ body,
 	float:none !important;
 }
 .admin_panel .project_files > ul li:not(:first-child) {
-	border-left:1px solid #eee !important;
+	border-left:1px solid #DFE1ED !important;
 	border-radius:0;
 }
 .admin_panel .project_files > ul li a {
-	margin:0 10px;
+	margin:0 5px;
+	padding:0 10px !important;
 	border-bottom:1px solid transparent !important;
 	color:#83889E;
+	float:none !important;
 }
 .admin_panel .project_files > ul li.ui-state-active a {
 	font-weight:bold;
-	border-bottom-color:var(--icon-hover-color) !important;
-	border-bottom-color:var(--icon-active-color) !important;
+	/*border-bottom-color:var(--icon-active-color) !important;*/
 	color:#2C2D34;
 }
 
 /* PROJECT FILES PANELS */
 .admin_panel .project_files .ui-tabs-panel {
+	padding:15px;
 	text-align:center;
 }
 
 /* PROJECT FILES PANELS - PROJECT LIST TYPE */
 .admin_panel .project_files .ui-tabs-panel .projects_list_type {
-	margin:5px 0 50px;
+	margin:0 0 55px;
 	text-align:center;
 }
 .admin_panel .project_files .ui-tabs-panel .projects_list_type .icon {
@@ -154,29 +158,36 @@ body,
 /* PROJECT FILES PANELS - BUTTON AND SEARCH FIELD */
 .admin_panel .project_files .ui-tabs-panel button {
 	margin-right:20px;
+	font-size:13px;
 }
 .admin_panel .project_files .ui-tabs-panel .search_file .icon.search {
 	cursor:default;
-	color:var(--icon-folder-color);
+	color:var(--icon-active-color);
 }
 .admin_panel .project_files .ui-tabs-panel .search_file input {
-	width:100px;
-	margin-left:-23px;
-	padding:0.370rem 5px 0.370rem 20px;
-	border-color:var(--icon-folder-color);
+	width:150px;
+	margin-left:-28px;
+	padding:10px 5px 10px 25px;
+	color:var(--icon-active-color);
+	border-color:var(--icon-active-color);
 	border-radius:0.2rem;
+	font-size:13px;
+}
+.admin_panel .project_files .ui-tabs-panel .search_file input::placeholder {
+	color:var(--icon-active-color);
 }
 
 /* PROJECT FILES PANELS - PROJECT DEFAULT TEMPLATE */
 .admin_panel .project_files .ui-tabs-panel > .project_default_template {
 	margin-top:15px;
 	color:#aaa;
-	font-size:9px;
+	font-size:11px;
 }
 .admin_panel .project_files .ui-tabs-panel > .project_default_template .breadcrumbs {
 	margin-left:5px;
 	color:#2C2D34;
 	color:var(--icon-active-color);
+	color:#585B69;
 }
 .admin_panel .project_files .ui-tabs-panel > .project_default_template .breadcrumbs .breadcrumb-item::after {
 	width:10px;
@@ -193,9 +204,13 @@ body,
 
 /* PROJECT FILES PANELS - MYTREE */
 .admin_panel .project_files .ui-tabs-panel .mytree {
+	margin:0 auto;
 	display:block;
 	clear:both;
 	text-align:left;
+}
+.admin_panel .project_files .ui-tabs-panel .mytree.list_view {
+	max-width:450px;
 }
 .admin_panel .project_files .mytree > li {
 	margin:0;
@@ -217,7 +232,7 @@ body,
 .admin_panel .project_files .mytree.block_view > li > ul > li:not(.separator):not(.empty_files) {
 	width:70px;
 	min-height:50px;
-	margin:15px 30px;
+	margin:20px 30px;
 	padding:0;
 	display:inline-block;
 	background:none;
@@ -237,13 +252,14 @@ body,
 	background:var(--main-template-bg);
 }
 .admin_panel .project_files .mytree.list_view > li > ul > li:not(.separator):not(.empty_files):not(:last-child):not(.last_from_group) {
-	border-bottom:1px solid var(--icon-folder-color);
+	border-bottom:1px solid #4070ff50;
 }
 .admin_panel .project_files .mytree > li > ul > li.separator {
 	margin:40px -5px 10px 20px;
 	display:block;
 	border-bottom:1px solid #eee;
-	color:#ddd;
+	color:var(--icon-folder-color);
+	font-size:11px;
 }
 .admin_panel .project_files .mytree.list_view > li > ul > li.separator {
 	margin-top:50px;
@@ -284,6 +300,11 @@ body,
 	display:block;
 	cursor:default;
 }
+.admin_panel .project_files .mytree.list_view > li > ul > li > a.jstree-anchor {
+	padding-right:10px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
 .admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor:hover > i:empty {
 	opacity:.5;
 }
@@ -308,13 +329,14 @@ body,
   .admin_panel .project_files .mytree > li > ul > li[data-jstree='{"icon":"template_folder"}'] > a.jstree-anchor:hover::before {
 	content:"Click to open folder";
 }
-.admin_panel .project_files .mytree.list_view > li > ul > li[data-jstree='{"icon":"entity_file"}'] > a.jstree-anchor:hover::before,
-  .admin_panel .project_files .mytree.list_view > li > ul > li[data-jstree='{"icon":"template_file"}'] > a.jstree-anchor:hover::before,
-  .admin_panel .project_files .mytree.list_view > li > ul > li[data-jstree='{"icon":"folder"}'] > a.jstree-anchor:hover::before,
-  .admin_panel .project_files .mytree.list_view > li > ul > li[data-jstree='{"icon":"template_folder"}'] > a.jstree-anchor:hover::before {
+.admin_panel .project_files .mytree.list_view > li > ul > li > a.jstree-anchor:hover::before {
 	top:10px;
 	left:auto;
 	right:20px;
+	background:#fff;
+}
+.admin_panel .project_files .mytree.list_view > li > ul > li:nth-child(odd) > a.jstree-anchor:hover::before {
+	background:var(--main-template-bg);
 }
 .admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor > i {
 	width:100%;
@@ -393,15 +415,18 @@ body,
 	object-fit:scale-down;
 }
 .admin_panel .project_files .mytree.block_view > li > ul > li > a.jstree-anchor > label {
+	line-height:12px;
 	display:inline-block;
 	text-align:center;
 	color:#585B69;
-	font-size:10px;
+	font-size:11px;
 	word-break:break-all;
 	white-space:break-spaces;
 	cursor:pointer;
 }
 .admin_panel .project_files .mytree.list_view > li > ul > li > a.jstree-anchor > label {
+	line-height:12px;
+	font-size:11px;
 	cursor:pointer;
 }
 .admin_panel .project_files .mytree > li > ul > li.default_template > a.jstree-anchor > label {
@@ -433,7 +458,7 @@ body,
 	color:var(--icon-hover-color);
 }
 .admin_panel .project_files .mytree > li > ul > li div.sub_menu > .icon {
-	margin:6px 5px 0 5px;
+	margin:0 5px 0 5px;
 	font-size:inherit;
 	color:inherit;
 }
@@ -441,7 +466,8 @@ body,
 	display:none;
 }
 .admin_panel .project_files .mytree > li > ul > li div.sub_menu.open > ul {
-	margin-top:13px;
+	/*margin-top:13px; with triangle*/
+	margin-top:5px; /* without triangle */
 	display:block !important;
 	visibility:visible;
 	top:auto;
@@ -455,15 +481,6 @@ body,
 }
 
 /* POPUP */
-.edit_project_details_popup {
-	/*position:fixed !important;
-	top:5px !important;
-	left:5px !important;
-	right:5px !important;
-	bottom:5px !important;*/
-	width:580px;
-	height:400px;
-}
 .import_templates_popup {
 	position:fixed !important;
 	top:5px !important;

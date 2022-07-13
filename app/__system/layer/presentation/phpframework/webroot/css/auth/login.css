@@ -23,11 +23,13 @@ body {
 	text-align:center;
 }
 .login .container .card .card-header img {
+	height:44px;
 	margin:20px auto 30px;
 	display:inline-block;
 }
 .login .container .card .card-header h5 {
 	margin-bottom:0;
+	color:#fff;
 }
 
 .form_fields { width:320px; margin:10px auto 0; }

@@ -44,7 +44,7 @@
 	top:30px;
 	left:0px;
 	bottom:0px;
-	width:250px;
+	width:195px;
 	
 	display:block;
 	z-index:1;
@@ -83,7 +83,7 @@
 .taskflowchart > .tasks_flow {
 	position:absolute;
 	top:30px;
-	left:255px;
+	left:200px;
 	right:0px;
 	bottom:0px;
 	
@@ -97,7 +97,7 @@
 }
 .taskflowchart.reverse > .tasks_flow {
 	left:0;
-	right:255px;
+	right:200px;
 	border-left:1px solid #CCC;
 }
 .taskflowchart:not(.reverse) > .tasks_flow {
@@ -121,7 +121,7 @@
 .taskflowchart > .tasks_menu_hide {
 	position:absolute;
 	top:30px;
-	left:250px;
+	left:195px;
 	bottom:0px;
 	width:5px;
 	cursor:ew-resize;
@@ -135,7 +135,7 @@
 }
 .taskflowchart.reverse > .tasks_menu_hide {
 	left:auto;
-	right:250px;
+	right:195px;
 }
 .taskflowchart:not(.reverse) > .tasks_menu_hide.tasks_menu_hidden {
 	left:0 !important;
@@ -214,10 +214,16 @@
 	/*background-color:#F7F7F7;*/
 }
 
+.taskflowchart > .tasks_menu .tasks_groups {
+	padding-bottom:15px;
+}
+.taskflowchart > .tasks_menu .tasks_group {
+	margin-top:15px;
+}
 .taskflowchart > .tasks_menu .tasks_group_label {
 	cursor:pointer;
-	margin:10px 5px 5px;
-	padding-top:10px;
+	margin:0 15px 0;
+	padding-top:15px;
 	color:#ccc;
 	opacity:.5;
 	border-top:1px dashed #ccc;
@@ -246,7 +252,7 @@
 .taskflowchart > .tasks_menu .tasks_group_label:hover:after {
 	content:"Click to collapse";
 	position:absolute;
-	right:5px;
+	right:15px;
 	display:block;
 	margin-top:-12px;
 	padding-left:5px;
@@ -257,12 +263,12 @@
 	content:"Click to expand";
 }
 .taskflowchart > .tasks_menu .tasks_group_tasks {
-	padding:0 20px;
+	padding:0 8px;
 	text-align:center;
 }
 
 .taskflowchart > .tasks_menu .task {
-	width:7em;
+	width:70px;
 	height:35px;
 	line-height:35px;
 	display:inline-block;
@@ -735,7 +741,7 @@
 }
 .taskflowchart.fixed_side_properties > .selected_task_properties,
   .taskflowchart.fixed_side_properties > .selected_connection_properties {
-	width:250px;
+	width:195px;
 	height:250px;
 	padding:0;
 	position:absolute !important;

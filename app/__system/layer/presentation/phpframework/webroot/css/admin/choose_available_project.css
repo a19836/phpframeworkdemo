@@ -85,12 +85,16 @@ body,
 }
 
 .choose_available_project > .new_project {
-	margin:50px 20px;
+	margin:55px 20px;
 	text-align:center;
+}
+.choose_available_project > .new_project .button {
+	font-size:13px;
 }
 .choose_available_project > .new_project .description {
 	margin-top:15px;
 	color:#585B69;
+	font-size:11px;
 }
 
 .choose_available_project > .loading_projects {
@@ -119,13 +123,14 @@ body,
 	
 }
 .choose_available_project .group.list_view > ul {
-	
+	max-width:650px;
+	margin:0 auto;
 }
 .choose_available_project .group.block_view li:not(.no_projects) {
 	display:inline-block;
 	width:50px;
 	min-height:50px;
-	margin:15px 30px;
+	margin:20px 25px;
 	padding:0;
 	box-sizing:border-box;
 	position:relative;
@@ -143,7 +148,7 @@ body,
 	background:var(--main-template-bg);
 }
 .choose_available_project .group.list_view li:not(.no_projects):not(:last-child) {
-	border-bottom:1px solid var(--icon-folder-color);
+	border-bottom:1px solid #4070ff50;
 }
 .choose_available_project .group li:hover:not(.no_projects):not(.project_common) {
 	opacity:.8;
@@ -151,7 +156,7 @@ body,
 .choose_available_project li.folder {
 	/*background:#ccc;*/
 }
-.choose_available_project li.project.project_common {
+.choose_available_project li.project.project_common > * {
 	opacity:.5;
 }
 .choose_available_project li.project.selected_project {
@@ -207,7 +212,8 @@ body,
 	content:"Click to open folder";
 }
 .choose_available_project .group li > label {
-	font-size:10px;
+	line-height:12px;
+	font-size:11px;
 	cursor:pointer;
 	color:#585B69;
 }

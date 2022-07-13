@@ -151,8 +151,8 @@
 }
 
 #ui .taskflowchart .tasks_menu .task {
-	width:80px;
-	font-size:8px;
+	/*width:80px;
+	font-size:8px;*/
 }
 #ui .taskflowchart .tasks_flow .connection_add_new_task_panel .generic_buttons input {
 	/*background:#d5e3e4;*/
@@ -199,6 +199,7 @@
 	clear:left;
 }
 .choose_from_file_manager .mytree {
+	margin-top:0;
 	cursor:auto;
 }
 .choose_from_file_manager .type, 

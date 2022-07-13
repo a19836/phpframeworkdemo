@@ -13,8 +13,8 @@ body,
 
 /* CREATE PROJECT */
 .edit_project_details {
-	width:530px;
-	margin:0 auto 15px;
+	width:520px;
+	margin:15px auto;
 	text-align:center;
 }
 .edit_project_details form {
@@ -60,7 +60,7 @@ body,
 	font-size:inherit;
 }
 .edit_project_details .details {
-	width:285px;
+	width:280px;
 	text-align:left;
 	vertical-align:top;
 	display:inline-block;
@@ -79,6 +79,9 @@ body,
 	width:250px;
 	height:100px;
 	font-size:inherit;
+}
+.edit_project_details .details .icon.search {
+	width:13px;
 }
 .edit_project_details.single_presentation_layer .details .layer {
 	display:none;

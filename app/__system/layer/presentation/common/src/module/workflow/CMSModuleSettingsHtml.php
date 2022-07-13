@@ -170,8 +170,8 @@ ProgrammingTaskUtil.on_programming_task_choose_file_path_callback = onIncludeFil
 	GetBeanObjectTaskPropertyObj.phpframeworks_options = ' . json_encode($phpframeworks_options) . ';
 	GetBeanObjectTaskPropertyObj.bean_names_options = ' . json_encode($bean_names_options) . ';
 	
-	CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
-	InlineHTMLTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
+	CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui_menu_widgets_backup\';
+	InlineHTMLTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui_menu_widgets_backup\';
 	
 	if (typeof CallBusinessLogicTaskPropertyObj != "undefined" && CallBusinessLogicTaskPropertyObj) {
 		CallBusinessLogicTaskPropertyObj.on_choose_business_logic_callback = onBusinessLogicTaskChooseBusinessLogic;
@@ -245,7 +245,7 @@ ProgrammingTaskUtil.on_programming_task_choose_file_path_callback = onIncludeFil
 		
 		<div id="ui">' . WorkFlowPresentationHandler::getTaskFlowContentHtml($WorkFlowUIHandler, array("save_func" => "saveModuleWorkflowSettings")) . '</div>
 		
-		<div class="ui-menu-widgets-backup hidden">
+		<div class="ui_menu_widgets_backup hidden">
 			' . $ui_menu_widgets_html . '
 		</div>
 		

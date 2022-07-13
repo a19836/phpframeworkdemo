@@ -99,7 +99,7 @@ function createLayoutUIEditor(textarea) {
 			else if (ui.data("LayoutUIEditor")) 
 				return ui.data("LayoutUIEditor");
 			
-			var mwb = parent.children(".ui-menu-widgets-backup");
+			var mwb = parent.children(".ui_menu_widgets_backup");
 			ui.children(".menu-widgets").append( mwb.contents() );
 			mwb.remove();
 			

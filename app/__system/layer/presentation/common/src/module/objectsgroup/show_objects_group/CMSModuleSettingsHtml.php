@@ -96,7 +96,7 @@ var create_form_settings_code_url = \'' . $project_url_prefix . 'module/objectsg
 ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
 ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
 
-CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
+CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui_menu_widgets_backup\';
 </script>';
 ?>
 <link rel="stylesheet" href="<?= $module["webroot_url"]; ?>settings.css" type="text/css" charset="utf-8" />
@@ -108,7 +108,7 @@ CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-men
 <div class="selected_task_properties module_show_objects_group_settings">
 	<?= $contents; ?>
 	
-	<div class="ui-menu-widgets-backup hidden">
+	<div class="ui_menu_widgets_backup hidden">
 		<? 
 		$common_webroot_path = $EVC->getWebrootPath($common_project_name);
 		$ui_menu_widgets_html = WorkFlowPresentationHandler::getUIEditorWidgetsHtml($common_webroot_path, $project_common_url_prefix, $webroot_cache_folder_path, $webroot_cache_folder_url, array("avoided_widgets" => array("php")));

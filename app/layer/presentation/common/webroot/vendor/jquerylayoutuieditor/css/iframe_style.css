@@ -22,6 +22,8 @@ body {
 	min-width:100vw;
 	min-height:100vh;
 	margin:0;
+	
+	overflow:overlay; /* The scrollbar will then also take transparent backgrounds across the page. This will also put the scrollbar inside the page instead of removing some of the width to put in the scrollbar.However the overlay value is now deprecated and only works in Chrome and Safari anymore. */
 }
 .main-droppable {
 	width:100%; 
@@ -105,24 +107,24 @@ body {
 /* SCROLLBARS */
 
 :not(.template-widget)::-webkit-scrollbar { /* Let's get this party started */
-	width:5px;
-	height:5px;
-	background-color:transparent;
+	width:10px;
+	height:10px;
+	background:transparent;
 }
 :not(.template-widget)::-webkit-scrollbar-track { /* Track */
-	-webkit-border-radius:0;
-	border-radius:0;
-	-webkit-box-shadow:inset 0 0 6px rgba(0,0,0, 0); /* transparent */
-	background-color:transparent;
+	/*-webkit-border-radius:5px;
+	border-radius:5px;
+	-webkit-box-shadow:inset 0 0 6px rgba(0,0,0, 0);*/
+	background:transparent;
 }
 :not(.template-widget)::-webkit-scrollbar-thumb { /* Handle */
-	-webkit-border-radius:5px;
-	border-radius:5px;
-	background:rgba(0,0,0,0.2);
+	background:#83889E;
 	/*-webkit-box-shadow:inset 0 0 6px rgba(250,250,250,0.8);*/
-}
-:not(.template-widget)::-webkit-scrollbar-thumb:hover {
-	background:rgba(0,0,0,0.5);
+
+	background-clip:padding-box;
+	border:2px solid transparent;
+	border-radius:9999px;
+	-webkit-box-shadow:0 0px 1px rgba(250,250,250,0.8);
 }
 :not(.template-widget)::-webkit-scrollbar-thumb:window-inactive {
 	/*background:rgba(0,0,0,0.35);*/

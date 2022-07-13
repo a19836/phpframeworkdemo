@@ -38,6 +38,9 @@
 	display:none;
 	float:none;
 }
+.create_form_task_html.with_search .form_action .search {
+	display:inline-block;
+}
 .create_form_task_html .form_settings input, .create_form_task_html .form_input input {
 	width:200px;
 	margin-right:5px;
@@ -243,14 +246,14 @@
    .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_action input {
 	width:calc(100% - 130px);
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html.with_search .form_action input {
+	width:calc(100% - 155px);
+}
 .create_form_task_html .form_action .add_variable {
 	margin-left:-22px;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_action .add_variable {
 	margin-left:-18px;
-}
-.create_form_task_html .form_action .search {
-	display:none;
 }
 
 /* PTL */

@@ -27,7 +27,7 @@ var SetBlockParamsTaskPropertyObj = {
 		var task_html_elm = $(properties_html_elm).find(".set_block_params_task_html");
 		
 		if (typeof ProgrammingTaskUtil.on_programming_task_choose_page_url_callback == "function")
-			task_html_elm.find(".value .search").css("display", "inline-block");
+			task_html_elm.addClass("with_search");
 		
 		if (!task_html_elm.children("input.main_variable_name").val())
 			task_html_elm.children("input.main_variable_name").val( SetBlockParamsTaskPropertyObj.main_variable_name );

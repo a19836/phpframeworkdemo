@@ -80,6 +80,9 @@
   .taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .wsdl_url > input {
 	width:calc(100% - 140px);
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html.with_search .wsdl_url > input {
+	width:calc(100% - 160px);
+}
 .taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .client_headers > input,
   .taskflowchart.fixed_side_properties .selected_task_properties .soap_connector_task_html .client_options > input {
 	width:calc(100% - 170px);
@@ -314,4 +317,7 @@
 	float:none;
 	display:none;
 	vertical-align:middle;
+}
+.soap_connector_task_html.with_search .wsdl_url .search {
+	display:inline-block;
 }

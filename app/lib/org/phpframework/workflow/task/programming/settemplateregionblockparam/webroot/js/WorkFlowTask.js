@@ -27,7 +27,7 @@ var SetTemplateRegionBlockParamTaskPropertyObj = {
 		var task_html_elm = $(properties_html_elm).find(".set_template_region_block_param_task_html");
 		
 		if (typeof ProgrammingTaskUtil.on_programming_task_choose_page_url_callback == "function")
-			task_html_elm.find(".param_value .search").css("display", "inline-block");
+			task_html_elm.addClass("with_search");
 		
 		if (!task_html_elm.children("input.main_variable_name").val()) {
 			task_html_elm.children("input.main_variable_name").val( SetTemplateRegionBlockParamTaskPropertyObj.main_variable_name );

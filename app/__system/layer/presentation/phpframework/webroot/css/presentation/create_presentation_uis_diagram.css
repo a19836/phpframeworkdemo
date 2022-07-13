@@ -69,7 +69,7 @@
 }
 
 .taskflowchart .tasks_menu .task {
-	background-image:none;
+	background-image:none !important;
 }
 
 .task_context_menu .start_task {

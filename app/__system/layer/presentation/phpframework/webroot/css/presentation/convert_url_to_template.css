@@ -53,7 +53,7 @@ body,
 }
 .convert_url_to_template .page_html iframe {
 	width:100%;
-	height:calc(100% - 50px);
+	height:calc(100% - 55px);
 	border:1px inset #ccc;
 	border-top:0;
 	box-sizing: border-box;

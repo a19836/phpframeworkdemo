@@ -57,6 +57,9 @@
    .taskflowchart.fixed_side_properties .selected_task_properties .set_template_region_block_param_task_html .param_value input {
 	width:calc(100% - 148px);
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .set_template_region_block_param_task_html.with_search .param_value input {
+	width:calc(100% - 170px);
+}
 .set_template_region_block_param_task_html .region select, 
    .set_template_region_block_param_task_html .block select, 
    .set_template_region_block_param_task_html .param_name select, 
@@ -71,4 +74,7 @@
 }
 .set_template_region_block_param_task_html .param_value .search {
 	display:none;
+}
+.set_template_region_block_param_task_html.with_search .param_value .search {
+	display:inline-block;
 }

@@ -112,9 +112,8 @@
 	--option-label-hover-color:#000
 
 	/* scrollbar */
-	--scrollbar-track-bg:#555;
+	--scrollbar-track-bg:transparent;
 	--scrollbar-thumb-bg:rgba(0,0,0,0.2);
-	--scrollbar-thumb-hover-bg:rgba(0,0,0,0.5);
 	
 	/* resize-panel */
 	--resize-panel-bg:#796669;
@@ -229,24 +228,24 @@
 /* SCROLLBARS */
 
 .layout-ui-editor :not(.template-widget)::-webkit-scrollbar { /* Let's get this party started */
-    width:5px;
-    height:5px;
-	background-color:transparent;
+	width:10px;
+	height:10px;
+	background:transparent;
 }
 .layout-ui-editor :not(.template-widget)::-webkit-scrollbar-track { /* Track */
-    -webkit-border-radius:0;
-    border-radius:0;
-    background:var(--scrollbar-track-bg, #555);
-    -webkit-box-shadow:inset 0 0 6px var(--scrollbar-track-bg, #555);
+	/*-webkit-border-radius:5px;
+	border-radius:5px;
+	-webkit-box-shadow:inset 0 0 6px var(--scrollbar-track-bg, #555);*/
+	background:var(--scrollbar-track-bg, #555);
 }
 .layout-ui-editor :not(.template-widget)::-webkit-scrollbar-thumb { /* Handle */
-    -webkit-border-radius:5px;
-    border-radius:5px;
-    background:var(--scrollbar-thumb-bg, #ccc); 
-    /*-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.15); */
-}
-.layout-ui-editor :not(.template-widget)::-webkit-scrollbar-thumb:hover {
-    background:var(--scrollbar-thumb-hover-bg);
+	background:var(--scrollbar-thumb-bg, #ccc); 
+	/*-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.15); */
+
+	background-clip:padding-box;
+	border:2px solid transparent;
+	border-radius:9999px;
+	-webkit-box-shadow:0 0px 1px rgba(250,250,250,0.8);
 }
 .layout-ui-editor :not(.template-widget)::-webkit-scrollbar-thumb:window-inactive {
 	/*background:rgba(250,250,250,0.8);*/ 
@@ -1025,6 +1024,9 @@
 	right:0 !important;
 }
 
+.layout-ui-editor > .menu-widgets {
+	padding-bottom: 15px;
+}
 .layout-ui-editor > .menu-widgets ul:after {
 	content:" ";
 	float:none;
@@ -1041,8 +1043,8 @@
 	color:var(--menu-widgets-group-color, #b9a5a6);
 }
 .layout-ui-editor > .menu-widgets .group .group-title {
-	margin:10px 5px 5px;
-	padding-top:10px;
+	margin:15px 15px 0;
+	padding-top:15px;
 	border-top:1px dashed rgba(0,0,0,0.15);
 	cursor:pointer;
 	text-align:left;
@@ -1064,7 +1066,7 @@
 .layout-ui-editor > .menu-widgets .group .group-title:hover:after {
 	content:"Click to expand";
 	position:absolute;
-	right:5px;
+	right:15px;
 	display:block;
 	margin-top:-12px;
 	padding-left:5px;
@@ -1085,7 +1087,7 @@
 	min-height:3em;
 	cursor:default;
 	margin:0;
-	padding:0 0 0 10px;
+	padding:0 8px;
 	text-align:left;
 	/*background:rgba(0,0,0,0.25);*/
 }
@@ -1097,10 +1099,7 @@
 	vertical-align:top;
 }
 .layout-ui-editor > .menu-widgets .group ul .group ul {
-	padding-left:0;
-}
-.layout-ui-editor > .menu-widgets .group ul .group ul .group ul {
-	padding-left:10px;
+	padding-right:0;
 }
 .layout-ui-editor > .menu-widgets .menu-widget,
   body > .menu-widget.ui-draggable-dragging { 
@@ -1109,7 +1108,7 @@
 	border:0;
 	position:relative;
 	
-	margin:10px;
+	margin:15px 7px 0;
 	border:1px solid var(--menu-widgets-widget-border, transparent);
 	list-style-type:none;
 	cursor:move;
@@ -1137,8 +1136,9 @@ body > .menu-widget.ui-draggable-dragging {
 	z-index:11; /* must be bigger than 10 bc the z-idnex for .layout-ui-editor.full-screen is 10 */
 }
 .layout-ui-editor > .menu-widgets .menu-widget > span:first-child {
+	line-height:12px;
 	margin-top:45px;
-	font-size:8px;
+	font-size:9px;
 	color:var(--menu-widgets-widget-color, #4070FF);
 	display:block;
 	text-align:center;
@@ -1269,6 +1269,9 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	margin:.5em .5em 0 0;
 	float:right;
 	cursor:pointer;
+}
+.layout-ui-editor > .menu-layers .main-group > .main-group-title > label {
+	vertical-align:middle;
 }
 .layout-ui-editor > .menu-layers .group {
 	border:1px solid var(--menu-layers-group-border, transparent);

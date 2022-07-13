@@ -6,9 +6,13 @@
 }
 
 /* Menu Task */
+.jsplumbtaskmenu .tasks_group:first-child {
+	margin-top:0 !important;
+}
 .jsplumbtaskmenu .task {
 	width:90px !important;
 	height:60px !important;
+	margin:15px 15px 0 !important;
 	
 	background-color:#4070FF !important;
 	background-size:22px 26px !important; 

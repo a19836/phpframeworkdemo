@@ -30,10 +30,10 @@ include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler"); $head = 
            <main>
                <div class="container">
                    <div class="row justify-content-center">
-                       <div class="col-lg-7 admin-page-content">
+                       <div class="col-sm-11 col-md-8 col-lg-6 admin-page-content">
                            <div class="card shadow-lg border-0 rounded-lg">
                                <div class="card-header">
-                               	' . ($popup ? '' : '<img src="' . $project_url_prefix . 'img/logo_full' . ($popup ? '' : '_white') . '.png" />') . '
+                               	' . ($popup ? '' : '<img src="' . $project_url_prefix . 'img/logo_full' . ($popup ? '' : '_white') . '.svg" />') . '
                                	' . ($popup ? '<h5 class="text-center font-weight-light">Login</h5>' : '') . '
                                </div>
                                <div class="card-body">

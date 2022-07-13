@@ -70,6 +70,9 @@
   .module_workflow_settings #ui > .taskflowchart .edit_function_code > #code > textarea {
 	border-top:0;
 }
+.module_workflow_settings #ui > .taskflowchart .create_form_task_html .layout-ui-editor > .tabs {
+	font-size:8pt;
+}
 .module_workflow_settings #code .code_menu > ul > .save,
   .module_workflow_settings #ui .taskflowchart .workflow_menu > .dropdown > .save,
   .module_workflow_settings #code .code_menu > ul > .auto_save_activation,

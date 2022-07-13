@@ -250,14 +250,18 @@ function refreshTreeWithNewPath(elm, path, mytree_parent_class) {
 }
 
 function updatePathBreadcrumbs(mytree, path) {
+	var mytree_parent = mytree.parent();
+	var is_pages = mytree_parent.is(".pages");
+	
 	//remove old current_project_folder
 	var breadcrumbs = $(".top_bar .breadcrumbs");
 	breadcrumbs.find(".breadcrumb-item:not(.fixed)").remove();
 	
+	var home_label = is_pages ? "pages" : "templates";
+	var breadcrumps_html = '<span class="breadcrumb-item"><a href="javascript:void(0)" onClick="refreshTreeWithNewPath(this, \'\', \'' + mytree_parent_class + '\')">' + home_label + '</a></span>';
+	
 	if (path) { //path could be undefined
-		var mytree_parent = mytree.parent();
 		var root_path = mytree_parent.attr("root_path");
-		var is_pages = mytree_parent.is(".pages");
 		var mytree_parent_class = is_pages ? "pages" : "templates";
 		
 		path = ("" + path).replace(/\/+/g, "/").replace(/^\/+/g, "").replace(/\/+$/g, ""); //remove duplicates, start and end slash
@@ -270,13 +274,13 @@ function updatePathBreadcrumbs(mytree, path) {
 			var str = is_pages ? "/src/entity/" : "/src/template/";
 			var pos = path.indexOf(str);
 			var prefix_path = path.substr(0, pos + str.length);
-			var home_label = is_pages ? "pages" : "templates";
 			
 			//add new current_project_folder
-			var breadcrumps_html = '<span class="breadcrumb-item"><a href="javascript:void(0)" onClick="refreshTreeWithNewPath(this, \'' + prefix_path + '\', \'' + mytree_parent_class + '\')">' + home_label + '</a></span>' + getProjectCurrentFolderHtml(current_path, prefix_path, mytree_parent_class);
-			breadcrumbs.append(breadcrumps_html);
+			breadcrumps_html = '<span class="breadcrumb-item"><a href="javascript:void(0)" onClick="refreshTreeWithNewPath(this, \'' + prefix_path + '\', \'' + mytree_parent_class + '\')">' + home_label + '</a></span>' + getProjectCurrentFolderHtml(current_path, prefix_path, mytree_parent_class);
 		}
 	}
+	
+	breadcrumbs.append(breadcrumps_html);
 }
 
 function getProjectCurrentFolderHtml(current_path, prefix_path, mytree_parent_class) {

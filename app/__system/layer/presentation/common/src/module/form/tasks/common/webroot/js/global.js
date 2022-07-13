@@ -23,14 +23,14 @@ var FormItemTaskPropertyObj = {
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values, is_form_item_group) {
 		//prepare properties html
 		var module_form_settings = properties_html_elm.parent().closest(".module_form_settings");
-		var task_html_elm = properties_html_elm.find(".formitem_task_html > .form-group-item");
-		var cloned = module_form_settings.find("#groups_flow > .form-groups > .form-group-item.form-group-default").clone();
+		var task_html_elm = properties_html_elm.find(".formitem_task_html > .sla_group_item");
+		var cloned = module_form_settings.find(".sla_groups_flow > .sla_groups > .sla_group_item.sla_group_default").clone();
 		
 		task_html_elm.removeAttr("inited").html("").append(cloned.children());
 		cloned.remove();
 		
-		var header_elm = task_html_elm.children(".form-group-header");
-		var action_type_elm = header_elm.children(".action-type");
+		var header_elm = task_html_elm.children(".sla_group_header");
+		var action_type_elm = header_elm.children(".action_type");
 		
 		if (is_form_item_group) {
 			action_type_elm.append( action_type_elm.find("option[value='loop'], option[value='group']") );
@@ -45,9 +45,9 @@ var FormItemTaskPropertyObj = {
 		
 		//load task_property_values
 		if (task_property_values && task_property_values["properties"])
-			loadFormBlockNewSettingsAction(task_property_values["properties"], task_html_elm);
+			loadSLASettingsAction(task_property_values["properties"], task_html_elm);
 		else
-			onChangeFormInputType( action_type_elm[0] );
+			onChangeSLAInputType( action_type_elm[0] );
 	},
 	
 	onSubmitTaskProperties : function(properties_html_elm, task_id, task_property_values) {
@@ -57,8 +57,8 @@ var FormItemTaskPropertyObj = {
 			return false;
 		}
 		
-		var task_html_elm = properties_html_elm.find(".formitem_task_html > .form-group-item");
-		var properties = getModuleFormSettingsFromItemsToSave(task_html_elm);
+		var task_html_elm = properties_html_elm.find(".formitem_task_html > .sla_group_item");
+		var properties = getSLASettingsFromItemsToSave(task_html_elm);
 		properties = properties ? properties[0] : {};
 		FormItemTaskPropertyObj.tmp_task_properties = properties;
 		

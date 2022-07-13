@@ -4,24 +4,24 @@ $(function () {
 	iframe.load(function() {
 		var style = '<style>' +
 '::-webkit-scrollbar {' +
-'	width:8px;' +
-'	height:15px;' +
+'	width:5px;' +
+'	height:5px;' +
 '}' +
 //track
 '::-webkit-scrollbar-track {' +
-'    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.4); ' +
-'    -webkit-border-radius:10px;' +
-'    border-radius:10px;' +
+'    -webkit-border-radius:5px;' +
+'    border-radius:5px;' +
+'    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0, 0); ' +
+'    background-color:transparent;' +
 '}' +
 //Handle
 '::-webkit-scrollbar-thumb {' +
-'    -webkit-border-radius:10px;' +
-'    border-radius:10px;' +
-'    background:rgba(0,0,0,0.2);' +
-'    -webkit-box-shadow:inset 0 0 6px rgba(250,250,250,0.8); ' +
+'    -webkit-border-radius:5px;' +
+'    border-radius:5px;' +
+'    background:#83889E;' +
 '}' +
 '::-webkit-scrollbar-thumb:window-inactive {' +
-'	background:rgba(0,0,0,0.2); ' +
+'	/*background:rgba(0,0,0,0.2);*/ ' +
 '}' +
 '</style>';
 		var iframe_head = this.contentWindow.document.head;

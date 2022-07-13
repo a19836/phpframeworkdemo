@@ -3029,7 +3029,7 @@ function saveObjCode(save_object_url, obj, opts) {
 		}
 		
 		//hide popup and reset auto save
-		if (!is_from_auto_save_bkp) {
+		if (!is_from_auto_save) {
 			MyFancyPopup.hidePopup();
 			$(".workflow_menu").show();
 		}

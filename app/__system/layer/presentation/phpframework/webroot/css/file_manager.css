@@ -25,7 +25,7 @@
 	text-rendering:auto;
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
-	margin-top:7px;
+	margin-top:9px;
 	margin-left:0;
 	display:inline-block;
 }
@@ -34,12 +34,14 @@
 .mytree .jstree-hovered {background-color:transparent !important; border-radius:none; box-shadow:none;}
 .mytree .jstree-anchor.jstree-clicked.jstree-hovered, .mytree .jstree-anchor.link.jstree-clicked.jstree-hovered {background-color:#ccc !important; border-radius:2px; box-shadow:inset 0 0 1px #999999;}
 .mytree .jstree-anchor.link.jstree-hovered {background-color:#eee !important; border-radius: 2px; box-shadow: inset 0 0 1px #cccccc;}
-.mytree .jstree-anchor {cursor:default; vertical-align:middle;}
+.mytree .jstree-anchor {height:auto; min-height:24px; padding-top:2px; padding-bottom:2px; cursor:default; vertical-align:middle;}
+.mytree .jstree-anchor > i.jstree-icon {vertical-align:middle;}
+.mytree .jstree-anchor > label {line-height:12px; white-space:normal; word-break:break-all;}
 .mytree a.link * {cursor:pointer;}
 .mytree li > .sub_menu {margin-left:5px; color:#ccc;}
 /*.mytree li > .sub_menu:hover::after {content:"Click me"; position:fixed; top:auto; left:auto; margin:-8px 0 0 -40px; color:var(--main-template-color); font: initial; font-family:var(--main-font-family); font-size:8px; }*/
 
-.mytree li.disabled > a {opacity:.3;}
+.mytree li.disabled > a {/*opacity:.3;*/}
 .mytree li.module_folder_disabled > a, .mytree li.module_folder_disabled > ul {opacity:.3;}
 .mytree li.disabled > a > i {opacity:.3;}
 .mytree li.module_folder_disabled > a > i {opacity:.3;}

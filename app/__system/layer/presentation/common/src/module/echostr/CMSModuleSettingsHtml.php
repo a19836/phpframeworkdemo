@@ -120,7 +120,7 @@ $ui_menu_widgets_html .= WorkFlowPresentationHandler::getUserUIEditorWidgetsHtml
 	<div id="layoutui_content" class="editor">
 		<textarea>Write here what you wish to echo...</textarea>
 		
-		<div class="ui-menu-widgets-backup hidden">
+		<div class="ui_menu_widgets_backup hidden">
 			<?= $ui_menu_widgets_html ?>
 		</div>
 	</div>

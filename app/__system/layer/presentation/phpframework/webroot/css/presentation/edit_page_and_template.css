@@ -424,9 +424,20 @@ body > .dragging_menu_item {
 #module_info_tooltip > .close {
 	margin:0;
 	position:absolute;
-	right:5px;
 	top:5px;
-	opacity:.5;
+	right:1px;
+	font-size:var(--icon-font-size);
+	color:#333;
+}
+#module_info_tooltip > .close::before {
+	width:15px;
+	display:inline-block;
+	text-rendering:auto;
+	-webkit-font-smoothing: antialiased;
+	font:var(--fa-font-solid);
+	/*content:x"\f057";*/
+	content:"\f00d";
+	line-height:16px;
 }
 #module_info_tooltip > .close:hover {
 	opacity:1;
@@ -540,6 +551,7 @@ body > .dragging_menu_item {
 	display:none; /*hide code group menu bc ptl and php are not allowed in the template_region_block_html_editor_popup */
 }
 .code_layout_ui_editor .layout-ui-editor > .menu-widgets li.menu-widget-ptl,
+  .template_region_block_html_editor_popup .layout-ui-editor > .menu-widgets li.group.group-code,
   .template_region_block_html_editor_popup .layout-ui-editor > .menu-widgets li.menu-widget-ptl,
   .template_region_block_html_editor_popup .layout-ui-editor > .menu-widgets li.menu-widget-php {
 	display:none !important;
@@ -622,14 +634,14 @@ body > .dragging_menu_item {
 	padding:5px;
 	top:0;
 	left:0;
-	right:calc(100% - 220px);
+	right:calc(100% - 205px);
 	box-sizing:border-box;
 	background:var(--main-template-bg);
 	white-space:nowrap;
 	z-index:3;
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.reverse > .options > .options-left {
-	left:calc(100% - 220px);
+	left:calc(100% - 205px);
 	right:0;
 	text-align:center;
 }
@@ -751,7 +763,7 @@ body > .dragging_menu_item {
 	overflow:hidden;
 	opacity:0;
 }
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .sub-options.open > ul:before {
+/*.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .sub-options.open > ul:before {
 	content:" ";
 	width:0;
 	height:0;
@@ -776,7 +788,7 @@ body > .dragging_menu_item {
 	border-right:7px solid transparent;
 	border-bottom:7px solid var(--main-context-menu-bg);
 	border-left:7px solid transparent;
-}
+}*/
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .sub-options ul li {
 	line-height:20px;
 	padding:5px 5px 5px 10px;
@@ -790,8 +802,8 @@ body > .dragging_menu_item {
 	border-top-right-radius:3px;
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .sub-options ul li:hover {
-	/*color:var(--icon-hover-color);*/
 	background:var(--main-context-menu-hover-bg);
+	color:var(--main-context-menu-hover-color);
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .sub-options ul li i {
 	width:15px;
@@ -889,7 +901,7 @@ body > .dragging_menu_item {
 	height:0;
 	opacity:0;
 }
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right .option.sub_menu.open > ul:before {
+/*.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right .option.sub_menu.open > ul:before {
 	content:" ";
 	width:0;
 	height:0;
@@ -914,7 +926,7 @@ body > .dragging_menu_item {
 	border-right:7px solid transparent;
 	border-bottom:7px solid var(--main-context-menu-bg);
 	border-left:7px solid transparent;
-}
+}*/
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .option.sub_menu ul li {
 	margin:0;
 	display:block;
@@ -938,7 +950,7 @@ body > .dragging_menu_item {
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .option.sub_menu ul li:hover {
 	background:var(--main-context-menu-hover-bg);
-	/*color:var(--icon-hover-color);*/
+	color:var(--main-context-menu-hover-color);
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .option.sub_menu ul li input[type=checkbox] {
 	position:absolute;
@@ -980,7 +992,7 @@ body > .dragging_menu_item {
 	margin-right:2px;
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .menu-layers {
-	padding-top:10px;
+	padding:10px;
 }
 .code_layout_ui_editor .layout-ui-editor.fixed-side-properties > .menu-settings.full-screen {
 	top:30px !important;
@@ -1016,6 +1028,8 @@ body > .dragging_menu_item {
 	margin-left:5px;
 	display:inline-block;
 	vertical-align:middle;
+	font-size:12px;
+	color:inherit;
 }
 .code_layout_ui_editor .mytree .icon.refresh {	
 	opacity:0;
@@ -1097,7 +1111,7 @@ body > .dragging_menu_item {
 	top:30px;
 	bottom:0;
 	overflow-y:auto;
-	overflow-x:hidden;
+	overflow-x:auto;
 	vertical-align:top;
 	display:none;
 	box-sizing:border-box;
@@ -1105,15 +1119,15 @@ body > .dragging_menu_item {
 	font-family:var(--main-font-family);
 	border-top:1px solid rgba(0,0,0,0.25);
 	color:#666;
-	font-size:9.7px;
+	font-size:11px;
 	transition:.2s all;
 }
 .code_layout_ui_editor .layout-ui-editor:not(.reverse) .layout_ui_editor_right_container {
 	left:0;
-	right:calc(100% - 220px);
+	right:calc(100% - 205px);
 }
 .code_layout_ui_editor .layout-ui-editor.reverse .layout_ui_editor_right_container {
-	left:calc(100% - 220px);
+	left:calc(100% - 205px);
 	right:0;
 }
 .code_layout_ui_editor .layout-ui-editor:not(.reverse).with-minimized-panels > .layout_ui_editor_right_container {
@@ -1160,9 +1174,10 @@ body > .dragging_menu_item {
 	color:var(--main-template-color);
 }
 .code_layout_ui_editor .layout-ui-editor .layout_ui_editor_right_container .mytree li.draggable_menu_item a {
-	height:26px;
-	line-height:26px;
+	padding-top:5px;
+	padding-bottom:5px;
 	cursor:move;
+	position:relative; /* bc of the .icon.info and .icon.edit in modules and blocks lists*/
 }
 .code_layout_ui_editor .layout-ui-editor .layout_ui_editor_right_container .mytree li.draggable_menu_item a > .jstree-icon {
 	background:var(--mytree-dragged-widget-bg);
@@ -1175,6 +1190,13 @@ body > .dragging_menu_item {
 .code_layout_ui_editor .layout-ui-editor .layout_ui_editor_right_container .mytree li.draggable_menu_item a label {
 	color:var(--mytree-dragged-widget-bg);
 	cursor:move;
+}
+.code_layout_ui_editor .layout-ui-editor .layout_ui_editor_right_container .mytree li.draggable_menu_item a .icon.info,
+  .code_layout_ui_editor .layout-ui-editor .layout_ui_editor_right_container .mytree li.draggable_menu_item a .icon.edit {
+	color:var(--mytree-dragged-widget-bg);
+	position:absolute;
+	top:10px;
+	right:-15px;
 }
 .code_layout_ui_editor .layout-ui-editor .layout_ui_editor_right_container .mytree .block_file,
   .code_layout_ui_editor .layout-ui-editor .layout_ui_editor_right_container .mytree .module_folder {

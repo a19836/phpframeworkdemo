@@ -31,7 +31,7 @@ var CreateFormTaskPropertyObj = {
 		var task_html_elm = $(properties_html_elm).find(".create_form_task_html");
 		
 		if (typeof ProgrammingTaskUtil.on_programming_task_choose_page_url_callback == "function")
-			task_html_elm.find(".form_action .search").css("display", "inline-block");
+			task_html_elm.addClass("with_search");
 		
 		if (!task_property_values || jQuery.isEmptyObject(task_property_values)) {
 			task_property_values = {

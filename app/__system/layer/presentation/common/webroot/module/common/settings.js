@@ -512,8 +512,8 @@ function createObjectItemCodeEditor(textarea, type, save_func) {
 			enableLiveAutocompletion: false,
 		});
 		editor.setOption("wrap", true);
-	
-		if (typeof save_func == "function") {
+		
+		if (typeof save_func == "function" || save_func) {
 			editor.commands.addCommand({
 				name: 'saveFile',
 				bindKey: {
@@ -522,8 +522,12 @@ function createObjectItemCodeEditor(textarea, type, save_func) {
 					sender: 'editor|cli'
 				},
 				exec: function(env, args, request) {
-					var button = $(".top_bar .save a")[0];
-					save_func(button);
+					var button = $(".top_bar .save a").first();
+					
+					if (typeof save_func == "function")
+						save_func(button[0]);
+					else if (save_func)
+						button.trigger("click");
 				},
 			});
 		}

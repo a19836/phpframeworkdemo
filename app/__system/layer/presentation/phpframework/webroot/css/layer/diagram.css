@@ -1,3 +1,7 @@
+::-webkit-scrollbar-track {
+	background-color:transparent !important; /* overwrite the bg from the setup.css */
+}
+
 /* TOP BAR */
 .top_bar header {
 	z-index:5;
@@ -13,19 +17,19 @@
 	top:50px;
 }
 .taskflowchart .tasks_menu {
-	width:120px;
+	width:140px;
 }
 .taskflowchart:not(.reverse) .tasks_flow {
-	left:125px;
+	left:145px;
 }
 .taskflowchart.reverse .tasks_flow {
-	right:127px;
+	right:145px;
 }
 .taskflowchart:not(.reverse) .tasks_menu_hide {
-	left:120px;
+	left:140px;
 }
 .taskflowchart.reverse .tasks_menu_hide {
-	right:120px;
+	right:140px;
 }
 
 .taskflowchart .tasks_flow::-webkit-scrollbar {
@@ -104,7 +108,8 @@
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
 	content:"\f14a";
-	margin-right:5px;
+	margin-right:12px;
+	font-size:14px;
 	color:green;
 }
 .task_context_menu .activate_task a.active::before {

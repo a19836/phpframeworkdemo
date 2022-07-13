@@ -34,18 +34,218 @@
 	background-color:#fff;
 }
 
-.module_form_settings .deprecated_actions_message {
-	margin-bottom:15px;
-	color:red;
-}
-
 .module_form_settings .module_form_contents {
 	border:0;
 }
 
-.module_form_settings #groups_flow {
-
+.module_form_settings .sla_groups_flow > nav > a.open_form_wizard,
+  .module_form_settings .sla_groups_flow > nav > a.add_form_group,
+  .module_form_settings .sla_groups_flow > nav > a.collapse_form_groups,
+  .module_form_settings .sla_groups_flow > nav > a.expand_form_groups {
+	cursor:pointer;
 }
+.module_form_settings .sla_groups_flow > nav > a.collapse_form_groups,
+  .module_form_settings .sla_groups_flow > nav > a.expand_form_groups {
+	margin-left:20px;
+}
+.module_form_settings .sla_groups_flow > nav > a.open_form_wizard {
+	float:right;
+}
+
+/* FORM WIZARD */
+.module_form_settings .form_wizard {
+	width:90%;
+	width:90vw;
+	min-height:90%;
+	min-height:90vh;
+	height:auto !important;
+	background:#fff;
+	z-index:9999;
+}
+
+.module_form_settings .form_wizard > .steps {
+	margin:20px 0 40px 0;
+}
+.module_form_settings .form_wizard > .steps > .step {
+	text-align:center;
+	display:none;
+}
+.module_form_settings .form_wizard > .steps > .step.panel_type_selection > .form_type,
+  .module_form_settings .form_wizard > .steps > .step.table_selection > .dal_broker,
+  .module_form_settings .form_wizard > .steps > .step.table_selection > .db_driver,
+  .module_form_settings .form_wizard > .steps > .step.table_selection > .db_type {
+	opacity:.5;
+	background:#fff;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .clear {
+	margin-top: 20px;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .toggle_table_options {
+	margin-top:10px;
+	display:block;
+	text-align:center;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .attributes,
+   .module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .conditions {
+	text-align:left;
+	margin-top:10px;
+	padding:10px;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .attributes > label,
+   .module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .conditions > label {
+	display:block;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .attributes li,
+   .module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .conditions li {
+	width:50%;
+	margin-top:5px;
+	display:inline-block;
+	opacity:.5;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .attributes li:after,
+   .module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .conditions li:after {
+	content:" ";
+	height:1px;
+	display:block;
+	float:none;
+	clear:both;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .attributes li.attr_activated,
+   .module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .conditions li.attr_activated {
+	opacity:1;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .attributes li label,
+   .module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .conditions li label {
+	width:100px;
+	margin-left:5px;
+	margin-right:5px;
+	display:inline-block;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .attributes li .attr_value,
+  .module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .conditions li .attr_name {
+	display:none;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .conditions li label:after {
+	content:" = ";
+	float:right;
+}
+
+.module_form_settings .form_wizard > .steps > .step.actions_selection > label {
+	margin-bottom:20px;
+	display:block;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection > .multiple_actions {
+	margin-top:20px;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action {
+	opacity:.5;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action.action_activated {
+	opacity:1;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action.action_multiple_insert_update {
+	display:none;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action.action_links {
+	margin-top:20px;
+	padding:10px;
+	border-top:1px solid #ccc;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .toggle {
+	margin-top:3px;
+	position:absolute;
+	display:none;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action.action_activated > .toggle {
+	display:inline-block;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > label {
+	width:100px;
+	display:inline-block;
+	text-align:left;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > input {
+	vertical-align:top;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options {
+	width:430px;
+	margin:10px auto;
+	border:1px solid #ccc;
+	display:none;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action.action_links > .action_options {
+	width:620px;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option {
+	padding:10px;
+	text-align:left;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option > ul label {
+	width:100px;
+	display:inline-block;
+	color:#999;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option > ul input {
+	width:300px;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option.ajax_url {
+	display:none;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option.action_links > .add {
+	float:none;
+	display:inline-block;
+	vertical-align:middle;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option.action_links > .action_link {
+	margin-top:5px;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option.action_links > .action_link > .action_link_url {
+	width:300px;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option.action_links > .action_link > .action_link_class {
+	width:100px;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option.action_links > .action_link > .action_link_title {
+	width:150px;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option.action_links > .action_link > .delete {
+	float:none;
+	display:inline-block;
+	vertical-align:middle;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option.action_links > .action_link:nth-of-type(2) > .delete {
+	display:none;
+}
+
+.module_form_settings .form_wizard > .steps > .step.create_selection > label {
+	margin-bottom:10px;
+	display:block;
+}
+.module_form_settings .form_wizard > .steps > .step.create_selection > input {
+	margin:10px;
+}
+.module_form_settings .form_wizard > .steps > .step.create_selection > input:disabled {
+	background:#ccc;
+	border:1px solid #c0c0c0;
+}
+
+.module_form_settings .form_wizard > .buttons {
+    width:auto;
+    position:absolute;
+    bottom:20px;
+    left:20px;
+    right:20px;
+}
+.module_form_settings .form_wizard > .buttons > .previous {
+	float:left;
+	display:none;
+}
+.module_form_settings .form_wizard > .buttons > .next {
+	float:right;
+	margin:0;
+}
+
+/* WORKFLOW */
 .module_form_settings #ui {
 	position:relative;
 }
@@ -80,1118 +280,15 @@
 .module_form_settings #ui > .taskflowchart > .tasks_flow {
 	right:135px;
 }
-.module_form_settings #ui > .taskflowchart > .tasks_menu > ul > li:nth-child(2) {
+.module_form_settings #ui > .taskflowchart > .tasks_menu > ul > li.tasks_group_disabled {
 	display:none;
+}
+.module_form_settings #ui > .taskflowchart > .tasks_menu .tasks_group_label {
+	padding-top:0;
+	border-top:0;
 }
 .module_form_settings #ui > .taskflowchart > .tasks_menu .tasks_group_label:hover:after {
 	display:none;
-}
-
-.module_form_settings #groups_flow > nav > a.open_form_wizard,
-  .module_form_settings #groups_flow > nav > a.add_form_group,
-  .module_form_settings #groups_flow > nav > a.collapse_form_groups,
-  .module_form_settings #groups_flow > nav > a.expand_form_groups {
-	cursor:pointer;
-}
-.module_form_settings #groups_flow > nav > a.collapse_form_groups,
-  .module_form_settings #groups_flow > nav > a.expand_form_groups {
-	margin-left:20px;
-}
-.module_form_settings #groups_flow > nav > a.open_form_wizard {
-	float:right;
-}
-.module_form_settings .form-group-default {
-	display:none;
-}
-.module_form_settings .form-group-item {
-	position:relative;
-}
-.module_form_settings .form-group-item:not(.collapsed) {
-	margin-bottom:90px;
-}
-.module_form_settings .form-group-item:last-child {
-	margin-bottom:0;
-}
-.module_form_settings .form-group-item:not(.form-group-default) {
-	margin-top:10px;
-	border:1px solid #ccc;
-}
-.module_form_settings .form-group-item:not(.collapsed):after {
-	text-rendering:auto;
-	-webkit-font-smoothing:antialiased;
-	font:var(--fa-font-solid);
-	content:"\f358";
-	
-	width:100%;
-	height:70px;
-	margin-top:10px;
-	display:block;
-	background-size:contain;
-	position:absolute;
-	font-size:70px;
-	text-align:center;
-	color:#ddd;
-}
-.module_form_settings .form-group-item:last-child:after {
-	display:none;
-}
-.module_form_settings .form-group-item.form-group-item-undefined {
-	opacity:.7;
-}
-.module_form_settings .form-group-item.form-group-item-undefined input,
-  .module_form_settings .form-group-item.form-group-item-undefined select,
-  .module_form_settings .form-group-item.form-group-item-undefined textarea {
-	background:#ccc;
-}
-.module_form_settings .form-group-item > .form-group-header {
-	padding:.5em;
-	background:#ddd;
-	position:relative;
-}
-.module_form_settings .form-group-item.form-group-item-undefined > .form-group-header {
-	background:#ccc;
-}
-.module_form_settings .form-group-item > .form-group-header > .result-var-name {
-	width:350px;
-	padding-left:5px;
-	background-color:#fff;
-	
-	/* bc of the loop and group sub-groups */
-	float:none;
-	display:inline;
-}
-.module_form_settings .form-group-item > .form-group-header > .result-var-name.result-var-name-output {
-	
-}
-.module_form_settings .form-group-item > .form-group-header > .action-type {
-	width:calc(100% - 480px);
-	min-width:200px;
-	margin-left:5px;
-}
-.module_form_settings .form-group-item > .form-group-header > .toggle {
-	margin:5px;
-	cursor:pointer;
-}
-.module_form_settings .form-group-item > .form-group-header > .remove,
-  .module_form_settings .form-group-item > .form-group-header > .move_up,
-  .module_form_settings .form-group-item > .form-group-header > .move_down {
-	margin:5px;
-	float:right;
-	cursor:pointer;
-	
-	/* bc of the loop and group sub-groups */
-	background:none;
-}
-.module_form_settings .form-group-item > .form-group-header > .move_up {
-	margin-left:5px;
-}
-.module_form_settings .form-groups > .form-group-item:nth-child(2) > .form-group-header > .move_up {
-	visibility: hidden;
-}
-.module_form_settings .form-groups > .form-group-item:last-child > .form-group-header > .move_down {
-	visibility: hidden;
-}
-.module_form_settings .form-group-item > .form-group-header > .toggle:hover,
-  .module_form_settings .form-group-item > .form-group-header > .remove:hover,
-  .module_form_settings .form-group-item > .form-group-header > .move_up:hover,
-  .module_form_settings .form-group-item > .form-group-header > .move_down:hover {
-	color:#000;
-}
-.module_form_settings .form-group-item > .form-group-header > .form-group-sub-header {
-	min-height:20px;
-	margin-top:.5em;
-	background:#ddd;
-	display:none;
-}
-.module_form_settings .form-group-item.form-group-item-undefined > .form-group-header > .form-group-sub-header {
-	background:#ccc;
-}
-.module_form_settings .form-group-item > .form-group-header > .form-group-sub-header > .condition-type {
-	width:360px;
-	margin-left:29px;
-}
-.module_form_settings .form-group-item > .form-group-header > .form-group-sub-header > .condition-value {
-	width:calc(100% - 490px);
-	min-width:200px;
-	margin-left:5px;
-	padding-left:5px;
-	display:none;
-}
-.module_form_settings .form-group-item > .form-group-header > .form-group-sub-header > .action-description {
-	width:100%;
-	min-height:40px;
-}
-.module_form_settings .form-group-item > .form-group-header > .form-group-sub-header > .action-description label {
-	font-size:80%;
-	color:#999;
-	float:right;
-	height:auto;
-	line-height:initial; /* reset line-heiht bc of the workflow: .selected_task_properties label */
-	opacity:.5;
-}
-.module_form_settings .form-group-item > .form-group-header > .form-group-sub-header > .action-description textarea {
-	width:100%;
-	height:30px;
-	display:block;
-	box-sizing:border-box;
-	font-size:80%;
-}
-.module_form_settings .form-group-item > .form-group-body {
-	padding:.5em;
-	display:none;
-}
-.module_form_settings .form-group-item > .form-group-body > section {
-	display:none;
-}
-
-.module_form_settings .selected_task_properties .opts .add_variable {
-	margin-left:-23px !important;
-}
-
-/* BROKER TASK HTML */
-.module_form_settings .selected_task_properties .broker-action-body .call_business_logic_task_html > div:not(.broker_method_obj) > .add_variable,
-  .module_form_settings .selected_task_properties .broker-action-body .call_ibatis_query_task_html > div:not(.broker_method_obj) > .add_variable,
-  .module_form_settings .selected_task_properties .broker-action-body .call_hibernate_method_task_html > div:not(.broker_method_obj) > .add_variable,
-  .module_form_settings .selected_task_properties .broker-action-body .call_hibernate_method_task_html > .service_method_args > div > .add_variable, 
-  .module_form_settings .selected_task_properties .broker-action-body .soap_connector_task_html .add_variable {
-	margin-left:-26px !important;
-}
-.module_form_settings .selected_task_properties .broker-action-body .call_hibernate_method_task_html > .service_method_args .sma_ids > .add_variable, 
-  .module_form_settings .selected_task_properties .broker-action-body .call_hibernate_method_task_html > .service_method_args .sma_statuses > .add_variable,
-  .module_form_settings .selected_task_properties .broker-action-body .call_object_method_task_html .method_name .add_variable,
-  .module_form_settings .selected_task_properties .broker-action-body .get_url_contents_task_html .add_variable,
-  .module_form_settings .selected_task_properties .broker-action-body .soap_connector_task_html .client_headers > ul > li > div > .add_variable,
-  .module_form_settings .selected_task_properties .broker-action-body .soap_connector_task_html .remote_function_args .add_variable,
-  .module_form_settings .selected_task_properties .broker-action-body .call_business_logic_task_html .array_items .add_variable.inline,
-  .module_form_settings .selected_task_properties .broker-action-body .call_ibatis_query_task_html .array_items .add_variable.inline,
-  .module_form_settings .selected_task_properties .broker-action-body .call_hibernate_method_task_html .array_items .add_variable.inline,
-  .module_form_settings .selected_task_properties .array-action-body.array_items .add_variable.inline {
-	margin-left:-22px !important;
-}
-.module_form_settings .selected_task_properties .broker-action-body .soap_connector_task_html .client_options .client_option .add_variable {
-	margin-left:-18px !important;
-}
-
-/* CREATE FORM TASK HTML */
-.module_form_settings .create_form_task_html {
-	margin:10px auto 0;
-}
-.module_form_settings .create_form_task_html .separate_input_from_result,
-   .module_form_settings .create_form_task_html .result,
-   .module_form_settings .create_form_task_html .task_property_exit {
-	display:none;
-}
-.module_form_settings .create_form_task_html .with_form {
-	margin-top:-25px !important;
-}
-.module_form_settings .create_form_task_html .form_action .add_variable.inline {
-	margin-left:-22px !important;
-}
-.module_form_settings .create_form_task_html .form_containers > .fields > .container {
-	background:white;
-}
-.module_form_settings .create_form_task_html .form_containers .fields .field {
-	background-color:transparent;
-	border:1px solid #CCC;
-	padding-top:5px;
-}
-.module_form_settings .selected_task_properties .form_containers .fields .field label {
-	font-style:normal;
-}
-.module_form_settings .selected_task_properties .form_containers .fields .field > .remove_field,
-   .module_form_settings .selected_task_properties .form_containers .fields .field > .minimize_field,
-   .module_form_settings .selected_task_properties .form_containers .fields .field > .move,
-   .module_form_settings .selected_task_properties .form_containers .fields .field > .move_up,
-   .module_form_settings .selected_task_properties .form_containers .fields .field > .move_down {
-	display:block;
-}
-.module_form_settings .selected_task_properties .form_containers .fields .field .class input {
-	width:160px;
-}
-.module_form_settings .selected_task_properties .form_containers .fields .field .input_src input {
-	width:539px;
-	padding-right:40px;
-}
-.module_form_settings .selected_task_properties .form_containers .tree .tree_props .default_input_data {
-	padding:0;
-}
-
-/* DATABASE TASK WORK FLOW HTML */
-.module_form_settings .database-action-body > header {
-	margin:5px auto;
-	text-align:center;
-}
-.module_form_settings .database-action-body > header > .dal-broker,
-  .module_form_settings .database-action-body > header > .db-driver,
-  .module_form_settings .database-action-body > header > .db-type {
-	margin:0 5px;
-	display:inline-block;
-}
-.module_form_settings .database-action-body.database-action-body-getinsertedid > header > .db-type,
-  .module_form_settings .database-action-body.database-action-body-getinsertedid > article {
-	display:none !important;
-}
-
-.module_form_settings .database-action-body > footer > .opts {
-	margin:10px auto;
-}
-.module_form_settings .database-action-body > footer > .opts .options_type {
-	float:none;
-	display:inline-block;
-	margin-bottom:0;
-}
-
-.module_form_settings .database-action-body .database-action-table {
-	text-align:center;
-	padding-top:10px;
-}
-.module_form_settings .database-action-body .database-action-table > .table {
-	display:inline-block;
-}
-.module_form_settings .database-action-body .database-action-table > .attributes,
-   .module_form_settings .database-action-body .database-action-table > .conditions {
-	text-align:left;
-	padding:10px;
-	display:none;
-}
-.module_form_settings .database-action-body .database-action-table > .attributes > label,
-   .module_form_settings .database-action-body .database-action-table > .conditions > label {
-	float:none;
-}
-.module_form_settings .database-action-body .database-action-table > .attributes li,
-   .module_form_settings .database-action-body .database-action-table > .conditions li {
-	width:50%;
-	margin-top:5px;
-	display:inline-block;
-	opacity:.5;
-}
-.module_form_settings .database-action-body .database-action-table > .attributes li:after,
-   .module_form_settings .database-action-body .database-action-table > .conditions li:after {
-	content:" ";
-	height:1px;
-	display:block;
-	float:none;
-	clear:both;
-}
-.module_form_settings .database-action-body .database-action-table > .attributes li.attr-activated,
-   .module_form_settings .database-action-body .database-action-table > .conditions li.attr-activated {
-	opacity:1;
-}
-.module_form_settings .database-action-body .database-action-table > .attributes li label,
-   .module_form_settings .database-action-body .database-action-table > .conditions li label {
-	width:100px;
-	margin-left:5px;
-	margin-right:5px;
-}
-.module_form_settings .database-action-body .database-action-table > .attributes li .attr-value:before,
-   .module_form_settings .database-action-body .database-action-table > .conditions li .attr-value:before {
-	content:" = ";
-}
-
-.module_form_settings .database-action-body .database-action-table > .conditions li .attr-name,
-   .module_form_settings .database-action-body.database-action-body-insert .database-action-table > .conditions,
-   .module_form_settings .database-action-body.database-action-body-delete .database-action-table > .attributes,
-   .module_form_settings .database-action-body.database-action-body-insert .database-action-table > .attributes li .attr-name,
-   .module_form_settings .database-action-body.database-action-body-update .database-action-table > .attributes li .attr-name,
-   .module_form_settings .database-action-body.database-action-body-select .database-action-table > .attributes li .attr-value {
-	display:none !important;
-}
-
-.module_form_settings .database-action-body .relationship {
-	width:690px;
-	margin:0 auto;
-	padding:0;
-	border:0;
-}
-.module_form_settings .database-action-body .relationship .query {
-	min-height:300px;
-	margin:0;
-	padding:0;
-}
-.module_form_settings .database-action-body .relationship .query .ui-tabs {
-	border:0;
-}
-.module_form_settings .database-action-body .relationship .query .taskflowchart {
-	width:100%;
-	height:275px !important;
-	margin:0;
-}
-.module_form_settings .database-action-body .relationship .query .taskflowchart .workflow_menu {
-	width:100%;
-	display:block !important;
-}
-.module_form_settings .database-action-body .relationship .query .taskflowchart .workflow_menu .toggle_ui {
-	display:none;
-}
-.module_form_settings .database-action-body .relationship .query .taskflowchart .jsplumbtaskworkflow {
-	width:100%;
-}
-.module_form_settings .database-action-body .relationship .query .taskflowchart .jsplumbtaskworkflow .task.task_query .info span:not(.icon) {
-	margin-top:-4px;
-	display:inline-block;
-}
-.module_form_settings .database-action-body .relationship .query .taskflowchart .jsplumbtaskworkflow .task.task_query .eps {
-	background:#fff;
-}
-.module_form_settings .database-action-body .relationship .query .query_settings .advanced_query_settings {
-	margin-top:177px;
-	font-size:inherit;
-	text-align:right;
-}
-.module_form_settings .database-action-body .relationship .query .query_settings .query_settings_tab {
-	border-top:1px solid #ccc;
-}
-.module_form_settings .database-action-body .relationship .query_settings_tab > table {
-	border:0;
-}
-.module_form_settings .database-action-body .relationship .query_settings_tab .fields .field td:not(.icon_cell) {
-	border-top:1px solid #eee;
-	border-right:1px solid #eee;
-}
-.module_form_settings .database-action-body .relationship .query_settings_tab .fields .field td input,
-  .module_form_settings .database-action-body .relationship .query_settings_tab .fields .field td select {
-	border:0;
-	background:transparent;
-}
-
-.module_form_settings .database-action-body .relationship.query_procedure .query .query_tabs .query_table_tab,
-  .module_form_settings .database-action-body .relationship.query_procedure .query .database-action-table {
-	display:none;
-}
-
-.module_form_settings .database-action-body .relationship .query_insert_update_delete .query_table {
-	width:270px;
-}
-.module_form_settings .database-action-body .relationship .query_insert_update_delete .query_table input {
-	padding-right:20px;
-}
-.module_form_settings .database-action-body .relationship .sub_limit_start {
-	width:100%;
-}
-.module_form_settings .database-action-body .relationship .limit_start .limit {
-	width:50%;
-	text-align:left;
-	box-sizing:border-box;
-	display:inline-block;
-}
-.module_form_settings .database-action-body .relationship .limit_start .start {
-	width:50%;
-	text-align:right;
-	box-sizing:border-box;
-	display:inline-block;
-}
-.module_form_settings .database-action-body .relationship .limit_start .limit label, 
-  .module_form_settings .database-action-body .relationship .limit_start .start label {
-	margin-left:5px;
-	display:inline-block;
-	float:none;
-}
-.module_form_settings .database-action-body .relationship .limit_start .limit input, 
-  .module_form_settings .database-action-body .relationship .limit_start .start input {
-	width:200px;
-	padding-right:20px;
-	display:inline-block;
-	float:none;
-}
-.module_form_settings .database-action-body .relationship .limit_start .limit .add_variable, 
-  .module_form_settings .database-action-body .relationship .limit_start .start .add_variable {
-	margin-top:5px;
-	color:#fff;
-}
-.module_form_settings .database-action-body .search {
-	margin:0;
-	float:none;
-	display:inline-block;
-	vertical-align:middle;
-}
-.module_form_settings .database-action-body .add_variable::before {
-	font-size:14px !important;
-}
-
-/* LAYOUT UI EDITOR */
-.module_form_settings .create_form_task_html .layout-ui-editor > .tabs {
-	font-size:8pt;
-}
-.module_form_settings .create_form_task_html .layout-ui-editor > .menu-settings select {
-	font-size:80%;
-}
-.module_form_settings .create_form_task_html .ptl_settings > .ptl_external_vars {
-	width:330px;
-}
-
-/* BROKERS PANELS */
-.module_form_settings .broker-action-body > div {
-	margin:0 auto;
-}
-.module_form_settings .broker-action-body > div:after {
-	content:" ";
-	height:1px;
-	display:block;
-	float:none;
-	clear:both;
-}
-
-/* MESSAGE PANEL */
-.module_form_settings .message-action-body {
-	margin:5px auto;
-}
-.module_form_settings .message-action-body > .message,
-  .module_form_settings .message-action-body > .redirect-url {
-	margin-top:5px;
-}
-.module_form_settings .message-action-body > .message:after,
-  .module_form_settings .message-action-body > .redirect-url:after {
-	content:" ";
-	height:1px;
-	display:block;
-	float:none;
-	clear:both;
-}
-.module_form_settings .message-action-body > .message label,
-  .module_form_settings .message-action-body > .redirect-url label {
-	width:100px;
-}
-.module_form_settings .message-action-body > .message input,
-  .module_form_settings .message-action-body > .redirect-url input {
-	width:282px;
-	width:calc(100% - 133px);
-	padding-right:20px;
-}
-.module_form_settings .message-action-body > .redirect-url .search {
-	margin:-3px 0 auto -18px;
-}
-.module_form_settings .message-action-body > .redirect-url .search::before {
-	font-size:16px;
-}
-
-/* REDIRECT PANEL */
-.module_form_settings .redirect-action-body > .search {
-	margin:-3px 0 auto -16px !important;
-}
-
-/* RECORD PANEL */
-.module_form_settings .records-action-body {
-	margin:5px auto;
-}
-.module_form_settings .records-action-body > .records-variable-name,
-  .module_form_settings .records-action-body > .index-variable-name {
-	margin-top:5px;
-}
-.module_form_settings .records-action-body > .records-variable-name:after,
-  .module_form_settings .records-action-body > .index-variable-name:after {
-	content:" ";
-	height:1px;
-	display:block;
-	float:none;
-	clear:both;
-}
-.module_form_settings .records-action-body > .records-variable-name label,
-  .module_form_settings .records-action-body > .index-variable-name label {
-	width:160px;
-}
-.module_form_settings .records-action-body > .records-variable-name input,
-  .module_form_settings .records-action-body > .index-variable-name input {
-	width:280px;
-	width:calc(100% - 200px);
-	padding-right:20px;
-}
-
-/* CODE PANEL */
-.module_form_settings .code-action-body textarea,
-  .module_form_settings .code-action-body .ace_editor {
-	width:100%;
-	height:200px;
-}
-
-/* VARIABLE AND STRING PANELS */
-.module_form_settings .redirect-action-body,
-  .module_form_settings .string-action-body,
-  .module_form_settings .variable-action-body,
-  .module_form_settings .sanitize-variable-action-body,
-  .module_form_settings .list-report-action-body,
-  .module_form_settings .call-block-action-body,
-  .module_form_settings .include-file-action-body,
-  .module_form_settings .draw-graph-action-body {
-	margin:5px auto;
-	text-align:center;
-}
-.module_form_settings .redirect-action-body:after,
-  .module_form_settings .string-action-body:after,
-  .module_form_settings .variable-action-body:after,
-  .module_form_settings .sanitize-variable-action-body:after,
-  .module_form_settings .list-report-action-body:after,
-  .module_form_settings .call-block-action-body:after,
-  .module_form_settings .include-file-action-body:after,
-  .module_form_settings .draw-graph-action-body:after {
-	content:" ";
-	height:1px;
-	display:block;
-	float:none;
-	clear:both;
-}
-.module_form_settings .redirect-action-body > label,
-  .module_form_settings .string-action-body > label,
-  .module_form_settings .string-action-body > input,
-  .module_form_settings .string-action-body > span,
-  .module_form_settings .redirect-action-body > input,
-  .module_form_settings .variable-action-body > label,
-  .module_form_settings .variable-action-body > input,
-  .module_form_settings .variable-action-body > span,
-  .module_form_settings .sanitize-variable-action-body > label,
-  .module_form_settings .sanitize-variable-action-body > input,
-  .module_form_settings .sanitize-variable-action-body > span,
-  .module_form_settings .list-report-action-body > div > label,
-  .module_form_settings .list-report-action-body > div > input,
-  .module_form_settings .list-report-action-body > div > span,
-  .module_form_settings .list-report-action-body > div > select,
-  .module_form_settings .call-block-action-body > div > label,
-  .module_form_settings .call-block-action-body > div > input,
-  .module_form_settings .call-block-action-body > div > span,
-  .module_form_settings .call-block-action-body > div > select,
-  .module_form_settings .include-file-action-body > div > label,
-  .module_form_settings .include-file-action-body > div > input,
-  .module_form_settings .draw-graph-action-body > .draw-graph-settings div > label,
-  .module_form_settings .draw-graph-action-body > .draw-graph-settings div > input,
-  .module_form_settings .draw-graph-action-body > .draw-graph-settings div > select,
-  .module_form_settings .draw-graph-action-body > .draw-graph-settings div > span,
-  .module_form_settings .draw-graph-action-body > .draw-graph-settings .graph-data-sets span {
-	display:inline-block;
-	float:none;
-	clear:both;
-}
-.module_form_settings .string-action-body > span,
-  .module_form_settings .variable-action-body > span,
-  .module_form_settings .sanitize-variable-action-body > span,
-  .module_form_settings .list-report-action-body > div > span,
-  .module_form_settings .call-block-action-body > div > span,
-  .module_form_settings .draw-graph-action-body > .draw-graph-settings div > span,
-  .module_form_settings .draw-graph-action-body > .draw-graph-settings .graph-data-sets span {
-	vertical-align:middle;
-}
-
-.module_form_settings .string-action-body > input,
-  .module_form_settings .variable-action-body > input,
-  .module_form_settings .sanitize-variable-action-body > input {
-	padding-right:20px;
-}
-
-/* REDIRECT PANEL */
-.module_form_settings .redirect-action-body > input {
-	width:100%;
-	width:calc(100% - 128px);
-	padding-right:20px;
-}
-.module_form_settings .redirect-action-body > label {
-	width:90px;
-	text-align:left;
-}
-
-/* LIST REPORT PANEL */
-.module_form_settings .list-report-action-body > div:not(.info) {
-	width:350px;
-	margin:0 auto 5px auto;
-	text-align:left;
-}
-.module_form_settings .list-report-action-body > div.info {
-	text-align:center;
-	color:#999;
-}
-.module_form_settings .list-report-action-body > div > label {
-	width:120px;
-}
-.module_form_settings .list-report-action-body > .doc_name > input,
-  .module_form_settings .list-report-action-body > .variable > input {
-	padding-right:20px;
-}
-
-/* CALL BLOCK PANEL */
-.module_form_settings .call-block-action-body > div {
-	text-align:left;
-	margin-top:5px;
-}
-.module_form_settings .call-block-action-body > .block > input {
-	width:100%;
-	width:calc(100% - 170px);
-	padding-right:20px;
-}
-.module_form_settings .call-block-action-body > .project > select {
-	width:100%;
-	width:calc(100% - 148px);
-	box-sizing:content-box;
-}
-.module_form_settings .call-block-action-body > .block > label,
-  .module_form_settings .call-block-action-body > .project > label {
-	width:120px;
-}
-.module_form_settings .call-block-action-body > .block > .search {
-	margin-top:-3px;
-}
-
-/* INCLUDE FILE PANEL */
-.module_form_settings .include-file-action-body > input.path {
-	width:100%;
-	width:calc(100% - 155px);
-}
-.module_form_settings .include-file-action-body > input.once {
-	margin:2px 0 0 10px;
-}
-.module_form_settings .include-file-action-body > label {
-	width:100px;
-	text-align:left;
-}
-.module_form_settings .include-file-action-body > .search_page_url {
-	margin:-3px 0 auto -45px !important;
-}
-
-/* DRAW GRAPH PANEL */
-.module_form_settings .draw-graph-action-body {
-	text-align:left;
-	border:0;
-}
-.module_form_settings .draw-graph-action-body > .info {
-	margin:0 20px 20px;
-	text-align:center;
-}
-.module_form_settings .draw-graph-action-body > .info a {
-	color:#33AADD;
-}
-.module_form_settings .draw-graph-action-body > .draw-graph-settings div {
-	margin-top:5px;
-}
-.module_form_settings .draw-graph-action-body > .draw-graph-settings input {
-	width:100%;
-	width:calc(100% - 203px);
-}
-.module_form_settings .draw-graph-action-body > .draw-graph-settings .labels-and-values-type select {
-	max-width:calc(100% - 203px);
-}
-.module_form_settings .draw-graph-action-body > .draw-graph-settings .graph-width input,
-  .module_form_settings .draw-graph-action-body > .draw-graph-settings .graph-height input,
-  .module_form_settings .draw-graph-action-body > .draw-graph-settings .border-width input {
-	width:100px;
-}
-.module_form_settings .draw-graph-action-body > .draw-graph-settings label {
-	width:160px;
-	text-align:left;
-}
-.module_form_settings .draw-graph-action-body > .draw-graph-settings .graph-data-sets > label {
-	margin-top:20px;
-	font-weight:700;
-}
-.module_form_settings .draw-graph-action-body > .draw-graph-settings .graph-data-sets > label .icon {
-	display:inline-block;
-	float:none;
-	clear:both;
-	vertical-align:middle;
-}
-.module_form_settings .draw-graph-action-body > .draw-graph-settings .graph-data-sets > ul > li {
-	margin-top:10px;
-	padding:10px;
-	border:1px solid #ccc;
-	border-radius:3px;
-	background:#f7f7f7;
-	position:relative;
-}
-.module_form_settings .draw-graph-action-body > .draw-graph-settings .graph-data-sets > ul > li:first-child > .icon.delete {
-	display:none;
-}
-.module_form_settings .draw-graph-action-body > .draw-graph-settings .graph-data-sets > ul > li > .icon.delete {
-	position:absolute;
-	top:5px;
-	right:0;
-}
-.module_form_settings .draw-graph-action-body > .draw-graph-settings .graph-data-sets .other-options {
-	margin-top:10px;
-}
-.module_form_settings .draw-graph-action-body > .draw-graph-settings .graph-data-sets .other-options li {
-	margin:5px 0 0;
-	padding:0;
-}
-.module_form_settings .draw-graph-action-body > .draw-graph-settings .graph-data-sets .other-options li input {
-	width:160px;
-	height:20px;
-	padding-right:20px;
-	box-sizing:border-box;
-	display:inline-block;
-	float:none;
-	clear:both;
-}
-.module_form_settings .draw-graph-action-body > .draw-graph-settings .graph-data-sets .other-options li input.option-value {
-	width:calc(100% - 197px);
-	height:20px;
-}
-.module_form_settings .draw-graph-action-body > .draw-graph-settings .graph-data-sets .other-options li .add_variable {
-	margin-left:-23px;
-}
-.module_form_settings .draw-graph-action-body > .draw-graph-settings .graph-data-sets .other-options li .icon.delete {
-	margin-right:0;
-}
-
-.module_form_settings .draw-graph-action-body > .draw-graph-js-code textarea,
-  .module_form_settings .draw-graph-action-body > .draw-graph-js-code .ace_editor {
-	width:100%;
-	height:200px;
-}
-
-/* FORM WIZARD */
-.module_form_settings .form-wizard {
-	width:90%;
-	width:90vw;
-	min-height:90%;
-	min-height:90vh;
-	height:auto !important;
-	background:#fff;
-	z-index:9999;
-}
-
-.module_form_settings .form-wizard > .steps {
-	margin:20px 0 40px 0;
-}
-.module_form_settings .form-wizard > .steps > .step {
-	text-align:center;
-	display:none;
-}
-.module_form_settings .form-wizard > .steps > .step.panel-type-selection > .form-type,
-  .module_form_settings .form-wizard > .steps > .step.table-selection > .dal-broker,
-  .module_form_settings .form-wizard > .steps > .step.table-selection > .db-driver,
-  .module_form_settings .form-wizard > .steps > .step.table-selection > .db-type {
-	opacity:.5;
-	background:#fff;
-}
-.module_form_settings .form-wizard > .steps > .step.table-selection > .clear {
-	margin-top: 20px;
-}
-.module_form_settings .form-wizard > .steps > .step.table-selection > .toggle-table-options {
-	margin-top:10px;
-	display:block;
-	text-align:center;
-}
-.module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .attributes,
-   .module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .conditions {
-	text-align:left;
-	margin-top:10px;
-	padding:10px;
-}
-.module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .attributes > label,
-   .module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .conditions > label {
-	display:block;
-}
-.module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .attributes li,
-   .module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .conditions li {
-	width:50%;
-	margin-top:5px;
-	display:inline-block;
-	opacity:.5;
-}
-.module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .attributes li:after,
-   .module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .conditions li:after {
-	content:" ";
-	height:1px;
-	display:block;
-	float:none;
-	clear:both;
-}
-.module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .attributes li.attr-activated,
-   .module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .conditions li.attr-activated {
-	opacity:1;
-}
-.module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .attributes li label,
-   .module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .conditions li label {
-	width:100px;
-	margin-left:5px;
-	margin-right:5px;
-	display:inline-block;
-}
-.module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .attributes li .attr-value,
-  .module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .conditions li .attr-name {
-	display:none;
-}
-.module_form_settings .form-wizard > .steps > .step.table-selection > .table-options > .conditions li label:after {
-	content:" = ";
-	float:right;
-}
-
-.module_form_settings .form-wizard > .steps > .step.actions-selection > label {
-	margin-bottom:20px;
-	display:block;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection > .multiple-actions {
-	margin-top:20px;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action {
-	opacity:.5;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action.action-activated {
-	opacity:1;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action.action-multiple-insert-update {
-	display:none;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action.action-links {
-	margin-top:20px;
-	padding:10px;
-	border-top:1px solid #ccc;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action > .toggle {
-	margin-top:3px;
-	position:absolute;
-	display:none;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action.action-activated > .toggle {
-	display:inline-block;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action > label {
-	width:100px;
-	display:inline-block;
-	text-align:left;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action > input {
-	vertical-align:top;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action > .action-options {
-	width:430px;
-	margin:10px auto;
-	border:1px solid #ccc;
-	display:none;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action.action-links > .action-options {
-	width:620px;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action > .action-options > .action-option {
-	padding:10px;
-	text-align:left;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action > .action-options > .action-option > ul label {
-	width:100px;
-	display:inline-block;
-	color:#999;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action > .action-options > .action-option > ul input {
-	width:300px;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action > .action-options > .action-option.ajax-url {
-	display:none;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action > .action-options > .action-option.action-links > .add {
-	float:none;
-	display:inline-block;
-	vertical-align:middle;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action > .action-options > .action-option.action-links > .action-link {
-	margin-top:5px;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action > .action-options > .action-option.action-links > .action-link > .action-link-url {
-	width:300px;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action > .action-options > .action-option.action-links > .action-link > .action-link-class {
-	width:100px;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action > .action-options > .action-option.action-links > .action-link > .action-link-title {
-	width:150px;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action > .action-options > .action-option.action-links > .action-link > .delete {
-	float:none;
-	display:inline-block;
-	vertical-align:middle;
-}
-.module_form_settings .form-wizard > .steps > .step.actions-selection .action > .action-options > .action-option.action-links > .action-link:nth-of-type(2) > .delete {
-	display:none;
-}
-
-.module_form_settings .form-wizard > .steps > .step.create-selection > label {
-	margin-bottom:10px;
-	display:block;
-}
-.module_form_settings .form-wizard > .steps > .step.create-selection > input {
-	margin:10px;
-}
-.module_form_settings .form-wizard > .steps > .step.create-selection > input:disabled {
-	background:#ccc;
-	border:1px solid #c0c0c0;
-}
-
-.module_form_settings .form-wizard > .buttons {
-    width:auto;
-    position:absolute;
-    bottom:20px;
-    left:20px;
-    right:20px;
-}
-.module_form_settings .form-wizard > .buttons > .previous {
-	float:left;
-	display:none;
-}
-.module_form_settings .form-wizard > .buttons > .next {
-	float:right;
-	margin:0;
-}
-
-
-/* CHECK LOGGED USER PERMISSIONS PANELS */
-.module_form_settings .check-logged-user-permissions-action-body {
-	text-align:center;
-}
-.module_form_settings .check-logged-user-permissions-action-body .all-permissions-checked,
-   .module_form_settings .check-logged-user-permissions-action-body .logged-user-id {
-	margin:20px 0 0;
-}
-.module_form_settings .check-logged-user-permissions-action-body .all-permissions-checked label,
-   .module_form_settings .check-logged-user-permissions-action-body .logged-user-id label {
-	display:inline-block;
-	float:none;
-	vertical-align:middle;
-}
-.module_form_settings .check-logged-user-permissions-action-body .all-permissions-checked input {
-	margin:0 5px 0 0;
-	display:inline-block;
-	float:none;
-}
-.module_form_settings .check-logged-user-permissions-action-body .logged-user-id input {
-	width:200px;
-	margin:0 0 0 5px;
-	padding-right:20px;
-	display:inline-block;
-	float:none;
-}
-.module_form_settings .check-logged-user-permissions-action-body .users-perms {
-	margin:20px 0 0;
-}
-.module_form_settings .check-logged-user-permissions-action-body .users-perms table {
-	margin:0 auto;
-}
-.module_form_settings .check-logged-user-permissions-action-body .users-perms table .user-type-id,
-   .module_form_settings .check-logged-user-permissions-action-body .users-perms table .activity-id {
-	min-width:115px;
-	text-align:center;
-}
-.module_form_settings .check-logged-user-permissions-action-body .users-perms table select {
-	min-width:calc(100% - 6px);
-	margin:3px;
-}
-
-/* LOOP PANELS */
-.module_form_settings .loop-action-body {
-	margin:-.5em;
-	padding:.5em;
-	background:#f7f7f7;
-}
-.module_form_settings .loop-action-body .loop-action-body {
-	background:#eee;
-}
-.module_form_settings .loop-action-body .loop-action-body .loop-action-body {
-	background:#f7f7f7;
-}
-.module_form_settings .loop-action-body .loop-action-body .loop-action-body .loop-action-body {
-	background:#eee;
-}
-.module_form_settings .loop-action-body .loop-action-body .loop-action-body .loop-action-body .loop-action-body {
-	background:#f7f7f7;
-}
-.module_form_settings .loop-action-body:after {
-	content:" ";
-	height:1px;
-	display:block;
-	float:none;
-	clear:both;
-}
-.module_form_settings .loop-action-body > header {
-	margin-bottom:30px;
-}
-.module_form_settings .loop-action-body > header > a {
-	margin:0 10px 10px 0;
-	text-align:right;
-	display:block;
-	cursor:pointer;
-}
-.module_form_settings .loop-action-body > header > div {
-	margin-bottom:5px;
-	text-align:center;
-}
-.module_form_settings .loop-action-body > header > div > label,
-  .module_form_settings .loop-action-body > header > div > input {
-	display:inline-block;
-	float:none;
-	clear:both;
-}
-.module_form_settings .loop-action-body > header > div > label {
-	width:170px;
-	text-align:left;
-}
-.module_form_settings .loop-action-body > header > div > input {
-	width:100%;
-	width:calc(100% - 210px);
-	padding-right:20px;
-}
-.module_form_settings .loop-action-body > .form-sub-groups > .form-group-item > .form-group-body {
-	background:#fff;
-}
-
-/* GROUP PANELS */
-.module_form_settings .group-action-body {
-	margin:-.5em;
-	padding:.5em;
-	background:#f7f7f7;
-}
-.module_form_settings .group-action-body .group-action-body {
-	background:#eee;
-}
-.module_form_settings .group-action-body .group-action-body .group-action-body {
-	background:#f7f7f7;
-}
-.module_form_settings .group-action-body .group-action-body .group-action-body .group-action-body {
-	background:#eee;
-}
-.module_form_settings .group-action-body .group-action-body .group-action-body .group-action-body .group-action-body {
-	background:#f7f7f7;
-}
-.module_form_settings .group-action-body:after {
-	content:" ";
-	height:1px;
-	display:block;
-	float:none;
-	clear:both;
-}
-.module_form_settings .group-action-body > header {
-	margin-bottom:30px;
-}
-.module_form_settings .group-action-body > header > a {
-	margin:0 10px 10px 0;
-	text-align:right;
-	display:block;
-	cursor:pointer;
-}
-.module_form_settings .group-action-body > header > span {
-	float:left;
-	color:#666;
- }
-.module_form_settings .group-action-body > header > div {
-	margin-bottom:5px;
-	text-align:center;
-	clear:both;
-}
-.module_form_settings .group-action-body > header > div > label,
-  .module_form_settings .group-action-body > header > div > input {
-	display:inline-block;
-	float:none;
-	clear:both;
-}
-.module_form_settings .group-action-body > header > div > label {
-	width:100px;
-	text-align:left;
-}
-.module_form_settings .group-action-body > header > div > input {
-	width:100%;
-	width:calc(100% - 140px);
-	padding-right:20px;
-}
-.module_form_settings .group-action-body > .form-sub-groups > .form-group-item > .form-group-body {
-	background:#fff;
-}
-
-/* WORKFLOW */
-.module_form_settings .jsplumbtaskworkflow .form-group-item > .form-group-body.selected_task_properties {
-	position:initial !important;
-	max-height:none;
 }
 .module_form_settings .workflow_message {
 	position:absolute;
@@ -1200,13 +297,12 @@
 	height:auto;
 	font-size:100%;
 }
-
-/* WORKFLOW - TASKS */
-.module_form_settings .taskflowchart .jsplumbtaskworkflow .form-group-item > .form-group-body.selected_task_properties .loop-action-body > header > a,
-  .module_form_settings .taskflowchart .jsplumbtaskworkflow .form-group-item > .form-group-body.selected_task_properties .group-action-body > header > a {
-	display:none;
+.module_form_settings .sla_group_item > .sla_group_body.selected_task_properties {
+	position:initial !important;
+	max-height:none;
 }
 
+/* WORKFLOW - TASKS */
 .module_form_settings .taskflowchart.with_top_bar_menu .tasks_menu.task_properties_shown, 
   .module_form_settings .taskflowchart.with_top_bar_menu .tasks_menu_hide.task_properties_shown, 
   .module_form_settings .taskflowchart.with_top_bar_menu .tasks_flow.task_properties_shown, 
@@ -1228,29 +324,46 @@
   .module_form_settings .taskflowchart.fixed_properties .selected_connection_properties {
 	z-index:999999 !important;
 }
-.module_form_settings .taskflowchart.fixed_properties .selected_task_properties > .resize_properties_panel .button, 
+/*.module_form_settings .taskflowchart.fixed_properties .selected_task_properties > .resize_properties_panel .button, 
   .module_form_settings .taskflowchart.fixed_properties .selected_connection_properties .resize_properties_panel .button {
 	margin:0;
-}
+}*/
 .module_form_settings .taskflowchart.fixed_properties .selected_task_properties > .toggle_properties_side_icon, 
   .module_form_settings .taskflowchart.fixed_properties .selected_connection_properties .toggle_properties_side_icon {
 	display:none;
+}
+.module_form_settings .taskflowchart.fixed_properties .selected_task_properties > .content, 
+  .module_form_settings .taskflowchart.fixed_properties .selected_connection_properties .content {
+	padding:10px 15px 15px;
 }
 .module_form_settings .taskflowchart.fixed_properties .selected_task_properties > .generic_buttons, 
   .module_form_settings .taskflowchart.fixed_properties .selected_connection_properties .generic_buttons {
 	right:55px;
 }
-.module_form_settings .taskflowchart.fixed_properties .selected_task_properties .form-group-item {
+.module_form_settings .taskflowchart.fixed_properties .selected_task_properties .sla_group_item {
 	margin-bottom:0;
 }
-.module_form_settings .taskflowchart.fixed_properties .selected_task_properties .form-group-item:after {
+.module_form_settings .taskflowchart.fixed_properties .selected_task_properties .sla_group_item:after {
 	display:none;
 }
-.module_form_settings .taskflowchart.fixed_properties .selected_task_properties .form-group-item .selected_task_properties {
+.module_form_settings .taskflowchart.fixed_properties .selected_task_properties .sla_group_item .selected_task_properties {
 	height:auto !important;
 	position:relative !important;
 }
-.module_form_settings .taskflowchart.fixed_properties .selected_task_properties .form-group-item .selected_task_properties::before,
-  .module_form_settings .taskflowchart.fixed_properties .selected_task_properties .form-group-item .selected_connection_properties::before {
+.module_form_settings .taskflowchart.fixed_properties .selected_task_properties .sla_group_item .selected_task_properties::before,
+  .module_form_settings .taskflowchart.fixed_properties .selected_task_properties .sla_group_item .selected_connection_properties::before {
 	display:none;
 }
+
+.module_form_settings .taskflowchart .sla_group_item > .sla_group_body.selected_task_properties .loop_action_body > header,
+  .module_form_settings .taskflowchart .sla_group_item > .sla_group_body.selected_task_properties .group_action_body > header {
+	margin-bottom:0;
+}
+.module_form_settings .taskflowchart .sla_group_item > .sla_group_body.selected_task_properties .loop_action_body > header > a,
+  .module_form_settings .taskflowchart .sla_group_item > .sla_group_body.selected_task_properties .group_action_body > header > a {
+	display:none;
+}
+.module_form_settings .taskflowchart .sla_group_item > .sla_group_body.selected_task_properties .create_form_task_html .layout-ui-editor:not(.full-screen) > .tabs {
+	background:var(--main-settings-bg);
+}
+

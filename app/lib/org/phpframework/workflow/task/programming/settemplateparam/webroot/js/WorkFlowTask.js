@@ -27,7 +27,7 @@ var SetTemplateParamTaskPropertyObj = {
 		var task_html_elm = $(properties_html_elm).find(".set_template_param_task_html");
 		
 		if (typeof ProgrammingTaskUtil.on_programming_task_choose_page_url_callback == "function")
-			task_html_elm.find(".value .search").css("display", "inline-block");
+			task_html_elm.addClass("with_search");
 		
 		BrokerOptionsUtilObj.initFields(task_html_elm.find(".broker_method_obj"), SetTemplateParamTaskPropertyObj.brokers_options, task_property_values["method_obj"]);
 		

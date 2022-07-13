@@ -23,21 +23,22 @@
 }
 .choose_available_template_popup.with_title .choose_different_editor,
   .choose_available_template_popup.with_title .install_template {
-	height:27px;
 	display:inline-block;
 	position:absolute;
-	top:12px;
+	top:7px;
 	right:50px;
 	font-size:11px;
 	cursor:pointer;
+	background:#8CA9FF;
+	border-color:#8CA9FF;
 }
 .choose_available_template_popup.with_title > .choose_different_editor {
 	left:auto;
 	right:175px;
 }
-.choose_available_template_popup.with_title > .choose_different_editor:not(:hover) {
-	background-color:#fff;
-	border:1px solid var(--icon-folder-color);
+.choose_available_template_popup.with_title .choose_different_editor:hover,
+  .choose_available_template_popup.with_title .install_template:hover {
+	opacity:.9;
 }
 .choose_available_template_popup > .choose_different_editor .icon {
 	color:inherit;
@@ -45,7 +46,7 @@
 
 /* TEMPLATE POPUPS - choose_available_template_popup - content */
 .choose_available_template_popup > .content {
-	padding:0 10px 20px;
+	padding:0 15px 15px;
 	position:absolute;
 	top:60px;
 	left:0;
@@ -125,6 +126,9 @@
 }
 .choose_available_template_popup > .content .current_template_folder .path_parts:hover {
 	color:var(--icon-hover-color);
+}
+.choose_available_template_popup > .content .current_template_folder .path_parts:last-child {
+	font-weight:bold;
 }
 .choose_available_template_popup > .content .current_template_folder .path_parts:not(:last-child):not(.path_part_project) {
 	margin-right:5px;

@@ -109,8 +109,10 @@ function getMenuWidgetsHTML($widgets, $widgets_root_path, $widgets_root_url, $we
 		//prepare widgets html
 		foreach ($widgets as $name => $sub_files) {
 			if (is_array($sub_files)) { //is menu group
+				$group_class = "group-" . strtolower(str_replace(array(" ", "_"), "-", $name));
+				
 				$groups_html .= '
-				<li class="group group-open">
+				<li class="group ' . $group_class . ' group-open">
 					<div class="group-title"><i class="zmdi zmdi-caret-down toggle"></i>' . ucwords(str_replace("_", " ", $name)) . '</div>
 					<ul>';
 				

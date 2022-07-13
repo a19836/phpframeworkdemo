@@ -35,8 +35,8 @@ body,
 }
 .modules_list .install {
 	position:fixed;
-	top:12px;
-	right:5px;
+	top:7px;
+	right:15px;
 	z-index:2;
 }
 .modules_list .install button {
@@ -65,11 +65,13 @@ body,
 	word-wrap:break-word;
 }
 .modules_list table .group {
-	width:10px;
-	padding:5px 0 3px 10px;
+	width:15px;
+	min-width:15px;
+	padding:5px 0 3px 15px;
 	border-right:0;
 	float:none;
 	clear:left;
+	box-sizing:border-box;
 }
 .modules_list table td.group {
 	border-top:1px solid #ccc;
@@ -86,7 +88,6 @@ body,
 }
 .modules_list table .status {
 	width:60px;
-	text-align:center;
 	border-left:0;
 }
 .modules_list table .status span {

@@ -15,10 +15,16 @@
 	
 	--link-color:#4070FF;
 	
+	--main-scrollbar-thumb-bg:#83889E;
+	
 	/* used in icons.css */
 	--icon-font-size:14px;
-	--icon-hover-color:#FC3C44;
+	--icon-hover-color:#8CA9FF;
 	--icon-active-color:#4070FF;
+	
+	--info-label-tooltip-border:#BFC4DB;
+	--info-label-tooltip-bg:var(--main-template-bg);
+	--info-label-tooltip-color:var(--main-template-color);
 }
 :root,
   .light_theme {
@@ -29,13 +35,15 @@
 	--main-iframe-bg:#F0F1F5;
 	--main-iframe-color:var(--main-template-color);
 	
-	--main-popup-header-bg:var(--main-iframe-bg);
-	--main-popup-header-color:var(--main-iframe-color);
+	--main-popup-header-bg:var(--icon-active-color);
+	--main-popup-header-color:#fff;
 	
+	--main-context-menu-triangle-border:#AAA;
 	--main-context-menu-border:#CCC;
 	--main-context-menu-bg:#FFF;
 	--main-context-menu-color:#585B69;
-	--main-context-menu-hover-bg:#F8F9FC;
+	--main-context-menu-hover-bg:#4070FF;
+	--main-context-menu-hover-color:#FFF;
 	
 	--main-settings-bg:var(--main-template-bg);/*#DFE1ED*/
 	--main-settings-color:var(--main-template-color);
@@ -60,6 +68,7 @@
 	--main-context-menu-bg:#FFF;
 	--main-context-menu-color:#585B69;
 	--main-context-menu-hover-bg:#ddd;
+	--main-context-menu-hover-color:#585B69;
 	
 	--main-settings-bg:var(--main-template-bg);
 	--main-settings-color:var(--main-template-color);
@@ -75,6 +84,8 @@ body {
 	font-size:8pt;
 	margin: 0;
 	height:100%;
+	
+	overflow:overlay; /* The scrollbar will then also take transparent backgrounds across the page. This will also put the scrollbar inside the page instead of removing some of the width to put in the scrollbar.However the overlay value is now deprecated and only works in Chrome and Safari anymore. */
 }
 body:not(.in_popup) {
 	background:var(--main-iframe-bg, #DFE1ED);
@@ -201,24 +212,20 @@ input[type=submit],
 	-ms-user-select: none;
 	user-select: none;
 	border: 1px solid transparent;
-	padding: 0.375rem 0.75rem;
+	padding:10px 15px;
 	letter-spacing:0.2px;
 	border-radius: 0.2rem;
 	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 	
-	/*background-color:#FAB12B;*/
-	background-color:#DFE1ED;
-	color:#000;
+	background-color:#4070FF;
+	color:#fff;
 	
 }
 input[type=submit]:hover, 
   input[type=button]:hover, 
   button:hover {
-	color:#212529;
-	/*background-color:#edb200;*/
-	background-color:#c8cad5;
-	/*border-color:#d39e00;*/
-	border-color:#aaa;
+	background-color:#4070ffdd;
+	border-color:#4070ff;
 }
 input[type=submit]:focus, 
   input[type=button]:focus, 
@@ -234,30 +241,25 @@ input[type=submit]:not(:disabled),
 }
 
 /* SCROLLBARS */
-    /* Let's get this party started */
 ::-webkit-scrollbar {
-	width:5px;
-	height:5px;
-	background-color:transparent;
+	width:10px;
+	height:10px;
+	background:transparent;
 }
- 
-    /* Track */
 ::-webkit-scrollbar-track {
-	-webkit-border-radius:5px;
+	/*-webkit-border-radius:5px;
 	border-radius:5px;
-	-webkit-box-shadow:inset 0 0 6px rgba(0,0,0, 0); 
-	background-color:transparent;
+	-webkit-box-shadow:inset 0 0 6px rgba(0,0,0, 0);*/
+	background:transparent;
 }
- 
-    /* Handle */
 ::-webkit-scrollbar-thumb {
-    -webkit-border-radius:5px;
-    border-radius:5px;
-    background:rgba(0,0,0,0.2);
-    /*-webkit-box-shadow:inset 0 0 6px rgba(250,250,250,0.8);*/
-}
-::-webkit-scrollbar-thumb:hover {
-    background:rgba(0,0,0,0.5);
+	background:var(--main-scrollbar-thumb-bg);
+	/*-webkit-box-shadow:inset 0 0 6px rgba(250,250,250,0.8);*/
+	
+	background-clip:padding-box;
+	border:2px solid transparent;
+	border-radius:9999px;
+	-webkit-box-shadow:0 0px 1px rgba(250,250,250,0.8);
 }
 ::-webkit-scrollbar-thumb:window-inactive {
 	/*background:rgba(0,0,0,0.35);*/
