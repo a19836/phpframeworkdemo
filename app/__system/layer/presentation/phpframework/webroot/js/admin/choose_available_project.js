@@ -132,14 +132,19 @@ function selectAvailableProject(project_id, originalEvent) {
 		if (win)
 			win.focus();
 	}
-	else if (is_popup) { //if is popup
-		if (typeof window.parent.MyFancyPopupProjects != "undefined" && window.parent.MyFancyPopupProjects.settings && typeof window.parent.MyFancyPopupProjects.settings.goTo == "function")
-			window.parent.MyFancyPopupProjects.settings.goTo(url, originalEvent);
-		else
-			window.parent.document.location = url;
+	else {
+		var selected_admin_home_project_page_url = admin_home_project_page_url.replace("#filter_by_layout#", layer_bean_folder_name + "/" + project_id);
+		MyJSLib.CookieHandler.setCookie('default_page', selected_admin_home_project_page_url, 0, "/"); //save cookie with url, so when we refresh the browser, the admin right panel contains the project home page
+		
+		if (is_popup) { //if is popup
+			if (typeof window.parent.MyFancyPopupProjects != "undefined" && window.parent.MyFancyPopupProjects.settings && typeof window.parent.MyFancyPopupProjects.settings.goTo == "function")
+				window.parent.MyFancyPopupProjects.settings.goTo(url, originalEvent);
+			else
+				window.parent.document.location = url;
+		}
+		else //if is current window
+			document.location = url;
 	}
-	else //if is current window
-		document.location = url;
 }
 
 function getAvailableProjectsConvertedWithFolders(layer_projects, folder_to_filter) {

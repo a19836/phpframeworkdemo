@@ -49,15 +49,6 @@
 .selected_task_properties > .popup_close:hover, .selected_connection_properties > .popup_close:hover {
 	opacity:1;
 }
-.taskflowchart.fixed_side_properties .selected_task_properties > .toggle_properties_side_icon, 
-  .taskflowchart.fixed_side_properties .selected_connection_properties > .toggle_properties_side_icon {
-	
-}
-.taskflowchart:not(.fixed_properties):not(.fixed_side_properties) .selected_task_properties > .generic_buttons, 
-  .taskflowchart:not(.fixed_properties):not(.fixed_side_properties) .selected_connection_properties > .generic_buttons {
-	position:relative;
-	margin-top:30px;
-} 
 .taskflowchart.fixed_properties .selected_task_properties .properties_task_id, 
   .taskflowchart.fixed_properties .selected_connection_properties .properties_task_id,
   .taskflowchart.fixed_side_properties .selected_task_properties .properties_task_id, 

@@ -1171,7 +1171,7 @@ body > .dragging_menu_item {
 	padding-top:10px;
 }
 .code_layout_ui_editor .layout-ui-editor .layout_ui_editor_right_container .mytree li a {
-	color:var(--main-template-color);
+	color:var(--menu-layers-group-title-color);
 }
 .code_layout_ui_editor .layout-ui-editor .layout_ui_editor_right_container .mytree li.draggable_menu_item a {
 	padding-top:5px;

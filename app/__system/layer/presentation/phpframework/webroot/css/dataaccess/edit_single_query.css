@@ -215,6 +215,7 @@
 
 .edit_single_query .relationship .query .query_select .taskflowchart .selected_connection_properties {
 	min-height:calc(50vh - 55px) !important;
+	background:var(--main-template-bg);
 }
 
 /* RELATIONSHIP - MAIN SETTINGS */

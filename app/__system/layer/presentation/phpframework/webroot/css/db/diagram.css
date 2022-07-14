@@ -44,12 +44,28 @@
 	height:10px;
 }
 
+.taskflowchart.fixed_side_properties:not(.reverse) > .tasks_flow {
+	left:305px;
+}
+.taskflowchart.fixed_side_properties.reverse > .tasks_flow {
+	right:305px;
+}
+.taskflowchart.fixed_side_properties:not(.reverse) > .tasks_menu_hide {
+	left:300px;
+}
+.taskflowchart.fixed_side_properties.reverse > .tasks_menu_hide {
+	right:300px;
+}
+.taskflowchart.fixed_side_properties > .selected_task_properties, 
+  .taskflowchart.fixed_side_properties > .selected_connection_properties {
+	width:300px;
+}
 .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_task_properties,
   .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_connection_properties,
   .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_task_properties.maximize_properties:not(.collapsed_properties), 
   .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_connection_properties.maximize_properties:not(.collapsed_properties) {
 	height:auto !important;
-	top:57px !important;
+	top:45px !important;
 	bottom:0 !important;
 }
 .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_task_properties > .resize_properties_panel,
@@ -58,29 +74,51 @@
   .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_connection_properties > .maximize_minimize_icon {
 	display:none;
 }
+
 .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_task_properties > .toggle_properties_side_icon,
   .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_connection_properties > .toggle_properties_side_icon {
-	right:25px;
+	right:45px;
 }
+
 .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_task_properties > .generic_buttons,
   .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_connection_properties > .generic_buttons {
-	right:55px;
+	right:75px;
 }
-.taskflowchart.with_top_bar_menu.fixed_side_properties .selected_task_properties .properties_task_id {
-	width:calc(100% - 160px);
+
+.taskflowchart.with_top_bar_menu.fixed_properties > .selected_task_properties .properties_task_id,
+  .taskflowchart.with_top_bar_menu.fixed_side_properties > .selected_task_properties .properties_task_id {
+	width:calc(100% - 165px);
 }
-.taskflowchart.with_top_bar_menu.fixed_side_properties:not(.auto_save_disabled) .selected_task_properties .properties_task_id {
-	width:calc(100% - 135px);
+.taskflowchart.with_top_bar_menu.fixed_side_properties.auto_save_disabled > .selected_task_properties .properties_task_id {
+	width:calc(100% - 195px);
 }
-.taskflowchart.with_top_bar_menu.fixed_side_properties .selected_connection_properties .properties_connection_id {
-	width:calc(100% - 190px);
-	left:115px;
+.taskflowchart.with_top_bar_menu.fixed_properties.auto_save_disabled > .selected_task_properties .properties_task_id {
+	width:calc(100% - 225px);
 }
+.taskflowchart.with_top_bar_menu.fixed_properties > .selected_task_properties.collapsed_properties .properties_task_id, 
+  .taskflowchart.with_top_bar_menu.fixed_side_properties > .selected_task_properties.collapsed_properties .properties_task_id {
+	width:calc(100% - 200px);
+}
+
+.taskflowchart.with_top_bar_menu.fixed_properties > .selected_connection_properties .properties_connection_id,
+  .taskflowchart.with_top_bar_menu.fixed_side_properties > .selected_connection_properties .properties_connection_id {
+	width:calc(100% - 205px);
+}
+.taskflowchart.with_top_bar_menu.fixed_side_properties.auto_save_disabled > .selected_connection_properties .properties_connection_id {
+	width:calc(100% - 235px);
+}
+.taskflowchart.with_top_bar_menu.fixed_properties.auto_save_disabled > .selected_connection_properties .properties_connection_id {
+	width:calc(100% - 265px);
+}
+.taskflowchart.with_top_bar_menu.fixed_properties > .selected_connection_properties.collapsed_properties .properties_connection_id, 
+  .taskflowchart.with_top_bar_menu.fixed_side_properties > .selected_connection_properties.collapsed_properties .properties_connection_id {
+	width:calc(100% - 240px);
+}
+
 .taskflowchart .selected_task_properties > .content > div,
   .taskflowchart .selected_task_properties > .content > div .ui-tabs-nav li.ui-tabs-active {
 	background:transparent;
 }
-
 
 body .task_context_menu .start_task:not(.is_start_task) a,
   body .task_context_menu .start_task:not(.is_start_task) a {

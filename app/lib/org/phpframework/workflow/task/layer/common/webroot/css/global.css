@@ -217,6 +217,7 @@
 
 .selected_connection_properties .layer_connection_html {
 	width:530px;
+	margin-top:15px;
 }
 
 .selected_connection_properties .layer_connection_html .connection_type label,

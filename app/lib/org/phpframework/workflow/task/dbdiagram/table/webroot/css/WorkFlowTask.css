@@ -112,28 +112,19 @@
 }
 
 /* START: SELECTED TASK PROPERTIES */
-.selected_task_properties .generic_buttons {
-	margin-bottom:10px;
-}
-.selected_task_properties .properties_task_id {
-	display:none;
-}
 .selected_task_properties .db_table_task_html {
-	width:700px;
-	margin-left:-20px;
-	margin-right:-20px;
 	border:0;
 	font-size:8pt;
+	box-sizing:border-box;
 }
-.selected_task_properties .db_table_task_html.advanced_ui_shown {
-	width:auto;
+.taskflowchart:not(.fixed_side_properties) > .selected_task_properties .db_table_task_html.simple_ui_shown {
+	min-width:700px;
 }
-.taskflowchart.fixed_side_properties .selected_task_properties .db_table_task_html {
-	width:auto;
+.taskflowchart:not(.fixed_properties):not(.fixed_side_properties) > .selected_task_properties .db_table_task_html.advanced_ui_shown {
+	overflow:auto;
 }
 .selected_task_properties .db_table_task_html .table_name {
-	margin-top:10px;
-	margin-left:5px;
+	margin-top:15px;
 } 
 .selected_task_properties .db_table_task_html .table_name label {
 	width:75px;
@@ -145,7 +136,7 @@
 	border:1px solid #eee;
 }
 .selected_task_properties .db_table_task_html > ul {
-	margin-top:20px;
+	margin-top:15px;
 	background:none;
 	border-top: none;
 	border-left: none;
@@ -154,9 +145,8 @@
 }
 
 /* START: SELECTED TASK PROPERTIES - SIMPLE UI */
-.taskflowchart.fixed_side_properties .selected_task_properties .db_table_task_html #simple_ui {
-	width:auto;
-	padding:20px 5px;
+.selected_task_properties .db_table_task_html #simple_ui {
+	padding:15px 0 0;
 }
 .selected_task_properties .db_table_task_html .simple_attributes > ul li {
 	margin-top:5px;
@@ -255,10 +245,7 @@
 
 /* START: SELECTED TASK PROPERTIES - ADVANCED UI */
 .selected_task_properties .db_table_task_html #advanced_ui {
-	padding-right:0;
-}
-.taskflowchart.fixed_side_properties .selected_task_properties .db_table_task_html #advanced_ui {
-	padding:20px 5px;
+	padding:5px 0 0;
 }
 
 .selected_task_properties .db_table_task_html .table_charset, 
@@ -474,6 +461,9 @@
 	border-radius:5px;
 	position:relative;
 }
+.selected_task_properties .db_table_task_html .list_attributes > ul > li:last-child {
+	margin-bottom:0;
+}
 .taskflowchart.fixed_side_properties .selected_task_properties .db_table_task_html .list_attributes > ul > li {
 	margin-right:5px;
 }
@@ -515,18 +505,12 @@
 }
 
 /* START: SELECTED CONNECTION PROPERTIES */
-.selected_connection_properties .properties_connection_id {
-	display:none;
-}
 .selected_connection_properties .db_table_connection_html {
-	width:560px;
 	margin:0 auto;
 	font-size:8pt;
 }
-.taskflowchart.fixed_side_properties .selected_connection_properties .db_table_connection_html {
-	width:auto;
-	margin-left:-15px;
-	margin-right:-15px;
+.taskflowchart:not(.fixed_side_properties) > .selected_connection_properties .db_table_connection_html {
+	min-width:560px;
 }
 .selected_connection_properties .db_table_connection_html .relationship_props {
 	width:100%;
@@ -534,17 +518,17 @@
 	min-height:20px;
 	font-size:8pt !important;
 	color:#666;
-	margin-top:10px;
+	margin-top:15px;
 	margin-left:auto;
 	margin-right:auto;
 	background:#fff;
 	border:1px solid #eee;
 	padding:4px 2px 4px 2px;
 	box-sizing:border-box;
+	text-align:center;
 }
 .selected_connection_properties .db_table_connection_html .relationship_props div {
-	text-align:center;
-	display:inline-block;
+	display:inline;
 	vertical-align:middle;
 }
 .taskflowchart.fixed_side_properties .selected_connection_properties .db_table_connection_html .relationship_props div {
@@ -554,13 +538,14 @@
 }
 .selected_connection_properties .db_table_connection_html .relationship_props .source,
    .selected_connection_properties .db_table_connection_html .relationship_props .target {
-	width:200px;
 	word-break:break-word;
 }
 .selected_connection_properties .db_table_connection_html .relationship_props .relationship {
 	width:120px;
-	border:0;
+	margin-left:5px;
+	margin-right:5px;
 	padding:0;
+	border:0;
 }
 .selected_connection_properties .db_table_connection_html .relationship_props select {
 	text-align:center;

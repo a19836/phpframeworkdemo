@@ -681,6 +681,7 @@ body.main_navigator_reverse.left_panel_hidden #hide_panel .button {
 	display:none;
 }
 #left_panel.left_panel_with_tabs .tabs {
+	min-width:300px; /* avoids lis to go below in a 2nd line */
 	margin-left:15px;
 	padding:0 20px 0 0;
 	background:var(--left-panel-tree-tabs-bg);
@@ -1072,6 +1073,15 @@ body.dark_theme #left_panel .mytree i.jstree-themeicon.template_file::before {
 #left_panel.left_panel_without_tabs > .sub_menu {
 	top:10px;
 	right:15px;
+}
+#left_panel.left_panel_with_tabs > .sub_menu { /* show sub_menu over the tabs in case the "#left_panel.left_panel_with_tabs .tabs" have a small width */
+	width:20px;
+	height:49px;
+	padding:20px 0 0 5px;
+	top:0;
+	right:0;
+	background:var(--left-panel-tree-tabs-bg);
+	box-sizing:border-box;
 }
 #left_panel.left_panel_with_tabs > .sub_menu:before {
 	content:"\f142";

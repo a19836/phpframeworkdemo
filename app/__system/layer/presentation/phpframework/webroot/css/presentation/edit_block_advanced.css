@@ -8,6 +8,9 @@
 .top_bar header > ul {
 	right:135px;
 }
+.top_bar.in_popup header > ul { /* in case when we edit a block from the LayoutUIEditor->RightContainer */
+	right:165px;
+}
 
 /* BLOCK OBJ */
 .block_obj {
@@ -23,6 +26,19 @@
 	height:calc(100vh - 55px) !important;
 	box-sizing:border-box; /* bc of the ace_editor */
 }
+
+.block_obj.in_popup > .tabs {
+	right:47px;
+}
+.block_obj.in_popup > .tabs li:not(.ui-tabs-active) {
+	color:var(--main-template-color);
+	background-color:var(--main-iframe-bg);
+}
+.block_obj.in_popup .top_bar_menu {
+	right:147px;
+}
+
+.in_popup .top_bar_menu {
 
 /* To print the workflow */
 @media print {

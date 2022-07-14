@@ -35,7 +35,7 @@ include_once $EVC->getUtilPath("BreadCrumbsUIHandler"); $query_string = str_repl
 <script>
 var add_block_url = "' . $add_block_url . '";
 </script>'; $main_content = '
-	<div class="top_bar">
+	<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 		<header>
 			<div class="title">' . $title . '</div>
 			<ul>

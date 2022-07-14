@@ -700,7 +700,8 @@
 /* PROPERTIES */
 .selected_task_properties, 
   .selected_connection_properties {
-	padding-bottom:50px;
+	padding:35px 15px 15px 15px;
+	box-sizing:border-box;
 }
 .selected_task_properties.maximize_properties:not(.collapsed_properties), 
   .selected_connection_properties.maximize_properties:not(.collapsed_properties) {
@@ -724,11 +725,15 @@
 	padding-top:0;
 	padding-bottom:0;
 }
-
+.taskflowchart:not(.fixed_properties):not(.fixed_side_properties) > .selected_task_properties,
+  .taskflowchart:not(.fixed_properties):not(.fixed_side_properties) > .selected_connection_properties {
+	min-width:150px;
+}
 .taskflowchart.fixed_properties > .selected_task_properties,
   .taskflowchart.fixed_properties > .selected_connection_properties {
+	width:auto;
 	height:250px;
-	padding:0;
+	padding:0 0 70px;
 	position:fixed !important;
 	top:auto !important;
 	left:0 !important;
@@ -743,7 +748,7 @@
   .taskflowchart.fixed_side_properties > .selected_connection_properties {
 	width:195px;
 	height:250px;
-	padding:0;
+	padding:0 0 70px;
 	position:absolute !important;
 	top:auto !important;
 	left:0px !important;
@@ -787,16 +792,16 @@
   .taskflowchart.fixed_side_properties > .selected_task_properties.collapsed_properties,
   .taskflowchart.fixed_side_properties > .selected_connection_properties.collapsed_properties {
 	height:30px !important; /* if not present it will be overwrite by 250px */
+	padding:0;
 	border:0;
 	background:transparent;
 	overflow:hidden;
 }
-.taskflowchart.fixed_properties > .selected_task_properties:before,
-  .taskflowchart.fixed_properties > .selected_connection_properties:before,
-  .taskflowchart.fixed_side_properties > .selected_task_properties:before,
-  .taskflowchart.fixed_side_properties > .selected_connection_properties:before {
+.taskflowchart > .selected_task_properties:before,
+  .taskflowchart > .selected_connection_properties:before {
 	content:"";
 	height:35px;
+	border-bottom:#ddd;
 	position:absolute;
 	top:0;
 	left:0;
@@ -857,10 +862,8 @@
 	background-image:url("../img/tool_frame_top.gif");
 }
 
-.taskflowchart.fixed_properties > .selected_task_properties > .title, 
-  .taskflowchart.fixed_properties > .selected_connection_properties .title,
-  .taskflowchart.fixed_side_properties > .selected_task_properties > .title, 
-  .taskflowchart.fixed_side_properties > .selected_connection_properties .title {
+.taskflowchart > .selected_task_properties > .title, 
+  .taskflowchart > .selected_connection_properties .title {
 	width:auto;
 	min-width:auto;
 	height:20px;
@@ -868,29 +871,25 @@
 	line-height:20px;
 	position: absolute;
 	top:9px;
-	left:5px;
+	left:15px;
 	margin: 0;
 	text-align: left;
 	display: inline-block;
 	font-weight: normal;
 	font-size: inherit;
 }
-.taskflowchart.fixed_properties > .selected_task_properties > .title:after, 
-  .taskflowchart.fixed_properties > .selected_connection_properties .title:after,
-  .taskflowchart.fixed_side_properties > .selected_task_properties > .title:after, 
-  .taskflowchart.fixed_side_properties > .selected_connection_properties .title:after {
+.taskflowchart > .selected_task_properties > .title:after, 
+  .taskflowchart > .selected_connection_properties .title:after {
 	content:":";
 }
 
-.taskflowchart.fixed_properties > .selected_task_properties > .popup_close, 
-  .taskflowchart.fixed_properties > .selected_connection_properties > .popup_close,
-  .taskflowchart.fixed_side_properties > .selected_task_properties > .popup_close, 
-  .taskflowchart.fixed_side_properties > .selected_connection_properties > .popup_close {
+.taskflowchart > .selected_task_properties > .popup_close, 
+  .taskflowchart > .selected_connection_properties > .popup_close {
 	width:25px;
 	height:25px;
 	top:5px;
 	left:auto;
-	right:5px;
+	right:15px;
 	background-size:30px;
 	opacity:1;
 }
@@ -900,15 +899,16 @@
 	display:block;
 	width:16px;
 	height:16px;
+	margin:0;
+	position: absolute;
+	top:10px;
+	right:51px;
 	cursor:pointer;
 	
 	/* Hide Text */
 	text-indent:-9999px;
 	white-space:nowrap;
 	overflow:hidden;
-	
-	float:right;
-	margin:0;
 }
 .selected_task_properties > .maximize_minimize_icon, 
   .selected_connection_properties > .maximize_minimize_icon {
@@ -919,29 +919,21 @@
 	background:url("../img/minimize_icon.png") no-repeat scroll 0 0px;
 }
 
-.taskflowchart.fixed_properties > .selected_task_properties > .maximize_minimize_icon, 
-  .taskflowchart.fixed_properties > .selected_connection_properties > .maximize_minimize_icon,
-  .taskflowchart.fixed_side_properties > .selected_task_properties > .maximize_minimize_icon, 
-  .taskflowchart.fixed_side_properties > .selected_connection_properties > .maximize_minimize_icon {
-	position: absolute;
-	top:10px;
-	right:35px;
-}
-
 .selected_task_properties > .toggle_properties_side_icon, 
   .selected_connection_properties > .toggle_properties_side_icon {
 	display:block;
 	width:16px;
 	height:16px;
+	margin:0 10px 0 0;
+	position: absolute;
+	top:10px;
+	right:71px;
 	cursor:pointer;
 	
 	/* Hide Text */
 	text-indent:-9999px;
 	white-space:nowrap;
 	overflow:hidden;
-	
-	float:right;
-	margin:0 10px 0 0;
 }
 .selected_task_properties > .toggle_properties_side_icon, 
   .selected_connection_properties > .toggle_properties_side_icon {
@@ -950,61 +942,36 @@
 .taskflowchart.fixed_side_properties > .selected_task_properties > .toggle_properties_side_icon,
   .taskflowchart.fixed_side_properties > .selected_connection_properties > .toggle_properties_side_icon {
 	background:url("../img/dock_bottom.png") no-repeat scroll 0 0px;
-	margin-right:5px;
 }
 .taskflowchart.fixed_properties > .selected_task_properties > .toggle_properties_side_icon,
   .taskflowchart.fixed_properties > .selected_connection_properties > .toggle_properties_side_icon {
 	background:url("../img/dock_center.png") no-repeat scroll 0 0px;
-	margin-right:5px;
-}
-
-.taskflowchart.fixed_properties > .selected_task_properties > .toggle_properties_side_icon, 
-  .taskflowchart.fixed_properties > .selected_connection_properties > .toggle_properties_side_icon,
-  .taskflowchart.fixed_side_properties > .selected_task_properties > .toggle_properties_side_icon, 
-  .taskflowchart.fixed_side_properties > .selected_connection_properties > .toggle_properties_side_icon {
-	position: absolute;
-	top:10px;
-	right:55px;
 }
 
 .selected_task_properties > .properties_task_id, 
   .selected_connection_properties > .properties_connection_id {
-	text-align:center;
-	font-size:14px;
-	color:#333;
-	margin-bottom:10px;
-	min-width:150px;
-}
-.taskflowchart.fixed_properties > .selected_task_properties > .properties_task_id, 
-  .taskflowchart.fixed_properties > .selected_connection_properties > .properties_connection_id,
-  .taskflowchart.fixed_side_properties > .selected_task_properties > .properties_task_id, 
-  .taskflowchart.fixed_side_properties > .selected_connection_properties > .properties_connection_id {
-	width:calc(100% - 190px);
+	width:calc(100% - 210px);
 	min-width:auto;
 	height:20px;
 	line-height:20px;
 	margin:0;
 	display:inline-block;
 	position:absolute;
-	top:7px;
-	left:95px;
+	top:9px;
+	left:100px;
 	font-size:inherit;
+	color:#333;
 	text-align:left;
 	white-space:nowrap;
 	text-overflow:ellipsis;
 	overflow:hidden;
 }
-.taskflowchart.fixed_properties > .selected_task_properties > .properties_task_id, 
-  .taskflowchart.fixed_properties > .selected_connection_properties > .properties_connection_id,
-  .taskflowchart.fixed_side_properties > .selected_task_properties > .properties_task_id, 
-  .taskflowchart.fixed_side_properties > .selected_connection_properties > .properties_connection_id {
-	width:calc(100% - 220px);
-	left:125px;
+.selected_connection_properties > .properties_connection_id {
+	width:calc(100% - 250px);
+	left:140px;
 }
-.taskflowchart.fixed_properties > .selected_task_properties > .properties_task_id input, 
-  .taskflowchart.fixed_properties > .selected_connection_properties > .properties_connection_id input,
-  .taskflowchart.fixed_side_properties > .selected_task_properties > .properties_task_id input, 
-  .taskflowchart.fixed_side_properties > .selected_connection_properties > .properties_connection_id input {
+.selected_task_properties > .properties_task_id input, 
+  .selected_connection_properties > .properties_connection_id input {
 	width:100%;
 	height:20px;
 	text-align:left;
@@ -1014,40 +981,48 @@
 	box-sizing:border-box;
 }
 
+.selected_task_properties > .content, 
+  .selected_connection_properties > .content {
+	
+}
 .taskflowchart.fixed_properties > .selected_task_properties > .content, 
   .taskflowchart.fixed_properties > .selected_connection_properties > .content,
   .taskflowchart.fixed_side_properties > .selected_task_properties > .content, 
   .taskflowchart.fixed_side_properties > .selected_connection_properties > .content {
-	padding:0 20px 20px;
+	padding:0 15px;
 	position:absolute;
 	top:35px;
 	left:0;
 	right:0;
-	bottom:40px;
+	bottom:70px;
 	overflow:auto;
 }
 
 .selected_task_properties > .generic_buttons, 
   .selected_connection_properties > .generic_buttons {
-	position:absolute;
-	left:5px;
-	right:5px;
-	bottom:5px;
-	
+	margin-top:15px;
 	text-align:center;
+	white-space:nowrap;
 }
-.selected_task_properties.collapsed_properties > .generic_buttons, 
-  .selected_connection_properties.collapsed_properties > .generic_buttons {
+.taskflowchart.fixed_properties > .selected_task_properties > .generic_buttons, 
+  .taskflowchart.fixed_properties > .selected_connection_properties > .generic_buttons,
+  .taskflowchart.fixed_side_properties > .selected_task_properties > .generic_buttons, 
+  .taskflowchart.fixed_side_properties > .selected_connection_properties > .generic_buttons {
+	margin-top:0;
+	position:absolute;
+	left:15px;
+	right:15px;
+	bottom:15px;
+}
+.taskflowchart.fixed_properties > .selected_task_properties.collapsed_properties > .generic_buttons, 
+  .taskflowchart.fixed_properties > .selected_connection_properties.collapsed_properties > .generic_buttons,
+  .taskflowchart.fixed_side_properties > .selected_task_properties.collapsed_properties > .generic_buttons, 
+  .taskflowchart.fixed_side_properties > .selected_connection_properties.collapsed_properties > .generic_buttons {
 	display:none;
-}
-.taskflowchart:not(.fixed_properties):not(.fixed_side_properties) > .selected_task_properties.maximize_properties > .generic_buttons, 
-  .taskflowchart:not(.fixed_properties):not(.fixed_side_properties) > .selected_connection_properties.maximize_properties > .generic_buttons {
-	margin-top:30px;
-	position:relative;
 }
 .selected_task_properties > .generic_buttons input, 
   .selected_connection_properties > .generic_buttons input {
-	margin-left:5px !important;
+	margin:0 10px !important;
 	display:inline !important;
 	float:none !important;
 	font-size:8pt;

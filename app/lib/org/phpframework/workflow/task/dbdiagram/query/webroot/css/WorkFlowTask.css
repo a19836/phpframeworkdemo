@@ -134,9 +134,11 @@
 	display:none;
 }
 .selected_connection_properties .db_table_connection_html {
-	width:585px;
-	margin:0 auto;
+	margin:15px auto 0;
 	font-size:12px;
+}
+.taskflowchart:not(.fixed_side_properties) > .selected_connection_properties .db_table_connection_html {
+	min-width:585px;
 }
 .selected_connection_properties .db_table_connection_html .header {
 	width:210px;

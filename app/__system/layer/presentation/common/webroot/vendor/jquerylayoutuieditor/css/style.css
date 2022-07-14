@@ -1522,9 +1522,9 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 }
 .layout-ui-editor > .menu-settings li.group {
 	min-width:220px;
-    /*background:rgba(0,0,0,0.15);*/
-    color:var(--menu-settings-group-color, #b9a5a6);
-    box-sizing:border-box;
+	/*background:rgba(0,0,0,0.15);*/
+	color:var(--menu-settings-group-color, #b9a5a6);
+	box-sizing:border-box;
 }
 .layout-ui-editor > .menu-settings li.group > .group-title {
 	margin:0 5px;
@@ -1539,6 +1539,7 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	position:absolute;
 	right:5px;
 	display:block;
+	margin-top:-15px;
 	padding-left:5px;
 	opacity:.8;
 	font-size:80%;

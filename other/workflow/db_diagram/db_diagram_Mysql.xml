@@ -5,8 +5,8 @@
 		<id><![CDATA[school]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>117</offset_left>
-		<offset_top>25</offset_top>
+		<offset_left>91</offset_left>
+		<offset_top>28</offset_top>
 		<width>198</width>
 		<height>73</height>
 		<properties>
@@ -55,8 +55,8 @@
 		<id><![CDATA[student]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>117</offset_left>
-		<offset_top>187</offset_top>
+		<offset_left>91</offset_left>
+		<offset_top>197</offset_top>
 		<width>198</width>
 		<height>96</height>
 		<properties>
@@ -132,8 +132,8 @@
 		<id><![CDATA[teacher]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>392</offset_left>
-		<offset_top>76</offset_top>
+		<offset_left>352</offset_left>
+		<offset_top>113</offset_top>
 		<width>198</width>
 		<height>119</height>
 		<properties>
@@ -146,11 +146,11 @@
 			</exits>
 			<table_charset></table_charset>
 			<table_collation><![CDATA[utf8_general_ci]]></table_collation>
-			<table_storage_engine><![CDATA[InnoDB]]></table_storage_engine>
-			<table_attr_primary_keys><![CDATA[true]]></table_attr_primary_keys>
-			<table_attr_primary_keys><![CDATA[false]]></table_attr_primary_keys>
-			<table_attr_primary_keys><![CDATA[false]]></table_attr_primary_keys>
-			<table_attr_primary_keys><![CDATA[false]]></table_attr_primary_keys>
+			<table_storage_engine><![CDATA[innodb]]></table_storage_engine>
+			<table_attr_primary_keys>1</table_attr_primary_keys>
+			<table_attr_primary_keys></table_attr_primary_keys>
+			<table_attr_primary_keys></table_attr_primary_keys>
+			<table_attr_primary_keys></table_attr_primary_keys>
 			<table_attr_names><![CDATA[teacher_id]]></table_attr_names>
 			<table_attr_names><![CDATA[school_id]]></table_attr_names>
 			<table_attr_names><![CDATA[name]]></table_attr_names>
@@ -163,26 +163,26 @@
 			<table_attr_lengths>20</table_attr_lengths>
 			<table_attr_lengths>50</table_attr_lengths>
 			<table_attr_lengths>2</table_attr_lengths>
-			<table_attr_nulls><![CDATA[false]]></table_attr_nulls>
-			<table_attr_nulls><![CDATA[false]]></table_attr_nulls>
-			<table_attr_nulls><![CDATA[false]]></table_attr_nulls>
-			<table_attr_nulls><![CDATA[false]]></table_attr_nulls>
-			<table_attr_unsigneds><![CDATA[true]]></table_attr_unsigneds>
-			<table_attr_unsigneds><![CDATA[true]]></table_attr_unsigneds>
-			<table_attr_unsigneds><![CDATA[false]]></table_attr_unsigneds>
-			<table_attr_unsigneds><![CDATA[false]]></table_attr_unsigneds>
-			<table_attr_uniques><![CDATA[true]]></table_attr_uniques>
-			<table_attr_uniques><![CDATA[false]]></table_attr_uniques>
-			<table_attr_uniques><![CDATA[false]]></table_attr_uniques>
-			<table_attr_uniques><![CDATA[false]]></table_attr_uniques>
-			<table_attr_auto_increments><![CDATA[true]]></table_attr_auto_increments>
-			<table_attr_auto_increments><![CDATA[false]]></table_attr_auto_increments>
-			<table_attr_auto_increments><![CDATA[false]]></table_attr_auto_increments>
-			<table_attr_auto_increments><![CDATA[false]]></table_attr_auto_increments>
-			<table_attr_has_defaults><![CDATA[false]]></table_attr_has_defaults>
-			<table_attr_has_defaults><![CDATA[false]]></table_attr_has_defaults>
-			<table_attr_has_defaults><![CDATA[false]]></table_attr_has_defaults>
-			<table_attr_has_defaults><![CDATA[false]]></table_attr_has_defaults>
+			<table_attr_nulls></table_attr_nulls>
+			<table_attr_nulls></table_attr_nulls>
+			<table_attr_nulls></table_attr_nulls>
+			<table_attr_nulls></table_attr_nulls>
+			<table_attr_unsigneds>1</table_attr_unsigneds>
+			<table_attr_unsigneds>1</table_attr_unsigneds>
+			<table_attr_unsigneds></table_attr_unsigneds>
+			<table_attr_unsigneds></table_attr_unsigneds>
+			<table_attr_uniques>1</table_attr_uniques>
+			<table_attr_uniques></table_attr_uniques>
+			<table_attr_uniques></table_attr_uniques>
+			<table_attr_uniques></table_attr_uniques>
+			<table_attr_auto_increments>1</table_attr_auto_increments>
+			<table_attr_auto_increments></table_attr_auto_increments>
+			<table_attr_auto_increments></table_attr_auto_increments>
+			<table_attr_auto_increments></table_attr_auto_increments>
+			<table_attr_has_defaults></table_attr_has_defaults>
+			<table_attr_has_defaults></table_attr_has_defaults>
+			<table_attr_has_defaults></table_attr_has_defaults>
+			<table_attr_has_defaults></table_attr_has_defaults>
 			<table_attr_defaults></table_attr_defaults>
 			<table_attr_defaults></table_attr_defaults>
 			<table_attr_defaults></table_attr_defaults>
@@ -195,14 +195,14 @@
 			<table_attr_charsets></table_attr_charsets>
 			<table_attr_charsets><![CDATA[utf8]]></table_attr_charsets>
 			<table_attr_charsets></table_attr_charsets>
-			<table_attr_comments></table_attr_comments>
-			<table_attr_comments></table_attr_comments>
-			<table_attr_comments></table_attr_comments>
-			<table_attr_comments></table_attr_comments>
 			<table_attr_collations></table_attr_collations>
 			<table_attr_collations></table_attr_collations>
 			<table_attr_collations><![CDATA[utf8_general_ci]]></table_attr_collations>
 			<table_attr_collations></table_attr_collations>
+			<table_attr_comments></table_attr_comments>
+			<table_attr_comments></table_attr_comments>
+			<table_attr_comments></table_attr_comments>
+			<table_attr_comments></table_attr_comments>
 		</properties>
 		<exits>
 			<layer_exit>

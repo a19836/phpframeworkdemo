@@ -4,3 +4,7 @@
 .jsplumbtaskworkflow .task.task_businesslogic {
 	background-image:url('../img/logo.svg');
 }
+
+.businesslogic_layer_task_html {
+	margin-top:15px;
+}

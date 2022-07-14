@@ -47,6 +47,7 @@
 
 .server_task_html {
 	border:0;
+	margin-top:15px;
 }
 .server_task_html ul.ui-tabs-nav {
 	background:none;
@@ -54,6 +55,9 @@
 	border-left: none;
 	border-right: none;
 	border-radius: 0;
+}
+.server_task_html .ui-tabs-panel {
+	padding:15px 0 0;
 }
 
 /* details_container */
@@ -67,6 +71,9 @@
 .server_task_html > .details_container > div > input {
 	width:300px;
 }
+.server_task_html > .details_container > div > select {
+	width:308px;
+}
 .server_task_html > .details_container > div > textarea {
 	width:300px;
 	height:100px;
@@ -75,7 +82,7 @@
 	width:228px;
 }
 .server_task_html > .details_container > .host > input.port {
-	width:50px;
+	width:55px;
 }
 .server_task_html > .details_container > div > .info {
 	text-align:right;
@@ -147,9 +154,9 @@
 .server_task_html .template_workflow > .taskflowchart {
 	position:absolute;
 	top:0;
-	left:0;
-	bottom:0;
-	right:0;
+	left:-15px; /* padding-left of popup is 15px */
+	right:-15px; /* padding-right of popup is 15px */
+	bottom:-15px; /* padding-bottom of popup is 15px */
 	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-family:var(--main-font-family);
 }
@@ -165,26 +172,27 @@
 	width:100%; 
 	height:25%; 
 	min-height:100px; 
-	border-bottom:3px inset #999;
+	border-top:1px dashed #DFE1ED;
 	text-align:center;
+}
+.server_task_html .template_workflow > .taskflowchart .tasks_flow #layer_presentations {
+	border-top:0;
 }
 .server_task_html .template_workflow > .taskflowchart .tasks_flow #layer_drivers {
 	border-bottom:0;
 }
 .server_task_html .template_workflow > .taskflowchart .tasks_flow .layer_title {
 	width:90vw; 
-	width:calc(100vw - 100px); 
+	width:calc(100vw - 160px); 
+	padding:10px;
 	position:sticky; 
+	top:0;
 	left:0; 
-	font-size:350%; 
-	color:#CCC; 
-	font-weight:bold; 
-	margin-top:50px; 
+	color:#83889E; 
 	display:block; 
 	white-space:nowrap; 
 	opacity:0.5; 
-	-ms-filter:alpha(opacity=50); 
-	filter:alpha(opacity=50);
+	text-align:left;
 }
 .server_task_html .template_workflow > .taskflowchart .tasks_flow .task .ep {
 	cursor:pointer;
@@ -481,11 +489,12 @@
 	display:block;
 	width:100%;
 	height:200px;
+	box-sizing:border-box;
 }
 
 /* deployments_container */
 .server_task_html .deployments_container > .deploy_template {
-	margin-bottom:20px;
+	margin-bottom:15px;
 }
 /*.server_task_html .deployments_container > .deploy_template > .icon {
 	display:inline-block;
@@ -503,6 +512,12 @@
   .server_task_html .deployments_container > table td {
 	text-align:center;
 	font-size:90%;
+}
+.server_task_html .deployments_container > table tbody tr:nth-child(even) {
+	background:#f7f7f7;
+}
+.server_task_html .deployments_container > table tbody td {
+	border-top:1px solid #f7f7f7;
 }
 .server_task_html .deployments_container > table .selected {
 	width:20px;
