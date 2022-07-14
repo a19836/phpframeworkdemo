@@ -122,9 +122,8 @@
 
 body .task_context_menu .start_task:not(.is_start_task) a,
   body .task_context_menu .start_task:not(.is_start_task) a {
+	padding-left:15px !important;
 	/*background:url("../../common/img/icon/refresh_icon.png") no-repeat scroll 4px 4px !important;*/
-	padding-left:5px !important;
-	background:transparent;
 }
 .task_context_menu .start_task a::before {
 	width:15px;
@@ -133,7 +132,7 @@ body .task_context_menu .start_task:not(.is_start_task) a,
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
 	content:"\f2f1";
-	margin-right:5px;
+	margin-right:12px;
 }
 
 .loading_panel {
