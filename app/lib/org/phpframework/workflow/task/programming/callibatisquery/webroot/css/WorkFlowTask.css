@@ -40,11 +40,8 @@
 	margin-bottom:5px;
 }
 .call_ibatis_query_task_html .get_automatically {
-	margin-top:15px;
+	/*margin-top:15px;*/
 	margin-bottom:5px;
-}
-.taskflowchart.fixed_side_properties .selected_task_properties .call_ibatis_query_task_html .get_automatically {
-	margin-top:0;
 }
 .call_ibatis_query_task_html .query_type {
 	margin-top:15px;

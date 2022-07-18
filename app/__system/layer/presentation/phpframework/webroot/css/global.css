@@ -8,7 +8,7 @@
   	--main-font-family:"Poppins-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
   	--main-font-family:"Poppins-Regular",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",Helvetica,Arial,sans-serif;
 	
-	--resize-bar-bg:#f7f7f7;/*#83889E;*/
+	--resize-bar-bg:#F8F9FC;/*#83889E;*/
 	--resize-bar-vertical-img:url(../img/back_frame_open_close_vertical_red.gif);
 	--resize-bar-horizontal-img:url(../../img/back_frame_open_close_horizontal_red.gif);
 	--resize-bar-border:#83889E;
@@ -22,9 +22,10 @@
 	--icon-hover-color:#8CA9FF;
 	--icon-active-color:#4070FF;
 	
-	--info-label-tooltip-border:#BFC4DB;
-	--info-label-tooltip-bg:var(--main-template-bg);
-	--info-label-tooltip-color:var(--main-template-color);
+	--info-label-tooltip-border-radius:0;/*3px*/
+	--info-label-tooltip-border:#fff;
+	--info-label-tooltip-bg:#2C2D34;/*var(--main-template-bg);*/
+	--info-label-tooltip-color:#fff;/*var(--main-template-color);*/
 }
 :root,
   .light_theme {
@@ -266,15 +267,70 @@ input[type=submit]:not(:disabled),
 }
 
 /* MESSAGES */
+.status_message:not(:empty) {
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	background:rgba(0, 0, 0, .5);
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:center;
+	z-index:99999 !important;
+	overflow-y:auto;
+}
+.status_message .status_message_info,
+  .status_message .status_message_error {
+	width:auto !important;
+	min-width:200px;
+	max-width:80vw;
+	min-height:105px !important;
+	max-height:80vh !important;
+	margin:20px;
+	padding:0 15px 15px;
+	display:inline-block;
+	box-sizing:border-box;
+	overflow-x:hidden;
+	overflow-y:auto;
+	position:relative;
+	border:1px solid #83889E;
+	border-radius:3px;
+	background:#FFF !important;
+	color:#2C2D34;
+	font-size:13px;
+}
+.status_message .status_message_info::before,
+  .status_message .status_message_error::before {
+	display:block;
+	margin:0 -15px 15px;
+	padding:15px;
+	color:#FFF;
+	font-weight:bold;
+	text-align:left;
+}
+.status_message .status_message_info::before {
+	content:"Info";
+	background:#51D87A;
+}
+.status_message .status_message_error::before {
+	content:"Error";
+	background:#FF4D4D;
+}
 .status_message .status_message_info span.close_message, 
   .status_message .status_message_error span.close_message {
-	display:inline-block !important;
 	width:20px !important;
 	height:auto !important;
 	margin-right:0 !important;
+	position:absolute;
+	top:15px;
+	right:15px;
+	display:inline-block !important;
 	text-indent:0 !important;
 	background:none !important;
-	font-size:16px;
+	color:#FFF;
+	font-size:20px;
 }
 .status_message .status_message_info span.close_message::before, 
   .status_message .status_message_error span.close_message::before {
@@ -283,14 +339,9 @@ input[type=submit]:not(:disabled),
 	text-rendering:auto;
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
-	content:"\f057";
+	/*content:"\f057";*/
+	content:"\f00d";
 	margin-right:20px;
-}
-.status_message .status_message_info {
-	background-color:#CCFF99 !important;
-}
-.status_message .status_message_error {
-	background-color:#B51E3F !important;
 }
 
 /* MAIN COLUMN */

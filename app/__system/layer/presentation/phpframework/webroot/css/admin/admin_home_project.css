@@ -64,6 +64,7 @@ body,
 	border:1px solid #DFE1ED;
 	border-radius:100%;
 	cursor:pointer;
+	overflow:hidden;
 }
 .admin_panel .project:not(.with_image) .project_image {
 	display:none;
@@ -143,6 +144,7 @@ body,
 	text-align:center;
 }
 .admin_panel .project_files .ui-tabs-panel .projects_list_type .icon {
+	margin:0 5px;
 	font-size:16px;
 }
 .admin_panel .project_files .ui-tabs-panel .projects_list_type .icon.active {
@@ -207,10 +209,11 @@ body,
 	margin:0 auto;
 	display:block;
 	clear:both;
-	text-align:left;
+	/*text-align:left;*/
 }
 .admin_panel .project_files .ui-tabs-panel .mytree.list_view {
 	max-width:450px;
+	text-align:left;
 }
 .admin_panel .project_files .mytree > li {
 	margin:0;
@@ -302,7 +305,6 @@ body,
 }
 .admin_panel .project_files .mytree.list_view > li > ul > li > a.jstree-anchor {
 	padding-right:10px;
-	overflow:hidden;
 	text-overflow:ellipsis;
 }
 .admin_panel .project_files .mytree > li > ul > li > a.jstree-anchor:hover > i:empty {
@@ -324,6 +326,8 @@ body,
 	font-size:8px;
 	color:#999;
 	text-align:center;
+	
+	display:none; /* This label causes too much noise, and we want to make the tool as simple as possible. */
 }
 .admin_panel .project_files .mytree > li > ul > li[data-jstree='{"icon":"folder"}'] > a.jstree-anchor:hover::before,
   .admin_panel .project_files .mytree > li > ul > li[data-jstree='{"icon":"template_folder"}'] > a.jstree-anchor:hover::before {
@@ -447,6 +451,7 @@ body,
 }
 .admin_panel .project_files .mytree.list_view > li > ul > li div.sub_menu {
 	position:absolute;
+	top:13px;
 	right:15px;
 	font-size:14px;
 }

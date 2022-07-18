@@ -17,10 +17,7 @@
 }
 
 .include_file_task_html .file_path {
-	margin-top:20px;
-}
-.taskflowchart.fixed_side_properties .selected_task_properties .include_file_task_html .file_path {
-	margin-top:0;
+	/*margin-top:15px;*/
 }
 .include_file_task_html .type {
 	margin-top:5px;

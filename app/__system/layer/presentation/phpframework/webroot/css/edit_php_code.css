@@ -107,6 +107,17 @@
 #code textarea {
 	position:fixed !important; /* 2021-02-08 JP: this is very important bc is fixing the problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.*/
 }
+#code .ace_editor .ace_gutter {
+	background:var(--main-iframe-bg);
+	color:#BFC4DB;
+}
+#code .ace_editor .ace_gutter .ace_gutter-active-line {
+	background:rgba(0, 0, 0, .05);
+}
+#code .ace_editor .ace_layer .ace_active-line {
+	background:var(--main-iframe-bg);
+}
+
 #code.ui-tabs-panel {
 	padding:0 !important;
 }

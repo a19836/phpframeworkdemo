@@ -37,6 +37,8 @@ body,
 	margin:48px auto;
 	display:inline-block;
 	border:1px solid #eee;
+	border-radius:100%;
+	overflow:hidden;
 }
 .edit_project_details .image .no_logo::before {
 	text-rendering: auto;
@@ -70,15 +72,18 @@ body,
 }
 .edit_project_details .details label {
 	display:block;
+	color:var(--main-template-color);
 }
 .edit_project_details .details input {
 	width:250px;
 	font-size:inherit;
+	color:#83889E;
 }
 .edit_project_details .details textarea {
 	width:250px;
 	height:100px;
 	font-size:inherit;
+	color:#83889E;
 }
 .edit_project_details .details .icon.search {
 	width:13px;

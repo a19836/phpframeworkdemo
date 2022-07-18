@@ -109,13 +109,15 @@ function addProject(oForm) {
 		MyFancyPopup.showOverlay();
 		MyFancyPopup.showLoading();
 		
-		var project_folder = oForm.find(".project_folder input").val();
+		var old_project_folder = oForm.find(".project_folder input[name=old_project_folder]").val();
+		var project_folder = oForm.find(".project_folder input[name=project_folder]").val();
 		var option = oForm.find(".layer select option:selected").first();
 		var bean_name = option.attr("bean_name");
 		var bean_file_name = option.attr("bean_file_name");
 		var old_project_name = oForm.find(".name input[name=old_name]").val();
 		var rename_project = is_project_created && old_project_name != project_name;
-		var action = rename_project ? "rename" : "create_folder";
+		var move_project = is_project_created && old_project_folder != project_folder;
+		var action = rename_project ? "rename" : (move_project ? "paste_and_remove" : "create_folder");
 		var path = "";
 		var extra = (project_folder ? project_folder + "/" : "") + project_name;
 		
@@ -123,10 +125,16 @@ function addProject(oForm) {
 			path = (project_folder ? project_folder + "/" : "") + old_project_name;
 			extra = project_name;
 		}
+		else if (move_project) {
+			path = (project_folder ? project_folder + "/" : "");
+			var original_project_path = (old_project_folder ? old_project_folder + "/" : "") + project_name;
+			var item_type = getParameterByName(manage_project_url, "item_type");
+			extra = "[" + bean_name + "," + bean_file_name + "," + original_project_path + "," + item_type + "]";
+		}
 		
 		var url = manage_project_url.replace("#action#", action).replace("#path#", path).replace("#bean_name#", bean_name).replace("#bean_file_name#", bean_file_name).replace("#extra#", extra);
 		
-		if (is_project_created && !rename_project) {
+		if (is_project_created && !rename_project && !move_project) {
 			setTimeout(function() {
 				btn.removeClass("loading");
 				icon.removeClass("loading");

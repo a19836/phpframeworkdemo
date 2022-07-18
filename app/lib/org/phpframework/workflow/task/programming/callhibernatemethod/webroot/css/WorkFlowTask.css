@@ -42,11 +42,8 @@
 	margin-bottom:5px;
 }
 .call_hibernate_method_task_html .get_automatically {
-	margin-top:15px;
+	/*margin-top:15px;*/
 	margin-bottom:5px;
-}
-.taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .get_automatically {
-	margin-top:0;
 }
 .call_hibernate_method_task_html .get_automatically label {
 	width:230px;

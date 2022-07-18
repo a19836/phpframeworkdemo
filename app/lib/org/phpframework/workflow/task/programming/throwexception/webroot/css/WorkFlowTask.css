@@ -19,7 +19,7 @@
 .throw_exception_task_html .class_name {
 	width:100%;
 	min-height:20px;
-	margin-top:15px;
+	/*margin-top:15px;*/
 	margin-bottom:20px;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .throw_exception_task_html .class_name {

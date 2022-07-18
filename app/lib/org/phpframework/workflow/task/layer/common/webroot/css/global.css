@@ -127,8 +127,8 @@
 .selected_task_properties .layer_rest_server_html,
   .selected_task_properties .layer_soap_server_html {
 	width:530px;
-	margin:5px -5px;
-	padding:5px;
+	margin:0;
+	padding:10px;
 	border:1px solid #ddd;
 }
 
@@ -217,7 +217,6 @@
 
 .selected_connection_properties .layer_connection_html {
 	width:530px;
-	margin-top:15px;
 }
 
 .selected_connection_properties .layer_connection_html .connection_type label,

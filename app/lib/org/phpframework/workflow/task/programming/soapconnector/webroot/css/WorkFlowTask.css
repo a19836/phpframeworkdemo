@@ -27,6 +27,9 @@
    	float:none;
    	clear:both;
 }
+.soap_connector_task_html > .data {
+	margin-top:0;
+}
 .soap_connector_task_html .remote_function_name {
    	margin-top:20px;
 	padding-top:20px;

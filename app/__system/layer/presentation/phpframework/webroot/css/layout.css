@@ -197,7 +197,7 @@
 	
 	/*background:var(--main-iframe-bg);
 	color:var(--main-template-color);*/
-	border-radius:3px;
+	border-radius:var(--info-label-tooltip-border-radius);
 	border:1px solid var(--info-label-tooltip-border);
 	background:var(--info-label-tooltip-bg);
 	color:var(--info-label-tooltip-color);
@@ -613,6 +613,8 @@
 .taskflowchart > .tasks_menu li .tasks_group_label {
 	font-size:11px;
 	color:#83889E;
+	opacity:1;
+	border-top-style:solid;
 }
 .taskflowchart > .tasks_menu li .tasks_group_label::before {
 	text-rendering:auto;
@@ -633,7 +635,7 @@
 /* WORKFLOW - PROPERTIES POPUP */
 .taskflowchart.with_top_bar_menu > .selected_task_properties,
   .taskflowchart.with_top_bar_menu > .selected_connection_properties {
-	padding:35px 15px 15px 15px; /*.myfancypopup padding is overwriting this padding. So we need to replace it again.*/
+	padding:50px 15px 15px 15px; /*.myfancypopup padding is overwriting this padding. So we need to replace it again.*/
 	color:var(--main-settings-color) !important;
 	background:var(--main-settings-bg) !important;
 }
@@ -756,7 +758,7 @@
   .taskflowchart.with_top_bar_menu.fixed_side_properties > .selected_task_properties > .content, 
   .taskflowchart.with_top_bar_menu.fixed_side_properties > .selected_connection_properties > .content {
 	bottom:0;
-	padding:0 15px 15px;
+	padding:15px;
 }
 
 .taskflowchart.with_top_bar_menu.fixed_properties > .selected_task_properties .generic_buttons, 
@@ -992,7 +994,7 @@ body .task_context_menu .start_task.is_start_task a {
 	background:none !important;
 }
 body .task_context_menu .start_task:not(.is_start_task) a {
-	padding-left:40px !important;
+	padding-left:42px !important;
 }
 .task_context_menu .start_task.is_start_task a::before {
 	width:15px;
@@ -1286,18 +1288,70 @@ body .connection_add_new_task_panel .generic_buttons {
 }
 
 /* WORKFLOW - MESSAGE */
-body .workflow_message {
-	font-size:8pt;
+body .workflow_message:not(:empty) {
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	background:rgba(0, 0, 0, .5);
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:center;
+	z-index:99999 !important;
+	overflow-y:auto;
+}
+body .workflow_message .status,
+  body .workflow_message .error {
+	width:auto !important;
+	min-width:200px;
+	max-width:80vw;
+	min-height:105px !important;
+	max-height:80vh !important;
+	margin:20px;
+	padding:0 15px 15px;
+	display:inline-block;
+	box-sizing:border-box;
+	overflow-x:hidden;
+	overflow-y:auto;
+	position:relative;
+	border:1px solid #83889E;
+	border-radius:3px;
+	background:#FFF !important;
+	color:#2C2D34;
+	font-size:13px;
+}
+body .workflow_message .status::before,
+  body .workflow_message .error::before {
+	display:block;
+	margin:0 -15px 15px;
+	padding:15px;
+	color:#FFF;
+	font-weight:bold;
+	text-align:left;
+}
+body .workflow_message .status::before {
+	content:"Info";
+	background:#51D87A;
+}
+body .workflow_message .error::before {
+	content:"Error";
+	background:#FF4D4D;
 }
 body .workflow_message .status span, 
   body .workflow_message .error span {
-	display:inline-block;
 	width:20px;
 	height:auto;
 	margin-right:0;
+	display:inline-block;
+	position:absolute;
+	top:15px;
+	right:15px;
 	text-indent:0;
 	background:none;
-	font-size:var(--icon-font-size);
+	color:#FFF;
+	font-size:20px;
 }
 .workflow_message .status span::before, 
   .workflow_message .error span::before {
@@ -1306,7 +1360,8 @@ body .workflow_message .status span,
 	text-rendering:auto;
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
-	content:"\f057";
+	/*content:"\f057";*/
+	content:"\f00d";
 	margin-right:20px;
 }
 
@@ -1658,6 +1713,8 @@ body .layout-ui-editor > .menu-layers .main-group > .main-group-title > .visibil
 body .layout-ui-editor > .menu-widgets .group > .group-title {
 	font-size:11px;
 	color:#83889E;
+	opacity:1;
+	border-top-style:solid;
 }
 body .layout-ui-editor > .menu-widgets .group > ul > .group > .group-title {
 	font-size:10px;
@@ -1731,7 +1788,6 @@ body .layout-ui-editor > .menu-widgets .group.group-open > .group-title .toggle:
 	right:0;
 	text-align:right;
 	white-space:nowrap;
-	border-radius:3px;
 	font-weight:normal;
 	cursor:auto;
 	font-size:8pt;
@@ -1739,6 +1795,7 @@ body .layout-ui-editor > .menu-widgets .group.group-open > .group-title .toggle:
 	
 	/*background:var(--main-iframe-bg);
 	color:var(--main-iframe-color);*/
+	border-radius:var(--info-label-tooltip-border-radius);
 	border:1px solid var(--info-label-tooltip-border);
 	background:var(--info-label-tooltip-bg);
 	color:var(--info-label-tooltip-color);

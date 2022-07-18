@@ -2,7 +2,7 @@ var StatusMessageHandler = {
 	message_html_obj : null,
 	
 	init : function() {
-		this.message_html_obj = $('<div class="status_message"></div>');
+		this.message_html_obj = $('<div class="status_message" onClick="StatusMessageHandler.removeMessages();"></div>');
 		
 		$(document.body).append(this.message_html_obj);
 	},
@@ -39,6 +39,12 @@ var StatusMessageHandler = {
 		this.prepareMessage(status_message, 10000);
 	},
 	
+	closeMessage : function(elm) {
+		event.stopPropagation(); //avoids to call the onClick event from .status_message
+		
+		this.removeMessage(elm);
+	},
+	
 	getMessageElement : function(message, message_class) {
 		var width = $(window).width();
 		
@@ -46,7 +52,7 @@ var StatusMessageHandler = {
 		var parts = message.split("\n");
 		var height = parts.length * 20 + (message.indexOf("<br") != -1 ? message.split("<br").length * 20 : 0);
 		
-		var status_message = $('<div class="' + message_class + '">' + message.replace(/\n/g, "<br/>") + '<span class="close_message" onClick="$(this).parent().remove();">close</span></div>');
+		var status_message = $('<div class="' + message_class + '">' + message.replace(/\n/g, "<br/>") + '<span class="close_message" onClick="StatusMessageHandler.closeMessage(this);">close</span></div>');
 		
 		status_message.css("width", width + "px"); //must be width, bc if is min-width the message won't be centered and the close button won't appear.
 		status_message.css("min-height", height + "px"); //min-height are important bc if the message is bigger than the height, the message will appear without background
@@ -148,12 +154,12 @@ var StatusMessageHandler = {
 	},
 	
 	removeLastShownMessage : function(type) {
-		var selector = type ? ".status_message_" + type : ".status_message";
+		var selector = type ? ".status_message_" + type : ".status_message_info, .status_message_error";
 		this.message_html_obj.children(selector).last().remove();
 	},
 	
 	removeMessages : function(type) {
-		var selector = type ? ".status_message_" + type : ".status_message";
+		var selector = type ? ".status_message_" + type : ".status_message_info, .status_message_error";
 		this.message_html_obj.children(selector).remove();
 	},
 };

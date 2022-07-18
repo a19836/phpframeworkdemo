@@ -624,9 +624,12 @@ function filterByLayout(elm) {
 		url += (url.indexOf("?") != -1 ? "&" : "?") + "filter_by_layout=" + proj_id;
 		url = url.replace(/[&]+/g, "&");
 		
-		//Note that if proj_id is empty, it means that the "ALL PROJECTS" was selected, and in this case we should show not set any default_page, bc it should open the previous opened page.
+		//Note that if proj_id is empty, it means that the "ALL PROJECTS" was selected, and in this case we should not show the previous opened page, but the admin_home_projects.
+		//save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
 		if (proj_id)
-			MyJSLib.CookieHandler.setCookie('default_page', selected_admin_home_project_page_url, 0, "/"); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+			MyJSLib.CookieHandler.setCookie('default_page', selected_admin_home_project_page_url, 0, "/"); 
+		else
+			MyJSLib.CookieHandler.setCookie('default_page', admin_home_projects_page_url, 0, "/"); 
 		
 		document.location = url;
 	}

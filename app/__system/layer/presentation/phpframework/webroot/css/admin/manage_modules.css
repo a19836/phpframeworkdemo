@@ -127,7 +127,8 @@ body,
 	width:80px;
 	text-align:center;
 }
-.modules_list table .buttons .icon {
+.modules_list table .status .icon,
+  .modules_list table .buttons .icon {
 	margin:5px 3px;
 	display:inline-block;
 	float:none;

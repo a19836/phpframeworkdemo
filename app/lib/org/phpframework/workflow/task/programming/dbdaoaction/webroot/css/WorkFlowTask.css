@@ -53,7 +53,7 @@
 	width:calc(100% - 75px);
 }
 .db_dao_action_task_html .get_automatically {
-	margin-top:15px;
+	/*margin-top:15px;*/
 	margin-bottom:5px;
 }
 .db_dao_action_task_html .get_automatically label {

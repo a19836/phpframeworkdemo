@@ -18,10 +18,7 @@
 }
 
 .define_var_task_html .name {
-	margin-top:20px;
-}
-.taskflowchart.fixed_side_properties .selected_task_properties .define_var_task_html .name {
-	margin-top:0;
+	/*margin-top:15px;*/
 }
 .define_var_task_html .value {
 	margin:5px 0px 5px 0px;

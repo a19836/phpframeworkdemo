@@ -143,16 +143,14 @@
 .selected_connection_properties .db_table_connection_html .header {
 	width:210px;
 	height:20px;
-	margin:10px 0px 10px 0px;
+	margin:0 auto 20px auto;
 	float:none;
 	clear:left;
 	text-align:center;
-	margin:0 auto 5px auto;
 }
 .selected_connection_properties .db_table_connection_html .header label {
-	float:left;
-	width:140px;
 	line-height:20px;
+	vertical-align:middle;
 }
 .selected_connection_properties .db_table_connection_html .header select {
 	width:65px;

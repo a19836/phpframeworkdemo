@@ -190,7 +190,7 @@
 	margin-left:10px;
 }
 .loop_task_html .other_settings .execute_first_iteration label {
-	width:230px;
+	margin-right:5px;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .loop_task_html .other_settings .execute_first_iteration label {
 	width:auto;

@@ -39,6 +39,7 @@
 	color:#fff;
 	border-top-left-radius:2px;
 	border-top-right-radius:2px;
+	font-size:11px;
 	text-align:left;
 	box-sizing:border-box;
 	box-shadow:0px -1px 5px #ccc;
@@ -59,14 +60,14 @@
 	box-shadow:0px 0px 5px #ccc;
 }
 .jsplumbtaskworkflow .task.task_table .ep {
-	width:25px;
-	height:25px;
+	width:16px;
+	height:16px;
 	border:1px solid #4070FF !important;
 	border-radius:100%;
 	background:#4070FF !important;
 	position:absolute;
 	left:88px;
-	bottom:-15px;
+	bottom:-12px;
 	z-index:1;
 }
 .jsplumbtaskworkflow .task.task_table .table_attrs {
@@ -80,7 +81,7 @@
 	padding:5px;
 	border-right:1px solid #4070FF;
 	border-bottom:1px solid #4070FF;
-	font-size:8px;
+	font-size:9px;
 	box-sizing:border-box;
 }
 .jsplumbtaskworkflow .task.task_table .table_attrs .table_attr:last-child td {
@@ -110,6 +111,11 @@
   .jsplumbtaskworkflow .connector_overlay_text_one {
 	color:#31498f;
 }
+.jsplumbtaskworkflow .connector_overlay_text_one.from_one, 
+  .jsplumbtaskworkflow .connector_overlay_text_one.to_one {
+	font-size:12px;
+	margin-top:0;
+}
 
 /* START: SELECTED TASK PROPERTIES */
 .selected_task_properties .db_table_task_html {
@@ -123,9 +129,6 @@
 .taskflowchart:not(.fixed_properties):not(.fixed_side_properties) > .selected_task_properties .db_table_task_html.advanced_ui_shown {
 	overflow:auto;
 }
-.selected_task_properties .db_table_task_html .table_name {
-	margin-top:15px;
-} 
 .selected_task_properties .db_table_task_html .table_name label {
 	width:75px;
 	display:inline-block;
@@ -518,7 +521,6 @@
 	min-height:20px;
 	font-size:8pt !important;
 	color:#666;
-	margin-top:15px;
 	margin-left:auto;
 	margin-right:auto;
 	background:#fff;

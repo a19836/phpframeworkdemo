@@ -38,7 +38,7 @@
 .mytree .jstree-anchor > i.jstree-icon {vertical-align:middle;}
 .mytree .jstree-anchor > label {line-height:12px; white-space:normal; word-break:break-all;}
 .mytree a.link * {cursor:pointer;}
-.mytree li > .sub_menu {margin-left:5px; color:#ccc;}
+.mytree li > .sub_menu {margin-left:5px; color:#aaa;}
 /*.mytree li > .sub_menu:hover::after {content:"Click me"; position:fixed; top:auto; left:auto; margin:-8px 0 0 -40px; color:var(--main-template-color); font: initial; font-family:var(--main-font-family); font-size:8px; }*/
 
 .mytree li.disabled > a {/*opacity:.3;*/}

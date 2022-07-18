@@ -214,10 +214,16 @@ function selectMyTreeNode(node) {
 			refreshTreeWithNewPath(node, path);
 	}
 	else if (i.is(".entity_file")) {
+		MyFancyPopup.showOverlay();
+		MyFancyPopup.showLoading();
+		
 		var path = a.attr("file_path");
 		document.location = edit_entity_url.replace(/#path#/g, path);
 	}
 	else if (i.is(".template_file")) {
+		MyFancyPopup.showOverlay();
+		MyFancyPopup.showLoading();
+		
 		var path = a.attr("file_path");
 		document.location = edit_template_url.replace(/#path#/g, path);
 	}

@@ -77,7 +77,7 @@ var manage_project_url = \'' . $manage_project_url . '\';
 			<div class="name">
 				<label>Name your project:</label>
 				<input type="hidden" name="old_name" value="' . $old_project . '" />
-				<input name="name" placeHolder="Type a name" value="' . $project . '" />
+				<input name="name" placeHolder="Type a name" value="' . $project . '" required />
 			</div>
 			<div class="description">
 				<label>Description:</label>

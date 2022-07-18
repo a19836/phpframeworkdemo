@@ -124,8 +124,17 @@ function editProject(elm, url) {
 }
 
 function onSucccessfullAddProject() {
-	url = document.location;
-	document.location = url;
+	var url = document.location;
+	
+	if (window.parent && window.parent != window) {
+		//set cookie with default page
+		window.parent.MyJSLib.CookieHandler.setCookie('default_page', url, 0, "/"); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+		
+		var parent_url = window.parent.location;
+		window.parent.location = parent_url;
+	}
+	else
+		document.location = url;
 }
 
 function goTo(elm, url) {

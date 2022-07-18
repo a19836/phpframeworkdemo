@@ -293,7 +293,7 @@
 	content:"\f0c7";
 	font-size:16px;
 	text-indent:1px;
-	display:block;
+	display:inline-block;
 }
 .icon.user::before {
 	content:"\f007";
@@ -583,8 +583,8 @@
 	content:"\f7a4";
 }
 .icon.block_view::before {
-	content:"\f58e";
-	margin-left:3px;
+	content:"\f58d";
+	margin-left:1px;
 }
 .icon.video::before {
 	content:"\f03d";

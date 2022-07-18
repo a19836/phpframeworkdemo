@@ -296,7 +296,7 @@
 .jsplumbtaskmenu .task span {
 	width:70px;
 	max-height:25px;
-	line-height:12px;
+	line-height:13px;
 	margin-left:-15px;
 	margin-right:-15px;
 	display:block;
@@ -304,9 +304,8 @@
 	left:0;
 	top:40px;
 	color:#426efa;
-	font-size:9px;
+	font-size:10px;
 	font-weight:normal;
-	letter-spacing:.5px;
 	text-align:center;
 	overflow:hidden;
 	text-overflow:ellipsis;
@@ -352,14 +351,15 @@
 }
 .jsplumbtaskworkflow .task.logic_task .task_info {
 	width:182px; /*bc box-sizing is border-box, we need to add the borderleft and right widths. */
+	padding-left:10px;
 	left:-55px;
 	background:#426efa;
 	color:#fff;
 	box-sizing:border-box;
 }
 .taskflowchart .task.logic_task .task_info .task_info_tag, .taskflowchart .task .task_info .task_info_label {
-	line-height:13px;
-	font-size:8px;
+	line-height:15px;
+	font-size:9px;
 }
 .jsplumbtaskworkflow .task.logic_task .info {
 	width:180px;

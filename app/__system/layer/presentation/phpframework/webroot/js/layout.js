@@ -260,7 +260,7 @@ function showAjaxLoginPopup(login_url, urls_to_match, success_func) {
 			h = h > 280 ? h : 280;
 			
 			iframe.css({width: w + "px", height: h + "px"});*/
-			iframe.css({width: "380px", height: "280px"});
+			iframe.css({width: "380px", height: "290px"});
 		}
 	};
 	iframe.bind("load", iframe_on_load_func);

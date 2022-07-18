@@ -892,7 +892,7 @@ function manageFile(a, attr_name, action, on_success_callbacks) {
 				
 				url = encodeUrlWeirdChars(url); //Note: Is very important to add the encodeUrlWeirdChars otherwise if a value has accents, won't work in IE.
 				
-				var str = action == "create_folder" || action == "create_file" ? "create" : action;
+				var str = action == "create_folder" || action == "create_file" ? "create" : action.replace(/_/g, " ");
 				
 				$.ajax({
 					type : "get",
@@ -910,7 +910,7 @@ function manageFile(a, attr_name, action, on_success_callbacks) {
 							else if (action != "remove")
 								refreshNodeParentChildsByChildId(tree_node_id_to_be_updated);
 							
-							StatusMessageHandler.showMessage("The file was " + str + (action == "unzip" || action == "zip" ? "pe" : "") + "d correctly");
+							StatusMessageHandler.showMessage("File " + str + (action == "unzip" || action == "zip" ? "pe" : "") + "d correctly");
 							
 							on_success_callbacks = $.isArray(on_success_callbacks) ? on_success_callbacks : [on_success_callbacks];
 							for (var i = 0; i < on_success_callbacks.length; i++)

@@ -29,10 +29,7 @@
 	width:100%;
 }
 .call_presentation_layer_web_service_task_html .get_automatically {
-	margin-top:15px;
-}
-.taskflowchart.fixed_side_properties .selected_task_properties .call_presentation_layer_web_service_task_html .get_automatically {
-	margin-top:0;
+	/*margin-top:15px;*/
 }
 .call_presentation_layer_web_service_task_html .get_automatically.disabled .icon {
 	opacity:.1;

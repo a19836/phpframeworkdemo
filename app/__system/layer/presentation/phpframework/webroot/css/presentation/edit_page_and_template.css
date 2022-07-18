@@ -644,6 +644,14 @@ body > .dragging_menu_item {
 	left:calc(100% - 205px);
 	right:0;
 	text-align:center;
+	direction:ltr;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-left::before {
+	content:"List:";
+	display:inline-block;
+	font:var(--main-font-family);
+	font-size:8pt;
+	color:var(--main-template-color);
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-left .option {
 	color:var(--main-template-color);
@@ -652,18 +660,20 @@ body > .dragging_menu_item {
 	display:none;
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-left .option.show-option-panel {
-	width:100%;
+	width:calc(100% - 20px);
 	margin:0;
 	/*border-color:rgba(0, 0, 0, .1);*/
 	border-color:transparent;
 	background:var(--main-template-bg);
-	color:var(--resize-bar-border);
+	color:var(--link-color);
 	/*font-weight:bold;*/
 	font-size:8pt;
 	text-align:left;
+	box-shadow:none; /* bc of on hover and focus events */
+	vertical-align:baseline;
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-left .option.show-option-panel:hover {
-	color:var(--resize-bar-border) !important;
+	color:var(--link-color) !important;
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .options-left .option.option-disabled {
 	opacity:.35 !important;

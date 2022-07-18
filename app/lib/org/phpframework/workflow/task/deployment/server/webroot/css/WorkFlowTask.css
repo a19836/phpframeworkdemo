@@ -47,7 +47,6 @@
 
 .server_task_html {
 	border:0;
-	margin-top:15px;
 }
 .server_task_html ul.ui-tabs-nav {
 	background:none;
@@ -217,7 +216,8 @@
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
 	content:"\f14a";
-	margin-right:5px;
+	margin-right:12px;
+	font-size:14px;
 	color:green;
 }
 .task_context_menu .activate_task a.active::before {

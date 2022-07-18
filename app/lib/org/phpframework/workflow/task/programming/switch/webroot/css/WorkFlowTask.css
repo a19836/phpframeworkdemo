@@ -82,7 +82,7 @@
 	min-height:20px;
 }
 .switch_task_html .object_var {
-	margin-top:15px;
+	/*margin-top:15px;*/
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .switch_task_html .object_var {
 	margin-top:0;

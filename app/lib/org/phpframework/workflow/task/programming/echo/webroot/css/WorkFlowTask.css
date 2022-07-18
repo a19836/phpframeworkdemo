@@ -17,10 +17,7 @@
 }
 
 .echo_task_html .value {
-	margin-top:15px;
-}
-.taskflowchart.fixed_side_properties .selected_task_properties .echo_task_html .value {
-	margin-top:0;
+	/*margin-top:15px;*/
 }
 
 .echo_task_html .value,

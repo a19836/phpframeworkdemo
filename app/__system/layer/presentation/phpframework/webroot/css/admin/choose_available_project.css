@@ -72,6 +72,7 @@ body,
 	display:none;
 }
 .choose_available_project > .projects_list_type .icon {
+	margin:0 5px;
 	font-size:16px;
 }
 .choose_available_project > .projects_list_type .icon.active {
@@ -110,6 +111,9 @@ body,
 
 .choose_available_project > .group {
 	margin:0 20px;
+	text-align:center;
+}
+.choose_available_project > .group.list_view {
 	text-align:left;
 }
 .choose_available_project > .group > .title {
@@ -202,6 +206,8 @@ body,
 	font-size:8px;
 	color:#999;
 	text-align:center;
+	
+	display:none; /* This label causes too much noise, and we want to make the tool as simple as possible. */
 }
 .choose_available_project .group.list_view li:not(.no_projects):hover::after {
 	top:15px;

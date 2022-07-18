@@ -11,6 +11,8 @@
 	bottom:-25px !important;
 	left:-5px !important;
 	background:none !important;
+	
+	display:none !important; /* This causes noise in the diagram. The diagrams should be as simple as possible, so we should reduce the noise. */
 }
 .jsplumbtaskworkflow .task:hover .short_actions {
 	padding:10px;

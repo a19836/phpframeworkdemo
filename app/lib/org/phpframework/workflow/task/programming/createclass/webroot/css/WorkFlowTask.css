@@ -29,6 +29,9 @@
 	margin-top:10px;
 	margin-bottom:5px;
 }
+.create_class_task_html > .name {
+	margin-top:0;
+}
 .create_class_task_html > .name label,
   .create_class_task_html > .extends label,
   .create_class_task_html > .implements label,
