@@ -31,7 +31,7 @@
 	width:100px;
 	border:1px solid #ccc;
 	background:transparent;
-	color:var(--main-template-color);
+  	color:var(--main-iframe-color);
 }
 .file_class_obj .abstract {
 	width:100%;

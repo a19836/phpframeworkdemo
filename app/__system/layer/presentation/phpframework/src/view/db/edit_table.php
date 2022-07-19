@@ -108,8 +108,8 @@ var step = ' . ($step ? $step : 0) . ';
 			</table>
 			
 			<div class="save_button">
-				' . ($table ? '<input class="delete" type="submit" name="delete" value="delete" onClick="return onDeleteButton(this);" />
-				<input type="submit" name="update" value="update" />' : '<input type="submit" name="add" value="add" />') . '
+				' . ($table ? '<input class="delete" type="submit" name="delete" value="Delete" onClick="return onDeleteButton(this);" />
+				<input type="submit" name="update" value="Update" />' : '<input type="submit" name="add" value="Add" />') . '
 			</div>
 		</form>
 	</div>
@@ -126,11 +126,11 @@ var step = ' . ($step ? $step : 0) . ';
 				<textarea class="editor">' . htmlspecialchars($sql, ENT_NOQUOTES) . '</textarea>
 			</div>'; $main_content .= '		
 			<div class="save_button">
-				<input class="back" type="button" name="back" value="back" onClick="return onBackButton(this, 0);" />
-				<input class="execute" type="submit" name="execute" value="execute" onClick="return onExecuteButton(this);" />
+				<input class="back" type="button" name="back" value="Back" onClick="return onBackButton(this, 0);" />
+				<input class="execute" type="submit" name="execute" value="Execute" onClick="return onExecuteButton(this);" />
 			</div>'; } else $main_content .= '<div>' . $status_message . '</div>		
 			<div class="save_button">
-				<input class="back" type="button" name="back" value="back" onClick="return onBackButton(this, 0);" />
+				<input class="back" type="button" name="back" value="Back" onClick="return onBackButton(this, 0);" />
 			</div>'; $main_content .= '
 		</form>
 	</div>
@@ -143,7 +143,7 @@ var step = ' . ($step ? $step : 0) . ';
 			</ul>
 		</div>'; $main_content .= '
 		<div class="save_button">
-			<input class="back" type="button" name="back" value="back" onClick="return onBackButton(this, 1);" />
+			<input class="back" type="button" name="back" value="Back" onClick="return onBackButton(this, 1);" />
 		</div>
 	</div>'; } $main_content .= '
 </div>'; function getTableAttributeHtml($v972f1a5c2b, $pd69fb7d0, $v539082ff30 = null) { $pe2c07578 = $v972f1a5c2b ? $v972f1a5c2b->getColumnCharsets() : array(); $v06b0f1c9be = $v972f1a5c2b ? $v972f1a5c2b->getColumnCollations() : array(); $v4159504aa3 = $v972f1a5c2b ? $v972f1a5c2b->getDBColumnTypes() : DB::getAllSharedColumnTypes(); $v8b7819f513 = $v972f1a5c2b ? $v972f1a5c2b->getDBColumnTypesIgnoredProps() : DB::getAllSharedColumnTypesIgnoredProps(); $pdc1215e3 = $v972f1a5c2b ? $v972f1a5c2b->getDBColumnTypesHiddenProps() : DB::getAllSharedColumnTypesHiddenProps(); $pe2c07578 = is_array($pe2c07578) ? $pe2c07578 : array(); $v06b0f1c9be = is_array($v06b0f1c9be) ? $v06b0f1c9be : array(); $v4159504aa3 = is_array($v4159504aa3) ? $v4159504aa3 : array(); $v8b7819f513 = is_array($v8b7819f513) ? $v8b7819f513 : array(); $v4a32ab2adf = is_array($v8b7819f513[ $v539082ff30["type"] ]) ? $v8b7819f513[ $v539082ff30["type"] ] : array(); $pd8c9353b = $v539082ff30["primary_key"] ? false : $v539082ff30["null"]; $v9707fb73e0 = $v539082ff30["primary_key"] ? true : $v539082ff30["unique"]; $v6c33401cc3 = $v539082ff30["auto_increment"]; $v6a54e01756 = strlen($v539082ff30["default"]) ? true : $v539082ff30["has_default"]; $v78c1f573dd = !$v539082ff30["type"] || in_array("length", $v4a32ab2adf); $pd68d0564 = !$v539082ff30["type"] || in_array("unsigned", $v4a32ab2adf); $v6876f9e654 = in_array("null", $v4a32ab2adf); $pebcbeb3e = in_array("auto_increment", $v4a32ab2adf); $pd0d5cab2 = in_array("default", $v4a32ab2adf); $pa3102e3f = in_array("extra", $v4a32ab2adf); $v5ef44a2b0a = in_array("charset", $v4a32ab2adf); $pfba02f79 = in_array("collation", $v4a32ab2adf); $pd5de3879 = in_array("comment", $v4a32ab2adf); $pf8ed4912 = '

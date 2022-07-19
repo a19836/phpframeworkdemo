@@ -7,7 +7,7 @@ body,
 }
 
 /* TOP BAR */
-.choose_available_project .top_bar {
+.choose_available_project.in_popup .top_bar {
 	height:0; /* important to not create extra black spaces in admin_home and when in popup */
 }
 .choose_available_project .top_bar header {
@@ -83,6 +83,7 @@ body,
 }
 .choose_available_project > .projects_list_type .icon:hover {
 	color:var(--icon-hover-color);
+	opacity:1;
 }
 
 .choose_available_project > .new_project {
@@ -222,6 +223,9 @@ body,
 	font-size:11px;
 	cursor:pointer;
 	color:#585B69;
+}
+.choose_available_project .group.list_view li:not(.no_projects):not(.project_common):nth-child(odd) > label {
+	color:var(--main-template-color);
 }
 .choose_available_project .group li.selected_project > label {
 	color:var(--icon-active-color, #4070FF);

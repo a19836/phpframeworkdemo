@@ -215,9 +215,11 @@ body.main_navigator_reverse #content {
 }
 #content .user_type_permissions_list table .user_type_permission .toggle::before {
 	content:"\f204";
+	margin-left:1px;
 }
 #content .user_type_permissions_list table .user_type_permission .toggle.active::before {
 	content:"\f205";
+	margin-left:1px;
 }
 #content .user_type_permissions_list table .icon {
 	width:24px;

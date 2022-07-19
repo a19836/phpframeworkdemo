@@ -2,16 +2,21 @@ var StatusMessageHandler = {
 	message_html_obj : null,
 	
 	init : function() {
-		this.message_html_obj = $('<div class="status_message" onClick="StatusMessageHandler.removeMessages();"></div>');
+		this.message_html_obj = $('<div class="status_message"></div>');
 		
 		$(document.body).append(this.message_html_obj);
+		
+		this.message_html_obj.click(function() {
+			StatusMessageHandler.removeMessages();
+		});
 	},
 	
 	showMessage : function(message) {
 		var status_message = this.getMessageElement(message, "status_message_info");
 		
 		try { //if message contains a full html page with head and body we will get a javascript error. So we need to catch it.
-			this.message_html_obj.append(status_message);
+			if (!status_message.parent().is(this.message_html_obj))
+				this.message_html_obj.append(status_message);
 		}
 		catch(e) {
 			this.message_html_obj = $(document.body).children('.status_message'); //sometimes the this.message_html_obj looses the reference for the object
@@ -27,7 +32,8 @@ var StatusMessageHandler = {
 		var status_message = this.getMessageElement(message, "status_message_error");
 		
 		try { //if message contains a full html page with head and body we will get a javascript error. So we need to catch it.
-			this.message_html_obj.append(status_message);
+			if (!status_message.parent().is(this.message_html_obj))
+				this.message_html_obj.append(status_message);
 		}
 		catch(e) {
 			this.message_html_obj = $(document.body).children('.status_message'); //sometimes the this.message_html_obj looses the reference for the object
@@ -39,22 +45,33 @@ var StatusMessageHandler = {
 		this.prepareMessage(status_message, 10000);
 	},
 	
-	closeMessage : function(elm) {
-		event.stopPropagation(); //avoids to call the onClick event from .status_message
-		
-		this.removeMessage(elm);
-	},
-	
 	getMessageElement : function(message, message_class) {
 		var width = $(window).width();
+		var created_time = (new Date()).getTime();
+		var last_msg_elm = this.message_html_obj.children().last();
+		var status_message = null;
 		
+		//prepare message text
 		message = this.parseMessage(message);
 		var parts = message.split("\n");
 		var height = parts.length * 20 + (message.indexOf("<br") != -1 ? message.split("<br").length * 20 : 0);
 		
-		var status_message = $('<div class="' + message_class + '">' + message.replace(/\n/g, "<br/>") + '<span class="close_message" onClick="StatusMessageHandler.closeMessage(this);">close</span></div>');
+		////prepare message element
+		if (last_msg_elm.is("." + message_class) && last_msg_elm.data("created_time") + 1500 > created_time) { //if there is already a message created in the previous 1.5seconds, combine this text with that message element.
+			status_message = last_msg_elm;
+			status_message.children(".close_message").last().before( "<br/>" + message.replace(/\n/g, "<br/>") );
+			
+			height += parseInt(last_msg_elm.css("min-height"));
+		}
+		else { //if new message element
+			status_message = $('<div class="' + message_class + '">' + message.replace(/\n/g, "<br/>") + '<span class="close_message">close</span></div>');
+			
+			status_message.css("width", width + "px"); //must be width, bc if is min-width the message won't be centered and the close button won't appear.
+			
+			status_message.data("created_time", created_time);
+		}
 		
-		status_message.css("width", width + "px"); //must be width, bc if is min-width the message won't be centered and the close button won't appear.
+		//set new height
 		status_message.css("min-height", height + "px"); //min-height are important bc if the message is bigger than the height, the message will appear without background
 		
 		return status_message;
@@ -140,13 +157,27 @@ var StatusMessageHandler = {
 	prepareMessage : function(status_message, timeout) {
 		var max_height = parseInt(status_message.css("max-height"));
 		var height = parseInt(status_message.css("min-height"));
+		var close_icon = status_message.children(".close_message");
 		
 		if (height && max_height && height > max_height)
 			status_message.css("min-height", max_height + "px");
 		
-		setTimeout(function() { 
-			status_message.remove(); 
+		var timeout_id = setTimeout(function() { 
+			close_icon.trigger("click");
 		}, timeout);
+		
+		status_message.click(function(event) {
+			event && typeof event.stopPropagation == "function" && event.stopPropagation(); //avoids to call the onClick event from message_html_obj
+		});
+		
+		close_icon.click(function(event) {
+			event && typeof event.stopPropagation == "function" && event.stopPropagation(); //avoids to call the onClick event from message_html_obj
+			
+			StatusMessageHandler.removeMessage(this);
+			
+			if (timeout_id)
+				clearTimeout(timeout_id);
+		});
 	},
 	
 	removeMessage : function(elm) {

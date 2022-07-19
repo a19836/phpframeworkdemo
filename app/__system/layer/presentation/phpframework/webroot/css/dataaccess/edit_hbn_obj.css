@@ -31,7 +31,7 @@
 .edit_hbn_obj .data_access_obj > .name input {
 	width:100px;
 	border:1px solid #ccc;
-	color:#000;
+	color:var(--main-iframe-color);
 	background:transparent;
 }
 .edit_hbn_obj .data_access_obj #tabs {

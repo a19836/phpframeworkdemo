@@ -265,7 +265,7 @@
 	box-sizing:border-box;
 }
 .layout-ui-editor .text-selection-menu:not(.maximized-menu) {
-	height:32px;
+	min-height:32px; /* Do not use height bc if there are any messages, they will be hidden. Use min-height instead. */
 	overflow:hidden;
 }
 .layout-ui-editor .text-selection-menu.sticky-text-selection-menu {
@@ -548,13 +548,14 @@
 
 /* TEXT SELECTION MENU - MESSAGES */
 
-.layout-ui-editor .text-selection-menu > .messages {
-	
+.layout-ui-editor .text-selection-menu > .messages:not(:empty) {
+	margin:5px -38px 5px 2px; /* -38px: text-selection-menu has padding-right of 40px and padding-left of 2px, which results of 38px. */
 }
 .layout-ui-editor .text-selection-menu > .messages:empty {
 	display:none;
 }
 .layout-ui-editor .text-selection-menu > .messages .message {
+	margin-top:5px;
 	padding-left:5px;
 	color:var(--text-selection-menu-msg-color, #fff);
 	font-size:80%;

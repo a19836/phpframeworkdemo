@@ -178,9 +178,12 @@
 	margin-top:5px;
 }
 .file_class_method_obj #settings .arguments thead th {
+	padding-left:5px;
+	font-size:10px;
 	border-bottom:1px solid #ccc;
 	border-right:1px solid #f5f5f5;
-	color:#666;
+	box-sizing:border-box;
+	opacity:.8;
 }
 .file_class_method_obj #settings .arguments tbody td {
 	border-bottom:1px solid #ccc;
@@ -188,6 +191,7 @@
 	background:#fff;
 }
 .file_class_method_obj #settings .arguments .icon_cell {
+	padding-left:0;
 	border:0;
 	background:unset;
 }
@@ -236,10 +240,12 @@
 	margin-top:5px;
 }
 .file_class_method_obj #settings .annotations thead th {
+	padding-left:5px;
 	font-size:10px;
 	border-bottom:1px solid #ccc;
 	border-right:1px solid #f5f5f5;
-	color:#666;
+	box-sizing:border-box;
+	opacity:.8;
 }
 .file_class_method_obj #settings .annotations tbody td {
 	border-bottom:1px solid #ccc;
@@ -247,6 +253,7 @@
 	background:#fff;
 }
 .file_class_method_obj #settings .annotations .icon_cell {
+	padding-left:0;
 	border:0;
 	background:unset;
 }

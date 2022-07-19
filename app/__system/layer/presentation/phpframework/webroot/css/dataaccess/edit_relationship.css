@@ -44,8 +44,8 @@
 .edit_relationship .relationship .rel_type select {
 	width:115px;
 	border:1px solid #ccc;
-	color:#000;
-	background:transparent;
+	color:var(--main-iframe-color);
+	background:var(--main-iframe-bg);
 }
 .edit_relationship .relationship .rel_name {
 	width:210px;
@@ -61,7 +61,7 @@
 .edit_relationship .relationship .rel_name input {
 	width:200px;
 	border:1px solid #ccc;
-	color:#000;
+	color:var(--main-iframe-color);
 	background:transparent;
 }
 

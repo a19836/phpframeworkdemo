@@ -38,15 +38,15 @@
 }
 .entity_obj .template > select[name=template] {
 	width:200px;
-	background:transparent;
-	border:1px solid rgba(0, 0, 0, .05);
+	background:var(--main-iframe-bg);
+	border:1px solid #ccc;
 	color:inherit;
 	font-size:10px;
 }
 .entity_obj .template > select[name=template_genre] {
 	width:115px;
-	background:transparent;
-	border:1px solid rgba(0, 0, 0, .05);
+	background:var(--main-iframe-bg);
+	border:1px solid #ccc;
 	color:inherit;
 	font-size:10px;
 }

@@ -19,7 +19,7 @@
 	white-space:nowrap;
 	overflow:hidden;
 	cursor:pointer;
-	color:#555;
+	color:inherit;
 	position:relative;
 	vertical-align:middle;
 	
@@ -47,20 +47,19 @@
 	position:absolute;
 	top:7px;
 	left:5px;
-	color:#FC3C44;
-	color:var(--icon-hover-color);
+	color:var(--icon-after-color);
 	font-size:10px;
 }
 .icon:hover {
-	color:#FC3C44;
 	color:var(--icon-hover-color);
 	text-decoration:none;
+	opacity:1;
 }
 .icon:hover::before {
 	color:inherit;
 }
 .icon:hover::after {
-	color:#000;
+	color:var(--icon-after-hover-color);
 }
 
 .toggle_icon:not(.active) .icon::before,
@@ -82,7 +81,6 @@
 	left:5px;
 	top:5px;
 	font-size:90%;
-	color:#FC3C44;
 	color:var(--icon-hover-color);
 	opacity:.7;
 }

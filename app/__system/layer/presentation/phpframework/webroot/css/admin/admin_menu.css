@@ -240,7 +240,7 @@
 	font-size:6pt;
 	
 	display:inline-block;
-	color:#666;
+	color:var(--icon-hover-color);
 	position:absolute;
 	left:17px;
 	top:10px;
@@ -334,12 +334,8 @@
 	right:10px;
 	bottom:10px;
 }
-.choose_available_tool_popup iframe,
-  .choose_available_project_popup iframe,
-  .choose_available_tutorial_popup iframe,
-  .go_to_popup iframe {
-	width:100%;
-	height:100%;
+.choose_available_tutorial_popup {
+	max-width:650px;
 }
 .edit_project_details_popup {
 	top:auto;
@@ -348,4 +344,12 @@
 	bottom:auto;
 	width:535px;
 	height:390px;
+}
+.choose_available_tool_popup iframe,
+  .choose_available_project_popup iframe,
+  .choose_available_tutorial_popup iframe,
+  .edit_project_details_popup iframe,
+  .go_to_popup iframe {
+	width:100%;
+	height:100%;
 }

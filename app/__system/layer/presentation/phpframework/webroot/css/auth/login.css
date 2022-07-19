@@ -31,7 +31,7 @@ body:not(.in_popup) #main_column {
 }
 .login .container .card .card-header img {
 	height:44px;
-	margin:20px auto 30px;
+	margin:15px auto;
 	display:inline-block;
 }
 .login.with_popup .container .card .card-header h5 {
@@ -41,9 +41,14 @@ body:not(.in_popup) #main_column {
 	text-align:left;
 	font-size:13px;
 }
-
+.login .container .card .card-body {
+	padding:40px;
+}
+.login.with_popup .container .card .card-body {
+	padding:20px;
+}
 .login .container .card .card-body .title {
-	margin:20px 0 40px;
+	margin:0 0 40px;
 	color:var(--link-color);
 	font-size:21px;
 	text-align:center;
@@ -52,7 +57,7 @@ body:not(.in_popup) #main_column {
 	display:none;
 }
 
-.form_fields { width:320px; margin:10px auto 0; }
+.form_fields { width:calc(100% - 10px); margin:10px auto 0; }
 .form_fields .form_field { position:relative; padding:7px 0; color:#555; }
 .form_fields .form_field label {
 	margin:0;

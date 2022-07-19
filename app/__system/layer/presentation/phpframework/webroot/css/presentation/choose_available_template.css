@@ -34,7 +34,7 @@
 }
 .choose_available_template_popup.with_title > .choose_different_editor {
 	left:auto;
-	right:175px;
+	right:190px;
 }
 .choose_available_template_popup.with_title .choose_different_editor:hover,
   .choose_available_template_popup.with_title .install_template:hover {
@@ -83,7 +83,7 @@
 	padding:0 10px;
 	text-align:left;
 	border-bottom:1px solid #eee;
-	color:#ddd;
+	color:var(--icon-folder-color);
 }
 .choose_available_template_popup > .content > .default_templates > ul,
   .choose_available_template_popup > .content > .installed_templates > ul,

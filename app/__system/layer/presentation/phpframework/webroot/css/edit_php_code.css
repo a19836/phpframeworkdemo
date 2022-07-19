@@ -108,14 +108,14 @@
 	position:fixed !important; /* 2021-02-08 JP: this is very important bc is fixing the problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.*/
 }
 #code .ace_editor .ace_gutter {
-	background:var(--main-iframe-bg);
-	color:#BFC4DB;
+	background:var(--main-ace-editor-bg);
+	color:var(--main-ace-editor-color);
 }
 #code .ace_editor .ace_gutter .ace_gutter-active-line {
-	background:rgba(0, 0, 0, .05);
+	background:var(--main-ace-editor-active-line-number-bg);
 }
 #code .ace_editor .ace_layer .ace_active-line {
-	background:var(--main-iframe-bg);
+	background:var(--main-ace-editor-active-line-bg);
 }
 
 #code.ui-tabs-panel {

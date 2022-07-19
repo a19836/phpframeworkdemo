@@ -189,8 +189,7 @@
 	left:0; 
 	color:#83889E; 
 	display:block; 
-	white-space:nowrap; 
-	opacity:0.5; 
+	white-space:nowrap;
 	text-align:left;
 }
 .server_task_html .template_workflow > .taskflowchart .tasks_flow .task .ep {

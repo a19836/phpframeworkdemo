@@ -155,6 +155,7 @@ body,
 }
 .admin_panel .project_files .ui-tabs-panel .projects_list_type .icon:hover {
 	color:var(--icon-hover-color);
+	opacity:1;
 }
 
 /* PROJECT FILES PANELS - BUTTON AND SEARCH FIELD */
@@ -263,6 +264,7 @@ body,
 	border-bottom:1px solid #eee;
 	color:var(--icon-folder-color);
 	font-size:11px;
+	text-align:left;
 }
 .admin_panel .project_files .mytree.list_view > li > ul > li.separator {
 	margin-top:50px;
@@ -302,6 +304,9 @@ body,
 	box-sizing:border-box;
 	display:block;
 	cursor:default;
+}
+.admin_panel .project_files .mytree.list_view > li > ul > li:not(.separator):not(.empty_files):nth-child(odd) > a.jstree-anchor {
+	color:var(--main-template-color);
 }
 .admin_panel .project_files .mytree.list_view > li > ul > li > a.jstree-anchor {
 	padding-right:10px;

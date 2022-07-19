@@ -21,7 +21,8 @@
   	left:50px;
   	z-index:9999;
   	border:1px solid #ccc;
-  	background:transparent;
+  	background:var(--main-iframe-bg);
+  	color:var(--main-iframe-color);
   	box-sizing:border-box;
 }
 .export_form input[name=doc_name] {
@@ -32,6 +33,7 @@
   	z-index:9999;
   	border:1px solid #ccc;
   	background:transparent;
+  	color:var(--main-iframe-color);
   	box-sizing:border-box;
 }
 .relationship .settings {

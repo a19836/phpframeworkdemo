@@ -96,6 +96,7 @@
 	padding:0 5px;
 }
 .manage_records table .editable td {
+	padding:0;
 	background:#f4f4f4;
 }
 .manage_records table .empty {
@@ -142,7 +143,6 @@
   .manage_records table select {
 	width:100%;
 	height:100%;
-	padding:0;
 	box-sizing:border-box;
 	background:transparent;
 	border-color:transparent;
