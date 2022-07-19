@@ -210,6 +210,8 @@
 	left:-15px;
 	font-size:8px;
 	color:#999;
+	
+	display:none; /* This causes too much noise and the framework should be as simple as possible. */
 }
 .choose_available_template_popup > .content li.folder:hover::before,
   .choose_available_template_popup > .content li.project_folder:hover::before {
