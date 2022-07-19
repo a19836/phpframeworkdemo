@@ -2142,6 +2142,7 @@ body .layout-ui-editor > .messages .message .close::before {
 	color:var(--main-iframe-color);
 }
 .tabs.tabs_icons li:not(.ui-tabs-active) {
+	height:calc(100% - 1px);
 	/*border:0;*/
 }
 .tabs.tabs_icons li.ui-tabs-active {
@@ -2149,8 +2150,11 @@ body .layout-ui-editor > .messages .message .close::before {
 	color:var(--icon-active-color);
 	z-index:2;
 }
-.tabs.tabs_icons > li.ui-state-hover:not(.ui-tabs-active) {
-	border-color:#d3d3d3;
+.tabs.tabs_icons li:not(.ui-tabs-active) {
+	border-color:#DFE1ED;
+}
+body.dark_theme .tabs.tabs_icons li:not(.ui-tabs-active) {
+	border-color:#777;
 }
 .tabs.tabs_icons li a {
 	width:46px;
@@ -2171,6 +2175,12 @@ body .layout-ui-editor > .messages .message .close::before {
 }
 .tabs.tabs_icons li#code_editor_tab.ui-tabs-active a {
 	background:#fff;
+}
+body:not(.dark_theme) .tabs.tabs_icons li#tasks_flow_tab.ui-tabs-active a {
+	background:var(--main-template-bg);
+}
+body:not(.dark_theme) .tabs.tabs_icons li#visual_editor_tab.ui-tabs-active a {
+	background:var(--main-template-bg);
 }
 .tabs.tabs_icons > li.ui-state-hover:not(.ui-tabs-active) a {
 	color:var(--icon-hover-color);
