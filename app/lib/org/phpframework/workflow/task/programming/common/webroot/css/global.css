@@ -328,7 +328,7 @@
 	opacity:1 !important;
 	z-index:9999;
 }
-.jsplumbtaskworkflow .task.logic_task:hover:before {
+.jsplumbtaskworkflow .task.logic_task:before {
 	width:180px;
 	left:-55px !important;
 	right:auto !important;
@@ -336,6 +336,9 @@
 	border-color:#DFE1ED !important;
 	box-shadow:3px 3px 4px rgba(0, 0, 0, 0.05);
 	/*background:#fff;*/
+}
+.jsplumbtaskworkflow .task.logic_task.is_start_task:not(:hover):before {
+	display:block;
 }
 .jsplumbtaskworkflow .task.logic_task:hover:after {
 	background:none !important;
@@ -345,9 +348,7 @@
 	display:none !important; /* reduce noise in UI */
 }
 .jsplumbtaskworkflow .task.logic_task.is_start_task .start_task_overlay {
-	top:-10px;
-	/*left:-25px;
-	right:-25px;*/
+	display:none;
 }
 .jsplumbtaskworkflow .task.logic_task .task_info {
 	width:182px; /*bc box-sizing is border-box, we need to add the borderleft and right widths. */
@@ -357,9 +358,23 @@
 	color:#fff;
 	box-sizing:border-box;
 }
-.taskflowchart .task.logic_task .task_info .task_info_tag, .taskflowchart .task .task_info .task_info_label {
+.jsplumbtaskworkflow .task.logic_task.is_start_task:not(:hover) .task_info {
+	display:block;
+	background:#83889E;
+}
+.jsplumbtaskworkflow .task.logic_task.is_start_task:not(:hover) .task_info:before {
+	content:"Start Task";
 	line-height:15px;
 	font-size:9px;
+}
+.taskflowchart .task.logic_task .task_info .task_info_tag, 
+  .taskflowchart .task.logic_task .task_info .task_info_label {
+	line-height:15px;
+	font-size:9px;
+}
+.taskflowchart .task.logic_task.is_start_task:not(:hover) .task_info .task_info_tag, 
+  .taskflowchart .task.logic_task.is_start_task:not(:hover) .task_info .task_info_label {
+	display:none;
 }
 .jsplumbtaskworkflow .task.logic_task .info {
 	width:180px;

@@ -372,7 +372,7 @@
 	filter:alpha(opacity=100);
 }
 
-.taskflowchart > .tasks_flow .task:hover:before {
+.taskflowchart > .tasks_flow .task:before {
 	content:" ";
 	position:absolute;
 	top:-25px;
@@ -388,7 +388,7 @@
 	display:block;
 }
 
-.taskflowchart > .tasks_flow .task:hover:after {
+.taskflowchart > .tasks_flow .task:after {
 	content:"Click to view menu, move or link to another box";
 	position:absolute;
 	left:0;

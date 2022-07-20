@@ -11,7 +11,7 @@
 	--resize-bar-bg:#F8F9FC;/*#83889E;*/
 	--resize-bar-vertical-img:url(../img/back_frame_open_close_vertical_red.gif);
 	--resize-bar-horizontal-img:url(../../img/back_frame_open_close_horizontal_red.gif);
-	--resize-bar-border:#83889E;
+	--resize-bar-border:#BFC4DB;
 	
 	--link-color:#4070FF;
 	
@@ -288,7 +288,7 @@ input[type=submit]:not(:disabled),
 	background-clip:padding-box;
 	border:2px solid transparent;
 	border-radius:9999px;
-	-webkit-box-shadow:0 0px 1px var(--main-scrollbar-thumb-shadow-color) !important; /* important here will overwrite the scrolllbar in the LayoutUIEDitor*/
+	/*-webkit-box-shadow:0 0px 1px var(--main-scrollbar-thumb-shadow-color);*/
 }
 ::-webkit-scrollbar-thumb:window-inactive {
 	/*background:rgba(0,0,0,0.35);*/

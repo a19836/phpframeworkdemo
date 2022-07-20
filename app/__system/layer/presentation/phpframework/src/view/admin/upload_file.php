@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include $EVC->getUtilPath("BreadCrumbsUIHandler"); $upload_url = $project_url_prefix . "admin/manage_file?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path&action=upload&item_type=$item_type"; $head = '
+include $EVC->getUtilPath("BreadCrumbsUIHandler"); $upload_url = $project_url_prefix . "admin/manage_file?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path&action=upload&item_type=$item_type"; $on_success_js_func = $on_success_js_func ? $on_success_js_func : "refreshAndShowLastNodeChilds"; $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -47,6 +47,8 @@ $(function() {
 				
 				//myDropzone.removeFile(file);
 			}
+			else if (typeof window.parent.' . $on_success_js_func . ' == "function")
+				window.parent.' . $on_success_js_func . '();
 		},
 		error: function(file, response) {
 			$(file.previewElement).find(".dz-error-message > [data-dz-errormessage]").html(response ? response : default_error_msg);

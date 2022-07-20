@@ -124,7 +124,7 @@ body {
 	background-clip:padding-box;
 	border:2px solid transparent;
 	border-radius:9999px;
-	-webkit-box-shadow:0 0px 1px rgba(250,250,250,0.8);
+	/*-webkit-box-shadow:0 0px 1px rgba(250,250,250,0.8);*/
 }
 :not(.template-widget)::-webkit-scrollbar-thumb:window-inactive {
 	/*background:rgba(0,0,0,0.35);*/

@@ -11,7 +11,7 @@
 	--top-panel-sub-menu-item-hover-bg:var(--main-context-menu-hover-bg);
 	--top-panel-sub-menu-item-hover-color:var(--main-context-menu-hover-color);
   	
-  	--menu-panel-border:#83889E;
+  	--menu-panel-border:var(--resize-bar-border);
 	--menu-panel-bg:#F0F1F5;
 	--menu-panel-color:var(--main-template-color);
 	--menu-panel-sub-menu-triangle-border:var(--main-context-menu-triangle-border);
@@ -26,7 +26,7 @@
 	--left-panel-color:#585B69;
 	--left-panel-tree-tabs-border:var(--resize-bar-border);
 	--left-panel-tree-tabs-bg:#F0F1F5;
-	--left-panel-tree-tabs-border:#83889E;
+	--left-panel-tree-tabs-border:var(--resize-bar-border);
 	--left-panel-tree-tabs-color:#83889E;
 	--left-panel-tree-tabs-active-color:#585B69;
 	--left-panel-tree-tabs-icon-active-color:var(--icon-active-color);/*#4070FF*/
@@ -54,7 +54,7 @@
 	--top-panel-sub-menu-item-hover-bg:var(--main-context-menu-hover-bg);
 	--top-panel-sub-menu-item-hover-color:var(--main-context-menu-hover-color);
   	
-  	--menu-panel-border:#83889E;
+  	--menu-panel-border:var(--main-context-menu-border);
 	--menu-panel-bg:var(--main-iframe-bg);
 	--menu-panel-color:var(--main-iframe-color);
 	--menu-panel-sub-menu-triangle-border:var(--main-context-menu-triangle-border);

@@ -934,7 +934,7 @@ body .taskflowchart .task .short_actions .move_action,
 }
 body .taskflowchart .task .short_actions .move_action:hover,
   body .taskflowchart .task .short_actions .context_menu_action:hover {
-	color:var(--icon-hover-color);
+	color:var(--icon-after-hover-color);
 }
 body .taskflowchart .task .short_actions .context_menu_action {
 	font-size:10pt;
