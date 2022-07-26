@@ -101,7 +101,7 @@ function chooseStoreTemplate(url) {
 		MyFancyPopupInstallStoreTemplate.hidePopup();
 		
 		//install template
-		installTemplate( $(".top_bar li.continue > a")[0] );
+		$(".top_bar li.continue > a").trigger("click");
 	}
 	else
 		alert("Error: You cannot choose this template. Please contact the sysadmin.");

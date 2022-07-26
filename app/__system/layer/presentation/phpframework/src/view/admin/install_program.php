@@ -152,13 +152,14 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 			<header>
 				<div class="title">' . $title . '</div>
 				<ul>
+					<li class="info" data-title="Info"><a onclick="$(\'.install_program .step_0\').toggleClass(\'show_info\');"><i class="icon info"></i> Info</a></li>
 					<li class="continue" data-title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
 			</header>
 		</div>
 		
 		<script>
-			var get_store_programs_url = "' . $get_store_programs_url . '";
+			var get_store_programs_url = "' . $project_url_prefix . "phpframework/admin/get_store_type_content?type=programs" . '";
 		</script>
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="step" value="1" />
@@ -168,11 +169,23 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 			
 			<input type="hidden" name="continue" value="Continue" />
 		</form>
-	
-		' . ($get_store_programs_url ? '<div class="install_store_program">To install programs from store please click <a href="javascript:void(0)" onClick="installStoreProgramPopup();">here</a></div>' : '') . '
+		
 		' . ($programs_download_page_url ? '<div class="go_to_programs_download_page">To download more programs please click <a href="' . $programs_download_page_url . '" target="download_programs">here</a></div>' : '') . '
 		
-		<div class="warning">
-			Note that in case of have Layers remotely installed, this is, Layers that are not locally installed and are remotely accessable, and if you wish to access this program from these Layers, you must then, install this program individually in that Layers too...
+		<div class="info">
+			<div class="warning">
+				Note that in case of have Layers remotely installed, this is, Layers that are not locally installed and are remotely accessable, and if you wish to access this program from these Layers, you must then, install this program individually in that Layers too...
+			</div>
+		</div>'; if ($get_store_programs_url) $main_content .= '
+		<div class="install_store_program">
+			<div class="title">Choose a program to install from our store:</div>
+			<ul>
+				<li class="loading">Loading programs from store...</li>
+			</ul>
 		</div>
+		<script>
+			$(function () {
+				initInstallStoreProgram();
+			});
+		</script>'; $main_content .= '
 	</div>'; } $main_content .= '</div>'; ?>

@@ -33,7 +33,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/install_template.js"></script>
 
 <script>
-var get_store_templates_url = "' . $get_store_templates_url . '"; //This is a global var
+var get_store_templates_url = "' . $project_url_prefix . "phpframework/admin/get_store_type_content?type=templates" . '"; //This is a global var
 var is_popup = ' . ($popup ? 1 : 0) . ';
 </script>'; $main_content = '
 	<div class="top_bar' . ($popup ? " in_popup" : "") . '">

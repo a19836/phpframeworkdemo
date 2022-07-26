@@ -33,7 +33,7 @@ $head = '
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/install_module.js"></script>
 
 <script>
-	var get_store_modules_url = \'' . $get_store_modules_url . '\';
+	var get_store_modules_url = \'' . $project_url_prefix . "phpframework/admin/get_store_type_content?type=modules" . '\';
 </script>
 '; $main_content = '
 <div class="top_bar">
