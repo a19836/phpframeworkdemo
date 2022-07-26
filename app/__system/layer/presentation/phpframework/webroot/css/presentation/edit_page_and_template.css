@@ -4,6 +4,7 @@
 	--mytree-dragged-widget-color:#fff;
 }
 
+/* regions_blocks_includes_settings_overlay */
 .regions_blocks_includes_settings_overlay {
 	content:"";
 	position:fixed;
@@ -23,7 +24,8 @@
 	left:0;
 	right:0;
 	bottom:0;
-	overflow:auto;
+	overflow:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow:overlay;
 	box-sizing:border-box;
 	z-index:4;
 	color:var(--main-settings-color);
@@ -116,18 +118,28 @@
 	visibility:hidden;
 }
 
-.regions_blocks_includes_settings input {
-	
-}
-.regions_blocks_includes_settings select {
-	
-}
-.regions_blocks_includes_settings input, .regions_blocks_includes_settings select, .regions_blocks_includes_settings textarea {
+.regions_blocks_includes_settings input:not([type=button]):not([type=submit]), 
+  .regions_blocks_includes_settings select, 
+  .regions_blocks_includes_settings textarea {
 	font-family:var(--main-font-family);
 	font-size: 0.9em;
 	/*background:#eee;
 	border: 1px inset #eee;*/
 	color: #555555;
+}
+
+.regions_blocks_includes_settings:not(.collapsed) > ul.tabs {
+	position:fixed;
+	right:10px;
+	margin-top:-37px;
+	z-index:1052; /* bigger than .regions_blocks_includes_settings .settings_header in edit_page_and_template.css */
+	border:0;
+}
+.regions_blocks_includes_settings:not(.collapsed) > ul.tabs li.ui-tabs-active {
+	background:var(--main-settings-bg);
+}
+.regions_blocks_includes_settings > .ui-tabs-panel {
+	padding:0;
 }
 
 .regions_blocks_includes_settings .template_params .items .item > .delete {
@@ -196,7 +208,7 @@
    .regions_blocks_includes_settings .other_template_params .items .item > label {
 	width:130px;
 }
-.regions_blocks_includes_settings input,
+.regions_blocks_includes_settings input:not([type=button]):not([type=submit]),
   .regions_blocks_includes_settings select {
 	height:26px;
 	font-size:10px;
@@ -370,6 +382,112 @@
 .regions_blocks_includes_settings .includes .items .item > .path {
 	width:330px;
 }
+
+/* regions_blocks_includes_settings - SLA */
+.regions_blocks_includes_settings .sla {
+	min-width:825px;
+	background:transparent;
+}
+.regions_blocks_includes_settings .sla .ui-widget {
+	font-size:8.5px !important;
+}
+.regions_blocks_includes_settings .sla input:not([type=button]):not([type=submit]), 
+  .regions_blocks_includes_settings .sla select {
+	height:auto;
+	font-size:inherit;
+	box-sizing:content-box;
+}
+.regions_blocks_includes_settings .sla textarea {
+	font-size:inherit;
+}
+.regions_blocks_includes_settings .sla .icon.add, 
+  .regions_blocks_includes_settings .sla .icon.delete {
+	width:16px;
+}
+.regions_blocks_includes_settings .sla .sla_groups_flow > nav {
+	position:absolute;
+	margin-top:-28px;
+}
+.regions_blocks_includes_settings .sla > ul.tabs li.ui-tabs-active {
+	background:var(--main-settings-bg);
+}
+
+.regions_blocks_includes_settings .sla .jsplumbtaskworkflow .icon, 
+  .regions_blocks_includes_settings .sla .selected_task_properties .icon, 
+  .regions_blocks_includes_settings .sla .selected_connection_properties .icon {
+	margin:auto 3px;
+}
+.regions_blocks_includes_settings .sla .selected_task_properties .search_page_url {
+	margin-left:-18px;
+}
+.regions_blocks_includes_settings .sla .selected_task_properties .add_variable.inline {
+	/*margin-top:2px;*/
+	margin-left:-18px;
+}
+.regions_blocks_includes_settings .sla .selected_task_properties .icon.add_variable::before {
+	font-size:16px;
+}
+.regions_blocks_includes_settings .sla .selected_task_properties .form_containers .fields .field .input_value .add_field_automatically {
+	right:33px;
+}
+.regions_blocks_includes_settings .sla .selected_task_properties .form_containers .fields .field .input_src .add_field_automatically {
+	right:47px;
+}
+.regions_blocks_includes_settings .sla .selected_task_properties .form_containers .fields .field .input_src .add_variable.inline,
+  .regions_blocks_includes_settings .sla .selected_task_properties .form_containers .fields .field .input_href .add_variable.inline {
+	margin-left:-21px;
+}
+.regions_blocks_includes_settings .sla .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .relationship .limit_start .limit .add_variable, 
+  .regions_blocks_includes_settings .sla .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .relationship .limit_start .start .add_variable {
+	margin-top:0;
+}
+.regions_blocks_includes_settings .sla .sla_main_groups .sla_group_item {
+	background:#fff;
+}
+.regions_blocks_includes_settings .sla .selected_task_properties .array_items > .items > .group_add {
+	margin-left:10px;
+}
+.regions_blocks_includes_settings .sla .get_url_contents_task_html .dts .data_type, 
+  .regions_blocks_includes_settings .sla .get_url_contents_task_html .result_type select[name=result_type_type] {
+	padding:0;
+}
+.regions_blocks_includes_settings .sla .get_url_contents_task_html .dts .array_items .items {
+	margin-top:-25px;
+}
+.regions_blocks_includes_settings .sla .selected_task_properties .create_form_task_html .ptl_settings .ptl_external_vars.array_items .items {
+	margin-left:0;
+}
+.regions_blocks_includes_settings .sla .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .include_file_action_body {
+	text-align:left;
+}
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .code_action_body textarea,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .code_action_body .ace_editor {
+	font-size:10px;
+}
+
+/* regions_blocks_includes_settings - SLA - taskflowchart */
+.regions_blocks_includes_settings .sla #ui > .taskflowchart > .workflow_menu {
+	right:225px;
+}
+.regions_blocks_includes_settings .sla #ui > .taskflowchart > .workflow_menu li a .icon {
+	margin-left:0;
+}
+.regions_blocks_includes_settings .sla .taskflowchart.with_top_bar_menu > .workflow_menu.top_bar_menu > ul {
+	position:absolute;
+}
+.regions_blocks_includes_settings .sla .taskflowchart.fixed_properties.resizable_task_properties > .selected_task_properties > .resize_properties_panel, 
+  .regions_blocks_includes_settings .sla .taskflowchart.fixed_properties.resizable_connection_properties > .selected_connection_properties .resize_properties_panel, 
+  .regions_blocks_includes_settings .sla .taskflowchart.fixed_side_properties.resizable_task_properties > .selected_task_properties > .resize_properties_panel, 
+  .regions_blocks_includes_settings .sla .taskflowchart.fixed_side_properties.resizable_connection_properties > .selected_connection_properties .resize_properties_panel {
+	background:var(--resize-bar-bg);
+	/*background:var(--resize-bar-horizontal-img) repeat-x var(--main-template-bg);*/
+}
+.regions_blocks_includes_settings .sla .taskflowchart > .selected_task_properties > .maximize_minimize_icon, 
+  .regions_blocks_includes_settings .sla .taskflowchart > .selected_connection_properties > .maximize_minimize_icon {
+	background:none;
+	text-indent:0;
+}
+
 /* TEMPLATE REGION INFO POPUP */
 .template_region_info_popup {
 	position:absolute;
@@ -1158,8 +1276,10 @@ body > .dragging_menu_item {
 	position:absolute;
 	top:30px;
 	bottom:0;
-	overflow-y:auto;
-	overflow-x:auto;
+	overflow-y:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow-y:overlay;
+	overflow-x:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow-x:overlay;
 	vertical-align:top;
 	display:none;
 	box-sizing:border-box;

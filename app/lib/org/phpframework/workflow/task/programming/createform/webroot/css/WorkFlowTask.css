@@ -82,15 +82,16 @@
 /* PREPARING ARRAY SETTINGS */
 .create_form_task_html .form_settings_data .items {
 	margin-top:-25px;
-	margin-left:160px;
+	margin-left:180px;
 	position:absolute;
 }
 .create_form_task_html .form_input_data .items {
-	margin-top:-32px;
-	margin-left:215px;
+	margin-top:-23px;
+	margin-left:200px;
 	position:absolute;
 }
-.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_input_data .items {
+.taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_settings_data .items,
+  .taskflowchart.fixed_side_properties .selected_task_properties .create_form_task_html .form_input_data .items {
 	margin-top:-24px;
 	margin-left:160px;
 }

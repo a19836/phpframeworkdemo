@@ -99,6 +99,7 @@ body.mobile_cursor,
 	float:right !important;
 	position:relative !important;
 	color:inherit !important;
+	font-size:inherit !important;
 }
 .template_region > .template_region_name .template_region_name_link:hover {
 	color:var(--icon-hover-color) !important;

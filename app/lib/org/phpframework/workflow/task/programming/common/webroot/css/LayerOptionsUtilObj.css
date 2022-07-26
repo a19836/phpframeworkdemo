@@ -68,12 +68,14 @@
 	width:20px;
 }
 .selected_task_properties .opts .options .items .add1::before {
-	content:"\f217";
+	content:"\f055";
 	vertical-align:middle;
+	font-size:15px;
 }
 .selected_task_properties .opts .options .items .add2::before {
-	content:"\f234";
+	content:"\2b";
 	vertical-align:middle;
+	font-size:15px;
 }
 .selected_task_properties .opts .options .items .add3::before {
 	font:var(--fa-font-regular);

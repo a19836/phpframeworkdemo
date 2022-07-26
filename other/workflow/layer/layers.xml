@@ -5,14 +5,14 @@
 		<width>655</width>
 		<height>150</height>
 		<left>1</left>
-		<top>-1</top>
+		<top>0</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_bls]]></id>
 		<width>655</width>
 		<height>150</height>
 		<left>1</left>
-		<top>149</top>
+		<top>150</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dals]]></id>
@@ -31,7 +31,7 @@
 	<container>
 		<id><![CDATA[layer_drivers]]></id>
 		<width>655</width>
-		<height>156</height>
+		<height>159</height>
 		<left>1</left>
 		<top>598</top>
 	</container>

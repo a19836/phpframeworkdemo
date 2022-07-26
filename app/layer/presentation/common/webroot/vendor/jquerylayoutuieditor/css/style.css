@@ -386,7 +386,8 @@
 	text-align:center;
 	font-size:80%;
 	box-sizing:border-box;
-	overflow:auto;
+	overflow:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow:overlay;
 }
 .layout-ui-editor .text-selection-menu .menu-item-popup:before,
   .layout-ui-editor .text-selection-menu .menu-item-popup:after {
@@ -921,7 +922,8 @@
 	bottom:0;
 	right:0;
 	display:inline-block;
-	overflow:auto; /* inner iframe can be bigger than .template-widgets, if user chooses responsive with a bigger width */
+	overflow:auto; /* inner iframe can be bigger than .template-widgets, if user chooses responsive with a bigger width. Must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow:overlay;
 	
 	-ms-box-sizing:border-box;
 	-moz-box-sizing:border-box;
@@ -987,7 +989,8 @@
 	right:70%;
 	bottom:0;
 	display:inline-block;
-	overflow-y: auto;
+	overflow-y:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow-y:overlay;
 	overflow-x: hidden;
 	vertical-align:top;
 	text-align:center;
@@ -1226,7 +1229,8 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 .layout-ui-editor > .menu-layers {
 	display:none;
 	text-align:left;
-	overflow-x:auto;
+	overflow-x:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow-x:overlay;
 }
 
 .layout-ui-editor > .menu-layers ul {
@@ -1383,7 +1387,8 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 .layout-ui-editor > .menu-settings {
 	display:none;
 	text-align:left;
-	overflow-x:auto;
+	overflow-x:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow-x:overlay;
 }
 .layout-ui-editor > .menu-settings li {
 	font-size:12px;
@@ -1861,7 +1866,8 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 
 .layout-ui-editor > .template-widgets-options {
 	text-align:left;
-	overflow-x:auto;
+	overflow-x:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow-x:overlay;
 }
 .layout-ui-editor.hide-template-widgets-options > .template-widgets-options {
 	display:none;

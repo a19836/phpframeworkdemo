@@ -1,6 +1,9 @@
 var saved_settings_id = null;
 
 $(function () {
+	var module_form_settings = $(".module_form_settings");
+	var block_obj = module_form_settings.parent().closest(".block_obj");
+	
 	//unbind beforeunload that was inited by the edit_query.js and edit_simple_block.js
 	$(window).unbind('beforeunload').bind('beforeunload', function () {
 		if (isModuleFormSettingsChanged()) {
@@ -14,13 +17,20 @@ $(function () {
 	});
 	
 	//prepare top_bar
-	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu").find("li.save, li.auto_save_activation, li.auto_convert_activation, li.tasks_flow_full_screen").remove();
+	$(".top_bar .save a").attr("onclick", "saveModuleFormSettings(this);");
+	
+	var workflow_menu_ul = module_form_settings.find("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu").children("ul");
+	workflow_menu_ul.children("li.save, li.auto_save_activation, li.auto_convert_activation, li.tasks_flow_full_screen").remove();
+	workflow_menu_ul.children("li").last().filter(".separator").remove();
+	
+	if (workflow_module_installed_and_enabled) {
+		block_obj.find(" > .module_data > .module_description").append('<a class="convert_to_module_workflow" onclick="convertModuleFormSettingsToModuleWorkflowSettings(this)" title="Convert this block into a workflow module">Convert to Workflow Module...</a>');
+		
+		$(".top_bar header .sub_menu li.toggle_module_data").after('<li class="convert_form_settings_to_workflow_code" title="Convert this block into a workflow module"><a onclick="$(\'.convert_to_module_workflow\').trigger(\'click\')"><i class="icon show_advanced_ui"></i> Convert to Workflow Module</a></li>');
+	}
 	
 	//change the toggle Auto save handler bc the edit_query task
-	if (typeof onToggleQueryAutoSave == "function")
-		$(".top_bar li.auto_save_activation input").attr("onChange", "").unbind("change").bind("change", function() {
-			toggleAutoSaveCheckbox(this, onToggleQueryAutoSave);
-		});
+	initSLAAutoSaveActivationMenu();
 	
 	//init trees
 	//only add popups if not exist yet - must be before the code that inits the trees
@@ -48,62 +58,12 @@ $(function () {
 	});
 	choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");*/
 	
-	chooseBusinessLogicFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
-	});
-	chooseBusinessLogicFromFileManagerTree.init("choose_business_logic_from_file_manager");
-	
-	chooseQueryFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeParametersAndResultMapsFromTree,
-	});
-	chooseQueryFromFileManagerTree.init("choose_query_from_file_manager");
-	
-	chooseHibernateObjectMethodFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeParametersAndResultMapsFromTree,
-	});
-	chooseHibernateObjectMethodFromFileManagerTree.init("choose_hibernate_object_method_from_file_manager");
-	
-	chooseBlockFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeAllThatIsNotBlocksFromTree,
-	});
-	chooseBlockFromFileManagerTree.init("choose_block_from_file_manager");
-	
 	//init ui
-	var module_form_settings = $(".module_form_settings");
-	var block_obj = module_form_settings.parent().closest(".block_obj");
-	$(".top_bar .save a").attr("onclick", "saveModuleFormSettings(this);");
-	
-	if (workflow_module_installed_and_enabled)
-		block_obj.find(" > .module_data > .module_description").append('<a class="convert_to_module_workflow" onclick="convertModuleFormSettingsToModuleWorkflowSettings(this)">Convert this block into code workflow...</a>');
-	
 	createObjectItemCodeEditor( module_form_settings.find(".block_css textarea.css")[0], "css", saveModuleFormSettings);
 	createObjectItemCodeEditor( module_form_settings.find(".block_js textarea.js")[0], "javascript", saveModuleFormSettings);
 	
-	var module_form_contents = module_form_settings.children(".module_form_contents");
-	
-	//remove database options bc there are no detected db_drivers
-	if (typeof db_brokers_drivers_tables_attributes != "undefined" && $.isEmptyObject(db_brokers_drivers_tables_attributes)) 
-		initSLAGroupItemsActionType( module_form_contents.find(".sla_groups_flow > .sla_groups") );
-	
-	module_form_contents.tabs();
-	
-	//change some handlers
-	ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback = onSLAProgrammingTaskChooseCreatedVariable;
-	
-	//load task flow and code editor
-	onLoadTaskFlowChartAndCodeEditor();
+	//init sla
+	initSLA(module_form_settings);
 	
 	//set saved settings id
 	saved_settings_id = getModuleFormSettingsId();
@@ -118,17 +78,11 @@ function loadFormBlockSettings(settings_elm, settings_values) {
 	MyFancyPopup.showLoading();
 	
 	var module_form_settings = settings_elm.children(".module_form_settings");
-	var add_group_icon = module_form_settings.find(".sla_groups_flow > nav > .add_form_group")[0];
+	var add_group_icon = module_form_settings.find(".sla_groups_flow > nav > .add_sla_group")[0];
 	
 	var tasks_values = convertFormSettingsToTasksValues(settings_values);
 	//console.log(settings_values);
 	//console.log(tasks_values);
-	
-	//setting the save_func in the CreateFormTaskPropertyObj
-	if (CreateFormTaskPropertyObj) 
-		CreateFormTaskPropertyObj.editor_save_func = function () {
-			$(".top_bar .save a").first().trigger("click");
-		};
 	
 	if (tasks_values) {
 		//load old form settings - Do not remove this code until all the old forms have the new settings
@@ -511,7 +465,7 @@ function createFormWizard(elm, replace_prev_html) {
 				if (data) {
 					//console.log(data);
 					var module_form_settings = $(".module_form_settings");
-					var add_group_icon = module_form_settings.find(".sla_groups_flow > nav > .add_form_group")[0];
+					var add_group_icon = module_form_settings.find(".sla_groups_flow > nav > .add_sla_group")[0];
 					
 					if (replace_prev_html)
 						module_form_settings.find(".sla_groups_flow > .sla_groups > .sla_group_item").not(".sla_group_default").remove();
@@ -754,7 +708,7 @@ function activateFormWizardAction(elm) {
 				miu.children("input").attr("checked", "checked").prop("checked", true);
 				
 				var mu = p2.hasClass("action_multiple_update") ? p2 : p;
-				copyActionToAnotherAction(mu, miu);
+				copyWizardActionToAnotherAction(mu, miu);
 				
 				//prepare multiple_insert and multiple_update
 				p2.hide().removeClass("action_activated").children("input").removeAttr("checked").prop("checked", false);
@@ -774,7 +728,7 @@ function activateFormWizardAction(elm) {
 		if (p.hasClass("action_multiple_insert_update")) {
 			p.hide();
 			p.parent().children(".action_multiple_insert, .action_multiple_update").show();
-			copyActionToAnotherAction(p, p.parent().children(".action_multiple_update"));
+			copyWizardActionToAnotherAction(p, p.parent().children(".action_multiple_update"));
 		}
 		
 		if (p.children(".action_options").css("display") != "none")
@@ -782,7 +736,7 @@ function activateFormWizardAction(elm) {
 	}
 }
 
-function copyActionToAnotherAction(action1, action2) {
+function copyWizardActionToAnotherAction(action1, action2) {
 	if (action1[0] && action2[0]) {
 		var ao1 = action1.find(".action_options");
 		var ao2 = action2.find(".action_options");
@@ -883,9 +837,10 @@ function onChangeDBTableFormWizard(elm) {
 
 /* SAVE FUNCTIONS */
 
-function getModuleFormContentsSettings(module_form_contents) {
-	var items = module_form_contents.find(".sla_groups_flow > .sla_groups > .sla_group_item:not(.sla_group_default)");
-	var actions_settings = getSLASettingsFromItemsToSave(items);
+function getModuleFormSettings(module_form_settings) {
+	var module_form_contents = module_form_settings.children(".module_form_contents");
+	var sla = module_form_contents.children(".sla");
+	var actions_settings = getSLASettings(sla);
 	
 	if (!$.isArray(actions_settings))
 		return null;
@@ -906,202 +861,6 @@ function getModuleFormContentsSettings(module_form_contents) {
 	};
 	
 	return settings;
-}
-
-function getModuleFormSettings(module_form_settings) {
-	var status = true;
-	var module_form_contents = module_form_settings.children(".module_form_contents");
-	var task_flow_tab_openned_by_user = module_form_contents.find("#tasks_flow_tab a").attr("is_init");
-	
-	if (task_flow_tab_openned_by_user && !is_from_auto_save) { //only if not auto save action, otherwise ignore it and only save the properties.
-		var selected_tab = module_form_contents.children("ul").find("li.ui-tabs-selected, li.ui-tabs-active").first();
-		
-		if (selected_tab.attr("id") != "tasks_flow_tab") {
-			module_form_contents.find("ul #tasks_flow_tab a").first().click();
-			updateTasksFlow();
-		}
-		
-		status = jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {overwrite: true, silent: true});
-	
-		if (status && confirm("Do you wish to generate new Groups based in the Workflow tab, before you save?\nIf you click the cancel button, the system will discard the changes in the Workflow tab and give preference to the Groups tab."))
-			status = generateGroupsFromTasksFlow(true);
-		
-		if (selected_tab.attr("id") != "tasks_flow_tab")
-			selected_tab.children("a").click();
-	}
-	
-	return status ? getModuleFormContentsSettings(module_form_contents) : null;
-}
-
-function onClickFormModuleSLAGroupsFlowTab(elm) {
-	update_sla_programming_task_variables_from_sla_groups = true;
-	update_sla_programming_task_variables_from_workflow = false;
-}
-
-function onClickFormModuleTaskWorkflowTab(elm) {
-	update_sla_programming_task_variables_from_sla_groups = false;
-	update_sla_programming_task_variables_from_workflow = true;
-	
-	onClickTaskWorkflowTab(elm);
-}
-
-function generateGroupsFromTasksFlow(do_not_confirm) {
-	var status = true;
-	
-	if (do_not_confirm || confirm("Do you wish to update Groups accordingly with the workflow tasks?")) {
-		status = false;
-		
-		MyFancyPopup.init({
-			parentElement: window,
-		});
-		MyFancyPopup.showOverlay();
-		MyFancyPopup.showLoading();
-		var workflow_menu = $(".workflow_menu");
-		workflow_menu.hide();
-		
-		var save_options = {
-			overwrite: true,
-			success: function(data, textStatus, jqXHR) {
-				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, set_tmp_workflow_file_url, function() {
-						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
-						StatusMessageHandler.removeLastShownMessage("error");
-						generateGroupsFromTasksFlow(true);
-					});
-			},
-		};
-		
-		if (jsPlumbWorkFlow.jsPlumbTaskFile.save(set_tmp_workflow_file_url, save_options)) {
-			$.ajax({
-				type : "get",
-				url : create_settings_from_workflow_file_url,
-				dataType : "json",
-				success : function(data, textStatus, jqXHR) {
-					if (data && data.hasOwnProperty("settings")) {
-						//console.log(data);
-						var settings = data["settings"];
-						
-						//create group settings
-						if (settings) {
-							var module_form_settings = $(".module_form_settings");
-							var add_group_icon = module_form_settings.find(".sla_groups_flow > nav > .add_form_group")[0];
-							
-							//remove old groups
-							module_form_settings.find(".sla_groups_flow > .sla_groups > .sla_group_item").not(".sla_group_default").remove();
-							
-							//load new groups
-							loadFormBlockNewSettings(module_form_settings, add_group_icon, settings);
-						}
-						
-						if (data["error"] && data["error"]["infinit_loop"] && data["error"]["infinit_loop"][0]) {
-							var loops = data["error"]["infinit_loop"];
-							
-							var msg = "";
-							for (var i = 0; i < loops.length; i++) {
-								var loop = loops[i];
-								var slabel = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(loop["source_task_id"]);
-								var tlabel = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(loop["target_task_id"]);
-								
-								msg += (i > 0 ? "\n" : "") + "- '" + slabel + "' => '" + tlabel + "'";
-							}
-							
-							msg = "The system detected the following invalid loops and discarded them from the Groups settings:\n" + msg + "\n\nYou should remove them from the workflow and apply the correct 'loop task' for doing loops.";
-							jsPlumbWorkFlow.jsPlumbStatusMessage.showError(msg);
-							alert(msg);
-						}
-						else {
-							$("#sla_groups_flow_tab a").first().click();
-							status = true;
-						}
-					}
-					else 
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update Groups. Please try again.");
-					
-					MyFancyPopup.hidePopup();
-					workflow_menu.show();
-				},
-				error : function() { 
-					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_settings_from_workflow_file_url, function() {
-							generateGroupsFromTasksFlow(true);
-						});
-					else {
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update Groups. Please try again.");
-				
-						MyFancyPopup.hidePopup();
-						workflow_menu.show();
-					}
-				},
-				async : false,
-			});
-		}
-		else 
-			jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update Groups. Please try again.");
-	}
-	
-	return status;
-}
-
-function generateTasksFlowFromGroups(do_not_confirm) {
-	var status = true;
-	
-	if (do_not_confirm || confirm("Do you wish to update this workflow accordingly with the settings in the Groups Tab?")) {
-		status = false;
-		
-		jsPlumbWorkFlow.getMyFancyPopupObj().hidePopup();
-		MyFancyPopup.init({
-			parentElement: window,
-		});
-		MyFancyPopup.showOverlay();
-		MyFancyPopup.showLoading();
-		$(".workflow_menu").hide();
-		
-		var module_form_contents = $(".module_form_settings .module_form_contents");
-		var settings = getModuleFormContentsSettings(module_form_contents);
-		
-		$.ajax({
-			type : "post",
-			url : create_workflow_file_from_settings_url,
-			data : {"settings": settings},
-			dataType : "text",
-			success : function(data, textStatus, jqXHR) {
-				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_workflow_file_from_settings_url, function() {
-						generateTasksFlowFromGroups(true);
-					});
-				else if (data == 1) {
-					var previous_callback = jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read;
-					
-					jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = function(data, text_status, jqXHR) {
-						if (!data)
-							jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to load the workflow's tasks.");
-						else {
-							jsPlumbWorkFlow.jsPlumbTaskSort.sortTasks();
-							status = true;
-						}
-						
-						jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = previous_callback;
-					}
-				
-					jsPlumbWorkFlow.jsPlumbTaskFile.reload(get_tmp_workflow_file_url, {"async": true});
-				}
-				else
-					jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again.");
-				
-				MyFancyPopup.hidePopup();
-				$(".workflow_menu").show();
-			},
-			error : function() { 
-				jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again.");
-			
-				MyFancyPopup.hidePopup();
-				$(".workflow_menu").show();
-			},
-			async : false,
-		});
-	}
-	
-	return status;
 }
 
 function isModuleFormSettingsChanged() {
@@ -1200,7 +959,7 @@ function saveModuleFormSettings(button) {
 						MyFancyPopup.hidePopup();
 						
 						if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-							showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_form_settings_code_url, function() {
+							showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_sla_settings_code_url, function() {
 								jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
 								StatusMessageHandler.removeLastShownMessage("error");
 								
@@ -1248,6 +1007,7 @@ function convertModuleFormSettingsToModuleWorkflowSettings(elm) {
 		//console.log(settings);
 		
 		if (!$.isArray(settings["actions"])) {
+			MyFancyPopup.hidePopup();
 			StatusMessageHandler.showError("Error trying to get form settings actions.\nPlease try again...");
 			return;
 		}
@@ -1260,14 +1020,18 @@ function convertModuleFormSettingsToModuleWorkflowSettings(elm) {
 			success : function(data, textStatus, jqXHR) {
 				if (data && data["code"])
 					saveBlockObj({
-						"module_id": "workflow",
-						"code": data["code"],
+						module_id: "workflow",
+						code: data["code"],
 					}, {
-						"success": function() {
+						success: function() {
 							//refresh page
 							var url = document.location;
 							document.location = url;
-						}
+						},
+						//add complete function bc if the file was changed meanwhile, it won't appear the confirmation popup with the new code to save, bc the system thinks that is an auto_save. So we need to show a error message.
+						/*complete: function() { //No need this anymore bc we solve this issue with async=false in the ajax options.
+							StatusMessageHandler.showError("Error trying to convert settings into workflow.\nPlease try again and if the problem persists, please refresh this page...");
+						}*/
 					});
 				else
 					StatusMessageHandler.showError("Error trying to convert settings into workflow.\nPlease try again...");
@@ -1278,6 +1042,7 @@ function convertModuleFormSettingsToModuleWorkflowSettings(elm) {
 				StatusMessageHandler.showError("Error trying to convert settings into workflow.\nPlease try again...");
 				MyFancyPopup.hidePopup();
 			},
+			async : false, //must be sync bc if the file was change meanwhile, we need to 
 		});
 	}
 }

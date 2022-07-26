@@ -3084,6 +3084,9 @@ function reloadLayoutIframeFromSettings(iframe, data, iframe_html_to_parse) {
 								if (head_html.indexOf("window.onerror") == -1) {
 									var script_code = '<script class="layout-ui-editor-reserved">'
 										+ 'window.onerror = function(msg, url, line, col, error) {'
+											+ 'if (window.parent && window.parent.$)'
+											+ '	window.parent.$(".template_loaded_with_errors").removeClass("hidden");' //show an alert message saying that the html may not be loaded correctly and this files should be edited via code Layout.
+											+ ''
 											+ 'if (console && console.log)'
 												+ 'console.log("[edit_page_and_template.js:reloadLayoutIframeFromSettings()] Layout Iframe error:" + "\\n- message: " + msg + "\\n- line " + line + "\\n- column " + col + "\\n- url: " + url + "\\n- error: " + error);'
 											+ 'return true;' //return true, avoids the error to be shown and other scripts to stop.
@@ -3414,15 +3417,18 @@ function initPageAndTemplateLayout(main_parent_elm, opts) {
 	});
 	
 	//init ui layout editor
-	initCodeLayoutUIEditor(main_parent_elm, {
+	var code_layout_ui_editor = main_parent_elm.find(".code_layout_ui_editor");
+	
+	initCodeLayoutUIEditor(code_layout_ui_editor, {
 		save_func: opts.save_func, 
 		ready_func: function() {
 			//console.log("initCodeLayoutUIEditor ready_func");
 			
-			var luie = main_parent_elm.find(".code_layout_ui_editor > .layout-ui-editor");
+			var luie = code_layout_ui_editor.children(".layout-ui-editor");
 			var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
 			
 			PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorWithRightContainer;
+			PtlLayoutUIEditor.options.on_convert_project_url_php_vars_to_real_values_func = convertProjectUrlPHPVarsToRealValues;
 			
 			//show view layout panel instead of code
 			var view_layout = luie.find(" > .tabs > .view-layout");
@@ -3469,6 +3475,34 @@ function initPageAndTemplateLayout(main_parent_elm, opts) {
 	});
 }
 
+function initPageAndTemplateLayoutSLA(regions_blocks_includes_settings) {
+	var resource_settings = regions_blocks_includes_settings.children(".resource_settings");
+	initSLA(resource_settings);
+	
+	var sla = resource_settings.children(".sla");
+	var workflow_menu_ul = sla.find(" > #ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu").children("ul");
+	workflow_menu_ul.children("li.save, li.auto_save_activation, li.auto_convert_activation, li.tasks_flow_full_screen").remove();
+	workflow_menu_ul.children("li").last().filter(".separator").remove();
+}
+
+function loadPageAndTemplateLayoutSLASettings(regions_blocks_includes_settings) {
+	var actions_obj = {
+		actions: {
+			key: "actions",
+			key_type: "string",
+			items: sla_settings_obj
+		}
+	};
+	var tasks_values = convertSettingsToTasksValues(actions_obj);
+	//console.log(tasks_values);
+	
+	if (tasks_values && tasks_values.hasOwnProperty("actions")) {
+		var add_group_icon = regions_blocks_includes_settings.find(" > .resource_settings > .sla > .sla_groups_flow > nav > .add_sla_group");
+		
+		loadSLASettingsActions(add_group_icon[0], tasks_values["actions"], false);
+	}
+}
+
 function resizeSettingsPanel(main_parent_elm, top) {
 	var settings = main_parent_elm.find(".regions_blocks_includes_settings");
 	var settings_overlay = main_parent_elm.find(".regions_blocks_includes_settings_overlay");
@@ -3476,6 +3510,7 @@ function resizeSettingsPanel(main_parent_elm, top) {
 	var icon = settings.find(" > .settings_header .icon");
 	
 	var wh = $(window).height();
+	var top_bar_height = $(".top_bar header").outerHeight();
 	var height = 0;
 	
 	iframe.css("visibility", "");
@@ -3483,14 +3518,14 @@ function resizeSettingsPanel(main_parent_elm, top) {
 	settings.removeClass("resizing");
 	settings.css({top: "", left: "", bottom: ""}); //remove top, left and bottom from style attribute in #settings_header
 	
-	if (top < 40) { //40 is the size of #top_bar (40px)
-		height = wh - 40;
+	if (top < top_bar_height) {
+		height = wh - (top_bar_height + 5); //5 is the height of the #settings_header resize bar
 		
 		settings.css("height", height + "px");
 		
 		enableAutoConvertSettingsFromLayout();
 	}
-	else if (top > wh - 25) { //25 is the size of #settings .settings_header when collapsed
+	else if (top > wh - 35) { //35 is the size of #settings .settings_header when collapsed
 		icon.addClass("maximize").removeClass("minimize");
 		settings.addClass("collapsed");
 		
@@ -3795,7 +3830,7 @@ function initCodeLayoutUIEditor(main_obj, opts) {
 	});
 	chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer.init("layout_ui_editor_right_container");
 	
-	var textarea = main_obj.find(".layout-ui-editor textarea")[0];
+	var textarea = main_obj.find(".layout-ui-editor > textarea")[0];
 	var editor = createCodeLayoutUIEditorEditor(textarea, opts);
 	
 	if (editor)
@@ -4393,4 +4428,22 @@ function setCodeLayoutUIEditorCode(main_obj, code) {
 	
 	var editor = PtlLayoutUIEditor.data("editor");
 	return editor ? editor.setValue(code) : main_obj.find(".layout-ui-editor > .template-source > textarea").first().val(code);
+}
+
+//This function will be used by the widgets in the LayoutUIEditor, mainly the script and link widgets.
+function convertProjectUrlPHPVarsToRealValues(str) {
+	var regex = /^<\?(|=|php)\s*(|echo|print)\s*(\$[a-z_]+)\s*;?\s*\?>/g;
+	var m;
+	
+	while ((m = regex.exec(str)) !== null) {
+		//console.log(m);
+		
+		if (m[3] == "$project_url_prefix" && selected_project_url_prefix)
+			str = str.replace(m[0], selected_project_url_prefix);
+		else if (m[3] == "$project_common_url_prefix" && selected_project_common_url_prefix)
+			str = str.replace(m[0], selected_project_common_url_prefix);
+	}
+	//console.log(str);
+	
+	return str;
 }

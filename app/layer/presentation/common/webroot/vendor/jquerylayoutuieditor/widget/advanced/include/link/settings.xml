@@ -110,7 +110,10 @@
 			me.parseSettings = function(widget, widget_settings) {
 				var link= widget.children("link");
 				
-				widget_settings["href"] = link.attr("href");
+				var href = widget.children(".link-file").html();
+				href = href.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
+				
+				widget_settings["href"] = href; //Do not use link.attr("href") bc the href can have the $project_url_prefix or $project_common_url_prefix var parsed
 				widget_settings["rel"] = link.attr("rel");
 				widget_settings["type"] = link.attr("type");
 				widget_settings["charset"] = link.attr("charset");
@@ -128,8 +131,14 @@
 				if (html_element) {
 					var href = $(html_element).attr("href");
 					
-					if (href && href != "") 
+					if (href && href != "") {
 						link_file.html(href);
+						
+						//parse href in case it contains the $project_url_prefix or $project_common_url_prefix
+						var aux = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(href) : href;
+						
+						html_element.attr("href", aux);
+					}
 					
 					widget.append(html_element);
 				}
@@ -168,14 +177,18 @@
 					var link = widget.children("link");
 					
 					if (sprop.hasClass("href")) {
-						var href_elm = widget.children(".link-file");
+						var link_file = widget.children(".link-file");
 						
 						if (field_value != "") {
-							href_elm.html(field_value);
-							link.attr("href", field_value);
+							link_file.html(field_value);
+							
+							//parse href in case it contains the $project_url_prefix or $project_common_url_prefix
+							var aux = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(field_value) : field_value;
+							
+							link.attr("href", aux);
 						}
 						else {
-							href_elm.html("");
+							link_file.html("");
 							link.removeAttr("href");
 						}
 					}

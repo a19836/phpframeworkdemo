@@ -23,6 +23,7 @@ body {
 	min-height:100vh;
 	margin:0;
 	
+	overflow:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
 	overflow:overlay; /* The scrollbar will then also take transparent backgrounds across the page. This will also put the scrollbar inside the page instead of removing some of the width to put in the scrollbar.However the overlay value is now deprecated and only works in Chrome and Safari anymore. */
 }
 .main-droppable {
@@ -180,7 +181,8 @@ body {
 	color:inherit;
 	font-size:inherit;
 	font-family:inherit;
-	overflow:auto;
+	overflow:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow:overlay;
 }
 .template-widget.html-comment > pre::-webkit-scrollbar {
 	height:7px;

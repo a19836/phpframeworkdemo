@@ -47,7 +47,7 @@
 }*/
 .code_area .ace_editor .ace_search {
 	position:fixed; /* must be position fiuxedotherwise when we search for something the search popup will disappear. */
-	top:33px;
+	top:50px;
 }
 .code_area .ace_editor .ace_search .ace_search_field {
 	background-color:#fff;

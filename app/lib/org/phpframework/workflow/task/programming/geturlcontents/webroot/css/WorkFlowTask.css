@@ -21,7 +21,7 @@
 	margin-bottom:15px;
 }
 .get_url_contents_task_html > .info a {
-	color:#33AADD;
+	color:var(--link-color);
 }
 
 .get_url_contents_task_html .dts {

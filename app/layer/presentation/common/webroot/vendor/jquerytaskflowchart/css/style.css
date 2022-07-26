@@ -88,8 +88,10 @@
 	bottom:0px;
 	
 	display:block; 
-	overflow-y:auto;
-	overflow-x:auto;
+	overflow-y:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow-y:overlay;
+	overflow-x:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow-x:overlay;
 	z-index:0;
 }
 .taskflowchart > .tasks_flow:not(.resizing) {
@@ -711,7 +713,8 @@
 	left:0 !important;
 	right:0 !important;
 	bottom:0 !important;
-	overflow:auto !important;
+	overflow:auto !important; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow:overlay !important;
 }
 .taskflowchart:not(.fixed_properties):not(.fixed_side_properties) > .selected_task_properties.maximize_properties:not(.collapsed_properties), 
   .taskflowchart:not(.fixed_properties):not(.fixed_side_properties) > .selected_connection_properties.maximize_properties:not(.collapsed_properties) {
@@ -754,7 +757,8 @@
 	left:0px !important;
 	right:auto !important;
 	bottom:0px !important;
-	overflow:auto;
+	overflow:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow:overlay;
 	cursor:initial;
 	border:0;
 	border-radius:0;
@@ -995,7 +999,8 @@
 	left:0;
 	right:0;
 	bottom:70px;
-	overflow:auto;
+	overflow:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow:overlay;
 }
 
 .selected_task_properties > .generic_buttons, 
@@ -1050,7 +1055,8 @@
 .tasks_flow_update_panel_confirmation .content {
 	width:100%;
 	max-height:200px;
-	overflow-y:auto;
+	overflow-y:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow-y:overlay;
 }
 .tasks_flow_update_panel_confirmation .buttons {
 	position:absolute;
@@ -1139,7 +1145,8 @@
 	margin:0;
 	float:none;
 	clear:right;
-	overflow-y:auto;
+	overflow-y:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow:overlay;
 }
 .workflow_message .status span, .workflow_message .error span {
 	display:block;

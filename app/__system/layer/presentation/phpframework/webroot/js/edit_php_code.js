@@ -2002,7 +2002,14 @@ function choosePresentation(elm) {
 /* UI, TABS, WORKFLOW & CODE EDITOR FUNCTIONS */
 
 function onLoadTaskFlowChartAndCodeEditor(opts) {
-	if ($(".taskflowchart")[0]) {
+	var parent = opts && $.isPlainObject(opts) && opts["parent_elm"] ? $(opts["parent_elm"]) : $("body");
+	var taskflowchart = parent.find(".taskflowchart");
+	
+	if (taskflowchart[0]) {
+		var workflow_menu = taskflowchart.find(".workflow_menu");
+		var ui_panel = parent.find("#ui");
+		var code_panel = parent.find("#code");
+		
 		resizeTaskFlowChart()
 		resizeCodeEditor();
 		
@@ -2014,17 +2021,17 @@ function onLoadTaskFlowChartAndCodeEditor(opts) {
 		});
 		
 		jsPlumbWorkFlow.onReady(function() {
-			$(".taskflowchart .workflow_menu").show();
-			$(".big_white_panel").hide();
+			workflow_menu.show();
+			parent.find(".big_white_panel").hide();
 		});
 		
 		//init the code_id in #ui and #code so the system doesn't re-generate the code and workflow when clicked in the code and taskflow tabs and bc of the isCodeAndWorkflowObjChanged method, when the #tasks_flow_tab is not inited yet.
-		if ($("#ui").length && $("#code").length) {
+		if (ui_panel.length && code_panel.length) {
 			var code = getEditorCodeRawValue();
 			var code_id = $.md5(code);
 			
-			$("#code").attr("generated_code_id", code_id);
-			$("#ui").attr("code_id", code_id);
+			code_panel.attr("generated_code_id", code_id);
+			ui_panel.attr("code_id", code_id);
 		}
 	}
 	

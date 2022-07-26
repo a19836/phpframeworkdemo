@@ -19,9 +19,9 @@
  */
 ?><div class="server_task_html">
 	<ul>
-		<li class="details_tab"><a href="#details_container">Details</a></li>
-		<li class="templates_tab"><a href="#templates_container">Templates</a></li>
-		<li class="deployments_tab"><a href="#deployments_container" onClick="ServerTaskPropertyObj.updateAvailableTemplates(this)">Deployments</a></li>
+		<li class="details_tab"><a href="#details_container" onClick="ServerTaskPropertyObj.onClickServerDetailsTab(this)">Details</a></li>
+		<li class="templates_tab"><a href="#templates_container" onClick="ServerTaskPropertyObj.onClickServerTemplatesTab(this)">Templates</a></li>
+		<li class="deployments_tab"><a href="#deployments_container" onClick="ServerTaskPropertyObj.onClickServerDeploymentsTab(this)">Deployments</a></li>
 	</ul>
 	
 	<div class="details_container" id="details_container">

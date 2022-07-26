@@ -117,6 +117,11 @@
 #code .ace_editor .ace_layer .ace_active-line {
 	background:var(--main-ace-editor-active-line-bg);
 }
+#code .ace_editor .ace_search input[type=submit]:not(:disabled), 
+  #code .ace_editor .ace_search input[type=button]:not(:disabled), 
+  #code .ace_editor .ace_search button:not(:disabled) {
+	color:#333;
+}
 
 #code.ui-tabs-panel {
 	padding:0 !important;
@@ -241,6 +246,9 @@
 	font-weight:normal;
 	font-style:normal;
 }
+.choose_from_file_manager .businesslogic label {
+	font-size:10px;
+}
 .choose_from_file_manager .type select, 
    .choose_from_file_manager .new_var input,
    .choose_from_file_manager .new_var select,
@@ -272,9 +280,12 @@
 }
 .choose_from_file_manager .new_var > .name > .add {
 	margin-left:5px;
+	margin-bottom:5px;
+	font-size:16px;
 }
 .choose_from_file_manager .new_var > .name > .sub_group .delete {
 	margin-left:9px;
+	font-size:14px;
 }
 .choose_from_file_manager .icon.info {
 	margin:0px 0px 0px 5px;
@@ -334,7 +345,8 @@
 	min-height:200px;
 	max-width:450px;
 	max-height:300px;
-	overflow:auto;
+	overflow:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow:overlay;
 	margin-bottom:10px;
 	margin-top:10px;
 }
@@ -348,7 +360,7 @@
 	bottom:0;
 	background-color:#FFF;
 	/*z-index:1501; /*.workflow_menu from tasks workflow has an zindex of 1500. So this zindex must be bigger.*/
-	z-index:10002; /*In edit_template_simple.php, .with_top_bar_tab .code_menu.top_bar_menu has an zindex of 10001. So this zindex must be bigger.*/
+	z-index:9999999; /*In edit_template_simple.php, .with_top_bar_tab .code_menu.top_bar_menu has an zindex of 10001, In edit_block_simple.php, .with_top_bar_tab .code_menu.top_bar_menu has an zindex of 1000000. So this zindex must be bigger.*/
 }
 .confirm_save .title {
 	margin:20px auto;
@@ -370,9 +382,10 @@
 .confirm_save .code_comparison .old_code pre, .confirm_save .code_comparison .new_code pre {
 	position:absolute;
 	top:80px;
-	bottom:45px;
+	bottom:65px;
 	width:47%;
 	overflow:auto;
+	overflow:overlay;
 	border:1px inset #CCC;
 	background-color:#F0F0F0;
 }

@@ -24,35 +24,22 @@
 	position:static; /* very important otherwise the wizard popup will not be centered in the window */
 	overflow:hidden; /* bc of the workflow menu drag&drop */
 }
-.module_form_settings label {
+/*.module_form_settings label {
 	font-style:normal;
 	font-weight:normal;
-	/*font-size:12px;*/
 }
 .module_form_settings input:not([type=submit]):not([type=button]), .module_form_settings select, .module_form_settings textarea {
-	/*font-size:12px;*/
 	background-color:#fff;
-}
+}*/
 
-.module_form_settings .module_form_contents {
-	border:0;
-}
-
-.module_form_settings .sla_groups_flow > nav > a.open_form_wizard,
-  .module_form_settings .sla_groups_flow > nav > a.add_form_group,
-  .module_form_settings .sla_groups_flow > nav > a.collapse_form_groups,
-  .module_form_settings .sla_groups_flow > nav > a.expand_form_groups {
+/* FORM WIZARD */
+.module_form_settings .sla_groups_flow > nav > a.open_form_wizard {
 	cursor:pointer;
-}
-.module_form_settings .sla_groups_flow > nav > a.collapse_form_groups,
-  .module_form_settings .sla_groups_flow > nav > a.expand_form_groups {
-	margin-left:20px;
 }
 .module_form_settings .sla_groups_flow > nav > a.open_form_wizard {
 	float:right;
 }
 
-/* FORM WIZARD */
 .module_form_settings .form_wizard {
 	width:90%;
 	width:90vw;
@@ -243,127 +230,5 @@
 .module_form_settings .form_wizard > .buttons > .next {
 	float:right;
 	margin:0;
-}
-
-/* WORKFLOW */
-.module_form_settings #ui {
-	position:relative;
-}
-.module_form_settings #ui.tasks_flow_full_screen {
-    position: fixed;
-    top:0px;
-}
-.module_form_settings #ui > .taskflowchart {
-	min-height:400px;
-	max-height:calc(100vh - 60px);
-	overflow:visible;
-}
-.module_form_settings #ui.tasks_flow_full_screen > .taskflowchart {
-	height:100% !important;
-}
-.module_form_settings #ui > .taskflowchart > .workflow_menu {
-	position:absolute;
-	top:-25px;
-	right:5px;
-	z-index:4;
-}
-.module_form_settings #ui > .taskflowchart > .workflow_menu:before {
-	font-size:14px;
-	color:#666;
-}
-.module_form_settings #ui > .taskflowchart > .tasks_menu {
-	width:130px;
-}
-.module_form_settings #ui > .taskflowchart > .tasks_menu_hide {
-	right:130px;
-}
-.module_form_settings #ui > .taskflowchart > .tasks_flow {
-	right:135px;
-}
-.module_form_settings #ui > .taskflowchart > .tasks_menu > ul > li.tasks_group_disabled {
-	display:none;
-}
-.module_form_settings #ui > .taskflowchart > .tasks_menu .tasks_group_label {
-	padding-top:0;
-	border-top:0;
-}
-.module_form_settings #ui > .taskflowchart > .tasks_menu .tasks_group_label:hover:after {
-	display:none;
-}
-.module_form_settings .workflow_message {
-	position:absolute;
-}
-.module_form_settings .error {
-	height:auto;
-	font-size:100%;
-}
-.module_form_settings .sla_group_item > .sla_group_body.selected_task_properties {
-	position:initial !important;
-	max-height:none;
-}
-
-/* WORKFLOW - TASKS */
-.module_form_settings .taskflowchart.with_top_bar_menu .tasks_menu.task_properties_shown, 
-  .module_form_settings .taskflowchart.with_top_bar_menu .tasks_menu_hide.task_properties_shown, 
-  .module_form_settings .taskflowchart.with_top_bar_menu .tasks_flow.task_properties_shown, 
-  .module_form_settings .taskflowchart.with_top_bar_menu .tasks_menu.connection_properties_shown, 
-  .module_form_settings .taskflowchart.with_top_bar_menu .tasks_menu_hide.connection_properties_shown, 
-  .module_form_settings .taskflowchart.with_top_bar_menu .tasks_flow.connection_properties_shown {
-	bottom:0 !important;
-}
-.module_form_settings .taskflowchart:not(.fixed_properties) .selected_task_properties > .maximize_minimize_icon,
-  .module_form_settings .taskflowchart:not(.fixed_properties) .selected_connection_properties > .maximize_minimize_icon {
-	display:none;
-}
-.module_form_settings .taskflowchart:not(.fixed_properties) .selected_task_properties > .generic_buttons,
-  .module_form_settings .taskflowchart:not(.fixed_properties) .selected_connection_properties > .generic_buttons {
-	right:30px !important;
-}
-
-.module_form_settings .taskflowchart.fixed_properties .selected_task_properties, 
-  .module_form_settings .taskflowchart.fixed_properties .selected_connection_properties {
-	z-index:999999 !important;
-}
-/*.module_form_settings .taskflowchart.fixed_properties .selected_task_properties > .resize_properties_panel .button, 
-  .module_form_settings .taskflowchart.fixed_properties .selected_connection_properties .resize_properties_panel .button {
-	margin:0;
-}*/
-.module_form_settings .taskflowchart.fixed_properties .selected_task_properties > .toggle_properties_side_icon, 
-  .module_form_settings .taskflowchart.fixed_properties .selected_connection_properties .toggle_properties_side_icon {
-	display:none;
-}
-.module_form_settings .taskflowchart.fixed_properties .selected_task_properties > .content, 
-  .module_form_settings .taskflowchart.fixed_properties .selected_connection_properties .content {
-	padding:10px 15px 15px;
-}
-.module_form_settings .taskflowchart.fixed_properties .selected_task_properties > .generic_buttons, 
-  .module_form_settings .taskflowchart.fixed_properties .selected_connection_properties .generic_buttons {
-	right:55px;
-}
-.module_form_settings .taskflowchart.fixed_properties .selected_task_properties .sla_group_item {
-	margin-bottom:0;
-}
-.module_form_settings .taskflowchart.fixed_properties .selected_task_properties .sla_group_item:after {
-	display:none;
-}
-.module_form_settings .taskflowchart.fixed_properties .selected_task_properties .sla_group_item .selected_task_properties {
-	height:auto !important;
-	position:relative !important;
-}
-.module_form_settings .taskflowchart.fixed_properties .selected_task_properties .sla_group_item .selected_task_properties::before,
-  .module_form_settings .taskflowchart.fixed_properties .selected_task_properties .sla_group_item .selected_connection_properties::before {
-	display:none;
-}
-
-.module_form_settings .taskflowchart .sla_group_item > .sla_group_body.selected_task_properties .loop_action_body > header,
-  .module_form_settings .taskflowchart .sla_group_item > .sla_group_body.selected_task_properties .group_action_body > header {
-	margin-bottom:0;
-}
-.module_form_settings .taskflowchart .sla_group_item > .sla_group_body.selected_task_properties .loop_action_body > header > a,
-  .module_form_settings .taskflowchart .sla_group_item > .sla_group_body.selected_task_properties .group_action_body > header > a {
-	display:none;
-}
-.module_form_settings .taskflowchart .sla_group_item > .sla_group_body.selected_task_properties .create_form_task_html .layout-ui-editor:not(.full-screen) > .tabs {
-	background:var(--main-settings-bg);
 }
 

@@ -41,6 +41,10 @@ $(function () {
 	var entity_obj = $(".entity_obj");
 	
 	if (entity_obj[0]) {
+		//prepare main settings tab
+		var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
+		regions_blocks_includes_settings.tabs();
+		
 		//init page template layout
 		initPageAndTemplateLayout(entity_obj, {
 			save_func: saveEntity, 
@@ -54,9 +58,12 @@ $(function () {
 					
 					//init auto save
 					addAutoSaveMenu(".top_bar li.sub_menu li.save");
-					//enableAutoSave(onToggleAutoSave); //Do not enable auto save bc it gets a litte bit slow editing the template.
+					//enableAutoSave(onToggleSLAAutoSave); //Do not enable auto save bc it gets a litte bit slow editing the template.
 					initAutoSave(".top_bar li.sub_menu li.save a");
 					StatusMessageHandler.showMessage("Auto save is disabled for a better user-experience...");
+					
+					//change the toggle Auto save handler bc the edit_query task
+					initSLAAutoSaveActivationMenu();
 					
 					//set update handlers
 					var iframe = getContentTemplateLayoutIframe(entity_obj);
@@ -73,6 +80,12 @@ $(function () {
 						//console.log("updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField");
 						updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField(elm, html, iframe);
 					};
+					
+					//init sla
+					initPageAndTemplateLayoutSLA(regions_blocks_includes_settings);
+					
+					//load sla settings
+					loadPageAndTemplateLayoutSLASettings(regions_blocks_includes_settings);
 					
 					//hide loading icon
 					MyFancyPopup.hidePopup();
@@ -909,12 +922,16 @@ function getExternalTemplateParams(entity_obj) {
 }
 
 function getObjToSave() {
-	var entity_obj = $(".entity_obj");
-	
+	//get regions blocks settings
 	var obj = getRegionsBlocksAndIncludesObjToSave();
 	//console.log(obj);
 	
+	//get sla settings
+	var sla = $(".sla");
+	obj["sla_settings"] = getSLASettings(sla);
+	
 	//prepare template
+	var entity_obj = $(".entity_obj");
 	var template_elm = entity_obj.find(".template");
 	var is_external_template = template_elm.find("select[name=template_genre]").val() ? true : false;
 	var template = getSelectedTemplate(entity_obj);

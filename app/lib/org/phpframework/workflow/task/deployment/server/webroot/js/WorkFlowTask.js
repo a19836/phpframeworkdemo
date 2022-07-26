@@ -2610,6 +2610,23 @@ var ServerTaskPropertyObj = {
 	
 	/* DEPLOYMENT - UTILS FUNCTIONS */
 	
+	onClickServerDetailsTab : function(elm) {
+		//remove width and height style so the popup get updated automatically
+		myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().getPopup().css({width: "", height: ""});
+	},
+	
+	onClickServerTemplatesTab : function(elm) {
+		//remove width and height style so the popup get updated automatically
+		myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().getPopup().css({width: "", height: ""});
+	},
+	
+	onClickServerDeploymentsTab : function(elm) {
+		this.updateAvailableTemplates(elm);
+		
+		//remove width and height style so the popup get updated automatically
+		myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().getPopup().css({width: "", height: ""});
+	},
+	
 	updateAvailableTemplates : function(elm) {
 		var task_html_elm = $(elm).parent().closest(".server_task_html");
 		var select = task_html_elm.find(" > .deployments_container > .deploy_template > select");

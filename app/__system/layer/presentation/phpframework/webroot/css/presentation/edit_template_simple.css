@@ -91,14 +91,6 @@
 }
 
 /* Settings */
-.template_obj .regions_blocks_includes_settings:not(.collapsed) > ul.tabs {
-	position:fixed;
-	right:10px;
-	margin-top:-37px;
-	z-index:1052; /* bigger than .regions_blocks_includes_settings .settings_header in edit_page_and_template.css */
-	border:0;
-}
-
 /*.template_obj .regions_blocks_includes_settings .update_automatically:not(.icon) {
 	width:250px;
 	position:absolute;
@@ -112,10 +104,6 @@
 	opacity:1;
 }*/
 
-.template_obj .regions_blocks_includes_settings .content_settings,
-  .template_obj .regions_blocks_includes_settings .design_settings {
-	padding:0;
-}
 .template_obj .regions_blocks_includes_settings .design_settings > div {
 	margin:10px 0;
 }

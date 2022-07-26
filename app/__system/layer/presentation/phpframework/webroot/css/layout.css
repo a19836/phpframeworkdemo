@@ -449,7 +449,8 @@
 	border-bottom:1px solid var(--main-context-menu-border);
 	border-bottom-left-radius:3px;
 	border-bottom-right-radius:3px;
-	overflow:auto;
+	overflow:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
+	overflow:overlay;
 	transition:.5s all;
 	opacity:1;
 	text-align:left;

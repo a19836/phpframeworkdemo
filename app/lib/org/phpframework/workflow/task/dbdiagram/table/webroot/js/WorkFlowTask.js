@@ -836,6 +836,9 @@ var DBTableTaskPropertyObj = {
 			else
 				ul.children(".no_simple_attributes").show();
 		}
+		
+		//remove width and height style so the popup get updated automatically
+		myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().getPopup().css({width: "", height: ""});
 	},
 	
 	/** START: TASK METHODS - SIMPLE UI **/
@@ -853,6 +856,9 @@ var DBTableTaskPropertyObj = {
 			
 			task_html_elm.find(".table_attrs").html(html);
 		}
+		
+		//remove width and height style so the popup get updated automatically
+		myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().getPopup().css({width: "", height: ""});
 	},
 	
 	convertSimpleAttributesIntoTableAttributesData : function(elm) {

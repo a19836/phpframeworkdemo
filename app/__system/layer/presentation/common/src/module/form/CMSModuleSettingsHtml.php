@@ -20,21 +20,28 @@ $project_common_url_prefix = $pcurlp;
 if ($PEVC) {
 	$opts = array(
 		"main_div_selector" => ".module_form_settings",
-		"allowed_tasks_tag" => array("formitemsingle", "formitemgroup"),
-		"extra_tasks_folder_path" => $EVC->getModulesPath($common_project_name) . "form/tasks/",
-		"tasks_groups_by_tag" => array(
-			"Form Groups" => array("formitemsingle", "formitemgroup"),
-		),
+		"workflow_tasks_id" => "presentation_block_form_sla",
+		"path_extra" => hash('crc32b', "$bean_file_name/$bean_name/$path"),
 	);
-	$ret = SequentialLogicalActivitiesHandler::getHeader($PEVC, $UserAuthenticationHandler, $bean_name, $bean_file_name, $path, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $user_beans_folder_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $filter_by_layout, $opts);
-	$sla_head = $ret["head"];
-	$sla_js_head = $ret["js_head"];
-	$tasks_contents = $ret["tasks_contents"];
-	$layer_brokers_settings = $ret["layer_brokers_settings"];
-	$presentation_projects = $ret["presentation_projects"];
-	$db_drivers = $ret["db_drivers"];
-	$WorkFlowTaskHandler = $ret["WorkFlowTaskHandler"];
-	$WorkFlowUIHandler = $ret["WorkFlowUIHandler"];
+	$sla = SequentialLogicalActivitiesHandler::getHeader($EVC, $PEVC, $UserAuthenticationHandler, $bean_name, $bean_file_name, $path, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $user_beans_folder_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $filter_by_layout, $opts);
+	$sla_head = $sla["head"];
+	$sla_js_head = $sla["js_head"];
+	$tasks_contents = $sla["tasks_contents"];
+	$layer_brokers_settings = $sla["layer_brokers_settings"];
+	$presentation_projects = $sla["presentation_projects"];
+	$db_drivers = $sla["db_drivers"];
+	$WorkFlowTaskHandler = $sla["WorkFlowTaskHandler"];
+	$WorkFlowUIHandler = $sla["WorkFlowUIHandler"];
+	$set_workflow_file_url = $sla["set_workflow_file_url"];
+	$get_workflow_file_url = $sla["get_workflow_file_url"];
+	
+	//prepare brokers
+	$presentation_brokers = $layer_brokers_settings["presentation_brokers"];
+	$business_logic_brokers = $layer_brokers_settings["business_logic_brokers"];
+	$data_access_brokers = $layer_brokers_settings["data_access_brokers"];
+	$ibatis_brokers = $layer_brokers_settings["ibatis_brokers"];
+	$hibernate_brokers = $layer_brokers_settings["hibernate_brokers"];
+	$db_brokers = $layer_brokers_settings["db_brokers"];
 	
 	//preparing generic urls
 	$choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#$filter_by_layout_url_query&path=#path#";
@@ -42,18 +49,6 @@ if ($PEVC) {
 	$choose_lib_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=lib&path=#path#";
 	$choose_vendor_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=vendor&path=#path#";
 	$get_file_properties_url = $project_url_prefix . "phpframework/admin/get_file_properties?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&class_name=#class_name#&type=#type#";
-	
-	//preparing workflow urls
-	$path_extra = hash('crc32b', "$bean_file_name/$bean_name/$path");
-	$get_workflow_tasks_id = "presentation_block_form&path_extra=_$path_extra";
-	$get_tmp_workflow_tasks_id = "presentation_block_form_tmp&path_extra=_${path_extra}_" . rand(0, 1000);
-	
-	$set_workflow_file_url = $project_url_prefix . "workflow/set_workflow_file?path=${get_workflow_tasks_id}";
-	$get_workflow_file_url = $project_url_prefix . "workflow/get_workflow_file?path=${get_workflow_tasks_id}";
-	$create_workflow_file_from_settings_url = $project_url_prefix . "module/form/create_workflow_file_from_settings?path=${get_tmp_workflow_tasks_id}&loaded_tasks_settings_cache_id=" . $WorkFlowTaskHandler->getLoadedTasksSettingsCacheId();
-	$get_tmp_workflow_file_url = $project_url_prefix . "workflow/get_workflow_file?path=${get_tmp_workflow_tasks_id}";
-	$create_settings_from_workflow_file_url = $project_url_prefix . "module/form/create_settings_from_workflow_file?path=${get_tmp_workflow_tasks_id}";
-	$set_tmp_workflow_file_url = $project_url_prefix . "workflow/set_workflow_file?path=${get_tmp_workflow_tasks_id}";
 	
 	//preparing head
 	$head = $sla_head;
@@ -67,21 +62,14 @@ if ($PEVC) {
 ';
 	
 	//preparing javascript head
-	$js_head = $sla_js_head . '
-	var get_workflow_file_url = \'' . $get_workflow_file_url . '\';
-	var create_workflow_file_from_settings_url = \'' . $create_workflow_file_from_settings_url . '\';
-	var get_tmp_workflow_file_url = \'' . $get_tmp_workflow_file_url . '\';
-	var create_settings_from_workflow_file_url = \'' . $create_settings_from_workflow_file_url . '\';
-	var set_tmp_workflow_file_url = \'' . $set_tmp_workflow_file_url . '\';
-	
+	$js_head = $sla_js_head;
+	$js_head .= '
 	var get_form_wizard_settings_url = \'' . $project_url_prefix . "module/form/get_form_wizard_settings?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path" . '\';
-	var create_form_settings_code_url = \'' . $project_url_prefix . 'module/form/create_form_settings_code\';
-	var convert_form_settings_to_workflow_code_url = \'' . $project_url_prefix . "module/form/convert_form_settings_to_workflow_code?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path" . '\';
 	var get_input_data_method_settings_url = \'' . $project_url_prefix . 'module/form/get_input_data_method_settings\';
+	var convert_form_settings_to_workflow_code_url = \'' . $project_url_prefix . "module/form/convert_form_settings_to_workflow_code?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path" . '\';
+	var create_form_settings_code_url = \'' . $project_url_prefix . "module/form/create_form_settings_code" . '\';
 	
-	CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui_menu_widgets_backup\';
-	
-	var choose_from_file_manager_popup_html = \'' . str_replace("\n", "", addcslashes(WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $layer_brokers_settings["db_brokers"], $layer_brokers_settings["data_access_brokers"], $layer_brokers_settings["ibatis_brokers"], $layer_brokers_settings["hibernate_brokers"], $layer_brokers_settings["business_logic_brokers"], $layer_brokers_settings["presentation_brokers"]), "\\'")) . '\';';
+	var choose_from_file_manager_popup_html = \'' . str_replace("\n", "", addcslashes(WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $db_brokers, $data_access_brokers, $ibatis_brokers, $hibernate_brokers, $business_logic_brokers, $presentation_brokers), "\\'")) . '\';';
 	
 	//check if workflow module is installed
 	$workflow_module_installed_and_enabled = $PEVC->getCMSLayer()->getCMSModuleLayer()->existsModule("workflow");
@@ -89,10 +77,10 @@ if ($PEVC) {
 	var workflow_module_installed_and_enabled = ' . ($workflow_module_installed_and_enabled ? 1 : 0) . ';';
 	
 	//prepare layers brokers settings (Must be after the '$WorkFlowQueryHandler->getDataAccessJavascript(...)' bc it must overwrite the main_layers_properties.Presentation javascript var with the right settings...
-	$js_head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($layer_brokers_settings["presentation_brokers"], $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url);
-	$js_head .= WorkFlowPresentationHandler::getBusinessLogicBrokersHtml($layer_brokers_settings["business_logic_brokers"], $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url);
+	$js_head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url);
+	$js_head .= WorkFlowPresentationHandler::getBusinessLogicBrokersHtml($business_logic_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url);
 	$js_head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url);
-	$js_head .= WorkFlowPresentationHandler::getDataAccessBrokersHtml($layer_brokers_settings["data_access_brokers"], $choose_bean_layer_files_from_file_manager_url);
+	$js_head .= WorkFlowPresentationHandler::getDataAccessBrokersHtml($data_access_brokers, $choose_bean_layer_files_from_file_manager_url);
 	
 	//preparing html
 	echo '
@@ -102,67 +90,22 @@ if ($PEVC) {
 		<link rel="stylesheet" href="' . $project_common_url_prefix . 'module/common/settings.css" type="text/css" charset="utf-8" />
 		<script type="text/javascript" src="' . $project_common_url_prefix . 'module/common/settings.js"></script>
 
-		<link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/sequential_logical_activities.css" type="text/css" charset="utf-8" />
-		<script type="text/javascript" src="' . $project_url_prefix . 'js/presentation/sequential_logical_activities.js"></script>';
+		<link rel="stylesheet" href="' . $project_url_prefix . 'css/sequentiallogicalactivity/sla.css" type="text/css" charset="utf-8" />
+		<script type="text/javascript" src="' . $project_url_prefix . 'js/sequentiallogicalactivity/sla.js"></script>';
 	?>
 		<link rel="stylesheet" href="<?= $module["webroot_url"]; ?>form.css" type="text/css" charset="utf-8" />
 		<script type="text/javascript" src="<?= $module["webroot_url"]; ?>form.js"></script>
 		
 		<div class="module_form_contents">
-			<ul class="tabs tabs_transparent">
-				<li id="sla_groups_flow_tab"><a href="#sla_groups_flow" onClick="onClickFormModuleSLAGroupsFlowTab(this);return false;">By Groups - Sequential Logic</a></li>
-				<li id="tasks_flow_tab"><a href="#ui" onClick="onClickFormModuleTaskWorkflowTab(this);return false;">By Diagram</a></li>
-			</ul>
-			
-			<div id="sla_groups_flow" class="sla_groups_flow">
-				<nav>
-					<a class="add_form_group" onClick="addAndInitNewSLAGroup(this)">Add Group <i class="icon add"></i></a>
-					<a class="collapse_form_groups" onClick="collapseSLAGroups(this)">Collapse Groups <i class="icon collapse_content"></i></a>
-					<a class="expand_form_groups" onClick="expandSLAGroups(this)">Expand Groups <i class="icon expand_content"></i></a>
-	
-	<? 
-		if ($db_drivers) 
-			echo '	<a class="open_form_wizard" onClick="openFormWizard()">Open Wizard <i class="icon wizard"></i></a>';
-	?>
-	
-				</nav>
-				
-				<ul class="sla_groups sla_main_groups">
-					<li class="sla_group_item sla_group_default">
-						<?php echo SequentialLogicalActivitiesHandler::getGroupItemHtml($EVC, $project_url_prefix, $project_common_url_prefix, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $tasks_contents, $db_drivers, $presentation_projects); ?>
-					</li>
-				</ul>
-			</div>
-		
-			<div id="ui">
 			<?php
-			echo WorkFlowPresentationHandler::getTaskFlowContentHtml($WorkFlowUIHandler, array(
-				"save_func" => "saveModuleFormSettings", 
-				"generate_code_from_tasks_flow_label" => "Generate Groups from Diagram", 
-				"generate_code_from_tasks_flow_func" => "generateGroupsFromTasksFlow", 
-				"generate_tasks_flow_from_code_label" => "Generate Diagram from Groups",
-				"generate_tasks_flow_from_code_func" => "generateTasksFlowFromGroups", 
+			echo SequentialLogicalActivitiesHandler::getSLAHtml($EVC, $project_url_prefix, $project_common_url_prefix, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $tasks_contents, $db_drivers, $presentation_projects, $WorkFlowUIHandler, array(
+				"extra_short_actions_html" => $db_drivers ? '<a class="open_form_wizard" onClick="openFormWizard()">Open Wizard <i class="icon wizard"></i></a>' : '',
+				"save_func" => "saveModuleFormSettings",
 			));
+		
+			echo CommonModuleSettingsUI::getCssFieldsHtml();
+			echo CommonModuleSettingsUI::getJsFieldsHtml();
 			?>
-				<div class="ui_menu_widgets_backup hidden">
-					<? echo SequentialLogicalActivitiesHandler::getUIMenuWidgetsHTML($EVC, $project_common_url_prefix, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url); ?>
-				</div>
-				
-				<script>
-					var ui = $(".module_form_settings #ui");
-					var mwb = ui.find(".ui_menu_widgets_backup");
-					var create_form_task_html = ui.find(".create_form_task_html");
-					create_form_task_html.find(".ptl_settings > .layout-ui-editor > .menu-widgets").append( mwb.contents().clone() );
-					ui.find(".inlinehtml_task_html > .layout-ui-editor > .menu-widgets").append( mwb.contents() );
-					mwb.remove();
-					
-						create_form_task_html.children(".separate_settings_from_input, .form_input, .form_input_data, .separate_input_from_result, .result, .task_property_exit").remove();
-				</script>
-			</div>
-		<?php
-		echo CommonModuleSettingsUI::getCssFieldsHtml();
-		echo CommonModuleSettingsUI::getJsFieldsHtml();
-		?>
 		</div>
 				
 		<div class="myfancypopup form_wizard">

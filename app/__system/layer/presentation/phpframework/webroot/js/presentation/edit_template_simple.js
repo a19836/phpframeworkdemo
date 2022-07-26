@@ -27,7 +27,8 @@ $(function () {
 	
 	if (template_obj[0]) {
 		//prepare main settings tab
-		template_obj.find(".regions_blocks_includes_settings").tabs();
+		var regions_blocks_includes_settings = template_obj.find(".regions_blocks_includes_settings");
+		regions_blocks_includes_settings.tabs();
 		
 		//prepare head editor
 		var textarea = template_obj.find(".head textarea")[0];
@@ -75,9 +76,12 @@ $(function () {
 					
 					//init auto save
 					addAutoSaveMenu(".top_bar li.sub_menu li.save");
-					//enableAutoSave(onToggleAutoSave); //Do not enable auto save bc it gets a litte bit slow editing the template.
+					//enableAutoSave(onToggleSLAAutoSave); //Do not enable auto save bc it gets a litte bit slow editing the template.
 					initAutoSave(".top_bar li.sub_menu li.save a");
 					StatusMessageHandler.showMessage("Auto save is disabled for a better user-experience...");
+					
+					//change the toggle Auto save handler bc the edit_query task
+					initSLAAutoSaveActivationMenu();
 					
 					//set update handlers
 					var iframe = getContentTemplateLayoutIframe(template_obj);
@@ -97,6 +101,12 @@ $(function () {
 					
 					//load js and css files
 					loadCodeEditorLayoutJSAndCSSFilesToSettings();
+					
+					//init sla
+					initPageAndTemplateLayoutSLA(regions_blocks_includes_settings);
+					
+					//load sla settings
+					loadPageAndTemplateLayoutSLASettings(regions_blocks_includes_settings);
 					
 					//hide loading icon
 					MyFancyPopup.hidePopup();
@@ -413,7 +423,7 @@ function updateCodeEditorLayoutFilesInSettings(files, ul) {
 			else if (file.indexOf(selected_project_common_url_prefix_aux) === 0) //checks if file starts with url in vars: selected_project_common_url_prefix_aux
 				path = common_project_name + "/webroot/" + file.substr(selected_project_common_url_prefix_aux.length);
 			else { //checks if file starts with php code: $project_url_prefix or $project_common_url_prefix
-				var m = /^<\?(|=|php)\s*(|echo)\s*(\$[a-z_]+)\s*;?\s*\?>/g.exec(file);
+				var m = /^<\?(|=|php)\s*(|echo|print)\s*(\$[a-z_]+)\s*;?\s*\?>/g.exec(file);
 				
 				if (m && (m[3] == "$project_url_prefix" || m[3] == "$project_common_url_prefix")) { 
 					var relative_file = file.substr(m[0].length);
@@ -626,29 +636,9 @@ function getTemplateCodeForSaving(without_regions_blocks_and_includes) {
 		//updateRegionsFromBodyEditor(false, true); 
 		
 		//get regions blocks settings
-		var obj = getRegionsBlocksAndIncludesObjToSave();
-		
-		//get php code for regions blocks
-		$.ajax({
-			type : "post",
-			url : create_entity_code_url,
-			data : {"object" : obj},
-			dataType : "json",
-			success : function(data, textStatus, jqXHR) {
-				code = data ? data + "\n" : "";
-			},
-			error : function(jqXHR, textStatus, errorThrown) { 
-				status = false;
-				
-				if (jqXHR.responseText && !is_from_auto_save) {
-					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-						StatusMessageHandler.showError("Please Login first!");
-					else 
-						StatusMessageHandler.showError(jqXHR.responseText);
-				}
-			},
-			async: false,
-		});
+		var ret = getRegionsBlocksAndIncludesObjCodeToSave();
+		code = ret["code"];
+		status = ret["status"];
 	}
 	
 	//prepare html
@@ -680,13 +670,50 @@ function getTemplateCodeForSaving(without_regions_blocks_and_includes) {
 	return status ? code : null;
 }
 
+function getRegionsBlocksAndIncludesObjCodeToSave(opts) {
+	var code = "";
+	var status = true;
+	
+	//get regions blocks settings
+	var obj = getRegionsBlocksAndIncludesObjToSave();
+	
+	//get sla settings
+	var sla = $(".sla");
+	obj["sla_settings"] = getSLASettings(sla);
+	
+	//get php code for regions blocks
+	$.ajax({
+		type : "post",
+		url : create_entity_code_url,
+		data : {"object" : obj},
+		dataType : "json",
+		success : function(data, textStatus, jqXHR) {
+			code = data ? data + "\n" : "";
+		},
+		error : function(jqXHR, textStatus, errorThrown) { 
+			status = false;
+			
+			if (jqXHR.responseText && !is_from_auto_save) {
+				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+					StatusMessageHandler.showError("Please Login first!");
+				else 
+					StatusMessageHandler.showError(jqXHR.responseText);
+			}
+		},
+		async: false,
+	});
+	
+	return {code: code, status: status};
+}
+
 function getTemplateCodeObjId() {
 	var obj_1 = getTemplateCodeForSaving(true);
 	var obj_2 = getRegionsBlocksAndIncludesObjToSave();
+	var obj_3 = getSLASettings( $(".sla") );
 	
 	MyFancyPopup.hidePopup();
 	
-	return $.md5(save_object_url + JSON.stringify(obj_1) + JSON.stringify(obj_2));
+	return $.md5(save_object_url + JSON.stringify(obj_1) + JSON.stringify(obj_2) + JSON.stringify(obj_3));
 }
 
 function isTemplateCodeObjChanged() {

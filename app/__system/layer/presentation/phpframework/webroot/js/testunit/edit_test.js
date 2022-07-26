@@ -202,17 +202,18 @@ function onToggleFullScreen(in_full_screen) {
 function resizeSettingsPanel(settings, top) {
 	var icon = settings.find(" > .settings_header .icon");
 	var wh = $(window).height();
+	var top_bar_height = $(".top_bar header").outerHeight();
 	var height = 0;
 	
 	settings.removeClass("resizing");
 	settings.css({top: "", left: "", bottom: ""}); //remove top, left and bottom from style attribute in #settings_header
 	
-	if (top < 40) { //40 is the size of #top_bar (40px)
-		height = wh - 40;
+	if (top < top_bar_height) {
+		height = wh - (top_bar_height + 5); //5 is the height of the #settings_header resize bar
 		
 		settings.css("height", height + "px");
 	}
-	else if (top > wh - 25) { //25 is the size of #settings .settings_header when collapsed
+	else if (top > wh - 35) { //35 is the size of #settings .settings_header when collapsed
 		icon.addClass("maximize").removeClass("minimize");
 		settings.addClass("collapsed");
 		

@@ -192,7 +192,10 @@
 					if (src && src != "") {
 						file.html( src.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
 						
-						script[0].src = src;
+						//parse src in case it contains the $project_url_prefix or $project_common_url_prefix
+						var aux = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(src) : src;
+						
+						script[0].src = aux;
 					}
 					
 					if (code && code != "") {
@@ -252,7 +255,11 @@
 					if (sprop.hasClass("src")) {
 						if (props["src"] != "") {
 							file.html( ("" + props["src"]).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
-							script[0].src = props["src"];
+							
+							//parse src in case it contains the $project_url_prefix or $project_common_url_prefix
+							var aux = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(props["src"]) : props["src"];
+							
+							script[0].src = aux;
 						}
 						else
 							file.html("");

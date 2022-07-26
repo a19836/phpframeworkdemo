@@ -17,10 +17,16 @@
 	padding:0;
 	border:0;
 }
+body:not(.dark_theme) .global_vars_obj > .tabs.tabs_icons li#form_global_vars_tab.ui-tabs-active a {
+	background:var(--main-template-bg);
+}
 
 .global_vars_obj #code .code_menu.top_bar_menu,
   .global_vars_obj #ui .taskflowchart .workflow_menu.top_bar_menu {
 	right:164px;
+}
+body:not(.dark_theme) .global_vars_obj #form_global_vars {
+	background:var(--main-template-bg) !important;
 }
 .global_vars_obj #form_global_vars .code_menu.top_bar_menu {
 	right:156px;
