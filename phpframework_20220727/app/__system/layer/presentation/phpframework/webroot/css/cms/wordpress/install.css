@@ -1,0 +1,18 @@
+/* WORDPRESS */
+.install_wordpress {
+	text-align:center;
+}
+.install_wordpress label {
+	display:block;
+	width:100%;
+	min-height:20px;
+	margin-bottom:10px;
+	font-weight:normal;
+}
+.install_wordpress .button {
+	height:25px;
+	line-height:15px;
+	display:inline-block;
+	margin:10px;
+	font-size:inherit;
+}

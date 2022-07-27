@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget>
+	<label>PHP</label>
+	<tag>php</tag>
+	<settings>
+		<create_widget_class>PHPWidget</create_widget_class>
+	</settings>
+	<menu_widget></menu_widget>
+	<template_widget><![CDATA[
+		<pre></pre>
+	]]></template_widget>
+	<properties></properties>
+	<menu_css><![CDATA[
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-php:before,
+		  body > .menu-widget.menu-widget-php.ui-draggable-dragging:before {
+			background-image:url('#widget_webroot_url#logo.svg');
+		}
+		
+		.layout-ui-editor > .template-widgets > .widget-header.widget-header-php .options .props,
+		   .layout-ui-editor > .template-widgets > .widget-header.widget-header-php .options .toggle {
+			display:none !important;
+		}
+		
+		.layout-ui-editor > .menu-settings.menu-settings-php .settings-id,
+		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-classes,
+		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-properties,
+		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-general,
+		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-dimension,
+		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-typography,
+		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-decorations,
+		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-extra {
+			display:none;
+		}
+		
+		.layout-ui-editor > .menu-layers .group.group-php > ul {
+			display:none !important;
+		}
+	]]></menu_css>
+	<template_css><![CDATA[
+		.template-widget.template-widget-php {
+			margin:5px !important; /* !important is bc of the css when .borders is active */
+			padding:5px !important; /* !important is bc of the css when .borders is active */
+			border:1px solid #000 !important; /* !important is bc of the css when .borders is active */
+			background-image:none !important; /* !important is bc of the css when .borders is active */
+			border-radius:3px;
+			background:#f7f7f7;
+			color:#000;
+			vertical-align:middle;
+			display:block;
+			word-break:break-all;
+		}
+		body > .droppable.borders .template-widget.template-widget-php:before {
+			content:"";
+			border:0;
+			display:none;
+		}
+		
+		.template-widget.template-widget-php > pre {
+			margin:0 !important; /* !important is bc of the css when .borders is active */
+			padding:0 !important; /* !important is bc of the css when .borders is active */
+			border:0 !important; /* !important is bc of the css when .borders is active */
+			background-image:none !important; /* !important is bc of the css when .borders is active */
+			display:block;
+			color:inherit;
+			/*font-size:inherit;*/
+			font-size:12px;
+			font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+			text-align:left;
+			overflow:auto;
+		}
+		.template-widget.template-widget-php > pre:focus-visible {
+			outline:none;
+		}
+		.template-widget.template-widget-php > pre::-webkit-scrollbar {
+			width:5px;
+			height:5px;
+			background-color:transparent;
+		}
+		body > .droppable.borders .template-widget.template-widget-php > pre:before {
+			content:"";
+			border:0;
+			display:none;
+		}
+	]]></template_css>
+	<menu_js><![CDATA[
+		function PHPWidget(ui_creator, menu_widget) {
+			var me = this;
+			me.on_drop_menu_widget_handlers = [];
+			
+			me.init = function() {
+				menu_widget.attr({
+					"data-on-parse-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.php.parseHtml",
+					"data-on-clean-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.php.cleanHtml",
+					"data-on-create-template-widget-func": ui_creator.obj_var_name + ".menu_widgets_objs.php.onCreateTemplateWidget",
+					"data-on-drag-stop-func": ui_creator.obj_var_name + ".menu_widgets_objs.php.onDropMenuWidget",
+				});
+				
+				menu_widget.removeAttr("data-on-clone-menu-widget-func");
+			};
+			
+			me.parseHtml = function(html_element) {
+				var node_name = html_element ? html_element.nodeName.toLowerCase() : "";
+				
+				//<php> or <?> or <?=>
+				if (/^\/?(php|\?|\?=)$/i.test(node_name))
+					return true;
+			};
+			
+			me.cleanHtml = function(html_element) {
+				var widget = $(html_element);
+				var text = widget.children("pre").html();
+				text = text.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
+				
+				return text;
+			};
+			
+			me.onCreateTemplateWidget = function(widget, html_element) {
+				var span = widget.children("pre");
+				
+				span.html("&lt;? PHP Code ?&gt;");
+				
+				if (html_element) {
+					var text = html_element.textContent;
+					
+					var node_name = html_element ? html_element.nodeName.toLowerCase() : "";
+					if (/^\/?(php|\?|\?=)$/i.test(node_name)) //This is for the cases: <php> or <?> or <?=>
+						text = '?php ' + text + ' ?';
+					
+					text = '&lt;' + text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") + '&gt;';
+					
+					span.html(text);
+					
+					$(html_element).remove();
+				}
+				
+				//prepare editable box
+				widget.attr("contenteditable", "false");
+				
+				span.attr("contenteditable", "true").mouseup(function(e) {
+					//prevents that the MyTextSelection open the inline menu
+					e.preventDefault();
+					e.stopPropagation();
+					
+					ui_creator.MyTextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
+				});
+			};
+			
+			me.onDropMenuWidget = function(menu_widget, widget, event, ui_obj) {
+				if (me.on_drop_menu_widget_handlers && me.on_drop_menu_widget_handlers.length > 0) {
+					for (var i = 0; i < me.on_drop_menu_widget_handlers.length; i++) {
+						var handler = me.on_drop_menu_widget_handlers[i];
+						
+						if (typeof handler == "function")
+							handler(menu_widget, widget, event, ui_obj);
+					}
+				}
+			};
+			
+			me.addOnDropMenuWidgetHandler = function(handler) {
+				if (typeof handler == "function" && me.on_drop_menu_widget_handlers.indexOf(handler) == -1)
+					me.on_drop_menu_widget_handlers.push(handler);
+			};
+		}
+	]]></menu_js>
+</widget>

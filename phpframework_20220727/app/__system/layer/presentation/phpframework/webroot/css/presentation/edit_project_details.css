@@ -1,0 +1,111 @@
+body,
+  #main_column {
+	background:#fff;
+}
+
+/* TOP BAR */
+.top_bar {
+	margin-bottom:15px;
+}
+.top_bar li.save {
+	display:none;
+}
+
+/* CREATE PROJECT */
+.edit_project_details {
+	width:520px;
+	margin:15px auto;
+	text-align:center;
+}
+.edit_project_details form {
+	margin-top:15px;
+}
+.edit_project_details .image {
+	width:220px;
+	margin-right:15px;
+	display:inline-block;
+}
+.edit_project_details .image {
+	height:260px;
+	text-align:center;
+	vertical-align:middle;
+}
+.edit_project_details .image img,
+  .edit_project_details .image .no_logo {
+	width:100px;
+	height:100px;
+	margin:48px auto;
+	display:inline-block;
+	border:1px solid #eee;
+	border-radius:100%;
+	overflow:hidden;
+}
+.edit_project_details .image .no_logo::before {
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	font: var(--fa-font-solid);
+	font-size:80px;
+	display:block;
+	margin-top:10px;
+	/*content:"\f0a0";*/
+	content:"\f49e";
+	color:#999;
+}
+.edit_project_details .image label,
+  .edit_project_details .image input {
+  	width:200px;
+	margin:0 auto;
+	display:block;
+	text-align:left;
+}
+.edit_project_details .image input {
+	font-size:inherit;
+}
+.edit_project_details .details {
+	width:280px;
+	text-align:left;
+	vertical-align:top;
+	display:inline-block;
+}
+.edit_project_details .details > div {
+	margin-bottom:20px;
+}
+.edit_project_details .details label {
+	display:block;
+	color:var(--main-template-color);
+}
+.edit_project_details .details input {
+	width:250px;
+	font-size:inherit;
+	color:#83889E;
+}
+.edit_project_details .details textarea {
+	width:250px;
+	height:100px;
+	font-size:inherit;
+	color:#83889E;
+}
+.edit_project_details .details .icon.search {
+	width:13px;
+}
+.edit_project_details.single_presentation_layer .details .layer {
+	display:none;
+}
+.edit_project_details .buttons {
+	margin-top:10px;
+}
+.edit_project_details .buttons input {
+	font-size:inherit;
+}
+.edit_project_details .buttons input.loading {
+	padding-left:25px;
+	background-position:5px center;
+}
+
+/* FILE MANAGER POPUP */
+.edit_project_details.single_presentation_layer #choose_project_folder_url_from_file_manager > .broker {
+	display:none;
+}
+#choose_project_folder_url_from_file_manager {
+	text-align:left;
+}

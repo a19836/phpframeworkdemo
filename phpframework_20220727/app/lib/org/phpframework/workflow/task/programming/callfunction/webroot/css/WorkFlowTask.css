@@ -1,0 +1,43 @@
+.jsplumbtaskmenu .task.task_callfunction {
+	background-image:url('../img/bg.svg');
+}
+.jsplumbtaskworkflow .task.task_callfunction .eps {
+	background-image:url('../img/bg.svg');
+}
+.jsplumbtaskworkflow .task.task_callfunction .ep {
+	border-color:transparent !important;
+	background-color:transparent !important;
+}
+
+.call_function_task_html {
+	width:390px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .call_function_task_html {
+	width:100%;
+}
+
+.call_function_task_html .func_name {
+	width:100%;
+	min-height:20px;
+	/*margin-top:15px;*/
+	margin-bottom:5px;
+}
+.call_function_task_html .func_name label {
+	width:135px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .call_function_task_html .func_name label {
+	width:75px;
+}
+.call_function_task_html .func_name input {
+	width:180px;  
+	padding-right:20px; 
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .call_function_task_html .func_name input {
+	width:calc(100% - 130px);  
+}
+.call_function_task_html .func_name .search {
+	
+}
+.call_function_task_html .func_name .add_variable.inline {
+	margin-left:-21px;
+}

@@ -1,0 +1,89 @@
+.jsplumbtaskmenu .task.task_form {
+	/*background-image:url('../img/bg.svg');
+	background-image:url('../img/bg.gif');*/
+}
+.jsplumbtaskmenu .task.task_form:before {
+	background-color:#29B473;
+}
+.jsplumbtaskmenu .task.task_form:after {
+	background-color:#29B47366;
+}
+.jsplumbtaskworkflow .task.task_form {
+	/*background-image:url('../img/bg.svg');
+	background-image:url('../img/bg.gif');*/
+}
+.jsplumbtaskworkflow .task.task_form:before {
+	background-color:#29B473;
+}
+.jsplumbtaskworkflow .task.task_form > .task_droppable {
+	min-height:100px;
+	position:absolute;
+	top:30px;
+	left:0;
+	right:0;
+	bottom:0;
+	box-sizing:border-box;
+	border-top:1px solid #29B473;
+	background-color:#29B47366;
+}
+.jsplumbtaskworkflow .task.task_form > .task_droppable.task_droppable_over {
+	background:#bfecbf;
+	background:#29B473a3;
+}
+.jsplumbtaskworkflow .task.task_form > .short_actions {
+	display:none;
+}
+
+/* task properties */
+.form_task_html .settings .choose_db_table .db_table_conditions {
+	display:none;
+}
+
+.form_task_html .ui table .ui_table_attribute_value:before {
+	display:block;
+	padding:5px;
+	color:#555;
+	background:#fff;
+}
+.form_task_html .ui table .ui_table_attribute_value.input:before {
+	content:"...";
+	width:100%;
+	min-width:100px;
+	box-sizing:border-box;
+	border:1px solid #f7f7f7;
+	border-radius:3px;
+}
+.form_task_html .ui table .ui_table_attribute_value.number:before {
+	content:"nn...";
+	border:1px solid #f7f7f7;
+	border-radius:3px;
+}
+.form_task_html .ui table .ui_table_attribute_value.date:before {
+	content:"yyyy-mm-dd";
+	border:1px solid #f7f7f7;
+	border-radius:3px;
+}
+.form_task_html .ui table .ui_table_attribute_value.datetime:before {
+	content:"yyyy-mm-dd hh:ii";
+	border:1px solid #f7f7f7;
+	border-radius:3px;
+}
+.form_task_html .ui table .ui_table_attribute_value.time:before {
+	content:"hh:ii";
+	border:1px solid #f7f7f7;
+	border-radius:3px;
+}
+.form_task_html .ui table .ui_table_attribute_value.checkbox:before {
+	content:"Yes/No";
+}
+.form_task_html .ui table .ui_table_attribute_value.textarea:before {
+	content:"...";
+	width:100%;
+	min-width:100px;
+	height:50px;
+	box-sizing:border-box;
+	border:1px solid #f7f7f7;
+	border-radius:3px;
+}
+
+

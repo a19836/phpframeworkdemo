@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+
+<link href='../packages/core/main.css' rel='stylesheet' />
+<link href='../packages/daygrid/main.css' rel='stylesheet' />
+<link href='../packages/timegrid/main.css' rel='stylesheet' />
+<link href='../packages/list/main.css' rel='stylesheet' />
+
+<script src='../vendor/rrule.js'></script>
+<script src='../packages/core/main.js'></script>
+<script src='../packages/core/locales-all.js'></script>
+<script src='../packages/interaction/main.js'></script>
+<script src='../packages/daygrid/main.js'></script>
+<script src='../packages/timegrid/main.js'></script>
+<script src='../packages/list/main.js'></script>
+<script src='../packages/rrule/main.js'></script>
+
+<!-- For Bootstrap themes -->
+<link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
+<link href='../vendor/bootstrap-4.3.1.min.css' rel='stylesheet' />
+<!--link href='https://bootswatch.com/4/cerulean/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/cosmo/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/cyborg/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/darkly/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/flatly/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/journal/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/litera/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/lumen/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/lux/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/materia/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/minty/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/pulse/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/sandstone/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/simplex/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/sketchy/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/slate/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/solar/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/spacelab/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/superhero/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/united/bootstrap.min.css' rel='stylesheet' />
+<link href='https://bootswatch.com/4/yeti/bootstrap.min.css' rel='stylesheet' /-->
+<link href='../packages/bootstrap/main.css' rel='stylesheet' />
+<script src="../vendor/jquery-3.3.1.min.js"></script>
+<script src="../vendor/popper.min.js"></script>
+<script src="../vendor/bootstrap-4.3.1.min.js"></script>
+<script src='../packages/bootstrap/main.js'></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+	
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list', 'rrule' ],
+      //plugins: [ 'bootstrap', 'interaction', 'dayGrid', 'timeGrid', 'list', 'rrule' ], //with bootstrap theme.
+      //themeSystem: 'bootstrap', //with bootstrap theme. To select the bootstrap theme, please uncomment the correspondent css that you wish, like the yeti style: https://bootswatch.com/4/yeti/bootstrap.min.css.
+      
+      timeZone: 'UTC', //or 'America/New_York' or 'Europe/Lisbon'
+    	 locale: 'pt',
+      header: {
+        left: 'prevYear,prev,next,nextYear today',
+        center: 'title addEventButton', //show title and button to add new event
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth,listWeek,listDay'
+      },
+      footer: {
+	   left: 'custom1,custom2',
+	   center: '',
+	   right: 'prev,next'
+	 },
+      defaultView: 'dayGridMonth', //default panel to be shown when calendar is created
+      defaultDate: '2019-06-12',
+      navLinks: true, //can click day/week names to navigate views. Days in the dayGridMonth become clickable links to timeGridWeek and timeGridDay 
+      
+      // customize the button names,
+      // otherwise they'd all just say "list"
+      views: {
+        listDay: { buttonText: 'list day' },
+        listWeek: { buttonText: 'list week' },
+        listMonth: { buttonText: 'list month' }
+      },
+
+      //callback function of button to add new event
+      customButtons: {
+		addEventButton: {
+			text: 'add event...',
+			click: function() {
+				var dateStr = prompt('Enter a date in YYYY-MM-DD format');
+				var date = new Date(dateStr + 'T00:00:00'); // will be in local time
+
+				if (!isNaN(date.valueOf())) { // valid?
+				  calendar.addEvent({
+				    title: 'dynamic event',
+				    start: date,
+				    allDay: true
+				  });
+				  alert('Great. Now, update your database...');
+				} 
+				else {
+				  alert('Invalid date.');
+				}
+			}
+		},
+		custom1: {
+			text: 'custom 1',
+			click: function() {
+				alert('clicked custom button 1!');
+			}
+		},
+		custom2: {
+			text: 'custom 2',
+			click: function() {
+				alert('clicked custom button 2!');
+			}
+		}
+	 },
+    	 
+    	 //Emphasizes certain time slots on the calendar.
+      businessHours: { 
+		// days of week. an array of zero-based day of week integers (0=Sunday)
+		daysOfWeek: [ 1, 2, 3, 4 ], // Monday - Thursday
+
+		startTime: '9:00', // a start time (10am in this example)
+		endTime: '18:00', // an end time (6pm in this example)
+	 },
+	 
+	 //indicator
+      nowIndicator: true, //show red line as indicator
+    	 now: '2019-06-12T09:25:00', //red line time
+    	 
+    	 //select a day and execute callback function
+      selectable: true, //Allows a user to highlight multiple days or timeslots by clicking and dragging.
+      selectMirror: true, //Whether to draw a “placeholder” event while the user is dragging.
+      select: function(arg) {
+        console.log(
+          'select',
+          arg.startStr,
+          arg.endStr,
+          arg.resource ? arg.resource.id : '(no resource)'
+        );
+        
+        var title = prompt('Event Title:');
+        if (title) {
+          calendar.addEvent({
+            title: title,
+            start: arg.start,
+            end: arg.end,
+            allDay: arg.allDay
+          })
+        }
+        calendar.unselect()
+      },
+      
+      //dateClick is the event that comes after we click in a day
+      dateClick: function(arg) {
+        console.log(
+          'dateClick',
+          arg.date,
+          arg.resource ? arg.resource.id : '(no resource)'
+        );
+      },
+	
+	 //Show week numbers in the left of the calendar (in the dayGridMonth)
+      weekNumbers: true,
+      weekNumbersWithinDays: false,
+      weekNumberCalculation: 'ISO',
+	 
+      editable: true, //Lets events to be dragged to another days
+      eventLimit: false, // allow "more" link when too many events
+      eventColor: 'green', //default events color
+      slotDuration: '00:10', // 10 minutes. This is how the time will be divided in the grids. to view this better go to the dayGridWeek or dayGridDay
+      minTime: '05:00:00', //Determines the first time slot that will be displayed for each day.
+      maxTime: '22:00:00', //Determines the last time slot that will be displayed for each day.
+      
+      //callback when event is clicked
+      eventClick: function(info) {
+		 var eventObj = info.event;
+
+		 if (eventObj.url) {
+		   alert(
+		     'Clicked ' + eventObj.title + '.\n' +
+		     'Will open ' + eventObj.url + ' in a new tab'
+		   );
+
+		   window.open(eventObj.url);
+
+		   info.jsEvent.preventDefault(); // prevents browser from following link in current tab.
+		 } 
+		 else {
+		   alert('Clicked ' + eventObj.title);
+		 }
+	 },
+	 
+      //show tooltip on event:hover
+      eventRender: function(info) {
+      	 var title = info.event.extendedProps.description;
+      	 
+      	 if (title)
+	      	 $(info.el).tooltip({title: title});
+	 },
+      
+      //default events to be drawn in the calendar
+      events: [
+        {
+          title: 'rrule event',
+          rrule: {
+            dtstart: '2019-06-09T13:00:00',
+            // until: '2019-06-01',
+            freq: 'weekly'
+          },
+          duration: '02:00',
+          color: 'gray' // override!
+        },
+        {
+          title: 'All Day Event',
+        	description: 'All Day Event description',
+          start: '2019-06-01',
+          color: '#257e4a'
+          //allow dragging this event everywhere
+        },
+        {
+          title: 'Long Event',
+        	description: 'Long Event description',
+          start: '2019-06-07',
+          end: '2019-06-10',
+        	constraint: 'availableForMeeting', // defined below. only allow this event to be dropped in the availableForMeeting container defined bellow.
+          color: 'purple' // override!
+        },
+        {
+          groupId: 999,
+          title: 'Repeating Event',
+        	description: 'description for Repeating Event',
+          start: '2019-06-09T16:00:00',
+          constraint: 'businessHours', //only allow dropping in the business hours defined above.
+          color: 'blue' // override!
+        },
+        {
+          groupId: 999,
+          title: 'Repeating Event',
+        	description: 'description for Repeating Event',
+          start: '2019-06-16T16:00:00',
+          constraint: 'businessHours' //only allow dropping in the business hours defined above.
+        },
+        {
+          title: 'Conference',
+        	description: 'description for Conference',
+          start: '2019-06-11',
+          end: '2019-06-13',
+        	constraint: 'availableForMeeting' // defined below. only allow this event to be dropped in the availableForMeeting container defined bellow.
+        },
+        {
+          title: 'Meeting',
+        	description: 'description for Meeting',
+          start: '2019-06-12T10:30:00',
+          end: '2019-06-12T12:30:00',
+        	constraint: 'availableForMeeting' // defined below. only allow this event to be dropped in the availableForMeeting container defined bellow.
+        },
+        {
+          title: 'Lunch',
+        	description: 'description for Lunch',
+          start: '2019-06-12T12:00:00',
+        	constraint: 'availableForMeeting' // defined below. only allow this event to be dropped in the availableForMeeting container defined bellow.
+        },
+        {
+          title: 'Meeting',
+        	description: 'description for Meeting',
+          start: '2019-06-12T14:30:00',
+          constraint: 'businessHours' //only allow dropping in the business hours defined above.
+        },
+        {
+          title: 'Happy Hour',
+        	description: 'description for Happy Hour',
+          start: '2019-06-12T17:30:00',
+          end: '2019-06-12T18:00:00',
+          constraint: 'businessHours' //only allow dropping in the business hours defined above.
+        },
+        {
+          title: 'Dinner',
+        	description: 'description for Dinner',
+          start: '2019-06-12T20:00:00'
+          //allow dragging this event everywhere
+        },
+        {
+          title: 'Birthday Party',
+        	description: 'description for Birthday Party',
+          start: '2019-06-13T07:00:00'
+          //allow dragging this event everywhere
+        },
+        {
+          title: 'Click for Google',
+        	description: 'description for Click for Google',
+          url: 'http://google.com/',
+          start: '2019-06-28'
+          //allow dragging this event everywhere
+        },
+        
+        // areas where some events can be droppeed. All events with "constraint:availableForMeeting", can only be dropped in these areas.
+	   {
+		groupId: 'availableForMeeting',
+		start: '2019-06-11T10:00:00',
+		end: '2019-06-11T16:00:00',
+		rendering: 'background',
+	   },
+	   {
+		groupId: 'availableForMeeting',
+		start: '2019-06-12T10:00:00',
+		end: '2019-06-12T16:00:00',
+		rendering: 'background',
+	   },
+	   {
+		groupId: 'availableForMeeting',
+		start: '2019-06-13T10:00:00',
+		end: '2019-06-13T16:00:00',
+		rendering: 'background',
+	   },
+	   
+	   // Then for the same areas of the availableForMeeting, add a background color
+	   {
+		start: '2019-06-11',
+		end: '2019-06-14',
+		rendering: 'background',
+		color: 'yellow'
+	   },
+
+	   // red areas where no events can be dropped
+	   {
+		start: '2019-06-24',
+		end: '2019-06-28',
+		overlap: false, //Determines if events being dragged and resized are allowed to overlap each other. If false, no events are allowed to overlap. If true, all events are allowed to overlap (the default). This is, if a event has a 2 days duration and 2019-06-23 is a droppable area for events, the event with 2 days duration will be declined when dropped to 2019-06-23, because the second day will be in 2019-06-24, which is forbidden.
+		rendering: 'background',
+		color: '#ff9f89'
+	   },
+	   {
+		start: '2019-06-06',
+		end: '2019-06-08',
+		overlap: false, //Determines if events being dragged and resized are allowed to overlap each other. If false, no events are allowed to overlap. If true, all events are allowed to overlap (the default). This is, if a event has a 2 days duration and 2019-06-23 is a droppable area for events, the event with 2 days duration will be declined when dropped to 2019-06-23, because the second day will be in 2019-06-24, which is forbidden.
+		rendering: 'background',
+		color: '#ff9f89'
+	   }
+      ]
+    });
+
+    calendar.render(); //create calendar
+  });
+
+</script>
+<style>
+
+  body {
+    margin: 40px 10px;
+    padding: 0;
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+    font-size: 14px;
+  }
+
+  #calendar {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+</style>
+</head>
+<body>
+
+  <div id='calendar'></div>
+
+</body>
+</html>

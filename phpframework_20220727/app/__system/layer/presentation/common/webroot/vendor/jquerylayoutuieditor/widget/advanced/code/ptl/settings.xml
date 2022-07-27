@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget>
+	<label>PTL</label>
+	<tag>ptl</tag>
+	<settings>
+		<create_widget_class>PTLWidget</create_widget_class>
+	</settings>
+	<menu_widget></menu_widget>
+	<template_widget><![CDATA[
+		<pre></pre>
+		<div class="droppable"></div>
+	]]></template_widget>
+	<properties></properties>
+	<menu_css><![CDATA[
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-ptl:before,
+		  body > .menu-widget.menu-widget-ptl.ui-draggable-dragging:before {
+			background-image:url('#widget_webroot_url#logo.svg');
+		}
+		
+		.layout-ui-editor > .template-widgets > .widget-header.widget-header-ptl .options .props,
+		   .layout-ui-editor > .template-widgets > .widget-header.widget-header-ptl .options .toggle {
+			display:none !important;
+		}
+		.layout-ui-editor > .template-widgets > .droppable-header.droppable-header-ptl {
+			display:none !important;
+		}
+		
+		.layout-ui-editor > .menu-settings.menu-settings-ptl .settings-id,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-classes,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-properties,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-general,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-dimension,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-typography,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-decorations,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-extra {
+			display:none;
+		}
+		
+		.layout-ui-editor > .menu-layers .group.group-ptl > ul {
+			display:none !important;
+		}
+	]]></menu_css>
+	<template_css><![CDATA[
+		.template-widget.template-widget-ptl {
+			margin:5px !important; /* !important is bc of the css when .borders is active */
+			padding:0 !important; /* !important is bc of the css when .borders is active */
+			border:1px dotted #ab7a90 !important; /* !important is bc of the css when .borders is active */
+			background-image:none !important; /* !important is bc of the css when .borders is active */
+			border-radius:5px;
+			vertical-align:middle;
+			display:block;
+			word-break:break-all;
+		}
+		body > .droppable.borders .template-widget.template-widget-ptl:before {
+			content:"";
+			border:0;
+			display:none;
+		}
+		
+		.template-widget.template-widget-ptl > pre {
+			width:auto;
+			min-height:1.5em;
+			margin:0 !important; /* !important is bc of the css when .borders is active */
+			padding:0 .2em !important; /* !important is bc of the css when .borders is active */
+			border:0 !important; /* !important is bc of the css when .borders is active */
+			background-image:none !important; /* !important is bc of the css when .borders is active */
+			display:block;
+			background:#ab7a90;
+			color:inherit;
+			/*font-size:inherit;*/
+			font-size:12px;
+			font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+			overflow:auto;
+		}
+		.template-widget.template-widget-ptl > pre::-webkit-scrollbar {
+			height:7px;
+		}
+		body > .droppable.borders .template-widget.template-widget-ptl > pre:before {
+			content:"";
+			border:0;
+			display:none;
+		}
+		
+		.template-widget.template-widget-ptl > .droppable {
+			min-height:20px;
+			margin:0 !important; /* !important is bc of the css when .borders is active */
+			padding:5px !important; /* !important is bc of the css when .borders is active */
+			border:0 !important; /* !important is bc of the css when .borders is active */
+			background-image:none !important; /* !important is bc of the css when .borders is active */
+			outline:none !important;
+		}
+		.template-widget.template-widget-ptl.is-single-ptl-tag > .droppable {
+			display:none;
+		}
+		body > .droppable.borders .template-widget.template-widget-ptl > .droppable {
+			margin:unset;
+			padding:unset;
+			border:unset;
+		}
+		body > .droppable.borders .template-widget.template-widget-ptl > .droppable:before {
+			content:"";
+			border:0;
+			display:none;
+		}
+	]]></template_css>
+	<menu_js><![CDATA[
+		function PTLWidget(ui_creator, menu_widget) {
+			var me = this;
+			
+			me.init = function() {
+				menu_widget.attr({
+					"data-on-parse-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.ptl.parseHtml",
+					"data-on-clean-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.ptl.cleanHtml",
+					"data-on-create-template-widget-func": ui_creator.obj_var_name + ".menu_widgets_objs.ptl.onCreateTemplateWidget",
+				});
+				
+				menu_widget.removeAttr("data-on-clone-menu-widget-func");
+			};
+			
+			me.parseHtml = function(html_element) {
+				var node_name = html_element ? html_element.nodeName.toLowerCase() : "";
+				
+				if (/^\/?(php|ptl|\?):/i.test(node_name)) { //allow empty ptl codes
+					//console.log(html_element);
+					
+					return {
+						"widget-droppable-selector": " > .droppable",
+					};
+				}
+			};
+			
+			me.cleanHtml = function(html_element) {
+				var widget = $(html_element);
+				var children = ui_creator.getCleanedHtmlContents( widget.children(".droppable").children() );
+				
+				var html = widget.children("pre").html();
+				html = html.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
+				html = "<" + html;
+				
+				if (children != "") {
+					var node_name = MyHtmlBeautify.getPTLTagName(html, 0);
+					var end_node_tag = "</" + node_name + ">";
+					html += ">" + children;
+					
+					if (!MyHtmlBeautify.isDecrementPrefixPTLTag(end_node_tag))
+						html += end_node_tag;
+					
+					return html;
+				}
+				
+				return html + "/>";
+			};
+			
+			me.onCreateTemplateWidget = function(widget, html_element) {
+				var span = widget.children("pre");
+				var default_text = span.html();
+				
+				span.html(html_element ? "" : (default_text ? default_text : "ptl:"));
+				
+				if (html_element) {
+					//console.log(html_element);
+					//console.log(html_element.attributes);
+					
+					var node_name = html_element.nodeName.toLowerCase();
+					var html = '<' + node_name;
+					if (html_element.attributes)
+						$.each(html_element.attributes, function(idx, attr) {
+							html += " " + attr.name + (attr.value != "" ? '="' + attr.value + '"' : "");
+						});
+					html += '/>';
+					
+					//for the cases: <input placeHolder="<ptl:echo str_replace('"', '&quot;', ($input_data[article_id] )) />" />
+					html = html.replace(/&/g, "&amp;");
+					
+					var temp = $(html);
+					var html = ui_creator.getCleanedHtmlElement(temp[0]);
+					temp.remove();
+					
+					if (MyHtmlBeautify && MyHtmlBeautify.isSinglePTLTag(html))
+						widget.addClass("is-single-ptl-tag");
+					
+					html = html.substr(1, html.indexOf('></' + node_name + '>') - 1);
+					
+					//console.log(html);
+					span.html(html);
+					
+					$(html_element).remove();
+				}
+				
+				//prepare editable box
+				widget.attr("contenteditable", "false");
+				widget.children(".droppable").attr("contenteditable", "true");
+				
+				span.attr("contenteditable", "true").mouseup(function(e) {
+					//prevents that the MyTextSelection open the inline menu
+					e.preventDefault();
+					e.stopPropagation();
+					
+					ui_creator.MyTextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
+				});
+			};
+		}
+	]]></menu_js>
+</widget>

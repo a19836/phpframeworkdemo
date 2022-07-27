@@ -1,0 +1,34 @@
+.jsplumbtaskmenu .task.task_usertask4 {
+	
+}
+.jsplumbtaskworkflow .task.task_usertask4 .eps {
+	
+}
+.jsplumbtaskworkflow .task.task_usertask4 .ep {
+	border-color:transparent !important;
+	background-color:transparent !important;
+}
+
+.user_task_4_task_html {
+	width:310px;
+}
+
+.user_task_4_task_html .value {
+	margin-top:15px;
+}
+
+.user_task_4_task_html .value,
+   .user_task_4_task_html .type {
+	width:100%;
+	height:20px;
+	margin-bottom:5px;
+}
+.user_task_4_task_html .value label,
+   .user_task_4_task_html .type label {
+	width:60px;
+}
+.user_task_4_task_html .value input {
+	width:200px;   
+}
+
+
