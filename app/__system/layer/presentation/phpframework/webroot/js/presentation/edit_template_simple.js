@@ -425,10 +425,10 @@ function updateCodeEditorLayoutFilesInSettings(files, ul) {
 			else { //checks if file starts with php code: $project_url_prefix or $project_common_url_prefix
 				var m = /^<\?(|=|php)\s*(|echo|print)\s*(\$[a-z_]+)\s*;?\s*\?>/g.exec(file);
 				
-				if (m && (m[3] == "$project_url_prefix" || m[3] == "$project_common_url_prefix")) { 
+				if (m && (m[3] == "$project_url_prefix" || m[3] == "$original_project_url_prefix" || m[3] == "$project_common_url_prefix" || m[3] == "$original_project_common_url_prefix")) { 
 					var relative_file = file.substr(m[0].length);
 					
-					path = (m[3] == "$project_url_prefix" ? selected_project_id : common_project_name) + "/webroot/" + relative_file;
+					path = (m[3] == "$project_url_prefix" || m[3] == "$original_project_url_prefix" ? selected_project_id : common_project_name) + "/webroot/" + relative_file;
 				}
 			}
 			

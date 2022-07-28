@@ -4438,9 +4438,9 @@ function convertProjectUrlPHPVarsToRealValues(str) {
 	while ((m = regex.exec(str)) !== null) {
 		//console.log(m);
 		
-		if (m[3] == "$project_url_prefix" && selected_project_url_prefix)
+		if ((m[3] == "$project_url_prefix" || m[3] == "$original_project_url_prefix") && selected_project_url_prefix)
 			str = str.replace(m[0], selected_project_url_prefix);
-		else if (m[3] == "$project_common_url_prefix" && selected_project_common_url_prefix)
+		else if ((m[3] == "$project_common_url_prefix" || m[3] == "$original_project_common_url_prefix") && selected_project_common_url_prefix)
 			str = str.replace(m[0], selected_project_common_url_prefix);
 	}
 	//console.log(str);
