@@ -1,0 +1,6 @@
+<module>
+	<label>Validate User Activity</label>
+	<description>Module "Validate User Activity" validates if the logged user has a specific activity.</description>
+	<image>logo.png</image>
+	<load_module_settings_js_function>loadValidateUserActivityBlockSettings</load_module_settings_js_function>
+</module>

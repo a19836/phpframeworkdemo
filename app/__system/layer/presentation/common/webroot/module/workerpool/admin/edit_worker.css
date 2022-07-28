@@ -1,0 +1,157 @@
+.module_edit {
+	width:600px;
+}
+.module_edit .main_title {
+	margin-bottom:0;
+}
+.module_edit .toggle_advanced_fields {
+	text-align:center;
+	margin-bottom:10px;
+}
+.module_edit .toggle_advanced_fields a {
+	color:#33AADD
+}
+.module_edit .form_fields .form_field.content {
+	margin:0 0 10px 0;
+	padding:0;
+}
+.module_edit .form_fields .form_field label {
+	width:130px;
+}
+.module_edit .form_fields .form_field input {
+	width:auto;
+}
+.module_edit .form_fields .form_field.args .form-input,
+   .module_edit .form_fields .form_field.description .form-input {
+	display:block;
+}
+.module_edit .form_fields .form_field.type select {
+	width:calc(100% - 135px);
+}
+.module_edit .form_fields .form_field.content textarea,
+  .module_edit .form_fields .form_field.description textarea {
+	width:100%;
+	height:100px;
+	margin:5px;
+	display:block;
+	float:none;
+	clear:both;
+}
+.module_edit .form_fields .form_field.failed_attempts input {
+	width:50px;
+}
+.module_edit .form_fields .form_field.thread_id input {
+	width:450px;
+	width:calc(100% - 140px);
+}
+.module_edit .form_fields .form_field.class > div:first-child,
+  .module_edit .form_fields .form_field.function_file > div:first-child,
+  .module_edit .form_fields .form_field.class_method_file > div:first-child {
+	display:inline-block;
+	width:calc(100% - 20px);
+}
+.module_edit .form_fields .form_field.class input,
+  .module_edit .form_fields .form_field.function_file input,
+  .module_edit .form_fields .form_field.class_method_file input {
+	width:450px;
+	width:calc(100% - 140px);
+}
+.module_edit .form_fields .form_field.function_name input,
+  .module_edit .form_fields .form_field.class_name input,
+  .module_edit .form_fields .form_field.method_name input {
+	width:450px;
+	width:calc(100% - 160px);
+}
+.module_edit .form_fields .form_field.send_email input {
+	width:450px;
+	width:calc(100% - 140px);
+}
+.module_edit .form_fields .form_field.class .icon.search,
+  .module_edit .form_fields .form_field.function_file .icon.search,
+  .module_edit .form_fields .form_field.class_method_file .icon.search {
+	display: inline-block;
+	float: none;
+	vertical-align: middle;
+	margin-left: 0;
+	margin-right: 0;
+}
+.module_edit .form_fields .form_field.class .icon.search {
+	margin-left:-3px;
+}
+.module_edit .form_fields .form_field.class .info {
+	margin-left:130px;
+	font-size:80%;
+}
+.module_edit .form_fields .form_field.class .info a {
+	color:#33AADD;
+}
+
+.module_edit .form_fields .form_field .args_info {
+	margin:10px 0 20px 130px;
+	font-size:80%;
+}
+.module_edit .form_fields .form_field .args_info > label {
+	width:auto;
+	display:block;
+	float:none;
+	clear:both;
+	font-style:normal;
+	color:#666;
+}
+.module_edit .form_fields .form_field .args_info > ul {
+	width:auto;
+	margin-left:20px;
+	display:block;
+}
+.module_edit .form_fields .form_field .args_info > ul li {
+	list-style: circle;
+}
+
+.module_edit .form_fields .form_field.args > div:first-child > textarea {
+	display:none;
+}
+.module_edit .form_fields .form_field.args > div.selected_task_properties {
+	margin:0px;
+	padding:0px;
+	position:relative;
+	left:0 !important;
+	top:0 !important;
+	right:0 !important;
+	bottom:0 !important;
+	display:block;
+	overflow:visible;
+}
+.module_edit .form_fields .form_field.args > div.selected_task_properties > .args_type {
+	display:inline-block;
+	float:none;
+	clear:both;
+	margin:-22px 0 0 130px;
+}
+.module_edit .form_fields .form_field.args > div.selected_task_properties > .args_code {
+	width:100%;
+	margin-top:5px;
+	float:none;
+	clear:both;
+}
+.module_edit .form_fields .form_field.args > div.selected_task_properties > .set_array_task_html > .array_items > .items {
+	margin:-25px 0 0 220px;
+	display:inline-block;
+}
+.module_edit .form_fields .form_field.args > div.selected_task_properties > .set_array_task_html > .array_items > .items > label {
+	display:none;
+}
+.module_edit .form_fields .form_field.args > div.selected_task_properties .array_items input.key, 
+  .module_edit .form_fields .form_field.args > div.selected_task_properties .array_items select.key_type, 
+  .module_edit .form_fields .form_field.args > div.selected_task_properties .array_items select.value_type {
+	width:60px !important;
+}
+.module_edit .form_fields .form_field.args > div.selected_task_properties .array_items input.value,
+  .module_edit .form_fields .form_field.args > div.selected_task_properties .array_items textarea.value {
+	min-width:150px !important;
+	width:calc(100% - 250px) !important;
+}
+
+.module_edit .form_fields .form_field.worker_advanced_field {
+	display:none;
+}
+

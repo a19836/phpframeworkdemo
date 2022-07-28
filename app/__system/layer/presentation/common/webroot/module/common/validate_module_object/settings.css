@@ -1,0 +1,130 @@
+.validate_object_to_object_settings {
+	text-align:left;
+}
+.validate_object_to_object_settings .clear {
+	float:none;
+	clear:both;
+}
+.validate_object_to_object_settings .input_disabled {
+	background-color:#CCC;
+	color:#CCC;
+}
+.validate_object_to_object_settings .object_type_id,
+   .validate_object_to_object_settings .object_id,
+   .validate_object_to_object_settings .group,
+   .validate_object_to_object_settings .module_object_id,
+   .validate_object_to_object_settings .validation_condition,
+   .validate_object_to_object_settings .validation_action,
+   .validate_object_to_object_settings .validation_message,
+   .validate_object_to_object_settings .validation_class,
+   .validate_object_to_object_settings .validation_redirect,
+   .validate_object_to_object_settings .validation_ttl,
+   .validate_object_to_object_settings .validation_blocks_execution,
+   .validate_object_to_object_settings .non_validation_action,
+   .validate_object_to_object_settings .non_validation_message,
+   .validate_object_to_object_settings .non_validation_class,
+   .validate_object_to_object_settings .non_validation_redirect,
+   .validate_object_to_object_settings .non_validation_ttl,
+   .validate_object_to_object_settings .non_validation_blocks_execution {
+	width:auto;
+	min-height:20px;
+	margin-bottom:10px;
+	float:none;
+	clear:left;
+}
+
+.validate_object_to_object_settings .object_type_id label,
+   .validate_object_to_object_settings .object_id label,
+   .validate_object_to_object_settings .group label,
+   .validate_object_to_object_settings .module_object_id label,
+   .validate_object_to_object_settings .validation_condition label,
+   .validate_object_to_object_settings .validation_action label,
+   .validate_object_to_object_settings .validation_message label,
+   .validate_object_to_object_settings .validation_class label,
+   .validate_object_to_object_settings .validation_redirect label,
+   .validate_object_to_object_settings .validation_ttl label,
+   .validate_object_to_object_settings .validation_blocks_execution label,
+   .validate_object_to_object_settings .non_validation_action label,
+   .validate_object_to_object_settings .non_validation_message label,
+   .validate_object_to_object_settings .non_validation_class label,
+   .validate_object_to_object_settings .non_validation_redirect label,
+   .validate_object_to_object_settings .non_validation_ttl label,
+   .validate_object_to_object_settings .non_validation_blocks_execution label {
+	width:200px;
+   	display:block;
+	float:left;
+}
+
+.validate_object_to_object_settings .validation_message label,
+   .validate_object_to_object_settings .validation_class label,
+   .validate_object_to_object_settings .validation_redirect label,
+   .validate_object_to_object_settings .validation_ttl label,
+   .validate_object_to_object_settings .validation_blocks_execution label,
+   .validate_object_to_object_settings .non_validation_message label,
+   .validate_object_to_object_settings .non_validation_class label,
+   .validate_object_to_object_settings .non_validation_redirect label,
+   .validate_object_to_object_settings .non_validation_ttl label,
+   .validate_object_to_object_settings .non_validation_blocks_execution label {
+	width:250px;
+	margin-left:10px;
+	color:#333;
+}
+.validate_object_to_object_settings .validation_message input,
+   .validate_object_to_object_settings .validation_class input,
+   .validate_object_to_object_settings .validation_blocks_execution input,
+   .validate_object_to_object_settings .non_validation_message input,
+   .validate_object_to_object_settings .non_validation_class input,
+   .validate_object_to_object_settings .non_validation_blocks_execution input {
+	width:300px;
+	height:15px;
+	font-size:11px;
+}
+.validate_object_to_object_settings .validation_redirect input,
+   .validate_object_to_object_settings .non_validation_redirect input {
+	width:282px;
+	height:15px;
+	font-size:11px;
+	padding-right:20px;
+}
+.validate_object_to_object_settings .validation_ttl input,
+   .validate_object_to_object_settings .non_validation_ttl input {
+	width:240px;
+	height:15px;
+	font-size:11px;
+}
+.validate_object_to_object_settings .validation_condition select,
+   .validate_object_to_object_settings .validation_action select,
+   .validate_object_to_object_settings .non_validation_action select,
+   .validate_object_to_object_settings .module_object_id select,
+   .validate_object_to_object_settings .object_type_id select {
+	width:305px;
+}
+.validate_object_to_object_settings .validation_condition input {
+	width:180px;
+	display:none;
+	font-size:12px;
+}
+.validate_object_to_object_settings .module_object_id input,
+   .validate_object_to_object_settings .object_id input {
+	width:300px;
+	height:15px;
+	font-size:11px;
+}
+.validate_object_to_object_settings .group input {
+	width:50px;
+	height:15px;
+	font-size:11px;
+}
+.validate_object_to_object_settings .module_object_id span,
+   .validate_object_to_object_settings .object_id span,
+   .validate_object_to_object_settings .group span {
+	display:block;
+	height:20px;
+	clear:left;
+	float:none;
+}
+.validate_object_to_object_settings .module_object_id span input,
+   .validate_object_to_object_settings .object_id span input,
+   .validate_object_to_object_settings .group span input {
+	width:auto;
+}

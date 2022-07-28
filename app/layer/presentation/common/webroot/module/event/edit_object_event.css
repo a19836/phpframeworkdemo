@@ -1,0 +1,9 @@
+.module_edit_object_event {
+	width:250px;
+}
+.module_edit_object_event .form_fields .form_field input {
+	width:80px;
+}
+.module_edit_object_event .form_fields .form_field select {
+	width:95px;
+}

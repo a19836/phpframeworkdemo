@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<sql_mapping>
+	<class name="ObjectUser" table="mu_object_user">
+		<id column="user_id"></id>
+		<id column="object_type_id"></id>
+		<id column="object_id"></id>
+	
+		<relationships>
+			<one_to_many name="object_user">
+				<attribute column="*" table="mu_user" />
+				
+				<key pcolumn="user_id" fcolumn="user_id" ftable="mu_user" />
+			</one_to_many>
+		</relationships>
+	</class>
+</sql_mapping>

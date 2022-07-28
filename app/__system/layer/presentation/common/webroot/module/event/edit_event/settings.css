@@ -1,0 +1,31 @@
+.edit_settings .settings_props .settings_prop.prop_event_attachments .label_settings {
+	padding:0;
+}
+.edit_settings .settings_props .settings_prop.prop_map .label_settings {
+	padding:0;
+}
+
+.edit_settings .html_images_settings {
+	border-top:1px solid #CCC;
+	margin-top:10px;
+	padding-top:15px;
+}
+.edit_settings .html_images_settings .upload_url,
+  .edit_settings .html_images_settings .attachment_id_regex {
+  	width:100%;
+  	min-height:20px;
+  	margin-top:10px;
+	margin-bottom:5px;
+}
+.edit_settings .html_images_settings .upload_url label,
+  .edit_settings .html_images_settings .attachment_id_regex label {
+  	width:175px;
+	display:inline-block;
+}
+.edit_settings .html_images_settings .attachment_id_regex input {
+  	width:500px;
+}
+.edit_settings .html_images_settings .upload_url input {
+  	width:482px;
+  	padding-right:20px;
+}

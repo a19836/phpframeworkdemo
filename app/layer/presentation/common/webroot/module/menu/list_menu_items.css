@@ -1,0 +1,28 @@
+.module_list_menu_items td.item_id {
+	width:80px;
+	text-align:center;
+}
+.module_list_menu_items td.group_id {
+	width:100px;
+	text-align:center;
+}
+.module_list_menu_items td.parent_id {
+	width:80px;
+	text-align:center;
+}
+.module_list_menu_items td.label {
+	width:100px;
+}
+.module_list_menu_items td.title {
+	width:100px;
+}
+.module_list_menu_items td.class {
+	width:100px;
+}
+.module_list_menu_items td.url {
+	width:100px;
+}
+.module_list_menu_items td.order {
+	width:80px;
+	text-align:center;
+}

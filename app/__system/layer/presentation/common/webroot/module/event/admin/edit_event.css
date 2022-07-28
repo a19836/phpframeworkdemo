@@ -1,0 +1,102 @@
+.module_edit {
+	width:900px;
+}
+.module_edit .form_fields .form_field label {
+	width:80px;
+}
+.module_edit .form_fields .form_field.description {
+	margin-top:0px;
+	margin-bottom:10px;
+	padding-top:0;
+	padding-bottom:0;
+}
+.module_edit .form_fields .form_field.description label {
+	float:none;
+	clear:left;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.module_edit .form_fields .form_field input {
+	width:790px;
+}
+.module_edit .form_fields .form_field.allow_comments label {
+	width:130px;
+}
+.module_edit .form_fields .form_field.published input, .module_edit .form_fields .form_field.allow_comments input {
+	width:auto;
+}
+
+.module_edit .form_fields .form_field.photo_url {
+	display:none;
+	text-align:center;
+}
+.module_edit .form_fields .form_field.photo_url label {
+	display:none;
+}
+.module_edit .form_fields .form_field.photo_url img {
+	display:block;
+	margin:10px auto 0 auto;
+	max-width:670px;
+	height:150px;
+}
+.module_edit .form_fields .form_field.photo_url a {
+	cursor:pointer;
+}
+
+.module_edit .cke_top {
+	background-color:#eee;
+	border: 1px outset #999999;
+}
+.module_edit .cke_chrome {
+	border-color:#ddd;
+}
+.module_edit .cke_bottom {
+	background-color:#eee;
+}
+.module_edit .cke_bottom * {
+	color:#333;
+}
+.module_edit .cke_top a.cke_button_off:hover/*, .module_edit .cke_top a.cke_button_disabled:hover*/ {
+	background-color:#ddd;
+}
+
+.module_edit .form_fields .form_field.latitude,
+   .module_edit .form_fields .form_field.longitude,
+   .module_edit .form_fields .form_field.begin_date,
+   .module_edit .form_fields .form_field.end_date {
+	width:50%;
+	float:left;
+	clear:none;
+}
+.module_edit .form_fields .form_field.latitude input,
+   .module_edit .form_fields .form_field.longitude input,
+   .module_edit .form_fields .form_field.begin_date input,
+   .module_edit .form_fields .form_field.end_date input {
+	width:100%;
+}
+
+
+/* ATTACHMENTS */
+.module_edit .form_fields .form_field.event_attachments label {
+	display:none;
+}
+.module_edit .form_fields .form_field.event_attachments .module_edit_object_attachments {
+	margin-top:0;
+}
+.module_edit .form_fields .form_field.event_attachments .module_edit_object_attachments .title {
+	color:#333;
+	font-family:var(--main-font-family);
+	font-style:italic;
+}
+.module_edit .form_fields .form_field.event_attachments .module_edit_object_attachments table th {
+	border-bottom:1px solid #ccc;
+	border-right:1px solid #eee;
+	color:#999;
+}
+.module_edit .form_fields .form_field.event_attachments .module_edit_object_attachments table td {
+	border-bottom:1px solid #ccc;
+	border-right:1px solid #eee;
+}
+.module_edit .form_fields .form_field.event_attachments .module_edit_object_attachments table td.name input {
+	width:295px;
+}

@@ -1,0 +1,9 @@
+.list_settings .prop_username .selected_task_properties .form_containers .fields .field .input_name,
+   .list_settings .prop_username .selected_task_properties .form_containers .fields .field .input_value,
+   .list_settings .prop_username .settings_prop_search_value {
+	display:none;
+}
+.list_settings .prop_answer_id .selected_task_properties .form_containers .fields .field .input_name,
+   .list_settings .prop_answer_id .selected_task_properties .form_containers .fields .field .input_value {
+	display:none;
+}

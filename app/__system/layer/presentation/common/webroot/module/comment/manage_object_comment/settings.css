@@ -1,0 +1,68 @@
+.manage_object_comment_settings {
+	text-align:left;
+}
+.manage_object_comment_settings .clear {
+	float:none;
+	clear:both;
+}
+.manage_object_comment_settings .object_type_id,
+   .manage_object_comment_settings .object_id,
+   .manage_object_comment_settings .validate_user,
+   .manage_object_comment_settings .ok_response,
+   .manage_object_comment_settings .error_response,
+   .manage_object_comment_settings .allow_update,
+   .manage_object_comment_settings .allow_insertion,
+   .manage_object_comment_settings .allow_deletion {
+	width:100%;
+	height:20px;
+	margin-bottom:10px;
+	float:none;
+	clear:left;
+}
+.manage_object_comment_settings .user_id,
+   .manage_object_comment_settings .session_id {
+	width:50%;
+	height:20px;
+	margin-bottom:10px;
+	float:left;
+}
+.manage_object_comment_settings .ok_response,
+   .manage_object_comment_settings .allow_update {
+	margin-top:15px;
+}
+.manage_object_comment_settings .allow_insertion {
+	margin-top:20px;
+}
+
+.manage_object_comment_settings .object_type_id label,
+   .manage_object_comment_settings .object_id label,
+   .manage_object_comment_settings .user_id label,
+   .manage_object_comment_settings .session_id label,
+   .manage_object_comment_settings .validate_user label,
+   .manage_object_comment_settings .ok_response label,
+   .manage_object_comment_settings .error_response label {
+	width:130px;
+	display:inline-block;
+}
+.manage_object_comment_settings .user_id label {
+	width:90px;
+	display:inline-block;
+}
+.manage_object_comment_settings .allow_update label,
+   .manage_object_comment_settings .allow_insertion label,
+   .manage_object_comment_settings .allow_deletion label {
+	width:180px;
+	display:inline-block;
+}
+.manage_object_comment_settings .object_type_id select,
+   .manage_object_comment_settings .object_id input,
+   .manage_object_comment_settings .user_id input,
+   .manage_object_comment_settings .session_id input {
+	width:170px;
+	font-size:11px;
+}
+.manage_object_comment_settings .ok_response input,
+   .manage_object_comment_settings .error_response input {
+	width:300px;
+	font-size:11px;
+}

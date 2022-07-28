@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sql_mapping>
+	<insert id="insert_user_answer">
+		insert into mq_user_answer (user_id, answer_id, created_date, modified_date) values (#user_id#, #answer_id#, '#created_date#', '#modified_date#')
+	</insert>
+	
+	<update id="update_user_answer_pks">
+		update mq_user_answer set user_id=#new_user_id#, answer_id=#new_answer_id#, modified_date='#modified_date#' where user_id=#old_user_id# and answer_id=#old_answer_id#
+	</update>
+	
+	<delete id="delete_user_answer">
+		delete from mq_user_answer where user_id=#user_id# and answer_id=#answer_id#
+	</delete>
+	
+	<delete id="delete_user_answers_by_user_id">
+		delete from mq_user_answer where user_id=#user_id#
+	</delete>
+	
+	<delete id="delete_user_answers_by_answer_id">
+		delete from mq_user_answer where answer_id=#answer_id#
+	</delete>
+	
+	<delete id="delete_user_answers_by_question_ids">
+		delete ua.* from mq_user_answer ua 
+		inner join mq_answer a on a.answer_id=ua.answer_id and a.question_id in (#question_ids#)
+	</delete>
+	
+	<delete id="delete_user_answers_by_user_and_question_ids">
+		delete ua.* from mq_user_answer ua
+		inner join mq_answer a on a.answer_id=ua.answer_id and a.question_id in (#question_ids#)
+		where ua.user_id=#user_id#
+	</delete>
+	
+	<select id="get_user_answer">
+		select * from mq_user_answer where user_id=#user_id# and answer_id=#answer_id#
+	</select>
+	
+	<select id="get_all_user_answers">
+		select * from mq_user_answer
+	</select>
+	
+	<select id="count_all_user_answers">
+		select count(*) total from mq_user_answer
+	</select>
+	
+	<select id="get_user_answers_by_conditions">
+		select * from mq_user_answer where #conditions#
+	</select>
+	
+	<select id="count_user_answers_by_conditions">
+		select count(*) total from mq_user_answer where #conditions#
+	</select>
+	
+	<select id="get_user_answers_by_question_ids">
+		select u.*, ua.*, a.question_id
+		from mq_user_answer ua 
+		inner join mq_answer a on a.answer_id=ua.answer_id and a.question_id in (#question_ids#)
+		inner join mu_user u on u.user_id=ua.user_id
+	</select>
+	
+	<select id="get_user_answers_by_user_and_question_ids">
+		select ua.*, a.question_id
+		from mq_user_answer ua 
+		inner join mq_answer a on a.answer_id=ua.answer_id and a.question_id in (#question_ids#)
+		where ua.user_id=#user_id#
+	</select>
+	
+	<select id="get_user_answers_by_question_object">
+		select u.*, ua.*, a.question_id
+		from mq_user_answer ua 
+		inner join mq_object_question oq on oq.object_type_id=#object_type_id# and oq.object_id=#object_id#
+		inner join mq_answer a on a.answer_id=ua.answer_id and a.question_id=oq.question_id
+		inner join mu_user u on u.user_id=ua.user_id
+	</select>
+	
+	<select id="get_user_answers_by_question_ids_grouped_by_users">
+		select ua.user_id, GROUP_CONCAT(DISTINCT ua.answer_id) AS answers_id
+		from mq_user_answer ua 
+		inner join mq_answer a on a.answer_id=ua.answer_id and a.question_id in (#question_ids#)
+		group by ua.user_id
+	</select>
+	
+	<select id="count_user_answers_by_question_ids_grouped_by_users">
+		select count(distinct(ua.user_id)) total
+		from mq_user_answer ua 
+		inner join mq_answer a on a.answer_id=ua.answer_id and a.question_id in (#question_ids#)
+	</select>
+</sql_mapping>

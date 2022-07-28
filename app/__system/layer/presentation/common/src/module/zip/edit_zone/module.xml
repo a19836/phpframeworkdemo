@@ -1,0 +1,6 @@
+<module>
+	<label>Edit Zone</label>
+	<description>Module "Edit Zone" allows the user to edit a zone.</description>
+	<image>logo.png</image>
+	<load_module_settings_js_function>loadEditSettingsBlockSettings</load_module_settings_js_function>
+</module>

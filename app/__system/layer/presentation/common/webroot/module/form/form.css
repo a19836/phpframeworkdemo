@@ -1,0 +1,242 @@
+/* TOP BAR */
+.top_bar > header {
+	z-index:1000000;
+}
+
+/* BLOCK OBJ */
+.block_obj {
+	min-width:825px; /* bc of the createformtask */
+}
+.block_obj .module_data .module_description .convert_to_module_workflow {
+	margin-top:20px;
+	display:block;
+	cursor:pointer;
+}
+.block_obj .module_settings {
+	width:auto;
+}
+.block_obj .module_settings .settings {
+	border:0;
+}
+
+.module_form_settings {
+	text-align:left;
+	position:static; /* very important otherwise the wizard popup will not be centered in the window */
+	overflow:hidden; /* bc of the workflow menu drag&drop */
+}
+/*.module_form_settings label {
+	font-style:normal;
+	font-weight:normal;
+}
+.module_form_settings input:not([type=submit]):not([type=button]), .module_form_settings select, .module_form_settings textarea {
+	background-color:#fff;
+}*/
+
+.module_form_settings .sla .tabs.tabs_right > li {
+	float:left;
+}
+.module_form_settings .sla #ui > .taskflowchart > .workflow_menu {
+	left:250px;
+	right:auto;
+}
+
+/* FORM WIZARD */
+.module_form_settings .sla_groups_flow > nav > a.open_form_wizard {
+	cursor:pointer;
+}
+.module_form_settings .sla_groups_flow > nav > a.open_form_wizard {
+	float:right;
+}
+
+.module_form_settings .form_wizard {
+	width:90%;
+	width:90vw;
+	min-height:90%;
+	min-height:90vh;
+	height:auto !important;
+	background:#fff;
+	z-index:9999;
+}
+
+.module_form_settings .form_wizard > .steps {
+	margin:20px 0 40px 0;
+}
+.module_form_settings .form_wizard > .steps > .step {
+	text-align:center;
+	display:none;
+}
+.module_form_settings .form_wizard > .steps > .step.panel_type_selection > .form_type,
+  .module_form_settings .form_wizard > .steps > .step.table_selection > .dal_broker,
+  .module_form_settings .form_wizard > .steps > .step.table_selection > .db_driver,
+  .module_form_settings .form_wizard > .steps > .step.table_selection > .db_type {
+	opacity:.5;
+	background:#fff;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .clear {
+	margin-top: 20px;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .toggle_table_options {
+	margin-top:10px;
+	display:block;
+	text-align:center;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .attributes,
+   .module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .conditions {
+	text-align:left;
+	margin-top:10px;
+	padding:10px;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .attributes > label,
+   .module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .conditions > label {
+	display:block;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .attributes li,
+   .module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .conditions li {
+	width:50%;
+	margin-top:5px;
+	display:inline-block;
+	opacity:.5;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .attributes li:after,
+   .module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .conditions li:after {
+	content:" ";
+	height:1px;
+	display:block;
+	float:none;
+	clear:both;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .attributes li.attr_activated,
+   .module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .conditions li.attr_activated {
+	opacity:1;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .attributes li label,
+   .module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .conditions li label {
+	width:100px;
+	margin-left:5px;
+	margin-right:5px;
+	display:inline-block;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .attributes li .attr_value,
+  .module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .conditions li .attr_name {
+	display:none;
+}
+.module_form_settings .form_wizard > .steps > .step.table_selection > .table_options > .conditions li label:after {
+	content:" = ";
+	float:right;
+}
+
+.module_form_settings .form_wizard > .steps > .step.actions_selection > label {
+	margin-bottom:20px;
+	display:block;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection > .multiple_actions {
+	margin-top:20px;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action {
+	opacity:.5;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action.action_activated {
+	opacity:1;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action.action_multiple_insert_update {
+	display:none;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action.action_links {
+	margin-top:20px;
+	padding:10px;
+	border-top:1px solid #ccc;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .toggle {
+	margin-top:3px;
+	position:absolute;
+	display:none;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action.action_activated > .toggle {
+	display:inline-block;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > label {
+	width:100px;
+	display:inline-block;
+	text-align:left;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > input {
+	vertical-align:top;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options {
+	width:430px;
+	margin:10px auto;
+	border:1px solid #ccc;
+	display:none;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action.action_links > .action_options {
+	width:620px;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option {
+	padding:10px;
+	text-align:left;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option > ul label {
+	width:100px;
+	display:inline-block;
+	color:#999;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option > ul input {
+	width:300px;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option.ajax_url {
+	display:none;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option.action_links > .add {
+	float:none;
+	display:inline-block;
+	vertical-align:middle;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option.action_links > .action_link {
+	margin-top:5px;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option.action_links > .action_link > .action_link_url {
+	width:300px;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option.action_links > .action_link > .action_link_class {
+	width:100px;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option.action_links > .action_link > .action_link_title {
+	width:150px;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option.action_links > .action_link > .delete {
+	float:none;
+	display:inline-block;
+	vertical-align:middle;
+}
+.module_form_settings .form_wizard > .steps > .step.actions_selection .action > .action_options > .action_option.action_links > .action_link:nth-of-type(2) > .delete {
+	display:none;
+}
+
+.module_form_settings .form_wizard > .steps > .step.create_selection > label {
+	margin-bottom:10px;
+	display:block;
+}
+.module_form_settings .form_wizard > .steps > .step.create_selection > input {
+	margin:10px;
+}
+.module_form_settings .form_wizard > .steps > .step.create_selection > input:disabled {
+	background:#ccc;
+	border:1px solid #c0c0c0;
+}
+
+.module_form_settings .form_wizard > .buttons {
+    width:auto;
+    position:absolute;
+    bottom:20px;
+    left:20px;
+    right:20px;
+}
+.module_form_settings .form_wizard > .buttons > .previous {
+	float:left;
+	display:none;
+}
+.module_form_settings .form_wizard > .buttons > .next {
+	float:right;
+	margin:0;
+}
+

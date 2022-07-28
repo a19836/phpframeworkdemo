@@ -1,0 +1,365 @@
+/*
+This is used in the modules
+*/
+
+/* Main Layout */	
+
+body {
+	background: #fff repeat-x 0 0;
+	color: #666;
+	font-size:13px;
+	margin: 0;
+	height:100%;
+}
+body,
+  #main_column {
+	background:#fff !important;
+}
+
+input, select, textarea {
+	color:#555555;
+	font-family:var(--main-font-family);
+}
+
+.main_content .homepage {
+	margin:100px;
+}
+.main_content .homepage h1 {
+	font-size:16px;
+	text-align:center;
+}
+.main_content .content {
+	margin-top:30px;
+	padding-top:10px;
+	padding-bottom:20px;
+}
+
+/* GENERIC */
+.form-input {
+	display:inline-block;
+}
+
+/* MENU */
+.main_content .menu {
+	position:fixed;
+	left:0px;
+	top:0px;
+	right:0px;
+	z-index:1500;
+	padding: 0px;
+	
+	background:#DFE1ED;
+	/*background: linear-gradient(to bottom, #f7f7f7 0%, #eee 95%, #ffffff73 100%);*/
+	/*border-top:2px solid #FC3C44;
+	background: -moz-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), color-stop(100%, #ffffff73));
+	background: -webkit-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -o-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: -ms-linear-gradient(top, #eee 50%, #ffffff73 100%);
+	background: linear-gradient(to bottom, #eee 50%, #ffffff73 100%);*/
+}
+.main_content .menu ul.dropdown li {
+	background:none;
+	padding:4px 8px;
+	font-weight:normal;
+}
+.main_content .menu ul.dropdown li a {
+	font-size:10px;
+	vertical-align:middle;
+}
+.main_content .menu ul.dropdown li ul {
+	background:#DFE1ED;
+	min-width:150px;
+}
+.main_content .menu ul.dropdown li.large ul {
+	min-width:250px;
+}
+.main_content .menu ul.dropdown li ul li:hover {
+	background:rgba(0, 0, 0, .1);
+}
+.main_content .menu ul.dropdown li ul li.highlight {
+	border-top:1px inset #FFF;
+	background:rgba(0, 0, 0, .1);
+}
+.main_content .menu ul.dropdown li ul li.highlight:hover {
+	background:rgba(0, 0, 0, .2);
+}
+
+.main_content .menu ul.dropdown li.other_modules {
+	float:right;
+}
+.main_content .menu ul.dropdown li.other_modules ul {
+	left:auto;
+	right:0;
+}
+.main_content .menu ul.dropdown li.other_modules ul li {
+	text-align:right;
+}
+
+.main_content .menu ul.dropdown li.settings {
+	
+}
+.main_content .menu ul.dropdown li.settings::before {
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f7d9";
+	margin-right:5px;
+	vertical-align:middle;
+}
+
+/* MAIN TITLE */
+.main_title {
+	text-align:center;
+	margin-top:20px;
+	margin-bottom:10px;
+	font-size:15px;
+}
+
+/* MESSAGES */
+.module_messages {
+    padding-top:20vh;
+    position:fixed;
+    left:0;
+    top:0;
+    right:0;
+    bottom:0;
+    background:#eee;
+    background:rgba(0, 0, 0, .3);
+    z-index:9999;
+}
+.module_messages .module_message {
+    width:500px;
+    max-width:90vw;
+    margin:0 auto;
+    padding:0;
+    border:0;
+    background:none;
+}
+.module_messages .module_message:only-child {
+    margin-top:20%;
+    margin-top:calc(30vh - 100px);
+}
+.module_messages .module_ok_message + .module_error_message {
+    margin:40px auto 0;
+}
+.module_messages .module_message .module_message_header {
+    margin:0;
+    padding:10px 15px;
+    text-align:left;
+    border:0;
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
+}
+.module_messages .module_ok_message .module_message_header {
+    background:green;
+}
+.module_messages .module_error_message .module_message_header {
+    background:red;
+}
+.module_messages .module_message .module_message_header label {
+    margin:0;
+    padding:0;
+    color:#fff;
+    text-transform:capitalize;
+    font-weight:500;
+    font-size:120%;
+    cursor:default;
+}
+.module_messages .module_message .module_message_header .close {
+    margin:5px 0 0;
+    padding:0;
+    color:#333;
+    background:none;
+    text-indent:initial;
+    font-size:120%;
+    font-weight:normal;
+    float:right;
+    opacity:.5;
+}
+.module_messages .module_message .module_message_body {
+    margin:0;
+    padding:20px 15px;
+    text-align:center;
+    font-weight:300;
+    color:#555;
+    background:#fff;
+    border:0;
+    border-bottom-left-radius:5px;
+    border-bottom-right-radius:5px;
+}
+
+/* EDIT + LIST FORM */
+.module_edit .empty_table, .module_list .empty_table {
+	width:100%;
+	height:20px;
+	text-align:center;
+	color:#999;
+	font-weight:bold;
+	margin:5px 0;
+}
+
+.module_edit .icon, .module_list .icon {
+	margin:2px 5px 0 5px;
+}
+.module_edit .top_pagination, .module_list .top_pagination {
+	margin-bottom:10px;
+}
+.module_edit .bottom_pagination, .module_list .bottom_pagination {
+	margin-top:10px;
+}
+.module_edit table, .module_list table {
+	margin:0 auto;
+}
+.module_edit th, .module_list th {
+	min-height:20px;
+	padding:2px 5px;
+	border-bottom:1px solid #ccc;
+	border-right:1px solid #eee;
+	
+	font-family:var(--main-font-family);
+	color:#555555;
+	font-weight:normal;
+	font-style:italic;
+	font-size:80%;
+	text-align:center;
+}
+.module_edit td, .module_list td {
+	border-bottom:1px solid #ccc;
+	border-right:1px solid #eee;
+	padding:0px 4px;
+	text-align:left;
+}
+
+/* EDIT FORM */
+.module_edit {
+	width:700px;
+	margin:0 auto;
+	float:none;
+	clear:both;
+	font-size:8pt;
+}
+.module_edit a {
+	color:#999;
+	text-decoration:none;
+}
+.module_edit a:hover {
+	text-decoration:underline;
+}
+
+.module_edit .form_fields {
+
+}
+.module_edit .form_fields .form_field {
+	width:100%;
+	min-height:20px;
+	text-align:left;
+	margin-bottom:10px;
+	float:none;
+	clear:both;
+}
+.module_edit .form_fields .form_field label {
+	width:135px;
+	display:inline-block;
+	font-weight:normal;
+}
+.module_edit .form_fields .form_field input {
+	width:200px;
+}
+.module_edit .form_fields .form_field input.checkbox,
+  .module_edit .form_fields .form_field .checkbox input {
+	width:auto;
+}
+.module_edit .form_fields .form_field.undefined_value input,
+   .module_edit .form_fields .form_field.undefined_value select,
+   .module_edit .form_fields .form_field.undefined_value textarea {
+	border:1px solid #FF0000;
+}
+.module_edit .form_fields .form_field select {
+	background-color:#FFF;
+}
+.module_edit .form_fields .form_field textarea {
+	width:200px;
+	height:100px;
+	background-color:#FFF;
+}
+
+.module_edit .buttons {
+	margin:0 auto 5px auto;
+	text-align:center;
+}
+.module_edit .buttons .submit_button {
+	margin:0 10px;
+	display:inline-block;
+}
+.module_edit .buttons .submit_button input {
+	font-size:inherit;
+}
+/*.module_edit .buttons {
+	width:auto;
+	min-height:20px;
+	float:none;
+	clear:both;
+	padding-top:5px;
+	margin:0 auto 5px auto;
+	text-align:center;
+}
+.module_edit .buttons .submit_button {
+	width:auto;
+	margin:0;
+	display:inline-block;
+	text-align:center;
+}
+.module_edit .buttons .submit_button input {
+	width:auto;
+	margin-left:5px;
+	margin-right:5px;
+	background-color:#CCC; /* JP 2021-10-29: Before this was #f7f7f7, but bc this is used in the presentation files too and if the page background is white, this won't look good. So I replaced the background by #ccc to be darker. *//*
+}
+.module_edit .buttons .submit_button.submit_button_save {
+	margin-right:10px;
+}
+.module_edit .buttons .button_delete {
+	margin-left:10px;
+}*/
+
+/* LIST ITEMS */
+.module_list {
+	float:none;
+	clear:both;
+	font-size:8pt;
+}
+.module_list td.created_date {
+	width:130px;
+	text-align:center;
+}
+.module_list td.modified_date {
+	width:130px;
+	text-align:center;
+}
+.module_list .edit_action {
+	border-right:0;
+	padding:0;
+}
+.module_list .edit_action .icon {
+	margin-right:0;
+}
+.module_list .delete_action {
+	border-left:0;
+	border-right:0;
+	padding:0;
+}
+.module_list .other_action {
+	border-left:0;
+	border-right:0;
+	padding:0;
+}
+
+.module_list .paging {
+	text-align:center;
+}
+.module_list .paging .selected {
+	background-color:#ccc;
+	color:#666;
+	padding:0 2px;
+}

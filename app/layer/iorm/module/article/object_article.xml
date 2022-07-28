@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sql_mapping>
+	<insert id="insert_object_article">
+		insert into ma_object_article (article_id, object_type_id, object_id, `group`, `order`, created_date, modified_date) values (#article_id#, #object_type_id#, #object_id#, #group#, #order#, '#created_date#', '#modified_date#')
+	</insert>
+	
+	<update id="update_object_article">
+		update ma_object_article set article_id=#new_article_id#, object_type_id=#new_object_type_id#, object_id=#new_object_id#, `group`=#group#, `order`=#order#, modified_date='#modified_date#' where article_id=#old_article_id# and object_type_id=#old_object_type_id# and object_id=#old_object_id#
+	</update>
+	
+	<update id="update_object_article_ids">
+		update ma_object_article set article_id=#new_article_id#, object_type_id=#new_object_type_id#, object_id=#new_object_id#, modified_date='#modified_date#' where article_id=#old_article_id# and object_type_id=#old_object_type_id# and object_id=#old_object_id#
+	</update>
+	
+	<update id="change_object_articles_object_ids">
+		update ma_object_article set object_type_id=#new_object_type_id#, object_id=#new_object_id#, modified_date='#modified_date#' where object_type_id=#old_object_type_id# and object_id=#old_object_id#
+	</update>
+	
+	<update id="change_object_articles_object_ids_of_parent_object">
+		update ma_object_article oa
+		inner join ma_object_article oa2 on oa.article_id=oa2.article_id and oa2.object_type_id=#parent_object_type_id# and oa2.object_id=#parent_object_id#
+		set oa.object_type_id=#new_object_type_id#, oa.object_id=#new_object_id#, oa.modified_date='#modified_date#' 
+		where oa.object_type_id=#old_object_type_id# and oa.object_id=#old_object_id#
+	</update>
+	
+	<update id="update_object_article_order">
+		update ma_object_article set `order`=#order#, modified_date='#modified_date#' where article_id=#article_id# and object_type_id=#object_type_id# and object_id=#object_id#
+	</update>
+	
+	<update id="update_object_article_group_order">
+		update ma_object_article set `order`=#order#, modified_date='#modified_date#' where article_id=#article_id# and object_type_id=#object_type_id# and object_id=#object_id# and `group`=#group#
+	</update>
+	
+	<delete id="delete_object_article">
+		delete from ma_object_article where article_id=#article_id# and object_type_id=#object_type_id# and object_id=#object_id#
+	</delete>
+	
+	<delete id="delete_object_articles_by_article_id">
+		delete from ma_object_article where article_id=#article_id#
+	</delete>
+	
+	<delete id="delete_object_articles_by_object">
+		delete from ma_object_article where object_type_id=#object_type_id and object_id=#object_id#
+	</delete>
+	
+	<delete id="delete_object_articles_by_conditions">
+		delete from ma_object_article where #conditions#
+	</delete>
+	
+	<select id="get_object_article">
+		select * from ma_object_article where article_id=#article_id# and object_type_id=#object_type_id# and object_id=#object_id#
+	</select>
+	
+	<select id="get_all_object_articles">
+		select * from ma_object_article
+	</select>
+	
+	<select id="count_all_object_articles">
+		select count(*) total from ma_object_article
+	</select>
+	
+	<select id="get_object_articles_by_article_id">
+		select * from ma_object_article where article_id=#article_id#
+	</select>
+	
+	<select id="count_object_articles_by_article_id">
+		select count(*) total from ma_object_article where article_id=#article_id#
+	</select>
+	
+	<select id="get_object_articles_by_object">
+		select * from ma_object_article where object_type_id=#object_type_id# and object_id=#object_id#
+	</select>
+	
+	<select id="get_object_articles_by_conditions">
+		select * from ma_object_article where #conditions#
+	</select>
+	
+	<select id="count_object_articles_by_conditions">
+		select count(*) total from ma_object_article where #conditions#
+	</select>
+</sql_mapping>

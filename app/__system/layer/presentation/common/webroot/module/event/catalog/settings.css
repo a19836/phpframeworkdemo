@@ -1,0 +1,212 @@
+.catalog_settings {
+	width:auto;
+}
+
+.catalog_settings .catalog_type,
+   .catalog_settings .catalog_title,
+   .catalog_settings .events_type,
+   .catalog_settings .catalog_by_parent,
+   .catalog_settings .catalog_by_parent .catalog_parent_object_type_id,
+   .catalog_settings .catalog_by_parent .catalog_parent_object_id,
+   .catalog_settings .catalog_by_parent .catalog_parent_group,
+   .catalog_settings .catalog_by_tags,
+   .catalog_settings .catalog_by_tags .catalog_tags,
+   .catalog_settings .catalog_by_selected_events,
+   .catalog_settings .catalog_by_selected_events .available_events,
+   .catalog_settings .catalog_by_selected_events .selected_events,
+   .catalog_settings .catalog_blog_list,
+   .catalog_settings .catalog_blog_list .blog_introduction_events_num,
+   .catalog_settings .catalog_blog_list .blog_featured_events_num,
+   .catalog_settings .catalog_blog_list .blog_featured_events_cols,
+   .catalog_settings .catalog_blog_list .blog_listed_events_num,
+   .catalog_settings .catalog_sort_column,
+   .catalog_settings .catalog_sort_order,
+   .catalog_settings .filter_by_published,
+   .catalog_settings .event_properties_url {
+	width:100%;
+	text-align:left;
+	margin-bottom:5px;
+	float:none;
+	clear:left;
+}
+.catalog_settings .catalog_type label,
+   .catalog_settings .catalog_title label,
+   .catalog_settings .events_type label,
+   .catalog_settings .catalog_by_parent label,
+   .catalog_settings .catalog_by_parent .catalog_parent_object_type_id label,
+   .catalog_settings .catalog_by_parent .catalog_parent_object_id label,
+   .catalog_settings .catalog_by_parent .catalog_parent_group label,
+   .catalog_settings .catalog_by_tags label,
+   .catalog_settings .catalog_by_tags .catalog_tags label,
+   .catalog_settings .catalog_by_selected_events label,
+   .catalog_settings .catalog_by_selected_events .available_events label,
+   .catalog_settings .catalog_blog_list label,
+   .catalog_settings .catalog_blog_list .blog_introduction_events_num label,
+   .catalog_settings .catalog_blog_list .blog_featured_events_num label,
+   .catalog_settings .catalog_blog_list .blog_featured_events_cols label,
+   .catalog_settings .catalog_blog_list .blog_listed_events_num label,
+   .catalog_settings .catalog_sort_column label,
+   .catalog_settings .catalog_sort_order label,
+   .catalog_settings .filter_by_published label,
+   .catalog_settings .event_properties_url label {
+	margin-bottom:5px;
+}
+.catalog_settings .catalog_type {
+	width:230px;
+	float:left;
+	clear:none;
+}
+.catalog_settings .catalog_title {
+	width:430px;
+	float:left;
+	clear:none;
+}
+.catalog_settings .catalog_sort_column {
+	width:350px;
+	float:left;
+	clear:none;
+}
+.catalog_settings .catalog_sort_order {
+	width:230px;
+	float:left;
+	clear:none;
+}
+.catalog_settings .catalog_by_parent {
+	float:none;
+	clear:left;
+	min-height:22px;
+}
+.catalog_settings .catalog_by_parent .catalog_parent_object_type_id {
+	width:39%;
+	float:left;
+	clear:none;
+}
+.catalog_settings .catalog_by_parent .catalog_parent_object_id,
+   .catalog_settings .catalog_by_parent .catalog_parent_group {
+	width:30%;
+	float:left;
+	clear:none;
+}
+.catalog_settings .catalog_type label, 
+   .catalog_settings .events_type label, 
+   .catalog_settings .catalog_title label, 
+   .catalog_settings .catalog_by_tags label, 
+   .catalog_settings .catalog_by_selected_events label, 
+   .catalog_settings .catalog_sort_order label, 
+   .catalog_settings .catalog_by_parent .catalog_parent_object_type_id label {
+	width:110px;
+	display:inline-block;
+}
+.catalog_settings .catalog_sort_column label,
+   .catalog_settings .filter_by_published label,
+   .catalog_settings .event_properties_url label {
+	width:170px;
+	display:inline-block;
+}
+.catalog_settings .catalog_by_parent .catalog_parent_object_id label, 
+   .catalog_settings .catalog_by_parent .catalog_parent_group label {
+	width:90px;
+	display:inline-block;
+}
+.catalog_settings .catalog_title input {
+	width:300px;
+}
+.catalog_settings .catalog_by_tags input {
+	width:530px;
+}
+.catalog_settings .catalog_by_parent .catalog_parent_object_type_id select {
+	width:130px;
+}
+.catalog_settings .catalog_by_parent .catalog_parent_object_id input {
+	width:100px;
+}
+.catalog_settings .catalog_by_parent .catalog_parent_group input {
+	width:30px;
+}
+.catalog_settings .catalog_by_selected_events select {
+	max-width:410px;
+}
+.catalog_settings .catalog_sort_column select {
+	width:170px;
+}
+.catalog_settings .event_properties_url input {
+	width:450px;
+	padding-right:20px;
+}
+.catalog_settings .event_properties_url .search_page_url {
+	margin-left:-22px !important;
+}
+.catalog_settings .event_properties_url .info {
+	display:block;
+	margin-left:170px;
+}
+
+.catalog_settings .catalog_sort_order label {
+	display:none;
+}
+
+.catalog_settings .catalog_by_selected_events .icon.add {
+	background-position:0 1px;
+}
+.catalog_settings .catalog_by_selected_events .selected_events {
+	padding-top:3px;
+}
+.catalog_settings .catalog_by_selected_events .selected_events table {
+	border:1px solid #CCC;
+	margin:0 auto;
+}
+.catalog_settings .catalog_by_selected_events .selected_events .event_id {
+	width:80px;
+}
+.catalog_settings .catalog_by_selected_events .selected_events td.event_id {
+	text-align:center;
+	font-weight:bold;
+}
+.catalog_settings .catalog_by_selected_events .selected_events .event_title {
+	width:490px;
+}
+.catalog_settings .catalog_by_selected_events .selected_events .buttons {
+	width:80px;
+}
+.catalog_settings .catalog_by_selected_events .selected_events .no_events td {
+	text-align:center;
+	font-style:italic;
+	padding-top:5px;
+}
+
+.catalog_settings .catalog_by_parent, 
+   .catalog_settings .catalog_parent_group, 
+   .catalog_settings .catalog_by_tags, 
+   .catalog_settings .catalog_by_selected_events {
+	display:none;
+}
+
+.catalog_settings .catalog_blog_list {
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.catalog_settings .catalog_blog_list label.main_catalog_blog_list_label {
+	width:100%;
+	float:none;
+	clear:left;
+}
+.catalog_settings .catalog_blog_list div {
+	margin-left:20px;
+}
+.catalog_settings .catalog_blog_list div label {
+	width:230px;
+	display:inline-block;
+	color:#666;
+}
+.catalog_settings .catalog_blog_list div input {
+	width:30px;
+}
+
+.catalog_settings .settings_props {
+	width:auto;
+	margin-bottom:0;
+	border-bottom:0;
+}
+.catalog_settings .settings_props .settings_prop {
+	width:auto;
+}

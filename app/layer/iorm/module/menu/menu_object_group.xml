@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sql_mapping>
+	<insert id="insert_menu_object_group">
+		insert into mmenu_object_group (group_id, object_type_id, object_id, `group`, `order`, created_date, modified_date) values (#group_id#, #object_type_id#, #object_id#, #group#, #order#, '#created_date#', '#modified_date#')
+	</insert>
+	
+	<update id="update_menu_object_group">
+		update mmenu_object_group set group_id=#new_group_id#, object_type_id=#new_object_type_id#, object_id=#new_object_id#, `group`=#group#, `order`=#order#, modified_date='#modified_date#' where group_id=#old_group_id# and object_type_id=#old_object_type_id# and object_id=#old_object_id#
+	</update>
+	
+	<update id="update_menu_object_group_ids">
+		update mmenu_object_group set group_id=#new_group_id#, object_type_id=#new_object_type_id#, object_id=#new_object_id#, modified_date='#modified_date#' where group_id=#old_group_id# and object_type_id=#old_object_type_id# and object_id=#old_object_id#
+	</update>
+	
+	<update id="change_menu_object_groups_object_ids">
+		update mmenu_object_group set object_type_id=#new_object_type_id#, object_id=#new_object_id#, modified_date='#modified_date#' where object_type_id=#old_object_type_id# and object_id=#old_object_id#
+	</update>
+	
+	<delete id="delete_menu_object_group">
+		delete from mmenu_object_group where group_id=#group_id# and object_type_id=#object_type_id# and object_id=#object_id#
+	</delete>
+	
+	<delete id="delete_menu_object_groups_by_group_id">
+		delete from mmenu_object_group where group_id=#group_id#
+	</delete>
+	
+	<delete id="delete_menu_object_groups_by_object">
+		delete from mmenu_object_group where object_type_id=#object_type_id and object_id=#object_id#
+	</delete>
+	
+	<delete id="delete_menu_object_groups_by_conditions">
+		delete from mmenu_object_group where #conditions#
+	</delete>
+	
+	<select id="get_menu_object_group">
+		select * from mmenu_object_group where group_id=#group_id# and object_type_id=#object_type_id# and object_id=#object_id#
+	</select>
+	
+	<select id="get_all_menu_object_groups">
+		select * from mmenu_object_group
+	</select>
+	
+	<select id="count_all_menu_object_groups">
+		select count(*) total from mmenu_object_group
+	</select>
+	
+	<select id="get_menu_object_groups_by_group_id">
+		select * from mmenu_object_group where group_id=#group_id#
+	</select>
+	
+	<select id="count_menu_object_groups_by_group_id">
+		select count(*) total from mmenu_object_group where group_id=#group_id#
+	</select>
+	
+	<select id="get_menu_object_groups_by_object">
+		select * from mmenu_object_group where object_type_id=#object_type_id# and object_id=#object_id#
+	</select>
+	
+	<select id="get_menu_object_groups_by_conditions">
+		select * from mmenu_object_group where #conditions#
+	</select>
+	
+	<select id="count_menu_object_groups_by_conditions">
+		select count(*) total from mmenu_object_group where #conditions#
+	</select>
+</sql_mapping>

@@ -1,0 +1,144 @@
+.list_settings {
+	width:720px;
+}
+
+.list_settings .events_type,
+   .list_settings .catalog_by_tags,
+   .list_settings .catalog_by_selected_events,
+   .list_settings .catalog_sort_column,
+   .list_settings .catalog_sort_order,
+   .list_settings .catalog_by_parent {
+   	width:100%;
+	text-align:left;
+	margin-bottom:5px;
+	float:none;
+	clear:left;
+}
+.list_settings .events_type div,
+   .list_settings .catalog_by_tags div,
+   .list_settings .catalog_by_selected_events div,
+   .list_settings .catalog_sort_column div,
+   .list_settings .catalog_sort_order div {
+	width:100%;
+	text-align:left;
+	margin-bottom:5px;
+	float:none;
+	clear:left;
+}
+.list_settings .events_type label,
+   .list_settings .catalog_by_tags label,
+   .list_settings .catalog_by_selected_events label,
+   .list_settings .catalog_sort_column label,
+   .list_settings .catalog_sort_order label, 
+   .list_settings .catalog_by_parent .catalog_parent_object_type_id label, 
+   .list_settings .catalog_by_parent .catalog_parent_object_id label, 
+   .list_settings .catalog_by_parent .catalog_parent_group label {
+	margin-bottom:5px;
+}
+.list_settings .catalog_sort_column {
+	width:300px;
+	float:left;
+	clear:none;
+}
+.list_settings .catalog_sort_order {
+	width:230px;
+	float:left;
+	clear:none;
+}
+.list_settings .catalog_by_parent .catalog_parent_object_type_id {
+	width:39%;
+	float:left;
+	clear:none;
+}
+.list_settings .catalog_by_parent {
+	min-height:22px;
+}
+.list_settings .catalog_by_parent .catalog_parent_object_id,
+   .list_settings .catalog_by_parent .catalog_parent_group {
+	width:30%;
+	float:left;
+	clear:none;
+}
+.list_settings .events_type label, 
+   .list_settings .catalog_by_tags label, 
+   .list_settings .catalog_by_selected_events label, 
+   .list_settings .catalog_sort_column label, 
+   .list_settings .catalog_sort_order label, 
+   .list_settings .catalog_by_parent .catalog_parent_object_type_id label {
+	width:110px;
+	display:inline-block;
+}
+.list_settings .catalog_by_parent .catalog_parent_object_id label, 
+   .list_settings .catalog_by_parent .catalog_parent_group label {
+	width:90px;
+	display:inline-block;
+}
+.list_settings .catalog_by_tags input {
+	width:540px;
+}
+.list_settings .catalog_by_parent .catalog_parent_object_type_id select {
+	width:150px;
+}
+.list_settings .catalog_by_parent .catalog_parent_object_id input, 
+   .list_settings .catalog_by_parent .catalog_parent_group input {
+	width:100px;
+}
+.list_settings .catalog_by_selected_events select {
+	max-width:420px;
+}
+.list_settings .catalog_sort_column select {
+	width:180px;
+}
+.list_settings .catalog_sort_order label {
+	display:none;
+}
+
+.list_settings .catalog_by_selected_events .icon.add {
+	background-position:0 1px;
+}
+.list_settings .catalog_by_selected_events .selected_events {
+	padding-top:3px;
+}
+.list_settings .catalog_by_selected_events .selected_events table {
+	border:1px solid #CCC;
+	margin:0 auto;
+}
+.list_settings .catalog_by_selected_events .selected_events .event_id {
+	width:80px;
+}
+.list_settings .catalog_by_selected_events .selected_events td.event_id {
+	text-align:center;
+	font-weight:bold;
+}
+.list_settings .catalog_by_selected_events .selected_events .event_title {
+	width:490px;
+}
+.list_settings .catalog_by_selected_events .selected_events .buttons {
+	width:80px;
+}
+.list_settings .catalog_by_selected_events .selected_events .no_events td {
+	text-align:center;
+	font-style:italic;
+	padding-top:5px;
+}
+
+.list_settings .catalog_by_parent, 
+   .list_settings .catalog_parent_group, 
+   .list_settings .catalog_by_tags, 
+   .list_settings .catalog_by_selected_events {
+	display:none;
+}
+
+.list_settings .list_events_fields_label {
+	font-family:var(--main-font-family);
+	font-style:italic;
+	font-weight:bold;
+	color:#333;
+	margin-top:10px;
+	margin-bottom:5px;
+	padding-top:10px;
+	border-top:1px solid #CCC;
+}
+.list_settings .prop_photo .settings_prop_search_value {
+	display:none;
+}

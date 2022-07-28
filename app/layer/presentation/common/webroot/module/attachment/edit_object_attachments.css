@@ -1,0 +1,93 @@
+.module_edit_object_attachments {
+	margin-top:20px;
+	margin-bottom:20px;
+	float:none;
+	clear:both;
+}
+.module_edit_object_attachments .title {
+	
+}
+.module_edit_object_attachments .attachments {
+	margin-top:3px;
+}
+.module_edit_object_attachments table {
+	border:1px solid #CCC;
+}
+.module_edit_object_attachments table th {
+	height:20px;
+	text-align:center;
+	vertical-align:middle;
+	border:1px solid #CCC;
+	background-color:#F7F7F7;
+	color:#999;
+	padding:0;
+}
+.module_edit_object_attachments table td {
+	border:1px solid #CCC;
+	vertical-align:middle;
+}
+.module_edit_object_attachments table .name {
+	min-width:300px;
+}
+.module_edit_object_attachments table .size {
+	min-width:70px;
+}
+.module_edit_object_attachments table .icons {
+	width:40px;
+}
+.module_edit_object_attachments table td.name {
+	text-align:left;
+}
+.module_edit_object_attachments table td.name input {
+	width:290px;
+	margin:0 auto;
+}
+.module_edit_object_attachments table td.size {
+	text-align:center;
+}
+.module_edit_object_attachments table td.icons {
+	
+}
+.module_edit_object_attachments table .icons .icon {
+	display:block;
+	width:16px;
+	height:20px;
+	margin-top:2px;
+	cursor:pointer;
+	
+	/* Hide Text */
+	text-indent:-9999px;
+	white-space:nowrap;
+	overflow:hidden;
+	margin-left:0;
+	margin-right:0;
+	
+	float:left;
+}
+.module_edit_object_attachments table .icons .delete {
+	background:url("../../../common/img/icon/delete_icon.gif") no-repeat scroll 0 -1px;
+}
+.module_edit_object_attachments table .icons .add {
+	background:url("../../../common/img/icon/add_icon.gif") no-repeat scroll 0 0;
+	margin-left:10px;
+}
+.module_edit_object_attachments table .icons .move {
+	background:url("../../../common/img/icon/move_icon.png") no-repeat scroll 0 0;
+	margin-left:5px;
+	cursor:move;
+}
+.module_edit_object_attachments table .icons .up {
+	background:url("../../../common/img/icon/up_icon.gif") no-repeat scroll 0 0;
+	margin-left:5px;
+}
+.module_edit_object_attachments table .icons .down {
+	background:url("../../../common/img/icon/down_icon.gif") no-repeat scroll 0 0;
+	margin-left:5px;
+}
+.module_edit_object_attachments table .empty_object_attachments td {
+	text-align:center;
+	color:#999;
+}
+.module_edit_object_attachments table .drag_and_drop_next_item td {
+	background-color:#CCC;
+}

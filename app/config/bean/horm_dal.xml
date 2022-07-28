@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+	<import relative="1">app.xml</import>
+	
+	<bean name="HormDbdataDBBrokerClient" path="lib.org.phpframework.broker.client.local.LocalDBBrokerClient">
+		<property name="PHPFrameWorkObjName" reference="phpframework_obj_name" />
+
+		<function name="addBeansFilePath">
+			<parameter><?php echo BEAN_PATH; ?>dbdata_dbl.xml</parameter>
+		</function>
+		<function name="setBeanName">
+			<parameter>DbdataDBBrokerServer</parameter>
+		</function>
+	</bean>
+	<!-- HIBERNATE -->
+	<bean name="HormHClient" path="lib.org.phpframework.sqlmap.hibernate.HibernateClient"></bean>
+
+	<var name="horm_hda_vars">
+		<list>
+			<item name="dal_path"><?php echo LAYER_PATH; ?>horm/</item>
+			<item name="dal_modules_file_path"><?php echo LAYER_PATH; ?>horm/modules.xml</item>
+			<item name="dal_services_file_name">services.xml</item>
+		</list>
+	</var>
+
+	<bean name="HormHDALayer" path="lib.org.phpframework.layer.dataaccess.HibernateDataAccessLayer">
+		<constructor_arg reference="HormHClient" /> 
+		<constructor_arg reference="horm_hda_vars" />
+
+		<property name="PHPFrameWorkObjName" reference="phpframework_obj_name" />
+		<property name="cacheLayer" reference="HormHDACacheLayer" />
+		
+		<function name="addBroker">
+			<parameter reference="HormDbdataDBBrokerClient" />
+			<parameter value="dbdata" />
+		</function>
+
+		<function name="setDefaultBrokerName">
+			<parameter value="&lt;?php echo $GLOBALS['default_db_broker']; ?>" />
+		</function>
+	</bean>
+	
+	<bean name="HormHDABrokerServer" path="lib.org.phpframework.broker.server.local.LocalHibernateDataAccessBrokerServer">
+		<constructor_arg reference="HormHDALayer" />
+	</bean>
+
+	<var name="horm_hda_cache_vars">
+		<list>
+			<item name="dal_cache_file_name">cache.xml</item>
+			<item name="dal_cache_path"><?php echo LAYER_CACHE_PATH; ?>horm/</item>
+			<item name="dal_default_cache_ttl">600</item>
+			<item name="dal_module_cache_maximum_size"></item>
+		</list>
+	</var>
+
+	<bean name="HormHDACacheLayer" path="lib.org.phpframework.layer.cache.DataAccessCacheLayer">
+		<constructor_arg reference="HormHDALayer" />
+		<constructor_arg reference="horm_hda_cache_vars" />
+	</bean>
+</beans>

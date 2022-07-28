@@ -1,0 +1,236 @@
+body,
+  #main_column {
+	background:#fff !important;
+}
+::-webkit-scrollbar-track {
+	background-color:#fff;
+}
+
+/* TOP BAR */
+.top_bar {
+	margin-bottom:20px;
+}
+
+/* FILE UPLOAD */
+.file_upload {
+	width:315px;
+	margin:0 auto;
+	text-align:center;
+}
+.file_upload .sub_title {
+	display:block;
+	width:100%;
+	height:20px;
+	margin-bottom:10px;
+	font-weight:normal;
+	text-align:center;
+}
+.file_upload div {
+	clear:left;
+	float:none;
+	text-align:right;
+	width:100%;
+	margin:5px auto;
+}
+.file_upload div label {
+	width:40px;
+	font-weight:normal;
+	display:inline-block;
+	text-align:left;
+}
+.file_upload div select {
+	width:calc(100% - 50px);
+	margin-right:5px;
+	font-size:inherit;
+}
+
+.file_upload .upload_file {
+	width:calc(100% - 57px);
+	display:block;
+	margin:10px 5px 0 auto;
+	font-size:inherit;
+}
+.file_upload .upload_url {
+	margin:10px auto 0 auto;
+}
+.file_upload .upload_url input {
+	width:calc(100% - 74px);
+	font-size:inherit;
+}
+.file_upload .upload_url .icon.delete {
+	height:16px;
+	margin-left:5px;
+	display:inline-block;
+	float:none;
+	vertical-align:middle;
+	font-size:14px;
+}
+.file_upload .upload_url .icon.delete::before {
+	margin-top:2px;
+	display:block;
+}
+
+.file_upload .go_to_templates_download_page {
+	width:100%;
+	margin:20px 0 0;
+	text-align:center;
+	color:#999;
+}
+.file_upload .install_store_template {
+	margin-top:30px;
+}
+
+.messages {
+	margin:10px 10px 20px 10px;
+	padding:10px;
+	background-color:#CCC;
+	border:1px solid #999;
+}
+.messages li ul li {
+	margin-left:20px;
+}
+.messages li ul li.ok {
+	color:green;
+	font-weight:bold;
+}
+.messages li ul li.error {
+	color:#B51E3F;
+	font-weight:bold;
+}
+.messages li ul li.info {
+	color:#999;
+	font-weight:bold;
+}
+.messages li ul li.exception {
+	color:brown;
+}
+
+/* TEMPLATE POPUPS - install_store_template */
+
+.install_store_template {
+	margin:40px 15px 15px;
+}
+.install_store_template > .title {
+	text-align:left;
+	padding-bottom:5px;
+	border-bottom:1px solid #ccc;
+}
+.install_store_template ul {
+	max-height: calc(100% - 90px);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: flex-start;
+	padding: 10px;
+	overflow: auto;
+}
+.install_store_template ul li.loading {
+	margin-top:20px;
+}
+.install_store_template ul li:not(.loading) {
+	width:200px;
+	height:130px;
+	margin:40px;
+	padding:0;
+	display: inline-block;
+	background: #fff;
+	/*border: 1px solid #ccc;*/
+	border-radius: 5px;
+	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 20%);
+	position:relative;
+}
+.install_store_template ul li:not(.loading):hover {
+	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 70%);
+}
+.install_store_template ul li a {
+	font-size:80%;
+	color:inherit;
+	text-decoration:underline;
+}
+.install_store_template ul li a.img_label {
+	width:100%;
+	height:100%;
+	margin-bottom:5px;
+	display:block;
+	border-radius: 5px;
+	overflow: hidden;
+}
+.install_store_template ul li a.img_label:hover::before {
+	content:"Click to preview template";
+	position:absolute;
+	top:-15px;
+	left:0;
+	font-size:8px;
+	color:#999;
+}
+.install_store_template ul li a.img_label:hover {
+	text-decoration:none;
+}
+.install_store_template ul li a .icon {
+	color:inherit;
+	display:none;
+}
+.install_store_template ul li a.choose_template .icon::before {
+	font-size:12px;
+}
+.install_store_template ul li img {
+    width:100%;
+    height:100%;
+}
+.install_store_template ul li label {
+	height:16px;
+	padding:5px 10px;
+	position:absolute;
+	bottom:0;
+	left:0;
+	right:0;
+	display:block;
+	text-align:center;
+	font-weight:normal;
+	font-size:10px;
+	background:rgba(0, 0, 0, .8);
+	color:#fff;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	direction:rtl;
+	white-space:nowrap;
+}
+.install_store_template ul li a label {
+	cursor:pointer;
+}
+.install_store_template ul li .choose_template:hover,
+  .install_store_template ul li .view_template:hover {
+    color:var(--icon-hover-color);
+}
+.install_store_template ul li .choose_template {
+    float:right;
+}
+.install_store_template ul li.loading {
+	padding-left:30px;
+	border:none;
+	background:transparent;
+	text-align:center;
+}
+
+/* TEMPLATE POPUPS - view_store_template_popup */
+
+.view_store_template_popup {
+	position:fixed;
+	top:10px !important;
+	left:10px !important;
+	right:10px !important;
+	bottom:10px !important;
+}
+.view_store_template_popup.in_popup {
+	top:45px !important;
+}
+.view_store_template_popup iframe {
+	width:100% !important;
+	height:calc(100% - 63px) !important;
+}
+.view_store_template_popup .install_template {
+	margin:-5px 30px 0 0;
+	float:right;
+}

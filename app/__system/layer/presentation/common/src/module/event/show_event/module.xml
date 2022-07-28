@@ -1,0 +1,7 @@
+<module>
+	<label>Show Event</label>
+	<description>Module "Event Properties" allows you to show an event with a title, sub-title, photo, description, html, etc... This module depends on the Tag, Object, Attachment, Action modules... This modules needs the jQuery lib.</description>
+	<image>logo.gif</image>
+	<load_module_settings_js_function>loadEventPropertiesBlockSettings</load_module_settings_js_function>
+	<is_reserved_module>1</is_reserved_module>
+</module>

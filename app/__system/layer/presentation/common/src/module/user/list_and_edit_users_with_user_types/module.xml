@@ -1,0 +1,6 @@
+<module>
+	<label>List and Edit Users with User Types</label>
+	<description>Module "List and Edit Users with User Types" allows to manage the users and the correspondent user types.</description>
+	<image>logo.png</image>
+	<load_module_settings_js_function>loadListAndEditUsersWitUserTypesSettingsBlockSettings</load_module_settings_js_function>
+</module>

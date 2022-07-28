@@ -1,0 +1,9 @@
+.module_edit_user {
+	width:580px;
+}
+.module_edit_user .form_fields .form_field select {
+	width:430px;
+}
+.module_edit_user .form_fields .form_field.password .password_generator {
+	margin-left:10px;
+}

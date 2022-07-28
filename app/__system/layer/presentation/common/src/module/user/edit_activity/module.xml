@@ -1,0 +1,6 @@
+<module>
+	<label>Edit Activity</label>
+	<description>Module "Edit Activity" allows the user to edit an activity.</description>
+	<image>logo.png</image>
+	<load_module_settings_js_function>loadEditSettingsBlockSettings</load_module_settings_js_function>
+</module>

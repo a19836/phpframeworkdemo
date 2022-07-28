@@ -1,0 +1,6 @@
+<module>
+	<label>Validate Object Event</label>
+	<description>Module "Validate Object Event" validates if the event belongs to a specific object.</description>
+	<image>logo.png</image>
+	<load_module_settings_js_function>loadValidateObjectToObjectBlockSettings</load_module_settings_js_function>
+</module>

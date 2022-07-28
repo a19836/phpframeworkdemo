@@ -1,0 +1,7 @@
+<module>
+	<label>Edit Object Objects Group</label>
+	<description>Module "Edit Object Objects Group" allows the user to edit an object objects group.</description>
+	<image>logo.gif</image>
+	<load_module_settings_js_function>loadEditObjectObjectsGroupSettingsBlockSettings</load_module_settings_js_function>
+	<is_reserved_module>1</is_reserved_module>
+</module>

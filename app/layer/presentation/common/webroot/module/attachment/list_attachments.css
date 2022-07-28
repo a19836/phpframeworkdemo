@@ -1,0 +1,16 @@
+.module_list_attachments td.attachment_id {
+	width:100px;
+	text-align:center;
+}
+.module_list_attachments td.name {
+	width:100px;
+}
+.module_list_attachments td.type {
+	width:100px;
+}
+.module_list_attachments td.size {
+	width:50px;
+}
+.module_list_attachments td.path {
+	width:150px;
+}

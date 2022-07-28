@@ -1,0 +1,4 @@
+.module_settings .settings .list_settings .show_edit_button, 
+   .module_settings .settings .list_settings .edit_page_url {
+	display:none;
+}

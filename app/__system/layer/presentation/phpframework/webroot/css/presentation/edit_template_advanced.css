@@ -1,0 +1,33 @@
+/* TOP BAR */
+.top_bar {
+	margin-bottom:10px;
+}
+.top_bar header .title {
+	max-width:calc(100% - 170px);
+}
+.top_bar header > ul {
+	right:135px;
+}
+
+/* TEMPLATE OBJ */
+.template_obj {
+	width:100%;
+	overflow:hidden;
+	margin:0 auto;
+	padding:0;
+	border:0;
+}
+.template_obj #code textarea,
+  .template_obj #code .ace_editor, 
+  .template_obj #ui .taskflowchart {
+	height:calc(100vh - 55px) !important;
+	box-sizing:border-box; /* bc of the .ace_editor */
+}
+
+/* To print the workflow */
+@media print {
+	.template_obj {
+		overflow:visible !important;
+		border:0 !important;
+	}
+}

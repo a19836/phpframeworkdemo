@@ -1,0 +1,6 @@
+<module>
+	<label>Edit User Type</label>
+	<description>Module "Edit User Type" allows the user to edit an user type details.</description>
+	<image>logo.png</image>
+	<load_module_settings_js_function>loadEditSettingsBlockSettings</load_module_settings_js_function>
+</module>

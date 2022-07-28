@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+   RewriteEngine on
+  
+   RewriteRule ^$ my_first_project/webroot/ [L,NC]
+   
+   RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteRule (.*) my_first_project/webroot/$1 [L,NC]
+</IfModule>

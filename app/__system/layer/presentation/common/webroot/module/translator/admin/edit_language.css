@@ -1,0 +1,11 @@
+.module_edit {
+	width:300px;
+}
+.module_edit .form_fields .form_field label {
+	width:80px;
+}
+.view_category_languages {
+	display:block;
+	margin-top:10px;
+	text-align:center;
+}

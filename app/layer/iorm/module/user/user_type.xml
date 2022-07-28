@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sql_mapping>
+	<insert id="insert_user_type">
+		insert into mu_user_type (name, created_date, modified_date) values ('#name#', '#created_date#', '#modified_date#')
+	</insert>
+	<insert id="insert_user_type_with_ai_pk" hard_coded_ai_pk="1">
+		insert into mu_user_type (user_type_id, name, created_date, modified_date) values (#user_type_id#, '#name#', '#created_date#', '#modified_date#')
+	</insert>
+	
+	<update id="update_user_type">
+		update mu_user_type set name='#name#', modified_date='#modified_date#' where user_type_id=#user_type_id#
+	</update>
+	
+	<delete id="delete_user_type">
+		delete from mu_user_type where user_type_id=#user_type_id#
+	</delete>
+	
+	<select id="get_user_type">
+		select * from mu_user_type where user_type_id=#user_type_id#
+	</select>
+	
+	<select id="get_all_user_types">
+		select * from mu_user_type
+	</select>
+	
+	<select id="count_all_user_types">
+		select count(user_type_id) total from mu_user_type
+	</select>
+	
+	<select id="get_user_types_by_conditions">
+		select * from mu_user_type where #conditions#
+	</select>
+	
+	<select id="count_user_types_by_conditions">
+		select count(user_type_id) total from mu_user_type where #conditions#
+	</select>
+</sql_mapping>

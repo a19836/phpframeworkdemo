@@ -1,0 +1,6 @@
+<module>
+	<label>Edit Comment</label>
+	<description>Module "Edit Comment" allows the user to edit a comment.</description>
+	<image>logo.png</image>
+	<load_module_settings_js_function>loadEditSettingsBlockSettings</load_module_settings_js_function>
+</module>

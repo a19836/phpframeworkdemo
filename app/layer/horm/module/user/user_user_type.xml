@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<sql_mapping>
+	<class name="UserUserType" table="mu_user_user_type">
+		<id column="user_id"></id>
+		<id column="user_type_id"></id>
+	</class>
+</sql_mapping>

@@ -1,0 +1,146 @@
+.module_edit_menu .form_fields .form_field.group_name label {
+	width:90px;
+	font-weight:normal;
+}
+.module_edit_menu .menu_items label {
+	display:block;
+	float:left;
+	line-height:20px;
+	width:65px;
+	font-weight:normal;
+}
+.module_edit_menu .menu_items .add {
+	margin-left:5px;
+}
+.module_edit_menu .menu_items .items {
+	float:none;
+	clear:left;
+	padding-top:1px;
+}
+.module_edit_menu .menu_items .items .menu_item {
+	float:none;
+	clear:left;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.module_edit_menu .menu_items .items .menu_item .icon {
+	margin-top:-24px;
+	float:right;
+}
+.module_edit_menu .menu_items .items .menu_item .in {
+	margin-right:25px;
+}
+.module_edit_menu .menu_items .items .menu_item .out {
+	margin-right:45px;
+}
+.module_edit_menu .menu_items .items .menu_item .down {
+	margin-right:65px;
+}
+.module_edit_menu .menu_items .items .menu_item .up {
+	margin-right:85px;
+}
+.module_edit_menu .menu_items .items .menu_item .add {
+	margin-right:105px;
+}
+.module_edit_menu .menu_items .items .menu_item .maximize,
+   .module_edit_menu .menu_items .items .menu_item .minimize {
+	margin-right:125px;
+}
+.module_edit_menu .menu_items .items .menu_item .item_id {
+	display:none;
+}
+.module_edit_menu .menu_items .items .menu_item .item_label {
+	background-color:#d5e3e4;
+	padding:4px;
+}
+.module_edit_menu .menu_items .items .menu_item .item_label input {
+	width:300px;
+	background-color:#FFF;
+}
+.module_edit_menu .menu_items .items .menu_item .item_class label {
+	text-align:center;
+}
+.module_edit_menu .menu_items .items .menu_item .item_title,
+   .module_edit_menu .menu_items .items .menu_item .item_class,
+   .module_edit_menu .menu_items .items .menu_item .item_url,
+   .module_edit_menu .menu_items .items .menu_item .item_previous_html,
+   .module_edit_menu .menu_items .items .menu_item .item_next_html {
+ 	display:none;  
+ 	padding-left:4px;
+}
+.module_edit_menu .menu_items .items .menu_item .item_url,
+   .module_edit_menu .menu_items .items .menu_item .item_previous_html,
+   .module_edit_menu .menu_items .items .menu_item .item_next_html {
+	float:none;
+	clear:left;
+	padding-top:5px;
+}
+.module_edit_menu .menu_items .items .menu_item .item_title {
+	width:250px;
+	float:left;
+	margin-top:5px;
+}
+.module_edit_menu .menu_items .items .menu_item .item_class {
+	width:250px;
+	float:left;
+	margin-top:5px;
+}
+.module_edit_menu .menu_items .items .menu_item input {
+	width:180px;
+}
+.module_edit_menu .menu_items .items .menu_item .item_url input,
+   .module_edit_menu .menu_items .items .menu_item .item_previous_html input,
+   .module_edit_menu .menu_items .items .menu_item .item_next_html input {
+	width:435px;
+}
+.module_edit_menu .menu_items .items .menu_item .item_previous_html textarea,
+   .module_edit_menu .menu_items .items .menu_item .item_next_html textarea {
+	width:435px;
+	height:45px;
+}
+.module_edit_menu .menu_items .items .menu_item .items {
+	margin-left:20px;
+}
+
+
+.module_edit_menu .icon {
+	display:block;
+	width:16px;
+	height:20px;
+	margin-top:2px;
+	cursor:pointer;
+	
+	/* Hide Text */
+	text-indent:-9999px;
+	white-space:nowrap;
+	overflow:hidden;
+	
+	float:left;
+	margin-left:5px;
+	margin-right:5px;
+}
+.module_edit_menu .delete {
+	background:url("../../../common/img/icon/delete_icon.gif") no-repeat scroll 0 -1px;
+}
+.module_edit_menu .add {
+	background:url("../../../common/img/icon/add_icon.gif") no-repeat scroll 0 0;
+	margin-left:30px;
+}
+.module_edit_menu .up {
+	background:url("../../../common/img/icon/up_icon.gif") no-repeat scroll 0 0;
+}
+.module_edit_menu .down {
+	background:url("../../../common/img/icon/down_icon.gif") no-repeat scroll 0 0;
+}
+.module_edit_menu .out {
+	background:url("../../../common/img/icon/left_icon.gif") no-repeat scroll 0 0;
+}
+.module_edit_menu .in {
+	background:url("../../../common/img/icon/right_icon.gif") no-repeat scroll 0 0;
+}
+.module_edit_menu .maximize {
+	background:url("../../../common/img/icon/maximize_icon.png") no-repeat scroll 0 0;
+}
+.module_edit_menu .minimize {
+	background:url("../../../common/img/icon/minimize_icon.png") no-repeat scroll 0 0;
+}

@@ -1,0 +1,1 @@
+<?php $CMSModuleHandler->enable(); ?>

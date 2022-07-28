@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<sql_mapping>
+	<class name="ObjectsGroup" table="mog_objects_group">
+		<id column="objects_group_id"></id>
+		
+		<relationships>
+			<one_to_many name="tags">
+				<attribute column="tag" table="mt_tag" />
+				
+				<key pcolumn="object_id" fcolumn="object_id" ftable="mt_object_tag" />
+				<key pcolumn="tag_id" ptable="mt_object_tag" fcolumn="tag_id" ftable="mt_tag" />
+				
+				<condition column="object_type_id" table="mt_object_tag" value="#object_type_id#" />
+			</one_to_many>
+		</relationships>
+		
+		<queries>
+			<select id="get_objects_groups_by_tags">
+				select og.*, ot.`group` tag_group, ot.`order` tag_order
+				from mog_objects_group og
+				inner join mt_object_tag ot on ot.object_type_id=#object_type_id# and ot.object_id=og.objects_group_id
+				inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+			</select>
+
+			<select id="count_objects_groups_by_tags">
+				select count(og.objects_group_id) total
+				from mog_objects_group og
+				inner join mt_object_tag ot on ot.object_type_id=#object_type_id# and ot.object_id=og.objects_group_id
+				inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+			</select>
+	
+			<select id="get_objects_groups_by_object_and_tags">
+				select og.*, oog.`group` `group`, oog.`order` `order`, ot.`group` tag_group, ot.`order` tag_order
+				from mog_objects_group og
+				inner join mog_object_objects_group oog on oog.objects_group_id=og.objects_group_id and oog.object_type_id=#object_type_id# and oog.object_id=#object_id#
+				inner join mt_object_tag ot on ot.object_type_id=#objects_group_object_type_id# and ot.object_id=og.objects_group_id
+				inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+			</select>
+	
+			<select id="count_objects_groups_by_object_and_tags">
+				select count(og.objects_group_id) total
+				from mog_objects_group og
+				inner join mog_object_objects_group oog on oog.objects_group_id=og.objects_group_id and oog.object_type_id=#object_type_id# and oog.object_id=#object_id#
+				inner join mt_object_tag ot on ot.object_type_id=#objects_group_object_type_id# and ot.object_id=og.objects_group_id
+				inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+			</select>
+			
+			<select id="get_objects_groups_by_object_group_and_tags">
+				select og.*, oog.`group` `group`, oog.`order` `order`, ot.`group` tag_group, ot.`order` tag_order
+				from mog_objects_group og
+				inner join mog_object_objects_group oog on oog.objects_group_id=og.objects_group_id and oog.object_type_id=#object_type_id# and oog.object_id=#object_id# and oog.`group`=#group#
+				inner join mt_object_tag ot on ot.object_type_id=#objects_group_object_type_id# and ot.object_id=og.objects_group_id
+				inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+			</select>
+	
+			<select id="count_objects_groups_by_object_group_and_tags">
+				select count(og.objects_group_id) total
+				from mog_objects_group og
+				inner join mog_object_objects_group oog on oog.objects_group_id=og.objects_group_id and oog.object_type_id=#object_type_id# and oog.object_id=#object_id# and oog.`group`=#group#
+				inner join mt_object_tag ot on ot.object_type_id=#objects_group_object_type_id# and ot.object_id=og.objects_group_id
+				inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+			</select>
+	
+			<select id="get_objects_groups_with_all_tags">
+				select og.*, z.tag_group, z.tag_order, z.tags_count 
+				from mog_objects_group og 
+				inner join (
+					select og.objects_group_id, ot.`group` tag_group, ot.`order` tag_order, count(t.tag) tags_count
+					from mog_objects_group og
+					inner join mt_object_tag ot on ot.object_type_id=#object_type_id# and ot.object_id=og.objects_group_id
+					inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+					group by og.objects_group_id, ot.`group`, ot.`order` having count(t.tag) >= #tags_count#
+				) z on z.objects_group_id=og.objects_group_id
+			</select>
+
+			<select id="count_objects_groups_with_all_tags">
+				select count(objects_group_id) total
+				from (
+					select og.objects_group_id, count(t.tag) tags_count
+					from mog_objects_group og
+					inner join mt_object_tag ot on ot.object_type_id=#object_type_id# and ot.object_id=og.objects_group_id
+					inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+					group by og.objects_group_id having count(t.tag) >= #tags_count#
+				) Z
+			</select>
+	
+			<select id="get_objects_groups_by_object_with_all_tags">
+				select og.*, z.`group`, z.`order`, z.tag_group, z.tag_order, z.tags_count 
+				from mog_objects_group og 
+				inner join (
+					select og.objects_group_id, oog.`group` `group`, oog.`order` `order`, ot.`group` tag_group, ot.`order` tag_order, count(t.tag) tags_count
+					from mog_objects_group og
+					inner join mog_object_objects_group oog on oog.objects_group_id=og.objects_group_id and oog.object_type_id=#object_type_id# and oog.object_id=#object_id#
+					inner join mt_object_tag ot on ot.object_type_id=#objects_group_object_type_id# and ot.object_id=og.objects_group_id
+					inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+					group by og.objects_group_id, oog.`group`, oog.`order`, ot.`group`, ot.`order` having count(t.tag) >= #tags_count#
+				) z on z.objects_group_id=og.objects_group_id
+			</select>
+
+			<select id="count_objects_groups_by_object_with_all_tags">
+				select count(objects_group_id) total
+				from (
+					select og.objects_group_id, count(t.tag) tags_count
+					from mog_objects_group og
+					inner join mog_object_objects_group oog on oog.objects_group_id=og.objects_group_id and oog.object_type_id=#object_type_id# and oog.object_id=#object_id#
+					inner join mt_object_tag ot on ot.object_type_id=#objects_group_object_type_id# and ot.object_id=og.objects_group_id
+					inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+					group by og.objects_group_id having count(t.tag) >= #tags_count#
+				) Z
+			</select>
+	
+			<select id="get_objects_groups_by_object_group_with_all_tags">
+				select og.*, z.`group`, z.`order`, z.tag_group, z.tag_order, z.tags_count 
+				from mog_objects_group og 
+				inner join (
+					select og.objects_group_id, oog.`group` `group`, oog.`order` `order`, ot.`group` tag_group, ot.`order` tag_order, count(t.tag) tags_count
+					from mog_objects_group og
+					inner join mog_object_objects_group oog on oog.objects_group_id=og.objects_group_id and oog.object_type_id=#object_type_id# and oog.object_id=#object_id# and oog.`group`=#group#
+					inner join mt_object_tag ot on ot.object_type_id=#objects_group_object_type_id# and ot.object_id=og.objects_group_id
+					inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+					group by og.objects_group_id, oog.`group`, oog.`order`, ot.`group`, ot.`order` having count(t.tag) >= #tags_count#
+				) z on z.objects_group_id=og.objects_group_id
+			</select>
+	
+			<select id="count_objects_groups_by_object_group_with_all_tags">
+				select count(objects_group_id) total
+				from (
+					select og.objects_group_id, count(t.tag) tags_count
+					from mog_objects_group og
+					inner join mog_object_objects_group oog on oog.objects_group_id=og.objects_group_id and oog.object_type_id=#object_type_id# and oog.object_id=#object_id# and oog.`group`=#group#
+					inner join mt_object_tag ot on ot.object_type_id=#objects_group_object_type_id# and ot.object_id=og.objects_group_id
+					inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+					group by og.objects_group_id having count(t.tag) >= #tags_count#
+				) Z
+			</select>
+	
+			<select id="get_objects_groups_by_object_and_conditions">
+				select og.*, oog.`group` `group`, oog.`order` `order`
+				from mog_objects_group og
+				inner join mog_object_objects_group oog on oog.objects_group_id=og.objects_group_id and oog.object_type_id=#object_type_id# and oog.object_id=#object_id#
+				where #conditions#
+			</select>
+	
+			<select id="count_objects_groups_by_object_and_conditions">
+				select count(og.objects_group_id) total 
+				from mog_objects_group og
+				inner join mog_object_objects_group oog on oog.objects_group_id=og.objects_group_id and oog.object_type_id=#object_type_id# and oog.object_id=#object_id#
+				where #conditions#
+			</select>
+	
+			<select id="get_objects_groups_by_object">
+				select og.*, oog.`group` `group`, oog.`order` `order`
+				from mog_objects_group og 
+				inner join mog_object_objects_group oog on oog.objects_group_id=og.objects_group_id and oog.object_type_id=#object_type_id# and oog.object_id=#object_id#
+			</select>
+	
+			<select id="count_objects_groups_by_object">
+				select count(og.objects_group_id) total
+				from mog_objects_group og 
+				inner join mog_object_objects_group oog on oog.objects_group_id=og.objects_group_id and oog.object_type_id=#object_type_id# and oog.object_id=#object_id#
+			</select>
+	
+			<select id="get_objects_groups_by_object_group">
+				select og.*, oog.`group` `group`, oog.`order` `order`
+				from mog_objects_group og 
+				inner join mog_object_objects_group oog on oog.objects_group_id=og.objects_group_id and oog.object_type_id=#object_type_id# and oog.object_id=#object_id# and oog.`group`=#group#
+			</select>
+	
+			<select id="count_objects_groups_by_object_group">
+				select count(og.objects_group_id) total
+				from mog_objects_group og 
+				inner join mog_object_objects_group oog on oog.objects_group_id=og.objects_group_id and oog.object_type_id=#object_type_id# and oog.object_id=#object_id# and oog.`group`=#group#
+			</select>
+		</queries>
+	</class>
+</sql_mapping>

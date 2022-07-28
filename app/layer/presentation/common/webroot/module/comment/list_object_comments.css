@@ -1,0 +1,12 @@
+.module_list_object_comments td.comment_id {
+	width:100px;
+	text-align:center;
+}
+.module_list_object_comments td.object_type_id {
+	width:100px;
+	text-align:center;
+}
+.module_list_object_comments td.object_id {
+	width:100px;
+	text-align:center;
+}

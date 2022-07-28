@@ -1,0 +1,88 @@
+.edit_settings {
+	text-align:left;
+}
+.edit_settings .clear {
+	float:none;
+	clear:both;
+}
+.edit_settings .question_type,
+   .edit_settings .question_id {
+ 	min-height:20px;
+	margin-bottom:10px;
+	float:left;
+}
+.edit_settings .question_type {
+	width:450;
+}
+.edit_settings .question_id {
+	width:260;
+	margin-left:20px;
+}
+.edit_settings .get_next_by_parent {
+	width:auto;
+	min-height:20px;
+	margin-bottom:10px;
+	float:none;
+	clear:left;
+}
+.edit_settings .question_type label {
+	width:120px;
+	display:inline-block;
+}
+.edit_settings .question_id label {
+	width:100px;
+	display:inline-block;
+}
+.edit_settings .question_type select {
+	width:300px;
+}
+.edit_settings .question_id input {
+	width:150px;
+}
+
+/* Get Next By Parent */
+.edit_settings .get_next_by_parent {
+	margin-left:20px;
+	float:none;
+	clear:left;
+	display:none;
+}
+.edit_settings .get_next_by_parent .get_next_object_type_id {
+	width:240px;
+	float:left;
+	clear:none;
+}
+.edit_settings .get_next_by_parent .get_next_object_id {
+	width:260px;
+	float:left;
+	clear:none;
+}
+.edit_settings .get_next_by_parent .get_next_group {
+	width:150px;
+	float:left;
+	clear:none;
+}
+.edit_settings .get_next_by_parent .get_next_object_type_id label {
+	width:100px;
+	display:inline-block;
+}
+.edit_settings .get_next_by_parent .get_next_object_id label {
+	width:90px;
+	display:inline-block;
+}
+.edit_settings .get_next_by_parent .get_next_group label {
+	width:60px;
+	display:inline-block;
+}
+.edit_settings .get_next_by_parent .get_next_object_type_id select {
+	width:130px;
+	font-size:11px;
+}
+.edit_settings .get_next_by_parent .get_next_object_id input {
+	width:150px;
+	font-size:11px;
+}
+.edit_settings .get_next_by_parent .get_next_group input {
+	width:70px;
+	font-size:11px;
+}

@@ -1,0 +1,6 @@
+<module>
+	<label>Forgot User Credentials</label>
+	<description>Module "Forgot User Credentials" allows the user to recover his credentials.</description>
+	<image>logo.png</image>
+	<load_module_settings_js_function>loadForgotCredentialsBlockSettings</load_module_settings_js_function>
+</module>

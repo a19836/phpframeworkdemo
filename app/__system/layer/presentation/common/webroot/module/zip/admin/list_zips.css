@@ -1,0 +1,12 @@
+.module_list .zip_id {
+	text-align:center;
+}
+.module_list .country_id {
+	text-align:center;
+}
+.module_list .zone_id {
+	text-align:center;
+}
+.module_list .delete_action .icon {
+	margin-right:0;
+}

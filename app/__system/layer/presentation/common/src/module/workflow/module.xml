@@ -1,0 +1,6 @@
+<module>
+	<label>Workflow</label>
+	<description>Module Workflow creates dynamic workflows and execute them!</description>
+	<image>logo.gif</image>
+	<load_module_settings_js_function>loadModuleWorkflowSettingsBlockSettings</load_module_settings_js_function>
+</module>

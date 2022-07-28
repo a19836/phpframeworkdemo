@@ -1,0 +1,15 @@
+.module_list_comments td.comment_id {
+	width:100px;
+	text-align:center;
+}
+.module_list_comments td.user_id {
+	width:100px;
+	text-align:center;
+}
+.module_list_comments td.username {
+	width:100px;
+	text-align:center;
+}
+.module_list_comments td.comment {
+	width:300px;
+}

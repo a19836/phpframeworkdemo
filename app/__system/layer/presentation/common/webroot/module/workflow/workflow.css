@@ -1,0 +1,130 @@
+.top_bar header {
+	z-index:4;
+}
+
+.block_obj {
+	margin-left:10px !important;
+	margin-right:10px !important;
+	padding-bottom:0;
+}
+.block_obj .module_settings {
+	width:auto;
+}
+.block_obj .module_settings > label {
+	display:block;
+}
+.block_obj .module_settings .settings {
+	border:0;
+	padding:0;
+	text-align:left;
+}
+
+.module_workflow_settings {
+	overflow:hidden; /* bc of the workflow menu drag&drop */
+}
+.module_workflow_settings .module_workflow_content {
+	border:0;
+}
+.module_workflow_settings .module_workflow_content > .tabs > #tasks_flow_tab.ui-tabs-active {
+	background:var(--main-template-bg);
+}
+
+.module_workflow_settings #ui .taskflowchart,
+  .module_workflow_settings #code > textarea,
+  .module_workflow_settings #code .ace_editor,
+  .module_workflow_settings #external_vars {
+	height:calc(100vh - 125px) !important;
+	box-sizing:border-box; /* bc of the .ace_editor */
+}
+.module_workflow_settings #ui .taskflowchart {
+	overflow:visible !important;
+}
+.module_workflow_settings #ui .taskflowchart.fixed_properties {
+	height:calc(100vh - 110px) !important;
+}
+.module_workflow_settings #code .code_menu,
+  .module_workflow_settings #ui .taskflowchart .workflow_menu {
+	margin-top:-23px;
+	position:absolute;
+	top:auto;
+	right:265px;
+	z-index:999999;
+}
+.module_workflow_settings #code .code_menu {
+	right:267px;
+}
+.module_workflow_settings #ui > .taskflowchart .edit_function_code > .tabs {
+	height:35px;
+}
+.module_workflow_settings #ui > .taskflowchart .edit_function_code > #code .code_menu.top_bar_menu {
+	margin-top:-27px;
+	top:auto !important;
+	right:110px !important;
+}
+.module_workflow_settings #ui > .taskflowchart .edit_function_code > #ui .taskflowchart .workflow_menu.top_bar_menu {
+	margin-top:-27px;
+	top:auto !important;
+	right:90px !important;
+}
+.module_workflow_settings #ui > .taskflowchart .edit_function_code > #code > .ace_editor, 
+  .module_workflow_settings #ui > .taskflowchart .edit_function_code > #code > textarea {
+	border-top:0;
+}
+.module_workflow_settings #ui > .taskflowchart .create_form_task_html .layout-ui-editor > .tabs {
+	font-size:8pt;
+}
+.module_workflow_settings #code .code_menu > ul > .save,
+  .module_workflow_settings #ui .taskflowchart .workflow_menu > .dropdown > .save,
+  .module_workflow_settings #code .code_menu > ul > .auto_save_activation,
+  .module_workflow_settings #code .code_menu > ul > .auto_convert_activation,
+  .module_workflow_settings #ui .taskflowchart .workflow_menu > .dropdown > .auto_save_activation,
+  .module_workflow_settings #ui .taskflowchart .workflow_menu > .dropdown > .auto_convert_activation,
+  .module_workflow_settings #code .code_menu > ul > .editor_full_screen,
+  .module_workflow_settings #ui .taskflowchart .workflow_menu > .dropdown > .tasks_flow_full_screen,
+  .module_workflow_settings #ui .taskflowchart .workflow_menu > .dropdown > .generate_code_from_tasks_flow + .separator {
+	display:none;
+}
+.module_workflow_settings #code .code_menu > ul > .generate_code_from_tasks_flow,
+  .module_workflow_settings #ui .taskflowchart .workflow_menu > .dropdown > .generate_code_from_tasks_flow {
+	
+}
+.module_workflow_settings #code .code_menu > ul > .editor_settings .icon.settings {
+	margin:0;
+	min-height:auto;
+}
+
+.module_workflow_settings #external_vars {
+	text-align:center;
+	overflow:auto;
+	box-sizing:border-box;
+}
+.module_workflow_settings #external_vars table {
+	width:300px;
+	margin:0 auto;
+}
+.module_workflow_settings #external_vars table th,
+   .module_workflow_settings #external_vars table td {
+	text-align:center;
+}
+.module_workflow_settings #external_vars table th.variable_name,
+   .module_workflow_settings #external_vars table th.variable_value {
+	width:140px;
+}
+.module_workflow_settings #external_vars table .add_variable.inline {
+	margin:2px 0 0 -15px;
+	position:absolute;
+	float:none;
+	clear:both;
+	display:inline-block;
+	vertical-align:middle;
+	opacity:.8;
+}
+
+/* WORKFLOW */
+.module_workflow_settings .workflow_message {
+	position:absolute;
+}
+.module_workflow_settings .error {
+	height:auto;
+	font-size:100%;
+}

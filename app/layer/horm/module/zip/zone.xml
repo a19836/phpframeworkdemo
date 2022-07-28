@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<sql_mapping>
+	<class name="Zone" table="mz_zone">
+		<id column="zone_id"></id>
+	
+		<relationships>
+			<many_to_one name="city">
+				<attribute column="*" table="mz_city" />
+				
+				<key pcolumn="city_id" fcolumn="city_id" ftable="mz_city" />
+			</many_to_one>
+			
+			<one_to_many name="zips">
+				<attribute column="*" table="mz_zip" />
+				
+				<key pcolumn="zone_id" fcolumn="zone_id" ftable="mz_zip" />
+			</one_to_many>
+		</relationships>
+		
+		<queries>
+			<delete id="delete_zones_by_state_id">
+				delete zo.*
+				from mz_city ci on ci.state_id=#state_id#
+				inner join mz_zone zo on zo.city_id=ci.city_id
+			</delete>
+	
+			<delete id="delete_zones_by_country_id">
+				delete zo.*
+				from mz_state st on st.country_id=#country_id#
+				inner join mz_city ci on ci.state_id=st.state_id
+				inner join mz_zone zo on zo.city_id=ci.city_id
+			</delete>
+			
+			<select id="get_zone">
+				select zo.*, ci.city_id, ci.name as 'city', st.state_id, st.name as 'state', co.country_id, co.name as 'country'
+				from mz_zone zo
+				inner join mz_city ci on ci.city_id=zo.city_id
+				inner join mz_state st on st.state_id=ci.state_id
+				inner join mz_country co on co.country_id=st.country_id
+				where zo.zone_id=#zone_id#
+			</select>
+	
+			<select id="get_full_zones">
+				select zo.*, ci.city_id, ci.name as 'city', st.state_id, st.name as 'state', co.country_id, co.name as 'country'
+				from mz_zone zo
+				inner join mz_city ci on ci.city_id=zo.city_id
+				inner join mz_state st on st.state_id=ci.state_id
+				inner join mz_country co on co.country_id=st.country_id
+			</select>
+		</queries>
+	</class>
+</sql_mapping>

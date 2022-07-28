@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<sql_mapping>
+	<class name="ObjectComment" table="mc_object_comment">
+		<id column="comment_id"></id>
+		<id column="object_type_id"></id>
+		<id column="object_id"></id>
+		
+		<relationships>
+			<one_to_many name="object_comment">
+				<attribute column="*" table="mc_comment" />
+				
+				<key pcolumn="comment_id" fcolumn="comment_id" ftable="mc_comment" />
+			</one_to_many>
+		</relationships>
+	</class>
+</sql_mapping>

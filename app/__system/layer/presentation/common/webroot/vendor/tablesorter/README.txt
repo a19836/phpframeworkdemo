@@ -1,0 +1,1 @@
+http://tablesorter.com/docs/

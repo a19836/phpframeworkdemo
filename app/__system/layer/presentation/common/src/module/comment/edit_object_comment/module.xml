@@ -1,0 +1,6 @@
+<module>
+	<label>Edit Object Comment</label>
+	<description>Module "Edit Object Comment" allows the user to edit an object comment.</description>
+	<image>logo.png</image>
+	<load_module_settings_js_function>loadEditObjectCommentSettingsBlockSettings</load_module_settings_js_function>
+</module>
