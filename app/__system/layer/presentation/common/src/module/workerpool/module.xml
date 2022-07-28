@@ -1,7 +1,0 @@
-<module>
-	<label>WorkerPool</label>
-	<description>Module WorkerPool allows you to add workers to a pool and execute them on the backend!</description>
-	<image>logo.gif</image>
-	<is_reserved_module>1</is_reserved_module>
-	<is_hidden_module>1</is_hidden_module>
-</module>

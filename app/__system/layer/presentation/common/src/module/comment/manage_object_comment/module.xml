@@ -1,6 +1,0 @@
-<module>
-	<label>Manage Object Comment</label>
-	<description>Module "Manage Object Comment" allows you to insert/update/delete a comment and relate it to an object. Additionally you can validate the insert/update/delete actions by logged in user...</description>
-	<image>logo.png</image>
-	<load_module_settings_js_function>loadManageObjectCommentBlockSettings</load_module_settings_js_function>
-</module>

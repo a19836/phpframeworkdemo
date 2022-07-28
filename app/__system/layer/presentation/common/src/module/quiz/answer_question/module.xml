@@ -1,6 +1,0 @@
-<module>
-	<label>Answer Question</label>
-	<description>Module "Answer Question" allows the user to answer a question.</description>
-	<image>logo.png</image>
-	<load_module_settings_js_function>loadAnswerQuestionBlockSettings</load_module_settings_js_function>
-</module>

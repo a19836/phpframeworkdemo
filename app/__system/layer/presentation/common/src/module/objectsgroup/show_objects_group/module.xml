@@ -1,9 +1,0 @@
-<module>
-	<label>Show Objects Group</label>
-	<description>This Module allows you to create a form or a table based in a specific objects group data (list or item)...
-	This modules should be used to create settings or other objects that can have their properties json encoded.
-	Example: If you wish to allow the client to show and edit a banner, you can use this module by creating the correspondent form and json-encoding the banner properties (like width, height, border, color, link url, etc...)</description>
-	<image>logo.gif</image>
-	<load_module_settings_js_function>loadShowObjectsGroupBlockSettings</load_module_settings_js_function>
-	<is_reserved_module>1</is_reserved_module>
-</module>

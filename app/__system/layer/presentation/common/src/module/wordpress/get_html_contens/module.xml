@@ -1,6 +1,0 @@
-<module>
-	<label>Get HTML Contents</label>
-	<description>Module "Get HTML Contents" gets pieces of wordpress pages.</description>
-	<image>logo.png</image>
-	<load_module_settings_js_function>loadGetHtmlContentsBlockSettings</load_module_settings_js_function>
-</module>

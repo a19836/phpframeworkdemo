@@ -1,7 +1,0 @@
-.module_edit_comment {
-	width:370px;
-}
-.module_edit_comment .form_fields .form_field.username.undefined_value select {
-	border-color:initial;
-	border-style:inset;
-}

@@ -1,7 +1,0 @@
-<module>
-	<label>List Object Users</label>
-	<description>Module "List Object Users" allows to manage the object users.</description>
-	<image>logo.png</image>
-	<load_module_settings_js_function>loadListSettingsBlockSettings</load_module_settings_js_function>
-	<is_reserved_module>1</is_reserved_module>
-</module>

@@ -1,7 +1,0 @@
-<module>
-	<label>Translator</label>
-	<description>Module Translator allows you to add multiple languages translations. This module is an auxiliar module which means this module can only be used by other modules and not directly!</description>
-	<image>logo.gif</image>
-	<is_reserved_module>1</is_reserved_module>
-	<is_hidden_module>1</is_hidden_module>
-</module>

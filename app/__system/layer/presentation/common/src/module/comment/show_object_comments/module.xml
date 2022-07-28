@@ -1,6 +1,0 @@
-<module>
-	<label>Show Object Comments</label>
-	<description>Module "Show Object Comments" allows you to view the comments from a specific object.</description>
-	<image>logo.png</image>
-	<load_module_settings_js_function>loadShowObjectCommentsBlockSettings</load_module_settings_js_function>
-</module>

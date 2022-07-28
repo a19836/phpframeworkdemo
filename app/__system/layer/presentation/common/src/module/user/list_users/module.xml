@@ -1,6 +1,0 @@
-<module>
-	<label>List Users</label>
-	<description>Module "List Users" allows to manage the users.</description>
-	<image>logo.png</image>
-	<load_module_settings_js_function>loadListUsersSettingsBlockSettings</load_module_settings_js_function>
-</module>

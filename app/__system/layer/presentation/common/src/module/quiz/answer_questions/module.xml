@@ -1,6 +1,0 @@
-<module>
-	<label>Answer Questions</label>
-	<description>Module "Answer Questions" allows the user to answer multiple questions.</description>
-	<image>logo.png</image>
-	<load_module_settings_js_function>loadAnswerQuestionsBlockSettings</load_module_settings_js_function>
-</module>

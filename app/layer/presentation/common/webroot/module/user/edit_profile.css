@@ -1,9 +1,0 @@
-.module_edit_profile {
-	width:580px;
-}
-.module_edit_profile .form_fields .form_field select {
-	width:430px;
-}
-.module_edit_profile .form_fields .form_field.password .password_generator {
-	margin-left:10px;
-}

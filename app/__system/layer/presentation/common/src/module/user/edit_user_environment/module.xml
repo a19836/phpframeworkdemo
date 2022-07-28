@@ -1,7 +1,0 @@
-<module>
-	<label>Edit User Environment</label>
-	<description>Module "Edit User Environment" allows the user to edit an user environment.</description>
-	<image>logo.png</image>
-	<load_module_settings_js_function>loadEditUserEnvironmentSettingsBlockSettings</load_module_settings_js_function>
-	<is_reserved_module>1</is_reserved_module>
-</module>

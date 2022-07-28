@@ -1,6 +1,0 @@
-<module>
-	<label>List Questions</label>
-	<description>Module "List Questions" allows to manage questions.</description>
-	<image>logo.png</image>
-	<load_module_settings_js_function>loadListQuestionsBlockSettings</load_module_settings_js_function>
-</module>

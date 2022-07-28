@@ -1,6 +1,0 @@
-<module>
-	<label>Show Question Users Answers</label>
-	<description>Module "Show Question Users Answers" shows the answers per user for a specific question.</description>
-	<image>logo.png</image>
-	<load_module_settings_js_function>loadShowQuestionUsersAnswersBlockSettings</load_module_settings_js_function>
-</module>

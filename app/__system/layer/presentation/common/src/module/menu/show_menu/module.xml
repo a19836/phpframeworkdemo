@@ -1,7 +1,0 @@
-<module>
-	<label>Show Menu</label>
-	<description>Module Menu allows you to create a menu list where each menu item can have a class, title, url and other sub-menu-items...</description>
-	<image>logo.gif</image>
-	<load_module_settings_js_function>loadShowMenuBlockSettings</load_module_settings_js_function>
-	<is_reserved_module>1</is_reserved_module>
-</module>

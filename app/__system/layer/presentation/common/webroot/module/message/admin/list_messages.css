@@ -1,7 +1,0 @@
-.module_list .message_id,
-   .module_list .from_user_id,
-   .module_list .to_user_id,
-   .module_list .subject,
-   .module_list .seen_date {
-	text-align:center;
-}

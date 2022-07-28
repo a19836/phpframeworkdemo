@@ -1,6 +1,0 @@
-<module>
-	<label>List Object Comments</label>
-	<description>Module "List Object Comments" allows to manage the object comments.</description>
-	<image>logo.png</image>
-	<load_module_settings_js_function>loadListSettingsBlockSettings</load_module_settings_js_function>
-</module>

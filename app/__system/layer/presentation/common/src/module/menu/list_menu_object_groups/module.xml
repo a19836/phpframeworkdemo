@@ -1,7 +1,0 @@
-<module>
-	<label>List Menu Object Groups</label>
-	<description>Module "List Menu Object Groups" allows to manage the menu object groups.</description>
-	<image>logo.gif</image>
-	<load_module_settings_js_function>loadListSettingsBlockSettings</load_module_settings_js_function>
-	<is_reserved_module>1</is_reserved_module>
-</module>

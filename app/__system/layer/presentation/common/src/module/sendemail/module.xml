@@ -1,7 +1,0 @@
-<module>
-	<label>Send Email Form</label>
-	<description>Module "Send Email" allows you to show a contact form in your page and send an email with the user info.</description>
-	<image>logo.gif</image>
-	<load_module_settings_js_function>loadSendEmailBlockSettings</load_module_settings_js_function>
-	<is_reserved_module>1</is_reserved_module>
-</module>

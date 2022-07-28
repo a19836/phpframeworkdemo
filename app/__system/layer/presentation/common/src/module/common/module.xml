@@ -1,6 +1,0 @@
-<module>
-	<label>Common</label>
-	<description>Module Common contains some files shared by other modules.</description>
-	<is_reserved_module>1</is_reserved_module>
-	<is_hidden_module>1</is_hidden_module>
-</module>

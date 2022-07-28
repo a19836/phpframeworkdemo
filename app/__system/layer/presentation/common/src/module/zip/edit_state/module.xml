@@ -1,6 +1,0 @@
-<module>
-	<label>Edit State</label>
-	<description>Module "Edit State" allows the user to edit a state.</description>
-	<image>logo.png</image>
-	<load_module_settings_js_function>loadEditSettingsBlockSettings</load_module_settings_js_function>
-</module>

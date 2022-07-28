@@ -1,7 +1,0 @@
-<module>
-	<label>Events Catalog</label>
-	<description>Module "Events Catalog" allows you to create a list of events where each event shows the title, sub_title, photo and description. This module depends on the Tag, Object, Attachment, Action modules...</description>
-	<image>logo.gif</image>
-	<load_module_settings_js_function>loadEventsCatalogBlockSettings</load_module_settings_js_function>
-	<is_reserved_module>1</is_reserved_module>
-</module>
