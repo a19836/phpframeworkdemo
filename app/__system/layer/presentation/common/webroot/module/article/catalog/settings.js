@@ -25,8 +25,8 @@ function onArticleCatalogUpdatePTLFromFieldsSettings(elm, settings, code, extern
 			"\n" + '	<ptl:block:top-pagination/>' +
 			"\n" + '</div>' +
 			"\n" + '<ul class="catalog catalog_normal_list">' +
-			"\n" + '	<ptl:if is_array(\\$input_data)>' +
-			"\n" + '		<ptl:foreach \\$input_data i article>' +
+			"\n" + '	<ptl:if is_array(\\$input)>' +
+			"\n" + '		<ptl:foreach \\$input i article>' +
 			"\n" + '			<li class="article">' + 
 			"\n" + '				<a href="' + (article_properties_url != "" ? article_properties_url : '?article_id=') + '<ptl:echo \\$article[article_id]/>' + '">' +
 			"\n" + '					' + code.replace(/\n/g, "\n\t\t\t\t\t") +

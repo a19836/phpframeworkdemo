@@ -49,12 +49,24 @@
 	position:fixed; /* must be position fiuxedotherwise when we search for something the search popup will disappear. */
 	top:50px;
 }
-.code_area .ace_editor .ace_search .ace_search_field {
-	background-color:#fff;
+.code_area .ace_editor .ace_gutter {
+	background:var(--main-ace-editor-bg);
+	color:var(--main-ace-editor-color);
 }
-#ace_settingsmenu, #kbshortcutmenu {
-	height:calc(100vh - 80px);
-	margin-top:50px !important;
+.code_area .ace_editor .ace_gutter .ace_gutter-active-line {
+	background:var(--main-ace-editor-active-line-number-bg);
+}
+.code_area .ace_editor .ace_layer .ace_active-line {
+	background:var(--main-ace-editor-active-line-bg);
+}
+.code_area .ace_editor .ace_search {
+	background:var(--main-iframe-bg);
+	color:var(--main-iframe-color);
+}
+.code_area .ace_editor .ace_search input[type=submit]:not(:disabled), 
+  .code_area .ace_editor .ace_search input[type=button]:not(:disabled), 
+  .code_area .ace_editor .ace_search button:not(:disabled) {
+	color:#333;
 }
 
 .error {

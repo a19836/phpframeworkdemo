@@ -283,6 +283,9 @@
 	font-size:16px;
 	margin-left:1px;
 }
+.icon.dropup_arrow::before {
+	content:"\f106";
+}
 .icon.dropdown_arrow::before {
 	content:"\f107";
 }

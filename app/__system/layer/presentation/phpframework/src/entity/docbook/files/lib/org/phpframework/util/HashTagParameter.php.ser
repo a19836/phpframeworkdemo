@@ -1,0 +1,32 @@
+a:1:{s:16:"HashTagParameter";a:2:{s:7:"methods";a:2:{s:38:"replaceHTMLHashTagParametersWithValues";a:20:{s:4:"name";s:38:"replaceHTMLHashTagParametersWithValues";s:16:"start_line_index";i:50;s:17:"start_token_index";i:81;s:4:"type";s:6:"public";s:8:"abstract";b:0;s:6:"static";b:1;s:8:"comments";a:5:{i:0;s:71:"//'\w' means all words with '_' and '/u' means with accents and ç too.";i:1;s:644:"/*
+	 * Note that some files contain the same regex than the HTML_HASH_TAG_PARAMETER_FULL_REGEX, but translated in javascript, this is:
+	 *  - app/lib/org/phpframework/workflow/task/programming/common/webroot/js/PTLFieldsUtilObj.js
+	 *  		/#([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC"' \-\+\[\]\.\$]+)#/g
+	 *  - app/__system/layer/presentation/common/webroot/vendor/myhtmlbeautify/MyHtmlBeautify.js
+	 *  		/\{\s*(\\?)\s*(\$[\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC"' \-\+\[\]\.\$]+)\s*\}/g
+	 *
+	 * Which means that any changes in the HTML_HASH_TAG_PARAMETER_PARTIAL_REGEX should be updated in this other files too.
+	 */";i:2;s:551:"/*
+	 * Then there are other places with other regexes that we should play attention too:
+	 *  - app/__system/layer/presentation/phpframework/src/util/CMSPresentationFormSettingsUIHandler.php
+	 * 		/#([\w \-\+\.]+)#/iu
+	 *
+	 * Which means that any changes in the HTML_HASH_TAG_PARAMETER_PARTIAL_REGEX should be updated in this other files too, but with carefull, this is, in the case of the '/#([\w \-\+\.]+)#/iu' regex in CMSPresentationFormSettingsUIHandler.php, we only need to get the hash-tags-parameters with the characters: [, ], $, ' or ".
+	 */";i:3;s:338:"/*
+	 * To search if there are more places where #xxx# can be, please open your terminal and type:
+	 * 	cd /var/www/html/phpframework/trunk
+	 * 	grep -r "#" app/lib/org/phpframework/ app/__system/layer/presentation/phpframework/ | grep '\\w' | grep -v "/cache" | grep -v "/vendor/" | grep -v "/docbook/" | grep -v "\.ser$" | grep "\#"
+	 */";i:4;s:12:"/*
+	 * 
+	 */";}s:25:"start_comments_line_index";i:21;s:26:"start_comments_token_index";i:71;s:23:"end_comments_line_index";i:49;s:24:"end_comments_token_index";i:79;s:22:"start_args_token_index";i:88;s:20:"end_args_token_index";i:107;s:9:"arguments";a:4:{s:5:"$text";N;s:7:"$values";N;s:7:"$filter";s:4:"null";s:20:"$replace_global_vars";s:4:"true";}s:25:"start_brackets_line_index";i:50;s:26:"start_brackets_token_index";i:109;s:23:"end_brackets_line_index";i:61;s:24:"end_brackets_token_index";i:193;s:14:"end_line_index";i:61;s:15:"end_token_index";i:193;}s:30:"getHTMLHashTagParametersValues";a:20:{s:4:"name";s:30:"getHTMLHashTagParametersValues";s:16:"start_line_index";i:66;s:17:"start_token_index";i:197;s:4:"type";s:6:"public";s:8:"abstract";b:0;s:6:"static";b:1;s:8:"comments";a:1:{i:0;s:95:"/*
+	 * replaces all hash-tag-parameters, like #foo#, in $text by the correspondent $values
+	 */";}s:25:"start_comments_line_index";i:63;s:26:"start_comments_token_index";i:195;s:23:"end_comments_line_index";i:65;s:24:"end_comments_token_index";i:195;s:22:"start_args_token_index";i:204;s:20:"end_args_token_index";i:230;s:9:"arguments";a:5:{s:5:"$text";N;s:7:"$values";N;s:7:"$filter";s:4:"null";s:20:"$replace_global_vars";s:4:"true";s:16:"$values_var_name";s:8:""values"";}s:25:"start_brackets_line_index";i:66;s:26:"start_brackets_token_index";i:232;s:23:"end_brackets_line_index";i:145;s:24:"end_brackets_token_index";i:904;s:14:"end_line_index";i:145;s:15:"end_token_index";i:904;}}s:5:"props";a:4:{s:36:"SQL_HASH_TAG_PARAMETER_PARTIAL_REGEX";a:16:{s:4:"name";s:36:"SQL_HASH_TAG_PARAMETER_PARTIAL_REGEX";s:4:"type";s:6:"public";s:5:"value";s:22:""#([\w \-\+\.\>\<]+)#"";s:8:"var_type";s:6:"string";s:6:"static";b:0;s:8:"abstract";b:0;s:5:"const";b:1;s:16:"start_line_index";i:10;s:17:"start_token_index";i:11;s:14:"end_line_index";i:10;s:15:"end_token_index";i:18;s:8:"comments";a:1:{i:0;s:321:"/*
+	 * Note that the SQL_HASH_TAG_PARAMETER_PARTIAL_REGEX is different from the HTML_HASH_TAG_PARAMETER_PARTIAL_REGEX. The SQL_HASH_TAG_PARAMETER_PARTIAL_REGEX does NOT allow calls like #foo[0]#. Only simple calls like #foo#!
+	 * Otherwise the automatic creation of business logic and presentation UIs will NOT work!
+	 */";}s:25:"start_comments_line_index";i:6;s:26:"start_comments_token_index";i:9;s:23:"end_comments_line_index";i:9;s:24:"end_comments_token_index";i:9;}s:33:"SQL_HASH_TAG_PARAMETER_FULL_REGEX";a:11:{s:4:"name";s:33:"SQL_HASH_TAG_PARAMETER_FULL_REGEX";s:4:"type";s:6:"public";s:5:"value";s:55:""/" . self::SQL_HASH_TAG_PARAMETER_PARTIAL_REGEX . "/u"";s:8:"var_type";s:6:"string";s:6:"static";b:0;s:8:"abstract";b:0;s:5:"const";b:1;s:16:"start_line_index";i:11;s:17:"start_token_index";i:20;s:14:"end_line_index";i:11;s:15:"end_token_index";i:37;}s:37:"HTML_HASH_TAG_PARAMETER_PARTIAL_REGEX";a:16:{s:4:"name";s:37:"HTML_HASH_TAG_PARAMETER_PARTIAL_REGEX";s:4:"type";s:6:"public";s:5:"value";s:29:""#([\w\"' \-\+\[\]\.\\\$]+)#"";s:8:"var_type";s:6:"string";s:6:"static";b:0;s:8:"abstract";b:0;s:5:"const";b:1;s:16:"start_line_index";i:20;s:17:"start_token_index";i:43;s:14:"end_line_index";i:20;s:15:"end_token_index";i:50;s:8:"comments";a:2:{i:0;s:71:"//'\w' means all words with '_' and '/u' means with accents and ç too.";i:1;s:577:"/*
+	 * Do not add the /#([^#]+)#/ bc if the $value contains html with css it will the css colors with attributes, this is:
+	 * 	.test1 {color:#000;}  .test2 {color:#000; background:#ccc; border:1px solid #000;} 
+	 * Then the regex /#([^#]+)#/ will get the matches: ["#000;}  .test2 {color:#", "#ccc; border:1px solid #"], and this is not what we want.
+	 *
+	 * The correct regex is: /#([\w"' \-\+\[\]\.\\\$]+)#/u which means that includes accents and ç, this is, '\w' means all words with '_' and '/u' means with accents and ç too. '/u' converts unicode to accents chars.
+	 */";}s:25:"start_comments_line_index";i:11;s:26:"start_comments_token_index";i:39;s:23:"end_comments_line_index";i:19;s:24:"end_comments_token_index";i:41;}s:34:"HTML_HASH_TAG_PARAMETER_FULL_REGEX";a:11:{s:4:"name";s:34:"HTML_HASH_TAG_PARAMETER_FULL_REGEX";s:4:"type";s:6:"public";s:5:"value";s:56:""/" . self::HTML_HASH_TAG_PARAMETER_PARTIAL_REGEX . "/u"";s:8:"var_type";s:6:"string";s:6:"static";b:0;s:8:"abstract";b:0;s:5:"const";b:1;s:16:"start_line_index";i:21;s:17:"start_token_index";i:52;s:14:"end_line_index";i:21;s:15:"end_token_index";i:69;}}}}

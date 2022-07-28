@@ -19,7 +19,8 @@
 
 var PTLFieldsUtilObj = {
 	
-	input_data_var_name : "input_data",
+	default_input_data_var_name : "input",
+	input_data_var_name : "input",
 	idx_var_name : "i",
 	external_vars : {},
 	
@@ -32,13 +33,13 @@ var PTLFieldsUtilObj = {
 		 * This code was added 2019-10-06 because an input's previous_html containing a html encapsulated with double quotes, this is, something like is:
 		 * 	"<input type=\"hidden\" name=\"ma_article[article_id]\" value=\"#[idx][article_id]#\" />"
 		 * which would be converted to the following ptl:
-		 * 	<ptl:echo "\"<input type=\\"hidden\\" name=\\"ma_article[article_id]\\" value=\\"" \$input_data_734[\$idx_734][article_id] "\\" /&gt;\""/>
+		 * 	<ptl:echo "\"<input type=\\"hidden\\" name=\\"ma_article[article_id]\\" value=\\"" \$input_734[\$idx_734][article_id] "\\" /&gt;\""/>
 		 * which is wrong!!!
 		 * So we need to fix this cases and remove all the encapsulated values which are strings and are not codes. The decapsulateEncapsulatedStrings function does this!
 		 * Basically this function will convert the example above in:
 		 * 	<input type="hidden" name="ma_article[article_id]" value="#[idx][article_id]#" />
 		 * which would be converted to the following ptl:
-		 * 	<ptl:echo "<input type=\"hidden\" name=\"ma_article[article_id]\" value=\"" \$input_data_389[\$idx_389][article_id] "\" /&gt;"/>
+		 * 	<ptl:echo "<input type=\"hidden\" name=\"ma_article[article_id]\" value=\"" \$input_389[\$idx_389][article_id] "\" /&gt;"/>
 		 * which is correct!!!
 		 */
 		form_settings = this.decapsulateEncapsulatedStrings(form_settings);
@@ -387,7 +388,8 @@ var PTLFieldsUtilObj = {
 				this.input_data_var_name = 'input_data';
 				var old_idx_var_name = this.idx_var_name;
 				this.idx_var_name = 'i';
-			
+				var didvn = this.default_input_data_var_name;
+				
 				var lis_class = tree.hasOwnProperty("lis_class") && tree["lis_class"] ? ' class="' + this.parseSettingsAttributeValue(tree["lis_class"]) + '"' : '';
 			
 				var fields = "";
@@ -397,7 +399,8 @@ var PTLFieldsUtilObj = {
 				
 				//must be outisde of the do-while, otherwise it will give an infinitive loop. '\w' means all words with '_' and '/u' means with accents and ç too.
 				//var reg = /<ptl:function:([\p{L}\w]+) input_data>/giu; //Cannot use this bc it does not work in IE. Cannot use this bc it does not work in IE.
-				var reg = /<ptl:function:([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC]+) input_data>/gi; 
+				//var reg = /<ptl:function:([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC]+) input>/gi; 
+				var reg = new RegExp("<ptl:function:([\\w\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u024F\\u1EBD\\u1EBC]+) " + didvn + ">", "gi");
 				
 				//Get inner functions and put them outside of main function
 				do {
@@ -415,9 +418,9 @@ var PTLFieldsUtilObj = {
 				while (matches !== null);
 				
 				//Create Tree function
-				code += '<ptl:function:createTree_' + rand + ' input_data>' +
-				'	<ptl:if !empty(\\$input_data) && (is_array(\\$input_data) || is_object(\\$input_data))>' +
-				'		<ptl:foreach \\$input_data i item>' +
+				code += '<ptl:function:createTree_' + rand + ' ' + didvn + '>' +
+				'	<ptl:if !empty(\\$' + didvn + ') && (is_array(\\$' + didvn + ') || is_object(\\$' + didvn + '))>' +
+				'		<ptl:foreach \\$' + didvn + ' i item>' +
 				'			<li' + lis_class + '>' + fields;
 				
 				//Preparing input_data item's childs
@@ -1078,8 +1081,8 @@ var PTLFieldsUtilObj = {
 			var v = "";
 			var offset = 0;
 			var length = value.length;
-			//var reg = /#([\p{L}\w"' \-\[\]\.\$]+)#/gu; //must be outisde of the do-while, otherwise it will give an infinitive loop. '\w' means all words with '_' and '/u' means with accents and ç too. Cannot use this bc it does not work in IE.
-			var reg = /#([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC"' \-\[\]\.\$]+)#/g; //must be outisde of the do-while, otherwise it will give an infinitive loop. '\w' means all words with '_' and 'u' means with accents and ç too.
+			//var reg = /#([\p{L}\w"' \-\+\[\]\.\$]+)#/gu; //must be outisde of the do-while, otherwise it will give an infinitive loop. '\w' means all words with '_' and '/u' means with accents and ç too. Cannot use this bc it does not work in IE.
+			var reg = /#([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC"' \-\+\[\]\.\$]+)#/g; //must be outisde of the do-while, otherwise it will give an infinitive loop. '\w' means all words with '_' and 'u' means with accents and ç too.
 			var matches_exists = false;
 			
 			do {
@@ -1093,20 +1096,23 @@ var PTLFieldsUtilObj = {
 					matches_exists = true;
 					
 					//echo "m($value):$m<br>";
-					if (m.indexOf("[") != -1) { //if value == #[0]name# or #[$idx - 1][name]#, returns $input_data[0]["name"] or $input_data[$idx - 1]["name"]
+					if (m.indexOf("[") != -1) { //if value == #[0]name# or #[$idx - 1][name]#, returns $input[0]["name"] or $input[$idx - 1]["name"]
 						var sub_matches = m.match(/([^\[\]]+)/g);
 						m = "[" + sub_matches.join("][") + "]"; //fix the cases like: #articles[$idx - 1]name#
 						m = m.replace(/\[idx\]/gi, '[\\$' + this.idx_var_name + "]").replace(/\[\\\$?idx\]/gi, '[\\$' + this.idx_var_name + "]").replace(/\\\$?idx[^a-z\_]/gi, '\\$' + this.idx_var_name);
 						
 						replacement = '\\$' + this.input_data_var_name + m;
 					}
-					/*else if (m == "$" + this.input_data_var_name) //#$input#, if this.input_data_var_name == "input" - Returns it-self.
+					else if (m == "$" + this.input_data_var_name) //#$input#, returns $input - Returns it-self.
 						replacement = '\\$' + this.input_data_var_name;
-					*/else if (m == "$input") //#$input#, if this.input_data_var_name == "input" - Returns it-self.
-						replacement = '\\$' + this.input_data_var_name;
+					else if (m == "$" + this.default_input_data_var_name) //#$input#, returns $input - Returns it-self.
+						replacement = '\\$' + this.default_input_data_var_name;
+					else if (m == "$input" || m == "$input_data") { //this.default_input_data_var_name or this.input_data_var_name should have this already covered, otherwise something is wrong with the above code.
+						alert("MAJOR ERRO no metodo getParsedValue dos ficheiros: HTMLFormHandler.php e PTLFieldsUtilObj.js. Falta aqui qualquer coisa. Verificar o código deste método.");
+					}
 					else if (m == "idx" || m == "$idx" || m == "\\$idx") //#idx#, returns $idx
 						replacement = '\\$' + this.idx_var_name;//replace by the correspondent key
-					else //if $value == #name#, returns $input_data["name"]
+					else //if $value == #name#, returns $input["name"]
 						replacement = '\\$' + this.input_data_var_name + '[' + m + ']';
 					
 					var aux = value.substr(offset, matches.index - offset);
@@ -1264,14 +1270,14 @@ var PTLFieldsUtilObj = {
 			if (value.substr(0, 1) == "#" && value.substr(value.length - 1, 1) == "#") {
 				var m = value.substr(1, value.length - 2);
 				
-				if (m.indexOf("[") != -1) //if value == #[0]name# or #[$idx - 1][name]#, returns $input_data[0]["name"] or $input_data[$idx - 1]["name"]
+				if (m.indexOf("[") != -1) //if value == #[0]name# or #[$idx - 1][name]#, returns $input[0]["name"] or $input[$idx - 1]["name"]
 					return '\\$' + this.input_data_var_name + m.replace(/\[\\\$?idx\]/gi, '[\\$' + this.idx_var_name + "]").replace(/\\\$?idx[^a-z\_]/gi, '\\$' + this.idx_var_name);
-				else if (m == "\$idx") //#$idx#, returns $input_data[$idx]
-					return '\\$' + this.input_data_var_name + '[\\$' + this.idx_var_name + ']'; //Not sure about this: $input_data[' + $idx + ']
-				else //if $value == #name#, returns $input_data["name"]
+				else if (m == "\$idx") //#$idx#, returns $input[$idx]
+					return '\\$' + this.input_data_var_name + '[\\$' + this.idx_var_name + ']'; //Not sure about this: $input[' + $idx + ']
+				else //if $value == #name#, returns $input["name"]
 					return '\\$' + this.input_data_var_name + '[' + m + ']';
 				
-				return null;//returns null in case #...# doesn't exists inside of $input_data or if there isn't #...#
+				return null;//returns null in case #...# doesn't exists inside of $input or if there isn't #...#
 			}
 			
 			return value;//return string value

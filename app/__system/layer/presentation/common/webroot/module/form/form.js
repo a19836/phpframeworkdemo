@@ -308,7 +308,7 @@ function convertFormSettingsDataWithNewInputData(data, input_data_var_name) {
 						var m = matches[1];
 						var replacement = "";
 						
-						if (m.indexOf("[") != -1) { //if value == #[0]name# or #[$idx - 1][name]#, returns $input_data[0]["name"] or $input_data[$idx - 1]["name"]
+						if (m.indexOf("[") != -1) { //if value == #[0]name# or #[$idx - 1][name]#, returns $input[0]["name"] or $input[$idx - 1]["name"]
 							var pos = m.indexOf("[");
 							if (pos > 0)
 								replacement = input_data_var_name + "[" + m.substr(0, pos) + "]" + m.substr(pos);

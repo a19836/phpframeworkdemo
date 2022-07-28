@@ -69,9 +69,18 @@
 	border-bottom:1px solid #CCC;
 	border-right:1px solid #eee;
 }
+.file_class_obj .properties thead th:nth-last-child(2) {
+	border-right:0;
+}
+.file_class_obj .properties thead th:not(.icon_cell) {
+	text-indent:3px;
+}
 .file_class_obj .properties tbody td {
 	border-bottom:1px solid #CCC;
 	border-right:1px solid #eee;
+}
+.file_class_obj .properties tbody td:nth-last-child(2) {
+	border-right:0;
 }
 .file_class_obj .properties .icon_cell {
 	border:0;
@@ -101,6 +110,8 @@
 }
 .file_class_obj .properties table .type {
 	width:100px;
+	text-align:center;
+	text-indent:0;
 }
 .file_class_obj .properties table .type select {
 	width:100px;
@@ -109,12 +120,15 @@
 .file_class_obj .properties table .static {
 	width:50px;
 	text-align:center;
+	text-indent:0;
 }
 .file_class_obj .properties table .static input {
 	display:inline;
 }
 .file_class_obj .properties table .var_type {
 	width:80px;
+	text-align:center;
+	text-indent:0;
 }
 .file_class_obj .properties table .var_type select {
 	width:80px;

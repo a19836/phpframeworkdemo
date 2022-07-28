@@ -26,8 +26,8 @@ function onQuestionCatalogUpdatePTLFromFieldsSettings(elm, settings, code, exter
 			"\n" + '	<ptl:block:top-pagination/>' +
 			"\n" + '</div>' +
 			"\n" + '<ul class="catalog catalog_normal_list">' +
-			"\n" + '	<ptl:if is_array(\\$input_data)>' +
-			"\n" + '		<ptl:foreach \\$input_data i question>' +
+			"\n" + '	<ptl:if is_array(\\$input)>' +
+			"\n" + '		<ptl:foreach \\$input i question>' +
 			"\n" + '			<li class="question">' + 
 			"\n" + '				<a href="' + (question_properties_url != "" ? question_properties_url : '?question_id=') + '<ptl:echo \\$question[question_id]/>' + '">' +
 			"\n" + '					' + code.replace(/\n/g, "\n\t\t\t\t\t") +

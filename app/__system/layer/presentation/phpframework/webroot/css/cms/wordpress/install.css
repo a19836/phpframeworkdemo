@@ -6,13 +6,10 @@
 	display:block;
 	width:100%;
 	min-height:20px;
-	margin-bottom:10px;
 	font-weight:normal;
 }
 .install_wordpress .button {
-	height:25px;
-	line-height:15px;
 	display:inline-block;
-	margin:10px;
+	margin:40px 20px;
 	font-size:inherit;
 }

@@ -13,7 +13,7 @@
 	display: inline-block;
 }
 .top_bar.is_external_template .template_fields {
-	width:163px;
+	width:185px;
 }
 
 /* ENTITY OBJ */
@@ -55,6 +55,14 @@
 	display:inline-block;
 	vertical-align:middle;
 	color:inherit;
+}
+.entity_obj .template > .external_template_params_toggle_btn {
+	display:inline-block;
+	vertical-align:middle;
+	color:inherit;
+}
+.entity_obj:not(.is_external_template) .template > .external_template_params_toggle_btn {
+	display:none;
 }
 
 /* Code Editor */
@@ -116,12 +124,11 @@
 	z-index:7;
 	overflow:hidden;
 	font-size:11px;
+	transition:.5s all;
 }
 .entity_obj .external_template_params.collapsed {
-	height:40px;
-}
-.entity_obj .external_template_params.collapsed .external_template_type {
-	margin-bottom:20px;
+	height:0px;
+	opacity:0;
 }
 .entity_obj .external_template_params > div {
 	margin:5px auto;

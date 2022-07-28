@@ -11,6 +11,7 @@ include $EVC->getUtilPath("util");
 
 if($_GET["step"] == 1) {//1st step
 	echo "<br/>GET SQL FROM DATA ACCESS THAT IS NOT REGISTER IN THE dataaccess/ibatis/xxx/SERVICES.xml";
+	$parameters = array("title" => "ibatis item test X");
 	echo "<br/>sql: ".$EVC->getBroker()->callBusinessLogic("test", "get_query_sql", array("module" => "test", "type" => "insert", "service" => "insert_item_not_registered", "parameters" => $parameters));
 	//echo "<br/>sql: ".$EVC->getBroker()->callBusinessLogic("test", "get_query_sql", array("module" => "test.item.xml", "type" => "insert", "service" => "insert_item_not_registered", "parameters" => $parameters));
 	//echo "<br/>sql: ".$EVC->getBroker()->callBusinessLogic("test", "get_query_sql", array("module" => "test/item.xml", "type" => "insert", "service" => "insert_item_not_registered", "parameters" => $parameters));

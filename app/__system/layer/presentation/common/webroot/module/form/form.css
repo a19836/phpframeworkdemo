@@ -32,6 +32,14 @@
 	background-color:#fff;
 }*/
 
+.module_form_settings .sla .tabs.tabs_right > li {
+	float:left;
+}
+.module_form_settings .sla #ui > .taskflowchart > .workflow_menu {
+	left:250px;
+	right:auto;
+}
+
 /* FORM WIZARD */
 .module_form_settings .sla_groups_flow > nav > a.open_form_wizard {
 	cursor:pointer;

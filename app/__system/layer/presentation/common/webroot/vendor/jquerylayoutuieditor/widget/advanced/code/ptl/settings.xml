@@ -169,7 +169,7 @@
 						});
 					html += '/>';
 					
-					//for the cases: <input placeHolder="<ptl:echo str_replace('"', '&quot;', ($input_data[article_id] )) />" />
+					//for the cases: <input placeHolder="<ptl:echo str_replace('"', '&quot;', ($input[article_id] )) />" />
 					html = html.replace(/&/g, "&amp;");
 					
 					var temp = $(html);

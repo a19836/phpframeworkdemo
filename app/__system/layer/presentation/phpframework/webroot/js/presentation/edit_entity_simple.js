@@ -158,6 +158,7 @@ function onChangeTemplateGenre(elm) {
 	var top_bar = $(".top_bar");
 	var select = p.children("select[name=template]");
 	var external_template_params = entity_obj.children(".external_template_params");
+	var external_template_params_toggle_btn = p.children(".external_template_params_toggle_btn");
 	var template_value = null;
 	
 	if (!is_external_template) {
@@ -167,6 +168,7 @@ function onChangeTemplateGenre(elm) {
 		
 		select.show();
 		external_template_params.hide();
+		external_template_params_toggle_btn.hide();
 		
 		//update template layout ui
 		updateTemplateLayout(entity_obj);
@@ -176,6 +178,7 @@ function onChangeTemplateGenre(elm) {
 		top_bar.addClass("is_external_template");
 		select.hide();
 		external_template_params.show();
+		external_template_params_toggle_btn.show();
 		
 		onChangeExternalTemplateType( external_template_params.find(".external_template_type select")[0] );
 	}
@@ -237,8 +240,8 @@ function onChooseAvailableTemplate(elm, show_templates_only) {
 
 function toggleExternalTemplateParams(elm) {
 	elm = $(elm);
-	elm.toggleClass("minimize maximize");
-	elm.parent().closest(".external_template_params").toggleClass("collapsed");
+	elm.toggleClass("dropdown_arrow dropup_arrow");
+	elm.parent().closest(".entity_obj").children(".external_template_params").toggleClass("collapsed");
 }
 
 function onChangeExternalTemplateType(elm) {

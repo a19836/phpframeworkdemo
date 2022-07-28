@@ -1425,6 +1425,10 @@ body .workflow_message .status span.close_message::before,
 }
 
 /* CODE EDITOR - EDITOR SETTINGS */
+#ace_settingsmenu, #kbshortcutmenu {
+	height:calc(100vh - 80px);
+	margin-top:50px !important;
+}
 #ace_settingsmenu, 
   #kbshortcutmenu {
 	padding:15px 0 !important;

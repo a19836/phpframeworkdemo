@@ -87,10 +87,10 @@ $block_settings[$block_id] = array(
 	"template_type" => "user_defined",
 	"ptl" => array(
 		"code" => "
-<ptl:if is_array(\$input_data)>
+<ptl:if is_array(\$input)>
 	<!-- Note that this does not need the UL element bc the template already contains the UL. -->
 	
-	<ptl:foreach \$input_data i item>
+	<ptl:foreach \$input i item>
 		
 		<!-- Nav Item - Components Collapse Menu -->
 		<li class=\"nav-item <ptl:echo \$item[class]/>\">
@@ -144,7 +144,7 @@ $block_settings[$block_id] = array(
 	"template_type" => "user_defined",
 	"ptl" => array(
 		"code" => "
-<ptl:getMenuHTML \$input_data />
+<ptl:getMenuHTML \$input />
 
 <ptl:function:getMenuHTML menus>
 	<ptl:if is_array(\$menus)>

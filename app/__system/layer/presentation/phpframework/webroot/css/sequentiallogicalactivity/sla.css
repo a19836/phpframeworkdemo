@@ -3,6 +3,9 @@
 .sla {
 	border:0;
 }
+.sla .tabs #tasks_flow_tab.ui-state-active {
+	background:#fff;
+}
 .sla .sla_groups_flow > nav > a:hover {
 	color:var(--icon-hover-color);
 }
@@ -1152,9 +1155,17 @@
 	width:130px;
 }
 .sla #ui > .taskflowchart > .tasks_menu_hide {
+	left:130px;
+}
+.sla #ui > .taskflowchart.reverse > .tasks_menu_hide {
+	left:auto;
 	right:130px;
 }
 .sla #ui > .taskflowchart > .tasks_flow {
+	left:135px;
+}
+.sla #ui > .taskflowchart.reverse > .tasks_flow {
+	left:0;
 	right:135px;
 }
 .sla #ui > .taskflowchart > .tasks_menu > ul > li.tasks_group_disabled {

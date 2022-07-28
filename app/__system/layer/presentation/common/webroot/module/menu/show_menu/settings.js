@@ -45,7 +45,7 @@ function setDefaultTemplatePTL() {
 		"\n" + '</ptl:if>' +
 		"\n" + '' +
 		"\n" + '<ul class="menu_main_ul">' +
-		"\n" + '	<ptl:getMenusHTML_' + r + ' \\$input_data>' +
+		"\n" + '	<ptl:getMenusHTML_' + r + ' \\$input>' +
 		"\n" + '</ul>';
 	
 	$(".menu_settings .els > .ptl > .layout-ui-editor > .template-source > textarea").text(ptl);

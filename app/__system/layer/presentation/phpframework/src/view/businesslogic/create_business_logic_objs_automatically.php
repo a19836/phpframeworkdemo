@@ -45,7 +45,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $filter_by_layout_url_query =
 				<div class="title">Automatic Create Business Logic Files in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
 			</header>
 		</div>
-		<div class="title">STATUSES</div>
+		<div class="title">Statuses</div>
 		<table>
 			<tr>
 				<th class="file_path table_header">File Path</th>

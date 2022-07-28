@@ -133,7 +133,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		//execute user list with ptl
 		if ($catalog_type == "user_list" && $settings["ptl"]) {
 			$form_settings = array("ptl" => $settings["ptl"]);
-			$events_item_input_data_var_name = $form_settings["ptl"]["external_vars"]["events_item_input_data_var_name"]; //this should contain "event" by default, but is not mandatory. This value should be the same than the following foreach-item-value-name: <ptl:foreach $input_data i event>, but only if the user doesn't change this value. If the user changes the foreach to <ptl:foreach $input_data i item>, he must change the external var "events_item_input_data_var_name" to "item" too.
+			$events_item_input_data_var_name = $form_settings["ptl"]["external_vars"]["events_item_input_data_var_name"]; //this should contain "event" by default, but is not mandatory. This value should be the same than the following foreach-item-value-name: <ptl:foreach $input i event>, but only if the user doesn't change this value. If the user changes the foreach to <ptl:foreach $input i item>, he must change the external var "events_item_input_data_var_name" to "item" too.
 			if ($events_item_input_data_var_name)
 				$form_settings["ptl"]["input_data_var_name"] = $events_item_input_data_var_name;
 			$HtmlFormHandler = new \HtmlFormHandler($form_settings);

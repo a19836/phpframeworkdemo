@@ -71,7 +71,8 @@
 }
 
 .data_access_obj .description {
-	margin:0px 15px 20px 15px;
+	/*margin:0px 15px 20px 15px;*/
+	margin:0px 20px 20px 0;
 	padding:5px 5px;
 	background-color:#F2F2F2;
 	border:1px solid #D7D7D7;
@@ -96,10 +97,16 @@
 	border-bottom:1px solid #CCC;
 	border-right:1px solid #f5f5f5;
 }
+.data_access_obj thead th:nth-last-child(2) {
+	border-right:0;
+}
 .data_access_obj tbody td {
 	text-align:center;
 	border-bottom:1px solid #CCC;
 	border-right:1px solid #f5f5f5;
+}
+.data_access_obj tbody td:nth-last-child(2) {
+	border-right:0;
 }
 .data_access_obj tbody input:not([type=submit]):not([type=button]), .data_access_obj tbody select {
 	background-color:transparent;
@@ -192,6 +199,9 @@
 .data_access_obj .includes .include .delete {
 	
 }
+.data_access_obj .includes .include .search + .delete {
+	margin-left:5px;
+}
 
 /* MAPS */
 .data_access_obj .map .type, .data_access_obj .map .class {
@@ -228,8 +238,8 @@
 	margin:auto;
 }
 .data_access_obj .map .update_automatically {
-	margin-left:10px;
-	float:right;
+	/*margin-left:10px;
+	float:right;*/
 }
 .data_access_obj .map .delete {
 	margin-left:20px;
@@ -239,7 +249,7 @@
 /* PARAMETERS MAP */
 .data_access_obj .parameters .type label, .data_access_obj .parameters .class label, .data_access_obj .parameters .map label {
 	width:140px;
-	font-size:13px;
+	/*font-size:13px;*/
 }
 .data_access_obj .parameters .type select, .data_access_obj .parameters .class input {
 	margin-top:3px;
@@ -255,7 +265,6 @@
 }
 .data_access_obj .parameters .map_id label, .data_access_obj .parameters .map_class label {
 	width:50px;
-	font-weight:bold;
 	font-size:10px;
 	color: #666;
 }
@@ -315,7 +324,6 @@
 }
 .data_access_obj .results .map_id label, .data_access_obj .results .map_class label {
 	width:50px;
-	font-weight:bold;
 	font-size:10px;
 	color: #666;
 }
@@ -969,6 +977,7 @@
 .choose_table_or_attribute {
 	width:340px;
 	font-size:8pt;
+	border:1px solid #999;
 }
 .choose_table_or_attribute .contents div {
 	width:100%;

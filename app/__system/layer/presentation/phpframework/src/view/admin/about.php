@@ -48,7 +48,7 @@ $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuth
 	</div>
 	<div class="framework">
 		<label>Framework:</label>
-		<span><a href="https://www.onlineitframework.com" target="onlineitframework">www.onlineitframework.com</a></span>
+		<span><a href="https://www.bloxtor.com" target="bloxtor">www.bloxtor.com</a></span>
 	</div>
 	<div class="version">
 		<label>Version:</label>

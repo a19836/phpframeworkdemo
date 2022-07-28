@@ -140,11 +140,17 @@
 }
 .selected_task_properties .db_table_task_html > ul {
 	margin-top:15px;
+	margin-left:-15px;
+	margin-right:-15px;
 	background:none;
 	border-top: none;
 	border-left: none;
 	border-right: none;
 	border-radius: 0;
+}
+.taskflowchart:not(.fixed_properties):not(.fixed_side_properties) > .selected_task_properties .db_table_task_html.advanced_ui_shown > ul {
+	margin-left:0;
+	margin-right:0;
 }
 
 /* START: SELECTED TASK PROPERTIES - SIMPLE UI */

@@ -38,7 +38,7 @@ $template = '
 <ptl:echo asd/ss${var[asd][asd(asd 12)]}ss/asd>
 <ptl:echo asd/s"s{$var[asd][asdasd(f)]}ss/asd">
 <ptl:echo "asd/ss$var[asd][asdasd]ss/asd">
-<ptl:echo "bla ble ." $input_data[username] ". bli blo." $input_data[name] ". blu"/>';*/
+<ptl:echo "bla ble ." $input[username] ". bli blo." $input[name] ". blu"/>';*/
 /*$template = '
 <php:define NAME name>
 <php:definevar:name NAME>
@@ -176,7 +176,7 @@ some html here
 </div>';*/
 /*$template = "<div class=\"form-group photo_id hidden\">
    <div class=\"form-input\">
-      <input type=\"hidden\" class=\"form-control \" value=\"<ptl:echo str_replace('\"', '&quot;', (\$input_data[photo_id] )) />\" photoUrl=\"<ptl:echo str_replace('\"', '&quot;', (\$input_data[photo_url] )) />\" onRemovePhotoConfirmationMessage=\"<ptl:echo str_replace('\"', '&quot;', (translateProjectText(\$EVC, 'Do you really want to delete this photo?'))) />\" name=\"photo_id\" />
+      <input type=\"hidden\" class=\"form-control \" value=\"<ptl:echo str_replace('\"', '&quot;', (\$input[photo_id] )) />\" photoUrl=\"<ptl:echo str_replace('\"', '&quot;', (\$input[photo_url] )) />\" onRemovePhotoConfirmationMessage=\"<ptl:echo str_replace('\"', '&quot;', (translateProjectText(\$EVC, 'Do you really want to delete this photo?'))) />\" name=\"photo_id\" />
    </div>
 </div>";*/
 
@@ -186,8 +186,8 @@ some html here
 <div class="nav-text<ptl:echo strlen($item[label]) &gt; 22? " nav-text-slide" : ""/>"><ptl:echo $item[label]/>:<ptl:echo strlen($item[label])></div>';*/
 
 //$template = '<ptl:echo addcslashes(str_replace("\n", "", foo($x)), "\'") />';
-//$template = "<ptl:echo str_replace('</textarea', '&lt;/textarea', (\$_POST[description] ? \$_POST[description] : \$input_data[appointment][description])) />";
-//$template = "<ptl:echo str_replace('</textarea', '&lt;/textarea', \$asd !== \$_POST[description] ? \$_POST[description] : \$input_data[appointment][description]) />";
+//$template = "<ptl:echo str_replace('</textarea', '&lt;/textarea', (\$_POST[description] ? \$_POST[description] : \$input[appointment][description])) />";
+//$template = "<ptl:echo str_replace('</textarea', '&lt;/textarea', \$asd !== \$_POST[description] ? \$_POST[description] : \$input[appointment][description]) />";
 //$template = "<span class=\"badge badge-<ptl:echo \$item[active] ? 'success' : 'secondary'/>\"><ptl:echo translateProjectText(\$EVC, \$item[active] ? 'Active' : 'Inactive')/></span>";
 //$template = '<ptl:echo $asd && "asd" />';
 //$template = '<ptl:echo $asd || "asd" />';

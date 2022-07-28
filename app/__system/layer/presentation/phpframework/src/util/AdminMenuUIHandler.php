@@ -48,7 +48,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 <link rel="stylesheet" href="' . $peb014cfd . 'css/admin/admin_menu.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $peb014cfd . 'js/admin/admin_menu.js"></script>
 '; } public static function getContextMenus($pe847b157) { return '
-<div id="selected_menu_properties" class="myfancypopup">
+<div id="selected_menu_properties" class="myfancypopup with_title">
 	<div class="title">Properties</div>
 	<p class="content"></p>
 </div>

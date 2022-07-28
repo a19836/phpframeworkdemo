@@ -447,8 +447,8 @@ function getFieldSettingsPTLCode(settings, els, external_vars) {
 			"\n" + '		</tr>' +
 			"\n" + '	</thead>' +
 			"\n" + '	<tbody>' +
-			"\n" + '		<ptl:if is_array(\\$input_data)>' +
-			"\n" + '			<ptl:foreach \\$input_data i item>' +
+			"\n" + '		<ptl:if is_array(\\$input)>' +
+			"\n" + '			<ptl:foreach \\$input i item>' +
 			"\n" + '				<tr' + rows_class + '>' + 
 			"" + '						' + code_table_body + 
 			"\n" + '				</tr>' +

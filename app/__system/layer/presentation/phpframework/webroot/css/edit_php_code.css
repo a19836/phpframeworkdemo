@@ -117,6 +117,10 @@
 #code .ace_editor .ace_layer .ace_active-line {
 	background:var(--main-ace-editor-active-line-bg);
 }
+#code .ace_editor .ace_search {
+	background:var(--main-iframe-bg);
+	color:var(--main-iframe-color);
+}
 #code .ace_editor .ace_search input[type=submit]:not(:disabled), 
   #code .ace_editor .ace_search input[type=button]:not(:disabled), 
   #code .ace_editor .ace_search button:not(:disabled) {

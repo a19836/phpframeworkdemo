@@ -126,7 +126,8 @@ body,
 	margin:20px;
 	padding:20px;
 	text-align:center;
-	background:#eee;
+	background:var(--main-iframe-bg);
+	color:var(--main-iframe-color);
 	border-radius:1rem;
 }
 .select_tables .brokers .info {
@@ -145,7 +146,7 @@ body,
 }
 .select_tables .brokers table td.path input {
 	width:250px;
-	font-size:80%;
+	font-size:inherit;
 	background-color:#fff;
 }
 
@@ -158,6 +159,10 @@ body,
 }
 .select_tables .users_permissions .info {
 	display:block;
+}
+.select_tables .users_permissions input,
+  .select_tables .users_permissions select {
+	font-size:inherit;
 }
 .select_tables .users_permissions table {
 	margin:10px auto;
@@ -222,7 +227,8 @@ body,
 	margin:10px;
 	padding:5px 10px;
 	border:1px inset #CCC;
-	background-color:#eee;
+	background-color:var(--main-iframe-bg);
+	color:var(--main-iframe-color);
 }
 .tables_settings .error label {
 	color:#999;
@@ -250,6 +256,8 @@ body,
 	clear:both;
 	float:none;
 	background:#eee;
+	background:var(--main-iframe-bg);
+	color:var(--main-iframe-color);
 	border-bottom:1px solid #aaa;
 }
 .table_group .table_header label {
