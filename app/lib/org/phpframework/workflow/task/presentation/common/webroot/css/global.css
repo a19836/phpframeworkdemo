@@ -349,7 +349,7 @@
 }
 .selected_task_properties .settings .links table td input {
 	width:200px;
-	font-size:initial;
+	font-size:inherit;
 	color:#999;
 	background:transparent;
 	border:0;
@@ -643,7 +643,7 @@
 }
 .selected_task_properties .ui_table_attribute_properties_popup .manual_list td input {
 	width:200px;
-	font-size:initial;
+	font-size:inherit;
 	color:#999;
 	background:transparent;
 	border:0;
