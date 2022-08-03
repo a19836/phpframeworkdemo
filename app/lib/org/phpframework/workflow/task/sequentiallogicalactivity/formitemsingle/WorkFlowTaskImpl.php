@@ -17,8 +17,5 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-?><div class="sla_item_task_html slaitemsingle_task_html sla_main_groups">
-	<div class="sla_group_item"></div>
-	
-	<div class="task_property_exit" exit_id="default_exit" exit_color="#3c963c"></div>
-</div>
+
+namespace WorkFlowTask\programming\slaitemsingle; include_once get_lib("org.phpframework.workflow.WorkFlowTask"); class WorkFlowTaskImpl extends \WorkFlowTask { public function createTaskPropertiesFromCodeStmt($v5faa4b8a01, $pb16df866, &$v6939304e91 = null, &$v1f377b389c = null) { return null; } public function parseProperties(&$v7f5911d32d) { $v3c3af72a1c = $v7f5911d32d["raw_data"]; $pef349725 = $v3c3af72a1c["childs"]["properties"][0]["childs"]; $pef349725 = \MyXML::complexArrayToBasicArray($pef349725, array("lower_case_keys" => true)); return $pef349725["properties"]; } public function printCode($v1d696dbd12, $v56dcda6d50, $v54bb17785b = "", $v5d3813882f = null) { $v539082ff30 = $this->data; $pef349725 = $v539082ff30["properties"]; $v7e12e3e1a3 = self::printTask($v1d696dbd12, $v539082ff30["exits"][self::DEFAULT_EXIT_ID][0], $v56dcda6d50, $v54bb17785b, $v5d3813882f); return array( "properties" => $pef349725, "next" => $v7e12e3e1a3, ); } } ?>

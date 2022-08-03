@@ -1,39 +1,14 @@
 .jsplumbtaskmenu .task.task_page {
 	background-image:url('../img/bg.svg');
-	background-image:url('../img/bg.gif');
 }
-.jsplumbtaskmenu .task.task_page:before {
-	background-color:#00727C;
-}
-.jsplumbtaskmenu .task.task_page:after {
-	background-color:#00727C66;
-}
-.jsplumbtaskworkflow .task.task_page {
+.jsplumbtaskworkflow .task.task_page .info:before {
 	background-image:url('../img/bg.svg');
-	background-image:url('../img/bg.gif');
-}
-.jsplumbtaskworkflow .task.task_page:before {
-	background-color:#00727C;
-}
-.jsplumbtaskworkflow .task.task_page > .task_droppable {
-	min-height:100px;
-	position:absolute;
-	top:30px;
-	left:0;
-	right:0;
-	bottom:0;
-	box-sizing:border-box;
-	border-top:1px solid #00727C;
-	background-color:#00727C66;
-}
-.jsplumbtaskworkflow .task.task_page > .task_droppable.task_droppable_over {
-	background:#00727C;
-	background:#00727Ca3;
 }
 
 /* page_task_html */
 .page_task_html {
 	border:0;
+	font-size:inherit;
 }
 .page_task_html > ul.ui-tabs-nav {
 	background:none;

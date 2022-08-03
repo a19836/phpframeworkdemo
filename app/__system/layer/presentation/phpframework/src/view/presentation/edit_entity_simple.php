@@ -143,7 +143,7 @@ var sla_settings_obj = ' . json_encode($sla_settings_obj) . ';
 			</div>
 			
 			<div id="resource_settings" class="resource_settings">
-				' . SequentialLogicalActivitiesHandler::getSLAHtml($EVC, $project_url_prefix, $project_common_url_prefix, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $tasks_contents, $db_drivers, $presentation_projects, $WorkFlowUIHandler, array( "save_func" => "saveEntity", )) . '
+				' . SequentialLogicalActivitiesUIHandler::getSLAHtml($EVC, $project_url_prefix, $project_common_url_prefix, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $tasks_contents, $db_drivers, $presentation_projects, $WorkFlowUIHandler, array( "save_func" => "saveEntity", )) . '
 			</div>
 		</div>
 		<div class="code_layout_ui_editor">

@@ -1,37 +1,8 @@
 .jsplumbtaskmenu .task.task_form {
-	/*background-image:url('../img/bg.svg');
-	background-image:url('../img/bg.gif');*/
+	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskmenu .task.task_form:before {
-	background-color:#29B473;
-}
-.jsplumbtaskmenu .task.task_form:after {
-	background-color:#29B47366;
-}
-.jsplumbtaskworkflow .task.task_form {
-	/*background-image:url('../img/bg.svg');
-	background-image:url('../img/bg.gif');*/
-}
-.jsplumbtaskworkflow .task.task_form:before {
-	background-color:#29B473;
-}
-.jsplumbtaskworkflow .task.task_form > .task_droppable {
-	min-height:100px;
-	position:absolute;
-	top:30px;
-	left:0;
-	right:0;
-	bottom:0;
-	box-sizing:border-box;
-	border-top:1px solid #29B473;
-	background-color:#29B47366;
-}
-.jsplumbtaskworkflow .task.task_form > .task_droppable.task_droppable_over {
-	background:#bfecbf;
-	background:#29B473a3;
-}
-.jsplumbtaskworkflow .task.task_form > .short_actions {
-	display:none;
+.jsplumbtaskworkflow .task.task_form .info:before {
+	background-image:url('../img/bg.svg');
 }
 
 /* task properties */

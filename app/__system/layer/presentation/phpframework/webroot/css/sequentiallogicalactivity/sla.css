@@ -3,8 +3,20 @@
 .sla {
 	border:0;
 }
-.sla .tabs #tasks_flow_tab.ui-state-active {
-	background:#fff;
+.sla .tabs.tabs_icons {
+	border-bottom-color:var(--resize-bar-border);
+}
+.sla .tabs.tabs_icons li.ui-tabs-active a {
+	background:var(--main-iframe-bg);
+}
+body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
+	background:var(--main-template-bg);
+}
+.sla .tabs li a {
+	padding-bottom:8px !important;
+}
+.sla .tabs li a .icon {
+	margin-left:0;
 }
 .sla .sla_groups_flow > nav > a:hover {
 	color:var(--icon-hover-color);
@@ -13,7 +25,7 @@
 	cursor:pointer;
 }
 .sla .sla_groups_flow > nav > a:not(:first-child) {
-	margin-left:20px;
+	margin-left:13px;
 }
 .sla .sla_groups_flow > nav > a .icon {
 	margin-left:5px;
@@ -126,7 +138,7 @@
 .sla_main_groups .sla_group_item > .sla_group_header > .move_up {
 	margin-left:5px;
 }
-.sla_groups > .sla_group_item:nth-child(2) > .sla_group_header > .move_up {
+.sla_groups > .sla_group_item:nth-child(3) > .sla_group_header > .move_up {
 	opacity:.1;
 	cursor:default;
 }
@@ -138,7 +150,7 @@
   .sla_main_groups .sla_group_item > .sla_group_header > .remove:hover,
   .sla_main_groups .sla_group_item > .sla_group_header > .move_up:hover,
   .sla_main_groups .sla_group_item > .sla_group_header > .move_down:hover {
-	color:#000;
+	/*color:#000;*/
 }
 .sla_main_groups .sla_group_item > .sla_group_header > .sla_group_sub_header {
 	min-height:20px;
@@ -1139,9 +1151,8 @@
 }
 .sla #ui > .taskflowchart > .workflow_menu {
 	position:absolute;
-	top:-23px;
-	right:5px;
-	right:250px;
+	top:-30px;
+	right:101px;
 	z-index:4;
 }
 .sla #ui > .taskflowchart > .workflow_menu:before {
@@ -1248,6 +1259,7 @@
 .sla .taskflowchart .selected_task_properties .sla_group_item > .sla_group_body.selected_task_properties {
 	position:initial !important;
 	max-height:none;
+	background:#fff;
 }
 .sla .taskflowchart.fixed_properties .selected_task_properties .sla_group_item .selected_task_properties {
 	height:auto !important;

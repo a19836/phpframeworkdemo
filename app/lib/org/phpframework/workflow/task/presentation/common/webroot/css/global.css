@@ -4,131 +4,121 @@
 .jsplumbtaskworkflow ._jsPlumb_endpoint {
 	opacity:0;
 }
+.jsplumbtaskworkflow .connector_overlay_label {
+	color:#000 !important;
+}
 
 /* MENU TASKS */
-.jsplumbtaskmenu .tasks_group:first-child {
-	margin-top:0 !important;
-}
 .jsplumbtaskmenu .task {
-	width:70px !important;
-	margin:15px 15px 0 !important;
-	background-size:100% 100%;
-	overflow:hidden !important;
-	padding:10px;
-	margin-bottom:5px !important;
-	border-radius:5px;
-}
-.jsplumbtaskmenu .task:before {
-	content:" ";
-	display:block;
-	position:absolute;
-	top:0;
-	left:0;
-	right:0;
-	height:20px;
-}
-.jsplumbtaskmenu .task:after {
-	content:" ";
-	display:block;
-	position:absolute;
-	top:20px;
-	left:0;
-	right:0;
-	bottom:0;
+	width:40px !important;
+	margin:15px 22px 30px !important;
+	padding:0 !important;
+	overflow:visible !important;
+	background-size:contain !important;
+	background-image:url('../img/user_generated_task_bg.svg');
+	box-sizing:border-box;
 }
 .jsplumbtaskmenu .task span {
-	width:100%;
-	max-height:none;
-	line-height:normal;
-	margin:2px 0 0;
-	padding-left:5px;
-	position:relative;
+	width:70px;
+	max-height:26px;
+	line-height:13px;
+	margin-left:-15px;
+	margin-right:-15px;
+	display:block;
+	position:absolute;
 	left:0;
-	top:0;
-	color:#fff;
+	top:40px;
+	color:#426efa;
 	font-size:10px;
-	text-align:left;
-	box-sizing:border-box;
+	font-weight:normal;
+	text-align:center;
+	overflow:hidden;
+	text-overflow:ellipsis;
 }
 
 /* FLOW TASKS */
 .jsplumbtaskworkflow .task {
-	background-size:100% 100%;
-	border-style:solid !important;
 	min-width:120px !important;
-	min-height:50px !important;
-	padding:0 !important;
+	min-height:140px !important;
+	margin:0;
+	padding:0 0 10px !important;
+	border-radius:2px !important;
+	border-style:solid !important;
+	border-color:#DFE1ED !important;
+	box-shadow:3px 3px 4px rgba(0, 0, 0, 0.05) !important;
+	background-color:transparent;
+	box-sizing:border-box;
+}
+.jsplumbtaskworkflow .task:not(.is_start_task):hover {
 	opacity:1 !important;
 }
-.jsplumbtaskworkflow .task:before {
-	content:" ";
-	display:block;
-	position:absolute;
-	top:0;
-	left:0;
-	right:0;
-	height:30px;
-}
 .jsplumbtaskworkflow .task:hover:before {
-	top:0 !important;
-	border:0 !important;
-	border-radius:0 !important;
+	display:none !important;
+}
+.jsplumbtaskworkflow .task .task_info {
+	min-height:auto;
+	background:none;
+	color:rgb(0, 0, 0, .3);
 }
 .jsplumbtaskworkflow .task:hover:after {
-	bottom:-20px !important;
+	bottom:-25px !important;
 	left:-5px !important;
 	background:none !important;
-}
-.jsplumbtaskworkflow .task > .task_droppable {
 	
+	display:none !important; /* This causes noise in the diagram. The diagrams should be as simple as possible, so we should reduce the noise. */
 }
-.jsplumbtaskworkflow .task .task_droppable .task:hover:after {
-	display:none;
+.jsplumbtaskworkflow .task .info {
+	width:calc(100% + 2px);
+	min-height:25px;
+	margin-left:-1px;
+	padding:5px 10px 5px 33px;
+	border:1px solid #4070FF !important;
+	background:#4070FF;
+	color:#fff;
+	border-top-left-radius:2px;
+	border-top-right-radius:2px;
+	font-size:11px;
+	text-align:left;
+	box-sizing:border-box;
+	box-shadow:0px -1px 5px #ccc;
+}
+.jsplumbtaskworkflow .task .info:before {
+	content:"";
+	width:18px;
+	height:18px;
+	display:block;
+	position:absolute;
+	left:7px;
+	background-repeat:no-repeat;
+	background-color:#fff;
+	background-position:center;
+	background-size:15px 12px;
+	border-radius:100%;
 }
 .jsplumbtaskworkflow .task:hover .short_actions {
 	padding:10px;
 	top:-30px;
 	right:-5px;
-	color:#ccc;
-}
-.jsplumbtaskworkflow .task .task_info {
-	top:-20px;
-	font-size:10px;
-	background:none;
-	color:#ccc;
-	width:auto;
-	left:0;
-	padding:0;
-}
-.jsplumbtaskworkflow .task .info {
-	position:absolute;
-	top:5px;
-	left:30px;
-	right:0px;
-	width:auto;
-	height:20px;
-	line-height:20px;
-	overflow:hidden;
-	text-align:left;
-	color:#fff;
 }
 .jsplumbtaskworkflow .task .eps {
-	position:absolute;
-	top:3px !important;
-	left:5px;
 	width:20px;
 	height:20px;
+	margin:0;
+	padding:0;
+	position:absolute;
+	left:calc(50% - 8px);
+	bottom:-8px;
+	box-sizing:border-box;
+	z-index:99; /* bc of the .ui-resizable-handle items */
 }
 .jsplumbtaskworkflow .task .ep {
-	position:relative;
-	width:100%;
-	height:20px;
-	line-height:20px;
-	margin:2px 0 0 0;
-	font-size:10px;
-	border:1px;
+	width:16px;
+	height:16px;
+	margin:0;
+	border:1px solid #4070FF !important;
 	border-radius:100%;
-	background:#fff !important;
+	background:#4070FF !important;
+	box-shadow:0px -1px 5px #ccc;
 }
 .jsplumbtaskworkflow .task .ep:hover:after {
 	content:"Drag me to another box to connect with it";
@@ -142,14 +132,30 @@
 	border-radius:2px;
 	white-space:nowrap;
 	z-index:4;
+	
+	display:none !important; /* This causes noise in the diagram. The diagrams should be as simple as possible, so we should reduce the noise. */
 }
-.jsplumbtaskworkflow .task .ep span {
+
+.jsplumbtaskworkflow .task > .task_droppable {
+	min-height:100px;
+	position:absolute;
+	top:30px;
+	left:0;
+	right:0;
+	bottom:10px;
+	box-sizing:border-box;
+}
+.jsplumbtaskworkflow .task > .task_droppable.task_droppable_over {
+	background-color:#f7f7f7;
+}
+.jsplumbtaskworkflow .task .task_droppable .task:hover:after {
 	display:none;
 }
 
 /* page_content_task_html */
 .page_content_task_html {
 	border:0;
+	font-size:inherit;
 }
 .page_content_task_html > ul.ui-tabs-nav {
 	background:none;

@@ -1,6 +1,9 @@
 .jsplumbtaskworkflow path { 
 	stroke-width:2px; 
 }
+.jsplumbtaskworkflow path { 
+	stroke-width:1px; 
+}
 
 /* START: JSPLUMB TASK */
 .task.task_menu.task_table {
@@ -13,9 +16,6 @@
 	border-radius:0.5em !important;
 }
 
-.jsplumbtaskworkflow path { 
-	stroke-width:1px; 
-}
 .jsplumbtaskworkflow .task.task_table {
 	width:200px !important;
 	height:auto !important;

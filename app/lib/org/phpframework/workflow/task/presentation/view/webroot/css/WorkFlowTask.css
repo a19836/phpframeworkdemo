@@ -1,37 +1,8 @@
 .jsplumbtaskmenu .task.task_view {
-	/*background-image:url('../img/bg.svg');
-	background-image:url('../img/bg.gif');*/
+	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskmenu .task.task_view:before {
-	background-color:#00DEF2;
-}
-.jsplumbtaskmenu .task.task_view:after {
-	background-color:#00DEF266;
-}
-.jsplumbtaskworkflow .task.task_view {
-	/*background-image:url('../img/bg.svg');
-	background-image:url('../img/bg.gif');*/
-}
-.jsplumbtaskworkflow .task.task_view:before {
-	background-color:#00DEF2;
-}
-.jsplumbtaskworkflow .task.task_view > .task_droppable {
-	min-height:100px;
-	position:absolute;
-	top:30px;
-	left:0;
-	right:0;
-	bottom:0;
-	box-sizing:border-box;
-	border-top:1px solid #00DEF2;
-	background-color:#00DEF266;
-}
-.jsplumbtaskworkflow .task.task_view > .task_droppable.task_droppable_over {
-	background:#c5c8f6;
-	background:#00DEF2a3;
-}
-.jsplumbtaskworkflow .task.task_view > .short_actions {
-	display:none;
+.jsplumbtaskworkflow .task.task_view .info:before {
+	background-image:url('../img/bg.svg');
 }
 
 /* task properties */

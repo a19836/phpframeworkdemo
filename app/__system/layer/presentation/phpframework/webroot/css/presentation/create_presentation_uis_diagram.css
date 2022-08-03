@@ -38,19 +38,19 @@
 	top:50px;
 }
 .taskflowchart .tasks_menu {
-	width:130px;
+	width:100px;
 }
 .taskflowchart:not(.reverse) .tasks_menu_hide {
-	left:130px;
+	left:100px;
 }
 .taskflowchart.reverse .tasks_menu_hide {
-	right:130px;
+	right:100px;
 }
 .taskflowchart:not(.reverse) .tasks_flow {
-	left:135px;
+	left:105px;
 }
 .taskflowchart.reverse .tasks_flow {
-	right:135px;
+	right:105px;
 }
 
 .taskflowchart .tasks_flow::-webkit-scrollbar {
@@ -68,14 +68,6 @@
 	display:block;
 }
 
-.taskflowchart .tasks_menu .task {
-	background-image:none !important;
-}
-
-.task_context_menu .start_task {
-	display:none !important;
-}
-
 /* TASK FLOW CHART - TASK PROPERTIES */
 .taskflowchart.with_top_bar_menu.fixed_properties .selected_task_properties, 
   .taskflowchart.with_top_bar_menu.fixed_properties .selected_connection_properties, 
@@ -87,7 +79,7 @@
   .taskflowchart.with_top_bar_menu.fixed_properties .selected_connection_properties .generic_buttons, 
   .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_task_properties .generic_buttons, 
   .taskflowchart.with_top_bar_menu.fixed_side_properties .selected_connection_properties .generic_buttons {
-	right:55px;
+	right:75px;
 }
 .taskflowchart .selected_task_properties > .content > div,
   .taskflowchart .selected_task_properties > .content > div .ui-tabs-nav li.ui-tabs-active {
@@ -139,30 +131,6 @@
 }
 .taskflowchart .selected_task_properties .ui_table_attribute_properties_popup {
 	margin-top:50px;
-}
-
-/* CHOOSE FROM FILE MANAGER */
-
-.choose_from_file_manager {
-	min-width:400px;
-	height:auto !important;
-}
-.choose_from_file_manager div {
-	float:none;
-	clear:left;
-}
-.choose_from_file_manager .button {
-	text-align:center;
-}
-.choose_from_file_manager .mytree {
-	border:1px inset #CCC;
-	min-width:300px;
-	min-height:200px;
-	max-width:450px;
-	max-height:300px;
-	overflow:auto;
-	margin-bottom:10px;
-	margin-top:10px;
 }
 
 /* CREATE UIS FILES */

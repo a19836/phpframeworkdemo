@@ -517,7 +517,8 @@
   .icon.visual_editor_tab,
   .icon.form_global_vars_tab,
   .icon.view_tab,
-  .icon.add_view_tab {
+  .icon.add_view_tab,
+  .icon.sla_tab {
 	width:20px;
 	height:20px;
 }
@@ -548,14 +549,12 @@
 	/*content:"\f303";*/
 }
 .icon.tasks_flow_tab::before {
-	font-size:15px;
-}
-.icon.tasks_flow_tab::before {
 	content:"\f126";
 	-webkit-transform:rotate(180deg) scaleX(-1);
 	transform:rotate(180deg) scaleX(-1);
 	position:absolute;
 	margin-left:1px;
+	font-size:15px;
 }
 .icon.tasks_flow_tab::after {
 	/*content:"\f303";*/
@@ -578,6 +577,9 @@
 }
 .icon.view_tab::after {
 	content:"\f06e";
+}
+.icon.sla_tab::before {
+	content:"\e476";
 }
 
 .icon.list_view::before {

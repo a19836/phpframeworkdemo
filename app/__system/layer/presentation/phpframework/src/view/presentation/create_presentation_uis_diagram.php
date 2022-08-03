@@ -46,6 +46,7 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); include $EVC->getUti
 	<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/layout.js"></script>
 	
 	<!-- Add EDIT PHP CODE file -->
+	<link rel="stylesheet" href="' . $project_url_prefix . 'css/edit_php_code.css" type="text/css" charset="utf-8" />
 	<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/edit_php_code.js"></script>
 	
 	<!-- Add CodeHighLight CSS and JS -->

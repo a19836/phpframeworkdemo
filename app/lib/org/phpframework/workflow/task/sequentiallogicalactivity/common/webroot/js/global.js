@@ -21,6 +21,8 @@ var SLAItemTaskPropertyObj = {
 	tmp_task_properties : null,
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values, is_sla_item_group) {
+		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
+		
 		//prepare properties html
 		var sla = properties_html_elm.parent().closest(".sla");
 		var task_html_elm = properties_html_elm.find(".sla_item_task_html > .sla_group_item");
@@ -51,6 +53,8 @@ var SLAItemTaskPropertyObj = {
 	},
 	
 	onSubmitTaskProperties : function(properties_html_elm, task_id, task_property_values) {
+		ProgrammingTaskUtil.saveTaskLabelField(properties_html_elm, task_id);
+		
 		//Note that by default the lib/org/phpframework/workflow/task/common/webroot/js/global.js must be loaded before. This will be used in the onCompleteTaskProperties function
 		if (!myWFObj) {
 			alert("myWFObj does not exists! Please include the lib/org/phpframework/workflow/task/common/webroot/js/global.js first");
@@ -77,24 +81,24 @@ var SLAItemTaskPropertyObj = {
 		SLAItemTaskPropertyObj.tmp_task_properties = null;
 	},
 	
-	onSuccessTaskCloning : function(task_id) {
-		if (myWFObj) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			WF.jsPlumbTaskFlow.getTaskLabelElementByTaskId(task_id).html("");
-			WF.jsPlumbProperty.showTaskProperties(task_id);
-		}
+	onCancelTaskProperties : function(properties_html_elm, task_id, task_property_values) {
+		return true;	
+	},
+	
+	onCompleteLabel : function(task_id) {
+		return ProgrammingTaskUtil.onEditLabel(task_id);
 	},
 	
 	prepareTaskLabel : function(task_id) {
 		var WF = myWFObj.getJsPlumbWorkFlow();
+		var label = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
+		label = ("" + label).replace(/\s+/g, "");
 		
-		if (WF.jsPlumbTaskFlow.tasks_properties[task_id]["properties"] && WF.jsPlumbTaskFlow.tasks_properties[task_id]["properties"]["action_type"]) {
+		if (label == "" && WF.jsPlumbTaskFlow.tasks_properties[task_id]["properties"] && WF.jsPlumbTaskFlow.tasks_properties[task_id]["properties"]["action_type"]) {
 			var props = WF.jsPlumbTaskFlow.tasks_properties[task_id]["properties"] ? WF.jsPlumbTaskFlow.tasks_properties[task_id]["properties"] : {};
 			var task_label = (props["result_var_name"] ? "$" + props["result_var_name"] + " = " : "") + props["action_type"] + " (...)";
-			var label_elm = WF.jsPlumbTaskFlow.getTaskLabelElementByTaskId(task_id);
-			label_elm.html(task_label);
-			label_elm.closest("." + WF.jsPlumbTaskFlow.task_label_class_name).attr("title", task_label);
 			
+			WF.jsPlumbTaskFlow.getTaskById(task_id).attr("title", task_label).find(".info span").html(task_label);
 			WF.jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
 		}
 	},

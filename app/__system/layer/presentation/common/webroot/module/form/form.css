@@ -32,11 +32,17 @@
 	background-color:#fff;
 }*/
 
+.module_form_settings .sla .tabs.tabs_icons li.ui-tabs-active a {
+	background:#fff !important;
+}
 .module_form_settings .sla .tabs.tabs_right > li {
 	float:left;
 }
 .module_form_settings .sla #ui > .taskflowchart > .workflow_menu {
-	left:250px;
+	left:102px;
+	right:auto;
+}
+.module_form_settings .sla #ui > .taskflowchart > .workflow_menu > ul {
 	right:auto;
 }
 

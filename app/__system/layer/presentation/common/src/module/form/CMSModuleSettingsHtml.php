@@ -1,7 +1,7 @@
 <div class="module_form_settings">
 <?php
 include $EVC->getConfigPath("config");
-include_once $EVC->getUtilPath("SequentialLogicalActivitiesHandler");
+include_once $EVC->getUtilPath("SequentialLogicalActivitiesUIHandler");
 include_once $EVC->getUtilPath("LayoutTypeProjectUIHandler");
 include_once $EVC->getModulePath("form/utils", $common_project_name);
 include_once $EVC->getModulePath("common/CommonModuleSettingsUI", $common_project_name);
@@ -23,7 +23,7 @@ if ($PEVC) {
 		"workflow_tasks_id" => "presentation_block_form_sla",
 		"path_extra" => hash('crc32b', "$bean_file_name/$bean_name/$path"),
 	);
-	$sla = SequentialLogicalActivitiesHandler::getHeader($EVC, $PEVC, $UserAuthenticationHandler, $bean_name, $bean_file_name, $path, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $user_beans_folder_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $filter_by_layout, $opts);
+	$sla = SequentialLogicalActivitiesUIHandler::getHeader($EVC, $PEVC, $UserAuthenticationHandler, $bean_name, $bean_file_name, $path, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $user_beans_folder_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $filter_by_layout, $opts);
 	$sla_head = $sla["head"];
 	$sla_js_head = $sla["js_head"];
 	$tasks_contents = $sla["tasks_contents"];
@@ -98,7 +98,7 @@ if ($PEVC) {
 		
 		<div class="module_form_contents">
 			<?php
-			echo SequentialLogicalActivitiesHandler::getSLAHtml($EVC, $project_url_prefix, $project_common_url_prefix, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $tasks_contents, $db_drivers, $presentation_projects, $WorkFlowUIHandler, array(
+			echo SequentialLogicalActivitiesUIHandler::getSLAHtml($EVC, $project_url_prefix, $project_common_url_prefix, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $tasks_contents, $db_drivers, $presentation_projects, $WorkFlowUIHandler, array(
 				"extra_short_actions_html" => $db_drivers ? '<a class="open_form_wizard" onClick="openFormWizard()">Open Wizard <i class="icon wizard"></i></a>' : '',
 				"save_func" => "saveModuleFormSettings",
 			));

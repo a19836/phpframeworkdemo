@@ -137,6 +137,7 @@
 }
 .regions_blocks_includes_settings:not(.collapsed) > ul.tabs li.ui-tabs-active {
 	background:var(--main-settings-bg);
+	border-color:var(--main-settings-header-border);
 }
 .regions_blocks_includes_settings > .ui-tabs-panel {
 	padding:0;
@@ -402,11 +403,12 @@
 }
 .regions_blocks_includes_settings .sla .icon.add, 
   .regions_blocks_includes_settings .sla .icon.delete {
-	width:16px;
+	width:13px;
 }
 .regions_blocks_includes_settings .sla .sla_groups_flow > nav {
 	position:absolute;
-	margin-top:-28px;
+	right:109px;
+	margin-top:-35px;
 }
 .regions_blocks_includes_settings .sla > ul.tabs li.ui-tabs-active {
 	background:var(--main-settings-bg);
@@ -466,9 +468,6 @@
 }
 
 /* regions_blocks_includes_settings - SLA - taskflowchart */
-.regions_blocks_includes_settings .sla #ui > .taskflowchart > .workflow_menu {
-	right:225px;
-}
 .regions_blocks_includes_settings .sla #ui > .taskflowchart > .workflow_menu li a .icon {
 	margin-left:0;
 }
@@ -673,10 +672,11 @@ body > .dragging_menu_item {
 .template_region_block_html_editor_popup .layout-ui-editor > .menu-widgets > li:first-child {
 	display:none; /*hide code group menu bc ptl and php are not allowed in the template_region_block_html_editor_popup */
 }
-.code_layout_ui_editor .layout-ui-editor > .menu-widgets li.menu-widget-ptl,
-  .template_region_block_html_editor_popup .layout-ui-editor > .menu-widgets li.group.group-code,
-  .template_region_block_html_editor_popup .layout-ui-editor > .menu-widgets li.menu-widget-ptl,
-  .template_region_block_html_editor_popup .layout-ui-editor > .menu-widgets li.menu-widget-php {
+.template_region_block_html_editor_popup .layout-ui-editor > .menu-widgets .group:nth-child(2) .group-title {
+	padding-top:0;
+	border-top:0;
+}
+.template_region_block_html_editor_popup .layout-ui-editor > .menu-widgets li.menu-widget-php {
 	display:none !important;
 }
 

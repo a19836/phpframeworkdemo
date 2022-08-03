@@ -83,6 +83,9 @@
 }
 
 /* Code Editor - ELS UI */
+.entity_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .menu-widgets li.menu-widget-php {
+	display:none !important;
+}
 .entity_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .options-right {
 	right:91px;
 	z-index:7;

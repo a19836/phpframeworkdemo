@@ -13,6 +13,9 @@
 		<js>js/WorkFlowTask.js</js>
 	</files>
 	<settings>
+		<task_menu>
+			<show_start_task_menu>0</show_start_task_menu>
+		</task_menu>
 		<connection_menu>
 			<show_properties_menu>1</show_properties_menu>
 			<show_connector_types_menu>0</show_connector_types_menu>

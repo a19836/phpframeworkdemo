@@ -44,6 +44,23 @@ $(function () {
 				var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
 				PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();
 				
+				//check if is dragged widget is PTL, and if yes, be sure that the droppable belongs to a template_region
+				PtlLayoutUIEditor.options.on_drag_stop_func = function(menu_widget, widget, event, ui_obj) {
+					if ($(menu_widget).is(".menu-widget-ptl")) {
+						var template_region = widget.parent().closest(".template_region");
+						
+						if (!template_region[0]) {
+							widget.hide();
+							
+							PtlLayoutUIEditor.showError("You cannot drop this widget outside of the template regions.");
+							
+							setTimeout(function() {
+								PtlLayoutUIEditor.deleteTemplateWidget(widget);
+							}, 500);
+						}
+					}
+				};
+				
 				//set default head code from iframe
 				var head_code = null;
 				

@@ -333,6 +333,7 @@
 	left:-55px !important;
 	right:auto !important;
 	bottom:-15px !important;
+	border-radius:2px;
 	border-color:#DFE1ED !important;
 	box-shadow:3px 3px 4px rgba(0, 0, 0, 0.05);
 	/*background:#fff;*/
@@ -357,6 +358,8 @@
 	background:#426efa;
 	color:#fff;
 	box-sizing:border-box;
+	border-top-left-radius:2px;
+	border-top-right-radius:2px;
 }
 .jsplumbtaskworkflow .task.logic_task.is_start_task:not(:hover) .task_info {
 	display:block;

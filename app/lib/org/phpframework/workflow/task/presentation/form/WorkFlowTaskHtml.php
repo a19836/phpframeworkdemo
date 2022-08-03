@@ -36,5 +36,5 @@
 		<?php include dirname(dirname($file_path)) . "/common/TaskPermissionsTabContentHtml.php"; ?>
 	</div>
 	
-	<div class="task_property_exit" exit_id="default_exit" exit_color="#29B473"></div>
+	<div class="task_property_exit" exit_id="default_exit" exit_color="#426efa"></div>
 </div>
