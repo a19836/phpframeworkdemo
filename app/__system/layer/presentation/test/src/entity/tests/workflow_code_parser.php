@@ -1,5 +1,5 @@
 <?php
-//http://localhost/springloops/phpframework/trunk/tests/workflow
+//http://jplpinto.localhost/__system/test/tests/workflow_code_parser
 
 include_once get_lib("org.phpframework.workflow.WorkFlowTaskCodeParser");
 
@@ -107,6 +107,11 @@ Obj::$TTT->$x = 1;
 $this->x = "as";
 self::$x = 1;
 $i++;
+?>';*/
+
+/*$code = '<?php
+include "foo.php";
+foo();
 ?>';*/
 
 $tasks = $WorkFlowTaskCodeParser->getParsedCodeAsArray($code);

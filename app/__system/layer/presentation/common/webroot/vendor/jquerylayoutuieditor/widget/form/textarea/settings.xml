@@ -51,6 +51,7 @@
 				});
 				
 				menu_widget.children(".properties").attr({
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.textarea.onOpenWidgetSettings",
 					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.textarea.saveSettingsField",
 					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.textarea.parseSettings",
 				});
@@ -69,11 +70,15 @@
 			me.onCreateTemplateWidget = function(widget, html_element) {
 				widget.keydown(function() {
 					ui_creator.getWidgetHeader().hide();
-					ui_creator.MyTextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
+					ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
 				})
 				.on("focus", function() {
-					ui_creator.MyTextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
+					ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
 				});
+			};
+			
+			me.onOpenWidgetSettings = function(widget, menu_settings) {
+				ui_creator.addMenuSettingsContextMenu( menu_settings.children(".settings-properties").find("input, textarea") );
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {

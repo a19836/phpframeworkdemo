@@ -21,8 +21,10 @@ var CallObjectMethodTaskPropertyObj = {
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
+		ProgrammingTaskUtil.prepareEditSourceIcon(properties_html_elm);
 		
 		var task_html_elm = $(properties_html_elm).find(".call_object_method_task_html");
+		ProgrammingTaskUtil.setIncludeFile(task_property_values, task_html_elm);
 		ProgrammingTaskUtil.setResultVariableType(task_property_values, task_html_elm);
 		
 		var method_args = task_property_values["method_args"];
@@ -76,5 +78,17 @@ var CallObjectMethodTaskPropertyObj = {
 			return ProgrammingTaskUtil.getResultVariableString(task_property_values) + method_obj + (task_property_values["method_static"] == 1 ? '::' : '->') + task_property_values["method_name"] + "(" + ProgrammingTaskUtil.getArgsString(task_property_values["method_args"]) + ")";
 		}
 		return "";
+	},
+	
+	onEditFile : function(elm) {
+		ProgrammingTaskUtil.onEditSource(elm, $(elm).closest(".call_object_method_task_html"), "file");
+	},
+	
+	onEditClass : function(elm) {
+		ProgrammingTaskUtil.onEditSource(elm, $(elm).closest(".call_object_method_task_html"), "class");
+	},
+	
+	onEditMethod : function(elm) {
+		ProgrammingTaskUtil.onEditSource(elm, $(elm).closest(".call_object_method_task_html"), "method");
 	},
 };

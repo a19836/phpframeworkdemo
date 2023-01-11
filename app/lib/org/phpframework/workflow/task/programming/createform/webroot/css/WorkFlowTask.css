@@ -2,7 +2,7 @@
 	background-image:url('../img/bg.svg');
 }
 .jsplumbtaskworkflow .task.task_createform .eps {
-	background-image:url('../img/bg.svg');
+	background-image:url('../img/bg_hover.svg');
 }
 .jsplumbtaskworkflow .task.task_createform .ep {
 	border-color:transparent !important;
@@ -325,6 +325,7 @@
 }
 .create_form_task_html .ptl_settings > .layout-ui-editor > .tabs {
 	background:#fff;
+	font-size:10px;
 }
 .create_form_task_html .ptl_settings > .layout-ui-editor > .options .options-left,
   .create_form_task_html .ptl_settings > .layout-ui-editor > .options .options-center,

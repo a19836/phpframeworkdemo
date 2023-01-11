@@ -77,8 +77,12 @@ if (typeof is_global_common_file_already_included == "undefined") {
 			if (l == elm_label.toLowerCase() && t.attr("id") != task_id) {
 				if (!ignore_msg) {
 					var msg = "Error: Repeated label.\nYou cannot have repeated labels!\nPlease try again...";
-					alert(msg);
 					WF.jsPlumbStatusMessage.showError(msg);
+					
+					var msg_elm = WF.jsPlumbStatusMessage.message_html_obj.children(".error").last();
+					
+					if (!msg_elm.is(":visible"))
+						alert(msg);
 				}
 				
 				return true;
@@ -168,7 +172,7 @@ if (typeof is_global_common_file_already_included == "undefined") {
 	function checkIfValueIsTrue(value) {
 		var v = typeof value == "string" ? value.toLowerCase() : "";
 		
-		return (value && value != null && value != 0 && v != "null" && v != "false" && v != "0");
+		return (value && value != null && value != 0 && value !== false && v != "null" && v != "false" && v != "0");
 	}
 	
 	function onEditLabel(task_id) {
@@ -284,8 +288,13 @@ if (typeof is_global_common_file_already_included == "undefined") {
 		var task_type = task.attr("type");
 		var show_task_properties = WF.jsPlumbProperty.isTaskSubSettingTrue(task_type, "task_menu", "show_properties_menu", true);
 		
-		if (show_task_properties)
+		if (show_task_properties) {
 			WF.jsPlumbProperty.showTaskProperties(task_id, {do_not_call_hide_properties : true});
+			
+			//if properties are open, then closes the contextmenu
+			if (WF.jsPlumbProperty.isSelectedTaskPropertiesOpen())
+				WF.jsPlumbContextMenu.hideContextMenus();
+		}
 	}
 	
 	function showConnectionPropertiesIfExists(connection) {
@@ -294,8 +303,13 @@ if (typeof is_global_common_file_already_included == "undefined") {
 			var task_type = $("#" + connection.sourceId).attr("type");
 			var show_connection_properties = WF.jsPlumbProperty.isTaskSubSettingTrue(task_type, "connection_menu", "show_properties_menu", true);
 			
-			if (show_connection_properties)
+			if (show_connection_properties) {
 				WF.jsPlumbProperty.showConnectionProperties(connection.id, {do_not_call_hide_properties : true});
+				
+				//if properties are open, then closes the contextmenu
+				if (WF.jsPlumbProperty.isSelectedConnectionPropertiesOpen())
+					WF.jsPlumbContextMenu.hideContextMenus();
+			}
 		}
 	}
 }

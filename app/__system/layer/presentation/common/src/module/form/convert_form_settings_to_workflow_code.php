@@ -1,7 +1,7 @@
 <?php
 $defined_vars = array_keys(get_defined_vars());
 
-include_once $EVC->getUtilPath("SequentialLogicalActivitiesCodeConverter");
+include_once $EVC->getUtilPath("SequentialLogicalActivityCodeConverter");
 
 $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "access");
 
@@ -10,16 +10,16 @@ $settings = $_POST["settings"];
 if (is_array($settings)) {
 	MyArray::arrKeysToLowerCase($settings, true);
 	
-	$code = SequentialLogicalActivitiesCodeConverter::convertActionsSettingsToCode($EVC, $webroot_cache_folder_path, $webroot_cache_folder_url, $settings["actions"]);
+	$code = SequentialLogicalActivityCodeConverter::convertActionsSettingsToCode($EVC, $webroot_cache_folder_path, $webroot_cache_folder_url, $settings["actions"]);
 	
 	if ($settings["css"] || $settings["js"]) {
 		$code = preg_replace("/\?>$/", "", $code);
 		
 		if ($settings["css"])
-			$code .= "\n/*** STYLE ***/\n" . 'echo "<style>" . ' . SequentialLogicalActivitiesCodeConverter::prepareStringValue($settings["css"]) . ' . "</style>";' . "\n";
+			$code .= "\n/*** STYLE ***/\n" . 'echo "<style>" . ' . SequentialLogicalActivityCodeConverter::prepareStringValue($settings["css"]) . ' . "</style>";' . "\n";
 		
 		if ($settings["js"]) 
-			$code .= "\n/*** SCRIPT ***/\n" . 'echo "<script>" . ' . SequentialLogicalActivitiesCodeConverter::prepareStringValue($settings["js"]) . ' . "</script>";' . "\n";
+			$code .= "\n/*** SCRIPT ***/\n" . 'echo "<script>" . ' . SequentialLogicalActivityCodeConverter::prepareStringValue($settings["js"]) . ' . "</script>";' . "\n";
 		
 		$code .= "\n?>";
 	}

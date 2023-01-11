@@ -4,6 +4,7 @@
 	<tag>button</tag>
 	<settings>
 		<resizable>1</resizable>
+		<template_class>droppable</template_class>
 		<template_node_name>button</template_node_name>
 		<create_widget_class>ButtonWidget</create_widget_class>
 	</settings>
@@ -55,7 +56,7 @@
 				});
 				
 				menu_widget.children(".properties").attr({
-					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.button.openSettings",
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.button.onOpenWidgetSettings",
 					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.button.saveSettingsField",
 					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.button.parseSettings",
 				});
@@ -100,11 +101,15 @@
 					widget.append("Button");
 			};
 			
-			me.openSettings = function(widget, settings) {
+			me.onOpenWidgetSettings = function(widget, menu_settings) {
 				//change the node name when type is changed
-				settings.find(" > .settings-properties > ul > .type select").change(function() {
+				var select = menu_settings.find(" > .settings-properties > ul > .type select");
+				select.change(function() {
 					ui_creator.saveMenuSettingsField(this);
 				});
+				
+				ui_creator.addMenuSettingsContextMenu(select);
+				ui_creator.addMenuSettingsContextMenu( menu_settings.find(" > .settings-properties input") );
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {

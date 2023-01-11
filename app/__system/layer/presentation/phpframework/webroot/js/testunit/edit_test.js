@@ -257,6 +257,56 @@ function addNewAnnotation(elm) {
 	return html_obj;
 }
 
+function initLayoutUIEditorWidgetResourceOptionsInEditTest(PtlLayoutUIEditor) {
+	initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor);
+	
+	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_db_tables_func = function(db_broker, db_driver, db_type) {
+		var aux = get_broker_db_data_url;
+		var bean_name = null;
+		var bean_file_name = null;
+		
+		if (db_driver_brokers)
+			$.each(db_driver_brokers, function(idx, db_driver_broker) {
+				if (db_driver == db_driver_broker[0]) {
+					bean_name = db_driver_broker[2];
+					bean_file_name = db_driver_broker[1];
+					return false;
+				}
+			});
+		
+		get_broker_db_data_url = aux.replace(/#bean_name#/g, bean_name).replace(/#bean_file_name#/g, bean_file_name);
+		
+		var result = getLayoutUIEditorWidgetResourceDBTables(db_broker, db_driver, db_type);
+		
+		get_broker_db_data_url = aux;
+		
+		return result;
+	};
+	
+	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_db_attributes_func = function(db_broker, db_driver, db_type, db_table) {
+		var aux = get_broker_db_data_url;
+		var bean_name = null;
+		var bean_file_name = null;
+		
+		if (db_driver_brokers)
+			$.each(db_driver_brokers, function(idx, db_driver_broker) {
+				if (db_driver == db_driver_broker[0]) {
+					bean_name = db_driver_broker[2];
+					bean_file_name = db_driver_broker[1];
+					return false;
+				}
+			});
+		
+		get_broker_db_data_url = aux.replace(/#bean_name#/g, bean_name).replace(/#bean_file_name#/g, bean_file_name);
+		
+		var result = getLayoutUIEditorWidgetResourceDBAttributes(db_broker, db_driver, db_type, db_table);
+		
+		get_broker_db_data_url = aux;
+		
+		return result;
+	};
+}
+
 function getTestSettingsId() {
 	var obj_settings = getTestSettings();
 	

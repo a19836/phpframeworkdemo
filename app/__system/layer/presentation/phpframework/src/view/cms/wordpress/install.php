@@ -33,7 +33,7 @@ $head = '
 '; $msg = $is_installed ? 'already has the wordpress installed!<br/>If you wish to reinstalled it please click in the button bellow, but all wordpress\'s previous data will be lost...' : 'doesn\'t have the wordpress installed.<br/>To proceed with it installation, please click in the button bellow.'; $main_content = '
 <div class="top_bar">
 	<header>
-		<div class="title">Install WordPress</div>
+		<div class="title" title="' . $path . '">Install WordPress in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($selected_project_id, $P) . '</div>
 	</header>
 </div>
 <div class="install_wordpress with_top_bar_section">

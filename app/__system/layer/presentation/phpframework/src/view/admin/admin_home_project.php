@@ -61,7 +61,7 @@ var available_templates_props = ' . json_encode($available_templates_props) . ';
 			<span class="sub_menu" onClick="openSubmenu(this)">
 				<i class="icon sub_menu_vertical active"></i>
 				
-				<ul class="jqcontextmenu with_top_right_triangle">
+				<ul class="mycontextmenu with_top_right_triangle">
 					<li class="edit">
 						<a onClick="editProject()">Edit Project Details</a>
 					</li>

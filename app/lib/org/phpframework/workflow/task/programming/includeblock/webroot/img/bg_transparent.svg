@@ -1,1 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36.47 36.47"><defs><style>.cls-1{fill:#4070ff;}</style></defs><title>Asset 6</title><g id="Layer_2" data-name="Layer 2"><g id="include_block" data-name="include block"><polygon class="cls-1" points="19.59 25.82 26.39 23.39 26.39 15.41 19.59 17.84 19.59 25.82"/><polygon class="cls-1" points="18.23 10.16 10.86 12.8 18.23 15.43 25.61 12.8 18.23 10.16"/><path class="cls-1" d="M18.24,0A18.24,18.24,0,1,0,36.47,18.24,18.23,18.23,0,0,0,18.24,0ZM29.11,23.39A2.77,2.77,0,0,1,27.3,26l-8.15,2.91a2.62,2.62,0,0,1-1.83,0L9.17,26a2.73,2.73,0,0,1-1.81-2.56V13.08a2.72,2.72,0,0,1,1.81-2.56L17.32,7.6a2.74,2.74,0,0,1,1.83,0l8.15,2.92a2.76,2.76,0,0,1,1.81,2.56Z"/></g></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 54 42" style="enable-background:new 0 0 54 42;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:#83889E;}
+</style>
+<g id="include_block">
+	<g>
+		<!--path class="st0" d="M27,2.76C16.93,2.76,8.76,10.93,8.76,21S16.93,39.24,27,39.24S45.24,31.07,45.24,21S37.07,2.76,27,2.76z"/-->
+		<polygon class="st1" points="28.36,28.58 35.15,26.16 35.15,18.17 28.36,20.6 		"/>
+		<polygon class="st1" points="27,12.93 19.62,15.56 27,18.2 34.38,15.56 		"/>
+		<path class="st1" d="M27,2.76C16.93,2.76,8.76,10.93,8.76,21S16.93,39.24,27,39.24S45.24,31.07,45.24,21S37.07,2.76,27,2.76z
+			 M37.87,26.16c0,1.15-0.76,2.17-1.8,2.56l-8.15,2.91c-0.59,0.21-1.24,0.21-1.83,0l-8.16-2.91c-1.08-0.39-1.8-1.41-1.8-2.56V15.84
+			c0-1.15,0.72-2.18,1.8-2.56l8.16-2.91c0.59-0.21,1.24-0.21,1.83,0l8.15,2.91c1.04,0.39,1.8,1.41,1.8,2.56V26.16z"/>
+	</g>
+</g>
+</svg>

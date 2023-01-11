@@ -94,6 +94,7 @@
 				});
 				
 				menu_widget.children(".properties").attr({
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.style.onOpenWidgetSettings",
 					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.style.saveSettingsField",
 					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.style.parseSettings",
 				});
@@ -121,9 +122,15 @@
 				if (html_element) {
 					var code = $(html_element).html();
 					
-					if (code && code != "")
-						style_content.html( code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
+					if (code && code != "") {
+						code = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;");
 						
+						//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
+						code = code.replace(/\u2003/g, "\t"); 
+						
+						style_content.html(code);
+					}
+					
 					widget.append(html_element);
 				}
 				else
@@ -137,6 +144,10 @@
 					.keyup(function(e) {
 						var code = style_content.html();
 						code = code.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
+						
+						//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
+						code = code.replace(/\u2003/g, "\t"); 
+						
 						style.html(code);
 						
 						if (update_menu_settings_timeout_id)
@@ -147,12 +158,16 @@
 						}, 700);
 					})
 					.mouseup(function(e) {
-						//prevents that the MyTextSelection open the inline menu
+						//prevents that the TextSelection open the inline menu
 						e.preventDefault();
 						e.stopPropagation();
 						
-						ui_creator.MyTextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
+						ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
 					});
+			};
+			
+			me.onOpenWidgetSettings = function(widget, menu_settings) {
+				ui_creator.addMenuSettingsContextMenu( menu_settings.find(".settings-properties textarea") );
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {

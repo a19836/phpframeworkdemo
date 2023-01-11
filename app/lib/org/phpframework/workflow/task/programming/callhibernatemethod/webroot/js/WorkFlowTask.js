@@ -63,6 +63,7 @@ var CallHibernateMethodTaskPropertyObj = {
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
+		ProgrammingTaskUtil.prepareEditSourceIcon(properties_html_elm);
 		
 		var task_html_elm = $(properties_html_elm).find(".call_hibernate_method_task_html");
 		ProgrammingTaskUtil.setResultVariableType(task_property_values, task_html_elm);
@@ -518,5 +519,23 @@ var CallHibernateMethodTaskPropertyObj = {
 		if (typeof this.on_choose_hibernate_object_method_callback == "function") {
 			this.on_choose_hibernate_object_method_callback(elm);
 		}
+	},
+	
+	onEditFile : function(elm) {
+		ProgrammingTaskUtil.onEditSource(elm, $(elm).closest(".call_hibernate_method_task_html"), "file");
+	},
+	
+	onEditObject : function(elm) {
+		ProgrammingTaskUtil.onEditSource(elm, $(elm).closest(".call_hibernate_method_task_html"), "object");
+	},
+	
+	onEditQuery : function(elm) {
+		var task_html_elm = $(elm).closest(".call_hibernate_method_task_html");
+		
+		var service_method_type = task_html_elm.find(".service_method select.service_method_type").val();
+		var service_method = service_method_type == "string" ? task_html_elm.find(".service_method select.service_method_string").val() : task_html_elm.find(".service_method input.service_method_code").val();
+		task_html_elm.find(".service_method input.service_method").val(service_method);
+		
+		ProgrammingTaskUtil.onEditSource(elm, task_html_elm, "query");
 	},
 };

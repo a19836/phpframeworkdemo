@@ -85,6 +85,8 @@
 				
 				li.data("tree-item-id", tree_item_id);
 				li.attr("id", tree_item_id);
+				
+				return true;
 			};
 			
 			me.onDropMenuWidget = function(menu_widget, widget, event, ui_obj) {

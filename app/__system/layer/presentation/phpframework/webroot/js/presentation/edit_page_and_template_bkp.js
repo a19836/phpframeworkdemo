@@ -410,7 +410,12 @@ function createRegionBlockHtmlEditor(block_html, opts) {
 
 function getTinyMCEOptions(block_html, opts) {
 	block_html = block_html instanceof jQuery ? block_html[0] : block_html;
-	var textarea = filterSelectorInNodes(block_html.childNodes, "textarea");
+	var textarea = null;
+	
+	for (var i = 0; i < block_html.childNodes.length; i++)
+		if (block_html.childNodes[i].nodeName.toLowerCase() == "textarea") {
+			textarea = block_html.childNodes[i];
+			break;
 	
 	return {
 		//theme: 'modern',
@@ -564,7 +569,7 @@ function loadAvailableBlocksList(parent, opts) {
 			}
 		};
 		
-		if (available_blocks_list_loading) { //Bc this function will get executed assynchronous, we need to be sure that we don't get multiple requests to the server of the same thing.
+		if (available_blocks_list_loading) { //Bc this function will get executed asynchronous, we need to be sure that we don't get multiple requests to the server of the same thing.
 			available_blocks_list_loading_interval_id = setInterval(function() {
 				if (!available_blocks_list_loading) {
 					available_blocks_list_loading_interval_id && clearInterval(available_blocks_list_loading_interval_id);
@@ -1735,7 +1740,7 @@ function onLoadRegionBlockParams(region_block_item) {
 		
 		if (project_blocks_params.hasOwnProperty(md5))
 			handler( project_blocks_params[md5] );
-		else if (project_blocks_params_loading[md5]) { //Bc this function will get executed assynchronous, we need to be sure that we don't get multiple requests to the server of the same thing.
+		else if (project_blocks_params_loading[md5]) { //Bc this function will get executed asynchronous, we need to be sure that we don't get multiple requests to the server of the same thing.
 			var func = function() {
 				if (!project_blocks_params_loading[md5])
 					handler( project_blocks_params[md5] );
@@ -3557,7 +3562,7 @@ function initCodeLayoutUIEditor(main_obj, opts) {
 			
    			setCodeLayoutUIEditorTreeItemsDraggableEvent(ul);
    			
-   			//bc the removeAllThatIsNotBlocksOrModulesFromTree is assync, run the setCodeLayoutUIEditorTreeItemsDraggableEvent again just in case we miss some item like the db table items.
+   			//bc the removeAllThatIsNotBlocksOrModulesFromTree is async, run the setCodeLayoutUIEditorTreeItemsDraggableEvent again just in case we miss some item like the db table items.
    			setTimeout(function() {
    				setCodeLayoutUIEditorTreeItemsDraggableEvent(ul);
    			}, 1000);
@@ -3888,11 +3893,6 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
 				}
 			
 			PtlLayoutUIEditor.options.on_ready_func = function() {
-				if (typeof LayoutUIEditorFormFieldUtil == "function") {
-					var LayoutUIEditorFormFieldUtilObj = new LayoutUIEditorFormFieldUtil(PtlLayoutUIEditor);
-					LayoutUIEditorFormFieldUtilObj.initFormFieldsSettings();
-				}
-				
 				//add right_container to layout ui editor
 				var right_container = $(".layout_ui_editor_right_container");
 				var luie = PtlLayoutUIEditor.getUI();
@@ -3974,7 +3974,7 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
         				}*/
         				
         				setTimeout(function() {
-	        				PtlLayoutUIEditor.MyTextSelection.refreshMenu();
+	        				PtlLayoutUIEditor.TextSelection.refreshMenu();
 	        			}, 1000);
         			});
 
@@ -4020,7 +4020,7 @@ function onToggleCodeEditorFullScreen(in_full_screen, main_obj) {
 		if (menu_settings.is(":visible"))
 			PtlLayoutUIEditor.showFixedMenuSettings();
 		
-		PtlLayoutUIEditor.MyTextSelection.refreshMenu();
+		PtlLayoutUIEditor.TextSelection.refreshMenu();
 	}, 500);
 }
 
@@ -4092,8 +4092,8 @@ function onResizeCodeLayoutUIEditorWithRightContainer(props) {
 			template_widgets_options.css("right", (width + 5) + "px"); //bc of the resize panel which has 5px of width
 			ui_obj.helper.css({left: "", top: "", right: width + "px"}); //reset layout_ui_editor_right_container_resize
 			
-			if (PtlLayoutUIEditor.MyTextSelection)
-				PtlLayoutUIEditor.MyTextSelection.refreshMenu();
+			if (PtlLayoutUIEditor.TextSelection)
+				PtlLayoutUIEditor.TextSelection.refreshMenu();
 		},
 	});
 }*/

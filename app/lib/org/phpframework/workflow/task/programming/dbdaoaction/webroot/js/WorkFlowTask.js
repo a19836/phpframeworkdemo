@@ -370,7 +370,7 @@ var DBDAOActionTaskPropertyObj = {
 			code_elm.hide();
 			arr_elm.show();
 			
-			if (elm.attr("current_type") == "options" && options_elm.children("li:not(.no_items):not(.item_add)").length > 0 && confirm("Do you wish to convert these options to an array?")) {
+			if (elm.attr("current_type") == "options" && options_elm.children("li:not(.no_items):not(.add)").length > 0 && confirm("Do you wish to convert these options to an array?")) {
 				var items = this.convertSimpleSettingsToArray(parent.parent().closest(".db_dao_action_task_html"), options_elm);
 				ArrayTaskUtilObj.onLoadArrayItems(arr_elm, items, "");
 			}
@@ -411,56 +411,60 @@ var DBDAOActionTaskPropertyObj = {
 	},
 	
 	onChooseTable : function(elm) {
-		if (typeof this.on_choose_table_callback == "function") {
-			this.on_choose_table_callback(elm, function (table_and_attributes) {
-				if (table_and_attributes && $.isPlainObject(table_and_attributes)) {
-					var table = table_and_attributes["table"];
-					var attributes = table_and_attributes["attributes"];
-					var task_html_elm = $(elm).parent().closest(".db_dao_action_task_html");
-					
-					//convert attributes array into a plain object where keys are the attribute names.
-					if ($.isArray(attributes)) {
-						var attributes_obj = {};
-						
-						for (var i = 0; i < attributes.length; i++) 
-							attributes_obj[ attributes[i] ] = {};
-						
-						attributes = attributes_obj;
-					}
-					
-					//prepare table name
-					task_html_elm.find(".table_name input").val(table);
-					task_html_elm.find(".table_name select").val("string");
-					
-					//prepare table attributes fields html
-					var method_name = task_html_elm.find(".method_name select").val();
-					var attributes_options = task_html_elm.find(".attrs > .attributes_options");
-					var conditions_options = task_html_elm.find(".conds > .conditions_options");
-					var relations_options = task_html_elm.find(".rels > .relations_options");
-					var parent_conditions_options = task_html_elm.find(".parent_conds > .parent_conditions_options");
-					
-					DBDAOActionTaskPropertyObj.loadNewTableAttributesOptions(attributes_options, attributes, method_name);
-					DBDAOActionTaskPropertyObj.loadNewTableAttributesOptions(conditions_options, attributes, method_name);
-					DBDAOActionTaskPropertyObj.loadNewTableAttributesOptions(relations_options, null, method_name);
-					DBDAOActionTaskPropertyObj.loadNewTableAttributesOptions(parent_conditions_options, null, method_name);
-					
-					//prepare fields types
-					var attributes_type = task_html_elm.find(".attrs > .attributes_type");
-					var conditions_type = task_html_elm.find(".conds > .conditions_type");
-					var relations_type = task_html_elm.find(".rels > .relations_type");
-					var parent_conditions_type = task_html_elm.find(".parent_conds > .parent_conditions_type");
-					
-					attributes_type.val("options");
-					conditions_type.val("options");
-					relations_type.val("options");
-					parent_conditions_type.val("options");
-					
-					DBDAOActionTaskPropertyObj.onChangeAttributesType(attributes_type[0]);
-					DBDAOActionTaskPropertyObj.onChangeConditionsType(conditions_type[0]);
-					DBDAOActionTaskPropertyObj.onChangeRelElmType(relations_type[0]);
-					DBDAOActionTaskPropertyObj.onChangeParentConditionsType(parent_conditions_type[0]);
-				}
+		if (typeof this.on_choose_table_callback == "function")
+			this.on_choose_table_callback(elm, function(table_and_attributes) {
+				DBDAOActionTaskPropertyObj.chooseTable(elm, table_and_attributes);
 			});
+			
+	},
+	
+	chooseTable : function(elm, table_and_attributes) {
+		if (table_and_attributes && $.isPlainObject(table_and_attributes)) {
+			var table = table_and_attributes["table"];
+			var attributes = table_and_attributes["attributes"];
+			var task_html_elm = $(elm).parent().closest(".db_dao_action_task_html");
+			
+			//convert attributes array into a plain object where keys are the attribute names.
+			if ($.isArray(attributes)) {
+				var attributes_obj = {};
+				
+				for (var i = 0; i < attributes.length; i++) 
+					attributes_obj[ attributes[i] ] = {};
+				
+				attributes = attributes_obj;
+			}
+			
+			//prepare table name
+			task_html_elm.find(".table_name input").val(table);
+			task_html_elm.find(".table_name select").val("string");
+			
+			//prepare table attributes fields html
+			var method_name = task_html_elm.find(".method_name select").val();
+			var attributes_options = task_html_elm.find(".attrs > .attributes_options");
+			var conditions_options = task_html_elm.find(".conds > .conditions_options");
+			var relations_options = task_html_elm.find(".rels > .relations_options");
+			var parent_conditions_options = task_html_elm.find(".parent_conds > .parent_conditions_options");
+			
+			DBDAOActionTaskPropertyObj.loadNewTableAttributesOptions(attributes_options, attributes, method_name);
+			DBDAOActionTaskPropertyObj.loadNewTableAttributesOptions(conditions_options, attributes, method_name);
+			DBDAOActionTaskPropertyObj.loadNewTableAttributesOptions(relations_options, null, method_name);
+			DBDAOActionTaskPropertyObj.loadNewTableAttributesOptions(parent_conditions_options, null, method_name);
+			
+			//prepare fields types
+			var attributes_type = task_html_elm.find(".attrs > .attributes_type");
+			var conditions_type = task_html_elm.find(".conds > .conditions_type");
+			var relations_type = task_html_elm.find(".rels > .relations_type");
+			var parent_conditions_type = task_html_elm.find(".parent_conds > .parent_conditions_type");
+			
+			attributes_type.val("options");
+			conditions_type.val("options");
+			relations_type.val("options");
+			parent_conditions_type.val("options");
+			
+			DBDAOActionTaskPropertyObj.onChangeAttributesType(attributes_type[0]);
+			DBDAOActionTaskPropertyObj.onChangeConditionsType(conditions_type[0]);
+			DBDAOActionTaskPropertyObj.onChangeRelElmType(relations_type[0]);
+			DBDAOActionTaskPropertyObj.onChangeParentConditionsType(parent_conditions_type[0]);
 		}
 	},
 	
@@ -478,14 +482,14 @@ var DBDAOActionTaskPropertyObj = {
 	loadNewTableAttributesOptions : function(table_items_elm, table_items_options, method_name) {
 		if (table_items_elm[0]) {
 			//clean html
-			table_items_elm.children("li:not(.no_items):not(.item_add)").remove();
+			table_items_elm.children("li:not(.no_items):not(.add)").remove();
 			
 			if (table_items_options && $.isPlainObject(table_items_options) && !$.isEmptyObject(table_items_options)) {
 				//hide no_items element
 				table_items_elm.children("li.no_items").hide();
 				
 				//prepare html
-				var add_icon = table_items_elm.children(".item_add");
+				var add_icon = table_items_elm.children(".add");
 				
 				for (var item_name in table_items_options) {
 					var item_props = table_items_options[item_name];
@@ -509,14 +513,14 @@ var DBDAOActionTaskPropertyObj = {
 	loadSavedTableAttributesOptions : function(table_items_elm, table_items_options) {
 		if (table_items_elm[0]) {
 			//clean html
-			table_items_elm.children("li:not(.no_items):not(.item_add)").remove();
+			table_items_elm.children("li:not(.no_items):not(.add)").remove();
 			
 			if (table_items_options && $.isPlainObject(table_items_options) && !$.isEmptyObject(table_items_options)) {
 				//hide no_items element
 				table_items_elm.children("li.no_items").hide();
 				
 				//prepare html
-				var add_icon = table_items_elm.children(".item_add");
+				var add_icon = table_items_elm.children(".add");
 				
 				for (var item_name in table_items_options) {
 					var item_value = table_items_options[item_name];

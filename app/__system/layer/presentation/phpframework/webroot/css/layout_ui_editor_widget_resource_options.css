@@ -1,0 +1,112 @@
+.choose_widget_resource_value_attribute {
+	width:480px;
+	box-sizing:border-box;
+}
+.choose_widget_resource_value_attribute > .tabs {
+	margin-top:20px;
+}
+.choose_widget_resource_value_attribute .empty_items {
+	color:#666;
+}
+
+.choose_widget_resource_value_attribute > #existent_resource_attribute > ul > li:not(first-child) {
+	margin-top:20px;
+}
+.choose_widget_resource_value_attribute > #existent_resource_attribute > ul > li:not(.empty_items) {
+	outline:1px solid transparent;
+	outline-offset:10px;
+	border-radius:1px;
+	opacity:.8;
+}
+.choose_widget_resource_value_attribute > #existent_resource_attribute > ul > li.selected {
+	outline-color:var(--link-color);
+	opacity:1;
+}
+.choose_widget_resource_value_attribute > #existent_resource_attribute > ul > li .sla_resource_header input[type=radio] {
+	margin:0 5px 0 0;
+	vertical-align:middle;
+}
+.choose_widget_resource_value_attribute > #existent_resource_attribute > ul > li .sla_resource_header .title {
+	margin-bottom:0;
+	text-align:left;
+}
+.choose_widget_resource_value_attribute > #existent_resource_attribute > ul > li .sla_resource_header .description {
+	margin-left:20px;
+	color:#666;
+}
+.choose_widget_resource_value_attribute > #existent_resource_attribute > ul > li .sla_resource_body {
+	margin-top:10px;
+	margin-left:20px;
+}
+.choose_widget_resource_value_attribute:not(.show_resource_attributes) > #existent_resource_attribute > ul > li .sla_resource_body,
+  .choose_widget_resource_value_attribute > #existent_resource_attribute > ul > li:not(.selected) .sla_resource_body {
+	display:none;
+}
+.choose_widget_resource_value_attribute > #existent_resource_attribute > ul > li:not(.is_multiple) .sla_resource_index {
+	display:none;
+}
+.choose_widget_resource_value_attribute > #existent_resource_attribute > ul > li .sla_resource_index input {
+	width:140px;
+	margin-left:10px;
+}
+.choose_widget_resource_value_attribute > #existent_resource_attribute > ul > li .sla_resource_attributes {
+	margin-top:10px;
+}
+.choose_widget_resource_value_attribute > #existent_resource_attribute > ul > li .sla_resource_attributes > ul > li {
+	margin-bottom:5px;
+}
+.choose_widget_resource_value_attribute > #existent_resource_attribute > ul > li .sla_resource_attributes > ul > li.user_defined_item {
+	margin-bottom:10px;
+	color:#666;
+}
+.choose_widget_resource_value_attribute > #existent_resource_attribute > ul > li .sla_resource_attributes > ul > li.user_defined_item input {
+	vertical-align:middle;
+	opacity:.5;
+}
+.choose_widget_resource_value_attribute > #existent_resource_attribute > ul > li .sla_resource_attributes > ul > li.user_defined_item input:not([type=radio]) {
+	width:100px;
+	opacity:.8;
+}
+.choose_widget_resource_value_attribute > #existent_resource_attribute > ul > li .sla_resource_attributes ul > li input[type=radio] {
+	margin:0 5px 0 0;
+}
+
+.choose_widget_resource_value_attribute > #new_resource_attribute > div {
+	margin-bottom:5px;
+}
+.choose_widget_resource_value_attribute > #new_resource_attribute > div > input,
+  .choose_widget_resource_value_attribute > #new_resource_attribute > div > select {
+	width:200px;
+}
+.choose_widget_resource_value_attribute > #new_resource_attribute > div.query_conditions {
+	margin-top:20px;
+}
+.choose_widget_resource_value_attribute > #new_resource_attribute > div:not(.query_conditions) > label {
+	width:70px;
+	display:inline-block;
+}
+.choose_widget_resource_value_attribute > #new_resource_attribute > div.query_conditions > ul {
+	margin-top:10px;
+	margin-left:20px;
+}
+.choose_widget_resource_value_attribute > #new_resource_attribute > div.query_conditions > ul > li {
+	margin-bottom:5px;
+}
+.choose_widget_resource_value_attribute > #new_resource_attribute > div.query_conditions > ul > li:not(.condition_activated) {
+	opacity:.5;
+}
+.choose_widget_resource_value_attribute > #new_resource_attribute > div.query_conditions > ul > li > label {
+	width:100px;
+	display:inline-block;
+}
+.choose_widget_resource_value_attribute > #new_resource_attribute > div.query_conditions > ul > li > input[type=checkbox] {
+	margin-right:5px;
+}
+.choose_widget_resource_value_attribute > #new_resource_attribute > div.query_conditions > ul > li > input:not([type=checkbox]) {
+	width:200px;
+}
+.choose_widget_resource_value_attribute > #new_resource_attribute > div.query_conditions > ul > li:not(.condition_activated) > input:not([type=checkbox]) {
+	cursor:not-allowed;
+}
+
+

@@ -26,9 +26,24 @@ var DBTableTaskPropertyObj = {
 	column_types : null,
 	column_simple_types : null,
 	column_numeric_types : null,
+	column_mandatory_length_types : null,
 	column_types_ignored_props : null,
 	column_types_hidden_props : null,
 	show_properties_on_connection_drop : false,
+	allow_column_sorting : false,
+	
+	//These will be used by the __system/layer/presentation/phpframework/.../db/diagram.php , __system/layer/presentation/phpframework/.../db/edit_table.php and other/availablemodules/common/.../CommonModuleAdminTableExtraAttributesUtil.php.
+	on_load_task_properties_callback : null,
+	on_submit_task_properties_callback : null,
+	on_task_creation_callback : null,
+	on_task_deletion_callback : null,
+	on_update_simple_attributes_html_with_table_attributes_callback : null,
+	on_update_table_attributes_html_with_simple_attributes_callback : null,
+	on_add_table_attribute_callback : null,
+	on_add_simple_attribute_callback : null,
+	on_add_task_properties_attribute_callback : null,
+	on_before_remove_task_properties_attribute_callback : null,
+	on_before_sort_task_properties_attributes : null,
 	
 	//private variables
 	selected_connection_properties_data : null,
@@ -63,6 +78,7 @@ var DBTableTaskPropertyObj = {
 		
 		//PREPARING TABLE NAME
 		var task_label = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
+		task_html_elm.find('.table_name input').val(task_label);
 		
 		//PREPARING CHARSETS
 		var charset_options = '<option value="">-- Default --</option>';
@@ -139,8 +155,7 @@ var DBTableTaskPropertyObj = {
 		
 		table_storage_engine_elm.find('select').html(storage_engine_options);
 		
-		//PREPARING TABLE NAME AND ATTRIBUTES
-		task_html_elm.find('.table_name input').val(task_label);
+		//PREPARING ATTRIBUTES
 		task_html_elm.find('.table_attrs').html("");
 		
 		//reset column_simple_custom_types so they don't get saved between tables
@@ -186,14 +201,39 @@ var DBTableTaskPropertyObj = {
 		var is_fixed_properties_panel = $("#" + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().closest(".taskflowchart").hasClass("fixed_side_properties");
 		
 		if (is_fixed_properties_panel)
-			DBTableTaskPropertyObj.convertTableToList( task_html_elm.find(".attributes .view")[0] );
+			DBTableTaskPropertyObj.convertTableToList( task_html_elm.find(".attributes .switch")[0] );
+		
+		//callback
+		if (typeof DBTableTaskPropertyObj.on_load_task_properties_callback == "function")
+			DBTableTaskPropertyObj.on_load_task_properties_callback(properties_html_elm, task_id, task_property_values);
 	},
 	
 	onSubmitTaskProperties : function(properties_html_elm, task_id, task_property_values) {
+		//All code that you need to add here, please add it in the getParsedTaskPropertyFields method.
+		//Try to avoid to execute other code here, than calling the getParsedTaskPropertyFields method, bc we the __system/layer/presentation/phpframework/webroot/js/db/edit_table.js file and others call the getParsedTaskPropertyFields to get the submited properties.
+		
+		var fields = DBTableTaskPropertyObj.getParsedTaskPropertyFields(properties_html_elm, task_id); 
+		var status = false;
+		
+		if (fields) {
+			DBTableTaskPropertyObj.prepareShortTableAttributes(task_id, fields);
+			
+			status = true;
+			
+			//callback
+			if (typeof DBTableTaskPropertyObj.on_submit_task_properties_callback == "function")
+				status = DBTableTaskPropertyObj.on_submit_task_properties_callback(properties_html_elm, task_id, task_property_values);
+		}
+		
+		return status;
+	},
+	
+	getParsedTaskPropertyFields : function(properties_html_elm, task_id) {
 		var task_html_elm = properties_html_elm.find('.db_table_task_html');
 		var task_label = task_html_elm.find(".table_name input").val();
 		var label_obj = {label: task_label};
 		var is_attributes_list_shown = task_html_elm.hasClass("attributes_list_shown");
+		var switch_icon = task_html_elm.find(".attributes .switch");
 		
 		//check which tab is selected and if is Simple UI tab, convert the attributes to advanced UI
 		var active_tab = task_html_elm.tabs('option', 'active');
@@ -208,9 +248,9 @@ var DBTableTaskPropertyObj = {
 		
 		//converts list to table first, if apply
 		if (is_attributes_list_shown)
-			DBTableTaskPropertyObj.convertListToTable( task_html_elm.find(".attributes .view")[0] );
+			DBTableTaskPropertyObj.convertListToTable(switch_icon[0]);
 		
-		//PREPARE has_default checkboxes according with the default values:
+		//prepare has_default checkboxes according with the default values:
 		var has_defaults = task_html_elm.find(".table_attr_has_default .task_property_field");
 		var defaults = task_html_elm.find(".table_attr_default .task_property_field");
 		
@@ -222,19 +262,31 @@ var DBTableTaskPropertyObj = {
 			}
 		}
 		
+		//normalize attributes' names
 		var names = task_html_elm.find(".table_attr_name .task_property_field");
 		for (var i = 0; i < names.length; i++) {
 			var v = $(names[i]).val();
 			$(names[i]).val( normalizeTaskTableName(v) );
 		}
 		
-		//PREPARE Task label and show the table attributes in the workflow task:
+		//prepare Task label and show the table attributes in the workflow task:
+		var fields = null;
+		
 		if (DBTableTaskPropertyObj.onCheckLabel(label_obj, task_id)) {
 			var primary_keys_fields = task_html_elm.find(".table_attr_primary_key .task_property_field");
 			var names_fields = task_html_elm.find(".table_attr_name .task_property_field");
 			var types_fields = task_html_elm.find(".table_attr_type .task_property_field");
 			var lengths_fields = task_html_elm.find(".table_attr_length .task_property_field");
+			var nulls_fields = task_html_elm.find(".table_attr_null .task_property_field");
+			var unsigneds_fields = task_html_elm.find(".table_attr_unsigned .task_property_field");
 			var uks_fields = task_html_elm.find(".table_attr_unique .task_property_field");
+			var auto_increments_fields = task_html_elm.find(".table_attr_auto_increment .task_property_field");
+			var has_defaults_fields = task_html_elm.find(".table_attr_has_default .task_property_field");
+			var defaults_fields = task_html_elm.find(".table_attr_default .task_property_field");
+			var extras_fields = task_html_elm.find(".table_attr_extra .task_property_field");
+			var charsets_fields = task_html_elm.find(".table_attr_charset .task_property_field");
+			var collations_fields = task_html_elm.find(".table_attr_collation .task_property_field");
+			var comments_fields = task_html_elm.find(".table_attr_comment .task_property_field");
 			
 			var column_types_ignored_props = $.isPlainObject(DBTableTaskPropertyObj.column_types_ignored_props) ? DBTableTaskPropertyObj.column_types_ignored_props : {};
 			
@@ -257,23 +309,30 @@ var DBTableTaskPropertyObj = {
 				DBTableTaskPropertyObj.prepareAttributeSerialType(tr, type);
 			});
 			
-			DBTableTaskPropertyObj.prepareTableAttributes(task_id, {
+			fields = {
 				table_name: label_obj.label,
 				table_attr_names: names_fields,
 				table_attr_primary_keys: primary_keys_fields,
 				table_attr_types: types_fields,
 				table_attr_lengths: lengths_fields,
+				table_attr_nulls: nulls_fields,
+				table_attr_unsigneds: unsigneds_fields,
 				table_attr_uniques: uks_fields,
-			});
-			
-			return true;
+				table_attr_auto_increments: auto_increments_fields,
+				table_attr_has_defaults: has_defaults_fields,
+				table_attr_defaults: defaults_fields,
+				table_attr_extras: extras_fields,
+				table_attr_charsets: charsets_fields,
+				table_attr_collations: collations_fields,
+				table_attr_comments: comments_fields,
+			};
 		}
 		
 		//converts back table to list
 		if (is_attributes_list_shown)
-			DBTableTaskPropertyObj.convertTableToList( task_html_elm.find(".attributes .view")[0] );
+			DBTableTaskPropertyObj.convertTableToList(switch_icon[0]);
 		
-		return false;
+		return fields;
 	},
 	
 	onCheckLabel : function(label_obj, task_id) {
@@ -308,11 +367,265 @@ var DBTableTaskPropertyObj = {
 		
 		if (task_property_values && task_property_values.table_attr_names && task_property_values.table_attr_names.length > 0) {
 			DBTableTaskPropertyObj.regularizeTaskPropertyValues(task_property_values);
-			DBTableTaskPropertyObj.prepareTableAttributes(task_id, task_property_values);
+			DBTableTaskPropertyObj.prepareShortTableAttributes(task_id, task_property_values);
+			
+			//add attributes icon to short actions
+			DBTableTaskPropertyObj.addShortActionsButton(task_id);
+			
+			//callback
+			if (typeof DBTableTaskPropertyObj.on_task_creation_callback == "function")
+				DBTableTaskPropertyObj.on_task_creation_callback(task_id);
 		}
 	},
 	
-	prepareTableAttributes : function(task_id, data) {
+	onTaskDeletion : function(task_id, task) {
+		//callback
+		if (typeof DBTableTaskPropertyObj.on_task_deletion_callback == "function")
+			DBTableTaskPropertyObj.on_task_deletion_callback(task_id, task);
+	},
+	
+	sortTaskPropertiesAttributes : function(task_id, attributes_names) {
+		if (attributes_names) {
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var task_property_values = WF.jsPlumbTaskFlow.tasks_properties[task_id];
+			
+			if (task_property_values && task_property_values.table_attr_names) {
+				var changed = false;
+				
+				//callback
+				if (typeof DBTableTaskPropertyObj.on_before_sort_task_properties_attributes == "function")
+					changed = DBTableTaskPropertyObj.on_before_sort_task_properties_attributes(task_id, attributes_names);
+				
+				var table_attr_names = Object.assign({}, task_property_values.table_attr_names);
+				
+				//console.log(table_attr_names);
+				//console.log(attributes_names);
+				
+				$.each(table_attr_names, function(i, table_attr_name) {
+					//convert object to array
+					if ($.isPlainObject(task_property_values.table_attr_names))
+						task_property_values.table_attr_names = $.map(task_property_values.table_attr_names, function(value, idx) { return [value]; });
+					
+					//prepare index
+					var from_index = task_property_values.table_attr_names.indexOf(table_attr_name);
+					var to_index = attributes_names.indexOf(table_attr_name);
+					//console.log("attr "+table_attr_name + "("+from_index+" => "+to_index+")");
+					
+					if (to_index != -1 && to_index != from_index) {
+						changed = true;
+						//console.log("changing "+table_attr_name);
+						
+						for (var j = 0; j < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; j++) {
+							var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[j];
+							var key = "table_attr_" + prop_name + "s";
+							var arr = task_property_values[key];
+							
+							//convert object to array
+							if ($.isPlainObject(arr))
+								arr = $.map(arr, function(value, idx) { return [value]; });
+							
+							//reorder array
+							var value = arr.splice(from_index, 1)[0];
+							arr.splice(to_index, 0, value);
+							
+							task_property_values[key] = arr;
+							//console.log(arr);
+						}
+						//console.log(task_property_values);
+					}
+				});
+				
+				if (changed)
+					WF.jsPlumbTaskFlow.tasks_properties[task_id] = task_property_values;
+			}
+		}
+	},
+	
+	updateTaskPropertiesAttribute : function(task_id, attribute_name, attribute_data, attribute_index) {
+		if (attribute_name && (!$.isPlainObject(attribute_data) || !attribute_data["name"]))
+			this.removeTaskPropertiesAttribute(task_id, attribute_name);
+		else if ($.isPlainObject(attribute_data) && attribute_data["name"]) { //Do not add attribute_name here, bc it may be empty in case be a new attribute
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var task_property_values = WF.jsPlumbTaskFlow.tasks_properties[task_id];
+			var exists = false;
+			
+			//update attribute in task properties
+			if (attribute_name && task_property_values && task_property_values.table_attr_names)
+				$.each(task_property_values.table_attr_names, function(i, table_attr_name) {
+					if (table_attr_name == attribute_name && (!$.isNumeric(attribute_index) || attribute_index < 0 || attribute_index == i)) { //attribute_index can be -1
+						exists = true;
+						
+						for (var j = 0; j < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; j++) {
+							var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[j];
+							
+							if (attribute_data.hasOwnProperty(prop_name))
+								task_property_values["table_attr_" + prop_name + "s"][i] = attribute_data[prop_name];
+						}
+						
+						return false; //exit loop
+					}
+				});
+			
+			//add new attribute in task properties
+			if (!exists) {
+				exists = true;
+				var new_index = 0;
+				
+				if (!$.isPlainObject(task_property_values))
+					task_property_values = {};
+				
+				if ($.isArray(task_property_values.table_attr_names))
+					new_index = task_property_values.table_attr_names.length;
+				else if ($.isPlainObject(task_property_values.table_attr_names))
+					for (var i in task_property_values.table_attr_names)
+						if ($.isNumeric(i) && parseInt(i) > new_index)
+							new_index = parseInt(i);
+				
+				for (var j = 0; j < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; j++) {
+					var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[j];
+					var prop_value = attribute_data.hasOwnProperty(prop_name) ? attribute_data[prop_name] : "";
+					var key = "table_attr_" + prop_name + "s";
+					
+					if ($.isArray(task_property_values[key])) 
+						task_property_values[key].push(prop_value);
+					else {
+						if (!$.isPlainObject(task_property_values[key]))
+							task_property_values[key] = {};
+						
+						task_property_values[key][new_index] = prop_value;
+					}
+				}
+				
+				//callback - must be before the sort happens
+				if (typeof DBTableTaskPropertyObj.on_add_task_properties_attribute_callback == "function")
+					status = DBTableTaskPropertyObj.on_add_task_properties_attribute_callback(task_id, attribute_name, attribute_data, new_index);
+				
+				//sort data
+				if ($.isNumeric(attribute_index) && attribute_index >= 0 && attribute_index != new_index) { //attribute_index can be -1
+					//prepare new attributes names with the right order based in the attribute_index
+					var attributes_names = $.map(Object.assign({}, task_property_values.table_attr_names), function(value, idx) { return [value]; }); //clone object/array and convert it to array
+					var name = attributes_names.splice(new_index, 1)[0];
+					attributes_names.splice(attribute_index, 0, name);
+					
+					//sort task_property_values
+					DBTableTaskPropertyObj.sortTaskPropertiesAttributes(task_id, attributes_names);
+				}
+			}
+			
+			//update task properties
+			WF.jsPlumbTaskFlow.tasks_properties[task_id] = task_property_values;
+		}
+	},
+	
+	removeTaskPropertiesAttribute : function(task_id, attribute_name) {
+		if (attribute_name) {
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var task_property_values = WF.jsPlumbTaskFlow.tasks_properties[task_id];
+			
+			//remove attribute from task properties
+			if (task_property_values && task_property_values.table_attr_names) {
+				var status = true;
+				
+				//callback
+				if (typeof DBTableTaskPropertyObj.on_before_remove_task_properties_attribute_callback == "function")
+					status = DBTableTaskPropertyObj.on_before_remove_task_properties_attribute_callback(task_id, attribute_name);
+				
+				if (status) {
+					var exists = false;
+					
+					$.each(task_property_values.table_attr_names, function(i, table_attr_name) {
+						if (table_attr_name == attribute_name) {
+							exists = true;
+							
+							for (var j = 0; j < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; j++) {
+								var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[j];
+								var key = "table_attr_" + prop_name + "s";
+								
+								if ($.isArray(task_property_values[key]))
+									task_property_values[key].splice(i, 1);
+								else if ($.isPlainObject(task_property_values[key]))
+									delete task_property_values[key][i];
+							}
+							
+							return false; //exit loop
+						}
+					});
+					
+					if (exists)
+						WF.jsPlumbTaskFlow.tasks_properties[task_id] = task_property_values;
+				}
+			}
+		}
+	},
+	
+	addShortActionsButton : function(task_id) {
+		var WF = myWFObj.getJsPlumbWorkFlow();
+		var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+		var short_actions = task.find(".short_actions");
+		var html = '<span class="add_attribute_action" onClick="DBTableTaskPropertyObj.addShortTableAttribute(this, event)"></span>';
+		var add_attribute_icon = $(html);
+		
+		short_actions.prepend(add_attribute_icon);
+		
+		return add_attribute_icon;
+	},
+	
+	addShortTableAttribute : function(elm, event) {
+		event.stopPropagation();
+		
+		elm = $(elm);
+		var task = elm.parent().closest(".task");
+		var task_id = task.attr("id");
+		
+		var WF = myWFObj.getJsPlumbWorkFlow();
+		var eps = task.children("." + WF.jsPlumbTaskFlow.task_eps_class_name);
+		var table_attrs = eps.find(" > table.table_attrs > tbody");
+		
+		var html = this.getShortTableAttributeRowHtml();
+		var attribute = $(html);
+		
+		this.prepareShortTableAttributeRowEvents(attribute);
+		
+		table_attrs.append(attribute);
+		
+		//repaint task so it can update its connections
+		WF.jsPlumbTaskFlow.repaintTask(task);
+		
+		//focus on name input
+		attribute.find(".name input").focus();
+		
+		//set default type
+		var select = attribute.find(".type select");
+		select.val("simple_name");
+		
+		if (select.val() != "simple_name")
+			select.val("varchar");
+		
+		attribute.find(".type input").val(50);
+		
+		return attribute;
+	},
+	
+	removeShortTableAttribute : function(elm, event) {
+		event.stopPropagation();
+		
+		elm = $(elm);
+		var table_attr = elm.parent().closest(".table_attr");
+		var attribute_name = table_attr.attr("data_attribute_name");
+		var task = table_attr.parent().closest(".task");
+		var task_id = task.attr("id");
+		
+		if (task_id && attribute_name)
+			this.removeTaskPropertiesAttribute(task_id, attribute_name);
+		
+		//remove attribute from UI
+		table_attr.remove();
+		
+		//repaint task so it can update its connections
+		myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.repaintTask(task);
+	},
+	
+	prepareShortTableAttributes : function(task_id, data) {
 		if (data) {
 			var label = data.table_name;
 			var WF = myWFObj.getJsPlumbWorkFlow();
@@ -325,43 +638,122 @@ var DBTableTaskPropertyObj = {
 			var names = data.table_attr_names;
 			var types = data.table_attr_types;
 			var lengths = data.table_attr_lengths;
-			var uks = data.table_attr_uniques;
+			var nulls = data.table_attr_nulls;
+			var unsigneds = data.table_attr_unsigneds;
+			var uniques = data.table_attr_uniques;
+			var auto_increments = data.table_attr_auto_increments;
+			var has_defaults = data.table_attr_has_defaults;
+			var defaults = data.table_attr_defaults;
+			var extras = data.table_attr_extras;
+			var charsets = data.table_attr_charsets;
+			var collations = data.table_attr_collations;
+			var comments = data.table_attr_comments;
 			
 			if (names) {
-				var column_types_ignored_props = $.isPlainObject(DBTableTaskPropertyObj.column_types_ignored_props) ? DBTableTaskPropertyObj.column_types_ignored_props : {};
+				var fks = DBTableTaskPropertyObj.getTaskForeignKeys(task_id); //Do not use "this.", bc we use this function in the db/diagram.js
 				
 				//PREPARE ATTRIBUTES
-				var html = '<table class="table_attrs">';
+				var html = '<table class="table_attrs"><tbody>';
 				
 				for (var i = 0; i < names.length; i++) {
 					var name = names[i] && names[i].nodeName && names[i].nodeName.toLowerCase() == "input" ? $(names[i]).val() : names[i];
-					var primary_key = primary_keys[i] && primary_keys[i].nodeName && primary_keys[i].nodeName.toLowerCase() == "input" ? $(primary_keys[i]).is(":checked") : primary_keys[i];
+					var primary_key = primary_keys[i] && primary_keys[i].nodeName && primary_keys[i].nodeName.toLowerCase() == "input" ? $(primary_keys[i]).is(":checked") : checkIfValueIsTrue(primary_keys[i]);
 					var type = types[i] && types[i].nodeName && types[i].nodeName.toLowerCase() == "select" ? $(types[i]).val() : types[i];
 					var length = lengths[i] && lengths[i].nodeName && lengths[i].nodeName.toLowerCase() == "input" ? $(lengths[i]).val() : lengths[i];
-					var uk = uks[i] && uks[i].nodeName && uks[i].nodeName.toLowerCase() == "input" ? $(uks[i]).is(":checked") : uks[i];
+					var is_null = nulls[i] && nulls[i].nodeName && nulls[i].nodeName.toLowerCase() == "input" ? $(nulls[i]).is(":checked") : checkIfValueIsTrue(nulls[i]);
+					var unsigned = unsigneds[i] && unsigneds[i].nodeName && unsigneds[i].nodeName.toLowerCase() == "input" ? $(unsigneds[i]).is(":checked") : checkIfValueIsTrue(unsigneds[i]);
+					var unique = uniques[i] && uniques[i].nodeName && uniques[i].nodeName.toLowerCase() == "input" ? $(uniques[i]).is(":checked") : checkIfValueIsTrue(uniques[i]);
+					var auto_increment = auto_increments[i] && auto_increments[i].nodeName && auto_increments[i].nodeName.toLowerCase() == "input" ? $(auto_increments[i]).is(":checked") : checkIfValueIsTrue(auto_increments[i]);
+					var has_default = has_defaults[i] && has_defaults[i].nodeName && has_defaults[i].nodeName.toLowerCase() == "input" ? $(has_defaults[i]).is(":checked") : checkIfValueIsTrue(has_defaults[i]);
+					var default_value = defaults[i] && defaults[i].nodeName && defaults[i].nodeName.toLowerCase() == "input" ? (
+						!$(defaults[i]).is(":disabled") ? $(defaults[i]).val() : null
+					) : defaults[i];
+					var extra = extras[i] && extras[i].nodeName && extras[i].nodeName.toLowerCase() == "input" ? $(extras[i]).val() : extras[i];
+					var charset = charsets[i] && charsets[i].nodeName && charsets[i].nodeName.toLowerCase() == "select" ? $(charsets[i]).val() : charsets[i];
+					var collation = collations[i] && collations[i].nodeName && collations[i].nodeName.toLowerCase() == "select" ? $(collations[i]).val() : collations[i];
+					var comment = comments[i] && comments[i].nodeName && comments[i].nodeName.toLowerCase() == "input" ? $(comments[i]).val() : comments[i];
 					
-					var column_type_ignored_props = type && column_types_ignored_props.hasOwnProperty(type) && $.isArray(column_types_ignored_props[type]) ? column_types_ignored_props[type] : [];
-					var is_length_disabled = !type || $.inArray("length", column_type_ignored_props) != -1;
+					//prepare attribute data
+					var attribute_data = {
+						name: name,
+						primary_key: primary_key,
+						type: type,
+						length: length,
+						"null": is_null,
+						unsigned: unsigned,
+						unique: unique,
+						auto_increment: auto_increment,
+						"default": default_value,
+						extra: extra,
+						charset: charset,
+						collation: collation,
+						comment: comment
+					};
+					attribute_data = DBTableTaskPropertyObj.prepareTaskTableAttributeData(attribute_data, fks); //Do not use "this.", bc we use this function in the db/diagram.js
 					
-					name = name ? name : "";
-					primary_key = checkIfValueIsTrue(primary_key) ? "PK" : (checkIfValueIsTrue(uk) ? "UK" : "");
-					type = type ? type : "";
-					length = !is_length_disabled && (length || parseInt(length) === 0) ? length : ""; //Do not ad parseInt or parseFloat bc the length can be 2 values splited by comma, like it happens with the decimal type.
-					
-					var primary_key_title = primary_key == "PK" ? "Primary Key" : (primary_key == "UK" ? "Unique Key" : "");
-					var name_title = "Attribute Name: " + name.replace(/"/g, "&quot;");
-					var type_title = "Attribute Type: " + type + "\nAttribute Length: " + length;
-					
-					html += '<tr class="table_attr"><td class="primary_key" title="' + primary_key_title + '">' + primary_key + '</td><td class="name" title="' + name_title + '">' + name + '</td><td class="type" title="' + type_title + '">' + type + (length ? " (" + length + ")" : "") + '</td></tr>';
+					//prepare html with attribute data
+					html += DBTableTaskPropertyObj.getShortTableAttributeRowHtml(attribute_data); //Do not use "this.", bc we use this function in the db/diagram.js
 				}
 				
-				html += "</table>";
+				html += "</tbody></table>";
 				
 				var eps = task.children("." + WF.jsPlumbTaskFlow.task_eps_class_name);
 				eps.children(".table_attrs").remove();
 				eps.append(html);
-	
-				this.prepareTableForeignKeys(task_id);
+				
+				eps.find(".table_attrs .table_attr").each(function(idx, table_attr) {
+					DBTableTaskPropertyObj.prepareShortTableAttributeRowEvents( $(table_attr) );
+				});
+				
+				//add sortable
+				if (DBTableTaskPropertyObj.allow_column_sorting) {
+					task.addClass("allow_sort");
+					
+					var tbody= eps.find(".table_attrs tbody");
+					tbody.sortable({
+						scroll: true,
+						scrollSensitivity: 20,
+						//refreshPositions: true,
+						
+						connectWith: "tbody",
+						items: "tr.table_attr",
+						containment: tbody,
+						appendTo: tbody,
+						handle: " > .button > .icon.move",
+						revert: true,
+						cursor: "ns-resize",
+						tolerance: "pointer",
+						grid: [5, 5],
+						axis: "y",
+						helper: "clone",
+						greedy: true,
+						
+						start: function(event, ui_obj) {
+							//TODO: maybe add handler to disable auto_save. In the future check if this is needed or not???
+						},
+						sort: function(event, ui_obj) {
+							WF.jsPlumbContextMenu.hideContextMenus();
+						},
+						stop: function(event, ui_obj) {
+							//reorder attributes
+							var item = ui_obj.item;
+							var trs = item.parent().children();
+							var new_attributes_names = [];
+							
+							for (var i = 0; i < trs.length; i++) 
+								new_attributes_names.push( trs[i].getAttribute("data_attribute_name") );
+							
+							DBTableTaskPropertyObj.sortTaskPropertiesAttributes(task_id, new_attributes_names);
+							
+							//TODO: maybe add handler to enable auto_save if apply. In the future check if this is needed or not???
+						},
+					});
+					
+					//avoid open contextmenu and task properties on sorting
+					tbody.click(function(event) {
+						event.stopPropagation();
+					});
+				}
 				
 				var label_height = parseInt( task.children("." + WF.jsPlumbTaskFlow.task_label_class_name).height() );
 				var min_height = parseInt( task.css("min-height") );
@@ -371,49 +763,545 @@ var DBTableTaskPropertyObj = {
 	
 				task.css("height", height);
 				
-				this.checkingTaskConnectionsPropertiesFromTaskProperties(task_id);
+				DBTableTaskPropertyObj.checkingTaskConnectionsPropertiesFromTaskProperties(task_id); //Do not use "this.", bc we use this function in the db/diagram.js
 				
 				resizeTableTaskBasedOnAttributes(task_id);
+				
+				WF.jsPlumbTaskFlow.repaintTask(task);
 			}
 		}
 	},
 	
-	prepareTableForeignKeys : function(task_id) {
-		if (task_id) {
-			var fks = this.getTaskForeignKeys(task_id);
-			var task = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskById(task_id);
-			
-			var primary_keys = task.find(" > ." + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.task_eps_class_name + " .table_attrs .table_attr .primary_key");
-			var names = task.find(" > ." + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.task_eps_class_name + " .table_attrs .table_attr .name");
+	getShortTableAttributeRowHtml : function(data) {
+		if (!$.isPlainObject(data))
+			data = {
+				name: "",
+				type: ""
+			};
 		
-			if (names) {
-				for (var i = 0; i < names.length; i++) {
-					var j_primary_key = $(primary_keys[i]);
-					var primary_key = j_primary_key.text();
-					var name = $(names[i]).text();
-					var fk = $.inArray(name, fks) != -1;
-					//console.log(name+":"+primary_key+":"+fk);
+		var type = data["type"];
+		var original_type = data["original_type"];
+		
+		//prepare ignored props before we convert type to a simple type
+		var column_type_ignored_props = original_type && $.isPlainObject(this.column_types_ignored_props) && this.column_types_ignored_props.hasOwnProperty(original_type) && $.isArray(this.column_types_ignored_props[original_type]) ? this.column_types_ignored_props[original_type] : [];
+		
+		//prepare other ignored props
+		var is_length_disabled = !original_type || $.inArray("length", column_type_ignored_props) != -1;
+		
+		//prepare html
+		var title = this.getShortTableAttributeRowTitle(data);
+		var key_type_options = this.getShortTableAttributeRowKeyTypeOptions(data["key_type"]);
+		var type_options = this.getSimpleAttributeTypeOptions(type);
+		var length_html = (!type || !is_length_disabled ? (
+				'<input value="'
+				+ (data["length"] || parseInt(data["length"]) === 0 ? data["length"] : "") 
+				+ '" />'
+			) : "");
+			
+		//var html = '<tr class="table_attr" title="' + title + '"><td class="key_type">' + data["key_type"].toUpperCase() + '</td><td class="name">' + data["name"] + '</td><td class="type">' + type + (!is_length_disabled && (data["length"] || parseInt(data["length"]) === 0) ? " (" + data["length"] + ")" : "") + '</td></tr>';
+		var html = '<tr class="table_attr" title="' + title + '" data_attribute_name="' + data["name"] + '">'
+					+ '<td class="key_type">'
+						+ '<select>'
+							+ key_type_options
+						+ '</select>'
+					+ '</td>'
+					+ '<td class="name">'
+						+ '<input value="' + data["name"] + '" />'
+					+ '</td>'
+					+ '<td class="type' + (length_html ? " with_length" : "") + '">'
+						+ '<select onChange="DBTableTaskPropertyObj.onChangeShortTableAttributeType(this)">'
+							+ type_options
+						+ '</select>'
+						+ length_html
+					+ '</td>'
+					+ '<td class="button">'
+						+ '<span class="icon remove" onClick="DBTableTaskPropertyObj.removeShortTableAttribute(this, event)"></span>'
+						+ (DBTableTaskPropertyObj.allow_column_sorting ? '<span class="icon move"></span>' : '')
+					+ '</td>'
+				+ '</tr>';
+		
+		//console.log($(html)[0]);
+		return html;
+	},
+	
+	onChangeShortTableAttributeType : function(elm) {
+		elm = $(elm);
+		var type = elm.val();
+		var length_input = elm.parent().children("input");
+		
+		if (length_input.val() == "") {
+			var column_simple_types = $.isPlainObject(DBTableTaskPropertyObj.column_simple_types) ? DBTableTaskPropertyObj.column_simple_types : {};
+			var column_simple_custom_types = $.isPlainObject(DBTableTaskPropertyObj.column_simple_custom_types) ? DBTableTaskPropertyObj.column_simple_custom_types : {};
+			
+			var simple_props = type && column_simple_types.hasOwnProperty(type) ? column_simple_types[type] : (
+				type && column_simple_custom_types.hasOwnProperty(type) ? column_simple_custom_types[type] : null
+			);
+			
+			var column_mandatory_length_types = $.isPlainObject(DBTableTaskPropertyObj.column_mandatory_length_types) ? DBTableTaskPropertyObj.column_mandatory_length_types : {};
+			var column_mandatory_length_type = type && column_mandatory_length_types.hasOwnProperty(type) ? column_mandatory_length_types[type] : null;
+			
+			if (simple_props && ($.isNumeric(simple_props["length"]) || simple_props["length"]))
+				column_mandatory_length_type = simple_props["length"];
+			
+			//update length, but only if any set yet
+			if ($.isNumeric(column_mandatory_length_type) || column_mandatory_length_type)
+				length_input.val(column_mandatory_length_type);
+		}
+	},
+	
+	prepareShortTableAttributeRowEvents : function(table_attr) {
+		//avoid to show contextmenu when we click in an input/select of the table_attr
+		table_attr.click(function(event) {
+			event.stopPropagation();
+		});
+		
+		//set onkeypress, onblur and onchange events
+		table_attr.find("input").on("blur", function(event) {
+			var timeout_id = table_attr.data("timeout_id");
+			timeout_id && clearTimeout(timeout_id);
+			
+			DBTableTaskPropertyObj.onChangeShortTableAttribute(this);
+		})
+		.on("keyup", function(event) {
+			var input = $(this);
+			var timeout_id = table_attr.data("timeout_id");
+			timeout_id && clearTimeout(timeout_id);
+			
+			timeout_id = setTimeout(function() {
+				table_attr.data("timeout_id", null);
+				DBTableTaskPropertyObj.onChangeShortTableAttribute( input[0] );
+			}, 2000);
+			
+			table_attr.data("timeout_id", timeout_id);
+		});
+		
+		table_attr.find("select").on("change", function(event) {
+			DBTableTaskPropertyObj.onChangeShortTableAttributeTypeSelectBox(this);
+		});
+	},
+	
+	onChangeShortTableAttributeTypeSelectBox : function(elm) {
+		var elm = $(elm);
+		var td = elm.parent();
+		
+		if (td.is(".type")) {
+			//update length and key type if is simple type
+			var type = elm.val();
+			var table_attr = $(elm).parent().closest(".table_attr");
+			var key_type_select = table_attr.find(".key_type select");
+			var length_input = table_attr.find(".type input");
+			
+			//prepare simple types
+			var column_simple_types = $.isPlainObject(DBTableTaskPropertyObj.column_simple_types) ? DBTableTaskPropertyObj.column_simple_types : {};
+			var column_simple_custom_types = $.isPlainObject(DBTableTaskPropertyObj.column_simple_custom_types) ? DBTableTaskPropertyObj.column_simple_custom_types : {};
+			
+			var column_mandatory_length_types = $.isPlainObject(DBTableTaskPropertyObj.column_mandatory_length_types) ? DBTableTaskPropertyObj.column_mandatory_length_types : {};
+			var column_mandatory_length_type = type && column_mandatory_length_types.hasOwnProperty(type) ? column_mandatory_length_types[type] : null;
+			
+			var simple_props = type && column_simple_types.hasOwnProperty(type) ? column_simple_types[type] : (
+				type && column_simple_custom_types.hasOwnProperty(type) ? column_simple_custom_types[type] : null
+			);
+			
+			if (simple_props) {
+				//If type is simple type and an auto_increment, check if it is the only field with the auto_increment property
+				var is_auto_increment = (simple_props.hasOwnProperty("auto_increment") && simple_props["auto_increment"]) || (simple_props.hasOwnProperty("extra") && typeof simple_props["extra"] == "string" && simple_props["extra"].toLowerCase().indexOf("auto_increment") != -1);
+				
+				if (is_auto_increment) {
+					//check if exists more than 1 auto_increment field
+					var task = table_attr.parent().closest(".task");
+					var task_id = task.attr("id");
+					var attributes_data = DBTableTaskPropertyObj.getTaskTableAttributesData(task_id);
 					
-					var str = "";
+					if (attributes_data) {
+						var attribute_name = table_attr.find(".name input").val();
+						var auto_increments_count = 0;
+						
+						for (var k in attributes_data)
+							if (k != attribute_name && attributes_data[k]["auto_increment"])
+								auto_increments_count++;
+						
+						//if there is more than 0 auto_increment fields, than reset this field, bc there can only be 1 auto_increment field!
+						if (auto_increments_count > 0) {
+							elm.val("");
+							myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("You cannot have more than one auto increment field! Please choose another type...");
+						}
+					}
+				}
+				
+				//update key type
+				if (simple_props["primary_key"])
+					key_type_select.val("pk");
+				else if (simple_props["unique"])
+					key_type_select.val("uk");
+				else
+					key_type_select.val("");
+				
+				//prepare default length
+				if ($.isNumeric(simple_props["length"]) || simple_props["length"])
+					column_mandatory_length_type = simple_props["length"];
+				else {
+					var native_types = simple_props["type"];
 					
-					if (fk)
-						str = primary_key[0] == "P" ? "PFK" : (primary_key[0] == "U" ? "FUK" : "FK");
-					else if (primary_key && primary_key[0] == "P")
-						str = "PK";
-					else if (primary_key && primary_key[0] == "U")
-						str = "UK";
+					if (!$.isArray(native_types))
+						native_types = [native_types];
 					
-					var title = "";
-					switch (str) {
-						case "PK": title = "Primary Key"; break;
-						case "UK": title = "Unique Key"; break;
-						case "FK": title = "Foreign Key"; break;
-						case "PFK": title = "Primary and Foreign Key"; break;
-						case "FUK": title = "Foreign and Unique Key"; break;
+					for (var i = 0; i < native_types.length; i++) {
+						var native_type = native_types[i];
+						
+						if (native_type && column_mandatory_length_types.hasOwnProperty(native_type)) {
+							column_mandatory_length_type = column_mandatory_length_types[native_type];
+							break;
+						}
+					}
+				}
+			}
+			
+			//update length, but only if any set yet
+			if (length_input.val() == "" && ($.isNumeric(column_mandatory_length_type) || column_mandatory_length_type))
+				length_input.val(column_mandatory_length_type);
+		}
+		
+		//call handler
+		DBTableTaskPropertyObj.onChangeShortTableAttribute(elm[0]);
+	},
+	
+	onChangeShortTableAttribute : function(elm) {
+		var table_attr = $(elm).parent().closest(".table_attr");
+		var attribute_name = table_attr.attr("data_attribute_name");
+		var table_attr_parent = table_attr.parent();
+		var task = table_attr_parent.closest(".task");
+		var task_id = task.attr("id");
+		
+		attribute_name = attribute_name.replace(/\s/g, "");
+		
+		if (task_id) {
+			//get old attribute_data
+			var attribute_data = DBTableTaskPropertyObj.getTaskTableAttributeData(task_id, attribute_name);
+			var new_attribute_name = table_attr.find(".name input").val().replace(/\s/g, "");
+			
+			if (!$.isPlainObject(attribute_data)) {
+				attribute_data = {};
+				
+				if (!attribute_name && new_attribute_name)
+					attribute_name = new_attribute_name;
+			}
+			
+			//prepare new attribute_data
+			var type = table_attr.find(".type select").val();
+			
+			attribute_data["type"] = type;
+			attribute_data["name"] = new_attribute_name;
+			attribute_data["length"] = table_attr.find(".type input").val();
+			
+			//prepare key type
+			var key_type = table_attr.find(".key_type select").val();
+			
+			switch (key_type) {
+				case "pk":
+				case "pfk":
+					attribute_data["primary_key"] = true;
+					break;
+				case "uk":
+				case "fuk":
+					attribute_data["primary_key"] = false;
+					attribute_data["unique"] = true;
+					break;
+				default:
+					attribute_data["primary_key"] = false;
+					attribute_data["unique"] = false;
+			}
+			
+			//prepare other attributes if primary key
+			if (attribute_data["primary_key"]) {
+				var column_numeric_types = $.isArray(DBTableTaskPropertyObj.column_numeric_types) ? DBTableTaskPropertyObj.column_numeric_types : [];
+				
+				attribute_data["null"] = false;
+				attribute_data["unique"] = true;
+				
+				//if there is only 1 primary key and type is numeric or blank, then add auto_increment text and check unsigned. Note that postgres will recognize the "auto_increment" text and remove it directly in the db-driver, so don't worry.
+				if (!type || ($.isArray(column_numeric_types) && $.inArray(type, column_numeric_types) != -1)) {
+					//prepare ignored props before we convert type to a simple type
+					var column_type_ignored_props = type && $.isPlainObject(DBTableTaskPropertyObj.column_types_ignored_props) && DBTableTaskPropertyObj.column_types_ignored_props.hasOwnProperty(type) && $.isArray(DBTableTaskPropertyObj.column_types_ignored_props[type]) ? DBTableTaskPropertyObj.column_types_ignored_props[type] : [];
+					
+					//prepare unsigned
+					var is_unsigned_disabled = column_type_ignored_props && $.inArray("unsigned", column_type_ignored_props) != -1;
+					
+					attribute_data["unsigned"] = !is_unsigned_disabled ? true : false;
+					
+					//count primary keys
+					var primary_keys_count = 0;
+					var selects = table_attr_parent.find(".type select");
+					
+					for (var i = 0, t = selects.length; i < t; i++) {
+						var select_key_type = $(selects[i]).val();
+						
+						if (select_key_type[0] == "p") //if is pk or pf
+							primary_keys_count++;
 					}
 					
-					j_primary_key.attr("title", title);
-					j_primary_key.html(str);
+					//prepare primary key
+					if (primary_keys_count == 1) {
+						//prepare extra
+						var text = attribute_data["extra"];
+						
+						if (!text || ("" + text).toLowerCase().indexOf("auto_increment") == -1) {
+							attribute_data["auto_increment"] = true;
+							attribute_data["extra"] = text + (text ? " " : "") + "auto_increment"; //TODO: Maybe in the future remove this bc it shouldn't be needed, since we already have the .table_attr_auto_increment field.
+						}
+					}
+					else
+						attribute_data["auto_increment"] = false;
+				}
+				else
+					attribute_data["auto_increment"] = false;
+			}
+			else
+				attribute_data["auto_increment"] = false;
+			
+			//prepare attribute data with new simple type
+			var column_simple_types = $.isPlainObject(DBTableTaskPropertyObj.column_simple_types) ? DBTableTaskPropertyObj.column_simple_types : {};
+			var column_simple_custom_types = $.isPlainObject(DBTableTaskPropertyObj.column_simple_custom_types) ? DBTableTaskPropertyObj.column_simple_custom_types : {};
+			
+			var simple_props = type && column_simple_types.hasOwnProperty(type) ? column_simple_types[type] : (
+				type && column_simple_custom_types.hasOwnProperty(type) ? column_simple_custom_types[type] : null
+			);
+			
+			if (simple_props) {
+				for (var prop_name in simple_props)
+					if (prop_name != "name" && prop_name != "length") { //type must be overwrite by the simple_props so we can have the native type
+						var prop_value = simple_props[prop_name];
+						
+						if ($.isArray(prop_value)) //if prop_name=="type" then the prop_value could be an array
+							prop_value = prop_value[0];
+						
+						attribute_data[prop_name] = prop_value;
+					}
+				
+				//update has default, if apply
+				if (prop_name == "default" && prop_value != null && typeof prop_value != "undefined" && !attribute_data["has_default"])
+					attribute_data["has_default"] = true;
+				
+				//update auto_increment, bc it might be hard-coded in the "extra" prop
+				if (!attribute_data["auto_increment"] && simple_props.hasOwnProperty("extra") && typeof simple_props["extra"] == "string" && simple_props["extra"].toLowerCase().indexOf("auto_increment") != -1)
+					attribute_data["auto_increment"] = true;
+				else if (simple_props.hasOwnProperty("auto_increment"))
+					attribute_data["auto_increment"] = simple_props["auto_increment"];
+			}
+			
+			//get attribute index (ignoring the empty attributes), in case the attribute got sorted with an empty attribute name and now has a new name
+			var attribute_index = null;
+			var attribute_dec = 0;
+			var inputs = table_attr_parent.find(".name input");
+			
+			for (var i = 0, t = inputs.length; i < t; i++) {
+				var name = ("" + inputs[i].value).replace(/\s/g, "");
+				
+				if (name == "")
+					attribute_dec++;
+				else if (attribute_data["name"] == name) {
+					attribute_index = i - attribute_dec;
+					break;
+				}
+			}
+			//console.log("attribute_index:"+attribute_index);
+			
+			//update attribute data into task properties
+			DBTableTaskPropertyObj.updateTaskPropertiesAttribute(task_id, attribute_name, attribute_data, attribute_index);
+			
+			if ($(elm).parent().is(".name") && new_attribute_name)
+				table_attr.attr("data_attribute_name", new_attribute_name);
+		}
+	},
+	
+	getShortTableAttributeRowKeyTypeOptions : function(key_type) {
+		var keys_options = '';
+		
+		if (key_type && $.inArray(key_type, ["fk", "pfk", "fuk"]) != -1)
+			keys_options = '<option value=""' + (key_type == "fk" ? ' selected' : '') + ' title="' + this.getShortTableAttributeKeyTypeLabel("fk") + '">FK</option>'
+						+ 	'<option value="pk"' + (key_type == "pfk" ? ' selected' : '') + ' title="' + this.getShortTableAttributeKeyTypeLabel("pfk") + '">PFK</option>'
+						+ 	'<option value="uk"' + (key_type == "fuk" ? ' selected' : '') + ' title="' + this.getShortTableAttributeKeyTypeLabel("fuk") + '">FUK</option>';
+		else
+			keys_options = '<option value="" title="No key"></option>'
+						+ '<option value="pk"' + (key_type == "pk" ? ' selected' : '') + ' title="' + this.getShortTableAttributeKeyTypeLabel("pk") + '">PK</option>'
+						+ '<option value="uk"' + (key_type == "uk" ? ' selected' : '') + ' title="' + this.getShortTableAttributeKeyTypeLabel("uk") + '">UK</option>';
+		
+		return keys_options;
+	},
+	
+	getShortTableAttributeKeyType : function(data, fks) {
+		var key_type = "";
+		
+		if ($.isPlainObject(data) && data["name"]) {
+			var fk = $.isArray(fks) && $.inArray(data["name"], fks) != -1;
+			
+			if (fk)
+				key_type = data["primary_key"] ? "pfk" : (
+							data["unique"] ? "fuk" : "fk"
+						);
+			else if (data["primary_key"])
+				key_type = "pk";
+			else if (data["unique"])
+				key_type = "uk";
+			
+			//if (key_type)console.log(data["name"]+":"+data["primary_key"]+":"+fk+":"+key_type);
+		}
+		
+		return key_type;
+	},
+	
+	getShortTableAttributeKeyTypeLabel : function(key_type) {
+		return key_type == "pfk" ? "Primary and Foreign Key" : (
+				key_type == "fuk" ? "Foreign and Unique Key" : (
+					key_type == "fk" ? "Foreign Key" : (
+						key_type == "pk" ? "Primary Key" : (
+							key_type == "uk" ? "Unique Key" : ""
+						)
+					)
+				)
+			);
+	},
+	
+	getShortTableAttributeRowTitle : function(data) {
+		if (!$.isPlainObject(data))
+			data = {};
+		
+		var type = data["type"];
+		var original_type = data["original_type"];
+		
+		//prepare simple props
+		var simple_props = $.isPlainObject(this.column_simple_types) ? this.column_simple_types[type] : null;
+		var simple_props_exists = simple_props && simple_props["label"];
+		
+		//prepare ignored props before we convert type to a simple type
+		var column_type_ignored_props = original_type && $.isPlainObject(this.column_types_ignored_props) && this.column_types_ignored_props.hasOwnProperty(original_type) && $.isArray(this.column_types_ignored_props[original_type]) ? this.column_types_ignored_props[original_type] : [];
+		
+		//check if numeric
+		var is_numeric = $.isArray(this.column_numeric_types) && $.inArray(original_type, this.column_numeric_types) != -1;
+		
+		//prepare key type
+		var key_type = data["key_type"] ? data["key_type"] : (
+			data["primary_key"] ? "pk" : (data["unique"] ? "uk" : "")
+		);
+		
+		//prepare other ignored props
+		var is_length_disabled = !original_type || $.inArray("length", column_type_ignored_props) != -1;
+		var is_unsigned_disabled = !original_type || $.inArray("unsigned", column_type_ignored_props) != -1;
+		var is_null_disabled = original_type && $.inArray("null", column_type_ignored_props) != -1;
+		var is_auto_increment_disabled = original_type && $.inArray("auto_increment", column_type_ignored_props) != -1;
+		var is_default_disabled = original_type && $.inArray("default", column_type_ignored_props) != -1;
+		var is_extra_disabled = original_type && $.inArray("extra", column_type_ignored_props) != -1;
+		
+		//prepare html
+		var name_label = data["name"] ? data["name"] : "";
+		var key_label = this.getShortTableAttributeKeyTypeLabel(key_type);
+		var type_label = type ? (simple_props_exists ? simple_props["label"] : stringToUCWords(type)) : "";
+		var length_label = !is_length_disabled && (data["length"] || parseInt(data["length"]) === 0) ? data["length"] : ""; //Do not ad parseInt or parseFloat bc the length can be 2 values splited by comma, like it happens with the decimal type.
+		var unsigned_label = !is_unsigned_disabled && data["unsigned"] ? "unsigned" : "";
+		var null_label = !is_null_disabled && data["is_null"] ? "null" : "";
+		var auto_increment_label = !is_auto_increment_disabled && data["auto_increment"] ? "auto_increment" : "";
+		var default_label = !is_default_disabled && data["has_default"] ? data["default_value"] : "";
+		var extra_label = !is_extra_disabled ? data["extra"] : "";
+		
+		//prepare title
+		var title = "Name: " + name_label.replace(/"/g, "&quot;") + "\n"
+				+ (key_label ? "Key: " + key_label + "\n" : "")
+				+ "Type: " + type_label + (simple_props_exists && original_type ? " (" + original_type + ")" : "") + "\n"
+				+ "Length: " + length_label + "\n"
+				+ (is_numeric ? "Unsigned: " + (unsigned_label ? "Yes" : "No") + "\n" : "")
+				+ "Null: " + (null_label ? "Yes" : "No") + "\n"
+				+ (auto_increment_label ? "Auto Increment: Yes\n" : "")
+				+ (default_label ? "Default value: " + default_label + "\n" : "")
+				+ (extra_label ? "Extra: " + extra_label : "");
+		
+		return title;
+	},
+	
+	prepareShortTableAttributesRowTitle : function(task_id) {
+		if (task_id) {
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+			var table_attrs = task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " .table_attrs .table_attr");
+			
+			if (table_attrs) {
+				var fks = this.getTaskForeignKeys(task_id);
+				var data_by_attribute_name = this.getTaskTableAttributesData(task_id, fks);
+				
+				for (var i = 0; i < table_attrs.length; i++) {
+					var table_attr = $(table_attrs[i]);
+					var name = table_attr.attr("data_attribute_name");
+					var attribute_data = data_by_attribute_name[name];
+					
+					if (attribute_data) {
+						var title = DBTableTaskPropertyObj.getShortTableAttributeRowTitle(attribute_data);
+						table_attr.attr("title", title);
+					}
+				}
+			}
+		}
+	},
+	
+	prepareShortTableAttributeRowTitle : function(task_id, attribute_name) {
+		if (task_id) {
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+			var table_attrs = task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " .table_attrs .table_attr");
+			
+			if (table_attrs) {
+				for (var i = 0; i < table_attrs.length; i++) {
+					var table_attr = $(table_attrs[i]);
+					var name = table_attr.attr("data_attribute_name");
+					
+					if (name == attribute_name) {
+						fks = this.getTaskForeignKeys(task_id);
+						var attribute_data = this.getTaskTableAttributeData(task_id, attribute_name, fks);
+						
+						if (attribute_data) {
+							var title = DBTableTaskPropertyObj.getShortTableAttributeRowTitle(attribute_data);
+							table_attr.attr("title", title);
+						}
+						
+						break;
+					}
+				}
+			}
+		}
+	},
+	
+	updateShortTableForeignKeys : function(task_id) {
+		if (task_id) {
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+			var table_attrs = task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " .table_attrs .table_attr");
+			
+			if (table_attrs) {
+				var fks = this.getTaskForeignKeys(task_id);
+				var data_by_attribute_name = this.getTaskTableAttributesData(task_id, fks);
+				
+				for (var i = 0; i < table_attrs.length; i++) {
+					var table_attr = $(table_attrs[i]);
+					var name = table_attr.attr("data_attribute_name");
+					var key_type_select = table_attr.find(".key_type select");
+					var key_type = key_type_select.val();
+					var attribute_data = data_by_attribute_name[name];
+					
+					if (attribute_data) {
+						var new_key_type = this.getShortTableAttributeKeyType(attribute_data, fks);
+						
+						//if key are different, update attribute UI
+						if (key_type != new_key_type) {
+							//update key type
+							key_type_select.val(new_key_type);
+							
+							if (key_type_select.val() != new_key_type) {
+								var keys_options = this.getShortTableAttributeRowKeyTypeOptions(new_key_type);
+								key_type_select.html(keys_options).val(new_key_type);
+							}
+							
+							//update title
+							var title = this.getShortTableAttributeRowTitle(attribute_data);
+							table_attr.attr("title", title);
+						}
+					}
 				}
 			}
 		}
@@ -429,50 +1317,48 @@ var DBTableTaskPropertyObj = {
 		}
 		
 		for (var attr_name in table_attributes) {
-			if (attr_name != "properties") {
-				var prop = table_attributes[attr_name]["properties"];
-		
-				if (prop) {
-					var type = prop["type"];
-					
-					//prepare serial props
-					/*Do not uncomment this bc we want to be able to choose the serial types in the diagrams. Postgres uses the serial types.
-					if (DBTableTaskPropertyObj.column_serial_types && DBTableTaskPropertyObj.column_serial_types.hasOwnProperty(type) && $.isPlainObject(DBTableTaskPropertyObj.column_serial_types[type]))
-						for (var k in DBTableTaskPropertyObj.column_serial_types[type]) {
-							var v = DBTableTaskPropertyObj.column_serial_types[type][k];
+			var prop = table_attributes[attr_name];
+			
+			if (prop) {
+				var type = prop["type"];
+				
+				//prepare serial props
+				/*Do not uncomment this bc we want to be able to choose the serial types in the diagrams. Postgres uses the serial types.
+				if (DBTableTaskPropertyObj.column_serial_types && DBTableTaskPropertyObj.column_serial_types.hasOwnProperty(type) && $.isPlainObject(DBTableTaskPropertyObj.column_serial_types[type]))
+					for (var k in DBTableTaskPropertyObj.column_serial_types[type]) {
+						var v = DBTableTaskPropertyObj.column_serial_types[type][k];
+						
+						if (k == "extra" && prop["extra"]) {
+							prop["extra"] = "" + prop["extra"];
+							var parts = ("" + v).split(" ");
 							
-							if (k == "extra" && prop["extra"]) {
-								prop["extra"] = "" + prop["extra"];
-								var parts = ("" + v).split(" ");
-								
-								for (var i = 0; i < parts.length; i++)
-									if (prop["extra"].toLowerCase().indexOf(parts[i].toLowerCase()) == -1)
-										prop["extra"] += " " + parts[i];
-							}
-							else
-								prop[k] = v;
-						}*/
+							for (var i = 0; i < parts.length; i++)
+								if (prop["extra"].toLowerCase().indexOf(parts[i].toLowerCase()) == -1)
+									prop["extra"] += " " + parts[i];
+						}
+						else
+							prop[k] = v;
+					}*/
+				
+				for (var i = 0; i < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; i++) {
+					var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[i];
+					var prop_value = prop[prop_name];
 					
-					for (var i = 0; i < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; i++) {
-						var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[i];
-						var prop_value = prop[prop_name];
-						
-						if (prop_name == "type")
-							prop_value = type;
-						else if (prop_name == "has_default")
-							prop_value = prop["default"] ? true : false;
-						else if (prop_name == "default" || prop_name == "charset" || prop_name == "collation")
-							prop_value = prop[prop_name] ? prop[prop_name] : "";
-						
-						task_property_values["table_attr_" + prop_name + "s"].push(prop_value);
-					}
+					if (prop_name == "type")
+						prop_value = type;
+					else if (prop_name == "has_default")
+						prop_value = prop["default"] ? true : false;
+					else if (prop_name == "default" || prop_name == "charset" || prop_name == "collation")
+						prop_value = prop[prop_name] ? prop[prop_name] : "";
+					
+					task_property_values["table_attr_" + prop_name + "s"].push(prop_value);
 				}
 			}
 		}
 
 		myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id] = task_property_values;
 
-		this.prepareTableAttributes(task_id, task_property_values);
+		this.prepareShortTableAttributes(task_id, task_property_values);
 	},
 	
 	getTableAttributeHtml : function(data) {
@@ -486,15 +1372,15 @@ var DBTableTaskPropertyObj = {
 		var primary_key = false, name = "", type, length = "", is_null = false, unsigned = false, unique = false, auto_increment = false, has_default = false, default_value = "", extra = "", charset = "", collation = "", comment = "";
 		
 		if (data) {
-			primary_key = DBTableTaskPropertyObj.checkIfTrue(data.primary_key);
+			primary_key = checkIfValueIsTrue(data.primary_key);
 			name = data.name ? data.name : "";
 			type = data.type;
 			length = data["length"] || parseInt(data["length"]) === 0 ? data["length"] : ""; //Do not ad parseInt or parseFloat bc the length can be 2 values splited by comma, like it happens with the decimal type.
-			is_null = DBTableTaskPropertyObj.checkIfTrue(data["null"]);
-			unsigned = DBTableTaskPropertyObj.checkIfTrue(data.unsigned);
-			unique = DBTableTaskPropertyObj.checkIfTrue(data.unique);
-			auto_increment = DBTableTaskPropertyObj.checkIfTrue(data.auto_increment);
-			has_default = DBTableTaskPropertyObj.checkIfTrue(data.has_default);
+			is_null = checkIfValueIsTrue(data["null"]);
+			unsigned = checkIfValueIsTrue(data.unsigned);
+			unique = checkIfValueIsTrue(data.unique);
+			auto_increment = checkIfValueIsTrue(data.auto_increment);
+			has_default = checkIfValueIsTrue(data.has_default);
 			default_value = data["default"] && data["default"] != null ? data["default"] : "";
 			extra = data.extra ? data.extra : "";
 			charset = data.charset ? data.charset : "";
@@ -652,6 +1538,13 @@ var DBTableTaskPropertyObj = {
 				column_type_ignored_props.push("unsigned");
 				column_type_ignored_props.push("auto_increment");
 			}
+			else if ($.inArray("length", column_type_ignored_props) == -1 && !$.isNumeric( ("" + length_field.val()).replace(/\s/, "") )) { //set default length for specific type
+				var column_mandatory_length_types = $.isPlainObject(DBTableTaskPropertyObj.column_mandatory_length_types) ? DBTableTaskPropertyObj.column_mandatory_length_types : {};
+				var column_mandatory_length_type = value && column_mandatory_length_types.hasOwnProperty(value) ? column_mandatory_length_types[value] : null;
+				
+				if ($.isNumeric(column_mandatory_length_type) || column_mandatory_length_type) 
+					length_field.val(column_mandatory_length_type);
+			}
 			
 			for (var i = 0; i < column_type_ignored_props.length; i++) {
 				var field_name = column_type_ignored_props[i];
@@ -721,15 +1614,20 @@ var DBTableTaskPropertyObj = {
 	
 	addTableAttribute : function(elm) {
 		var html = DBTableTaskPropertyObj.getTableAttributeHtml();
+		var item = $(html);
 		var task_html_elm = $(elm).parent().closest('.db_table_task_html');
 		//var task_html_elm = $("#" + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.main_tasks_flow_obj_id + " .db_table_task_html");
 		
+		//callback - Call this before calling the convertTableRowToListItem, bc this method may add new attributes to the table
+		if (typeof DBTableTaskPropertyObj.on_add_table_attribute_callback == "function")
+			DBTableTaskPropertyObj.on_add_table_attribute_callback(item);
+		
 		if (task_html_elm.hasClass("attributes_list_shown")) {
 			var column_names = DBTableTaskPropertyObj.getTableColumnNames( task_html_elm.find("table") );
-			DBTableTaskPropertyObj.convertTableRowToListItem(task_html_elm.find(".list_attrs"), $(html), column_names);
+			DBTableTaskPropertyObj.convertTableRowToListItem(task_html_elm.find(".list_attrs"), item, column_names);
 		}
 		else
-			task_html_elm.find(".table_attrs").append(html);
+			task_html_elm.find(".table_attrs").append(item);
 	},
 	
 	removeTableAttribute : function(elm) {
@@ -791,13 +1689,16 @@ var DBTableTaskPropertyObj = {
 	},
 	
 	updateSimpleAttributesHtmlWithTableAttributes : function(elm, do_not_confirm) {
+		var WF = myWFObj.getJsPlumbWorkFlow();
+		
 		if (do_not_confirm || auto_convert || confirm("Do you wish to convert the Advanced UI's attributes into the Simple UI?")) {
 			var task_html_elm = $(elm).closest(".db_table_task_html");
 			
 			//prepare task_property_values
 			var task_property_values = {};
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var query_string = WF.jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(task_html_elm.find(".table_attrs"), "task_property_field");
+			var selector = task_html_elm.hasClass("attributes_list_shown") ? ".list_attributes .list_attrs" : ".table_attrs";
+			var selector_elm = task_html_elm.find(selector);
+			var query_string = WF.jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(selector_elm, "task_property_field");
 			
 			try {
 				parse_str(query_string, task_property_values);
@@ -814,18 +1715,19 @@ var DBTableTaskPropertyObj = {
 			var html = "";
 			
 			//I added the collation after, so there are some .xml files that don't contain this. So we need to add this, otherwise we get a js error.
-			$.each(task_property_values.table_attr_names, function(i, table_attr_name) {
-				var data = {};
-				
-				for (var j = 0; j < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; j++) {
-					var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[j];
-					var prop_value = task_property_values["table_attr_" + prop_name + 's'][i];
+			if (task_property_values.hasOwnProperty("table_attr_names"))
+				$.each(task_property_values.table_attr_names, function(i, table_attr_name) {
+					var data = {};
 					
-					data[prop_name] = prop_value;
-				}
-				
-				html += DBTableTaskPropertyObj.getSimpleAttributeHtml(data);
-			});
+					for (var j = 0; j < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; j++) {
+						var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[j];
+						var prop_value = task_property_values["table_attr_" + prop_name + 's'][i];
+						
+						data[prop_name] = prop_value;
+					}
+					
+					html += DBTableTaskPropertyObj.getSimpleAttributeHtml(data);
+				});
 			
 			var ul = task_html_elm.find(".simple_attributes > ul");
 			ul.children("li:not(.no_simple_attributes)").remove();
@@ -835,15 +1737,27 @@ var DBTableTaskPropertyObj = {
 				ul.children(".no_simple_attributes").hide();
 			else
 				ul.children(".no_simple_attributes").show();
+			
+			//callback
+			if (typeof DBTableTaskPropertyObj.on_update_simple_attributes_html_with_table_attributes_callback == "function")
+				DBTableTaskPropertyObj.on_update_simple_attributes_html_with_table_attributes_callback(elm);
 		}
 		
-		//remove width and height style so the popup get updated automatically
-		myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().getPopup().css({width: "", height: ""});
+		//remove width and height style so the popup get updated automatically, but only if not fixed properties
+		var taskflowchart = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().closest(".taskflowchart");
+		
+		if (!taskflowchart.is(".fixed_properties, .fixed_side_properties"))
+			WF.getMyFancyPopupObj().getPopup().css({
+				width: "", 
+				height: ""
+			});
 	},
 	
 	/** START: TASK METHODS - SIMPLE UI **/
 	
 	updateTableAttributesHtmlWithSimpleAttributes : function(elm, do_not_confirm) {
+		var WF = myWFObj.getJsPlumbWorkFlow();
+		
 		if (do_not_confirm || auto_convert || confirm("Do you wish to convert the Simple UI's attributes into the Advanced UI?")) {
 			var task_html_elm = $(elm).closest(".db_table_task_html");
 			var lis = task_html_elm.find(".simple_attributes > ul > li:not(.no_simple_attributes)");
@@ -854,11 +1768,23 @@ var DBTableTaskPropertyObj = {
 				html += DBTableTaskPropertyObj.getTableAttributeHtml(data);
 			}
 			
+			//set new html
 			task_html_elm.find(".table_attrs").html(html);
+			
+			//callback - Call this before calling the convertTableToList, bc this method may add new attributes to the table
+			if (typeof DBTableTaskPropertyObj.on_update_table_attributes_html_with_simple_attributes_callback == "function")
+				DBTableTaskPropertyObj.on_update_table_attributes_html_with_simple_attributes_callback(elm);
+			
+			//show list view again - This must happen after the on_update_table_attributes_html_with_simple_attributes_callback runs
+			if (task_html_elm.hasClass("attributes_list_shown"))
+				DBTableTaskPropertyObj.convertTableToList(elm);
 		}
 		
-		//remove width and height style so the popup get updated automatically
-		myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().getPopup().css({width: "", height: ""});
+		//remove width and height style so the popup get updated automatically, but only if not fixed side
+		var taskflowchart = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().closest(".taskflowchart");
+		
+		if (!taskflowchart.is(".fixed_properties, .fixed_side_properties"))
+			WF.getMyFancyPopupObj().getPopup().css({width: "", height: ""});
 	},
 	
 	convertSimpleAttributesIntoTableAttributesData : function(elm) {
@@ -894,13 +1820,15 @@ var DBTableTaskPropertyObj = {
 		var column_simple_types = $.isPlainObject(DBTableTaskPropertyObj.column_simple_types) ? DBTableTaskPropertyObj.column_simple_types : {};
 		var column_simple_custom_types = $.isPlainObject(DBTableTaskPropertyObj.column_simple_custom_types) ? DBTableTaskPropertyObj.column_simple_custom_types : {};
 		
-		
 		//update the type with the real DB value.
 		if (type) {
 			if (column_simple_types.hasOwnProperty(type))
 				type = column_simple_types[type]["type"];
 			else if (column_simple_custom_types.hasOwnProperty(type))
 				type = column_simple_custom_types[type]["type"];
+			
+			if ($.isArray(type))
+				type = type[0];
 		}
 		
 		var data = {};
@@ -933,6 +1861,7 @@ var DBTableTaskPropertyObj = {
 	
 	getSimpleAttributeHtml : function(data) {
 		//console.debug(data);
+		//console.log(Object.assign({}, data));
 		
 		//prepare attributes
 		var column_types_hidden_props = $.isArray(DBTableTaskPropertyObj.column_types_hidden_props) ? DBTableTaskPropertyObj.column_types_hidden_props : [];
@@ -945,15 +1874,15 @@ var DBTableTaskPropertyObj = {
 		var primary_key = false, name = "", type, length = "", is_null = false, unsigned = false, unique = false, auto_increment = false, has_default = false, default_value = "", extra = "", charset = "", collation = "", comment = "";
 		
 		if (data) {
-			primary_key = DBTableTaskPropertyObj.checkIfTrue(data.primary_key);
+			primary_key = checkIfValueIsTrue(data.primary_key);
 			name = data.name ? data.name : "";
 			type = data.type;
 			length = data["length"] || parseInt(data["length"]) === 0 ? data["length"] : ""; //Do not ad parseInt or parseFloat bc the length can be 2 values splited by comma, like it happens with the decimal type.
-			is_null = DBTableTaskPropertyObj.checkIfTrue(data["null"]);
-			unsigned = DBTableTaskPropertyObj.checkIfTrue(data.unsigned);
-			unique = DBTableTaskPropertyObj.checkIfTrue(data.unique);
-			auto_increment = DBTableTaskPropertyObj.checkIfTrue(data.auto_increment);
-			has_default = DBTableTaskPropertyObj.checkIfTrue(data.has_default);
+			is_null = checkIfValueIsTrue(data["null"]);
+			unsigned = checkIfValueIsTrue(data.unsigned);
+			unique = checkIfValueIsTrue(data.unique);
+			auto_increment = checkIfValueIsTrue(data.auto_increment);
+			has_default = checkIfValueIsTrue(data.has_default);
 			default_value = data["default"] && data["default"] != null ? data["default"] : "";
 			extra = data.extra ? data.extra : "";
 			charset = data.charset ? data.charset : "";
@@ -964,75 +1893,72 @@ var DBTableTaskPropertyObj = {
 				has_default = true;
 		}
 		
+		//prepare ignored props before we convert type to a simple type
+		var column_types_ignored_props = $.isPlainObject(DBTableTaskPropertyObj.column_types_ignored_props) ? DBTableTaskPropertyObj.column_types_ignored_props : {};
+		var column_type_ignored_props = type && column_types_ignored_props.hasOwnProperty(type) && $.isArray(column_types_ignored_props[type]) ? column_types_ignored_props[type] : [];
+		
 		//convert native types to simple types
 		if (column_simple_types_exists && type) {
 			//prepare current field data
-			var is_auto_increment = auto_increment || ("" + extra).toLowerCase().indexOf("auto_increment") != -1;
 			var current_simple_props = {
+				name: name,
 				primary_key: primary_key,
 				type: type,
 				length: length,
 				"null": is_null,
 				unsigned: unsigned,
 				unique: unique,
-				auto_increment: is_auto_increment,
+				auto_increment: auto_increment,
 				"default": default_value,
-				extra: typeof extra == "string" ? extra.replace(/(^|\s)auto_increment(\s|$)/gi, " ") : extra,
+				extra: extra,
 				charset: charset,
 				collation: collation,
 				comment: comment
 			};
 			
 			//find current field matches with any simple type
-			for (var key in column_simple_types) {
-				var props = column_simple_types[key];
+			var simple_type = DBTableTaskPropertyObj.isSimpleAttribute(current_simple_props);
+			var simple_props = null;
+			
+			if (simple_type) {
+				type = simple_type;
+				simple_props = column_simple_types[simple_type];
 				
-				//prepare auto_increment props
-				if (props.hasOwnProperty("auto_increment"))
-					props["auto_increment"] = props["auto_increment"] || (props.hasOwnProperty("extra") && typeof props["extra"] == "string" && props["extra"].toLowerCase().indexOf("auto_increment") != -1);
-				
-				if (props.hasOwnProperty("extra") && typeof props["extra"] == "string")
-					props["extra"] = props["extra"].replace(/(^|\s)auto_increment(\s|$)/gi, " ");
-				
-				//check if all props matches with current field props
-				var exists = true;
-				
-				for (var i = 0; i < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; i++) {
-					var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[i];
-					
-					if (props.hasOwnProperty(prop_name) && props[prop_name] != current_simple_props[prop_name]) {
-						//console.log(name+":"+key+":"+prop_name+":"+props[prop_name]+"=="+current_simple_props[prop_name]);
-						exists = false;
-						break;
-					}
-				}
-				
-				if (exists) {
-					type = key;
-					auto_increment = props["auto_increment"]; //update auto_increment, bc it might be hard-coded in the "extra" prop
-					break;
-				}
+				//update auto_increment, bc it might be hard-coded in the "extra" prop
+				if (!auto_increment && simple_props.hasOwnProperty("extra") && typeof simple_props["extra"] == "string" && simple_props["extra"].toLowerCase().indexOf("auto_increment") != -1)
+					auto_increment = true;
+				else if (simple_props.hasOwnProperty("auto_increment")) //otherwise if auto_increment exists in simple_props, update it
+					auto_increment = simple_props["auto_increment"];
 			}
 			
-			//if current field is not a simple type, but is a primary key, then we need to create a new simple type according with the field props.
-			if (primary_key && !column_simple_types.hasOwnProperty(type)) {
+			if (primary_key && (!simple_type || !simple_props["primary_key"])) { //if current field is not a simple type, but is a primary key, then we need to create a new simple type according with the field props. Or if is a simple_type with a primary key hard-coded but in the simple props is not a primary key.
 				var column_numeric_types = $.isArray(DBTableTaskPropertyObj.column_numeric_types) ? DBTableTaskPropertyObj.column_numeric_types : [];
 				var simple_type = "simple_manual_primary_key";
+				var is_auto_increment = auto_increment || ("" + extra).toLowerCase().indexOf("auto_increment") != -1;
 				
 				if (is_auto_increment)
 					simple_type = "simple_auto_primary_key";
 				else if ($.isArray(column_numeric_types) && $.inArray(type, column_numeric_types) != -1)
 					simple_type = "simple_fk_auto_primary_key";
 				
+				//update current_simple_props with simple props
+				if (simple_props) {
+					current_simple_props["auto_increment"] = auto_increment;
+					
+					for (var k in simple_props)
+						if (k != "primary_key" && k != "auto_increment")
+						current_simple_props[k] = simple_props[k];
+				}
+				
+				//set new custom type
 				var key = simple_type + "_" + type;
+				var type_label = stringToUCWords( type.replace(/_/g, " ") );
 				column_simple_custom_types[key] = current_simple_props;
 				
 				if (column_simple_types.hasOwnProperty(simple_type))
-					column_simple_custom_types[key]["label"] = column_simple_types[simple_type]["label"] + " - " + type;
+					column_simple_custom_types[key]["label"] = column_simple_types[simple_type]["label"] + " - " + type_label;
 				else //if simple_type doesn't exist in column_simple_types, ucwords the simple_type as label
-					column_simple_custom_types[key]["label"] = simple_type.replace(/_/g, " ").replace(/\b[a-z]/g, function(letter) {
-						return letter.toUpperCase();
-					}) + " - " + type;
+					column_simple_custom_types[key]["label"] = stringToUCWords( simple_type.replace(/_/g, " ") ) + " - " + type_label;
 				
 				type = key; //set the new type as a simple type
 			}
@@ -1042,59 +1968,18 @@ var DBTableTaskPropertyObj = {
 		is_null = primary_key ? false : is_null;
 		unique = primary_key ? true : unique;
 		
-		var column_types_ignored_props = $.isPlainObject(DBTableTaskPropertyObj.column_types_ignored_props) ? DBTableTaskPropertyObj.column_types_ignored_props : {};
-		var column_type_ignored_props = type && column_types_ignored_props.hasOwnProperty(type) && $.isArray(column_types_ignored_props[type]) ? column_types_ignored_props[type] : [];
-		
+		//prepare other ignored props
 		var is_length_disabled = !type || $.inArray("length", column_type_ignored_props) != -1;
 		var is_null_disabled = type && $.inArray("null", column_type_ignored_props) != -1;
 		var is_default_disabled = type && $.inArray("default", column_type_ignored_props) != -1;
 		
+		//prepare html
 		var html = '<li>'
 					+ '<div class="header">'
 						+ '<input type="text" class="simple_attr_name" value="' + name + '" placeHolder="attribute name" onBlur="DBTableTaskPropertyObj.onBlurSimpleAttributeInputBox(this)" />'
 						+ '<select class="simple_attr_type" onChange="DBTableTaskPropertyObj.onChangeSimpleAttributeTypeSelectBox(this)">'
-						   + '<option value="">Please choose a type</option>'
-						   + '<option disabled></option>';
-		
-		if (column_simple_types_exists) {
-			html += 			'<optgroup label="Simple Types">';
-			
-			for (var key in column_simple_types) {
-				var label = column_simple_types[key]["label"] ? column_simple_types[key]["label"] : key;
-				html += 			'<option value="' + key + '" ' + (key == type ? "selected" : "") + ' title="' + label + '">' + label + '</option>';
-			}
-			
-			html += 			'</optgroup>'
-						   + '<option disabled></option>';
-		}
-		
-		var column_simple_custom_types_exists = !$.isEmptyObject(column_simple_custom_types);
-		
-		if (column_simple_types_exists || column_simple_custom_types_exists) 
-			html += 			'<optgroup label="Native Types">';
-		
-		for (var key in types) 
-			html += 				'<option value="' + key + '" ' + (key == type ? "selected" : "") + ' title="' + types[key] + '">' + types[key] + '</option>';
-		
-		if (column_simple_types_exists || column_simple_custom_types_exists) 
-			html +=  			'</optgroup>';
-		
-		if (column_simple_custom_types_exists) {
-			html += 			'<option disabled></option>'
-						   + '<optgroup label="Other Types - created dynamically">';
-			
-			for (var key in column_simple_custom_types) {
-				var label = column_simple_custom_types[key]["label"] ? column_simple_custom_types[key]["label"] : key;
-				html += 			'<option value="' + key + '" ' + (key == type ? "selected" : "") + ' title="' + label + '">' + label + '</option>';
-			}
-			
-			html += 			'</optgroup>';
-		}
-		
-		if (type && !types.hasOwnProperty(type) && !column_simple_types.hasOwnProperty(type) && !column_simple_custom_types.hasOwnProperty(type))
-			html += 			'<option value="' + type + '" title="' + type + '">' + type + ' - NON DEFAULT</option>';
-		
-		html +=			  '</select>'
+						   + DBTableTaskPropertyObj.getSimpleAttributeTypeOptions(type)
+						+ '</select>'
 						+ '<a class="icon maximize" onClick="DBTableTaskPropertyObj.toggleSimpleAttributeProps(this)" title="Toggle other Properties">Toggle</a>'
 						+ '<a class="icon move_up" onClick="DBTableTaskPropertyObj.moveUpSimpleAttribute(this)">move up</a>'
 						+ '<a class="icon move_down" onClick="DBTableTaskPropertyObj.moveDownSimpleAttribute(this)">move down</a>'
@@ -1126,6 +2011,127 @@ var DBTableTaskPropertyObj = {
 			+ '</li>';
 		
 		return html;
+	},
+	
+	getSimpleAttributeTypeOptions : function(type) {
+		var types = $.isPlainObject(this.column_types) ? this.column_types : {};
+		var column_simple_types = $.isPlainObject(this.column_simple_types) ? this.column_simple_types : {};
+		var column_simple_custom_types = $.isPlainObject(this.column_simple_custom_types) ? this.column_simple_custom_types : {};
+		var column_simple_types_exists = !$.isEmptyObject(column_simple_types);
+		
+		var html = '<option value="">Please choose a type</option>'
+				+ '<option disabled></option>';
+		
+		if (column_simple_types_exists) {
+			html += '<optgroup label="Simple Types">';
+			
+			for (var key in column_simple_types) {
+				var props = column_simple_types[key];
+				var label = props["label"] ? props["label"] : stringToUCWords(key);
+				var title = label + ":";
+				
+				for (var k in props)
+					if (k != "label")
+						title += "\n- " + stringToUCWords(k) + ": " + props[k];
+				
+				html += '<option value="' + key + '" ' + (key == type ? "selected" : "") + ' title="' + title + '">' + label + '</option>';
+			}
+			
+			html += '</optgroup>'
+				+ '<option disabled></option>';
+		}
+		
+		var column_simple_custom_types_exists = !$.isEmptyObject(column_simple_custom_types);
+		
+		if (column_simple_types_exists || column_simple_custom_types_exists) 
+			html += '<optgroup label="Native Types">';
+		
+		for (var key in types) 
+			html += '<option value="' + key + '" ' + (key == type ? "selected" : "") + ' title="' + types[key] + '">' + types[key] + '</option>';
+		
+		if (column_simple_types_exists || column_simple_custom_types_exists) 
+			html += '</optgroup>';
+		
+		if (column_simple_custom_types_exists) {
+			html += '<option disabled></option>'
+						+ '<optgroup label="Other Types - created dynamically">';
+			
+			for (var key in column_simple_custom_types) {
+				var label = column_simple_custom_types[key]["label"] ? column_simple_custom_types[key]["label"] : key;
+				html += '<option value="' + key + '" ' + (key == type ? "selected" : "") + ' title="' + label + '">' + label + '</option>';
+			}
+			
+			html += '</optgroup>';
+		}
+		
+		if (type && !types.hasOwnProperty(type) && !column_simple_types.hasOwnProperty(type) && !column_simple_custom_types.hasOwnProperty(type))
+			html += '<option value="' + type + '" title="' + type + '">' + type + ' - NON DEFAULT</option>';
+		
+		return html;
+	},
+	
+	isSimpleAttribute : function(data) {
+		if ($.isPlainObject(DBTableTaskPropertyObj.column_simple_types) && $.isPlainObject(data)) {
+			//prepare current field data
+			var current_simple_props = data;
+			
+			if (typeof current_simple_props["extra"] == "string" && current_simple_props["extra"].toLowerCase().indexOf("auto_increment") != -1) {
+				current_simple_props["auto_increment"] = true;
+				current_simple_props["extra"] = current_simple_props["extra"].replace(/(^|\s)auto_increment(\s|$)/gi, " ");
+			}
+			
+			//find current field matches with any simple type
+			for (var key in DBTableTaskPropertyObj.column_simple_types) {
+				var props = DBTableTaskPropertyObj.column_simple_types[key];
+				
+				//prepare auto_increment props
+				if (props.hasOwnProperty("auto_increment"))
+					props["auto_increment"] = props["auto_increment"] || (props.hasOwnProperty("extra") && typeof props["extra"] == "string" && props["extra"].toLowerCase().indexOf("auto_increment") != -1);
+				
+				if (props.hasOwnProperty("extra") && typeof props["extra"] == "string")
+					props["extra"] = props["extra"].replace(/(^|\s)auto_increment(\s|$)/gi, " ");
+				
+				//check if all props matches with current field props
+				var exists = true;
+				
+				for (var i = 0; i < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; i++) {
+					var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[i];
+					
+					if (props.hasOwnProperty(prop_name)) {
+						var props_value = props[prop_name];
+						
+						if (!$.isArray(props_value)) //if prop_name == "type" then the props_value maight be an array
+							props_value = [props_value];
+						
+						var sub_exists = false;
+						
+						for (var j = 0; j < props_value.length; j++) {
+							if (prop_name == "name") { //prop_name=="name" is a different property that will check if name contains the searching string.
+								if (!current_simple_props[prop_name] || current_simple_props[prop_name].toLowerCase().indexOf( props_value[j].toLowerCase() ) != -1) {
+									sub_exists = true;
+									break;
+								}
+							}
+							else if (props_value[j] == current_simple_props[prop_name] || (!props_value[j] && !current_simple_props[prop_name])) { //if both values are false (null or empty string or 0), then the values are the same
+								sub_exists = true;
+								break;
+							}
+						}
+						
+						if (!sub_exists) {
+							//console.log(key+":"+prop_name+":"+props_value.join(",")+"=="+current_simple_props[prop_name]);
+							exists = false;
+							break;
+						}
+					}
+				}
+				
+				if (exists)
+					return key;
+			}
+		}
+		
+		return null;
 	},
 	
 	onBlurSimpleAttributeInputBox : function(elm) {
@@ -1178,10 +2184,10 @@ var DBTableTaskPropertyObj = {
 		}
 		
 		//reset all hidden props - This must happens before we load the simple type props, if apply, bc if we change from simple_auto_primary_key to manual_primary_key or to simple_fk_auto_primary_key, the auto_increment field will still be 1. So we must reset it before we load the simple type props!
-		li.find("input.simple_attr_primary_key").val(0);
-		li.find("input.simple_attr_unique").val(0);
-		li.find("input.simple_attr_unsigned").val(0);
-		li.find("input.simple_attr_auto_increment").val(0);
+		li.find("input.simple_attr_primary_key[type=checkbox]").removeAttr("checked").prop("checked", false);
+		li.find("input.simple_attr_unique[type=checkbox]").removeAttr("checked").prop("checked", false);
+		li.find("input.simple_attr_unsigned[type=checkbox]").removeAttr("checked").prop("checked", false);
+		li.find("input.simple_attr_auto_increment[type=checkbox]").removeAttr("checked").prop("checked", false);
 		
 		var extra_elm = li.find("input.simple_attr_extra");
 		var extra = extra_elm.val();
@@ -1190,7 +2196,11 @@ var DBTableTaskPropertyObj = {
 		
 		//If type is a simple type, update fields accordingly
 		if (simple_props) {
-			value = simple_props["type"]; //change the value with the real DB value, so we can use the value to prepare the ignored fields below.
+			//change the value with the real DB value, so we can use the value to prepare the ignored fields below.
+			if ($.isArray(simple_props["type"]))
+				value = simple_props["type"][0];
+			else
+				value = simple_props["type"];
 			
 			//reset shown props
 			li.find("input.simple_attr_length").val("");
@@ -1200,8 +2210,11 @@ var DBTableTaskPropertyObj = {
 			
 			//set the new values for the shown and hidden props
 			for (var prop_name in simple_props) {
-				var prop_value = simple_props[prop_name];
 				var input_prop_name = prop_name;
+				var prop_value = simple_props[prop_name];
+				
+				if ($.isArray(prop_value)) //if prop_name=="type" then the prop_value could be an array
+					prop_value = prop_value[0];
 				
 				if (prop_name == "null") {
 					prop_value = !prop_value;
@@ -1238,9 +2251,8 @@ var DBTableTaskPropertyObj = {
 		
 		li.find("input, select").removeAttr('disabled');
 		
-		if (!value) {
+		if (!value)
 			column_type_ignored_props.push("length");
-		}
 		
 		for (var i = 0; i < column_type_ignored_props.length; i++) {
 			var field_name = column_type_ignored_props[i];
@@ -1299,9 +2311,14 @@ var DBTableTaskPropertyObj = {
 	
 	addSimpleAttribute : function(elm) {
 		var html = DBTableTaskPropertyObj.getSimpleAttributeHtml();
+		var item = $(html);
 		
 		var ul = $(elm).parent().closest(".simple_attributes").children("ul");
-		ul.append(html);
+		ul.append(item);
+		
+		//callback
+		if (typeof DBTableTaskPropertyObj.on_add_simple_attribute_callback == "function")
+			DBTableTaskPropertyObj.on_add_simple_attribute_callback(item);
 		
 		ul.children(".no_simple_attributes").hide();
 	},
@@ -1500,8 +2517,8 @@ var DBTableTaskPropertyObj = {
 				connection = new_connection;
 			}
 			
-			DBTableTaskPropertyObj.prepareTableForeignKeys(connection.sourceId);
-			DBTableTaskPropertyObj.prepareTableForeignKeys(connection.targetId);
+			DBTableTaskPropertyObj.updateShortTableForeignKeys(connection.sourceId);
+			DBTableTaskPropertyObj.updateShortTableForeignKeys(connection.targetId);
 		}
 	},
 	
@@ -1532,7 +2549,7 @@ var DBTableTaskPropertyObj = {
 			
 			if (target_task_property_values && target_task_property_values.table_attr_primary_keys && source_task_property_values.table_attr_primary_keys.length > 0)
 				$.each(target_task_property_values.table_attr_primary_keys, function(i, table_attr_primary_key) {
-					if (DBTableTaskPropertyObj.checkIfTrue(table_attr_primary_key)) {
+					if (checkIfValueIsTrue(table_attr_primary_key)) {
 						var pk_name = target_task_property_values.table_attr_names[i];
 						target_pks[pk_name] = i;
 					}
@@ -1634,7 +2651,7 @@ var DBTableTaskPropertyObj = {
 							else if (prop_name == "primary_key" || prop_name == "auto_increment" || prop_name == "unique")
 								prop_value = 0;
 							else if (prop_name == "extra" && prop_value && ("" + prop_value).toLowerCase().indexOf("auto_increment") != -1)
-								prop_value = ("" + prop_value).replace(/auto_increment/g, "");
+								prop_value = ("" + prop_value).replace(/auto_increment/gi, "");
 							
 							if ($.isArray(source_task_property_values["table_attr_" + prop_name + "s"]))
 								source_task_property_values["table_attr_" + prop_name + "s"].push(prop_value);
@@ -1694,9 +2711,9 @@ var DBTableTaskPropertyObj = {
 				
 				//refresh tasks and connection with new configurations
 				myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.changeConnectionOverlayType(conn.connection, "Many To One");
-				DBTableTaskPropertyObj.prepareTableAttributes(conn.sourceId, source_task_property_values);
-				DBTableTaskPropertyObj.prepareTableForeignKeys(conn.sourceId);
-				DBTableTaskPropertyObj.prepareTableForeignKeys(conn.targetId);
+				DBTableTaskPropertyObj.prepareShortTableAttributes(conn.sourceId, source_task_property_values);
+				DBTableTaskPropertyObj.updateShortTableForeignKeys(conn.sourceId);
+				DBTableTaskPropertyObj.updateShortTableForeignKeys(conn.targetId);
 			}
 		}
 		
@@ -1707,8 +2724,8 @@ var DBTableTaskPropertyObj = {
 	},
 	
 	onSuccessConnectionDeletion : function(connection) {
-		DBTableTaskPropertyObj.prepareTableForeignKeys(connection.sourceId);
-		DBTableTaskPropertyObj.prepareTableForeignKeys(connection.targetId);
+		DBTableTaskPropertyObj.updateShortTableForeignKeys(connection.sourceId);
+		DBTableTaskPropertyObj.updateShortTableForeignKeys(connection.targetId);
 	},
 	
 	getTableForeignKeyHtml : function(data) {
@@ -1838,12 +2855,6 @@ var DBTableTaskPropertyObj = {
 	},
 	/** END: CONNECTION METHODS **/
 	
-	checkIfTrue : function(value) {
-		var v = typeof value == "string" ? value.toLowerCase() : "";
-		
-		return value && value != null && typeof value != "undefined" && value != 0 && v != "null" && v != "false" && v != "0" ? true : false;
-	},
-	
 	regularizeTaskPropertyValues : function(task_property_values) {
 		if (!$.isArray(task_property_values.table_attr_names) && !$.isPlainObject(task_property_values.table_attr_names)) {
 			for (var i = 0; i < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; i++) {
@@ -1972,5 +2983,74 @@ var DBTableTaskPropertyObj = {
 		}
 		
 		task_html_elm.removeClass("attributes_list_shown").addClass("attributes_table_shown");
+	},
+	
+	getTaskTableAttributesData : function(task_id, fks) {
+		var WF = myWFObj.getJsPlumbWorkFlow();
+		var task_property_values = WF.jsPlumbTaskFlow.tasks_properties[task_id];
+		
+		if (task_property_values && task_property_values.table_attr_names) {
+			var data = {};
+			
+			$.each(task_property_values.table_attr_names, function(i, table_attr_name) {
+				var attribute_data = {};
+				
+				for (var j = 0; j < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; j++) {
+					var prop_name = DBTableTaskPropertyObj.task_property_values_table_attr_prop_names[j];
+					attribute_data[prop_name] = task_property_values["table_attr_" + prop_name + "s"][i];
+				}
+				
+				attribute_data = DBTableTaskPropertyObj.prepareTaskTableAttributeData(attribute_data, fks);
+				
+				data[table_attr_name] = attribute_data;
+			});
+			
+			return data;
+		}
+		
+		return null;
+	},
+	
+	getTaskTableAttributeData : function(task_id, attribute_name, fks) {
+		var data = this.getTaskTableAttributesData(task_id, fks);
+		return data[attribute_name];
+	},
+	
+	prepareTaskTableAttributeData : function(attribute_data, fks) {
+		//prepare attribute_data
+		attribute_data["primary_key"] = checkIfValueIsTrue(attribute_data["primary_key"]);
+		attribute_data["null"] = checkIfValueIsTrue(attribute_data["null"]);
+		attribute_data["unsigned"] = checkIfValueIsTrue(attribute_data["unsigned"]);
+		attribute_data["unique"] = checkIfValueIsTrue(attribute_data["unique"]);
+		attribute_data["auto_increment"] = checkIfValueIsTrue(attribute_data["auto_increment"]);
+		attribute_data["has_default"] = checkIfValueIsTrue(attribute_data["has_default"]);
+		
+		if (attribute_data["default"])
+			attribute_data["has_default"] = true;
+		
+		if (typeof attribute_data["extra"] == "string" && attribute_data["extra"].toLowerCase().indexOf("auto_increment") != -1)
+			attribute_data["auto_increment"] = true;
+		
+		attribute_data["original_type"] = attribute_data["type"];
+		attribute_data["key_type"] = this.getShortTableAttributeKeyType(attribute_data, fks);
+		
+		//find current field matches with any simple type
+		var current_simple_props = Object.assign({}, attribute_data); //must clone attribute_data, bc the isSimpleAttribute method changes this object
+		var simple_type = this.isSimpleAttribute(current_simple_props);
+		
+		if (simple_type) {
+			var simple_props = this.column_simple_types[simple_type];
+			
+			//update attribute data
+			attribute_data["type"] = simple_type;
+			
+			//update auto_increment, bc it might be hard-coded in the "extra" prop
+			if (!attribute_data["auto_increment"] && simple_props.hasOwnProperty("extra") && typeof simple_props["extra"] == "string" && simple_props["extra"].toLowerCase().indexOf("auto_increment") != -1)
+				attribute_data["auto_increment"] = true;
+			else if (simple_props.hasOwnProperty("auto_increment"))
+				attribute_data["auto_increment"] = simple_props["auto_increment"];
+		}
+		
+		return attribute_data;
 	},
 };

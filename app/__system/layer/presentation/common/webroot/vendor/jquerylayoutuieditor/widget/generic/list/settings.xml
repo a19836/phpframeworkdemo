@@ -73,6 +73,7 @@
 				});
 				
 				menu_widget.children(".properties").attr({
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.list.onOpenWidgetSettings",
 					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.list.parseSettings",
 					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.list.saveSettingsField",
 				});
@@ -151,6 +152,10 @@
 				options.children(".sort").removeClass("zmdi-hc-rotate-90");
 				options.children(".sort-left").addClass("zmdi-hc-rotate-180").removeClass("zmdi-hc-rotate-270");
 				options.children(".sort-right").removeClass("zmdi-hc-rotate-90");
+			};
+			
+			me.onOpenWidgetSettings = function(widget, menu_settings) {
+				ui_creator.addMenuSettingsContextMenu( menu_settings.find(" > .settings-properties input") );
 			};
 
 			me.saveSettingsField = function(field, widget, status) {

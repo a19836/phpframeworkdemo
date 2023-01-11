@@ -90,7 +90,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 					widget.append(style);
 				}
 				
-				menu_settings.find(".settings-properties .style textarea").val( style.html() );
+				var textarea = menu_settings.find(".settings-properties .style textarea");
+				textarea.val( style.html() );
+				ui_creator.addMenuSettingsContextMenu(textarea);
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {

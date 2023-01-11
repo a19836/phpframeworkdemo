@@ -340,7 +340,7 @@ function removeAllThatIsFolderFromTree(ul, data) {
 		var a = elm.parent();
 		var li = a.parent();
 		
-		if (elm.is(".folder, .cms_common, .cms_module, .cms_program, .project, .project_common, .project_folder")) {
+		if (elm.is(".folder, .cms_common, .cms_module, .cms_program, .cms_resource, .project, .project_common, .project_folder")) {
 			addTreeItemCheckbox(li, data, permissions[permission_belong_name], li.parent().attr("object_id_prefix"));
 			
 			if (elm.is(".project, .project_common"))
@@ -391,7 +391,7 @@ function removeAllThatCannotBeReferencedFromTree(ul, data) {
 	});
 	
 	//add checkbox to all folders
-	ul.find("i.folder, i.cms_common, i.cms_module, .module_folder, i.cms_program, .project, .project_common, .project_folder, .configs_folder, .entities_folder, .views_folder, .templates_folder, .template_folder, .blocks_folder, .utils_folder, .webroot_folder, .controllers_folder, .caches_folder").each(function(idx, elm){
+	ul.find("i.folder, i.cms_common, i.cms_module, .module_folder, i.cms_program, i.cms_resource, .project, .project_common, .project_folder, .configs_folder, .entities_folder, .views_folder, .templates_folder, .template_folder, .blocks_folder, .utils_folder, .webroot_folder, .controllers_folder, .caches_folder").each(function(idx, elm){
 		var li = $(elm).parent().parent();
 		addTreeItemCheckbox(li, data, permissions[permission_referenced_name], li.parent().attr("object_id_prefix"));
 	});

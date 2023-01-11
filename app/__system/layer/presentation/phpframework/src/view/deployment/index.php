@@ -87,7 +87,13 @@ var wordpress_installations_relative_path = "' . $EVC->getCommonProjectName() . 
 						main_layers_properties.' . $l[2] . '.ui.cms_program.attributes = {};
 					
 					if (!main_layers_properties.' . $l[2] . '.ui.cms_program.attributes.hasOwnProperty("file_path"))
-						main_layers_properties.' . $l[2] . '.ui.cms_program.attributes.file_path = "#path#";'; if ($k == "presentation_brokers") $head .= '
+						main_layers_properties.' . $l[2] . '.ui.cms_program.attributes.file_path = "#path#";
+					
+					if (!main_layers_properties.' . $l[2] . '.ui.cms_resource.hasOwnProperty("attributes"))
+						main_layers_properties.' . $l[2] . '.ui.cms_resource.attributes = {};
+					
+					if (!main_layers_properties.' . $l[2] . '.ui.cms_resource.attributes.hasOwnProperty("file_path"))
+						main_layers_properties.' . $l[2] . '.ui.cms_resource.attributes.file_path = "#path#";'; if ($k == "presentation_brokers") $head .= '
 					if (!main_layers_properties.' . $l[2] . '.ui.project_folder.hasOwnProperty("attributes"))
 						main_layers_properties.' . $l[2] . '.ui.project_folder.attributes = {};
 					

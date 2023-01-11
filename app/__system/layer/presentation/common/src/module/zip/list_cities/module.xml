@@ -1,6 +1,6 @@
 <module>
 	<label>List Cities</label>
 	<description>Module "List Cities" allows to manage the cities.</description>
-	<image>logo.png</image>
+	<image>logo.svg</image>
 	<load_module_settings_js_function>loadListSettingsBlockSettings</load_module_settings_js_function>
 </module>

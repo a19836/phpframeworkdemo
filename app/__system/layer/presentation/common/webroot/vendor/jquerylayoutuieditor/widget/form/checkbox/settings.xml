@@ -47,6 +47,7 @@
 				});
 				
 				menu_widget.children(".properties").attr({
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.checkbox.onOpenWidgetSettings",
 					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.checkbox.saveSettingsField",
 					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.checkbox.parseSettings",
 				});
@@ -64,6 +65,10 @@
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
 				widget[0].type = "checkbox";
+			};
+			
+			me.onOpenWidgetSettings = function(widget, menu_settings) {
+				ui_creator.addMenuSettingsContextMenu( menu_settings.find(" > .settings-properties input") );
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {

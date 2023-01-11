@@ -103,7 +103,7 @@ if (!class_exists("\soa\CommonService")) {
 				
 				$cond = \DB::getSQLConditions($data["conditions"], $data["conditions_join"]);
 				if ($cond)
-					$data["searching_condition"] = ($data["searching_condition"] ? $data["searching_condition"] : "") . " and " . $cond;
+					$data["searching_condition"] = ($data["searching_condition"] ? $data["searching_condition"] : "") . " and (" . $cond . ")";
 			}
 		}
 	

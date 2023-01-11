@@ -24,6 +24,7 @@ var CallIbatisQueryTaskPropertyObj = {
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
+		ProgrammingTaskUtil.prepareEditSourceIcon(properties_html_elm);
 		
 		var task_html_elm = $(properties_html_elm).find(".call_ibatis_query_task_html");
 		ProgrammingTaskUtil.setResultVariableType(task_property_values, task_html_elm);
@@ -196,5 +197,19 @@ var CallIbatisQueryTaskPropertyObj = {
 		if (typeof this.on_choose_query_callback == "function") {
 			this.on_choose_query_callback(elm);
 		}
+	},
+	
+	onEditFile : function(elm) {
+		ProgrammingTaskUtil.onEditSource(elm, $(elm).closest(".call_ibatis_query_task_html"), "file");
+	},
+	
+	onEditQuery : function(elm) {
+		var task_html_elm = $(elm).closest(".call_ibatis_query_task_html");
+		
+		var service_type_type = task_html_elm.find(".service_type select.service_type_type").val();
+		var service_type = service_type_type == "string" ? task_html_elm.find(".service_type select.service_type_string").val() : task_html_elm.find(".service_type input.service_type_code").val();
+		task_html_elm.find(".service_type input.service_type").val(service_type);
+		
+		ProgrammingTaskUtil.onEditSource(elm, task_html_elm, "query");
 	},
 };

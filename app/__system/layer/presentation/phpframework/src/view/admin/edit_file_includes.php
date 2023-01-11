@@ -58,7 +58,7 @@ var new_include_html = \'' . str_replace("'", "\\'", str_replace("\n", "", WorkF
 '; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getBusinessLogicBrokersHtml($business_logic_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDataAccessBrokersHtml($data_access_brokers, $choose_bean_layer_files_from_file_manager_url); $head .= '</script>'; $head .= LayoutTypeProjectUIHandler::getHeader(); $main_content = '
 	<div class="top_bar">
 		<header>
-			<div class="title">Manage Includes in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj, true) . '</div>
+			<div class="title" title="' . $path . '">Manage Includes in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj, true) . '</div>
 			<ul>
 				<li class="save" data-title="Save"><a onClick="saveIncludes()"><i class="icon save"></i> Save</a></li>
 				<li class="sub_menu" onClick="openSubmenu(this)">

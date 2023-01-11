@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $get_layer_sub_files_url = $project_url_prefix . "admin/get_sub_files?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=#path#"; $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $WorkFlowQueryHandler = new WorkFlowQueryHandler($WorkFlowUIHandler, $project_url_prefix, $project_common_url_prefix, $db_drivers, $selected_db_broker, $selected_db_driver, $selected_type, $selected_table, $selected_tables_name, $selected_table_attrs, $map_php_types, $map_db_types); $head = $WorkFlowUIHandler->getHeader(); $head .= LayoutTypeProjectUIHandler::getHeader(); $head .= '
+include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $is_obj_valid = $obj_data || !$hbn_obj_id; if ($is_obj_valid) { $get_layer_sub_files_url = $project_url_prefix . "admin/get_sub_files?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=#path#"; $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $WorkFlowQueryHandler = new WorkFlowQueryHandler($WorkFlowUIHandler, $project_url_prefix, $project_common_url_prefix, $db_drivers, $selected_db_broker, $selected_db_driver, $selected_type, $selected_table, $selected_tables_name, $selected_table_attrs, $map_php_types, $map_db_types); $head = $WorkFlowUIHandler->getHeader(); $head .= LayoutTypeProjectUIHandler::getHeader(); } $head .= '
 <!-- Add MyTree main JS and CSS files -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerymytree/css/style.min.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerymytree/js/mytree.js"></script>
@@ -37,36 +37,36 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("Bread
 
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/dataaccess/edit_hbn_obj.css" type="text/css" charset="utf-8" />
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/edit_hbn_obj.js"></script>'; $head .= $WorkFlowQueryHandler->getHeader(); $head .= $WorkFlowQueryHandler->getDataAccessJavascript($bean_name, $bean_file_name, $path, $item_type, $hbn_obj_id, $get_layer_sub_files_url); $head .= '<script>
-var save_data_access_object_url = \'' . $project_url_prefix . 'phpframework/dataaccess/save_hbn_obj?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $path . '&item_type=' . $item_type . '&obj=' . $hbn_obj_id . '\';
-var remove_data_access_object_url = \'' . $project_url_prefix . 'phpframework/dataaccess/remove_hbn_obj?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $path . '&item_type=' . $item_type . '&obj=#obj_id#\';
-var old_obj_id = \'' . $hbn_obj_id . '\';
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/edit_hbn_obj.js"></script>'; if ($is_obj_valid) { $head .= $WorkFlowQueryHandler->getHeader(); $head .= $WorkFlowQueryHandler->getDataAccessJavascript($bean_name, $bean_file_name, $path, $item_type, $hbn_obj_id, $get_layer_sub_files_url); $head .= '<script>
+	var save_data_access_object_url = \'' . $project_url_prefix . 'phpframework/dataaccess/save_hbn_obj?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $path . '&item_type=' . $item_type . '&obj=' . $hbn_obj_id . '\';
+	var remove_data_access_object_url = \'' . $project_url_prefix . 'phpframework/dataaccess/remove_hbn_obj?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $path . '&item_type=' . $item_type . '&obj=#obj_id#\';
+	var old_obj_id = \'' . $hbn_obj_id . '\';
 
-var new_id_html = \'' . str_replace("'", "\\'", str_replace("\n", "", getIdHTML())) .'\';
-var auto_increment_db_attributes_types = ' . json_encode(DB::getAllColumnAutoIncrementTypes()) . ';
-</script>'; $main_content = $WorkFlowQueryHandler->getGlobalTaskFlowChar(); $main_content .= '<div class="edit_hbn_obj">
-	<div class="top_bar">
-		<header>
-			<div class="title">
-				' . ($hbn_obj_id ? "Edit" : "Add") . ' Hibernate Object <span class="query_name"></span> in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($is_hbn_obj_equal_to_file_name ? dirname($file_path) : $file_path, $obj, $is_hbn_obj_equal_to_file_name) . '
-			</div>
-			<ul>
-				<li class="save" data-title="Save Query"><a onClick="saveHibernateObject()"><i class="icon save"></i> Save</a></li>
-				<li class="sub_menu" onClick="openSubmenu(this)">
-					<i class="icon sub_menu"></i>
-					<ul>
-						<li class="update_automatically" title="Update Automatically"><a onClick="createHibernateObjectAutomatically(this)"><i class="icon update_automatically"></i> Create Automatically</a></li>
-						<li class="separator"></li>
-						<li class="toggle_advanced_settings" title="Toggle Advanced Settings"><a onClick="toggleHbnObjAdvancedSettings(this)"><i class="icon toggle_ids"></i> <span>Show Advanced Settings</span> <input type="checkbox"/></a></li>
-						<li class="separator"></li>
-						<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
-						<li class="separator"></li>
-						<li class="save" title="Save Query"><a onClick="saveHibernateObject()"><i class="icon save"></i> Save</a></li>
-					</ul>
-				</li>
-			</ul>
-		</header>
-	</div>'; if ($obj_data || !$hbn_obj_id) { $name = WorkFlowDataAccessHandler::getNodeValue($obj_data, "name"); $table = WorkFlowDataAccessHandler::getNodeValue($obj_data, "table"); $extends = WorkFlowDataAccessHandler::getNodeValue($obj_data, "extends"); $main_content .= $WorkFlowQueryHandler->getChooseQueryTableOrAttributeHtml("choose_db_table_or_attribute"); $main_content .= $WorkFlowQueryHandler->getChooseIncludeFromFileManagerHtml($get_layer_sub_files_url, "choose_include_from_file_manager"); $main_content .= $WorkFlowQueryHandler->getChooseDAOObjectFromFileManagerHtml("choose_dao_object_from_file_manager"); $main_content .= $WorkFlowQueryHandler->getChooseAvailableMapIdHtml("choose_map_id"); $main_content .= '
+	var new_id_html = \'' . str_replace("'", "\\'", str_replace("\n", "", getIdHTML())) .'\';
+	var auto_increment_db_attributes_types = ' . json_encode(DB::getAllColumnAutoIncrementTypes()) . ';
+	</script>'; $main_content = $WorkFlowQueryHandler->getGlobalTaskFlowChar(); $main_content .= '<div class="edit_hbn_obj">
+		<div class="top_bar' . ($popup ? " in_popup" : "") . '">
+			<header>
+				<div class="title" title="' . $path . '">
+					' . ($hbn_obj_id ? "Edit" : "Add") . ' Hibernate Object <span class="query_name"></span> in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($is_hbn_obj_equal_to_file_name ? dirname($file_path) : $file_path, $obj, $is_hbn_obj_equal_to_file_name) . '
+				</div>
+				<ul>
+					<li class="save" data-title="Save Query"><a onClick="saveHibernateObject()"><i class="icon save"></i> Save</a></li>
+					<li class="sub_menu" onClick="openSubmenu(this)">
+						<i class="icon sub_menu"></i>
+						<ul>
+							<li class="update_automatically" title="Update Automatically"><a onClick="createHibernateObjectAutomatically(this)"><i class="icon update_automatically"></i> Create Automatically</a></li>
+							<li class="separator"></li>
+							<li class="toggle_advanced_settings" title="Toggle Advanced Settings"><a onClick="toggleHbnObjAdvancedSettings(this)"><i class="icon toggle_ids"></i> <span>Show Advanced Settings</span> <input type="checkbox"/></a></li>
+							<li class="separator"></li>
+							<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
+							<li class="separator"></li>
+							<li class="save" title="Save Query"><a onClick="saveHibernateObject()"><i class="icon save"></i> Save</a></li>
+						</ul>
+					</li>
+				</ul>
+			</header>
+		</div>'; $name = WorkFlowDataAccessHandler::getNodeValue($obj_data, "name"); $table = WorkFlowDataAccessHandler::getNodeValue($obj_data, "table"); $extends = WorkFlowDataAccessHandler::getNodeValue($obj_data, "extends"); $main_content .= $WorkFlowQueryHandler->getChooseQueryTableOrAttributeHtml("choose_db_table_or_attribute"); $main_content .= $WorkFlowQueryHandler->getChooseIncludeFromFileManagerHtml($get_layer_sub_files_url, "choose_include_from_file_manager"); $main_content .= $WorkFlowQueryHandler->getChooseDAOObjectFromFileManagerHtml("choose_dao_object_from_file_manager"); $main_content .= $WorkFlowQueryHandler->getChooseAvailableMapIdHtml("choose_map_id"); $main_content .= '
 <div class="data_access_obj with_top_bar_section">
 	<div class="name">
 		<label>Name: </label>
@@ -150,7 +150,12 @@ var auto_increment_db_attributes_types = ' . json_encode(DB::getAllColumnAutoInc
 			' . $WorkFlowQueryHandler->getDataAccessObjHtml($queries) . '
 		</div>'; $main_content .= '
 	</div>
-</div>'; } else $main_content .= '<div class="error">Error: The system couldn\'t detect the selected object. Please refresh and try again...</div>'; function getParameterClassHTML($paeae9fca, $v217e7cf3c0, $pb6233a29 = false) { return '
+</div>'; } else { $title = ($hbn_obj_id ? "Edit" : "Add") . " Hibernate Object"; $main_content = '
+		<div class="top_bar' . ($popup ? " in_popup" : "") . '">
+			<header>
+				<div class="title" title="' . $path . '">' . $title . '</div>
+			</header>
+		</div>'; $main_content .= '<div class="error">Error: The system couldn\'t detect the selected object. Please refresh and try again...</div>'; } function getParameterClassHTML($paeae9fca, $v217e7cf3c0, $pb6233a29 = false) { return '
 	<div class="class" ' . ($paeae9fca == "class" ? 'style="display:block;"' : 'style="display:none;"') . '>
 		<label>Parameter Class:</label>
 		<input type="text" name="parameter_class" value="' . $v217e7cf3c0 . '" />

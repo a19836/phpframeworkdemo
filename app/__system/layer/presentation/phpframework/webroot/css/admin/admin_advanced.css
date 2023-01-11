@@ -664,6 +664,12 @@ body.main_navigator_reverse.left_panel_hidden #hide_panel .button {
 #left_panel .mytree .jstree-anchor.link.jstree-hovered:not(.jstree-clicked) {
 	background-color:var(--left-panel-tree-item-hover-bg) !important;
 }
+#left_panel .mytree li.drop_hover > ul {
+	background:var(--left-panel-tree-item-clicked-bg);
+}
+#left_panel .mytree li.drop_hover > a {
+	color:var(--left-panel-tree-item-clicked-color) !important;
+}
 #left_panel .mytree a {
 	color:inherit;
 }
@@ -674,7 +680,9 @@ body.main_navigator_reverse.left_panel_hidden #hide_panel .button {
 	cursor:pointer; /* bc of the "others" folder */
 }
 #left_panel .mytree a.jstree-clicked > label, 
-  #left_panel .mytree a.jstree-clicked > label > label {
+  #left_panel .mytree a.jstree-clicked > label > label,
+  #left_panel .mytree li.drop_hover > a > label,
+  #left_panel .mytree li.drop_hover > a > label > label {
 	font-weight:bold;
 }
 #left_panel:not(.advanced_level) .mytree li[data-jstree='{"icon":"main_node main_node_data_access_layers"}'] {
@@ -682,6 +690,17 @@ body.main_navigator_reverse.left_panel_hidden #hide_panel .button {
 }
 #left_panel:not(.advanced_level) .mytree li[data-jstree='{"icon":"main_node main_node_library"}'] {
 	display:none;
+}
+
+/* LEFT PANEL - mytree sortable items */
+body > .sortable_helper {
+	padding:5px;
+	border-radius:5px;
+	border:1px solid var(--main-popup-header-color);
+	background:var(--main-popup-header-bg);
+	color:var(--main-popup-header-color);
+	z-index:1;
+	position:fixed;
 }
 
 /* LEFT PANEL - WITH TABS */
@@ -859,8 +878,11 @@ body.main_navigator_reverse.left_panel_hidden #hide_panel .button {
 	padding:0 0 0 15px;
 	background:transparent;
 	color:inherit;
-	overflow: auto;
 	box-sizing:border-box;
+	position:relative; /* very important bc when we drag a tree item and then scroll at the same time, the dragged element must update its position automatically. If the position is relative, the position will be updated automatically. Additionally if we dragged the element to the bottom, it will scroll down automatically. The same happens when we dragged the element up. */
+}
+#left_panel.left_panel_with_tabs .main_tree_node.scroll {
+	overflow:auto;
 }
 #left_panel.left_panel_with_tabs .main_tree_node > a > label, 
   #left_panel .main_tree_node > a > label > label {
@@ -938,7 +960,7 @@ body.main_navigator_reverse.left_panel_hidden #hide_panel .button {
 }
 #left_panel .mytree > ul > li.main_tree_node.hide_tree_item > .title {
 	display:block;
-	padding:17px 15px 2px 15px;
+	padding:17px 15px 5px 15px;
 	position:relative;
 	color:var(--left-panel-tree-tabs-active-color);
 	border-bottom:1px solid var(--left-panel-tree-sub-group-border);
@@ -990,6 +1012,9 @@ body.main_navigator_reverse.left_panel_hidden #hide_panel .button {
 #left_panel.left_panel_without_tabs .mytree {
 	height:calc(100vh - 90px);
 	margin-bottom:0;
+	position:relative; /* very important bc when we drag a tree item and then scroll at the same time, the dragged element must update its position automatically. If the position is relative, the position will be updated automatically. Additionally if we dragged the element to the bottom, it will scroll down automatically. The same happens when we dragged the element up. */
+}
+#left_panel.left_panel_without_tabs .mytree.scroll {
 	overflow:auto;
 }
 #left_panel.left_panel_without_tabs .mytree > ul {
@@ -1061,6 +1086,7 @@ body.main_navigator_reverse.left_panel_hidden #hide_panel .button {
 	background-color:var(--left-panel-tree-entities-folder-bg);
 }
 #left_panel .mytree > ul > .presentation_layers > ul li[data-jstree='{"icon":"entities_folder"}'] > a > label {
+	width:35px;
 	text-indent:-9999px;
 	display:inline-block;
 }
@@ -1256,31 +1282,31 @@ body.dark_theme #left_panel .mytree i.jstree-themeicon.template_file::before {
 }
 
 /* CONTEXT MENUS */
-.jqcontextmenu {
+.mycontextmenu {
 	background-color:var(--menu-panel-sub-menu-bg); 
 	color:var(--menu-panel-sub-menu-item-color); 
 	border-color:var(--menu-panel-sub-menu-border);
 }
-.jqcontextmenu ul {
+.mycontextmenu ul {
 	font-family:inherit;
 }
-.jqcontextmenu li {
+.mycontextmenu li {
 	background-color:var(--menu-panel-sub-menu-item-bg);
 }
-.jqcontextmenu li:not(.line_break):hover {
+.mycontextmenu li:not(.line_break):hover {
 	background-color:var(--menu-panel-sub-menu-item-hover-bg) !important;
 }
-.jqcontextmenu li a {
+.mycontextmenu li a {
 	background-color:var(--menu-panel-sub-menu-item-bg);
 	color:var(--menu-panel-sub-menu-item-color);
 }
-.jqcontextmenu li:hover a {
+.mycontextmenu li:hover a {
 	background-color:var(--menu-panel-sub-menu-item-hover-bg);
 }
-.jqcontextmenu .line_break {
+.mycontextmenu .line_break {
 	border-top-color:var(--menu-panel-sub-menu-border);
 }
-.jqcontextmenu li::after {
+.mycontextmenu li::after {
 	color:var(--menu-panel-sub-menu-item-color);
 }
 

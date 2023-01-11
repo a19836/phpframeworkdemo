@@ -1,0 +1,21 @@
+<?php
+/*
+ * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
+ * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * 
+ * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
+ * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
+ * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
+ * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
+ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+include_once get_lib("org.phpframework.layer.presentation.cms.CMSLayer"); class CMSPagePropertyLayer { private $v874d5d2d79; private $v0e2ae424ae; private $pebb2c687; private $v7eae0304dc; private $v4a432b49de; private $v557ad68afd; private $v7715b7ec3a; private $pe4ea0904; private $v0b46d550f1; private $pf530f4c2; private $v016c1cc8fd; public function __construct(CMSLayer $v874d5d2d79) { $this->v874d5d2d79 = $v874d5d2d79; $this->v0e2ae424ae = false; $this->pebb2c687 = false; $this->v7eae0304dc = null; $this->v4a432b49de = null; $this->v557ad68afd = null; $this->v7715b7ec3a = null; $this->pe4ea0904 = null; $this->v0b46d550f1 = null; $this->pf530f4c2 = 10000; $this->v016c1cc8fd = 10000; } public function setParseFullHtml($v0e2ae424ae) { $this->v0e2ae424ae = $v0e2ae424ae === 0 || $v0e2ae424ae === "0" || $v0e2ae424ae === "" ? false : $v0e2ae424ae; } public function getParseFullHtml() { return $this->v0e2ae424ae; } public function setParseRegionsHtml($pebb2c687) { $this->pebb2c687 = $pebb2c687 === 0 || $pebb2c687 === "0" || $pebb2c687 === "" ? false : $pebb2c687; } public function getParseRegionsHtml() { return $this->pebb2c687; } public function setExecuteSLA($v7eae0304dc) { $this->v7eae0304dc = $v7eae0304dc === 0 || $v7eae0304dc === "0" || $v7eae0304dc === "" ? false : $v7eae0304dc; } public function getExecuteSLA() { return $this->v7eae0304dc; } public function setParseHashTags($v4a432b49de) { $this->v4a432b49de = $v4a432b49de === 0 || $v4a432b49de === "0" || $v4a432b49de === "" ? false : $v4a432b49de; } public function getParseHashTags() { return $this->v4a432b49de; } public function setParsePTL($v557ad68afd) { $this->v557ad68afd = $v557ad68afd === 0 || $v557ad68afd === "0" || $v557ad68afd === "" ? false : $v557ad68afd; } public function getParsePTL() { return $this->v557ad68afd; } public function setAddMyJSLib($v7715b7ec3a) { $this->v7715b7ec3a = $v7715b7ec3a === 0 || $v7715b7ec3a === "0" || $v7715b7ec3a === "" ? false : $v7715b7ec3a; } public function getAddMyJSLib() { return $this->v7715b7ec3a; } public function setAddWidgetResourceLib($pe4ea0904) { $this->pe4ea0904 = $pe4ea0904 === 0 || $pe4ea0904 === "0" || $pe4ea0904 === "" ? false : $pe4ea0904; } public function getAddWidgetResourceLib() { return $this->pe4ea0904; } public function setFilterByPermission($v0b46d550f1) { $this->v0b46d550f1 = $v0b46d550f1 === 0 || $v0b46d550f1 === "0" || $v0b46d550f1 === "" ? false : $v0b46d550f1; } public function getFilterByPermission() { return $this->v0b46d550f1; } public function setMaximumUsageMemory($pf530f4c2) { $this->pf530f4c2 = $pf530f4c2 >= 0 ? $pf530f4c2 : $this->pf530f4c2; } public function getMaximumUsageMemory() { return $this->pf530f4c2; } public function setMaximumBufferChunkSize($v016c1cc8fd) { $this->v016c1cc8fd = $v016c1cc8fd >= 0 ? $v016c1cc8fd : $this->v016c1cc8fd; } public function getMaximumBufferChunkSize() { return $this->v016c1cc8fd; } } ?>

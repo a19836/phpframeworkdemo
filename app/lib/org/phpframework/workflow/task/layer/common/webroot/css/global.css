@@ -9,18 +9,19 @@
 .jsplumbtaskmenu .tasks_group:first-child {
 	margin-top:0 !important;
 }
-.jsplumbtaskmenu .task {
-	width:90px !important;
-	height:60px !important;
-	margin:15px 15px 0 !important;
+.jsplumbtaskmenu .task,
+  .taskflowchart > .tasks_menu .task {
+	width:90px;
+	height:60px;
+	margin:15px 15px 0;
 	
-	background-color:#4070FF !important;
-	background-size:22px 26px !important; 
-	background-position:center 15px !important; 
+	background-color:#4070FF;
+	background-size:22px 26px; 
+	background-position:center 15px; 
 	
-	border-radius:5px !important;
-	border:0 !important;
-	box-shadow:none !important;
+	border-radius:5px;
+	border:0;
+	box-shadow:none;
 }
 .jsplumbtaskmenu .task span {
 	line-height:normal;

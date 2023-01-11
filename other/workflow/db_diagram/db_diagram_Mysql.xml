@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tasks>
+	<settings>
+		<sync_with_db_server>1</sync_with_db_server>
+		<old_tables_names><![CDATA[{"school":"school","student":"student","teacher":"teacher"}]]></old_tables_names>
+		<old_tables_attributes_names><![CDATA[{"school":["school_id","name"],"student":["student_id","school_id","name"],"teacher":["teacher_id","school_id","name","age"]}]]></old_tables_attributes_names>
+	</settings>
 	<task>
 		<label><![CDATA[school]]></label>
 		<id><![CDATA[school]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>47</offset_left>
-		<offset_top>25</offset_top>
-		<width>198</width>
-		<height>79</height>
+		<offset_left>30</offset_left>
+		<offset_top>37</offset_top>
+		<width>318</width>
+		<height>78</height>
 		<properties>
 			<exits>
 				<layer_exit>
@@ -55,10 +60,10 @@
 		<id><![CDATA[student]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>48</offset_left>
-		<offset_top>174</offset_top>
-		<width>198</width>
-		<height>103</height>
+		<offset_left>31</offset_left>
+		<offset_top>222</offset_top>
+		<width>318</width>
+		<height>102</height>
 		<properties>
 			<exits>
 				<layer_exit>
@@ -132,10 +137,10 @@
 		<id><![CDATA[teacher]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>334</offset_left>
-		<offset_top>64</offset_top>
-		<width>198</width>
-		<height>128</height>
+		<offset_left>423</offset_left>
+		<offset_top>103</offset_top>
+		<width>318</width>
+		<height>126</height>
 		<properties>
 			<exits>
 				<layer_exit>

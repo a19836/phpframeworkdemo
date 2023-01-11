@@ -58,7 +58,7 @@ $(function() {
 </script>'; $main_content .= '
 <div class="top_bar">
 	<header>
-		<div class="title">Upload Files into  in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj) . '</div>
+		<div class="title" title="' . $path . '">Upload Files into  in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj) . '</div>
 	</header>
 </div>
 

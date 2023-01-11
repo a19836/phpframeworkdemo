@@ -96,6 +96,7 @@
 				});
 				
 				menu_widget.children(".properties").attr({
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.link.onOpenWidgetSettings",
 					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.link.saveSettingsField",
 					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.link.parseSettings",
 				});
@@ -112,6 +113,9 @@
 				
 				var href = widget.children(".link-file").html();
 				href = href.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
+				
+				//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
+				href = href.replace(/\u2003/g, "\t"); 
 				
 				widget_settings["href"] = href; //Do not use link.attr("href") bc the href can have the $project_url_prefix or $project_common_url_prefix var parsed
 				widget_settings["rel"] = link.attr("rel");
@@ -161,12 +165,16 @@
 						}, 700);
 					})
 					.mouseup(function(e) {
-						//prevents that the MyTextSelection open the inline menu
+						//prevents that the TextSelection open the inline menu
 						e.preventDefault();
 						e.stopPropagation();
 						
-						ui_creator.MyTextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
+						ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
 					});
+			};
+			
+			me.onOpenWidgetSettings = function(widget, menu_settings) {
+				ui_creator.addMenuSettingsContextMenu( menu_settings.find(".settings-properties input") );
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {

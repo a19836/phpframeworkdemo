@@ -9,12 +9,13 @@
 }
 
 /* MENU TASKS */
-.jsplumbtaskmenu .task {
-	width:40px !important;
-	margin:15px 22px 30px !important;
-	padding:0 !important;
-	overflow:visible !important;
-	background-size:contain !important;
+.jsplumbtaskmenu .task,
+  .taskflowchart > .tasks_menu .task {
+	width:40px;
+	margin:15px 22px 30px;
+	padding:0;
+	overflow:visible;
+	background-size:contain;
 	background-image:url('../img/user_generated_task_bg.svg');
 	box-sizing:border-box;
 }

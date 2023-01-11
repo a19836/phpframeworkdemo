@@ -2,26 +2,42 @@
 include_once get_lib("org.phpframework.db.DB");
 include_once get_lib("org.phpframework.layer.presentation.cms.module.CMSModuleInstallationBLNamespaceHandler");
 include_once get_lib("org.phpframework.layer.presentation.cms.module.CMSProgramExtraTableInstallationUtil");
+include_once $EVC->getUtilPath("WorkFlowTasksFileHandler");
 include_once $EVC->getUtilPath("WorkFlowBeansFileHandler");
+include_once $EVC->getUtilPath("WorkFlowDBHandler");
 include_once $EVC->getUtilPath("WorkFlowBusinessLogicHandler");
 include_once $EVC->getUtilPath("FlushCacheHandler");
+include_once $EVC->getUtilPath("WorkFlowUIHandler");
 
 class CommonModuleAdminTableExtraAttributesUtil {
 	private $EVC;
 	private $PEVC;
 	private $module_path;
-	private $user_global_variables_file_path;
-	private $user_beans_folder_path;
 	private $brokers;
 	private $default_db_driver;
 	private $main_attributes_table_name;
 	private $extra_attributes_table_name;
 	private $extra_attributes_table_alias;
 	
-	private $group_module_id;
 	private $project_url_prefix;
 	private $project_common_url_prefix;
+	private $user_global_variables_file_path;
+	private $user_beans_folder_path;
+	private $gpl_js_url_prefix;
+	private $proprietary_js_url_prefix;
+	private $webroot_cache_folder_path;
+	private $webroot_cache_folder_url;
+	
+	private $group_module_id;
 	private $db_driver;
+	private $layers;
+	private $presentation_module_path;
+	private $business_logic_module_paths;
+	private $ibatis_module_paths;
+	private $hibernate_module_paths;
+	
+	private $WorkFlowTaskHandler;
+	
 	private $available_tables = array();
 	private $main_attributes = array();
 	private $main_pks = array();
@@ -35,18 +51,12 @@ class CommonModuleAdminTableExtraAttributesUtil {
 	private $error_message;
 	private $status_message;
 	
-	private $layers;
-	private $presentation_module_path;
-	private $business_logic_module_paths;
-	private $ibatis_module_paths;
-	private $hibernate_module_paths;
+	private $available_file_types = array("" => "-- Not a file --", "file" => "File", "image" => "Image");
 	
-	public function __construct($EVC, $PEVC, $module_path, $user_global_variables_file_path, $user_beans_folder_path, $default_db_driver, $main_attributes_table_name, $main_attributes_table_alias = false, $extra_attributes_table_name = false, $extra_attributes_table_alias = false) {
+	public function __construct($EVC, $PEVC, $module_path, $default_db_driver, $main_attributes_table_name, $main_attributes_table_alias = false, $extra_attributes_table_name = false, $extra_attributes_table_alias = false) {
 		$this->EVC = $EVC;
 		$this->PEVC = $PEVC;
 		$this->module_path = $module_path;
-		$this->user_global_variables_file_path = $user_global_variables_file_path;
-		$this->user_beans_folder_path = $user_beans_folder_path;
 		$this->brokers = $PEVC->getPresentationLayer()->getBrokers();
 		$this->default_db_driver = $default_db_driver;
 		$this->main_attributes_table_name = $main_attributes_table_name;
@@ -56,7 +66,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		
 		$this->initGroupModuleId();
 		$this->initLayersPaths();
-		$this->initUrlPrefixes();
+		$this->initSystemGlobalVars();
 		
 		$this->db_driver = $this->getDBDriver();
 		
@@ -67,99 +77,167 @@ class CommonModuleAdminTableExtraAttributesUtil {
 	}
 	
 	public function getHead() {
-		$column_types_ignored_props = $this->db_driver->getDBColumnTypesIgnoredProps();
-		$valid_allow_javascript_types = $this->db_driver->getDBColumnTextTypes();
-		
-		$column_types_ignored_props = is_array($column_types_ignored_props) ? $column_types_ignored_props : array();
-		
 		$admin_common_url = $this->project_common_url_prefix . "module/" . $this->EVC->getCommonProjectName() . "/";
 		
+		//prepare WorkFlowTaskHandler 
+		//Do not call this in the construct bc we are flushing the cache on the saveData method, and when this happens we must recreate the cache for the WorkFlowTaskHandler. If this is here, the cache will always be recreated
+		$this->WorkFlowTaskHandler = new WorkFlowTaskHandler($this->webroot_cache_folder_path, $this->webroot_cache_folder_url);
+		$this->WorkFlowTaskHandler->setCacheRootPath(LAYER_CACHE_PATH);
+		$this->WorkFlowTaskHandler->setAllowedTaskTypes(array("table"));
+		
+		//get task table workflow settings
+		$WorkFlowUIHandler = new WorkFlowUIHandler($this->WorkFlowTaskHandler, $this->project_url_prefix, $this->project_common_url_prefix, $this->gpl_js_url_prefix, $this->proprietary_js_url_prefix, $this->user_global_variables_file_path, $this->webroot_cache_folder_path, $this->webroot_cache_folder_url);
+		
+		//prepare DBTableTaskPropertyObj properties 
+		$charsets = $this->db_driver->getTableCharsets();
+		$collations = $this->db_driver->getTableCollations();
+		$storage_engines = $this->db_driver->getStorageEngines();
+		$column_charsets = $this->db_driver->getColumnCharsets();
+		$column_collations = $this->db_driver->getColumnCollations();
+		$column_column_types = $this->db_driver->getDBColumnTypes();
+		$column_column_simple_types = $this->db_driver->getDBColumnSimpleTypes();
+		$column_numeric_types = $this->db_driver->getDBColumnNumericTypes();
+		$column_mandatory_length_types = $this->db_driver->getDBColumnMandatoryLengthTypes();
+		$column_types_ignored_props = $this->db_driver->getDBColumnTypesIgnoredProps();
+		$column_types_hidden_props = $this->db_driver->getDBColumnTypesHiddenProps();
+		$valid_allow_javascript_types = $this->db_driver->getDBColumnTextTypes();
+		
+		$charsets = is_array($charsets) ? $charsets : array();
+		$collations = is_array($collations) ? $collations : array();
+		$storage_engines = is_array($storage_engines) ? $storage_engines : array();
+		$column_charsets = is_array($column_charsets) ? $column_charsets : array();
+		$column_collations = is_array($column_collations) ? $column_collations : array();
+		$column_column_types = is_array($column_column_types) ? $column_column_types : array();
+		$column_column_simple_types = is_array($column_column_simple_types) ? $column_column_simple_types : array();
+		$column_numeric_types = is_array($column_numeric_types) ? $column_numeric_types : array();
+		$column_mandatory_length_types = is_array($column_mandatory_length_types) ? $column_mandatory_length_types : array();
+		$column_types_ignored_props = is_array($column_types_ignored_props) ? $column_types_ignored_props : array();
+		$valid_allow_javascript_types = is_array($valid_allow_javascript_types) ? $valid_allow_javascript_types : array();
+		
+		$column_column_types["attachment"] = "Attachment";
+		$column_numeric_types[] = "attachment";
+		$column_types_ignored_props["attachment"] = $column_types_ignored_props["bigint"];
+		
+		foreach ($column_types_ignored_props as $type => $ignored_props) {
+			if (!in_array($type, $valid_allow_javascript_types)) {
+				$ignored_props = is_array($ignored_props) ? $ignored_props : ($ignored_props ? array($ignored_props) : array());
+				$ignored_props[] = "allow_javascript";
+				$column_types_ignored_props[$type] = $ignored_props;
+			}
+			
+			if ($type != "bigint" && $type != "attachment") {
+				$ignored_props = is_array($ignored_props) ? $ignored_props : ($ignored_props ? array($ignored_props) : array());
+				$ignored_props[] = "file_type";
+				$column_types_ignored_props[$type] = $ignored_props;
+			}
+		}
+		
+		//get table data
+		$data = $this->saved_data ? $this->saved_data : array(
+			"table_name" => $this->extra_attributes_table_name,
+			"table_storage_engine" => "",
+			"table_charset" => "",
+			"table_collation" => "",
+			"attributes" => $this->extra_attributes
+		);
+		
+		if ($data && $data["attributes"]) {
+			foreach ($data["attributes"] as $idx => $attr)
+				foreach ($attr as $k => $v) {
+					$data["table_attr_" . $k . "s"][$idx] = $v;
+					
+					if ($k == "default")
+						$data["table_attr_has_" . $k . "s"][$idx] = strlen($v) > 0;
+				}
+			
+			//echo "<pre>";print_r($data["attributes"]);die();
+			unset($data["attributes"]);
+		}
+		//echo "<pre>";print_r($data);die();
+		
+		//prepare html
 		$html = '
+		<!-- Add Globals JS files -->
+		<script language="javascript" type="text/javascript" src="' . $this->project_common_url_prefix . 'js/global.js"></script>
+		
 		<!-- Add ACE Editor JS files -->
 		<script src="' . $this->project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ace.js"></script>
 		<script src="' . $this->project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
+		';
+		$html .= $WorkFlowUIHandler->getHeader();
+		$html .= '
+		<!-- Add Layout CSS file -->
+		<link rel="stylesheet" href="' . $this->project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
 		
-		<!-- Add Fontawsome Icons CSS -->
-		<link rel="stylesheet" href="' . $this->project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
-		
-		<!-- Add Icons CSS files -->
-		<link rel="stylesheet" href="' . $this->project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
-		
-		<!-- Add Globals JS files -->
-		<script language="javascript" type="text/javascript" src="' . $this->project_common_url_prefix . 'js/global.js"></script>
-
 		<!-- Add Local JS and CSS files -->
 		<link rel="stylesheet" href="' . $admin_common_url . 'admin.css" type="text/css" charset="utf-8" />
 		
+		<!-- Add Local JS and CSS files -->
 		<link rel="stylesheet" href="' . $this->project_url_prefix . 'css/db/edit_table.css" type="text/css" charset="utf-8" />
 		<script language="javascript" type="text/javascript" src="' . $this->project_url_prefix . 'js/db/edit_table.js"></script>
 		
 		<link rel="stylesheet" href="' . $admin_common_url . 'manage_table_extra_attributes.css" type="text/css" charset="utf-8" />
 		<script language="javascript" type="text/javascript" src="' . $admin_common_url . 'manage_table_extra_attributes.js"></script>
-
+		
 		<script>
-		var column_types_ignored_props = ' . json_encode($column_types_ignored_props) . ';
-		var valid_allow_javascript_types = ' . json_encode($valid_allow_javascript_types) . ';
-
-		var attribute_html = \'' . str_replace("'", "\\'", str_replace("\n", "", $this->getTableExtraAttributeHtml("#idx#"))) . '\';
+		DBTableTaskPropertyObj.column_types = ' . json_encode($column_column_types) . ';
+		DBTableTaskPropertyObj.column_simple_types = ' . json_encode($column_column_simple_types) . ';
+		DBTableTaskPropertyObj.column_numeric_types = ' . json_encode($column_numeric_types) . ';
+		DBTableTaskPropertyObj.column_mandatory_length_types = ' . json_encode($column_mandatory_length_types) . ';
+		DBTableTaskPropertyObj.column_types_ignored_props = ' . json_encode($column_types_ignored_props) . ';
+		DBTableTaskPropertyObj.column_types_hidden_props = ' . json_encode($column_types_hidden_props) . ';
+		DBTableTaskPropertyObj.table_charsets = ' . json_encode($charsets) . ';
+		DBTableTaskPropertyObj.table_collations = ' . json_encode($collations) . ';
+		DBTableTaskPropertyObj.table_storage_engines = ' . json_encode($storage_engines) . ';
+		DBTableTaskPropertyObj.column_charsets = ' . json_encode($column_charsets) . ';
+		DBTableTaskPropertyObj.column_collations = ' . json_encode($column_collations) . ';
+		
+		DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.push("allow_javascript");
+		DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.push("file_type");
+		
+		DBTableTaskPropertyObj.on_update_simple_attributes_html_with_table_attributes_callback = onUpdateExtraSimpleAttributesHtmlWithTableAttributes;
+		DBTableTaskPropertyObj.on_update_table_attributes_html_with_simple_attributes_callback = onUpdateExtraTableAttributesHtmlWithSimpleAttributes;
+		DBTableTaskPropertyObj.on_add_simple_attribute_callback = onAddExtraSimpleAttribute;
+		DBTableTaskPropertyObj.on_add_table_attribute_callback = onAddExtraTableAttribute;
+		
+		var task_property_values = ' . json_encode($data) . ';
+		
 		var step = ' . ($this->step ? $this->step : 0) . ';
+		var available_file_types = ' . json_encode($this->available_file_types) . ';
 		</script>';
 		
 		return $html;
 	}
 	
 	public function getContent() {
-		$column_types_hidden_props = $this->db_driver->getDBColumnTypesHiddenProps();
+		//get task table workflow settings
+		$tasks_settings = $this->WorkFlowTaskHandler->getLoadedTasksSettings();
+		$task_contents = array();
+		
+		foreach ($tasks_settings as $group_id => $group_tasks)
+			foreach ($group_tasks as $task_type => $task_settings)
+				if (is_array($task_settings))
+					$task_contents = $task_settings["task_properties_html"];
+		
+		//$allow_sort = $this->db_driver->allowTableAttributeSorting() && !$this->extra_attributes; //if no extra attributes, then allow sort attributes
+		$allow_sort = $this->db_driver->allowTableAttributeSorting();
 		
 		$html = '
 	<div class="manage_table_exta_attributes edit_table">
 		<h3>Table Settings <a class="icon refresh" href="javascript:void(0);" onClick="document.location=document.location+\'\';" title="Refresh">Refresh</a></h3>
-		<div class="table_settings">
+		<div class="table_settings' . ($allow_sort ? " allow_sort" : "") . '">
+			<div class="attributes_title">Attributes for table: "' . $this->extra_attributes_table_name . '"</div>
+			
+			<div class="selected_task_properties">
+			' . $task_contents . '
+			</div>
+			
 			<form method="post">
 				<input type="hidden" name="step" value="1"/>
+				<textarea class="hidden" name="data"></textarea>
 				
-				<div class="attributes">
-					<label>Attributes for table: "' . $this->extra_attributes_table_name . '" <a class="icon add" onClick="addTableAttribute(this)" title="Add">Add</a></label>
-				</div>
-				
-				<table>
-					<thead>
-						<tr>
-							<th class="table_attr_name table_header">Name</th>
-							<th class="table_attr_type table_header">Type</th>
-							<th class="table_attr_length table_header"' . (in_array("length", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>Length</th>
-							<th class="table_attr_null table_header"' . (in_array("null", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>Null</th>
-							<th class="table_attr_unsigned table_header"' . (in_array("unsigned", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>Unsigned</th>
-							<th class="table_attr_unique table_header"' . (in_array("unique", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>Unique</th>
-							<th class="table_attr_auto_increment table_header"' . (in_array("auto_increment", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>Auto Increment</th>
-							<th class="table_attr_allow_javascript table_header">Allow Javascript</th>
-							<th colspan="2" class="table_attr_default table_header"' . (in_array("default", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>Default</th>
-							<th class="table_attr_extra table_header"' . (in_array("extra", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>Extra</th>
-							<th class="table_attr_charset table_header"' . (in_array("charset", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>Charset</th>
-							<th class="table_attr_collation table_header"' . (in_array("collation", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>Collation</th>
-							<th class="table_attr_file_type table_header">File Type</th>
-							<th class="table_attr_comment table_header"' . (in_array("comment", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>Comments</th>
-							<th class="table_attr_icons">
-								<a class="icon add" onClick="addTableAttribute(this)" title="Add">Add</i></a>
-							</th>
-						</tr>
-					</thead>
-					<tbody index_prefix="attributes">';
-
-		if ($this->extra_attributes)
-			foreach ($this->extra_attributes as $idx => $attr)
-				$html .= $this->getTableExtraAttributeHtml($idx, $attr);
-		
-		$colspan = 15 - count($column_types_hidden_props);
-		
-		$html .= '		<tr class="no_attributes"' . ($this->extra_attributes ? ' style="display:none"' : '') . '><td colspan="' . $colspan . '">No extra attributes added yet...</td></tr>
-					</tbody>
-				</table>
-				
-				<div class="buttons">
-					<div class="submit_button submit_button_save">
-						<input type="submit" name="save" value="SAVE" />
-					</div>
+				<div class="save_button">
+					<input type="submit" name="save" value="SAVE" onClick="return onSaveButton(this);" />
 				</div>
 			</form>
 		</div>
@@ -254,7 +332,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 					$e = $this->db_driver->setData($sql);
 				
 					if ($e !== true)
-						$this->errors[] = (is_a($e, "Exception") ? $e-getMessage() . "\n\n" : "") . $sql;
+						$this->errors[] = (is_a($e, "Exception") ? $e->getMessage() . "\n\n" : "") . $sql;
 				}
 				
 				$changed = false;
@@ -272,37 +350,53 @@ class CommonModuleAdminTableExtraAttributesUtil {
 			}
 		}
 		else if ($this->step == 1) {
-			$data = $post_data;
+			$data = json_decode($post_data["data"], true);
+			//$data = $post_data;
 			
-			//remove POST buttons
-			unset($data["save"]);
-			unset($data["step"]);
+			//echo "<pre>";print_r($post_data);die();
 			//echo "<pre>";print_r($data);die();
 			//echo "<pre>";print_r($data["attributes"][0]);die();
 			
-			$sql_options = $this->db_driver->getOptions();
 			$this->sql_statements = array();
 			$this->sql_statements_labels = array();
 			
-			$attributes_to_add = array();
-			$attributes_to_modify = array();
-			$attributes_to_rename = array();
-			$attributes_to_delete = array();
-			$changed = false;
+			//replace attachment type by bigint, remove empty attributes and trim names
+			if ($data && $data["attributes"])
+				foreach ($data["attributes"] as $idx => $attr) {
+					if (!trim($attr["name"]))
+						unset($data["attributes"][$idx]);
+					else {
+						$data["attributes"][$idx]["name"] = trim($attr["name"]); //trim name
+						
+						if ($attr["type"] == "attachment")
+							$data["attributes"][$idx]["type"] = "bigint";
+					}
+				}
 			
 			//check first if table exists in DB and if not create it
 			if (!$this->db_driver->isTableInNamesList($this->available_tables, $this->extra_attributes_table_name)) {
-				$changed = true;
-				
 				$this->extra_pks = $this->main_pks; //set the extra_pks, bc they were not set yet!
 				$new_attributes = array_values($this->extra_pks);
 				$new_attributes = $data["attributes"] ? array_merge($new_attributes, $data["attributes"]) : $new_attributes;
 				
+				$main_table_name = $this->db_driver->getTableInNamesList($this->available_tables, $this->main_attributes_table_name);
+				$main_table_data = array();
+				
+				$t = count($this->available_tables);
+				for ($i = 0; $i < $t; $i++)
+					if ($this->available_tables[$i]["name"] == $main_table_name) {
+						$main_table_data = $this->available_tables[$i];
+						break;
+					}
+				
 				$table_data = array(
 					"table_name" => $this->extra_attributes_table_name, 
+					"table_storage_engine" => $main_table_data["engine"],
+					"table_charset" => $main_table_data["charset"],
+					"table_collation" => $main_table_data["collation"],
 					"attributes" => $new_attributes,
 				);
-				$this->sql_statements[] = $this->db_driver->getCreateTableStatement($table_data, $sql_options);
+				$this->sql_statements[] = $this->db_driver->getCreateTableStatement($table_data, $this->db_driver->getOptions());
 				$this->sql_statements_labels[] = "Create table " . $table_data["table_name"];
 				/*$e = $this->db_driver->setData($sql);
 				
@@ -310,95 +404,32 @@ class CommonModuleAdminTableExtraAttributesUtil {
 					$this->errors[] = (is_a($e, "Exception") ? $e-getMessage() . "\n\n" : "") . $sql;*/
 			}
 			else { //get attributes to add and modify
-				$column_types_ignored_props = $this->db_driver->getDBColumnTypesIgnoredProps();
-			
-				if ($data["attributes"]) {
+				//remove primary keys or already existent attributes in $this->main_attributes
+				if ($data["attributes"])
 					foreach ($data["attributes"] as $idx => $new_attr) {
-						$new_attr["name"] = $data["attributes"][$idx]["name"] = trim($new_attr["name"]);
-						
-						if ($new_attr["name"] && !array_key_exists($new_attr["name"], $this->extra_pks) && !array_key_exists($new_attr["name"], $this->main_attributes)) {
-							$exists = false;
-							$is_different = false;
-							
-							if ($table_attrs)
-								foreach ($table_attrs as $old_attr)
-									if (strtolower($new_attr["old_name"]) == strtolower($old_attr["name"])) {
-										$exists = true;
-										
-										if ($new_attr["name"] != $old_attr["name"]) //in case the user change the case of some letter.
-											$attributes_to_rename[ $old_attr["name"] ] = $new_attr["name"];
-										 
-										//prepare new name with old_name, just in case the user changed the lettering case.
-										$new_attr["name"] = $old_attr["name"];
-										
-										//prepare non-editable attributes in $new_attr. Sets the defaults from $old_attr.
-										if (is_array($column_types_ignored_props[ $old_attr["type"] ]))
-											foreach ($column_types_ignored_props[ $old_attr["type"] ] as $attr_to_ignore)
-												$new_attr[$attr_to_ignore] = $old_attr[$attr_to_ignore];
-										
-										//check if there is something different
-										if ($new_attr["type"] != $old_attr["type"] || $new_attr["length"] != $old_attr["length"] || $new_attr["null"] != $old_attr["null"] || $new_attr["unique"] != $old_attr["unique"] || $new_attr["auto_increment"] != $old_attr["auto_increment"] || $new_attr["unsigned"] != $old_attr["unsigned"] || $new_attr["default"] != $old_attr["default"] || $new_attr["extra"] != $old_attr["extra"] || ($new_attr["charset"] && $new_attr["charset"] != $old_attr["charset"]) || ($new_attr["collation"] && $new_attr["collation"] != $old_attr["collation"]) || $new_attr["comment"] != $old_attr["comment"])
-											$is_different = true;
-										
-										break;
-									}
-							
-							if (!$exists)
-								$attributes_to_add[] = $new_attr;
-							else if ($is_different)
-								$attributes_to_modify[] = $new_attr;
-						}
-						else
+						if (!$new_attr["name"] || array_key_exists($new_attr["name"], $this->extra_pks) || array_key_exists($new_attr["name"], $this->main_attributes))
 							unset($data["attributes"][$idx]);
+						else if ($new_attr["primary_key"]) {
+							$new_attr["primary_key"] = false;
+							$new_attr["unique"] = false;
+							$new_attr["auto_increment"] = false;
+							$new_attr["extra"] = preg_replace("/(^|\s)auto_increment($|\s)/i", "", $new_attr["extra"]);
+							
+							$data["attributes"][$idx] = $new_attr;
+						}
 					}
-				}
 				
-				//get attributes to delete
 				if ($table_attrs)
-					foreach ($table_attrs as $old_attr) {
-						$exists = false;
-						
-						if ($data["attributes"])
-							foreach ($data["attributes"] as $new_attr) 
-								if (strtolower($new_attr["old_name"]) == strtolower($old_attr["name"])) {
-									$exists = true;
-									break;
-								}
-						
-						if (!$exists)
-							$attributes_to_delete[] = $old_attr;
-					}
+					foreach ($table_attrs as $idx => $attr)
+						if ($attr["primary_key"])
+							unset($table_attrs[$idx]);
 				
-				//update attributes
-				if ($attributes_to_add || $attributes_to_modify || $attributes_to_rename || $attributes_to_delete) {
-					$changed = true;
-					
-					//echo "<pre>attributes_to_add:".print_r($attributes_to_add, 1)."\nattributes_to_modify:".print_r($attributes_to_modify, 1)."\nattributes_to_rename:".print_r($attributes_to_rename, 1)."\nattributes_to_delete:".print_r($attributes_to_delete, 1); die();
-					
-					foreach ($attributes_to_add as $attr) {
-						$this->sql_statements[] = $this->db_driver->getAddTableAttributeStatement($this->extra_attributes_table_name, $attr, $sql_options);
-						$this->sql_statements_labels[] = "Add attribute " . $attr["name"] . " to table " . $this->extra_attributes_table_name;
-					}
-					
-					foreach ($attributes_to_modify as $attr) {
-						$this->sql_statements[] = $this->db_driver->getModifyTableAttributeStatement($this->extra_attributes_table_name, $attr, $sql_options);
-						$this->sql_statements_labels[] = "Modify attribute " . $attr["name"] . " in table " . $this->extra_attributes_table_name;
-					}
-					
-					//remove attrs must be first than the rename, so we can remove an attribute and then rename another one to the same name of the attribute that we removed.
-					foreach ($attributes_to_delete as $attr) {
-						$this->sql_statements[] = $this->db_driver->getDropTableAttributeStatement($this->extra_attributes_table_name, $attr["name"], $sql_options);
-						$this->sql_statements_labels[] = "Drop attribute " . $attr["name"] . " in table " . $this->extra_attributes_table_name;
-					}
-					
-					foreach ($attributes_to_rename as $old_name => $new_name) {
-						$this->sql_statements[] = $this->db_driver->getRenameTableAttributeStatement($this->extra_attributes_table_name, $old_name, $new_name, $sql_options);
-						$this->sql_statements_labels[] = "Rename attribute $old_name in table " . $this->extra_attributes_table_name;
-					}
-				}
+				$statements = WorkFlowDBHandler::getTableUpdateSQLStatements($this->db_driver, $this->extra_attributes_table_name, $table_attrs, $data["attributes"]);
+				$this->sql_statements = $statements["sql_statements"];
+				$this->sql_statements_labels = $statements["sql_statements_labels"];
 			}
 			
-			if (!$changed)
+			if (empty($this->sql_statements))
 				$this->status_message = "No changes to be made!";
 			
 			//updates extra attributes bc of the saveDataToFile
@@ -409,154 +440,6 @@ class CommonModuleAdminTableExtraAttributesUtil {
 	
 	/* PRIVATE METHODS */
 	
-	private function getTableExtraAttributeHtml($idx, $data = null) {
-		//console.debug(data);
-		
-		$charsets = $this->db_driver->getColumnCharsets();
-		$collations = $this->db_driver->getColumnCollations();
-		$types = $this->db_driver->getDBColumnTypes();
-		$column_types_ignored_props = $this->db_driver->getDBColumnTypesIgnoredProps();
-		$column_types_hidden_props = $this->db_driver->getDBColumnTypesHiddenProps();
-		$file_types = array("" => "-- Not a file --", "file" => "File", "image" => "Image");
-		
-		$charsets = is_array($charsets) ? $charsets : array();
-		$collations = is_array($collations) ? $collations : array();
-		$types = is_array($types) ? $types : array();
-		$column_types_ignored_props = is_array($column_types_ignored_props) ? $column_types_ignored_props : array();
-		$column_type_ignored_props = is_array($column_types_ignored_props[ $data["type"] ]) ? $column_types_ignored_props[ $data["type"] ] : array();
-		
-		$is_null = $data["primary_key"] ? false : $data["null"];
-		$is_unique = $data["primary_key"] ? true : $data["unique"];
-		$auto_increment = $data["auto_increment"];
-		$has_default = strlen($data["default"]) ? true : $data["has_default"];
-		
-		$is_length_disabled = !$data["type"] || in_array("length", $column_type_ignored_props);
-		$is_unsigned_disabled = !$data["type"] || in_array("unsigned", $column_type_ignored_props);
-		$is_null_disabled = in_array("null", $column_type_ignored_props);
-		$is_auto_increment_disabled = in_array("auto_increment", $column_type_ignored_props);
-		$is_default_disabled = in_array("default", $column_type_ignored_props);
-		$is_extra_disabled = in_array("extra", $column_type_ignored_props);
-		$is_charset_disabled = in_array("charset", $column_type_ignored_props);
-		$is_collation_disabled = in_array("collation", $column_type_ignored_props);
-		$is_comment_disabled = in_array("comment", $column_type_ignored_props);
-		$is_allow_javascript_disabled = !$data["type"] || !ObjTypeHandler::isDBTypeText($data["type"]);
-		$file_type_disabled = $data["type"] != "bigint";
-		
-		$html = '
-		<tr>
-			<td class="table_attr_name">
-				<input type="hidden" name="attributes[' . $idx . '][old_name]" value="' . $data["name"] . '" />
-				<input type="text" name="attributes[' . $idx . '][name]" value="' . $data["name"] . '" onBlur="onBlurTableAttributeInputBox(this)" />
-			</td>
-			<td class="table_attr_type">
-				<select name="attributes[' . $idx . '][type]" onChange="onChangeSelectBoxExtra(this)"><option></option>';
-		
-		$selected_type = $data["type"] == "bigint" && $data["file_type"] ? "attachment" : $data["type"];
-		
-		foreach ($types as $type_id => $type_name)
-			$html .= '<option value="' . $type_id . '" ' . ($type_id == $selected_type ? "selected" : "") . '>' . $type_name . '</option>';
-		
-		$html .= '	<option value="bigint"' . ($selected_type == "attachment" ? "selected" : "") . '><strong>Attachment</strong></option>';
-		
-		if ($selected_type && !array_key_exists($selected_type, $types))
-			$html .= '<option value="' . $selected_type . '">' . $selected_type . ' - NON DEFAULT</option>';
-		
-		$html .= '
-				</select>
-			</td>
-			<td class="table_attr_length"' . (in_array("length", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>
-				<input type="text" name="attributes[' . $idx . '][length]" value="' . $data["length"] . '" ' . ($is_length_disabled ? 'disabled="disabled"' : '') . ' />
-			</td>
-			<td class="table_attr_null"' . (in_array("null", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>
-				<input type="checkbox" name="attributes[' . $idx . '][null]" ' . ($is_null ? 'checked="checked"' : '') . ' value="1" ' . ($is_null_disabled ? 'disabled="disabled"' : '') . ' />
-			</td>
-			<td class="table_attr_unsigned"' . (in_array("unsigned", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>
-				<input type="checkbox" name="attributes[' . $idx . '][unsigned]" ' . ($data["unsigned"] ? 'checked="checked"' : '') . ' value="1" ' . ($is_unsigned_disabled ? 'disabled="disabled"' : '') . ' />
-			</td>
-			<td class="table_attr_unique"' . (in_array("unique", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>
-				<input type="checkbox" name="attributes[' . $idx . '][unique]" ' . ($is_unique ? 'checked="checked"' : '') . ' value="1" />
-			</td>
-			<td class="table_attr_auto_increment"' . (in_array("auto_increment", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>
-				<input type="checkbox" name="attributes[' . $idx . '][auto_increment]" ' . ($auto_increment ? 'checked="checked"' : '') . ' value="1" ' . ($is_auto_increment_disabled ? 'disabled="disabled"' : '') . ' />
-			</td>
-			<td class="table_attr_allow_javascript">
-				<input type="checkbox" name="attributes[' . $idx . '][allow_javascript]" ' . ($data["allow_javascript"] ? 'checked="checked"' : '') . ' value="1" ' . ($is_allow_javascript_disabled ? 'disabled="disabled"' : '') . ' />
-			</td>
-			<td class="table_attr_has_default"' . (in_array("default", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>
-				<input type="checkbox" name="attributes[' . $idx . '][has_default]" ' . ($has_default ? 'checked="checked"' : '') . ' value="1" ' . ($is_default_disabled ? 'disabled="disabled"' : '') . ' onClick="onClickCheckBox(this)" title="Enable/Disable Default value" />
-			</td>
-			<td class="table_attr_default"' . (in_array("default", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>
-				<input type="text" name="attributes[' . $idx . '][default]" value="' . $data["default"] . '" ' . ($has_default && !$is_default_disabled ? '' : 'disabled="disabled"') . ' />
-			</td>
-			<td class="table_attr_extra"' . (in_array("extra", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>
-				<input type="text" name="attributes[' . $idx . '][extra]" value="' . $data["extra"] . '" ' . ($is_extra_disabled ? 'disabled="disabled"' : '') . ' />
-			</td>
-			<td class="table_attr_charset"' . (in_array("charset", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>
-				<select name="attributes[' . $idx . '][charset]" ' . ($is_charset_disabled ? 'disabled="disabled"' : '') . '>
-					<option value="">-- Default --</option>';
-		
-		$charset_exists = false;
-		$charset_lower = $data["charset"] ? strtolower($data["charset"]) : "";
-		
-		foreach ($charsets as $charset_id => $charset_label) {
-			$selected = strtolower($charset_id) == $charset_lower;
-			$html .= '<option value="' . $charset_id . '" ' . ($selected ? "selected" : "") . '>' . $charset_label . '</option>';
-			
-			if ($selected)
-				$charset_exists = true;
-		}
-		
-		if ($data["charset"] && !$charset_exists)
-			$html .= '<option value="' . $data["charset"] . '" selected>' . $data["charset"] . ' - NON DEFAULT</option>';
-		
-		$html .= '
-				</select>
-			</td>
-			<td class="table_attr_collation"' . (in_array("collation", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>
-				<select name="attributes[' . $idx . '][collation]" ' . ($is_collation_disabled ? 'disabled="disabled"' : '') . '>
-					<option value="">-- Default --</option>';
-		
-		$collation_exists = false;
-		$collation_lower = $data["collation"] ? strtolower($data["collation"]) : "";
-		
-		foreach ($collations as $collation_id => $collation_label) {
-			$selected = strtolower($collation_id) == $collation_lower;
-			$html .= '<option value="' . $collation_id . '" ' . ($selected ? "selected" : "") . '>' . $collation_label . '</option>';
-			
-			if ($selected)
-				$collation_exists = true;
-		}
-		
-		if ($data["collation"] && !$collation_exists)
-			$html .= '<option value="' . $data["collation"] . '" selected>' . $data["collation"] . ' - NON DEFAULT</option>';
-		
-		$html .= '
-				</select>
-			</td>
-			<td class="table_attr_file_type">
-				<select name="attributes[' . $idx . '][file_type]" title="In order to be activated, please change the attribute type to Bigint or Attachment" ' . ($file_type_disabled ? 'disabled="disabled"' : '') . '>
-					<option></option>';
-		
-		foreach ($file_types as $type_id => $type_name)
-			$html .= '<option value="' . $type_id . '" ' . ($type_id == $data["file_type"] ? "selected" : "") . '>' . $type_name . '</option>';
-		
-		if ($data["file_type"] && !array_key_exists($data["file_type"], $file_types))
-			$html .= '<option value="' . $data["file_type"] . '">' . $data["file_type"] . ' - NON DEFAULT</option>';
-		
-		$html .= '
-				</select>
-			</td>
-			<td class="table_attr_comment"' . (in_array("comment", $column_types_hidden_props) ? ' style="display:none;"' : '') . '>
-				<input type="text" name="attributes[' . $idx . '][comment]" value="' . $data["comment"] . '" ' . ($is_comment_disabled ? 'disabled="disabled"' : '') . ' />
-			</td>
-			<td class="table_attr_icons">
-				<a class="icon delete" onClick="removeTableAttribute(this)" ' . ($data ? 'confirm="1"' : "") . ' title="Remove">Remove</a>
-			</td>
-		</tr>';
-		
-		return $html;
-	}
-	
 	private function loadData() {
 		//load available tables
 		$tables = $this->db_driver->listTables();
@@ -564,7 +447,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		
 		foreach ($tables as $t)
 			if ($t["name"])
-				$this->available_tables[] = $t["name"];
+				$this->available_tables[] = $t;
 		
 		if (!$this->db_driver->isTableInNamesList($this->available_tables, $this->main_attributes_table_name)) {
 			throw new Exception("DB table '" . $this->main_attributes_table_name . "' does not exist!");
@@ -851,12 +734,18 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		$this->group_module_id = $pos > 0 ? substr($group_module_id, 0, $pos) : $group_module_id;
 	}
 	
-	private function initUrlPrefixes() {
+	private function initSystemGlobalVars() {
 		$EVC = $this->EVC;
 		include $EVC->getConfigPath("config");
 		
 		$this->project_url_prefix = $project_url_prefix;
 		$this->project_common_url_prefix = $project_common_url_prefix;
+		$this->user_global_variables_file_path = $user_global_variables_file_path;
+		$this->user_beans_folder_path = $user_beans_folder_path;
+		$this->gpl_js_url_prefix = $gpl_js_url_prefix;
+		$this->proprietary_js_url_prefix = $proprietary_js_url_prefix;
+		$this->webroot_cache_folder_path = $webroot_cache_folder_path;
+		$this->webroot_cache_folder_url = $webroot_cache_folder_url;
 	}
 	
 	private function initLayersPaths() {

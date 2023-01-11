@@ -2,7 +2,7 @@
 	background-image:url('../img/bg.svg');
 }
 .jsplumbtaskworkflow .task.task_slaitemgroup .eps {
-	background-image:url('../img/bg.svg');
+	background-image:url('../img/bg_hover.svg');
 }
 .jsplumbtaskworkflow .task.task_slaitemgroup .eps:hover:after {
 	content:"Drag the small circles to link to another box";

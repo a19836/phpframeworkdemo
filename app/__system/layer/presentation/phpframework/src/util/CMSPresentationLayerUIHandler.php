@@ -88,11 +88,17 @@ include_once get_lib("org.phpframework.phpscript.PHPUICodeExpressionHandler"); i
 <!-- Layout UI Editor - Add Layout UI Editor -->
 <link rel="stylesheet" href="' . $v37d269c4fa . 'vendor/jquerylayoutuieditor/css/some_bootstrap_style.css" type="text/css" charset="utf-8" />
 <link rel="stylesheet" href="' . $v37d269c4fa . 'vendor/jquerylayoutuieditor/css/style.css" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="' . $v37d269c4fa . 'vendor/jquerylayoutuieditor/css/widget_resource.css" type="text/css" charset="utf-8" />
 
 <script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/jquerylayoutuieditor/js/TextSelection.js"></script>
 <script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/jquerylayoutuieditor/js/LayoutUIEditor.js"></script>
 <script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/jquerylayoutuieditor/js/CreateWidgetContainerClassObj.js"></script>
-<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/jquerylayoutuieditor/js/LayoutUIEditorFormFieldUtil.js"></script>
+<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/jquerylayoutuieditor/js/LayoutUIEditorFormField.js"></script>
+<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/jquerylayoutuieditor/js/LayoutUIEditorWidgetResource.js"></script>
+
+<!-- Layout UI Editor - Add Layout UI Editor Widget Resource Options/Handlers -->
+<link rel="stylesheet" href="' . $peb014cfd . 'css/layout_ui_editor_widget_resource_options.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $peb014cfd . 'js/layout_ui_editor_widget_resource_options.js"></script>
 '; return $pf8ed4912; } public static function getChoosePresentationIncludeFromFileManagerPopupHtml($v8ffce2a791, $pa0462a8e, $pf7b73b3a, $v54c4a1fbb7, $pe2f0f7f1, $v828ff69e5c, $pb0e92e25, $v8aefdcedb9 = "MyFancyPopup") { $pdf10c8d2 = $pb0e92e25[0][0] ? $pb0e92e25[0][0] : $v8ffce2a791; return '<div id="choose_presentation_include_from_file_manager" class="myfancypopup choose_from_file_manager">
 			<ul class="mytree">
 				<li>

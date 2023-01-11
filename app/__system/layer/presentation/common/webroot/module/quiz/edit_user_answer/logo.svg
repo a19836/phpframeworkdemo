@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg4"
+   version="1.1"
+   viewBox="0 0 640 512">
+  <metadata
+     id="metadata10">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs8" />
+  <!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) -->
+  <path
+     id="path2"
+     d="m 0,448 c 0,17.67 14.33,32 32,32 l 333.01695,0 c 17.67,0 245.27027,-213.93555 279.32203,-235.93221 L 640,128 H 0 Z M 64,264 c 0,-4.42 3.58,-8 8,-8 h 304 c 4.42,0 8,3.58 8,8 v 16 c 0,4.42 -3.58,8 -8,8 H 72 c -4.42,0 -8,-3.58 -8,-8 z m 0,96 c 0,-4.42 3.58,-8 8,-8 h 176 c 4.42,0 8,3.58 8,8 v 16 c 0,4.42 -3.58,8 -8,8 H 72 c -4.42,0 -8,-3.58 -8,-8 z M 624,32 H 16 C 7.16,32 0,39.16 0,48 V 96 H 640 V 48 c 0,-8.84 -7.16,-16 -16,-16 z" />
+  <path
+     style="stroke-width:0.33605903"
+     id="path2-3"
+     d="m 562.48047,350.32183 46.11102,40.14041 -100.12814,87.16322 -41.11165,3.9507 c -5.50363,0.5299 -10.15364,-3.52114 -9.54132,-8.31216 l 4.57436,-35.81345 z m 74.63055,-5.97623 -21.65078,-18.84738 c -6.75348,-5.87902 -17.70675,-5.87902 -24.46023,0 l -20.36853,17.73114 46.11103,40.14042 20.36851,-17.73114 c 6.75349,-5.88215 6.75349,-15.41401 0,-21.29304 z" />
+</svg>

@@ -1,6 +1,6 @@
 <module>
 	<label>Manage Object Attachment</label>
 	<description>Module "Manage Object Attachment" allows you to upload an attachment and relate it to an object. In the future can allow other actions...</description>
-	<image>logo.png</image>
+	<image>logo.svg</image>
 	<load_module_settings_js_function>loadManageObjectAttachmentBlockSettings</load_module_settings_js_function>
 </module>

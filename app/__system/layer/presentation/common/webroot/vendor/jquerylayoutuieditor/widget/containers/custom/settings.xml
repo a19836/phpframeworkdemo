@@ -16,23 +16,22 @@
 		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-custom-container,
 		  body > .menu-widget.menu-widget-custom-container.ui-draggable-dragging {
 			width:70px;
-			background-color:#426efa;
+			background-color:#83889E;
 			text-align:center;
-			border-radius:2px;
 		}
 		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-custom-container:before,
 		  body > .menu-widget.menu-widget-custom-container.ui-draggable-dragging:before {
 			background-image:url('#widget_webroot_url#logo.svg');
-			left:15px;
+			left:20px;
 		}
 		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-custom-container > .custom-values,
 		  body > .menu-widget.menu-widget-custom-container.ui-draggable-dragging > .custom-values {
 			width:calc(100% + 2px);
-			margin:40px -2px -1px -2px;
+			margin:30px -2px -1px -2px;
 			font-size:6pt;
 			text-align:center;
 			box-sizing:border-box;
-			border:1px solid #426efa;
+			border:1px solid #83889E;
 			border-radius:0;
 			border-bottom-left-radius:2px;
 			border-bottom-right-radius:2px;
@@ -68,8 +67,8 @@
 				menu_widget.attr({
 					"data-on-parse-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs['custom-container'].parseHtml",
 					"data-on-clone-menu-widget-func": ui_creator.obj_var_name + ".menu_widgets_objs['custom-container'].onCloneMenuWidget",
-					"data-on-drag-start-func": ui_creator.obj_var_name + ".menu_widgets_objs['custom-container'].checkCustomContainer",
 					"data-on-drag-helper-func": ui_creator.obj_var_name + ".menu_widgets_objs['custom-container'].createCustomContainer",
+					"data-on-drag-start-func": ui_creator.obj_var_name + ".menu_widgets_objs['custom-container'].checkCustomContainer",
 					"data-on-drag-stop-func": ui_creator.obj_var_name + ".menu_widgets_objs['custom-container'].onDropMenuWidget",
 				});
 				
@@ -157,7 +156,7 @@
 				return true;
 			};
 			
-			me.createCustomContainer = function(widget, event) {
+			me.createCustomContainer = function(widget, event, ui_obj) {
 				widget = $(widget);
 				var clone = widget.clone();
 				var cv = clone.find(".custom-values").val();

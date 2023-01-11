@@ -9,7 +9,7 @@ if ($PEVC) {
 	include $EVC->getModulePath("common/admin/CommonModuleAdminTableExtraAttributesUtil", $common_project_name);
 	
 	$UserAdminUtil = new UserAdminUtil($CommonModuleAdminUtil);
-	$CommonModuleAdminTableExtraAttributesUtil = new CommonModuleAdminTableExtraAttributesUtil($EVC, $PEVC, $module_path, $user_global_variables_file_path, $user_beans_folder_path, $GLOBALS["default_db_driver"], "mu_user", "user");
+	$CommonModuleAdminTableExtraAttributesUtil = new CommonModuleAdminTableExtraAttributesUtil($EVC, $PEVC, $module_path, $GLOBALS["default_db_driver"], "mu_user", "user");
 	
 	if ($_POST) {
 		$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "write");

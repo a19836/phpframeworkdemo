@@ -123,6 +123,7 @@
 				});
 				
 				menu_widget.children(".properties").attr({
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.script.onOpenWidgetSettings",
 					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.script.saveSettingsField",
 					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.script.parseSettings",
 				});
@@ -141,6 +142,10 @@
 				var code = widget.children(".script-content").html();
 				code = code.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
 				
+				//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
+				src = src.replace(/\u2003/g, "\t"); 
+				code = code.replace(/\u2003/g, "\t"); 
+				
 				widget_settings["src"] = src;
 				widget_settings["content"] = code;
 				widget_settings["language"] = widget.data("widget-props-language");
@@ -158,13 +163,18 @@
 				src = src.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
 				code = code.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
 				
+				//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
+				src = src.replace(/\u2003/g, "\t"); 
+				code = code.replace(/\u2003/g, "\t"); 
+				
 				//remove the weird chars from code, this is, in the php editor appears some red dots in the code, which means there some weird chars in the code.
 				src = src.replace(/[^\x20-\x7E]/g, ''); //This will remove the end_lines too but the MyHtmlBeautify.beautify will add them again
 				code = code.replace(/[^\x20-\x7E]/g, ''); //This will remove the end_lines too but the MyHtmlBeautify.beautify will add them again
 				
 				var html = '<' + 'script' + (src ? ' src="' + src + '"' : '') + (language ? ' language="' + language + '"' : '') + (type ? ' type="' + type + '"' : '') + '>' + code + '<' + '/script>'; //<script must be spearate otherwise gives error.
 				
-				html = MyHtmlBeautify.beautify(html); //beautify code
+				if (ui_creator.options.beautify)
+					html = MyHtmlBeautify.beautify(html); //beautify code
 				
 				return html;
 			};
@@ -225,12 +235,16 @@
 						}, 700);
 					})
 					.mouseup(function(e) {
-						//prevents that the MyTextSelection open the inline menu
+						//prevents that the TextSelection open the inline menu
 						e.preventDefault();
 						e.stopPropagation();
 						
-						ui_creator.MyTextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
+						ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
 					});
+			};
+			
+			me.onOpenWidgetSettings = function(widget, menu_settings) {
+				ui_creator.addMenuSettingsContextMenu( menu_settings.find(".settings-properties").find("input, textarea") );
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {

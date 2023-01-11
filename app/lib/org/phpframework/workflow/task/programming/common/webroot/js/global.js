@@ -23,6 +23,7 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 	var ProgrammingTaskUtil = {
 		variables_in_workflow : {},
 		
+		on_programming_task_edit_source_callback : null,
 		on_programming_task_choose_created_variable_callback : null,
 		on_programming_task_choose_object_property_callback : null,
 		on_programming_task_choose_object_method_callback : null,
@@ -182,6 +183,15 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			
 			for (var i = 0; i < cl; i++)
 				ProgrammingTaskUtil.pushDownFollowingTask(child_connections[i].targetId, extra_top);
+		},
+		
+		prepareEditSourceIcon : function(task_html_elm) {
+			var hide = typeof ProgrammingTaskUtil.on_programming_task_edit_source_callback != "function";
+			
+			if (hide)
+				task_html_elm.find(".edit_source").each(function(idx, icon) {
+					$(icon).hide();
+				});
 		},
 		
 		createTaskLabelField : function(properties_html_elm, task_id) {
@@ -353,6 +363,24 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			else {
 				task_html_elm.find(".type_variable, .type_obj_prop, .type_echo").hide();
 				task_html_elm.find(".result_var_type select").val("");
+			}
+		},
+		
+		setIncludeFile : function(task_property_values, task_html_elm) {
+			var file_path = task_property_values["include_file_path"];
+			var file_path_type = task_property_values["include_file_path_type"];
+			var once = task_property_values["include_once"];
+			
+			if (file_path) {
+				var include_file_elm = task_html_elm.find(".include_file");
+				
+				include_file_elm.find("input[type=text]").val(file_path);
+				include_file_elm.find("select").val(file_path_type);
+				
+				if (once)
+					include_file_elm.find("input[type=checkbox]").prop("checked", true).attr("checked", "");
+				else
+					include_file_elm.find("input[type=checkbox]").prop("checked", false).removeAttr("checked");
 			}
 		},
 		
@@ -689,6 +717,55 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			}
 			
 			return true;
+		},
+		
+		getTaskTagFromTaskPropertiesHtmlElementClass : function(task_html_elm) {
+			//get task type based in properties parent class
+			var classes = task_html_elm[0].hasAttribute("class") ? task_html_elm.attr("class").split(" ") : [];
+			var task_type = null;
+			
+			for (var i = 0, t = classes.length; i < t; i++) {
+				var c = classes[i];
+				
+				if (c.indexOf("_task_html") != -1) {
+					task_type = c.substr(0, c.length - "_task_html".length).replace(/_/g, "");
+					break;
+				}
+			}
+			
+			return task_type;
+		},
+		
+		onEditIncludeFile : function(elm) {
+			var task_html_elm = $(elm).closest(".include_file").parent();
+			ProgrammingTaskUtil.onEditSource(elm, task_html_elm, "file");
+		},
+		
+		onEditSource : function(elm, task_html_elm, type) {
+			data = {};
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var query_string = WF.jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(task_html_elm, "task_property_field");
+			
+			try {
+				parse_str(query_string, data);
+			}
+			catch(e) {}
+			
+			if (!$.isEmptyObject(data)) {
+				data["task_tag"] = ProgrammingTaskUtil.getTaskTagFromTaskPropertiesHtmlElementClass(task_html_elm);
+				data["edit_type"] = type ? type : "file";
+				
+				ProgrammingTaskUtil.onProgrammingTaskEditSource(elm, data);
+			}
+			else
+				WF.jsPlumbStatusMessage.showError("Cannot edit file");
+		},
+		
+		onProgrammingTaskEditSource : function(elm, data) {
+			//Do not use "this.", but "ProgrammingTaskUtil." instead, bc if we assign this function to a variable (var x = ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl), the "this." will not work.
+			if (typeof ProgrammingTaskUtil.on_programming_task_edit_source_callback == "function") {
+				ProgrammingTaskUtil.on_programming_task_edit_source_callback(elm, data);
+			}
 		},
 		
 		onProgrammingTaskChooseCreatedVariable : function(elm) {

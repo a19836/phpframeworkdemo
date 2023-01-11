@@ -131,7 +131,7 @@ $(function() {
 			
 			tabs_html	+= '<li class="' + tab_classes + '"><a href="#' + id + '" title="' + tab_label + '"><i class="tab_icon ' + classes + '"></i><span class="tab_label">' + tab_label + '</span></a></li>';
 			
-			li.addClass("main_tree_node");
+			li.addClass("main_tree_node scroll");
 		});
 		
 		tabs_html	+= '</ul>';
@@ -140,7 +140,7 @@ $(function() {
 		file_tree_ul.tabs();
 		
 		file_tree_ul.find(" > ul.tabs > .tab_main_node a").click(function(originalEvent){
-			$(".jqcontextmenu").hide();
+			MyContextMenu.hideAllContextMenu();
 			
 			prepareLayerActiveTab( $(this).parent() );
 		});
@@ -440,10 +440,10 @@ function iniSubMenu(tree_item_li) {
 			
 			//show or hide contextmenu
 			if (context_menu_elm.is(":visible"))
-				jquerycontextmenu.hidebox(jQuery, context_menu_elm);
+				MyContextMenu.hideContextMenu(context_menu_elm);
 			else {
 				a.children("label").contextmenu();
-				jquerycontextmenu.positionul(jQuery, context_menu_elm, e);
+				MyContextMenu.updateContextMenuPosition(context_menu_elm, e);
 			}
 			
 			return false;
@@ -692,7 +692,12 @@ function refreshIframe() {
 	doc = doc.document ? doc.document : doc;
 	
 	try {
-		iframe.src = doc.location;
+		var url = "" + doc.location;
+		
+		if (url.indexOf("#") != -1)
+			url = url.substr(0, url.indexOf("#"));
+		
+		iframe.src = url;
 	}
 	catch(e) {
 		//sometimes gives an error bc of the iframe beforeunload event. This doesn't matter, but we should catch it and ignore it.

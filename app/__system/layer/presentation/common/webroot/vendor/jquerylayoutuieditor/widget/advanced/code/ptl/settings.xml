@@ -135,6 +135,10 @@
 				
 				var html = widget.children("pre").html();
 				html = html.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
+				
+				//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
+				html = html.replace(/\u2003/g, "\t"); 
+				
 				html = "<" + html;
 				
 				if (children != "") {
@@ -192,11 +196,11 @@
 				widget.children(".droppable").attr("contenteditable", "true");
 				
 				span.attr("contenteditable", "true").mouseup(function(e) {
-					//prevents that the MyTextSelection open the inline menu
+					//prevents that the TextSelection open the inline menu
 					e.preventDefault();
 					e.stopPropagation();
 					
-					ui_creator.MyTextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
+					ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
 				});
 			};
 		}

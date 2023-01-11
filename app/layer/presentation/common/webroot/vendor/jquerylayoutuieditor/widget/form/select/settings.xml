@@ -167,7 +167,7 @@
 				});
 				
 				menu_widget.children(".properties").attr({
-					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.select.openSettings",
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.select.onOpenWidgetSettings",
 					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.select.saveSettingsField",
 					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.select.parseSettings",
 				});
@@ -198,12 +198,12 @@
 					widget.css({width: "100px", height:"20px"});
 				
 				widget.on("focus", function() {
-					ui_creator.MyTextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
+					ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
 				});
 			};
 			
-			me.openSettings = function(widget, settings) {
-				var options_elm = settings.find(" > .settings-properties > ul > .options");
+			me.onOpenWidgetSettings = function(widget, menu_settings) {
+				var options_elm = menu_settings.find(" > .settings-properties > ul > .options");
 				
 				//set reset option selection icon action
 				var btn_reset = options_elm.find(" > label > .reset-option-selection");
@@ -257,6 +257,8 @@
 					   	ui_creator.saveMenuSettingsField( options_elm.children("ul")[0] );
 				    },
 				});
+				
+				ui_creator.addMenuSettingsContextMenu( menu_settings.find(".settings-properties input") );
 			};
 			
 			me.addOption = function(btn, default_values) {
@@ -278,9 +280,12 @@
 					+ '	<div class="remove-option"><span class="zmdi zmdi-close-circle"></span></div>'
 					+ '</li>');
 				
-				html.find("input").blur(function(event) {
+				var inputs = html.find("input");
+				inputs.blur(function(event) {
 					return ui_creator.saveMenuSettingsField(this);
 				});
+				
+				ui_creator.addMenuSettingsContextMenu(inputs);
 				
 				html.find(".remove-option").click(function() {
 					var li = $(this).parent().closest(".dd-item");

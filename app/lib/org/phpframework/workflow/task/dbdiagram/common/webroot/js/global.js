@@ -74,6 +74,7 @@ if (typeof is_global_db_diagram_common_file_already_included == "undefined") {
 	
 	function isTaskTableLabelValid(label_obj, task_id, ignore_msg) {
 		var valid = false;
+		var is_repeated = false;
 		
 		if (label_obj.label && label_obj.label.length > 0) {
 			var text = label_obj.label;
@@ -88,14 +89,17 @@ if (typeof is_global_db_diagram_common_file_already_included == "undefined") {
 				valid = m && m[0];
 			}
 			
-			valid = valid && isTaskLabelRepeated(label_obj, task_id, ignore_msg) == false;
+			if (valid) {
+				is_repeated = isTaskLabelRepeated(label_obj, task_id, ignore_msg);
+				valid = is_repeated == false;
+			}
 			
 			if (valid)
 				isTaskTableNameAdvisable(text);
 		}
 		
 		if (!valid)
-			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("Invalid label. Please choose a different label.\nOnly this letters are allowed: a-z, A-Z, 0-9, '_', '.' and you must have at least 1 character. Note that by adding the '.' char you are adding a schema to your table.");
+			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError((is_repeated ? "\n" : "") + "Invalid label. Please choose a different label.\nOnly this letters are allowed: a-z, A-Z, 0-9, '_', '.' and you must have at least 1 character.\nNote that by adding the '.' char you are adding a schema to your table.");
 		
 		return valid;
 	}
@@ -120,8 +124,9 @@ if (typeof is_global_db_diagram_common_file_already_included == "undefined") {
 	}
 	
 	function resizeTableTaskBasedOnAttributes(task_id) {
-		var task = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskById(task_id);
-		var items = task.find(" > ." + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.task_eps_class_name + " ." + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.task_ep_class_name + " .table_attr .name p");
+		var WF = myWFObj.getJsPlumbWorkFlow();
+		var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+		var items = task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " ." + WF.jsPlumbTaskFlow.task_ep_class_name + " .table_attr .name p");
 		
 		var name_elm = null;
 		var n = "";
@@ -145,6 +150,8 @@ if (typeof is_global_db_diagram_common_file_already_included == "undefined") {
 			
 			if (diff > 0) {
 				task.css("width", (parseInt(task.css("width")) + diff + 5) + "px");
+				
+				WF.jsPlumbTaskFlow.repaintTask(task);
 			}
 		}
 	}

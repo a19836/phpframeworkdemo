@@ -24,6 +24,7 @@ var CallHibernateObjectTaskPropertyObj = {
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
+		ProgrammingTaskUtil.prepareEditSourceIcon(properties_html_elm);
 		
 		var task_html_elm = $(properties_html_elm).find(".call_hibernate_object_task_html");
 		ProgrammingTaskUtil.setResultVariableType(task_property_values, task_html_elm);
@@ -114,5 +115,13 @@ var CallHibernateObjectTaskPropertyObj = {
 		if (typeof this.on_choose_hibernate_object_callback == "function") {
 			this.on_choose_hibernate_object_callback(elm);
 		}
+	},
+	
+	onEditFile : function(elm) {
+		ProgrammingTaskUtil.onEditSource(elm, $(elm).closest(".call_hibernate_object_task_html"), "file");
+	},
+	
+	onEditObject : function(elm) {
+		ProgrammingTaskUtil.onEditSource(elm, $(elm).closest(".call_hibernate_object_task_html"), "object");
 	},
 };

@@ -36,10 +36,23 @@ $(function () {
 		if (textarea)
 			createCodeEditor(textarea, {save_func: saveTemplate, no_height: true});
 		
+		var init_finished = false;
+		
+		setTimeout(function() {
+			//init sla
+			initPageAndTemplateLayoutSLA(regions_blocks_includes_settings);
+			
+			//load sla settings
+			loadPageAndTemplateLayoutSLASettings(regions_blocks_includes_settings, false);
+		}, 10);
+		
 		//init page template layout
 		initPageAndTemplateLayout(template_obj, {
 			save_func: saveTemplate, 
 			ready_func: function() {
+				//console.log("initPageAndTemplateLayout ready_func");
+				
+				//prepare some PtlLayoutUIEditor options
 				var luie = template_obj.find(".code_layout_ui_editor > .layout-ui-editor");
 				var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
 				PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();
@@ -70,7 +83,10 @@ $(function () {
 				}
 				else { //beautify head code
 					head_code = getTemplateHeadEditorCode();
-					head_code = MyHtmlBeautify.beautify(head_code); 
+					
+					if (PtlLayoutUIEditor.options.beautify)
+						head_code = MyHtmlBeautify.beautify(head_code); 
+					
 					setTemplateHeadEditorCode(head_code);
 				}
 				
@@ -86,50 +102,53 @@ $(function () {
 						$(textarea).on("blur", updateCodeEditorLayoutHeadFromSettings);
 				}
 				
-				//waits until the load params and joinpoints gets loaded
-				setTimeout(function() {
-					//set saved_template_obj_id
-					saved_template_obj_id = getTemplateCodeObjId();//only for testing. Then uncomment this line!
-					
-					//init auto save
-					addAutoSaveMenu(".top_bar li.sub_menu li.save");
-					//enableAutoSave(onToggleSLAAutoSave); //Do not enable auto save bc it gets a litte bit slow editing the template.
-					initAutoSave(".top_bar li.sub_menu li.save a");
-					StatusMessageHandler.showMessage("Auto save is disabled for a better user-experience...");
-					
-					//change the toggle Auto save handler bc the edit_query task
-					initSLAAutoSaveActivationMenu();
-					
-					//set update handlers
-					var iframe = getContentTemplateLayoutIframe(template_obj);
-					
-					update_settings_from_layout_iframe_func = function() {
-						//console.log("update_settings_from_layout_iframe_func");
-						updateCodeEditorSettingsFromLayout(template_obj);
-					};
-					update_layout_iframe_from_settings_func = function() {
-						//console.log("update_layout_iframe_from_settings_func");
-						updateCodeEditorLayoutFromSettings(template_obj, false, true);
-					};
-					update_layout_iframe_field_html_value_from_settings_func = function(elm, html) { //set handler to update directly the the html in the template layout without refreshing the entire layout.
-						//console.log("update_layout_iframe_field_html_value_from_settings_func");
-						updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField(elm, html, iframe);
-					};
-					
+				//DEPRECATED - waits until the load params and joinpoints gets loaded. No need this anymorebc the initPageAndTemplateLayout method already covers this case.
+				//setTimeout(function() {
 					//load js and css files
 					loadCodeEditorLayoutJSAndCSSFilesToSettings();
 					
-					//init sla
-					initPageAndTemplateLayoutSLA(regions_blocks_includes_settings);
-					
-					//load sla settings
-					loadPageAndTemplateLayoutSLASettings(regions_blocks_includes_settings);
-					
-					//hide loading icon
-					MyFancyPopup.hidePopup();
+					var func = function() {
+						if (init_finished) {
+							//set saved_template_obj_id
+							saved_template_obj_id = getTemplateCodeObjId();//only for testing. Then uncomment this line!
+							
+							//init auto save
+							addAutoSaveMenu(".top_bar li.sub_menu li.save");
+							//enableAutoSave(onToggleSLAAutoSave); //Do not enable auto save bc it gets a litte bit slow editing the template.
+							initAutoSave(".top_bar li.sub_menu li.save a");
+							StatusMessageHandler.showMessage("Auto save is disabled for a better user-experience...");
+							
+							//change the toggle Auto save handler bc the edit_query task
+							initSLAAutoSaveActivationMenu();
+							
+							//set update handlers
+							var iframe = getContentTemplateLayoutIframe(template_obj);
+							
+							update_settings_from_layout_iframe_func = function() {
+								//console.log("update_settings_from_layout_iframe_func");
+								updateCodeEditorSettingsFromLayout(template_obj);
+							};
+							update_layout_iframe_from_settings_func = function() {
+								//console.log("update_layout_iframe_from_settings_func");
+								updateCodeEditorLayoutFromSettings(template_obj, false, true);
+							};
+							update_layout_iframe_field_html_value_from_settings_func = function(elm, html) { //set handler to update directly the the html in the template layout without refreshing the entire layout.
+								//console.log("update_layout_iframe_field_html_value_from_settings_func");
+								updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField(elm, html, iframe);
+							};
+							
+							//hide loading icon
+							MyFancyPopup.hidePopup();
+						}
+						else
+							setTimeout(function() {
+								func();
+							}, 700);
+					};
+					func();
 					
 					entity_or_template_obj_inited = true;
-				}, 2000);
+				//}, 2000);
 			}
 		});
 	}
@@ -401,76 +420,22 @@ function updateCodeEditorLayoutHeadFromSettings(obj) {
 	}
 }
 
-function loadCodeEditorLayoutJSAndCSSFilesToSettings() {
-	var js_and_css_files = getCurrentCodeJSAndCSSFiles();
-	var css_files = js_and_css_files["css_files"];
-	var js_files = js_and_css_files["js_files"];
-	var regions_blocks_includes_settings = $(".template_obj .regions_blocks_includes_settings");
-	
-	updateCodeEditorLayoutFilesInSettings(css_files, regions_blocks_includes_settings.find(".css_files > ul"));
-	updateCodeEditorLayoutFilesInSettings(js_files, regions_blocks_includes_settings.find(".js_files > ul"));
-}
-
-function updateCodeEditorLayoutFilesInSettings(files, ul) {
-	//console.log(files);
-	var empty_files_li = ul.children(".empty_files");
-	
-	//remove old files
-	ul.children("li:not(.empty_files)").remove()
-	
-	//prepare new files
-	if (files) {
-		empty_files_li.hide();
-		var html = '';
-		
-		//prepare non https or http urls
-		var selected_project_url_prefix_aux = selected_project_url_prefix.match(/^http:/) ? selected_project_url_prefix.replace(/^http:/, "https:") : selected_project_url_prefix.replace(/^https:/, "http:");
-		var selected_project_common_url_prefix_aux = selected_project_common_url_prefix.match(/^http:/) ? selected_project_common_url_prefix.replace(/^http:/, "https:") : selected_project_common_url_prefix.replace(/^https:/, "http:");
-		
-		for (var i = 0; i < files.length; i++) {
-			var file = files[i];
-			var path = null;
-			
-			if (file.indexOf(selected_project_url_prefix) === 0) //checks if file starts with url in vars: selected_project_url_prefix
-				path = selected_project_id + "/webroot/" + file.substr(selected_project_url_prefix.length);
-			else if (file.indexOf(selected_project_common_url_prefix) === 0) //checks if file starts with url in vars: selected_project_common_url_prefix
-				path = common_project_name + "/webroot/" + file.substr(selected_project_common_url_prefix.length);
-			else if (file.indexOf(selected_project_url_prefix_aux) === 0) //checks if file starts with url in vars: selected_project_url_prefix_aux
-				path = selected_project_id + "/webroot/" + file.substr(selected_project_url_prefix_aux.length);
-			else if (file.indexOf(selected_project_common_url_prefix_aux) === 0) //checks if file starts with url in vars: selected_project_common_url_prefix_aux
-				path = common_project_name + "/webroot/" + file.substr(selected_project_common_url_prefix_aux.length);
-			else { //checks if file starts with php code: $project_url_prefix or $project_common_url_prefix
-				var m = /^<\?(|=|php)\s*(|echo|print)\s*(\$[a-z_]+)\s*;?\s*\?>/g.exec(file);
-				
-				if (m && (m[3] == "$project_url_prefix" || m[3] == "$original_project_url_prefix" || m[3] == "$project_common_url_prefix" || m[3] == "$original_project_common_url_prefix")) { 
-					var relative_file = file.substr(m[0].length);
-					
-					path = (m[3] == "$project_url_prefix" || m[3] == "$original_project_url_prefix" ? selected_project_id : common_project_name) + "/webroot/" + relative_file;
-				}
-			}
-			
-			var file_name = file.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-			
-			if (path)
-				file_name = '<a href="javascript:void(0)" onClick="editWebrootFile(\'' + path + '\')" title="Click to edit file">' + file_name + '</a>';
-			
-			html += '<li>' + file_name + '</li>';
-		}
-		
-		ul.append(html);
-	}
-	else
-		empty_files_li.show();
-}
-
 function editWebrootFile(path) {
 	//prepare popup
 	var template_obj = $(".template_obj");
 	var popup= template_obj.children("#edit_webroot_file");
-	var iframe = popup.children("iframe");
-	var edit_url = iframe.attr("orig_src").replace("#path#", path);
 	
-	iframe.attr("src", edit_url);
+	if (!popup[0]) {
+		popup = $('<div id="edit_webroot_file" class="myfancypopup with_iframe_title"><iframe></iframe></div>');
+		template_obj.append(popup);
+	}
+	else 
+		popup.html('<iframe></iframe>');
+	
+	var iframe = popup.children("iframe");
+	var url = edit_webroot_file_url.replace("#path#", path);
+	
+	iframe.attr("src", url);
 	
 	//open popup
 	MyFancyPopupEditWebrootFile.init({
@@ -483,55 +448,6 @@ function editWebrootFile(path) {
 	});
 	
 	MyFancyPopupEditWebrootFile.showPopup();
-}
-
-function getCurrentCodeJSAndCSSFiles() {
-	var css_files = [];
-	var js_files = [];
-	var head_code = getTemplateHeadEditorCode();
-	var body_code = getTemplateBodyEditorCode();
-	
-	var code = "<html><head>" + head_code + "</head><body>" + body_code + "</body></html>";
-	var regex = /<(script|link)\s+/gi;
-	var m = regex.exec(code);
-	
-	while (m != null) {
-		var tag_start = m.index;
-		var tag_html = MyHtmlBeautify.getTagHtml(code, tag_start, "");
-		var tag_code = tag_html[0];
-		var tag_end = tag_html[1];
-		
-		/*console.log(m);
-		console.log("tag_code:"+tag_code);
-		console.log("tag_start:"+tag_start);
-		console.log("tag_end:"+tag_end);*/
-		
-		//parse tag_code
-		if (tag_code) {
-			var is_script = m[1].toLowerCase() == "script";
-			var sub_regex = new RegExp("\\s+(" + (is_script ? "src" : "href") + ")\\s*=\\s*(\"|'|)", "gi");
-			var sub_m = sub_regex.exec(tag_code);
-			
-			if (sub_m != null) {
-				var attr_start = sub_m.index + sub_m[0].length;
-				var attr = MyHtmlBeautify.getAttribute(tag_code, attr_start, sub_m[2]);
-				var attr_html = attr[0];
-				var attr_end = attr[1];
-				//console.log("attr_html:"+attr_html);
-				
-				if (attr_html) {
-					if (is_script)
-						js_files.push(attr_html);
-					else
-						css_files.push(attr_html);
-				}
-			}
-		}
-		
-		m = regex.exec(code);
-	}
-	
-	return {"css_files": css_files, "js_files": js_files};
 }
 
 function getCurrentCodeRegions() {
@@ -673,7 +589,8 @@ function getTemplateCodeForSaving(without_regions_blocks_and_includes) {
 	template_code = PtlLayoutUIEditor.replaceTagAttributesFromSource(template_code, "head", head_attributes);
 	template_code = PtlLayoutUIEditor.replaceTagContentFromSource(template_code, "head", head_code);
 	
-	template_code = MyHtmlBeautify.beautify(template_code); //do not beautify the code, bc sometimes it messes the php code and the inner html inside of the addRegionHtml method
+	if (PtlLayoutUIEditor.options.beautify)
+		template_code = MyHtmlBeautify.beautify(template_code); //do not beautify the code, bc sometimes it messes the php code and the inner html inside of the addRegionHtml method
 	//console.log(template_code); //already contains the head tags including the scripts.
 	
 	code += template_code;
@@ -746,7 +663,7 @@ function isTemplateCodeObjChanged() {
 
 function saveTemplate() {
 	var template_obj = $(".template_obj");
-		
+	
 	prepareAutoSaveVars();
 	
 	if (template_obj[0]) {

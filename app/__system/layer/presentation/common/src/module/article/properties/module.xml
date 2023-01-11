@@ -1,7 +1,7 @@
 <module>
 	<label>Article Properties</label>
 	<description>Module "Article Properties" allows you to show an article with a title, sub-title, photo, description, html, etc... This module depends on the Tag module.</description>
-	<image>logo.gif</image>
+	<image>logo.svg</image>
 	<load_module_settings_js_function>loadArticlePropertiesBlockSettings</load_module_settings_js_function>
 	<is_reserved_module>1</is_reserved_module>
 </module>

@@ -18,6 +18,7 @@
  */
 
 var CreateFormTaskPropertyObj = {
+	editor_ready_func: null,
 	editor_save_func: null,
 	layout_ui_editor_menu_widgets_elm_selector : null,
 	
@@ -298,14 +299,11 @@ var CreateFormTaskPropertyObj = {
 					var PtlLayoutUIEditor = new LayoutUIEditor();
 					PtlLayoutUIEditor.options.ui_element = ui;
 					PtlLayoutUIEditor.options.template_source_editor_save_func = CreateFormTaskPropertyObj.editor_save_func;
+					PtlLayoutUIEditor.options.on_choose_variable_func = ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable;
 					PtlLayoutUIEditor.options.on_choose_page_url_func = ProgrammingTaskUtil.onProgrammingTaskChoosePageUrl;
 					PtlLayoutUIEditor.options.on_choose_image_url_func = ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl;
+					
 					PtlLayoutUIEditor.options.on_ready_func = function() {
-						if (typeof LayoutUIEditorFormFieldUtil == "function") {
-							var LayoutUIEditorFormFieldUtilObj = new LayoutUIEditorFormFieldUtil(PtlLayoutUIEditor);
-							LayoutUIEditorFormFieldUtilObj.initFormFieldsSettings();
-						}
-						
 						//hide php menu widget bc it doesn't apply here
 						PtlLayoutUIEditor.getMenuWidgets().find(".menu-widget-php").hide();
 						
@@ -313,6 +311,10 @@ var CreateFormTaskPropertyObj = {
 						PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();
 						PtlLayoutUIEditor.showTemplateWidgetsBorders();
 						PtlLayoutUIEditor.showTemplatePHPWidgets();
+						
+						//runf ready function
+						if (typeof CreateFormTaskPropertyObj.editor_ready_func == "function")
+							CreateFormTaskPropertyObj.editor_ready_func(PtlLayoutUIEditor);
 					};
 					window[ptl_ui_creator_var_name] = PtlLayoutUIEditor;
 					PtlLayoutUIEditor.init(ptl_ui_creator_var_name);

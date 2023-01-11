@@ -67,7 +67,7 @@ function onToggleFullScreen(in_full_screen) {
 		if (menu_settings.is(":visible"))
 			PtlLayoutUIEditor.showFixedMenuSettings();
 		
-		PtlLayoutUIEditor.MyTextSelection.refreshMenu();
+		PtlLayoutUIEditor.TextSelection.refreshMenu();
 	}, 500);
 }
 
@@ -109,14 +109,13 @@ function createLayoutUIEditor(textarea) {
 			var PtlLayoutUIEditor = new LayoutUIEditor();
 			PtlLayoutUIEditor.options.ui_element = ui;
 			PtlLayoutUIEditor.options.template_source_editor_save_func = saveEchoStrSettings;
+			PtlLayoutUIEditor.options.on_choose_variable_func = typeof onProgrammingTaskChooseCreatedVariable == "function" ? onProgrammingTaskChooseCreatedVariable : null;
 			PtlLayoutUIEditor.options.on_choose_page_url_func = typeof onIncludePageUrlTaskChooseFile == "function" ? onIncludePageUrlTaskChooseFile : null;
 			PtlLayoutUIEditor.options.on_choose_image_url_func = typeof onIncludeImageUrlTaskChooseFile == "function" ? onIncludeImageUrlTaskChooseFile : null;
+			
+			initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor);
+			
 			PtlLayoutUIEditor.options.on_ready_func = function() {
-				if (typeof LayoutUIEditorFormFieldUtil == "function") {
-					var LayoutUIEditorFormFieldUtilObj = new LayoutUIEditorFormFieldUtil(PtlLayoutUIEditor);
-					LayoutUIEditorFormFieldUtilObj.initFormFieldsSettings();
-				}
-				
 				var luie = PtlLayoutUIEditor.getUI();
         			var options = luie.children(".options");
         			

@@ -1,6 +1,6 @@
 <module>
 	<label>List User Types</label>
 	<description>Module "List User Types" allows to manage the user types.</description>
-	<image>logo.png</image>
+	<image>logo.svg</image>
 	<load_module_settings_js_function>loadListSettingsBlockSettings</load_module_settings_js_function>
 </module>

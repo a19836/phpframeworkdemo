@@ -11,6 +11,8 @@ var chooseBlockFromFileManagerTree = null;
 var choosePageUrlFromFileManagerTree = null; //used by the create_presentation_uis_diagram.js and module/menu/show_menu/settings.js and others
 var chooseImageUrlFromFileManagerTree = null; //used by the create_presentation_uis_diagram.js and module/menu/show_menu/settings.js and others
 
+var TaskEditSourceFancyPopup = new MyFancyPopupClass();
+
 var brokers_db_drivers = {};
 var auto_scroll_active = true;
 var word_wrap_active = false;
@@ -473,12 +475,66 @@ function getFileProperties(url) {
 
 /* POPUP FUNCTIONS */
 
+function onFunctionTaskEditMethodCode(elm, popup) {
+	if (typeof openSubmenu == "function") 
+		popup.find("#code > .code_menu, #ui > .taskflowchart > .workflow_menu").attr("onClick", "openSubmenu(this)");
+}
+
+function onProgrammingTaskEditSource(elm, data) {
+	//console.log("onProgrammingTaskEditSource");
+	//console.log(data);
+	
+	if (edit_task_source_url) {
+		//filter data ignoring inner arrays and objects, in order to don't overload the url.
+		for (var k in data)
+			if ($.isArray(data[k]) || $.isPlainObject(data[k])) {
+				data[k] = null;
+				delete data[k];
+			}
+		
+		//prepare url
+		var url = edit_task_source_url + (edit_task_source_url.indexOf("?") == -1 ? "?" : "");
+		url += "&popup=1";
+		
+		//get popup
+		var popup = $("body > .edit_task_source_popup");
+		
+		if (!popup[0]) {
+			popup = $('<div class="myfancypopup with_iframe_title edit_task_source_popup"></div>');
+			$(document.body).append(popup);
+		}
+		
+		var html = '<form action="' + url + '" method="post" target="edit_task_source_frame" style="display:none;">'
+			+ '<textarea name="data">' + JSON.stringify(data) + '</textarea>'
+			+ '<input type="submit">'
+		+ '</form>'
+		+ '<iframe name="edit_task_source_frame"></iframe>';
+		
+		popup.html(html); //cleans the iframe so we don't see the previous html
+		
+		//prepare popup iframe
+		var oForm = popup.children("form");
+		oForm.submit();
+		
+		TaskEditSourceFancyPopup.init({
+			elementToShow: popup,
+			parentElement: document,
+		});
+		
+		TaskEditSourceFancyPopup.showPopup();
+	}
+	else
+		StatusMessageHandler.showError("Undefined edit_task_source_url variable in onProgrammingTaskEditSource method");
+}
+
 function getTargetFieldForProgrammingTaskChooseFromFileManager(elm) {
 	var target_field = null;
 	var p = elm.parent();
 	var input_selector = elm.attr("input_selector");
 	
-	if (input_selector && p.find(input_selector).length > 0)
+	if (elm.is("input, textarea"))
+		target_field = elm;
+	else if (input_selector && p.find(input_selector).length > 0)
 		target_field = p.find(input_selector).first();
 	else if (elm.prev("input").is("input"))
 		target_field = elm.prev();
@@ -778,6 +834,10 @@ function chooseObjectMethod(elm) {
 	
 	var value = select.val();
 	
+	//set file path
+	setTaskIncludeFileFromSelectedNode(chooseMethodFromFileManagerTree);
+	
+	//set method
 	var dest = $(MyFancyPopup.settings.targetField);
 	dest.val(value ? value : "");
 	
@@ -816,6 +876,10 @@ function chooseFunction(elm) {
 	var select = popup.find(".function select");
 	var value = select.val();
 	
+	//set file path
+	setTaskIncludeFileFromSelectedNode(chooseFunctionFromFileManagerTree);
+	
+	//set method
 	$(MyFancyPopup.settings.targetField).val(value ? value : "");
 	
 	if (value && (auto_convert || confirm("Do you wish to update automatically this function arguments?"))) {
@@ -868,6 +932,27 @@ function chooseClassName(elm, do_not_update_args) {
 	}
 	
 	MyFancyPopup.hidePopup();
+}
+
+function setTaskIncludeFileFromSelectedNode(tree) {
+	var node = tree.getSelectedNodes();
+	node = node[0];
+	
+	if (node) {
+		var a = $(node).children("a");
+		var file_path = a.attr("file_path");
+		var bean_name = a.attr("bean_name");
+		var include_path = file_path ? getNodeIncludePath(node, file_path, bean_name) : null;
+		
+		if (include_path) {
+			var include_file = $(MyFancyPopup.settings.targetField).parent().parent().children(".include_file");
+			
+			if (include_file[0]) {
+				include_file.children("input[type=text]").val(include_path);
+				include_file.children("input[type=checkbox]").prop("checked", true).attr("checked", "");
+			}
+		}
+	}
 }
 
 function onIncludeFileTaskChooseFile(elm) {
@@ -1642,6 +1727,10 @@ function chooseHibernateObjectMethod(elm) {
 			if (relationship_type == "queries") {
 				main_div.find(".sma_query_id input").val(query_id);
 				main_div.find(".sma_query_id select").val("string");
+				
+				main_div.find(".sma_query_type input").val(query_type);
+				main_div.find(".sma_query_type select[name=sma_query_type]").val(query_type);
+				main_div.find(".sma_query_type select[name=sma_query_type_type]").val("string");
 				
 				method = "call" + query_type.charAt(0).toUpperCase() + query_type.slice(1).toLowerCase();
 			}
@@ -3286,7 +3375,7 @@ function saveObj(save_object_url, obj, opts) {
 				if (is_from_auto_save_bkp && auto_save_connection_ttl)
 					ajax_options["timeout"] = auto_save_connection_ttl; //add timeout to auto save connection.
 				
-				//sets assync
+				//sets async
 				if (opts.hasOwnProperty("async")) 
 					ajax_options["async"] = opts["async"];
 				

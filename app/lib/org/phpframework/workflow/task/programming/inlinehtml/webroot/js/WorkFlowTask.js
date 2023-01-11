@@ -18,6 +18,7 @@
  */
 
 var InlineHTMLTaskPropertyObj = {
+	editor_ready_func: null,
 	editor_save_func: null,
 	is_code_html_base : true, //This means that the base is html and not php
 	layout_ui_editor_menu_widgets_elm_selector : null,
@@ -56,6 +57,7 @@ var InlineHTMLTaskPropertyObj = {
 			var PtlLayoutUIEditor = new LayoutUIEditor();
 			PtlLayoutUIEditor.options.ui_element = layout_ui_editor_elm;
 			PtlLayoutUIEditor.options.template_source_editor_save_func = InlineHTMLTaskPropertyObj.editor_save_func;
+			PtlLayoutUIEditor.options.on_choose_variable_func = ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable;
 			
 			if (typeof ProgrammingTaskUtil.on_programming_task_choose_page_url_callback == "function")
 				PtlLayoutUIEditor.options.on_choose_page_url_func = function(elm) {
@@ -70,15 +72,14 @@ var InlineHTMLTaskPropertyObj = {
 				}
 			
 			PtlLayoutUIEditor.options.on_ready_func = function() {
-				if (typeof LayoutUIEditorFormFieldUtil == "function") {
-					var LayoutUIEditorFormFieldUtilObj = new LayoutUIEditorFormFieldUtil(PtlLayoutUIEditor);
-					LayoutUIEditorFormFieldUtilObj.initFormFieldsSettings();
-				}
-				
 				//show php widgets, borders and background
 				PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();
 				PtlLayoutUIEditor.showTemplateWidgetsBorders();
 				PtlLayoutUIEditor.showTemplatePHPWidgets();
+				
+				//runf ready function
+				if (typeof InlineHTMLTaskPropertyObj.editor_ready_func == "function")
+					InlineHTMLTaskPropertyObj.editor_ready_func(PtlLayoutUIEditor);
 			};
 			window[ptl_ui_creator_var_name] = PtlLayoutUIEditor;
 			PtlLayoutUIEditor.init(ptl_ui_creator_var_name);

@@ -1,132 +1,132 @@
 var saved_class_method_settings_id = null;
 
 $(function () {
-	$(window).bind('beforeunload', function () {
-		if (isClassMethodObjChanged()) {
-			if (window.parent && window.parent.iframe_overlay)
-				window.parent.iframe_overlay.hide();
+	var file_class_method_obj = $(".file_class_method_obj");
+	
+	if (file_class_method_obj[0]) {
+		$(window).bind('beforeunload', function () {
+			if (isClassMethodObjChanged()) {
+				if (window.parent && window.parent.iframe_overlay)
+					window.parent.iframe_overlay.hide();
+				
+				return "If you proceed your changes won't be saved. Do you wish to continue?";
+			}
 			
-			return "If you proceed your changes won't be saved. Do you wish to continue?";
-		}
+			return null;
+		});
 		
-		return null;
-	});
-	
-	//prepare top_bar
-	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_side_properties").children(".workflow_menu").addClass("top_bar_menu");
-	
-	$("#code > .code_menu > ul, #ui > .taskflowchart > .workflow_menu > ul").prepend('<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleSettingsPanel(this)"><i class="icon toggle_main_settings"></i> <span>Show Main Settings</span> <input type="checkbox"/></a></li><li class="separator"></li>');
-	
-	//init auto save
-	enableAutoSave(onTogglePHPCodeAutoSave);
-	enableAutoConvert(onTogglePHPCodeAutoConvert);
-	initAutoSave("#code > .code_menu li.save a");
-	
-	//init trees
-	choosePropertyVariableFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
-	});
-	choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");
-	
-	chooseMethodFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
-	});
-	chooseMethodFromFileManagerTree.init("choose_method_from_file_manager");
-	
-	chooseFunctionFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
-	});
-	chooseFunctionFromFileManagerTree.init("choose_function_from_file_manager");
-	
-	chooseFileFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
-	});
-	chooseFileFromFileManagerTree.init("choose_file_from_file_manager");
-	
-	if (layer_type == "pres" || layer_type == "bl") {
-		chooseBusinessLogicFromFileManagerTree = new MyTree({
+		//prepare top_bar
+		$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_side_properties").children(".workflow_menu").addClass("top_bar_menu");
+		
+		$("#code > .code_menu > ul, #ui > .taskflowchart > .workflow_menu > ul").prepend('<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleSettingsPanel(this)"><i class="icon toggle_main_settings"></i> <span>Show Main Settings</span> <input type="checkbox"/></a></li><li class="separator"></li>');
+		
+		//init auto save
+		enableAutoSave(onTogglePHPCodeAutoSave);
+		enableAutoConvert(onTogglePHPCodeAutoConvert);
+		initAutoSave("#code > .code_menu li.save a");
+		
+		//init trees
+		choosePropertyVariableFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_children_on_click : true,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
+		});
+		choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");
+		
+		chooseMethodFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_children_on_click : true,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
+		});
+		chooseMethodFromFileManagerTree.init("choose_method_from_file_manager");
+		
+		chooseFunctionFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_children_on_click : true,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
+		});
+		chooseFunctionFromFileManagerTree.init("choose_function_from_file_manager");
+		
+		chooseFileFromFileManagerTree = new MyTree({
 			multiple_selection : false,
 			toggle_children_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
 			ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 		});
-		chooseBusinessLogicFromFileManagerTree.init("choose_business_logic_from_file_manager");
+		chooseFileFromFileManagerTree.init("choose_file_from_file_manager");
 		
-		chooseQueryFromFileManagerTree = new MyTree({
-			multiple_selection : false,
-			toggle_children_on_click : true,
-			ajax_callback_before : prepareLayerNodes1,
-			ajax_callback_after : removeParametersAndResultMapsFromTree,
-		});
-		chooseQueryFromFileManagerTree.init("choose_query_from_file_manager");
-		
-		chooseHibernateObjectFromFileManagerTree = new MyTree({
-			multiple_selection : false,
-			toggle_children_on_click : true,
-			ajax_callback_before : prepareLayerNodes1,
-			ajax_callback_after : removeQueriesAndMapsAndOtherHbnNodesFromTree,
-		});
-		chooseHibernateObjectFromFileManagerTree.init("choose_hibernate_object_from_file_manager");
-		
-		chooseHibernateObjectMethodFromFileManagerTree = new MyTree({
-			multiple_selection : false,
-			toggle_children_on_click : true,
-			ajax_callback_before : prepareLayerNodes1,
-			ajax_callback_after : removeParametersAndResultMapsFromTree,
-		});
-		chooseHibernateObjectMethodFromFileManagerTree.init("choose_hibernate_object_method_from_file_manager");
-		
-		if (layer_type == "pres") {
-			choosePresentationFromFileManagerTree = new MyTree({
+		if (layer_type == "pres" || layer_type == "bl") {
+			chooseBusinessLogicFromFileManagerTree = new MyTree({
 				multiple_selection : false,
 				toggle_children_on_click : true,
 				ajax_callback_before : prepareLayerNodes1,
-				ajax_callback_after : removeAllThatIsNotPagesFromTree,
+				ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
 			});
-			choosePresentationFromFileManagerTree.init("choose_presentation_from_file_manager");
+			chooseBusinessLogicFromFileManagerTree.init("choose_business_logic_from_file_manager");
 			
-			chooseBlockFromFileManagerTree = new MyTree({
+			chooseQueryFromFileManagerTree = new MyTree({
 				multiple_selection : false,
 				toggle_children_on_click : true,
 				ajax_callback_before : prepareLayerNodes1,
-				ajax_callback_after : removeAllThatIsNotBlocksFromTree,
+				ajax_callback_after : removeParametersAndResultMapsFromTree,
 			});
-			chooseBlockFromFileManagerTree.init("choose_block_from_file_manager");
+			chooseQueryFromFileManagerTree.init("choose_query_from_file_manager");
 			
-			choosePageUrlFromFileManagerTree = new MyTree({
+			chooseHibernateObjectFromFileManagerTree = new MyTree({
 				multiple_selection : false,
 				toggle_children_on_click : true,
 				ajax_callback_before : prepareLayerNodes1,
-				ajax_callback_after : removeAllThatIsNotPagesFromTree,
+				ajax_callback_after : removeQueriesAndMapsAndOtherHbnNodesFromTree,
 			});
-			choosePageUrlFromFileManagerTree.init("choose_page_url_from_file_manager");
-	
-			chooseImageUrlFromFileManagerTree = new MyTree({
+			chooseHibernateObjectFromFileManagerTree.init("choose_hibernate_object_from_file_manager");
+			
+			chooseHibernateObjectMethodFromFileManagerTree = new MyTree({
 				multiple_selection : false,
 				toggle_children_on_click : true,
 				ajax_callback_before : prepareLayerNodes1,
-				ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
+				ajax_callback_after : removeParametersAndResultMapsFromTree,
 			});
-			chooseImageUrlFromFileManagerTree.init("choose_image_url_from_file_manager");
+			chooseHibernateObjectMethodFromFileManagerTree.init("choose_hibernate_object_method_from_file_manager");
+			
+			if (layer_type == "pres") {
+				choosePresentationFromFileManagerTree = new MyTree({
+					multiple_selection : false,
+					toggle_children_on_click : true,
+					ajax_callback_before : prepareLayerNodes1,
+					ajax_callback_after : removeAllThatIsNotPagesFromTree,
+				});
+				choosePresentationFromFileManagerTree.init("choose_presentation_from_file_manager");
+				
+				chooseBlockFromFileManagerTree = new MyTree({
+					multiple_selection : false,
+					toggle_children_on_click : true,
+					ajax_callback_before : prepareLayerNodes1,
+					ajax_callback_after : removeAllThatIsNotBlocksFromTree,
+				});
+				chooseBlockFromFileManagerTree.init("choose_block_from_file_manager");
+				
+				choosePageUrlFromFileManagerTree = new MyTree({
+					multiple_selection : false,
+					toggle_children_on_click : true,
+					ajax_callback_before : prepareLayerNodes1,
+					ajax_callback_after : removeAllThatIsNotPagesFromTree,
+				});
+				choosePageUrlFromFileManagerTree.init("choose_page_url_from_file_manager");
+		
+				chooseImageUrlFromFileManagerTree = new MyTree({
+					multiple_selection : false,
+					toggle_children_on_click : true,
+					ajax_callback_before : prepareLayerNodes1,
+					ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
+				});
+				chooseImageUrlFromFileManagerTree.init("choose_image_url_from_file_manager");
+			}
 		}
-	}
 		
-	//init file_class_method
-	var file_class_method_obj = $(".file_class_method_obj");
-	
-	if (file_class_method_obj[0]) {
+		//init file_class_method
 		file_class_method_obj.tabs({active: show_low_code_first ? 1 : 0});
 		
 		var textarea = $("#code textarea")[0];

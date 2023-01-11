@@ -1,5 +1,7 @@
 <?php
 /******* PREPARE EVC *******/
+$EVC->setController( basename(__FILE__, ".php") );
+
 $page_prefix = "";
 $page = "";
 $parameters_count = $parameters ? count($parameters) : 0;

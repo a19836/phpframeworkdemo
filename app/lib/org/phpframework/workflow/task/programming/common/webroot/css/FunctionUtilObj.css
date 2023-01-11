@@ -82,7 +82,7 @@
 	
 }
 .taskflowchart .edit_function_code > #ui .taskflowchart .workflow_menu .sort_tasks:hover > ul {
-	width:120px;
+	min-width:120px;
 }
 .taskflowchart .edit_function_code > #code textarea, 
   .taskflowchart .edit_function_code > #code .ace_editor {
@@ -107,8 +107,11 @@
 	top:0;
 	display:block;
 }
-.taskflowchart .edit_function_code > #ui .taskflowchart > .tasks_menu,
-  .taskflowchart .edit_function_code > #ui .taskflowchart > .tasks_menu_hide,
+.taskflowchart .edit_function_code > #ui .taskflowchart > .tasks_menu {
+	top:0; /* cannot be !important othewise the .scroll class (when dragging menu tasks) won't work. */
+	bottom:0; /* cannot be !important othewise the resize based in the fixed_side_properties won't work. */
+}
+.taskflowchart .edit_function_code > #ui .taskflowchart > .tasks_menu_hide,
   .taskflowchart .edit_function_code > #ui .taskflowchart > .tasks_flow {
 	top:0 !important;
 	bottom:0 !important;

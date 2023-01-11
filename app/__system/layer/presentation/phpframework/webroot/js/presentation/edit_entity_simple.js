@@ -1,5 +1,11 @@
+var available_projects_props = null;
+var available_templates_props = null;
 var show_popup_interval_id = null;
 var chooseProjectTemplateUrlFromFileManagerTree = null; //used by the create_presentation_uis_diagram.js and module/menu/show_menu/settings.js and others
+var MyFancyPopupEditTemplateFile = new MyFancyPopupClass();
+var MyFancyPopupEditWebrootFile = new MyFancyPopupClass();
+
+//var start = (new Date()).getTime();
 
 $(function () {
 	MyFancyPopup.showOverlay();
@@ -21,14 +27,6 @@ $(function () {
 	$(".code_layout_ui_editor > .layout-ui-editor").addClass("with_top_bar_menu");
 	
 	//init trees
-	chooseBlockFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeAllThatIsNotBlocksFromTree,
-	});
-	chooseBlockFromFileManagerTree.init("choose_block_from_file_manager");
-	
 	chooseProjectTemplateUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
 		toggle_children_on_click : true,
@@ -45,53 +43,90 @@ $(function () {
 		var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
 		regions_blocks_includes_settings.tabs();
 		
+		var init_finished = false;
+		
+		setTimeout(function() {
+			//init template list
+			initTemplatesList(entity_obj);
+			
+			//prepare advanced entity settings
+			initPageAdvancedSettings( regions_blocks_includes_settings.find(".advanced_settings") );
+			
+			//init sla
+			initPageAndTemplateLayoutSLA(regions_blocks_includes_settings);
+			
+			//load sla settings
+			loadPageAndTemplateLayoutSLASettings(regions_blocks_includes_settings, false);
+			
+			init_finished = true;
+		}, 10);
+		
 		//init page template layout
 		initPageAndTemplateLayout(entity_obj, {
 			save_func: saveEntity, 
 			ready_func: function() {
 				//console.log("initPageAndTemplateLayout ready_func");
 				
-				//waits until the load params and joinpoints gets loaded
-				setTimeout(function() {
-					//set saved_obj_id
-					saved_obj_id = getEntityCodeObjId();
+				//prepare some PtlLayoutUIEditor options
+				var luie = entity_obj.find(".code_layout_ui_editor > .layout-ui-editor");
+				var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
+				
+				//set on_template_widgets_iframe_reload_func so everytime the template layout is changed or reload we update the css and js files.
+				PtlLayoutUIEditor.options.on_template_widgets_iframe_reload_func = function() {
+					//reload js and css files
+					loadCodeEditorLayoutJSAndCSSFilesToSettings();
+				};
+				
+				//DEPRECATED - waits until the load params and joinpoints gets loaded. No need this anymorebc the initPageAndTemplateLayout method already covers this case.
+				//setTimeout(function() {
+					//load js and css files
+					loadCodeEditorLayoutJSAndCSSFilesToSettings();
 					
-					//init auto save
-					addAutoSaveMenu(".top_bar li.sub_menu li.save");
-					//enableAutoSave(onToggleSLAAutoSave); //Do not enable auto save bc it gets a litte bit slow editing the template.
-					initAutoSave(".top_bar li.sub_menu li.save a");
-					StatusMessageHandler.showMessage("Auto save is disabled for a better user-experience...");
-					
-					//change the toggle Auto save handler bc the edit_query task
-					initSLAAutoSaveActivationMenu();
-					
-					//set update handlers
-					var iframe = getContentTemplateLayoutIframe(entity_obj);
-					
-					update_settings_from_layout_iframe_func = function() {
-						//console.log("updateSettingsFromLayout");
-						updateSettingsFromLayout(entity_obj);
+					var func = function() {
+						if (init_finished) {
+							//set saved_obj_id
+							saved_obj_id = getEntityCodeObjId();
+							
+							//init auto save
+							addAutoSaveMenu(".top_bar li.sub_menu li.save");
+							//enableAutoSave(onToggleSLAAutoSave); //Do not enable auto save bc it gets a litte bit slow editing the template.
+							initAutoSave(".top_bar li.sub_menu li.save a");
+							StatusMessageHandler.showMessage("Auto save is disabled for a better user-experience...");
+							
+							//change the toggle Auto save handler bc the edit_query task
+							initSLAAutoSaveActivationMenu();
+							
+							//set update handlers
+							var iframe = getContentTemplateLayoutIframe(entity_obj);
+							
+							update_settings_from_layout_iframe_func = function() {
+								//console.log("updateSettingsFromLayout");
+								updateSettingsFromLayout(entity_obj);
+							};
+							update_layout_iframe_from_settings_func = function() {
+								//console.log("updateLayoutFromSettings");
+								updateLayoutFromSettings(entity_obj, false);
+							};
+							update_layout_iframe_field_html_value_from_settings_func = function(elm, html) { //set handler to update directly the the html in the template layout without refreshing the entire layout.
+								//console.log("updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField");
+								updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField(elm, html, iframe);
+							};
+							
+							//hide loading icon
+							MyFancyPopup.hidePopup();
+							
+							//var end = (new Date()).getTime();
+							//console.log("loading time: "+((end-start)/1000)+" secs");
+						}
+						else
+							setTimeout(function() {
+								func();
+							}, 700);
 					};
-					update_layout_iframe_from_settings_func = function() {
-						//console.log("updateLayoutFromSettings");
-						updateLayoutFromSettings(entity_obj, false);
-					};
-					update_layout_iframe_field_html_value_from_settings_func = function(elm, html) { //set handler to update directly the the html in the template layout without refreshing the entire layout.
-						//console.log("updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField");
-						updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField(elm, html, iframe);
-					};
-					
-					//init sla
-					initPageAndTemplateLayoutSLA(regions_blocks_includes_settings);
-					
-					//load sla settings
-					loadPageAndTemplateLayoutSLASettings(regions_blocks_includes_settings);
-					
-					//hide loading icon
-					MyFancyPopup.hidePopup();
+					func();
 					
 					entity_or_template_obj_inited = true;
-				}, 2000);
+				//}, 2000);
 			}
 		});
 		
@@ -113,6 +148,31 @@ function onToggleFullScreen(in_full_screen) {
 }
 
 /* CHOOSE TEMPLATE FUNCTIONS */
+
+function initTemplatesList(entity_obj) {
+	$.ajax({
+		type : "get",
+		url : get_available_templates_list_url,
+		dataType : "json",
+		success : function(data, textStatus, jqXHR) {
+			//console.log(data);
+			var templates_select = entity_obj.find(" > .template select[name=template]");
+			var current_template = templates_select.val();
+			var html = '<option value="">-- DEFAULT --</option>';
+			
+			$.each(data, function(idx, template_id) {
+				html += '<option value="' + template_id + '">' + template_id + '</option>';
+			});
+			
+			templates_select.html(html);
+			templates_select.val(current_template);
+		},
+		error : function(jqXHR, textStatus, errorThrown) { 
+			if (jqXHR.responseText);
+				StatusMessageHandler.showError(jqXHR.responseText);
+		},
+	});
+}
 
 function removeAllThatIsNotTemplatesFromTree(ul, data) {
 	ul = $(ul);
@@ -195,7 +255,8 @@ function onChooseAvailableTemplate(elm, show_templates_only) {
 	var available_projects_templates_props = {};
 	available_projects_templates_props[selected_project_id] = available_templates_props;
 	
-	chooseAvailableTemplate( template_elm.children("select[name=template]")[0], {
+	var cat_select = template_elm.children("select[name=template]");
+	var cat_props = {
 		show_templates_only: show_templates_only,
 		available_projects_templates_props: available_projects_templates_props,
 		available_projects_props: available_projects_props,
@@ -235,7 +296,59 @@ function onChooseAvailableTemplate(elm, show_templates_only) {
 			
 			func(selected_template);
 		}
-	} );
+	};
+	
+	//init available_projects_props
+	if (!available_templates_props && get_available_templates_props_url) {
+		MyFancyPopup.showLoading();
+		
+		$.ajax({
+			type : "get",
+			url : get_available_templates_props_url.replace("#path#", entity_path),
+			dataType : "json",
+			success : function(data, textStatus, jqXHR) {
+				//console.log(data);
+				available_templates_props = data;
+				cat_props["available_projects_templates_props"][selected_project_id] = data;
+				
+				MyFancyPopup.hideLoading();
+			},
+			error : function(jqXHR, textStatus, errorThrown) { 
+				if (jqXHR.responseText);
+					StatusMessageHandler.showError(jqXHR.responseText);
+				
+				MyFancyPopup.hideLoading();
+			},
+			async: false
+		});
+	}
+	
+	//init available_projects_props
+	if (!available_projects_props && get_available_projects_props_url) {
+		MyFancyPopup.showLoading();
+		
+		$.ajax({
+			type : "get",
+			url : get_available_projects_props_url,
+			dataType : "json",
+			success : function(data, textStatus, jqXHR) {
+				//console.log(data);
+				available_projects_props = data;
+				cat_props["available_projects_props"] = data;
+				
+				MyFancyPopup.hideLoading();
+			},
+			error : function(jqXHR, textStatus, errorThrown) { 
+				if (jqXHR.responseText);
+					StatusMessageHandler.showError(jqXHR.responseText);
+				
+				MyFancyPopup.hideLoading();
+			},
+			async: false
+		});
+	}
+	
+	chooseAvailableTemplate(cat_select[0], cat_props);
 }
 
 function toggleExternalTemplateParams(elm) {
@@ -401,7 +514,7 @@ function updateTemplateLayout(entity_obj) {
 	}
 	
 	if (is_template_ok) {
-		var is_external_template = entity_obj.find(".template select[name=template_genre]").val() ? 1 : 0;
+		var is_external_template = isExternalTemplate(entity_obj) ? 1 : 0;
 		var external_template_params = getExternalSetTemplateParams(entity_obj);
 		
 		var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
@@ -486,7 +599,7 @@ function updateTemplateLayout(entity_obj) {
 
 function getSelectedTemplate(entity_obj) {
 	var template = "";
-	var is_external_template = entity_obj.find(" > .template > select[name=template_genre]").val() ? true : false;
+	var is_external_template = isExternalTemplate(entity_obj);
 	
 	if (is_external_template) 
 		template = "parse_php_code";
@@ -496,6 +609,147 @@ function getSelectedTemplate(entity_obj) {
 	}
 	
 	return template;
+}
+
+function isExternalTemplate(entity_obj) {
+	return entity_obj.find(" > .template > select[name=template_genre]").val() ? true : false;
+}
+
+function editCurrentTemplateFile(elm) {
+	var entity_obj = $(".entity_obj");
+	var template = getSelectedTemplate(entity_obj);
+	var url = null;
+	
+	if (template == "parse_php_code") {
+		var template_args = getExternalTemplateParams(entity_obj);
+		//console.log(template_args);
+		
+		if (template_args["type"] == "project" && template_args["template_id"]) {
+			var path = (template_args["external_project_id"] ? template_args["external_project_id"] : selected_project_id) + "/src/template/" + template_args["template_id"] + ".php";
+			url = edit_template_file_url.replace("#path#", path);
+		}
+		else if (template_args["type"] == "block" && template_args["block_id"]) {
+			var path = (template_args["external_project_id"] ? template_args["external_project_id"] : selected_project_id) + "/src/block/" + template_args["block_id"] + ".php";
+			url = edit_block_url.replace("#path#", path);
+		}
+	}
+	else {
+		var path = selected_project_id + "/src/template/" + (template ? template : layer_default_template) + ".php";
+		url = edit_template_file_url.replace("#path#", path);
+	}
+	
+	if (!url)
+		alert("Cannot edit this template through here. Please go directly to the file path through the navigator panel.");
+	else {
+		url += (url.indexOf("?") != -1 ? "&" : "?") + "popup=1";
+		
+		//prepare popup
+		var entity_obj = $(".entity_obj");
+		var popup = entity_obj.children("#edit_template_file");
+		
+		if (!popup[0]) {
+			popup = $('<div id="edit_template_file" class="myfancypopup with_iframe_title"><iframe></iframe></div>');
+			entity_obj.append(popup);
+		}
+		else 
+			popup.html('<iframe></iframe>');
+		
+		var iframe = popup.children("iframe");
+		
+		iframe.attr("src", url);
+		//console.log(url);
+		
+		//open popup
+		MyFancyPopupEditTemplateFile.init({
+			elementToShow: popup,
+			parentElement: document,
+			
+			onClose: function() {
+				updateTemplateLayout(entity_obj);
+			},
+		});
+		
+		MyFancyPopupEditTemplateFile.showPopup();
+	}
+}
+
+function editWebrootFile(path) {
+	//prepare popup
+	var entity_obj = $(".entity_obj");
+	var popup = entity_obj.children("#edit_webroot_file");
+	
+	if (!popup[0]) {
+		popup = $('<div id="edit_webroot_file" class="myfancypopup with_iframe_title"><iframe></iframe></div>');
+		entity_obj.append(popup);
+	}
+	else 
+		popup.html('<iframe></iframe>');
+	
+	var iframe = popup.children("iframe");
+	var url = edit_webroot_file_url.replace("#path#", path);
+	
+	iframe.attr("src", url);
+	
+	//open popup
+	MyFancyPopupEditWebrootFile.init({
+		elementToShow: popup,
+		parentElement: document,
+		
+		onClose: function() {
+			updateTemplateLayout(entity_obj);
+		},
+	});
+	
+	MyFancyPopupEditWebrootFile.showPopup();
+}
+
+function getTemplateHeadEditorCode() {
+	var code_layout_ui_editor = $(".entity_obj .code_layout_ui_editor");
+	var PtlLayoutUIEditor = code_layout_ui_editor.find(".layout-ui-editor").data("LayoutUIEditor");
+	
+	if (PtlLayoutUIEditor) {
+		//disable beauty in PtlLayoutUIEditor so it can get the code faster
+		var beautify = PtlLayoutUIEditor.options.beautify;
+		PtlLayoutUIEditor.options.beautify = false; //This will make the system 3 secs faster everytime this function gets called.
+		
+		//remove active class so the getCodeLayoutUIEditorCode calls the getTemplateSourceEditorValue method, instead of getTemplateFullSourceEditorValue
+		var luie = PtlLayoutUIEditor.getUI();
+		luie.find(" > .options .option.show-full-source").addClass("option-active"); 
+	
+		var code = getCodeLayoutUIEditorCode(code_layout_ui_editor);
+		
+		//set original beauty
+		PtlLayoutUIEditor.options.beautify = beautify;
+		
+		//filter head 
+		if (PtlLayoutUIEditor.existsTagFromSource(code, "head"))
+			return PtlLayoutUIEditor.getTagContentFromSource(code, "head"); 
+	}
+	
+	return "";
+}
+
+function getTemplateBodyEditorCode() {
+	var code_layout_ui_editor = $(".entity_obj .code_layout_ui_editor");
+	var PtlLayoutUIEditor = code_layout_ui_editor.find(".layout-ui-editor").data("LayoutUIEditor");
+	
+	if (PtlLayoutUIEditor) {
+		//disable beauty in PtlLayoutUIEditor so it can get the code faster
+		var beautify = PtlLayoutUIEditor.options.beautify;
+		PtlLayoutUIEditor.options.beautify = false; //This will make the system 3 secs faster everytime this function gets called.
+		
+		//remove active class so the getCodeLayoutUIEditorCode calls the getTemplateSourceEditorValue method, instead of getTemplateFullSourceEditorValue
+		var luie = PtlLayoutUIEditor.getUI();
+		luie.find(" > .options .option.show-full-source").removeClass("option-active"); 
+	}
+	
+	var code = getCodeLayoutUIEditorCode(code_layout_ui_editor);
+	
+	//set original beauty
+	if (PtlLayoutUIEditor)
+		PtlLayoutUIEditor.options.beautify = beautify;
+	
+	return code;
 }
 
 /* LAYOUT-SETTINGS-LAYOUT UPDATE FUNCTIONS */
@@ -531,7 +785,7 @@ function updateLayoutFromSettings(entity_obj, reload_iframe) {
 				"template_regions" : data["template_regions"],
 				"template_params": data["params"],
 				"template_includes": data["includes"],
-				"is_external_template": entity_obj.find(" > .template > select[name=template_genre]").val() ? 1 : 0,
+				"is_external_template": isExternalTemplate(entity_obj) ? 1 : 0,
 				"external_template_params": getExternalSetTemplateParams(entity_obj)
 			};
 			
@@ -570,6 +824,43 @@ function updateSettingsFromLayout(entity_obj) {
 			});
 		}
 	}
+}
+
+/* ADVACNED SETTINGS FUNCTIONS */
+
+function initPageAdvancedSettings(elm) {
+	onChangeParseHtml( elm.find(".parser .parse_html select")[0] );
+	
+	elm.find(".cache input[type=checkbox]").each(function(idx, elm) {
+		onChangeCacheOption(elm);
+	});
+}
+
+function onChangeParseHtml(elm) {
+	elm = $(elm);
+	var type = elm.val();
+	var parser_elm = elm.parent().closest(".parser");
+	var divs = parser_elm.children("div:not(.parse_html)");
+	var inputs = divs.find("input, select");
+	
+	if (type == 0) {
+		divs.hide();
+		inputs.attr("disabled", "disabled");
+	}
+	else {
+		divs.show();
+		inputs.removeAttr("disabled", "disabled");
+	}
+}
+
+function onChangeCacheOption(elm) {
+	elm = $(elm);
+	var input = elm.parent().children("input:not([type=checkbox])");
+	
+	if (elm.is(":checked"))
+		input.removeAttr("disabled").show();
+	else
+		input.attr("disabled", "disabled").hide();
 }
 
 /* SAVING FUNCTIONS */
@@ -855,7 +1146,7 @@ function preview() {
 }
 
 function getExternalSetTemplateParams(entity_obj) {
-	var is_external_template = entity_obj.find(" > .template select[name=template_genre]").val() ? true : false;
+	var is_external_template = isExternalTemplate(entity_obj);
 	
 	//prepare template params
 	var external_template_params = entity_obj.children(".external_template_params");
@@ -897,7 +1188,7 @@ function getExternalSetTemplateParams(entity_obj) {
 }
 
 function getExternalTemplateParams(entity_obj) {
-	var is_external_template = entity_obj.find(" > .template select[name=template_genre]").val() ? true : false;
+	var is_external_template = isExternalTemplate(entity_obj);
 	
 	//prepare template params
 	var external_template_params = entity_obj.children(".external_template_params");
@@ -933,10 +1224,14 @@ function getObjToSave() {
 	var sla = $(".sla");
 	obj["sla_settings"] = getSLASettings(sla);
 	
+	//get advanced properties
+	var advanced_settings = $(".advanced_settings");
+	obj["advanced_settings"] = getAdvancedSettings(advanced_settings);
+	
 	//prepare template
 	var entity_obj = $(".entity_obj");
 	var template_elm = entity_obj.find(".template");
-	var is_external_template = template_elm.find("select[name=template_genre]").val() ? true : false;
+	var is_external_template = isExternalTemplate(entity_obj);
 	var template = getSelectedTemplate(entity_obj);
 	template = !is_external_template && template == layer_default_template ? "" : template;
 	
@@ -954,4 +1249,28 @@ function getObjToSave() {
 	}
 	
 	return obj;
+}
+
+function getAdvancedSettings(advanced_settings_elm) {
+	var inputs = advanced_settings_elm.find("input, select, textarea");
+	var setttings = {};
+	
+	for (var i = 0; i < inputs.length; i++) {
+		var input = inputs[i];
+		
+		if (!input.hasAttribute("disabled")) {
+			var name = input.name;
+			
+			if (name) {
+				if ((input.type == "checkbox" || input.type == "radio")) {
+					if (input.checked)
+						setttings[name] = input.value;
+				}
+				else
+					setttings[name] = input.value;	
+			}
+		}
+	}
+	
+	return setttings;
 }

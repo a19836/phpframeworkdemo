@@ -310,7 +310,7 @@ function toggleFullScreen(elm) {
 
 function openFullscreen(elm) {
 	if (!elm)
-		elm = $("body")[0];
+		elm = $("html")[0]; //Do not use body otherwise it loose some properties and the workflow task menu dragging items will be messy.
 	
 	if (elm.requestFullscreen)
 		elm.requestFullscreen();

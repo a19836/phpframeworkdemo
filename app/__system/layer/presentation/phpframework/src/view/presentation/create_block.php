@@ -37,7 +37,7 @@ var add_block_url = "' . $add_block_url . '";
 </script>'; $main_content = '
 	<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 		<header>
-			<div class="title">' . $title . '</div>
+			<div class="title" title="' . $path . '">' . $title . '</div>
 			<ul>
 				' . $title_icons . '
 			</ul>

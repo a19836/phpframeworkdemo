@@ -42,7 +42,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $filter_by_layout_url_query =
 '; $head .= LayoutTypeProjectUIHandler::getHeader(); if ($_POST["step_1"]) { $exists_any_status_ok = false; $main_content .= '<div class="statuses">
 		<div class="top_bar">
 			<header>
-				<div class="title">Automatic Create Business Logic Files in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
+				<div class="title" title="' . $path . '">Automatic Create Business Logic Files in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
 			</header>
 		</div>
 		<div class="title">Statuses</div>
@@ -74,6 +74,9 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $filter_by_layout_url_query =
 					cms_program: {
 						get_sub_files_url: "' . $get_sub_files_url . '",
 					},
+					cms_resource: {
+						get_sub_files_url: "' . $get_sub_files_url . '",
+					},
 					file: {
 						attributes: {
 							file_path: "#path#",
@@ -101,7 +104,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $filter_by_layout_url_query =
 	<div class="select_options">
 		<div class="top_bar">
 			<header>
-				<div class="title">Automatic Create Business Logic Files in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
+				<div class="title" title="' . $path . '">Automatic Create Business Logic Files in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
 				<ul>
 					<li class="continue" data-title="Continue"><a onClick="submitForm(this, checkChooseFiles);"><i class="icon continue"></i> Continue</a></li>
 				</ul>

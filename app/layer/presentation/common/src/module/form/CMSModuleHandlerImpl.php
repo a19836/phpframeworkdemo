@@ -1,7 +1,7 @@
 <?php
 namespace CMSModule\form;
 
-include_once get_lib("org.phpframework.layer.presentation.cms.SequentialLogicalActivities");
+include_once get_lib("org.phpframework.layer.presentation.cms.SequentialLogicalActivity");
 
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
@@ -27,9 +27,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			foreach ($settings as $type => $value) {
 				switch ($type) {
 					case "actions":
-						$SequentialLogicalActivities = new \SequentialLogicalActivities();
-						$SequentialLogicalActivities->setEVC($EVC);
-						$html .= $SequentialLogicalActivities->execute($value);
+						$SequentialLogicalActivity = new \SequentialLogicalActivity();
+						$SequentialLogicalActivity->setEVC($EVC);
+						$html .= $SequentialLogicalActivity->execute($value);
 						break;
 					
 					case "css":

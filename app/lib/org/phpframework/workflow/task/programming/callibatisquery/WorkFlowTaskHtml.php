@@ -29,7 +29,7 @@
 		<span class="icon add_variable inline" onClick="BrokerOptionsUtilObj.chooseCreatedBrokerVariable(this)">Search</span>
 	</div>
 	<div class="module_id">
-		<label>Module Id:</label>
+		<label>Module Id: <span class="icon edit edit_source" onClick="CallIbatisQueryTaskPropertyObj.onEditFile(this)" title="Edit file">Edit</span></label>
 		<input type="text" class="task_property_field" name="module_id" />
 		<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
 		<select class="task_property_field" name="module_id_type">
@@ -57,7 +57,7 @@
 		</select>
 	</div>
 	<div class="service_id">
-		<label>Query Id:</label>
+		<label>Query Id: <span class="icon edit edit_source" onClick="CallIbatisQueryTaskPropertyObj.onEditQuery(this)" title="Edit query">Edit</span></label>
 		<input type="text" class="task_property_field" name="service_id" />
 		<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
 		<select class="task_property_field" name="service_id_type">
@@ -84,7 +84,7 @@
 		<input type="text" class="task_property_field options_code" name="options" />
 		<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
 		<select class="task_property_field options_type" name="options_type" onChange="LayerOptionsUtilObj.onChangeOptionsType(this)">
-			<option value="">code</option>
+			<option></option>
 			<option>string</option>
 			<option>variable</option>
 			<option>array</option>

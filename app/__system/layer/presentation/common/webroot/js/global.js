@@ -48,7 +48,7 @@ if (!document.querySelector)
 		return (elements.length) ? elements[0] : null;
 	};
 
-//add querySelectorAllInNodes
+//add querySelectorAllInNodes - new methods by JP
 if (typeof querySelectorAllInNodes != "function")
 	function querySelectorAllInNodes(nodes, selectors) {
 		var elements = [], l2, node, elms, j;
@@ -70,14 +70,14 @@ if (typeof querySelectorAllInNodes != "function")
 		return elements;
 	};
 
-//add querySelectorInNodes
+//add querySelectorInNodes - new methods by JP
 if (typeof querySelectorInNodes != "function")
 	function querySelectorInNodes(nodes, selectors) {
 		var elements = querySelectorAllInNodes(nodes, selectors);
 		return (elements.length) ? elements[0] : null;
 	};
 
-//add filterSelectorAllInNodes
+//add filterSelectorAllInNodes - new methods by JP
 if (typeof filterSelectorAllInNodes != "function")
 	function filterSelectorAllInNodes(nodes, selectors) {
 		var elements = [], node;
@@ -93,7 +93,7 @@ if (typeof filterSelectorAllInNodes != "function")
 		return elements;
 	};
 
-//add filterSelectorInNodes
+//add filterSelectorInNodes - new methods by JP
 if (typeof filterSelectorInNodes != "function")
 	function filterSelectorInNodes(nodes, selectors) {
 		var elements = filterSelectorAllInNodes(nodes, selectors);

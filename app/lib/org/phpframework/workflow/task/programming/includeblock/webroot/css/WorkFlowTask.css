@@ -2,7 +2,7 @@
 	background-image:url('../img/bg.svg');
 }
 .jsplumbtaskworkflow .task.task_includeblock .eps {
-	background-image:url('../img/bg.svg');
+	background-image:url('../img/bg_hover.svg');
 }
 .jsplumbtaskworkflow .task.task_includeblock .ep {
 	border-color:transparent !important;

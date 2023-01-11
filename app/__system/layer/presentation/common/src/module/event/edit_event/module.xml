@@ -1,7 +1,7 @@
 <module>
 	<label>Edit Event</label>
 	<description>Module "Edit Event" allows the user to edit an event.</description>
-	<image>logo.gif</image>
+	<image>logo.svg</image>
 	<load_module_settings_js_function>loadEditSettingsBlockSettings</load_module_settings_js_function>
 	<is_reserved_module>1</is_reserved_module>
 </module>

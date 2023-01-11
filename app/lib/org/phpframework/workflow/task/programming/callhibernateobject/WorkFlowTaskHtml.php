@@ -29,7 +29,7 @@
 		<span class="icon search" onClick="BrokerOptionsUtilObj.chooseCreatedBrokerVariable(this)">Search</span>
 	</div>
 	<div class="module_id">
-		<label>Module Id:</label>
+		<label>Module Id: <span class="icon edit edit_source" onClick="CallHibernateObjectTaskPropertyObj.onEditFile(this)" title="Edit file">Edit</span></label>
 		<input type="text" class="task_property_field" name="module_id" />
 		<select class="task_property_field" name="module_id_type">
 			<option>string</option>
@@ -38,7 +38,7 @@
 		</select>
 	</div>
 	<div class="service_id">
-		<label>Object Id:</label>
+		<label>Object Id: <span class="icon edit edit_source" onClick="CallHibernateObjectTaskPropertyObj.onEditObject(this)" title="Edit object">Edit</span></label>
 		<input type="text" class="task_property_field" name="service_id" />
 		<select class="task_property_field" name="service_id_type">
 			<option>string</option>
@@ -50,8 +50,9 @@
 	<div class="opts">
 		<label class="main_label">Options:</label>
 		<input type="text" class="task_property_field options_code" name="options" />
+		<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
 		<select class="task_property_field options_type" name="options_type" onChange="LayerOptionsUtilObj.onChangeOptionsType(this)">
-			<option value="">code</option>
+			<option></option>
 			<option>string</option>
 			<option>variable</option>
 			<option>array</option>

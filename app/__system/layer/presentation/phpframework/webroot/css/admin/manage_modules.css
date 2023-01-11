@@ -104,8 +104,10 @@ body,
 	font-weight:bold;
 	text-transform:uppercase;
 }
-.modules_list table .photo img {
-	max-width:100px;
+.modules_list table .photo img,
+  .modules_list table .photo svg {
+	max-width:20px;
+	fill:var(--link-color);
 }
 .modules_list table .label {
 	width:150px;
@@ -113,6 +115,7 @@ body,
 }
 .modules_list table td.label {
 	font-weight:bold;
+	color:var(--link-color);
 }
 .modules_list table .description {
 	width:430px;

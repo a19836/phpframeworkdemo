@@ -24,6 +24,7 @@ var CallBusinessLogicTaskPropertyObj = {
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
+		ProgrammingTaskUtil.prepareEditSourceIcon(properties_html_elm);
 		
 		var task_html_elm = $(properties_html_elm).find(".call_business_logic_task_html");
 		ProgrammingTaskUtil.setResultVariableType(task_property_values, task_html_elm);
@@ -159,5 +160,13 @@ var CallBusinessLogicTaskPropertyObj = {
 		if (typeof this.on_choose_business_logic_callback == "function") {
 			this.on_choose_business_logic_callback(elm);
 		}
+	},
+	
+	onEditFile : function(elm) {
+		ProgrammingTaskUtil.onEditSource(elm, $(elm).closest(".call_business_logic_task_html"), "file");
+	},
+	
+	onEditService : function(elm) {
+		ProgrammingTaskUtil.onEditSource(elm, $(elm).closest(".call_business_logic_task_html"), "service");
 	},
 };

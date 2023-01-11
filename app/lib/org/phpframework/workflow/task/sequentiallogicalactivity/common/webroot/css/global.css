@@ -4,13 +4,13 @@
 .jsplumbtaskworkflow ._jsPlumb_endpoint {
 	opacity:1 !important;
 }
-.jsplumbtaskworkflow .task.is_start_task:not(:hover):before,
-  .jsplumbtaskworkflow .task:hover:not(.dragActive):before, 
-  .jsplumbtaskworkflow .task.is_start_task:not(:hover) .task_info,
-  .jsplumbtaskworkflow .task:hover:not(.dragActive) > .task_info {
+.jsplumbtaskworkflow .task.logic_task.is_start_task:not(:hover):before,
+  .jsplumbtaskworkflow .task.logic_task:hover:not(.dragActive):before, 
+  .jsplumbtaskworkflow .task.logic_task.is_start_task:not(:hover) .task_info,
+  .jsplumbtaskworkflow .task.logic_task:hover:not(.dragActive) > .task_info {
 	display:block !important;
 }
-.jsplumbtaskworkflow .task .short_actions {
+.jsplumbtaskworkflow .task.logic_task .short_actions {
 	top:-28px !important;
 	right:-55px !important;
 }

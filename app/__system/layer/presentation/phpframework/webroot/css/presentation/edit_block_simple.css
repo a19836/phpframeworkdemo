@@ -71,9 +71,11 @@
 	margin-right:20px;
 	display:block;
 }
-.block_obj .module_data .module_img img {
+.block_obj .module_data .module_img img,
+  .block_obj .module_data .module_img svg {
 	width:150px;
 	height:150px;
+	fill:var(--link-color);
 }
 .block_obj .module_data .module_img .no_photo {
 	width:150px;
@@ -88,6 +90,7 @@
 	margin-bottom:5px;
 	font-weight:bold;
 	font-size:14px;
+	color:var(--link-color);
 	float:left;
 }
 .block_obj .module_data .module_description {

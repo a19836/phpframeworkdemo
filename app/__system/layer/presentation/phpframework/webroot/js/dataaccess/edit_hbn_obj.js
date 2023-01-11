@@ -70,7 +70,7 @@ function getHbnObjTableFromDB(elm) {
 function updateHbnObjTableField(elm) {
 	updateTableField(elm);
 	
-	selected_table = $(MyFancyPopup.settings.targetField).val();//this will be used on the onDeleteQueryTable function
+	default_db_table = $(MyFancyPopup.settings.targetField).val();//this will be used on the onDeleteQueryTable function
 }
 /* START: HBN OBJ TABLE */
 
@@ -230,7 +230,7 @@ function updateHibernateObjectAutomatically(elm) {
 		
 		if (db_table != "") {
 			hbn_obj.children(".table").children("input").val(db_table);
-			selected_table = db_table;
+			default_db_table = db_table;
 			
 			//PREPARING IDS
 			MyFancyPopup.settings.targetField = hbn_obj.children(".ids").children(".add")[0];

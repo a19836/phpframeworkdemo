@@ -4,6 +4,7 @@ include $EVC->getConfigPath("config");
 include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler");
 include_once $EVC->getUtilPath("WorkFlowUIHandler");
 include_once $EVC->getUtilPath("WorkFlowPresentationHandler");
+include_once $EVC->getUtilPath("WorkFlowBrokersSelectedDBVarsHandler");
 
 $common_project_name = $EVC->getCommonProjectName();
 $purlp = $project_url_prefix;
@@ -14,7 +15,10 @@ $project_url_prefix = $purlp;
 $project_common_url_prefix = $pcurlp;
 
 if ($PEVC) {
+	$filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout);
+	
 	$selected_project_id = $P->getSelectedPresentationId();
+	$selected_db_vars = WorkFlowBrokersSelectedDBVarsHandler::getBrokersSelectedDBVars( $P->getBrokers() );
 	
 	//PREPARING BROKERS
 	$layer_brokers_settings = WorkFlowBeansFileHandler::getLayerBrokersSettings($user_global_variables_file_path, $user_beans_folder_path, $brokers, '$EVC->getBroker');
@@ -97,7 +101,7 @@ if ($PEVC) {
 	));
 	$WorkFlowUIHandler->addFoldersTasksToTasksGroups($code_workflow_editor_user_tasks_folders_path);
 	
-	$choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#";
+	$choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#$filter_by_layout_url_query&path=#path#";
 	$choose_dao_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=dao&path=#path#";
 	$choose_lib_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=lib&path=#path#";
 	$choose_vendor_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=vendor&path=#path#";
@@ -107,7 +111,8 @@ if ($PEVC) {
 	$get_business_logic_properties_url = $project_url_prefix . "phpframework/businesslogic/get_business_logic_properties?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&service=#service#";
 	$get_broker_db_drivers_url = $project_url_prefix . "phpframework/db/get_broker_db_drivers?bean_name=$bean_name&bean_file_name=$bean_file_name&broker=#broker#&item_type=presentation";
 	$get_broker_db_data_url = $project_url_prefix . "phpframework/dataaccess/get_broker_db_data?bean_name=$bean_name&bean_file_name=$bean_file_name";
-		
+	$edit_task_source_url = $project_url_prefix . "phpframework/admin/edit_task_source?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$path";
+	
 	$path_extra = hash('crc32b', "$bean_file_name/$bean_name/$path");
 	$get_workflow_tasks_id = "presentation_block_workflow&path_extra=_$path_extra";
 	$get_tmp_workflow_tasks_id = "presentation_block_workflow_tmp&path_extra=_${path_extra}_" . rand(0, 1000);
@@ -118,7 +123,6 @@ if ($PEVC) {
 	$get_tmp_workflow_file_url = $project_url_prefix . "workflow/get_workflow_file?path=${get_tmp_workflow_tasks_id}";
 	$create_code_from_workflow_file_url = $project_url_prefix . "workflow/create_code_from_workflow_file?path=${get_tmp_workflow_tasks_id}";
 	$set_tmp_workflow_file_url = $project_url_prefix . "workflow/set_workflow_file?path=${get_tmp_workflow_tasks_id}";
-
 	
 	$head = WorkFlowPresentationHandler::getHeader($project_url_prefix, $project_common_url_prefix, $WorkFlowUIHandler, $set_workflow_file_url, true);
 	
@@ -133,6 +137,7 @@ if ($PEVC) {
 	<script type="text/javascript" src="' . $module["webroot_url"] . 'workflow.js"></script>
 	
 	<script>
+	' . WorkFlowBrokersSelectedDBVarsHandler::printSelectedDBVarsJavascriptCode($project_url_prefix, $bean_name, $bean_file_name, $selected_db_vars) . '
 	var layer_type = "pres";
 	var selected_project_id = "' . $selected_project_id . '";
 
@@ -147,8 +152,10 @@ if ($PEVC) {
 	var get_query_properties_url = \'' . $get_query_properties_url . '\';
 	var get_business_logic_properties_url = \'' . $get_business_logic_properties_url . '\';
 	var get_broker_db_drivers_url = \'' . $get_broker_db_drivers_url . '\';
-var get_broker_db_data_url = \'' . $get_broker_db_data_url . '\';
-
+	var get_broker_db_data_url = \'' . $get_broker_db_data_url . '\';
+	var edit_task_source_url = \'' . $edit_task_source_url . '\';
+	
+	ProgrammingTaskUtil.on_programming_task_edit_source_callback = onProgrammingTaskEditSource;
 	ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback = onProgrammingTaskChooseCreatedVariable;
 	ProgrammingTaskUtil.on_programming_task_choose_object_property_callback = onProgrammingTaskChooseObjectProperty;
 	ProgrammingTaskUtil.on_programming_task_choose_object_method_callback = onProgrammingTaskChooseObjectMethod;
@@ -158,6 +165,7 @@ ProgrammingTaskUtil.on_programming_task_choose_file_path_callback = onIncludeFil
 	ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
 	ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
 	
+	FunctionUtilObj.on_function_task_edit_method_code_callback = onFunctionTaskEditMethodCode;
 	FunctionUtilObj.set_tmp_workflow_file_url = set_tmp_workflow_file_url;
 	FunctionUtilObj.get_tmp_workflow_file_url = get_tmp_workflow_file_url;
 	FunctionUtilObj.create_code_from_workflow_file_url = create_code_from_workflow_file_url;
@@ -170,7 +178,9 @@ ProgrammingTaskUtil.on_programming_task_choose_file_path_callback = onIncludeFil
 	GetBeanObjectTaskPropertyObj.phpframeworks_options = ' . json_encode($phpframeworks_options) . ';
 	GetBeanObjectTaskPropertyObj.bean_names_options = ' . json_encode($bean_names_options) . ';
 	
+	CreateFormTaskPropertyObj.editor_ready_func = initLayoutUIEditorWidgetResourceOptions;
 	CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui_menu_widgets_backup\';
+	InlineHTMLTaskPropertyObj.editor_ready_func = initLayoutUIEditorWidgetResourceOptions;
 	InlineHTMLTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui_menu_widgets_backup\';
 	
 	if (typeof CallBusinessLogicTaskPropertyObj != "undefined" && CallBusinessLogicTaskPropertyObj) {

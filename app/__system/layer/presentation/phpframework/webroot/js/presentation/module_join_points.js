@@ -177,7 +177,7 @@ function onLoadRegionBlockJoinPoints(item, region, block) {
 			
 			if (page_blocks_join_points_htmls.hasOwnProperty(b))
 				handler( page_blocks_join_points_htmls[b] );
-			else if (page_blocks_join_points_htmls_loading[b]) { //Bc this function will get executed assynchronous, we need to be sure that we don't get multiple requests to the server of the same thing.
+			else if (page_blocks_join_points_htmls_loading[b]) { //Bc this function will get executed asynchronous, we need to be sure that we don't get multiple requests to the server of the same thing.
 				page_blocks_join_points_htmls_loading_interval_id[b] = setInterval(function() {
 					if (!page_blocks_join_points_htmls_loading[b]) {
 						clearInterval(page_blocks_join_points_htmls_loading_interval_id[b]);

@@ -33,7 +33,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 '; $main_content = '
 <div class="top_bar">
 	<header>
-		<div class="title">Manage WordPress in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($selected_project_id, $P) . '</div>
+		<div class="title" title="' . $path . '">Manage WordPress in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($selected_project_id, $P) . '</div>
 	</header>
 </div>
 <div class="manage_wordpress with_top_bar_section">

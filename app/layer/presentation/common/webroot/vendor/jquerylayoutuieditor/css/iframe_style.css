@@ -60,6 +60,9 @@ body {
 .hidden {
 	display:none !important;
 }
+.hide-children > * {
+	display:none !important;
+}
 
 /* when dropping an element */
 .main-droppable.highlight {
@@ -614,6 +617,16 @@ body {
   	border:var(--html-element-border);
 }
 
+/* prepare bootstrap row and cols. This is very important to show the label and input in the same line for each column of a form */
+.main-droppable.borders .row.template-widget:not(.container),
+  .main-droppable.borders .row.template-widget:not(.container) {
+	padding:10px;
+}
+.main-droppable.borders .row.template-widget:not(.container) > *,
+  .main-droppable.borders .row.template-widget:not(.container) > * {
+	margin:0;
+}
+
 .main-droppable.borders p.template-widget {
 	background-image: url(data:image/gif;base64,R0lGODlhCQAJAJEAAAAAAP///7u7u////yH5BAEAAAMALAAAAAAJAAkAAAIQnG+CqCN/mlyvsRUpThG6AgA7);
 }
@@ -1159,3 +1172,25 @@ body {
   .main-droppable.borders xmp.droppable.droppable-over:before {
 	content:"xmp";
 }
+
+/* WIDGET RESOURCE MODALS */
+.modal.template-widget { /* very usefull to see the popups mainly the [data-widget-popup] elements */
+	display:block !important;
+	position:static !important;
+	background:rgba(0,0,0,.1) !important;
+	opacity:1 !important;
+}
+.template-widget[data-widget-resource-value]:empty,
+  .template-widget[data-widget-item-attribute-field-view]:empty,
+  .template-widget[data-widget-item-attribute-link-view]:empty,
+  .template-widget[data-widget-item-attribute-link-edit]:empty {
+	min-width:20px !important;
+	min-height:10px !important;
+}
+.template-widget[data-widget-item-attribute-field-view]:empty:after,
+  .template-widget[data-widget-item-attribute-link-view]:empty:after,
+  .template-widget[data-widget-item-attribute-link-edit]:empty:after,
+  .template-widget[data-widget-item-attribute-field-edit]:empty:not(input):not(textarea):not(select):after {
+	content:"dummy data" !important;
+}
+

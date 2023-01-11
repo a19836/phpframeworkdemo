@@ -1,60 +1,62 @@
 $(function() {
 	var edit_single_query = $(".edit_single_query");
 	
-	//init auto save
-	addAutoSaveMenu(".top_bar li.sub_menu li.save", "onToggleQueryAutoSave");
-	addAutoConvertMenu(".top_bar li.sub_menu li.save", "onToggleQueryAutoConvert");
-	enableAutoSave(onToggleQueryAutoSave);
-	
-	if (is_covertable_sql)
-		enableAutoConvert(onToggleQueryAutoConvert);
-	else
-		disableAutoConvert(onToggleQueryAutoConvert);
-	
-	initAutoSave(".top_bar li.sub_menu li.save a");
-	
-	//init ui
-	var relationship = edit_single_query.find(".data_access_obj .relationships .relationship");
-	var query = relationship.find(".query");
-	var rand_number = query.attr("rand_number");
-	var select = relationship.find(".rel_type select");
-	select.attr("onChange", "updateSingleQueryRelationshipType(this, " + rand_number + ")");
-	
-	updateSingleQueryRelationshipType(select[0], rand_number);
-	
-	relationship.css("display", "block");
-	
-	//init main settings panel
-	initMainSettingsPanel();
-	
-	//load sql
-	var a = $(".query_tabs .query_sql_tab a").first();
-	a.attr("not_create_sql_from_ui", 1);
-	a.click();
-	a.removeAttr("not_create_sql_from_ui");
-	
-	//update design with query
-	var a = $(".query_tabs .query_design_tab a").first();
-	a.attr("do_not_confirm", 1);
-	a.click();
-	a.removeAttr("do_not_confirm");
-	
-	//hide advanced settings
-	var advanced_query_settings = query.find(".query_settings .advanced_query_settings");
-	showOrHideExtraQuerySettings(advanced_query_settings[0], rand_number);
-	
-	//show query properties
-	showOrHideSingleQuerySettings($(".top_bar .toggle_settings a")[0], rand_number);
-	
-	//set sync_ui_settings_with_sql to 1 so it updates automatically the sql query on every change on UI.
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
-	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
-	main_tasks_flow_obj.attr("sync_ui_settings_with_sql", 1);
-	main_tasks_flow_obj.attr("sync_sql_with_ui_settings", 1);
-	
-	$(window).resize(function() {
-		WF.getMyFancyPopupObj().updatePopup();
-	});
+	if (edit_single_query[0]) {
+		//init auto save
+		addAutoSaveMenu(".top_bar li.sub_menu li.save", "onToggleQueryAutoSave");
+		addAutoConvertMenu(".top_bar li.sub_menu li.save", "onToggleQueryAutoConvert");
+		enableAutoSave(onToggleQueryAutoSave);
+		
+		if (is_covertable_sql)
+			enableAutoConvert(onToggleQueryAutoConvert);
+		else
+			disableAutoConvert(onToggleQueryAutoConvert);
+		
+		initAutoSave(".top_bar li.sub_menu li.save a");
+		
+		//init ui
+		var relationship = edit_single_query.find(".data_access_obj .relationships .relationship");
+		var query = relationship.find(".query");
+		var rand_number = query.attr("rand_number");
+		var select = relationship.find(".rel_type select");
+		select.attr("onChange", "updateSingleQueryRelationshipType(this, " + rand_number + ")");
+		
+		updateSingleQueryRelationshipType(select[0], rand_number);
+		
+		relationship.css("display", "block");
+		
+		//init main settings panel
+		initMainSettingsPanel();
+		
+		//load sql
+		var a = $(".query_tabs .query_sql_tab a").first();
+		a.attr("not_create_sql_from_ui", 1);
+		a.click();
+		a.removeAttr("not_create_sql_from_ui");
+		
+		//update design with query
+		var a = $(".query_tabs .query_design_tab a").first();
+		a.attr("do_not_confirm", 1);
+		a.click();
+		a.removeAttr("do_not_confirm");
+		
+		//hide advanced settings
+		var advanced_query_settings = query.find(".query_settings .advanced_query_settings");
+		showOrHideExtraQuerySettings(advanced_query_settings[0], rand_number);
+		
+		//show query properties
+		showOrHideSingleQuerySettings($(".top_bar .toggle_settings a")[0], rand_number);
+		
+		//set sync_ui_settings_with_sql to 1 so it updates automatically the sql query on every change on UI.
+		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+		var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+		main_tasks_flow_obj.attr("sync_ui_settings_with_sql", 1);
+		main_tasks_flow_obj.attr("sync_sql_with_ui_settings", 1);
+		
+		$(window).resize(function() {
+			WF.getMyFancyPopupObj().updatePopup();
+		});
+	}
 });
 
 function onToggleQueryAutoConvert() {

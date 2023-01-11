@@ -2,7 +2,7 @@
 	background-image:url('../img/bg.svg');
 }
 .jsplumbtaskworkflow .task.task_dbdaoaction .eps {
-	background-image:url('../img/bg.svg');
+	background-image:url('../img/bg_hover.svg');
 }
 .jsplumbtaskworkflow .task.task_dbdaoaction .ep {
 	border-color:transparent !important;
@@ -57,10 +57,7 @@
 	margin-bottom:5px;
 }
 .db_dao_action_task_html .get_automatically label {
-	width:200px;
-}
-.taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .get_automatically label {
-	width:135px;
+	width:auto;
 }
 .db_dao_action_task_html .get_automatically .icon {
 	width:23px;
@@ -129,6 +126,13 @@
 	margin-right:5px;
 	padding-right:20px;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .table_name input,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs .attributes_code,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .conds .conditions_code,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .rels .relations_code,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .parent_conds .parent_conditions_code {
+	width:calc(100% - 168px);
+}
 .db_dao_action_task_html .table_name select,
   .db_dao_action_task_html .attrs .attributes_type,
   .db_dao_action_task_html .conds .conditions_type,
@@ -152,10 +156,10 @@
    .db_dao_action_task_html .parent_conds > .parent_conditions_options {
 	padding:10px;
 }
-.db_dao_action_task_html .attrs > .attributes_options > .item_add,
-   .db_dao_action_task_html .conds > .conditions_options > .item_add,
-   .db_dao_action_task_html .rels > .relations_options > .item_add,
-   .db_dao_action_task_html .parent_conds > .parent_conditions_options > .item_add {
+.db_dao_action_task_html .attrs > .attributes_options > .add,
+   .db_dao_action_task_html .conds > .conditions_options > .add,
+   .db_dao_action_task_html .rels > .relations_options > .add,
+   .db_dao_action_task_html .parent_conds > .parent_conditions_options > .add {
 	position:absolute;
 	margin-top:-29px;
 	margin-left:190px;
@@ -194,6 +198,16 @@
 	font-weight:normal;
 	font-size:90%;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs > .attributes_options li label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .conds > .conditions_options li label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .rels > .relations_options li label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .parent_conds > .parent_conditions_options li label {
+	width:calc((100% - 90px) / 2);
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html.findObjects .attrs > .attributes_options li label,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html.findRelationshipObjects .attrs > .attributes_options li label {
+  	width:calc((100% - 50px) / 2);
+}
 .db_dao_action_task_html.findObjects .attrs > .attributes_options li label:after,
   .db_dao_action_task_html.findRelationshipObjects .attrs > .attributes_options li label:after {
 	content:" with alias ";
@@ -213,7 +227,17 @@
    .db_dao_action_task_html .conds > .conditions_options li .attr_value,
    .db_dao_action_task_html .rels > .relations_options li .attr_value,
    .db_dao_action_task_html .parent_conds > .parent_conditions_options li .attr_value {
+	width:calc(100% - 240px);
 	background:#fff;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs > .attributes_options li .attr_alias {
+	width:calc((100% - 130px) / 2);
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs > .attributes_options li .attr_value,
+   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .conds > .conditions_options li .attr_value,
+   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .rels > .relations_options li .attr_value,
+   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .parent_conds > .parent_conditions_options li .attr_value {
+	width:calc((100% - 90px) / 2);
 }
 .db_dao_action_task_html.insertObject .attrs > .attributes_options li .attr_alias,
    .db_dao_action_task_html.findObjectsColumnMax .attrs > .attributes_options li .attr_alias,

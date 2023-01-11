@@ -230,6 +230,12 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_object_method_task_html > .method_obj_name {
 	margin-top:0;
 }
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_function_task_html > .func_name > .add_variable.inline {
+	margin-left:-20px;
+}
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body .include_file .add_variable.inline {
+	margin-left:-20px;
+}
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body .call_business_logic_task_html > div:not(.broker_method_obj) > .add_variable,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body .call_ibatis_query_task_html > div:not(.broker_method_obj) > .add_variable,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body .call_hibernate_method_task_html > div:not(.broker_method_obj) > .add_variable,
@@ -347,8 +353,15 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 	display:none;
 	margin:20px auto;
 }
-.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_function_task_html .func_name label {
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_function_task_html .include_file {
+	width:calc(100% + 50px);
+}
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_function_task_html .func_name label,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_function_task_html .include_file label {
 	width:110px;
+}
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_function_task_html .include_file input[type=text] {
+	width:180px;
 }
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_function_task_html .result,
    .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_function_task_html .task_property_exit {
@@ -365,10 +378,17 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
    .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_object_method_task_html .method_static {
 	margin-bottom:5px;
 }
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_object_method_task_html .include_file {
+	width:calc(100% + 50px);
+}
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_object_method_task_html .method_obj_name label, 
    .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_object_method_task_html .method_name label, 
-   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_object_method_task_html .method_static label {
+   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_object_method_task_html .method_static label, 
+   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_object_method_task_html .include_file label {
 	width:110px;
+}
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_object_method_task_html .include_file input[type=text] {
+	width:180px;
 }
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_object_method_task_html .result,
    .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .call_object_method_task_html .task_property_exit {
@@ -535,7 +555,8 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
    .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body.database_action_body_delete .database_action_table > .attributes,
    .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body.database_action_body_insert .database_action_table > .attributes li .attr_name,
    .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body.database_action_body_update .database_action_table > .attributes li .attr_name,
-   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body.database_action_body_select .database_action_table > .attributes li .attr_value {
+   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body.database_action_body_select .database_action_table > .attributes li .attr_value,
+   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body.database_action_body_count .database_action_table > .attributes {
 	display:none !important;
 }
 
@@ -567,6 +588,9 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 }
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .relationship .query .taskflowchart .jsplumbtaskworkflow {
 	width:100%;
+}
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .relationship .query .taskflowchart .jsplumbtaskworkflow .choose_table_or_attribute {
+	border:1px solid #999;
 }
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .relationship .query .taskflowchart .jsplumbtaskworkflow .task.task_query .info span:not(.icon) {
 	margin-top:-4px;
@@ -1220,6 +1244,10 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
   .sla .taskflowchart.with_top_bar_menu .tasks_menu_hide.connection_properties_shown, 
   .sla .taskflowchart.with_top_bar_menu .tasks_flow.connection_properties_shown {
 	bottom:0 !important;
+}
+.sla #ui .taskflowchart .selected_task_properties > .properties_task_id,
+  .sla #ui .taskflowchart .selected_connection_properties > .properties_connection_id {
+	display:inline-block !important;
 }
 .sla .taskflowchart:not(.fixed_properties) .selected_task_properties > .maximize_minimize_icon,
   .sla .taskflowchart:not(.fixed_properties) .selected_connection_properties > .maximize_minimize_icon {

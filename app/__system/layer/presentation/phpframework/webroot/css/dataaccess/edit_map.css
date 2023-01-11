@@ -40,6 +40,10 @@
 	left:125px;
 	z-index:2;
 }
+.in_popup .edit_map .map .map_id {
+	top:16px;
+	left:140px;
+}
 .edit_map .results_maps.map .map_id {
 	left:102px;
 }
@@ -51,6 +55,10 @@
 	border:1px solid #ccc;
 	color:var(--main-iframe-color);
 	background:transparent;
+}
+.in_popup .edit_map .map .map_id input {
+	background:var(--main-popup-header-bg);
+	color:var(--main-popup-header-color);
 }
 .edit_map .data_access_obj .relationships .map .map_class {
 	margin-left:10px;

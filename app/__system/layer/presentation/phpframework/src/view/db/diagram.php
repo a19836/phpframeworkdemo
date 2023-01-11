@@ -18,7 +18,11 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $head = $WorkFlowUIHandler->getHeader(); $head .= '
+include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $head = '
+	<!-- Add ACE Editor JS files -->
+	<script src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ace.js"></script>
+	<script src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
+	'; $head .= $WorkFlowUIHandler->getHeader(); $head .= '
 	<!-- Add Layout CSS file -->
 	<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
 	
@@ -28,15 +32,11 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHan
 		var get_updated_db_diagram_url = \'' . $project_url_prefix . 'db/get_updated_db_diagram?layer_bean_folder_name=' . $layer_bean_folder_name . '&bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $workflow_path_id . '\';
 		var get_db_data_url = \'' . $project_url_prefix . 'db/get_db_data?layer_bean_folder_name=' . $layer_bean_folder_name . '&bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&table=#table#\';
 		var create_diagram_sql_url = \'' . $project_url_prefix . 'db/create_diagram_sql?layer_bean_folder_name=' . $layer_bean_folder_name . '&bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&popup=1\';
+		var sync_diagram_with_db_server_url = \'' . $project_url_prefix . 'db/sync_diagram_with_db_server?layer_bean_folder_name=' . $layer_bean_folder_name . '&bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '\';
 		
 		var task_type_id = "' . WorkFlowDBHandler::TASK_TABLE_TYPE . '";
-		
-		jsPlumbWorkFlow.jsPlumbProperty.selected_connection_properties_id_text_prefix = "";
-		jsPlumbWorkFlow.jsPlumbProperty.selected_connection_properties_id_text_suffix = "";
-		jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id_text_prefix = "";
-		jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id_text_suffix = "";
 	</script>
-	<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/db/diagram.js"></script>'; $head .= $WorkFlowUIHandler->getJS($workflow_path_id, false, array("resizable_task_properties" => true, "resizable_connection_properties" => true)); $head .= '<script>prepareTaskContextMenu();</script>'; $menus = array( "Flush Cache" => array( "class" => "flush_cache", "html" => '<a onClick="return flushCache();"><i class="icon flush_cache"></i> Flush Cache</a>', ), "Empty Diagram" => array( "class" => "empty_diagram", "html" => '<a onClick="emptyDiagam();return false;"><i class="icon empty_diagram"></i> Empty Diagram</a>', ), 0 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Add new Table" => array( "class" => "add_new_table", "html" => '<a onClick="addNewTable();return false;"><i class="icon add"></i> Add new Table</a>', ), "Load Tables from DB Server" => array( "class" => "update_db_diagram_automatically", "title" => "Update DB Diagram Automatically", "html" => '<a onClick="return updateDBDiagram();"><i class="icon update_db_diagram_automatically"></i> Load Tables from DB Server</a>', ), 1 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Create Diagram's SQL" => array( "class" => "create_diagram_sql", "html" => '<a onClick="createDiagamSQL();return false;"><i class="icon create_diagram_sql"></i> Create Diagram\'s SQL</a>', ), 2 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Maximize/Minimize Editor Screen" => array( "class" => "tasks_flow_full_screen", "html" => '<a onClick="toggleFullScreen(this);return false;"><i class="icon full_screen"></i> Maximize Editor Screen</a>', ), 3 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Save" => array( "class" => "save", "html" => '<a onClick="return saveDBDiagram();"><i class="icon save"></i> Save</a>', ), ); $WorkFlowUIHandler->setMenus($menus); $main_content = '
+	<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/db/diagram.js"></script>'; $head .= $WorkFlowUIHandler->getJS($workflow_path_id, false, array("resizable_task_properties" => true, "resizable_connection_properties" => true)); $menus = array( "Flush Cache" => array( "class" => "flush_cache", "html" => '<a onClick="return flushCache();"><i class="icon flush_cache"></i> Flush Cache</a>', ), "Empty Diagram" => array( "class" => "empty_diagram", "html" => '<a onClick="emptyDiagam();return false;"><i class="icon empty_diagram"></i> Empty Diagram</a>', ), 0 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Add new Table" => array( "class" => "add_new_table", "html" => '<a onClick="addNewTable();return false;"><i class="icon add"></i> Add new Table</a>', ), "Load Tables from DB Server" => array( "class" => "update_db_diagram_automatically", "title" => "Update DB Diagram Automatically", "html" => '<a onClick="return updateDBDiagram();"><i class="icon update_db_diagram_automatically"></i> Load Tables from DB Server</a>', ), 1 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Create Diagram's SQL" => array( "class" => "create_diagram_sql", "html" => '<a onClick="createDiagamSQL();return false;"><i class="icon create_diagram_sql"></i> Create Diagram\'s SQL</a>', ), 2 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Enable Auto-Sync Diagram with DB Server" => array( "class" => "sync_automatically_with_db_server hidden", "html" => '<a onClick="toggleAutoSyncWithDBServer(this, true);return false;"><i class="icon server"></i> Enable Auto-Sync Diagram with DB Server</a>', ), "Sync Diagram NOW with DB Server" => array( "class" => "sync_now_with_db_server", "html" => '<a onClick="syncNowWithDBServer(this);return false;"><i class="icon server"></i> Sync Diagram NOW with DB Server</a>', ), 3 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Maximize/Minimize Editor Screen" => array( "class" => "tasks_flow_full_screen", "html" => '<a onClick="toggleFullScreen(this);return false;"><i class="icon full_screen"></i> Maximize Editor Screen</a>', ), 4 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Save" => array( "class" => "save", "html" => '<a onClick="return saveDBDiagram();"><i class="icon save"></i> Save</a>', ), ); $WorkFlowUIHandler->setMenus($menus); $main_content = '
 	<div class="top_bar">
 		<header>
 			<div class="title">Tables Diagram for DB: \'' . $bean_name . '\'</div>
@@ -48,6 +48,7 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHan
 			DBTableTaskPropertyObj.column_types = ' . json_encode($DBDriver->getDBColumnTypes()) . ';
 			DBTableTaskPropertyObj.column_simple_types = ' . json_encode($DBDriver->getDBColumnSimpleTypes()) . ';
 			DBTableTaskPropertyObj.column_numeric_types = ' . json_encode($DBDriver->getDBColumnNumericTypes()) . ';
+			DBTableTaskPropertyObj.column_mandatory_length_types = ' . json_encode($DBDriver->getDBColumnMandatoryLengthTypes()) . ';
 			DBTableTaskPropertyObj.column_types_ignored_props = ' . json_encode($DBDriver->getDBColumnTypesIgnoredProps()) . ';
 			DBTableTaskPropertyObj.column_types_hidden_props = ' . json_encode($DBDriver->getDBColumnTypesHiddenProps()) . ';
 			DBTableTaskPropertyObj.table_charsets = ' . json_encode($DBDriver->getTableCharsets()) . ';
@@ -55,4 +56,15 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHan
 			DBTableTaskPropertyObj.table_storage_engines = ' . json_encode($DBDriver->getStorageEngines()) . ';
 			DBTableTaskPropertyObj.column_charsets = ' . json_encode($DBDriver->getColumnCharsets()) . ';
 			DBTableTaskPropertyObj.column_collations = ' . json_encode($DBDriver->getColumnCollations()) . ';
+			DBTableTaskPropertyObj.allow_column_sorting = ' . $DBDriver->allowTableAttributeSorting() . ';
+			
+			DBTableTaskPropertyObj.on_load_task_properties_callback = onLoadDBTableTaskProperties;
+			DBTableTaskPropertyObj.on_submit_task_properties_callback = onSubmitDBTableTaskProperties;
+			DBTableTaskPropertyObj.on_task_creation_callback = onDBTableTaskCreation;
+			DBTableTaskPropertyObj.on_task_deletion_callback = onDBTableTaskDeletion;
+			DBTableTaskPropertyObj.on_update_simple_attributes_html_with_table_attributes_callback = onUpdateSimpleAttributesHtmlWithTableAttributes;
+			DBTableTaskPropertyObj.on_update_table_attributes_html_with_simple_attributes_callback = onUpdateTableAttributesHtmlWithSimpleAttributes;
+			DBTableTaskPropertyObj.on_add_task_properties_attribute_callback = onAddTaskPropertiesAttribute;
+			DBTableTaskPropertyObj.on_before_remove_task_properties_attribute_callback = onBeforeRemoveTaskPropertiesAttribute;
+			DBTableTaskPropertyObj.on_before_sort_task_properties_attributes = onBeforeSortTaskPropertiesAttributes;
 		</script>'; $main_content .= '<div class="loading_panel"></div>'; } else { $error_message = "Error: DB Name undefined!"; } ?>

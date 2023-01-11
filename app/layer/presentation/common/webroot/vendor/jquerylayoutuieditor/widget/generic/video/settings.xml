@@ -54,6 +54,7 @@
 				});
 				
 				menu_widget.children(".properties").attr({
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.video.onOpenWidgetSettings",
 					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.video.saveSettingsField",
 					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.video.parseSettings",
 				});
@@ -72,6 +73,10 @@
 				widget_settings["src"] = widget.attr("src");
 				widget_settings["controls"] = widget.attr("controls") ? 1 : 0;
 				widget_settings["autoplay"] = widget.attr("autoplay") ? 1 : 0;
+			};
+			
+			me.onOpenWidgetSettings = function(widget, menu_settings) {
+				ui_creator.addMenuSettingsContextMenu( menu_settings.find(" > .settings-properties input") );
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {

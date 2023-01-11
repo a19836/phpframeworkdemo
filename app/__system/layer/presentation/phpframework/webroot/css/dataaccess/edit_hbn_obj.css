@@ -25,6 +25,10 @@
 	left:130px;
 	z-index:1502;
 }
+.in_popup .edit_hbn_obj .data_access_obj > .name {
+	top:16px;
+	left:146px;
+}
 .edit_hbn_obj .data_access_obj > .name label {
 	display:none;
 }
@@ -33,6 +37,10 @@
 	border:1px solid #ccc;
 	color:var(--main-iframe-color);
 	background:transparent;
+}
+.in_popup .edit_hbn_obj .data_access_obj > .name input {
+	background:var(--main-popup-header-bg);
+	color:var(--main-popup-header-color);
 }
 .edit_hbn_obj .data_access_obj #tabs {
 	min-width:640px;

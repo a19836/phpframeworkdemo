@@ -70,7 +70,7 @@
 		</select>
 		<div class="attributes array_items"></div>
 		<ul class="attributes_options">
-			<a class="icon item_add" onclick="DBDAOActionTaskPropertyObj.onAddTableAttributeOption(this)" title="Add">add</a>
+			<a class="icon add" onclick="DBDAOActionTaskPropertyObj.onAddTableAttributeOption(this)" title="Add">add</a>
 			<li class="no_items">There are no loaded attributes!</li>
 		</ul>
 	</div>
@@ -88,7 +88,7 @@
 		</select>
 		<div class="conditions array_items"></div>
 		<ul class="conditions_options">
-			<a class="icon item_add" onclick="DBDAOActionTaskPropertyObj.onAddTableAttributeOption(this)" title="Add">add</a>
+			<a class="icon add" onclick="DBDAOActionTaskPropertyObj.onAddTableAttributeOption(this)" title="Add">add</a>
 			<li class="no_items">There are no loaded conditions!</li>
 		</ul>
 	</div>
@@ -107,7 +107,7 @@
 		</select>
 		<div class="relations array_items"></div>
 		<ul class="relations_options">
-			<a class="icon item_add" onclick="DBDAOActionTaskPropertyObj.onAddTableAttributeOption(this)" title="Add">add</a>
+			<a class="icon add" onclick="DBDAOActionTaskPropertyObj.onAddTableAttributeOption(this)" title="Add">add</a>
 			<li class="no_items">There are no loaded relations!</li>
 		</ul>
 	</div>
@@ -125,7 +125,7 @@
 		</select>
 		<div class="parent_conditions array_items"></div>
 		<ul class="parent_conditions_options">
-			<a class="icon item_add" onclick="DBDAOActionTaskPropertyObj.onAddTableAttributeOption(this)" title="Add">add</a>
+			<a class="icon add" onclick="DBDAOActionTaskPropertyObj.onAddTableAttributeOption(this)" title="Add">add</a>
 			<li class="no_items">There are no loaded conditions!</li>
 		</ul>
 	</div-->

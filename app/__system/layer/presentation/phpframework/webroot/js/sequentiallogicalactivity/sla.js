@@ -81,11 +81,17 @@ function onToggleSLAAutoSave() {
 
 /* LOAD FUNCTIONS */
 
-function loadSLASettingsActions(add_group_icon, actions, is_sub_group) {
+function loadSLASettingsActions(add_group_icon, actions, is_sub_group, asynchronous) {
 	if (actions) {
 		$.each(actions, function (i, action) {
 			var group_item = is_sub_group ? addNewSLASubGroup(add_group_icon) : addNewSLAGroup(add_group_icon);
-			loadSLASettingsAction(action, group_item);
+			
+			if (asynchronous)
+				setTimeout(function() {
+					loadSLASettingsAction(action, group_item, asynchronous);
+				}, 1);
+			else
+				loadSLASettingsAction(action, group_item);
 		});
 		
 		var sla_groups_flow = $(add_group_icon).parent().closest(".sla_groups_flow");
@@ -96,7 +102,7 @@ function loadSLASettingsActions(add_group_icon, actions, is_sub_group) {
 	}
 }
 		
-function loadSLASettingsAction(action, group_item) {
+function loadSLASettingsAction(action, group_item, asynchronous) {
 	if ($.isPlainObject(action) && group_item[0]) {
 		var result_var_name = action["result_var_name"];
 		var action_type = ("" + action["action_type"]).toLowerCase();
@@ -279,7 +285,7 @@ function loadSLASettingsAction(action, group_item) {
 				loop_elm.find(' > header > .array_item_key_variable_name > input').val(action_value["array_item_key_variable_name"]);
 				loop_elm.find(' > header > .array_item_value_variable_name > input').val(action_value["array_item_value_variable_name"]);
 				
-				loadSLASettingsActions(sub_add_group_icon[0], action_value["actions"], true);
+				loadSLASettingsActions(sub_add_group_icon[0], action_value["actions"], true, asynchronous);
 				
 				break;
 			
@@ -289,7 +295,7 @@ function loadSLASettingsAction(action, group_item) {
 				
 				group_elm.find(' > header > .group_name > input').val(action_value["group_name"]);
 				
-				loadSLASettingsActions(sub_add_group_icon[0], action_value["actions"], true);
+				loadSLASettingsActions(sub_add_group_icon[0], action_value["actions"], true, asynchronous);
 				
 				break;
 		}
@@ -318,6 +324,7 @@ function loadSLASettingsAction(action, group_item) {
 			case "update":
 			case "delete":
 			case "select":
+			case "count":
 			case "procedure":
 			case "getinsertedid":
 				$(function () { //must be after everything loads otherwise the UI was not created yet
@@ -508,6 +515,9 @@ function convertActionValueToSQL(action_type, action_value) {
 			if (attributes)
 				sql += "select " + attributes + " from " + action_value["table"] + conditions;
 			break;
+		case "count":
+			sql += "select count(*) from " + action_value["table"] + conditions;
+			break;
 	}
 	
 	return sql;
@@ -612,7 +622,7 @@ function convertSettingsToTasksValues(settings_values) {
 					//console.log(action_value);
 					//console.log(action["action_value"]);
 				}
-				else if (action_type == "insert" || action_type == "update" || action_type == "delete" || action_type == "select" || action_type == "procedure" || action_type == "getinsertedid") {
+				else if (action_type == "insert" || action_type == "update" || action_type == "delete" || action_type == "select" || action_type == "count" || action_type == "procedure" || action_type == "getinsertedid") {
 					if (action_value["items"] && $.isPlainObject(action_value["items"]) && action_value["items"]["options"]) {
 						var v = action_value["items"]["options"];
 						
@@ -836,9 +846,6 @@ function initSLAGroupItemTasks(group_item, values) {
 }
 
 function initSLAGroupItemUndefinedTask(group_item, tag_name, tag_values) {
-	console.log(group_item);
-	throw new Error("asd");
-	
 	group_item.find(" > .sla_group_body > .undefined_action_value").val( JSON.stringify(tag_values) );
 	
 	var select = group_item.find(" > .sla_group_header > select.action_type");
@@ -937,6 +944,7 @@ function onChangeSLAInputType(elm) {
 		case "update":
 		case "delete":
 		case "select":
+		case "count":
 		case "procedure":
 		case "getinsertedid":
 			var section = sections.filter(".database_action_body");
@@ -987,7 +995,7 @@ function onChangeSLAInputType(elm) {
 					var rel_type = html.children(".rel_type");
 					rel_type.hide();
 					rel_type_select = rel_type.children("select");
-					rel_type_select.val(selection);
+					rel_type_select.val(selection == "count" ? "select" : selection);
 					updateRelationshipType(rel_type_select[0], rand);
 					
 					html.find(".myfancypopup.choose_table_or_attribute > .contents > .db_broker > select").change(function () {
@@ -1014,7 +1022,7 @@ function onChangeSLAInputType(elm) {
 			}
 			else {
 				var rand = rel_type_select.parent().closest(".relationship").children(".query").attr("rand_number");
-				rel_type_select.val(selection);
+				rel_type_select.val(selection == "count" ? "select" : selection);
 				updateRelationshipType(rel_type_select[0], rand);
 			}
 			
@@ -1207,7 +1215,18 @@ function initDatabaseActionBodyQueryDesign(elm, rand_number) {
 			clearInterval(interval);
 			
 			var rel_type = elm.parent().closest(".relationship").find(" > .rel_type > select").val();
-			var action_type_select = elm.parent().closest(".sla_group_item").find(" > .sla_group_header select.action_type");
+			var sla_group_item = elm.parent().closest(".sla_group_item");
+			
+			//check if rel_type var should be "count" instead of "select", based in the sql
+			if (rel_type == "select") {
+				var rel = getUserRelationshipObj( query_settings_elm.parent().closest(".relationship") );
+				var sql = rel[1] && rel[1]["value"] ? rel[1]["value"] : "";
+				
+				if (sql != "" && sla_group_item.find(" > .sla_group_body > .database_action_body").hasClass("database_action_body_count") && sql.replace(/^\s+/g, "").match(/^select\scount\(\*\)\sfrom\s/i))
+					rel_type = "count";
+			}
+			
+			var action_type_select = sla_group_item.find(" > .sla_group_header select.action_type");
 			action_type_select.val(rel_type);
 			onChangeSLAInputType( action_type_select[0] );
 		}
@@ -1503,8 +1522,8 @@ function updateDBActionTableAttributes(elm, already_synced) {
 			html += '<li data_attr_name="' + attributes[idx] + '">'
 					+ '<input class="attr_active" type="checkbox" onClick="activateDBActionTableAttribute(this)" />'
 					+ '<label>' + attributes[idx] + '</label>'
-					+ '<input class="attr_value" type="text" title="Write the value here" />'
-					+ '<input class="attr_name" type="text" title="Write the alias/label here" />'
+					+ '<input class="attr_value" type="text" title="Write the value here" placeHolder="Write a value" />'
+					+ '<input class="attr_name" type="text" title="Write the alias/label here" placeHolder="Write an alias/label" />'
 					+ '<span class="icon add_variable" onClick="onSLADataBaseActionTableProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>'
 				+ '</li>';
 	
@@ -1930,8 +1949,8 @@ function toggleGroupBody(elm) {
 	}
 }
 
-function removeGroupItem(elm) {
-	if (confirm("Do you wish to remove this item?")) {
+function removeGroupItem(elm, do_not_confirm) {
+	if (do_not_confirm || confirm("Do you wish to remove this item?")) {
 		var item = $(elm).parent().closest(".sla_group_item");
 		var parent = item.parent();
 		item.remove();
@@ -2013,14 +2032,23 @@ function onSLAProgrammingTaskChooseCreatedVariable(elm) {
 		//hide option 2 bc it doesn't matter
 		popup.find(" > .type > select > option[value=class_prop_var]").hide();
 		
+		//add new list option
+		var option_get = popup.find(" > .new_var > .group > select > option[value=_GET]");
+		var option_prev = option_get.prev("option");
+		
+		if (option_prev.attr("value") != "[\\$idx]")
+			option_get.before('<option value="[\\$idx]">Local list variable</option>');
+		
+		//prepare type field
 		popup.children(".type").show();
 		onChangePropertyVariableType( popup.find(".type select")[0] );
 		
+		//prepare popup
 		MyFancyPopup.init({
 			elementToShow: popup,
 			parentElement: document,
 			onOpen: function() {
-				//bc this can be a little bit slow if the forms has several groups, we add a timeout to happen assynchronously
+				//bc this can be a little bit slow if the forms has several groups, we add a timeout to happen asynchronously
 				setTimeout(function() {
 					//update ProgrammingTaskUtil.variables_in_workflow
 					updateSLAProgrammingTaskVariablesInWorkflow(popup);
@@ -2028,7 +2056,7 @@ function onSLAProgrammingTaskChooseCreatedVariable(elm) {
 			},
 			
 			targetField: target_field[0],
-			updateFunction: function(other_elm) {
+			updateFunction: function(other_elm) { //prepare update handler
 				var type = popup.find(".type select").val();
 				var type_elm = popup.find("." + type);
 				var value = null;
@@ -2063,6 +2091,9 @@ function onSLAProgrammingTaskChooseCreatedVariable(elm) {
 					else if (target_field.is(".value") && target_field.parent().is(".item")) //in case of array items
 						target_field.parent().children(".value_type").val("");
 					
+					//put cursor in targetField
+					target_field.focus();
+					
 					MyFancyPopup.hidePopup();
 				}
 				else
@@ -2070,6 +2101,7 @@ function onSLAProgrammingTaskChooseCreatedVariable(elm) {
 			},
 		});
 		
+		//show popup
 		MyFancyPopup.showPopup();
 	}
 	else
@@ -2083,10 +2115,35 @@ function updateSLAProgrammingTaskVariablesInWorkflow(popup) {
 	//show loading bar
 	showLoadingBarInSLAProgrammingTaskVariablesInWorkflow(select);
 	
+	//set vars in select
+	updateSLAProgrammingTaskVariablesInWorkflowSelect(select);
+	
+	//hide loading bar
+	hideLoadingBarInSLAProgrammingTaskVariablesInWorkflow(select);
+}
+
+function updateSLAProgrammingTaskVariablesInWorkflowSelect(select) {
+	window.variables_in_workflow_loading_processes = 0;
 	ProgrammingTaskUtil.variables_in_workflow = {};
 	
 	if (update_sla_programming_task_variables_from_sla_groups) {
 		var inputs = $(".sla_groups_flow .sla_groups .sla_group_item:not(sla_group_default) > .sla_group_header > .result_var_name");
+		var include_paths = [];
+		
+		$.each(inputs, function(idx, input) {
+			input = $(input);
+			var sla_group_header = input.parent();
+			var sla_group_item = sla_group_header.parent();
+			var action_type = sla_group_header.children(".action_type").val();
+			
+			if (action_type == "include_file") {
+				var item_settings = getSLASettingsFromItemsToSave(sla_group_item, {ignore_errors: true});
+				var action_value = item_settings && item_settings[0] ? item_settings[0]["action_value"] : null;
+				
+				if ($.isPlainObject(action_value) && action_value["path"])
+					include_paths.push(action_value["path"]);
+			}
+		});
 		
 		$.each(inputs, function(idx, input) {
 			input = $(input);
@@ -2094,16 +2151,16 @@ function updateSLAProgrammingTaskVariablesInWorkflow(popup) {
 			var_name = var_name ? var_name.replace(/^\s+/g, "").replace(/\s+$/g, "") : "";
 			
 			if (var_name != "") {
-				ProgrammingTaskUtil.variables_in_workflow[var_name] = {};
-				
-				//update sub vars if var is a composed var
 				var sla_group_header = input.parent();
 				var sla_group_item = sla_group_header.parent();
 				var action_type = sla_group_header.children(".action_type").val();
 				
-				if (action_type == "select" || action_type == "callbusinesslogic" || action_type == "callibatisquery" || action_type == "callhibernatemethod" || action_type == "getquerydata" || action_type == "setquerydata" || action_type == "restconnector" || action_type == "soapconnector" || action_type == "array") {
+				ProgrammingTaskUtil.variables_in_workflow[var_name] = {};
+				
+				//update sub vars if var is a composed var
+				if (action_type == "select" || action_type == "callbusinesslogic" || action_type == "callibatisquery" || action_type == "callhibernatemethod" || action_type == "getquerydata" || action_type == "setquerydata" || action_type == "restconnector" || action_type == "soapconnector" || action_type == "array" || action_type == "callobjectmethod") {
 					var item_settings = getSLASettingsFromItemsToSave(sla_group_item, {ignore_errors: true});
-					updateSLAProgrammingTaskVariablesInWorkflowBasedInItemSettings(select, var_name, item_settings ? item_settings[0] : null);
+					updateSLAProgrammingTaskVariablesInWorkflowBasedInItemSettings(select, var_name, item_settings ? item_settings[0] : null, include_paths);
 				}
 			}
 		});
@@ -2112,29 +2169,39 @@ function updateSLAProgrammingTaskVariablesInWorkflow(popup) {
 	if (update_sla_programming_task_variables_from_workflow && jsPlumbWorkFlow) {
 		var tasks_properties = jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties;
 		
-		if (tasks_properties)
+		if (tasks_properties) {
+			var include_paths = [];
+			
 			$.each(tasks_properties, function(idx, task_properties) {
-				var var_name = task_properties && task_properties["properties"] ? task_properties["properties"]["result_var_name"] : "";
-				var_name = var_name ? var_name.replace(/^\s+/g, "").replace(/\s+$/g, "") : "";
-				
-				if (var_name != "") {
-					ProgrammingTaskUtil.variables_in_workflow[var_name] = {};
+				if (task_properties && $.isPlainObject(task_properties["properties"]) && task_properties["properties"]["action_type"] == "include_file") {
+					var action_value = task_properties["properties"]["action_value"];
 					
-					//update sub vars if var is a composed var
-					updateSLAProgrammingTaskVariablesInWorkflowBasedInItemSettings(select, var_name, task_properties["properties"]);
+					if ($.isPlainObject(action_value) && action_value["path"])
+						include_paths.push(action_value["path"]);
 				}
 			});
+			
+			$.each(tasks_properties, function(idx, task_properties) {
+				if (task_properties && $.isPlainObject(task_properties["properties"])) {
+					var var_name = task_properties["properties"].hasOwnProperty("result_var_name") ? task_properties["properties"]["result_var_name"] : "";
+					var_name = var_name ? var_name.replace(/^\s+/g, "").replace(/\s+$/g, "") : "";
+					
+					if (var_name != "") {
+						ProgrammingTaskUtil.variables_in_workflow[var_name] = {};
+						
+						//update sub vars if var is a composed var
+						updateSLAProgrammingTaskVariablesInWorkflowBasedInItemSettings(select, var_name, task_properties["properties"], include_paths);
+					}
+				}
+			});
+		}
 	}
-	
-	//hide loading bar
-	hideLoadingBarInSLAProgrammingTaskVariablesInWorkflow(select);
 	
 	//update select field from ProgrammingTaskUtil.variables_in_workflow
 	populateVariablesOfTheWorkflowInSelectField(select);
 }
 
 function showLoadingBarInSLAProgrammingTaskVariablesInWorkflow(select) {
-	window.variables_in_workflow_loading_processes = 0;
 	var p = select.parent();
 	var loading = p.children(".loading");
 	
@@ -2151,7 +2218,7 @@ function hideLoadingBarInSLAProgrammingTaskVariablesInWorkflow(select) {
 		select.parent().children(".loading").remove();
 }
 
-function updateSLAProgrammingTaskVariablesInWorkflowBasedInItemSettings(select, var_name, item_settings) {
+function updateSLAProgrammingTaskVariablesInWorkflowBasedInItemSettings(select, var_name, item_settings, include_paths) {
 	if (item_settings && $.isPlainObject(item_settings)) {
 		var action_type = item_settings["action_type"];
 		var action_value = item_settings["action_value"];
@@ -2185,6 +2252,9 @@ function updateSLAProgrammingTaskVariablesInWorkflowBasedInItemSettings(select, 
 					break;
 				case "setquerydata":
 					updateSLAProgrammingTaskVariablesInWorkflowBasedInSQL(select, var_name, action_value["sql"]);
+					break;
+				case "callobjectmethod":
+					updateSLAProgrammingTaskVariablesInWorkflowBasedInObjectMethod(select, var_name, action_value, include_paths);
 					break;
 				case "restconnector":
 					updateSLAProgrammingTaskVariablesInWorkflowBasedInRestConnector(select, var_name, action_value);
@@ -2221,7 +2291,7 @@ function updateSLAProgrammingTaskVariablesInWorkflowBasedInBusinessLogicService(
 			var broker_props = brokers_settings[broker_name];
 			
 			if (broker_props) {
-				if (("" + bl_settings["service_id"]).indexOf(".get")) { //if a get method: like get, getAll, gets, getItem, getItems, getAllItems
+				if (("" + bl_settings["service_id"]).indexOf(".get") != -1) { //if a get method: like get, getAll, gets, getItem, getItems, getAllItems
 					//http://jplpinto.localhost/__system/phpframework/businesslogic/get_business_logic_attributes?bean_name=SoaBLLayer&bean_file_name=soa_bll.xml&module_id=sample.test&service=ItemService.get
 					var url = get_business_logic_result_properties_url.replace("#bean_file_name#", broker_props[1]).replace("#bean_name#", broker_props[2]).replace("#module_id#", bl_settings["module_id"]).replace("#service#", bl_settings["service_id"]);
 					var url_id = $.md5(url);
@@ -2268,6 +2338,98 @@ function updateSLAProgrammingTaskVariablesInWorkflowBasedInBusinessLogicService(
 						});
 					}
 				}
+			}
+		}
+	}
+}
+
+//get results for ResourceUtil method
+function updateSLAProgrammingTaskVariablesInWorkflowBasedInObjectMethod(select, var_name, om_settings, include_paths) {
+	if (om_settings && om_settings["method_obj"] && om_settings["method_name"]) {
+		if (("" + om_settings["method_name"]).indexOf("get") != -1) { //if a get method: like get, getAll, gets, getItem, getItems, getAllItems
+			//get util path for correspondent method_obj (class name) if exists
+			var method_obj_path = "";
+			var regex = new RegExp("\\->\\s*getUtilPath\\s*\\(");
+			
+			if (include_paths)
+				$.each(include_paths, function(idx, path) {
+					if (path.indexOf(om_settings["method_obj"]) != -1 && (
+						path.indexOf("/util/") != -1 || path.match(regex)
+					)) {
+						//if: $EVC->getUtilPath("some path here")
+						if (path.match(regex)) { 
+							regex = new RegExp("\\->\\s*getUtilPath\\s*\\(\\s*\"([^\"]+)\"\\s*\\)");
+							var m = path.match(regex);
+							
+							if (m && m[1])
+								method_obj_path = m[1];
+							else {
+								regex = new RegExp("\\->\\s*getUtilPath\\s*\\(\\s*'([^']+)'\\s*\\)");
+								m = path.match(regex);
+								
+								if (m && m[1])
+									method_obj_path = m[1];
+							}
+							
+							if (method_obj_path)
+								method_obj_path = "/src/util/" + method_obj_path + "." + (default_extension ? default_extension : "php");
+						}
+						//if: $EVC->getPresentationLayer()->getLayerPathSetting() . \"some path here\"
+						else if (path.match(/\s*\.\s*"/)) { 
+							var m = path.match(/\s*\.\s*"([^"]+)"/);
+							
+							if (m && m[1])
+								method_obj_path = m[1];
+						}
+						
+						return false;
+					}
+				});
+			
+			//http://jplpinto.localhost/__system/phpframework/presentation/get_util_attributes?bean_name=PresentationPLayer&bean_file_name=presentation_pl.xml&class_path=resource/ItemResourceUtil.php&class_name=ItemResourceUtil&method=get
+			var url = get_util_result_properties_url.replace("#class_path#", method_obj_path).replace("#class_name#", om_settings["method_obj"]).replace("#method#", om_settings["method_name"]);
+			var url_id = $.md5(url);
+			
+			if (cached_data_for_variables_in_workflow.hasOwnProperty(url_id)) {
+				var data = cached_data_for_variables_in_workflow[url_id];
+				
+				if(data && $.isPlainObject(data) && data["attributes"])
+					$.each(data["attributes"], function(idx, attr) {
+						var column = attr["column"];
+						
+						if (column)
+							ProgrammingTaskUtil.variables_in_workflow[var_name + (data["is_multiple"] ? "[idx]" : "") + "[" + attr["column"] + "]"] = {};
+					});
+			}
+			else {
+				window.variables_in_workflow_loading_processes++;
+				
+				$.ajax({
+					type : "get",
+					url : url,
+					dataType : "json",
+					success : function(data, textStatus, jqXHR) {
+						cached_data_for_variables_in_workflow[url_id] = data;
+						
+						if(data && $.isPlainObject(data) && data["attributes"]) {
+							$.each(data["attributes"], function(idx, attr) {
+								var column = attr["column"];
+								
+								if (column) 
+									ProgrammingTaskUtil.variables_in_workflow[var_name + (data["is_multiple"] ? "[idx]" : "") + "[" + attr["column"] + "]"] = {};
+							});
+							
+							populateVariablesOfTheWorkflowInSelectField(select);
+						}
+						
+						window.variables_in_workflow_loading_processes--;
+						hideLoadingBarInSLAProgrammingTaskVariablesInWorkflow(select);
+					},
+					error : function(jqXHR, textStatus, errorThrown) { 
+						window.variables_in_workflow_loading_processes--;
+						hideLoadingBarInSLAProgrammingTaskVariablesInWorkflow(select);
+					},
+				});
 			}
 		}
 	}
@@ -2402,7 +2564,7 @@ function updateSLAProgrammingTaskVariablesInWorkflowBasedInSQL(select, var_name,
 			window.variables_in_workflow_loading_processes++;
 			
 			//get selected db broker and db driver and add them to get_query_obj_from_sql
-			var url = get_query_obj_from_sql.replace("#db_broker#", selected_db_broker ? selected_db_broker : "").replace("#db_driver#", selected_db_driver ? selected_db_driver : "");
+			var url = get_query_obj_from_sql.replace("#db_broker#", default_dal_broker ? default_dal_broker : "").replace("#db_driver#", default_db_driver ? default_db_driver : "");
 			
 			$.ajax({
 				type : "post",
@@ -2675,6 +2837,7 @@ function getSLASettingsFromItemsToSave(items, options) {
 				case "update":
 				case "delete":
 				case "select":
+				case "count":
 				case "procedure":
 				case "getinsertedid":
 					var section = group_body.children(".database_action_body");
@@ -3189,6 +3352,10 @@ function getBrokerSettings(elm, brokers_layer_type) {
 			settings["func_name"] = task_html_elm.find(".func_name input").val();
 			settings["func_args"] = parseArgs(task_html_elm.children(".func_args"), "func_args");
 			
+			settings["include_file_path"] = task_html_elm.find(".include_file input[type=text]").val();
+			settings["include_file_path_type"] = task_html_elm.find(".include_file select").val();
+			settings["include_once"] = task_html_elm.find(".include_file input[type=checkbox]").is(":checked") ? 1 : 0;
+			
 			break;
 		case "callobjectmethod":
 			var task_html_elm = elm.children(".call_object_method_task_html");
@@ -3197,6 +3364,10 @@ function getBrokerSettings(elm, brokers_layer_type) {
 			settings["method_name"] = task_html_elm.find(".method_name input").val();
 			settings["method_static"] = task_html_elm.find(".method_static input:checked").val();
 			settings["method_args"] = parseArgs(task_html_elm.children(".method_args"), "method_args");
+			
+			settings["include_file_path"] = task_html_elm.find(".include_file input[type=text]").val();
+			settings["include_file_path_type"] = task_html_elm.find(".include_file select").val();
+			settings["include_once"] = task_html_elm.find(".include_file input[type=checkbox]").is(":checked") ? 1 : 0
 			
 			break;
 		case "restconnector":
@@ -3441,7 +3612,7 @@ function generateSLAGroupsFromTasksFlow(do_not_confirm) {
 							sla.find(".sla_groups_flow > .sla_groups > .sla_group_item").not(".sla_group_default").remove();
 							
 							//load new groups
-							loadSLASettingsActions(add_group_icon, actions_settings, false);
+							loadSLASettingsActions(add_group_icon, actions_settings, false, false);
 						}
 						
 						if (data["error"] && data["error"]["infinit_loop"] && data["error"]["infinit_loop"][0]) {

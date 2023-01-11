@@ -186,11 +186,11 @@
 				//prepare region with editable name
 				span.attr("contenteditable", "true")
 				  .mouseup(function(e) {
-					//prevents that the MyTextSelection open the inline menu
+					//prevents that the TextSelection open the inline menu
 					e.preventDefault();
 					e.stopPropagation();
 					
-					ui_creator.MyTextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
+					ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
 				  })
 				  .keyup(function(e) {
 				  	me.updateRegionName(widget);

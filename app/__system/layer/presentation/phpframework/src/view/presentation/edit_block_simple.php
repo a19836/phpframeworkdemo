@@ -62,6 +62,7 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/module_join_points.js"></script>
 
 <script>
+' . WorkFlowBrokersSelectedDBVarsHandler::printSelectedDBVarsJavascriptCode($project_url_prefix, $bean_name, $bean_file_name, $selected_db_vars) . '
 var layer_type = "pres";
 var selected_project_id = "' . $selected_project_id . '";
 var file_modified_time = ' . $file_modified_time . '; //for version control
@@ -79,12 +80,13 @@ var system_project_common_webroot_url = \'' . $project_common_url_prefix . '\';
 var templates_regions_html_url = \'' . $templates_regions_html_url . '\';  //used in widget: src/view/presentation/common_editor_widget/template_region/import_region_html.xml and in the Layout_ui_editor from the taskflowchart->inlinehtml and createform tasks, for the workflow module.
 
 var block_settings_obj = ' . json_encode($block_settings_obj) . ';
+var brokers_db_drivers = ' . json_encode($brokers_db_drivers) . ';
 var load_module_settings_function = null;
 var is_popup = ' . ($popup ? 1 : 0) . ';
 '; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= '</script>'; $head .= CMSPresentationLayerJoinPointsUIHandler::getHeader(); $head .= LayoutTypeProjectUIHandler::getHeader(); $main_content = '
 	<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 		<header>
-			<div class="title">' . $title . '</div>
+			<div class="title" title="' . $path . '">' . $title . '</div>
 			<ul>
 				<li class="save" data-title="Save Block"><a onClick="saveBlock()"><i class="icon save"></i> Save</a></li>
 				<li class="sub_menu" onclick="openSubmenu(this)">
@@ -101,11 +103,11 @@ var is_popup = ' . ($popup ? 1 : 0) . ';
 				</li>
 			</ul>
 		</header>
-	</div>'; if ($module) { if (!$module["enabled"]) $main_content .='<div class="invalid">Warning: This module is currently DISABLED!</div>'; if ($hard_coded) $main_content .='<div class="invalid">Alert: The system detected that the block id is different than the current file name. We advise you to edit this file with the Advanced UI, otherwise you may overwrite other people\'s changes...</div>'; $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, null, null, null, null, null, $presentation_brokers); $main_content .= '
+	</div>'; if ($module) { if (!$module["enabled"]) $main_content .='<div class="invalid">Warning: This module is currently DISABLED!</div>'; if ($hard_coded) $main_content .='<div class="invalid">Alert: The system detected that the block id is different than the current file name. We advise you to edit this file with the Advanced UI, otherwise you may overwrite other people\'s changes...</div>'; $main_content .= WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, null, null, null, null, null, $presentation_brokers); $image = '<span class="no_photo">No Photo</span>'; if ($module["images"][0]["url"]) { if (preg_match("/\.svg$/i", $module["images"][0]["url"]) && file_exists($module["images"][0]["path"])) $image = file_get_contents($module["images"][0]["path"]); else $image = '<img src="' . $module["images"][0]["url"] . '" />'; } $main_content .= '
 	<div class="block_obj' . (!$popup ? " with_top_bar_section" : "") . '">
 		<div class="module_data">
 			<input type="hidden" name="module_id" value="' . $module_id . '" />
-			<div class="module_img">' . ($module["images"][0]["url"] ? '<img src="' . $module["images"][0]["url"] . '" />' : '<span class="no_photo">No Photo</span>') . '</div>
+			<div class="module_img">' . $image . '</div>
 			<div class="module_label">' . $module["label"] . '</div>
 			<div class="module_description">
 				' . str_replace("\n", "<br>", $module["description"]) . '

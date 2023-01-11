@@ -51,18 +51,16 @@ function initObjectBlockSettings(class_name, save_func, save_func_name) {
 		var els_ui_creator_var_name = "ElsLayoutUIEditor_" + Math.abs(("" + class_name).hashCode()); //Be sure that the hasCode is positive with Math.abs
 		var ElsLayoutUIEditor = new LayoutUIEditor();
 		ElsLayoutUIEditor.options.ui_element = layout_ui_editor_elm;
-		ElsLayoutUIEditor.options.on_choose_page_url_func = typeof onIncludePageUrlTaskChooseFile == "function" ? onIncludePageUrlTaskChooseFile : null;
-		ElsLayoutUIEditor.options.on_choose_image_url_func = typeof onIncludeImageUrlTaskChooseFile == "function" ? onIncludeImageUrlTaskChooseFile : null;
 		ElsLayoutUIEditor.options.template_source_editor_save_func = function() {
 			var button = $(".top_bar .save a")[0];
 			save_func(button);
 		};
-		ElsLayoutUIEditor.options.on_ready_func = function() {
-			if (typeof LayoutUIEditorFormFieldUtil == "function") {
-				var LayoutUIEditorFormFieldUtilObj = new LayoutUIEditorFormFieldUtil(ElsLayoutUIEditor);
-				LayoutUIEditorFormFieldUtilObj.initFormFieldsSettings();
-			}
-		};
+		ElsLayoutUIEditor.options.on_choose_variable_func = typeof onProgrammingTaskChooseCreatedVariable == "function" ? onProgrammingTaskChooseCreatedVariable : null;
+		ElsLayoutUIEditor.options.on_choose_page_url_func = typeof onIncludePageUrlTaskChooseFile == "function" ? onIncludePageUrlTaskChooseFile : null;
+		ElsLayoutUIEditor.options.on_choose_image_url_func = typeof onIncludeImageUrlTaskChooseFile == "function" ? onIncludeImageUrlTaskChooseFile : null;
+		
+		initLayoutUIEditorWidgetResourceOptions(ElsLayoutUIEditor);
+		
 		window[els_ui_creator_var_name] = ElsLayoutUIEditor;
 		ElsLayoutUIEditor.init(els_ui_creator_var_name);
 		

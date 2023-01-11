@@ -2,7 +2,7 @@
 	background-image:url('../img/bg.svg');
 }
 .jsplumbtaskworkflow .task.task_callhibernateobject .eps {
-	background-image:url('../img/bg.svg');
+	background-image:url('../img/bg_hover.svg');
 }
 .jsplumbtaskworkflow .task.task_callhibernateobject .ep {
 	border-color:transparent !important;
@@ -68,8 +68,10 @@
    .call_hibernate_object_task_html .service_id label {
 	width:110px;
 }
-.taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_object_task_html .module_id label,
-   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_object_task_html .service_id label {
+.taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_object_task_html .opts .main_label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_object_task_html .module_id label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_object_task_html .service_id label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_object_task_html .opts .main_label {
 	width:75px;
 }
 .call_hibernate_object_task_html .module_id input,
@@ -79,7 +81,10 @@
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_object_task_html .module_id input,
    .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_object_task_html .service_id input {
-	width:calc(100% - 157px);
+	width:calc(100% - 155px);
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_object_task_html .opts .options_code {
+	width:calc(100% - 174px);
 }
 .call_hibernate_object_task_html .module_id select,
    .call_hibernate_object_task_html .service_id select {
@@ -94,13 +99,9 @@
 .call_hibernate_object_task_html .broker_method_obj .search {
 	margin:0;
 }
-
-.taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_object_task_html .opts .main_label {
-	width:75px;
-}
-.taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_object_task_html .opts .options_code {
-	width:calc(100% - 174px);
+.call_hibernate_object_task_html > div:not(.broker_method_obj) > .add_variable {
+	margin-left:-26px;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_object_task_html .opts > .options > .items {
-	margin-left:130px;
+	margin-left:135px;
 }

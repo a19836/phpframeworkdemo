@@ -62,10 +62,10 @@ $head = '
 				</th>
 			</tr>
 		</thead>
-		<tbody>'; if (is_array($loaded_modules)) { foreach ($loaded_modules as $group_module_id => $loaded_modules_by_group) { $sub_main_content = ""; foreach ($loaded_modules_by_group as $module_id => $loaded_module) if ($project_loaded_modules[$module_id]) { $enable = CMSModuleEnableHandler::isModuleEnabled($project_loaded_modules[$module_id]["path"]); $admin_url = $loaded_module["admin_path"] ? $project_url_prefix . "phpframework/admin/module_admin?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&group_module_id=$group_module_id" : null; $sub_main_content .= '<tr class="group_module_item" group_module_id="' . $group_module_id . '">
+		<tbody>'; if (is_array($loaded_modules)) { foreach ($loaded_modules as $group_module_id => $loaded_modules_by_group) { $sub_main_content = ""; foreach ($loaded_modules_by_group as $module_id => $loaded_module) if ($project_loaded_modules[$module_id]) { $enable = CMSModuleEnableHandler::isModuleEnabled($project_loaded_modules[$module_id]["path"]); $admin_url = $loaded_module["admin_path"] ? $project_url_prefix . "phpframework/admin/module_admin?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&group_module_id=$group_module_id" : null; $image = ''; if ($loaded_module["images"][0]["url"]) { if (preg_match("/\.svg$/i", $loaded_module["images"][0]["url"]) && file_exists($loaded_module["images"][0]["path"])) $image = file_get_contents($loaded_module["images"][0]["path"]); else $image = '<img src="' . $loaded_module["images"][0]["url"] . '" />'; } $sub_main_content .= '<tr class="group_module_item" group_module_id="' . $group_module_id . '">
 						<td class="group"></td>
 						<td class="status"><span class="icon ' . ($enable ? 'enable' : 'disable') . '" title="This module is currently ' . ($enable ? 'enabled' : 'disabled') . '"></span></td>
-						<td class="photo">' . ($loaded_module["images"][0]["url"] ? '<img src="' . $loaded_module["images"][0]["url"] . '" />' : 'No Photo') . '</td>
+						<td class="photo">' . $image . '</td>
 						<td class="label">' . $loaded_module["label"] . '</td>
 						<td class="module_id">' . $loaded_module["id"] . '</td>
 						<td class="description">' . str_replace("\n", "<br>", $loaded_module["description"]) . '</td>

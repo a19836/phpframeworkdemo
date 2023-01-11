@@ -53,6 +53,7 @@
 				});
 				
 				menu_widget.children(".properties").attr({
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.map.onOpenWidgetSettings",
 					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.map.saveSettingsField",
 					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.map.parseSettings",
 				});
@@ -65,6 +66,10 @@
 			me.onCreateTemplateWidget = function(widget, html_element) {
 				if (!html_element) 
 					widget.attr("src", default_src).attr("frameborder", "0");
+			};
+			
+			me.onOpenWidgetSettings = function(widget, menu_settings) {
+				ui_creator.addMenuSettingsContextMenu( menu_settings.find(".settings-properties input") );
 			};
 			
 			me.parseSettings = function(widget, widget_settings) {

@@ -41,9 +41,9 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("Bread
 var save_data_access_object_url = \'' . $project_url_prefix . 'phpframework/dataaccess/save_includes?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $path . '&item_type=' . $item_type . '&obj=' . $hbn_obj_id . '&relationship_type=' . $relationship_type . '\';
 var old_obj_id = null;
 </script>'; $main_content = $WorkFlowQueryHandler->getGlobalTaskFlowChar(); $main_content .= '<div class="edit_includes">
-	<div class="top_bar">
+	<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 		<header>
-			<div class="title">Manage Includes in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj) . '</div>
+			<div class="title" title="' . $path . '">Manage Includes in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj) . '</div>
 			<ul>
 				<li class="save" data-title="Save Includes"><a onClick="saveIbatisObject()"><i class="icon save"></i> Save</a></li>
 				<li class="sub_menu" onClick="openSubmenu(this)">

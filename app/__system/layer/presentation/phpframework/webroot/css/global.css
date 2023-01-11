@@ -302,10 +302,10 @@ input[type=submit]:not(:disabled),
 	right:0;
 	bottom:0;
 	background:rgba(0, 0, 0, .5);
-	display:flex;
+	/*display:flex;
 	flex-direction:column;
 	justify-content:center;
-	align-items:center;
+	align-items:center;*/
 	z-index:99999 !important;
 	overflow-y:auto;
 }
@@ -316,9 +316,9 @@ input[type=submit]:not(:disabled),
 	max-width:80vw;
 	min-height:105px !important;
 	max-height:80vh !important;
-	margin:20px;
+	margin:20px auto;
 	padding:0 15px 15px;
-	display:inline-block;
+	display:block;
 	box-sizing:border-box;
 	overflow-x:hidden;
 	overflow-y:auto;
@@ -328,6 +328,11 @@ input[type=submit]:not(:disabled),
 	background:#FFF !important;
 	color:#2C2D34;
 	font-size:13px;
+}
+.status_message .status_message_info:only-child,
+  .status_message .status_message_error:only-child {
+	display:inline-block;
+	margin-top:40vh;
 }
 .status_message .status_message_info::before,
   .status_message .status_message_error::before {

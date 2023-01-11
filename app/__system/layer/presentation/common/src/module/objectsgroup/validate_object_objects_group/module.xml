@@ -1,6 +1,6 @@
 <module>
 	<label>Validate Object Objects Group</label>
 	<description>Module "Validate Object Objects Group" validates if the objects group belongs to a specific object.</description>
-	<image>logo.png</image>
+	<image>logo.svg</image>
 	<load_module_settings_js_function>loadValidateObjectToObjectBlockSettings</load_module_settings_js_function>
 </module>

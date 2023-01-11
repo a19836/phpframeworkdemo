@@ -14,6 +14,7 @@
 .taskflowchart.fixed_side_properties .selected_task_properties .opts > .options > .items {
 	margin-top:-23px;
 	margin-left:115px;
+	white-space:nowrap;
 }
 .selected_task_properties .opts .array_items ul .items {
 	position:static;

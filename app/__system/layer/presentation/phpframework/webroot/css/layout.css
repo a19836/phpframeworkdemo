@@ -120,6 +120,11 @@
 	float:none;
 	vertical-align:middle;
 }
+.top_bar.in_popup .title input,
+  .top_bar.in_popup .title select {
+	background:var(--main-popup-header-bg);
+	color:inherit;
+}
 .top_bar .title input.hidden,
   .top_bar .title select.hidden {
 	display:none;
@@ -246,6 +251,9 @@
 	display:block;
 	opacity:1;
 	transition:.5s all;
+}
+.top_bar.in_popup header > ul > li > ul {
+	background:none;
 }
 .top_bar header > ul > li:not(.open) > ul {
 	width:0;
@@ -433,6 +441,11 @@
 .top_bar_menu:hover:before,
   .top_bar_menu.open:before {
 	color:var(--icon-hover-color);
+}
+.in_popup .top_bar_menu:before,
+  .top_bar_menu:hover:before,
+  .top_bar_menu.open:before {
+	color:inherit;
 }
 .top_bar_menu > ul {
 	width:auto;
@@ -858,16 +871,20 @@
 .with_top_bar_tab .taskflowchart.with_top_bar_menu > .workflow_menu.top_bar_menu {
 	right:117px;
 }
+.in_popup .with_top_bar_tab .taskflowchart.with_top_bar_menu > .workflow_menu.top_bar_menu {
+	top:16px;
+	right:151px;
+}
 .taskflowchart.with_top_bar_menu > .workflow_menu.top_bar_menu > ul {
 	min-width:auto;
+	position:absolute;
 }
 .taskflowchart.with_top_bar_menu > .workflow_menu.top_bar_menu li {
 	padding:0;
 	background:var(--main-context-menu-bg);
-	color:#444;
+	color:var(--main-context-menu-color);
 	border-left:1px solid var(--main-context-menu-border);
 	border-bottom:0;
-	color:inherit;
 	font-size:8pt;
 	float:none;
 }
@@ -927,21 +944,29 @@ body .taskflowchart .task .short_actions {
 	right:-50px;
 }
 body .taskflowchart .task .short_actions .move_action,
-  body .taskflowchart .task .short_actions .context_menu_action {
+  body .taskflowchart .task .short_actions .context_menu_action,
+  body .taskflowchart .task.task_table .short_actions .add_attribute_action {
 	width:auto;
 	height:auto;
 	background:none !important;
 	font-size:8pt;
 }
 body .taskflowchart .task .short_actions .move_action:hover,
-  body .taskflowchart .task .short_actions .context_menu_action:hover {
+  body .taskflowchart .task .short_actions .context_menu_action:hover,
+  body .taskflowchart .task.task_table .short_actions .add_attribute_action:hover,
+  body .taskflowchart .task.task_table .table_attrs .table_attr td.button .icon:hover {
 	color:var(--icon-after-hover-color);
 }
 body .taskflowchart .task .short_actions .context_menu_action {
 	font-size:10pt;
 }
+body .taskflowchart .task.task_table .short_actions .add_attribute_action {
+	margin-right:10px;
+	font-size:9pt;
+}
 .taskflowchart .task .short_actions .move_action::before,
-  .taskflowchart .task .short_actions .context_menu_action::before {
+  .taskflowchart .task .short_actions .context_menu_action::before,
+  .taskflowchart .task.task_table .short_actions .add_attribute_action::before {
 	text-rendering:auto;
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
@@ -952,11 +977,14 @@ body .taskflowchart .task .short_actions .context_menu_action {
 .taskflowchart .task .short_actions .context_menu_action::before {
 	content:"\f141";
 }
+.taskflowchart .task.task_table .short_actions .add_attribute_action::before {
+	content:"\f0fe";
+}
 
-.task_context_menu, 
-  .task_context_menu ul, 
-  .connection_context_menu, 
-  .connection_context_menu ul {
+body .task_context_menu, 
+  body .task_context_menu ul, 
+  body .connection_context_menu, 
+  body .connection_context_menu ul {
 	padding-top:10px;
 	padding-bottom:10px;
 	background:var(--main-context-menu-bg) !important;
@@ -965,25 +993,25 @@ body .taskflowchart .task .short_actions .context_menu_action {
 	box-shadow:none !important;
 	font-size:11px;
 }
-.task_context_menu li, 
-  .connection_context_menu li {
+body .task_context_menu li, 
+  body .connection_context_menu li {
 	background:var(--main-context-menu-bg) !important;
 	color:var(--main-context-menu-color) !important;
 }
-.task_context_menu li:hover, 
-  .connection_context_menu li:hover {
+body .task_context_menu li:hover, 
+  body .connection_context_menu li:hover {
 	background:var(--main-context-menu-hover-bg) !important;
 	color:var(--main-context-menu-hover-color) !important;
 }
-.task_context_menu li.delete::before, 
-  .connection_context_menu li.delete::before {
+body .task_context_menu li.delete::before, 
+  body .connection_context_menu li.delete::before {
 	content:"";
 	height:10px;
 	display:block;
 	background:var(--main-context-menu-bg);
 }
-.task_context_menu li.delete, 
-  .connection_context_menu li.delete {
+body .task_context_menu li.delete, 
+  body .connection_context_menu li.delete {
 	margin-top:10px;
 }
 body .task_context_menu li a, 
@@ -995,7 +1023,7 @@ body .task_context_menu li a,
 body .task_context_menu .set_label a {
 	background:none !important;
 }
-.task_context_menu .set_label a::before {
+body .task_context_menu .set_label a::before {
 	width:15px;
 	display:inline-block;
 	text-rendering:auto;
@@ -1008,7 +1036,7 @@ body .task_context_menu .set_label a {
 body .task_context_menu .properties a {
 	background:none !important;
 }
-.task_context_menu .properties a::before {
+body .task_context_menu .properties a::before {
 	width:15px;
 	display:inline-block;
 	text-rendering:auto;
@@ -1028,7 +1056,7 @@ body .task_context_menu .start_task.is_start_task a {
 body .task_context_menu .start_task:not(.is_start_task) a {
 	padding-left:42px !important;
 }
-.task_context_menu .start_task.is_start_task a::before {
+body .task_context_menu .start_task.is_start_task a::before {
 	width:15px;
 	display:inline-block;
 	text-rendering:auto;
@@ -1041,7 +1069,7 @@ body .task_context_menu .start_task:not(.is_start_task) a {
 body .task_context_menu .show_code a {
 	background:none !important;
 }
-.task_context_menu .show_code a::before {
+body .task_context_menu .show_code a::before {
 	width:15px;
 	display:inline-block;
 	text-rendering:auto;
@@ -1054,7 +1082,7 @@ body .task_context_menu .show_code a {
 body .task_context_menu .delete a {
 	background:none !important;
 }
-.task_context_menu .delete a::before {
+body .task_context_menu .delete a::before {
 	width:15px;
 	display:inline-block;
 	text-rendering:auto;
@@ -1068,7 +1096,7 @@ body .task_context_menu .delete a {
 body .connection_context_menu .set_label a {
 	background:none !important;
 }
-.connection_context_menu .set_label a::before {
+body .connection_context_menu .set_label a::before {
 	width:15px;
 	display:inline-block;
 	text-rendering:auto;
@@ -1081,7 +1109,7 @@ body .connection_context_menu .set_label a {
 body .connection_context_menu .properties a {
 	background:none !important;
 }
-.connection_context_menu .properties a::before {
+body .connection_context_menu .properties a::before {
 	width:15px;
 	display:inline-block;
 	text-rendering:auto;
@@ -1095,8 +1123,8 @@ body .connection_context_menu .connector_types a,
   body .connection_context_menu .overlay_types a {
 	background:none !important;
 }
-.connection_context_menu .connector_types > a::before, 
-  .connection_context_menu .overlay_types > a::before {
+body .connection_context_menu .connector_types > a::before, 
+  body .connection_context_menu .overlay_types > a::before {
 	width:15px;
 	display:inline-block;
 	text-rendering:auto;
@@ -1110,8 +1138,8 @@ body .connection_context_menu .connector_types li.selected_connector a,
   body .connection_context_menu .overlay_types li.selected_overlay a {
 	background:none !important;
 }
-.connection_context_menu .connector_types li.selected_connector a::before, 
-  .connection_context_menu .overlay_types li.selected_overlay a::before {
+body .connection_context_menu .connector_types li.selected_connector a::before, 
+  body .connection_context_menu .overlay_types li.selected_overlay a::before {
 	width:15px;
 	display:inline-block;
 	text-rendering:auto;
@@ -1125,13 +1153,13 @@ body .connection_context_menu .connector_types li:not(.selected_connector) a,
   body .connection_context_menu .overlay_types li:not(.selected_overlay) a {
 	padding-left:40px !important;
 }
-body .connection_context_menu .connector_types a .rightarrowclass,
-  body .connection_context_menu .overlay_types a .rightarrowclass {
+body .connection_context_menu .connector_types a .right_arrow,
+  body .connection_context_menu .overlay_types a .right_arrow {
 	background:none;
 	top:7px;
 }
-.connection_context_menu .connector_types a .rightarrowclass::before,
-  .connection_context_menu .overlay_types a .rightarrowclass::before {
+body .connection_context_menu .connector_types a .right_arrow::before,
+  body .connection_context_menu .overlay_types a .right_arrow::before {
 	width:15px;
 	display:inline-block;
 	text-rendering:auto;
@@ -1142,7 +1170,7 @@ body .connection_context_menu .connector_types a .rightarrowclass,
 body .connection_context_menu .delete a {
 	background:none !important;
 }
-.connection_context_menu .delete a::before {
+body .connection_context_menu .delete a::before {
 	width:15px;
 	display:inline-block;
 	text-rendering:auto;
@@ -1403,6 +1431,9 @@ body .workflow_message .status span.close_message::before,
 	right:117px;
 	z-index:10001;
 }
+.in_popup .with_top_bar_tab .code_menu.top_bar_menu {
+	right:151px;
+}
 .with_top_bar_tab #ui > .taskflowchart #code > .code_menu.top_bar_menu,
   .with_top_bar_tab #ui > .taskflowchart #ui > .taskflowchart > .workflow_menu.top_bar_menu {
 	top:27px;
@@ -1413,8 +1444,8 @@ body .workflow_message .status span.close_message::before,
 }
 .with_top_bar_tab #ui > .taskflowchart .edit_function_code > #code .code_menu.top_bar_menu, 
   .with_top_bar_tab #ui > .taskflowchart .edit_function_code > #ui .taskflowchart .workflow_menu.top_bar_menu {
-	top:30px;
-	right:120px;
+	top:35px;
+	right:127px;
 }
 
 .with_top_bar_tab #ui > .taskflowchart #code > .ace_editor,
@@ -1641,7 +1672,7 @@ body .layout-ui-editor {
 	
 	--text-selection-menu-popup-border:#eee;
 	--text-selection-menu-popup-button-border:#eee;
-	--text-selection-menu-popup-button-bg:#666;
+	--text-selection-menu-popup-button-bg:#4070ff;
 	--text-selection-menu-popup-button-color:#eee;
 	--text-selection-menu-popup-input-border:#eee;
 	--text-selection-menu-popup-input-bg:#fff;
@@ -1662,7 +1693,7 @@ body .layout-ui-editor {
 	--add-widget-popup-bg:#fff;
 	--add-widget-popup-color:#999;
 	--add-widget-popup-button-border:#eee;
-	--add-widget-popup-button-bg:#666;
+	--add-widget-popup-button-bg:#4070ff;
 	--add-widget-popup-button-color:#eee;
 	--add-widget-popup-input-border:#eee;
 	--add-widget-popup-input-bg:#fff;
@@ -1720,10 +1751,15 @@ body .layout-ui-editor > .menu-layers .main-group > .main-group-title,
 	line-height:23px;
 	font-size:11px;
 }
+body .layout-ui-editor > .menu-layers .main-group > .main-group-title > label,
+  body .layout-ui-editor > .menu-layers .group > .group-title > label {
+	color:inherit;
+}
 body .layout-ui-editor > .menu-layers .main-group > .main-group-title > .toggle,
   body .layout-ui-editor > .menu-layers .group > .group-title > .toggle {
 	width:10px;
 	font-size:inherit;
+	vertical-align:baseline;
 }
 body .layout-ui-editor > .menu-layers .main-group > .main-group-title > .toggle::before,
   body .layout-ui-editor > .menu-layers .group > .group-title .toggle::before {
@@ -1925,9 +1961,63 @@ body .layout-ui-editor.fixed-properties > .menu-settings > .resize-menu-settings
   body .layout-ui-editor.fixed-side-properties > .menu-settings > .resize-menu-settings .button {
 	margin-top:-1px;
 }
+body .layout-ui-editor.fixed-properties > .menu-settings .group > .group-title,
+  body .layout-ui-editor.fixed-side-properties > .menu-settings .group > .group-title {
+	padding:15px 5px 0;
+	font-size:11px;
+	color:var(--main-iframe-top-title-color);
+}
+body .layout-ui-editor.with_top_bar_menu.fixed-properties > .menu-settings li.group:not(.group-open) .group-title,
+  body .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings li.group:not(.group-open) .group-title {
+	padding-bottom:5px;
+}
+body .layout-ui-editor.fixed-properties > .menu-settings .group > ul > .group > .group-title,
+  body .layout-ui-editor.fixed-side-properties > .menu-settings .group > ul > .group > .group-title {
+	font-size:10px;
+}
+body .layout-ui-editor.with_top_bar_menu.fixed-properties > .menu-settings li.group .group-title:hover:after,
+  body .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings li.group .group-title:hover:after {
+	display:none;
+}
+body .layout-ui-editor.fixed-properties > .menu-settings .group > .group-title > .toggle,
+  body .layout-ui-editor.fixed-side-properties > .menu-settings .group > .group-title > .toggle {
+	width:10px;
+	font-size:inherit;
+	vertical-align:baseline;
+}
+body .layout-ui-editor.fixed-properties > .menu-settings .group > .group-title .toggle::before,
+  body .layout-ui-editor.fixed-side-properties > .menu-settings .group > .group-title > .toggle::before {
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	content:"\f054";
+}
+body .layout-ui-editor.fixed-properties > .menu-settings .group.group-open > .group-title .toggle::before,
+  body .layout-ui-editor.fixed-side-properties > .menu-settings .group.group-open > .group-title > .toggle::before {
+	content:"\f078";
+}
+body .layout-ui-editor > .menu-settings li.group.settings-typography .settings-letter-spacing > label {
+	width:calc(100% - 90px);
+}
+body .layout-ui-editor > .menu-settings li.group.settings-typography .settings-vertical-align > label {
+	width:calc(100% - 80px);
+}
+body .layout-ui-editor > .menu-settings li.group.settings-typography .settings-text-align > label {
+	width:calc(100% - 100px);
+}
+body .layout-ui-editor > .menu-settings li.group .settings-attributes > ul > li.settings-empty-attributes {
+	color:var(--main-iframe-top-title-color);
+}
 .layout-ui-editor.with_top_bar_menu.fixed-properties label,
   .layout-ui-editor.with_top_bar_menu.fixed-side-properties label {
 	line-height:20px;
+	color:var(--main-iframe-top-title-color);
+}
+.layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings li.group {
+	min-width:195px;
+}
+.layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings .settings-typography .settings-text-align label {
+	padding-right:0;
 }
 .layout-ui-editor.with_top_bar_menu.fixed-properties > .menu-settings .settings-info .close,
   .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings .settings-info .close,
@@ -1937,10 +2027,25 @@ body .layout-ui-editor.fixed-properties > .menu-settings > .resize-menu-settings
   .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings .settings-info .toggle-settings-side {
 	top:9px;
 }
+.layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings .settings-info .close {
+	right:10px;
+}
+.layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings .settings-info .full-screen {
+	right:30px;
+}
+.layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings .settings-info .toggle-settings-side {
+	right:50px;
+}
 .layout-ui-editor.with_top_bar_menu.fixed-properties > .menu-settings .settings-info .close::before,
   .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings .settings-info .close::before,
   .layout-ui-editor.with_top_bar_menu.fixed-properties > .menu-settings .settings-info .full-screen::before,
-  .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings .settings-info .full-screen::before {
+  .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings .settings-info .full-screen::before,
+  .layout-ui-editor.with_top_bar_menu.fixed-properties > .menu-settings li.group li > .clear-user-input::before,
+  .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings li.group li > .clear-user-input::before,
+  .layout-ui-editor.with_top_bar_menu.fixed-properties > .menu-settings li.group .settings-attributes .add::before,
+  .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings li.group .settings-attributes .add::before,
+  .layout-ui-editor.with_top_bar_menu.fixed-properties > .menu-settings li.group .settings-attributes .delete::before,
+  .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings li.group .settings-attributes .delete::before {
 	text-rendering:auto;
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
@@ -1965,6 +2070,19 @@ body .layout-ui-editor.fixed-properties > .menu-settings > .resize-menu-settings
   .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings.full-screen .settings-info .full-screen::before {
 	content:"\f78c";
 }
+.layout-ui-editor.with_top_bar_menu.fixed-properties > .menu-settings li.group li > .clear-user-input::before,
+  .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings li.group li > .clear-user-input::before {
+	content:"\f00d";
+	line-height:2.3em;
+}
+.layout-ui-editor.with_top_bar_menu.fixed-properties > .menu-settings li.group .settings-attributes .add::before,
+  .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings li.group .settings-attributes .add::before {
+	content:"\f0fe";
+}
+.layout-ui-editor.with_top_bar_menu.fixed-properties > .menu-settings li.group .settings-attributes .delete::before,
+  .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings li.group .settings-attributes .delete::before {
+	content:"\f1f8";
+}
 .layout-ui-editor.with_top_bar_menu.fixed-properties > .menu-settings .settings-info .toggle-settings-side::before,
   .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings .settings-info .toggle-settings-side::before {
 	content:"\f2d0";
@@ -1977,39 +2095,205 @@ body .layout-ui-editor.fixed-properties > .menu-settings > .resize-menu-settings
 	
 }
 
+.layout-ui-editor.with_top_bar_menu.fixed-properties > .menu-settings .enlarged_field .enlarged-field-close,
+  .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings .enlarged_field .enlarged-field-close {
+	color:var(--menu-settings-button-bg);
+}
+
+/* LAYOUT CODE EDITOR - SETTINGS - WIDGET */
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-group-info {
+	margin-top:10px;
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-swap-field > label {
+	max-width:calc(100% - 165px);
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-swap-field.widget-resource-reference > label {
+	max-width:calc(100% - 185px);
+}
+
+/* LAYOUT CODE EDITOR - SETTINGS - WIDGET - ICONS */
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .group > .group-title > .widget-group-item-add::before,
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-item-add::before, 
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-item-remove::before, 
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .swap-input-select::before, 
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .choose-table-attribute::before, 
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .choose-widget-resource::before, 
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .choose-widget-resource-attribute::before, 
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .refresh-existent-data::before,
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-resource > .widget-resource-remove::before, 
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-resource > .widget-resource-toggle::before,
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-display-resource-value > .group-title > .widget-display-resource-value-toggle::before,
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .with-sub-options > .toggle::before {
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	color:var(--main-template-color);
+	line-height:2.3em;
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .group > .group-title > .widget-group-item-add::before {
+	content:"\f0fe";
+	line-height:unset;
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-item-add::before {
+	content:"\f0fe";
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-item-remove::before,
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-resource > .widget-resource-remove::before {
+	content:"\f1f8";
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .swap-input-select::before {
+	content:"\f362";
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .choose-table-attribute::before,
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .choose-widget-resource::before,
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .choose-widget-resource-attribute::before {
+	content:"\f304";
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .refresh-existent-data::before {
+	content:"\f2f1";
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-resource > .widget-resource-toggle::before,
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-display-resource-value > .group-title > .widget-display-resource-value-toggle::before {
+	content:"\f31e";
+	line-height:unset;
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-resource.widget-advanced-options > .widget-resource-toggle::before,
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-display-resource-value.widget-advanced-options > .group-title > .widget-display-resource-value-toggle::before {
+	content:"\f78c";
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .with-sub-options > .toggle {
+	width:10px;
+	font-size:90%;
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .with-sub-options > .toggle::before {
+	content:"\f054";
+	color:var(--main-iframe-top-title-color);
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .with-sub-options.widget-property-open > .toggle::before {
+	content:"\f078";
+}
+
+/* LAYOUT CODE EDITOR - SETTINGS - PROPERTIES - SHOWN/PKS/SEARCH ATTRS NAMES */
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-shown-attrs-names > .widget-item-add::before, 
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-search-attrs-names > .widget-item-add::before, 
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-pks-attrs-names > .widget-item-add::before, 
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-default-attrs-values > .widget-item-add::before {
+	line-height:unset;
+}
+
+/* LAYOUT CODE EDITOR - SETTINGS - AVAILABLE VALUES */
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-available-values > .widget-item-add::before {
+	line-height:unset;
+}
+
+/* LAYOUT CODE EDITOR - SETTINGS - WIDGET - RESOURCE */
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-resource .widget-resource-reference > input, 
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-resource .widget-resource-reference > select {
+	width:calc(100% - 65px);
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-resource .widget-resource-reference:not(.select-shown) > input {
+	width: calc(100% - 50px);
+}
+
+/* LAYOUT CODE EDITOR - SETTINGS - WIDGET - DISPLAY RESOURCE ATTRIBUTE */
+body .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings li.group.settings-widget .widget-display-resource-value > .group-title > .widget-display-resource-value-toggle {
+	line-height:unset;
+	margin:0;
+	float:right;
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-display-resource-value .widget-swap-field.widget-resource-reference > input, 
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-display-resource-value .widget-swap-field.widget-resource-reference > select {
+	max-width:none;
+}
+
+/* MENU SETTINGS - WIDGET - PROPERTIES - ACTIONS */
+body .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-viewable,
+  body .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-addable,
+  body .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-editable,
+  body .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-removable,
+  body .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-multiple-items-actions {
+	background-color:rgba(0, 0, 0, 0.01);
+}
+
+/* LAYOUT CODE EDITOR - SETTINGS - PROPERTIES - ACTION PERMISSIONS */
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-properties .widget-property-action-permissions > .widget-permission > .group-block > li > ul > li input, 
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-properties .widget-property-action-permissions > .widget-permission > .group-block > li > ul > li select {
+	max-width:calc(100% - 70px);
+}
+
+/* LAYOUT CODE EDITOR - SETTINGS - WIDGET - CHOOSE DB TABLE ATTRIBUTE POPUP */
+body .layout-ui-editor.with_top_bar_menu > .menu-settings .widget-choose-db-table-attribute-popup {
+	/*border:1px outset var(--menu-settings-button-bg, #796669);*/
+	border:1px solid rgba(0,0,0,0.25);
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings .widget-choose-db-table-attribute-popup > ul {
+	padding-right:10px !important;
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings .widget-choose-db-table-attribute-popup > .popup-title {
+	background:var(--menu-settings-button-bg, #796669);
+	color:var(--menu-settings-button-color, #463a3c);
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings .widget-choose-db-table-attribute-popup > .popup-title .popup-close {
+	top:8px;
+	right:10px;
+}
+body .layout-ui-editor.with_top_bar_menu > .menu-settings .widget-choose-db-table-attribute-popup > .popup-title .popup-close::before {
+	content:"\f00d";
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	font:var(--fa-font-solid);
+	color:inherit;
+}
+
 /* LAYOUT CODE EDITOR - WIDGET HEADER */
-.layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.html-source,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.paste,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.cut,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.copy,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.add,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.toggle,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.sort,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options > .option.sort,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options > .option.toggle,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options > .option.add,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options > .option.html-source {
+.layout-ui-editor.with_top_bar_menu > .template-widgets .widget-header label,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets .droppable-header label {
+	color:inherit;
+}
+.layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header .options .option .sub-options,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header .options .option .sub-options {
+	margin-top:-25px;
+}
+
+.layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options .option.html-source i,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options .option.paste i,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options .option.cut i,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options .option.copy i,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options .option.add i,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options .option.toggle i,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options .option.sort,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options .option.sort,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options .option.toggle i,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options .option.add i,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options .option.html-source i {
 	font-weight:600;
 }
-.layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.delete::before,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.sort-up::before,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.sort-down::before,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options > .option.sort-right::before,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options > .option.sort-left::before {
+.layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options .option.delete i::before,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options .option.sort-up::before,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options .option.sort-down::before,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options .option.sort-right::before,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options .option.sort-left::before {
 	text-rendering:auto;
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
 }
-.layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.delete::before {
+.layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options .option.delete i::before {
 	content:"\f1f8";
 	font-size:90%;
 }
-.layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.sort-up::before,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options > .option.sort-down::before,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options > .option.sort-right::before,
-  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options > .option.sort-left::before {
+.layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options .option.sort-up::before,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .widget-header > .options .option.sort-down::before,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options .option.sort-right::before,
+  .layout-ui-editor.with_top_bar_menu > .template-widgets > .droppable-header > .options .option.sort-left::before {
 	content:"\f0a9";
 	font-size:90%;
+}
+
+/* LAYOUT CODE EDITOR - ADD WIDGET POPUP */
+body .layout-ui-editor .template-widgets > .add-widget-popup select, 
+  body .layout-ui-editor .template-widgets > .add-widget-popup button {
+	font-size:8pt;
+	font-family:inherit;
 }
 
 /* LAYOUT CODE EDITOR - TEXT SELECTION MENU */
@@ -2031,6 +2315,7 @@ body .layout-ui-editor .text-selection-menu .menu-item-popup input,
   body .layout-ui-editor .text-selection-menu .menu-item-popup textarea, 
   body .layout-ui-editor .text-selection-menu .menu-item-popup button {
 	font-size:8pt;
+	font-family:inherit;
 }
 body .layout-ui-editor .text-selection-menu .table-props table tbody tr td:not(.actions) .delete {
 	margin-top:8px;
@@ -2111,6 +2396,31 @@ body .layout-ui-editor > .messages .message .close::before {
 	margin-right:20px;
 }
 
+/* MENU SETTINGS CONTEXT MENU */
+body .layout-ui-editor-menu-settings-context-menu {
+	padding:10px 0;
+	border-radius:3px;
+	border:1px solid var(--main-context-menu-border);
+	background:var(--main-context-menu-bg);
+	color:var(--main-context-menu-color);
+	font-size:8pt;
+}
+body .layout-ui-editor-menu-settings-context-menu li:hover {
+	background:var(--main-context-menu-hover-bg);
+	color:var(--main-context-menu-hover-color);
+}
+body .layout-ui-editor-menu-settings-context-menu li a {
+	padding:4px 15px 4px 15px;
+	font-size:inherit;
+	font-family:inherit;
+	background:inherit;
+	color:inherit;
+}
+body .layout-ui-editor-menu-settings-context-menu li a:hover {
+	background:inherit;
+	color:inherit;
+}
+
 /* TABS */
 .tabs.tabs_transparent {
 	background:none;
@@ -2136,6 +2446,9 @@ body .layout-ui-editor > .messages .message .close::before {
 	z-index:2;
 	border-bottom:0;
 }
+.in_popup .with_top_bar_tab > .tabs {
+	right:47px;
+}
 
 /* TABS - TABS ICONS */
 .tabs.tabs_icons li { /* Do not add the ".with_top_bar_tab > ", bc in the workflow the edit_function task will open a popup when edit the code, which will use this styles */
@@ -2145,6 +2458,9 @@ body .layout-ui-editor > .messages .message .close::before {
 	margin-right:0;
 	background:none;
 	color:var(--main-iframe-color);
+}
+.in_popup .with_top_bar_tab > .tabs.tabs_icons li:not(.ui-tabs-active) {
+	background:#ccc;
 }
 .tabs.tabs_icons li:not(.ui-tabs-active) {
 	height:calc(100% - 1px);

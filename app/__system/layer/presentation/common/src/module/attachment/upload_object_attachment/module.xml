@@ -1,7 +1,7 @@
 <module>
 	<label>Upload Object Attachment</label>
 	<description>Module "Upload Object Attachment" allows the user to upload a file.</description>
-	<image>logo.png</image>
+	<image>logo.svg</image>
 	<load_module_settings_js_function>loadUploadObjectAttachmentBlockSettings</load_module_settings_js_function>
 	<is_reserved_module>1</is_reserved_module>
 </module>

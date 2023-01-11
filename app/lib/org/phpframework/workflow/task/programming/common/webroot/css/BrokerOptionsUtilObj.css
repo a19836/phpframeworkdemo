@@ -10,14 +10,14 @@
 	width:110px;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .broker_method_obj label {
-	width:55px;
+	width:65px;
 }
 .selected_task_properties .broker_method_obj select {
 	width:237px;
 	margin-bottom:5px;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .broker_method_obj select {
-	width:calc(100% - 60px);
+	width:calc(100% - 70px);
 }
 .selected_task_properties .broker_method_obj input {
 	width:210px;
@@ -25,8 +25,8 @@
 	padding-right:20px;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .broker_method_obj input {
-	width:calc(100% - 85px);
-	margin-left:57px;
+	width:calc(100% - 95px);
+	margin-left:67px;
 }
 .selected_task_properties .broker_method_obj .search {
 	/*margin-top:2px;*/

@@ -2,7 +2,7 @@
 	background-image:url('../img/bg.svg');
 }
 .jsplumbtaskworkflow .task.task_includefile .eps {
-	background-image:url('../img/bg.svg');
+	background-image:url('../img/bg_hover.svg');
 }
 .jsplumbtaskworkflow .task.task_includefile .ep {
 	border-color:transparent !important;
@@ -23,7 +23,9 @@
 	margin-top:5px;
 	margin-bottom:5px;
 }
-.include_file_task_html .file_path, .include_file_task_html .type, .include_file_task_html .once {
+.include_file_task_html .file_path, 
+  .include_file_task_html .type, 
+  .include_file_task_html .once {
 	width:100%;
 	min-height:20px;
 }
@@ -35,13 +37,13 @@
 .taskflowchart.fixed_side_properties .selected_task_properties .include_file_task_html .file_path label, 
   .taskflowchart.fixed_side_properties .selected_task_properties .include_file_task_html .type label, 
   .taskflowchart.fixed_side_properties .selected_task_properties .include_file_task_html .once label {
-	width:45px;
+	width:65px;
 }
 .include_file_task_html .file_path input {
-	width:275px;   
+	width:255px;   
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .include_file_task_html .file_path input {
-	width:calc(100% - 80px);   
+	width:calc(100% - 100px);  
 }
 
 

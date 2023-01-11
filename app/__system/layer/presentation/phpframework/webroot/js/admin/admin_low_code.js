@@ -6,7 +6,7 @@ $(function() {
 	left_panel.tabs();
 	
 	left_panel.find(" > ul.tabs > .tab a").click(function(idx, a){
-		$(".jqcontextmenu").hide();
+		MyContextMenu.hideAllContextMenu();
 	});
 	
 	//prepare right panel iframe
@@ -163,7 +163,12 @@ function refreshIframe() {
 	doc = doc.document ? doc.document : doc;
 	
 	try {
-		iframe.src = doc.location;
+		var url = "" + doc.location;
+		
+		if (url.indexOf("#") != -1)
+			url = url.substr(0, url.indexOf("#"));
+		
+		iframe.src = url;
 	}
 	catch(e) {
 		//sometimes gives an error bc of the iframe beforeunload event. This doesn't matter, but we should catch it and ignore it.

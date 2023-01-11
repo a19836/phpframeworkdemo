@@ -60,6 +60,10 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 	<script language="javascript" type="text/javascript" src="../jsbeautify/js/lib/beautify.js"></script>
 	<script language="javascript" type="text/javascript" src="../jsbeautify/js/lib/beautify-css.js"></script>
 	<script language="javascript" type="text/javascript" src="../myhtmlbeautify/MyHtmlBeautify.js"></script>
+	
+	<!-- CONTEXT MENU -->
+		<link rel="stylesheet" href="../jquerymycontextmenu/css/style.css" type="text/css" charset="utf-8" />
+	<script language="javascript" type="text/javascript" src="../jquerymycontextmenu/js/jquery.mycontextmenu.js"></script>
     	
 	<!-- Layout UI Editor -->
 		<!-- Layout UI Editor - HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -77,15 +81,17 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 		<!-- Layout UI Editor - Add Editor -->
 		<link rel="stylesheet" href="css/some_bootstrap_style.css" type="text/css" charset="utf-8" />
 		<link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+		<link rel="stylesheet" href="css/widget_resource.css" type="text/css" charset="utf-8" />
 		
 		<script language="javascript" type="text/javascript" src="js/TextSelection.js"></script>
 		<script language="javascript" type="text/javascript" src="js/LayoutUIEditor.js"></script>
 		<script language="javascript" type="text/javascript" src="js/CreateWidgetContainerClassObj.js"></script>
 		
-		<!-- Layout UI Editor - LayoutUIEditorFormFieldUtil.js is optional, bc it depends of task/programming/common/webroot/js/FormFieldsUtilObj.js -->
+		<!-- Layout UI Editor - LayoutUIEditorFormField.js is optional, bc it depends of task/programming/common/webroot/js/FormFieldsUtilObj.js -->
 		<script language="javascript" type="text/javascript" src="http://jplpinto.localhost/__system/phpframework/__system/cache/workflow/tasks/default/programming/common/js/global.js"></script><!-- Only exists if phpframework cache was not deleted -->
 		<script language="javascript" type="text/javascript" src="http://jplpinto.localhost/__system/phpframework/__system/cache/workflow/tasks/default/programming/common/js/FormFieldsUtilObj.js"></script><!-- Only exists if phpframework cache was not deleted -->
-		<script language="javascript" type="text/javascript" src="js/LayoutUIEditorFormFieldUtil.js"></script>
+		<script language="javascript" type="text/javascript" src="js/LayoutUIEditorFormField.js"></script>
+		<script language="javascript" type="text/javascript" src="js/LayoutUIEditorWidgetResource.js"></script>
 		
 	<!-- Others -->
 	<script language="javascript" type="text/javascript" src="js/script.js"></script>
@@ -94,32 +100,35 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 		.layout-ui-editor.layout-ui-editor-1 {
 			width:90%;
 			margin:0 auto;
+			/*display:none;*/
 		}
 		
 		.layout-ui-editor.layout-ui-editor-2 {
 			width:80%;
 			margin:100px auto 0 auto;
 			background:#333;
+			/*display:none;*/
 		}
 		.layout-ui-editor.layout-ui-editor-2 > .options > .options-center {
 			background:#333;
 		}
 		
 		.layout-ui-editor-3-button {
-			margin:100px auto 0 auto;
+			margin:100px auto 50px auto;
 			display:block;
 		}
 		.layout-ui-editor.layout-ui-editor-3 {
 			width:80%;
 			margin:20px auto 0 auto;
 			background:#660000;
+			/*display:none;*/
 		}
 		.layout-ui-editor.layout-ui-editor-3 > .options > .options-center {
 			background:#660000;
 		}
 		
 		.layout-ui-editor.layout-ui-editor-4 {
-			margin:100px auto 0 auto;
+			margin:50px auto 0 auto;
 			
 			/* generic */
 			--main-editor-bg:#d5e3e4;
@@ -165,7 +174,7 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 			--menu-settings-button-color:#d5e3e4;
 			--menu-settings-button-hover-color:#bcd4d6;
 			
-			--menu-settings-user-classes-bg:rgba(0,0,0,0.25);
+			--menu-settings-user-classes-bg:rgba(0,0,0,0.05);
 			--menu-settings-user-class-border:transparent;
 			--menu-settings-user-class-bg:#ddd;
 			--menu-settings-user-class-color:#333;
@@ -173,7 +182,7 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 			--menu-settings-group-color:#485152;
 			--menu-settings-group-list-bg:transparent;
 			--menu-settings-group-block-list-border:transparent;
-			--menu-settings-group-block-list-bg:#ccc;
+			--menu-settings-group-block-list-bg:rgba(0,0,0,0.05);
 			
 			--menu-settings-measurement-style-select-border-left:#bcd4d6;
 			--menu-settings-buttons-style-btn-border:transparent;
@@ -290,10 +299,6 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 		  .layout-ui-editor.layout-ui-editor-4 > .template-widgets-options {
 			border:0;
 		}
-		.layout-ui-editor.layout-ui-editor-4 > .menu-settings .group ul.group-block,
-		  .layout-ui-editor.layout-ui-editor-4 > .menu-settings .settings-classes .user-classes {
-			background:rgba(0,0,0,0.05);
-		}
 		.layout-ui-editor.layout-ui-editor-4 > .menu-settings input,
 		  .layout-ui-editor.layout-ui-editor-4 > .menu-settings select,
 		  .layout-ui-editor.layout-ui-editor-4 > .menu-settings textarea {
@@ -302,6 +307,7 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 		
 		.layout-ui-editor.layout-ui-editor-5 {
 			margin:100px auto 0 auto;
+			/*display:none;*/
 		}
 	</style>
 </head>
@@ -329,6 +335,24 @@ if ($_SERVER["HTTP_HOST"] != "jplpinto.localhost")
 			<? echo $menu_widgets_html; ?>
 		</ul>
 	</div>
+	
+	<br/>
+	<br/>
+	<br/>
+	Copy this html to test:
+	<div style="color:#666; padding-left:20px; font-size:90%;">
+		some html &lt;?= $y + 1; ?&gt; <br/>&lt;div &lt;?php echo "w=&amp;quot;1/11&amp;quot;"; ?&gt; x="&lt;?php echo "t=&amp;quot;2/22&amp;quot;"; ?&gt;" age="3&amp;quot;3" &lt;ptl:echo"asd"/&gt; &gt;asdas&lt;/div&gt;<br/> bla ble&lt;ptl:echo "jp"/&gt; some other html
+		<br/>
+		&lt;div class="droppable template-widget template-widget-html-tag template_widget_html-tag_l5i2y_681 widget-active html-tag list-responsive" id="widget_list_widget_list_1" data-widget-list="" data-widget-props="{&amp;quot;pks_attrs_names&amp;quot;:&amp;quot;id&amp;quot;, &amp;quot;load&amp;quot;:&amp;quot;MyWidgetResourceLib.ListHandler.loadListTableAndTreeResource&amp;quot;}" data-widget-resources="{&amp;quot;load&amp;quot;:[{&amp;quot;name&amp;quot;:&amp;quot;items&amp;quot;}],&amp;quot;remove&amp;quot;:[{&amp;quot;name&amp;quot;:&amp;quot;delete_item&amp;quot;}]}" xxx="&lt;ptl:if&gt;&lt;ptl:echo $x/&gt;&lt;/ptl:if&gt;" &lt;ptl:if&gt;&lt;ptl:echo $x/&gt;&lt;/ptl:if&gt;&gt;
+asd a&lt;/div&gt;
+		<br/>
+		&lt;div &lt;ptl:if&gt;&lt;ptl:echo $x/&gt;&lt;/ptl:if&gt;&gt; asd a&lt;/div&gt;
+		<br/>
+		&lt;?php 
+		$EVC-&gt;getCMSLayer()-&gt;getCMSTemplateLayer()-&gt;addRegionHtml("Content", "&lt;div class=\"list-responsive\" id=\"widget_list_widget_list_1\" data-widget-list data-widget-props=\"{&quot;load&quot;:&quot;MyWidgetResourceLib.ListHandler.loadListTableAndTreeResource&quot;,&quot;items_limit_per_page&quot;:&quot;5&quot;,&quot;pks_attrs_names&quot;:[&quot;id&quot;]}\" data-widget-resources=\"{&quot;load&quot;:[{&quot;name&quot;:&quot;items&quot;}],&quot;remove&quot;:[{&quot;name&quot;:&quot;delete_item&quot;}]}\" data-widget-resources-load=\"\"&gt;asd&lt;/div&gt;");
+		?&gt;
+	</div>
+	
 	
 	<div class="layout-ui-editor reverse fixed-side-properties hide-template-widgets-options layout-ui-editor-4">
 		<ul class="menu-widgets hidden">

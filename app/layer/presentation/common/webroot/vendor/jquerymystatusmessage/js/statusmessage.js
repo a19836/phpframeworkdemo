@@ -26,6 +26,8 @@ var StatusMessageHandler = {
 		}
 		
 		this.prepareMessage(status_message, 5000);
+		
+		return status_message;
 	},
 
 	showError : function(message) {
@@ -43,6 +45,8 @@ var StatusMessageHandler = {
 		}
 		
 		this.prepareMessage(status_message, 10000);
+		
+		return status_message;
 	},
 	
 	getMessageElement : function(message, message_class) {
@@ -166,10 +170,20 @@ var StatusMessageHandler = {
 			close_icon.trigger("click");
 		}, timeout);
 		
+		status_message.off();
 		status_message.click(function(event) {
 			event && typeof event.stopPropagation == "function" && event.stopPropagation(); //avoids to call the onClick event from message_html_obj
 		});
+		status_message.hover(function() { //in
+			if (timeout_id)
+				clearTimeout(timeout_id);
+		}, function() { //out
+			timeout_id = setTimeout(function() { 
+				close_icon.trigger("click");
+			}, timeout);
+		});
 		
+		close_icon.off();
 		close_icon.click(function(event) {
 			event && typeof event.stopPropagation == "function" && event.stopPropagation(); //avoids to call the onClick event from message_html_obj
 			

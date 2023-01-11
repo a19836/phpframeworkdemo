@@ -1,28 +1,47 @@
 .manage_table_exta_attributes {
-	min-height:calc(100vh - 100px);
+	min-height:calc(100vh - 30px);
+	margin-top:-15px;
+	margin-bottom:-20px; /*so we don't show any scroll. This is needed bc of padding-bottom:20px of the: ".main_content .content" */
+	font-size:inherit;
 }
-.manage_table_exta_attributes .attributes {
-	margin:20px auto;
+.manage_table_exta_attributes .attributes_title {
+	margin:10px auto 0;
 	text-align:center;
 }
-.manage_table_exta_attributes .table_attr_file_type {
+.manage_table_exta_attributes > .table_settings .selected_task_properties {
+	padding-top:0;
+}
+.manage_table_exta_attributes > .table_settings .selected_task_properties .db_table_task_html .table_name,
+  .manage_table_exta_attributes > .table_settings .selected_task_properties .db_table_task_html .table_charset,
+  .manage_table_exta_attributes > .table_settings .selected_task_properties .db_table_task_html .table_collation,
+  .manage_table_exta_attributes > .table_settings .selected_task_properties .db_table_task_html .table_storage_engine {
+	display:none !important;
+}
+.manage_table_exta_attributes > .table_settings .selected_task_properties > .db_table_task_html .attributes {
+	margin-top:10px;
+}
+.manage_table_exta_attributes > .table_settings .selected_task_properties .db_table_task_html table {
+	width:1350px;
+}
+.manage_table_exta_attributes > .table_settings:not(.allow_sort) .selected_task_properties .db_table_task_html table {
+	width:1300px;
+}
+.manage_table_exta_attributes > .table_settings .selected_task_properties .db_table_task_html table .table_attr_allow_javascript {
+	width:60px;
+	text-align:center;
+}
+.manage_table_exta_attributes > .table_settings .selected_task_properties .db_table_task_html table .table_attr_file_type {
 	width:90px;
 }
-.manage_table_exta_attributes .table_attr_file_type select {
-	width:90px;
+.manage_table_exta_attributes > .table_settings .selected_task_properties .db_table_task_html table .table_attr_file_type select {
+	width:100%;
+	min-width:90px;
 	text-align:left;
-	font-size:10px !important;
+	font-size:8pt !important;
 	margin:0 auto;
 }
-.manage_table_exta_attributes .table_attr_allow_javascript {
-	width:110px;
-	text-align:center;
-}
-.manage_table_exta_attributes .table_attr_allow_javascript input {
-	margin:0 auto;
-}
-.manage_table_exta_attributes .add {
-	font-size:14px;
+.manage_table_exta_attributes > .table_settings .selected_task_properties .db_table_task_html .simple_attributes .simple_attr_type option.not_apply {
+	color:#ccc;
 }
 
 /* WARNING */

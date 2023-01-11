@@ -187,7 +187,11 @@
 			};
 			
 			me.onOpenWidgetSettings = function(widget, menu_settings) {
-				menu_settings.find(".settings-properties .style textarea").val( widget.children("style").html() );
+				var textarea = menu_settings.find(".settings-properties .style textarea");
+				textarea.val( widget.children("style").html() );
+				
+				ui_creator.addMenuSettingsContextMenu(textarea);
+				ui_creator.addMenuSettingsContextMenu( menu_settings.find(".settings-properties input") );
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {

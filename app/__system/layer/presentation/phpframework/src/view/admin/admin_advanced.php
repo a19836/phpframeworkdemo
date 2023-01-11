@@ -110,7 +110,7 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 		</div>
 		
 		<div class="file_tree_root"></div>
-		<div id="file_tree" class="mytree hidden">
+		<div id="file_tree" class="mytree hidden' . ($tree_layout == "left_panel_without_tabs" ? " scroll" : "") . '">
 			<ul>'; $main_layers_properties = array(); $main_content .= AdminMenuUIHandler::getLayersGroup("presentation_layers", $layers["presentation_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("business_logic_layers", $layers["business_logic_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("data_access_layers", $layers["data_access_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("db_layers", $layers["db_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= '
 				<li class="main_node_library jstree-open" data-jstree=\'{"icon":"main_node main_node_library"}\'>
 					<label>Library</label>

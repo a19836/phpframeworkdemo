@@ -58,9 +58,9 @@
 				});
 				
 				menu_widget.children(".properties").attr({
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.iframe.onOpenWidgetSettings",
 					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.iframe.saveSettingsField",
 					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.iframe.parseSettings",
-					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.iframe.openSettings",
 				});
 			};
 			
@@ -68,7 +68,7 @@
 				return html_element && html_element.nodeName.toLowerCase() == "iframe";
 			};
 			
-			me.openSettings = function(widget, menu_settings) {
+			me.onOpenWidgetSettings = function(widget, menu_settings) {
 				if (typeof ui_creator.options.on_choose_page_url_func == "function") {
 					var icon = $('<span class="zmdi zmdi-search-in-file search"></span>');
 					icon.on("click", function() {
@@ -76,6 +76,8 @@
 					});
 					menu_settings.find(" > .settings-properties .settings-property.src").addClass("with-search-icon").append(icon);
 				}
+				
+				ui_creator.addMenuSettingsContextMenu( menu_settings.find(" > .settings-properties input") );
 			};
 			
 			me.parseSettings = function(widget, widget_settings) {

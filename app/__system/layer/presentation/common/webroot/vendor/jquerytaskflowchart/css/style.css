@@ -44,7 +44,7 @@
 	top:30px;
 	left:0px;
 	bottom:0px;
-	width:195px;
+	width:200px;
 	
 	display:block;
 	z-index:1;
@@ -83,7 +83,7 @@
 .taskflowchart > .tasks_flow {
 	position:absolute;
 	top:30px;
-	left:200px;
+	left:205px;
 	right:0px;
 	bottom:0px;
 	
@@ -99,7 +99,7 @@
 }
 .taskflowchart.reverse > .tasks_flow {
 	left:0;
-	right:200px;
+	right:205px;
 	border-left:1px solid #CCC;
 }
 .taskflowchart:not(.reverse) > .tasks_flow {
@@ -123,7 +123,7 @@
 .taskflowchart > .tasks_menu_hide {
 	position:absolute;
 	top:30px;
-	left:195px;
+	left:200px;
 	bottom:0px;
 	width:5px;
 	cursor:ew-resize;
@@ -137,7 +137,7 @@
 }
 .taskflowchart.reverse > .tasks_menu_hide {
 	left:auto;
-	right:195px;
+	right:200px;
 }
 .taskflowchart:not(.reverse) > .tasks_menu_hide.tasks_menu_hidden {
 	left:0 !important;
@@ -496,7 +496,7 @@
 .taskflowchart .task .short_actions .context_menu_action {
 	width:16px;
 	height:16px;
-	margin-left:5px;
+	margin-left:10px;
 	display:inline-block;
 	background:url(../img/view_properties_icon.gif);
 	cursor:pointer;
@@ -587,7 +587,7 @@
 	overflow:hidden;
 	cursor:pointer;
 }
-.taskflowchart > .tasks_flow:not(.dragging_task) .connector_overlay_add_icon {
+.taskflowchart > .tasks_flow:not(.dragging_task) .connector_overlay_add_icon:not(.task_droppable_over) {
 	opacity:.03;
 }
 .taskflowchart .connector_overlay_add_icon:hover {
@@ -749,7 +749,7 @@
 }
 .taskflowchart.fixed_side_properties > .selected_task_properties,
   .taskflowchart.fixed_side_properties > .selected_connection_properties {
-	width:195px;
+	width:200px;
 	height:250px;
 	padding:0 0 70px;
 	position:absolute !important;
@@ -974,15 +974,13 @@
 	width:calc(100% - 250px);
 	left:140px;
 }
-.selected_task_properties > .properties_task_id input, 
-  .selected_connection_properties > .properties_connection_id input {
-	width:100%;
-	height:20px;
-	text-align:left;
-	border:1px solid #ccc;
-	background:transparent;
-	font-size:inherit;
-	box-sizing:border-box;
+.selected_task_properties > .properties_task_id:before,
+  .selected_connection_properties > .properties_connection_id:before {
+	content:"(";
+}
+.selected_task_properties > .properties_task_id:after,
+  .selected_connection_properties > .properties_connection_id:after {
+	content:")";
 }
 
 .selected_task_properties > .content, 

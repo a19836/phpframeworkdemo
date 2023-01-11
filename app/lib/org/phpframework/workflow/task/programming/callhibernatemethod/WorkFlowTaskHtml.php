@@ -29,7 +29,7 @@
 		<span class="icon add_variable inline" onClick="CallHibernateMethodTaskPropertyObj.chooseCreatedBrokerVariable(this)">Search</span>
 	</div>
 	<div class="module_id">
-		<label>Module Id:</label>
+		<label>Module Id: <span class="icon edit edit_source" onClick="CallHibernateMethodTaskPropertyObj.onEditFile(this)" title="Edit file">Edit</span></label>
 		<input type="text" class="task_property_field" name="module_id" />
 		<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
 		<select class="task_property_field" name="module_id_type">
@@ -39,7 +39,7 @@
 		</select>
 	</div>
 	<div class="service_id">
-		<label>Object Id:</label>
+		<label>Object Id: <span class="icon edit edit_source" onClick="CallHibernateMethodTaskPropertyObj.onEditObject(this)" title="Edit object">Edit</span></label>
 		<input type="text" class="task_property_field" name="service_id" />
 		<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
 		<select class="task_property_field" name="service_id_type">
@@ -53,7 +53,7 @@
 		<input type="text" class="task_property_field options_code" name="options" />
 		<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
 		<select class="task_property_field options_type" name="options_type" onChange="LayerOptionsUtilObj.onChangeOptionsType(this)">
-			<option value="">code</option>
+			<option></option>
 			<option>string</option>
 			<option>variable</option>
 			<option>array</option>
@@ -95,7 +95,7 @@
 			</select>
 		</div>
 		<div class="sma_query_id">
-			<label class="service_method_arg_label">Query Id:</label>
+			<label class="service_method_arg_label">Query Id: <span class="icon edit edit_source" onClick="CallHibernateMethodTaskPropertyObj.onEditQuery(this)" title="Edit query">Edit</span></label>
 			<input type="text" class="task_property_field service_method_arg_code" name="sma_query_id" />
 			<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
 			<select class="task_property_field service_method_arg_type" name="sma_query_id_type">

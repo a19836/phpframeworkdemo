@@ -21,7 +21,7 @@ function prepareLayerNodes1(ul, data) {
 		
 		//console.log(main_layers_properties);
 		//console.log(data);
-		if (data.properties && data.properties.item_type == "db") //prepare ddb drivers
+		if (data.properties && data.properties.item_type == "db") //prepare db drivers
 			data = prepareDataNodesForDBDrivers(data);
 		
 		prepareFolderNodes(ul, data, main_layer_properties, parent_path);
@@ -33,7 +33,8 @@ function prepareLayerNodes2(ul, data) {
 		var bean_name = data.properties && data.properties.bean_name ? data.properties.bean_name : "";
 		var main_layer_properties = main_layers_properties && bean_name && main_layers_properties[bean_name] ? main_layers_properties[bean_name] : null;
 		
-		initUlChildsContextMenu(ul, main_layer_properties);
+		initUlChildsContextMenu(ul, data, main_layer_properties);
+		initUlChildsEvents(ul, data, main_layer_properties);
 	}
 }
 
@@ -182,6 +183,17 @@ function prepareFolderNodes(ul, data, main_layer_properties, parent_path) {
 							attr_value = attr_value.replace("#bean_name#", bean_name);
 							attr_value = attr_value.replace("#bean_file_name#", bean_file_name);
 						}
+						else if (item_type == "table" || item_type == "attribute") {
+							var bean_name = properties && properties.bean_name ? properties.bean_name : "";
+							var bean_file_name = properties && properties.bean_file_name ? properties.bean_file_name : "";
+							var name = properties && properties.name ? properties.name : "";
+							
+							attr_value = attr_value.replace("#bean_name#", bean_name);
+							attr_value = attr_value.replace("#bean_file_name#", bean_file_name);
+							attr_value = attr_value.replace("#name#", name);
+							attr_value = attr_value.replace("#table#", item_type == "attribute" ? properties.table : name);
+							attr_value = attr_value.replace("#attribute#", name);
+						}
 						else if (item_type == "obj" || item_type == "query" || item_type == "relationship" || item_type == "hbn_native" || item_type == "map" || item_type == "import") {
 							var hbn_obj_id = properties && properties.hbn_obj_id ? properties.hbn_obj_id : "";
 							hbn_obj_id = item_type == "query" || item_type == "relationship" || item_type == "hbn_native" || item_type == "map" || item_type == "import" ? hbn_obj_id : key;
@@ -203,16 +215,6 @@ function prepareFolderNodes(ul, data, main_layer_properties, parent_path) {
 							attr_value = attr_value.replace("#service#", service_id);
 							attr_value = attr_value.replace("#class#", class_id);
 							attr_value = attr_value.replace("#method#", key);
-						}
-						else if (item_type == "table" || item_type == "attribute") {
-							var bean_name = properties && properties.bean_name ? properties.bean_name : "";
-							var bean_file_name = properties && properties.bean_file_name ? properties.bean_file_name : "";
-							var name = properties && properties.name ? properties.name : "";
-							
-							attr_value = attr_value.replace("#bean_name#", bean_name);
-							attr_value = attr_value.replace("#bean_file_name#", bean_file_name);
-							attr_value = attr_value.replace("#name#", name);
-							attr_value = attr_value.replace("#table#", name);
 						}
 						else if (item_type == "entities_folder" && attr_name == "project_with_auto_view")
 							attr_value = properties && properties.project_with_auto_view ? properties.project_with_auto_view : "0";
@@ -282,36 +284,65 @@ function prepareFolderNodes(ul, data, main_layer_properties, parent_path) {
 	}
 }
 
-function initUlChildsContextMenu(ul, main_layer_properties) {
+function initUlChildsContextMenu(ul, data, main_layer_properties) {
 	ul = $(ul);
 	
 	if (main_layer_properties) {
 		var layer_type = main_layer_properties && main_layer_properties.item_type ? main_layer_properties.item_type.toLowerCase() : "";
 		
 		if ((layer_type == "db" || layer_type == "dbdriver") && typeof initDBContextMenu == "function") //dbdriver is when I expand the menu "DB: xxxx" in the admin panel to see the tables inside of a db.
-			initDBContextMenu(ul);
+			initDBContextMenu(ul, data);
 		else if (layer_type == "ibatis" && typeof initIbatisContextMenu == "function")
-			initIbatisContextMenu(ul);
+			initIbatisContextMenu(ul, data);
 		else if (layer_type == "hibernate" && typeof initHibernateContextMenu == "function")
-			initHibernateContextMenu(ul);
+			initHibernateContextMenu(ul, data);
 		else if (layer_type == "lib" && typeof initLibContextMenu == "function")
-			initLibContextMenu(ul);
+			initLibContextMenu(ul, data);
 		else if (layer_type == "dao" && typeof initDaoContextMenu == "function")
-			initDaoContextMenu(ul);
+			initDaoContextMenu(ul, data);
 		else if (layer_type == "vendor" && typeof initVendorContextMenu == "function")
-			initVendorContextMenu(ul);
+			initVendorContextMenu(ul, data);
 		else if (layer_type == "test_unit" && typeof initVendorContextMenu == "function")
-			initTestUnitContextMenu(ul);
+			initTestUnitContextMenu(ul, data);
 		else if (layer_type == "other" && typeof initOtherContextMenu == "function")
-			initOtherContextMenu(ul);
+			initOtherContextMenu(ul, data);
 		else if (layer_type == "businesslogic" && typeof initContextContextMenu == "function")
-			initContextContextMenu(ul);
+			initContextContextMenu(ul, data);
 		else if (layer_type == "presentation" && typeof initPresentationContextMenu == "function")
-			initPresentationContextMenu(ul);
+			initPresentationContextMenu(ul, data);
 	}
 	
 	prepareParentChildsEventToHideContextMenu(ul);
 	addSubMenuIconToParentChildsWithContextMenu(ul);
+}
+
+function initUlChildsEvents(ul, data, main_layer_properties) {
+	ul = $(ul);
+	
+	if (main_layer_properties) {
+		var item_type = data && data.properties && data.properties.item_type ? data.properties.item_type : "";
+		var layer_type = main_layer_properties && main_layer_properties.item_type ? main_layer_properties.item_type.toLowerCase() : "";
+		
+		if ((layer_type == "db" || layer_type == "dbdriver")) {
+			if (item_type == "table" && typeof initDBTableAttributesSorting == "function") //prepare db table attributes with user-friendly sorting
+				initDBTableAttributesSorting(ul);
+			else if (item_type == "dbdriver" && typeof initDBTablesSorting == "function") //prepare db tables with user-friendly sorting
+				initDBTablesSorting(ul);
+		}
+	}
+	
+	//set event on label to show again the ul that was previously open when the toggle_children_on_click get triggered
+	if (mytree.options.toggle_children_on_click)
+		ul.find("li > a").click(function(originalEvent) {
+			var a = this;
+			var li = $(a).parent();
+			
+			if (a.hasAttribute("onClick") && li.hasClass("jstree-open"))
+				setTimeout(function() {
+					li.removeClass("jstree-closed").addClass("jstree-open");
+					li.children("ul").show();
+				}, 210); //note that 200 is the timeout in the mytree.toggleLi method
+		});
 }
 
 function prepareParentChildsEventToHideContextMenu(ul) {
@@ -319,7 +350,7 @@ function prepareParentChildsEventToHideContextMenu(ul) {
 		if (originalEvent.preventDefault) originalEvent.preventDefault(); 
 		else originalEvent.returnValue = false;
 		
-		$(".jqcontextmenu").hide();
+		MyContextMenu.hideAllContextMenu();
 	});
 }
 	
@@ -347,7 +378,7 @@ function addSubMenuIconToParentChildsWithContextMenu(ul) {
 }
 
 function triggerUlChildLinkContextMenu(a, originalEvent) {
-	$(".jqcontextmenu").hide();
+	MyContextMenu.hideAllContextMenu();
 	
 	var context_menu_id = a.data("context_menu_id");
 	
@@ -364,8 +395,8 @@ function triggerUlChildLinkContextMenu(a, originalEvent) {
 				originalEvent.target = original_target;
 			}
 			
-			jquerycontextmenu.positionul(jQuery, context_menu_elm, originalEvent);
-			jquerycontextmenu.showbox(jQuery, context_menu_elm, originalEvent);
+			MyContextMenu.updateContextMenuPosition(context_menu_elm, originalEvent);
+			MyContextMenu.showContextMenu(context_menu_elm, originalEvent);
 		}
 	}
 }

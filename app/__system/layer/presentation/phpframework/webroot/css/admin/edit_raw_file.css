@@ -106,7 +106,7 @@
 .confirm_save .file_code .old_file_code pre, .confirm_save .file_code .new_file_code pre {
 	position:absolute;
 	top:80px;
-	bottom:45px;
+	bottom:60px;
 	width:47%;
 	overflow:auto;
 	border:1px inset #CCC;

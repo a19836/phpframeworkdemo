@@ -27,6 +27,7 @@ $head = '
 
 <!-- Add Layout CSS and JS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/layout.js"></script>
 
 <!-- Add Local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/install_module.css" type="text/css" charset="utf-8" />
@@ -42,6 +43,13 @@ $head = '
 		<ul>
 			<li class="info" data-title="Info"><a onclick="$(\'.file_upload\').toggleClass(\'show_info\');"><i class="icon info"></i> Info</a></li>
 			<li class="install" data-title="Install Now"><a onclick="onSubmitButtonClick(this);"><i class="icon continue"></i> Install Now</a></li>
+			<li class="sub_menu" onclick="openSubmenu(this)">
+				<i class="icon sub_menu"></i>
+				<ul>
+					<li class="info" title="Info"><a onclick="$(\'.file_upload\').toggleClass(\'show_info\');"><i class="icon info"></i> Info</a></li>
+					<li class="modules_list" title="List Installed Modules"><a href="' . $project_url_prefix . 'phpframework/admin/manage_modules"><i class="icon go_up"></i> List Installed Modules</a></li>
+				</ul>
+			</li>
 		</ul>
 	</header>
 </div>

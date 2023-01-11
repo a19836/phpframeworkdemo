@@ -1,4 +1,7 @@
 <?php
+//PREPARE CONTROLLER
+$EVC->setController( basename(__FILE__, ".php") );
+
 //PREPARE PAGE
 $page_prefix = "";
 $page = "";
@@ -38,6 +41,9 @@ if ($default_view)
 
 if ($default_template)
 	$EVC->setTemplate($default_template);
+
+$CMSHtmlParserLayer = $EVC->getCMSLayer()->getCMSHtmlParserLayer();
+$CMSHtmlParserLayer->init($default_entity, $project_url_prefix, $project_common_url_prefix);
 
 //PREPARE ENTITIES
 $entities = $EVC->getEntities();
@@ -103,8 +109,13 @@ for ($template_index = 0; $template_index < count($templates); ++$template_index
 		$template_project_id = $template_params ? $template_params["project_id"] : false;
 		$template_path = $EVC->getTemplatePath($template, $template_project_id);
 		
-		if (file_exists($template_path))
+		if (file_exists($template_path)) {
+			$CMSHtmlParserLayer->beforeIncludeTemplate($template_path);
+			
 			include $template_path;
+			
+			$CMSHtmlParserLayer->afterIncludeTemplate($template_path);
+		}
 		else {
 			header("HTTP/1.0 404 Not Found");
 			launch_exception(new EVCException(4, $template_path));

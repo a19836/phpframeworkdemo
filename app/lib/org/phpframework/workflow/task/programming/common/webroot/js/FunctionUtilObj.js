@@ -29,6 +29,8 @@ var FunctionUtilObj = {
 	create_workflow_file_from_code_url : null,
 	auto_convert: false,
 	
+	on_function_task_edit_method_code_callback : null,
+	
 	loadMethodArgs : function(parent_elm, arguments) {
 		if (arguments) {
 			var add_icon = parent_elm.find(" > table thead th .icon.add");
@@ -90,7 +92,7 @@ var FunctionUtilObj = {
 		
 		this.auto_convert = typeof auto_convert != "undefined" ? auto_convert : false;
 		
-		var is_reverse = main_tasks_flow_parent.is("reverse");
+		var is_reverse = main_tasks_flow_parent.hasClass("reverse");
 		
 		//prepare html
 		var html = '	<div class="myfancypopup edit_function_code">'
@@ -195,6 +197,8 @@ var FunctionUtilObj = {
 				
 				var overlay = FunctionUtilObj.EditFunctionCodeMyFancyPopupObject.getOverlay();
 				overlay.unbind("click").off().click(close_func);
+				
+				FunctionUtilObj.onFunctionTaskEditMethodCode(elm, popup);
 			},
 			
 			targetField: function_code_textarea[0],
@@ -271,7 +275,8 @@ var FunctionUtilObj = {
 		if (!WF) {
 			//prepare new jsPlumbWorkFlowHandler obj
 			var selector = elm.attr("href");
-			var main_div_id = elm.parent().closest(".edit_function_code").children(selector).children(".taskflowchart").attr("id");
+			var main_div = elm.parent().closest(".edit_function_code").children(selector).children(".taskflowchart");
+			var main_div_id = main_div.attr("id");
 			
 			WF = new jsPlumbWorkFlowHandler(main_div_id, {
 				on_init_function: function(innerWF) {
@@ -297,6 +302,11 @@ var FunctionUtilObj = {
 			WF.jsPlumbTaskFile.get_tasks_file_url = this.OriginalJsPlumbWorkFlowObject.jsPlumbTaskFile.get_tasks_file_url;
 			
 			WF.jsPlumbContainer.tasks_containers = [];
+			
+			WF.jsPlumbWorkFlowObjOptions.on_resize_panels_function = function() {
+				//reset top in style attribute, so it can have the css from the FunctionUtilObj.css file.
+				main_div.find(".workflow_menu, .tasks_menu, .tasks_menu_hide, .tasks_flow").css("top", "");
+			};
 			
 			//init flow
 			WF.init();
@@ -591,5 +601,12 @@ var FunctionUtilObj = {
 		setTimeout(function() { 
 			message_elm.html("").hide();
 		}, 3000);
+	},
+	
+	onFunctionTaskEditMethodCode : function(elm, popup) {
+		//Do not use "this.", but "ProgrammingTaskUtil." instead, bc if we assign this function to a variable (var x = ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl), the "this." will not work.
+		if (typeof FunctionUtilObj.on_function_task_edit_method_code_callback == "function") {
+			FunctionUtilObj.on_function_task_edit_method_code_callback(elm, popup);
+		}
 	},
 };

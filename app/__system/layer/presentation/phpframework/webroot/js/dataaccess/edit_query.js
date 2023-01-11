@@ -560,7 +560,7 @@ function updateDBDrivers(elm, do_not_sync) {
 			html += "<option>" + db_driver + "</option>";
 		
 		if (!chosen_db_driver || !db_brokers_drivers_tables_attributes[db_broker].hasOwnProperty(chosen_db_driver)) //if no db driver selected before or doesn't exists in db_brokers_drivers_tables_attributes[db_broker], set it to default db driver
-			chosen_db_driver = selected_db_driver;
+			chosen_db_driver = default_db_driver;
 		
 		select.html(html);
 		select.val(chosen_db_driver);
@@ -599,7 +599,7 @@ function updateDBTables(elm, rand_number, do_not_sync) {
 			html += "<option>" + db_table + "</option>";
 		
 		if (!chosen_table || !db_tables.hasOwnProperty(chosen_table))
-			chosen_table = selected_table; //if no table selected before or doesn't exists in db_tables, set it to default table
+			chosen_table = default_db_table; //if no table selected before or doesn't exists in db_tables, set it to default table
 		
 		select.html(html);
 		select.val(chosen_table);
@@ -863,7 +863,7 @@ function getQueryTableAttributeFromDB(elm, selector, rand_number) {
 				selected_table_name = select.val();
 			
 			if (!selected_table_name)
-				selected_table_name = selected_table;
+				selected_table_name = default_db_table;
 			
 			if (!selected_attribute_name)
 				selected_attribute_name = popup.find(".db_attribute select").val();
@@ -991,8 +991,8 @@ function onBlurQueryTableField(input, rand_number) {
 			attribute_name = column_div.parent().find(".fcolumn input").val().trim();
 	
 		if (!new_table_name || new_table_name == "" || !old_table_name || old_table_name == "") {
-			var tasks = getTasksByTableName(selected_table, WF);
-			var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : selected_table;
+			var tasks = getTasksByTableName(default_db_table, WF);
+			var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 		
 			new_table_name = new_table_name == "" ? tb : new_table_name;
 			old_table_name = old_table_name == "" ? tb : old_table_name;
@@ -1030,7 +1030,7 @@ function onBlurQueryAttributeField(input, rand_number) {
 			table_name = column_div.parent().find(".ftable input").val().trim();
 	
 		if (!table_name || table_name == "") {
-			table_name = selected_table;
+			table_name = default_db_table;
 		
 			var tasks = getTasksByTableName(table_name, WF);
 			table_name = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : table_name;
@@ -1481,8 +1481,8 @@ function deleteOldAttributesThatDontExistAnymore(WF, old_attributes_to_delete) {
 	var settings = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().parent().parent().children(".query_settings");
 		
 	if (settings) {
-		var tasks = getTasksByTableName(selected_table, WF);
-		var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : selected_table;
+		var tasks = getTasksByTableName(default_db_table, WF);
+		var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 		
 		settings.find("tbody .field .ptable").each(function(idx, elm) {
 			elm = $(elm).parent()[0];
@@ -1764,8 +1764,8 @@ function deleteQueryKey(elm, rand_number) {
 	var join_value = field.children(".join").children("select").val();
 	var operator = field.children(".operator").children("select").val();
 	
-	var tasks = getTasksByTableName(selected_table, WF);
-	var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : selected_table;
+	var tasks = getTasksByTableName(default_db_table, WF);
+	var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 	
 	ptable = ptable == "" ? tb : ptable;
 	ftable = ftable == "" ? tb : ftable;
@@ -1889,8 +1889,8 @@ function onBlurQueryKey(input, rand_number) {
 		}
 	
 		//SETTING TABLE DEFAULT
-		var tasks = getTasksByTableName(selected_table, WF);
-		var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : selected_table;
+		var tasks = getTasksByTableName(default_db_table, WF);
+		var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 	
 		old_ptable = !old_ptable || old_ptable == "" ? tb : old_ptable;
 		new_ptable = !new_ptable || new_ptable == "" ? tb : new_ptable;
@@ -2522,8 +2522,8 @@ function updateQueryUITableFromQuerySettings(rand_number, main_table) {
 				var tables_join = item.find(".join input").val();
 				var operator = item.find(".operator input").val();
 				
-				ptable = ptable ? ptable.trim() : selected_table;
-				ftable = ftable ? ftable.trim() : selected_table;
+				ptable = ptable ? ptable.trim() : default_db_table;
+				ftable = ftable ? ftable.trim() : default_db_table;
 				tables_join = tables_join ? tables_join : "inner";
 				operator = operator ? operator : "=";
 			
@@ -2682,8 +2682,8 @@ function updateQueryUITableFromQuerySettings(rand_number, main_table) {
 			updateQueryDBBroker(rand_number, true);
 			
 			//SETTING START TASK FOR MAIN TABLE
-			if (main_table || selected_table) {
-				var table_task_id = task_ids[main_table ? main_table : selected_table];
+			if (main_table || default_db_table) {
+				var table_task_id = task_ids[main_table ? main_table : default_db_table];
 				
 				if (table_task_id)
 					DBQueryTaskPropertyObj.setStartTaskById(table_task_id);
@@ -2724,8 +2724,8 @@ function getQueryFieldsDataObj(rand_number, main_table) {
 		}
 	}
 	
-	var tasks = getTasksByTableName(selected_table, WF);
-	var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : selected_table;
+	var tasks = getTasksByTableName(default_db_table, WF);
+	var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 	
 	var data = {
 		"type": rel_type,
@@ -2888,8 +2888,8 @@ function onClickQueryAtributeCheckBox(checkbox, WF, rand_number) {
 	var fields = $(settings).find(".attributes .fields");
 	var items = $(fields).children(".field");
 	
-	var tasks = getTasksByTableName(selected_table, WF);
-	var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : selected_table;
+	var tasks = getTasksByTableName(default_db_table, WF);
+	var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 	
 	if (checkbox.is(':checked')) {
 		var exists = false;
@@ -2946,8 +2946,8 @@ function onDeleteQueryTable(task, WF) {
 		var settings = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().parent().parent().children(".query_settings");
 		
 		if (settings) {
-			var tasks = getTasksByTableName(selected_table, WF);
-			var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : selected_table;
+			var tasks = getTasksByTableName(default_db_table, WF);
+			var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 			
 			settings.find("tbody .field td").each(function(idx, elm) {
 				var j_elm = $(elm);
@@ -2977,8 +2977,8 @@ function prepareTableLabelSettings(WF, task_id, old_table_name, new_table_name) 
 	var settings = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().parent().parent().children(".query_settings");
 	
 	if (settings[0]) {
-		var tasks = getTasksByTableName(selected_table, WF);
-		var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : selected_table;
+		var tasks = getTasksByTableName(default_db_table, WF);
+		var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 		
 		settings.find(".fields .table input, .fields .ptable input, .fields .ftable input").each(function(idx, elm) {
 			var table_name = elm.value.trim();
@@ -3006,8 +3006,8 @@ function prepareTablesRelationshipKeys(WF, connection, old_connection_property_v
 	if (settings_fields[0] && (new_connection_property_values || old_connection_property_values)) {
 		new_connection_property_values = !new_connection_property_values ? {} : new_connection_property_values;
 		
-		var tasks = getTasksByTableName(selected_table, WF);
-		var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : selected_table;
+		var tasks = getTasksByTableName(default_db_table, WF);
+		var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 		
 		var source_table = new_connection_property_values.source_table;
 		var target_table = new_connection_property_values.target_table;
@@ -3363,6 +3363,13 @@ function getDBTableAttributesDetailedInfo(db_broker, db_driver, type, db_table) 
 		dataType : "json",
 		success : function(data, textStatus, jqXHR) {
 			detailed_info = data ? data : {};
+			
+			if ($.isPlainObject(detailed_info) && !$.isEmptyObject(detailed_info) && !db_brokers_drivers_tables_attributes[db_broker][db_driver][type].hasOwnProperty(db_table)) {
+				db_brokers_drivers_tables_attributes[db_broker][db_driver][type][db_table] = [];
+				
+				for (var attr_name in detailed_info)
+					db_brokers_drivers_tables_attributes[db_broker][db_driver][type][db_table].push(attr_name);
+			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) { 
 			if (jqXHR.responseText)
@@ -3488,7 +3495,7 @@ function updateRelationshipsAutomatically(elm, target_field, update_function) {
 			var select = popup.find(".db_table select");
 			
 			if (select.val() == "")
-				select.val(selected_table);
+				select.val(default_db_table);
 			
 			var map_option = $('<div class="map_option"><label>With Maps:</label><input type="checkbox" value="1" /></div>');
 			popup.find(".db_attribute").after(map_option);

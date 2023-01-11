@@ -356,10 +356,10 @@ function prepareFileTreeItemLinkMenus(a) {
 			
 			//show or hide contextmenu
 			if (context_menu_elm.is(":visible"))
-				jquerycontextmenu.hidebox(jQuery, context_menu_elm);
+				MyContextMenu.hideContextMenu(context_menu_elm);
 			else {
 				$(this).parent().closest("li").find(" > a > label").contextmenu();
-				jquerycontextmenu.positionul(jQuery, context_menu_elm, e);
+				MyContextMenu.updateContextMenuPosition(context_menu_elm, e);
 				
 				//update upload menu to open in a popup
 				var cm_link = context_menu_elm.find(" > .upload > a");

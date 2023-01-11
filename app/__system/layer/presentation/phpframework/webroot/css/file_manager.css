@@ -153,6 +153,14 @@
 	content:"\f51f";
 	color:#888;
 }*/
+.mytree i.cms_resource::before {
+	content:"\f07c";
+	color:var(--icon-folder-color);
+}
+/*.mytree i.cms_resource::after {
+	content:"\f51f";
+	color:#888;
+}*/
 .mytree i.cms_folder::before {
 	content:"\f07c";
 	color:var(--icon-folder-color);
@@ -636,13 +644,22 @@
 	content:"\f0e8";
 	color:var(--icon-file-color);
 }
+.mytree i.table {
+	cursor:crosshair;
+}
 .mytree i.table::before {
 	content:"\f0db";
 	color:var(--icon-file-color);
 }
+.mytree i.attribute {
+	cursor:ns-resize;
+}
 .mytree i.attribute::before {
 	content:"\f00b";
 	color:var(--icon-file-color);
+}
+.mytree li.primary_key > a > i.attribute::before {
+	content:"\f084";
 }
 
 /* ICONS - LIBRARY */

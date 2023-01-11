@@ -21,6 +21,7 @@ var IncludeFileTaskPropertyObj = {
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
+		ProgrammingTaskUtil.prepareEditSourceIcon(properties_html_elm);
 	},
 	
 	onSubmitTaskProperties : function(properties_html_elm, task_id, task_property_values) {
@@ -58,5 +59,9 @@ var IncludeFileTaskPropertyObj = {
 	
 	getDefaultExitLabel : function(task_property_values) {
 		return task_property_values["file_path"] ? "include" + (task_property_values["once"] ? "_once" : "") + " " + ProgrammingTaskUtil.getValueString(task_property_values["file_path"], task_property_values["type"]) : "";
+	},
+	
+	onEditFile : function(elm) {
+		ProgrammingTaskUtil.onEditSource(elm, $(elm).closest(".include_file_task_html"), "file");
 	},
 };

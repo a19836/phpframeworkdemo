@@ -37,7 +37,7 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 </script>'; $main_content = '<div class="install_program">'; $title = "Program Installation" . ($bean_name && $bean_file_name ? ' in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($selected_project_id, $P) : ''); if ($step >= 3) { $main_content .= '<div class="step_3">
 		<div class="top_bar">
 			<header>
-				<div class="title">' . $title . '</div>
+				<div class="title" title="' . $path . '">' . $title . '</div>
 				<ul style="display:none;">
 					<li class="continue" data-title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
@@ -86,7 +86,7 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 		</div>'; } if ($messages) $main_content .= '<label class="error">Important messages:</label><ul class="messages_list"><li>' . implode("</li><li>", $messages) . '</li></ul>'; $main_content .= '</div>'; } else if ($step == 2) { $main_content .= '<div class="step_2">
 		<div class="top_bar">
 			<header>
-				<div class="title">' . $title . '</div>
+				<div class="title" title="' . $path . '">' . $title . '</div>
 				<ul>
 					<li class="continue" data-title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
@@ -111,7 +111,7 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 	<div class="step_1">
 		<div class="top_bar">
 			<header>
-				<div class="title">' . $title . '</div>
+				<div class="title" title="' . $path . '">' . $title . '</div>
 				<ul>
 					<li class="continue" data-title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
@@ -150,7 +150,7 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 	<div class="step_0">
 		<div class="top_bar">
 			<header>
-				<div class="title">' . $title . '</div>
+				<div class="title" title="' . $path . '">' . $title . '</div>
 				<ul>
 					<li class="info" data-title="Info"><a onclick="$(\'.install_program .step_0\').toggleClass(\'show_info\');"><i class="icon info"></i> Info</a></li>
 					<li class="continue" data-title="Continue"><a onclick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
@@ -178,7 +178,7 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 			</div>
 		</div>'; if ($get_store_programs_url) $main_content .= '
 		<div class="install_store_program">
-			<div class="title">Choose a program to install from our store:</div>
+			<div class="title" title="' . $path . '">Choose a program to install from our store:</div>
 			<ul>
 				<li class="loading">Loading programs from store...</li>
 			</ul>

@@ -1,6 +1,6 @@
 <module>
 	<label>Validate Menu Object Group</label>
 	<description>Module "Validate Menu Object Group" validates if the menu group belongs to a specific object.</description>
-	<image>logo.png</image>
+	<image>logo.svg</image>
 	<load_module_settings_js_function>loadValidateObjectToObjectBlockSettings</load_module_settings_js_function>
 </module>

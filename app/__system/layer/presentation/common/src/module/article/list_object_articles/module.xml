@@ -1,7 +1,7 @@
 <module>
 	<label>List Object Articles</label>
 	<description>Module "List Object Articles" allows to manage the object articles.</description>
-	<image>logo.gif</image>
+	<image>logo.svg</image>
 	<load_module_settings_js_function>loadListSettingsBlockSettings</load_module_settings_js_function>
 	<is_reserved_module>1</is_reserved_module>
 </module>

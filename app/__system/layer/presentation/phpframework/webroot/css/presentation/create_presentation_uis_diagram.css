@@ -155,6 +155,11 @@
 .create_uis_files .step_1 {
 	display:block;
 }
+.create_uis_files .step input,
+  .create_uis_files .step select,
+  .create_uis_files .step textarea {
+	font-size:inherit;
+}
 .create_uis_files .title,
   .create_uis_files .info,
   .create_uis_files .overwrite,

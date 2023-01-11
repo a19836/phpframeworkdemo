@@ -1186,7 +1186,7 @@ function isDarkColor(color) {
 	var url = options.url ? options.url : null;
 	var data = method == "POST" && options.data ? options.data : null;
 	var result_type = options.result_type ? ("" + options.result_type).toLowerCase() : "text";
-	var assync = options.hasOwnProperty("assync") ? options.assync : true;
+	var is_async = options.hasOwnProperty("async") ? options.async : true;
 	var username = options.hasOwnProperty("username") ? options.username : null;
 	var password = options.hasOwnProperty("password") ? options.password : null;
 	var callback_func = options.callback_func ? options.callback_func : null;
@@ -1224,13 +1224,13 @@ function isDarkColor(color) {
 	if (typeof XMLRequestObject.overrideMimeType == "function")
 		XMLRequestObject.overrideMimeType("text/plain");
 	
-	//open(method, url, async, user, psw)
+	//open(method, url, is_async, user, psw)
 	//	method: the request type GET or POST
 	//	url: the file location
 	//	async: true (asynchronous) or false (synchronous)
 	//	user: optional user name
 	//	psw: optional password
-	XMLRequestObject.open(method, url, assync, username, password);
+	XMLRequestObject.open(method, url, is_async, username, password);
 	
 	if(method == "POST") {
 		XMLRequestObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

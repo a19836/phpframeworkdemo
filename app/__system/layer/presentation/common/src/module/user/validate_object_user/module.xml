@@ -1,6 +1,6 @@
 <module>
 	<label>Validate Object User</label>
 	<description>Module "Validate Object User" validates if the user belongs to a specific object.</description>
-	<image>logo.png</image>
+	<image>logo.svg</image>
 	<load_module_settings_js_function>loadValidateObjectToObjectBlockSettings</load_module_settings_js_function>
 </module>

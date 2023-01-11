@@ -68,7 +68,7 @@ DBTableTaskPropertyObj.table_storage_engines = DBTableTaskPropertyObj.table_stor
 		</div>
 		
 		<div class="attributes">
-			<label>Table Attributes: <a class="icon add" onClick="DBTableTaskPropertyObj.addTableAttribute(this)" title="Add new attribute">ADD</a> <a class="icon view" onClick="DBTableTaskPropertyObj.toggleTableAndListView(this)" title="toggle from table to list view and vice-versa">CONVERT</a></label>
+			<label>Table Attributes: <a class="icon add" onClick="DBTableTaskPropertyObj.addTableAttribute(this)" title="Add new attribute">ADD</a> <a class="icon switch" onClick="DBTableTaskPropertyObj.toggleTableAndListView(this)" title="toggle from table to list view and vice-versa">CONVERT</a></label>
 		</div>
 		
 		<div class="responsive_table">

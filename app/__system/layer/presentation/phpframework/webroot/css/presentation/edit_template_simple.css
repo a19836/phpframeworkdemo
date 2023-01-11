@@ -64,9 +64,17 @@
 	right:91px;
 	z-index:7;
 }
+.template_obj.in_popup .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .options-right {
+	right:127px;
+	color:var(--main-popup-header-color);
+}
 .template_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center {
 	right:224px;
 	z-index:7;
+}
+.template_obj.in_popup .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center {
+	right:260px;
+	color:var(--main-popup-header-color);
 }
 .template_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .options-left .option.save,
   .template_obj .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .options-right .option.full-screen {
@@ -104,17 +112,6 @@
 	opacity:1;
 }*/
 
-.template_obj .regions_blocks_includes_settings .design_settings > div {
-	margin:10px 0;
-}
-.template_obj .regions_blocks_includes_settings .design_settings > div > label {
-	width:100px;
-	display:inline-block;
-}
-.template_obj .regions_blocks_includes_settings .design_settings > div > input {
-	width:calc(100% - 105px);
-}
-
 .template_obj .regions_blocks_includes_settings .head textarea, 
   .template_obj .regions_blocks_includes_settings .head .ace_editor {
 	width:100%;
@@ -123,37 +120,6 @@
 	border:.5px solid #eee;
 	margin:0;
 	box-sizing:border-box;
-}
-
-.template_obj .regions_blocks_includes_settings .css_files {
-	margin-top:20px;
-}
-.template_obj .regions_blocks_includes_settings .css_files > ul li:not(.empty_files),
-  .template_obj .regions_blocks_includes_settings .js_files > ul li:not(.empty_files) {
-	list-style-type:disc;
-	margin-left:20px;
-}
-.template_obj .regions_blocks_includes_settings .css_files > ul li a,
-  .template_obj .regions_blocks_includes_settings .js_files > ul li a {
-	color:var(--link-color);
-}
-
-/* EDIT WEBROOT FILE */
-.template_obj #edit_webroot_file {
-	width:auto !important;
-	height:auto !important;
-	position:fixed !important;
-	top:5px !important;
-	left:5px !important;
-	right:5px !important;
-	bottom:5px !important;
-	padding:0 !important;
-}
-.template_obj #edit_webroot_file iframe {
-	width:100%;
-	height:100%;
-	box-sizing:border-box;
-	border:none;
 }
 
 /* To print the workflow */

@@ -51,6 +51,10 @@
 .selected_task_properties > .popup_close:hover, .selected_connection_properties > .popup_close:hover {
 	opacity:1;
 }
+.selected_task_properties .properties_task_id, 
+  .selected_connection_properties .properties_connection_id {
+	display:none !important;
+}
 .taskflowchart.fixed_properties .selected_task_properties .properties_task_id, 
   .taskflowchart.fixed_properties .selected_connection_properties .properties_task_id,
   .taskflowchart.fixed_side_properties .selected_task_properties .properties_task_id, 

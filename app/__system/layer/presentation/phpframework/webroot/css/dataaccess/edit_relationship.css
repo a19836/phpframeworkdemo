@@ -38,6 +38,10 @@
 	left:40px;
 	z-index:1503;
 }
+.in_popup .edit_relationship .relationship .rel_type {
+	top:16px;
+	left:43px;
+}
 .edit_relationship .relationship .rel_type label {
 	display:none;
 }
@@ -47,6 +51,10 @@
 	color:var(--main-iframe-color);
 	background:var(--main-iframe-bg);
 }
+.in_popup .edit_relationship .relationship .rel_type select {
+	background:var(--main-popup-header-bg);
+	color:var(--main-popup-header-color);
+}
 .edit_relationship .relationship .rel_name {
 	width:210px;
 	margin:0;
@@ -54,6 +62,10 @@
 	top:18px;
 	left:230px;
 	z-index:1503;
+}
+.in_popup .edit_relationship .relationship .rel_name {
+	top:16px;
+	left:240px;
 }
 .edit_relationship .relationship .rel_name label {
 	display:none;
@@ -63,6 +75,10 @@
 	border:1px solid #ccc;
 	color:var(--main-iframe-color);
 	background:transparent;
+}
+.in_popup .edit_relationship .relationship .rel_name input {
+	background:var(--main-popup-header-bg);
+	color:var(--main-popup-header-color);
 }
 
 /* RELATIONSHIP - QUERY */

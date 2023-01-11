@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $template_includes = array_map(function($include) { $inc_path = PHPUICodeExpressionHandler::getArgumentCode($include["path"], $include["path_type"]); return array("path" => $inc_path, "once" => $include["once"]); }, $includes); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $sla_settings_obj = CMSPresentationLayerJoinPointsUIHandler::convertBlockSettingsArrayToObj($sla_settings); $page_preview_url = $project_url_prefix . "phpframework/presentation/test_project?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path"; $view_project_url = $project_url_prefix . "phpframework/presentation/view_project?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path"; $save_url = $project_url_prefix . "phpframework/presentation/save_entity_simple?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path"; $get_block_handler_source_code_url = $project_url_prefix . "phpframework/presentation/get_module_handler_source_code?bean_name=$bean_name&bean_file_name=$bean_file_name&project=$path&block=#block#"; $get_page_block_join_points_html_url = $project_url_prefix . "phpframework/presentation/get_page_block_join_points_html?bean_name=$bean_name&bean_file_name=$bean_file_name&project=$path&block=#block#"; $get_available_blocks_list_url = $project_url_prefix . "phpframework/presentation/get_available_blocks_list?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path"; $get_block_params_url = $project_url_prefix . "phpframework/presentation/get_block_params?bean_name=$bean_name&bean_file_name=$bean_file_name&project=#project#&block=#block#"; $edit_simple_template_layout_url = $project_url_prefix . "phpframework/presentation/edit_simple_template_layout?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path"; $template_region_info_url = $project_url_prefix . "phpframework/presentation/template_region_info?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$selected_project_id/" . $P->settings["presentation_templates_path"] . "#template#.php&region=#region#"; $template_samples_url = $project_url_prefix . "phpframework/presentation/template_samples?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$selected_project_id/" . $P->settings["presentation_templates_path"] . "#template#.php"; $templates_regions_html_url = $project_url_prefix . "phpframework/presentation/templates_regions_html?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$selected_project_id"; $choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=#path#"; $choose_dao_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=dao&path=#path#"; $choose_lib_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=lib&path=#path#"; $choose_vendor_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=vendor&path=#path#"; $get_db_data_url = $project_url_prefix . "db/get_db_data?bean_name=#bean_name#&bean_file_name=#bean_file_name#&type=#type#"; $get_file_properties_url = $project_url_prefix . "phpframework/admin/get_file_properties?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&class_name=#class_name#&type=#type#"; $create_page_module_block_url = $project_url_prefix . "phpframework/presentation/create_page_module_block?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path"; $add_block_url = $project_url_prefix . "phpframework/presentation/edit_page_module_block?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path&module_id=#module_id#&edit_block_type=simple"; $edit_block_url = $project_url_prefix . "phpframework/presentation/edit_block?bean_name=$bean_name&bean_file_name=$bean_file_name&path=#path#&edit_block_type=simple"; $get_module_info_url = $project_url_prefix . "phpframework/presentation/get_module_info?module_id=#module_id#"; $create_page_presentation_uis_diagram_block_url = $project_url_prefix . "phpframework/presentation/create_page_presentation_uis_diagram_block?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$path"; $create_entity_code_url = $project_url_prefix . "phpframework/presentation/create_entity_code?project=$selected_project_id&default_extension=" . $P->getPresentationFileExtension(); $install_template_url = $project_url_prefix . "phpframework/presentation/install_template?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$selected_project_id/src/template/"; $get_available_templates_props_url = $project_url_prefix . "phpframework/presentation/get_available_templates_props?bean_name=$bean_name&bean_file_name=$bean_file_name&path=#path#"; $get_template_regions_and_params_url = $project_url_prefix . "phpframework/presentation/get_template_regions_and_params?bean_name=$bean_name&bean_file_name=$bean_file_name&project=$selected_project_id&template=#template#"; $head = $sla_head; $head .= '
+include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $template_includes = array_map(function($include) { $inc_path = PHPUICodeExpressionHandler::getArgumentCode($include["path"], $include["path_type"]); return array("path" => $inc_path, "once" => $include["once"]); }, $includes); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $sla_settings_obj = CMSPresentationLayerJoinPointsUIHandler::convertBlockSettingsArrayToObj($sla_settings); $page_preview_url = $project_url_prefix . "phpframework/presentation/test_project?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path"; $view_project_url = $project_url_prefix . "phpframework/presentation/view_project?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path"; $save_url = $project_url_prefix . "phpframework/presentation/save_entity_simple?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path"; $get_block_handler_source_code_url = $project_url_prefix . "phpframework/presentation/get_module_handler_source_code?bean_name=$bean_name&bean_file_name=$bean_file_name&project=$path&block=#block#"; $get_page_block_join_points_html_url = $project_url_prefix . "phpframework/presentation/get_page_block_join_points_html?bean_name=$bean_name&bean_file_name=$bean_file_name&project=$path&block=#block#"; $get_available_blocks_list_url = $project_url_prefix . "phpframework/presentation/get_available_blocks_list?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path"; $get_block_params_url = $project_url_prefix . "phpframework/presentation/get_block_params?bean_name=$bean_name&bean_file_name=$bean_file_name&project=#project#&block=#block#"; $edit_simple_template_layout_url = $project_url_prefix . "phpframework/presentation/edit_simple_template_layout?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path"; $template_region_info_url = $project_url_prefix . "phpframework/presentation/template_region_info?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$selected_project_id/" . $P->settings["presentation_templates_path"] . "#template#.php&region=#region#"; $template_samples_url = $project_url_prefix . "phpframework/presentation/template_samples?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$selected_project_id/" . $P->settings["presentation_templates_path"] . "#template#.php"; $templates_regions_html_url = $project_url_prefix . "phpframework/presentation/templates_regions_html?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$selected_project_id"; $choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=#path#"; $choose_dao_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=dao&path=#path#"; $choose_lib_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=lib&path=#path#"; $choose_vendor_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=vendor&path=#path#"; $get_db_data_url = $project_url_prefix . "db/get_db_data?bean_name=#bean_name#&bean_file_name=#bean_file_name#&type=#type#"; $get_file_properties_url = $project_url_prefix . "phpframework/admin/get_file_properties?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&class_name=#class_name#&type=#type#"; $create_page_module_block_url = $project_url_prefix . "phpframework/presentation/create_page_module_block?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path"; $add_block_url = $project_url_prefix . "phpframework/presentation/edit_page_module_block?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path&module_id=#module_id#&edit_block_type=simple"; $edit_block_url = $project_url_prefix . "phpframework/presentation/edit_block?bean_name=$bean_name&bean_file_name=$bean_file_name&path=#path#&edit_block_type=simple"; $get_module_info_url = $project_url_prefix . "phpframework/presentation/get_module_info?module_id=#module_id#"; $create_page_presentation_uis_diagram_block_url = $project_url_prefix . "phpframework/presentation/create_page_presentation_uis_diagram_block?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$path"; $create_entity_code_url = $project_url_prefix . "phpframework/presentation/create_entity_code?project=$selected_project_id&default_extension=" . $P->getPresentationFileExtension(); $get_available_projects_props_url = $project_url_prefix . "phpframework/presentation/get_available_projects_props?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$path"; $get_available_templates_props_url = $project_url_prefix . "phpframework/presentation/get_available_templates_props?bean_name=$bean_name&bean_file_name=$bean_file_name&path=#path#"; $get_available_templates_list_url = $project_url_prefix . "phpframework/presentation/get_available_templates_list?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path"; $get_template_regions_and_params_url = $project_url_prefix . "phpframework/presentation/get_template_regions_and_params?bean_name=$bean_name&bean_file_name=$bean_file_name&project=$selected_project_id&template=#template#"; $install_template_url = $project_url_prefix . "phpframework/presentation/install_template?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$selected_project_id/src/template/"; $edit_template_file_url = $project_url_prefix . "phpframework/presentation/edit_template?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=#path#&edit_template_type=simple"; $edit_webroot_file_url = $project_url_prefix . "phpframework/admin/edit_raw_file?bean_name=$bean_name&bean_file_name=$bean_file_name&item_type=presentation&path=#path#&popup=1"; $head = $sla_head; $head .= '
 <!-- Add Layout CSS and JS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
 '; $head .= WorkFlowPresentationHandler::getHeader($project_url_prefix, $project_common_url_prefix, $WorkFlowUIHandler, $set_workflow_file_url); $head .= '
@@ -46,6 +46,8 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); include $EVC->getUti
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/choose_available_template.js"></script>
 
 <script>
+' . WorkFlowBrokersSelectedDBVarsHandler::printSelectedDBVarsJavascriptCode($project_url_prefix, $bean_name, $bean_file_name, $selected_db_vars) . '
+var entity_path = "' . $path . '";
 var layer_type = "pres";
 var file_modified_time = ' . $file_modified_time . '; //for version control
 
@@ -62,24 +64,29 @@ var add_block_url = \'' . $add_block_url . '\';
 var edit_block_url = \'' . $edit_block_url . '\';
 var get_module_info_url = \'' . $get_module_info_url . '\';
 
+var get_available_projects_props_url = \'' . $get_available_projects_props_url . '\';
 var get_template_regions_and_params_url = \'' . $get_template_regions_and_params_url . '\';
-var install_template_url = \'' . $install_template_url . '\';
 var get_available_templates_props_url = \'' . $get_available_templates_props_url . '\';
+var get_available_templates_list_url = \'' . $get_available_templates_list_url . '\';
+var install_template_url = \'' . $install_template_url . '\';
+var edit_template_file_url = \'' . $edit_template_file_url . '\';
+var edit_webroot_file_url = \'' . $edit_webroot_file_url . '\';
 
 var layer_default_template = \'' . $layer_default_template . '\';
-var available_templates_props = ' . json_encode($available_templates_props) . ';
-var available_projects_props = ' . json_encode($available_projects_props) . ';
-var show_templates_only = ' . ($_GET["show_templates_only"] ? 1 : 0) . '; //This is set when we switch the entity advanced ui to the simple ui.
-
-var confirm_save = ' . ($confirm_save ? 'true' : 'false') . ';
+var common_project_name = \'' . $PEVC->getCommonProjectName() . '\';
 var selected_project_url_prefix = \'' . $selected_project_url_prefix . '\';
 var selected_project_common_url_prefix = \'' . $selected_project_common_url_prefix . '\';
 
+var show_templates_only = ' . ($_GET["show_templates_only"] ? 1 : 0) . '; //This is set when we switch the entity advanced ui to the simple ui.
+
+var confirm_save = ' . ($confirm_save ? 'true' : 'false') . ';
+
 var sla_settings_obj = ' . json_encode($sla_settings_obj) . ';
+var brokers_db_drivers = ' . json_encode($brokers_db_drivers) . ';
 '; $head .= $sla_js_head; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getBusinessLogicBrokersHtml($business_logic_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDataAccessBrokersHtml($data_access_brokers, $choose_bean_layer_files_from_file_manager_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= '</script>'; $head .= CMSPresentationLayerUIHandler::getHeader($project_url_prefix, $project_common_url_prefix, $get_available_blocks_list_url, $get_block_params_url, $create_entity_code_url, $available_blocks_list, $regions_blocks_list, $block_params_values_list, $template_includes, $blocks_join_points, $template_params_values_list, $selected_project_id, false, $head); $head .= LayoutTypeProjectUIHandler::getHeader(); $confirm_save = $obj_data["code"] && $cached_modified_date != $file_modified_time; $query_string = str_replace(array("&edit_entity_type=advanced", "&edit_entity_type=simple"), "", $_SERVER["QUERY_STRING"]); $main_content = '
 	<div class="top_bar' . ($is_external_template ? " is_external_template" : "") . '">
 		<header>
-			<div class="title">Edit Page (Visual Workspace) <span class="template_fields"></span> at: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $P, true) . '</div>
+			<div class="title" title="' . $path . '">Edit Page (Visual Workspace) <span class="template_fields"></span> at: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $P, true) . '</div>
 			<ul>
 				<li class="view_project_page" data-title="View Project Page"><a href="' . $view_project_url . '" target="project"><i class="icon view"></i></a></li>
 				<li class="save" data-title="Save Page"><a onClick="saveEntity()"><i class="icon save"></i> Save</a></li>
@@ -99,6 +106,7 @@ var sla_settings_obj = ' . json_encode($sla_settings_obj) . ';
 						<li class="separator"></li>
 						<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
 						<li class="separator"></li>
+						<li class="beautify" title="Disable Html beautify on save"><a onClick="toggleCodeEditorHtmlBeautify(this)"><i class="icon save"></i> Disable Html Beautify on Save</a></li>
 						<li class="save" title="Save Page"><a onClick="saveEntity()"><i class="icon save"></i> Save</a></li>
 						<li class="save_preview" title="Save & Preview Page"><a onClick="saveAndPreview();"><i class="icon save_preview_file"></i> Save & Preview Page</a></li>
 					</ul>
@@ -134,27 +142,165 @@ var sla_settings_obj = ' . json_encode($sla_settings_obj) . ';
 			</div>
 			
 			<ul class="tabs tabs_transparent tabs_right">
+				<li><a href="#design_settings">Design</a></li>
 				<li><a href="#content_settings">Content</a></li>
 				<li><a href="#resource_settings">Resources</a></li>
+				<li><a href="#advanced_settings">Advanced</a></li>
 			</ul>
+			
+			<div id="design_settings" class="design_settings">
+				<div class="current_template_file">To edit the current template please click <a href="javascript:void(0
+)" onClick="editCurrentTemplateFile(this)">here</a></div>
+				
+				<div class="css_files">
+					<label>CSS Files:</label>
+					<ul>
+						<li class="empty_files">No files detected...</li>
+					</ul>
+				</div>
+				
+				<div class="js_files">
+					<label>Javascript Files:</label>
+					<ul>
+						<li class="empty_files">No files detected...</li>
+					</ul>
+				</div>
+			</div>
 			
 			<div id="content_settings" class="content_settings">
 				' . CMSPresentationLayerUIHandler::getRegionsBlocksAndIncludesHtml($selected_or_default_template, $available_regions_list, $regions_blocks_list, $available_blocks_list, $available_block_params_list, $block_params_values_list, $includes, $available_params_list, $template_params_values_list) . '
 			</div>
 			
 			<div id="resource_settings" class="resource_settings">
-				' . SequentialLogicalActivitiesUIHandler::getSLAHtml($EVC, $project_url_prefix, $project_common_url_prefix, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $tasks_contents, $db_drivers, $presentation_projects, $WorkFlowUIHandler, array( "save_func" => "saveEntity", )) . '
+				' . SequentialLogicalActivityUIHandler::getSLAHtml($EVC, $project_url_prefix, $project_common_url_prefix, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $tasks_contents, $db_drivers, $presentation_projects, $WorkFlowUIHandler, array( "save_func" => "saveEntity", )) . '
+			</div>
+			
+			<div id="advanced_settings" class="advanced_settings">
+				' . getAdvancedSettingsHtml($EVC, $advanced_settings) . '
 			</div>
 		</div>
 		<div class="code_layout_ui_editor">
-			' . WorkFlowPresentationHandler::getCodeEditorHtml("", array("save_func" => "saveEntity", "show_pretty_print" => false), $ui_menu_widgets_html, $user_global_variables_file_path, $user_beans_folder_path, $PEVC, $UserAuthenticationHandler, $bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $get_db_data_url, $create_page_presentation_uis_diagram_block_url, "chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer", false, array( 'layout_ui_editor_html' => '
+			' . WorkFlowPresentationHandler::getCodeEditorHtml("", array("save_func" => "saveEntity", "show_pretty_print" => false), $ui_menu_widgets_html, $user_global_variables_file_path, $user_beans_folder_path, $PEVC, $UserAuthenticationHandler, $bean_name, $bean_file_name, $brokers_db_drivers, $choose_bean_layer_files_from_file_manager_url, $get_db_data_url, $create_page_presentation_uis_diagram_block_url, "chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer", false, array( 'layout_ui_editor_html' => '
 					<div class="template-widgets">
 						<iframe class="template-widgets-droppable" edit_simple_template_layout_url="' . $edit_simple_template_layout_url . '"></iframe>
 					</div>' )) . '
 		</div>
 	</div>
 	
-	<div class="current_entity_code hidden">' . str_replace(">", "&gt;", str_replace("<", "&lt;", $obj_data["code"])) . '</div>'; } else $main_content .= '<div class="error">Error: The system couldn\'t detect the selected file. Please refresh and try again...</div>'; function getTemplatesHtml($pb46d1829, $v7b2ad4afbf, $paf93610a, $v32c1e58e0c) { if (is_array($pb46d1829["template_params"])) { $pa1cddb9c = is_array($pb46d1829["template_params"]["type"]) ? $pb46d1829["template_params"]["type"]["value"] : null; if ($pa1cddb9c == 'project') { $v76b80da673 = is_array($pb46d1829["template_params"]["template_id"]) ? $pb46d1829["template_params"]["template_id"]["value"] : null; $v1a936daaed = is_array($pb46d1829["template_params"]["external_project_id"]) ? $pb46d1829["template_params"]["external_project_id"]["value"] : null; $pa2ed4c82 = is_array($pb46d1829["template_params"]["keep_original_project_url_prefix"]) ? $pb46d1829["template_params"]["keep_original_project_url_prefix"]["value"] : null; } else if ($pa1cddb9c == 'block') { $v76b80da673 = is_array($pb46d1829["template_params"]["block_id"]) ? $pb46d1829["template_params"]["block_id"]["value"] : null; $v1a936daaed = is_array($pb46d1829["template_params"]["external_project_id"]) ? $pb46d1829["template_params"]["external_project_id"]["value"] : null; } else if ($pa1cddb9c == 'wordpress_template') { $v76b80da673 = is_array($pb46d1829["template_params"]["url_query"]) ? $pb46d1829["template_params"]["url_query"]["value"] : null; $v820cf4f4d9 = is_array($pb46d1829["template_params"]["wordpress_installation_name"]) ? $pb46d1829["template_params"]["wordpress_installation_name"]["value"] : null; } else if ($pa1cddb9c == 'url') { $v74823199e7 = is_array($pb46d1829["template_params"]["url"]) ? $pb46d1829["template_params"]["url"]["value"] : null; } $v467a8922be = is_array($pb46d1829["template_params"]["cache_ttl"]) ? $pb46d1829["template_params"]["cache_ttl"]["value"] : null; } $pf8ed4912 = '
+	<div class="current_entity_code hidden">' . str_replace(">", "&gt;", str_replace("<", "&lt;", $obj_data["code"])) . '</div>'; } else $main_content .= '<div class="error">Error: The system couldn\'t detect the selected file. Please refresh and try again...</div>'; function getAdvancedSettingsHtml($v08d9602741, $v4859640498) { $v1763debff9 = $v4859640498["parse_full_html"] || $v4859640498["parse_regions_html"]; $pb662dff7 = $v1763debff9 ? ' style="display:none;"' : ''; $pc7e8340a = $v1763debff9 ? ' disabled' : ''; if (!array_key_exists("add_my_js_lib", $v4859640498)) $v4859640498["add_my_js_lib"] = false; $pf8ed4912 = '
+	<div class="parser">
+		<label>Parser:</label>
+		<span class="info">If active, parses the generated html according with the options below.</span>
+		
+		<div class="parse_html">
+			<label>Parse Html: </label>
+			<select name="parse_html" onChange="onChangeParseHtml(this)" title="If active the system will parse the html and add or filter elements according with the options defined below.">
+				<option value="0"' . (!$v1763debff9 ? ' selected' : '') . '>No</option>
+				<option value="1"' . ($v4859640498["parse_full_html"] ? ' selected' : '') . ' title="Parse Full Page Output Html including the template html. Basically parses the html before it is sent to the client browser.">Parse Full Page Output Html</option>
+				<option value="2"' . ($v4859640498["parse_regions_html"] && !$v4859640498["parse_full_html"] ? ' selected' : '') . '>Only Parse Page Regions Html</option>
+			</select>
+			<span class="info">If active the system will parse the html and add or filter elements according with the options defined below.</span>
+		</div>
+		
+		<div class="execute_sla"' . $pb662dff7 . '>
+			<label>Execute SLA Resources: </label>
+			<select name="execute_sla" title="\'Auto\': means that the system will try to find if the html needs to be parsed. If active the system will execute the resources and save them, so we can use them later on through the hash-tags, PTL or directly in the html..."' . $pc7e8340a . '>
+				<option value="0"' . ($v4859640498["execute_sla"] === false ? ' selected' : '') . '>No</option>
+				<option value="1"' . ($v4859640498["execute_sla"] === true ? ' selected' : '') . '>Yes</option>
+				<option value=""' . ($v4859640498["execute_sla"] === null ? ' selected' : '') . '>Auto</option>
+			</select>
+			<span class="info">If active the system will execute the resources and save them, so we can use them later on through the hash-tags, PTL or directly in the html...<br/>\'Auto\': means that the system will try to find if the html needs to be parsed.</span>
+		</div>
+		
+		<div class="parse_hash_tags"' . $pb662dff7 . '>
+			<label>Parse Hash Tags: </label>
+			<select name="parse_hash_tags" title="\'Auto\': means that the system will try to find if the html needs to be parsed. If active the system will replace all hash-tags with the correspondent data from the resources."' . $pc7e8340a . '>
+				<option value="0"' . ($v4859640498["parse_hash_tags"] === false ? ' selected' : '') . '>No</option>
+				<option value="1"' . ($v4859640498["parse_hash_tags"] === true ? ' selected' : '') . '>Yes</option>
+				<option value=""' . ($v4859640498["parse_hash_tags"] === null ? ' selected' : '') . '>Auto</option>
+			</select>
+			<span class="info">If active the system will replace all hash-tags with the correspondent data from the resources.<br/>\'Auto\': means that the system will try to find if the html needs to be parsed.</span>
+		</div>
+		
+		<div class="parse_ptl"' . $pb662dff7 . '>
+			<label>Parse PTL: </label>
+			<select name="parse_ptl" title="\'Auto\': means that the system will try to find if the html needs to be parsed. If active the system will convert the PTL code into HTML."' . $pc7e8340a . '>
+				<option value="0"' . ($v4859640498["parse_ptl"] === false ? ' selected' : '') . '>No</option>
+				<option value="1"' . ($v4859640498["parse_ptl"] === true ? ' selected' : '') . '>Yes</option>
+				<option value=""' . ($v4859640498["parse_ptl"] === null ? ' selected' : '') . '>Auto</option>
+			</select>
+			<span class="info">If active the system will convert the PTL code into HTML.<br/>\'Auto\': means that the system will try to find if the html needs to be parsed.</span>
+		</div>
+		
+		<div class="add_my_js_lib"' . $pb662dff7 . '>
+			<label>Add Form JS Lib: </label>
+			<select name="add_my_js_lib" title="\'Auto\': means that the system will try to find if the html needs to be parsed. If active the system will add the MyJSLib.js file."' . $pc7e8340a . '>
+				<option value="0"' . ($v4859640498["add_my_js_lib"] === false ? ' selected' : '') . '>No</option>
+				<option value="1"' . ($v4859640498["add_my_js_lib"] === true ? ' selected' : '') . '>Yes</option>
+				<option value=""' . ($v4859640498["add_my_js_lib"] === null ? ' selected' : '') . '>Auto</option>
+			</select>
+			<span class="info">If active the system will add the MyJSLib.js file.<br/>\'Auto\': means that the system will try to find if the html needs to be parsed.</span>
+		</div>
+		
+		<div class="add_widget_resource_lib"' . $pb662dff7 . '>
+			<label>Add Widget Resource JS and CSS Lib: </label>
+			<select name="add_widget_resource_lib" title="\'Auto\': means that the system will try to find if the html needs to be parsed. If active the system will add the MyWidgetResourceLib.js and MyWidgetResourceLib.css files."' . $pc7e8340a . '>
+				<option value="0"' . ($v4859640498["add_widget_resource_lib"] === false ? ' selected' : '') . '>No</option>
+				<option value="1"' . ($v4859640498["add_widget_resource_lib"] === true ? ' selected' : '') . '>Yes</option>
+				<option value=""' . ($v4859640498["add_widget_resource_lib"] === null ? ' selected' : '') . '>Auto</option>
+			</select>
+			<span class="info">If active the system will add the MyWidgetResourceLib.js and MyWidgetResourceLib.css files.<br/>\'Auto\': means that the system will try to find if the html needs to be parsed.</span>
+		</div>
+		
+		<div class="filter_by_permission"' . $pb662dff7 . '>
+			<label>Filter by Permission: </label>
+			<select name="filter_by_permission" title="\'Auto\': means that the system will try to find if the html needs to be parsed. If active the system will filter (show, hide or remove) the html elements according with the permission defined in each element."' . $pc7e8340a . '>
+				<option value="0"' . ($v4859640498["filter_by_permission"] === false ? ' selected' : '') . '>No</option>
+				<option value="1"' . ($v4859640498["filter_by_permission"] === true ? ' selected' : '') . '>Yes</option>
+				<option value=""' . ($v4859640498["filter_by_permission"] === null ? ' selected' : '') . '>Auto</option>
+			</select>
+			<span class="info">If active the system will filter (show, hide or remove) the html elements according with the permission defined in each element.<br/>\'Auto\': means that the system will try to find if the html needs to be parsed.</span>
+		</div>
+		
+		<div class="maximum_usage_memory"' . $pb662dff7 . '>
+			<label>Maximum Usage Memory: </label>
+			<input name="maximum_usage_memory" placeHolder="empty for default: ' . $v08d9602741->getCMSLayer()->getCMSPagePropertyLayer()->getMaximumUsageMemory() . ' bytes" value="' . $v4859640498["maximum_usage_memory"] . '"' . $pc7e8340a . ' />
+			<span class="info">If the page html and resources exceed this maximum, the parser will NOT run!</span>
+		</div>
+		
+		<div class="maximum_buffer_chunk_size"' . $pb662dff7 . '>
+			<label>Maximum Buffer Chunk Size: </label>
+			<input name="maximum_buffer_chunk_size" placeHolder="empty for default: ' . $v08d9602741->getCMSLayer()->getCMSPagePropertyLayer()->getMaximumBufferChunkSize() . ' bytes" value="' . $v4859640498["maximum_buffer_chunk_size"] . '"' . $pc7e8340a . ' />
+			<span class="info">Parses the html in chunks and flushes this chunks to the client browser, so server memory doesn\'t get overloaded! <br/>Note that the "Parse Hash Tags", "Parse PTL" and "Filter by Permission" options will not run if the html is parsed in chunks! Which means you may need to increase the chunk size if your data is too big...</span>
+		</div>
+	</div>
+	
+	<div class="cache">
+		<label>Cache:</label>
+		<span class="info">If active, caches this page so the client request be faster. Be careful caching dynamic pages...</span>
+		<div class="todo">Comming soon... (TODO: sync this UI with the backend code to get this properties and create the correspondent cache. Add correspondent cache to the "resource.php" controller too, this is, any cache define here must be replicated for the resource url too.<br/>
+		Note that the cache feature is already implemented. The only we need to do is to create the UI to interact with the correspondent XML files.)</div>
+		
+		<div class="cache_page">
+			<label>Cache Page: </label>
+			<input type="checkbox" name="cache_page" value="1" onChange="onChangeCacheOption(this)"' . ($v4859640498["cache_page"] ? ' checked' : '') . ' />
+			<input name="cache_page_ttl" placeHolder="TTL in secs" value="' . $v4859640498["cache_page_ttl"] . '"' . ($v4859640498["cache_page"] ? '' : ' disabled') . ' />
+		</div>
+		
+		<div class="cache_dispatcher">
+			<label>Cache Dispatcher: </label>
+			<input type="checkbox" name="cache_dispatcher" value="1" onChange="onChangeCacheOption(this)"' . ($v4859640498["cache_page"] ? ' checked' : '') . ' />
+			<input name="cache_dispatcher_ttl" placeHolder="TTL in secs" value="' . $v4859640498["cache_dispatcher_ttl"] . '"' . ($v4859640498["cache_page"] ? '' : ' disabled') . ' />
+		</div>
+	</div>
+	
+	<div class="routers">
+		<label>Routers:</label>
+		<span class="info">Assign different urls to this page.</span>
+		
+		<div class="todo">Comming soon... (TODO: sync this UI with the backend code to get this properties and create the correspondent routers. Add correspondent routers to the "resource.php" controller too, this is, any router define here must be replicated for the resource url too.<br/>
+		Note that the router feature is already implemented. The only we need to do is to create the UI to interact with the correspondent XML files.)</div>
+	</div>'; return $pf8ed4912; } function getTemplatesHtml($pb46d1829, $v7b2ad4afbf, $paf93610a, $v32c1e58e0c) { if (is_array($pb46d1829["template_params"])) { $pa1cddb9c = is_array($pb46d1829["template_params"]["type"]) ? $pb46d1829["template_params"]["type"]["value"] : null; if ($pa1cddb9c == 'project') { $v76b80da673 = is_array($pb46d1829["template_params"]["template_id"]) ? $pb46d1829["template_params"]["template_id"]["value"] : null; $v1a936daaed = is_array($pb46d1829["template_params"]["external_project_id"]) ? $pb46d1829["template_params"]["external_project_id"]["value"] : null; $pa2ed4c82 = is_array($pb46d1829["template_params"]["keep_original_project_url_prefix"]) ? $pb46d1829["template_params"]["keep_original_project_url_prefix"]["value"] : null; } else if ($pa1cddb9c == 'block') { $v76b80da673 = is_array($pb46d1829["template_params"]["block_id"]) ? $pb46d1829["template_params"]["block_id"]["value"] : null; $v1a936daaed = is_array($pb46d1829["template_params"]["external_project_id"]) ? $pb46d1829["template_params"]["external_project_id"]["value"] : null; } else if ($pa1cddb9c == 'wordpress_template') { $v76b80da673 = is_array($pb46d1829["template_params"]["url_query"]) ? $pb46d1829["template_params"]["url_query"]["value"] : null; $v820cf4f4d9 = is_array($pb46d1829["template_params"]["wordpress_installation_name"]) ? $pb46d1829["template_params"]["wordpress_installation_name"]["value"] : null; } else if ($pa1cddb9c == 'url') { $v74823199e7 = is_array($pb46d1829["template_params"]["url"]) ? $pb46d1829["template_params"]["url"]["value"] : null; } $v467a8922be = is_array($pb46d1829["template_params"]["cache_ttl"]) ? $pb46d1829["template_params"]["cache_ttl"]["value"] : null; } $pf8ed4912 = '
 	<div class="template">
 		<label>with</label>
 		<select name="template_genre" onChange="onChangeTemplateGenre(this)">

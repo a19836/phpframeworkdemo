@@ -2,7 +2,7 @@
 	background-image:url('../img/bg.svg');
 }
 .jsplumbtaskworkflow .task.task_callhibernatemethod .eps {
-	background-image:url('../img/bg.svg');
+	background-image:url('../img/bg_hover.svg');
 }
 .jsplumbtaskworkflow .task.task_callhibernatemethod .ep {
 	border-color:transparent !important;
@@ -71,8 +71,9 @@
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .module_id label,
    .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_id label,
-   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_method label {
-	width:55px;
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_method label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .opts .main_label {
+	width:65px;
 }
 .call_hibernate_method_task_html .module_id input,
    .call_hibernate_method_task_html .service_id input,
@@ -83,15 +84,16 @@
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .module_id input,
    .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_id input,
-   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_method input {
-	width:calc(100% - 154px);
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_method input,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .opts .options_code {
+	width:calc(100% - 164px);
 }
 .call_hibernate_method_task_html .service_method select.service_method_string {
 	width:235px;
 	margin-right:5px;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_method select.service_method_string {
-	width:calc(100% - 130px);
+	width:calc(100% - 140px);
 }
 .call_hibernate_method_task_html .module_id select,
    .call_hibernate_method_task_html .service_id select,
@@ -109,6 +111,9 @@
 	display:inline-block;
 	margin-bottom:0;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .opts > .options > .items {
+	margin-left:125px;
+}
 .call_hibernate_method_task_html .service_method_args .sma_sql .service_method_arg_type {
 	margin-bottom:5px;
 }
@@ -125,6 +130,18 @@
    .call_hibernate_method_task_html .service_method_args .sma_options {
 	padding-left:10px;
 	margin-bottom:5px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_method_args .sma_query_type,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_method_args .sma_query_id,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_method_args .sma_function_name,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_method_args .sma_data,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_method_args .sma_statuses,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_method_args .sma_ids,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_method_args .sma_rel_name,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_method_args .sma_parent_ids,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_method_args .sma_sql,
+   .taskflowchart.fixed_side_properties .selected_task_properties .call_hibernate_method_task_html .service_method_args .sma_options {
+	white-space:nowrap;
 }
 .call_hibernate_method_task_html .service_method_args label.service_method_arg_label {
 	width:130px;

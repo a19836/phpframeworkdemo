@@ -33,19 +33,19 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/create_data_access_objs_automatically.js"></script>'; $main_content = ''; if ($_POST["step_2"]) { $exists_any_status_ok = false; $main_content .= '<div class="statuses">
 		<div class="top_bar">
 			<header>
-				<div class="title">Automatic creation in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
+				<div class="title" title="' . $path . '">Automatic creation in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
 			</header>
 		</div>
 		<div class="title">Please check the statuses of the table objects created</div>
 		<table>
 			<tr>
-				<th class="name">Table Name</th>
 				<th class="path">File Path</th>
+				<th class="name">Table Name</th>
 				<th class="status">Status</th>
 			</tr>'; $t = count($selected_tables); for ($i = 0; $i < $t; $i++) { $data = $statuses[$i]; $main_content .= '
 			<tr>
+				<td class="path">' . $data[0] . '</td>
 				<td class="name">' . $selected_tables[$i] . '</td>
-				<td class="path">' . $data[1] . '</td>
 				<td class="status status_' . ($data[2] ? "ok" : "error") . '">' . ($data[2] ? "OK" : "ERROR") . '</td>
 			</tr>'; if ($data[2]) { $exists_any_status_ok = true; } } if (empty($selected_tables)) { $main_content .= '<tr><td colspan="3" style="text-align:center;">No elements available</td></tr>'; } $main_content .= '
 		</table>
@@ -53,7 +53,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 	</div>'; if ($exists_any_status_ok) $main_content .= '<script>if (window.parent.refreshAndShowLastNodeChilds) window.parent.refreshAndShowLastNodeChilds();</script>'; } else if ($_POST["step_1"]) { $main_content .= '<div class="select_tables">
 		<div class="top_bar">
 			<header>
-				<div class="title">Automatic creation in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
+				<div class="title" title="' . $path . '">Automatic creation in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
 				<ul>
 					<li class="continue" data-title="Continue"><a onClick="submitForm(this, checkSelectedTables);"><i class="icon continue"></i> Continue</a></li>
 				</ul>
@@ -90,7 +90,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 	</script>'; $main_content .= '<div class="select_brokers">
 		<div class="top_bar">
 			<header>
-				<div class="title">Automatic creation in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
+				<div class="title" title="' . $path . '">Automatic creation in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
 				<ul>
 					<li class="continue" data-title="Continue"><a onClick="submitForm(this);"><i class="icon continue"></i> Continue</a></li>
 				</ul>

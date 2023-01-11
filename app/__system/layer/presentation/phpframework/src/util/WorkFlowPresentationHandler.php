@@ -90,6 +90,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					main_layers_properties.' . $v7aeaf992f5[2] . '.ui["cms_common"] = main_layers_properties.' . $v7aeaf992f5[2] . '.ui["folder"]; //used in deployment/index.php
 					main_layers_properties.' . $v7aeaf992f5[2] . '.ui["cms_module"] = main_layers_properties.' . $v7aeaf992f5[2] . '.ui["folder"];
 					main_layers_properties.' . $v7aeaf992f5[2] . '.ui["cms_program"] = main_layers_properties.' . $v7aeaf992f5[2] . '.ui["folder"];
+					main_layers_properties.' . $v7aeaf992f5[2] . '.ui["cms_resource"] = main_layers_properties.' . $v7aeaf992f5[2] . '.ui["folder"];
 					main_layers_properties.' . $v7aeaf992f5[2] . '.ui["cms_folder"] = main_layers_properties.' . $v7aeaf992f5[2] . '.ui["folder"];
 					main_layers_properties.' . $v7aeaf992f5[2] . '.ui["wordpress_folder"] = main_layers_properties.' . $v7aeaf992f5[2] . '.ui["folder"];
 					main_layers_properties.' . $v7aeaf992f5[2] . '.ui["wordpress_installation_folder"] = main_layers_properties.' . $v7aeaf992f5[2] . '.ui["folder"];
@@ -141,6 +142,9 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 						cms_program: {
 							get_sub_files_url: "' . $v94a9c171e3 . '",
 						},
+						cms_resource: {
+							get_sub_files_url: "' . $v94a9c171e3 . '",
+						},
 						file: {
 							attributes: {
 								file_path: "#path#",
@@ -170,6 +174,9 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					get_sub_files_url: "' . $v54c4a1fbb7 . '",
 				},
 				cms_program: {
+					get_sub_files_url: "' . $v54c4a1fbb7 . '",
+				},
+				cms_resource: {
 					get_sub_files_url: "' . $v54c4a1fbb7 . '",
 				},
 				file: {
@@ -269,6 +276,9 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 							get_sub_files_url: "' . $v94a9c171e3 . '",
 						},
 						cms_program: {
+							get_sub_files_url: "' . $v94a9c171e3 . '",
+						},
+						cms_resource: {
 							get_sub_files_url: "' . $v94a9c171e3 . '",
 						},
 						file: {
@@ -711,7 +721,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 			<li class="auto_save_activation" title="Is Auto Save Active" onClick="toggleAutoSaveCheckbox(this, onTogglePHPCodeAutoSave)"><i class="icon auto_save_activation"></i> <span>Enable Auto Save</span> <input type="checkbox" value="1" /></li>
 			<li class="auto_convert_activation" title="Is Auto Convert Active" onClick="toggleAutoConvertCheckbox(this, onTogglePHPCodeAutoConvert)"><i class="icon auto_convert_activation"></i> <span>Enable Auto Convert</span> <input type="checkbox" value="1" /></li>
 			<li class="save" title="Save"><a onClick="' . $v5d3813882f["save_func"] . '()"><i class="icon save"></i> Save</a></li>
-		</ul>'; } public static function getCodeEditorHtml($v067674f4e4, $v48e4e778a5, $pefdd2109, $v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, $pd0054995, $v9106c07f80, $v5988353a93 = false, $v5d3813882f = null) { $v446c479876 = $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse"; $v318c0a296c = $v5d3813882f["layout_ui_editor_html"]; $pf8ed4912 = '
+		</ul>'; } public static function getCodeEditorHtml($v067674f4e4, $v48e4e778a5, $pefdd2109, $v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v9b98e0e818, $pf7b73b3a, $pe6619ae3, $pd0054995, $v9106c07f80, $v5988353a93 = false, $v5d3813882f = null) { $v446c479876 = $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse"; $v318c0a296c = $v5d3813882f["layout_ui_editor_html"]; $pf8ed4912 = '
 			<div class="code_menu" onClick="openSubmenu(this)">
 				' . self::getCodeEditorMenuHtml($v48e4e778a5) . '
 			</div>
@@ -725,20 +735,20 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				</div>
 			</div>
 			<div id="layout_ui_editor_right_container" class="layout_ui_editor_right_container">
-				' . self::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, $v9106c07f80) . '
+				' . self::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v9b98e0e818, $pf7b73b3a, $pe6619ae3, $v9106c07f80) . '
 			</div>
 			
 			<div id="choose_layout_ui_editor_module_block_from_file_manager" class="myfancypopup choose_from_file_manager">
-				' . self::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, "chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree") . '
+				' . self::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v9b98e0e818, $pf7b73b3a, $pe6619ae3, "chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree") . '
 				
 				<div class="button">
 					<input type="button" value="Update" onClick="MyCodeLayoutUIEditorFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 			
-			<div class="myfancypopup db_table_uis_diagram_block" create_page_presentation_uis_diagram_block_url="' . $pd0054995 . '">
+			<div class="myfancypopup db_table_uis_diagram_block with_iframe_title" create_page_presentation_uis_diagram_block_url="' . $pd0054995 . '">
 				<iframe></iframe>
-			</div>'; return $pf8ed4912; } public static function getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $pe6619ae3, $v9106c07f80) { $v9ab35f1f0d = $v08d9602741->getPresentationLayer(); $pe61ee068 = $v08d9602741->getCommonProjectName() . "/" . $v9ab35f1f0d->settings["presentation_modules_path"]; $v9b98e0e818 = WorkFlowBeansFileHandler::getLayerDBDrivers($v3d55458bcd, $v5039a77f9d, $v9ab35f1f0d, true); $v1eb9193558 = new LayoutTypeProjectHandler($pdf77ee66, $v3d55458bcd, $v5039a77f9d, $pa0462a8e, $v8ffce2a791); $v1eb9193558->filterLayerBrokersDBDriversPropsBasedInUrl($v9b98e0e818, $pf7b73b3a); $pf8ed4912 = '<script>
+			</div>'; return $pf8ed4912; } public static function getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v9b98e0e818, $pf7b73b3a, $pe6619ae3, $v9106c07f80) { $v9ab35f1f0d = $v08d9602741->getPresentationLayer(); $pe61ee068 = $v08d9602741->getCommonProjectName() . "/" . $v9ab35f1f0d->settings["presentation_modules_path"]; if (!$v9b98e0e818) { $v9b98e0e818 = WorkFlowBeansFileHandler::getLayerDBDrivers($v3d55458bcd, $v5039a77f9d, $v9ab35f1f0d, true); $v1eb9193558 = new LayoutTypeProjectHandler($pdf77ee66, $v3d55458bcd, $v5039a77f9d, $pa0462a8e, $v8ffce2a791); $v1eb9193558->filterLayerBrokersDBDriversPropsBasedInUrl($v9b98e0e818, $pf7b73b3a); } $pf8ed4912 = '<script>
 			//clones module_folder properties, bc is the same object that the ui["folder"] properties, this is, is the reference object of the ui["folder"] object.
 			main_layers_properties.' . $v8ffce2a791 . '.ui["module_folder"] = JSON.parse(JSON.stringify(main_layers_properties.' . $v8ffce2a791 . '.ui["module_folder"])); 
 			

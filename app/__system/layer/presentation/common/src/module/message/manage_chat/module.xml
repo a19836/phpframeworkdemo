@@ -1,7 +1,7 @@
 <module>
 	<label>Manage Chat</label>
 	<description>Module "Manage Chat" allows to manage the chat messages, like add new messages and load new messages.</description>
-	<image>logo.png</image>
+	<image>logo.svg</image>
 	<load_module_settings_js_function>loadManageChatBlockSettings</load_module_settings_js_function>
 	<is_reserved_module>1</is_reserved_module>
 </module>

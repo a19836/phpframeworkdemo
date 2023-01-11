@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg14"
+   version="1.1"
+   viewBox="0 0 36.47 36.47">
+  <metadata
+     id="metadata18">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Asset 9</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs4"/>
+  <g
+     data-name="Layer 2"
+     id="Layer_2">
+    <g
+       id="create_form">
+      <path
+         id="path8"
+         d="M24.42,9.8H12.05a.28.28,0,0,0-.22.27V26.39a.27.27,0,0,0,.26.27H24.38a.27.27,0,0,0,.26-.27V10.07A.28.28,0,0,0,24.42,9.8ZM15.86,20.16h-3V18.44h3Zm0-3.45h-3V15h3Zm7.72,6.91H20.4V21.89h3.18Zm0-3.46H17V18.44h6.56Zm0-3.45H17V15h6.56Z" />
+      <path
+         id="path10"
+d="M18.24,0A18.24,18.24,0,1,0,36.47,18.24,18.23,18.23,0,0,0,18.24,0Zm8.34,15.73V26.6a2,2,0,0,1-2,2H11.89a2,2,0,0,1-2-2V9.76a2,2,0,0,1,2-1.9H24.59a2,2,0,0,1,2,1.9v6Z" />
+    </g>
+  </g>
+</svg>

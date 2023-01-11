@@ -376,7 +376,7 @@ body {
 	display:inline-block;
 	vertical-align:middle;
 }
-#left_panel .sub_menus > ul li.external_sub_menu .jqcontextmenu {
+#left_panel .sub_menus > ul li.external_sub_menu .mycontextmenu {
 	position:relative;
 	background-color:transparent;
 	border:0;
@@ -384,16 +384,16 @@ body {
 	box-shadow:none;
 	display:block !important;
 }
-#left_panel .sub_menus > ul li.external_sub_menu .jqcontextmenu li,
-  #left_panel .sub_menus > ul li.external_sub_menu .jqcontextmenu li a {
+#left_panel .sub_menus > ul li.external_sub_menu .mycontextmenu li,
+  #left_panel .sub_menus > ul li.external_sub_menu .mycontextmenu li a {
 	background-color:#eee !important;
 	border-radius:0;
 }
-#left_panel .sub_menus > ul li.external_sub_menu .jqcontextmenu li:hover,
-  #left_panel .sub_menus > ul li.external_sub_menu .jqcontextmenu li:hover a {
+#left_panel .sub_menus > ul li.external_sub_menu .mycontextmenu li:hover,
+  #left_panel .sub_menus > ul li.external_sub_menu .mycontextmenu li:hover a {
 	background-color:#ddd !important;
 }
-#left_panel .sub_menus > ul li.external_sub_menu .jqcontextmenu li.line_break {
+#left_panel .sub_menus > ul li.external_sub_menu .mycontextmenu li.line_break {
 	margin:0 5px;
 	border:none;
 	border-top:1px solid #aaa;

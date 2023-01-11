@@ -68,13 +68,13 @@
 				});
 				
 				menu_widget.children(".properties").attr({
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.form.onOpenWidgetSettings",
 					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.form.saveSettingsField",
 					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.form.parseSettings",
-					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.form.openSettings",
 				});
 			};
 			
-			me.openSettings = function(widget, menu_settings) {
+			me.onOpenWidgetSettings = function(widget, menu_settings) {
 				var menu_settings_properties = menu_settings.children(".settings-properties");
 				
 				//prepare search icon in action field
@@ -97,6 +97,8 @@
 				if (selected_value && $.inArray(("" + selected_value).toUpperCase(), default_method_options) == -1)
 					html += '<option value="' + selected_value + '">' + selected_value + ' - NON DEFAULT</option>';
 				
+				menu_settings_properties.find(".method select").html(html);
+				
 				//prepare enctype options
 				var html = '<option></option>';
 				var selected_value = widget.attr("enctype");
@@ -107,6 +109,10 @@
 				
 				if (selected_value && $.inArray(("" + selected_value).toLowerCase(), default_enctype_options) == -1)
 					html += '<option value="' + selected_value + '">' + selected_value + ' - NON DEFAULT</option>';
+				
+				menu_settings_properties.find(".enctype select").html(html);
+				
+				ui_creator.addMenuSettingsContextMenu( menu_settings_properties.find("input, select") );
 			};
 			
 			me.parseSettings = function(widget, widget_settings) {

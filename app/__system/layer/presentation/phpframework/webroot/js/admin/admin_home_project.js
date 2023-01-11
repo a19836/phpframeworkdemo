@@ -74,7 +74,7 @@ function prepareProjectLayerNodes2(ul, data) {
 				
 				var html = '<div class="sub_menu" onClick="openProjectFileSubmenu(this)">'
 							+ '<i class="icon sub_menu_vertical"></i>'
-							+ '<ul class="jqcontextmenu with_top_right_triangle">'
+							+ '<ul class="mycontextmenu with_top_right_triangle">'
 								+ '<li class="rename"><a onclick="return manageFile(this, \'folder\', \'rename\', \'' + file_path + '\', onSucccessfullRenameFile)">Rename Folder</a></li>'
 							+ '<li class="line_break"></li>'
 								+ '<li class="remove"><a onclick="return manageFile(this, \'folder\', \'remove\', \'' + file_path + '\', ' + (is_template_folder ? 'onSucccessfullRemoveTemplateFolder' : 'onSucccessfullRemoveFile') + ')">Delete Folder</a></li>'
@@ -101,7 +101,7 @@ function prepareProjectLayerNodes2(ul, data) {
 			var edit_url = edit_entity_url.replace(/#path#/g, file_path);
 			var html = '<div class="sub_menu" onClick="openProjectFileSubmenu(this)">'
 						+ '<i class="icon sub_menu_vertical"></i>'
-						+ '<ul class="jqcontextmenu with_top_right_triangle">'
+						+ '<ul class="mycontextmenu with_top_right_triangle">'
 							+ '<li class="edit"><a href="' + edit_url + '">Edit Page</a></li>'
 							+ '<li class="rename"><a onclick="return manageFile(this, \'file\', \'rename\', \'' + file_path + '\', onSucccessfullRenameFile)">Rename Page</a></li>'
 							+ '<li class="line_break"></li>'
@@ -128,7 +128,7 @@ function prepareProjectLayerNodes2(ul, data) {
 			var edit_url = edit_template_url.replace(/#path#/g, file_path);
 			var html = '<div class="sub_menu" onClick="openProjectFileSubmenu(this)">'
 						+ '<i class="icon sub_menu_vertical"></i>'
-						+ '<ul class="jqcontextmenu with_top_right_triangle">'
+						+ '<ul class="mycontextmenu with_top_right_triangle">'
 							+ '<li class="edit"><a href="' + edit_url + '">Edit Template</a></li>'
 							+ '<li class="rename"><a onclick="return manageFile(this, \'file\', \'rename\', \'' + file_path + '\', onSucccessfullRenameFile)">Rename Template</a></li>'
 							+ '<li class="line_break"></li>'

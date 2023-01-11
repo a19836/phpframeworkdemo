@@ -1,6 +1,6 @@
 /* TOP BAR */
-.top_bar {
-	
+.top_bar.in_popup header {
+	z-index:5;
 }
 
 /* SQL AREA */
@@ -14,6 +14,9 @@
 .sql_results {
 	margin:0;
 	overflow:auto;
+}
+.sql_results.in_popup {
+	height:auto !important;
 }
 .sql_results table {
 	width:100%;
@@ -30,8 +33,22 @@
 	padding:0 5px;
 }
 .sql_results table td.empty {
+	padding-top:40px;
 	text-align:center;
 	color:#aaa;
+}
+.sql_results table td.message {
+	padding-top:20px;
+	text-align:center;
+}
+.sql_results table td.message.success {
+	color:#51D87A;
+}
+.sql_results table td.message.error {
+	color:#FF4D4D;
+}
+.sql_results table td.empty.error:before {
+	content:"Error: ";
 }
 .sql_results .dataTables_length, .sql_results .dataTables_filter, .sql_results .dataTables_info, .sql_results .dataTables_paginate {
 	height:20px;

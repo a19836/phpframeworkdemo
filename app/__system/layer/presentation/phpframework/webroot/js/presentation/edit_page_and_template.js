@@ -30,6 +30,8 @@ var update_settings_from_layout_iframe_timeout_id = null;
 var update_layout_iframe_from_settings_func = null;
 var update_layout_iframe_from_settings_timeout_id = null;
 
+var regions_blocks_html_editor_save_func = null;
+
 /* TEMPLATE-REGIONS-BLOCKS */
 
 function createChoosePresentationIncludeFromFileManagerTree() {
@@ -179,30 +181,50 @@ function removeAllThatIsNotBlocksOrModulesFromTree(ul, data, tree_obj) {
 			li.append(li_ul);
 		}
 		
-		var list_items = $('<li data-jstree=\'{"icon":"table-list"}\'>'
-						+ '	<label>List Items</label>'
+		var list_items_html = $('<li data-jstree=\'{"icon":"table-list table-html"}\'>'
+						+ '	<label title="List Items based in html">List Items Html</label>'
 						+ '</li>');
-		var edit_item = $('<li data-jstree=\'{"icon":"table-edit"}\'>'
-						+ '	<label>Edit Item</label>'
+		var list_items_block = $('<li data-jstree=\'{"icon":"table-list table-block-file"}\'>'
+						+ '	<label title="List Items based in a Block file">List Items Block</label>'
 						+ '</li>');
-		var add_item = $('<li data-jstree=\'{"icon":"table-add"}\'>'
-						+ '	<label>Add Item</label>'
+		var edit_item_html = $('<li data-jstree=\'{"icon":"table-edit table-html"}\'>'
+						+ '	<label title="Edit Item based in html">Edit Item Html</label>'
 						+ '</li>');
-		var view_item = $('<li data-jstree=\'{"icon":"table-view"}\'>'
-						+ '	<label>View Item</label>'
+		var edit_item_block = $('<li data-jstree=\'{"icon":"table-edit table-block-file"}\'>'
+						+ '	<label title="Edit Item based in a Block file">Edit Item Block</label>'
+						+ '</li>');
+		var add_item_html = $('<li data-jstree=\'{"icon":"table-add table-html"}\'>'
+						+ '	<label title="Add Item based in html">Add Item Html</label>'
+						+ '</li>');
+		var add_item_block = $('<li data-jstree=\'{"icon":"table-add table-block-file"}\'>'
+						+ '	<label title="Add Item based in a Block file">Add Item Block</label>'
+						+ '</li>');
+		var view_item_html = $('<li data-jstree=\'{"icon":"table-view table-html"}\'>'
+						+ '	<label title="View Item based in html">View Item Html</label>'
+						+ '</li>');
+		var view_item_block = $('<li data-jstree=\'{"icon":"table-view table-block-file"}\'>'
+						+ '	<label title="View Item based in a Block file">View Item Block</label>'
 						+ '</li>');
 		
-		li_ul.append(list_items);
-		li_ul.append(edit_item);
-		li_ul.append(add_item);
-		li_ul.append(view_item);
+		li_ul.append(list_items_html);
+		li_ul.append(list_items_block);
+		li_ul.append(edit_item_html);
+		li_ul.append(edit_item_block);
+		li_ul.append(add_item_html);
+		li_ul.append(add_item_block);
+		li_ul.append(view_item_html);
+		li_ul.append(view_item_block);
 		
 		tree_obj.initNodeChilds(li);
 		
-		initIframeModulesBlocksToolbarDraggableMenuItem(list_items);
-		initIframeModulesBlocksToolbarDraggableMenuItem(edit_item);
-		initIframeModulesBlocksToolbarDraggableMenuItem(add_item);
-		initIframeModulesBlocksToolbarDraggableMenuItem(view_item);
+		initIframeModulesBlocksToolbarDraggableMenuItem(list_items_html);
+		initIframeModulesBlocksToolbarDraggableMenuItem(list_items_block);
+		initIframeModulesBlocksToolbarDraggableMenuItem(edit_item_html);
+		initIframeModulesBlocksToolbarDraggableMenuItem(edit_item_block);
+		initIframeModulesBlocksToolbarDraggableMenuItem(add_item_html);
+		initIframeModulesBlocksToolbarDraggableMenuItem(add_item_block);
+		initIframeModulesBlocksToolbarDraggableMenuItem(view_item_html);
+		initIframeModulesBlocksToolbarDraggableMenuItem(view_item_block);
 	});
 }
 
@@ -406,67 +428,90 @@ function createRegionBlockHtmlEditor(block_html, opts) {
 
 function createRegionBlockHtmlWyswygEditor(block_html, opts) {
 	block_html = block_html instanceof jQuery ? block_html[0] : block_html;
-	var textarea_orig = filterSelectorInNodes(block_html.childNodes, "textarea");
+	var textarea_orig = null;
 	
-	var editor = block_html.editor;
+	for (var i = 0; i < block_html.childNodes.length; i++)
+		if (block_html.childNodes[i].nodeName.toLowerCase() == "textarea") {
+			textarea_orig = block_html.childNodes[i];
+			break;
+		}
 	
-	if (!editor) {
-		//Note that this method will execute inside of the iframe too, so we must call the right ace based in the current window
-		var doc = block_html.ownerDocument || document;
-		var win = doc.defaultView || doc.parentWindow;
+	if (textarea_orig) {
+		var editor = block_html.editor;
 		
-		//remove textarea onBlur attribute, bc we will use the editor onChange event instead.
-		textarea_orig.removeAttribute("onBlur");
-		
-		//clone textarea, otherwise the ace editor will remove it
-		var textarea = textarea_orig.cloneNode(true);
-		textarea_orig.parentNode.insertBefore(textarea, textarea_orig);
-		
-		//create ace editor
-		win.ace.require("ace/ext/language_tools");
-		var editor = win.ace.edit(textarea);
-		editor.setTheme("ace/theme/chrome");
-		editor.session.setMode("ace/mode/html");
-		editor.setAutoScrollEditorIntoView(true);
-		editor.setOption("minLines", 5);
-		editor.setOptions({
-			enableBasicAutocompletion: true,
-			enableSnippets: true,
-			enableLiveAutocompletion: false,
-		});
-		editor.setOption("wrap", true);
-		
-		//set on change event
-		/* on change method is anoying, so we use instead the onblur
-		editor.on("change", function() {
-			//Note that this method will execute inside of the iframe too, so we must call the right onBlurRegionBlock
-			if (win.region_block_html_editor_on_change_timeout_id)
-				clearTimeout(win.region_block_html_editor_on_change_timeout_id);
+		if (!editor) {
+			//Note that this method will execute inside of the iframe too, so we must call the right ace based in the current window
+			var doc = block_html.ownerDocument || document;
+			var win = doc.defaultView || doc.parentWindow;
 			
-			win.region_block_html_editor_on_change_timeout_id = setTimeout(function() {
+			//remove textarea onBlur attribute, bc we will use the editor onChange event instead.
+			textarea_orig.removeAttribute("onBlur");
+			
+			//clone textarea, otherwise the ace editor will remove it
+			var textarea = textarea_orig.cloneNode(true);
+			textarea_orig.parentNode.insertBefore(textarea, textarea_orig);
+			
+			//create ace editor
+			win.ace.require("ace/ext/language_tools");
+			var editor = win.ace.edit(textarea);
+			editor.setTheme("ace/theme/chrome");
+			editor.session.setMode("ace/mode/html");
+			editor.setAutoScrollEditorIntoView(true);
+			editor.setOption("minLines", 5);
+			editor.setOptions({
+				enableBasicAutocompletion: true,
+				enableSnippets: true,
+				enableLiveAutocompletion: false,
+			});
+			editor.setOption("wrap", true);
+			
+			var save_func = opts && typeof opts.save_func == "function" ? opts.save_func : regions_blocks_html_editor_save_func;
+			
+			if (typeof save_func == "function")
+				editor.commands.addCommand({
+					name: 'saveFile',
+					bindKey: {
+						win: 'Ctrl-S',
+						mac: 'Command-S',
+						sender: 'editor|cli'
+					},
+					exec: function(env, args, request) {
+						save_func();
+					},
+				});
+			
+			//set on change event
+			/* on change method is anoying, so we use instead the onblur
+			editor.on("change", function() {
+				//Note that this method will execute inside of the iframe too, so we must call the right onBlurRegionBlock
+				if (win.region_block_html_editor_on_change_timeout_id)
+					clearTimeout(win.region_block_html_editor_on_change_timeout_id);
+				
+				win.region_block_html_editor_on_change_timeout_id = setTimeout(function() {
+					var str = getRegionBlockHtmlEditorValue(block_html);
+					
+					textarea_orig.value = str;
+					win.onChangeRegionBlockEditor(textarea_orig, str);
+				}, 2000); //waits 2 secs
+			});*/
+			editor.on("blur", function() {
+				//Note that this method will execute inside of the iframe too, so we must call the right onBlurRegionBlock
 				var str = getRegionBlockHtmlEditorValue(block_html);
 				
 				textarea_orig.value = str;
 				win.onChangeRegionBlockEditor(textarea_orig, str);
-			}, 2000); //waits 2 secs
-		});*/
-		editor.on("blur", function() {
-			//Note that this method will execute inside of the iframe too, so we must call the right onBlurRegionBlock
-			var str = getRegionBlockHtmlEditorValue(block_html);
+			});
 			
-			textarea_orig.value = str;
-			win.onChangeRegionBlockEditor(textarea_orig, str);
-		});
-		
-		//fixing problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.
-		var t = block_html.querySelector("textarea.ace_text-input");
-		t && t.classList.remove("ace_text-input"); 
-		
-		//set editor instance in block_html
-		block_html.editor = editor; //bc this method will be called from the edit_template_simple_layout.js, we shouldn't use the jQuery.data() method.
-		
-		//hide textarea_orig
-		textarea_orig.style.display = 'none';
+			//fixing problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.
+			var t = block_html.querySelector("textarea.ace_text-input");
+			t && t.classList.remove("ace_text-input"); 
+			
+			//set editor instance in block_html
+			block_html.editor = editor; //bc this method will be called from the edit_template_simple_layout.js, we shouldn't use the jQuery.data() method.
+			
+			//hide textarea_orig
+			textarea_orig.style.display = 'none';
+		}
 	}
 	
 	//all your after init logics here.
@@ -546,7 +591,7 @@ function loadAvailableBlocksList(parent, opts) {
 		var timeout_id = null;
 		
 		if (available_blocks_list_loading) { 
-			//Bc this function will get executed assynchronous, we need to be sure that we don't get multiple requests to the server of the same thing. So if a process is already running, don't do anything and waits until the ajax process finishes.
+			//Bc this function will get executed asynchronous, we need to be sure that we don't get multiple requests to the server of the same thing. So if a process is already running, don't do anything and waits until the ajax process finishes.
 			timeout_id = setTimeout(function() {
 				loadAvailableBlocksList(parent, opts);
 			}, 500);
@@ -1386,6 +1431,12 @@ function editRegionBlock(elm, opts) {
 			
 			PtlLayoutUIEditor = new LayoutUIEditor();
 			PtlLayoutUIEditor.options.ui_element = layout_ui_editor_elm;
+			
+			PtlLayoutUIEditor.options.on_choose_page_url_func = typeof onIncludePageUrlTaskChooseFile == "function" ? onIncludePageUrlTaskChooseFile : null;
+			PtlLayoutUIEditor.options.on_choose_image_url_func = typeof onIncludeImageUrlTaskChooseFile == "function" ? onIncludeImageUrlTaskChooseFile : null;
+			
+			initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor);
+			
 			PtlLayoutUIEditor.options.on_ready_func = function() {
 				setCodeLayoutUIEditorCode(popup, html);
 				PtlLayoutUIEditor.forceTemplateLayoutConversionAutomatically();
@@ -1748,7 +1799,7 @@ function onLoadRegionBlockParams(region_block_item) {
 		
 		if (project_blocks_params.hasOwnProperty(md5))
 			handler( project_blocks_params[md5] );
-		else if (project_blocks_params_loading[md5]) { //Bc this function will get executed assynchronous, we need to be sure that we don't get multiple requests to the server of the same thing.
+		else if (project_blocks_params_loading[md5]) { //Bc this function will get executed asynchronous, we need to be sure that we don't get multiple requests to the server of the same thing.
 			var func = function() {
 				if (!project_blocks_params_loading[md5])
 					handler( project_blocks_params[md5] );
@@ -3076,30 +3127,14 @@ function reloadLayoutIframeFromSettings(iframe, data, iframe_html_to_parse) {
 						var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
 						
 						if (PtlLayoutUIEditor) {
-							//prepare head html by adding a script code that avoids showing errors, before anything runs in the html. Note that although the edit_simple_template_layout.js already contains the window.onerror already defined, it will only be loaded after some html runs first, and if this html contains javascript errors, they won't be cached by the edit_simple_template_layout.js. So we need to add the following lines of code to run before anything.
-							if (PtlLayoutUIEditor.existsTagFromSource(html, "head")) {
-								var head_html = PtlLayoutUIEditor.getTagContentFromSource(html, "head");
-								
-								//if not exists yet, just incase someone removed these javascript from the edit_simple_template_layout.php
-								if (head_html.indexOf("window.onerror") == -1) {
-									var script_code = '<script class="layout-ui-editor-reserved">'
-										+ 'window.onerror = function(msg, url, line, col, error) {'
-											+ 'if (window.parent && window.parent.$)'
-											+ '	window.parent.$(".template_loaded_with_errors").removeClass("hidden");' //show an alert message saying that the html may not be loaded correctly and this files should be edited via code Layout.
-											+ ''
-											+ 'if (console && console.log)'
-												+ 'console.log("[edit_page_and_template.js:reloadLayoutIframeFromSettings()] Layout Iframe error:" + "\\n- message: " + msg + "\\n- line " + line + "\\n- column " + col + "\\n- url: " + url + "\\n- error: " + error);'
-											+ 'return true;' //return true, avoids the error to be shown and other scripts to stop.
-										+ '};'
-									+ '</script>'; 
-									head_html = script_code + head_html;
-									
-									html = PtlLayoutUIEditor.replaceTagContentFromSource(html, "head", head_html);
-								}
-							}
+							var exists_head = PtlLayoutUIEditor.existsTagFromSource(html, "head");
+							var exists_body = PtlLayoutUIEditor.existsTagFromSource(html, "body");
+							var exists_html = PtlLayoutUIEditor.existsTagFromSource(html, "html");
+							var code_exists = html.replace(/^\s+/g, "").replace(/\s+$/g, "") != "";
+							var non_standard_code = code_exists && !exists_html && !exists_head && !exists_body;
 							
-							//prepare body html, with right php tags parsed
-							if (PtlLayoutUIEditor.existsTagFromSource(html, "body")) {
+							//prepare body html, with right php tags parsed.
+							if (exists_body) {
 								var body_html = PtlLayoutUIEditor.getTagContentFromSource(html, "body");
 								
 								if (body_html) {
@@ -3109,9 +3144,35 @@ function reloadLayoutIframeFromSettings(iframe, data, iframe_html_to_parse) {
 									//console.log(html);
 								}
 							}
+							else if (html && non_standard_code) { //This must execute first than the head html parser (this is, the code below), otherwise we are parsing the script_code too
+								html = PtlLayoutUIEditor.parsedHtmlFromHtmlSource(html);
+							}
+							
+							//prepare head html by adding a script code that avoids showing errors, before anything runs in the html. Note that although the edit_simple_template_layout.js already contains the window.onerror already defined, it will only be loaded after some html runs first, and if this html contains javascript errors, they won't be cached by the edit_simple_template_layout.js. So we need to add the following lines of code to run before anything.
+							var script_code = '<script class="layout-ui-editor-reserved">'
+								+ 'window.onerror = function(msg, url, line, col, error) {'
+									+ 'if (window.parent && window.parent.$)'
+									+ '	window.parent.$(".template_loaded_with_errors").removeClass("hidden");' //show an alert message saying that the html may not be loaded correctly and this files should be edited via code Layout.
+									+ ''
+									+ 'if (console && console.log)'
+										+ 'console.log("[edit_page_and_template.js:reloadLayoutIframeFromSettings()] Layout Iframe error:" + "\\n- message: " + msg + "\\n- line " + line + "\\n- column " + col + "\\n- url: " + url + "\\n- error: " + error);'
+									+ 'return true;' //return true, avoids the error to be shown and other scripts to stop.
+								+ '};'
+							+ '</script>';
+							 
+							if (exists_head) {
+								var head_html = PtlLayoutUIEditor.getTagContentFromSource(html, "head");
+								
+								//if not exists yet, just incase someone removed these javascript from the edit_simple_template_layout.php
+								if (head_html.indexOf("window.onerror") == -1) {
+									head_html = script_code + head_html;
+									html = PtlLayoutUIEditor.replaceTagContentFromSource(html, "head", head_html);
+								}
+							}
+							else if (html && non_standard_code && html.indexOf("window.onerror") == -1)
+								html = script_code + html;
 						}
 						
-						//console.log(html);
 						var doc = iframe[0].contentDocument ? iframe[0].contentDocument : iframe[0].contentWindow.document;
 						doc.open();
 						doc.write(html);
@@ -3278,6 +3339,9 @@ function getContentTemplateLayoutIframe(main_elm) {
 function initPageAndTemplateLayout(main_parent_elm, opts) {
 	opts = opts ? opts : {};
 	
+	if (opts.save_func)
+		regions_blocks_html_editor_save_func = opts.save_func;
+	
 	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
@@ -3396,11 +3460,23 @@ function initPageAndTemplateLayout(main_parent_elm, opts) {
 		//console.log("init_code_layout_ui_editor_finished:"+init_code_layout_ui_editor_finished);
 		
 		if (load_available_block_list_finished && init_code_layout_ui_editor_finished) {
-			main_parent_elm.removeClass("inactive");
+			var func = function() {
+				main_parent_elm.removeClass("inactive");
+				
+				//call ready callback
+				if (typeof opts.ready_func == "function") //must be inside here bc of the update_settings_from_layout_iframe_func and update_layout_iframe_from_settings_func vars, otherwise the loadAvailableBlocksList will trigger some select.change events that will trigger this functions
+					opts.ready_func();
+			};
+			var is_finished = (typeof page_blocks_join_points_htmls_loading != "object" || $.isEmptyObject(page_blocks_join_points_htmls_loading)) && (typeof project_blocks_params_loading != "object" || $.isEmptyObject(project_blocks_params_loading));
+			//console.log(page_blocks_join_points_htmls_loading);
+			//console.log(project_blocks_params_loading);
 			
-			//call ready callback
-			if (typeof opts.ready_func == "function") //must be inside here bc of the update_settings_from_layout_iframe_func and update_layout_iframe_from_settings_func vars, otherwise the loadAvailableBlocksList will trigger some select.change events that will trigger this functions
-				opts.ready_func();
+			if (is_finished)
+				func();
+			else
+				setTimeout(function() {
+					last_func_to_be_executed();
+				}, 700);
 		}
 	};
 	
@@ -3421,14 +3497,12 @@ function initPageAndTemplateLayout(main_parent_elm, opts) {
 	
 	initCodeLayoutUIEditor(code_layout_ui_editor, {
 		save_func: opts.save_func, 
+		beautify: false,
 		ready_func: function() {
 			//console.log("initCodeLayoutUIEditor ready_func");
 			
 			var luie = code_layout_ui_editor.children(".layout-ui-editor");
 			var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
-			
-			PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorWithRightContainer;
-			PtlLayoutUIEditor.options.on_convert_project_url_php_vars_to_real_values_func = convertProjectUrlPHPVarsToRealValues;
 			
 			//show view layout panel instead of code
 			var view_layout = luie.find(" > .tabs > .view-layout");
@@ -3455,6 +3529,9 @@ function initPageAndTemplateLayout(main_parent_elm, opts) {
 				$(iframe[0].contentWindow).unload(iframe_unload_func);
 				
 				main_parent_elm.removeClass("inactive");
+				
+				//set beautify to defaults
+				PtlLayoutUIEditor.options.beautify = true;
 			});
 			$(iframe[0].contentWindow).unload(iframe_unload_func);
 			
@@ -3483,9 +3560,51 @@ function initPageAndTemplateLayoutSLA(regions_blocks_includes_settings) {
 	var workflow_menu_ul = sla.find(" > #ui > .taskflowchart").addClass("with_top_bar_menu fixed_properties").children(".workflow_menu").addClass("top_bar_menu").children("ul");
 	workflow_menu_ul.children("li.save, li.auto_save_activation, li.auto_convert_activation, li.tasks_flow_full_screen").remove();
 	workflow_menu_ul.children("li").last().filter(".separator").remove();
+	
+	//overwrite the removeGroupItem function to check if the resource is being used in the html
+	changeRemoveSLAGroupItemFunctionToCheckUsedResources();
+	
+	//initSLA changes the ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback, so we need to update it here too.
+	var PtlLayoutUIEditor = $(".code_layout_ui_editor > .layout-ui-editor").data("LayoutUIEditor");
+	
+	if (PtlLayoutUIEditor)
+		PtlLayoutUIEditor.options.on_choose_variable_func = ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback; 
 }
 
-function loadPageAndTemplateLayoutSLASettings(regions_blocks_includes_settings) {
+function changeRemoveSLAGroupItemFunctionToCheckUsedResources() {
+	//overwrite the removeGroupItem function to check if the resource is being used in the html
+	window.old_removeGroupItem = removeGroupItem;
+
+	window.removeGroupItem = function(elm, do_not_confirm) {
+		var status = true;
+		
+		if (!do_not_confirm) {
+			var PtlLayoutUIEditor = $(".code_layout_ui_editor > .layout-ui-editor").data("LayoutUIEditor");
+			
+			if (PtlLayoutUIEditor) {
+				var item = $(elm).parent().closest(".sla_group_item");
+				var resource_name = item.find(" > .sla_group_header > .result_var_name").val();
+				
+				if (resource_name) {
+					var filtered_resources_name = PtlLayoutUIEditor.LayoutUIEditorWidgetResource.filterResourcesIfNotUsedAnymore(resource_name);
+					
+					//if filtered_resources_name.length == 0, it means that the resource_name is being by some widget
+					if (filtered_resources_name.length == 0) {
+						if (confirm("This resource is being used in the html. By removing it, the html may not work as expected. Do you still wish to remove it?"))
+							do_not_confirm = true;
+						else
+							status = false;
+					}
+				}
+			}
+		}
+		
+		if (status)
+			window.old_removeGroupItem(elm, do_not_confirm);
+	}
+}
+
+function loadPageAndTemplateLayoutSLASettings(regions_blocks_includes_settings, asynchronous) {
 	var actions_obj = {
 		actions: {
 			key: "actions",
@@ -3499,7 +3618,7 @@ function loadPageAndTemplateLayoutSLASettings(regions_blocks_includes_settings) 
 	if (tasks_values && tasks_values.hasOwnProperty("actions")) {
 		var add_group_icon = regions_blocks_includes_settings.find(" > .resource_settings > .sla > .sla_groups_flow > nav > .add_sla_group");
 		
-		loadSLASettingsActions(add_group_icon[0], tasks_values["actions"], false);
+		loadSLASettingsActions(add_group_icon[0], tasks_values["actions"], false, asynchronous); //set asynchronous argument to true so it can load the slas asynchrounously. This will make the system 3 to 5 secs faster.
 	}
 }
 
@@ -3598,15 +3717,16 @@ function disableLinksAndButtonClickEvent(parent_elm) {
 
 function initIframeModulesBlocksToolbarDraggableMenuItem(menu_item) {
 	menu_item.addClass("draggable_menu_item");
+	var menu_item_icon = menu_item.find(" > a > i");
 	
-	if (menu_item.find(" > a > i").hasClass("block_file"))
+	if (menu_item_icon.hasClass("block_file"))
 		menu_item.addClass("draggable_menu_item_block");
-	else if (menu_item.find(" > a > i").is(".table-list, .table-edit, .table-add, .table-view"))
+	else if (menu_item_icon.is(".table-list, .table-edit, .table-add, .table-view"))
 		menu_item.addClass("draggable_menu_item_table");
 	else
 		menu_item.addClass("draggable_menu_item_module");
 	
-	menu_item.draggable({
+	/*menu_item.draggable({
 		iframeFix: true,
 		iframeScroll:true,
 		scroll: true,
@@ -3630,7 +3750,7 @@ function initIframeModulesBlocksToolbarDraggableMenuItem(menu_item) {
 		start: function(event, ui) {
 			closeModuleInfo();
 		},
-	});
+	});*/
 }
 
 function getMenuItemModuleId(menu_item) {
@@ -3640,6 +3760,119 @@ function getMenuItemModuleId(menu_item) {
 	module_id = module_id.substr(module_id.length - 1) == "/" ? module_id.substr(0, module_id.length - 1) : module_id;
 	
 	return module_id;
+}
+
+/* DESIGN SETTINGS PANEL */
+
+function loadCodeEditorLayoutJSAndCSSFilesToSettings() {
+	var js_and_css_files = getCurrentCodeJSAndCSSFiles();
+	var css_files = js_and_css_files["css_files"];
+	var js_files = js_and_css_files["js_files"];
+	var regions_blocks_includes_settings = $(".regions_blocks_includes_settings");
+	
+	updateCodeEditorLayoutFilesInSettings(css_files, regions_blocks_includes_settings.find(".css_files > ul"));
+	updateCodeEditorLayoutFilesInSettings(js_files, regions_blocks_includes_settings.find(".js_files > ul"));
+}
+
+function getCurrentCodeJSAndCSSFiles() {
+	var css_files = [];
+	var js_files = [];
+	var head_code = getTemplateHeadEditorCode(); //The getTemplateHeadEditorCode function needs to be defined in the js files that call this method, bc it doesn't exists here.
+	var body_code = getTemplateBodyEditorCode(); //The getTemplateBodyEditorCode function needs to be defined in the js files that call this method, bc it doesn't exists here.
+	
+	var code = "<html><head>" + head_code + "</head><body>" + body_code + "</body></html>";
+	var regex = /<(script|link)\s+/gi;
+	var m = regex.exec(code);
+	
+	while (m != null) {
+		var tag_start = m.index;
+		var tag_html = MyHtmlBeautify.getTagHtml(code, tag_start, "");
+		var tag_code = tag_html[0];
+		var tag_end = tag_html[1];
+		
+		/*console.log(m);
+		console.log("tag_code:"+tag_code);
+		console.log("tag_start:"+tag_start);
+		console.log("tag_end:"+tag_end);*/
+		
+		//parse tag_code
+		if (tag_code) {
+			var is_script = m[1].toLowerCase() == "script";
+			var sub_regex = new RegExp("\\s+(" + (is_script ? "src" : "href") + ")\\s*=\\s*(\"|'|)", "gi");
+			var sub_m = sub_regex.exec(tag_code);
+			
+			if (sub_m != null) {
+				var attr_start = sub_m.index + sub_m[0].length;
+				var attr = MyHtmlBeautify.getAttribute(tag_code, attr_start, sub_m[2]);
+				var attr_html = attr[0];
+				var attr_end = attr[1];
+				//console.log("attr_html:"+attr_html);
+				
+				if (attr_html) {
+					if (is_script)
+						js_files.push(attr_html);
+					else
+						css_files.push(attr_html);
+				}
+			}
+		}
+		
+		m = regex.exec(code);
+	}
+	
+	return {"css_files": css_files, "js_files": js_files};
+}
+
+function updateCodeEditorLayoutFilesInSettings(files, ul) {
+	//console.log(files);
+	var empty_files_li = ul.children(".empty_files");
+	
+	//remove old files
+	ul.children("li:not(.empty_files)").remove()
+	
+	//prepare new files
+	if (files.length > 0) {
+		empty_files_li.hide();
+		var html = '';
+		
+		//prepare non https or http urls
+		var selected_project_url_prefix_aux = selected_project_url_prefix.match(/^http:/) ? selected_project_url_prefix.replace(/^http:/, "https:") : selected_project_url_prefix.replace(/^https:/, "http:");
+		var selected_project_common_url_prefix_aux = selected_project_common_url_prefix.match(/^http:/) ? selected_project_common_url_prefix.replace(/^http:/, "https:") : selected_project_common_url_prefix.replace(/^https:/, "http:");
+		
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			var path = null;
+			
+			if (file.indexOf(selected_project_url_prefix) === 0) //checks if file starts with url in vars: selected_project_url_prefix
+				path = selected_project_id + "/webroot/" + file.substr(selected_project_url_prefix.length);
+			else if (file.indexOf(selected_project_common_url_prefix) === 0) //checks if file starts with url in vars: selected_project_common_url_prefix
+				path = common_project_name + "/webroot/" + file.substr(selected_project_common_url_prefix.length);
+			else if (file.indexOf(selected_project_url_prefix_aux) === 0) //checks if file starts with url in vars: selected_project_url_prefix_aux
+				path = selected_project_id + "/webroot/" + file.substr(selected_project_url_prefix_aux.length);
+			else if (file.indexOf(selected_project_common_url_prefix_aux) === 0) //checks if file starts with url in vars: selected_project_common_url_prefix_aux
+				path = common_project_name + "/webroot/" + file.substr(selected_project_common_url_prefix_aux.length);
+			else { //checks if file starts with php code: $project_url_prefix or $project_common_url_prefix
+				var m = /^<\?(|=|php)\s*(|echo|print)\s*(\$[a-z_]+)\s*;?\s*\?>/g.exec(file);
+				
+				if (m && (m[3] == "$project_url_prefix" || m[3] == "$original_project_url_prefix" || m[3] == "$project_common_url_prefix" || m[3] == "$original_project_common_url_prefix")) { 
+					var relative_file = file.substr(m[0].length);
+					
+					path = (m[3] == "$project_url_prefix" || m[3] == "$original_project_url_prefix" ? selected_project_id : common_project_name) + "/webroot/" + relative_file;
+				}
+			}
+			
+			var file_name = file.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+			
+			if (path)
+				file_name = '<a href="javascript:void(0)" onClick="editWebrootFile(\'' + path + '\')" title="Click to edit file">' + file_name + '</a>';
+			
+			html += '<li>' + file_name + '</li>';
+		}
+		
+		ul.append(html);
+	}
+	else
+		empty_files_li.show();
 }
 
 /* MODULE INFO POPUP */
@@ -3664,6 +3897,7 @@ function showModuleInfo(elm) {
 		
 		module_info_tooltip.children(".module_data").html('<div class="loading">Loading...</div>');
 		module_info_tooltip.css({
+			inset: "",
 			top: window.event.y,
 			left: window.event.x + 10,
 		})
@@ -3822,7 +4056,7 @@ function initCodeLayoutUIEditor(main_obj, opts) {
 			
    			setCodeLayoutUIEditorTreeItemsDraggableEvent(ul);
    			
-   			//bc the removeAllThatIsNotBlocksOrModulesFromTree is assync, run the setCodeLayoutUIEditorTreeItemsDraggableEvent again just in case we miss some item like the db table items.
+   			//bc the removeAllThatIsNotBlocksOrModulesFromTree is async, run the setCodeLayoutUIEditorTreeItemsDraggableEvent again just in case we miss some item like the db table items.
    			setTimeout(function() {
    				setCodeLayoutUIEditorTreeItemsDraggableEvent(ul);
    			}, 1000);
@@ -3851,7 +4085,9 @@ function setCodeLayoutUIEditorTreeItemsDraggableEvent(ul) {
 		
 		if (item.attr("tree-draggable-inited") != 1) {
 			item.attr("tree-draggable-inited", 1);
-			item.draggable('destroy'); //remove the previous draggable event setted by the edit_page_and_template.js
+			
+			if (item.hasClass("ui-draggable"))
+				item.draggable('destroy'); //remove the previous draggable event setted by the edit_page_and_template.js
 			
 	  		var li = item.closest("li");
 	  		li.append( cmob_template_widget.clone() );
@@ -3867,6 +4103,12 @@ function setCodeLayoutUIEditorTreeItemsDraggableEvent(ul) {
 	  		
 	  		PtlLayoutUIEditor.setDraggableMenuWidget(li, {
 	  			menu_widget_to_create_template_widget: cmob[0],
+	  			on_drag_start_func: function(menu_widget, event, ui_obj, ret) {
+	  				//close module info popup
+		  			closeModuleInfo();
+		  			
+		  			return ret;
+		  		}
 	  		});
 		}
 	});
@@ -3900,6 +4142,9 @@ function chooseCodeLayoutUIEditorModuleBlock(tree_obj) {
 	var node = tree_obj.getSelectedNodes();
 	node = node[0];
 	
+	//close module info popup in case be open.
+	closeModuleInfo();
+	
 	if (node) {
 		node = $(node);
 		
@@ -3915,7 +4160,6 @@ function chooseCodeLayoutUIEditorModuleBlock(tree_obj) {
 	    		
 	    		MyCodeLayoutUIEditorFancyPopup.setOption("onClose", null);
 	    		MyCodeLayoutUIEditorFancyPopup.hidePopup();
-			closeModuleInfo();
 	    	}
 		else if (node.hasClass("draggable_menu_item_module")) {
 	    		var module_id = getMenuItemModuleId(node);
@@ -3928,30 +4172,111 @@ function chooseCodeLayoutUIEditorModuleBlock(tree_obj) {
 	    		var table_li = node.parent().closest("li");
 	    		var db_type_li = table_li.parent().closest("li");
 	    		var db_driver_li = db_type_li.parent().closest("li");
+	    		var widget_type = i.hasClass("table-html") ? "html" : "block";
 	    		var task_tag = null;
 	    		var task_tag_action = null;
+	    		var widget_group = null;
+	    		var widget_action = null;
 	    		
-	    		if (i.hasClass("table-list"))
+	    		if (i.hasClass("table-list")) {
 	    			task_tag = "listing";
+	    			
+	    			widget_group = "list";
+	    			widget_action = "edit";
+	    		}
 	    		else if (i.hasClass("table-edit")) {
 	    			task_tag = "form";
 	    			task_tag_action = "update";
+	    			
+	    			widget_group = "form";
+	    			widget_action = "edit";
 	    		}
 	    		else if (i.hasClass("table-add")) {
 	    			task_tag = "form";
 	    			task_tag_action = "insert";
+	    			
+	    			widget_group = "form";
+	    			widget_action = "add";
 	    		}
-	    		else if (i.hasClass("table-view"))
+	    		else if (i.hasClass("table-view")) {
 	    			task_tag = "view";
+	    			
+	    			widget_group = "form";
+	    			widget_action = "view";
+	    		}
 	    		
-	    		openCodeLayoutUIEditorDBTableUisDiagramBlockPopup({
-		    		task_tag: task_tag,
-		    		task_tag_action: task_tag_action,
-		    		db_driver: db_driver_li.attr("db_driver_name"),
-		    		db_type: db_type_li.attr("db_type"),
-	    			db_table: table_li.children("a").attr("table"),
-	    		});
+	    		if (widget_type == "html") {
+	    			var widget = MyCodeLayoutUIEditorFancyPopup.settings.targetField;
+	    			updateCodeLayoutUIEditorDBTableWidget(widget, {
+			    		widget_group: widget_group,
+			    		widget_action: widget_action,
+			    		db_driver: db_driver_li.attr("db_driver_name"),
+			    		db_type: db_type_li.attr("db_type"),
+		    			db_table: table_li.children("a").attr("table"),
+		    		});
+	    		}
+	    		else
+		    		openCodeLayoutUIEditorDBTableUisDiagramBlockPopup({
+			    		task_tag: task_tag,
+			    		task_tag_action: task_tag_action,
+			    		db_driver: db_driver_li.attr("db_driver_name"),
+			    		db_type: db_type_li.attr("db_type"),
+		    			db_table: table_li.children("a").attr("table"),
+		    		});
 		}
+	}
+}
+
+function updateCodeLayoutUIEditorDBTableWidget(widget, settings) {
+	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+	
+	if (PtlLayoutUIEditor) {
+		widget.hide();
+		MyFancyPopup.showLoading();
+		
+		//prepare db_broker
+		if (!settings["db_broker"] && settings["db_driver"]) {
+			if (default_dal_broker && $.isPlainObject(db_brokers_drivers_tables_attributes[default_dal_broker]))
+				for (db_driver in db_brokers_drivers_tables_attributes[default_dal_broker])
+					if (db_driver == settings["db_driver"]) {
+						settings["db_broker"] = default_dal_broker;
+						break;
+					}
+			
+			if (!settings["db_broker"])
+				for (db_broker in db_brokers_drivers_tables_attributes)
+					if ($.isPlainObject(db_brokers_drivers_tables_attributes[db_broker])) {
+						for (db_driver in db_brokers_drivers_tables_attributes[db_broker])
+							if (db_driver == settings["db_driver"]) {
+								settings["db_broker"] = db_broker;
+								break;
+							}
+						
+						if (settings["db_broker"])
+							break;
+					}
+		}
+		
+		if (settings["db_broker"] == default_dal_broker)
+			settings["db_broker"] = "";
+		
+		//must have settimeout bc the widget doesn't have the right parent yet.
+		setTimeout(function() {
+			//prepare widget_settings. Note that the widget is a block widget and we simply want an html widget, so we need to create a new one
+			var new_widget = $('<div></div>');
+			widget.after(new_widget);
+			widget.remove();
+			
+			//convert new_widget to a real widget
+			PtlLayoutUIEditor.convertHtmlElementToWidget(new_widget);
+			PtlLayoutUIEditor.refreshElementMenuLayer( new_widget.parent() );
+			
+			if (!PtlLayoutUIEditor.LayoutUIEditorWidgetResource.prepareWidgetBasedInUserSettings(new_widget, settings)) {
+				new_widget.remove();
+			}
+			
+			MyFancyPopup.hideLoading();
+		}, 100);
 	}
 }
 
@@ -4154,8 +4479,12 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
 			var PtlLayoutUIEditor = new LayoutUIEditor();
 			PtlLayoutUIEditor.options.ui_element = ui;
 			PtlLayoutUIEditor.options.template_source_editor_save_func = opts && opts.save_func ? opts.save_func : null;
+			PtlLayoutUIEditor.options.beautify = opts && opts.beautify ? opts.beautify : true;
+			
 			PtlLayoutUIEditor.options.auto_convert = typeof auto_convert != "undefined" && auto_convert;
-			PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorPanels;
+			PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorWithRightContainer;
+			PtlLayoutUIEditor.options.on_choose_variable_func = typeof ProgrammingTaskUtil == "object" && typeof ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback == "function" ? ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback : onProgrammingTaskChooseCreatedVariable;
+			PtlLayoutUIEditor.options.on_convert_project_url_php_vars_to_real_values_func = convertProjectUrlPHPVarsToRealValues;
 			
 			if (typeof onIncludePageUrlTaskChooseFile == "function")
 				PtlLayoutUIEditor.options.on_choose_page_url_func = function(elm) {
@@ -4169,12 +4498,9 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
 					MyFancyPopup.settings.is_code_html_base = true;
 				}
 			
+			initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor);
+			
 			PtlLayoutUIEditor.options.on_ready_func = function() {
-				if (typeof LayoutUIEditorFormFieldUtil == "function") {
-					var LayoutUIEditorFormFieldUtilObj = new LayoutUIEditorFormFieldUtil(PtlLayoutUIEditor);
-					LayoutUIEditorFormFieldUtilObj.initFormFieldsSettings();
-				}
-				
 				//add right_container to layout ui editor
 				var right_container = $(".layout_ui_editor_right_container");
 				var luie = PtlLayoutUIEditor.getUI();
@@ -4256,7 +4582,7 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
         				}*/
         				
         				setTimeout(function() {
-	        				PtlLayoutUIEditor.MyTextSelection.refreshMenu();
+	        				PtlLayoutUIEditor.TextSelection.refreshMenu();
 	        			}, 1000);
         			});
 
@@ -4289,7 +4615,8 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
 	}
 }
 
-function onChangeLayoutUIEditorWidgets(widget) {
+//Note that when this function gets call from PtlLayoutUIEditor.options.on_template_widgets_layout_changed_func it may or may not pass a widget as first argument
+function onChangeLayoutUIEditorWidgets() {
 	updateSettingsFromLayoutIframeField();
 }
 
@@ -4297,13 +4624,41 @@ function onChangeLayoutUIEditorWidgets(widget) {
 function onToggleCodeEditorFullScreen(in_full_screen, main_obj) {
 	setTimeout(function() {
 		var PtlLayoutUIEditor = main_obj.find(".layout-ui-editor").data("LayoutUIEditor");
-		var menu_settings = PtlLayoutUIEditor.getMenuSettings();
 		
-		if (menu_settings.is(":visible"))
-			PtlLayoutUIEditor.showFixedMenuSettings();
-		
-		PtlLayoutUIEditor.MyTextSelection.refreshMenu();
+		if (PtlLayoutUIEditor) {
+			var menu_settings = PtlLayoutUIEditor.getMenuSettings();
+			
+			if (menu_settings.is(":visible"))
+				PtlLayoutUIEditor.showFixedMenuSettings();
+			
+			PtlLayoutUIEditor.TextSelection.refreshMenu();
+		}
 	}, 500);
+}
+
+function toggleCodeEditorHtmlBeautify(elm) {
+	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+	
+	if (PtlLayoutUIEditor) {
+		elm = $(elm);
+		var li = elm.parent();
+		var title = li.attr("title");
+		var html = elm.html();
+		
+		if (PtlLayoutUIEditor.options.beautify) {
+			PtlLayoutUIEditor.options.beautify = false;
+			title = title.replace("Disable", "Enable");
+			html = html.replace("Disable", "Enable");
+		}
+		else {
+			PtlLayoutUIEditor.options.beautify = true;
+			title = title.replace("Enable", "Disable");
+			html = html.replace("Enable", "Disable");
+		}
+		
+		li.attr("title", title);
+		elm.html(html);
+	}
 }
 
 function flipCodeLayoutUIEditorPanelsSide(elm) {
@@ -4332,10 +4687,16 @@ function onResizeCodeLayoutUIEditorWithRightContainer(props) {
 	
 	var layout_ui_editor_right_container = props.ui.children(".layout_ui_editor_right_container");
 	
-	if (props.is_reverse)
-		layout_ui_editor_right_container.css({"left": props.calc_str});
-	else
-		layout_ui_editor_right_container.css({"right": props.perc_str});
+	if (layout_ui_editor_right_container[0]) {
+		if (props.direction == "horizontal") {
+			if (props.is_reverse)
+				layout_ui_editor_right_container.css({"left": props.calc_str});
+			else
+				layout_ui_editor_right_container.css({"right": props.perc_str});
+		}
+		else if (props.direction == "vertical")
+			layout_ui_editor_right_container.css({"bottom": props.offset ? props.offset + "px" : ""});
+	}
 }
 
 /*function initResizeCodeLayoutUIEditorRightContainer(PtlLayoutUIEditor) {
@@ -4374,8 +4735,8 @@ function onResizeCodeLayoutUIEditorWithRightContainer(props) {
 			template_widgets_options.css("right", (width + 5) + "px"); //bc of the resize panel which has 5px of width
 			ui_obj.helper.css({left: "", top: "", right: width + "px"}); //reset layout_ui_editor_right_container_resize
 			
-			if (PtlLayoutUIEditor.MyTextSelection)
-				PtlLayoutUIEditor.MyTextSelection.refreshMenu();
+			if (PtlLayoutUIEditor.TextSelection)
+				PtlLayoutUIEditor.TextSelection.refreshMenu();
 		},
 	});
 }*/
@@ -4407,11 +4768,14 @@ function getCodeLayoutUIEditorCode(main_obj) {
 		var luie = PtlLayoutUIEditor.getUI();
 		var is_full_source_active = luie.find(" > .options .option.show-full-source").hasClass("option-active");
 		
-		return is_full_source_active ? PtlLayoutUIEditor.getTemplateFullSourceEditorValue() : PtlLayoutUIEditor.getTemplateSourceEditorValue();
+		code = is_full_source_active ? PtlLayoutUIEditor.getTemplateFullSourceEditorValue() : PtlLayoutUIEditor.getTemplateSourceEditorValue();
+	}
+	else {
+		var editor = main_obj.data("editor");
+		code = editor ? editor.getValue() : main_obj.find(".layout-ui-editor > .template-source > textarea").first().val();
 	}
 	
-	var editor = main_obj.data("editor");
-	return editor ? editor.getValue() : main_obj.find(".layout-ui-editor > .template-source > textarea").first().val();
+	return code;
 }
 
 function setCodeLayoutUIEditorCode(main_obj, code) {
