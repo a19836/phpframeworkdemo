@@ -22,17 +22,17 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$session_id_var_name = \UserUtil::getConstantVariable("USER_SESSION_ID_VARIABLE_NAME");
 		$session_id = $_COOKIE[$session_id_var_name];
 		unset($_COOKIE[$session_id_var_name]);
-		setcookie($session_id_var_name, "", time() - 3600, "/");
+		\CookieHandler::setSafeCookie($session_id_var_name, "", time() - 3600, "/");
 		
 		//remove captcha cookie
 		$show_captcha_var_name = \UserUtil::getConstantVariable("USER_LOGIN_SHOW_CAPTCHA_VARIABLE_NAME");
 		unset($_COOKIE[$show_captcha_var_name]);
-		setcookie($show_captcha_var_name, "", time() - 3600, "/");
+		\CookieHandler::setSafeCookie($show_captcha_var_name, "", time() - 3600, "/");
 		
 		//remove session control cookie
 		$user_session_control_var_name = \UserUtil::getConstantVariable("USER_SESSION_CONTROL_VARIABLE_NAME");
 		unset($_COOKIE[$user_session_control_var_name]);
-		setcookie($user_session_control_var_name, "", time() - 3600, "/");
+		\CookieHandler::setSafeCookie($user_session_control_var_name, "", time() - 3600, "/");
 		
 		$status = true;
 		

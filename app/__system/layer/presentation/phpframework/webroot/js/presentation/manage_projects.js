@@ -128,7 +128,7 @@ function onSucccessfullAddProject() {
 	
 	if (window.parent && window.parent != window) {
 		//set cookie with default page
-		window.parent.MyJSLib.CookieHandler.setEternalRootCookie('default_page', url); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+		window.parent.MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('default_page', url); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
 		
 		var parent_url = window.parent.location;
 		window.parent.location = parent_url;

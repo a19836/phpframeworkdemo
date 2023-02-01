@@ -1790,7 +1790,7 @@ function onSucccessfullEditProject(opts) {
 				}
 				
 				//set cookie with default page
-				MyJSLib.CookieHandler.setEternalRootCookie('default_page', default_page); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+				MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('default_page', default_page); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
 			}
 			
 			document.location = url;
