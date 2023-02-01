@@ -308,6 +308,7 @@
 .mycontextmenu .edit_config::before {content:"\f013"; color:#999;}
 .mycontextmenu .edit_config::after {content:"\f304";}
 .mycontextmenu .edit_init::before {content:"\f573";}
+.mycontextmenu .manage_users::before {content:"\f0c0";}
 .mycontextmenu .manage_references::before {content:"\f572";}
 .mycontextmenu .view_project::before {content:"\f06e";}
 .mycontextmenu .test_project::before {content:"\f06e";}
@@ -380,35 +381,25 @@
 	height:100%;
 }
 
-.choose_db_table_widget_options_popup,
-  .choose_db_table_task_options_popup {
+.choose_db_table_task_options_popup {
 	top:auto;
 	left:auto;
 	right:auto;
 	bottom:auto;
-	width:200px;
+	width:230px;
 }
-.choose_db_table_widget_options_popup .widget_group,
-  .choose_db_table_task_options_popup .method_name {
+.choose_db_table_task_options_popup .method_name {
 	padding:20px 20px 0;
 }
-.choose_db_table_widget_options_popup .widget_action {
-	padding:10px 20px 0;
-}
-.choose_db_table_widget_options_popup .widget_group label,
-  .choose_db_table_widget_options_popup .widget_action label,
-  .choose_db_table_task_options_popup .method_name label {
-	width:50px;
+.choose_db_table_task_options_popup .method_name label {
+	width:80px;
 	display:inline-block;
 }
-.choose_db_table_widget_options_popup .button,
-  .choose_db_table_task_options_popup .button {
+.choose_db_table_task_options_popup .button {
 	padding:20px;
 	text-align:center;
 }
-.choose_db_table_widget_options_popup select,
-  .choose_db_table_widget_options_popup input,
-  .choose_db_table_task_options_popup select,
+.choose_db_table_task_options_popup select,
   .choose_db_table_task_options_popup input {
 	font-size:inherit;
 }

@@ -51,11 +51,11 @@
 				if (!html_element) {
 					TemplateCallModuleOrBlockWidgetObj.prepareCreatedTemplateWidget(widget, html_element);
 				
-					if (typeof chooseCodeLayoutUIEditorModuleBlock == "function" && MyCodeLayoutUIEditorFancyPopup) {
-						if (!MyCodeLayoutUIEditorFancyPopup.settings)
-							MyCodeLayoutUIEditorFancyPopup.settings = {};
+					if (typeof chooseCodeLayoutUIEditorModuleBlock == "function" && CodeLayoutUIEditorFancyPopup) {
+						if (!CodeLayoutUIEditorFancyPopup.settings)
+							CodeLayoutUIEditorFancyPopup.settings = {};
 						
-						MyCodeLayoutUIEditorFancyPopup.settings.targetField = widget;
+						CodeLayoutUIEditorFancyPopup.settings.targetField = widget;
 						
 						chooseCodeLayoutUIEditorModuleBlock(chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer);
 					}

@@ -147,6 +147,7 @@
 	display:none;
 }
 .button_settings .button_settings_label {
+	line-height:20px;
 	margin-left:5px;
 }
 .button_settings .button_settings_icon {

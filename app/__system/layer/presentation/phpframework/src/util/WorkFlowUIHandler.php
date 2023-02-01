@@ -179,6 +179,44 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 			jsPlumbWorkFlow.reinit();
 	}
 	
+	function zoomInDiagram(elm) {
+		jsPlumbWorkFlow.jsPlumbTaskFlow.zoomIn();
+		updateCurrentZoom(elm);
+		zoomEventPropagationDiagram(elm);
+	}
+	
+	function zoomOutDiagram(elm) {
+		jsPlumbWorkFlow.jsPlumbTaskFlow.zoomOut();
+		updateCurrentZoom(elm);
+		zoomEventPropagationDiagram(elm);
+	}
+	
+	function zoomDiagram(input) {
+		jsPlumbWorkFlow.jsPlumbTaskFlow.zoom(input.value);
+		updateCurrentZoom(input);
+		zoomEventPropagationDiagram(input);
+	}
+	
+	function zoomResetDiagram(elm) {
+		jsPlumbWorkFlow.jsPlumbTaskFlow.zoomReset();
+		updateCurrentZoom(elm);
+		zoomEventPropagationDiagram(elm);
+	}
+	
+	function zoomEventPropagationDiagram(elm) {
+		window.event.stopPropagation();
+	}
+	
+	function updateCurrentZoom(elm) {
+		elm = $(elm);
+		var current_zoom = jsPlumbWorkFlow.jsPlumbTaskFlow.getCurrentZoom();
+		var main_parent = elm.parent().closest("li").parent();
+		main_parent.find(".zoom span").html( parseInt(current_zoom * 100) + "%");
+		
+		if (!elm.is("input[type=range]"))
+			main_parent.find(".zoom input[type=range]").val(current_zoom);
+	}
+	
 	function openIframePopup(url, options) {
 		options = typeof options != "undefined" && options ? options : {};
 		options["url"] = url;
@@ -187,7 +225,7 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 		jsPlumbWorkFlow.getMyFancyPopupObj().init(options);
 		jsPlumbWorkFlow.getMyFancyPopupObj().showPopup();
 	}
-</script>'; return $v0a9dad1fe0; } public function setMenus($v243e50bc1d) { $this->v243e50bc1d = $v243e50bc1d; } public function getDefaultMenus() { $pabf7b139 = array_keys($this->v85ea3272a0); $pabf7b139 = $pabf7b139[0]; $v75c19c5e8a = $this->v85ea3272a0[$pabf7b139][0]; return array( "File" => array( "childs" => array( "Save" => array("click" => "jsPlumbWorkFlow.jsPlumbTaskFile.save();return false;"), "Flush Cache" => array("click" => "return flushCache();"), "Empty Diagram" => array("click" => "emptyDiagam();return false;"), ) ), "WorkFlow" => array( "childs" => array( "Add new task $v75c19c5e8a" => array("click" => "jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByType('" . $v75c19c5e8a . "');return false;"), ) ), "Container" => array( "childs" => array( "Decrease Containers IF Size" => array("click" => "jsPlumbWorkFlow.jsPlumbContainer.changeContainerSize('" . $pabf7b139 . "', 400, 100);return false;"), "Increase Containers IF Size" => array("click" => "jsPlumbWorkFlow.jsPlumbContainer.changeContainerSize('" . $pabf7b139 . "', 1300, 250);return false;"), "Shrink containers" => array("click" => "jsPlumbWorkFlow.jsPlumbContainer.automaticDecreaseContainersSize();return false;"), ) ), ); } public function getMenusContent() { if (empty($this->v243e50bc1d) || !is_array($this->v243e50bc1d)) $this->v243e50bc1d = $this->getDefaultMenus(); return '<div id="workflow_menu" class="workflow_menu" onClick="openSubmenu(this)">' . $this->f5e52484713($this->v243e50bc1d, "dropdown") . '</div>'; } private function f5e52484713($v243e50bc1d, $v3ae55a9a2e = false) { $pf8ed4912 = ''; if (!empty($v243e50bc1d) && is_array($v243e50bc1d)) { $pf8ed4912 .= '<ul' . ($v3ae55a9a2e ? ' class="' . $v3ae55a9a2e . '"' : '') . '>'; foreach ($v243e50bc1d as $v134495e57e => $pdf6c365c) { $pf8ed4912 .= '<li class="' . $pdf6c365c["class"] . '" title="' . ($pdf6c365c["title"] ? $pdf6c365c["title"] : $v134495e57e) . '">'; if ($pdf6c365c["html"]) $pf8ed4912 .= $pdf6c365c["html"]; else $pf8ed4912 .= '<a' . ($pdf6c365c["click"] ? ' onClick="' . $pdf6c365c["click"] . '"' : '') . '>' . $v134495e57e . '</a>'; if (!empty($pdf6c365c["childs"])) $pf8ed4912 .= $this->f5e52484713($pdf6c365c["childs"]); $pf8ed4912 .= '</li>'; } $pf8ed4912 .= '</ul>'; } return $pf8ed4912; } public function getContent($v29ae981180 = "taskflowchart") { $v446c479876 = $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse"; $v6e611b5051 = '
+</script>'; return $v0a9dad1fe0; } public function setMenus($v243e50bc1d) { $this->v243e50bc1d = $v243e50bc1d; } public function getDefaultMenus() { $pabf7b139 = array_keys($this->v85ea3272a0); $pabf7b139 = $pabf7b139[0]; $v75c19c5e8a = $this->v85ea3272a0[$pabf7b139][0]; return array( "File" => array( "childs" => array( "Save" => array("click" => "jsPlumbWorkFlow.jsPlumbTaskFile.save();return false;"), "Flush Cache" => array("click" => "return flushCache();"), "Empty Diagram" => array("click" => "emptyDiagam();return false;"), "Flip Diagram" => array("click" => "jsPlumbWorkFlow.jsPlumbContextMenu.flipPanelsSide();return false;"), ) ), "WorkFlow" => array( "childs" => array( "Add new task $v75c19c5e8a" => array("click" => "jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByType('" . $v75c19c5e8a . "');return false;"), "Zoom In" => array("click" => "zoomInDiagram(this);return false;"), "Zoom Out" => array("click" => "zoomOutDiagram(this);return false;"), "Zoom" => array("click" => "zoomEventPropagationDiagram(this);return false;", "class" => "zoom", "html" => '<span>100%</span> <input type="range" min="0.5" max="1.5" step=".02" value="1" onInput="zoomDiagram(this);return false;" />'), "Zoom Reset" => array("click" => "zoomResetDiagram(this);return false;"), ) ), "Container" => array( "childs" => array( "Decrease Containers IF Size" => array("click" => "jsPlumbWorkFlow.jsPlumbContainer.changeContainerSize('" . $pabf7b139 . "', 400, 100);return false;"), "Increase Containers IF Size" => array("click" => "jsPlumbWorkFlow.jsPlumbContainer.changeContainerSize('" . $pabf7b139 . "', 1300, 250);return false;"), "Shrink containers" => array("click" => "jsPlumbWorkFlow.jsPlumbContainer.automaticDecreaseContainersSize();return false;"), "Enlarge containers" => array("click" => "jsPlumbWorkFlow.jsPlumbContainer.automaticIncreaseContainersSize();return false;"), ) ), ); } public function getMenusContent() { if (empty($this->v243e50bc1d) || !is_array($this->v243e50bc1d)) $this->v243e50bc1d = $this->getDefaultMenus(); return '<div id="workflow_menu" class="workflow_menu" onClick="openSubmenu(this)">' . $this->f5e52484713($this->v243e50bc1d, "dropdown") . '</div>'; } private function f5e52484713($v243e50bc1d, $v3ae55a9a2e = false) { $pf8ed4912 = ''; if (!empty($v243e50bc1d) && is_array($v243e50bc1d)) { $pf8ed4912 .= '<ul' . ($v3ae55a9a2e ? ' class="' . $v3ae55a9a2e . '"' : '') . '>'; foreach ($v243e50bc1d as $v134495e57e => $pdf6c365c) { $pf8ed4912 .= '<li class="' . $pdf6c365c["class"] . '" title="' . ($pdf6c365c["title"] ? $pdf6c365c["title"] : $v134495e57e) . '">'; if ($pdf6c365c["html"]) $pf8ed4912 .= $pdf6c365c["html"]; else $pf8ed4912 .= '<a' . ($pdf6c365c["click"] ? ' onClick="' . $pdf6c365c["click"] . '"' : '') . '>' . $v134495e57e . '</a>'; if (!empty($pdf6c365c["childs"])) $pf8ed4912 .= $this->f5e52484713($pdf6c365c["childs"]); $pf8ed4912 .= '</li>'; } $pf8ed4912 .= '</ul>'; } return $pf8ed4912; } public function getContent($v29ae981180 = "taskflowchart") { $v446c479876 = $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse"; $v6e611b5051 = '
 	<div id="' . $v29ae981180 . '" class="taskflowchart ' . $v446c479876 . '">
 		' . $this->getMenusContent() . '
 		

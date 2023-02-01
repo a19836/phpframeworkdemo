@@ -187,7 +187,7 @@ var brokers_db_drivers = ' . json_encode($brokers_db_drivers) . ';
 		</div>
 	</div>
 	
-	<div class="current_entity_code hidden">' . str_replace(">", "&gt;", str_replace("<", "&lt;", $obj_data["code"])) . '</div>'; } else $main_content .= '<div class="error">Error: The system couldn\'t detect the selected file. Please refresh and try again...</div>'; function getAdvancedSettingsHtml($v08d9602741, $v4859640498) { $v1763debff9 = $v4859640498["parse_full_html"] || $v4859640498["parse_regions_html"]; $pb662dff7 = $v1763debff9 ? ' style="display:none;"' : ''; $pc7e8340a = $v1763debff9 ? ' disabled' : ''; if (!array_key_exists("add_my_js_lib", $v4859640498)) $v4859640498["add_my_js_lib"] = false; $pf8ed4912 = '
+	<div class="current_entity_code hidden">' . str_replace(">", "&gt;", str_replace("<", "&lt;", $obj_data["code"])) . '</div>'; } else $main_content .= '<div class="error">Error: The system couldn\'t detect the selected file. Please refresh and try again...</div>'; function getAdvancedSettingsHtml($v08d9602741, $v4859640498) { $v1763debff9 = $v4859640498["parse_full_html"] || $v4859640498["parse_regions_html"]; $pb662dff7 = $v1763debff9 ? '' : ' style="display:none;"'; $pc7e8340a = $v1763debff9 ? '' : ' disabled'; $pf8ed4912 = '
 	<div class="parser">
 		<label>Parser:</label>
 		<span class="info">If active, parses the generated html according with the options below.</span>

@@ -62,7 +62,14 @@ include_once $EVC->getModulePath("user/UserUI", $EVC->getCommonProjectName());
 			"username" => array("validation_message" => "Username cannot be undefined."), 
 			"password" => array("type" => "password", "validation_message" => "Password cannot be undefined."),
 		),
-		"buttons" => false,
+		"buttons" => array(
+	 		"insert" => array(
+	 			"show" => true,
+	 			"button_show_option_hidden" => true, 
+	 			"button_label" => "Login Button", 
+	 			"value" => "Login",
+	 		),
+	 	),
 	 	"css" => true,
 	 	"js" => true,
 	));

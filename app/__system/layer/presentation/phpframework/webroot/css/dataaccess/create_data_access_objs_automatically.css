@@ -69,7 +69,9 @@ input,
 .select_tables .tables .table {
 	width:200px;
 	min-height:20px;
+	margin:0 10px 10px 0;
 	float:left;
+	overflow-wrap:break-word;
 }
 .select_tables .tables .table input {
 

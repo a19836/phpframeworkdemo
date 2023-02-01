@@ -2141,6 +2141,9 @@ body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widg
   body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-resource > .widget-resource-remove::before {
 	content:"\f1f8";
 }
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-resources-type > .group-title > .widget-item-remove::before {
+	line-height:normal;
+}
 body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .swap-input-select::before {
 	content:"\f362";
 }

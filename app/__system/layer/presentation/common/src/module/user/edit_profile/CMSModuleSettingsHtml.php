@@ -39,7 +39,9 @@ include_once $EVC->getModulePath("user/UserUI", $EVC->getCommonProjectName());
 		"style_type" => true,
 	 	"block_class" => true,
 		"fields" => $fields,
-		"buttons" => false,
+		"buttons" => array(
+	 		"update" => array("show" => true, "button_show_option_hidden" => true),
+	 	),
 	 	"css" => true,
 	 	"js" => true,
 	));

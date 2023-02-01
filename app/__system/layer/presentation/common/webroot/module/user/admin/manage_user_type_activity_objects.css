@@ -52,9 +52,10 @@
 	text-align:left;
 }
 .module_manage_user_type_activity_objects .title {
+	margin-top:20px;
+	margin-bottom:10px;
 	text-align:center;
-	font-weight:bold;
-	font-size:16px;
+	font-size:15px;
 }
 .module_manage_user_type_activity_objects .message {
 	height:20px;

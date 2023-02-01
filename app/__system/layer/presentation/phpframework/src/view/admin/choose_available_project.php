@@ -18,13 +18,15 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include_once $EVC->getUtilPath("AdminMenuUIHandler"); $admin_home_project_page_url = $project_url_prefix . "admin/admin_home_project?filter_by_layout=#filter_by_layout#"; $add_project_url = $project_url_prefix . "phpframework/presentation/edit_project_details?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&popup=1&on_success_js_func=onSucccessfullAddProject"; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
+include_once $EVC->getUtilPath("AdminMenuUIHandler"); $admin_home_project_page_url = $project_url_prefix . "admin/admin_home_project?filter_by_layout=#filter_by_layout#"; $add_project_url = $project_url_prefix . "phpframework/presentation/edit_project_details?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&popup=1&on_success_js_func=onSucccessfullAddProject"; $manage_file_url = $project_url_prefix . "phpframework/presentation/manage_file?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&action=#action#&item_type=presentation&extra=#extra#"; $get_available_projects_props_url = $project_url_prefix . "phpframework/presentation/get_available_projects_props?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&include_empty_project_folders=1"; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/choose_available_project.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/choose_available_project.js"></script>
 
 <script>
 var add_project_url = "' . $add_project_url . '";
+var manage_file_url = "' . $manage_file_url . '";
+var get_available_projects_props_url = "' . $get_available_projects_props_url . '";
 var admin_home_project_page_url = "' . $admin_home_project_page_url . '";
 var select_project_url = "' . $project_url_prefix . $redirect_path . (strpos($redirect_path, "?") !== false ? '&' : '?') . 'bean_name=#bean_name#&bean_file_name=#bean_file_name#&project=#project#&filter_by_layout=#filter_by_layout#";
 var layers_props = ' . json_encode($layers_projects) . ';

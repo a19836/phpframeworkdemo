@@ -136,9 +136,6 @@ body {
 
 /* TEMPLATE WIDGET */
 
-.template-widget {
-	
-}
 .template-widget.widget-over,
   .droppable.droppable-over {
 	outline:var(--html-element-over-border);

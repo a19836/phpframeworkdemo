@@ -146,8 +146,10 @@
 	bottom:10px;
 	box-sizing:border-box;
 }
-.jsplumbtaskworkflow .task > .task_droppable.task_droppable_over {
-	background-color:#f7f7f7;
+.jsplumbtaskworkflow .task > .task_droppable.task_droppable_over,
+  .taskflowchart .tasks_flow .task .task_droppable.task_droppable_over {
+	background-color:rgba(0, 0, 0, .04);
+	opacity:1 !important;
 }
 .jsplumbtaskworkflow .task .task_droppable .task:hover:after {
 	display:none;

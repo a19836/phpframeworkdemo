@@ -46,6 +46,14 @@ function loadListAndEditUsersWitUserTypesSettingsBlockSettings(settings_elm, set
 	input_settings.children(".input_type").hide();
 	input_settings.children(".input_options").remove();
 	
+	list_settings.find(".settings_prop.prop_active > .selected_task_properties > .form_containers > .fields > .field > .input_settings > .input_type select option").each(function (idx, option) {
+		option = $(option);
+		var option_value = option.val();
+		
+		if (option_value != "select" && option_value != "checkbox")
+			option.remove();
+	});
+	
 	var prop_selected_item = list_settings.find(".settings_prop.prop_selected_item");
 	var field = prop_selected_item.find(" > .selected_task_properties > .form_containers > .fields > .field ");
 	prop_selected_item.children(".show_settings_prop, .settings_prop_search_value").remove();
@@ -75,6 +83,11 @@ function loadListAndEditUsersWitUserTypesSettingsBlockSettings(settings_elm, set
 		
 		next_input.val(v);
 	});
+	
+	//setTimeout bc of the onElsTabChange inside of the loadListSettingsBlockSettings
+	setTimeout(function() {
+		list_settings.find(".settings_prop > .selected_task_properties > .form_containers > .fields > .field > .class").show();
+	}, 110);
 	
 	MyFancyPopup.hidePopup();
 }

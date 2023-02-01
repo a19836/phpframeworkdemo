@@ -4,6 +4,14 @@
 	margin-bottom:-20px; /*so we don't show any scroll. This is needed bc of padding-bottom:20px of the: ".main_content .content" */
 	font-size:inherit;
 }
+.in_popup .manage_table_exta_attributes {
+	min-height:calc(100vh - 70px);
+}
+.in_popup .manage_table_exta_attributes > .table_settings, 
+  .in_popup .manage_table_exta_attributes > .table_sql_statements, 
+  .in_popup .manage_table_exta_attributes > .table_errors {
+	max-height: calc(100vh - 200px);
+}
 .manage_table_exta_attributes .attributes_title {
 	margin:10px auto 0;
 	text-align:center;

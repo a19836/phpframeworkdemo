@@ -1,7 +1,10 @@
 /* LAYOUTUIEDITOR FUNCTIONS */
 var creating_resources = {};
+var creating_resources_by_table = {};
 
 function initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor) {
+	PtlLayoutUIEditor.options.on_choose_event_func = toggleChooseEventPopup;
+	
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.toggle_choose_db_table_attribute_popup_func = toggleChooseLayoutUIEditorWidgetResourceDBTableAttributePopup;
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.toggle_choose_widget_resource_popup_func = function(elm, widget, handler) {
 		toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget, handler, PtlLayoutUIEditor, false);
@@ -18,17 +21,135 @@ function initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor) {
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_user_types_func = getLayoutUIEditorWidgetResourceUserTypes;
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_php_numeric_types_func = getLayoutUIEditorWidgetResourcePHPNumericTypes;
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_db_numeric_types_func = getLayoutUIEditorWidgetResourceDBNumericTypes;
+	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_internal_attribute_names_func = getLayoutUIEditorWidgetResourceInternalAttributeNames;
 	
-	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.add_sla_resource_func = addLayoutUIEditorWidgetResourceSLAResource;
+	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.add_sla_resource_func = addLayoutUIEditorWidgetResourceSLAResourceSync;
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.remove_sla_resource_func = removeLayoutUIEditorWidgetResourceSLAResource;
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.create_resource_names_func = createLayoutUIEditorWidgetResourceSLAResourceNames;
 }
 
-function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget, handler, PtlLayoutUIEditor, show_resource_attributes) {
-	var popup = $("#choose_widget_resource_value_attribute");
+function toggleChooseEventPopup(elm, widget, handler, available_events) {
+	var popup = $("#choose_event_popup");
 	
 	if (!popup[0]) {
-		html = '<div id="choose_widget_resource_value_attribute" class="myfancypopup choose_widget_resource_value_attribute">'
+		html = '<div id="choose_event_popup" class="myfancypopup choose_event_popup with_title">'
+				+ '<div class="title">Available Events</div>'
+				+ '<div class="content">'
+					+ '<div class="filter">'
+						+ '<label>Filter:</label>'
+						+ '<select>';
+		
+		for (var k in available_events)
+			html += 		'<option>' + k + '</option>';
+		
+			html += 		'</select>'
+					+ '</div>'
+					+ '<ul class="events">'
+					+ '</ul>'
+				+ '</div>'
+				+ '<div class="button">'
+					+ '<input type="button" value="update" onClick="MyFancyPopup.settings.updateFunction(this)" />'
+				+ '</div>'
+			+ '</div>';
+		
+		popup = $(html);
+		
+		$("body").append(popup);
+		
+		var draw_events_handler = function(select, items) {
+			while (select.next("select").length > 0)
+				select.next("select").remove();
+			
+			popup.find(".events").html("");
+			
+			if ($.isPlainObject(items)) {
+				var items_html = '<select>';
+				
+				for (var k in items)
+					items_html += '<option>' + k + '</option>';
+				
+				items_html += '</select>';
+				
+				var item_select = $(items_html);
+				item_select.on("change", function() {
+					var value = item_select.val();
+					var select_items = items[value];
+					
+					draw_events_handler(item_select, select_items);
+				});
+				
+				select.after(item_select);
+				item_select.trigger("change");
+			}
+			else if ($.isArray(items)) {
+				var items_html = '';
+				
+				for (var i = 0, t = items.length; i < t; i++) {
+					var item = items[i];
+					var value = item["value"];
+					var title = item["title"];
+					var description = item["description"];
+					
+					items_html += '<li>'
+								+ '<input type="radio" name="event" value="' + value + '"/>'
+								+ '<label>' + title + '</label>'
+								+ '<div class="info">' + description + '</div>'
+							+ '</li>';
+				}
+				
+				popup.find(".events").html(items_html);
+				
+				MyFancyPopup.updatePopup();
+			}
+			else
+				MyFancyPopup.updatePopup();
+		};
+		
+		var select = popup.find(".filter select");
+		select.on("change", function() {
+			var value = select.val();
+			var items = available_events[value];
+			
+			draw_events_handler(select, items);
+		});
+		select.trigger("change");
+	}
+	
+	if (popup[0]) {
+		var style = window.getComputedStyle(popup[0]);
+		
+		if (style.display === "none") {
+			popup.hide(); //This popup is shared with other actions so we must hide it first otherwise the user experience will be weird bc we will see the popup changing with the new changes.
+			
+			MyFancyPopup.init({
+				elementToShow: popup,
+				parentElement: document,
+				updateFunction: function(btn) { //prepare update handler
+					var code = popup.find("input[name=event]:checked").val();
+					
+					if (!code) 
+						StatusMessageHandler.showError("Please select an event first...");
+					else {
+						if (typeof handler == "function")
+							handler(code);
+						
+						MyFancyPopup.hidePopup();
+					}
+				},
+			});
+			MyFancyPopup.showPopup();
+		}
+		else {
+			MyFancyPopup.hidePopup();
+		}
+	}
+}
+
+function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget, handler, PtlLayoutUIEditor, show_resource_attributes) {
+	var popup = $("#choose_widget_resource_value_attribute_popup");
+	
+	if (!popup[0]) {
+		html = '<div id="choose_widget_resource_value_attribute_popup" class="myfancypopup choose_widget_resource_value_attribute_popup">'
 				+ '<div class="title"></div>'
 				+ '<ul class="tabs tabs_transparent tabs_right">'
 					+ '<li class="existent_resource_attribute_tab"><a href="#existent_resource_attribute">Based in Existent Resource</a></li>'
@@ -41,16 +162,27 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 				+ '</div>'
 				+ '<div id="new_resource_attribute">'
 					+ $("#choose_db_table_or_attribute > .contents").html()
+					+ '<div class="db_table_alias" title="Write a table alias if apply or leave it blank for default">'
+						+ '<label>Table Alias:</label>'
+						+ '<input placeHolder="Leave blank for default">'
+					+ '</div>'
 					+ '<div class="query_type">'
 						+ '<label>Query Type:</label>'
 						+ '<select>' //options must be the same than the action_type in LayoutUIEditorWidgetResource.js
 							+ '<option value="get_all">Get multiple records list</option>'
 							+ '<option value="get">Get a specific record</option>'
+							+ '<option value="insert">Add a record</option>'
+							+ '<option value="update">Update a record</option>'
+							+ '<option value="update_attribute">Update a record attribute</option>'
+							+ '<option value="multiple_save">Save multiple records (Add and Update)</option>'
+							+ '<option value="delete">Remove a record</option>'
+							+ '<option value="multiple_delete">Remove multiple records</option>'
+							+ '<option value="get_options">Get Options</option>'
 						+ '</select>'
 					+ '</div>'
 					+ '<div class="row_index">'
 						+ '<label>Row Index:</label>'
-						+ '<input placeHolder="Leave it blank for automatic">'
+						+ '<input placeHolder="Leave blank for automatic">'
 					+ '</div>'
 					+ '<div class="query_conditions">'
 						+ '<label>Query Conditions:</label>'
@@ -79,20 +211,30 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 		});
 		
 		popup.find(" > #new_resource_attribute > .query_type > select").on("change", function(event) {
-			var lis = popup.find(" > #new_resource_attribute > .query_conditions > ul > li:not(.empty_items):not(.primary_key)");
+			var new_resource_attribute = popup.children("#new_resource_attribute");
+			var row_index = new_resource_attribute.children(".row_index");
+			var query_conditions = new_resource_attribute.children(".query_conditions");
+			var query_conditions_attributes = query_conditions.find(" > ul > li:not(.empty_items):not(.primary_key)");
 			
 			if (this.value == "get_all") {
-				popup.find(" > #new_resource_attribute > .row_index").show();
-				lis.show();
+				row_index.show();
+				query_conditions.show();
+				query_conditions_attributes.show();
 			}
-			else {
-				popup.find(" > #new_resource_attribute > .row_index").hide();
-				lis.each(function(idx, li) {
+			else if (this.value == "get") {
+				row_index.hide();
+				query_conditions.show();
+				
+				query_conditions_attributes.each(function(idx, li) {
 					li = $(li);
 					li.hide().removeClass("condition_activated");
 					li.find("input[type=checkbox]").prop("checked", false).removeAttr("checked");
 					li.find("input[type=text]").val("");
 				});
+			}
+			else {
+				row_index.hide();
+				query_conditions.hide();
 			}
 		});
 		
@@ -104,10 +246,22 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 		
 		if (style.display === "none") {
 			//update popup class
-			if (show_resource_attributes)
+			var query_type_select = popup.find(" > #new_resource_attribute > .query_type > select");
+			var query_type_select_options = query_type_select.find("option[value=insert], option[value=update], option[value=update_attribute], option[value=multiple_save], option[value=delete], option[value=multiple_delete], option[value=get_options], option[value=]");
+			
+			if (show_resource_attributes) {
 				popup.addClass("show_resource_attributes");
-			else
+				query_type_select_options.hide();
+				
+				if (query_type_select_options.filter( query_type_select.find("option:selected") ).length > 0) {
+					query_type_select.val("get_all");
+					popup.find(" > #new_resource_attribute > .query_type > select").trigger("change");
+				}
+			}
+			else {
 				popup.removeClass("show_resource_attributes");
+				query_type_select_options.show();
+			}
 			
 			//update title
 			popup.children(".title").html("Choose Widget Resource" + (show_resource_attributes ? " Attribute" : ""));
@@ -221,7 +375,7 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 					var variables_in_workflow = Object.assign({}, ProgrammingTaskUtil.variables_in_workflow);
 					var callback = function() {
 						if (window.variables_in_workflow_loading_processes == 0) {
-							//because the updateSLAProgrammingTaskVariablesInWorkflowSelect method resets the ProgrammingTaskUtil.variables_in_workflow var, we need to update it with the variables_in_workflow var, which contains the vars created from the addLayoutUIEditorWidgetResourceSLAResource method
+							//because the updateSLAProgrammingTaskVariablesInWorkflowSelect method resets the ProgrammingTaskUtil.variables_in_workflow var, we need to update it with the variables_in_workflow var, which contains the vars created from the addLayoutUIEditorWidgetResourceSLAResourceSync method
 							
 							if ($.isPlainObject(variables_in_workflow) && !$.isEmptyObject(variables_in_workflow)) {
 								for (var k in variables_in_workflow)
@@ -363,6 +517,9 @@ function updateChooseLayoutUIEditorWidgetResourceValueDBAttributes(elm) {
 			}
 			
 			ul.append(html);
+			
+			//only show the correspondent conditions according with the query type
+			p.find(" > .query_type > select").trigger("change");
 		}
 	}
 	
@@ -374,7 +531,7 @@ function toggleChooseLayoutUIEditorWidgetResourceValueQueryCondition(elm) {
 }
 
 function getChooseLayoutUIEditorWidgetResourceValueUserData(elm, menu_settings_elm, widget, PtlLayoutUIEditor) {
-	var popup = $(elm).parent().closest(".choose_widget_resource_value_attribute");
+	var popup = $(elm).parent().closest(".choose_widget_resource_value_attribute_popup");
 	var active_tab = popup.find(" > ul > .ui-state-active");
 	var resource_name = null;
 	var resource_attribute = null;
@@ -395,6 +552,7 @@ function getChooseLayoutUIEditorWidgetResourceValueUserData(elm, menu_settings_e
 		var db_driver = p.find(" > .db_driver select").val();
 		var db_type = p.find(" > .type select").val();
 		var db_table = p.find(" > .db_table select").val();
+		var db_table_alias = p.find(" > .db_table_alias input").val();
 		var db_attribute = p.find(" > .db_attribute select").val();
 		var query_type = p.find(" > .query_type select").val();
 		var query_conditions_ul = p.find(" > .query_conditions > ul");
@@ -418,7 +576,7 @@ function getChooseLayoutUIEditorWidgetResourceValueUserData(elm, menu_settings_e
 		//console.log(resource_data);
 		
 		//prepare resource possible names
-		var resources_name = createLayoutUIEditorWidgetResourceSLAResourceNames(query_type, db_driver, db_table, null, resource_data);
+		var resources_name = createLayoutUIEditorWidgetResourceSLAResourceNames(query_type, db_driver, db_table, db_table_alias, null, resource_data);
 		resource_attribute = db_attribute;
 		
 		var resource_possible_names = [resources_name];
@@ -428,12 +586,12 @@ function getChooseLayoutUIEditorWidgetResourceValueUserData(elm, menu_settings_e
 		var widget_view_permissions = PtlLayoutUIEditor.LayoutUIEditorWidgetResource.getWidgetPermissions(widget);
 		
 		if (widget_group_view_permissions) {
-			resource_possible_names.push( createLayoutUIEditorWidgetResourceSLAResourceNames(query_type, db_driver, db_table, widget_group_view_permissions, resource_data) );
+			resource_possible_names.push( createLayoutUIEditorWidgetResourceSLAResourceNames(query_type, db_driver, db_table, db_table_alias, widget_group_view_permissions, resource_data) );
 			resource_possible_name_permissions.push(widget_group_view_permissions);
 		}
 		
 		if (widget_view_permissions) {
-			resource_possible_names.push( createLayoutUIEditorWidgetResourceSLAResourceNames(query_type, db_driver, db_table, widget_view_permissions, resource_data) );
+			resource_possible_names.push( createLayoutUIEditorWidgetResourceSLAResourceNames(query_type, db_driver, db_table, db_table_alias, widget_view_permissions, resource_data) );
 			resource_possible_name_permissions.push(widget_view_permissions);
 		}
 		
@@ -467,7 +625,7 @@ function getChooseLayoutUIEditorWidgetResourceValueUserData(elm, menu_settings_e
 				resource_name += "_" + resource_conditions_hash;
 			
 			//console.log("resource_name:"+resource_name);
-			addLayoutUIEditorWidgetResourceSLAResource(db_broker, db_driver, db_type, db_table, query_type, resource_name, permissions, resource_data);
+			addLayoutUIEditorWidgetResourceSLAResourceSync(db_broker, db_driver, db_type, db_table, db_table_alias, query_type, resource_name, permissions, resource_data);
 		}
 	}
 	//console.log("resource_name:"+resource_name);
@@ -634,9 +792,28 @@ function getLayoutUIEditorWidgetResourceDBNumericTypes() {
 	return typeof db_numeric_types != "undefined" ? db_numeric_types : null;
 }
 
-function addLayoutUIEditorWidgetResourceSLAResource(db_broker, db_driver, db_type, db_table, action_type, resource_name, permissions, data) {
+function getLayoutUIEditorWidgetResourceInternalAttributeNames() {
+	return typeof internal_attribute_names != "undefined" ? internal_attribute_names : null;
+}
+
+function addLayoutUIEditorWidgetResourceSLAResourceSync(db_broker, db_driver, db_type, db_table, db_table_alias, action_type, resource_name, permissions, data) {
 	if (create_sla_resource_url && !creating_resources[resource_name]) {
+		//very important to be here, otherwise if there are not business loigc services and ibatis rules yet, it will create multiple business logic classes and ibatis files for the same table, bc this function will be called concorrently. This avoids concorrent process for the same table, which avoids multiple different files to be created for the same table service and rule.
+		if (creating_resources_by_table[db_broker + "_" + db_driver + "_" + db_type + "_" + db_table])
+			setTimeout(function() {
+				addLayoutUIEditorWidgetResourceSLAResourceSync(db_broker, db_driver, db_type, db_table, db_table_alias, action_type, resource_name, permissions, data)
+			}, 300);
+		else
+			addLayoutUIEditorWidgetResourceSLAResourceAsync(db_broker, db_driver, db_type, db_table, db_table_alias, action_type, resource_name, permissions, data);
+	}
+}
+
+function addLayoutUIEditorWidgetResourceSLAResourceAsync(db_broker, db_driver, db_type, db_table, db_table_alias, action_type, resource_name, permissions, data) {
+	var resource_table_id = db_broker + "_" + db_driver + "_" + db_type + "_" + db_table;
+	
+	if (create_sla_resource_url && !creating_resources[resource_name] && !creating_resources_by_table[resource_table_id]) {
 		creating_resources[resource_name] = true;
+		creating_resources_by_table[resource_table_id] = true;
 		
 		//console.log("ADD RESOURCE: "+resource_name);
 		var status_message_elm = StatusMessageHandler.showMessage("Creating new resource with name: '" + resource_name + "'");
@@ -646,6 +823,7 @@ function addLayoutUIEditorWidgetResourceSLAResource(db_broker, db_driver, db_typ
 			db_driver: db_driver,
 			db_type: db_type,
 			db_table: db_table,
+			db_table_alias: db_table_alias,
 			action_type: action_type,
 			resource_name: resource_name,
 			permissions: permissions,
@@ -664,6 +842,10 @@ function addLayoutUIEditorWidgetResourceSLAResource(db_broker, db_driver, db_typ
 				//console.log(data);
 				creating_resources[resource_name] = null;
 				delete creating_resources[resource_name];
+				
+				creating_resources_by_table[resource_table_id] = null;
+				delete creating_resources[resource_table_id];
+				
 				status_message_elm.remove();
 				
 				if (data && data["status"]) {
@@ -714,13 +896,16 @@ function addLayoutUIEditorWidgetResourceSLAResource(db_broker, db_driver, db_typ
 				creating_resources[resource_name] = null;
 				delete creating_resources[resource_name];
 				
+				creating_resources_by_table[resource_table_id] = null;
+				delete creating_resources[resource_table_id];
+				
 				MyFancyPopup.hideLoading();
 				
 				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_sla_resource_url, function() {
 						StatusMessageHandler.removeLastShownMessage("error");
 						
-						addLayoutUIEditorWidgetResourceSLAResource(db_broker, db_driver, db_type, db_table, action_type, resource_name, permissions, data);
+						addLayoutUIEditorWidgetResourceSLAResourceSync(db_broker, db_driver, db_type, db_table, db_table_alias, action_type, resource_name, permissions, data);
 					});
 				else {
 					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
@@ -872,14 +1057,20 @@ function removeSLAProgrammingTaskVariablesBasedInResource(resource_name) {
 	}
 }
 
-function createLayoutUIEditorWidgetResourceSLAResourceNames(action_type, db_driver, db_table, permissions, data) {
+function createLayoutUIEditorWidgetResourceSLAResourceNames(action_type, db_driver, db_table, db_table_alias, permissions, data) {
 	var resource_names = [];
+	
+	//first get the rules for the table_alias
+	if (db_table_alias && db_table_alias != db_table && action_type != "get_options")
+		resource_names = createLayoutUIEditorWidgetResourceSLAResourceNames(action_type, db_driver, db_table_alias, null, permissions, data);
+	
 	var permissions_hash_code = permissions ? ("_" + JSON.stringify(permissions).hashCode()).replace(/-/g, "_") : "";
 	var is_default_db_driver = !db_driver || (typeof default_db_driver != "undefined" && default_db_driver == db_driver);
-	var db_table_plural = db_table + (db_table.substr(db_table.length - 1) == "y" ? "ies" : "s");
+	var db_table_plural = db_table.substr(db_table.length - 1) == "y" ? db_table.substr(0, db_table.length - 1) + "ies" : db_table + "s";
 	var db_driver_table = (db_driver ? db_driver + "_" : "") + db_table + permissions_hash_code;
 	var db_driver_table_plural = (db_driver ? db_driver + "_" : "") + db_table_plural + permissions_hash_code;
 	
+	//and then for the table name
 	switch (action_type) {
 		case "insert": 
 			if (is_default_db_driver)
@@ -969,19 +1160,48 @@ function createLayoutUIEditorWidgetResourceSLAResourceNames(action_type, db_driv
 			resource_names.push("count_" + db_driver_table_plural + "_items");
 			break;
 		case "get_options":
+			//prepare data and if invalid, set the data with the db_table
 			if ($.isPlainObject(data))
 				data = [data];
+			else if (!$.isArray(data))
+				data = [{
+					table: db_table,
+					table_alias: db_table_alias
+				}];
 			
 			if ($.isArray(data)) {
-				var suffix = data[0]["table"] + (data[0]["attribute"] ? "_" + data[0]["attribute"] : "") + permissions_hash_code + "_options";
+				//if data if invalid, set the data with the db_table
+				if (!$.isPlainObject(data[0]) || $.isEmptyObject(data[0]) || !data[0]["table"])
+					data = [{
+						table: db_table,
+						table_alias: db_table_alias
+					}];
 				
-				if (is_default_db_driver) {
-					resource_names.push("get_" + suffix);
-					resource_names.push(suffix);
+				//prepare names for table alias
+				if (data[0]["table_alias"]) {
+					var suffix = data[0]["table_alias"] + (data[0]["attribute"] ? "_" + data[0]["attribute"] : "") + permissions_hash_code + "_options";
+					
+					if (is_default_db_driver) {
+						resource_names.push("get_" + suffix);
+						resource_names.push(suffix);
+					}
+					
+					resource_names.push("get_" + (db_driver ? db_driver + "_" : "") + suffix);
+					resource_names.push((db_driver ? db_driver + "_" : "") + suffix);
 				}
 				
-				resource_names.push("get_" + (db_driver ? db_driver + "_" : "") + suffix);
-				resource_names.push((db_driver ? db_driver + "_" : "") + suffix);
+				//prepare names for table name
+				if (data[0]["table_alias"] != data[0]["table"]) {
+					var suffix = data[0]["table"] + (data[0]["attribute"] ? "_" + data[0]["attribute"] : "") + permissions_hash_code + "_options";
+					
+					if (is_default_db_driver) {
+						resource_names.push("get_" + suffix);
+						resource_names.push(suffix);
+					}
+					
+					resource_names.push("get_" + (db_driver ? db_driver + "_" : "") + suffix);
+					resource_names.push((db_driver ? db_driver + "_" : "") + suffix);
+				}
 			}
 			break;
 	}
@@ -1051,3 +1271,4 @@ if (typeof getDBTableAttributesDetailedInfo != "function")
 		
 		return detailed_info;
 	}
+

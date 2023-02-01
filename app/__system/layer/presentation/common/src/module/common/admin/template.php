@@ -45,7 +45,7 @@
 
 	<?= $head;?>
 </head>
-<body>
+<body<?= ' class="' . $_COOKIE["theme_layout"] . ' ' . $_COOKIE["main_navigator_side"] . ($_GET["popup"] ? " in_popup" : "") . '"'; ?>>
 	<div class="main_content"><? echo $main_content; ?></div>
 </body>
 </html>

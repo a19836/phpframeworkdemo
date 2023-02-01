@@ -99,6 +99,11 @@
 			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
 			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
 		)), 
+		"active" => array("show" => 0, "type" => "select", "options" => array(
+			array("value" => 0, "label" => "new"),
+			array("value" => 1, "label"=> "active"),
+			array("value" => 2, "label"=> "inative"),
+		)),
 		"user_type_ids" => array("type" => "select", "label" => "User Types", "allow_null" => 1, "extra_attributes" => array(
 			//array("name" => "multiple", "value" => 'multiple'),
 			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),

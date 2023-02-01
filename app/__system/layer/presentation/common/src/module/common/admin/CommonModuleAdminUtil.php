@@ -9,6 +9,7 @@ class CommonModuleAdminUtil {
 	private $bean_name;
 	private $bean_file_name;
 	private $path;
+	private $popup;
 	
 	private $group_module_id;
 	private $project_url_prefix;
@@ -22,11 +23,12 @@ class CommonModuleAdminUtil {
 	private $all_users_count;
 	private $all_users;
 	
-	public function __construct($EVC, $bean_name, $bean_file_name, $path, $module_path) {
+	public function __construct($EVC, $bean_name, $bean_file_name, $path, $module_path, $popup = false) {
 		$this->EVC = $EVC;
 		$this->bean_name = $bean_name;
 		$this->bean_file_name = $bean_file_name;
 		$this->path = $path;
+		$this->popup = $popup;
 		
 		$this->initGroupModuleId($EVC, $module_path);
 		$this->initUrlPrefixes($EVC);
@@ -120,7 +122,7 @@ class CommonModuleAdminUtil {
 	}
 	
 	public function getAdminFileUrl($file_code) {
-		return $this->project_url_prefix . "module/" . $this->group_module_id . "/admin/" . $file_code . "?bean_name=" . $this->bean_name . "&bean_file_name=" . $this->bean_file_name . "&path=" . $this->path . "&";
+		return $this->project_url_prefix . "module/" . $this->group_module_id . "/admin/" . $file_code . "?bean_name=" . $this->bean_name . "&bean_file_name=" . $this->bean_file_name . "&path=" . $this->path . "&" . ($this->popup ? "popup=" . $this->popup . "&" : "");
 	}
 	
 	public function getWebrootAdminFolderUrl() {
@@ -319,14 +321,12 @@ class CommonModuleAdminUtil {
 		$modules_menu_settings = $this->getModulesMenuSettings();
 		
 		if ($modules_menu_settings) {
-			if ($menu_settings) {
+			if ($menu_settings)
 				$menu_settings["menus"] = $menu_settings["menus"] ? array_merge($menu_settings["menus"], $modules_menu_settings) : $modules_menu_settings;
-			}
-			else {
+			else
 				$menu_settings = array(
 					"menus" => $modules_menu_settings
 				);
-			}
 		}
 		
 		return '<ul class="dropdown ' . $menu_settings["class"] . '">' . self::getMenusHTML($menu_settings["menus"]) . '</ul>';
@@ -376,7 +376,7 @@ class CommonModuleAdminUtil {
 						
 						$items[] = array(
 							"label" => ucwords($group_id),
-							"url" => $this->project_url_prefix . "module/$group_id/admin/index?bean_name=" . $this->bean_name . "&bean_file_name=" . $this->bean_file_name . "&path=" . $this->path . "&",
+							"url" => $this->project_url_prefix . "module/$group_id/admin/index?bean_name=" . $this->bean_name . "&bean_file_name=" . $this->bean_file_name . "&path=" . $this->path . "&" . ($this->popup ? "popup=" . $this->popup . "&" : ""),
 							"title" => "Go to the '" . ucwords($group_id) . "' Module Admin Panel",
 						);
 					}

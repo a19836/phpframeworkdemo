@@ -9,6 +9,14 @@ $(function () {
 			field.children(".input_settings, .help_settings, .label_settings").remove();
 		});
 	});
+	
+	$(".edit_settings .prop_active > .selected_task_properties > .form_containers > .fields > .field > .input_settings > .input_type").show().find("select option").each(function (idx, option) {
+		option = $(option);
+		var option_value = option.val();
+		
+		if (option_value != "select" && option_value != "checkbox")
+			option.remove();
+	});
 });
 
 function loadEditUserBlockSettings(settings_elm, settings_values) {

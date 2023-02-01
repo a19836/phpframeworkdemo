@@ -16,14 +16,11 @@
 	width:100%;
 }
 
-.add_template_region_block_task_html .region, 
-   .add_template_region_block_task_html .block {
-	margin-bottom:5px;
-}
 .add_template_region_block_task_html .region,
    .add_template_region_block_task_html .block {
 	width:100%;
 	min-height:20px;
+	margin-bottom:5px;
 }
 .add_template_region_block_task_html .region label,
    .add_template_region_block_task_html .block label,

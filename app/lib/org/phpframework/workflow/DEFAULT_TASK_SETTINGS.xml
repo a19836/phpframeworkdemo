@@ -73,7 +73,8 @@
 	</settings>
 	<code_parser>
 		<statements></statements>
-		<reserved_function_names></reserved_function_names>
+		<reserved_static_method_class_names></reserved_static_method_class_names>
 		<reserved_object_method_names></reserved_object_method_names>
+		<reserved_function_names></reserved_function_names>
 	</code_parser>
 </task>

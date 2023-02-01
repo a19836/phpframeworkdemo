@@ -2,17 +2,17 @@
 <tasks>
 	<container>
 		<id><![CDATA[content_with_only_if]]></id>
-		<width>1050</width>
-		<height>100</height>
+		<width></width>
+		<height>200</height>
 		<left>1</left>
 		<top>0</top>
 	</container>
 	<container>
 		<id><![CDATA[content_with_only_switch]]></id>
-		<width>1050</width>
+		<width></width>
 		<height>318</height>
 		<left>1</left>
-		<top>100</top>
+		<top>200</top>
 	</container>
 	<task>
 		<label><![CDATA[begin]]></label>

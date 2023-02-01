@@ -292,17 +292,21 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			
 			switch(type) {
 				case "variable":
-					task_html_elm.find(".type_obj_prop, .type_echo").remove();
+					task_html_elm.find(".type_obj_prop, .type_echo, .type_return").remove();
 					break;
 				case "obj_prop": 
-					task_html_elm.find(".type_variable, .type_echo").remove();
+					task_html_elm.find(".type_variable, .type_echo, .type_return").remove();
 					break;
 				case "echo": 
 					task_html_elm.find(".type_echo input").val(1);
-					task_html_elm.find(".type_variable, .type_obj_prop").remove();
+					task_html_elm.find(".type_variable, .type_obj_prop, .type_return").remove();
+					break;
+				case "return": 
+					task_html_elm.find(".type_return input").val(1);
+					task_html_elm.find(".type_variable, .type_obj_prop, .type_echo").remove();
 					break;
 				default:
-					task_html_elm.find(".type_variable, .type_obj_prop, .type_echo").remove();
+					task_html_elm.find(".type_variable, .type_obj_prop, .type_echo, .type_return").remove();
 			}
 		},
 	
@@ -316,21 +320,26 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			switch(type) {
 				case "variable":
 					task_html_elm.find(".type_variable").show();
-					task_html_elm.find(".type_obj_prop, .type_echo").hide();
+					task_html_elm.find(".type_obj_prop, .type_echo, .type_return").hide();
 					WF.getMyFancyPopupObj().resizeOverlay();
 					break;
 				case "obj_prop": 
 					task_html_elm.find(".type_obj_prop").show();
-					task_html_elm.find(".type_variable, .type_echo").hide();
+					task_html_elm.find(".type_variable, .type_echo, .type_return").hide();
 					WF.getMyFancyPopupObj().resizeOverlay();
 					break;
 				case "echo": 
 					task_html_elm.find(".type_echo").show();
-					task_html_elm.find(".type_variable, .type_obj_prop").hide();
+					task_html_elm.find(".type_variable, .type_obj_prop, .type_return").hide();
+					WF.getMyFancyPopupObj().resizeOverlay();
+					break;
+				case "return": 
+					task_html_elm.find(".type_return").show();
+					task_html_elm.find(".type_variable, .type_obj_prop, .type_echo").hide();
 					WF.getMyFancyPopupObj().resizeOverlay();
 					break;
 				default:
-					task_html_elm.find(".type_variable, .type_obj_prop, .type_echo").hide();
+					task_html_elm.find(".type_variable, .type_obj_prop, .type_echo, .type_return").hide();
 			}
 		},
 	
@@ -340,15 +349,16 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			var result_prop_name = task_property_values["result_prop_name"];
 			var result_static = task_property_values["result_static"];
 			var result_echo = task_property_values["result_echo"];
+			var result_return = task_property_values["result_return"];
 			
 			if (result_var_name) {
 				task_html_elm.find(".type_variable").show();
-				task_html_elm.find(".type_obj_prop, .type_echo").hide();
+				task_html_elm.find(".type_obj_prop, .type_echo, .type_return").hide();
 				task_html_elm.find(".result_var_type select").val("variable");
 			}
 			else if (result_obj_name || result_prop_name) {
 				task_html_elm.find(".type_obj_prop").show();
-				task_html_elm.find(".type_variable, .type_echo").hide();
+				task_html_elm.find(".type_variable, .type_echo, .type_return").hide();
 				task_html_elm.find(".result_var_type select").val("obj_prop");
 				
 				result_obj_name = result_obj_name ? result_obj_name : "";
@@ -357,11 +367,16 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			}
 			else if (result_echo) {
 				task_html_elm.find(".type_echo").show();
-				task_html_elm.find(".type_variable, .type_obj_prop").hide();
+				task_html_elm.find(".type_variable, .type_obj_prop, .type_return").hide();
 				task_html_elm.find(".result_var_type select").val("echo");
 			}
-			else {
+			else if (result_return) {
+				task_html_elm.find(".type_return").show();
 				task_html_elm.find(".type_variable, .type_obj_prop, .type_echo").hide();
+				task_html_elm.find(".result_var_type select").val("return");
+			}
+			else {
+				task_html_elm.find(".type_variable, .type_obj_prop, .type_echo, .type_return").hide();
 				task_html_elm.find(".result_var_type select").val("");
 			}
 		},
@@ -408,6 +423,7 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			var result_static = task_property_values["result_static"];
 			var result_prop_assignment = task_property_values["result_prop_assignment"];
 			var result_echo = task_property_values["result_echo"];
+			var result_return = task_property_values["result_return"];
 			
 			if (result_var_name) {
 				return result_var_name ? this.getValueString(result_var_name, "variable") + " " + this.getVariableAssignmentOperator(result_var_assignment) + " " : "";
@@ -422,6 +438,9 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			}
 			else if (result_echo) {
 				return "echo ";
+			}
+			else if (result_return) {
+				return "return ";
 			}
 			
 			return "";
@@ -515,6 +534,9 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			name = name ? name : "";
 			value = typeof value != "undefined" || value != null ? "" + value + "" : "";
 			type = type ? type : "";
+			
+			if (type == "variable" && typeof value == "string" && value[0] == '$')
+				value = value.substr(1);
 			
 			var n = name ? "$" + name + ":" : "";
 			

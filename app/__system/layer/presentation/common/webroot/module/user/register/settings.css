@@ -38,3 +38,15 @@
 	display:inline-block;
 	font-size:90%;
 }
+
+.edit_settings > .status_action_insert > .on_ok_redirect_url label {
+	width:100% !important;
+}
+.edit_settings > .status_action_insert > .on_ok_redirect_url label:after {
+	content:"is automatically set through the 'Redirect Page Url' field, shown above.";
+	margin-left:5px;
+}
+.edit_settings > .status_action_insert > .on_ok_redirect_url input,
+  .edit_settings > .status_action_insert > .on_ok_redirect_url .search {
+	display:none !important;
+}

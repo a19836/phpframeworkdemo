@@ -528,10 +528,12 @@ class CommonModuleSettingsUI {
 		$html = '';
 		
 		if (isset($view) && $view !== false && $view !== 0) {
+			$field = is_array($view) ? $view : array();
+			
 			$html .= '
 			<div class="allow_view">
 				<label>' . (is_array($view) && $view["button_label"] ? $view["button_label"] : "Allow View") . ':</label>
-				<input type="checkbox" class="module_settings_property" name="allow_view" value="1" checked />
+				<input type="checkbox" class="module_settings_property' . ($field["button_show_option_hidden"] ? " hidden" : "") . '" name="allow_view" value="1"' . ($field["show"] || !array_key_exists("show", $field) ? " checked" : "") . ' />
 			</div>';
 		}
 		
@@ -546,7 +548,7 @@ class CommonModuleSettingsUI {
 			$html .= '
 			<div class="allow_insertion">
 				<label>' . ($field["button_label"] ? $field["button_label"] : "Allow Insertion") . ':</label>
-				<input type="checkbox" class="module_settings_property" name="allow_insertion" value="1"' . ($field["show"] ? " checked" : "") . ' />
+				<input type="checkbox" class="module_settings_property' . ($field["button_show_option_hidden"] ? " hidden" : "") . '" name="allow_insertion" value="1"' . ($field["show"] ? " checked" : "") . ' />
 				<span class="icon maximize status_action_toggle_icon" title="Minimize/Maximize Status Insert Settings" onclick="toggleStatusAction(this, \'insert\')">Toggle</span>
 			</div>' . 
 			self::getStatusActionHtml("insert", "alert_message_and_redirect", "show_message", $field["ok_message"], $field["error_message"]) . 
@@ -564,7 +566,7 @@ class CommonModuleSettingsUI {
 			$html .= '
 			<div class="allow_update">
 				<label>' . ($field["button_label"] ? $field["button_label"] : "Allow Update") . ':</label>
-				<input type="checkbox" class="module_settings_property" name="allow_update" value="1"' . ($field["show"] || !array_key_exists("show", $field) ? " checked" : "") . ' />
+				<input type="checkbox" class="module_settings_property' . ($field["button_show_option_hidden"] ? " hidden" : "") . '" name="allow_update" value="1"' . ($field["show"] || !array_key_exists("show", $field) ? " checked" : "") . ' />
 				<span class="icon maximize status_action_toggle_icon" title="Minimize/Maximize Status Update Settings" onclick="toggleStatusAction(this, \'update\')">Toggle</span>
 			</div>' . 
 			self::getStatusActionHtml("update", "show_message", "show_message", $field["ok_message"], $field["error_message"]) . 
@@ -588,7 +590,7 @@ class CommonModuleSettingsUI {
 			$html .= '
 			<div class="allow_deletion">
 				<label>' . ($field["button_label"] ? $field["button_label"] : "Allow Deletion") . ':</label>
-				<input type="checkbox" class="module_settings_property" name="allow_deletion" value="1"' . ($field["show"] ? " checked" : "") . ' />
+				<input type="checkbox" class="module_settings_property' . ($field["button_show_option_hidden"] ? " hidden" : "") . '" name="allow_deletion" value="1"' . ($field["show"] ? " checked" : "") . ' />
 				<span class="icon maximize status_action_toggle_icon" title="Minimize/Maximize Status Delete Settings" onclick="toggleStatusAction(this, \'delete\')">Toggle</span>
 			</div>' . 
 			self::getStatusActionHtml("delete", "show_message_and_stop", "show_message", $field["ok_message"], $field["error_message"]) .  

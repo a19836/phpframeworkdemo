@@ -1,12 +1,13 @@
 var choosePresentationIncludeFromFileManagerTree = null;
-
 var chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree = null;
 var chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer = null;
-var MyCodeLayoutUIEditorFancyPopup = new MyFancyPopupClass();
+
+var CodeLayoutUIEditorFancyPopup = new MyFancyPopupClass();
 var CodeLayoutUIEditorDBTableUisDiagramBlockFancyPopup = new MyFancyPopupClass();
 var TemplateSamplesFancyPopup = new MyFancyPopupClass();
 var TemplateRegionBlockHtmlEditorFancyPopup = new MyFancyPopupClass();
-var TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup = new MyFancyPopupClass();
+var TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup = new MyFancyPopupClass();
+var DBTableWidgetOptionsFancyPopup = new MyFancyPopupClass();
 
 var block_params_values_list = {};
 var regions_blocks_params_latest_values = {};
@@ -181,50 +182,30 @@ function removeAllThatIsNotBlocksOrModulesFromTree(ul, data, tree_obj) {
 			li.append(li_ul);
 		}
 		
-		var list_items_html = $('<li data-jstree=\'{"icon":"table-list table-html"}\'>'
-						+ '	<label title="List Items based in html">List Items Html</label>'
+		var list_items = $('<li data-jstree=\'{"icon":"table-list"}\'>'
+						+ '	<label title="List Items">List Items Html</label>'
 						+ '</li>');
-		var list_items_block = $('<li data-jstree=\'{"icon":"table-list table-block-file"}\'>'
-						+ '	<label title="List Items based in a Block file">List Items Block</label>'
+		var edit_item = $('<li data-jstree=\'{"icon":"table-edit"}\'>'
+						+ '	<label title="Edit Item">Edit Item Html</label>'
 						+ '</li>');
-		var edit_item_html = $('<li data-jstree=\'{"icon":"table-edit table-html"}\'>'
-						+ '	<label title="Edit Item based in html">Edit Item Html</label>'
+		var add_item = $('<li data-jstree=\'{"icon":"table-add"}\'>'
+						+ '	<label title="Add Item">Add Item Html</label>'
 						+ '</li>');
-		var edit_item_block = $('<li data-jstree=\'{"icon":"table-edit table-block-file"}\'>'
-						+ '	<label title="Edit Item based in a Block file">Edit Item Block</label>'
-						+ '</li>');
-		var add_item_html = $('<li data-jstree=\'{"icon":"table-add table-html"}\'>'
-						+ '	<label title="Add Item based in html">Add Item Html</label>'
-						+ '</li>');
-		var add_item_block = $('<li data-jstree=\'{"icon":"table-add table-block-file"}\'>'
-						+ '	<label title="Add Item based in a Block file">Add Item Block</label>'
-						+ '</li>');
-		var view_item_html = $('<li data-jstree=\'{"icon":"table-view table-html"}\'>'
-						+ '	<label title="View Item based in html">View Item Html</label>'
-						+ '</li>');
-		var view_item_block = $('<li data-jstree=\'{"icon":"table-view table-block-file"}\'>'
-						+ '	<label title="View Item based in a Block file">View Item Block</label>'
+		var view_item = $('<li data-jstree=\'{"icon":"table-view"}\'>'
+						+ '	<label title="View Item">View Item Html</label>'
 						+ '</li>');
 		
-		li_ul.append(list_items_html);
-		li_ul.append(list_items_block);
-		li_ul.append(edit_item_html);
-		li_ul.append(edit_item_block);
-		li_ul.append(add_item_html);
-		li_ul.append(add_item_block);
-		li_ul.append(view_item_html);
-		li_ul.append(view_item_block);
+		li_ul.append(list_items);
+		li_ul.append(edit_item);
+		li_ul.append(add_item);
+		li_ul.append(view_item);
 		
 		tree_obj.initNodeChilds(li);
 		
-		initIframeModulesBlocksToolbarDraggableMenuItem(list_items_html);
-		initIframeModulesBlocksToolbarDraggableMenuItem(list_items_block);
-		initIframeModulesBlocksToolbarDraggableMenuItem(edit_item_html);
-		initIframeModulesBlocksToolbarDraggableMenuItem(edit_item_block);
-		initIframeModulesBlocksToolbarDraggableMenuItem(add_item_html);
-		initIframeModulesBlocksToolbarDraggableMenuItem(add_item_block);
-		initIframeModulesBlocksToolbarDraggableMenuItem(view_item_html);
-		initIframeModulesBlocksToolbarDraggableMenuItem(view_item_block);
+		initIframeModulesBlocksToolbarDraggableMenuItem(list_items);
+		initIframeModulesBlocksToolbarDraggableMenuItem(edit_item);
+		initIframeModulesBlocksToolbarDraggableMenuItem(add_item);
+		initIframeModulesBlocksToolbarDraggableMenuItem(view_item);
 	});
 }
 
@@ -945,9 +926,9 @@ function openPretifyRegionBlockComboBoxImportModuleBlockOptionPopup(select_elm, 
 						}
 						
 						if (ajax_response && ajax_response["status"] == 1) {
-							TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.setOption("onClose", null);
+							TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.setOption("onClose", null);
 							popup.hide(); //force popup to hide faster bc when we call the addRegionBlockOption, it will make the browser slow and the hidePopup bc it calls the jquery fadeOut function, it will be freezed for a second, which gives a bad user experience and is not user-friendly.
-							TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.hidePopup();
+							TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.hidePopup();
 							
 							setTimeout(function() {
 								addRegionBlockOption(select_elm, ajax_response["block_id"], selected_project_id);
@@ -959,7 +940,7 @@ function openPretifyRegionBlockComboBoxImportModuleBlockOptionPopup(select_elm, 
 		});
 	
 	//open popup
-	TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.init({
+	TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.init({
 		elementToShow: popup,
 		parentElement: document,
 		onClose: function(elm) {
@@ -976,7 +957,7 @@ function openPretifyRegionBlockComboBoxImportModuleBlockOptionPopup(select_elm, 
 		}
 	});
 	
-	TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.showPopup();
+	TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.showPopup();
 }
 
 function refreshPretifyRegionBlockComboBox(select_elm) {
@@ -985,7 +966,9 @@ function refreshPretifyRegionBlockComboBox(select_elm) {
 	
 	try {
 		setTimeout(function() {
-			select_elm.selectmenu("refresh", true);
+			if (select_elm.selectmenu("instance")) //be sure that the selectmenu was already inited.
+				select_elm.selectmenu("refresh", true);
+			
 			sm_text.html(value).attr("title", value);
 		}, 300);
 	} catch(e) {
@@ -1246,7 +1229,6 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 }
 
 function getRegionBlockHtml(region, block, block_project, is_html, rb_index) {
-	var rb_html = null;
 	var select = null;
 	
 	var block = block ? block : "";
@@ -1254,27 +1236,30 @@ function getRegionBlockHtml(region, block, block_project, is_html, rb_index) {
 	rb_index = $.isNumeric(rb_index) ? rb_index : "";
 	
 	var reg = region.replace(/"/g, "&quot;");
+	var rb_html = $( region_block_html.replace(/#region#/g, reg).replace(/#block#/g, "").replace(/#rb_index#/g, rb_index) ); //replace #block# with empty strnig bc if block is an html string, it will break the javascript. So, the block value will be assigned in the code bellow.
 	
 	//prepare new region_block_html item
 	if (!is_html) {
 		var b = block.substr(0, 1) == '"' ? block.replace(/"/g, "") : block;
 		var bt = block.substr(0, 1) == '"' && block.substr(block.length - 1) == '"' ? block.substr(1, block.length - 2) : block;
 		var bp = block_project.substr(0, 1) == '"' ? block_project.replace(/"/g, "") : block_project;
+		var is_text = b.indexOf("\n") != -1;
 		
-		var blo = block.replace(/"/g, "&quot;");
-		rb_html = $( region_block_html.replace(/#region#/g, reg).replace(/#block#/g, blo).replace(/#rb_index#/g, rb_index) );
+		var apbl = available_blocks_list ? available_blocks_list[bp] : null;
+		var is_bp_html_or_text = is_text || /<\/?[a-z][\s\S]*>/i.test(b);
+		var exists_in_blocks = (apbl && !is_bp_html_or_text && $.inArray(b, apbl) != -1) ? true : false;
 		
 		select = rb_html.children(".region_block_type");
 		var block_options = rb_html.children(".block_options");
 		var block_input = rb_html.children("input.block");
 		var block_text = rb_html.children(".block_text");
 		
-		block_options.val(b);
-		block_input.val(b);
-		block_text.children("textarea").val(stripslashes(bt));
-		
-		var apbl = available_blocks_list ? available_blocks_list[bp] : null;
-		var exists_in_blocks = (apbl && $.inArray(b, apbl) != -1) ? true : false;
+		if (!is_text) {
+			block_options.val(b);
+			block_input.val(b);
+		}
+		else
+			block_text.children("textarea").text( stripslashes(bt) );
 		
 		if (b == "" || exists_in_blocks) 
 			select.val("options");
@@ -1282,11 +1267,10 @@ function getRegionBlockHtml(region, block, block_project, is_html, rb_index) {
 			var block_type = getArgumentType(block); //if no block, by default sets to string
 			select.val(block_type);
 			
-			rb_html.addClass(b.indexOf("\n") != -1 ? "is_text" : "is_input");
+			rb_html.addClass(is_text ? "is_text" : "is_input");
 		}
 	}
 	else {
-		rb_html = $( region_block_html.replace(/#region#/g, reg).replace(/#block#/g, "").replace(/#rb_index#/g, rb_index) );
 		var block_html = rb_html.children(".block_html");
 		var textarea = block_html.children("textarea");
 		textarea.val(block);
@@ -2880,7 +2864,7 @@ function updateLayoutIframeFromSettings(iframe, data, settings, iframe_html_to_p
 						//console.log(iframe_region_items_children);
 						
 						$.each(region_items, function(idx, region_item) {
-							var iframe_region_item = iframe_region_items[idx];
+							var iframe_region_item = iframe_region_items ? iframe_region_items[idx] : null;
 							var iframe_item = $(iframe_region_items_children[item_to_insert_index]); //get the iframe_item where the items will be inserted before...
 							var is_html = region_item[3];
 							
@@ -4065,10 +4049,7 @@ function initCodeLayoutUIEditor(main_obj, opts) {
 	chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer.init("layout_ui_editor_right_container");
 	
 	var textarea = main_obj.find(".layout-ui-editor > textarea")[0];
-	var editor = createCodeLayoutUIEditorEditor(textarea, opts);
-	
-	if (editor)
-		editor.focus();
+	createCodeLayoutUIEditorEditor(textarea, opts);
 }
 
 function setCodeLayoutUIEditorTreeItemsDraggableEvent(ul) {
@@ -4118,7 +4099,7 @@ function setCodeLayoutUIEditorTreeItemsDraggableEvent(ul) {
 function onCodeLayoutUIEditorModuleBlockWidgetDragAndDrop(widget, tree_obj) {
 	var popup = $("#choose_layout_ui_editor_module_block_from_file_manager");
 	
-	MyCodeLayoutUIEditorFancyPopup.init({
+	CodeLayoutUIEditorFancyPopup.init({
 		elementToShow: popup,
 		parentElement: document,
 		
@@ -4135,7 +4116,7 @@ function onCodeLayoutUIEditorModuleBlockWidgetDragAndDrop(widget, tree_obj) {
 		}
 	});
 	
-	MyCodeLayoutUIEditorFancyPopup.showPopup();
+	CodeLayoutUIEditorFancyPopup.showPopup();
 }
 
 function chooseCodeLayoutUIEditorModuleBlock(tree_obj) {
@@ -4155,11 +4136,11 @@ function chooseCodeLayoutUIEditorModuleBlock(tree_obj) {
 	    		var block = path.substr(pos + "/src/block/".length);
 	    		block = block.substr(0, block.length - 4);
 	    		
-	    		var widget = MyCodeLayoutUIEditorFancyPopup.settings.targetField;
+	    		var widget = CodeLayoutUIEditorFancyPopup.settings.targetField;
 			updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block, project);
 	    		
-	    		MyCodeLayoutUIEditorFancyPopup.setOption("onClose", null);
-	    		MyCodeLayoutUIEditorFancyPopup.hidePopup();
+	    		CodeLayoutUIEditorFancyPopup.setOption("onClose", null);
+	    		CodeLayoutUIEditorFancyPopup.hidePopup();
 	    	}
 		else if (node.hasClass("draggable_menu_item_module")) {
 	    		var module_id = getMenuItemModuleId(node);
@@ -4172,59 +4153,224 @@ function chooseCodeLayoutUIEditorModuleBlock(tree_obj) {
 	    		var table_li = node.parent().closest("li");
 	    		var db_type_li = table_li.parent().closest("li");
 	    		var db_driver_li = db_type_li.parent().closest("li");
-	    		var widget_type = i.hasClass("table-html") ? "html" : "block";
-	    		var task_tag = null;
-	    		var task_tag_action = null;
 	    		var widget_group = null;
+	    		var widget_list_type = null;
 	    		var widget_action = null;
 	    		
 	    		if (i.hasClass("table-list")) {
-	    			task_tag = "listing";
-	    			
 	    			widget_group = "list";
+	    			widget_list_type = "table";
 	    			widget_action = "edit";
 	    		}
 	    		else if (i.hasClass("table-edit")) {
-	    			task_tag = "form";
-	    			task_tag_action = "update";
-	    			
 	    			widget_group = "form";
 	    			widget_action = "edit";
 	    		}
 	    		else if (i.hasClass("table-add")) {
-	    			task_tag = "form";
-	    			task_tag_action = "insert";
-	    			
 	    			widget_group = "form";
 	    			widget_action = "add";
 	    		}
 	    		else if (i.hasClass("table-view")) {
-	    			task_tag = "view";
-	    			
 	    			widget_group = "form";
 	    			widget_action = "view";
 	    		}
 	    		
-	    		if (widget_type == "html") {
-	    			var widget = MyCodeLayoutUIEditorFancyPopup.settings.targetField;
-	    			updateCodeLayoutUIEditorDBTableWidget(widget, {
-			    		widget_group: widget_group,
-			    		widget_action: widget_action,
-			    		db_driver: db_driver_li.attr("db_driver_name"),
-			    		db_type: db_type_li.attr("db_type"),
-		    			db_table: table_li.children("a").attr("table"),
-		    		});
-	    		}
-	    		else
-		    		openCodeLayoutUIEditorDBTableUisDiagramBlockPopup({
-			    		task_tag: task_tag,
-			    		task_tag_action: task_tag_action,
-			    		db_driver: db_driver_li.attr("db_driver_name"),
-			    		db_type: db_type_li.attr("db_type"),
-		    			db_table: table_li.children("a").attr("table"),
-		    		});
+	    		var db_driver = db_driver_li.attr("db_driver_name");
+	    		var db_type = db_type_li.attr("db_type");
+		    	var db_table = table_li.children("a").attr("table");
+	    		var widget = CodeLayoutUIEditorFancyPopup.settings.targetField;
+	    		var opts = {
+	    			hide_widget_group: true,
+	    			hide_widget_action: widget_group == "form",
+	    			
+	    			widget_group: widget_group,
+		    		widget_list_type: widget_list_type,
+		    		widget_action: widget_action
+	    		};
+	    		
+	    		onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_table, widget, opts);
 		}
 	}
+}
+
+function onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_table, widget, opts) {
+	//get existent popup
+	var popup = $(".choose_db_table_widget_options_popup");
+	
+	//prepare on_change_callback
+	var on_change_callback = function(p, widget_type, widget_group) {
+		if (widget_type == "html" && widget_group == "list")
+			p.children(".widget_list_type").show();
+		else
+			p.children(".widget_list_type").hide();
+	};
+	
+	//create popup if not exists yet
+	if (!popup[0]) {
+		popup = $('<div class="myfancypopup with_title choose_db_table_widget_options_popup">'
+				+ '<div class="title">Choose your options:</div>'
+				+ '<div class="table_alias">'
+					+ '<label>Table alias:</label>'
+					+ '<input placeHolder="Leave blank for default" />'
+				+ '</div>'
+				+ '<div class="widget_type">'
+					+ '<label>Widget Type:</label>'
+					+ '<select>'
+						+ '<option value="html" title="Widget based in editable html elements">Html</option>'
+						+ '<option value="block" title="Widget based in a Block file">Block</option>'
+					+ '</select>'
+				+ '</div>'
+				+ '<div class="widget_group">'
+					+ '<label>UI Type:</label>'
+					+ '<select>'
+						+ '<option value="list">List</option>'
+						+ '<option value="form">Form</option>'
+					+ '</select>'
+				+ '</div>'
+				+ '<div class="widget_list_type">'
+					+ '<label>List Type:</label>'
+					+ '<select>'
+						+ '<option value="table" title="Table layout">Table</option>'
+						+ '<option value="tree" title="Tree layout based in ul/li">Tree</option>'
+						+ '<option value="both" title="Table and tree layout">Table and Tree</option>'
+					+ '</select>'
+				+ '</div>'
+				+ '<div class="widget_action">'
+					+ '<label>Action:</label>'
+					+ '<select>'
+						+ '<option value="view">View</option>'
+						+ '<option value="edit">Edit</option>'
+						+ '<option value="remove">Remove</option>'
+						+ '<option value="add">Add</option>'
+					+ '</select>'
+				+ '</div>'
+				+ '<div class="button">'
+					+ '<input type="button" value="Proceed" onclick="DBTableWidgetOptionsFancyPopup.settings.updateFunction(this)">'
+				+ '</div>'
+			+ '</div>');
+		$(document.body).append(popup);
+		
+		popup.find(".widget_type select").on("change", function(event) {
+			var widget_type = $(this).val();
+			var widget_group = popup.find(".widget_group select").val();
+			
+			on_change_callback(popup, widget_type, widget_group);
+		});
+		
+		popup.find(".widget_group select").on("change", function(event) {
+			var widget_group = $(this).val();
+			var widget_type = popup.find(".widget_type select").val();
+			
+			on_change_callback(popup, widget_type, widget_group);
+		});
+	}
+	
+	//load some default values
+	popup.find(".widget_type, .widget_group, .widget_list_type, .widget_action").removeClass("hidden");
+	
+	if (opts) {
+		if (opts["hide_table_alias"])
+			popup.find(".table_alias").addClass("hidden");
+		
+		if (opts["hide_widget_type"])
+			popup.find(".widget_type").addClass("hidden");
+		
+		if (opts["hide_widget_group"])
+			popup.find(".widget_group").addClass("hidden");
+		
+		if (opts["hide_widget_list_type"])
+			popup.find(".widget_list_type").addClass("hidden");
+		
+		if (opts["hide_widget_action"])
+			popup.find(".widget_action").addClass("hidden");
+		
+		if (opts.hasOwnProperty("table_alias"))
+			popup.find(".table_alias input").val( opts["table_alias"] );
+		
+		if (opts.hasOwnProperty("widget_type"))
+			popup.find(".widget_type select").val( opts["widget_type"] );
+		
+		if (opts.hasOwnProperty("widget_group"))
+			popup.find(".widget_group select").val( opts["widget_group"] );
+		
+		if (opts.hasOwnProperty("widget_list_type"))
+			popup.find(".widget_list_type select").val( opts["widget_list_type"] );
+		
+		if (opts.hasOwnProperty("widget_action"))
+			popup.find(".widget_action select").val( opts["widget_action"] );
+		
+		on_change_callback(popup, popup.find(".widget_type select").val(), popup.find(".widget_group select").val());
+	}
+	
+	//set update func
+	var update_func = function(elm) {
+		var table_alias = popup.find(".table_alias input").val();
+		var widget_type = popup.find(".widget_type select").val();
+		var widget_group = popup.find(".widget_group select").val();
+		var widget_list_type = popup.find(".widget_list_type select").val();
+		var widget_action = popup.find(".widget_action select").val();
+		
+		//hide popup first
+		DBTableWidgetOptionsFancyPopup.hidePopup();
+		DBTableWidgetOptionsFancyPopup.setOption("onClose", null);
+		
+		//replace widget by real widget
+		if (widget_type == "html")
+			updateCodeLayoutUIEditorDBTableWidget(widget, {
+		    		widget_group: widget_group,
+		    		widget_list_type: widget_list_type,
+		    		widget_action: widget_action,
+		    		db_driver: db_driver,
+		    		db_type: db_type,
+				db_table: db_table,
+		    		db_table_alias: table_alias,
+			});
+		else {
+			var task_tag = null;
+			var task_tag_action = null;
+			
+			if (widget_group == "list")
+	    			task_tag = "listing";
+	    		else if (widget_group == "form") {
+	    			if (widget_action == "view")
+		    			task_tag = "view";
+		    		else 
+		    			task_tag = "form";
+	    		}
+    			
+			if (widget_action == "add")
+	    			task_tag_action = "insert";
+	    		else if (widget_action == "edit")
+	    			task_tag_action = "update,delete";
+	    		else if (widget_action == "remove")
+	    			task_tag_action = "delete";
+			
+			openCodeLayoutUIEditorDBTableUisDiagramBlockPopup(widget, {
+		    		task_tag: task_tag,
+		    		task_tag_action: task_tag_action,
+		    		db_driver: db_driver,
+		    		db_type: db_type,
+				db_table: db_table,
+		    		db_table_alias: table_alias,
+	    		});
+	    	}
+	};
+	
+	//init and show popup
+	DBTableWidgetOptionsFancyPopup.init({
+		elementToShow: popup,
+		parentElement: document,
+		
+		onClose: function() {
+			//update menu layer
+			var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+			
+			if (PtlLayoutUIEditor)
+				PtlLayoutUIEditor.deleteTemplateWidget(widget); //update menu layer from layout ui editor
+		},
+		updateFunction: update_func,
+	});
+	DBTableWidgetOptionsFancyPopup.showPopup();
 }
 
 function updateCodeLayoutUIEditorDBTableWidget(widget, settings) {
@@ -4280,11 +4426,11 @@ function updateCodeLayoutUIEditorDBTableWidget(widget, settings) {
 	}
 }
 
-function openCodeLayoutUIEditorDBTableUisDiagramBlockPopup(settings) {
+function openCodeLayoutUIEditorDBTableUisDiagramBlockPopup(widget, settings) {
 	var task_tag = settings["task_tag"] ? settings["task_tag"] : "";
 	var task_tag_action = settings["task_tag_action"] ? settings["task_tag_action"] : "";
-	var db_driver = settings["db_driver"] ? settings["db_driver"] : "";
-	var db_type = settings["db_type"] ? settings["db_type"] : "";
+	var db_driver = settings["db_driver"] ? settings["db_driver"] : (typeof default_db_driver != "undefined" ? default_db_driver : "");
+	var db_type = settings["db_type"] ? settings["db_type"] : (typeof default_db_driver != "undefined" ? default_db_type : "");
 	var db_table = settings["db_table"] ? settings["db_table"] : "";
 	
 	var popup_elm = $(".db_table_uis_diagram_block");
@@ -4301,6 +4447,8 @@ function openCodeLayoutUIEditorDBTableUisDiagramBlockPopup(settings) {
 		parentElement: document,
 		type: "iframe",
 		url: url,
+		
+		targetField: widget,
 	});
 	CodeLayoutUIEditorDBTableUisDiagramBlockFancyPopup.showPopup();
 }
@@ -4310,13 +4458,13 @@ function addCodeLayoutUIEditorDBTableUisDiagramBlockToPage(block_file_path) {
 	var project = block_file_path.substr(0, pos);
 	var block = block_file_path.substr(pos + "/src/block/".length);
 	
-	var widget = MyCodeLayoutUIEditorFancyPopup.settings.targetField;
+	var widget = CodeLayoutUIEditorDBTableUisDiagramBlockFancyPopup.settings.targetField;
 	updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block, project);
 	
 	CodeLayoutUIEditorDBTableUisDiagramBlockFancyPopup.hidePopup();
 	
-	MyCodeLayoutUIEditorFancyPopup.setOption("onClose", null);
-	MyCodeLayoutUIEditorFancyPopup.hidePopup();
+	CodeLayoutUIEditorFancyPopup.setOption("onClose", null);
+	CodeLayoutUIEditorFancyPopup.hidePopup();
 	closeModuleInfo();
 }
 
@@ -4350,7 +4498,7 @@ function chooseCodeLayoutUIEditorImportModulePopup(url) {
 					
 					if (ajax_response && ajax_response["status"] == 1) {
 						var block_id = ajax_response["block_id"];
-						var widget = MyCodeLayoutUIEditorFancyPopup.settings.targetField;
+						var widget = CodeLayoutUIEditorFancyPopup.settings.targetField;
 						
 						if (block_id)
 							updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block_id);
@@ -4362,10 +4510,10 @@ function chooseCodeLayoutUIEditorImportModulePopup(url) {
 								PtlLayoutUIEditor.deleteTemplateWidget(widget); //update menu layer from layout ui editor
 						}
 						
-						TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.hidePopup();
+						TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.hidePopup();
 						
-						MyCodeLayoutUIEditorFancyPopup.setOption("onClose", null);
-						MyCodeLayoutUIEditorFancyPopup.hidePopup();
+						CodeLayoutUIEditorFancyPopup.setOption("onClose", null);
+						CodeLayoutUIEditorFancyPopup.hidePopup();
 						closeModuleInfo();
 					}
 				}
@@ -4374,12 +4522,12 @@ function chooseCodeLayoutUIEditorImportModulePopup(url) {
 	});
 	
 	//open popup
-	TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.init({
+	TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.init({
 		elementToShow: popup,
 		parentElement: document,
 	});
 	
-	TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.showPopup();
+	TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.showPopup();
 }
 
 function updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block_id, project) {

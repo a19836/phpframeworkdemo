@@ -13,7 +13,8 @@
 	font-weight:normal;
 }
 .module_settings .settings div .user_environments_settings .add {
-	margin:-28px 0 0 135px;
+	margin:-28px 0 0 115px;
+	font-size:14px;
 }
 .module_settings .settings div .user_environments_settings .user_environment {
 	width:auto;

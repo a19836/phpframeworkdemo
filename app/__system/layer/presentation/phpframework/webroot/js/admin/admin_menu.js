@@ -2,9 +2,9 @@ var file_to_copy_or_cut = null;
 var copy_or_cut_action = null;
 var copy_or_cut_tree_node_id = null;
 
-var MyFancyPopupTools = new MyFancyPopupClass();
-var MyFancyPopupProjects = new MyFancyPopupClass();
-var MyFancyPopupDBTable = new MyFancyPopupClass();
+var ToolsFancyPopup = new MyFancyPopupClass();
+var ProjectsFancyPopup = new MyFancyPopupClass();
+var DBTableTaskOptionsFancyPopup = new MyFancyPopupClass();
 
 function initFileTreeMenu() {
 	//prepare menu tree
@@ -62,6 +62,7 @@ function initContextMenus() {
 	
 	prepareParentChildsEventToHideContextMenu(file_tree);
 	addSubMenuIconToParentChildsWithContextMenu(file_tree);
+	prepareParentChildsEventOnClick(file_tree);
 	
 	//var selected_menu_properties = $("#selected_menu_properties");
 }
@@ -507,6 +508,7 @@ function onDBContextMenu(target, contextmenu, originalEvent) {
 				
 				var select = contextmenu.find(".type a select");
 				select.find("option:not([disabled])").remove();
+				select.find(".dynamic").remove();
 				
 				var select_checker = function(set_mandatory_length) {
 					var type = select.val();
@@ -519,8 +521,15 @@ function onDBContextMenu(target, contextmenu, originalEvent) {
 						if (simple_props["type"]) {
 							type = simple_props["type"];
 							
-							if ($.isArray(type))
-								type = type[0];
+							if ($.isArray(type)) {
+								var original_type = select.find("option:selected").attr("original_type");
+								
+								//check if original type previous set belongs to the any simple types and if yes, stays with the original value, bc it was not changed. This is very important, bc if we have an attribute with a native type, which was converted to a simple type, when we convert it to the native type again, we must stay with original value. Otherwise we are changing automatically the types of the attributes without the consent of the user. The original type is is very important!!!
+								if (original_type && $.inArray(original_type, type) != -1)
+									type = original_type;
+								else
+									type = type[0];
+							}
 						}
 					}
 					
@@ -548,6 +557,7 @@ function onDBContextMenu(target, contextmenu, originalEvent) {
 				
 				//convert type into simple type if apply
 				var current_attribute_type = attribute_properties["type"];
+				var original_attribute_type = attribute_properties["type"];
 				
 				if (column_simple_types && $.isPlainObject(column_simple_types))
 					for (var simple_type in column_simple_types) {
@@ -593,20 +603,21 @@ function onDBContextMenu(target, contextmenu, originalEvent) {
 				
 				//prepare types html
 				var exists = false;
-				var types = '<option disabled></option>';
+				var types = '<option class="dynamic" disabled></option>';
 				
 				if (column_simple_types && $.isPlainObject(column_simple_types)) {
-					types += '<optgroup label="Simple Types">';
+					types += '<optgroup class="dynamic" label="Simple Types">';
 					
 					$.each(column_simple_types, function(type_id, type_props) {
 						var type_label = type_props["label"] ? type_props["label"] : type_id;
 						var title = type_label + ":";
+						var original_type_html = original_attribute_type && $.isArray(type_props["type"]) && $.inArray(original_attribute_type, type_props["type"]) != -1 ? ' original_type="' + original_attribute_type + '"' : '';
 						
 						for (var k in type_props)
 							if (k != "label")
 								title += "\n- " + k + ": " + type_props[k];
 						
-						types += '<option value="' + type_id + '"' + (current_attribute_type == type_id ? " selected" : "") + ' title="' + title + '">' + type_label + '</option>';
+						types += '<option value="' + type_id + '"' + (current_attribute_type == type_id ? " selected" : "") + ' title="' + title + '"' + original_type_html + '>' + type_label + '</option>';
 					});
 					
 					types += '</optgroup>';
@@ -616,8 +627,8 @@ function onDBContextMenu(target, contextmenu, originalEvent) {
 				}
 				
 				if (column_types && $.isPlainObject(column_types)) {
-					types += '<option disabled></option>'
-						  + '<optgroup label="Native Types">';
+					types += '<option class="dynamic" disabled></option>'
+						  + '<optgroup class="dynamic" label="Native Types">';
 					
 					$.each(column_types, function(type_id, type_label) {
 						types += '<option value="' + type_id + '"' + (current_attribute_type == type_id ? " selected" : "") + '>' + type_label + '</option>';
@@ -630,7 +641,7 @@ function onDBContextMenu(target, contextmenu, originalEvent) {
 				}
 				
 				if (!exists)
-					types += '<option disabled></option>'
+					types += '<option class="dynamic" disabled></option>'
 						  + '<option value="' + current_attribute_type + '" selected>' + current_attribute_type + '</option>';
 				
 				select.append(types);
@@ -784,6 +795,7 @@ function onPresentationContextMenu(target, contextmenu, originalEvent) {
 	contextmenu.find(".edit_project_global_variables a").attr("edit_project_global_variables_url", a.attr("edit_project_global_variables_url"));
 	contextmenu.find(".edit_config a").attr("edit_config_url", a.attr("edit_config_url"));
 	contextmenu.find(".edit_init a").attr("edit_init_url", a.attr("edit_init_url"));
+	contextmenu.find(".manage_users a").attr("manage_users_url", a.attr("manage_users_url"));
 	contextmenu.find(".manage_references a").attr("manage_references_url", a.attr("manage_references_url"));
 	contextmenu.find(".view_project a").attr("view_project_url", a.attr("view_project_url"));
 	contextmenu.find(".test_project a").attr("test_project_url", a.attr("test_project_url"));
@@ -971,7 +983,7 @@ function initDBTablesSorting(elm) {
 				if (iframe_droppable_elm) { //if iframe_droppable_elm exists, it means it has the class: .droppable"
 					//create widget and append it to iframe_droppable_elm
 					var widget = $("<div></div>");
-					iframe_droppable_elm.append(widget);
+					j_iframe_droppable_elm.append(widget);
 					
 					//add widget in the right place and disable classes in LayoutUIEditor's droppable
 					var new_event = {
@@ -1334,56 +1346,7 @@ function getIframeBeanDBDriver(iframe_win, bean_name) {
 }
 
 function onChooseLayoutUIEditorDBTableWidgetOptions(iframe_win, db_driver, table_name, widget) {
-	var popup = $(".choose_db_table_widget_options_popup");
-	
-	if (!popup[0]) {
-		popup = $('<div class="myfancypopup with_title choose_db_table_widget_options_popup">'
-				+ '<div class="title">Choose your options:</div>'
-				+ '<div class="widget_group">'
-					+ '<label>UI Type:</label>'
-					+ '<select>'
-						+ '<option value="list">List</option>'
-						+ '<option value="form">Form</option>'
-					+ '</select>'
-				+ '</div>'
-				+ '<div class="widget_action">'
-					+ '<label>Action:</label>'
-					+ '<select>'
-						+ '<option value="view">View</option>'
-						+ '<option value="edit">Edit</option>'
-						+ '<option value="remove">Remove</option>'
-						+ '<option value="add">Add</option>'
-					+ '</select>'
-				+ '</div>'
-				+ '<div class="button">'
-					+ '<input type="button" value="Proceed" onclick="MyFancyPopupDBTable.settings.updateFunction(this)">'
-				+ '</div>'
-			+ '</div>');
-		$(document.body).append(popup);
-	}
-	
-	MyFancyPopupDBTable.init({
-		elementToShow: popup,
-		parentElement: document,
-		
-		updateFunction: function(elm) {
-			var widget_group = popup.find(".widget_group select").val();
-			var widget_action = popup.find(".widget_action select").val();
-			
-			//hide popup first
-			MyFancyPopupDBTable.hidePopup();
-			
-			//replace widget by real widget
-			iframe_win.updateCodeLayoutUIEditorDBTableWidget(widget, {
-		    		widget_group: widget_group,
-		    		widget_action: widget_action,
-		    		db_driver: db_driver,
-		    		db_type: "db",
-				db_table: table_name,
-			});
-		},
-	});
-	MyFancyPopupDBTable.showPopup();
+	iframe_win.onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, "db", table_name, widget);
 }
 
 function onChooseWorkflowDBTableTaskOptions(event, iframe_droppable_elm, iframe_win, iframe_offset, db_driver, table_name, task_type, url) {
@@ -1403,13 +1366,13 @@ function onChooseWorkflowDBTableTaskOptions(event, iframe_droppable_elm, iframe_
 					+ '</select>'
 				+ '</div>'
 				+ '<div class="button">'
-					+ '<input type="button" value="Proceed" onclick="MyFancyPopupDBTable.settings.updateFunction(this)">'
+					+ '<input type="button" value="Proceed" onclick="DBTableTaskOptionsFancyPopup.settings.updateFunction(this)">'
 				+ '</div>'
 			+ '</div>');
 		$(document.body).append(popup);
 	}
 	
-	MyFancyPopupDBTable.init({
+	DBTableTaskOptionsFancyPopup.init({
 		elementToShow: popup,
 		parentElement: document,
 		
@@ -1530,10 +1493,10 @@ function onChooseWorkflowDBTableTaskOptions(event, iframe_droppable_elm, iframe_
 			else
 				iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Could not get table attributes because there is no table correspondent url!");
 			
-			MyFancyPopupDBTable.hidePopup();
+			DBTableTaskOptionsFancyPopup.hidePopup();
 		},
 	});
-	MyFancyPopupDBTable.showPopup();
+	DBTableTaskOptionsFancyPopup.showPopup();
 }
 
 function initDBTableAttributesSorting(elm) {
@@ -1802,30 +1765,82 @@ function onSuccessfullPopupAction(opts) {
 
 function onSucccessfullEditProject(opts) {
 	if (opts && opts["is_rename_project"]) {
-		var url = "" + document.location;
-		url = url.indexOf("#") != -1 ? url.substr(0, url.indexOf("#")) : url; //remove # so it can refresh page
+		var selected_project_elm = $("#top_panel .filter_by_layout > ul li.selected a");
+		var selected_project = selected_project_elm.attr("value");
 		
-		if (url.match(/(&|\?)filter_by_layout\s*=([^&#]+)/)) { //check if parent url has any filter_by_layout
-			url = url.replace(/(&|\?)filter_by_layout\s*=\s*([^&#]*)/, "");
+		//only refresh page if exists a selected project
+		if (!selected_project_elm[0] || selected_project) {
+			var url = "" + document.location;
+			url = url.indexOf("#") != -1 ? url.substr(0, url.indexOf("#")) : url; //remove # so it can refresh page
 			
-			if (opts["new_filter_by_layout"])
-				url += (url.indexOf("?") != -1 ? "&" : "?") + "filter_by_layout=" + opts["new_filter_by_layout"];
-		}
-		
-		//get default_page url and check if contains filter_by_layout in the url and if so, replace it with new project name
-		var default_page = MyJSLib.CookieHandler.getCookie('default_page');
-		
-		if (default_page && opts["new_filter_by_layout"]) {
-			if (default_page.match(/(&|\?)filter_by_layout\s*=([^&#]+)/)) { //check if default_page url has any filter_by_layout
-				default_page = default_page.replace(/(&|\?)filter_by_layout\s*=\s*([^&#]*)/, "");
-				default_page += (default_page.indexOf("?") != -1 ? "&" : "?") + "filter_by_layout=" + opts["new_filter_by_layout"];
+			if (url.match(/(&|\?)filter_by_layout\s*=([^&#]+)/)) { //check if parent url has any filter_by_layout
+				url = url.replace(/(&|\?)filter_by_layout\s*=\s*([^&#]*)/, "");
+				
+				if (opts["new_filter_by_layout"])
+					url += (url.indexOf("?") != -1 ? "&" : "?") + "filter_by_layout=" + opts["new_filter_by_layout"];
 			}
 			
-			//set cookie with default page
-			MyJSLib.CookieHandler.setCookie('default_page', default_page, 0, "/"); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+			//get default_page url and check if contains filter_by_layout in the url and if so, replace it with new project name
+			var default_page = MyJSLib.CookieHandler.getCookie('default_page');
+			
+			if (default_page && opts["new_filter_by_layout"]) {
+				if (default_page.match(/(&|\?)filter_by_layout\s*=([^&#]+)/)) { //check if default_page url has any filter_by_layout
+					default_page = default_page.replace(/(&|\?)filter_by_layout\s*=\s*([^&#]*)/, "");
+					default_page += (default_page.indexOf("?") != -1 ? "&" : "?") + "filter_by_layout=" + opts["new_filter_by_layout"];
+				}
+				
+				//set cookie with default page
+				MyJSLib.CookieHandler.setCookie('default_page', default_page, 0, "/"); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+			}
+			
+			document.location = url;
 		}
-		
-		document.location = url;
+		else {
+			//refresh grand-parent folder
+			refreshLastNodeParentChildsIfNotTreeLayoutAndMainTreeNode(opts);
+			
+			//check if project was moved to a grand-parent folder and if so, refresh that grand-parent
+			if (last_selected_node_id && opts["new_filter_by_layout"] && opts["old_filter_by_layout"]) {
+				var new_filter_by_layout = opts["new_filter_by_layout"];
+				var old_filter_by_layout = opts["old_filter_by_layout"];
+				
+				//remove duplicated, first and last slashes
+				new_filter_by_layout = new_filter_by_layout.replace(/(^\/|\/$)/g, "").replace(/\/+/g, "/");
+				old_filter_by_layout = old_filter_by_layout.replace(/(^\/|\/$)/g, "").replace(/\/+/g, "/");
+				
+				//get project folder
+				var suffix = null;
+				
+				do {
+					var pos = new_filter_by_layout.lastIndexOf("/");
+					
+					if (pos != -1) {
+						new_filter_by_layout = new_filter_by_layout.substr(0, pos);
+						
+						//check if project folder is inside of old_filter_by_layout
+						if (old_filter_by_layout.indexOf(new_filter_by_layout + "/") === 0) {
+							suffix = old_filter_by_layout.substr(new_filter_by_layout.length + 1);
+							break;
+						}
+					}
+				}
+				while (pos != -1);
+				
+				//prepare parent level
+				if (suffix) {
+					var parent_level = suffix.split("/").length - 1;
+					var node_id = getLastNodeParentId();
+					
+					while (parent_level > 0) {
+						node_id = getNodeParentIdByNodeId(node_id);
+						parent_level--;
+					}
+					
+					//prepare parent node
+					refreshNodeChildsByNodeId(node_id);
+				}
+			}
+		}
 	}
 	else
 		refreshLastNodeParentChildsIfNotTreeLayoutAndMainTreeNode(opts);
@@ -1963,7 +1978,7 @@ function manageFile(a, attr_name, action, on_success_callbacks) {
 							else if (action != "remove")
 								refreshNodeParentChildsByChildId(tree_node_id_to_be_updated);
 							
-							StatusMessageHandler.showMessage("File " + str + (action == "unzip" || action == "zip" ? "pe" : "") + "d correctly");
+							//StatusMessageHandler.showMessage("File " + str + (action == "unzip" || action == "zip" ? "pe" : "") + "d correctly"); //we commented this message bc was annoying.
 							
 							on_success_callbacks = $.isArray(on_success_callbacks) ? on_success_callbacks : [on_success_callbacks];
 							for (var i = 0; i < on_success_callbacks.length; i++)
@@ -2063,6 +2078,8 @@ function renameProject(a, attr_name, action, new_file_name, url, tree_node_id_to
 		}
 	
 	//console.log(opts);
+	last_selected_node_id = tree_node_id_to_be_updated;
+	
 	onSucccessfullEditProject(opts);
 }
 
@@ -2116,7 +2133,7 @@ function managePresentationFile(a, attr_name, action, new_file_name, url, tree_n
 							managePresentationFile(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated);
 						});
 					else if (data == "1") {
-						StatusMessageHandler.showMessage("View " + str + "d successfully");
+						//StatusMessageHandler.showMessage("View " + str + "d successfully"); //we commented this message bc was annoying.
 					
 						if (entity_folder[0]) {
 							var p = entity_folder;
@@ -2167,7 +2184,7 @@ function managePresentationFile(a, attr_name, action, new_file_name, url, tree_n
 							managePresentationFile(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated);
 						});
 					else if (data == "1") {
-						StatusMessageHandler.showMessage("Template webroot deleted successfully");
+						//StatusMessageHandler.showMessage("Template webroot deleted successfully"); //we commented this message bc was annoying.
 						
 						var folder_name = tree_node.find(" > a > label").text();
 						var project = p.closest("li[data-jstree=\'{\"icon\":\"project\"}\']");
@@ -2234,7 +2251,7 @@ function removeItem(a, attr_name, on_success_callback) {
 				dataType : "json",
 				success : function(data, textStatus, jqXHR) {
 					if(data == 1) {
-						StatusMessageHandler.showMessage("Removed successfully");
+						//StatusMessageHandler.showMessage("Removed successfully"); //we commented this message bc was annoying.
 						
 						if (typeof on_success_callback == "function")
 							on_success_callback(a, attr_name, tree_node_id_to_be_updated);
@@ -2294,7 +2311,7 @@ function copyOrCutFile(a, action) {
 	
 	setTimeout(function() {
 		file_to_copy_or_cut = a.getAttribute(action == "cut" ? "cut_url" : "copy_url");
-		//StatusMessageHandler.showMessage("File copied successfully");
+		//StatusMessageHandler.showMessage("File copied successfully"); //we commented this message bc was annoying.
 	}, 100);
 	
 	MyContextMenu.hideAllContextMenu();
@@ -2385,8 +2402,15 @@ function manageDBTableAction(a, attr_name, action, on_success_callback, on_error
 					properties = simple_props;
 					delete properties["label"];
 					
-					if ($.isArray(properties["type"]))
-						properties["type"] = properties["type"][0];
+					if ($.isArray(properties["type"])) {
+						var original_type = type_select.find("option:selected").attr("original_type");
+						
+						//check if original type previous set belongs to the any simple types and if yes, stays with the original value, bc it was not changed. This is very important, bc if we have an attribute with a native type, which was converted to a simple type, when we convert it to the native type again, we must stay with original value. Otherwise we are changing automatically the types of the attributes without the consent of the user. The original type is is very important!!!
+						if (original_type && $.inArray(original_type, properties["type"]) != -1)
+							properties["type"] = original_type;
+						else
+							properties["type"] = properties["type"][0];
+					}
 					
 					properties["length"] = property_length;
 				}
@@ -2615,7 +2639,7 @@ function chooseAvailableTool(url) {
 		$(document.body).append(popup);
 	}
 	
-	MyFancyPopupTools.init({
+	ToolsFancyPopup.init({
 		elementToShow: popup,
 		parentElement: document,
 		
@@ -2624,10 +2648,10 @@ function chooseAvailableTool(url) {
 			a.setAttribute("url", url);
 			goTo(a, "url", originalEvent);
 			
-			MyFancyPopupTools.hidePopup();
+			ToolsFancyPopup.hidePopup();
 		},
 	});
-	MyFancyPopupTools.showPopup();
+	ToolsFancyPopup.showPopup();
 	
 	return false;
 }
@@ -2640,21 +2664,21 @@ function chooseAvailableProject(url) {
 		$(document.body).append(popup);
 	}
 	
-	MyFancyPopupProjects.init({
+	ProjectsFancyPopup.init({
 		elementToShow: popup,
 		parentElement: document,
 		
 		goTo: function(url, originalEvent) {
-			MyFancyPopupProjects.hidePopup();
-			MyFancyPopupProjects.showOverlay();
-			MyFancyPopupProjects.showLoading();
+			ProjectsFancyPopup.hidePopup();
+			ProjectsFancyPopup.showOverlay();
+			ProjectsFancyPopup.showLoading();
 			
 			setTimeout(function() {
 				document.location = url;
 			}, 300);
 		},
 	});
-	MyFancyPopupProjects.showPopup();
+	ProjectsFancyPopup.showPopup();
 	
 	return false;
 }
@@ -2667,21 +2691,21 @@ function chooseAvailableTutorial(url) {
 		$(document.body).append(popup);
 	}
 	
-	MyFancyPopupProjects.init({
+	ProjectsFancyPopup.init({
 		elementToShow: popup,
 		parentElement: document,
 		
 		goTo: function(url, originalEvent) {
-			MyFancyPopupProjects.hidePopup();
-			MyFancyPopupProjects.showOverlay();
-			MyFancyPopupProjects.showLoading();
+			ProjectsFancyPopup.hidePopup();
+			ProjectsFancyPopup.showOverlay();
+			ProjectsFancyPopup.showLoading();
 			
 			setTimeout(function() {
 				document.location = url;
 			}, 300);
 		},
 	});
-	MyFancyPopupProjects.showPopup();
+	ProjectsFancyPopup.showPopup();
 	
 	return false;
 }

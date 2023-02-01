@@ -13,8 +13,8 @@ function goTo(url, originalEvent, on_parent_location) {
 	else if (is_popup) { //if is popup
 		if (on_parent_location)
 			window.parent.document.location = url;
-		else if (typeof window.parent.MyFancyPopupTools != "undefined" && typeof window.parent.MyFancyPopupTools.settings.goTo == "function")
-			window.parent.MyFancyPopupTools.settings.goTo(url, originalEvent);
+		else if (typeof window.parent.ToolsFancyPopup != "undefined" && typeof window.parent.ToolsFancyPopup.settings.goTo == "function")
+			window.parent.ToolsFancyPopup.settings.goTo(url, originalEvent);
 		else
 			window.parent.document.location = url;
 	}

@@ -95,7 +95,7 @@ if (!class_exists("\soa\CommonService")) {
 		protected static function prepareInputData(&$data) {
 			self::prepareSearch($data);
 			
-			if ($data["conditions"]) {
+			if ($data && $data["conditions"]) {
 				if (!self::$db_lib_included)
 					include_once get_lib("org.phpframework.db.DB"); //leave this here, otherwise it could be over-loading for every request to include without need it...
 				
@@ -108,12 +108,54 @@ if (!class_exists("\soa\CommonService")) {
 		}
 	
 		/**
+		 * Parse the $data[conditions] according with the $parser function. This is very useful to change attributes names from conditions or add the correspondent table prefix.
+		 * @hidden
+		 */
+		protected static function prepareInputConditionsData(&$data, $parser_func) {
+			if (is_array($conditions) && $parser_func)	{
+				foreach ($conditions as $attribute_name => $attribute_value) {
+					$lower_attr_name = strtolower($attribute_name);
+
+					if ($lower_attr_name == "or" || $lower_attr_name == "and") {
+						if (is_array($attribute_value))
+							foreach ($attribute_value as $sub_attribute_name => $sub_attribute_value) {
+								$sub_attr_name = $sub_attribute_name;
+								$sub_attr_value = $sub_attribute_value;
+								
+								$parser_func($sub_attr_name, $sub_attr_value);
+								
+								if ($sub_attr_name !== $sub_attribute_name) {
+									unset($conditions[$attribute_name][$sub_attribute_name]);
+									$conditions[$attribute_name][$sub_attr_name] = $sub_attr_value;
+								}
+								else	if ($sub_attr_value !== $sub_attribute_value)
+									$conditions[$attribute_name][$sub_attr_name] = $sub_attr_value;
+							}
+					}
+					else {
+						$attr_name = $attribute_name;
+						$attr_value = $attribute_value;
+						
+						$parser_func($attr_name, $attr_value);
+						
+						if ($attr_name !== $attribute_name) {
+							unset($conditions[$attribute_name]);
+							$conditions[$attr_name] = $attr_value;
+						}
+						else if ($attr_value !== $attribute_value)
+							$conditions[$attr_name] = $attr_value;
+					}
+				}
+			}
+		}
+	
+		/**
 		 * @hidden
 		 */
 		protected static function prepareSearch(&$data) {
 			$condition = "";
 		
-			if($data["searching"] && is_array($data["searching"]) && $data["searching"]["fields"]) {
+			if($data && $data["searching"] && is_array($data["searching"]) && $data["searching"]["fields"]) {
 				if (!self::$db_lib_included)
 					include_once get_lib("org.phpframework.db.DB"); //leave this here, otherwise it could be over-loading for every request to include without need it...
 				

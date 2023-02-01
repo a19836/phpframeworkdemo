@@ -414,8 +414,13 @@ function getSimpleFormSettings() {
 	var vars_value_data = [];
 	
 	for (var i = 0; i < vars_name.length; i++) {
-		vars_name_data.push( $(vars_name[i]).val() );
-		vars_value_data.push( $(vars_value[i]).val() );
+		var name = $(vars_name[i]).val();
+		var value = $(vars_value[i]).val();
+		
+		if (name && value != "__DEFAULT__") {
+			vars_name_data.push(name);
+			vars_value_data.push(value);
+		}
 	}
 	
 	return {

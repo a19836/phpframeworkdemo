@@ -26,6 +26,7 @@
 			<option value="variable">simple variable</option>
 			<option value="obj_prop">object property</option>
 			<option value="echo">echo/print</option>
+			<option value="return">return</option>
 		</select>
 	</div>
 	<div class="type_variable">
@@ -72,5 +73,8 @@
 	</div>
 	<div class="type_echo">
 		<input type="hidden" class="task_property_field" name="result_echo" />
+	</div>
+	<div class="type_return">
+		<input type="hidden" class="task_property_field" name="result_return" />
 	</div>
 </div>

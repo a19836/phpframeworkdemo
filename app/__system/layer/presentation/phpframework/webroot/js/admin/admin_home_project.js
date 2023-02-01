@@ -4,40 +4,43 @@ var default_available_templates = ["empty", "ajax", "default"];
 
 $(function() {
 	var project_files = $(".admin_panel .project_files");
-	project_files.tabs({active: active_tab});
 	
-	pagesFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_selection : false,
-		toggle_children_on_click : false,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : prepareProjectLayerNodes2,
-		ajax_callback_error : validateLayerNodesRequest,
-		on_select_callback : selectMyTreeNode,
-		default_id: "pages_",
-	});
-	pagesFromFileManagerTree.init("pages");
-	
-	templatesFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_selection : false,
-		toggle_children_on_click : false,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : prepareProjectLayerNodes2,
-		ajax_callback_error : validateLayerNodesRequest,
-		on_select_callback : selectMyTreeNode,
-		default_id: "templates_",
-	});
-	templatesFromFileManagerTree.init("templates");
-	
-	pagesFromFileManagerTree.refreshNodeChilds( project_files.find(".pages > .mytree > li")[0] );
-	templatesFromFileManagerTree.refreshNodeChilds( project_files.find(".templates > .mytree > li")[0] );
-	
-	onClickPagesTab();
-	
-	$(window).resize(function() {
-		MyFancyPopup.updatePopup();
-	});
+	if (project_files[0]) {
+		project_files.tabs({active: active_tab});
+		
+		pagesFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_selection : false,
+			toggle_children_on_click : false,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : prepareProjectLayerNodes2,
+			ajax_callback_error : validateLayerNodesRequest,
+			on_select_callback : selectMyTreeNode,
+			default_id: "pages_",
+		});
+		pagesFromFileManagerTree.init("pages");
+		
+		templatesFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_selection : false,
+			toggle_children_on_click : false,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : prepareProjectLayerNodes2,
+			ajax_callback_error : validateLayerNodesRequest,
+			on_select_callback : selectMyTreeNode,
+			default_id: "templates_",
+		});
+		templatesFromFileManagerTree.init("templates");
+		
+		pagesFromFileManagerTree.refreshNodeChilds( project_files.find(".pages > .mytree > li")[0] );
+		templatesFromFileManagerTree.refreshNodeChilds( project_files.find(".templates > .mytree > li")[0] );
+		
+		onClickPagesTab();
+		
+		$(window).resize(function() {
+			MyFancyPopup.updatePopup();
+		});
+	}
 	
 	MyFancyPopup.hidePopup();
 });
@@ -494,7 +497,7 @@ function manageFile(elm, type, action, path, handler, new_file_name) {
 					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
 							StatusMessageHandler.removeLastShownMessage("error");
-							removeProject();
+							manageFile(elm, type, action, path, handler, new_file_name);
 						});
 					else if (data == "1") {
 						StatusMessageHandler.showMessage(type + " " + action_label + "d successfully!");

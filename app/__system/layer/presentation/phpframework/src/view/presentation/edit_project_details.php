@@ -74,7 +74,7 @@ var manage_project_url = \'' . $manage_project_url . '\';
 			<input type="file" name="image" />
 		</div>
 		<div class="details">
-			<div class="name">
+			<div class="name" title="Please write your new project\'s folder name">
 				<label>Name your project:</label>
 				<input type="hidden" name="old_name" value="' . $old_project . '" />
 				<input name="name" placeHolder="Type a name" value="' . $project . '" required />
@@ -89,7 +89,7 @@ var manage_project_url = \'' . $manage_project_url . '\';
 					<option bean_name="' . $bn . '" bean_file_name="' . $layer_props["bean_file_name"] . '" layer_bean_folder_name="' . $layer_props["layer_bean_folder_name"] . '"' . ($bn == $bean_name && $bean_file_name == $layer_props["bean_file_name"] ? " selected" : "") . '>' . $layer_props["item_label"] . '</option>'; } $main_content .= '
 				</select>
 			</div>'; } $main_content .= '
-			<div class="project_folder">
+			<div class="project_folder" title="Create your project inside of an existent or new folder...">
 				<label>Want to assign this project to a folder?</label>
 				<input type="hidden" name="old_project_folder" value="' . $old_project_folder . '" />
 				<input name="project_folder" placeHolder="Type folder name" value="' . $project_folder . '" />

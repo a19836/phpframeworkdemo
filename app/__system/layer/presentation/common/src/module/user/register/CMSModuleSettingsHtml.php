@@ -48,7 +48,16 @@ include_once $EVC->getModulePath("user/UserUI", $EVC->getCommonProjectName());
 		"style_type" => true,
 	 	"block_class" => true,
 		"fields" => $fields,
-		"buttons" => false,
+		"buttons" => array(
+	 		"insert" => array(
+	 			"show" => true,
+	 			"button_show_option_hidden" => true, 
+	 			"button_label" => "Register Button", 
+	 			"ok_message" => "User registered successfully!",
+	 			"error_message" => "User NOT registered! Please try again...",
+	 			"value" => "Register",
+	 		),
+	 	),
 	 	"css" => true,
 	 	"js" => true,
 	));

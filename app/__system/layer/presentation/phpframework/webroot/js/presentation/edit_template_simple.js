@@ -4,11 +4,13 @@ var MyFancyPopupTemplatePreview = new MyFancyPopupClass();
 var MyFancyPopupEditWebrootFile = new MyFancyPopupClass();
 
 $(function () {
+	var init_finished = false;
+	
 	MyFancyPopup.showOverlay();
 	MyFancyPopup.showLoading();
 	
 	$(window).bind('beforeunload', function () {
-		if (isTemplateCodeObjChanged()) {
+		if (init_finished && isTemplateCodeObjChanged()) {
 			if (window.parent && window.parent.iframe_overlay)
 				window.parent.iframe_overlay.hide();
 			
@@ -35,8 +37,6 @@ $(function () {
 		
 		if (textarea)
 			createCodeEditor(textarea, {save_func: saveTemplate, no_height: true});
-		
-		var init_finished = false;
 		
 		setTimeout(function() {
 			//init sla

@@ -33,6 +33,11 @@
    .login_settings .single_sign_on_attribute_label {
 	margin-top:5px;
 }
+.edit_settings .register_attribute_label {
+	margin-top:15px;
+	padding-top:15px;
+	border-top:1px solid #CCC;
+}
 .login_settings .single_sign_on_page_url {
 	margin-bottom:15px;
 	padding-bottom:15px;
@@ -63,10 +68,8 @@
  	width:260px;
 	display:inline-block;
 }
-.login_settings .welcoming_message input {
-	width:490px;
-}
-.login_settings .redirect_page_url input,
+.login_settings .welcoming_message input,
+   .login_settings .redirect_page_url input,
    .login_settings .register_page_url input,
    .login_settings .forgot_credentials_page_url input,
    .login_settings .single_sign_on_page_url input {
@@ -78,3 +81,9 @@
 	margin-left:250px;
 }
 
+.edit_settings > .status_action_insert {
+	display:none !important;
+}
+.edit_settings > .button_settings_insert {
+	margin-top:10px;
+}

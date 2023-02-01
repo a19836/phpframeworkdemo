@@ -49,7 +49,7 @@
 			float:none;
 			clear:both;
 			position:absolute;
-			right:15px;
+			right:10px;
 			margin:8px 0 0;
 			background:none;
 			cursor:pointer;

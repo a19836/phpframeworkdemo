@@ -411,7 +411,7 @@ body.mobile_cursor .template_region > .template_region_items .template_region_it
 
 .pretty_block_options_menu.ui-selectmenu-open {
     display:block !important;
-    z-index:1 !important; /* bc of the edit_simple_template_layout inside of the edit_template_simple */
+    z-index:99999999999999 !important; /* bc of the edit_simple_template_layout inside of the edit_template_simple */
 }
 
 .pretty_block_options_menu {

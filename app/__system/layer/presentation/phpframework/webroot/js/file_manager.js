@@ -331,6 +331,10 @@ function initUlChildsEvents(ul, data, main_layer_properties) {
 		}
 	}
 	
+	prepareParentChildsEventOnClick(ul);
+}
+
+function prepareParentChildsEventOnClick(ul) {
 	//set event on label to show again the ul that was previously open when the toggle_children_on_click get triggered
 	if (mytree.options.toggle_children_on_click)
 		ul.find("li > a").click(function(originalEvent) {

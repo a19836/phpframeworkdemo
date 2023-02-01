@@ -188,7 +188,7 @@ function addNewTable() {
 			
 				//add id, created_date and modified_date attributes by default
 				var task_label = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
-				var id_attribute_name = "id_" + task_label.toLowerCase().replace(/ /g, "_").replace(/_/g, "_");
+				var id_attribute_name = task_label.toLowerCase().replace(/ /g, "_").replace(/_/g, "_") + "_id";
 				id_attribute_name = normalizeTaskTableName(id_attribute_name);
 				
 				var task_property_values = jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id];
@@ -214,7 +214,10 @@ function addNewTable() {
 				DBTableTaskPropertyObj.prepareShortTableAttributes(task_id, task_property_values);
 				
 				//open properties
-				jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+				//jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id); //disable show proeprties bc is annoying
+				
+				 old_tables_names[task_id] = "";
+				 old_tables_attributes_names[task_id] = {};
 				
 				return task_id;
 			}
@@ -242,7 +245,7 @@ function addExistentTable(table_name, offset) {
 				updateTaskTableAttributes(task_id, true, {
 					success: function() {
 						//open properties
-						jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+						//jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id); //disable show proeprties bc is annoying
 					},
 					error: function() {
 						//delete task

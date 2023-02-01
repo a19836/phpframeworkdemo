@@ -368,14 +368,14 @@ var DBTableTaskPropertyObj = {
 		if (task_property_values && task_property_values.table_attr_names && task_property_values.table_attr_names.length > 0) {
 			DBTableTaskPropertyObj.regularizeTaskPropertyValues(task_property_values);
 			DBTableTaskPropertyObj.prepareShortTableAttributes(task_id, task_property_values);
-			
-			//add attributes icon to short actions
-			DBTableTaskPropertyObj.addShortActionsButton(task_id);
-			
-			//callback
-			if (typeof DBTableTaskPropertyObj.on_task_creation_callback == "function")
-				DBTableTaskPropertyObj.on_task_creation_callback(task_id);
 		}
+		
+		//add attributes icon to short actions
+		DBTableTaskPropertyObj.addShortActionsButton(task_id);
+		
+		//callback
+		if (typeof DBTableTaskPropertyObj.on_task_creation_callback == "function")
+			DBTableTaskPropertyObj.on_task_creation_callback(task_id);
 	},
 	
 	onTaskDeletion : function(task_id, task) {
@@ -678,6 +678,7 @@ var DBTableTaskPropertyObj = {
 						name: name,
 						primary_key: primary_key,
 						type: type,
+						original_type: type,
 						length: length,
 						"null": is_null,
 						unsigned: unsigned,
@@ -776,7 +777,8 @@ var DBTableTaskPropertyObj = {
 		if (!$.isPlainObject(data))
 			data = {
 				name: "",
-				type: ""
+				type: "",
+				original_type: ""
 			};
 		
 		var type = data["type"];
@@ -791,7 +793,7 @@ var DBTableTaskPropertyObj = {
 		//prepare html
 		var title = this.getShortTableAttributeRowTitle(data);
 		var key_type_options = this.getShortTableAttributeRowKeyTypeOptions(data["key_type"]);
-		var type_options = this.getSimpleAttributeTypeOptions(type);
+		var type_options = this.getSimpleAttributeTypeOptions(type, original_type);
 		var length_html = (!type || !is_length_disabled ? (
 				'<input value="'
 				+ (data["length"] || parseInt(data["length"]) === 0 ? data["length"] : "") 
@@ -1347,9 +1349,11 @@ var DBTableTaskPropertyObj = {
 					if (prop_name == "type")
 						prop_value = type;
 					else if (prop_name == "has_default")
-						prop_value = prop["default"] ? true : false;
+						prop_value = prop["default"] ? 1 : "";
 					else if (prop_name == "default" || prop_name == "charset" || prop_name == "collation")
 						prop_value = prop[prop_name] ? prop[prop_name] : "";
+					else if ($.inArray(prop_name, ["primary_key", "null", "unique", "unsigned", "auto_increment"]) != -1)
+						prop_value = checkIfValueIsTrue(prop_value) ? 1 : "";
 					
 					task_property_values["table_attr_" + prop_name + "s"].push(prop_value);
 				}
@@ -1827,8 +1831,15 @@ var DBTableTaskPropertyObj = {
 			else if (column_simple_custom_types.hasOwnProperty(type))
 				type = column_simple_custom_types[type]["type"];
 			
-			if ($.isArray(type))
-				type = type[0];
+			if ($.isArray(type)) {
+				var original_type = type_select.find("option:selected").attr("original_type");
+				
+				//check if original type previous set belongs to the any simple types and if yes, stays with the original value, bc it was not changed. This is very important, bc if we have an attribute with a native type, which was converted to a simple type, when we convert it to the native type again, we must stay with original value. Otherwise we are changing automatically the types of the attributes without the consent of the user. The original type is is very important!!!
+				if (original_type && $.inArray(original_type, type) != -1)
+					type = original_type;
+				else
+					type = type[0];
+			}
 		}
 		
 		var data = {};
@@ -1871,12 +1882,13 @@ var DBTableTaskPropertyObj = {
 		
 		var column_simple_types_exists = !$.isEmptyObject(column_simple_types);
 		
-		var primary_key = false, name = "", type, length = "", is_null = false, unsigned = false, unique = false, auto_increment = false, has_default = false, default_value = "", extra = "", charset = "", collation = "", comment = "";
+		var primary_key = false, name = "", type, original_type, length = "", is_null = false, unsigned = false, unique = false, auto_increment = false, has_default = false, default_value = "", extra = "", charset = "", collation = "", comment = "";
 		
 		if (data) {
 			primary_key = checkIfValueIsTrue(data.primary_key);
 			name = data.name ? data.name : "";
 			type = data.type;
+			original_type = data.type;
 			length = data["length"] || parseInt(data["length"]) === 0 ? data["length"] : ""; //Do not ad parseInt or parseFloat bc the length can be 2 values splited by comma, like it happens with the decimal type.
 			is_null = checkIfValueIsTrue(data["null"]);
 			unsigned = checkIfValueIsTrue(data.unsigned);
@@ -1978,7 +1990,7 @@ var DBTableTaskPropertyObj = {
 					+ '<div class="header">'
 						+ '<input type="text" class="simple_attr_name" value="' + name + '" placeHolder="attribute name" onBlur="DBTableTaskPropertyObj.onBlurSimpleAttributeInputBox(this)" />'
 						+ '<select class="simple_attr_type" onChange="DBTableTaskPropertyObj.onChangeSimpleAttributeTypeSelectBox(this)">'
-						   + DBTableTaskPropertyObj.getSimpleAttributeTypeOptions(type)
+						   + DBTableTaskPropertyObj.getSimpleAttributeTypeOptions(type, original_type)
 						+ '</select>'
 						+ '<a class="icon maximize" onClick="DBTableTaskPropertyObj.toggleSimpleAttributeProps(this)" title="Toggle other Properties">Toggle</a>'
 						+ '<a class="icon move_up" onClick="DBTableTaskPropertyObj.moveUpSimpleAttribute(this)">move up</a>'
@@ -2013,11 +2025,13 @@ var DBTableTaskPropertyObj = {
 		return html;
 	},
 	
-	getSimpleAttributeTypeOptions : function(type) {
+	getSimpleAttributeTypeOptions : function(type, original_type) {
 		var types = $.isPlainObject(this.column_types) ? this.column_types : {};
 		var column_simple_types = $.isPlainObject(this.column_simple_types) ? this.column_simple_types : {};
 		var column_simple_custom_types = $.isPlainObject(this.column_simple_custom_types) ? this.column_simple_custom_types : {};
 		var column_simple_types_exists = !$.isEmptyObject(column_simple_types);
+		
+		original_type = original_type ? original_type : "";
 		
 		var html = '<option value="">Please choose a type</option>'
 				+ '<option disabled></option>';
@@ -2029,12 +2043,13 @@ var DBTableTaskPropertyObj = {
 				var props = column_simple_types[key];
 				var label = props["label"] ? props["label"] : stringToUCWords(key);
 				var title = label + ":";
+				var original_type_html = original_type && $.isArray(props["type"]) && $.inArray(original_type, props["type"]) != -1 ? ' original_type="' + original_type + '"' : '';
 				
 				for (var k in props)
 					if (k != "label")
 						title += "\n- " + stringToUCWords(k) + ": " + props[k];
 				
-				html += '<option value="' + key + '" ' + (key == type ? "selected" : "") + ' title="' + title + '">' + label + '</option>';
+				html += '<option value="' + key + '" ' + (key == type ? "selected" : "") + ' title="' + title + '"' + original_type_html + '>' + label + '</option>';
 			}
 			
 			html += '</optgroup>'

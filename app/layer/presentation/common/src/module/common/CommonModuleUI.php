@@ -571,7 +571,7 @@ class CommonModuleUI {
 				$form_settings["form_containers"][0]["container"]["elements"][] = array("ptl" => $settings["ptl"]);
 			}
 			
-			//if ($settings["ptl"]){print_r($form_settings);die();}
+			//if ($settings["ptl"]){echo"<textarea>";print_r($form_settings);echo"</textarea>";die();}
 			
 			translateProjectFormSettings($EVC, $form_settings);
 			

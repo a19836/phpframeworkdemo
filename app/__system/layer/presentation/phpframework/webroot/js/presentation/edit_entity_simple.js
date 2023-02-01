@@ -8,11 +8,13 @@ var MyFancyPopupEditWebrootFile = new MyFancyPopupClass();
 //var start = (new Date()).getTime();
 
 $(function () {
+	var init_finished = false;
+	
 	MyFancyPopup.showOverlay();
 	MyFancyPopup.showLoading();
 	
 	$(window).bind('beforeunload', function () {
-		if (isEntityCodeObjChanged()) {
+		if (init_finished && isEntityCodeObjChanged()) {
 			if (window.parent && window.parent.iframe_overlay)
 				window.parent.iframe_overlay.hide();
 			
@@ -42,8 +44,6 @@ $(function () {
 		//prepare main settings tab
 		var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
 		regions_blocks_includes_settings.tabs();
-		
-		var init_finished = false;
 		
 		setTimeout(function() {
 			//init template list
@@ -588,7 +588,7 @@ function updateTemplateLayout(entity_obj) {
 	else {
 		//update new template
 		updateSelectedTemplateRegionsBlocks(entity_obj, null);
-		reloadLayoutIframeFromSettings(iframe, {"template": ""});
+		reloadLayoutIframeFromSettings(iframe, {template: ""});
 		
 		//sets back synchronization functions
 		update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;

@@ -3293,7 +3293,7 @@ function addQueryKeyToConnectionsProperties(rand_number, source_table, source_co
 }
 
 function getDBTables(db_broker, db_driver, type) {
-	var db_tables = db_brokers_drivers_tables_attributes[db_broker][db_driver][type];
+	var db_tables = db_brokers_drivers_tables_attributes[db_broker] && db_brokers_drivers_tables_attributes[db_broker][db_driver] ? db_brokers_drivers_tables_attributes[db_broker][db_driver][type] : null;
 	
 	if (jQuery.isEmptyObject(db_tables)) {
 		$.ajax({
@@ -3304,9 +3304,15 @@ function getDBTables(db_broker, db_driver, type) {
 			success : function(data, textStatus, jqXHR) {
 				if(data) {
 					db_tables = {};
-					for (var i = 0; i < data.length; i++) {
+					
+					for (var i = 0; i < data.length; i++)
 						db_tables[ data[i] ] = {};
-					}
+					
+					if (!$.isPlainObject(db_brokers_drivers_tables_attributes[db_broker]))
+						db_brokers_drivers_tables_attributes[db_broker] = {};
+					
+					if (!$.isPlainObject(db_brokers_drivers_tables_attributes[db_broker][db_driver]))
+						db_brokers_drivers_tables_attributes[db_broker][db_driver] = {};
 					
 					db_brokers_drivers_tables_attributes[db_broker][db_driver][type] = db_tables;
 				}
@@ -3326,7 +3332,7 @@ function getDBAttributes(db_broker, db_driver, type, db_table) {
 	var parts = db_table.split(" ");
 	db_table = parts[0];
 	
-	var db_attributes = db_brokers_drivers_tables_attributes[db_broker][db_driver][type][db_table];
+	var db_attributes = db_brokers_drivers_tables_attributes[db_broker] && db_brokers_drivers_tables_attributes[db_broker][db_driver] && db_brokers_drivers_tables_attributes[db_broker][db_driver][type] ? db_brokers_drivers_tables_attributes[db_broker][db_driver][type][db_table] : null;
 
 	if (jQuery.isEmptyObject(db_attributes) || (db_attributes && !db_attributes.length)) {
 		$.ajax({
@@ -3337,6 +3343,15 @@ function getDBAttributes(db_broker, db_driver, type, db_table) {
 			success : function(data, textStatus, jqXHR) {
 				db_attributes = data && data.length > 0 ? data : [];
 			
+				if (!$.isPlainObject(db_brokers_drivers_tables_attributes[db_broker]))
+					db_brokers_drivers_tables_attributes[db_broker] = {};
+				
+				if (!$.isPlainObject(db_brokers_drivers_tables_attributes[db_broker][db_driver]))
+					db_brokers_drivers_tables_attributes[db_broker][db_driver] = {};
+				
+				if (!$.isPlainObject(db_brokers_drivers_tables_attributes[db_broker][db_driver][type]))
+					db_brokers_drivers_tables_attributes[db_broker][db_driver][type] = {};
+				
 				db_brokers_drivers_tables_attributes[db_broker][db_driver][type][db_table] = db_attributes;
 			},
 			error : function(jqXHR, textStatus, errorThrown) { 
@@ -3364,7 +3379,21 @@ function getDBTableAttributesDetailedInfo(db_broker, db_driver, type, db_table) 
 		success : function(data, textStatus, jqXHR) {
 			detailed_info = data ? data : {};
 			
-			if ($.isPlainObject(detailed_info) && !$.isEmptyObject(detailed_info) && !db_brokers_drivers_tables_attributes[db_broker][db_driver][type].hasOwnProperty(db_table)) {
+			if ($.isPlainObject(detailed_info) && !$.isEmptyObject(detailed_info) && (
+				!db_brokers_drivers_tables_attributes.hasOwnProperty(db_broker) || 
+				!db_brokers_drivers_tables_attributes[db_broker].hasOwnProperty(db_driver) || 
+				!db_brokers_drivers_tables_attributes[db_broker][db_driver].hasOwnProperty(type) || 
+				!db_brokers_drivers_tables_attributes[db_broker][db_driver][type].hasOwnProperty(db_table)
+			)) {
+				if (!$.isPlainObject(db_brokers_drivers_tables_attributes[db_broker]))
+					db_brokers_drivers_tables_attributes[db_broker] = {};
+				
+				if (!$.isPlainObject(db_brokers_drivers_tables_attributes[db_broker][db_driver]))
+					db_brokers_drivers_tables_attributes[db_broker][db_driver] = {};
+				
+				if (!$.isPlainObject(db_brokers_drivers_tables_attributes[db_broker][db_driver][type]))
+					db_brokers_drivers_tables_attributes[db_broker][db_driver][type] = {};
+				
 				db_brokers_drivers_tables_attributes[db_broker][db_driver][type][db_table] = [];
 				
 				for (var attr_name in detailed_info)

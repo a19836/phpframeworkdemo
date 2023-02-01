@@ -1,13 +1,13 @@
 var choosePresentationIncludeFromFileManagerTree = null;
 var iframeModulesBlocksToolbarTree = null;
-
 var chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree = null;
 var chooseCodeLayoutUIEditorModuleBlockFromFileManagerTreeRightContainer = null;
-var MyCodeLayoutUIEditorFancyPopup = new MyFancyPopupClass();
+
+var CodeLayoutUIEditorFancyPopup = new MyFancyPopupClass();
 var CodeLayoutUIEditorDBTableUisDiagramBlockFancyPopup = new MyFancyPopupClass();
 var TemplateSamplesFancyPopup = new MyFancyPopupClass();
 var TemplateRegionBlockHtmlEditorFancyPopup = new MyFancyPopupClass();
-var TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup = new MyFancyPopupClass();
+var TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup = new MyFancyPopupClass();
 
 var block_params_values_list = {};
 var regions_blocks_params_latest_values = {};
@@ -900,9 +900,9 @@ function openPretifyRegionBlockComboBoxImportModuleBlockOptionPopup(select_elm, 
 						}
 						
 						if (ajax_response && ajax_response["status"] == 1) {
-							TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.setOption("onClose", null);
+							TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.setOption("onClose", null);
 							popup.hide(); //force popup to hide faster bc when we call the addRegionBlockOption, it will make the browser slow and the hidePopup bc it calls the jquery fadeOut function, it will be freezed for a second, which gives a bad user experience and is not user-friendly.
-							TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.hidePopup();
+							TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.hidePopup();
 							
 							setTimeout(function() {
 								addRegionBlockOption(select_elm, ajax_response["block_id"], selected_project_id);
@@ -914,7 +914,7 @@ function openPretifyRegionBlockComboBoxImportModuleBlockOptionPopup(select_elm, 
 		});
 	
 	//open popup
-	TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.init({
+	TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.init({
 		elementToShow: popup,
 		parentElement: document,
 		onClose: function(elm) {
@@ -930,7 +930,7 @@ function openPretifyRegionBlockComboBoxImportModuleBlockOptionPopup(select_elm, 
 		}
 	});
 	
-	TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.showPopup();
+	TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.showPopup();
 }
 
 function refreshPretifyRegionBlockComboBox(select_elm) {
@@ -3343,7 +3343,7 @@ function openDBTableDraggableItemTaskPropertiesPopup(block_options, settings) {
 	var url = popup_elm.attr("create_page_presentation_uis_diagram_block_url");
 	url += (url.indexOf("?") != -1 ? "&" : "?") + "&parent_add_block_func=addDBTableDraggableItemBlockToPage&task_tag=" + task_tag + "&task_tag_action=" + task_tag_action + "&db_driver=" + db_driver + "&db_type=" + db_type + "&db_table=" + db_table;
 	
-	TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.init({
+	TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.init({
 		elementToShow: popup_elm,
 		parentElement: document,
 		type: "iframe",
@@ -3354,7 +3354,7 @@ function openDBTableDraggableItemTaskPropertiesPopup(block_options, settings) {
 				block_options.parent().remove();
 		}
 	});
-	TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.showPopup();
+	TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.showPopup();
 }
 
 function addDBTableDraggableItemBlockToPage(block_file_path) {
@@ -3362,11 +3362,11 @@ function addDBTableDraggableItemBlockToPage(block_file_path) {
 	var project = block_file_path.substr(0, pos);
 	var block = block_file_path.substr(pos + "/src/block/".length);
 	
-	var block_options = TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.settings.targetedField;
+	var block_options = TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.settings.targetedField;
 	
-	TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.setOption("onClose", null);
-	TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.settings.elementToShow.hide(); //force popup to hide faster bc when we call the addRegionBlockOption, it will make the browser slow and the hidePopup bc it calls the jquery fadeOut function, it will be freezed for a second, which gives a bad user experience and is not user-friendly.
-	TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.hidePopup();
+	TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.setOption("onClose", null);
+	TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.settings.elementToShow.hide(); //force popup to hide faster bc when we call the addRegionBlockOption, it will make the browser slow and the hidePopup bc it calls the jquery fadeOut function, it will be freezed for a second, which gives a bad user experience and is not user-friendly.
+	TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.hidePopup();
 	
 	setTimeout(function() {
 		addRegionBlockOption(block_options, block, project);
@@ -3614,7 +3614,7 @@ function setCodeLayoutUIEditorTreeItemsDraggableEvent(ul) {
 function onCodeLayoutUIEditorModuleBlockWidgetDragAndDrop(widget, tree_obj) {
 	var popup = $("#choose_layout_ui_editor_module_block_from_file_manager");
 	
-	MyCodeLayoutUIEditorFancyPopup.init({
+	CodeLayoutUIEditorFancyPopup.init({
 		elementToShow: popup,
 		parentElement: document,
 		
@@ -3631,7 +3631,7 @@ function onCodeLayoutUIEditorModuleBlockWidgetDragAndDrop(widget, tree_obj) {
 		}
 	});
 	
-	MyCodeLayoutUIEditorFancyPopup.showPopup();
+	CodeLayoutUIEditorFancyPopup.showPopup();
 }
 
 function chooseCodeLayoutUIEditorModuleBlock(tree_obj) {
@@ -3648,11 +3648,11 @@ function chooseCodeLayoutUIEditorModuleBlock(tree_obj) {
 	    		var block = path.substr(pos + "/src/block/".length);
 	    		block = block.substr(0, block.length - 4);
 	    		
-	    		var widget = MyCodeLayoutUIEditorFancyPopup.settings.targetField;
+	    		var widget = CodeLayoutUIEditorFancyPopup.settings.targetField;
 			updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block, project);
 	    		
-	    		MyCodeLayoutUIEditorFancyPopup.setOption("onClose", null);
-	    		MyCodeLayoutUIEditorFancyPopup.hidePopup();
+	    		CodeLayoutUIEditorFancyPopup.setOption("onClose", null);
+	    		CodeLayoutUIEditorFancyPopup.hidePopup();
 			closeModuleInfo();
 	    	}
 		else if (node.hasClass("draggable_menu_item_module")) {
@@ -3723,13 +3723,13 @@ function addCodeLayoutUIEditorDBTableUisDiagramBlockToPage(block_file_path) {
 	var project = block_file_path.substr(0, pos);
 	var block = block_file_path.substr(pos + "/src/block/".length);
 	
-	var widget = MyCodeLayoutUIEditorFancyPopup.settings.targetField;
+	var widget = CodeLayoutUIEditorFancyPopup.settings.targetField;
 	updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block, project);
 	
 	CodeLayoutUIEditorDBTableUisDiagramBlockFancyPopup.hidePopup();
 	
-	MyCodeLayoutUIEditorFancyPopup.setOption("onClose", null);
-	MyCodeLayoutUIEditorFancyPopup.hidePopup();
+	CodeLayoutUIEditorFancyPopup.setOption("onClose", null);
+	CodeLayoutUIEditorFancyPopup.hidePopup();
 	closeModuleInfo();
 }
 
@@ -3763,7 +3763,7 @@ function chooseCodeLayoutUIEditorImportModulePopup(url) {
 					
 					if (ajax_response && ajax_response["status"] == 1) {
 						var block_id = ajax_response["block_id"];
-						var widget = MyCodeLayoutUIEditorFancyPopup.settings.targetField;
+						var widget = CodeLayoutUIEditorFancyPopup.settings.targetField;
 						
 						if (block_id)
 							updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block_id);
@@ -3775,10 +3775,10 @@ function chooseCodeLayoutUIEditorImportModulePopup(url) {
 								PtlLayoutUIEditor.deleteTemplateWidget(widget); //update menu layer from layout ui editor
 						}
 						
-						TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.hidePopup();
+						TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.hidePopup();
 						
-						MyCodeLayoutUIEditorFancyPopup.setOption("onClose", null);
-						MyCodeLayoutUIEditorFancyPopup.hidePopup();
+						CodeLayoutUIEditorFancyPopup.setOption("onClose", null);
+						CodeLayoutUIEditorFancyPopup.hidePopup();
 						closeModuleInfo();
 					}
 				}
@@ -3787,12 +3787,12 @@ function chooseCodeLayoutUIEditorImportModulePopup(url) {
 	});
 	
 	//open popup
-	TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.init({
+	TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.init({
 		elementToShow: popup,
 		parentElement: document,
 	});
 	
-	TemplateRegionBlockFancyComboBoxImportModuleBlockOptionPopup.showPopup();
+	TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.showPopup();
 }
 
 function updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block_id, project) {

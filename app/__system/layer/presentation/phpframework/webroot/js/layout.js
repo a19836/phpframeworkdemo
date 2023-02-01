@@ -350,19 +350,35 @@ function openSubmenu(elm) {
 				clearInterval(open_interval);
 			
 			if (sub_menu.hasClass("open")) {
+				var close_sub_menu = function() {
+					//console.log(window.sub_menu_open_interval);
+					var open_interval = sub_menu.data("open_interval");
+					
+					if (open_interval)
+						clearInterval(open_interval);
+					
+					sub_menu.removeClass("open");
+				};
+				
 				open_interval = setInterval(function() {
-					if (!sub_menu.is(":hover")) {
-						//console.log(window.sub_menu_open_interval);
-						var open_interval = sub_menu.data("open_interval");
-						
-						if (open_interval)
-							clearInterval(open_interval);
-						
-						sub_menu.removeClass("open");
-					}
+					if (!sub_menu.is(":hover"))
+						close_sub_menu();
 				}, 5000);
 				
 				sub_menu.data("open_interval", open_interval);
+				
+				if (sub_menu.data("hover_inited") != 1) {
+					sub_menu.data("hover_inited", 1);
+					
+					sub_menu.children("ul").hover(
+						function(ev) {
+							
+						},
+						function(ev) {
+							close_sub_menu();
+						}
+					);
+				}
 			}
 		}
 	}

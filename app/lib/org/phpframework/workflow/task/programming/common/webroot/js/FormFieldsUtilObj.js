@@ -751,16 +751,40 @@ var FormFieldsUtilObj = {
 			
 			$.each(data, function(key, value) {
 				if (key == "label") {
-					if (!$.isEmptyObject(value))
+					if ($.isPlainObject(value) && !$.isEmptyObject(value)) {
+						//prepare some composite item keys, so it can load them with empty values
+						if (!value.hasOwnProperty("extra_attributes"))
+							value["extra_attributes"] = "";
+						
+						if (!value.hasOwnProperty("available_values"))
+							value["available_values"] = "";
+						
+						if (!value.hasOwnProperty("options"))
+							value["options"] = "";
+						
+						//load item values
 						$.each(value, function(item_key, item_value) {
 							loadInputFieldItemData(label_settings_elm, item_key, item_value, "label_");
 						});
+					}
 				}
 				else if (key == "input") {
-					if (!$.isEmptyObject(value))
+					if ($.isPlainObject(value) && !$.isEmptyObject(value)) {
+						//prepare some composite item keys, so it can load them with empty values
+						if (!value.hasOwnProperty("extra_attributes"))
+							value["extra_attributes"] = "";
+						
+						if (!value.hasOwnProperty("available_values"))
+							value["available_values"] = "";
+						
+						if (!value.hasOwnProperty("options"))
+							value["options"] = "";
+						
+						//load item values
 						$.each(value, function(item_key, item_value) {
 							loadInputFieldItemData(input_settings_elm, item_key, item_value, "input_");
 						});
+					}
 				}
 				else 
 					loadInputFieldItemData(field_elm, key, value, "");
@@ -831,8 +855,8 @@ var FormFieldsUtilObj = {
 							status = false;
 					});
 				}
-				else if (value) {
-					item.children("input").val(value);
+				else {
+					item.children("input").val($.isNumeric(value) || value ? value : "");
 					var select = item.children("select");
 					var value_type = ("" + value).trim().charAt(0) == '$' ? "variable" : "string";
 					select.val(value_type);

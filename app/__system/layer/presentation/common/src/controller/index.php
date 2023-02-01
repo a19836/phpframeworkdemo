@@ -43,7 +43,8 @@ if ($default_template)
 	$EVC->setTemplate($default_template);
 
 $CMSHtmlParserLayer = $EVC->getCMSLayer()->getCMSHtmlParserLayer();
-$CMSHtmlParserLayer->init($default_entity, $project_url_prefix, $project_common_url_prefix);
+$default_entity_code = substr($default_entity, 0, 1) == "/" ? $default_entity : $page_prefix . $default_entity;
+$CMSHtmlParserLayer->init($default_entity_code, $project_url_prefix, $project_common_url_prefix);
 
 //PREPARE ENTITIES
 $entities = $EVC->getEntities();

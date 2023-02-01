@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tasks>
+	<task start="1">
+		<label><![CDATA[Return $EVC-&gt;getBroker("iorm")]]></label>
+		<id><![CDATA[d1e9c332_6e956c36_704]]></id>
+		<type><![CDATA[d1e9c332]]></type>
+		<tag><![CDATA[return]]></tag>
+		<offset_left>100</offset_left>
+		<offset_top>50</offset_top>
+		<width>70</width>
+		<height>75</height>
+		<properties>
+			<value><![CDATA[$EVC->getBroker("iorm")]]></value>
+			<type></type>
+			<exits></exits>
+		</properties>
+	</task>
+</tasks>

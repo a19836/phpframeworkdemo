@@ -1,17 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tasks>
 	<task start="1">
-		<label><![CDATA[Return Variable or String]]></label>
-		<id><![CDATA[d1e9c332_98ec2871_793]]></id>
+		<label><![CDATA[Call insert_item in sample/test]]></label>
+		<id><![CDATA[43d36425_30be6e3f_678]]></id>
+		<type><![CDATA[43d36425]]></type>
+		<tag><![CDATA[callibatisquery]]></tag>
+		<offset_left>0</offset_left>
+		<offset_top>0</offset_top>
+		<width>70</width>
+		<height>0</height>
+		<properties>
+			<exits>
+				<default_exit>
+					<color><![CDATA[#426efa]]></color>
+				</default_exit>
+			</exits>
+			<method_obj><![CDATA[this->getDataAccessBroker($EVC)]]></method_obj>
+			<module_id><![CDATA[sample/test]]></module_id>
+			<module_id_type><![CDATA[string]]></module_id_type>
+			<service_type><![CDATA[insert]]></service_type>
+			<service_type_type><![CDATA[string]]></service_type_type>
+			<service_id><![CDATA[insert_item]]></service_id>
+			<service_id_type><![CDATA[string]]></service_id_type>
+			<parameters><![CDATA[settings]]></parameters>
+			<parameters_type><![CDATA[variable]]></parameters_type>
+			<options></options>
+			<options_type></options_type>
+			<query_type>1</query_type>
+			<result_var_type><![CDATA[variable]]></result_var_type>
+			<result_var_name><![CDATA[result]]></result_var_name>
+			<result_var_assignment><![CDATA[default]]></result_var_assignment>
+		</properties>
+		<exits>
+			<default_exit>
+				<task_id><![CDATA[d1e9c332_bf2209e1_178]]></task_id>
+				<label></label>
+				<type><![CDATA[Straight]]></type>
+				<overlay><![CDATA[Forward Arrow]]></overlay>
+				<color><![CDATA[#426efa]]></color>
+			</default_exit>
+		</exits>
+	</task>
+	<task>
+		<label><![CDATA[Return $result]]></label>
+		<id><![CDATA[d1e9c332_bf2209e1_178]]></id>
 		<type><![CDATA[d1e9c332]]></type>
 		<tag><![CDATA[return]]></tag>
-		<offset_left>29</offset_left>
-		<offset_top>25</offset_top>
+		<offset_left>0</offset_left>
+		<offset_top>0</offset_top>
 		<width>70</width>
-		<height>65</height>
+		<height>0</height>
 		<properties>
-			<value><![CDATA[true]]></value>
-			<type></type>
+			<value><![CDATA[$result]]></value>
+			<type><![CDATA[variable]]></type>
+			<exits></exits>
 		</properties>
 	</task>
 </tasks>

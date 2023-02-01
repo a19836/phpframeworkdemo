@@ -131,7 +131,7 @@ body,
 	max-width:650px;
 	margin:0 auto;
 }
-.choose_available_project .group.block_view li:not(.no_projects) {
+.choose_available_project .group.block_view li:not(.no_projects):not(.sub_menu_item) {
 	display:inline-block;
 	width:50px;
 	min-height:50px;
@@ -144,24 +144,25 @@ body,
 	cursor:pointer;
 	opacity:1;
 }
-.choose_available_project .group.list_view li:not(.no_projects) {
+.choose_available_project .group.list_view li:not(.no_projects):not(.sub_menu_item) {
 	padding:10px;
 	position:relative;
 	cursor:pointer;
 }
-.choose_available_project .group.list_view li:not(.no_projects):not(.project_common):nth-child(odd) {
+.choose_available_project .group.list_view li:not(.no_projects):not(.sub_menu_item):not(.project_common):nth-child(odd) {
 	background:var(--main-template-bg);
 }
-.choose_available_project .group.list_view li:not(.no_projects):not(:last-child) {
+.choose_available_project .group.list_view li:not(.no_projects):not(.sub_menu_item):not(:last-child) {
 	border-bottom:1px solid #4070ff50;
 }
-.choose_available_project .group li:hover:not(.no_projects):not(.project_common) {
+.choose_available_project .group li:hover:not(.no_projects):not(.sub_menu_item):not(.project_common) .photo,
+  .choose_available_project .group li:hover:not(.no_projects):not(.sub_menu_item):not(.project_common) .image {
 	opacity:.8;
 }
 .choose_available_project li.folder {
 	/*background:#ccc;*/
 }
-.choose_available_project li.project.project_common > * {
+.choose_available_project li.project.project_common > *:not(.sub_menu) {
 	opacity:.5;
 }
 .choose_available_project li.project.selected_project {
@@ -197,7 +198,7 @@ body,
 	margin:20px;
 	text-align:center;
 }
-.choose_available_project li:not(.no_projects):hover::after {
+.choose_available_project li:not(.no_projects):not(.sub_menu_item):hover::after {
 	content:"Click to select";
 	width:80px;
 	display:block;
@@ -218,19 +219,19 @@ body,
 .choose_available_project li.folder:hover::after {
 	content:"Click to open folder";
 }
-.choose_available_project .group li > label {
+.choose_available_project .group li:not(.sub_menu_item) > label {
 	line-height:12px;
 	font-size:11px;
 	cursor:pointer;
 	color:#585B69;
 }
-.choose_available_project .group.list_view li:not(.no_projects):not(.project_common):nth-child(odd) > label {
+.choose_available_project .group.list_view li:not(.no_projects):not(.sub_menu_item):not(.project_common):nth-child(odd) > label {
 	color:var(--main-template-color);
 }
 .choose_available_project .group li.selected_project > label {
 	color:var(--icon-active-color, #4070FF);
 }
-.choose_available_project .group.block_view li > label {
+.choose_available_project .group.block_view li:not(.sub_menu_item) > label {
 	display:block;
 	text-align:center;
 	word-break:break-all;
@@ -242,14 +243,14 @@ body,
 .choose_available_project .group.block_view li.folder > label {
 	/*font-weight:bold;*/
 }
-.choose_available_project .group.block_view li:not(.no_projects) > a {
+.choose_available_project .group.block_view li:not(.no_projects):not(.sub_menu_item) > a {
 	margin-top:10px;
 	display:block;
 	text-align:center;
 	font-size:80%;
 	color:inherit;
 }
-.choose_available_project li:hover:not(.no_projects) > a {
+.choose_available_project li:hover:not(.no_projects):not(.sub_menu_item) > a {
 	text-decoration:underline;
 }
 .choose_available_project .group.block_view li.project > .image {
@@ -276,14 +277,14 @@ body,
 	object-fit:contain;
 	object-fit:scale-down;
 }
-.choose_available_project .group.block_view li > .photo {
+.choose_available_project .group.block_view li:not(.sub_menu_item) > .photo {
 	padding:0 0 10px;
 	font-size:25px;
 	/*border:1px solid #ccc;*/
 	border-radius:3px;
 	/*background:#f7f7f7;*/
 }
-.choose_available_project .group.list_view li > .photo {
+.choose_available_project .group.list_view li:not(.sub_menu_item) > .photo {
 	width:20px;
 	height:20px;
 	margin:0 10px 0 0;
@@ -312,10 +313,58 @@ body,
 	content:"\f07c";
 	color:var(--icon-folder-color);
 }
-.choose_available_project .group li:hover:not(.no_projects) > .photo::before,
-  .choose_available_project .group li:hover:not(.no_projects) > .image > img {
+.choose_available_project .group li:hover:not(.no_projects):not(.sub_menu_item) > .photo::before,
+  .choose_available_project .group li:hover:not(.no_projects):not(.sub_menu_item) > .image > img {
 	opacity:.5;
 }
+
+/* SUB MENU */
+.choose_available_project li > div.sub_menu {
+	width:15px;
+	height:20px;
+	margin:0 -10px 0 0;
+	display:inline-block;
+	font-size:10px;
+	color:#ccc;
+	vertical-align:top;
+	position:absolute;
+	top:35px;
+	right:0;
+	font-size:14px;
+}
+.choose_available_project .list_view li > div.sub_menu {
+	top:13px;
+	right:5px;
+	margin-right:0;
+}
+.choose_available_project li:hover > div.sub_menu {
+	color:#585B69;
+}
+.choose_available_project li > div.sub_menu:hover,
+  .choose_available_project li > div.sub_menu.open > .icon {
+	color:var(--icon-hover-color);
+}
+.choose_available_project li > div.sub_menu > .icon {
+	margin:0 5px 0 5px;
+	font-size:inherit;
+	color:inherit;
+}
+.choose_available_project li > div.sub_menu:hover::after {
+	display:none;
+}
+.choose_available_project li > div.sub_menu.open > ul {
+	width:210px;
+	/*margin-top:13px; with triangle*/
+	margin-top:5px; /* without triangle */
+	display:block !important;
+	visibility:visible;
+	top:auto;
+	left:auto;
+	right:-100px;
+	text-align:left;
+	white-space:nowrap;
+}
+
 /* POPUP */
 .edit_project_details_popup {
 	/*position:fixed !important;

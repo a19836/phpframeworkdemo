@@ -33,6 +33,9 @@ input, select, textarea {
 	padding-top:10px;
 	padding-bottom:20px;
 }
+.in_popup .main_content .content {
+	margin-top:70px;
+}
 
 /* GENERIC */
 .form-input {
@@ -58,18 +61,40 @@ input, select, textarea {
 	background: -ms-linear-gradient(top, #eee 50%, #ffffff73 100%);
 	background: linear-gradient(to bottom, #eee 50%, #ffffff73 100%);*/
 }
+.in_popup .main_content .menu {
+	min-height:50px;
+	padding:15px 40px 15px 15px;
+	box-sizing:border-box;
+	background:var(--main-popup-header-bg);
+	color:var(--main-popup-header-color);
+}
 .main_content .menu ul.dropdown li {
 	background:none;
+	border-left:1px inset #999;
+	color:inherit;
 	padding:4px 8px;
 	font-weight:normal;
+}
+.main_content .menu ul.dropdown li:first-child {
+	border-left:none;
+}
+.main_content .menu ul.dropdown li {
+	border-color:var(--main-popup-header-color);
 }
 .main_content .menu ul.dropdown li a {
 	font-size:10px;
 	vertical-align:middle;
+	color:inherit;
+}
+.main_content .menu ul.dropdown li a label {
+	color:inherit;
 }
 .main_content .menu ul.dropdown li ul {
 	background:#DFE1ED;
 	min-width:150px;
+}
+.in_popup .main_content .menu ul.dropdown li ul {
+	background:var(--main-popup-header-bg);
 }
 .main_content .menu ul.dropdown li.large ul {
 	min-width:250px;

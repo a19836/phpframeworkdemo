@@ -147,21 +147,25 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$settings["error_message"] = $error_message;
 		
 		$settings["allow_insertion"] = true;
-		$settings["on_insert_ok_message"] = "User registered successfully!";
-		$settings["on_insert_ok_action"] = $settings["redirect_page_url"] ? "alert_message_and_redirect" : "show_message_and_stop";
-		$settings["on_insert_ok_redirect_url"] = $settings["redirect_page_url"] . (strpos($settings["redirect_page_url"], "?") !== false ? "&" : "?") . "user_id=$user_id";
-		$settings["on_insert_error_message"] = "User NOT registered! Please try again...";
-		$settings["on_insert_error_action"] = "show_message";
-		$settings["buttons"]["insert"] = array(
-			"field" => array(
-				"class" => "submit_button",
-				"input" => array(
-					"type" => "submit",
-					"name" => "save",
-					"value" => "Register",
-				)
-			)
+		$settings["on_insert_ok_message"] = array_key_exists("on_insert_ok_message", $settings) ? $settings["on_insert_ok_message"] : "User registered successfully!";
+		$settings["on_insert_ok_action"] = array_key_exists("on_insert_ok_action", $settings) ? $settings["on_insert_ok_action"] : (
+			$settings["redirect_page_url"] ? "alert_message_and_redirect" : "show_message_and_stop"
 		);
+		$settings["on_insert_ok_redirect_url"] = $settings["redirect_page_url"] . (strpos($settings["redirect_page_url"], "?") !== false ? "&" : "?") . "user_id=$user_id";
+		$settings["on_insert_error_message"] = array_key_exists("on_insert_error_message", $settings) ? $settings["on_insert_error_message"] : "User NOT registered! Please try again...";
+		$settings["on_insert_error_action"] = array_key_exists("on_insert_error_action", $settings) ? $settings["on_insert_error_action"] : "show_message";
+		
+		if (!$settings["buttons"] || !array_key_exists("insert", $settings["buttons"]))
+			$settings["buttons"]["insert"] = array(
+				"field" => array(
+					"class" => "submit_button",
+					"input" => array(
+						"type" => "submit",
+						"name" => "save",
+						"value" => "Register",
+					)
+				)
+			);
 		
 		$CommonModuleTableExtraAttributesUtil->prepareFileFieldsSettings($EVC, $settings);
 		

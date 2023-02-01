@@ -173,7 +173,12 @@ body .task_context_menu .start_task:not(.is_start_task) a,
 	right:10px;
 	bottom:10px;
 }
-.show_sync_sql_popup > ul > li {
+.show_sync_sql_popup > ul {
+	max-height:calc(100% - 125px);
+	margin-bottom:20px;
+	overflow:auto;
+}
+.show_sync_sql_popup > ul > li:not(:last-child) {
 	padding-bottom:20px;
 }
 .show_sync_sql_popup > ul > li > .table_header {
@@ -186,6 +191,9 @@ body .task_context_menu .start_task:not(.is_start_task) a,
 }
 .show_sync_sql_popup > ul > li > .sql_statement {
 	padding:10px 20px;
+}
+.show_sync_sql_popup > ul > li:last-child > .sql_statement {
+	padding-bottom:0;
 }
 .show_sync_sql_popup > .button {
 	padding:0 20px 20px;

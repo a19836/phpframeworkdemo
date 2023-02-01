@@ -1233,10 +1233,12 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-id,
    .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-classes,
    .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-properties,
+   .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-widget,
    .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-general,
    .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-dimension,
    .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-typography,
    .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-decorations,
+   .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-events,
    .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-extra {
 	display:none;
 }
@@ -1658,6 +1660,21 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 .layout-ui-editor > .menu-settings li.group.settings-events input {
 	width:40%;
 	width:calc(100% - 120px);
+}
+.layout-ui-editor > .menu-settings li.group.settings-events .with-choose-event-icon input {
+	width:calc(100% - 130px);
+}
+.layout-ui-editor > .menu-settings li.group.settings-events .choose-event {
+	line-height:2.2em;
+	margin-right:10px;
+	font-weight:bold;
+	cursor:pointer;
+	vertical-align:middle;
+	float:right;
+	display:none;
+}
+.layout-ui-editor > .menu-settings li.group.settings-events .with-choose-event-icon .choose-event {
+	display:inline-block;
 }
 .layout-ui-editor > .menu-settings li.group li.settings-style > textarea {
 	width:100%;

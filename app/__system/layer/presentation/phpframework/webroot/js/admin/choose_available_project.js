@@ -91,6 +91,16 @@ function getChooseAvailableProjectHtml(folder_to_filter, fp, project_props) {
 	
 	html += '	<label>' + label + '</label>';
 	
+	if (!is_project)
+		html += '<div class="sub_menu" onClick="openProjectFileSubmenu(this)">'
+				+ '<i class="icon sub_menu_vertical"></i>'
+				+ '<ul class="mycontextmenu with_top_center_triangle">'
+					+ '<li class="sub_menu_item rename"><a onclick="return manageFile(this, \'project_folder\', \'rename\', \'' + project_id + '\', onSucccessfullRenameFile)">Rename Folder</a></li>'
+					+ '<li class="sub_menu_item line_break"></li>'
+					+ '<li class="sub_menu_item remove"><a onclick="return manageFile(this, \'project_folder\', \'remove\', \'' + project_id + '\', onSucccessfullRemoveFile)">Delete Folder</a></li>'
+				+ '</ul>'
+			+ '</div>';
+	
 	/*if (!is_project) //if is folder
 		html += '<a href="javascript:void(0)">View Projects in this folder</a>';*/
 	
@@ -137,8 +147,8 @@ function selectAvailableProject(project_id, originalEvent) {
 		MyJSLib.CookieHandler.setCookie('default_page', selected_admin_home_project_page_url, 0, "/"); //save cookie with url, so when we refresh the browser, the admin right panel contains the project home page
 		
 		if (is_popup) { //if is popup
-			if (typeof window.parent.MyFancyPopupProjects != "undefined" && window.parent.MyFancyPopupProjects.settings && typeof window.parent.MyFancyPopupProjects.settings.goTo == "function")
-				window.parent.MyFancyPopupProjects.settings.goTo(url, originalEvent);
+			if (typeof window.parent.ProjectsFancyPopup != "undefined" && window.parent.ProjectsFancyPopup.settings && typeof window.parent.ProjectsFancyPopup.settings.goTo == "function")
+				window.parent.ProjectsFancyPopup.settings.goTo(url, originalEvent);
 			else
 				window.parent.document.location = url;
 		}
@@ -236,4 +246,140 @@ function onSucccessfullAddProject() {
 	}
 	else
 		document.location = url;
+}
+
+function openProjectFileSubmenu(elm) {
+	window.event.stopPropagation(); //prevent the event to fire in the parent "a" html element.
+	
+	openSubmenu(elm);
+}
+
+function manageFile(elm, type, action, path, handler, new_file_name) {
+	if (path)
+		path = path.replace(/\/+/g, "/").replace(/^\/+/g, "").replace(/\/+$/g, ""); //remove duplicates, start and end slash
+	
+	if (type && action && path) {
+		var status = true;
+		var action_label = action;
+		var file_type = type.replace(/_/g, " ");
+		
+		if (action == "remove")
+			status = confirm("Do you wish to remove the " + file_type + ": '" + path + "'?") && confirm("If you delete this " + file_type + ", you will loose all the created pages and other files inside of this " + file_type + "!\nDo you wish to continue?") && confirm("LAST WARNING:\nIf you proceed, you cannot undo this deletion!\nAre you sure you wish to remove this " + file_type + "?");
+		else if (action == "rename") {
+			var pos = path.lastIndexOf(".");
+			var dir_pos = path.lastIndexOf("/");
+			
+			pos = pos != -1 ? pos : path.length;
+			dir_pos = dir_pos != -1 ? dir_pos + 1 : 0;
+			
+			var dir_name = path.substr(0, dir_pos);
+			var base_name = path.substr(dir_pos, pos - dir_pos);
+			var extension = pos + 1 < path.length ? path.substr(pos + 1) : "";
+			
+			if (!new_file_name)
+				status = (new_file_name = prompt("Please write the new name:", base_name));
+			
+			new_file_name = ("" + new_file_name).replace(/^\s+/g, "").replace(/\s+$/g, ""); //trim name
+			
+			if (status && new_file_name && extension)
+				new_file_name += "." + extension;
+			else if (!new_file_name)
+				status = false;
+		}
+		else if (action == "create_folder") {
+			action_label = "create";
+			
+			if (!new_file_name)
+				status = (new_file_name = prompt("Please write the folder name:"));
+			
+			new_file_name = ("" + new_file_name).replace(/^\s+/g, "").replace(/\s+$/g, ""); //trim name
+			
+			if (!new_file_name)
+				status = false;
+		}
+		
+		if (status) {
+			var choose_available_project= $(".choose_available_project");
+			var option = choose_available_project.find(" > .layer select option:selected").first();
+			var bean_name = option.attr("bean_name");
+			var bean_file_name = option.attr("bean_file_name");
+			var url = manage_file_url.replace("#bean_name#", bean_name).replace("#bean_file_name#", bean_file_name).replace("#path#", path).replace("#action#", action).replace("#extra#", new_file_name);
+			
+			$.ajax({
+				type : "get",
+				url : url,
+				success : function(data, textStatus, jqXHR) {
+					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
+							StatusMessageHandler.removeLastShownMessage("error");
+							manageFile(elm, type, action, path, handler, new_file_name);
+						});
+					else if (data == "1") {
+						StatusMessageHandler.showMessage(file_type + " " + action_label + "d successfully!");
+						
+						if (typeof handler == "function")
+							handler(elm, type, action, path, new_file_name);
+					}
+					else
+						StatusMessageHandler.showError("There was a problem trying to " + action_label + " " + file_type + ". Please try again..." + (data ? "\n" + data : ""));
+				},
+				error : function(jqXHR, textStatus, errorThrown) { 
+					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+					StatusMessageHandler.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to " + action_label + " " + file_type + ".\nPlease try again..." + msg);
+				},
+			});
+		}
+	}
+}
+
+function refreshLayerProjects(path) {
+	var choose_available_project= $(".choose_available_project");
+	var option = choose_available_project.find(" > .layer select option:selected").first();
+	var bean_name = option.attr("bean_name");
+	var bean_file_name = option.attr("bean_file_name");
+	
+	if (layers_props && bean_name && layers_props[bean_name]) {
+		StatusMessageHandler.showMessage("Refreshing projects' list...");
+		
+		var url = get_available_projects_props_url.replace("#bean_name#", bean_name).replace("#bean_file_name#", bean_file_name).replace("#path#", "/");
+		
+		$.ajax({
+			type : "get",
+			url : url,
+			dataType: "json",
+			success : function(data, textStatus, jqXHR) {
+				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
+						StatusMessageHandler.removeLastShownMessage("error");
+						refreshLayerProjects(path);
+					});
+				else {
+					layers_props[bean_name]["projects"] = data;
+					
+					path = path.replace(/[\/]+/, "/").replace(/[\/]+$/, "");
+					var dirs = path.split("/");
+					dirs.pop();
+					var parent_folder = dirs.join("/");
+					
+					updateLayerProjects(parent_folder);
+				}
+			},
+			error : function(jqXHR, textStatus, errorThrown) { 
+				var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+				StatusMessageHandler.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to refresh the files list.\nPlease refresh this page manually..." + msg);
+			},
+		});
+	}
+}
+
+function onSucccessfullRenameFile(elm, type, action, path, new_file_name) {
+	refreshLayerProjects(path);
+}
+
+function onSucccessfullRemoveFile(elm, type, action, path, new_file_name) {
+	refreshLayerProjects(path);
+}
+
+function onSucccessfullCreateFile(elm, type, action, path, new_file_name) {
+	refreshLayerProjects(path);
 }

@@ -51,7 +51,8 @@ if ($default_template)
 
 //GET CACHED FILE
 $UserCacheHandler = $EVC->getPresentationLayer()->getPHPFrameWork()->getObject("UserCacheHandler");
-$cache_key = $EVC->getController() . "_controller/" . $EVC->getPresentationLayer()->getSelectedPresentationId() . "/$default_entity." . $EVC->getPresentationLayer()->getPresentationFileExtension();
+$default_entity_code = substr($default_entity, 0, 1) == "/" ? $default_entity : $page_prefix . $default_entity;
+$cache_key = $EVC->getController() . "_controller/" . $EVC->getPresentationLayer()->getSelectedPresentationId() . "/" . str_replace("/", "_", $default_entity_code) . "." . $EVC->getPresentationLayer()->getPresentationFileExtension();
 $file_included = false;
 
 ob_start();

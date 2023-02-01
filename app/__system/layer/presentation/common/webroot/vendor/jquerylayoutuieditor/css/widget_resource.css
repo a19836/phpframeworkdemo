@@ -1,3 +1,8 @@
+/* MENU SETTINGS - EVENTS *
+.layout-ui-editor > .menu-settings li.group.settings-events input[disabled] {
+	cursor:not-allowed;
+}*/
+
 /* MENU SETTINGS - WIDGET - GENERIC */
 .layout-ui-editor > .menu-settings li.group.settings-widget input:not([type=checkbox]):not([type=radio]),
   .layout-ui-editor > .menu-settings li.group.settings-widget select {
@@ -51,7 +56,8 @@
   .layout-ui-editor > .menu-settings li.group.settings-widget .choose-table-attribute,
   .layout-ui-editor > .menu-settings li.group.settings-widget .choose-widget-resource,
   .layout-ui-editor > .menu-settings li.group.settings-widget .choose-widget-resource-attribute,
-  .layout-ui-editor > .menu-settings li.group.settings-widget .refresh-existent-data {
+  .layout-ui-editor > .menu-settings li.group.settings-widget .refresh-existent-data,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .choose-event {
 	line-height:2.2em;
 	margin-right:10px;
 	font-weight:bold;
@@ -69,7 +75,8 @@
   .layout-ui-editor > .menu-settings li.group.settings-widget .choose-table-attribute,
   .layout-ui-editor > .menu-settings li.group.settings-widget .choose-widget-resource,
   .layout-ui-editor > .menu-settings li.group.settings-widget .choose-widget-resource-attribute,
-  .layout-ui-editor > .menu-settings li.group.settings-widget .refresh-existent-data {
+  .layout-ui-editor > .menu-settings li.group.settings-widget .refresh-existent-data,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .choose-event {
 	float:right;
 }
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-item-remove {
@@ -252,6 +259,17 @@
 	max-width:100%;
 	margin-left:0;
 }
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-resources .widget-resources-type > .group-title > .widget-item-remove {
+	line-height:normal;
+	cursor:pointer;
+	float:right;
+	font-size:120%;
+	font-weight:bold;
+	vertical-align:middle;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-resources .widget-resources-type:not(.group-open) > .group-title > .widget-item-remove {
+	display:none;
+}
 
 /* MENU SETTINGS - WIDGET - RESOURCE */
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource > .widget-resource-remove,
@@ -325,6 +343,9 @@
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value  > ul > li.widget-display-resource-value-resource-attribute > label {
 	max-width:calc(100% - 140px);
 }
+.layout-ui-editor > .menu-settings:not(.menu-settings-select) li.group.settings-widget .widget-display-resource-value  > ul > li.widget-display-resource-value-allow-new-options {
+	display:none;
+}
 
 /* MENU SETTINGS - WIDGET - PROPERTIES */
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-handler input:not(:focus),
@@ -345,7 +366,9 @@
 }
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-widget-type select {
 	width:100%;
-	height:150px;
+	height:200px;
+	min-height:100px;
+	max-height:70vh;
 	overflow:auto;
 }
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-widget-type select option.widget_type_group {

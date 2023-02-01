@@ -484,18 +484,21 @@ function setLinksAttributesObj(row, attributes) {
 			var href = link.attr("href");
 			var fk_table = link.attr("fk_table");
 			var fk_attributes = $.isPlainObject(table_fks) ? table_fks[fk_table] : {};
-			var extra_fk_attributes = $.isPlainObject(table_extra_fks) ? table_extra_fks[fk_table] : {};
 			
-			for (var fk_attribute in extra_fk_attributes)
-				fk_attributes[fk_attribute] = extra_fk_attributes[fk_attribute];
-			
-			for (var fk_attribute in fk_attributes) {
-				var attribute = fk_attributes[fk_attribute];
-				var expression = new RegExp("&conditions\\[" + fk_attribute + "\\]=[^&]*", "gi"); 
+			if (fk_attributes) {
+				var extra_fk_attributes = $.isPlainObject(table_extra_fks) ? table_extra_fks[fk_table] : {};
 				
-				if (expression.test(href)) {
-					href = href.replace(expression, "&conditions[" + fk_attribute + "]=" + attributes[attribute]);
-					link.attr("href", href);
+				for (var fk_attribute in extra_fk_attributes)
+					fk_attributes[fk_attribute] = extra_fk_attributes[fk_attribute];
+				
+				for (var fk_attribute in fk_attributes) {
+					var attribute = fk_attributes[fk_attribute];
+					var expression = new RegExp("&conditions\\[" + fk_attribute + "\\]=[^&]*", "gi"); 
+					
+					if (expression.test(href)) {
+						href = href.replace(expression, "&conditions[" + fk_attribute + "]=" + attributes[attribute]);
+						link.attr("href", href);
+					}
 				}
 			}
 		});

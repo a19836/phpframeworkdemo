@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($new_path) { $page_name = $db_table . "_" . $task_tag . ($task_tag_action ? "_" . $task_tag_action : ""); $head .= '
+include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($new_path) { $page_name = $db_table . "_" . $task_tag . ($task_tag_action ? "_" . implode("_", $task_tag_action) : ""); $head .= '
 	<style>
 	.taskflowchart .tasks_menu_hide,
 	  .taskflowchart .workflow_menu {
@@ -156,11 +156,11 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 			WF.jsPlumbTaskFlow.tasks_properties[selected_task_id]["choose_db_table"]["db_table"] = "' . $db_table . '";
 			WF.jsPlumbTaskFlow.tasks_properties[selected_task_id]["attributes"] = uis_attributes;
 			
-			' . ($task_tag_action ? '
-			WF.jsPlumbTaskFlow.tasks_properties[selected_task_id]["action"]["single_' . $task_tag_action . '"] = 1;
-			' . ($task_tag == "listing" ? 'WF.jsPlumbTaskFlow.tasks_properties[selected_task_id]["action"]["multiple_' . $task_tag_action . '"] = 1;' : '') . '
-			' : '') . '
+			'; if ($task_tag_action) foreach ($task_tag_action as $tta) $head .= '
+			WF.jsPlumbTaskFlow.tasks_properties[selected_task_id]["action"]["single_' . $tta . '"] = 1;
+			' . ($task_tag == "listing" ? 'WF.jsPlumbTaskFlow.tasks_properties[selected_task_id]["action"]["multiple_' . $tta . '"] = 1;' : '') . '
 			
+			'; $head .= '
 			//prepare page properties
 			var page_properties = $("#" + WF.jsPlumbTaskFlow.main_tasks_properties_obj_id + " .task_properties_" + page_task_type.toLowerCase());
 			page_properties.find(".file_name, .template, .links, .authentication_tab, .advanced_settings_tab").hide();

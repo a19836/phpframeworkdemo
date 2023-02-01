@@ -924,6 +924,7 @@ body > .dragging_menu_item {
 }
 .in_popup .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-right {
 	top:17px;
+	background:var(--main-popup-header-bg);
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .option:not(input) {
 	width:auto;
@@ -1405,7 +1406,7 @@ body > .dragging_menu_item {
 	vertical-align:middle;
 }
 .code_layout_ui_editor .layout-ui-editor .layout_ui_editor_right_container .mytree a > i.jstree-icon.table {
-	cursor:default;
+	cursor:pointer;
 }
 .code_layout_ui_editor .layout-ui-editor .layout_ui_editor_right_container .mytree .jstree-hovered {
 	background:var(--main-navigator-tree-item-hover-bg) !important;
@@ -1496,6 +1497,59 @@ body > .dragging_menu_item {
 	left:10px;
 	right:10px;
 	bottom:10px;
+}
+
+/* CHOOSE DB TABLE WIDGET OPTIONS POPUP */
+.choose_db_table_widget_options_popup {
+	top:auto;
+	left:auto;
+	right:auto;
+	bottom:auto;
+	width:250px;
+}
+.choose_db_table_widget_options_popup .table_alias {
+	padding:20px 20px 0;
+}
+.choose_db_table_widget_options_popup .table_alias.hidden + .widget_type {
+	padding:20px 20px 0;
+}
+.choose_db_table_widget_options_popup .widget_type,
+  .choose_db_table_widget_options_popup .widget_group,
+  .choose_db_table_widget_options_popup .widget_list_type,
+  .choose_db_table_widget_options_popup .widget_action {
+	padding:10px 20px 0;
+}
+.choose_db_table_widget_options_popup .table_alias.hidden,
+  .choose_db_table_widget_options_popup .widget_type.hidden,
+  .choose_db_table_widget_options_popup .widget_group.hidden,
+  .choose_db_table_widget_options_popup .widget_list_type.hidden,
+  .choose_db_table_widget_options_popup .widget_action.hidden {
+	display:none !important;
+}
+.choose_db_table_widget_options_popup .table_alias label,
+  .choose_db_table_widget_options_popup .widget_type label,
+  .choose_db_table_widget_options_popup .widget_group label,
+  .choose_db_table_widget_options_popup .widget_list_type label,
+  .choose_db_table_widget_options_popup .widget_action label {
+	width:80px;
+	display:inline-block;
+}
+.choose_db_table_widget_options_popup .table_alias input {
+	width:calc(100% - 90px);
+}
+.choose_db_table_widget_options_popup .widget_type select,
+  .choose_db_table_widget_options_popup .widget_group select,
+  .choose_db_table_widget_options_popup .widget_list_type select,
+  .choose_db_table_widget_options_popup .widget_action select {
+	width:calc(100% - 80px);
+}
+.choose_db_table_widget_options_popup .button {
+	padding:20px;
+	text-align:center;
+}
+.choose_db_table_widget_options_popup select,
+  .choose_db_table_widget_options_popup input {
+	font-size:inherit;
 }
 
 /* ERROR and INVALID */

@@ -37,10 +37,12 @@
 		.layout-ui-editor > .menu-settings.menu-settings-script li.group.settings-properties > ul .settings-property.content .form-control {
 			text-align:left;
 		}
-		.layout-ui-editor > .menu-settings.menu-settings-script li.group.settings-general,
+		.layout-ui-editor > .menu-settings.menu-settings-script li.group.settings-widget,
+		  .layout-ui-editor > .menu-settings.menu-settings-script li.group.settings-general,
 		  .layout-ui-editor > .menu-settings.menu-settings-script li.group.settings-dimension,
 		  .layout-ui-editor > .menu-settings.menu-settings-script li.group.settings-typography,
 		  .layout-ui-editor > .menu-settings.menu-settings-script li.group.settings-decorations,
+		  .layout-ui-editor > .menu-settings.menu-settings-script li.group.settings-events,
 		  .layout-ui-editor > .menu-settings.menu-settings-script li.group.settings-extra .settings-style {
 			display:none;
 		}
@@ -63,6 +65,7 @@
 			border-radius:5px;
 			border:1px outset #bbb !important; /* !important is bc of the css when .borders is active */
 			word-break:break-all;
+			text-align:left;
 		}
 		body > .droppable.borders .template-widget.template-widget-script:before {
 			content:"";

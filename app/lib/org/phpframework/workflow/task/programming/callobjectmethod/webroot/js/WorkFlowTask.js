@@ -24,6 +24,7 @@ var CallObjectMethodTaskPropertyObj = {
 		ProgrammingTaskUtil.prepareEditSourceIcon(properties_html_elm);
 		
 		var task_html_elm = $(properties_html_elm).find(".call_object_method_task_html");
+		CallObjectMethodTaskPropertyObj.setMethodObject(task_property_values, task_html_elm);
 		ProgrammingTaskUtil.setIncludeFile(task_property_values, task_html_elm);
 		ProgrammingTaskUtil.setResultVariableType(task_property_values, task_html_elm);
 		
@@ -78,6 +79,11 @@ var CallObjectMethodTaskPropertyObj = {
 			return ProgrammingTaskUtil.getResultVariableString(task_property_values) + method_obj + (task_property_values["method_static"] == 1 ? '::' : '->') + task_property_values["method_name"] + "(" + ProgrammingTaskUtil.getArgsString(task_property_values["method_args"]) + ")";
 		}
 		return "";
+	},
+	
+	setMethodObject : function(task_property_values, task_html_elm) {
+		if (task_property_values["method_obj"] && task_property_values["method_static"] == 0 && typeof task_property_values["method_obj"] == "string" && task_property_values["method_obj"].substr(0, 1) == '$')
+			task_html_elm.find(".method_obj_name input").val( task_property_values["method_obj"].substr(1) );
 	},
 	
 	onEditFile : function(elm) {

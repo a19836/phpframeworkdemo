@@ -82,7 +82,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				}
 				
 				if (!$empty_field_name)
-					$empty_field_name = \CommonModuleUI::checkIfEmptyFields($settings, array("username" => $username, /*"password" => $password, */"name" => $name, "email" => $email, "security_question_1" => $security_question_1, "security_answer_1" => $security_answer_1, "security_question_2" => $security_question_2, "security_answer_2" => $security_answer_2, "security_question_3" => $security_question_3, "security_answer_3" => $security_answer_3));
+					$empty_field_name = \CommonModuleUI::checkIfEmptyFields($settings, array("username" => $username, /*"password" => $password, */"name" => $name, "email" => $email, "security_question_1" => $security_question_1, "security_answer_1" => $security_answer_1, "security_question_2" => $security_question_2, "security_answer_2" => $security_answer_2, "security_question_3" => $security_question_3, "security_answer_3" => $security_answer_3, "active" => $active));
 				
 				if (!$empty_field_name)
 					$empty_field_name = $CommonModuleTableExtraAttributesUtil->checkIfEmptyFields($settings, $_POST);
@@ -121,6 +121,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						$new_data["security_answer_2"] = $settings["show_security_answer_2"] ? $security_answer_2 : $new_data["security_answer_2"];
 						$new_data["security_question_3"] = $settings["show_security_question_3"] ? $security_question_3 : $new_data["security_question_3"];
 						$new_data["security_answer_3"] = $settings["show_security_answer_3"] ? $security_answer_3 : $new_data["security_answer_3"];
+						$new_data["active"] = $settings["show_active"] ? $active : $new_data["active"];
 						
 						if ($settings["show_user_type_id"])
 							$new_data["user_type_id"] = is_array($user_type_id) ? $user_type_id : (strlen($user_type_id) > 0 ? array($user_type_id) : array());
@@ -128,6 +129,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						$CommonModuleTableExtraAttributesUtil->prepareFieldsWithNewData($settings, $new_data, $data, $_POST);
 						
 						\CommonModuleUI::prepareFieldsWithDefaultValue($settings, $new_data);
+						
+						$active = $new_data["active"]; //set $active with default values with apply
 						
 						if (empty($new_data["user_type_id"]))
 							$new_data["user_type_id"] = array(\UserUtil::PUBLIC_USER_TYPE_ID);

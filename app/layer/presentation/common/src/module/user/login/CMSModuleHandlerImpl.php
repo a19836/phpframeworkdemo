@@ -17,9 +17,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		$username_attribute_label = $settings["fields"]["username"]["field"]["label"]["value"];
 		$password_attribute_label = $settings["fields"]["password"]["field"]["label"]["value"];
-		$register_attribute_label = $settings["register_attribute_label"] ? $settings["register_attribute_label"] : "Register?";
-		$forgot_credentials_attribute_label = $settings["forgot_credentials_attribute_label"] ? $settings["forgot_credentials_attribute_label"] : "Forgot Credentials?";
-		$single_sign_on_attribute_label = $settings["single_sign_on_attribute_label"] ? $settings["single_sign_on_attribute_label"] : "Single Sign On?";
+		$register_attribute_label = $settings && array_key_exists("register_attribute_label", $settings) ? $settings["register_attribute_label"] : "Register?";
+		$forgot_credentials_attribute_label = $settings && array_key_exists("forgot_credentials_attribute_label", $settings) ? $settings["forgot_credentials_attribute_label"] : "Forgot Credentials?";
+		$single_sign_on_attribute_label = $settings && array_key_exists("single_sign_on_attribute_label", $settings) ? $settings["single_sign_on_attribute_label"] : "Single Sign On?";
 		
 		$username_attribute_label = explode(":", $username_attribute_label);
 		$username_attribute_label = $username_attribute_label[0];
@@ -211,21 +211,28 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				);
 			}
 			
+			if (!$settings["buttons"] || !array_key_exists("insert", $settings["buttons"]))
+				$login_button = array(
+					"field" => array(
+						"class" => "submit_button",
+						"input" => array(
+							"type" => "submit",
+							"name" => "login",
+							"value" => "Login",
+						)
+					)
+				);
+			else
+				$login_button = $settings["buttons"]["insert"];
+			
+			$settings["buttons"]["insert"]["field"]["input"]["name"] = "login"; //force button name to be login
+			
 			$buttons = array();
 			$buttons["submit"] = array(
 				"container" => array(
 					"class" => "buttons",
 					"elements" => array(
-						0 => array(
-							"field" => array(
-								"class" => "submit_button",
-								"input" => array(
-									"type" => "submit",
-									"name" => "login",
-									"value" => "Login",
-								)
-							)
-						),
+						0 => $login_button,
 					)
 				)
 			);

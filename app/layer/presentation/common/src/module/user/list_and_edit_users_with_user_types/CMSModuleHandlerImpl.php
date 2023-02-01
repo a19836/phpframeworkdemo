@@ -299,7 +299,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					$fields_aux["selected_item"]["field"]["input"]["extra_attributes"] = array();
 				
 				$fields_aux["selected_item"]["field"]["input"]["extra_attributes"][] = array("name" => "checked", "value" => "");
-				$fields_aux["selected_item"]["field"]["input"]["extra_attributes"][] = array("name" => "style", "value" => "visibility:hidden;");
+				$fields_aux["selected_item"]["field"]["input"]["extra_attributes"][] = array("name" => "style", "value" => "display:none;");
 				$fields_aux["selected_item"]["field"]["input"]["next_html"] .= '<a class="glyphicon glyphicon-trash icon delete" href="javascript:void(0);" onClick="onListRemoveNewUser(this)">Remove</a>';
 				
 				$tr = '<tr>';
@@ -356,8 +356,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$security_answer_2 = $new_user["security_answer_2"];
 		$security_question_3 = $new_user["security_question_3"];
 		$security_answer_3 = $new_user["security_answer_3"];
+		$active = $new_user["active"];
 		
-		$empty_field_name = \CommonModuleUI::checkIfEmptyFields($settings, array("user_type_ids" => $user_type_ids, "username" => $username, /*"password" => $password, */"name" => $name, "email" => $email, "security_question_1" => $security_question_1, "security_answer_1" => $security_answer_1, "security_question_2" => $security_question_2, "security_answer_2" => $security_answer_2, "security_question_3" => $security_question_3, "security_answer_3" => $security_answer_3), $files);
+		$empty_field_name = \CommonModuleUI::checkIfEmptyFields($settings, array("user_type_ids" => $user_type_ids, "username" => $username, /*"password" => $password, */"name" => $name, "email" => $email, "security_question_1" => $security_question_1, "security_answer_1" => $security_answer_1, "security_question_2" => $security_question_2, "security_answer_2" => $security_answer_2, "security_question_3" => $security_question_3, "security_answer_3" => $security_answer_3, "active" => $active), $files);
 		
 		if (!$empty_field_name)
 			$empty_field_name = $this->CommonModuleTableExtraAttributesUtil->checkIfEmptyFields($settings, $new_user, $files);
@@ -395,11 +396,14 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				$new_data["security_question_3"] = $settings["show_security_question_3"] ? $security_question_3 : $new_data["security_question_3"];
 				$new_data["security_answer_3"] = $settings["show_security_answer_3"] ? $security_answer_3 : $new_data["security_answer_3"];
 				
+				$new_data["active"] = $settings["show_active"] ? $active : $new_data["active"];
 				$new_data["user_type_ids"] = $settings["show_user_type_ids"] ? $user_type_ids : $new_data["user_type_ids"];
 				
 				$this->CommonModuleTableExtraAttributesUtil->prepareFieldsWithNewData($settings, $new_data, $old_user, $new_user);
 				
 				\CommonModuleUI::prepareFieldsWithDefaultValue($settings, $new_data, $files);
+				
+				$active = $new_data["active"]; //set $active with default values with apply
 				
 				if (empty($new_data["user_type_ids"]))
 					$new_data["user_type_ids"] = \UserUtil::PUBLIC_USER_TYPE_ID;
@@ -457,6 +461,10 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					
 					if ($settings["show_username"] && $username && strtolower($old_user["username"]) != strtolower($username))
 						\UserUtil::changeUserSessionUsernameByUsername($brokers, $settings, $old_user["username"], $username);
+					
+					//save user active status
+					if ($settings["show_active"])
+						$status = \UserUtil::updateUserActiveStatus($brokers, array("user_id" => $user_id, "active" => $active));
 				}
 				else if ($settings["allow_insertion"] && empty($old_user["user_id"]) && $inserted_user_id)
 					\UserUtil::deleteUser($EVC, $inserted_user_id, $brokers);

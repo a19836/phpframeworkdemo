@@ -87,21 +87,37 @@
 			height:30px;
 			line-height:30px;
 			margin:0;
-			visibility:hidden;
 			background:none;
 			border:none;
+			color:var(--menu-settings-group-color, #b9a5a6);
+			
+			font: normal normal normal 14px/1 'Material-Design-Iconic-Font';
+			font-size: 2em;
+			text-rendering: auto;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			
+			display:none;
 		}
-		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group > .dd-collapse,
-		   .settings-properties-select-options-li li.option-group > .dd-collapse,
-		   .layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group > .dd-expand,
-		   .settings-properties-select-options-li li.option-group > .dd-expand {
-			visibility:visible;
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group:not(.dd-collapsed) > .dd-collapse,
+		   .settings-properties-select-options-li li.option-group:not(.dd-collapsed) > .dd-collapse,
+		   .layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group.dd-collapsed > .dd-expand,
+		   .settings-properties-select-options-li li.option-group.dd-collapsed > .dd-expand {
+			display:block;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group > .dd-collapse:before,
+		   .settings-properties-select-options-li li.option-group > .dd-collapse:before {
+			content:'\f2f2';
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group > .dd-expand:before,
+		   .settings-properties-select-options-li li.option-group > .dd-expand:before {
+			content:'\f2f6';
 		}
 		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .select-option,
 		   .settings-properties-select-options-li .select-option {
-			position:absolute;
-			margin-top:auto;
+			margin:0;
 			padding:5px 0;
+			float:left;
 		}
 		
 		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .select-option input,
@@ -111,25 +127,27 @@
 		}
 		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .dd-handle,
 		   .settings-properties-select-options-li .dd-handle {
-			position:absolute;
-			margin:0 0 0 32px;
-			padding:7px 0;
+			margin:0 5px;
+			padding:9px 0;
 			border:none;
 			background:none;
 			color:var(--menu-settings-group-color, #b9a5a6);
 			cursor:move;
+			float:left;
 		}
 		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .option-value,
 		   .settings-properties-select-options-li .option-value,
 		   .layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .option-label,
-		   .settings-properties-select-options-li .option-label {
-			width:30%;
-			width:calc((100% - 80px) / 2);
+		   .settings-properties-select-options-li .option-label,
+		   .layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .option-attributes,
+		   .settings-properties-select-options-li .option-attributes {
+			width:20%;
+			width:calc((100% - 70px) / 3);
 			display:inline-block;
 		}
 		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li > .remove-option,
 		   .settings-properties-select-options-li .remove-option {
-			width:20px;
+			width:15px;
 			padding:7px 0;
 			display:inline-block;
 			cursor:pointer;
@@ -146,8 +164,10 @@
 			display:none;
 		}
 		.layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group > .option-label,
-		   .settings-properties-select-options-li li.option-group > .option-label {
-			width:calc(100% - 80px);
+		   .settings-properties-select-options-li li.option-group > .option-label,
+		   .layout-ui-editor > .menu-settings.menu-settings-select li.group.settings-properties > ul .options > ul li.option-group > .option-attributes,
+		   .settings-properties-select-options-li li.option-group > .option-attributes {
+			width:calc((100% - 70px) / 2);
 		}
 	]]></menu_css>
 	<template_css><![CDATA[
@@ -174,7 +194,14 @@
 			};
 			
 			me.parseHtml = function(html_element) {
-				return html_element && html_element.nodeName.toLowerCase() == "select";
+				if (html_element && html_element.nodeName.toLowerCase() == "select") {
+					html_element = $(html_element);
+					
+					//return droppable bc we want to convert the options and optgroup to widgets so we can access their properties through the layers panel.
+					return {
+						droppable: html_element,
+					};
+				}
 			};
 			
 			me.parseSettings = function(widget, widget_settings) {
@@ -184,13 +211,16 @@
 			};
 			
 			me.cleanHtml = function(html_element) {
+				return ui_creator.getCleanedHtmlElement(html_element); //call the default clean html method
+				
+				/* The code below is deprecated bc we want to convert the options and optgroup to widgets so we can access their properties through the layers panel.
 				var clone = ui_creator.cloneHtmlElementBeforeCleanIt(html_element);
 				clone[0].innerHTML = '';
 				
 				var html = ui_creator.getCleanedHtmlElement(clone[0]);
 				var options = html_element.innerHTML;
 				
-				return html.replace('</select>', options + '</select>');
+				return html.replace('</select>', options + '</select>');*/
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
@@ -263,11 +293,12 @@
 			
 			me.addOption = function(btn, default_values) {
 				var ul = $(btn).parent().closest(".options").children("ul, ol").first();
-				var v = "", l = "", so = false, children = null;
+				var v = "", l = "", a = "", so = false, children = null;
 				
 				if (default_values) {
 					v = default_values.hasOwnProperty("value") ? default_values.value : "";
 					l = default_values.hasOwnProperty("label") ? default_values.label : "";
+					a = default_values.hasOwnProperty("attrs_html") ? default_values.attrs_html : "";
 					so = default_values.hasOwnProperty("selected") ? default_values.selected : false;
 					children = default_values.hasOwnProperty("children") ? default_values.children : null;
 				}
@@ -277,6 +308,7 @@
 					+ '	<div class="dd-handle"><span class="zmdi zmdi-arrows"></span></div>'
 					+ '  <div class="option-value input-group-sm"><input class="form-control" value="' + v + '" placeHolder="value" title="value" /></div>'
 					+ '  <div class="option-label input-group-sm"><input class="form-control" value="' + l + '" placeHolder="label" title="label" /></div>'
+					+ '  <div class="option-attributes input-group-sm"><input class="form-control" value="' + a + '" placeHolder="other attributes" title="other attributes" /></div>'
 					+ '	<div class="remove-option"><span class="zmdi zmdi-close-circle"></span></div>'
 					+ '</li>');
 				
@@ -347,6 +379,8 @@
 						var options = getNestedOptions(ul);
 						var options_html = getOptionsHtml(options);
 						widget.html(options_html);
+						
+						ui_creator.parseElementInnerHtml(widget);
 					}
 				}
 				
@@ -366,6 +400,7 @@
 							selected: li.find(" > .select-option > input").is(":checked"),
 							value: li.find(" > .option-value > input").val(),
 							label: li.find(" > .option-label > input").val(),
+							attrs_html: li.find(" > .option-attributes > input").val(),
 							children: getNestedOptions( li.children("ul, ol").first() ),
 						});
 					});
@@ -380,14 +415,16 @@
 				if (options && options.length > 0) {
 					$.each(options, function(idx, option) {
 						var selected = option["selected"];
+						var has_v = option.hasOwnProperty("value");
 						var v = option["value"];
 						var l = option["label"];
+						var a = option["attrs_html"] ? " " + option["attrs_html"] : "";
 						var children = option["children"];
 						
 						if (children && children.length > 0)
-							html += '<optgroup label="' + l + '">' + getOptionsHtml(children) + '</optgroup>';
+							html += '<optgroup label="' + l + '"' + a + '>' + getOptionsHtml(children) + '</optgroup>';
 						else
-							html += '<option' + (v ? ' value="' + v + '"' : '') + (selected ? ' selected' : '') + '>' + l + '</option>';
+							html += '<option' + (has_v ? ' value="' + v + '"' : '') + (selected ? ' selected' : '') + a + '>' + l + '</option>';
 					});
 				}
 				
@@ -399,19 +436,25 @@
 				var children = elm.children("option, optgroup");
 				
 				$.each(children, function(idx, item) {
+					var j_item = $(item);
 					var node_name = item.nodeName.toLowerCase();
-					item = $(item);
+					var is_optgroup = node_name == "optgroup";
+					var attrs_html = ui_creator.getCleanedHtmlElementAttributes(item, {
+						attributes_to_exclude: is_optgroup ? ["label"] : ["value", "selected"]
+					});
 					
-					if (node_name == "optgroup")
+					if (is_optgroup)
 						options.push({
-							label: item.attr("label"),
-							children: getOptionsFromHtmlElement(item),
+							label: j_item.attr("label"),
+							children: getOptionsFromHtmlElement(j_item),
+							attrs_html: attrs_html
 						});
 					else 
 						options.push({
-							label: item.text(),
-							value: item[0].hasAttribute("value") ? item.attr("value") : item.text(),
-							selected: item.is(":selected"),
+							label: j_item.text(),
+							value: item.hasAttribute("value") ? j_item.attr("value") : j_item.text(),
+							selected: j_item.is(":selected"),
+							attrs_html: attrs_html
 						});
 				});
 				

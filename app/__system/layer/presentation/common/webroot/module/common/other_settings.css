@@ -17,7 +17,8 @@
 	font-weight:normal;
 }
 .module_settings .settings div .object_to_objects_settings .add {
-	margin:-28px 0 0 325px;
+	margin:-28px 0 0 235px;
+	font-size:14px;
 }
 .module_settings .settings div .object_to_objects_settings .object_to_object {
 	width:auto;
