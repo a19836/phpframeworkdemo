@@ -515,7 +515,7 @@ function toggleAdvancedLevel(elm) {
 	var left_panel = $("#left_panel");
 	var advanced_level = left_panel.hasClass("advanced_level") ? "simple_level" : "advanced_level";
 	
-	MyJSLib.CookieHandler.setCookie('advanced_level', advanced_level, 0, "/");
+	MyJSLib.CookieHandler.setEternalRootCookie('advanced_level', advanced_level);
 	left_panel.toggleClass("simple_level").toggleClass("advanced_level");
 	
 	//check if active tab is a hidden tab
@@ -549,7 +549,7 @@ function toggleThemeLayout(elm) {
 	var body = $("body");
 	var theme_layout = body.hasClass("light_theme") ? "dark_theme" : "light_theme";
 	
-	MyJSLib.CookieHandler.setCookie('theme_layout', theme_layout, 0, "/");
+	MyJSLib.CookieHandler.setEternalRootCookie('theme_layout', theme_layout);
 	body.toggleClass("light_theme").toggleClass("dark_theme");
 	
 	updateThemeLayoutInIframes( $("iframe"), theme_layout);
@@ -627,9 +627,9 @@ function filterByLayout(elm) {
 		//Note that if proj_id is empty, it means that the "ALL PROJECTS" was selected, and in this case we should not show the previous opened page, but the admin_home_projects.
 		//save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
 		if (proj_id)
-			MyJSLib.CookieHandler.setCookie('default_page', selected_admin_home_project_page_url, 0, "/"); 
+			MyJSLib.CookieHandler.setEternalRootCookie('default_page', selected_admin_home_project_page_url); 
 		else
-			MyJSLib.CookieHandler.setCookie('default_page', admin_home_projects_page_url, 0, "/"); 
+			MyJSLib.CookieHandler.setEternalRootCookie('default_page', admin_home_projects_page_url); 
 		
 		document.location = url;
 	}
@@ -644,7 +644,7 @@ function goToHandler(url, a, attr_name, originalEvent) {
 	setTimeout(function() {
 		try {
 			//save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
-			MyJSLib.CookieHandler.setCookie('default_page', url, 0, "/");
+			MyJSLib.CookieHandler.setEternalRootCookie('default_page', url);
 			//console.log(url);
 			
 			//open url in right panel
@@ -664,7 +664,7 @@ function goBack() {
 	
 	if (win) {
 		//get history url and set cookie
-		//TODO: MyJSLib.CookieHandler.setCookie('default_page', url, 0, "/");
+		//TODO: MyJSLib.CookieHandler.setEternalRootCookie('default_page', url);
 		
 		//loads new page
 		win.history.go(-1);
@@ -677,7 +677,7 @@ function goForward() {
 	
 	if (win) {
 		//get history url and set cookie
-		//TODO: MyJSLib.CookieHandler.setCookie('default_page', url, 0, "/");
+		//TODO: MyJSLib.CookieHandler.setEternalRootCookie('default_page', url);
 		
 		//loads new page
 		win.history.go(1);

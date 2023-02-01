@@ -144,7 +144,7 @@ function selectAvailableProject(project_id, originalEvent) {
 	}
 	else {
 		var selected_admin_home_project_page_url = admin_home_project_page_url.replace("#filter_by_layout#", layer_bean_folder_name + "/" + project_id);
-		MyJSLib.CookieHandler.setCookie('default_page', selected_admin_home_project_page_url, 0, "/"); //save cookie with url, so when we refresh the browser, the admin right panel contains the project home page
+		MyJSLib.CookieHandler.setEternalRootCookie('default_page', selected_admin_home_project_page_url); //save cookie with url, so when we refresh the browser, the admin right panel contains the project home page
 		
 		if (is_popup) { //if is popup
 			if (typeof window.parent.ProjectsFancyPopup != "undefined" && window.parent.ProjectsFancyPopup.settings && typeof window.parent.ProjectsFancyPopup.settings.goTo == "function")
@@ -239,7 +239,7 @@ function onSucccessfullAddProject() {
 	
 	if (window.parent && window.parent != window) {
 		//set cookie with default page
-		window.parent.MyJSLib.CookieHandler.setCookie('default_page', url, 0, "/"); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+		window.parent.MyJSLib.CookieHandler.setEternalRootCookie('default_page', url); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
 		
 		var parent_url = window.parent.location;
 		window.parent.location = parent_url;
