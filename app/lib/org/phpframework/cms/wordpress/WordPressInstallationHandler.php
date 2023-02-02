@@ -84,7 +84,7 @@ $admin_pass = "' . $pa871ec4b . '";
 		\$phpframework_results['full_page_html'] .= \$obgc;
 		ob_end_clean();
 		
-		ob_start();
+		ob_start(null, 0);
 		\$current_phpframework_result_key = 'header';
 	}
 	"; $v6490ea3a15 = preg_replace($v391cc249fc, $v91a962d917, $v6490ea3a15, 1); } if (strpos($v6490ea3a15, "\$current_phpframework_result_key = 'theme_content';") === false) { $v391cc249fc = '/if\s*\(\s*!\s*(locate_template\([^)]*\))\s*\)\s*\{/'; $v91a962d917 = "\$status = \${1};
@@ -98,7 +98,7 @@ $admin_pass = "' . $pa871ec4b . '";
 		\$phpframework_results['full_page_html'] .= \$obgc;
 		ob_end_clean();
 		
-		ob_start(); //start a new ob_start that will be closed in the get_footer in order to get the theme_content
+		ob_start(null, 0); //start a new ob_start that will be closed in the get_footer in order to get the theme_content
 		\$current_phpframework_result_key = 'theme_content';
 	}
 	
@@ -116,7 +116,7 @@ $admin_pass = "' . $pa871ec4b . '";
 		\$phpframework_results['full_page_html'] .= \$obgc;
 		ob_end_clean();
 		
-		ob_start();
+		ob_start(null, 0);
 		\$current_phpframework_result_key = 'footer';
 	}
 	"; $v6490ea3a15 = preg_replace($v391cc249fc, $v91a962d917, $v6490ea3a15, 1); } if (strpos($v6490ea3a15, "\$current_phpframework_result_key = 'after_footer';") === false) { $v391cc249fc = '/if\s*\(\s*!\s*(locate_template\([^)]*\))\s*\)\s*\{/'; $v91a962d917 = "\$status = \${1};
@@ -130,7 +130,7 @@ $admin_pass = "' . $pa871ec4b . '";
 		\$phpframework_results['full_page_html'] .= \$obgc;
 		ob_end_clean();
 		
-		ob_start();
+		ob_start(null, 0);
 		\$current_phpframework_result_key = 'after_footer';
 	}
 	
@@ -140,7 +140,7 @@ $admin_pass = "' . $pa871ec4b . '";
 
 	//start fetching sidebar output
 	if (\$phpframework_options)
-		ob_start();
+		ob_start(null, 0);
 	"; $v6490ea3a15 = preg_replace($v391cc249fc, $v91a962d917, $v6490ea3a15, 1); $v391cc249fc = '/if\s*\(\s*!\s*(locate_template\([^)]*\))\s*\)\s*\{/'; $v91a962d917 = "\$status = \${1};
 	
 	//changed by phpframework at " . date("Y-m-d H:i") . "
@@ -163,7 +163,7 @@ $admin_pass = "' . $pa871ec4b . '";
 	
 	//start fetching sidebar output
 	if (\$phpframework_options) 
-		ob_start();
+		ob_start(null, 0);
 	"; $v6490ea3a15 = preg_replace($v391cc249fc, $v91a962d917, $v6490ea3a15, 1); $v391cc249fc = '/return\s+(apply_filters\s*\(\s*\'dynamic_sidebar_has_widgets\'\s*,\s*false,\s*\$index\s*\)\s*;)/'; $v91a962d917 = "
 		//changed by phpframework at " . date("Y-m-d H:i") . "
 		//stop fetching sidebar output and save it
@@ -241,7 +241,7 @@ $admin_pass = "' . $pa871ec4b . '";
 		//saving menu
 		if (\$phpframework_options) {
 			//get nav_menu
-			ob_start();
+			ob_start(null, 0);
 			\$returned = \${1}
 			\$nav_menu = ob_get_contents();
 			\$nav_menu = '<!-- phpframework:template:region: \"Before Nav Menu: ' . \$phpframework_menu_id . '\" -->' . \$nav_menu . '<!-- phpframework:template:region: \"After Nav Menu: ' . \$phpframework_menu_id . '\" -->';
@@ -266,7 +266,7 @@ $admin_pass = "' . $pa871ec4b . '";
 	
 	//start fetching comments output
 	if (\$phpframework_options)
-		ob_start();
+		ob_start(null, 0);
 	
 	\${0}"; $v6490ea3a15 = preg_replace($v391cc249fc, $v91a962d917, $v6490ea3a15, 1); $v391cc249fc = '/require\s+ABSPATH\s*\.\s*WPINC\s*\.\s*\'\/theme-compat\/comments\.php\'\s*;\s*\}/'; $v91a962d917 = "\${0}
 		

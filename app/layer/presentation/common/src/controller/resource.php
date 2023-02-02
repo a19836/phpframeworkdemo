@@ -55,7 +55,7 @@ $default_entity_code = substr($default_entity, 0, 1) == "/" ? $default_entity : 
 $cache_key = $EVC->getController() . "_controller/" . $EVC->getPresentationLayer()->getSelectedPresentationId() . "/" . str_replace("/", "_", $default_entity_code) . "." . $EVC->getPresentationLayer()->getPresentationFileExtension();
 $file_included = false;
 
-ob_start();
+ob_start(null, 0);
 
 if ($UserCacheHandler) {
 	$UserCacheHandler->config(false, false);
