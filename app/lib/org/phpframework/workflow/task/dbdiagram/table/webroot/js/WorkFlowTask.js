@@ -1119,7 +1119,7 @@ var DBTableTaskPropertyObj = {
 		var keys_options = '';
 		
 		if (key_type && $.inArray(key_type, ["fk", "pfk", "fuk"]) != -1)
-			keys_options = '<option value=""' + (key_type == "fk" ? ' selected' : '') + ' title="' + this.getShortTableAttributeKeyTypeLabel("fk") + '">FK</option>'
+			keys_options = '<option value="fk"' + (key_type == "fk" ? ' selected' : '') + ' title="' + this.getShortTableAttributeKeyTypeLabel("fk") + '">FK</option>'
 						+ 	'<option value="pk"' + (key_type == "pfk" ? ' selected' : '') + ' title="' + this.getShortTableAttributeKeyTypeLabel("pfk") + '">PFK</option>'
 						+ 	'<option value="uk"' + (key_type == "fuk" ? ' selected' : '') + ' title="' + this.getShortTableAttributeKeyTypeLabel("fuk") + '">FUK</option>';
 		else
@@ -1160,6 +1160,12 @@ var DBTableTaskPropertyObj = {
 						)
 					)
 				)
+			);
+	},
+	
+	getShortTableAttributeKeyTypeOptionValue : function(key_type) {
+		return key_type == "pfk" ? "pk" : (
+				key_type == "fuk" ? "uk" : key_type
 			);
 	},
 	
@@ -1288,21 +1294,14 @@ var DBTableTaskPropertyObj = {
 					
 					if (attribute_data) {
 						var new_key_type = this.getShortTableAttributeKeyType(attribute_data, fks);
+						var keys_options = this.getShortTableAttributeRowKeyTypeOptions(new_key_type);
+						var option_value = this.getShortTableAttributeKeyTypeOptionValue(new_key_type);
 						
-						//if key are different, update attribute UI
-						if (key_type != new_key_type) {
-							//update key type
-							key_type_select.val(new_key_type);
-							
-							if (key_type_select.val() != new_key_type) {
-								var keys_options = this.getShortTableAttributeRowKeyTypeOptions(new_key_type);
-								key_type_select.html(keys_options).val(new_key_type);
-							}
-							
-							//update title
-							var title = this.getShortTableAttributeRowTitle(attribute_data);
-							table_attr.attr("title", title);
-						}
+						key_type_select.html(keys_options).val(option_value);
+						
+						//update title
+						var title = this.getShortTableAttributeRowTitle(attribute_data);
+						table_attr.attr("title", title);
 					}
 				}
 			}
