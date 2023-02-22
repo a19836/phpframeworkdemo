@@ -150,25 +150,29 @@ var DBQueryTaskPropertyObj = {
 	onCompleteLabel : function(task_id) {
 		var WF = myWFObj.getJsPlumbWorkFlow();
 		var span = WF.jsPlumbTaskFlow.getTaskLabelElementByTaskId(task_id);
-		var table_name = span.attr("table_name");
 		
-		var new_alias = span.text();
-		var old_alias = span.attr("table_alias");
-		
-		var new_label = table_name + (new_alias.trim() ? " " + new_alias.replace(/[ -]+/g, "_").trim() : "");
-		var old_label = table_name + (old_alias ? " " + old_alias : "");
-		
-		span.html(new_label);
-		span.removeAttr("table_name");
-		span.removeAttr("table_alias");
-		
-		onEditLabel(task_id);
-		WF.jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
-		
-		if (old_label != new_label) {
-			if (typeof DBQueryTaskPropertyObj.on_complete_table_label == "function") {
+		if (span[0].hasAttribute("table_name")) {
+			var table_name = span.attr("table_name");
+			
+			var new_alias = span.text();
+			var old_alias = span.attr("table_alias");
+			
+			var new_label = table_name + (new_alias.trim() ? " " + new_alias.replace(/[ -]+/g, "_").trim() : "");
+			var old_label = table_name + (old_alias ? " " + old_alias : "");
+			
+			span.html(new_label);
+			span.removeAttr("table_name");
+			span.removeAttr("table_alias");
+			
+			onEditLabel(task_id);
+			WF.jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
+			
+			if (old_label != new_label && typeof DBQueryTaskPropertyObj.on_complete_table_label == "function")
 				DBQueryTaskPropertyObj.on_complete_table_label(WF, task_id, old_label, new_label);
-			}
+		}
+		else {
+			onEditLabel(task_id);
+			WF.jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
 		}
 	},
 	

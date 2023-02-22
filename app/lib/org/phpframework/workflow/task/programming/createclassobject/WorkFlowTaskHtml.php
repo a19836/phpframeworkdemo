@@ -18,6 +18,8 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 ?><div class="create_class_object_task_html">
+	<?php include dirname(dirname($file_path)) . "/common/IncludeFileHtml.php"; ?>
+	
 	<div class="class_name">
 		<label>Class Name:</label>
 		<input type="text" class="task_property_field" name="class_name" />

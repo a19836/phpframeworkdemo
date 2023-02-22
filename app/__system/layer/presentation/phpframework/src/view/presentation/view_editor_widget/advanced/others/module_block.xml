@@ -37,10 +37,12 @@
 		.layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-id,
 		   .layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-classes,
 		   .layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-properties,
+		   .layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-widget,
 		   .layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-general,
 		   .layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-dimension,
 		   .layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-typography,
 		   .layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-decorations,
+		   .layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-events,
 		   .layout-ui-editor > .menu-settings.menu-settings-call-module-or-block .settings-extra {
 			display:none;
 		}

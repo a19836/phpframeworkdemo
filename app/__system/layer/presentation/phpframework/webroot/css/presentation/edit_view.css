@@ -25,13 +25,13 @@
 }
 
 .view_obj .code_layout_ui_editor {
-	height:calc(100vh - 55px);
+	height:calc(100vh - 50px);
 	min-height:300px;
 	padding:0 !important;
 	position:relative;
 }
 .view_obj #ui .taskflowchart {
-	height:calc(100vh - 55px) !important;
+	height:calc(100vh - 50px) !important;
 }
 
 .view_obj #ui .taskflowchart .tasks_flow.drop_hover { /* .drop_hover is set in admin_menu.js */

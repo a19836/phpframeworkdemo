@@ -329,6 +329,8 @@ function initUlChildsEvents(ul, data, main_layer_properties) {
 			else if (item_type == "dbdriver" && typeof initDBTablesSorting == "function") //prepare db tables with user-friendly sorting
 				initDBTablesSorting(ul);
 		}
+		else
+			initFilesDragAndDrop(ul);
 	}
 	
 	prepareParentChildsEventOnClick(ul);

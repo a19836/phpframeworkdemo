@@ -292,6 +292,11 @@ function isModuleWorkflowObjChanged() {
 	return saved_workflow_settings_id != new_workflow_settings_id;
 }
 
+function isModuleWorkflowCodeWithErrors() {
+	var errors = getEditorCodeErros();
+	return errors.length > 0;
+}
+
 function getModuleWorkflowObj() {
 	var module_workflow_content = $(".module_workflow_content");
 	
@@ -331,7 +336,7 @@ function saveModuleWorkflowSettings(button) {
 		if (!window.is_save_block_func_running) {
 			window.is_save_block_func_running = true;
 			
-			if (is_from_auto_save_bkp && !isModuleWorkflowObjChanged()) {
+			if (is_from_auto_save_bkp && (!isModuleWorkflowObjChanged() || isModuleWorkflowCodeWithErrors())) {
 				resetAutoSave();
 				window.is_save_block_func_running = false;
 				return;

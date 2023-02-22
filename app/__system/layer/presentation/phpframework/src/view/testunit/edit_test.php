@@ -65,7 +65,8 @@ ProgrammingTaskUtil.on_programming_task_choose_file_path_callback = onIncludeFil
 ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
 ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
 
-FunctionUtilObj.on_function_task_edit_method_code_callback = onFunctionTaskEditMethodCode;
+if (typeof FunctionUtilObj != "undefined" && FunctionUtilObj)
+	FunctionUtilObj.on_function_task_edit_method_code_callback = onFunctionTaskEditMethodCode;
 
 GetBeanObjectTaskPropertyObj.phpframeworks_options = ' . json_encode($phpframeworks_options) . ';
 GetBeanObjectTaskPropertyObj.bean_names_options = ' . json_encode($bean_names_options) . ';

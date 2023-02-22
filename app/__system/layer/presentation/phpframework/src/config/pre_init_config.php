@@ -18,4 +18,4 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$project_path = dirname(dirname(str_replace(DIRECTORY_SEPARATOR, "/", __DIR__))) . "/"; $layer_path = dirname($project_path) . "/"; $presentation_id = substr($project_path, strlen($layer_path), -1); $project_default_template = "main"; $project_with_auto_view = true; define("IS_SYSTEM_PHPFRAMEWORK", true); ?>
+$project_path = dirname(dirname(str_replace(DIRECTORY_SEPARATOR, "/", __DIR__))) . "/"; $layer_path = dirname($project_path) . "/"; $presentation_id = substr($project_path, strlen($layer_path), -1); $project_default_template = "main"; $project_with_auto_view = true; $log_level = 3; define("IS_SYSTEM_PHPFRAMEWORK", true); ?>

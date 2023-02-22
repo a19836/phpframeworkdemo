@@ -2,6 +2,7 @@ var saved_template_obj_id = null;
 var saved_head_code = null;
 var MyFancyPopupTemplatePreview = new MyFancyPopupClass();
 var MyFancyPopupEditWebrootFile = new MyFancyPopupClass();
+var give_priority_to_original_project_url_prefix = true; //set this to true so the method edit_page_and_template.js:convertProjectUrlRealValuesToPHPVars can replace the project url with the $original_project_url_prefix var.
 
 $(function () {
 	var init_finished = false;
@@ -44,6 +45,8 @@ $(function () {
 			
 			//load sla settings
 			loadPageAndTemplateLayoutSLASettings(regions_blocks_includes_settings, false);
+			
+			init_finished = true;
 		}, 10);
 		
 		//init page template layout

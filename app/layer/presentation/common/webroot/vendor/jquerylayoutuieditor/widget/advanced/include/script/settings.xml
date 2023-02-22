@@ -166,6 +166,18 @@
 				src = src.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
 				code = code.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
 				
+				/* DEPRECATED bc the code below will remove all end lines and then execute the MyHtmlBeautify.beautify
+				//add first and last end line removed from trim code on onCreateTemplateWidget
+				if (code)
+					code = code.replace(/^([^\n])/, "\n$1").replace(/([^\n])$/, "$1\n");
+				
+				//prepare prefix tabs by adding them
+				var prefix = widget.data("prefix");
+				
+				if (prefix)
+					code = code.replace(/\n/g, "\n" + prefix);
+				*/
+				
 				//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
 				src = src.replace(/\u2003/g, "\t"); 
 				code = code.replace(/\u2003/g, "\t"); 
@@ -216,6 +228,20 @@
 						if (code.indexOf("<!--?") != -1)
 							code = code.replace(/<!--\?/g, '<?').replace(/\?-->/g, '?>');
 						
+						//prepare prefix tabs by removing the tabs that don't matter
+						var m = code.match(/^\r?\n(\s+)/);
+						
+						if (m && m[1]) {
+							var prefix = m[1];
+							var regex = new RegExp("(\r?\n)" + prefix, "g");
+							code = code.replace(regex, "$1");
+							
+							widget.data("prefix", prefix);
+						}
+						
+						//remove first and last white spaces - trim code
+						code = code.replace(/^\s+/g, "").replace(/\s+$/g, "");
+						
 						//show code
 						content.html( code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
 						
@@ -244,6 +270,10 @@
 						
 						ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
 					});
+				
+				//only allows paste with text, discarding the html. Html is not allowed here.
+				ui_creator.setPasteCallbackForOnlyText(file);
+				ui_creator.setPasteCallbackForOnlyText(content);
 			};
 			
 			me.onOpenWidgetSettings = function(widget, menu_settings) {

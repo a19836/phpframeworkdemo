@@ -24,10 +24,12 @@
 		.layout-ui-editor > .menu-settings.menu-settings-php .settings-id,
 		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-classes,
 		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-properties,
+		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-widget,
 		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-general,
 		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-dimension,
 		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-typography,
 		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-decorations,
+		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-events,
 		   .layout-ui-editor > .menu-settings.menu-settings-php .settings-extra {
 			display:none;
 		}
@@ -111,6 +113,12 @@
 				var text = widget.children("pre").html();
 				text = text.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
 				
+				//prepare prefix tabs by adding them
+				var prefix = widget.data("prefix");
+				
+				if (prefix)
+					text = text.replace(/\n/g, "\n" + prefix);
+				
 				//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
 				text = text.replace(/\u2003/g, "\t"); 
 				//console.log(text);
@@ -130,6 +138,21 @@
 					if (/^\/?(php|\?|\?=)$/i.test(node_name)) //This is for the cases: <php> or <?> or <?=>
 						text = '?php ' + text + ' ?';
 					
+					//prepare prefix tabs by removing the tabs that don't matter
+					var m = text.match(/^\?(php|=|)\r?\n(\s+)/);
+					
+					if (m && m[2]) {
+						var prefix = m[2];
+						var regex = new RegExp("(\r?\n)" + prefix, "g");
+						text = text.replace(regex, "$1");
+						
+						widget.data("prefix", prefix);
+					}
+					
+					//remove first and last white spaces - trim code
+					text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
+					
+					//prepare text
 					text = '&lt;' + text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") + '&gt;';
 					
 					span.html(text);
@@ -147,6 +170,9 @@
 					
 					ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
 				});
+				
+				//only allows paste with text, discarding the html. Html is not allowed here.
+				ui_creator.setPasteCallbackForOnlyText(span);
 			};
 			
 			me.onDropMenuWidget = function(menu_widget, widget, event, ui_obj) {

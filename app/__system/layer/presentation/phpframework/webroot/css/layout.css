@@ -707,6 +707,10 @@
   .taskflowchart.with_top_bar_menu.fixed_side_properties > .selected_connection_properties.collapsed_properties {
 	height:35px !important;
 }
+.taskflowchart.with_top_bar_menu.fixed_properties > .tasks_flow.task_properties_shown.task_properties_collapsed, 
+  .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_flow.connection_properties_shown.connection_properties_collapsed {
+	bottom:35px;
+}
 .taskflowchart.with_top_bar_menu > .selected_task_properties:before,
   .taskflowchart.with_top_bar_menu > .selected_connection_properties:before {
 	height:35px;
@@ -2463,7 +2467,8 @@ body .layout-ui-editor-menu-settings-context-menu li a:hover {
 	color:var(--main-iframe-color);
 }
 .in_popup .with_top_bar_tab > .tabs.tabs_icons li:not(.ui-tabs-active) {
-	background:#ccc;
+	background:rgba(255, 255, 255, .3);
+	color:var(--main-popup-header-color);
 }
 .tabs.tabs_icons li:not(.ui-tabs-active) {
 	height:calc(100% - 1px);

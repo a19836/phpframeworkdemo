@@ -449,6 +449,11 @@ function isGlobalVariablesCodeObjChanged() {
 	return saved_simple_form_settings_id != new_simple_form_settings_id;
 }
 
+function isGlobalVariablesCodeWithErrors() {
+	var errors = getEditorCodeErros();
+	return errors.length > 0;
+}
+
 function getGlobalVariablesCodeObj() {
 	var global_vars_obj = $(".global_vars_obj");
 	
@@ -488,7 +493,7 @@ function saveGlobalVariables() {
 		if (!window.is_save_func_running) {
 			window.is_save_func_running = true;
 			
-			if (is_from_auto_save_bkp && !isGlobalVariablesCodeObjChanged()) {
+			if (is_from_auto_save_bkp && (!isGlobalVariablesCodeObjChanged() || isGlobalVariablesCodeWithErrors())) {
 				resetAutoSave();
 				window.is_save_func_running = false;
 				return;

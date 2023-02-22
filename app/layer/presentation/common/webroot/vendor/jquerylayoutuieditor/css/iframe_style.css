@@ -57,13 +57,6 @@ body {
 
 /* GENERIC */
 
-.hidden {
-	display:none !important;
-}
-.hide-children > * {
-	display:none !important;
-}
-
 /* when dropping an element */
 .main-droppable.highlight {
 	-ms-box-shadow: inset 0px 0px 10px 5px rgba(0, 0, 0, 0.3) !important;
@@ -149,6 +142,34 @@ body {
 .template-widget.widget-hidden,
   .droppable.droppable-hidden {
 	display:none !important;
+}
+.template-widget.widget-children-hidden > * {
+	display:none !important;
+}
+
+.template-widget.widget-resize-n {
+	cursor:n-resize;
+}
+.template-widget.widget-resize-s {
+	cursor:s-resize;
+}
+.template-widget.widget-resize-e {
+	cursor:e-resize;
+}
+.template-widget.widget-resize-w {
+	cursor:w-resize;
+}
+.template-widget.widget-resize-ne {
+	cursor:ne-resize;
+}
+.template-widget.widget-resize-nw {
+	cursor:nw-resize;
+}
+.template-widget.widget-resize-se {
+	cursor:se-resize;
+}
+.template-widget.widget-resize-sw {
+	cursor:sw-resize;
 }
 
 /* MENU WIDGETS - HTML COMMENT */
@@ -1170,13 +1191,7 @@ body {
 	content:"xmp";
 }
 
-/* WIDGET RESOURCE MODALS */
-.modal.template-widget { /* very usefull to see the popups mainly the [data-widget-popup] elements */
-	display:block !important;
-	position:static !important;
-	background:rgba(0,0,0,.1) !important;
-	opacity:1 !important;
-}
+/* WIDGET RESOURCES */
 .template-widget[data-widget-resource-value]:empty,
   .template-widget[data-widget-item-attribute-field-view]:empty,
   .template-widget[data-widget-item-attribute-link-view]:empty,
@@ -1189,5 +1204,17 @@ body {
   .template-widget[data-widget-item-attribute-link-edit]:empty:after,
   .template-widget[data-widget-item-attribute-field-edit]:empty:not(input):not(textarea):not(select):after {
 	content:"dummy data" !important;
+}
+
+/* BOOTSTRAP */
+.template-widget.modal { /* very usefull to see the popups mainly the [data-widget-popup] elements */
+	display:block !important;
+	position:static !important;
+	background:rgba(0,0,0,.1) !important;
+	opacity:1 !important;
+}
+.template-widget.d-none { /* very usefull to see the popups mainly the [data-widget-popup] elements */
+	display:unset !important;
+	opacity:.1 !important;
 }
 

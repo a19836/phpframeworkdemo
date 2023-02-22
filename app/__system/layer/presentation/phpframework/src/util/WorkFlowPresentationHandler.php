@@ -482,53 +482,8 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					<label>VENDOR</label>
 					<ul url="' . $v828ff69e5c . '"></ul>
 				</li>
-			</ul>'; $pf8ed4912 = '
-			<div id="choose_property_variable_from_file_manager" class="myfancypopup choose_from_file_manager">
-				<div class="type">
-					<label>Variable Type:</label>
-					<select onChange="onChangePropertyVariableType(this)">
-						<option value="new_var">New Variable</option>
-						<option value="class_prop_var">Class Property Variable</option>
-						<option value="existent_var">Existent Variable</option>
-					</select>
-				</div>
-				<div class="variable_type new_var">
-					<div class="group">
-						<label>Group:</label>
-						<select>
-							<option value="">Local variable</option>
-							<option value="_GET">Variable from URL</option>
-							<option value="_POST">Variable from POST form</option>
-							<option value="_COOKIE">Variable from Cookies</option>
-							<option value="GLOBALS">Global variable</option>
-							<option value="_ENV">Environment variable</option>
-						</select>
-					</div>
-					<div class="name">
-						<label>Name:</label>
-						<input />
-						<span class="icon add" onClick="addNewVarSubGroupToProgrammingTaskChooseCreatedVariablePopup(this)" title="Add a sub group">Add</span>
-						<ul class="sub_group"></ul>
-					</div>
-				</div>
-				<div class="variable_type class_prop_var" style="display:none">
-					' . $v195d5f6856 . '
-					<div class="property">
-						<label>Property:</label>
-						<select></select>
-					</div>
-				</div>
-				<div class="variable_type existent_var" style="display:none">
-					<div class="variable">
-						<label>Variable:</label>
-						<select></select>
-					</div>
-				</div>
-				<div class="button">
-					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
-				</div>
-			</div>
-	
+			</ul>'; $pf8ed4912 = self::mb112bf1b7769($v195d5f6856) . '
+			
 			<div id="choose_method_from_file_manager" class="myfancypopup choose_from_file_manager">
 				' . $v195d5f6856 . '
 				<div class="method">
@@ -590,8 +545,48 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 					<label>VENDOR</label>
 					<ul url="' . $v828ff69e5c . '"></ul>
 				</li>
-			</ul>'; $pf8ed4912 = '
-			<div id="choose_property_variable_from_file_manager" class="myfancypopup choose_from_file_manager">
+			</ul>'; $pf8ed4912 = self::mb112bf1b7769($v195d5f6856) . '
+			
+			<div id="choose_method_from_file_manager" class="myfancypopup choose_from_file_manager">
+				' . $v195d5f6856 . '
+				<div class="method">
+					<label>Method:</label>
+					<select></select>
+				</div>
+				<div class="button">
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
+				</div>
+			</div>
+	
+			<div id="choose_function_from_file_manager" class="myfancypopup choose_from_file_manager">
+				' . $v195d5f6856 . '
+				<div class="function">
+					<label>Function:</label>
+					<select></select>
+				</div>
+				<div class="button">
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
+				</div>
+			</div>
+	
+			<div id="choose_file_from_file_manager" class="myfancypopup choose_from_file_manager">
+				' . $v195d5f6856 . '
+				<div class="button">
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
+				</div>
+			</div>
+	
+			<div id="choose_block_from_file_manager" class="myfancypopup choose_from_file_manager">
+				<ul class="mytree">'; if (isset($pb0e92e25)) foreach ($pb0e92e25 as $v7aeaf992f5) { $pf8ed4912 .= '
+					<li>
+						<label>' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</label>
+						<ul url="' . str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pf7b73b3a)) . '"></ul>
+					</li>'; } $pf8ed4912 .= '
+				</ul>
+				<div class="button">
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
+				</div>
+			</div>'; return $pf8ed4912; } private static function mb112bf1b7769($v195d5f6856) { return '<div id="choose_property_variable_from_file_manager" class="myfancypopup choose_from_file_manager">
 				<div class="type">
 					<label>Variable Type:</label>
 					<select onChange="onChangePropertyVariableType(this)">
@@ -632,51 +627,18 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 						<select></select>
 					</div>
 				</div>
+				
+				<div class="variable_settings new_var existent_var">
+					<div class="convert_to_hash_tag">
+						<label>Convert to HashTag:</label>
+						<input type="checkbox" value="1" />
+					</div>
+				</div>
+				
 				<div class="button">
 					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
-			</div>
-	
-			<div id="choose_method_from_file_manager" class="myfancypopup choose_from_file_manager">
-				' . $v195d5f6856 . '
-				<div class="method">
-					<label>Method:</label>
-					<select></select>
-				</div>
-				<div class="button">
-					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
-				</div>
-			</div>
-	
-			<div id="choose_function_from_file_manager" class="myfancypopup choose_from_file_manager">
-				' . $v195d5f6856 . '
-				<div class="function">
-					<label>Function:</label>
-					<select></select>
-				</div>
-				<div class="button">
-					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
-				</div>
-			</div>
-	
-			<div id="choose_file_from_file_manager" class="myfancypopup choose_from_file_manager">
-				' . $v195d5f6856 . '
-				<div class="button">
-					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
-				</div>
-			</div>
-	
-			<div id="choose_block_from_file_manager" class="myfancypopup choose_from_file_manager">
-				<ul class="mytree">'; if (isset($pb0e92e25)) foreach ($pb0e92e25 as $v7aeaf992f5) { $pf8ed4912 .= '
-					<li>
-						<label>' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</label>
-						<ul url="' . str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pf7b73b3a)) . '"></ul>
-					</li>'; } $pf8ed4912 .= '
-				</ul>
-				<div class="button">
-					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
-				</div>
-			</div>'; return $pf8ed4912; } private static function f7b6f77050d($v8ffce2a791, $pa0462a8e, $v6e9af47944, $v9fda9fad47, $pf864769c, $paf75a67c, $pb0e92e25) { $pec746181 = array($v6e9af47944, $v9fda9fad47, $pf864769c, $paf75a67c, $pb0e92e25); foreach ($pec746181 as $pa8b0de28) if ($pa8b0de28) foreach ($pa8b0de28 as $v1e79db4422) { $v2b2cf4c0eb = $v1e79db4422[0]; $pf2073d1f = $v1e79db4422[1]; $pef1b7ad7 = $v1e79db4422[2]; if ($pf2073d1f == $pa0462a8e && $pef1b7ad7 == $v8ffce2a791) return $v2b2cf4c0eb; } return $v8ffce2a791; } private static function f15bc1b79f6($pf7b73b3a, $pb0e92e25) { $pf8ed4912 = ''; if (isset($pb0e92e25)) { $pc37695cb = count($pb0e92e25); $pf8ed4912 .='<div id="choose_page_url_from_file_manager" class="myfancypopup choose_from_file_manager">
+			</div>'; } private static function f7b6f77050d($v8ffce2a791, $pa0462a8e, $v6e9af47944, $v9fda9fad47, $pf864769c, $paf75a67c, $pb0e92e25) { $pec746181 = array($v6e9af47944, $v9fda9fad47, $pf864769c, $paf75a67c, $pb0e92e25); foreach ($pec746181 as $pa8b0de28) if ($pa8b0de28) foreach ($pa8b0de28 as $v1e79db4422) { $v2b2cf4c0eb = $v1e79db4422[0]; $pf2073d1f = $v1e79db4422[1]; $pef1b7ad7 = $v1e79db4422[2]; if ($pf2073d1f == $pa0462a8e && $pef1b7ad7 == $v8ffce2a791) return $v2b2cf4c0eb; } return $v8ffce2a791; } private static function f15bc1b79f6($pf7b73b3a, $pb0e92e25) { $pf8ed4912 = ''; if (isset($pb0e92e25)) { $pc37695cb = count($pb0e92e25); $pf8ed4912 .='<div id="choose_page_url_from_file_manager" class="myfancypopup choose_from_file_manager">
 				<div class="broker' . ($pc37695cb == 1 ? " single_broker" : "") . '">
 					<label>Broker:</label>
 					<select onChange="updateLayerUrlFileManager(this)">'; for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $pb0e92e25[$v43dd7d0051]; $pf8ed4912 .= '<option bean_file_name="' . $v7aeaf992f5[1] . '" bean_name="' . $v7aeaf992f5[2] . '" value="' . $v7aeaf992f5[0] . '">' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</option>'; } $pf8ed4912 .= '
@@ -688,8 +650,14 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 						<ul layer_url="' . $pf7b73b3a . '"></ul>
 					</li>
 				</ul>
+				<div class="query_string_attributes">
+					<label>Query String: <span class="icon add" onClick="addUrlQueryStringAttribute(this)">Add</span></label>
+					<ul>
+						<li class="empty_query_string_attributes">No query attributes yet...</li>
+					</ul>
+				</div>
 				<div class="button">
-					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
+					<input type="button" value="Update" onClick="IncludePageUrlFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 			

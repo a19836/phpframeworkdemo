@@ -40,10 +40,12 @@
 		.layout-ui-editor > .menu-settings.menu-settings-region-block .settings-id,
 		   .layout-ui-editor > .menu-settings.menu-settings-region-block .settings-classes,
 		   .layout-ui-editor > .menu-settings.menu-settings-region-block .settings-properties,
+		   .layout-ui-editor > .menu-settings.menu-settings-region-block .settings-widget,
 		   .layout-ui-editor > .menu-settings.menu-settings-region-block .settings-general,
 		   .layout-ui-editor > .menu-settings.menu-settings-region-block .settings-dimension,
 		   .layout-ui-editor > .menu-settings.menu-settings-region-block .settings-typography,
 		   .layout-ui-editor > .menu-settings.menu-settings-region-block .settings-decorations,
+		   .layout-ui-editor > .menu-settings.menu-settings-region-block .settings-events,
 		   .layout-ui-editor > .menu-settings.menu-settings-region-block .settings-extra {
 			display:none;
 		}

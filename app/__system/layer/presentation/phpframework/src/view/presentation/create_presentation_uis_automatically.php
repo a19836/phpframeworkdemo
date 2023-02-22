@@ -258,7 +258,7 @@ include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilP
 					<tr>
 						<td class="status"><input type="checkbox" name="active_brokers[' . $broker_name . ']" value="1" checked /></td>
 						<td class="name">' . $broker_name . ' (' . $broker_type_label . ') </td>
-						<td class="path">' . (is_a($broker, "IDBBrokerClient") ? '' : '<input type="text" name="active_brokers_folder[' . $broker_name . ']" value="" placeHolder="write folder path here" />') . '</td>
+						<td class="path">' . (is_a($broker, "IDBBrokerClient") ? '' : '<input type="text" name="active_brokers_folder[' . $broker_name . ']" value="' . $broker_path_to_filter . '" placeHolder="write folder path here" />') . '</td>
 					</tr>'; } $main_content .= '</table>
 			</div>
 			<div class="users_permissions">

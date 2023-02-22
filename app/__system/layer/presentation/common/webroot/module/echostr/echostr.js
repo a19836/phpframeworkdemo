@@ -1,5 +1,6 @@
 var timeout_id = null;
 var saved_str_id = null;
+var is_code_type = false;
 
 $(function () {
 	$(window).unbind('beforeunload').bind('beforeunload', function () {
@@ -77,6 +78,7 @@ function loadEchoStrBlockSettings(settings_elm, settings_values) {
 	
 	var tasks_values = convertBlockSettingsValuesIntoBasicArray(settings_values);
 	var value = prepareFieldValueIfValueTypeIsString(tasks_values["str"]);
+	is_code_type = tasks_values["str"] && value == tasks_values["str"];
 	
 	echostr_settings.children("textarea.module_settings_property").val(value);
 	echostr_settings.find(" > .editor > textarea").val(value);
@@ -109,9 +111,24 @@ function createLayoutUIEditor(textarea) {
 			var PtlLayoutUIEditor = new LayoutUIEditor();
 			PtlLayoutUIEditor.options.ui_element = ui;
 			PtlLayoutUIEditor.options.template_source_editor_save_func = saveEchoStrSettings;
-			PtlLayoutUIEditor.options.on_choose_variable_func = typeof onProgrammingTaskChooseCreatedVariable == "function" ? onProgrammingTaskChooseCreatedVariable : null;
+			PtlLayoutUIEditor.options.on_choose_variable_func = typeof onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute == "function" ? onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute : (
+				typeof onProgrammingTaskChooseCreatedVariable == "function" ? onProgrammingTaskChooseCreatedVariable : null
+			);
 			PtlLayoutUIEditor.options.on_choose_page_url_func = typeof onIncludePageUrlTaskChooseFile == "function" ? onIncludePageUrlTaskChooseFile : null;
 			PtlLayoutUIEditor.options.on_choose_image_url_func = typeof onIncludeImageUrlTaskChooseFile == "function" ? onIncludeImageUrlTaskChooseFile : null;
+			
+			//set the convert php vars to url, but only if the code is not php type, where we will have: ' somehting ' . $project_url_prefix . ' something '
+			if (!is_code_type) { 
+				if (typeof convertProjectUrlPHPVarsToRealValues == "function")
+					PtlLayoutUIEditor.options.on_convert_project_url_php_vars_to_real_values_func = function(str) {
+						return convertProjectUrlPHPVarsToRealValues(str, true);
+					};
+				
+				if (typeof convertProjectUrlRealValuesToPHPVars == "function")
+					PtlLayoutUIEditor.options.on_convert_project_url_real_values_to_php_vars_func = function(str) {
+						return convertProjectUrlRealValuesToPHPVars(str);
+					};
+			}
 			
 			initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor);
 			

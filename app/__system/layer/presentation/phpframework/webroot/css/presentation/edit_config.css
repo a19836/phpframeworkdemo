@@ -20,7 +20,7 @@
 .config_obj #code textarea,
   .config_obj #code .ace_editor, 
   .config_obj #ui .taskflowchart {
-	height:calc(100vh - 55px) !important;
+	height:calc(100vh - 50px) !important;
 	box-sizing:border-box; /* bc of the .ace_editor */
 }
 

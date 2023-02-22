@@ -96,6 +96,12 @@
 
 /* SOME DEFAULT ICONS */
 
+.icon.logs_console {
+	width:18px;
+}
+.icon.logs_console::before {
+	content:"\f26c";
+}
 .icon.question::before {
 	content:"\f059";
 }

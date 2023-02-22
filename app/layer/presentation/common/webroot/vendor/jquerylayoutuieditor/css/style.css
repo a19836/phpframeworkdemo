@@ -1816,7 +1816,7 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	direction:ltr !important;
 }
 
-.layout-ui-editor > .menu-settings .enlarged_field {
+.layout-ui-editor > .menu-settings .enlarged-field {
 	width:100%;
 	min-height:20px;
 	/*padding:5px;*/
@@ -1826,13 +1826,14 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	text-align:right;
 	z-index:1;
 }
-.layout-ui-editor > .menu-settings .enlarged_field input, 
-  .layout-ui-editor > .menu-settings .enlarged_field select, 
-  .layout-ui-editor > .menu-settings .enlarged_field textarea {
+.layout-ui-editor > .menu-settings .enlarged-field input, 
+  .layout-ui-editor > .menu-settings .enlarged-field select, 
+  .layout-ui-editor > .menu-settings .enlarged-field textarea {
 	width:calc(100% - 18px) !important;
 	height:100%;
+	padding:0 !important; /* bc of padding right of input parents - bc of the icons on the right side */
 }
-.layout-ui-editor > .menu-settings .enlarged_field .enlarged-field-close {
+.layout-ui-editor > .menu-settings .enlarged-field .enlarged-field-close {
 	margin-left:8px;
 	font-weight:bold;
 	cursor:pointer;
@@ -1866,6 +1867,9 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
   .layout-ui-editor.fixed-side-properties > .menu-settings.collapsed {
 	height:35px !important;
 	top:auto !important;
+}
+.layout-ui-editor.fixed-properties > .menu-settings.collapsed:not(.full-screen),
+  .layout-ui-editor.fixed-side-properties > .menu-settings.collapsed:not(.full-screen) {
 	overflow:hidden;
 }
 .layout-ui-editor.reverse.fixed-side-properties > .menu-settings {
@@ -2379,6 +2383,7 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	right:10px;
 	top:10px;
 	cursor:pointer;
+	z-index:1;
 }
 .layout-ui-editor .template-widget-source-popup textarea {
 	width:100% !important;
@@ -2388,6 +2393,10 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	resize:none;
 	box-sizing:border-box !important;
 	font-size:80%;
+}
+.layout-ui-editor .template-widget-source-popup .ace_editor {
+	height:100%;
+	margin:0;
 }
 
 /* MESSAGES */

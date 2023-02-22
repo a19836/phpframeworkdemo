@@ -697,10 +697,14 @@ function showError(msg) {
 }
 
 function createRegionBlockHtmlEditor(block_html, opts) {
-	var parent_body = block_html.closest("body"); //this is very important, bc if the textarea does not exists yet, this is, if was not added to the DOM yet, does not create the editor. Which means the textarea creation must be done in manually in all the addRepeatedRegionBlock methods.
+	var is_wyswyg_editor = block_html.classList.contains("editor");
 	
-	if (parent_body)
-		parent.createRegionBlockHtmlWyswygEditor(block_html, opts);
+	if (is_wyswyg_editor) {
+		var parent_body = block_html.closest("body"); //this is very important, bc if the textarea does not exists yet, this is, if was not added to the DOM yet, does not create the editor. Which means the textarea creation must be done in manually in all the addRepeatedRegionBlock methods.
+		
+		if (parent_body && !parent.hasRegionBlockHtmlEditor(block_html))
+			parent.createRegionBlockHtmlWyswygEditor(block_html, opts);
+	}
 }
 
 function onChangeRegionBlock(elm) {
@@ -837,7 +841,6 @@ function prepareNewRegion(new_region) {
 		filterSelectorInNodes(children, ".delete").setAttribute("onClick", "deleteRegionBlock(this)");
 		
 		var block_html = filterSelectorInNodes(new_region.childNodes, ".block_html");
-		block_html.classList.remove("editor");
 		
 		prepareRegionBlockConflictsWithLayoutUIEditor(new_region);
 		prepareRegionBlockOverHandlers(new_region);

@@ -1287,9 +1287,9 @@
       })(this);
       xhr.onerror = (function(_this) {
         return function() {
-          if (files[0].status === Dropzone.CANCELED) {
+          /*if (files[0].status === Dropzone.CANCELED) {
             return;
-          }
+          }*/ //Commented by JP 2023-02-22
           return handleError();
         };
       })(this);

@@ -2029,8 +2029,13 @@ function onSLAProgrammingTaskChooseCreatedVariable(elm) {
 	if (target_field[0]) {
 		var popup = $("#choose_property_variable_from_file_manager");
 		
+		//hide variable_settings bc it doesn't matter. Note that the onChangePropertyVariableType method (called below), shows the variable_settings, so we need to remove the proper classes
+		var variable_settings = popup.children(".variable_settings");
+		variable_settings.removeClass("new_var existent_var");
+		
 		//hide option 2 bc it doesn't matter
-		popup.find(" > .type > select > option[value=class_prop_var]").hide();
+		var class_prop_var_option = popup.find(" > .type > select > option[value=class_prop_var]");
+		class_prop_var_option.hide();
 		
 		//add new list option
 		var option_get = popup.find(" > .new_var > .group > select > option[value=_GET]");
@@ -2053,6 +2058,10 @@ function onSLAProgrammingTaskChooseCreatedVariable(elm) {
 					//update ProgrammingTaskUtil.variables_in_workflow
 					updateSLAProgrammingTaskVariablesInWorkflow(popup);
 				}, 100);
+			},
+			onClose: function() {
+				class_prop_var_option.show();
+				variable_settings.addClass("new_var existent_var").show();
 			},
 			
 			targetField: target_field[0],

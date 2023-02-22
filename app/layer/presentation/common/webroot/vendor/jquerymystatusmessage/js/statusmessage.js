@@ -11,8 +11,8 @@ var StatusMessageHandler = {
 		});
 	},
 	
-	showMessage : function(message) {
-		var status_message = this.getMessageElement(message, "status_message_info");
+	showMessage : function(message, message_class) {
+		var status_message = this.getMessageElement(message, "status_message_info" + (message_class ? " " + message_class : ""));
 		
 		try { //if message contains a full html page with head and body we will get a javascript error. So we need to catch it.
 			if (!status_message.parent().is(this.message_html_obj))
@@ -30,8 +30,8 @@ var StatusMessageHandler = {
 		return status_message;
 	},
 
-	showError : function(message) {
-		var status_message = this.getMessageElement(message, "status_message_error");
+	showError : function(message, message_class) {
+		var status_message = this.getMessageElement(message, "status_message_error" + (message_class ? " " + message_class : ""));
 		
 		try { //if message contains a full html page with head and body we will get a javascript error. So we need to catch it.
 			if (!status_message.parent().is(this.message_html_obj))
@@ -60,8 +60,12 @@ var StatusMessageHandler = {
 		var parts = message.split("\n");
 		var height = parts.length * 20 + (message.indexOf("<br") != -1 ? message.split("<br").length * 20 : 0);
 		
-		////prepare message element
-		if (last_msg_elm.is("." + message_class) && last_msg_elm.data("created_time") + 1500 > created_time) { //if there is already a message created in the previous 1.5seconds, combine this text with that message element.
+		//prepare message_class
+		message_class = message_class.replace(/\s+/g, " ").replace(/^\s+/g, "").replace(/\s+$/g, "");
+		var message_class_selector = message_class.replace(/ /g, ".");
+		
+		//prepare message element
+		if (last_msg_elm.is("." + message_class_selector) && last_msg_elm.data("created_time") + 1500 > created_time) { //if there is already a message created in the previous 1.5seconds, combine this text with that message element.
 			status_message = last_msg_elm;
 			status_message.children(".close_message").last().before( "<br/>" + message.replace(/\n/g, "<br/>") );
 			

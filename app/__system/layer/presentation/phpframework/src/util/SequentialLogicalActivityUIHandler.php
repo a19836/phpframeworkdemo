@@ -396,7 +396,7 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 				
 				<div class="logged_user_id">
 					<label>Logged User Id:</label>
-					<input type="text" placeHolder="$GLOBALS[\'logged_user_id\']" />
+					<input type="text" placeHolder="eg: $GLOBALS[\'logged_user_id\']" />
 					<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
 				</div>
 				

@@ -65,6 +65,8 @@ if ($UserCacheHandler) {
 		//echo "cached_file_path:$cached_file_path:".file_exists($cached_file_path);die();
 		
 		if (file_exists($cached_file_path)) {
+			//echo file_get_contents($cached_file_path); die();
+			
 			include $cached_file_path;
 			$file_included = true;
 		}
@@ -75,6 +77,7 @@ if (!$file_included) {
 	$main_contents = "";
 	
 	//PREPARE ENTITIES
+	$old_vars = get_defined_vars();
 	$entities = $EVC->getEntities();
 	$entities_params = $EVC->getEntitiesParams();
 	
@@ -87,9 +90,11 @@ if (!$file_included) {
 			$entity = substr($entity, 0, 1) == "/" ? $entity : $page_prefix . $entity;
 			$entity_path = $EVC->getEntityPath($entity, $entity_project_id);
 			
+			$new_vars = get_defined_vars();
+			
 			if (file_exists($entity_path)) {
 				$contents = file_get_contents($entity_path);
-				$parsed_contents = parseFileContents($contents);
+				$parsed_contents = parseFileContents($EVC, $contents);
 				
 				if ($contents != $parsed_contents) {
 					$temp = tmpfile();
@@ -103,6 +108,16 @@ if (!$file_included) {
 				else
 					include $entity_path;
 				
+				//add entity vars for the cache, otherwise when we run the SLAs or the blocks, we won't have the $entity_path and other vars inited.
+				$diff_vars = array_diff_key($new_vars, $old_vars);
+				unset($diff_vars["old_vars"]);
+				
+				$main_contents .= "<?php";
+				foreach ($diff_vars as $var_name => $var_value)
+					$main_contents .= "\n\$$var_name = " . var_export($var_value, true) . ";";
+				$main_contents .= "\n?>";
+				
+				//add entity file contents
 				$main_contents .= $parsed_contents;
 			}
 			else {
@@ -117,6 +132,7 @@ if (!$file_included) {
 	}
 
 	//PREPARE TEMPLATES
+	$old_vars = get_defined_vars();
 	$templates = $EVC->getTemplates();
 	$templates_params = $EVC->getTemplatesParams();
 
@@ -128,9 +144,11 @@ if (!$file_included) {
 			$template_project_id = $template_params ? $template_params["project_id"] : false;
 			$template_path = $EVC->getTemplatePath($template, $template_project_id);
 			
+			$new_vars = get_defined_vars();
+			
 			if (file_exists($template_path)) {
 				$contents = file_get_contents($template_path);
-				$parsed_contents = parseFileContents($contents);
+				$parsed_contents = parseFileContents($EVC, $contents);
 				
 				if ($contents != $parsed_contents) {
 					$temp = tmpfile();
@@ -144,6 +162,16 @@ if (!$file_included) {
 				else
 					include $template_path;
 				
+				//add template vars, otherwise when we run the SLAs or the blocks, we won't have the $entity_path and other vars inited.
+				$diff_vars = array_diff_key($new_vars, $old_vars);
+				unset($diff_vars["old_vars"]);
+				
+				$main_contents .= "<?php";
+				foreach ($diff_vars as $var_name => $var_value)
+					$main_contents .= "\n\$$var_name = " . var_export($var_value, true) . ";";
+				$main_contents .= "\n?>";
+				
+				//add template file contents
 				$main_contents .= $parsed_contents;
 			}
 			else {
@@ -166,7 +194,9 @@ if (!$file_included) {
 
 ob_end_clean();
 
-//if ($file_included) echo "from cache\n<br>";
+//if ($file_included) {echo "from cache\n<br>"; die();}
+//if ($file_included) {echo file_get_contents($cached_file_path); die();}
+
 //print_r($EVC->getCMSLayer()->getCMSSequentialLogicalActivityLayer()->getSLASettings());die();
 
 $output = $EVC->getCMSLayer()->getCMSSequentialLogicalActivityLayer()->executeSequentialLogicalActivities(); //This method only executes the sla_settings once, if they were not executed yet.
@@ -185,25 +215,31 @@ if ($sla_results && array_key_exists($resource_name, $sla_results)) {
 }
 
 //note that we sould leave the includes bc the sla might be inside of another files. However we should remove the includes for blocks, bc we don't want to execute the blocks.
-function parseFileContents($contents) {
-	//remove include block from entity code
-	$includes_block = CMSFileHandler::getIncludesBlock($contents);
-	//echo "<pre>";print_r($includes_block);die();
-	$t = count($includes_block);
+function parseFileContents($EVC, $contents) {
+	preg_match("/->setIncludeBlocksWhenCallingResources\(([^)]+)\)/", $contents, $matches, PREG_OFFSET_CAPTURE);
+	$include_blocks_when_calling_resources = $matches && !preg_match("/(\"\"|''|\"0\"|'0'|0|false)/i", $matches[1][0]);
+	//echo "include_blocks_when_calling_resources:$include_blocks_when_calling_resources";print_r($matches);die();
 	
-	for ($i = 0; $i < $t; $i++) {
-		$include_block_code = $includes_block[$i]["match"];
-		$contents = str_replace($include_block_code, "", $contents);
-	}
-	
-	//remove echo of hard coded blocks from entity code
-	$hard_coded_regions_blocks = CMSFileHandler::getHardCodedRegionsBlocks($contents);
-	//echo "<pre>";print_r($hard_coded_regions_blocks);die();
-	$t = count($hard_coded_regions_blocks);
-	
-	for ($i = 0; $i < $t; $i++) {
-		$hard_coded_region_block_code = $hard_coded_regions_blocks[$i]["match"];
-		$contents = str_replace($hard_coded_region_block_code, '""', $contents);
+	if (!$include_blocks_when_calling_resources) {
+		//remove include block from entity code
+		$includes_block = CMSFileHandler::getIncludesBlock($contents);
+		//echo "<pre>";print_r($includes_block);die();
+		$t = count($includes_block);
+		
+		for ($i = 0; $i < $t; $i++) {
+			$include_block_code = $includes_block[$i]["match"];
+			$contents = str_replace($include_block_code, "", $contents);
+		}
+		
+		//remove echo of hard coded blocks from entity code - This is created when the user drags and drops the widget from module_block.xml in the LayoutUIEditor of the edit_entity_simple.php and edit_template_simple.php
+		$hard_coded_regions_blocks = CMSFileHandler::getHardCodedRegionsBlocks($contents);
+		//echo "<pre>";print_r($hard_coded_regions_blocks);die();
+		$t = count($hard_coded_regions_blocks);
+		
+		for ($i = 0; $i < $t; $i++) {
+			$hard_coded_region_block_code = $hard_coded_regions_blocks[$i]["match"];
+			$contents = str_replace($hard_coded_region_block_code, '""', $contents);
+		}
 	}
 	
 	//reset all template regions
@@ -222,6 +258,7 @@ function parseFileContents($contents) {
 			$reset_region_code .= "\$EVC->getCMSLayer()->getCMSTemplateLayer()->resetRegion($region_code);\n";
 		}
 	}
+	//echo "<pre>";print_r($repeated_region_code);die();
 	
 	if ($reset_region_code)
 		$contents .= "<?php\n$reset_region_code?>";

@@ -101,7 +101,7 @@ class CommonModuleUtil {
 						}
 					}
 				
-					$html = $HtmlDomHandler->getHtml();
+					$html = $HtmlDomHandler->getHtmlExact();
 				}
 			}
 		}

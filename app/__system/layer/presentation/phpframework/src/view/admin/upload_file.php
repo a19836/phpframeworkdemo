@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include $EVC->getUtilPath("BreadCrumbsUIHandler"); $upload_url = $project_url_prefix . "admin/manage_file?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path&action=upload&item_type=$item_type"; $on_success_js_func = $on_success_js_func ? $on_success_js_func : "refreshAndShowLastNodeChilds"; $head = '
+include $EVC->getUtilPath("BreadCrumbsUIHandler"); $upload_url = $project_url_prefix . "admin/manage_file?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$path&action=upload&item_type=$item_type"; $on_success_js_func = $on_success_js_func ? $on_success_js_func : "refreshAndShowLastNodeChilds"; $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -42,8 +42,11 @@ $(function() {
 	
 	var myDropzone = new Dropzone(".dropzone", {
 		success: function(file, response, progress_event) {
+			console.log(response);
 			if (response != 1) {
-				$(file.previewElement).removeClass("dz-success").addClass("dz-error").find(" > .dz-error-message > [data-dz-errormessage]").html(response ? response : default_error_msg);
+				var dz_error_message = $(file.previewElement).removeClass("dz-success").addClass("dz-error").children(".dz-error-message");
+				dz_error_message.addClass("show");
+				dz_error_message.children("[data-dz-errormessage]").html(response ? response : default_error_msg);
 				
 				//myDropzone.removeFile(file);
 			}
@@ -51,7 +54,9 @@ $(function() {
 				window.parent.' . $on_success_js_func . '();
 		},
 		error: function(file, response) {
-			$(file.previewElement).find(".dz-error-message > [data-dz-errormessage]").html(response ? response : default_error_msg);
+			var dz_error_message = $(file.previewElement).find(".dz-error-message");
+			dz_error_message.addClass("show");
+			dz_error_message.children("[data-dz-errormessage]").html(response ? response : default_error_msg);
 		}
 	});
 });

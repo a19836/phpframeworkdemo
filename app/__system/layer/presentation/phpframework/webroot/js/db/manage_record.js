@@ -192,6 +192,7 @@ function getPKsObj(manage_record) {
 
 function getAttributesObj(manage_record) {
 	manage_record = $(manage_record);
+	
 	var inputs = manage_record.children("table").find("input, select, textarea");
 	var obj = {};
 	
@@ -302,7 +303,14 @@ function createEditor(items) {
     $.each(items, function(idx, textarea) {
         if (textarea) {
             textarea = $(textarea);
+            var parent = textarea.parent();
             
+            //prepare textarea id for tabs below
+            if (!textarea[0].id)
+            	textarea[0].id = "textarea_" + textarea[0].name + "_" + parseInt(Math.random() * 1000000);
+            
+            var textarea_id = textarea[0].id;
+            var textarea_value = textarea.val();
             var h = parseInt(textarea.css("height"));
             var mh = parseInt(textarea.css("max-height"));
             mh = mh > 0 ? mh : $(window).height() - 200;
@@ -328,6 +336,53 @@ function createEditor(items) {
                image_title: false, // disable title field in the Image dialog
                image_description: false,// disable title field in the Image dialog
                convert_urls: false,// disable convert urls for images and other urls, this is, the url that the user inserts is the url that will be in the HTML.
+               setup: function(editor) {
+				editor.on('init', function(e) {
+					//set tabs
+			   		var tabs_id = "tabs_for_" + textarea_id;
+					
+					if (parent.children("#" + tabs_id).length == 0) {
+					  var tinymce_elm = parent.children(".mce-tinymce");
+					  var tinymce_id = tinymce_elm.attr("id");
+					  
+					  if (tinymce_id) {
+					  	var cloned_textarea_id = "cloned_" + textarea_id;
+						var cloned_textarea = $('<textarea class="cloned_textarea" id="' + cloned_textarea_id + '"></textarea>');
+						textarea.after(cloned_textarea);
+						
+						cloned_textarea.val(textarea_value);
+						cloned_textarea.attr("name", textarea.attr("name"));
+						textarea.removeAttr("name");
+						
+						var ul = $('<ul class="tabs tabs_transparent tabs_right" id="' + tabs_id + '">'
+							  + '<li><a href="#' + cloned_textarea_id + '">Code</a></li>'
+							  + '<li><a href="#' + tinymce_id + '">Editor</a></li>'
+						  + '</ul>');
+						
+						ul.find("li a[href='#" + tinymce_id + "']").click(function() {
+							tinyMCE.get(textarea_id).setContent( cloned_textarea.val() );
+							
+							if (cloned_textarea.attr("name")) {
+								textarea.attr("name", cloned_textarea.attr("name"));
+								cloned_textarea.removeAttr("name");
+							}
+						});
+						ul.find("li a[href='#" + cloned_textarea_id + "']").click(function() {
+							cloned_textarea.val( tinyMCE.get(textarea_id).getContent() );
+							
+							if (textarea.attr("name")) {
+								cloned_textarea.attr("name", textarea.attr("name"));
+								textarea.removeAttr("name");
+							}
+						});
+						tinymce_elm.before(ul);
+						
+						parent.tabs();
+						parent.closest("tr").addClass("with_editor");
+					  }
+					}
+				});
+			}
            }
            
            if (upload_url) {
@@ -431,13 +486,14 @@ function createEditor(items) {
                };
            }
            
-           textarea.tinymce(tinymce_opts);
+		textarea.tinymce(tinymce_opts);
    		
    		//set form on submit function. TinyMCE already does this, but only after our formChecker runs, which returns an error bc our formChecker detects that the textarea is empty.
-   		var f = textarea.parent().closest('form');
-   		var os = f.attr('onSubmit');
-   		if (!os || os.indexOf('tinyMCE.triggerSave()') == -1)
-   		    f.attr('onSubmit', 'tinyMCE.triggerSave();' + (os ? os : ''));
+		var f = parent.closest('form');
+		var os = f.attr('onSubmit');
+		
+		if (!os || os.indexOf('tinyMCE.triggerSave(this)') == -1)
+			f.attr('onSubmit', 'tinyMCE.triggerSave(this);' + (os ? os : ''));
        }
     });
 }

@@ -24,7 +24,7 @@ $choose_vendor_files_from_file_manager_url = $project_url_prefix . "admin/get_su
 $get_file_properties_url = $project_url_prefix . "phpframework/admin/get_file_properties?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&class_name=#class_name#&type=#type#";
 
 $js_head = '
-ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback = onProgrammingTaskChooseCreatedVariable;
+ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback = typeof onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute == "function" ? onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute : onProgrammingTaskChooseCreatedVariable;
 
 var choose_from_file_manager_popup_html = \'' . str_replace("\n", "", addcslashes(WorkFlowPresentationHandler::getChooseFromFileManagerPopupHtml($bean_name, $bean_file_name, $choose_bean_layer_files_from_file_manager_url, $choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, null, null, null, null, null, $presentation_brokers), "\\'")) . '\';
 ';

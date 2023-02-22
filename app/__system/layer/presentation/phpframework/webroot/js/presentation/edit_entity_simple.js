@@ -4,6 +4,8 @@ var show_popup_interval_id = null;
 var chooseProjectTemplateUrlFromFileManagerTree = null; //used by the create_presentation_uis_diagram.js and module/menu/show_menu/settings.js and others
 var MyFancyPopupEditTemplateFile = new MyFancyPopupClass();
 var MyFancyPopupEditWebrootFile = new MyFancyPopupClass();
+var is_code_html_base = false; //sets the callbacks (like on_choose_page_url_func and on_choose_image_url_func) in the edit_page_and_template.js to return the choosen file as an inline php code.
+var replace_inline_project_url_php_vars = true; //set this to true so the method edit_page_and_template.js:convertProjectUrlPHPVarsToRealValues can replace the inline vars: $project_url_prefix and $project_common_url_prefix with the real url values
 
 //var start = (new Date()).getTime();
 

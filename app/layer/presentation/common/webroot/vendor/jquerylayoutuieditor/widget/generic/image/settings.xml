@@ -74,6 +74,14 @@
 				clone.removeAttr("contenteditable", "false");
 				clone.removeAttr("draggable", "false");
 				
+				//parse src to convert url to vars: $project_url_prefix or $project_common_url_prefix
+				var src = clone.attr("src");
+				
+				if (src && typeof ui_creator.options.on_convert_project_url_real_values_to_php_vars_func == "function") {
+					src = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(src);
+					clone.attr("src", src);
+				}
+				
 				var html = ui_creator.getCleanedHtmlElement(clone[0]);
 				
 				clone.remove();
@@ -96,6 +104,15 @@
 			me.onCreateTemplateWidget = function(widget, html_element) {
 				if (!html_element) 
 					widget.attr("src", default_src);
+				else {
+					var src = widget.attr("src");
+					
+					//parse src in case it contains the $project_url_prefix or $project_common_url_prefix
+					if (src && typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function") {
+						src = ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(src);
+						widget.attr("src", src);
+					}
+				}
 				
 				//prepare non editable image
 				widget.attr("contenteditable", "false");
@@ -105,6 +122,10 @@
 			me.parseSettings = function(widget, widget_settings) {
 				widget_settings["src"] = widget.attr("src");
 				widget_settings["alt"] = widget.attr("alt");
+				
+				//parse src to convert url to vars: $project_url_prefix or $project_common_url_prefix
+				if (widget_settings["src"] && typeof ui_creator.options.on_convert_project_url_real_values_to_php_vars_func == "function")
+					widget_settings["src"] = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(widget_settings["src"]);
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {
@@ -122,8 +143,12 @@
 					else if (sprop.hasClass("src")) {
 						field_value = field_value.replace(/^\s+/g, "").replace(/\s+$/g, "");//trim url
 						
-						if (field_value != "")
+						if (field_value != "") {
+							//parse src in case it contains the $project_url_prefix or $project_common_url_prefix
+							field_value = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(field_value) : field_value;
+							
 							widget.attr("src", field_value);
+						}
 						else {
 							ui_creator.showError("Image src cannot be empty!");
 							field.val( widget.attr("src") );

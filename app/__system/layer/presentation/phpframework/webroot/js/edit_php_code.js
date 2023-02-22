@@ -12,6 +12,7 @@ var choosePageUrlFromFileManagerTree = null; //used by the create_presentation_u
 var chooseImageUrlFromFileManagerTree = null; //used by the create_presentation_uis_diagram.js and module/menu/show_menu/settings.js and others
 
 var TaskEditSourceFancyPopup = new MyFancyPopupClass();
+var IncludePageUrlFancyPopup = new MyFancyPopupClass();
 
 var brokers_db_drivers = {};
 var auto_scroll_active = true;
@@ -561,7 +562,7 @@ function onChangePropertyVariableType(elm) {
 	
 	var main_elm = elm.parent().parent();
 	
-	main_elm.children(".variable_type").hide();
+	main_elm.children(".variable_type, .variable_settings").hide();
 	main_elm.children("." + type).show();
 	
 	MyFancyPopup.updatePopup();
@@ -662,13 +663,20 @@ function chooseCreatedVariable(elm) {
 		}
 	}
 	
+	var convert_to_hash_tag = type_elm.find(".convert_to_hash_tag input").is(":checked");
+	convert_to_hash_tag = value && convert_to_hash_tag && type != "class_prop_var" && value.substr(0, 1) == '$';
+	
+	if (convert_to_hash_tag)
+		value = "#" + value.substr(1).replace(/\[("|')/g, "[").replace(/("|')\]/g, "]") + "#";
+	
 	var input = $(MyFancyPopup.settings.targetField);
 	input.val(value ? value : "");
 	
 	//update var_type if exists
-	var var_type = input.parent().parent().find(".var_type select");
-	var_type.val("");
-	var_type.trigger("change");
+	var var_type = convert_to_hash_tag ? "string" : "";
+	var var_type_select = input.parent().parent().find(".var_type select");
+	var_type_select.val(var_type);
+	var_type_select.trigger("change");
 	
 	//set value_type if exists and if only input name is simple without "]" and "[" chars:
 	var input_name = input.attr("name");
@@ -677,10 +685,14 @@ function chooseCreatedVariable(elm) {
 		var input_type = input.parent().children("select[name=" + input_name + "_type]");
 		
 		if (input_type[0])
-			input_type.val("");
+			input_type.val(var_type);
 	}
-	else if (input.is(".value") && input.parent().is(".item")) //in case of array items
-		input.parent().children(".value_type").val("");
+	else if (input.is(".value") && input.parent().is(".item")) { //in case of array items
+		var input_type = input.parent().children(".value_type");
+		
+		if (input_type[0])
+			input_type.val(var_type);
+	}
 	else if (input.is(".var") && input.parent().is(".item")) { //in case of conditions items
 		//fins the next sibling with class .var_type
 		var node = input;
@@ -689,7 +701,7 @@ function chooseCreatedVariable(elm) {
 			var next = node.next();
 			
 			if (next.hasClass("var_type")) {
-				next.val("");
+				next.val(var_type);
 				break;
 			}
 			
@@ -828,6 +840,7 @@ function onProgrammingTaskChooseObjectMethod(elm) {
 	MyFancyPopup.showPopup();
 }
 
+//Note that any change here must be replicated in admin_menu.js:onChooseWorkflowCallObjectMethodTask
 function chooseObjectMethod(elm) {
 	var popup = $("#choose_method_from_file_manager");
 	var select = popup.find(".method select");
@@ -871,6 +884,7 @@ function onProgrammingTaskChooseFunction(elm) {
 	MyFancyPopup.showPopup();
 }
 
+//Note that any change here must be replicated in admin_menu.js:onChooseWorkflowCallFunctionTask
 function chooseFunction(elm) {
 	var popup = $("#choose_function_from_file_manager");
 	var select = popup.find(".function select");
@@ -912,12 +926,16 @@ function onProgrammingTaskChooseClassName(elm) {
 	MyFancyPopup.showPopup();
 }
 
+//Note that any change here must be replicated in admin_menu.js:onChooseWorkflowCreateClassObjectTask
 function chooseClassName(elm, do_not_update_args) {
 	var node = chooseMethodFromFileManagerTree.getSelectedNodes();
 	node = node[0];
 	
 	if (node) {
 		var class_name = $(node).children("a").children("label").first().text();
+		
+		//set file path
+		setTaskIncludeFileFromSelectedNode(chooseMethodFromFileManagerTree);
 		
 		$(MyFancyPopup.settings.targetField).val(class_name ? class_name : "");
 		
@@ -969,6 +987,7 @@ function onIncludeFileTaskChooseFile(elm) {
 	MyFancyPopup.showPopup();
 }
 
+//Note that any change here must be replicated in admin_menu.js:onChooseWorkflowIncludeFileTask
 function chooseIncludeFile(elm) {
 	var node = chooseFileFromFileManagerTree.getSelectedNodes();
 	node = node[0];
@@ -1153,8 +1172,11 @@ function chooseIncludeBlock(elm) {
 //target_field is used by the workflow task: GetUrlContentsTaskPropertyObj
 function onIncludePageUrlTaskChooseFile(elm) {
 	var popup = $("#choose_page_url_from_file_manager");
+	var target = $(elm).parent().children("input");
 	
-	MyFancyPopup.init({
+	onUrlQueryString(elm, popup, target);
+	
+	IncludePageUrlFancyPopup.init({
 		elementToShow: popup,
 		parentElement: document,
 		onOpen: function() {
@@ -1164,16 +1186,21 @@ function onIncludePageUrlTaskChooseFile(elm) {
 			}
 		},
 		
-		targetField: $(elm).parent().children("input"),
+		targetField: target,
 		updateFunction: function(elm) {
 			chooseIncludePageUrl(elm);
 		}
 	});
 	
-	MyFancyPopup.showPopup();
+	IncludePageUrlFancyPopup.showPopup();
 }
 
 function chooseIncludePageUrl(elm) {
+	//prepare query string if exists
+	var popup = $("#choose_page_url_from_file_manager");
+	var exists_query_string_attributes = popup.find(".query_string_attributes").length > 0;
+	
+	//prepare selected node
 	var node = choosePageUrlFromFileManagerTree.getSelectedNodes();
 	node = node[0];
 	
@@ -1207,7 +1234,7 @@ function chooseIncludePageUrl(elm) {
 				}
 				
 				var url_str = project_path == "common/" ? "project_common_url_prefix" : "project_url_prefix";
-				var url = MyFancyPopup.settings.is_code_html_base ? "<?= $" + url_str + " ?>" : "{$" + url_str + "}";
+				var url = IncludePageUrlFancyPopup.settings.is_code_html_base ? "<?= $" + url_str + " ?>" : "{$" + url_str + "}";
 				url += project_path == "common/" ? "" : project_path;
 				var selected_project_name = project_path ? project_path.replace(/\/+$/g, "") : selected_project_id;
 				
@@ -1215,32 +1242,185 @@ function chooseIncludePageUrl(elm) {
 				if (typeof layers_projects_urls != "undefined" && $.isPlainObject(layers_projects_urls) && layers_projects_urls.hasOwnProperty(bean_name) && $.isPlainObject(layers_projects_urls[bean_name]) && layers_projects_urls[bean_name].hasOwnProperty(selected_project_name) && layers_projects_urls[bean_name][selected_project_name])
 					url = layers_projects_urls[bean_name][selected_project_name];
 				
-				var previous_url = MyFancyPopup.settings.targetField.val();
-				var m = previous_url ? previous_url.match(/[^<]\?[^>]/) : null;
-				var query_string = m ? previous_url.substr(m.index + 2) : ""; //m.index is the char before the "?"
 				url += entity_path;
 				
-				if (query_string != "") 
-					url += "?" + query_string;
+				//add query string
+				if (exists_query_string_attributes)
+					url = getUrlWithQueryStringFromAttributes(popup, url);
 				else {
-					var url_suffix = MyFancyPopup.settings.targetField.attr("url_suffix");
-					url += url_suffix ? url_suffix : "";
+					var previous_url = IncludePageUrlFancyPopup.settings.targetField.val();
+					var m = previous_url ? previous_url.match(/[^<]\?[^>]/) : null;
+					var query_string = m ? previous_url.substr(m.index + 2) : ""; //m.index is the char before the "?"
+					
+					if (query_string != "") 
+						url += "?" + query_string;
+					else {
+						var url_suffix = IncludePageUrlFancyPopup.settings.targetField.attr("url_suffix");
+						url += url_suffix ? url_suffix : "";
+					}
 				}
 				
-				MyFancyPopup.settings.targetField.val(url);
-				MyFancyPopup.settings.targetField.focus(); //if MyFancyPopup.settings.targetField is an input from the LayoutUIEditor, then we must set the cursor inside of that input, bc the value will onnly be updated in the html, with the onBlur event of that input. So we must first to focus it or trigger the onBlur event for that input element.
+				//set url in target
+				IncludePageUrlFancyPopup.settings.targetField.val(url);
+				IncludePageUrlFancyPopup.settings.targetField.focus(); //if IncludePageUrlFancyPopup.settings.targetField is an input from the LayoutUIEditor, then we must set the cursor inside of that input, bc the value will onnly be updated in the html, with the onBlur event of that input. So we must first to focus it or trigger the onBlur event for that input element.
 				
 				//update var_Type if exists
-				var var_type = MyFancyPopup.settings.targetField.parent().parent().find(".var_type select");
+				var var_type = IncludePageUrlFancyPopup.settings.targetField.parent().parent().find(".var_type select");
 				var_type.val("string");
 				var_type.trigger("change");
 				
-				MyFancyPopup.hidePopup();
+				IncludePageUrlFancyPopup.hidePopup();
 			}
 		}
 		else
 			alert("invalid selected file.\nPlease choose a valid file.");
 	}
+	else if (exists_query_string_attributes) { //update url with user query string in target event if no node selected. If no node selected, keep original url from target.
+		var url = IncludePageUrlFancyPopup.settings.targetField.val();
+		var pos = url.indexOf("?");
+		
+		//remove query string from url
+		if (pos != -1) 
+			url = url.substr(0, pos);
+		
+		//add user query string to url
+		url = getUrlWithQueryStringFromAttributes(popup, url);
+		
+		//set url in target
+		IncludePageUrlFancyPopup.settings.targetField.val(url);
+		IncludePageUrlFancyPopup.settings.targetField.focus(); //if IncludePageUrlFancyPopup.settings.targetField is an input from the LayoutUIEditor, then we must set the cursor inside of that input, bc the value will onnly be updated in the html, with the onBlur event of that input. So we must first to focus it or trigger the onBlur event for that input element.
+		
+		//update var_Type if exists
+		var var_type = IncludePageUrlFancyPopup.settings.targetField.parent().parent().find(".var_type select");
+		var_type.val("string");
+		var_type.trigger("change");
+		
+		IncludePageUrlFancyPopup.hidePopup();
+	}
+}
+
+function onUrlQueryString(elm, popup, target) {
+	//clean query_string_attributes
+	var query_string_attributes = popup.find(".query_string_attributes");
+	query_string_attributes.find(" > ul > li:not(.empty_query_string_attributes)").remove();
+	
+	//prepare url
+	var url = target.val();
+	
+	if (url) {
+		var add_icon = popup.find(".query_string_attributes .icon.add");
+		
+		try {
+			//try to get parameteres through URL
+			var url_obj = new URL(url);
+			
+			if (url_obj)
+				url_obj.searchParams.forEach(function(param_value, param_name) {
+					var item = addUrlQueryStringAttribute(add_icon[0]);
+					
+					item.find("input.attribute_name").val(param_name);
+					item.find("input.attribute_value").val(param_value);
+				});
+		}
+		catch(e) {
+			//If url is invalid for 'new URL' object, then try to get parameters through regex
+			var pos = url.indexOf("?");
+			
+			if (pos != -1) {
+				var query_string = url.substr(pos + 1);
+				
+				if (query_string) {
+					var regex = /&?([^=&]+)=([^&]*)&?/g;
+					var m;
+					
+					while ((m = regex.exec(query_string)) !== null) {
+						var item = addUrlQueryStringAttribute(add_icon[0]);
+						
+						item.find("input.attribute_name").val(m[1]);
+						item.find("input.attribute_value").val(m[2]);
+					}
+				}
+			}
+		}
+	}
+}
+
+function addUrlQueryStringAttribute(elm) {
+	var ul = $(elm).parent().closest(".query_string_attributes").children("ul");
+	ul.children(".empty_query_string_attributes").hide();
+	
+	var on_click_func = typeof ProgrammingTaskUtil != "undefined" && ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback ? "ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback" : "onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute";
+	
+	var html = '<li class="query_string_attribute">'
+				+ '<input class="attribute_name" placeHolder="Attribute name" />'
+				+ ' = '
+				+ '<input class="attribute_value" placeHolder="Attribute value" />'
+				+ '<span class="icon add_variable" onClick="' + on_click_func + '(this)"></span>'
+				+ '<span class="icon remove" onClick="removeUrlQueryStringAttribute(this)">Remove</span>'
+			+ '</li>';
+	var attribute = $(html);
+	
+	ul.append(attribute);
+	
+	return attribute;
+}
+
+function removeUrlQueryStringAttribute(elm) {
+	var li = $(elm).parent().closest("li");
+	var ul = li.parent();
+	
+	li.remove();
+	
+	if (ul.children("li:not(.empty_query_string_attributes)").length == 0)
+		ul.children("li.empty_query_string_attributes").show();
+}
+
+function getUrlQueryStringFromAttributes(popup) {
+	var query_string = "";
+	
+	if (popup && popup[0]) {
+		var query_string_attributes = popup.find(".query_string_attributes");
+		
+		if (query_string_attributes[0]) {
+			var lis = query_string_attributes.find(" > ul > li:not(.empty_query_string_attributes)");
+			
+			$.each(lis, function(idx, li) {
+				li = $(li);
+				var attribute_name = li.find("input.attribute_name").val();
+				var attribute_value = li.find("input.attribute_value").val();
+				
+				if (attribute_name.replace(/^\s+/g, "").replace(/\s+$/g, "").length > 0)
+					query_string += (query_string ? "&" : "") + attribute_name + "=" + attribute_value;
+			});
+		}
+	}
+	
+	return query_string;
+}
+
+function getUrlWithQueryStringFromAttributes(popup, url) {
+	var query_string = getUrlQueryStringFromAttributes(popup);
+	
+	if (query_string)
+		url += (url.indexOf("?") != -1 ? "&" : "?") + query_string;
+	
+	return url;
+}
+
+function onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute(elm) {
+	var popup = $("#choose_property_variable_from_file_manager");
+	var select = popup.find(" > .type > select");
+	select.val("new_var");
+	
+	onProgrammingTaskChooseCreatedVariable(elm);
+	
+	//hide option 2 bc it doesn't matter
+	var class_prop_var_option = select.children("option[value=class_prop_var]");
+	class_prop_var_option.hide();
+	
+	MyFancyPopup.settings.onClose = function() {
+		class_prop_var_option.show();
+	};
 }
 
 //target_field is used by the workflow task: GetUrlContentsTaskPropertyObj
@@ -1365,6 +1545,7 @@ function onBusinessLogicTaskChooseBusinessLogic(elm) {
 	MyFancyPopup.showPopup();
 }
 
+//Note that any change here must be replicated in admin_menu.js:onChooseWorkflowCallBusinessLogicTask
 function chooseBusinessLogic(elm) {
 	var popup = $("#choose_business_logic_from_file_manager");
 	var select = popup.find(".businesslogic select");
@@ -1473,6 +1654,7 @@ function onChooseIbatisQuery(elm) {
 	MyFancyPopup.showPopup();
 }
 
+//Note that any change here must be replicated in admin_menu.js:onChooseWorkflowTaskCallIbatisQuery
 function chooseQuery(elm) {
 	var popup = $("#choose_query_from_file_manager");
 	
@@ -1498,23 +1680,23 @@ function chooseQuery(elm) {
 			//PREPARING MODULE ID
 			var module = file_path.lastIndexOf("/") != -1 ? file_path.substr(0, file_path.lastIndexOf("/")) : file_path;
 			module = module.replace(/\//g, ".");
-		
+			
 			var module_id = main_div.children(".module_id");
 			module_id.children("input").val(module);
 			module_id.children("select").val("string");
-		
+			
 			//PREPARING SERVICE TYPE
 			var service_type = main_div.children(".service_type");
 			var service_type_type = service_type.children(".service_type_type");
 			service_type_type.val("string");
 			CallIbatisQueryTaskPropertyObj.onChangeServiceType(service_type_type[0]);
 			service_type.children(".service_type_string").val(query_type.toLowerCase());
-		
+			
 			//PREPARING SERVICE ID
 			var service_id = main_div.children(".service_id");
 			service_id.children("input").val(query_id);
 			service_id.children("select").val("string");
-		
+			
 			//PREPARING PARAMETERS
 			var select = popup.find(".broker select")[0];
 			var option = select.options[ select.selectedIndex ];
@@ -1614,6 +1796,7 @@ function onChooseHibernateObject(elm) {
 	MyFancyPopup.showPopup();
 }
 
+//Note that any change here must be replicated in admin_menu.js:onChooseWorkflowCallHibernateObjectTask
 function chooseHibernateObject(elm) {
 	var popup = $("#choose_hibernate_object_from_file_manager");
 	
@@ -1686,6 +1869,7 @@ function onChooseHibernateObjectMethod(elm) {
 	MyFancyPopup.showPopup();
 }
 
+//Note that any change here must be replicated in admin_menu.js:onChooseWorkflowCallHibernateMethodTask
 function chooseHibernateObjectMethod(elm) {
 	var popup = $("#choose_hibernate_object_method_from_file_manager");
 	
@@ -2358,6 +2542,23 @@ function getEditorCodeValue() {
 	return code;
 }
 
+function getEditorCodeErros() {
+	var errors = [];
+	var editor = $("#code").data("editor");
+	
+	if (editor) {
+		var annotations = editor.getSession().getAnnotations();
+		//console.log(annotations);
+		
+		if (annotations)
+			errors = annotations.filter(function(annotation) {
+				return annotation["type"] == "error";
+			});
+	}
+	
+	return errors;
+}
+
 function sortWorkflowTask(sort_type) {
 	jsPlumbWorkFlow.getMyFancyPopupObj().init({
 		parentElement: $("#" + jsPlumbWorkFlow.jsPlumbTaskFlow.main_tasks_flow_obj_id),
@@ -2774,134 +2975,240 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 	var status = true;
 	var options = typeof options == "object" ? options : {};
 	
-	var old_code_id = $("#ui").attr("code_id");
-	var code = getEditorCodeRawValue();
-	var new_code_id = $.md5(code);
+	//only if no errors detected
+	var errors = getEditorCodeErros();
 	
-	if (old_code_id != new_code_id || options["force"]) {
-		if (do_not_confirm || auto_convert || confirm("Do you wish to update this workflow accordingly with the code in the editor?")) {
-			status = false;
-			
-			if (!is_from_auto_save) {
-				jsPlumbWorkFlow.getMyFancyPopupObj().hidePopup();
-				MyFancyPopup.init({
-					parentElement: window,
-				});
-				MyFancyPopup.showOverlay();
-				MyFancyPopup.showLoading();
-				$(".workflow_menu").hide();
-			}
-			
-			var auto_save_bkp = auto_save;
-			
-			if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
-				auto_save = false;
-			
-			$.ajax({
-				type : "post",
-				url : create_workflow_file_from_code_url,
-				data : code,
-				dataType : "text",
-				success : function(data, textStatus, jqXHR) {
-					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL)) {
-						if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
-							auto_save = auto_save_bkp;
-						
-						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_workflow_file_from_code_url, function() {
-							generateTasksFlowFromCode(true, options);
-						});
-					}
-					else if (data == 1) {
-						var previous_callback = jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read;
-						var previous_tasks_flow_saved_data_obj = jsPlumbWorkFlow.jsPlumbTaskFile.saved_data_obj; //save the previous jsPlumbTaskFile.saved_data_obj, bc when we run the jsPlumbTaskFile.reload method, this var will be with the new workflow data obj and then the auto_save won't run bc the jsPlumbTaskFile.isWorkFlowChangedFromLastSaving will return false. So we must save this var before and then re-put it again with the previous value.
-						
-						jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = function(data, text_status, jqXHR) {
-							if (!data) {
-								jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to load the workflow's tasks.");
-								
-								if (typeof options["error"] == "function")
-									options["error"]();
-							}
-							else {
-								jsPlumbWorkFlow.jsPlumbTaskSort.sortTasks();
-								
-								setTimeout(function() { //must be in timeout otherwise the connections will appear weird
-									jsPlumbWorkFlow.jsPlumbTaskFlow.repaintAllTasks();
-								}, 5);
-								
-								$("#code").attr("generated_code_id", new_code_id);
-								$("#ui").attr("code_id", new_code_id);
-								$("#ui").attr("workflow_id", getCurrentWorkFlowId());
-								
-								status = true;
-								
-								if (typeof options["success"] == "function")
-									options["success"]();
-							}
-							
+	prepareAutoSaveVars();
+	
+	if (errors.length == 0) {
+		var old_code_id = $("#ui").attr("code_id");
+		var code = getEditorCodeRawValue();
+		var new_code_id = $.md5(code);
+		
+		if (old_code_id != new_code_id || options["force"]) {
+			if (do_not_confirm || auto_convert || confirm("Do you wish to update this workflow accordingly with the code in the editor?")) {
+				status = false;
+				
+				if (!is_from_auto_save) {
+					jsPlumbWorkFlow.getMyFancyPopupObj().hidePopup();
+					MyFancyPopup.init({
+						parentElement: window,
+					});
+					MyFancyPopup.showOverlay();
+					MyFancyPopup.showLoading();
+					$(".workflow_menu").hide();
+				}
+				
+				var auto_save_bkp = auto_save;
+				
+				if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
+					auto_save = false;
+				
+				$.ajax({
+					type : "post",
+					url : create_workflow_file_from_code_url,
+					data : code,
+					dataType : "text",
+					success : function(data, textStatus, jqXHR) {
+						if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL)) {
 							if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
 								auto_save = auto_save_bkp;
 							
-							//The jsPlumbTaskFile will call after this function the jsPlumbTaskFile.startAutoSave method which updates the jsPlumbTaskFile.saved_data_obj var with the new workflow data obj. So we must execute a setTimeout so we can then update the old value to the jsPlumbTaskFile.saved_data_obj var.
-							setTimeout(function() {
-								jsPlumbWorkFlow.jsPlumbTaskFile.saved_data_obj = previous_tasks_flow_saved_data_obj;
-							}, 100);
-							
-							jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = previous_callback;
+							showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_workflow_file_from_code_url, function() {
+								generateTasksFlowFromCode(true, options);
+							});
 						}
-						
-						jsPlumbWorkFlow.jsPlumbTaskFile.reload(get_tmp_workflow_file_url, {
-							"async": true,
-							error: function() {
+						else if (data == 1) {
+							var previous_callback = jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read;
+							var previous_tasks_flow_saved_data_obj = jsPlumbWorkFlow.jsPlumbTaskFile.saved_data_obj; //save the previous jsPlumbTaskFile.saved_data_obj, bc when we run the jsPlumbTaskFile.reload method, this var will be with the new workflow data obj and then the auto_save won't run bc the jsPlumbTaskFile.isWorkFlowChangedFromLastSaving will return false. So we must save this var before and then re-put it again with the previous value.
+							
+							jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = function(data, text_status, jqXHR) {
+								if (!data) {
+									jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to load the workflow's tasks.");
+									
+									if (typeof options["error"] == "function")
+										options["error"]();
+								}
+								else {
+									jsPlumbWorkFlow.jsPlumbTaskSort.sortTasks();
+									
+									setTimeout(function() { //must be in timeout otherwise the connections will appear weird
+										jsPlumbWorkFlow.jsPlumbTaskFlow.repaintAllTasks();
+									}, 5);
+									
+									$("#code").attr("generated_code_id", new_code_id);
+									$("#ui").attr("code_id", new_code_id);
+									$("#ui").attr("workflow_id", getCurrentWorkFlowId());
+									
+									status = true;
+									
+									if (typeof options["success"] == "function")
+										options["success"]();
+								}
+								
 								if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
 									auto_save = auto_save_bkp;
+								
+								//The jsPlumbTaskFile will call after this function the jsPlumbTaskFile.startAutoSave method which updates the jsPlumbTaskFile.saved_data_obj var with the new workflow data obj. So we must execute a setTimeout so we can then update the old value to the jsPlumbTaskFile.saved_data_obj var.
+								setTimeout(function() {
+									jsPlumbWorkFlow.jsPlumbTaskFile.saved_data_obj = previous_tasks_flow_saved_data_obj;
+								}, 100);
+								
+								jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = previous_callback;
 							}
-						});
-					}
-					else {
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again." + (data ? "\n" + data : ""));
+							
+							jsPlumbWorkFlow.jsPlumbTaskFile.reload(get_tmp_workflow_file_url, {
+								"async": true,
+								error: function() {
+									if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
+										auto_save = auto_save_bkp;
+								}
+							});
+						}
+						else {
+							jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again." + (data ? "\n" + data : ""));
+							
+							if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
+								auto_save = auto_save_bkp;
 						
+							if (typeof options["error"] == "function")
+								options["error"]();
+						}
+						
+						if (!is_from_auto_save) {
+							MyFancyPopup.hidePopup();
+							$(".workflow_menu").show();
+						}
+					},
+					error : function(jqXHR, textStatus, errorThrown) { 
+						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again." + msg);
 						if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
 							auto_save = auto_save_bkp;
-					
+						
 						if (typeof options["error"] == "function")
 							options["error"]();
-					}
-					
-					if (!is_from_auto_save) {
-						MyFancyPopup.hidePopup();
-						$(".workflow_menu").show();
-					}
-				},
-				error : function(jqXHR, textStatus, errorThrown) { 
-					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-					jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again." + msg);
-					if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
-						auto_save = auto_save_bkp;
-					
-					if (typeof options["error"] == "function")
-						options["error"]();
-					
-					if (!is_from_auto_save) {
-						MyFancyPopup.hidePopup();
-						$(".workflow_menu").show();
-					}
-				},
-				async : options.hasOwnProperty("async") ? options["async"] : true,
-			});
+						
+						if (!is_from_auto_save) {
+							MyFancyPopup.hidePopup();
+							$(".workflow_menu").show();
+						}
+					},
+					async : options.hasOwnProperty("async") ? options["async"] : true,
+				});
+			}
+			else if (typeof options["success"] == "function")
+				options["success"]();
 		}
-		else if (typeof options["success"] == "function")
-			options["success"]();
+		else {
+			if (!is_from_auto_save)
+				StatusMessageHandler.showMessage("The code has no changes. No need to update the tasks flow diagram.");
+			
+			if (typeof options["success"] == "function")
+				options["success"]();
+		}
 	}
 	else {
-		if (!is_from_auto_save)
-			StatusMessageHandler.showMessage("The code has no changes. No need to update the tasks flow diagram.");
+		if (!is_from_auto_save) {
+			//show errors
+			var msg = "";
+			
+			for (var i = 0, t = errors.length; i < t; i++) {
+				var error = errors[i];
+				msg += "\n- " + error["text"];
+				
+				if ($.isNumeric(error["row"]))
+					msg += " in line " + error["row"] + ($.isNumeric(error["column"]) ? ", " + error["column"] : "");
+				 
+				 msg += ".";
+			}
+			//console.log(msg);
+			
+			StatusMessageHandler.showError("The code has the following errors, which means we cannot update the tasks flow diagram:" + msg);
+		}
 		
-		if (typeof options["success"] == "function")
-			options["success"]();
+		if (typeof options["error"] == "function")
+			options["error"]();
 	}
 	
 	return status;
+}
+
+//This function will be used by the widgets in the LayoutUIEditor, mainly the script, link, href, image, video and iframe widgets.
+//replace_inline_vars should be true on edit_entity_simple. The edit_template_simple should have this flag disabled and only replace the project_url_prefix inside of the php tags.
+function convertProjectUrlPHPVarsToRealValues(str, replace_inline_vars) {
+	if (str) {
+		var regex = /<\?(|=|php)\s*(|echo|print)\s*(\$[a-z_]+)\s*;?\s*\?>/g;
+		var m;
+		//console.log("old str:"+str);
+		
+		while ((m = regex.exec(str)) !== null) {
+			//console.log(m);
+			
+			if ((m[3] == "$project_url_prefix" || m[3] == "$original_project_url_prefix") && typeof selected_project_url_prefix != "undefined" && selected_project_url_prefix)
+				str = str.replace(m[0], selected_project_url_prefix);
+			else if ((m[3] == "$project_common_url_prefix"/* || m[3] == "$original_project_common_url_prefix"*/) && typeof selected_project_common_url_prefix != "undefined" && selected_project_common_url_prefix)
+				str = str.replace(m[0], selected_project_common_url_prefix);
+		}
+		
+		if (replace_inline_vars) {
+			var regex = /{?\$([a-z_]+)}?/g;
+			var m;
+			
+			while ((m = regex.exec(str)) !== null) {
+				//console.log(str);
+				//console.log(m);
+				var reg = new RegExp("(\"|')\\s*\\.\\s*\\$" + m[1] + "\\s*\\.\\s*(\"|')");
+				//console.log(reg);
+				//console.log("match:"+str.match(reg));
+				
+				//ignores cases like: ' somehting ' . $project_url_prefix . ' something '
+				if (!str.match(reg)) {
+					if ((m[1] == "project_url_prefix" || m[1] == "original_project_url_prefix") && typeof selected_project_url_prefix != "undefined" && selected_project_url_prefix)
+						str = str.replace(m[0], selected_project_url_prefix);
+					else if ((m[1] == "project_common_url_prefix"/* || m[1] == "original_project_common_url_prefix"*/) && typeof selected_project_common_url_prefix != "undefined" && selected_project_common_url_prefix)
+						str = str.replace(m[0], selected_project_common_url_prefix);
+				}
+			}
+		}
+		
+		//console.log("new str:"+str);
+		//console.log("replace_inline_vars:"+replace_inline_vars);
+	}
+	
+	return str;
+}
+
+//This function will be used by the widgets in the LayoutUIEditor, mainly the script, link, href, image, video and iframe widgets.
+//give_priority_to_original_project_url_prefix should be true on edit_template_simple. The edit_entity_simple should have the project_url_prefix var instead.
+function convertProjectUrlRealValuesToPHPVars(str, give_priority_to_original_project_url_prefix, is_str_html_base) {
+	if (str) {
+		var replace_func = function(to_search, to_replace, text) {
+			do {
+				text = text.replace(to_search, to_replace);
+			}
+			while (text.indexOf(to_search) != -1);
+			
+			return text;
+		};
+		
+		if (typeof selected_project_url_prefix != "undefined" && selected_project_url_prefix && str.indexOf(selected_project_url_prefix) != -1) {
+			var var_name = give_priority_to_original_project_url_prefix ? "original_project_url_prefix" : "project_url_prefix";
+			var replacement = is_str_html_base ? "<?= $" + var_name + " ?>" : "{$" + var_name + "}";
+			//console.log("replacement:"+replacement);
+			str = replace_func(selected_project_url_prefix, replacement, str);
+		}
+		
+		if (typeof selected_project_common_url_prefix != "undefined" && selected_project_common_url_prefix && str.indexOf(selected_project_common_url_prefix) != -1) {
+			//var var_name = give_priority_to_original_project_url_prefix ? "original_project_common_url_prefix" : "project_common_url_prefix";
+			var var_name = "project_common_url_prefix";
+			var replacement = is_str_html_base ? "<?= $" + var_name + " ?>" : "{$" + var_name + "}";
+			str = replace_func(selected_project_common_url_prefix, replacement, str);
+		}
+		//console.log(str);
+	}
+	
+	return str;
 }
 
 /* SAVING FUNCTIONS */
@@ -3090,7 +3397,7 @@ function getCodeForSaving(parent_elm, options) {
 }
 
 function saveObjCode(save_object_url, obj, opts) {
-	if (obj && obj.code != null)
+	if (obj && obj.code != null && (!obj.errors || obj.errors.length == 0))
 		saveObj(save_object_url, obj, opts);
 	else {
 		//prepare and clone opts just in case exists a concurrent process that changes something in the opts.
@@ -3288,6 +3595,17 @@ function saveObj(save_object_url, obj, opts) {
 								
 								//sets new saved_obj_id
 								saved_obj_id = new_saved_obj_id;
+								
+								//set new code id if tasks_flow_tab was not inited yet
+								if ($("#code, #ui").length >= 2) {
+									var is_tasks_flow_tab_inited = $("#code").parent().find(" > ul > #tasks_flow_tab > a").attr("is_init") == 1;
+									
+									if (!is_tasks_flow_tab_inited) {
+										var raw_code = getEditorCodeRawValue();
+										var new_code_id = $.md5(raw_code);
+										$("#ui").attr("code_id", new_code_id);
+									}
+								}
 								
 								//call on success 
 								if (!success_func || success_func(data, textStatus, jqXHR)) {

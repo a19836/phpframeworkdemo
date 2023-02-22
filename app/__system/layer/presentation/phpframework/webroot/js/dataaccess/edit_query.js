@@ -2328,6 +2328,7 @@ function createUIFromSql(ul, rand_number, do_not_confirm) {
 						data = data ? data : {};
 						var main_table = data.table ? data.table : "";
 						var rel_type = data.type ? data.type : "";
+						//console.log(new_sql);
 						//console.log(data);
 						
 						//UPDATING REL TYPE
@@ -2467,10 +2468,8 @@ function updateQueryUITableFromQuerySettings(rand_number, main_table) {
 		if (settings) {
 			var tables = {};
 			var connections = {};
-			
-			//SETTING MAIN TABLE HAS DEFAULT TABLE TO BE CREATED IF EXISTS
-			if (main_table)
-				tables[main_table] = {};
+			var main_table_regex = main_table ? new RegExp("^" + main_table + "($|\s)") : null;
+			//console.log(main_table_regex);
 			
 			//PREPARING DBQueryTaskPropertyObj - REMOVING THE CALLBACKS
 			myWFObj.setJsPlumbWorkFlow(WF);
@@ -2501,6 +2500,10 @@ function updateQueryUITableFromQuerySettings(rand_number, main_table) {
 					attr_name = div.parent().find(".fcolumn input").val().trim();
 				
 				if (table_name != "" && attr_name != "") {
+					//console.log("check regex "+main_table_regex+" in table: '"+table_name+"'");
+					if (main_table_regex && table_name.match(main_table_regex))
+						main_table = table_name;
+					
 					if (!tables.hasOwnProperty(table_name))
 						tables[table_name] = {};
 					
@@ -2569,16 +2572,30 @@ function updateQueryUITableFromQuerySettings(rand_number, main_table) {
 			for (var i = 0; i < tasks.length; i++) {
 				var task = $(tasks[i]);
 				var table_name = WF.jsPlumbTaskFlow.getTaskLabel(task);
-			
+				
 				existent_tasks[table_name] = false;
 				task_ids[table_name] = task.attr("id");
 				
 				//in case the settings panel contains something like 'count(*)' where there is no table name, we must add it manually here, otherwise that table will be deleted on the code below. Here is a query example of a sql where this happens: "SELECT count(*) FROM item".
-				if (task.is(".is_start_task") && !tables.hasOwnProperty(table_name))
+				if (task.is(".is_start_task") && !tables.hasOwnProperty(table_name)) {
 					tables[table_name] = {};
+					
+					if (main_table_regex && table_name.match(main_table_regex)) {
+						//console.log("check regex "+main_table_regex+" in table: '"+table_name+"'");
+						main_table = table_name;
+					}
+				}
 			}
+			
+			//SETTING MAIN TABLE AS DEFAULT TABLE TO BE CREATED IF EXISTS
+			if (main_table && !tables.hasOwnProperty(main_table)) {
+				//console.log("main table does not exists");
+				tables[main_table] = {};
+			}
+			
 			//console.log("tables:");
 			//console.log(tables);
+			//console.log(main_table);
 			
 			//ADDING NEW TABLES
 			for (var table_name in tables) {

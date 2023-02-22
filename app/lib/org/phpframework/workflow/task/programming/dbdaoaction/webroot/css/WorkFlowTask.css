@@ -198,6 +198,12 @@
 	font-weight:normal;
 	font-size:90%;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs > .attributes_options li,
+   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .conds > .conditions_options li,
+   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .rels > .relations_options li,
+   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .parent_conds > .parent_conditions_options li {
+	width:100%;
+}
 .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs > .attributes_options li label,
    .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .conds > .conditions_options li label,
    .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .rels > .relations_options li label,

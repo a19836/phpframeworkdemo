@@ -66,7 +66,7 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("Bread
 							<li class="is_convertable_sql" title="Is SQL convertable"><a onClick="onChangeIsConvertableSQL(this)" previous_auto_convert="1"><i class="icon toggle_ids"></i> <span>' . ($is_covertable_sql ? "Dis" : "En") . 'able SQL convertable</span> <input type="checkbox"' . ($is_covertable_sql ? " checked" : "") . '/></a></li>
 							<li class="separator"></li>
 							<li class="toggle_ui select_query" title="Toggle Query Diagram"><a class="toggle_icon active" onclick="return showOrHideSingleQueryUI(this, ' . $rand . ');"><i class="icon toggle_ui"></i> <span>Hide Query Diagram</span> <input type="checkbox" checked/></a></li>
-							<li class="toggle_settings select_query" title="Toggle Query Settings"><a class="toggle_icon active" onclick="return showOrHideSingleQuerySettings(this, ' . $rand . ');"><i class="icon toggle_settings"></i> <span>Hide Query Settings</span> <input type="checkbox" checked/></a></li>
+							<li class="toggle_settings" title="Toggle Query Settings"><a class="toggle_icon active" onclick="return showOrHideSingleQuerySettings(this, ' . $rand . ');"><i class="icon toggle_settings"></i> <span>Hide Query Settings</span> <input type="checkbox" checked/></a></li>
 							<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleMainSettingsPanel(this, \'.edit_single_query\')"><i class="icon toggle_ids"></i> <span>Show Main Settings</span> <input type="checkbox"/></a></li>
 							<li class="separator"></li>
 							<li class="create_sql_from_ui" title="Generate SQL From Diagram"><a onClick="autoUpdateSqlFromUI(' . $rand . ')"><i class="icon create_sql_from_ui"></i> Generate SQL From Diagram</a></li>

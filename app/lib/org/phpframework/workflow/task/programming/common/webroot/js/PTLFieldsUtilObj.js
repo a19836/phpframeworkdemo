@@ -1055,6 +1055,7 @@ var PTLFieldsUtilObj = {
 		return value;
 	},
 	
+	//any change here should be replicated in the HtmlFormHandler.php::parseNewInputData and MyWidgetResourceLib.js.HashTagHandler::parseNewInputData methods too
 	parseNewInputData : function(value) {
 		if ($.isArray(value) || $.isPlainObject(value))
 			return value;
@@ -1074,15 +1075,15 @@ var PTLFieldsUtilObj = {
 		return ""; //return empty ptl code in case there isn't value.
 	},
 	
+	//any change here should be replicated in the HtmlFormHandler.php::getParsedValue and MyWidgetResourceLib.js.HashTagHandler::parseNewInputData methods too
 	getParsedValue : function(value, result_in_array) {
 		var results = new Array();
 		
 		if (value && $.type(value) == "string" && value.indexOf("#") != -1) {
-			var v = "";
 			var offset = 0;
 			var length = value.length;
-			//var reg = /#([\p{L}\w"' \-\+\[\]\.\$]+)#/gu; //must be outisde of the do-while, otherwise it will give an infinitive loop. '\w' means all words with '_' and '/u' means with accents and ç too. Cannot use this bc it does not work in IE.
-			var reg = /#([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC"' \-\+\[\]\.\$]+)#/g; //must be outisde of the do-while, otherwise it will give an infinitive loop. '\w' means all words with '_' and 'u' means with accents and ç too.
+			//var reg = /#([\p{L}\w"' \-\+\[\]\.\$]+)#/gu; //must be outside of the do-while, otherwise it will give an infinitive loop. '\w' means all words with '_' and '/u' means with accents and ç too. Cannot use this bc it does not work in IE.
+			var reg = /#([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC"' \-\+\[\]\.\$]+)#/g; //must be outside of the do-while, otherwise it will give an infinitive loop. '\w' means all words with '_' and 'u' means with accents and ç too.
 			var matches_exists = false;
 			
 			do {
@@ -1090,6 +1091,7 @@ var PTLFieldsUtilObj = {
 				
 				if (matches !== null && matches.length > 1 && matches[1]) {
 					var m = matches[1];
+					var to_search = matches[0];
 					var replacement = "";
 					//console.log(m);
 					
@@ -1121,7 +1123,7 @@ var PTLFieldsUtilObj = {
 					
 					results.push(replacement); //in case the $replacemente be an array, the array is safetly save in the $results variable.
 					
-					offset = matches.index + matches[0].length;
+					offset = matches.index + to_search.length;
 				}
 			}
 			while (matches && matches.length > 0 && offset < length);

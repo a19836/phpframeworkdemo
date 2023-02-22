@@ -15,3 +15,7 @@
 .dropzone .dz-preview .dz-error-message {
 	width:300px;
 }
+.dropzone .dz-preview .dz-error-message.show {
+	display:block;
+	opacity:1;
+}

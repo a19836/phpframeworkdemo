@@ -3,6 +3,16 @@ $common_project_name = $EVC->getCommonProjectName();
 include_once $EVC->getModulePath("common/CommonModuleSettingsUI", $common_project_name);
 include $EVC->getConfigPath("config");
 
+//prepare init_layout_ui_editor_widget_resource_options
+include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
+
+if ($PEVC) {
+	include $EVC->getModulePath("common/init_layout_ui_editor_widget_resource_options", $common_project_name);
+}
+
+include $EVC->getModulePath("common/end_project_module_file", $common_project_name);
+
+//prepare createform task
 $tasks = array("createform");
 include $EVC->getModulePath("common/init_tasks_flow", $common_project_name);
 
@@ -11,17 +21,18 @@ $contents = $tasks_data["contents"]["createform"];
 $js_load_function = $tasks_data["js_load_functions"]["createform"];
 
 echo '
+<!-- Add TaskFlowChart main JS and CSS files -->
+<script type="text/javascript" src="' . $proprietary_js_url_prefix . 'jquerytaskflowchart/js/lib/jsPlumbCloneHandler.js"></script>
+<script type="text/javascript" src="' . $proprietary_js_url_prefix . 'jquerytaskflowchart/js/task_flow_chart.js"></script>';
+
+echo $WorkFlowUIHandler->getHeader(array("tasks_css_and_js" => false, "icons_and_edit_code_already_included" => true, "ui_editor" => true, "taskflowchart_already_included" => true));
+/*echo '
 <!-- Layout UI Editor - Color -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'js/color.js"></script>
-
-<!-- Layout UI Editor - MD5 -->
-<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>
 
 <!-- Layout UI Editor - Add ACE-Editor -->
 <script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ace.js"></script>
 <script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
-<script type="text/javascript" src="' . $proprietary_js_url_prefix . 'jquerytaskflowchart/js/lib/jsPlumbCloneHandler.js"></script>
-<script type="text/javascript" src="' . $proprietary_js_url_prefix . 'jquerytaskflowchart/js/task_flow_chart.js"></script>
 
 <!-- Add Code Beautifier -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/mycodebeautifier/js/codebeautifier.js"></script>
@@ -73,7 +84,10 @@ echo '
 <!-- Layout UI Editor - Add Layout UI Editor Widget Resource Options/Handlers -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/layout_ui_editor_widget_resource_options.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/layout_ui_editor_widget_resource_options.js"></script>
+';*/
 
+/* already included in the view/edit_block_simple.php
+echo '
 <!-- Add MyTree main JS and CSS files -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerymytree/css/style.min.css" type="text/css" charset="utf-8" />
 <script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerymytree/js/mytree.js"></script>
@@ -81,13 +95,12 @@ echo '
 <!-- Add FileManager JS file -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/file_manager.css" type="text/css" charset="utf-8" />
 <script type="text/javascript" src="' . $project_url_prefix . 'js/file_manager.js"></script>
-	
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/edit_php_code.css" type="text/css" charset="utf-8" />
-<script type="text/javascript" src="' . $project_url_prefix . 'js/edit_php_code.js"></script>
+<script type="text/javascript" src="' . $project_url_prefix . 'js/edit_php_code.js"></script>';*/
 
-' . $head . '
-
+echo $head;
+echo '
 <!-- Add Common Settings JS -->
 <script type="text/javascript" src="' . $project_common_url_prefix . 'module/common/settings.js"></script>
 
@@ -96,6 +109,8 @@ echo '
 <script type="text/javascript" src="' . $project_common_url_prefix . 'module/common/other_settings.js"></script>
 
 <script>
+' . $layout_ui_editor_widget_resource_options_js . '
+
 var js_load_function = ' . ($js_load_function ? $js_load_function : 'null') . ';
 var create_form_settings_code_url = \'' . $project_url_prefix . 'module/objectsgroup/show_objects_group/create_form_settings_code\';
 

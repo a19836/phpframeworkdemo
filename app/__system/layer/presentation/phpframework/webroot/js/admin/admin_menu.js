@@ -5,6 +5,7 @@ var copy_or_cut_tree_node_id = null;
 var ToolsFancyPopup = new MyFancyPopupClass();
 var ProjectsFancyPopup = new MyFancyPopupClass();
 var DBTableTaskOptionsFancyPopup = new MyFancyPopupClass();
+var LogConsoleFancyPopup = new MyFancyPopupClass();
 
 function initFileTreeMenu() {
 	//prepare menu tree
@@ -902,6 +903,505 @@ function onContextMenu(target, contextmenu, originalEvent) {
 	return false;
 }
 
+//Any change in this method should be done too in the initDBTablesSorting method
+function initFilesDragAndDrop(elm) {
+	var scroll_parent = elm.parent().closest(".scroll");
+	var iframe = $("#right_panel > iframe");
+	var iframe_win = iframe[0].contentWindow;
+	var iframe_doc = iframe_win ? iframe_win.document : null;
+	var iframe_offset = iframe.offset();
+	var iframe_droppable_elm = null;
+	var iframe_droppable_over_class = "drop_hover dragging_task task_droppable_over";
+	var available_iframe_droppables_selectors = ".droppable, .tasks_flow, .connector_overlay_add_icon"; //".droppable" is related with the LayoutUIEditor, ".tasks_flow" is related with workflows and ".connector_overlay_add_icon" is related with Logic workflows.
+	
+	var folders_selector = "i.folder";
+	var files_selector = "i.file, i.objtype, i.hibernatemodel, i.config_file, i.controller_file, i.entity_file, i.view_file, i.template_file, i.util_file, i.block_file, i.module_file, i.undefined_file, i.js_file, i.css_file, i.img_file, i.zip_file";
+	var droppables_selector = "i.folder, i.entities_folder, i.views_folder, i.templates_folder, i.template_folder, i.utils_folder, i.webroot_folder, i.modules_folder, i.configs_folder, i.cms_common, i.cms_module, i.cms_program, i.cms_resource";
+	var draggables_selector = folders_selector + ", " + files_selector + ", .query, .relationship, .obj, .class, .method, .function";
+	
+	var left_panel_droppable_handler = function(event, ui_obj) {
+		var file_li = $(this);
+		var is_file_li_ul = file_li.is("ul") && file_li.parent().is("li");
+		
+		if (is_file_li_ul)
+			file_li = file_li.parent();
+		
+		var file_li_a = file_li.children("a");
+		var item = ui_obj.draggable;
+		var a = item.children("a");
+		
+		file_li.removeClass("drop_hover");
+		
+		if (a.children(files_selector + ", " + folders_selector).length == 0)
+			StatusMessageHandler.showError("Sorry, droppable not allowed...");
+		else if (file_li_a.children(droppables_selector).length == 0)
+			StatusMessageHandler.showError("Sorry, droppable not allowed...");
+		else if (a.attr("id") != file_li_a.attr("id")) { //if file is not it-self
+			var originalEvent = event || window.event;
+			var is_ctrl_key = originalEvent && (originalEvent.ctrlKey || originalEvent.keyCode == 65);
+			var action = is_ctrl_key ? "copy" : "cut";
+			
+			copy_or_cut_tree_node_id = item.attr("id");
+			copy_or_cut_action = action;
+			file_to_copy_or_cut = a.attr(action == "cut" ? "cut_url" : "copy_url");
+			
+			var dummy_menu = $('<ul last_selected_node_id="' + file_li.attr("id") + '"><li><a paste_url="' + file_li_a.attr("paste_url") + '"></a></li></ul>'); //emulate the menu item
+			var a = dummy_menu.find("li a");
+			
+			manageFile(a[0], 'paste_url', 'paste', function() {
+				dummy_menu.remove();
+			});
+		}
+		
+		//do not add "return false" otherwise the draggable will stop working for next iteractions
+	};
+	
+	var right_panel_droppable_handler = function(event, ui_obj, tree_node, helper_clone) {
+		//console.log(event);
+		//console.log(ui_obj);
+		
+		var j_iframe_droppable_elm = $(iframe_droppable_elm);
+		var li = ui_obj.helper;
+		var li_a = li.children("a");
+		
+		//if dragged item is a table
+		if (li_a.children("i.query, i.relationship").length > 0) { //ibatis query => create callibatisquery or callhibernatemethod task
+			//check if query belongs to a hibernate obj
+			var parent_li = li.parent().parent();
+			var is_relationship = li_a.children("i.relationship").length > 0;
+			var is_hbn_obj = is_relationship || parent_li.children("a").children("i.obj").length > 0;
+			var func = is_hbn_obj ? iframe_win.CallHibernateMethodTaskPropertyObj : iframe_win.CallIbatisQueryTaskPropertyObj;
+			var task_tag = is_hbn_obj ? "callhibernatemethod" : "callibatisquery";
+			
+			if (typeof func == "object") {
+				if (iframe_droppable_elm) {
+					var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
+					var task_menu = tasks_menu.find(".task.task_menu.task_" + task_tag);
+					var task_type = task_menu.attr("type");
+					
+					if (task_type) {
+						var edit_url = li_a.attr("edit_url");
+						var bean_name = getParameterByName(edit_url, "bean_name");
+						var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
+						
+						if (bean_ui_props) {
+							var query_type = getParameterByName(edit_url, "query_type");
+							
+							if (is_relationship || $.inArray(query_type, ["insert", "update", "delete", "procedure", "select"]) != -1) {
+								var hbn_obj = getParameterByName(edit_url, "obj");
+								var query_id = getParameterByName(edit_url, "query_id");
+								var task_label = (query_type == "select" ? "Get" : "Set") + " query " + (hbn_obj ? hbn_obj + "." : "") + query_id;
+								
+								onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
+									if (is_hbn_obj)
+										onChooseWorkflowCallHibernateMethodTask(iframe_win, li, task_id);
+									else
+										onChooseWorkflowCallIbatisQueryTask(iframe_win, li, task_id);
+								});
+							}
+							else
+								iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+						}
+						else
+							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+					}
+					else
+						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+				}
+				else
+					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+			}
+			else
+				StatusMessageHandler.showError("Sorry, droppable not allowed...");
+		}
+		else if (li_a.children("i.obj").length > 0) { //hibernate obj => create callhibernateobject task
+			if (typeof iframe_win.CallHibernateObjectTaskPropertyObj == "object") {
+				if (iframe_droppable_elm) {
+					var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
+					var task_menu = tasks_menu.find(".task.task_menu.task_callhibernateobject");
+					var task_type = task_menu.attr("type");
+					
+					if (task_type) {
+						var edit_url = li_a.attr("edit_url");
+						var bean_name = getParameterByName(edit_url, "bean_name");
+						var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
+						
+						if (bean_ui_props) {
+							var hbn_obj = getParameterByName(edit_url, "obj");
+							var task_label = "Get hibernate obj " + hbn_obj;
+							
+							onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
+								onChooseWorkflowCallHibernateObjectTask(iframe_win, li, task_id);
+							});
+						}
+						else
+							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+					}
+					else
+						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+				}
+				else
+					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+			}
+			else
+				StatusMessageHandler.showError("Sorry, droppable not allowed...");
+		}
+		else if (li_a.children("i.class").length > 0) { //hibernate obj => create callhibernateobject task
+			if (typeof iframe_win.CreateClassObjectTaskPropertyObj == "object") {
+				if (iframe_droppable_elm) {
+					var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
+					var task_menu = tasks_menu.find(".task.task_menu.task_createclassobject");
+					var task_type = task_menu.attr("type");
+					
+					if (task_type) {
+						var edit_url = li_a.attr("edit_url");
+						var bean_name = getParameterByName(edit_url, "bean_name");
+						var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
+						
+						if (bean_ui_props) {
+							var class_obj = getParameterByName(edit_url, "class");
+							var task_label = "Create class obj " + class_obj;
+							
+							onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
+								onChooseWorkflowCreateClassObjectTask(iframe_win, li, task_id);
+							});
+						}
+						else
+							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+					}
+					else
+						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+				}
+				else
+					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+			}
+			else
+				StatusMessageHandler.showError("Sorry, droppable not allowed...");
+		}
+		else if (li_a.children("i.method").length > 0) { //util method or business logic service
+			var is_bl = li.parent().closest(".main_node_businesslogic").length > 0;
+			var func = is_bl ? iframe_win.CallBusinessLogicTaskPropertyObj : iframe_win.CallObjectMethodTaskPropertyObj;
+			var task_tag = is_bl ? "callbusinesslogic" : "callobjectmethod";
+			
+			if (typeof func == "object") {
+				if (iframe_droppable_elm) {
+					var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
+					var task_menu = tasks_menu.find(".task.task_menu.task_" + task_tag);
+					var task_type = task_menu.attr("type");
+					
+					if (task_type) {
+						var edit_url = li_a.attr("edit_url");
+						var bean_name = getParameterByName(edit_url, "bean_name");
+						var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
+						
+						if (bean_ui_props) {
+							var obj_class = getParameterByName(edit_url, is_bl ? "service" : "class");
+							var method = getParameterByName(edit_url, "method");
+							var task_label = "Call " + (is_bl ? "service " : "") + obj_class + "." + method;
+							
+							onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
+								if (is_bl)
+									onChooseWorkflowCallBusinessLogicTask(iframe_win, li, task_id);
+								else
+									onChooseWorkflowCallObjectMethodTask(iframe_win, li, task_id);
+							});
+						}
+						else
+							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+					}
+					else
+						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+				}
+				else
+					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+			}
+			else
+				StatusMessageHandler.showError("Sorry, droppable not allowed...");
+		}
+		else if (li_a.children("i.function").length > 0) { //function or business logic service
+			var is_bl = li.parent().closest(".main_node_businesslogic").length > 0;
+			var func = is_bl ? iframe_win.CallBusinessLogicTaskPropertyObj : iframe_win.CallFunctionTaskPropertyObj;
+			var task_tag = is_bl ? "callbusinesslogic" : "callfunction";
+			
+			if (typeof func == "object") {
+				if (iframe_droppable_elm) {
+					var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
+					var task_menu = tasks_menu.find(".task.task_menu.task_" + task_tag);
+					var task_type = task_menu.attr("type");
+					
+					if (task_type) {
+						var edit_url = li_a.attr("edit_url");
+						var bean_name = getParameterByName(edit_url, "bean_name");
+						var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
+						
+						if (bean_ui_props) {
+							var func_name = getParameterByName(edit_url, "function");
+							var task_label = "Call " + (is_bl ? "service " : "") + func_name;
+							
+							onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
+								if (is_bl)
+									onChooseWorkflowCallBusinessLogicTask(iframe_win, li, task_id);
+								else
+									onChooseWorkflowCallFunctionTask(iframe_win, li, task_id);
+							});
+						}
+						else
+							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+					}
+					else
+						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+				}
+				else
+					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+			}
+			else
+				StatusMessageHandler.showError("Sorry, droppable not allowed...");
+		}
+		else if (li_a.children("i.file, i.objtype, i.hibernatemodel, i.config_file, i.controller_file, i.entity_file, i.view_file, i.template_file, i.util_file, i.block_file, i.module_file").length > 0) { //file => create includefile task
+			//check if file has a php extension
+			
+			if (typeof iframe_win.IncludeFileTaskPropertyObj == "object") {
+				if (iframe_droppable_elm) {
+					var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
+					var task_menu = tasks_menu.find(".task.task_menu.task_includefile");
+					var task_type = task_menu.attr("type");
+					
+					if (task_type) {
+						var edit_url = li_a[0].hasAttribute("edit_url") ? li_a.attr("edit_url") : li_a.attr("edit_raw_file_url");
+						var bean_name = getParameterByName(edit_url, "bean_name");
+						var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
+						
+						if (bean_ui_props) {
+							var path = getParameterByName(edit_url, "path");
+							var is_php = path.match(/\.php$/i);
+							
+							if (is_php) {
+								var iframe_url = iframe_doc.location;
+								var iframe_bean_name = getParameterByName(iframe_url, "bean_name");
+								var is_same_layer = bean_name == iframe_bean_name || iframe_bean_name == "test_unit" || !iframe_bean_name || $.inArray(bean_name, ["dao", "lib", "vendor", "test_unit"]) != -1; //if iframe_bean_name is empty, it means is in the edit test unit page.
+								
+								if (is_same_layer) {
+									var task_label = "Include " + path;
+									
+									onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
+										onChooseWorkflowIncludeFileTask(iframe_win, li, task_id);
+									});
+								}
+								else
+									iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for files that are not in the same layer.");
+							}
+							else
+								iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for non php files.");
+						}
+						else
+							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+					}
+					else
+						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+				}
+				else
+					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+			}
+			else
+				StatusMessageHandler.showError("Sorry, droppable not allowed...");
+		}
+		else
+			StatusMessageHandler.showError("Sorry, droppable not allowed...");
+	};
+	
+	var getIframeElementFromPoint = function(inner_iframe, x, y, helper, helper_clone) {
+		var inner_iframe_win = inner_iframe.contentWindow;
+		var inner_iframe_doc = inner_iframe_win ? inner_iframe_win.document : null;
+		var inner_iframe_offset = $(inner_iframe).offset();
+		var inner_iframe_droppable_elm = null;
+		
+		if (inner_iframe_doc) {
+			//hide helpers
+			var helper_visible = helper.css("display") != "none";
+			var helper_clone_visible = helper_clone.css("display") != "none";
+			
+			if (helper_visible)
+				helper.hide();
+			
+			if (helper_clone_visible)
+				helper_clone.hide();
+			
+			//get droppable element
+			var inner_iframe_event_x = x - inner_iframe_offset.left;
+			var inner_iframe_event_y = y - inner_iframe_offset.top;
+			
+			var inner_iframe_droppable_elm = inner_iframe_doc.elementFromPoint(inner_iframe_event_x, inner_iframe_event_y);
+			
+			if (inner_iframe_droppable_elm && inner_iframe_droppable_elm.nodeName && inner_iframe_droppable_elm.nodeName.toUpperCase() == "IFRAME")
+				inner_iframe_droppable_elm = getIframeElementFromPoint(inner_iframe_droppable_elm, inner_iframe_event_x, inner_iframe_event_y, helper, helper_clone);
+			
+			//show helpers
+			if (helper_visible)
+				helper.show();
+			
+			if (helper_clone_visible)
+				helper_clone.show();
+		}
+		
+		return inner_iframe_droppable_elm;
+	};
+	
+	var folders_lis = elm.find("li > a > i").filter(droppables_selector).parent().parent();
+	var files_lis = elm.find("li > a > i").filter(draggables_selector).parent().parent();
+	
+	folders_lis.droppable({
+		greedy: true,
+		over: function(event, ui_obj) {
+			$(this).addClass("drop_hover");
+		},
+		out: function(event, ui_obj) {
+			$(this).removeClass("drop_hover");
+		},
+		drop: left_panel_droppable_handler,
+	});
+	
+	files_lis.draggable({
+		//settings for the iframe droppable
+		iframeFix:true,
+	     iframeScroll: true,
+	     scroll: true,
+	     scrollSensitivity: 20,
+	     
+	     //others settings
+	    	items: "li.jstree-node",
+		//containment: elm, //we can drag the tables to the DB Diagram or to LayoutUIEditor in edit_entity_simple and edit_template_simple.
+		//appendTo: elm, //disable to allow copy attribute accross different tables.
+		handle: "> a.jstree-anchor > i.jstree-icon",
+		revert: true,
+		cursor: "crosshair",
+          tolerance: "pointer",
+		grid: [5, 5],
+		//axis: "y", //we can drag the tables to the DB Diagram or LayoutUIEditor in edit_entity_simple and edit_template_simple.
+		
+		//handlers
+		helper: function() {
+			var clone = $(this).clone();
+			clone.addClass("sortable_helper");
+			clone.children("a").removeClass("jstree-hovered jstree-clicked");
+			clone.children("ul").remove();
+			clone.children(".sub_menu").remove();
+			
+			return clone;
+		},
+		start: function(event, ui_obj) {
+			var helper_clone = ui_obj.helper.clone();
+			$("body").append(helper_clone);
+			
+			iframe_win = iframe[0].contentWindow;
+			iframe_doc = iframe_win ? iframe_win.document : null;
+			iframe_offset = iframe.offset();
+		},
+		drag: function(event, ui_obj) {
+			//prepare scroll_parent element when the dragged element will be out of the left panel and dropped in the right panel to the DB diagram or to edit_entity_simple and edit_template_simple files.
+			var helper = ui_obj.helper;
+			helper.show();
+			
+			var right_edge = scroll_parent.offset().left + scroll_parent.width();
+			var is_in_edge = (helper.offset().left + helper.width()) > (right_edge - 20);
+			
+			if (is_in_edge && scroll_parent.hasClass("scroll")) {
+				var st = scroll_parent.scrollTop();
+				var sl = scroll_parent.scrollLeft();
+				
+				scroll_parent.data("mt", scroll_parent.css("margin-top"));
+				scroll_parent.data("ml", scroll_parent.css("margin-left"));
+				scroll_parent.data("st", st);
+				scroll_parent.data("sl", sl);
+				
+				scroll_parent.removeClass("scroll");
+				scroll_parent.css("margin-top", "-" + st + "px");
+				scroll_parent.css("margin-left", "-" + sl + "px");
+				
+				helper.css("margin-top", st + "px");
+				helper.css("margin-left", sl + "px");
+			}
+			else if (!is_in_edge && !scroll_parent.hasClass("scroll")) {
+				scroll_parent.addClass("scroll");
+				scroll_parent.css("margin-top", scroll_parent.data("mt"));
+				scroll_parent.css("margin-left", scroll_parent.data("ml"));
+				scroll_parent.scrollTop( scroll_parent.data("st") );
+				scroll_parent.scrollLeft( scroll_parent.data("sl") );
+				
+				helper.css("margin-top", "");
+				helper.css("margin-left", "");
+			}
+			
+			//prepare helper_clone
+			var helper_clone = $("body").children(".sortable_helper");
+			var is_in_right_panel = event.clientX > iframe.offset().left;
+			
+			helper_clone.offset({
+				top: event.clientY,
+				left: event.clientX,
+			});
+			
+			if (is_in_right_panel) {
+				//get droppable
+				var new_iframe_droppable_elm = getIframeElementFromPoint(iframe[0], event.clientX, event.clientY, helper, helper_clone);
+				
+				//hide helper from left panel and show the one from the right panel
+				helper_clone.show();
+				helper.hide();
+				
+				//get real droppable based in class
+				if (new_iframe_droppable_elm)
+					new_iframe_droppable_elm = new_iframe_droppable_elm.closest(available_iframe_droppables_selectors);
+				
+				//remove from old iframe_droppable_elm
+				if (iframe_droppable_elm && new_iframe_droppable_elm != iframe_droppable_elm)
+					$(iframe_droppable_elm).removeClass(iframe_droppable_over_class); 
+				
+				//set new iframe_droppable_elm
+				iframe_droppable_elm = new_iframe_droppable_elm;
+				
+				if (iframe_droppable_elm) //prepare droppable over class
+					$(iframe_droppable_elm).addClass(iframe_droppable_over_class);
+			}
+			else {
+				helper_clone.hide();
+				//helper.show(); //no need bc I already show it above
+				
+				if (iframe_droppable_elm) //remove droppable over class
+					$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
+			}
+		},
+		stop: function(event, ui_obj) {
+			var helper = ui_obj.helper;
+			var helper_clone = $("body").children(".sortable_helper");
+			
+			helper.show();
+			//helper_clone.hide(); //Do not hide helper_clone bc right_panel_droppable_handler will use its position
+			
+			//prepare scroll_parent and call stop handler
+			if (!scroll_parent.hasClass("scroll")) {
+				scroll_parent.addClass("scroll");
+				scroll_parent.css("margin-top", scroll_parent.data("mt"));
+				scroll_parent.css("margin-left", scroll_parent.data("ml"));
+				scroll_parent.scrollTop( scroll_parent.data("st") );
+				scroll_parent.scrollLeft( scroll_parent.data("sl") );
+				
+				if (iframe_droppable_elm) //remove droppable over class
+					$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
+				
+				right_panel_droppable_handler(event, ui_obj, this, helper_clone);
+			}
+			
+			helper.remove();
+			helper_clone.remove();
+			
+			//do not add "return false" otherwise the draggable will stop working for next iteractions
+		},
+	});
+	
+	files_lis.find(" > a > i").addClass("allow_move");
+}
+
+//Any change in this method should be done too in the initFilesDragAndDrop method
 function initDBTablesSorting(elm) {
 	var scroll_parent = elm.parent().closest(".scroll");
 	var iframe = $("#right_panel > iframe");
@@ -913,7 +1413,6 @@ function initDBTablesSorting(elm) {
 	var available_iframe_droppables_selectors = ".droppable, .tasks_flow, .connector_overlay_add_icon"; //".droppable" is related with the LayoutUIEditor, ".tasks_flow" is related with workflows and ".connector_overlay_add_icon" is related with Logic workflows.
 	var PtlLayoutUIEditor = null;
 	
-	var lis = elm.children("li");
 	var left_panel_droppable_handler = function(event, ui_obj) {
 		var fk_table_li = $(this);
 		var is_fk_table_li_ul = fk_table_li.is("ul") && fk_table_li.parent().is("li");
@@ -1036,72 +1535,6 @@ function initDBTablesSorting(elm) {
 			else
 				StatusMessageHandler.showError("Sorry, droppable not allowed...");
 		}
-		else if (li_a.children("i.query").length > 0) { //ibatis query => create callibatisquery or callhibernatemethod task
-			//check if query belongs to a hibernate obj
-			var parent_li = li.parent().parent();
-			var is_hbn_obj = parent_li.children("a").children("i.obj").length > 0;
-			
-			if (
-				(!is_hbn_obj && typeof iframe_win.CallIbatisQueryTaskPropertyObj == "object") || 
-				(is_hbn_obj && typeof iframe_win.CallHibernateMethodTaskPropertyObj == "object")
-			) {
-				if (iframe_droppable_elm) {
-					var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
-					var task_menu = is_hbn_obj ? tasks_menu.find(".task.task_menu.task_callhibernatemethod") : tasks_menu.find(".task.task_menu.task_callibatisquery");
-					var task_type = task_menu.attr("type");
-					
-					if (task_type) {
-						//TODO: create task
-					}
-					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
-				}
-				else
-					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
-			}
-			else
-				StatusMessageHandler.showError("Sorry, droppable not allowed...");
-		}
-		else if (li_a.children("i.obj").length > 0) { //hibernate obj => create callhibernateobject task
-			if (typeof iframe_win.CallHibernateObjectTaskPropertyObj == "object") {
-				if (iframe_droppable_elm) {
-					var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
-					var task_menu = tasks_menu.find(".task.task_menu.task_callhibernateobject");
-					var task_type = task_menu.attr("type");
-					
-					if (task_type) {
-						//TODO: create task
-					}
-					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
-				}
-				else
-					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
-			}
-			else
-				StatusMessageHandler.showError("Sorry, droppable not allowed...");
-		}
-		else if (li_a.children("i.file").length > 0) { //file => create includefile task
-			//check if file has a php extension
-			
-			if (typeof iframe_win.IncludeFileTaskPropertyObj == "object") {
-				if (iframe_droppable_elm) {
-					var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
-					var task_menu = tasks_menu.find(".task.task_menu.task_includefile");
-					var task_type = task_menu.attr("type");
-					
-					if (task_type) {
-						//TODO: create task
-					}
-					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
-				}
-				else
-					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
-			}
-			else
-				StatusMessageHandler.showError("Sorry, droppable not allowed...");
-		}
 		else
 			StatusMessageHandler.showError("Sorry, droppable not allowed...");
 	};
@@ -1142,6 +1575,8 @@ function initDBTablesSorting(elm) {
 		
 		return inner_iframe_droppable_elm;
 	};
+	
+	var lis = elm.find(" > li > a > .table").parent().parent();
 	
 	lis.droppable({
 		greedy: true,
@@ -1343,10 +1778,454 @@ function getIframeBeanDBDriver(iframe_win, bean_name) {
 				break;
 			}
 		}
+	
+	return db_driver;
 }
 
-function onChooseLayoutUIEditorDBTableWidgetOptions(iframe_win, db_driver, table_name, widget) {
-	iframe_win.onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, "db", table_name, widget);
+function onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, on_success_func) {
+	var task_id = null;
+	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
+	var j_iframe_droppable_elm = $(iframe_droppable_elm);
+	
+	//preparing droppable if is ".connector_overlay_add_icon"
+	if (j_iframe_droppable_elm.hasClass("connector_overlay_add_icon")) {
+		var overlay_id = j_iframe_droppable_elm.attr("id");
+		var droppable_connection = jsPlumbWorkFlow.jsPlumbTaskFlow.getOverlayConnectionId(overlay_id);
+		
+		if (droppable_connection)
+			task_id = jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByTypeToConnection(task_type, droppable_connection);
+	}
+	//preparing droppable if is ".tasks_flow"
+	else {
+		var tasks_flow_offset = j_iframe_droppable_elm.offset();
+		var tasks_flow_event_x = event.clientX - iframe_offset.left - tasks_flow_offset.left;
+		var tasks_flow_event_y = event.clientY - iframe_offset.top - tasks_flow_offset.top;
+		
+		task_id = jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByType(task_type, {
+			top: tasks_flow_event_y,
+			left: tasks_flow_event_x,
+		});
+	}
+	
+	//preparing task properties according with dragged and dropped table
+	if (task_id) {
+		//set task label
+		var label_obj = {label: task_label};
+		
+		jsPlumbWorkFlow.jsPlumbTaskFlow.setTaskLabelByTaskId(task_id, label_obj); //set {label: table_name}, so the jsPlumbTaskFlow.setTaskLabel method ignores the prompt and adds the default label or an auto generated label.
+		
+		//open properties
+		jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+		
+		if (typeof on_success_func == "function")
+			on_success_func(task_id);
+	}
+	
+	iframe_win.jsPlumbWorkFlow.getMyFancyPopupObj().hideLoading();
+}
+
+//Note that this logic was taken from edit_php_code.js:chooseIncludeFile
+function onChooseWorkflowIncludeFileTask(iframe_win, file_tree_item, task_id) {
+	//get method props
+	var file_tree_item_a = file_tree_item.children("a");
+	var edit_url = file_tree_item_a[0].hasAttribute("edit_url") ? file_tree_item_a.attr("edit_url") : file_tree_item_a.attr("edit_raw_file_url");
+	var bean_name = getParameterByName(edit_url, "bean_name");
+	var file_path = getParameterByName(edit_url, "path");
+	
+	//preparing task properties according with dragged and dropped table
+	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
+	var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+	var task_html_elm = selected_task_properties.find(".include_file_task_html");
+	
+	//set include path
+	var include_path = typeof iframe_win.getNodeIncludePath == "function" ? iframe_win.getNodeIncludePath(file_tree_item, file_path, bean_name) : null;
+	
+	if (include_path) {
+		task_html_elm.find(".file_path input").val(include_path);
+		task_html_elm.find(".type select").val("");
+		task_html_elm.find(".once input").prop("checked", true).attr("checked", "");
+	}
+	
+	//save properties
+	jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+	
+	//load again task
+	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+}
+
+//Note that this logic was taken from edit_php_code.js:chooseObjectMethod
+function onChooseWorkflowCallObjectMethodTask(iframe_win, file_tree_item, task_id) {
+	//get method props
+	var file_tree_item_a = file_tree_item.children("a");
+	var edit_url = file_tree_item_a.attr("edit_url");
+	var bean_name = getParameterByName(edit_url, "bean_name");
+	var file_path = getParameterByName(edit_url, "path");
+	var obj_class = getParameterByName(edit_url, "class");
+	var method = getParameterByName(edit_url, "method");
+	
+	//preparing task properties according with dragged and dropped table
+	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
+	var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+	var task_html_elm = selected_task_properties.find(".call_object_method_task_html");
+	
+	//set include path
+	var include_path = typeof iframe_win.getNodeIncludePath == "function" ? iframe_win.getNodeIncludePath(file_tree_item, file_path, bean_name) : null;
+	
+	if (include_path) {
+		task_html_elm.find(".include_file input[name=include_file_path]").val(include_path);
+		task_html_elm.find(".include_file select[name=include_file_path_type]").val("");
+		task_html_elm.find(".include_file input[name=include_once]").prop("checked", true).attr("checked", "");
+	}
+	
+	//set method props
+	task_html_elm.find(".method_obj_name input").val(obj_class);
+	task_html_elm.find(".method_name input").val(method);
+	
+	var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? iframe_win.main_layers_properties[bean_name]["ui"] : {};
+	var get_file_properties_url = bean_ui_props.hasOwnProperty("file") && bean_ui_props["file"].hasOwnProperty("attributes") && bean_ui_props["file"]["attributes"] ? bean_ui_props["file"]["attributes"]["get_file_properties_url"] : null;
+	
+	var class_methods = get_file_properties_url && typeof iframe_win.getClassMethods == "function" ? iframe_win.getClassMethods(get_file_properties_url, file_path, obj_class) : null;
+	var method_static = false;
+	
+	if (class_methods)
+		for (var i = 0; i < class_methods.length; i++)
+			if (class_methods[i]["name"] == method) {
+				method_static = class_methods[i]["static"];
+				break;
+			}
+	
+	if (method_static)
+		task_html_elm.find(".method_static input[type=checkbox]").prop("checked", true).attr("checked", "");
+	else
+		task_html_elm.find(".method_static input[type=checkbox]").prop("checked", false).removeAttr("checked");
+	
+	if (get_file_properties_url && typeof iframe_win.getMethodArguments == "function")
+		if (iframe_win.auto_convert || confirm("Do you wish to update automatically this method arguments?")) {
+			var args = iframe_win.getMethodArguments(get_file_properties_url, file_path, obj_class, method);
+			iframe_win.ProgrammingTaskUtil.setArgs(args, task_html_elm.find(".method_args .args"));
+		}
+	
+	//save properties
+	jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+	
+	//load again task
+	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+}
+
+//Note that this logic was taken from edit_php_code.js:chooseFunction
+function onChooseWorkflowCallFunctionTask(iframe_win, file_tree_item, task_id) {
+	//get method props
+	var file_tree_item_a = file_tree_item.children("a");
+	var edit_url = file_tree_item_a.attr("edit_url");
+	var bean_name = getParameterByName(edit_url, "bean_name");
+	var file_path = getParameterByName(edit_url, "path");
+	var func_name = getParameterByName(edit_url, "function");
+	
+	//preparing task properties according with dragged and dropped table
+	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
+	var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+	var task_html_elm = selected_task_properties.find(".call_function_task_html");
+	
+	//set include path
+	var include_path = typeof iframe_win.getNodeIncludePath == "function" ? iframe_win.getNodeIncludePath(file_tree_item, file_path, bean_name) : null;
+	
+	if (include_path) {
+		task_html_elm.find(".include_file input[name=include_file_path]").val(include_path);
+		task_html_elm.find(".include_file select[name=include_file_path_type]").val("");
+		task_html_elm.find(".include_file input[name=include_once]").prop("checked", true).attr("checked", "");
+	}
+	
+	//set function props
+	task_html_elm.find(".func_name input").val(func_name);
+	
+	var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? iframe_win.main_layers_properties[bean_name]["ui"] : {};
+	var get_file_properties_url = bean_ui_props.hasOwnProperty("file") && bean_ui_props["file"].hasOwnProperty("attributes") && bean_ui_props["file"]["attributes"] ? bean_ui_props["file"]["attributes"]["get_file_properties_url"] : null;
+	
+	if (get_file_properties_url && typeof iframe_win.getFunctionArguments == "function")
+		if (iframe_win.auto_convert || confirm("Do you wish to update automatically this function arguments?")) {
+			var args = iframe_win.getFunctionArguments(get_file_properties_url, file_path, func_name);
+			iframe_win.ProgrammingTaskUtil.setArgs(args, task_html_elm.find(".func_args .args"));
+		}
+	
+	//save properties
+	jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+	
+	//load again task
+	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+}
+
+//Note that this logic was taken from edit_php_code.js:chooseBusinessLogic
+function onChooseWorkflowCallBusinessLogicTask(iframe_win, file_tree_item, task_id) {
+	//get method props
+	var file_tree_item_a = file_tree_item.children("a");
+	var edit_url = file_tree_item_a.attr("edit_url");
+	var bean_name = getParameterByName(edit_url, "bean_name");
+	var bean_file_name = getParameterByName(edit_url, "bean_file_name");
+	var file_path = getParameterByName(edit_url, "path");
+	var service = getParameterByName(edit_url, "service");
+	var method = getParameterByName(edit_url, "method");
+	var func_name = getParameterByName(edit_url, "function");
+	
+	var module_id = file_path.lastIndexOf("/") != -1 ? file_path.substr(0, file_path.lastIndexOf("/")) : file_path;
+	module_id = module_id.replace(/\//g, ".");
+	var service_id = service && method ? service + "." + method : func_name;
+	
+	//preparing task properties according with dragged and dropped table
+	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
+	var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+	var task_html_elm = selected_task_properties.find(".call_business_logic_task_html");
+	
+	//preparing broker method obj
+	var broker_name = file_tree_item_a.parent().closest(".main_node_businesslogic").find(" > a > label").text().toLowerCase();
+	onChooseWorkflowTaskBrokerMethodObj(iframe_win, task_html_elm, broker_name);
+	
+	//preparing module id
+	task_html_elm.find(".module_id input").val(module_id);
+	task_html_elm.find(".module_id select").val("string");
+	
+	//preparing service id
+	task_html_elm.find(".service_id input").val(service_id);
+	task_html_elm.find(".service_id select").val("string");
+	
+	var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? iframe_win.main_layers_properties[bean_name]["ui"] : {};
+	var get_file_properties_url = bean_ui_props.hasOwnProperty("file") && bean_ui_props["file"].hasOwnProperty("attributes") && bean_ui_props["file"]["attributes"] ? bean_ui_props["file"]["attributes"]["get_file_properties_url"] : null;
+	
+	if (get_file_properties_url && typeof iframe_win.updateBusinessLogicParams == "function")
+		iframe_win.updateBusinessLogicParams(task_html_elm, bean_file_name, bean_name, file_path, service_id);
+	
+	//save properties
+	jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+	
+	//load again task
+	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+}
+
+//Note that this logic was taken from edit_php_code.js:chooseClassName
+function onChooseWorkflowCreateClassObjectTask(iframe_win, file_tree_item, task_id) {
+	//get method props
+	var file_tree_item_a = file_tree_item.children("a");
+	var edit_url = file_tree_item_a.attr("edit_url");
+	var bean_name = getParameterByName(edit_url, "bean_name");
+	var file_path = getParameterByName(edit_url, "path");
+	var class_obj = getParameterByName(edit_url, "class");
+	
+	//preparing task properties according with dragged and dropped table
+	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
+	var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+	var task_html_elm = selected_task_properties.find(".create_class_object_task_html");
+	
+	//set include path
+	var include_path = typeof iframe_win.getNodeIncludePath == "function" ? iframe_win.getNodeIncludePath(file_tree_item, file_path, bean_name) : null;
+	
+	if (include_path) {
+		task_html_elm.find(".include_file input[name=include_file_path]").val(include_path);
+		task_html_elm.find(".include_file select[name=include_file_path_type]").val("");
+		task_html_elm.find(".include_file input[name=include_once]").prop("checked", true).attr("checked", "");
+	}
+	
+	//preparing class_name
+	task_html_elm.find(".class_name input").val(class_obj);
+	
+	var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? iframe_win.main_layers_properties[bean_name]["ui"] : {};
+	var get_file_properties_url = bean_ui_props.hasOwnProperty("file") && bean_ui_props["file"].hasOwnProperty("attributes") && bean_ui_props["file"]["attributes"] ? bean_ui_props["file"]["attributes"]["get_file_properties_url"] : null;
+	
+	if (get_file_properties_url && typeof iframe_win.getMethodArguments == "function")
+		if (iframe_win.auto_convert || confirm("Do you wish to update automatically this class arguments?")) {
+			var args = iframe_win.getMethodArguments(get_file_properties_url, file_path, class_obj, "__construct");
+			iframe_win.ProgrammingTaskUtil.setArgs(args, task_html_elm.find(".class_args .args"));
+		}
+	
+	//save properties
+	jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+	
+	//load again task
+	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+}
+
+//Note that this logic was taken from edit_php_code.js:chooseHibernateObject
+function onChooseWorkflowCallHibernateObjectTask(iframe_win, file_tree_item, task_id) {
+	//get method props
+	var file_tree_item_a = file_tree_item.children("a");
+	var edit_url = file_tree_item_a.attr("edit_url");
+	var file_path = getParameterByName(edit_url, "path");
+	var hbn_obj = getParameterByName(edit_url, "obj");
+	
+	var module_id = file_path.lastIndexOf("/") != -1 ? file_path.substr(0, file_path.lastIndexOf("/")) : file_path;
+	module_id = module_id.replace(/\//g, ".");
+	var service_id = hbn_obj;
+	
+	//preparing task properties according with dragged and dropped table
+	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
+	var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+	var task_html_elm = selected_task_properties.find(".call_hibernate_object_task_html");
+	
+	//preparing broker method obj
+	var broker_name = file_tree_item_a.parent().closest(".main_node_hibernate").find(" > a > label").text().toLowerCase();
+	onChooseWorkflowTaskBrokerMethodObj(iframe_win, task_html_elm, broker_name);
+	
+	//preparing module id
+	task_html_elm.find(".module_id input").val(module_id);
+	task_html_elm.find(".module_id select").val("string");
+	
+	//preparing service id
+	task_html_elm.find(".service_id input").val(service_id);
+	task_html_elm.find(".service_id select").val("string");
+	
+	//save properties
+	jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+	
+	//load again task
+	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+}
+
+//Note that this logic was taken from edit_php_code.js:chooseHibernateObjectMethod
+function onChooseWorkflowCallHibernateMethodTask(iframe_win, file_tree_item, task_id) {
+	//get method props
+	var file_tree_item_a = file_tree_item.children("a");
+	var edit_url = file_tree_item_a.attr("edit_url");
+	var bean_name = getParameterByName(edit_url, "bean_name");
+	var bean_file_name = getParameterByName(edit_url, "bean_file_name");
+	var file_path = getParameterByName(edit_url, "path");
+	var hbn_obj = getParameterByName(edit_url, "obj");
+	var query_id = getParameterByName(edit_url, "query_id");
+	var query_type = getParameterByName(edit_url, "query_type");
+	var relationship_type = getParameterByName(edit_url, "relationship_type");
+	
+	var module_id = file_path.lastIndexOf("/") != -1 ? file_path.substr(0, file_path.lastIndexOf("/")) : file_path;
+	module_id = module_id.replace(/\//g, ".");
+	
+	//preparing task properties according with dragged and dropped table
+	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
+	var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+	var task_html_elm = selected_task_properties.find(".call_hibernate_method_task_html");
+	
+	//preparing broker method obj
+	var broker_name = file_tree_item_a.parent().closest(".main_node_hibernate").find(" > a > label").text().toLowerCase();
+	onChooseWorkflowTaskBrokerMethodObj(iframe_win, task_html_elm, broker_name);
+	
+	//preparing module id
+	task_html_elm.find(".module_id input").val(module_id);
+	task_html_elm.find(".module_id select").val("string");
+	
+	//preparing service id
+	task_html_elm.find(".service_id input").val(hbn_obj);
+	task_html_elm.find(".service_id select").val("string");
+	
+	//preparing query id /rel name
+	var method = null;
+	
+	if (relationship_type == "queries") {
+		task_html_elm.find(".sma_query_id input").val(query_id);
+		task_html_elm.find(".sma_query_id select").val("string");
+		
+		task_html_elm.find(".sma_query_type input").val(query_type);
+		task_html_elm.find(".sma_query_type select[name=sma_query_type]").val(query_type);
+		task_html_elm.find(".sma_query_type select[name=sma_query_type_type]").val("string");
+		
+		method = "call" + query_type.charAt(0).toUpperCase() + query_type.slice(1).toLowerCase();
+	}
+	else if (relationship_type == "relationships") {
+		task_html_elm.find(".sma_rel_name input").val(query_id);
+		task_html_elm.find(".sma_rel_name select").val("string");
+		
+		method = "findRelationship";
+	}
+	else if (relationship_type == "native") {
+		method = query_id;
+	}
+	
+	//preparing method name
+	task_html_elm.find(".service_method .service_method_string").val(method);
+	task_html_elm.find(".service_method .service_method_type").val("string");
+	
+	iframe_win.CallHibernateMethodTaskPropertyObj.onChangeServiceMethodType( task_html_elm.find(".service_method .service_method_type")[0] );
+	iframe_win.CallHibernateMethodTaskPropertyObj.onChangeServiceMethod( task_html_elm.find(".service_method .service_method_string")[0] );
+	
+	//preparing parameters
+	if (typeof iframe_win.updateHibernateObjectMethodParams == "function") {
+		var db_driver = iframe_win.default_db_driver ? iframe_win.default_db_driver : ""; //Do not use getIframeBeanDBDriver(iframe_win, bean_name), bc this is only for the DBDriver beans and this is a hibernate bean.
+		var db_type = iframe_win.default_db_type ? iframe_win.default_db_type : "db";
+		
+		iframe_win.updateHibernateObjectMethodParams(task_html_elm, bean_file_name, bean_name, db_driver, db_type, file_path, query_type, query_id, hbn_obj, relationship_type);
+	}
+	
+	//save properties
+	jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+	
+	//load again task
+	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+}
+
+//Note that this logic was taken from edit_php_code.js:chooseQuery
+function onChooseWorkflowCallIbatisQueryTask(iframe_win, file_tree_item, task_id) {
+	//get method props
+	var file_tree_item_a = file_tree_item.children("a");
+	var edit_url = file_tree_item_a.attr("edit_url");
+	var bean_name = getParameterByName(edit_url, "bean_name");
+	var bean_file_name = getParameterByName(edit_url, "bean_file_name");
+	var file_path = getParameterByName(edit_url, "path");
+	var query_id = getParameterByName(edit_url, "query_id");
+	var query_type = getParameterByName(edit_url, "query_type");
+	var relationship_type = getParameterByName(edit_url, "relationship_type");
+	
+	var module_id = file_path.lastIndexOf("/") != -1 ? file_path.substr(0, file_path.lastIndexOf("/")) : file_path;
+	module_id = module_id.replace(/\//g, ".");
+	
+	//preparing task properties according with dragged and dropped table
+	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
+	var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+	var task_html_elm = selected_task_properties.find(".call_ibatis_query_task_html");
+	
+	//preparing broker method obj
+	var broker_name = file_tree_item_a.parent().closest(".main_node_ibatis").find(" > a > label").text().toLowerCase();
+	onChooseWorkflowTaskBrokerMethodObj(iframe_win, task_html_elm, broker_name);
+	
+	//preparing module id
+	task_html_elm.find(".module_id input").val(module_id);
+	task_html_elm.find(".module_id select").val("string");
+	
+	//preparing service id
+	var service_id = task_html_elm.children(".service_id");
+	service_id.children("input").val(query_id);
+	service_id.children("select").val("string");
+
+	//preparing query type
+	var service_type = task_html_elm.children(".service_type");
+	var service_type_type = service_type.children(".service_type_type");
+	service_type_type.val("string");
+	iframe_win.CallIbatisQueryTaskPropertyObj.onChangeServiceType(service_type_type[0]);
+	service_type.children(".service_type_string").val(query_type.toLowerCase());
+	
+	//preparing parameters
+	if (typeof iframe_win.updateQueryParams == "function") {
+		var db_driver = iframe_win.default_db_driver ? iframe_win.default_db_driver : ""; //Do not use getIframeBeanDBDriver(iframe_win, bean_name), bc this is only for the DBDriver beans and this is a hibernate bean.
+		var db_type = iframe_win.default_db_type ? iframe_win.default_db_type : "db";
+		
+		iframe_win.updateQueryParams(task_html_elm, bean_file_name, bean_name, db_driver, db_type, file_path, query_type, query_id, "", relationship_type);
+	}
+	
+	//save properties
+	jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+	
+	//load again task
+	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+}
+
+function onChooseWorkflowTaskBrokerMethodObj(iframe_win, task_html_elm, broker_name) {
+	//update the selected broker
+	var select = task_html_elm.find(".broker_method_obj select");
+	//console.log(broker_name);
+	
+	if (select && select[0])
+		for (var i = 0; i < select[0].options.length; i++) {
+			var option = select[0].options[i];
+			
+			if (option.value.indexOf('("' + broker_name + '")') != -1) {
+				select.val( option.value );
+				iframe_win.BrokerOptionsUtilObj.onBrokerChange(select[0]);
+				break;
+			}
+		}
 }
 
 function onChooseWorkflowDBTableTaskOptions(event, iframe_droppable_elm, iframe_win, iframe_offset, db_driver, table_name, task_type, url) {
@@ -1391,57 +2270,29 @@ function onChooseWorkflowDBTableTaskOptions(event, iframe_droppable_elm, iframe_
 					url : url,
 					dataType : "json",
 					success : function(data, textStatus, jqXHR) {
-						var task_id = null;
-						var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
-						var DBDAOActionTaskPropertyObj = iframe_win.DBDAOActionTaskPropertyObj;
+						var task_label = method_name.replace(/_/g, " ") + " " + table_name;
 						
-						//prepare table attributes
-						var table_attributes = {};
-						
-						for (var attribute_name in data)
-							if (attribute_name != "properties") {
-								var attribute_props = data[attribute_name]["properties"];
-								delete attribute_props["item_id"];
-								delete attribute_props["item_type"];
-								delete attribute_props["item_menu"];
-								delete attribute_props["bean_name"];
-								delete attribute_props["bean_file_name"];
-								delete attribute_props["table"];
-								
-								table_attributes[attribute_name] = attribute_props;
-							}
-						
-						//preparing droppable if is ".connector_overlay_add_icon"
-						if (j_iframe_droppable_elm.hasClass("connector_overlay_add_icon")) {
-							var overlay_id = j_iframe_droppable_elm.attr("id");
-							var droppable_connection = jsPlumbWorkFlow.jsPlumbTaskFlow.getOverlayConnectionId(overlay_id);
+						onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
+							var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
+							var DBDAOActionTaskPropertyObj = iframe_win.DBDAOActionTaskPropertyObj;
 							
-							if (droppable_connection)
-								task_id = jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByTypeToConnection(task_type, droppable_connection);
-						}
-						//preparing droppable if is ".tasks_flow"
-						else {
-							var tasks_flow_offset = j_iframe_droppable_elm.offset();
-							var tasks_flow_event_x = event.clientX - iframe_offset.left - tasks_flow_offset.left;
-							var tasks_flow_event_y = event.clientY - iframe_offset.top - tasks_flow_offset.top;
+							//prepare table attributes
+							var table_attributes = {};
 							
-							task_id = jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByType(task_type, {
-								top: tasks_flow_event_y,
-								left: tasks_flow_event_x,
-							});
-						}
-						
-						//preparing task properties according with dragged and dropped table
-						if (task_id) {
-							//set task label
-							var label_obj = {label: method_name.replace(/_/g, " ") + " " + table_name};
+							for (var attribute_name in data)
+								if (attribute_name != "properties") {
+									var attribute_props = data[attribute_name]["properties"];
+									delete attribute_props["item_id"];
+									delete attribute_props["item_type"];
+									delete attribute_props["item_menu"];
+									delete attribute_props["bean_name"];
+									delete attribute_props["bean_file_name"];
+									delete attribute_props["table"];
+									
+									table_attributes[attribute_name] = attribute_props;
+								}
 							
-							jsPlumbWorkFlow.jsPlumbTaskFlow.setTaskLabelByTaskId(task_id, label_obj); //set {label: table_name}, so the jsPlumbTaskFlow.setTaskLabel method ignores the prompt and adds the default label or an auto generated label.
-							
-							//open properties
-							jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
-							
-							//prepare properties
+							//preparing task properties according with dragged and dropped table
 							var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
 							var task_html_elm = selected_task_properties.find(".db_dao_action_task_html");
 							
@@ -1478,9 +2329,7 @@ function onChooseWorkflowDBTableTaskOptions(event, iframe_droppable_elm, iframe_
 							
 							//load again task
 							jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
-						}
-						
-						iframe_win.jsPlumbWorkFlow.getMyFancyPopupObj().hideLoading();
+						});
 					},
 					error : function(jqXHR, textStatus, errorThrown) { 
 						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
@@ -1497,6 +2346,10 @@ function onChooseWorkflowDBTableTaskOptions(event, iframe_droppable_elm, iframe_
 		},
 	});
 	DBTableTaskOptionsFancyPopup.showPopup();
+}
+
+function onChooseLayoutUIEditorDBTableWidgetOptions(iframe_win, db_driver, table_name, widget) {
+	iframe_win.onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, "db", table_name, widget);
 }
 
 function initDBTableAttributesSorting(elm) {
@@ -1727,6 +2580,17 @@ function goToPopup(a, attr_name, originalEvent, popup_class_name, on_success_pop
 	//console.log(attr_name+":"+url);
 	
 	if (url) {
+		//check if ctrlKey is pressed and if yes, open in a new window
+		originalEvent = originalEvent || window.event;
+		
+		if (originalEvent && (originalEvent.ctrlKey || originalEvent.keyCode == 65)) {
+			a.setAttribute(attr_name, url.replace(/(\?|&)popup=1/i, "")); //remove popup parameter from url
+			goToNew(a, attr_name);
+			a.setAttribute(attr_name, url); //add original url again
+			return false;
+		}
+		
+		//prepare popup
 		var popup = $(".go_to_popup");
 		
 		if (!popup[0]) {
@@ -2401,6 +3265,7 @@ function manageDBTableAction(a, attr_name, action, on_success_callback, on_error
 				if ($.isPlainObject(simple_props)) {
 					properties = simple_props;
 					delete properties["label"];
+					delete properties["name"];
 					
 					if ($.isArray(properties["type"])) {
 						var original_type = type_select.find("option:selected").attr("original_type");
@@ -2706,6 +3571,39 @@ function chooseAvailableTutorial(url) {
 		},
 	});
 	ProjectsFancyPopup.showPopup();
+	
+	return false;
+}
+
+function openConsole(url, originalEvent) {
+	if (url) {
+		//check if ctrlKey is pressed and if yes, open in a new window
+		originalEvent = originalEvent || window.event;
+		
+		if (originalEvent && (originalEvent.ctrlKey || originalEvent.keyCode == 65)) {
+			url = url.replace(/(\?|&)popup=1/i, ""); //remove popup parameter from url
+			var a = $('<a url="' + url + '"></a>');
+			goToNew(a[0], "url");
+			
+			a.remove();
+			
+			return false;
+		}
+		
+		//prepare popup
+		var popup = $(".log_console_popup");
+		
+		if (!popup[0]) {
+			popup = $('<div class="myfancypopup with_iframe_title log_console_popup"><iframe src="' + url + '"></iframe></div>');
+			$(document.body).append(popup);
+		}
+		
+		LogConsoleFancyPopup.init({
+			elementToShow: popup,
+			parentElement: document,
+		});
+		LogConsoleFancyPopup.showPopup();
+	}
 	
 	return false;
 }

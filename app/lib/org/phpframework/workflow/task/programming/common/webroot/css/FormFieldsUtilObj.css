@@ -331,6 +331,9 @@
 	padding-right:15px;
 	background-color:#fff;
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .form_containers .fields .field .input_href input {
+	width:calc(100% - 105px);
+}
 .selected_task_properties .form_containers .fields .field .label_previous_html textarea,
    .selected_task_properties .form_containers .fields .field .label_next_html textarea,
    .selected_task_properties .form_containers .fields .field .input_previous_html textarea,
@@ -339,6 +342,12 @@
 	height:65px;  
 	background-color:#fff; 
 }
+.selected_task_properties .form_containers .fields .field .input_value {
+	position:relative;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .form_containers .fields .field .input_value {
+	width:auto;
+}
 .selected_task_properties .form_containers .fields .field .input_value input {
 	width:200px;
 	padding-right:40px;
@@ -346,41 +355,28 @@
 .taskflowchart.fixed_side_properties .selected_task_properties .form_containers .fields .field .input_value input {
 	width:calc(100% - 105px);
 }
+.selected_task_properties .form_containers .fields .field .input_value .add_field_automatically {
+	margin-left:-40px;
+}
+.selected_task_properties .form_containers .fields .field .input_src {
+	position:relative;
+}
 .selected_task_properties .form_containers .fields .field .input_src input {
-	width:564px;
+	width:calc(100% - 170px);
 	padding-right:35px;
 	background-color:#fff; 
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .form_containers .fields .field .input_src input {
-	width:calc(100% - 100px);
+	width:calc(100% - 125px);
 }
-.selected_task_properties .form_containers .fields .field .input_value {
-	width:340px;
-	position:relative;
-}
-.selected_task_properties .form_containers .fields .field .input_src {
-	width:687px;
-	position:relative;
-}
-.taskflowchart.fixed_side_properties .selected_task_properties .form_containers .fields .field .input_value,
-   .taskflowchart.fixed_side_properties .selected_task_properties .form_containers .fields .field .input_src {
+.taskflowchart.fixed_side_properties .selected_task_properties .form_containers .fields .field .input_src {
 	width:auto;
 }
-.selected_task_properties .form_containers .fields .field .input_value .add_field_automatically,
-   .selected_task_properties .form_containers .fields .field .input_src .add_field_automatically {
-	position:absolute;
-	float:none;
-	clear:both;
-}
-.selected_task_properties .form_containers .fields .field .input_value .add_field_automatically {
-	right:32px;
-}
 .selected_task_properties .form_containers .fields .field .input_src .add_field_automatically {
-	right:22px;
+	margin-left:-40px;
 }
-.taskflowchart.fixed_side_properties .selected_task_properties .form_containers .fields .field .input_value .add_field_automatically,
-  .taskflowchart.fixed_side_properties .selected_task_properties .form_containers .fields .field .input_src .add_field_automatically {
-	right:19px;
+.selected_task_properties .form_containers .fields .field .input_src .search_page {
+	margin-left:15px;
 }
 
 .selected_task_properties .form_containers .fields .field .other_settings .confirmation,

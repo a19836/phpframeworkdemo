@@ -222,6 +222,7 @@
 .advanced_settings > div > div > label {
 	width:185px;
 	display:inline-block;
+	vertical-align:text-top;
 }
 .advanced_settings > div > div > .info {
 	margin-left:190px;

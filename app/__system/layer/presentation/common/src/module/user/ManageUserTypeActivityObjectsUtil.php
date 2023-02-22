@@ -184,7 +184,7 @@ class ManageUserTypeActivityObjectsUtil {
 				</ul>
 				
 				<div class="submit_button">
-					<input type="submit" name="save" value="' . translateProjectText($EVC, "Save") . '" onClick="$(this).attr(\'disabled\', \'disabled\').val(\'Saving... Please wait...\')[0].form.submit()" />
+					<input type="submit" name="save" value="' . translateProjectText($EVC, "Save") . '" onClick="this.setAttribute(\'disabled\', \'disabled\'); this.value=\'Saving... Please wait...\'; this.form.submit()" />
 				</div>
 			</form>
 			</div>';
@@ -333,31 +333,40 @@ class ManageUserTypeActivityObjectsUtil {
 	}
 	
 	private static function getObjectTypeHtml($EVC, $user_type_id, $object_type_id, $object_type_name, $activities, &$object_types_activities, $pages, $modules) {
+		$is_module_type = $object_type_id == ObjectUtil::MODULE_OBJECT_TYPE_ID;
+		$is_page_type = $object_type_id == ObjectUtil::PAGE_OBJECT_TYPE_ID;
 		$colspan = ($activities ? count($activities) : 0) + 3;
-		$is_predefined_file_path = $object_type_id == ObjectUtil::PAGE_OBJECT_TYPE_ID || $object_type_id == ObjectUtil::MODULE_OBJECT_TYPE_ID;
+		$is_predefined_file_path = $is_page_type || $is_module_type;
+		$is_hidden = !$is_page_type;
 		
 		$query_string = "bean_name=" . $_GET["bean_name"] . "&bean_file_name=" . $_GET["bean_file_name"] . "&path=" . $_GET["path"];
 		
 		$html = '
 		<li>
 			<div class="object_type_header object_type_header_' . str_replace(array(" ", "-"), "_", strtolower($object_type_name)) . '">
-				<label>' . translateProjectText($EVC, ucwords(str_replace(array("_", "-"), " ", $object_type_name))) . ':</label>';
+				<label>' . translateProjectText($EVC, ucwords(str_replace(array("_", "-"), " ", $object_type_name))) . ':</label>
+				<span class="icon ' . ($is_hidden ? 'maximize' : 'minimize') . '" onClick="togglePanel(this)">' . translateProjectText($EVC, "Minimize/Maximize") . '</span>';
 		
 		if (!$is_predefined_file_path) {
-			$html .= '<span class="icon add" onClick="addObjectActivity(\'?' . $query_string . '&action=add&user_type_id=' . $user_type_id . '&object_type_id=' . $object_type_id . '\')" title="' . str_replace("", translateProjectText($EVC, $object_type_name), translateProjectText($EVC, "Add new activity object '#object_type_name#'")) . '">' . translateProjectText($EVC, "Add") . '</span>';
+			$html .= '<span class="icon add" onClick="addObjectActivity(\'?' . $query_string . '&action=add&user_type_id=' . $user_type_id . '&object_type_id=' . $object_type_id . '\')" title="' . str_replace("#object_type_name#", translateProjectText($EVC, $object_type_name), translateProjectText($EVC, "Add new activity object '#object_type_name#'")) . '">' . translateProjectText($EVC, "Add") . '</span>';
 		}
 		
-		$object_id_column_label = $object_type_id == ObjectUtil::PAGE_OBJECT_TYPE_ID ? "Page Path" : ($object_type_id == ObjectUtil::MODULE_OBJECT_TYPE_ID ? "Module File" : "Object Id");
+		$object_id_column_label = $is_page_type ? "Page Path" : ($is_module_type ? "Module File" : "Object Id");
 		
-		$html .= '	<span class="icon minimize" onClick="togglePanel(this)">' . translateProjectText($EVC, "Minimize/Maximize") . '</span>
+		$html .= '
 			</div>
-			<table>
+			<table' . ($is_hidden ? ' style="display:none"' : '') . '>
 				<tr>
 					<th class="object_id">' . translateProjectText($EVC, $object_id_column_label) . '</th>';
 	
 		$project_html = '
 		<tr class="group_name">
-			<td>#title#</td>';
+			<td class="group_name_label">';
+		
+		if ($is_page_type)
+			$project_html .= '<span class="icon #toggle_icon_class#" onClick="toggleGroupFiles(this)">' . translateProjectText($EVC, "Minimize/Maximize") . '</span>';
+		
+		$project_html .= '#title#</td>';
 		
 		foreach($activities as $activity) {
 			$html .= '	<th class="activity activity_' . str_replace(array(" ", "-"), "_", strtolower($activity["name"])) . ' activity_' . $activity["activity_id"] . '">
@@ -379,21 +388,28 @@ class ManageUserTypeActivityObjectsUtil {
 		</tr>';
 		
 		if ($is_predefined_file_path) {
-			$items = $object_type_id == ObjectUtil::PAGE_OBJECT_TYPE_ID ? $pages : $modules;
-			
+			$items = $is_page_type ? $pages : $modules;
 			$selected_project = null;
+			$selected_project_name = $EVC->getPresentationLayer()->getSelectedPresentationId();
 			
 			foreach ($items as $project => $project_items) {
 				foreach ($project_items as $file_code => $file_props) {
 					$file_path = $file_props[0];
 					$file_activities = $file_props[1];
+					$is_file_hidden = false;
+					
+					if ($is_page_type && $project != $selected_project_name)
+						$is_file_hidden = true; //hides sub files for the projets that are not the selected_project_name
 					
 					if ($project && $project != $selected_project) {
-						$html .= str_replace("#title#", translateProjectText($EVC, "Files for the project") . ": '$project':", $project_html);
+						$project_html_aux = str_replace("#title#", translateProjectText($EVC, "Files for the project") . ": '$project':", $project_html);
+						$project_html_aux = str_replace("#toggle_icon_class#", $is_file_hidden ? "maximize" : "minimize", $project_html_aux);
+						
+						$html .= $project_html_aux;
 						$selected_project = $project;
 					}
 					
-					$html .= self::getObjectHtml($EVC, $object_type_id, $file_code, $file_path, $activities, $object_types_activities, $object_type_id == ObjectUtil::MODULE_OBJECT_TYPE_ID, $file_activities);
+					$html .= self::getObjectHtml($EVC, $object_type_id, $file_code, $file_path, $activities, $object_types_activities, $is_module_type, $file_activities, $is_file_hidden);
 					unset($object_types_activities[$object_type_id][$file_code]);
 				}
 			}
@@ -404,7 +420,7 @@ class ManageUserTypeActivityObjectsUtil {
 			$html .= $is_predefined_file_path ? str_replace("#title#", translateProjectText($EVC, "Independent Files based in Object Id") . ":", $project_html) : '';
 			
 			foreach ($objects_activities as $object_id => $object_activities) {
-				$html .= self::getObjectHtml($EVC, $object_type_id, $object_id, $object_id, $activities, $object_types_activities, $object_type_id == ObjectUtil::MODULE_OBJECT_TYPE_ID);
+				$html .= self::getObjectHtml($EVC, $object_type_id, $object_id, $object_id, $activities, $object_types_activities, $is_module_type, null, true);
 				unset($object_types_activities[$object_type_id][$object_id]);
 			}
 		}
@@ -417,11 +433,11 @@ class ManageUserTypeActivityObjectsUtil {
 		return $html;
 	}
 	
-	private static function getObjectHtml($EVC, $object_type_id, $object_id, $object_name, $activities, &$object_types_activities, $is_file, $object_available_activities = null) {
+	private static function getObjectHtml($EVC, $object_type_id, $object_id, $object_name, $activities, &$object_types_activities, $is_file, $object_available_activities = null, $is_hidden = false) {
 		$object_available_activities = is_array($object_available_activities) ? $object_available_activities : array();
 		
 		$html = '
-		<tr>
+		<tr' . ($is_hidden ? ' style="display:none;"' : '') . '>
 			<td class="object_id">' . $object_name . '</td>';
 
 		foreach($activities as $activity) {

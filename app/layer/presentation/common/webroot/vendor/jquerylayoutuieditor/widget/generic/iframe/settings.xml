@@ -42,7 +42,7 @@
 	<template_css><![CDATA[
 		/* bc of the resize, otherwise will be very dificult to resize this element, bc the focus will be inside of the iframe. */
 		.template-widget.template-widget-iframe {
-			border: 10px solid #f7f7f7; 
+			border:10px solid #f7f7f7; 
 		}
 		.template-widget.template-widget-iframe.widget-active {
 			border:10px solid #f7f7f7 !important;
@@ -55,6 +55,8 @@
 			me.init = function() {
 				menu_widget.attr({
 					"data-on-parse-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.iframe.parseHtml",
+					"data-on-clean-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.iframe.cleanHtml",
+					"data-on-create-template-widget-func": ui_creator.obj_var_name + ".menu_widgets_objs.iframe.onCreateTemplateWidget",
 				});
 				
 				menu_widget.children(".properties").attr({
@@ -66,6 +68,24 @@
 			
 			me.parseHtml = function(html_element) {
 				return html_element && html_element.nodeName.toLowerCase() == "iframe";
+			};
+			
+			me.cleanHtml = function(html_element) {
+				var clone = ui_creator.cloneHtmlElementBeforeCleanIt(html_element);
+				
+				//parse src to convert url to vars: $project_url_prefix or $project_common_url_prefix
+				var src = clone.attr("src");
+				
+				if (src && typeof ui_creator.options.on_convert_project_url_real_values_to_php_vars_func == "function") {
+					src = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(src);
+					clone.attr("src", src);
+				}
+				
+				var html = ui_creator.getCleanedHtmlElement(clone[0]);
+				
+				clone.remove();
+				
+				return html;
 			};
 			
 			me.onOpenWidgetSettings = function(widget, menu_settings) {
@@ -80,8 +100,24 @@
 				ui_creator.addMenuSettingsContextMenu( menu_settings.find(" > .settings-properties input") );
 			};
 			
+			me.onCreateTemplateWidget = function(widget, html_element) {
+				if (html_element) {
+					var src = widget.attr("src");
+					
+					//parse src in case it contains the $project_url_prefix or $project_common_url_prefix
+					if (src && typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function") {
+						src = ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(src);
+						widget.attr("src", src);
+					}
+				}
+			};
+			
 			me.parseSettings = function(widget, widget_settings) {
 				widget_settings["src"] = widget.attr("src");
+				
+				//parse src to convert url to vars: $project_url_prefix or $project_common_url_prefix
+				if (widget_settings["src"] && typeof ui_creator.options.on_convert_project_url_real_values_to_php_vars_func == "function")
+					widget_settings["src"] = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(widget_settings["src"]);
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {
@@ -91,8 +127,12 @@
 					var sprop = field.parent();
 					
 					if (sprop.hasClass("src")) {
-						if (field_value != "") 
+						if (field_value != "")  {
+							//parse src in case it contains the $project_url_prefix or $project_common_url_prefix
+							field_value = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(field_value) : field_value;
+							
 							widget.attr("src", field_value);
+						}
 						else 
 							widget.removeAttr("src");
 					}

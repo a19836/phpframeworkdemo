@@ -54,6 +54,10 @@ $(function() {
 	$("#choose_test_units_from_file_manager > .mytree > li:first-child > a").attr("file_path", "");
 });
 
+function onToggleFullScreen(in_full_screen) {
+	jsPlumbWorkFlow.resizePanels();
+}
+
 function removeAllInvalidTemplateTaskLayerFilesFromTree(ul, data) {
 	ul = $(ul);
 	

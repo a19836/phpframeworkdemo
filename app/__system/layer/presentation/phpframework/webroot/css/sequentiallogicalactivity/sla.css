@@ -456,8 +456,14 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 	width:160px;
 }
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .create_form_task_html .form_containers .fields .field .input_src input {
-	width:539px;
+	width:555px;
 	padding-right:40px;
+}
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .create_form_task_html .form_containers .fields .field .input_src .add_field_automatically {
+	margin-left:-45px;
+}
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .create_form_task_html .form_containers .fields .field .input_src .search_page {
+	margin-left:20px;
 }
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .create_form_task_html .form_containers .tree .tree_props .default_input_data {
 	padding:0;

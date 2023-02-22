@@ -121,6 +121,9 @@
 	content:"\f05e";
 	color:var(--icon-alert-color);
 }
+.mytree i.allow_move {
+	cursor:move;
+}
 
 .mytree li[data-jstree='{"icon":"reserved_folder"}'] > a,
   .mytree li[data-jstree='{"icon":"reserved_file"}'] > a,

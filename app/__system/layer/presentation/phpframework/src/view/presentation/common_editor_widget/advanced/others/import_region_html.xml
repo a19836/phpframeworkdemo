@@ -21,10 +21,12 @@
 		.layout-ui-editor > .menu-settings.menu-settings-import-template-region-html .settings-id,
 		   .layout-ui-editor > .menu-settings.menu-settings-import-template-region-html .settings-classes,
 		   .layout-ui-editor > .menu-settings.menu-settings-import-template-region-html .settings-properties,
+		   .layout-ui-editor > .menu-settings.menu-settings-import-template-region-html .settings-widget,
 		   .layout-ui-editor > .menu-settings.menu-settings-import-template-region-html .settings-general,
 		   .layout-ui-editor > .menu-settings.menu-settings-import-template-region-html .settings-dimension,
 		   .layout-ui-editor > .menu-settings.menu-settings-import-template-region-html .settings-typography,
 		   .layout-ui-editor > .menu-settings.menu-settings-import-template-region-html .settings-decorations,
+		   .layout-ui-editor > .menu-settings.menu-settings-import-template-region-html .settings-events,
 		   .layout-ui-editor > .menu-settings.menu-settings-import-template-region-html .settings-extra {
 			display:none;
 		}

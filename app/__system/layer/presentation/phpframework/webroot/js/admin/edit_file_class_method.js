@@ -376,6 +376,11 @@ function isClassMethodObjChanged() {
 	return saved_class_method_settings_id != new_class_method_settings_id;
 }
 
+function isClassMethodCodeWithErrors() {
+	var errors = getEditorCodeErros();
+	return errors.length > 0;
+}
+
 function getFileClassMethodObjId() {
 	var obj = getFileClassMethodObj();
 	
@@ -474,8 +479,8 @@ function saveFileClassMethod() {
 	if (file_class_method_obj[0]) {
 		if (!window.is_save_func_running) {
 			window.is_save_func_running = true;
-		
-			if (is_from_auto_save_bkp && !isClassMethodObjChanged()) {
+			
+			if (is_from_auto_save_bkp && (!isClassMethodObjChanged() || isClassMethodCodeWithErrors())) {
 				resetAutoSave();
 				window.is_save_func_running = false;
 				return;

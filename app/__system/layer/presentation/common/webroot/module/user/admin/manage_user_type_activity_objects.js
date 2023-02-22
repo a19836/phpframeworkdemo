@@ -12,6 +12,36 @@ function togglePanel(elm) {
 	}
 }
 
+function toggleGroupFiles(elm) {
+	elm = $(elm);
+	var tr = elm.closest("tr");
+	
+	if (tr[0]) {
+		var is_maximize = elm.hasClass("maximize");
+		
+		if (is_maximize)
+			elm.removeClass("maximize").addClass("minimize");
+		else
+			elm.removeClass("minimize").addClass("maximize");
+		
+		var next = tr;
+		
+		do {
+			next = next.next("tr");
+			
+			if (next.hasClass("group_name"))
+				break;
+			else {
+				if (is_maximize)
+					next.show();
+				else
+					next.hide();
+			}
+		}
+		while(next && next[0]);
+	}
+}
+
 function changeUserTypeId(elm) {
 	goToUserTypeId( $(elm).val() );
 }

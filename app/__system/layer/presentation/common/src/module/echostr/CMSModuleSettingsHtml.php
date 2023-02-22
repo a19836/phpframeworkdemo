@@ -24,6 +24,13 @@ if ($PEVC) {
 	
 	//load createform js files and load all files for the LayoutUIEditor
 	echo $WorkFlowUIHandler->getHeader(array("tasks_css_and_js" => true, "icons_and_edit_code_already_included" => true, "ui_editor" => true));
+	
+	//prepare init_layout_ui_editor_widget_resource_options
+	include $EVC->getModulePath("common/init_layout_ui_editor_widget_resource_options", $common_project_name);
+	
+	echo '<script>
+	' . $layout_ui_editor_widget_resource_options_js . '
+	</script>';
 }
 
 include $EVC->getModulePath("common/end_project_module_file", $common_project_name);

@@ -79,6 +79,9 @@ var system_project_common_webroot_url = \'' . $project_common_url_prefix . '\';
 
 var templates_regions_html_url = \'' . $templates_regions_html_url . '\';  //used in widget: src/view/presentation/common_editor_widget/template_region/import_region_html.xml and in the Layout_ui_editor from the taskflowchart->inlinehtml and createform tasks, for the workflow module.
 
+var selected_project_url_prefix = \'' . $selected_project_url_prefix . '\';
+var selected_project_common_url_prefix = \'' . $selected_project_common_url_prefix . '\';
+
 var block_settings_obj = ' . json_encode($block_settings_obj) . ';
 var brokers_db_drivers = ' . json_encode($brokers_db_drivers) . ';
 var load_module_settings_function = null;

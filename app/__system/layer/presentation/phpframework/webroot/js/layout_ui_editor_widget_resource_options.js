@@ -4,14 +4,17 @@ var creating_resources_by_table = {};
 
 function initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor) {
 	PtlLayoutUIEditor.options.on_choose_event_func = toggleChooseEventPopup;
+	var exists_choose_db_table_or_attribute_popup = $("#choose_db_table_or_attribute").length > 0;
 	
-	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.toggle_choose_db_table_attribute_popup_func = toggleChooseLayoutUIEditorWidgetResourceDBTableAttributePopup;
-	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.toggle_choose_widget_resource_popup_func = function(elm, widget, handler) {
-		toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget, handler, PtlLayoutUIEditor, false);
-	};
-	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.toggle_choose_widget_resource_value_attribute_popup_func = function(elm, widget, handler) {
-		toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget, handler, PtlLayoutUIEditor, true);
-	};
+	if (exists_choose_db_table_or_attribute_popup) {
+		PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.toggle_choose_db_table_attribute_popup_func = toggleChooseLayoutUIEditorWidgetResourceDBTableAttributePopup;
+		PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.toggle_choose_widget_resource_popup_func = function(elm, widget, handler) {
+			toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget, handler, PtlLayoutUIEditor, false);
+		};
+		PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.toggle_choose_widget_resource_value_attribute_popup_func = function(elm, widget, handler) {
+			toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget, handler, PtlLayoutUIEditor, true);
+		};
+	}
 	
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_db_brokers_func = getLayoutUIEditorWidgetResourceDBBrokers;
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_db_drivers_func = getLayoutUIEditorWidgetResourceDBDrivers;
@@ -672,6 +675,8 @@ function toggleChooseLayoutUIEditorWidgetResourceDBTableAttributePopup(elm, even
 			MyFancyPopup.hidePopup();
 		}
 	}
+	else 
+		StatusMessageHandler.showMessage("No #choose_db_table_or_attribute elm to be open as a popup! Please talk with the sys admin...");
 }
 
 function getLayoutUIEditorWidgetResourceDBBrokers() {
@@ -797,7 +802,7 @@ function getLayoutUIEditorWidgetResourceInternalAttributeNames() {
 }
 
 function addLayoutUIEditorWidgetResourceSLAResourceSync(db_broker, db_driver, db_type, db_table, db_table_alias, action_type, resource_name, permissions, data) {
-	if (create_sla_resource_url && !creating_resources[resource_name]) {
+	if (typeof create_sla_resource_url != "undefined" && create_sla_resource_url && !creating_resources[resource_name]) {
 		//very important to be here, otherwise if there are not business loigc services and ibatis rules yet, it will create multiple business logic classes and ibatis files for the same table, bc this function will be called concorrently. This avoids concorrent process for the same table, which avoids multiple different files to be created for the same table service and rule.
 		if (creating_resources_by_table[db_broker + "_" + db_driver + "_" + db_type + "_" + db_table])
 			setTimeout(function() {
@@ -811,7 +816,7 @@ function addLayoutUIEditorWidgetResourceSLAResourceSync(db_broker, db_driver, db
 function addLayoutUIEditorWidgetResourceSLAResourceAsync(db_broker, db_driver, db_type, db_table, db_table_alias, action_type, resource_name, permissions, data) {
 	var resource_table_id = db_broker + "_" + db_driver + "_" + db_type + "_" + db_table;
 	
-	if (create_sla_resource_url && !creating_resources[resource_name] && !creating_resources_by_table[resource_table_id]) {
+	if (typeof create_sla_resource_url != "undefined" && create_sla_resource_url && !creating_resources[resource_name] && !creating_resources_by_table[resource_table_id]) {
 		creating_resources[resource_name] = true;
 		creating_resources_by_table[resource_table_id] = true;
 		

@@ -124,6 +124,10 @@ $(function () {
 	MyFancyPopup.hidePopup();
 });
 
+function onToggleFullScreen(in_full_screen) {
+	jsPlumbWorkFlow.resizePanels();
+}
+
 function onIncludeBlockTaskChooseFile(elm) {
 	var popup = $("#choose_page_block_from_file_manager");
 	

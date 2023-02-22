@@ -42,6 +42,10 @@ $(function() {
 	onResizeTaskFlowChartPanels(jsPlumbWorkFlow, 0);
 });
 
+function onToggleFullScreen(in_full_screen) {
+	jsPlumbWorkFlow.resizePanels();
+}
+
 function onResizeTaskFlowChartPanels(WF, height) {
 	if ($("#" + WF.jsPlumbContextMenu.main_tasks_menu_obj_id).parent().hasClass("with_top_bar_menu"))
 		$("#" + WF.jsPlumbContextMenu.main_tasks_menu_obj_id + ", #" + WF.jsPlumbContextMenu.main_tasks_menu_hide_obj_id + ", #" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).css("top", "");

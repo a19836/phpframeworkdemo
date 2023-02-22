@@ -328,6 +328,7 @@ input[type=submit]:not(:disabled),
 	background:#FFF !important;
 	color:#2C2D34;
 	font-size:13px;
+	text-align:left;
 }
 .status_message .status_message_info:only-child,
   .status_message .status_message_error:only-child {

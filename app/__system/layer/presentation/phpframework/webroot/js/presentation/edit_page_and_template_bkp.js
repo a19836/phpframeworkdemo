@@ -285,8 +285,8 @@ function onPresentationIncludePageUrlTaskChooseFile(elm) {
 	
 	onIncludePageUrlTaskChooseFile(elm);
 	
-	MyFancyPopup.settings.targetField = target_field;
-	MyFancyPopup.settings.updateFunction = function(sub_elm) {
+	IncludePageUrlFancyPopup.settings.targetField = target_field;
+	IncludePageUrlFancyPopup.settings.updateFunction = function(sub_elm) {
 		chooseIncludePageUrl(sub_elm);
 		
 		select.val("string");

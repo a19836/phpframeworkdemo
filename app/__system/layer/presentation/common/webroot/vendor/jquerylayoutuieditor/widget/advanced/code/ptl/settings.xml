@@ -28,10 +28,12 @@
 		.layout-ui-editor > .menu-settings.menu-settings-ptl .settings-id,
 		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-classes,
 		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-properties,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-widget,
 		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-general,
 		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-dimension,
 		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-typography,
 		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-decorations,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-events,
 		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-extra {
 			display:none;
 		}
@@ -202,6 +204,9 @@
 					
 					ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
 				});
+				
+				//only allows paste with text, discarding the html. Html is not allowed here.
+				ui_creator.setPasteCallbackForOnlyText(span);
 			};
 		}
 	]]></menu_js>

@@ -18,6 +18,9 @@ include $EVC->getModulePath("common/start_project_module_file", $common_project_
 
 if ($PEVC) {
 	$CommonModuleTableExtraAttributesSettingsUtil = new CommonModuleTableExtraAttributesSettingsUtil($EVC, $PEVC, $GLOBALS["default_db_driver"], $module["path"]);
+	
+	//prepare init_layout_ui_editor_widget_resource_options
+	include $EVC->getModulePath("common/init_layout_ui_editor_widget_resource_options", $common_project_name);
 }
 include $EVC->getModulePath("common/end_project_module_file", $common_project_name);
 
@@ -31,17 +34,21 @@ var jsPlumbWorkFlow = null;
 </script>';
 echo $tasks_data["head"];
 echo '<script>
-ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback = onProgrammingTaskChooseCreatedVariable;
+ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback = typeof onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute == "function" ? onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute : onProgrammingTaskChooseCreatedVariable;
 ProgrammingTaskUtil.on_programming_task_choose_file_path_callback = onIncludeFileTaskChooseFile;
 ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
 ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
-</script>
+</script>';
 
+echo $WorkFlowUIHandler->getHeader(array("tasks_css_and_js" => false, "icons_and_edit_code_already_included" => true, "ui_editor" => true, "taskflowchart_already_included" => true));
+
+echo '<script>
+' . $layout_ui_editor_widget_resource_options_js . '
+</script>';
+
+/*echo '
 <!-- Layout UI Editor - Color -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'js/color.js"></script>
-
-<!-- Layout UI Editor - MD5 -->
-<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>
 
 <!-- Layout UI Editor - Add ACE-Editor -->
 <!-- Add ACE-Editor -->
@@ -98,7 +105,9 @@ ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeIma
 <!-- Layout UI Editor - Add Layout UI Editor Widget Resource Options/Handlers -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/layout_ui_editor_widget_resource_options.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/layout_ui_editor_widget_resource_options.js"></script>
+';*/
 
+echo '
 <!-- Add Form Field CSS and JS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'module/common/settings.css" type="text/css" charset="utf-8" />
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'module/common/other_settings.css" type="text/css" charset="utf-8" />

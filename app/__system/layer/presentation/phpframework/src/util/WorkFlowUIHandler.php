@@ -23,8 +23,7 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 <script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jquerytaphold/taphold.js"></script>
 
 <!-- Jquery Touch Punch to work on mobile devices with touch -->
-<script type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jqueryuitouchpunch/jquery.ui.touch-punch.min.js"></script>
-
+<script type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jqueryuitouchpunch/jquery.ui.touch-punch.min.js"></script>'; if (!$v5d3813882f["taskflowchart_already_included"]) $v0a9dad1fe0 .= '
 <!-- Add JSPlumb main JS and CSS files -->
 <script language="javascript" type="text/javascript" src="' . $this->v3b2000c17b . 'jqueryjsplumb/build/1.3.16/js/jquery.jsPlumb-1.3.16-all-min.js"></script>
 

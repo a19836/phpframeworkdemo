@@ -32,6 +32,39 @@ function togglePanel(elm) {
 	}
 }
 
+function toggleGroupFiles(elm) {
+	var tr = elm.closest("tr");
+	
+	if (tr) {
+		var is_maximize = elm.classList.contains("maximize");
+		
+		if (is_maximize) {
+			elm.classList.remove("maximize");
+			elm.classList.add("minimize");
+		}
+		else {
+			elm.classList.remove("minimize");
+			elm.classList.add("maximize");
+		}
+		
+		var next = tr;
+		
+		do {
+			next = next.nextElementSibling;
+			
+			if (next.classList.contains("group_name"))
+				break;
+			else {
+				if (is_maximize)
+					next.style.display = "";
+				else
+					next.style.display = "none";
+			}
+		}
+		while(next);
+	}
+}
+
 function changeUserTypeId(elm) {
 	//goToUserTypeId( $(elm).val() );
 	goToUserTypeId( elm.value );

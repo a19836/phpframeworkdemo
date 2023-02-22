@@ -124,18 +124,22 @@
    .selected_task_properties .form_containers .fields .field > .move_down {
 	display:none;
 }
-.selected_task_properties .form_containers .fields .field .input_value .add_field_automatically {
-	right:33px;
+.selected_task_properties .form_containers .fields .field .class input {
+	width:220px;
+}
+.selected_task_properties .form_containers .fields .field .input_src input {
+	width:555px;
+	padding-right:40px;
 }
 .selected_task_properties .form_containers .fields .field .input_src .add_field_automatically {
-	right:47px;
+	margin-left:-45px;
+}
+.selected_task_properties .form_containers .fields .field .input_src .search_page {
+	margin-left:20px;
 }
 .selected_task_properties .form_containers .fields .field .input_src .add_variable.inline,
   .selected_task_properties .form_containers .fields .field .input_href .add_variable.inline {
 	margin-left:-21px;
-}
-.selected_task_properties .form_containers .fields .field .class input {
-	width:220px;
 }
 
 .button_settings {

@@ -45,7 +45,8 @@ $(function() {
 		showOrHideExtraQuerySettings(advanced_query_settings[0], rand_number);
 		
 		//show query properties
-		showOrHideSingleQuerySettings($(".top_bar .toggle_settings a")[0], rand_number);
+		if (relationship.hasClass("query_select"))
+			showOrHideSingleQuerySettings($(".top_bar .toggle_settings a")[0], rand_number);
 		
 		//set sync_ui_settings_with_sql to 1 so it updates automatically the sql query on every change on UI.
 		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
@@ -53,6 +54,24 @@ $(function() {
 		main_tasks_flow_obj.attr("sync_ui_settings_with_sql", 1);
 		main_tasks_flow_obj.attr("sync_sql_with_ui_settings", 1);
 		
+		//set save function to sql editor
+		var query_sql_elm = query.find(".sql_text_area")
+		var editor = getQuerySqlEditor(query_sql_elm);
+		
+		if (editor)
+			editor.commands.addCommand({
+				name: 'saveFile',
+				bindKey: {
+					win: 'Ctrl-S',
+					mac: 'Command-S',
+					sender: 'editor|cli'
+				},
+				exec: function(env, args, request) {
+					saveQueryObject(onSuccessSingleQuerySave);
+				},
+			});
+		
+		//set window resize events
 		$(window).resize(function() {
 			WF.getMyFancyPopupObj().updatePopup();
 		});
@@ -85,17 +104,25 @@ function updateSingleQueryRelationshipType(elm, rand_number) {
 	var menus = $(".edit_single_query > .top_bar ul .select_query");
 	
 	if (rel_type == "select")
-		menus.show();
+		menus.addClass("show");
 	else
-		menus.hide();
+		menus.removeClass("show");
 }
 
 function showOrHideSingleQuerySettings(elm, rand_number) {
 	elm = $(elm);
 	var input = elm.children("input");
 	var span = elm.children("span");
-	var query_select = $(".edit_single_query .data_access_obj .relationships .relationship .query .query_select");
-	var settings = query_select.find(".query_settings");
+	var relationship = $(".edit_single_query .data_access_obj .relationships .relationship");
+	var query = relationship.children(".query");
+	var settings = query.find(".query_select .query_settings");
+	var other_settings = query.find(".query_insert_update_delete");
+	
+	if (!relationship.hasClass("query_select")) {
+		var aux = settings;
+		settings = other_settings;
+		other_settings = aux;
+	}
 	
 	if (settings[0]) {
 		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
@@ -106,10 +133,14 @@ function showOrHideSingleQuerySettings(elm, rand_number) {
 			
 			settings.slideDown("slow", function() {
 				elm.addClass("active");
-				query_select.removeClass("hide_query_settings");
+				query.removeClass("hide_query_settings");
+				other_settings.show();
 				
 				MyFancyPopup.updatePopup();
 				WF.getMyFancyPopupObj().updatePopup();
+				
+				//resize sql editor
+				resizeQuerySqlEditor();
 			});
 		}
 		else {//hide
@@ -118,10 +149,14 @@ function showOrHideSingleQuerySettings(elm, rand_number) {
 			
 			settings.slideUp("slow", function() {
 				elm.removeClass("active");
-				query_select.addClass("hide_query_settings");
+				query.addClass("hide_query_settings");
+				other_settings.hide();
 				
 				MyFancyPopup.updatePopup();
 				WF.getMyFancyPopupObj().updatePopup();
+				
+				//resize sql editor
+				resizeQuerySqlEditor();
 			});
 		}
 	}
@@ -131,37 +166,55 @@ function showOrHideSingleQueryUI(elm, rand_number) {
 	elm = $(elm);
 	var input = elm.children("input");
 	var span = elm.children("span");
-	var query_select = $(".edit_single_query .data_access_obj .relationships .relationship .query .query_select");
-	var a = query_select.find(".query_ui .taskflowchart .workflow_menu .toggle_ui a")[0];
-	var is_shown = elm.hasClass("active");
+	var relationship = $(".edit_single_query .data_access_obj .relationships .relationship");
+	var query = relationship.children(".query");
+	var a = relationship.hasClass("query_select") ? query.find(".query_select .query_ui .taskflowchart .workflow_menu .toggle_ui a")[0] : null;
 	
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
-	
-	if (is_shown) {
-		elm.removeClass("active");
-		input.removeAttr("checked").prop("checked", false);
-		span.html("Show Query Diagram");
-	}
-	else {
-		elm.addClass("active");
-		input.attr("checked", "checked").prop("checked", true);
-		span.html("Hide Query Diagram");
-		query_select.removeClass("hide_taskflowchart");
+	if (a) {
+		var is_shown = elm.hasClass("active");
 		
-		MyFancyPopup.updatePopup();
-		WF.getMyFancyPopupObj().updatePopup();
-	}
-	
-	showOrHideQueryUI(a, rand_number, {
-		callback: function() {
-			if (is_shown) {
-				query_select.addClass("hide_taskflowchart");
-				
-				MyFancyPopup.updatePopup();
-				WF.getMyFancyPopupObj().updatePopup();
-			}
+		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+		
+		if (is_shown) {
+			elm.removeClass("active");
+			input.removeAttr("checked").prop("checked", false);
+			span.html("Show Query Diagram");
 		}
-	});
+		else {
+			elm.addClass("active");
+			input.attr("checked", "checked").prop("checked", true);
+			span.html("Hide Query Diagram");
+			query.removeClass("hide_taskflowchart");
+			
+			MyFancyPopup.updatePopup();
+			WF.getMyFancyPopupObj().updatePopup();
+			
+			//resize sql editor
+			resizeQuerySqlEditor();
+		}
+		
+		showOrHideQueryUI(a, rand_number, {
+			callback: function() {
+				if (is_shown) {
+					query.addClass("hide_taskflowchart");
+					
+					MyFancyPopup.updatePopup();
+					WF.getMyFancyPopupObj().updatePopup();
+					
+					//resize sql editor
+					resizeQuerySqlEditor();
+				}
+			}
+		});
+	}
+}
+
+function resizeQuerySqlEditor() {
+	var query_sql_elm = $(".edit_single_query .data_access_obj .relationships .relationship .query .sql_text_area")
+	var editor = getQuerySqlEditor(query_sql_elm);
+	
+	if (editor)
+		editor.resize();
 }
 
 function onToggleFullScreen(in_full_screen) {
@@ -205,4 +258,7 @@ function onChangeIsConvertableSQL(elm) {
 		elm.attr("previous_auto_convert", auto_convert ? 1 : 0);
 		disableAutoConvert(onToggleQueryAutoConvert);
 	}
+	
+	//resize sql editor
+	resizeQuerySqlEditor();
 }

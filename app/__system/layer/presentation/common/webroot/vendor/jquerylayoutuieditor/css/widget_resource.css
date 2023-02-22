@@ -350,8 +350,10 @@
 /* MENU SETTINGS - WIDGET - PROPERTIES */
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-handler input:not(:focus),
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-complete-callback input:not(:focus),
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-end-callback input:not(:focus),
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-handler select,
-  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-complete-callback select {
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-complete-callback select,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-end-callback select {
 	direction:rtl;
 	text-align:left;
 }
@@ -370,6 +372,7 @@
 	min-height:100px;
 	max-height:70vh;
 	overflow:auto;
+	resize:vertical;
 }
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-widget-type select option.widget_type_group {
 	margin-top:5px;

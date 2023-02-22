@@ -55,9 +55,21 @@ function initObjectBlockSettings(class_name, save_func, save_func_name) {
 			var button = $(".top_bar .save a")[0];
 			save_func(button);
 		};
-		ElsLayoutUIEditor.options.on_choose_variable_func = typeof onProgrammingTaskChooseCreatedVariable == "function" ? onProgrammingTaskChooseCreatedVariable : null;
+		ElsLayoutUIEditor.options.on_choose_variable_func = typeof onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute == "function" ? onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute : (
+			typeof onProgrammingTaskChooseCreatedVariable == "function" ? onProgrammingTaskChooseCreatedVariable : null
+		);
 		ElsLayoutUIEditor.options.on_choose_page_url_func = typeof onIncludePageUrlTaskChooseFile == "function" ? onIncludePageUrlTaskChooseFile : null;
 		ElsLayoutUIEditor.options.on_choose_image_url_func = typeof onIncludeImageUrlTaskChooseFile == "function" ? onIncludeImageUrlTaskChooseFile : null;
+		
+		if (typeof convertProjectUrlPHPVarsToRealValues == "function")
+			ElsLayoutUIEditor.options.on_convert_project_url_php_vars_to_real_values_func = function(str) {
+				return convertProjectUrlPHPVarsToRealValues(str, true);
+			};
+		
+		if (typeof convertProjectUrlRealValuesToPHPVars == "function")
+			ElsLayoutUIEditor.options.on_convert_project_url_real_values_to_php_vars_func = function(str) {
+				return convertProjectUrlRealValuesToPHPVars(str);
+			};
 		
 		initLayoutUIEditorWidgetResourceOptions(ElsLayoutUIEditor);
 		

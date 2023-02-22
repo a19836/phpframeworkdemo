@@ -139,6 +139,7 @@
 	background:white;
 	position:relative;
 	cursor:default;
+	white-space:pre-line; /*Because of the end lines*/
 }
 .status_message_info:before,
   .status_message_error:before {

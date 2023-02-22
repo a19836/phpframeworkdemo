@@ -24,10 +24,12 @@
 		.layout-ui-editor > .menu-settings.menu-settings-region-param .settings-id,
 		   .layout-ui-editor > .menu-settings.menu-settings-region-param .settings-classes,
 		   .layout-ui-editor > .menu-settings.menu-settings-region-param .settings-properties,
+		   .layout-ui-editor > .menu-settings.menu-settings-region-param .settings-widget,
 		   .layout-ui-editor > .menu-settings.menu-settings-region-param .settings-general,
 		   .layout-ui-editor > .menu-settings.menu-settings-region-param .settings-dimension,
 		   .layout-ui-editor > .menu-settings.menu-settings-region-param .settings-typography,
 		   .layout-ui-editor > .menu-settings.menu-settings-region-param .settings-decorations,
+		   .layout-ui-editor > .menu-settings.menu-settings-region-param .settings-events,
 		   .layout-ui-editor > .menu-settings.menu-settings-region-param .settings-extra {
 			display:none;
 		}

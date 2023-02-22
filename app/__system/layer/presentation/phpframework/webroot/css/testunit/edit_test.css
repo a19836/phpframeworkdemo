@@ -23,7 +23,7 @@
 .error {
 	text-align:center;
 	color:#B51E3F;
-	font-weight:bold;
+	/*font-weight:bold;*/
 }
 
 /* EDIT TEST - SETTINGS */
@@ -303,7 +303,7 @@
   .edit_test > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_menu_hide.connection_properties_collapsed, 
   .edit_test > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_flow.task_properties_collapsed, 
   .edit_test > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_flow.connection_properties_collapsed {
-	margin-bottom:40px;
+	margin-bottom:35px;
 }
 .edit_test > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_menu.task_properties_shown:not(.task_properties_collapsed), 
   .edit_test > #ui > .taskflowchart.with_top_bar_menu.fixed_properties > .tasks_menu.connection_properties_shown:not(.connection_properties_collapsed), 

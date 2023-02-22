@@ -223,16 +223,22 @@
 	margin-top:0;
 	cursor:auto;
 }
-.choose_from_file_manager .type, 
+.choose_from_file_manager .type,
    .choose_from_file_manager .new_var,
    .choose_from_file_manager .existent_var,
-   .choose_from_file_manager .property, 
-   .choose_from_file_manager .method, 
-   .choose_from_file_manager .function, 
-   .choose_from_file_manager .businesslogic, 
-   .choose_from_file_manager .broker, 
-   .choose_from_file_manager .db_driver {
+   .choose_from_file_manager .property,
+   .choose_from_file_manager .variable_settings,
+   .choose_from_file_manager .method,
+   .choose_from_file_manager .function,
+   .choose_from_file_manager .businesslogic,
+   .choose_from_file_manager .broker,
+   .choose_from_file_manager .db_driver,
+   .choose_from_file_manager .db_driver,
+   .choose_from_file_manager .query_string_attributes {
    	
+}
+.choose_from_file_manager .query_string_attributes {
+   	margin:20px 0 10px;
 }
 .choose_from_file_manager .broker.single_broker {
 	display:none;
@@ -241,6 +247,7 @@
    .choose_from_file_manager .new_var label,
    .choose_from_file_manager .existent_var label, 
    .choose_from_file_manager .property label, 
+   .choose_from_file_manager .variable_settings label,
    .choose_from_file_manager .method label, 
    .choose_from_file_manager .function label, 
    .choose_from_file_manager .businesslogic label, 
@@ -254,22 +261,27 @@
 .choose_from_file_manager .businesslogic label {
 	font-size:10px;
 }
+.choose_from_file_manager .query_string_attributes label {
+	display:block;
+}
 .choose_from_file_manager .type select, 
-   .choose_from_file_manager .new_var input,
+   .choose_from_file_manager .new_var input:not([type=checkbox]),
    .choose_from_file_manager .new_var select,
    .choose_from_file_manager .existent_var select,
    .choose_from_file_manager .property select, 
+   .choose_from_file_manager .variable_settings input:not([type=checkbox]),
    .choose_from_file_manager .method select, 
    .choose_from_file_manager .function select, 
    .choose_from_file_manager .businesslogic select, 
    .choose_from_file_manager .broker select, 
-   .choose_from_file_manager .db_driver select {
+   .choose_from_file_manager .db_driver select, 
+   .choose_from_file_manager .query_string_attributes input {
 	display:inline-block;
 	width:250px;
 	margin-bottom:5px;
 	font-size:inherit;
 }
-.choose_from_file_manager .new_var input {
+.choose_from_file_manager .new_var input:not([type=checkbox]) {
 	box-sizing: border-box;
 }
 .choose_from_file_manager .new_var > .name > .sub_group {
@@ -294,6 +306,23 @@
 }
 .choose_from_file_manager .icon.info {
 	margin:0px 0px 0px 5px;
+}
+.choose_from_file_manager .query_string_attributes .icon {
+	margin-left:5px;
+	vertical-align:middle;
+	font-size:14px;
+}
+.choose_from_file_manager .query_string_attributes .empty_query_string_attributes {
+	opacity:.8;
+}
+.choose_from_file_manager .query_string_attributes .query_string_attribute input {
+	width:170px;
+	padding-right:20px;
+	box-sizing:border-box;
+}
+.choose_from_file_manager .query_string_attributes .query_string_attribute .add_variable {
+	margin-left:-15px;
+	margin-top:-4px;
 }
 .choose_from_file_manager .button, 
   #choose_db_driver .button,

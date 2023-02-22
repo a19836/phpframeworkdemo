@@ -60,6 +60,10 @@ $(function () {
 	DBTableTaskPropertyObj.show_properties_on_connection_drop = true;
 });
 
+function onToggleFullScreen(in_full_screen) {
+	jsPlumbWorkFlow.resizePanels();
+}
+
 function updateTaskTableAttributes(task_id, do_not_confirm, opts) {
 	if (task_id) {
 		var table_name = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
@@ -468,8 +472,10 @@ function syncWithDBServer(do_not_simulate) {
 						if (!show_sql && exists_sql)
 							executeSyncSQLStatements(workflow_data, data["statements"]);
 						else if (!local_is_from_auto_save) { //if manual action
-							if (!exists_sql)
-								jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Nothing to sync...");
+							if (!exists_sql) {
+								if (!$.isEmptyObject(workflow_data["tasks"]))
+									jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Nothing to sync...");
+							}
 							//show sql and confirm with user
 							else if (show_sql)
 								showSyncWithDBServerSQL(workflow_data, data["statements"]);

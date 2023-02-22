@@ -211,6 +211,11 @@ function isEntityCodeObjChanged() {
 	return saved_layout_ui_editor_code_id != new_layout_ui_editor_code_id;
 }
 
+function isEntityCodeWithErrors() {
+	var errors = getEditorCodeErros();
+	return errors.length > 0;
+}
+
 function getEntityCodeObj() {
 	var entity_obj = $(".entity_obj");
 	
@@ -237,7 +242,7 @@ function saveEntity() {
 		if (!window.is_save_func_running) {
 			window.is_save_func_running = true;
 			
-			if (is_from_auto_save_bkp && !isEntityCodeObjChanged()) {
+			if (is_from_auto_save_bkp && (!isEntityCodeObjChanged() || isEntityCodeWithErrors())) {
 				resetAutoSave();
 				window.is_save_func_running = false;
 				return;

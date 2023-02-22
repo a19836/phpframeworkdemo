@@ -39,16 +39,8 @@ body:not(.dark_theme) .global_vars_obj #form_global_vars {
   .global_vars_obj #code .ace_editor,
   .global_vars_obj #ui .taskflowchart,
   .global_vars_obj #form_global_vars {
-	height:calc(100vh - 55px) !important;
+	height:calc(100vh - 50px) !important;
 	box-sizing:border-box; /* bc of the ace_editor */
-}
-.global_vars_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu.task_properties_shown, 
-  .global_vars_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu.connection_properties_shown, 
-  .global_vars_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu_hide.task_properties_shown, 
-  .global_vars_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_menu_hide.connection_properties_shown, 
-  .global_vars_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_flow.task_properties_shown, 
-  .global_vars_obj > #ui .taskflowchart.with_top_bar_menu.fixed_properties .tasks_flow.connection_properties_shown {
-	margin-bottom:-10px;
 }
 
 .global_vars_obj > #ui .taskflowchart .tasks_flow.drop_hover { /* .drop_hover is set in admin_menu.js */

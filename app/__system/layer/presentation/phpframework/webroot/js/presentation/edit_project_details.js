@@ -25,6 +25,21 @@ function removeAllThatIsNotProjectFolderFromTree(ul, data) {
 	});
 }
 
+function onChangeProjectWithDB(elm) {
+	elm = $(elm);
+	var value = $(elm).val();
+	var p = elm.parent().closest(".edit_project_details");
+	var db_details = p.find(".db_details");
+	
+	if (value === "1") {
+		onChangeDBType( db_details.find(".db_type > select")[0] );
+		
+		db_details.show();
+	}
+	else
+		db_details.hide();
+}
+
 function onChooseProjectFolder(elm) {
 	var p = $(elm).parent();
 	var popup = $("#choose_project_folder_url_from_file_manager");
@@ -64,6 +79,34 @@ function chooseProjectFolder(elm) {
 		else
 			alert("invalid selected project folder.\nPlease choose a valid project folder.");
 	}
+}
+
+function goToManageLayoutTypePermissions(elm) {
+	var url = $(elm).attr("url");
+	
+	if (url) {
+		if (is_popup) {
+			//if inside of the admin_home_project.php which is inside of the admin_advanced.php
+			if (typeof window.parent.parent.goTo == "function" &&  window.parent.parent != window.parent) 
+				window.parent.document.location = url;
+			//if inside of the admin_advanced.php
+			else if (typeof window.parent.goTo == "function") {
+				window.parent.goTo(elm, "url");
+				window.parent.MyFancyPopup.hidePopup();
+			}
+			//if in an independent window
+			else
+				window.parent.document.location = url;
+		}
+		//if no popup
+		else
+			document.location = url;
+	}
+}
+
+//is used in the goTo function
+function goToHandler(url, a, attr_name, originalEvent) {
+	document.location = url;
 }
 
 function updateLayerFileManagers(elm) {

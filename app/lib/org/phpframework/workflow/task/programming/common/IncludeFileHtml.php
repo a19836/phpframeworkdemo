@@ -27,5 +27,5 @@
 		<option>string</option>
 		<option>variable</option>
 	</select>
-	<input class="task_property_field once" type="checkbox" name="include_once" value="1" title="Check here to active the include ONCE feature" checked="checked">
+	<input type="checkbox" class="task_property_field once" name="include_once" value="1" title="Check here to active the include ONCE feature" checked>
 </div>

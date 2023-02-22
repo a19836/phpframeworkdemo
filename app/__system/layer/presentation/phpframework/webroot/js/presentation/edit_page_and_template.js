@@ -262,7 +262,7 @@ function onPresentationProgrammingTaskChooseCreatedVariable(elm) {
 	elm = $(elm);
 	var p = $(elm).parent();
 	var select = p.children("select");
-	var target_field = p.children("input[type=text]").first();
+	var target_field = p.children("input[type=text], input").first(); //input may not have the type attribute
 	
 	var auto_save_bkp = auto_save;
 	auto_save = false;
@@ -284,18 +284,21 @@ function onPresentationProgrammingTaskChooseCreatedVariable(elm) {
 function onPresentationIncludePageUrlTaskChooseFile(elm) {
 	var p = $(elm).parent();
 	var select = p.children("select");
-	var target_field = p.children("input[type=text]").first();
+	var target_field = p.children("input[type=text], input").first(); //input may not have the type attribute
 	
 	var auto_save_bkp = auto_save;
 	auto_save = false;
 	
 	onIncludePageUrlTaskChooseFile(elm);
 	
-	MyFancyPopup.settings.targetField = target_field;
-	MyFancyPopup.settings.onClose = function() {
+	var popup = $("#choose_page_url_from_file_manager");
+	onUrlQueryString(elm, popup, target_field);
+	
+	IncludePageUrlFancyPopup.settings.targetField = target_field;
+	IncludePageUrlFancyPopup.settings.onClose = function() {
 		auto_save = auto_save_bkp;
 	};
-	MyFancyPopup.settings.updateFunction = function(sub_elm) {
+	IncludePageUrlFancyPopup.settings.updateFunction = function(sub_elm) {
 		chooseIncludePageUrl(sub_elm);
 		
 		select.val("string");
@@ -306,7 +309,7 @@ function onPresentationIncludePageUrlTaskChooseFile(elm) {
 function onPresentationIncludeImageUrlTaskChooseFile(elm) {
 	var p = $(elm).parent();
 	var select = p.children("select");
-	var target_field = p.children("input[type=text]").first();
+	var target_field = p.children("input[type=text], input").first(); //input may not have the type attribute
 	
 	var auto_save_bkp = auto_save;
 	auto_save = false;
@@ -681,7 +684,8 @@ function loadAvailableBlocksListInRegionsBlocks(parent, opts) {
 			item.html(available_blocks_list_options_html);
 			
 			/*if (block == "" && region_block_type.val() == "string" && block_input_value != "" && selected_project_id &&	available_blocks_list.hasOwnProperty(selected_project_id) && $.isArray(available_blocks_list[selected_project_id]) && $.inArray(block_input_value, available_blocks_list[selected_project_id]) != -1) {
-				item.val(block_input_value);
+				//cannot execute 'item.val(block_input_value);' bc if 2 projects have blocks with the same name, then it can select the block from the other project. 
+				//item.find("optgroup[label=\"" + selected_project_id + "\"] option[value=\"" + block_input_value + "\"]").attr("selected", "selected"); //or the line below. Both work!
 				item.find("option[value='" + block_input_value + "']").filter("[project='" + selected_project_id + "']").first().attr("selected", "selected");
 				
 				region_block_type.val("options");
@@ -692,6 +696,8 @@ function loadAvailableBlocksListInRegionsBlocks(parent, opts) {
 				var proj = option.attr("project");
 				
 				if (available_blocks_list.hasOwnProperty(proj) && $.isArray(available_blocks_list[proj]) && $.inArray(block, available_blocks_list[proj]) != -1) {
+					//cannot execute 'item.val(block);' bc if 2 projects have blocks with the same name, then it can select the block from the other project. 
+					//item.find("optgroup[label=\"" + proj + "\"] option[value=\"" + block + "\"]").attr("selected", "selected"); //or the line below. Both work!
 					item.find("option[value='" + block + "']").filter("[project='" + proj + "']").first().attr("selected", "selected");
 					
 					if (region_block_type.val() == "string") {
@@ -1255,7 +1261,9 @@ function getRegionBlockHtml(region, block, block_project, is_html, rb_index) {
 		var block_text = rb_html.children(".block_text");
 		
 		if (!is_text) {
-			block_options.val(b);
+			//cannot execute 'block_options.val(b);' bc if 2 projects have blocks with the same name, then it can select the block from the other project. 
+			//block_options.find("optgroup[label=\"" + bp + "\"] option[value=\"" + b + "\"]").attr("selected", "selected"); //or the line below. Both work!
+			block_options.find("option[value='" + b + "']").filter("[project='" + bp + "']").first().attr("selected", "selected");
 			block_input.val(b);
 		}
 		else
@@ -1292,7 +1300,9 @@ function getRegionBlockHtml(region, block, block_project, is_html, rb_index) {
 	var ret = loadAvailableBlocksListInRegionsBlocks(rb_html, {
 		"on_pretify_handler" : function(block_options2) {
 			if (select.val() == "options") {
-				block_options2.find("optgroup[label=\"" + bp + "\"] option[value=\"" + b + "\"]").attr("selected", "selected");
+				//cannot execute 'block_options2.val(b);' bc if 2 projects have blocks with the same name, then it can select the block from the other project.
+				//block_options2.find("optgroup[label=\"" + bp + "\"] option[value=\"" + b + "\"]").attr("selected", "selected"); //or the line below. Both work!
+				block_options2.find("option[value='" + b + "']").filter("[project='" + bp + "']").first().attr("selected", "selected"); 
 				select.trigger("change");
 				select.data("on_change_triggered", true);
 			}
@@ -1416,8 +1426,26 @@ function editRegionBlock(elm, opts) {
 			PtlLayoutUIEditor = new LayoutUIEditor();
 			PtlLayoutUIEditor.options.ui_element = layout_ui_editor_elm;
 			
-			PtlLayoutUIEditor.options.on_choose_page_url_func = typeof onIncludePageUrlTaskChooseFile == "function" ? onIncludePageUrlTaskChooseFile : null;
-			PtlLayoutUIEditor.options.on_choose_image_url_func = typeof onIncludeImageUrlTaskChooseFile == "function" ? onIncludeImageUrlTaskChooseFile : null;
+			if (typeof onPresentationIncludePageUrlTaskChooseFile == "function")
+				PtlLayoutUIEditor.options.on_choose_page_url_func = function(elm) {
+					onPresentationIncludePageUrlTaskChooseFile(elm);
+					IncludePageUrlFancyPopup.settings.is_code_html_base = typeof is_code_html_base == "undefined" ? true : is_code_html_base;
+				}
+			
+			if (typeof onPresentationIncludeImageUrlTaskChooseFile == "function")
+				PtlLayoutUIEditor.options.on_choose_image_url_func = function(elm) {
+					onPresentationIncludeImageUrlTaskChooseFile(elm);
+					MyFancyPopup.settings.is_code_html_base = typeof is_code_html_base == "undefined" ? true : is_code_html_base;
+				}
+			
+			//set new func for on_convert_project_url_php_vars_to_real_values_func that replaces inline vars too. This is only for the edit_entity_simple. The edit_template_simple should have this flag disabled and only replace the project_url_prefix inside of the php tags.
+			PtlLayoutUIEditor.options.on_convert_project_url_php_vars_to_real_values_func = function(str) {
+				return convertProjectUrlPHPVarsToRealValues(str, typeof replace_inline_project_url_php_vars == "undefined" ? false : replace_inline_project_url_php_vars);
+			};
+			//set new func for on_convert_project_url_real_values_to_php_vars_func that replaces the project_url_prefix with the original_project_url_prefix var. This is only for the edit_template_simple. The edit_entity_simple should have the project_url_prefix var instead.
+			PtlLayoutUIEditor.options.on_convert_project_url_real_values_to_php_vars_func = function(str) {
+				return convertProjectUrlRealValuesToPHPVars(str, typeof give_priority_to_original_project_url_prefix == "undefined" ? false : give_priority_to_original_project_url_prefix, typeof is_code_html_base == "undefined" ? true : is_code_html_base);
+			};
 			
 			initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor);
 			
@@ -1597,7 +1625,16 @@ function onChangeRegionBlockType(elm) {
 		var set_value = p.hasClass("is_text") || p.hasClass("is_input"); //if was already options no need to change value
 		var value = p.hasClass("is_text") ? text_textarea.val() : input.val();
 		
-		set_value && select.val(value);
+		if (set_value) {
+			//cannot execute 'select.val(value);' bc if 2 projects have blocks with the same name, then it can select the block from the other project. 
+			//var option_to_select = selected_project_id ? select.find("optgroup[label=\"" + selected_project_id + "\"] option[value=\"" + value + "\"]") : null; //or the line below. Both work!
+			var option_to_select = selected_project_id ? select.find("option[value='" + value + "']").filter("[project='" + selected_project_id + "']").first() : null;
+			
+			if (option_to_select.length > 0)
+				option_to_select.attr("selected", "selected");
+			else
+				select.val(value);
+		}
 		
 		if (pretty_select[0]) {
 			select.hide().addClass("hidden");
@@ -2648,7 +2685,8 @@ function updateSettingsFromLayoutIframeField(on_complete) {
 				update_layout_iframe_field_html_value_from_settings_func = null;
 				
 				//synchronize
-				update_settings_from_layout_iframe_func_bkp();
+				if (typeof update_settings_from_layout_iframe_func_bkp == "function")
+					update_settings_from_layout_iframe_func_bkp();
 				
 				//sets back synchronization functions
 				update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
@@ -2701,7 +2739,8 @@ function updateLayoutIframeFromSettingsField() {
 			update_layout_iframe_field_html_value_from_settings_func = null;
 			
 			//synchronize
-			update_layout_iframe_from_settings_func_bkp();
+			if (typeof update_layout_iframe_from_settings_func_bkp == "function")
+				update_layout_iframe_from_settings_func_bkp();
 			
 			//sets back synchronization functions
 			update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
@@ -3838,7 +3877,7 @@ function updateCodeEditorLayoutFilesInSettings(files, ul) {
 			else { //checks if file starts with php code: $project_url_prefix or $project_common_url_prefix
 				var m = /^<\?(|=|php)\s*(|echo|print)\s*(\$[a-z_]+)\s*;?\s*\?>/g.exec(file);
 				
-				if (m && (m[3] == "$project_url_prefix" || m[3] == "$original_project_url_prefix" || m[3] == "$project_common_url_prefix" || m[3] == "$original_project_common_url_prefix")) { 
+				if (m && (m[3] == "$project_url_prefix" || m[3] == "$original_project_url_prefix" || m[3] == "$project_common_url_prefix"/* || m[3] == "$original_project_common_url_prefix"*/)) { 
 					var relative_file = file.substr(m[0].length);
 					
 					path = (m[3] == "$project_url_prefix" || m[3] == "$original_project_url_prefix" ? selected_project_id : common_project_name) + "/webroot/" + relative_file;
@@ -4631,20 +4670,28 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
 			
 			PtlLayoutUIEditor.options.auto_convert = typeof auto_convert != "undefined" && auto_convert;
 			PtlLayoutUIEditor.options.on_panels_resize_func = onResizeCodeLayoutUIEditorWithRightContainer;
-			PtlLayoutUIEditor.options.on_choose_variable_func = typeof ProgrammingTaskUtil == "object" && typeof ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback == "function" ? ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback : onProgrammingTaskChooseCreatedVariable;
-			PtlLayoutUIEditor.options.on_convert_project_url_php_vars_to_real_values_func = convertProjectUrlPHPVarsToRealValues;
+			PtlLayoutUIEditor.options.on_choose_variable_func = typeof ProgrammingTaskUtil == "object" && typeof ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback == "function" ? ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback : onPresentationProgrammingTaskChooseCreatedVariable;
 			
-			if (typeof onIncludePageUrlTaskChooseFile == "function")
+			if (typeof onPresentationIncludePageUrlTaskChooseFile == "function")
 				PtlLayoutUIEditor.options.on_choose_page_url_func = function(elm) {
-					onIncludePageUrlTaskChooseFile(elm);
-					MyFancyPopup.settings.is_code_html_base = true;
+					onPresentationIncludePageUrlTaskChooseFile(elm);
+					IncludePageUrlFancyPopup.settings.is_code_html_base = typeof is_code_html_base == "undefined" ? true : is_code_html_base;
 				}
 			
-			if (typeof onIncludeImageUrlTaskChooseFile == "function")
+			if (typeof onPresentationIncludeImageUrlTaskChooseFile == "function")
 				PtlLayoutUIEditor.options.on_choose_image_url_func = function(elm) {
-					onIncludeImageUrlTaskChooseFile(elm);
-					MyFancyPopup.settings.is_code_html_base = true;
+					onPresentationIncludeImageUrlTaskChooseFile(elm);
+					MyFancyPopup.settings.is_code_html_base = typeof is_code_html_base == "undefined" ? true : is_code_html_base;
 				}
+			
+			//set new func for on_convert_project_url_php_vars_to_real_values_func that replaces inline vars too. This is only for the edit_entity_simple. The edit_template_simple should have this flag disabled and only replace the project_url_prefix inside of the php tags.
+			PtlLayoutUIEditor.options.on_convert_project_url_php_vars_to_real_values_func = function(str) {
+				return convertProjectUrlPHPVarsToRealValues(str, typeof replace_inline_project_url_php_vars == "undefined" ? false : replace_inline_project_url_php_vars);
+			};
+			//set new func for on_convert_project_url_real_values_to_php_vars_func that replaces the project_url_prefix with the original_project_url_prefix var. This is only for the edit_template_simple. The edit_entity_simple should have the project_url_prefix var instead.
+			PtlLayoutUIEditor.options.on_convert_project_url_real_values_to_php_vars_func = function(str) {
+				return convertProjectUrlRealValuesToPHPVars(str, typeof give_priority_to_original_project_url_prefix == "undefined" ? false : give_priority_to_original_project_url_prefix, typeof is_code_html_base == "undefined" ? true : is_code_html_base);
+			};
 			
 			initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor);
 			
@@ -4940,22 +4987,4 @@ function setCodeLayoutUIEditorCode(main_obj, code) {
 	
 	var editor = PtlLayoutUIEditor.data("editor");
 	return editor ? editor.setValue(code) : main_obj.find(".layout-ui-editor > .template-source > textarea").first().val(code);
-}
-
-//This function will be used by the widgets in the LayoutUIEditor, mainly the script and link widgets.
-function convertProjectUrlPHPVarsToRealValues(str) {
-	var regex = /^<\?(|=|php)\s*(|echo|print)\s*(\$[a-z_]+)\s*;?\s*\?>/g;
-	var m;
-	
-	while ((m = regex.exec(str)) !== null) {
-		//console.log(m);
-		
-		if ((m[3] == "$project_url_prefix" || m[3] == "$original_project_url_prefix") && selected_project_url_prefix)
-			str = str.replace(m[0], selected_project_url_prefix);
-		else if ((m[3] == "$project_common_url_prefix" || m[3] == "$original_project_common_url_prefix") && selected_project_common_url_prefix)
-			str = str.replace(m[0], selected_project_common_url_prefix);
-	}
-	//console.log(str);
-	
-	return str;
 }
