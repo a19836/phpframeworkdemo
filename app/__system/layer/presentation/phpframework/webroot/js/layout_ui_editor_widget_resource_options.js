@@ -1,6 +1,7 @@
 /* LAYOUTUIEDITOR FUNCTIONS */
 var creating_resources = {};
 var creating_resources_by_table = {};
+var flush_cache = false;
 
 function initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor) {
 	PtlLayoutUIEditor.options.on_choose_event_func = toggleChooseEventPopup;
@@ -180,7 +181,7 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 							+ '<option value="multiple_save">Save multiple records (Add and Update)</option>'
 							+ '<option value="delete">Remove a record</option>'
 							+ '<option value="multiple_delete">Remove multiple records</option>'
-							+ '<option value="get_options">Get Options</option>'
+							+ '<option value="get_all_options">Get Options</option>'
 						+ '</select>'
 					+ '</div>'
 					+ '<div class="row_index">'
@@ -250,7 +251,7 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 		if (style.display === "none") {
 			//update popup class
 			var query_type_select = popup.find(" > #new_resource_attribute > .query_type > select");
-			var query_type_select_options = query_type_select.find("option[value=insert], option[value=update], option[value=update_attribute], option[value=multiple_save], option[value=delete], option[value=multiple_delete], option[value=get_options], option[value=]");
+			var query_type_select_options = query_type_select.find("option[value=insert], option[value=update], option[value=update_attribute], option[value=multiple_save], option[value=delete], option[value=multiple_delete], option[value=get_all_options], option[value=]");
 			
 			if (show_resource_attributes) {
 				popup.addClass("show_resource_attributes");
@@ -853,6 +854,9 @@ function addLayoutUIEditorWidgetResourceSLAResourceAsync(db_broker, db_driver, d
 				
 				status_message_elm.remove();
 				
+				if (data && data["flush_cache"])
+					flush_cache = data["flush_cache"];
+				
 				if (data && data["status"]) {
 					//create resource in sla panel
 					if (data["actions"]) {
@@ -1066,7 +1070,7 @@ function createLayoutUIEditorWidgetResourceSLAResourceNames(action_type, db_driv
 	var resource_names = [];
 	
 	//first get the rules for the table_alias
-	if (db_table_alias && db_table_alias != db_table && action_type != "get_options")
+	if (db_table_alias && db_table_alias != db_table && action_type != "get_all_options")
 		resource_names = createLayoutUIEditorWidgetResourceSLAResourceNames(action_type, db_driver, db_table_alias, null, permissions, data);
 	
 	var permissions_hash_code = permissions ? ("_" + JSON.stringify(permissions).hashCode()).replace(/-/g, "_") : "";
@@ -1164,7 +1168,7 @@ function createLayoutUIEditorWidgetResourceSLAResourceNames(action_type, db_driv
 			resource_names.push("count_" + db_driver_table_plural);
 			resource_names.push("count_" + db_driver_table_plural + "_items");
 			break;
-		case "get_options":
+		case "get_all_options":
 			//prepare data and if invalid, set the data with the db_table
 			if ($.isPlainObject(data))
 				data = [data];

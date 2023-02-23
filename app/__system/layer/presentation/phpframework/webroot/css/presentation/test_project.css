@@ -41,12 +41,15 @@ html, body, #main_column {
 	display:inline-block;
 }
 .test_project form .vars table {
-	margin:10px auto 0;
+	margin:10px 10px 0;
 }
-.test_project form .vars table th,
-  .test_project form .vars table td {
+.test_project form .vars table th {
+	padding:5px;
 	text-align:center;
-	border:1px solid #ccc;
+}
+.test_project form .vars table td {
+	text-align:center;
+	border-top:1px solid #eee;
 }
 .test_project form .vars table .name,
   .test_project form .vars table .value {
@@ -56,14 +59,14 @@ html, body, #main_column {
 	width:100%;
 	background:#fff;
 	border:0;
-	font-size:80%;
+	font-size:inherit;
 	text-align:center;
 }
 .test_project form .vars table .actions {
 	width:20px;
 }
 .test_project form .vars table .no_vars td {
-	font-weight:bold;
+	/*font-weight:bold;*/
 }
 .test_project form .vars table .icon {
 	margin:0 auto;

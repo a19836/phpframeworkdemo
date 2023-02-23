@@ -185,6 +185,7 @@
 .module_manage_user_type_activity_objects table td.object_id {
 	padding-left:20px;
 	background-color:#b3c8cc;
+	font-size:80%;
 }
 .module_manage_user_type_activity_objects table td.activity {
 	text-align:center;

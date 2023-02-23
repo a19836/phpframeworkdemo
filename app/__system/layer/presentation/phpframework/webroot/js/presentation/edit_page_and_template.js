@@ -4988,3 +4988,32 @@ function setCodeLayoutUIEditorCode(main_obj, code) {
 	var editor = PtlLayoutUIEditor.data("editor");
 	return editor ? editor.setValue(code) : main_obj.find(".layout-ui-editor > .template-source > textarea").first().val(code);
 }
+
+/* UTIL FUNCTIONS */
+if (typeof flushCache != "function" && flush_cache_url)
+	function flushCache(do_not_show_messages) {
+		$.ajax({
+			type : "get",
+			url : flush_cache_url,
+			success : function(data, textStatus, jqXHR) {
+				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
+						flushCache();
+					});
+				else if (!do_not_show_messages) {
+					if (data == "1")
+						jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Cache flushed!");
+					else
+						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Error: Cache not flushed!\nPlease try again..." + (data ? "\n" + data : ""));
+				}
+			},
+			error : function(jqXHR, textStatus, errorThrown) { 
+				if (!do_not_show_messages) {
+					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+					jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Error: Cache not flushed!\nPlease try again..." + msg);
+				}
+			},
+		});
+		
+		return false;
+	}

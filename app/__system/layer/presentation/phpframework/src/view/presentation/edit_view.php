@@ -29,6 +29,10 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("WorkF
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/edit_view.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/edit_view.js"></script>
 
+<!-- Add Join Point CSS and JS -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/module_join_points.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/module_join_points.js"></script>
+
 <script>
 ' . WorkFlowBrokersSelectedDBVarsHandler::printSelectedDBVarsJavascriptCode($project_url_prefix, $bean_name, $bean_file_name, $selected_db_vars) . '
 var layer_type = "pres";

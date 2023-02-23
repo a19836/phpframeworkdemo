@@ -738,6 +738,12 @@ function save() {
 						//	resetAutoSave(); //the saveObj function already resetAutoSave
 						
 						window.is_save_func_running = false;
+						
+						//flushes the cache
+						if (typeof flush_cache != "undefined" && flush_cache) {
+							flushCache(is_from_auto_save_bkp);
+							flush_cache = false;
+						}
 					},
 				});
 			}

@@ -157,6 +157,9 @@ function saveDBDiagram() {
 }
 
 function updateDBDiagram() {
+	prepareAutoSaveVars();
+	var local_is_from_auto_save = is_from_auto_save;
+	
 	jsPlumbWorkFlow.jsPlumbTaskFile.update(get_updated_db_diagram_url, {
 		success: function(data, textStatus, jqXHR) {
 			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
@@ -164,6 +167,8 @@ function updateDBDiagram() {
 					jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
 					updateDBDiagram();
 				});
+			else if (local_is_from_auto_save)
+				resetAutoSave();
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
@@ -171,6 +176,8 @@ function updateDBDiagram() {
 					jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
 					updateDBDiagram();
 				});
+			else if (local_is_from_auto_save)
+				resetAutoSave();
 		},
 	});
 
@@ -290,6 +297,11 @@ function createDiagamSQL() {
 	});
 	
 	MyFancyPopupCreateDiagramSQL.showPopup();
+}
+
+function sortWorkflowTables() {
+	var sort_type = 1;
+	jsPlumbWorkFlow.jsPlumbTaskSort.sortTasks(sort_type);
 }
 
 /* SYNC Methods */

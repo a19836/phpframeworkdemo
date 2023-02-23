@@ -18,4 +18,4 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$obj = array( "status" => $status, "actions" => $actions, "error_message" => $error_message ); $EVC->setTemplate("json"); ?>
+$obj = array( "status" => $status, "actions" => $actions, "error_message" => $error_message, "flush_cache" => $flush_cache ); $EVC->setTemplate("json"); ?>

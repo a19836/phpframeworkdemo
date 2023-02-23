@@ -331,6 +331,8 @@
 .top_bar li.sub_menu > .icon {
 	width:4px;
 	height:20px;/* the same than the other icons */
+	margin:0 auto;
+	display:block;
 	color:inherit;
 }
 .top_bar li.sub_menu > .icon::before {
@@ -1970,10 +1972,6 @@ body .layout-ui-editor.fixed-properties > .menu-settings .group > .group-title,
 	padding:15px 5px 0;
 	font-size:11px;
 	color:var(--main-iframe-top-title-color);
-}
-body .layout-ui-editor.with_top_bar_menu.fixed-properties > .menu-settings li.group:not(.group-open) .group-title,
-  body .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings li.group:not(.group-open) .group-title {
-	padding-bottom:5px;
 }
 body .layout-ui-editor.fixed-properties > .menu-settings .group > ul > .group > .group-title,
   body .layout-ui-editor.fixed-side-properties > .menu-settings .group > ul > .group > .group-title {

@@ -28,7 +28,7 @@
 	margin-bottom:5px;
 }
 .layout-ui-editor > .menu-settings li.group.settings-widget .group,
-  .layout-ui-editor > .menu-settings li.group.settings-widget li .group-block li{
+  .layout-ui-editor > .menu-settings li.group.settings-widget li .group-block li {
 	width:auto;
 	min-width:auto;
 	display:block;
@@ -43,6 +43,9 @@
 	min-width:auto;
 	margin:5px 0;
 	display:block;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .group:not(.group-open) > .group-title {
+	margin-bottom:8px;
 }
 .layout-ui-editor > .menu-settings li.group.settings-widget .group:not(.group-open) > .group-title > .widget-group-item-add {
 	display:none;

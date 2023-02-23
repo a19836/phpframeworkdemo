@@ -10,10 +10,10 @@
 		<id><![CDATA[school]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>55</offset_left>
-		<offset_top>30</offset_top>
+		<offset_left>65</offset_left>
+		<offset_top>41</offset_top>
 		<width>318</width>
-		<height>78</height>
+		<height>80</height>
 		<properties>
 			<exits>
 				<layer_exit>
@@ -60,10 +60,10 @@
 		<id><![CDATA[student]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>56</offset_left>
-		<offset_top>221</offset_top>
+		<offset_left>64</offset_left>
+		<offset_top>222</offset_top>
 		<width>318</width>
-		<height>102</height>
+		<height>105</height>
 		<properties>
 			<exits>
 				<layer_exit>
@@ -137,10 +137,10 @@
 		<id><![CDATA[teacher]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>417</offset_left>
-		<offset_top>122</offset_top>
+		<offset_left>497</offset_left>
+		<offset_top>150</offset_top>
 		<width>318</width>
-		<height>126</height>
+		<height>130</height>
 		<properties>
 			<exits>
 				<layer_exit>
