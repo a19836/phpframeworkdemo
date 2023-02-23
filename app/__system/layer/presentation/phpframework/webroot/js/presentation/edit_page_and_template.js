@@ -3818,8 +3818,8 @@ function getCurrentCodeJSAndCSSFiles() {
 		console.log("tag_start:"+tag_start);
 		console.log("tag_end:"+tag_end);*/
 		
-		//parse tag_code
-		if (tag_code) {
+		//parse tag_code, ignoring the layout-ui-editor-reserved
+		if (tag_code && tag_code.indexOf("layout-ui-editor-reserved") == -1) {
 			var is_script = m[1].toLowerCase() == "script";
 			var sub_regex = new RegExp("\\s+(" + (is_script ? "src" : "href") + ")\\s*=\\s*(\"|'|)", "gi");
 			var sub_m = sub_regex.exec(tag_code);
@@ -3829,6 +3829,7 @@ function getCurrentCodeJSAndCSSFiles() {
 				var attr = MyHtmlBeautify.getAttribute(tag_code, attr_start, sub_m[2]);
 				var attr_html = attr[0];
 				var attr_end = attr[1];
+				//console.log("tag_code:"+tag_code);
 				//console.log("attr_html:"+attr_html);
 				
 				if (attr_html) {
