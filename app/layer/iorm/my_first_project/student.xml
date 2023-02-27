@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sql_mapping>
+	<insert id="insert_student"><![CDATA[
+		INSERT INTO `student` (`school_id`, `name`) VALUES (#school_id#, '#name#')
+	]]></insert>
+	<insert id="insert_student_with_ai_pk" hard_coded_ai_pk="1"><![CDATA[
+		INSERT INTO `student` (`student_id`, `school_id`, `name`) VALUES (#student_id#, #school_id#, '#name#')
+	]]></insert>
+	<update id="update_student"><![CDATA[
+		UPDATE `student` SET `school_id`=#school_id#, `name`='#name#' WHERE `student_id` = #student_id#
+	]]></update>
+	<update id="update_student_primary_keys"><![CDATA[
+		UPDATE `student` SET `student_id`=#new_student_id# WHERE `student_id` = #old_student_id#
+	]]></update>
+	<update id="update_all_student_items"><![CDATA[
+		UPDATE `student` SET `school_id`=#school_id#, `name`='#name#' WHERE 1=1 #searching_condition#
+	]]></update>
+	<delete id="delete_student"><![CDATA[
+		DELETE FROM `student` WHERE `student_id` = #student_id#
+	]]></delete>
+	<delete id="delete_all_student_items"><![CDATA[
+		DELETE FROM `student` WHERE 1=1 #searching_condition#
+	]]></delete>
+	<select id="get_student"><![CDATA[
+		SELECT `student_id`, `school_id`, `name` FROM `student` WHERE `student_id` = #student_id#
+	]]></select>
+	<select id="get_student_items"><![CDATA[
+		SELECT `student_id`, `school_id`, `name` FROM `student` WHERE 1=1 #searching_condition#
+	]]></select>
+	<select id="count_student_items"><![CDATA[
+		SELECT count(*) AS total FROM `student` WHERE 1=1 #searching_condition#
+	]]></select>
+	<select id="get_student_school_parent"><![CDATA[
+		SELECT `school`.`school_id`, `school`.`name` FROM `student`  inner JOIN `school` ON  `school`.`school_id` = `student`.`school_id` WHERE `student`.`student_id`=#student_id# #searching_condition#
+	]]></select>
+	<select id="count_student_school_parent"><![CDATA[
+		SELECT count(*) AS total  FROM `student`  inner JOIN `school` ON  `school`.`school_id` = `student`.`school_id` WHERE `student`.`student_id`=#student_id# #searching_condition#
+	]]></select>
+</sql_mapping>

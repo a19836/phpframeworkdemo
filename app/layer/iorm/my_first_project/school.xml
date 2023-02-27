@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sql_mapping>
+	<insert id="insert_school"><![CDATA[
+		INSERT INTO `school` (`name`) VALUES ('#name#')
+	]]></insert>
+	<insert id="insert_school_with_ai_pk" hard_coded_ai_pk="1"><![CDATA[
+		INSERT INTO `school` (`school_id`, `name`) VALUES (#school_id#, '#name#')
+	]]></insert>
+	<update id="update_school"><![CDATA[
+		UPDATE `school` SET `name`='#name#' WHERE `school_id` = #school_id#
+	]]></update>
+	<update id="update_school_primary_keys"><![CDATA[
+		UPDATE `school` SET `school_id`=#new_school_id# WHERE `school_id` = #old_school_id#
+	]]></update>
+	<update id="update_all_school_items"><![CDATA[
+		UPDATE `school` SET `name`='#name#' WHERE 1=1 #searching_condition#
+	]]></update>
+	<delete id="delete_school"><![CDATA[
+		DELETE FROM `school` WHERE `school_id` = #school_id#
+	]]></delete>
+	<delete id="delete_all_school_items"><![CDATA[
+		DELETE FROM `school` WHERE 1=1 #searching_condition#
+	]]></delete>
+	<select id="get_school"><![CDATA[
+		SELECT `school_id`, `name` FROM `school` WHERE `school_id` = #school_id#
+	]]></select>
+	<select id="get_school_items"><![CDATA[
+		SELECT `school_id`, `name` FROM `school` WHERE 1=1 #searching_condition#
+	]]></select>
+	<select id="count_school_items"><![CDATA[
+		SELECT count(*) AS total FROM `school` WHERE 1=1 #searching_condition#
+	]]></select>
+	<select id="get_school_student_childs"><![CDATA[
+		SELECT `student`.`student_id`, `student`.`school_id`, `student`.`name` FROM `school`  inner JOIN `student` ON  `student`.`school_id` = `school`.`school_id` WHERE `school`.`school_id`=#school_id# #searching_condition#
+	]]></select>
+	<select id="count_school_student_childs"><![CDATA[
+		SELECT count(*) AS total  FROM `school`  inner JOIN `student` ON  `student`.`school_id` = `school`.`school_id` WHERE `school`.`school_id`=#school_id# #searching_condition#
+	]]></select>
+	<select id="get_school_teacher_childs"><![CDATA[
+		SELECT `teacher`.`teacher_id`, `teacher`.`school_id`, `teacher`.`name`, `teacher`.`age` FROM `school`  inner JOIN `teacher` ON  `teacher`.`school_id` = `school`.`school_id` WHERE `school`.`school_id`=#school_id# #searching_condition#
+	]]></select>
+	<select id="count_school_teacher_childs"><![CDATA[
+		SELECT count(*) AS total  FROM `school`  inner JOIN `teacher` ON  `teacher`.`school_id` = `school`.`school_id` WHERE `school`.`school_id`=#school_id# #searching_condition#
+	]]></select>
+</sql_mapping>
