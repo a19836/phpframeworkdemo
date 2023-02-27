@@ -1,8 +1,10 @@
 $(function () {
-	hideOrShowIsBusinessLogicService( $(".top_bar .title > select.is_business_logic_service")[0] );
-	
-	//set saved_class_method_settings_id
-	saved_class_method_settings_id = getFileClassMethodSettingsId();
+	if (is_obj_valid) {
+		hideOrShowIsBusinessLogicService( $(".top_bar .title > select.is_business_logic_service")[0] );
+		
+		//set saved_class_method_settings_id
+		saved_class_method_settings_id = getFileClassMethodSettingsId();
+	}
 });
 
 function hideOrShowIsBusinessLogicService(elm) {

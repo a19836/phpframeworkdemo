@@ -67,7 +67,8 @@
 			<option>header</option>
 			<option value="content">content text</option>
 			<option value="content_json">content json</option>
-			<option value="content_xml">content xml</option>
+			<option value="content_xml">content xml parsed to array</option>
+			<option value="content_xml_simple">content xml parsed to simple array</option>
 			<option value="content_serialized">content serialized</option>
 			<option>settings</option>
 		</select>

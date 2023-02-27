@@ -1,451 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tasks>
 	<task start="1">
-		<label><![CDATA[If $conditions &amp;&amp; $conditions_type;]]></label>
-		<id><![CDATA[d45ddc36_b1ae7bc3_484]]></id>
-		<type><![CDATA[d45ddc36]]></type>
-		<tag><![CDATA[if]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
-		<width>70</width>
-		<height>0</height>
-		<properties>
-			<group>
-				<join><![CDATA[and]]></join>
-				<item>
-					<first>
-						<value><![CDATA[$conditions]]></value>
-						<type><![CDATA[variable]]></type>
-					</first>
-					<operator><![CDATA[==]]></operator>
-					<second>
-						<value><![CDATA[true]]></value>
-						<type></type>
-					</second>
-				</item>
-				<item>
-					<first>
-						<value><![CDATA[$conditions_type]]></value>
-						<type><![CDATA[variable]]></type>
-					</first>
-					<operator><![CDATA[==]]></operator>
-					<second>
-						<value><![CDATA[true]]></value>
-						<type></type>
-					</second>
-				</item>
-			</group>
-			<exits>
-				<true>
-					<color><![CDATA[#51D87A]]></color>
-					<label><![CDATA[True]]></label>
-				</true>
-				<false>
-					<color><![CDATA[#FF4D4D]]></color>
-					<label><![CDATA[False]]></label>
-				</false>
-			</exits>
-		</properties>
-		<exits>
-			<true>
-				<task_id><![CDATA[1ff0e444_85bdcd3c_814]]></task_id>
-				<label><![CDATA[True]]></label>
-				<type><![CDATA[Straight]]></type>
-				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#51D87A]]></color>
-			</true>
-			<false>
-				<task_id><![CDATA[b70dfcdb_6c92a6f7_557]]></task_id>
-				<label><![CDATA[False]]></label>
-				<type><![CDATA[Straight]]></type>
-				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#FF4D4D]]></color>
-			</false>
-		</exits>
-	</task>
-	<task>
-		<label><![CDATA[loop $conditions]]></label>
-		<id><![CDATA[1ff0e444_85bdcd3c_814]]></id>
-		<type><![CDATA[1ff0e444]]></type>
-		<tag><![CDATA[foreach]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
-		<width>70</width>
-		<height>0</height>
-		<properties>
-			<obj><![CDATA[$conditions]]></obj>
-			<key><![CDATA[$attribute_name]]></key>
-			<value><![CDATA[$attribute_value]]></value>
-			<exits>
-				<start_exit>
-					<color><![CDATA[#31498f]]></color>
-					<label><![CDATA[Start loop]]></label>
-				</start_exit>
-				<default_exit>
-					<color><![CDATA[#2C2D34]]></color>
-					<label><![CDATA[End loop]]></label>
-				</default_exit>
-			</exits>
-		</properties>
-		<exits>
-			<default_exit>
-				<task_id><![CDATA[b70dfcdb_6c92a6f7_557]]></task_id>
-				<label><![CDATA[End loop]]></label>
-				<type><![CDATA[Straight]]></type>
-				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#2C2D34]]></color>
-			</default_exit>
-			<start_exit>
-				<task_id><![CDATA[d45ddc36_86745663_467]]></task_id>
-				<label><![CDATA[Start loop]]></label>
-				<type><![CDATA[Straight]]></type>
-				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#31498f]]></color>
-			</start_exit>
-		</exits>
-	</task>
-	<task>
-		<label><![CDATA[If is_array($conditions_type);]]></label>
-		<id><![CDATA[d45ddc36_86745663_467]]></id>
-		<type><![CDATA[d45ddc36]]></type>
-		<tag><![CDATA[if]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
-		<width>70</width>
-		<height>0</height>
-		<properties>
-			<group>
-				<join><![CDATA[and]]></join>
-				<item>
-					<first>
-						<value><![CDATA[is_array($conditions_type)]]></value>
-						<type><![CDATA[function]]></type>
-					</first>
-					<operator><![CDATA[==]]></operator>
-					<second>
-						<value><![CDATA[true]]></value>
-						<type></type>
-					</second>
-				</item>
-			</group>
-			<exits>
-				<true>
-					<color><![CDATA[#51D87A]]></color>
-					<label><![CDATA[True]]></label>
-				</true>
-				<false>
-					<color><![CDATA[#FF4D4D]]></color>
-					<label><![CDATA[False]]></label>
-				</false>
-			</exits>
-		</properties>
-		<exits>
-			<true>
-				<task_id><![CDATA[6d1db313_e8b10c74_369]]></task_id>
-				<label><![CDATA[True]]></label>
-				<type><![CDATA[Straight]]></type>
-				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#51D87A]]></color>
-			</true>
-			<false>
-				<task_id><![CDATA[6d1db313_08982f12_955]]></task_id>
-				<label><![CDATA[False]]></label>
-				<type><![CDATA[Straight]]></type>
-				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#FF4D4D]]></color>
-			</false>
-		</exits>
-	</task>
-	<task>
-		<label><![CDATA[Define var $attribute_condition_type]]></label>
-		<id><![CDATA[6d1db313_e8b10c74_369]]></id>
-		<type><![CDATA[6d1db313]]></type>
-		<tag><![CDATA[setvar]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
-		<width>70</width>
-		<height>0</height>
-		<properties>
-			<result_var_name><![CDATA[attribute_condition_type]]></result_var_name>
-			<result_var_assignment></result_var_assignment>
-			<value><![CDATA[$conditions_type[$attribute_name]]]></value>
-			<type></type>
-			<exits>
-				<default_exit>
-					<color><![CDATA[#426efa]]></color>
-				</default_exit>
-			</exits>
-		</properties>
-		<exits>
-			<default_exit>
-				<task_id><![CDATA[d45ddc36_fd5fcbdf_265]]></task_id>
-				<label></label>
-				<type><![CDATA[Straight]]></type>
-				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#426efa]]></color>
-			</default_exit>
-		</exits>
-	</task>
-	<task>
-		<label><![CDATA[Define var $attribute_condition_type]]></label>
-		<id><![CDATA[6d1db313_08982f12_955]]></id>
-		<type><![CDATA[6d1db313]]></type>
-		<tag><![CDATA[setvar]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
-		<width>70</width>
-		<height>0</height>
-		<properties>
-			<result_var_name><![CDATA[attribute_condition_type]]></result_var_name>
-			<result_var_assignment></result_var_assignment>
-			<value><![CDATA[$conditions_type]]></value>
-			<type><![CDATA[variable]]></type>
-			<exits>
-				<default_exit>
-					<color><![CDATA[#426efa]]></color>
-				</default_exit>
-			</exits>
-		</properties>
-		<exits>
-			<default_exit>
-				<task_id><![CDATA[d45ddc36_fd5fcbdf_265]]></task_id>
-				<label></label>
-				<type><![CDATA[Straight]]></type>
-				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#426efa]]></color>
-			</default_exit>
-		</exits>
-	</task>
-	<task>
-		<label><![CDATA[If $attribute_condition_type == "starts_with" || $attribute_condition_type == "ends_with" || $attribute_condition_type == "contains";]]></label>
-		<id><![CDATA[d45ddc36_fd5fcbdf_265]]></id>
-		<type><![CDATA[d45ddc36]]></type>
-		<tag><![CDATA[if]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
-		<width>70</width>
-		<height>0</height>
-		<properties>
-			<group>
-				<join><![CDATA[or]]></join>
-				<group>
-					<join><![CDATA[or]]></join>
-					<item>
-						<operator><![CDATA[==]]></operator>
-						<first>
-							<value><![CDATA[$attribute_condition_type]]></value>
-							<type><![CDATA[variable]]></type>
-						</first>
-						<second>
-							<value><![CDATA[starts_with]]></value>
-							<type><![CDATA[string]]></type>
-						</second>
-					</item>
-					<item>
-						<operator><![CDATA[==]]></operator>
-						<first>
-							<value><![CDATA[$attribute_condition_type]]></value>
-							<type><![CDATA[variable]]></type>
-						</first>
-						<second>
-							<value><![CDATA[ends_with]]></value>
-							<type><![CDATA[string]]></type>
-						</second>
-					</item>
-				</group>
-				<item>
-					<operator><![CDATA[==]]></operator>
-					<first>
-						<value><![CDATA[$attribute_condition_type]]></value>
-						<type><![CDATA[variable]]></type>
-					</first>
-					<second>
-						<value><![CDATA[contains]]></value>
-						<type><![CDATA[string]]></type>
-					</second>
-				</item>
-			</group>
-			<exits>
-				<true>
-					<color><![CDATA[#51D87A]]></color>
-					<label><![CDATA[True]]></label>
-				</true>
-				<false>
-					<color><![CDATA[#FF4D4D]]></color>
-					<label><![CDATA[False]]></label>
-				</false>
-			</exits>
-		</properties>
-		<exits>
-			<true>
-				<task_id><![CDATA[6d1db313_52c43b10_174]]></task_id>
-				<label><![CDATA[True]]></label>
-				<type><![CDATA[Straight]]></type>
-				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#51D87A]]></color>
-			</true>
-			<false>
-				<task_id><![CDATA[6d1db313_65fc8497_0]]></task_id>
-				<label><![CDATA[False]]></label>
-				<type><![CDATA[Straight]]></type>
-				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#FF4D4D]]></color>
-			</false>
-		</exits>
-	</task>
-	<task>
-		<label><![CDATA[Define var $attribute_operator]]></label>
-		<id><![CDATA[6d1db313_52c43b10_174]]></id>
-		<type><![CDATA[6d1db313]]></type>
-		<tag><![CDATA[setvar]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
-		<width>70</width>
-		<height>0</height>
-		<properties>
-			<result_var_name><![CDATA[attribute_operator]]></result_var_name>
-			<result_var_assignment></result_var_assignment>
-			<value><![CDATA[like]]></value>
-			<type><![CDATA[string]]></type>
-			<exits>
-				<default_exit>
-					<color><![CDATA[#426efa]]></color>
-				</default_exit>
-			</exits>
-		</properties>
-		<exits>
-			<default_exit>
-				<task_id><![CDATA[d45ddc36_e1573709_535]]></task_id>
-				<label></label>
-				<type><![CDATA[Straight]]></type>
-				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#426efa]]></color>
-			</default_exit>
-		</exits>
-	</task>
-	<task>
-		<label><![CDATA[Define var $attribute_operator]]></label>
-		<id><![CDATA[6d1db313_65fc8497_0]]></id>
-		<type><![CDATA[6d1db313]]></type>
-		<tag><![CDATA[setvar]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
-		<width>70</width>
-		<height>0</height>
-		<properties>
-			<result_var_name><![CDATA[attribute_operator]]></result_var_name>
-			<result_var_assignment></result_var_assignment>
-			<value><![CDATA[$attribute_condition_type]]></value>
-			<type><![CDATA[variable]]></type>
-			<exits>
-				<default_exit>
-					<color><![CDATA[#426efa]]></color>
-				</default_exit>
-			</exits>
-		</properties>
-		<exits>
-			<default_exit>
-				<task_id><![CDATA[d45ddc36_e1573709_535]]></task_id>
-				<label></label>
-				<type><![CDATA[Straight]]></type>
-				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#426efa]]></color>
-			</default_exit>
-		</exits>
-	</task>
-	<task>
-		<label><![CDATA[If $attribute_operator &amp;&amp; $attribute_operator != "=" &amp;&amp; $attribute_operator != "equal";]]></label>
-		<id><![CDATA[d45ddc36_e1573709_535]]></id>
-		<type><![CDATA[d45ddc36]]></type>
-		<tag><![CDATA[if]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
-		<width>70</width>
-		<height>0</height>
-		<properties>
-			<group>
-				<join><![CDATA[and]]></join>
-				<group>
-					<join><![CDATA[and]]></join>
-					<item>
-						<first>
-							<value><![CDATA[$attribute_operator]]></value>
-							<type><![CDATA[variable]]></type>
-						</first>
-						<operator><![CDATA[==]]></operator>
-						<second>
-							<value><![CDATA[true]]></value>
-							<type></type>
-						</second>
-					</item>
-					<item>
-						<operator><![CDATA[!=]]></operator>
-						<first>
-							<value><![CDATA[$attribute_operator]]></value>
-							<type><![CDATA[variable]]></type>
-						</first>
-						<second>
-							<value><![CDATA[=]]></value>
-							<type><![CDATA[string]]></type>
-						</second>
-					</item>
-				</group>
-				<item>
-					<operator><![CDATA[!=]]></operator>
-					<first>
-						<value><![CDATA[$attribute_operator]]></value>
-						<type><![CDATA[variable]]></type>
-					</first>
-					<second>
-						<value><![CDATA[equal]]></value>
-						<type><![CDATA[string]]></type>
-					</second>
-				</item>
-			</group>
-			<exits>
-				<true>
-					<color><![CDATA[#51D87A]]></color>
-					<label><![CDATA[True]]></label>
-				</true>
-				<false>
-					<color><![CDATA[#FF4D4D]]></color>
-					<label><![CDATA[False]]></label>
-				</false>
-			</exits>
-		</properties>
-		<exits>
-			<true>
-				<task_id><![CDATA[b70dfcdb_9665a253_997]]></task_id>
-				<label><![CDATA[True]]></label>
-				<type><![CDATA[Straight]]></type>
-				<overlay><![CDATA[Forward Arrow]]></overlay>
-				<color><![CDATA[#51D87A]]></color>
-			</true>
-		</exits>
-	</task>
-	<task>
-		<label><![CDATA[Init $conditions[$attribute_name]]]></label>
-		<id><![CDATA[b70dfcdb_9665a253_997]]></id>
+		<label><![CDATA[Init $options]]></label>
+		<id><![CDATA[b70dfcdb_9341aa1e_63]]></id>
 		<type><![CDATA[b70dfcdb]]></type>
 		<tag><![CDATA[setarray]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
+		<offset_left>100</offset_left>
+		<offset_top>50</offset_top>
 		<width>70</width>
-		<height>0</height>
+		<height>65</height>
 		<properties>
-			<result_var_name><![CDATA[conditions[$attribute_name]]]></result_var_name>
+			<result_var_name><![CDATA[options]]></result_var_name>
 			<result_var_assignment></result_var_assignment>
 			<items>
-				<key><![CDATA[operator]]></key>
+				<key><![CDATA[no_cache]]></key>
 				<key_type><![CDATA[string]]></key_type>
-				<value><![CDATA[$attribute_operator]]></value>
+				<value><![CDATA[$no_cache]]></value>
 				<value_type><![CDATA[variable]]></value_type>
 			</items>
 			<items>
-				<key><![CDATA[value]]></key>
+				<key><![CDATA[limit]]></key>
 				<key_type><![CDATA[string]]></key_type>
-				<value><![CDATA[($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . $attribute_value . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : "")]]></value>
-				<value_type></value_type>
+				<value><![CDATA[$limit]]></value>
+				<value_type><![CDATA[variable]]></value_type>
+			</items>
+			<items>
+				<key><![CDATA[start]]></key>
+				<key_type><![CDATA[string]]></key_type>
+				<value><![CDATA[$start]]></value>
+				<value_type><![CDATA[variable]]></value_type>
+			</items>
+			<items>
+				<key><![CDATA[sort]]></key>
+				<key_type><![CDATA[string]]></key_type>
+				<value><![CDATA[$sort]]></value>
+				<value_type><![CDATA[variable]]></value_type>
 			</items>
 			<exits>
 				<default_exit>
@@ -453,16 +42,25 @@
 				</default_exit>
 			</exits>
 		</properties>
+		<exits>
+			<default_exit>
+				<task_id><![CDATA[b70dfcdb_a2984874_896]]></task_id>
+				<label></label>
+				<type><![CDATA[Straight]]></type>
+				<overlay><![CDATA[Forward Arrow]]></overlay>
+				<color><![CDATA[#426efa]]></color>
+			</default_exit>
+		</exits>
 	</task>
 	<task>
 		<label><![CDATA[Init $data]]></label>
-		<id><![CDATA[b70dfcdb_6c92a6f7_557]]></id>
+		<id><![CDATA[b70dfcdb_a2984874_896]]></id>
 		<type><![CDATA[b70dfcdb]]></type>
 		<tag><![CDATA[setarray]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
+		<offset_left>100</offset_left>
+		<offset_top>218</offset_top>
 		<width>70</width>
-		<height>0</height>
+		<height>65</height>
 		<properties>
 			<result_var_name><![CDATA[data]]></result_var_name>
 			<result_var_assignment></result_var_assignment>
@@ -470,6 +68,12 @@
 				<key><![CDATA[conditions]]></key>
 				<key_type><![CDATA[string]]></key_type>
 				<value><![CDATA[$conditions]]></value>
+				<value_type><![CDATA[variable]]></value_type>
+			</items>
+			<items>
+				<key><![CDATA[conditions_type]]></key>
+				<key_type><![CDATA[string]]></key_type>
+				<value><![CDATA[$conditions_type]]></value>
 				<value_type><![CDATA[variable]]></value_type>
 			</items>
 			<items>
@@ -486,7 +90,7 @@
 		</properties>
 		<exits>
 			<default_exit>
-				<task_id><![CDATA[1e5acc1c_3ecd11a1_916]]></task_id>
+				<task_id><![CDATA[1e5acc1c_99dcc8e3_541]]></task_id>
 				<label></label>
 				<type><![CDATA[Straight]]></type>
 				<overlay><![CDATA[Forward Arrow]]></overlay>
@@ -495,49 +99,26 @@
 		</exits>
 	</task>
 	<task>
-		<label><![CDATA[BL: sample/test.ItemService.getAll]]></label>
-		<id><![CDATA[1e5acc1c_3ecd11a1_916]]></id>
+		<label><![CDATA[BL: sample/test.ItemResourceService.getAll]]></label>
+		<id><![CDATA[1e5acc1c_99dcc8e3_541]]></id>
 		<type><![CDATA[1e5acc1c]]></type>
 		<tag><![CDATA[callbusinesslogic]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
+		<offset_left>100</offset_left>
+		<offset_top>386</offset_top>
 		<width>70</width>
-		<height>0</height>
+		<height>75</height>
 		<properties>
 			<result_var_name><![CDATA[result]]></result_var_name>
 			<result_var_assignment></result_var_assignment>
 			<method_obj><![CDATA[$EVC->getBroker("soa")]]></method_obj>
 			<module_id><![CDATA[sample/test]]></module_id>
 			<module_id_type><![CDATA[string]]></module_id_type>
-			<service_id><![CDATA[ItemService.getAll]]></service_id>
+			<service_id><![CDATA[ItemResourceService.getAll]]></service_id>
 			<service_id_type><![CDATA[string]]></service_id_type>
 			<parameters><![CDATA[$data]]></parameters>
 			<parameters_type><![CDATA[variable]]></parameters_type>
-			<options>
-				<key><![CDATA[no_cache]]></key>
-				<key_type><![CDATA[string]]></key_type>
-				<value><![CDATA[$no_cache]]></value>
-				<value_type><![CDATA[variable]]></value_type>
-			</options>
-			<options>
-				<key><![CDATA[limit]]></key>
-				<key_type><![CDATA[string]]></key_type>
-				<value><![CDATA[$limit]]></value>
-				<value_type><![CDATA[variable]]></value_type>
-			</options>
-			<options>
-				<key><![CDATA[start]]></key>
-				<key_type><![CDATA[string]]></key_type>
-				<value><![CDATA[$start]]></value>
-				<value_type><![CDATA[variable]]></value_type>
-			</options>
-			<options>
-				<key><![CDATA[sort]]></key>
-				<key_type><![CDATA[string]]></key_type>
-				<value><![CDATA[$sort]]></value>
-				<value_type><![CDATA[variable]]></value_type>
-			</options>
-			<options_type><![CDATA[array]]></options_type>
+			<options><![CDATA[$options]]></options>
+			<options_type><![CDATA[variable]]></options_type>
 			<exits>
 				<default_exit>
 					<color><![CDATA[#426efa]]></color>
@@ -546,7 +127,7 @@
 		</properties>
 		<exits>
 			<default_exit>
-				<task_id><![CDATA[d1e9c332_bf2209e1_676]]></task_id>
+				<task_id><![CDATA[d1e9c332_44566afb_871]]></task_id>
 				<label></label>
 				<type><![CDATA[Straight]]></type>
 				<overlay><![CDATA[Forward Arrow]]></overlay>
@@ -555,14 +136,14 @@
 		</exits>
 	</task>
 	<task>
-		<label><![CDATA[Return $result]]></label>
-		<id><![CDATA[d1e9c332_bf2209e1_676]]></id>
+		<label><![CDATA[Return result]]></label>
+		<id><![CDATA[d1e9c332_44566afb_871]]></id>
 		<type><![CDATA[d1e9c332]]></type>
 		<tag><![CDATA[return]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
+		<offset_left>100</offset_left>
+		<offset_top>554</offset_top>
 		<width>70</width>
-		<height>0</height>
+		<height>65</height>
 		<properties>
 			<value><![CDATA[$result]]></value>
 			<type><![CDATA[variable]]></type>

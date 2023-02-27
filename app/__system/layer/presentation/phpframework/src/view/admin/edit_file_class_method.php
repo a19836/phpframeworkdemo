@@ -25,7 +25,10 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("WorkF
 <!-- Add local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/edit_file_class_method.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/edit_file_class_method.js"></script>
-'; if ($is_obj_valid) { $head .= '
+
+<script>
+var is_obj_valid = ' . ($is_obj_valid ? "true" : "false") . ';
+</script>'; if ($is_obj_valid) { $head .= '
 	<script>
 	' . WorkFlowBrokersSelectedDBVarsHandler::printSelectedDBVarsJavascriptCode($project_url_prefix, $bean_name, $bean_file_name, $selected_db_vars) . '
 	var layer_type = "' . ($item_type == "presentation" ? "pres" : ($item_type == "businesslogic" ? "bl" : $item_type)) . '";
@@ -72,10 +75,15 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("WorkF
 	FunctionUtilObj.create_code_from_workflow_file_url = create_code_from_workflow_file_url;
 	FunctionUtilObj.create_workflow_file_from_code_url = create_workflow_file_from_code_url;
 
-	CreateFormTaskPropertyObj.editor_ready_func = initLayoutUIEditorWidgetResourceOptions;
-	CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
-	InlineHTMLTaskPropertyObj.editor_ready_func = initLayoutUIEditorWidgetResourceOptions;
-	InlineHTMLTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
+	if (typeof CreateFormTaskPropertyObj != "undefined" && CreateFormTaskPropertyObj) {
+		CreateFormTaskPropertyObj.editor_ready_func = initLayoutUIEditorWidgetResourceOptions;
+		CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
+	}
+	
+	if (typeof InlineHTMLTaskPropertyObj != "undefined" && InlineHTMLTaskPropertyObj) {
+		InlineHTMLTaskPropertyObj.editor_ready_func = initLayoutUIEditorWidgetResourceOptions;
+		InlineHTMLTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui-menu-widgets-backup\';
+	}
 	'; if ($item_type == "presentation") $head .= '
 	ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
 	ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
@@ -250,6 +258,6 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("WorkF
 	<div class="big_white_panel"></div>'; } else { $main_content = '
 		<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 			<header>
-				<div class="title" title="' . $path . '">' . $title . '</div>
+				<div class="title" title="' . $path . '">' . $title . ($ft == "class_method" ? $method_id : $function_id) . '</div>
 			</header>
 		</div>'; $main_content .= '<div class="error">Error: The system couldn\'t detect the selected object. Please refresh and try again...</div>'; } ?>

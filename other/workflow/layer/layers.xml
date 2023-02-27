@@ -2,36 +2,36 @@
 <tasks>
 	<container>
 		<id><![CDATA[layer_presentations]]></id>
-		<width>648</width>
+		<width>906</width>
 		<height>150</height>
 		<left>1</left>
-		<top>-1</top>
+		<top>0</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_bls]]></id>
-		<width>648</width>
+		<width>906</width>
 		<height>150</height>
 		<left>1</left>
-		<top>149</top>
+		<top>150</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dals]]></id>
-		<width>648</width>
+		<width>906</width>
 		<height>150</height>
 		<left>1</left>
 		<top>299</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dbs]]></id>
-		<width>648</width>
+		<width>906</width>
 		<height>150</height>
 		<left>1</left>
 		<top>449</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_drivers]]></id>
-		<width>648</width>
-		<height>522</height>
+		<width>906</width>
+		<height>121</height>
 		<left>1</left>
 		<top>599</top>
 	</container>
@@ -41,7 +41,7 @@
 		<type><![CDATA[f99a69c9]]></type>
 		<tag><![CDATA[dbdriver]]></tag>
 		<offset_left>279</offset_left>
-		<offset_top>638</offset_top>
+		<offset_top>639</offset_top>
 		<width>90.4</width>
 		<height>60.4</height>
 		<properties>
@@ -68,7 +68,7 @@
 		<type><![CDATA[14b5bd7e]]></type>
 		<tag><![CDATA[db]]></tag>
 		<offset_left>279</offset_left>
-		<offset_top>480</offset_top>
+		<offset_top>481</offset_top>
 		<width>90.4</width>
 		<height>60.4</height>
 		<properties>
@@ -97,7 +97,7 @@
 		<type><![CDATA[c9c0af26]]></type>
 		<tag><![CDATA[dataaccess]]></tag>
 		<offset_left>120</offset_left>
-		<offset_top>324</offset_top>
+		<offset_top>325</offset_top>
 		<width>90.4</width>
 		<height>60.4</height>
 		<properties>
@@ -132,7 +132,7 @@
 		<type><![CDATA[c9c0af26]]></type>
 		<tag><![CDATA[dataaccess]]></tag>
 		<offset_left>395</offset_left>
-		<offset_top>324</offset_top>
+		<offset_top>325</offset_top>
 		<width>90.4</width>
 		<height>60.4</height>
 		<properties>
@@ -167,7 +167,7 @@
 		<type><![CDATA[9a89b3f5]]></type>
 		<tag><![CDATA[businesslogic]]></tag>
 		<offset_left>260</offset_left>
-		<offset_top>178</offset_top>
+		<offset_top>177</offset_top>
 		<width>90.4</width>
 		<height>60.4</height>
 		<properties>
@@ -227,7 +227,7 @@
 		<type><![CDATA[7cf9ccfb]]></type>
 		<tag><![CDATA[presentation]]></tag>
 		<offset_left>244</offset_left>
-		<offset_top>22</offset_top>
+		<offset_top>21</offset_top>
 		<width>90.4</width>
 		<height>60.4</height>
 		<properties>

@@ -257,6 +257,9 @@ function addExistentTable(table_name, offset) {
 					success: function() {
 						//open properties
 						//jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id); //disable show proeprties bc is annoying
+						
+						//re-update old_tables_names and old_tables_attributes_names
+						onDBTableTaskCreation(task_id);
 					},
 					error: function() {
 						//delete task

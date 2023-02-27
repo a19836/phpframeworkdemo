@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tasks>
+	<task start="1">
+		<label><![CDATA[Call this.checkLicence]]></label>
+		<id><![CDATA[dae39165_55c07fdc_525]]></id>
+		<type><![CDATA[dae39165]]></type>
+		<tag><![CDATA[callobjectmethod]]></tag>
+		<offset_left>0</offset_left>
+		<offset_top>0</offset_top>
+		<width>70</width>
+		<height>0</height>
+		<properties>
+			<result_obj_name><![CDATA[$this]]></result_obj_name>
+			<result_prop_name><![CDATA[status]]></result_prop_name>
+			<result_static>0</result_static>
+			<result_prop_assignment></result_prop_assignment>
+			<method_obj><![CDATA[$this]]></method_obj>
+			<method_name><![CDATA[checkLicence]]></method_name>
+			<method_args></method_args>
+			<method_static>0</method_static>
+			<exits>
+				<default_exit>
+					<color><![CDATA[#426efa]]></color>
+				</default_exit>
+			</exits>
+		</properties>
+	</task>
+</tasks>

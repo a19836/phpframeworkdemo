@@ -79,7 +79,7 @@ var is_popup = ' . ($popup ? "true" : "false") . ';
 			' . ($project_image ? '<img src="' . $project_image . '" alt="No Image" />' : '<div class="no_logo"></div>') . '
 			
 			<label>Change logo:</label>
-			<input type="file" name="image" />'; if (!$is_existent_project) { $main_content .= '
+			<input type="file" name="image" />'; if ($db_brokers_exist) { if (!$is_existent_project) { $main_content .= '
 			<div class="project_db_driver" title="If you wish this project to access a DB, please activate this option and fill the DB details below...">
 				<label>Want to assign a default DB?</label>
 				<select name="project_db_driver" onChange="onChangeProjectWithDB(this)">
@@ -91,7 +91,7 @@ var is_popup = ' . ($popup ? "true" : "false") . ';
 			<div class="project_db_driver" title="If you wish to manage the DBs that this project has access to, please click in the link below...">
 				<label>Do you wish to assign different DBs?</label>
 				<a href="javascript:void(0);" onClick="goToManageLayoutTypePermissions(this)" url="' . $manage_layout_type_permissions_url . '">Manage this project DBs</a>
-			</div>'; } $main_content .= '
+			</div>'; } } $main_content .= '
 		</div>
 		<div class="right_content">
 			<div class="name" title="Please write your new project\'s folder name">

@@ -1,189 +1,193 @@
 var saved_test_settings_id = null;
 
 $(function () {
-	$(window).bind('beforeunload', function () {
-		if (isTestObjChanged()) {
-			if (window.parent && window.parent.iframe_overlay)
-				window.parent.iframe_overlay.hide();
-			
-			return "If you proceed your changes won't be saved. Do you wish to continue?";
-		}
-		
-		return null;
-	});
-	
-	//prepare top_bar
-	$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_side_properties").children(".workflow_menu").addClass("top_bar_menu");
-	
-	$("#code > .code_menu > ul, #ui > .taskflowchart > .workflow_menu > ul").prepend('<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleSettingsPanel(this)"><i class="icon toggle_main_settings"></i> <span>Show Main Settings</span> <input type="checkbox"/></a></li><li class="separator"></li>');
-	
-	//init auto save
-	enableAutoSave(onTogglePHPCodeAutoSave);
-	enableAutoConvert(onTogglePHPCodeAutoConvert);
-	initAutoSave("#code > .code_menu li.save a");
-	
-	//init trees
-	choosePropertyVariableFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
-	});
-	choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");
-	
-	chooseMethodFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
-	});
-	chooseMethodFromFileManagerTree.init("choose_method_from_file_manager");
-	
-	chooseFunctionFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
-	});
-	chooseFunctionFromFileManagerTree.init("choose_function_from_file_manager");
-	
-	chooseFileFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
-	});
-	chooseFileFromFileManagerTree.init("choose_file_from_file_manager");
-	
-	chooseBusinessLogicFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
-	});
-	chooseBusinessLogicFromFileManagerTree.init("choose_business_logic_from_file_manager");
-	
-	chooseQueryFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeParametersAndResultMapsFromTree,
-	});
-	chooseQueryFromFileManagerTree.init("choose_query_from_file_manager");
-	
-	chooseHibernateObjectFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeQueriesAndMapsAndOtherHbnNodesFromTree,
-	});
-	chooseHibernateObjectFromFileManagerTree.init("choose_hibernate_object_from_file_manager");
-	
-	chooseHibernateObjectMethodFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeParametersAndResultMapsFromTree,
-	});
-	chooseHibernateObjectMethodFromFileManagerTree.init("choose_hibernate_object_method_from_file_manager");
-	
-	choosePresentationFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeAllThatIsNotPagesFromTree,
-	});
-	choosePresentationFromFileManagerTree.init("choose_presentation_from_file_manager");
-	
-	chooseBlockFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeAllThatIsNotBlocksFromTree,
-	});
-	chooseBlockFromFileManagerTree.init("choose_block_from_file_manager");
-	
-	choosePageUrlFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeAllThatIsNotPagesFromTree,
-	});
-	choosePageUrlFromFileManagerTree.init("choose_page_url_from_file_manager");
-	
-	chooseImageUrlFromFileManagerTree = new MyTree({
-		multiple_selection : false,
-		toggle_children_on_click : true,
-		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
-	});
-	chooseImageUrlFromFileManagerTree.init("choose_image_url_from_file_manager");
-	
-	//init edit_test
-	var edit_test = $(".edit_test");
-	
-	if (edit_test[0]) {
-		edit_test.tabs({active: show_low_code_first ? 1 : 0});
-		
-		var textarea = $("#code textarea")[0];
-		if (textarea) {
-			var editor = createCodeEditor(textarea, {save_func: saveTest});
-			
-			if (editor)
-				editor.focus();
-		}
-		
-		onLoadTaskFlowChartAndCodeEditor({do_not_hide_popup : true});
-		
-		//init tasks flow tab
-		onClickTaskWorkflowTab( edit_test.find(" > .tabs > #tasks_flow_tab > a")[0], {
-			on_success: function() {
-				//set saved_test_settings_id
-				saved_test_settings_id = getTestSettingsId();
+	if (is_obj_valid) {
+		$(window).bind('beforeunload', function () {
+			if (isTestObjChanged()) {
+				if (window.parent && window.parent.iframe_overlay)
+					window.parent.iframe_overlay.hide();
 				
-				MyFancyPopup.hidePopup();
-			},
-			on_error: function() {
-				edit_test.tabs("option", "active", 0); //show code tab
-				
-				//set saved_test_settings_id
-				saved_test_settings_id = getTestSettingsId();
-				
-				MyFancyPopup.hidePopup();
+				return "If you proceed your changes won't be saved. Do you wish to continue?";
 			}
+			
+			return null;
 		});
 		
-		//init settings
-		var settings = edit_test.find("#settings");
+		//prepare top_bar
+		$("#ui > .taskflowchart").addClass("with_top_bar_menu fixed_side_properties").children(".workflow_menu").addClass("top_bar_menu");
 		
-		settings.draggable({
-			axis: "y",
-			appendTo: 'body',
-			cursor: 'move',
-               tolerance: 'pointer',
-               handle: ' > .settings_header',
-         		cancel: '.icon', //this means that is inside of .settings_header
-			start: function(event, ui) {
-				settings.addClass("resizing").removeClass("collapsed");
-				settings.find(" > .settings_header .icon").addClass("minimize").removeClass("maximize");
-				
-				return true;
-			},
-			drag: function(event, ui) {
-				var h = $(window).height() - (ui.offset.top - $(window).scrollTop());
-				
-				settings.css({
-					height: h + "px",
-					top: "", 
-					left: "", 
-					bottom: ""
-				});
-			},
-			stop: function(event, ui) {
-				var top = parseInt(ui.helper.css("top"));//Do not use ui.offset.top bc if the window has scrollbar, it will get the wrong top for the calculations inside of resizeSettingsPanel
-				resizeSettingsPanel(settings, top);
-			},
+		$("#code > .code_menu > ul, #ui > .taskflowchart > .workflow_menu > ul").prepend('<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleSettingsPanel(this)"><i class="icon toggle_main_settings"></i> <span>Show Main Settings</span> <input type="checkbox"/></a></li><li class="separator"></li>');
+		
+		//init auto save
+		enableAutoSave(onTogglePHPCodeAutoSave);
+		enableAutoConvert(onTogglePHPCodeAutoConvert);
+		initAutoSave("#code > .code_menu li.save a");
+		
+		//init trees
+		choosePropertyVariableFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_children_on_click : true,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
 		});
+		choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");
+		
+		chooseMethodFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_children_on_click : true,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
+		});
+		chooseMethodFromFileManagerTree.init("choose_method_from_file_manager");
+		
+		chooseFunctionFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_children_on_click : true,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
+		});
+		chooseFunctionFromFileManagerTree.init("choose_function_from_file_manager");
+		
+		chooseFileFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_children_on_click : true,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
+		});
+		chooseFileFromFileManagerTree.init("choose_file_from_file_manager");
+		
+		chooseBusinessLogicFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_children_on_click : true,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
+		});
+		chooseBusinessLogicFromFileManagerTree.init("choose_business_logic_from_file_manager");
+		
+		chooseQueryFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_children_on_click : true,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : removeParametersAndResultMapsFromTree,
+		});
+		chooseQueryFromFileManagerTree.init("choose_query_from_file_manager");
+		
+		chooseHibernateObjectFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_children_on_click : true,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : removeQueriesAndMapsAndOtherHbnNodesFromTree,
+		});
+		chooseHibernateObjectFromFileManagerTree.init("choose_hibernate_object_from_file_manager");
+		
+		chooseHibernateObjectMethodFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_children_on_click : true,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : removeParametersAndResultMapsFromTree,
+		});
+		chooseHibernateObjectMethodFromFileManagerTree.init("choose_hibernate_object_method_from_file_manager");
+		
+		choosePresentationFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_children_on_click : true,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : removeAllThatIsNotPagesFromTree,
+		});
+		choosePresentationFromFileManagerTree.init("choose_presentation_from_file_manager");
+		
+		chooseBlockFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_children_on_click : true,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : removeAllThatIsNotBlocksFromTree,
+		});
+		chooseBlockFromFileManagerTree.init("choose_block_from_file_manager");
+		
+		choosePageUrlFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_children_on_click : true,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : removeAllThatIsNotPagesFromTree,
+		});
+		choosePageUrlFromFileManagerTree.init("choose_page_url_from_file_manager");
+		
+		chooseImageUrlFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_children_on_click : true,
+			ajax_callback_before : prepareLayerNodes1,
+			ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
+		});
+		chooseImageUrlFromFileManagerTree.init("choose_image_url_from_file_manager");
+		
+		//init edit_test
+		var edit_test = $(".edit_test");
+		
+		if (edit_test[0]) {
+			edit_test.tabs({active: show_low_code_first ? 1 : 0});
+			
+			var textarea = $("#code textarea")[0];
+			if (textarea) {
+				var editor = createCodeEditor(textarea, {save_func: saveTest});
+				
+				if (editor)
+					editor.focus();
+			}
+			
+			onLoadTaskFlowChartAndCodeEditor({do_not_hide_popup : true});
+			
+			//init tasks flow tab
+			onClickTaskWorkflowTab( edit_test.find(" > .tabs > #tasks_flow_tab > a")[0], {
+				on_success: function() {
+					//set saved_test_settings_id
+					saved_test_settings_id = getTestSettingsId();
+					
+					MyFancyPopup.hidePopup();
+				},
+				on_error: function() {
+					edit_test.tabs("option", "active", 0); //show code tab
+					
+					//set saved_test_settings_id
+					saved_test_settings_id = getTestSettingsId();
+					
+					MyFancyPopup.hidePopup();
+				}
+			});
+			
+			//init settings
+			var settings = edit_test.find("#settings");
+			
+			settings.draggable({
+				axis: "y",
+				appendTo: 'body',
+				cursor: 'move',
+		          tolerance: 'pointer',
+		          handle: ' > .settings_header',
+		    		cancel: '.icon', //this means that is inside of .settings_header
+				start: function(event, ui) {
+					settings.addClass("resizing").removeClass("collapsed");
+					settings.find(" > .settings_header .icon").addClass("minimize").removeClass("maximize");
+					
+					return true;
+				},
+				drag: function(event, ui) {
+					var h = $(window).height() - (ui.offset.top - $(window).scrollTop());
+					
+					settings.css({
+						height: h + "px",
+						top: "", 
+						left: "", 
+						bottom: ""
+					});
+				},
+				stop: function(event, ui) {
+					var top = parseInt(ui.helper.css("top"));//Do not use ui.offset.top bc if the window has scrollbar, it will get the wrong top for the calculations inside of resizeSettingsPanel
+					resizeSettingsPanel(settings, top);
+				},
+			});
+		}
+		else	//hide loading icon
+			MyFancyPopup.hidePopup();
 	}
 	else	//hide loading icon
 		MyFancyPopup.hidePopup();

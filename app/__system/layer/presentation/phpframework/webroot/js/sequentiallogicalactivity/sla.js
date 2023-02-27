@@ -2609,7 +2609,7 @@ function updateSLAProgrammingTaskVariablesInWorkflowBasedInSQL(select, var_name,
 }
 
 function updateSLAProgrammingTaskVariablesInWorkflowBasedInRestConnector(select, var_name, rest_settings) {
-	var allowed_result_types = ["content", "content_json", "content_xml", "content_serialized"];
+	var allowed_result_types = ["content", "content_json", "content_xml", "content_xml_simple", "content_serialized"];
 	
 	if (rest_settings && $.inArray(rest_settings["result_type"], allowed_result_types) != -1) {
 		var post_data = {"action_type" : "restconnector", "action_value": rest_settings};
@@ -2671,7 +2671,7 @@ function updateSLAProgrammingTaskVariablesInWorkflowBasedInSoapConnector(select,
 	var allowed_types = ["callSoapClient", "callSoapFunction"];
 	
 	if (soap_settings && $.isPlainObject(soap_settings["data"]) && $.inArray(soap_settings["data"]["type"], allowed_types) != -1) {
-		var allowed_result_types = ["content", "content_json", "content_xml", "content_serialized"];
+		var allowed_result_types = ["content", "content_json", "content_xml", "content_xml_simple", "content_serialized"];
 		
 		if (soap_settings["data"]["type"] != "callSoapFunction" || $.inArray(soap_settings["result_type"], allowed_result_types) != -1) {
 			var post_data = {"action_type" : "soapconnector", "action_value": soap_settings};
