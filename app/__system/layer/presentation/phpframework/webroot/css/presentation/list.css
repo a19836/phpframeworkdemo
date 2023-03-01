@@ -8,7 +8,7 @@ body,
 
 /* TOP BAR */
 .top_bar {
-	margin-bottom:20px;
+	margin-bottom:30px;
 }
 .top_bar header .title .sub_title {
 	color:#666;
@@ -29,7 +29,7 @@ body.no_scroll {
 
 /* TREE */
 #file_tree {
-	margin:-5px auto 0 auto;
+	margin:0 auto;
 }
 #file_tree li > a:not(.jstree-clicked) {
 	background-color:#f0f0f0;

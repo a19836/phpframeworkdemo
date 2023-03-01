@@ -57,4 +57,4 @@ include $EVC->getViewPath("/layer/diagram"); $confirm_msg = $diagram_already_exi
 		$(".taskflowchart .workflow_menu li.save").after(html);
 		$(".top_bar li.save").attr("title", "Save and Rebuild Layers").children("a").attr("onClick", "continueSetup();").html(\'<i class="icon continue"></i> Save and Rebuild Layers\');
 	</script>
-	<style> #setup .buttons {display:none;} </style>'; } $continue_function = "continueSetup()"; $back_function = "document.location='?step=3&iframe=$is_inside_of_iframe'"; $back_label = "BEGINNER"; ?>
+	<style> #setup .buttons {display:none;} </style>'; } $continue_function = "continueSetup()"; $back_function = "document.location='?step=3&iframe=$is_inside_of_iframe'"; $back_label = "Go to beginner settings"; ?>

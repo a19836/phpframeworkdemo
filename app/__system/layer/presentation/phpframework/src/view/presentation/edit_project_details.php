@@ -76,7 +76,7 @@ var is_popup = ' . ($popup ? "true" : "false") . ';
 		<input type="hidden" name="is_existent_project" value="' . ($is_existent_project ? 1 : 0) . '" />
 		
 		<div class="left_content">
-			' . ($project_image ? '<img src="' . $project_image . '" alt="No Image" />' : '<div class="no_logo"></div>') . '
+			' . ($project_image ? '<img src="' . $project_image . '" alt="No Image" onClick="$(this).parent().children(\'input[type=file]\').trigger(\'click\')" />' : '<div class="no_logo" onClick="$(this).parent().children(\'input[type=file]\').trigger(\'click\')"></div>') . '
 			
 			<label>Change logo:</label>
 			<input type="file" name="image" />'; if ($db_brokers_exist) { if (!$is_existent_project) { $main_content .= '

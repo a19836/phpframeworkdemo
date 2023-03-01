@@ -83,7 +83,10 @@ body,
 	float:right;
 }
 #setup .buttons .back {
+	padding-right:30px;
 	float:right;
+	border-right:1px solid;
+	border-radius:0;
 }
 #setup .buttons .cancel {
 	float:left;
@@ -198,20 +201,26 @@ body,
 	margin-top:-55px; /* This is the padding-top for the parent div: #setup */
 }
 #layer_form:not(.hide_setup) .top_bar header {
-	top:64px;
+	top:70px;
 	
 	/*background: linear-gradient(0deg, #ffffff73 0%, #eee 50%, #ffffff73 100%);*/
 
 }
+#layer_form:not(.hide_setup) .top_bar header li.save {
+	display:none;
+}
 #layer_form:not(.hide_setup) .taskflowchart.with_top_bar_menu .tasks_menu, 
   #layer_form:not(.hide_setup) .taskflowchart.with_top_bar_menu .tasks_menu_hide, 
   #layer_form:not(.hide_setup) .taskflowchart.with_top_bar_menu .tasks_flow {
-	top:95px !important;
+	top:120px !important;
 }
 #layer_form:not(.hide_setup) .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu {
-	top:70px;
+	top:87px;
 }
-#layer_form.hide_setup .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.save {
+#layer_form:not(.hide_setup) .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu > ul {
+	max-height:calc(100vh - 120px);
+}
+#layer_form .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.save {
 	display:none;
 }
 #layer_form .taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu .set_global_vars {

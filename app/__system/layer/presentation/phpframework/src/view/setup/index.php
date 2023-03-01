@@ -32,7 +32,7 @@ function cancelSetup() {'; if ($is_inside_of_iframe) { $head .= '
 			window.close();
 		
 			//If not closed:
-			window.location = "error";
+			window.location = "' . $project_url_prefix . 'setup";
 		}'; } $head .= '
 	return false;
 }

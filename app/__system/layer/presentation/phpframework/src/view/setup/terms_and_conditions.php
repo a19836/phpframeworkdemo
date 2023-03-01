@@ -31,4 +31,5 @@ $main_content = '<div id="terms_and_conditions">
 			</label>
 		</div>
 	</form>
-</div>'; $continue_function = "$('#terms_and_conditions form').submit()"; ?>
+</div>
+<style> #setup .buttons .cancel {display:none;} </style>'; $continue_function = "$('#terms_and_conditions form').submit()"; ?>

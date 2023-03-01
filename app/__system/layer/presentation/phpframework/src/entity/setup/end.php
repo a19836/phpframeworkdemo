@@ -18,4 +18,4 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); ?>
+$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $user_id = $UserAuthenticationHandler->auth && $UserAuthenticationHandler->auth["user_data"] ? $UserAuthenticationHandler->auth["user_data"]["user_id"] : null; ?>

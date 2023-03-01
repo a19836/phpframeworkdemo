@@ -905,98 +905,135 @@ function onContextMenu(target, contextmenu, originalEvent) {
 
 //Any change in this method should be done too in the initDBTablesSorting method
 function initFilesDragAndDrop(elm) {
-	var scroll_parent = elm.parent().closest(".scroll");
 	var iframe = $("#right_panel > iframe");
-	var iframe_win = iframe[0].contentWindow;
-	var iframe_doc = iframe_win ? iframe_win.document : null;
-	var iframe_offset = iframe.offset();
-	var iframe_droppable_elm = null;
-	var iframe_droppable_over_class = "drop_hover dragging_task task_droppable_over";
-	var available_iframe_droppables_selectors = ".droppable, .tasks_flow, .connector_overlay_add_icon"; //".droppable" is related with the LayoutUIEditor, ".tasks_flow" is related with workflows and ".connector_overlay_add_icon" is related with Logic workflows.
 	
-	var folders_selector = "i.folder";
-	var files_selector = "i.file, i.objtype, i.hibernatemodel, i.config_file, i.controller_file, i.entity_file, i.view_file, i.template_file, i.util_file, i.block_file, i.module_file, i.undefined_file, i.js_file, i.css_file, i.img_file, i.zip_file";
-	var droppables_selector = "i.folder, i.entities_folder, i.views_folder, i.templates_folder, i.template_folder, i.utils_folder, i.webroot_folder, i.modules_folder, i.configs_folder, i.cms_common, i.cms_module, i.cms_program, i.cms_resource";
-	var draggables_selector = folders_selector + ", " + files_selector + ", .query, .relationship, .obj, .class, .method, .function";
-	
-	var left_panel_droppable_handler = function(event, ui_obj) {
-		var file_li = $(this);
-		var is_file_li_ul = file_li.is("ul") && file_li.parent().is("li");
+	if (iframe[0]) {
+		var scroll_parent = elm.parent().closest(".scroll");
+		var iframe_win = iframe[0].contentWindow;
+		var iframe_doc = iframe_win ? iframe_win.document : null;
+		var iframe_offset = iframe.offset();
+		var iframe_droppable_elm = null;
+		var iframe_droppable_over_class = "drop_hover dragging_task task_droppable_over";
+		var available_iframe_droppables_selectors = ".droppable, .tasks_flow, .connector_overlay_add_icon"; //".droppable" is related with the LayoutUIEditor, ".tasks_flow" is related with workflows and ".connector_overlay_add_icon" is related with Logic workflows.
 		
-		if (is_file_li_ul)
-			file_li = file_li.parent();
+		var folders_selector = "i.folder";
+		var files_selector = "i.file, i.objtype, i.hibernatemodel, i.config_file, i.controller_file, i.entity_file, i.view_file, i.template_file, i.util_file, i.block_file, i.module_file, i.undefined_file, i.js_file, i.css_file, i.img_file, i.zip_file";
+		var droppables_selector = "i.folder, i.entities_folder, i.views_folder, i.templates_folder, i.template_folder, i.utils_folder, i.webroot_folder, i.modules_folder, i.configs_folder, i.cms_common, i.cms_module, i.cms_program, i.cms_resource";
+		var draggables_selector = folders_selector + ", " + files_selector + ", .query, .relationship, .obj, .class, .method, .function";
 		
-		var file_li_a = file_li.children("a");
-		var item = ui_obj.draggable;
-		var a = item.children("a");
-		
-		file_li.removeClass("drop_hover");
-		
-		if (a.children(files_selector + ", " + folders_selector).length == 0)
-			StatusMessageHandler.showError("Sorry, droppable not allowed...");
-		else if (file_li_a.children(droppables_selector).length == 0)
-			StatusMessageHandler.showError("Sorry, droppable not allowed...");
-		else if (a.attr("id") != file_li_a.attr("id")) { //if file is not it-self
-			var originalEvent = event || window.event;
-			var is_ctrl_key = originalEvent && (originalEvent.ctrlKey || originalEvent.keyCode == 65);
-			var action = is_ctrl_key ? "copy" : "cut";
+		var left_panel_droppable_handler = function(event, ui_obj) {
+			var file_li = $(this);
+			var is_file_li_ul = file_li.is("ul") && file_li.parent().is("li");
 			
-			copy_or_cut_tree_node_id = item.attr("id");
-			copy_or_cut_action = action;
-			file_to_copy_or_cut = a.attr(action == "cut" ? "cut_url" : "copy_url");
+			if (is_file_li_ul)
+				file_li = file_li.parent();
 			
-			var dummy_menu = $('<ul last_selected_node_id="' + file_li.attr("id") + '"><li><a paste_url="' + file_li_a.attr("paste_url") + '"></a></li></ul>'); //emulate the menu item
-			var a = dummy_menu.find("li a");
+			var file_li_a = file_li.children("a");
+			var item = ui_obj.draggable;
+			var a = item.children("a");
 			
-			manageFile(a[0], 'paste_url', 'paste', function() {
-				dummy_menu.remove();
-			});
-		}
-		
-		//do not add "return false" otherwise the draggable will stop working for next iteractions
-	};
-	
-	var right_panel_droppable_handler = function(event, ui_obj, tree_node, helper_clone) {
-		//console.log(event);
-		//console.log(ui_obj);
-		
-		var j_iframe_droppable_elm = $(iframe_droppable_elm);
-		var li = ui_obj.helper;
-		var li_a = li.children("a");
-		
-		//if dragged item is a table
-		if (li_a.children("i.query, i.relationship").length > 0) { //ibatis query => create callibatisquery or callhibernatemethod task
-			//check if query belongs to a hibernate obj
-			var parent_li = li.parent().parent();
-			var is_relationship = li_a.children("i.relationship").length > 0;
-			var is_hbn_obj = is_relationship || parent_li.children("a").children("i.obj").length > 0;
-			var func = is_hbn_obj ? iframe_win.CallHibernateMethodTaskPropertyObj : iframe_win.CallIbatisQueryTaskPropertyObj;
-			var task_tag = is_hbn_obj ? "callhibernatemethod" : "callibatisquery";
+			file_li.removeClass("drop_hover");
 			
-			if (typeof func == "object") {
-				if (iframe_droppable_elm) {
-					var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
-					var task_menu = tasks_menu.find(".task.task_menu.task_" + task_tag);
-					var task_type = task_menu.attr("type");
-					
-					if (task_type) {
-						var edit_url = li_a.attr("edit_url");
-						var bean_name = getParameterByName(edit_url, "bean_name");
-						var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
+			if (a.children(files_selector + ", " + folders_selector).length == 0)
+				StatusMessageHandler.showError("Sorry, droppable not allowed...");
+			else if (file_li_a.children(droppables_selector).length == 0)
+				StatusMessageHandler.showError("Sorry, droppable not allowed...");
+			else if (a.attr("id") != file_li_a.attr("id")) { //if file is not it-self
+				var originalEvent = event || window.event;
+				var is_ctrl_key = originalEvent && (originalEvent.ctrlKey || originalEvent.keyCode == 65);
+				var action = is_ctrl_key ? "copy" : "cut";
+				
+				copy_or_cut_tree_node_id = item.attr("id");
+				copy_or_cut_action = action;
+				file_to_copy_or_cut = a.attr(action == "cut" ? "cut_url" : "copy_url");
+				
+				var dummy_menu = $('<ul last_selected_node_id="' + file_li.attr("id") + '"><li><a paste_url="' + file_li_a.attr("paste_url") + '"></a></li></ul>'); //emulate the menu item
+				var a = dummy_menu.find("li a");
+				
+				manageFile(a[0], 'paste_url', 'paste', function() {
+					dummy_menu.remove();
+				});
+			}
+			
+			//do not add "return false" otherwise the draggable will stop working for next iteractions
+		};
+		
+		var right_panel_droppable_handler = function(event, ui_obj, tree_node, helper_clone) {
+			//console.log(event);
+			//console.log(ui_obj);
+			
+			var j_iframe_droppable_elm = $(iframe_droppable_elm);
+			var li = ui_obj.helper;
+			var li_a = li.children("a");
+			
+			//if dragged item is a table
+			if (li_a.children("i.query, i.relationship").length > 0) { //ibatis query => create callibatisquery or callhibernatemethod task
+				//check if query belongs to a hibernate obj
+				var parent_li = li.parent().parent();
+				var is_relationship = li_a.children("i.relationship").length > 0;
+				var is_hbn_obj = is_relationship || parent_li.children("a").children("i.obj").length > 0;
+				var func = is_hbn_obj ? iframe_win.CallHibernateMethodTaskPropertyObj : iframe_win.CallIbatisQueryTaskPropertyObj;
+				var task_tag = is_hbn_obj ? "callhibernatemethod" : "callibatisquery";
+				
+				if (typeof func == "object") {
+					if (iframe_droppable_elm) {
+						var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
+						var task_menu = tasks_menu.find(".task.task_menu.task_" + task_tag);
+						var task_type = task_menu.attr("type");
 						
-						if (bean_ui_props) {
-							var query_type = getParameterByName(edit_url, "query_type");
+						if (task_type) {
+							var edit_url = li_a.attr("edit_url");
+							var bean_name = getParameterByName(edit_url, "bean_name");
+							var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
 							
-							if (is_relationship || $.inArray(query_type, ["insert", "update", "delete", "procedure", "select"]) != -1) {
+							if (bean_ui_props) {
+								var query_type = getParameterByName(edit_url, "query_type");
+								
+								if (is_relationship || $.inArray(query_type, ["insert", "update", "delete", "procedure", "select"]) != -1) {
+									var hbn_obj = getParameterByName(edit_url, "obj");
+									var query_id = getParameterByName(edit_url, "query_id");
+									var task_label = (query_type == "select" ? "Get" : "Set") + " query " + (hbn_obj ? hbn_obj + "." : "") + query_id;
+									
+									onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
+										if (is_hbn_obj)
+											onChooseWorkflowCallHibernateMethodTask(iframe_win, li, task_id);
+										else
+											onChooseWorkflowCallIbatisQueryTask(iframe_win, li, task_id);
+									});
+								}
+								else
+									iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+							}
+							else
+								iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+						}
+						else
+							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+					}
+					else
+						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+				}
+				else
+					StatusMessageHandler.showError("Sorry, droppable not allowed...");
+			}
+			else if (li_a.children("i.obj").length > 0) { //hibernate obj => create callhibernateobject task
+				if (typeof iframe_win.CallHibernateObjectTaskPropertyObj == "object") {
+					if (iframe_droppable_elm) {
+						var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
+						var task_menu = tasks_menu.find(".task.task_menu.task_callhibernateobject");
+						var task_type = task_menu.attr("type");
+						
+						if (task_type) {
+							var edit_url = li_a.attr("edit_url");
+							var bean_name = getParameterByName(edit_url, "bean_name");
+							var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
+							
+							if (bean_ui_props) {
 								var hbn_obj = getParameterByName(edit_url, "obj");
-								var query_id = getParameterByName(edit_url, "query_id");
-								var task_label = (query_type == "select" ? "Get" : "Set") + " query " + (hbn_obj ? hbn_obj + "." : "") + query_id;
+								var task_label = "Get hibernate obj " + hbn_obj;
 								
 								onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
-									if (is_hbn_obj)
-										onChooseWorkflowCallHibernateMethodTask(iframe_win, li, task_id);
-									else
-										onChooseWorkflowCallIbatisQueryTask(iframe_win, li, task_id);
+									onChooseWorkflowCallHibernateObjectTask(iframe_win, li, task_id);
 								});
 							}
 							else
@@ -1006,763 +1043,732 @@ function initFilesDragAndDrop(elm) {
 							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 					}
 					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
 				}
 				else
-					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+					StatusMessageHandler.showError("Sorry, droppable not allowed...");
 			}
-			else
-				StatusMessageHandler.showError("Sorry, droppable not allowed...");
-		}
-		else if (li_a.children("i.obj").length > 0) { //hibernate obj => create callhibernateobject task
-			if (typeof iframe_win.CallHibernateObjectTaskPropertyObj == "object") {
-				if (iframe_droppable_elm) {
-					var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
-					var task_menu = tasks_menu.find(".task.task_menu.task_callhibernateobject");
-					var task_type = task_menu.attr("type");
-					
-					if (task_type) {
-						var edit_url = li_a.attr("edit_url");
-						var bean_name = getParameterByName(edit_url, "bean_name");
-						var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
+			else if (li_a.children("i.class").length > 0) { //hibernate obj => create callhibernateobject task
+				if (typeof iframe_win.CreateClassObjectTaskPropertyObj == "object") {
+					if (iframe_droppable_elm) {
+						var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
+						var task_menu = tasks_menu.find(".task.task_menu.task_createclassobject");
+						var task_type = task_menu.attr("type");
 						
-						if (bean_ui_props) {
-							var hbn_obj = getParameterByName(edit_url, "obj");
-							var task_label = "Get hibernate obj " + hbn_obj;
+						if (task_type) {
+							var edit_url = li_a.attr("edit_url");
+							var bean_name = getParameterByName(edit_url, "bean_name");
+							var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
 							
-							onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
-								onChooseWorkflowCallHibernateObjectTask(iframe_win, li, task_id);
-							});
-						}
-						else
-							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
-					}
-					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
-				}
-				else
-					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
-			}
-			else
-				StatusMessageHandler.showError("Sorry, droppable not allowed...");
-		}
-		else if (li_a.children("i.class").length > 0) { //hibernate obj => create callhibernateobject task
-			if (typeof iframe_win.CreateClassObjectTaskPropertyObj == "object") {
-				if (iframe_droppable_elm) {
-					var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
-					var task_menu = tasks_menu.find(".task.task_menu.task_createclassobject");
-					var task_type = task_menu.attr("type");
-					
-					if (task_type) {
-						var edit_url = li_a.attr("edit_url");
-						var bean_name = getParameterByName(edit_url, "bean_name");
-						var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
-						
-						if (bean_ui_props) {
-							var class_obj = getParameterByName(edit_url, "class");
-							var task_label = "Create class obj " + class_obj;
-							
-							onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
-								onChooseWorkflowCreateClassObjectTask(iframe_win, li, task_id);
-							});
-						}
-						else
-							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
-					}
-					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
-				}
-				else
-					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
-			}
-			else
-				StatusMessageHandler.showError("Sorry, droppable not allowed...");
-		}
-		else if (li_a.children("i.method").length > 0) { //util method or business logic service
-			var is_bl = li.parent().closest(".main_node_businesslogic").length > 0;
-			var func = is_bl ? iframe_win.CallBusinessLogicTaskPropertyObj : iframe_win.CallObjectMethodTaskPropertyObj;
-			var task_tag = is_bl ? "callbusinesslogic" : "callobjectmethod";
-			
-			if (typeof func == "object") {
-				if (iframe_droppable_elm) {
-					var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
-					var task_menu = tasks_menu.find(".task.task_menu.task_" + task_tag);
-					var task_type = task_menu.attr("type");
-					
-					if (task_type) {
-						var edit_url = li_a.attr("edit_url");
-						var bean_name = getParameterByName(edit_url, "bean_name");
-						var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
-						
-						if (bean_ui_props) {
-							var obj_class = getParameterByName(edit_url, is_bl ? "service" : "class");
-							var method = getParameterByName(edit_url, "method");
-							var task_label = "Call " + (is_bl ? "service " : "") + obj_class + "." + method;
-							
-							onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
-								if (is_bl)
-									onChooseWorkflowCallBusinessLogicTask(iframe_win, li, task_id);
-								else
-									onChooseWorkflowCallObjectMethodTask(iframe_win, li, task_id);
-							});
-						}
-						else
-							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
-					}
-					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
-				}
-				else
-					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
-			}
-			else
-				StatusMessageHandler.showError("Sorry, droppable not allowed...");
-		}
-		else if (li_a.children("i.function").length > 0) { //function or business logic service
-			var is_bl = li.parent().closest(".main_node_businesslogic").length > 0;
-			var func = is_bl ? iframe_win.CallBusinessLogicTaskPropertyObj : iframe_win.CallFunctionTaskPropertyObj;
-			var task_tag = is_bl ? "callbusinesslogic" : "callfunction";
-			
-			if (typeof func == "object") {
-				if (iframe_droppable_elm) {
-					var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
-					var task_menu = tasks_menu.find(".task.task_menu.task_" + task_tag);
-					var task_type = task_menu.attr("type");
-					
-					if (task_type) {
-						var edit_url = li_a.attr("edit_url");
-						var bean_name = getParameterByName(edit_url, "bean_name");
-						var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
-						
-						if (bean_ui_props) {
-							var func_name = getParameterByName(edit_url, "function");
-							var task_label = "Call " + (is_bl ? "service " : "") + func_name;
-							
-							onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
-								if (is_bl)
-									onChooseWorkflowCallBusinessLogicTask(iframe_win, li, task_id);
-								else
-									onChooseWorkflowCallFunctionTask(iframe_win, li, task_id);
-							});
-						}
-						else
-							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
-					}
-					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
-				}
-				else
-					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
-			}
-			else
-				StatusMessageHandler.showError("Sorry, droppable not allowed...");
-		}
-		else if (li_a.children("i.file, i.objtype, i.hibernatemodel, i.config_file, i.controller_file, i.entity_file, i.view_file, i.template_file, i.util_file, i.block_file, i.module_file").length > 0) { //file => create includefile task
-			//check if file has a php extension
-			
-			if (typeof iframe_win.IncludeFileTaskPropertyObj == "object") {
-				if (iframe_droppable_elm) {
-					var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
-					var task_menu = tasks_menu.find(".task.task_menu.task_includefile");
-					var task_type = task_menu.attr("type");
-					
-					if (task_type) {
-						var edit_url = li_a[0].hasAttribute("edit_url") ? li_a.attr("edit_url") : li_a.attr("edit_raw_file_url");
-						var bean_name = getParameterByName(edit_url, "bean_name");
-						var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
-						
-						if (bean_ui_props) {
-							var path = getParameterByName(edit_url, "path");
-							var is_php = path.match(/\.php$/i);
-							
-							if (is_php) {
-								var iframe_url = iframe_doc.location;
-								var iframe_bean_name = getParameterByName(iframe_url, "bean_name");
-								var is_same_layer = bean_name == iframe_bean_name || iframe_bean_name == "test_unit" || !iframe_bean_name || $.inArray(bean_name, ["dao", "lib", "vendor", "test_unit"]) != -1; //if iframe_bean_name is empty, it means is in the edit test unit page.
+							if (bean_ui_props) {
+								var class_obj = getParameterByName(edit_url, "class");
+								var task_label = "Create class obj " + class_obj;
 								
-								if (is_same_layer) {
-									var task_label = "Include " + path;
-									
-									onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
-										onChooseWorkflowIncludeFileTask(iframe_win, li, task_id);
-									});
-								}
-								else
-									iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for files that are not in the same layer.");
+								onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
+									onChooseWorkflowCreateClassObjectTask(iframe_win, li, task_id);
+								});
 							}
 							else
-								iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for non php files.");
+								iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 						}
 						else
 							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 					}
 					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
 				}
 				else
-					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+					StatusMessageHandler.showError("Sorry, droppable not allowed...");
+			}
+			else if (li_a.children("i.method").length > 0) { //util method or business logic service
+				var is_bl = li.parent().closest(".main_node_businesslogic").length > 0;
+				var func = is_bl ? iframe_win.CallBusinessLogicTaskPropertyObj : iframe_win.CallObjectMethodTaskPropertyObj;
+				var task_tag = is_bl ? "callbusinesslogic" : "callobjectmethod";
+				
+				if (typeof func == "object") {
+					if (iframe_droppable_elm) {
+						var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
+						var task_menu = tasks_menu.find(".task.task_menu.task_" + task_tag);
+						var task_type = task_menu.attr("type");
+						
+						if (task_type) {
+							var edit_url = li_a.attr("edit_url");
+							var bean_name = getParameterByName(edit_url, "bean_name");
+							var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
+							
+							if (bean_ui_props) {
+								var obj_class = getParameterByName(edit_url, is_bl ? "service" : "class");
+								var method = getParameterByName(edit_url, "method");
+								var task_label = "Call " + (is_bl ? "service " : "") + obj_class + "." + method;
+								
+								onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
+									if (is_bl)
+										onChooseWorkflowCallBusinessLogicTask(iframe_win, li, task_id);
+									else
+										onChooseWorkflowCallObjectMethodTask(iframe_win, li, task_id);
+								});
+							}
+							else
+								iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+						}
+						else
+							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+					}
+					else
+						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+				}
+				else
+					StatusMessageHandler.showError("Sorry, droppable not allowed...");
+			}
+			else if (li_a.children("i.function").length > 0) { //function or business logic service
+				var is_bl = li.parent().closest(".main_node_businesslogic").length > 0;
+				var func = is_bl ? iframe_win.CallBusinessLogicTaskPropertyObj : iframe_win.CallFunctionTaskPropertyObj;
+				var task_tag = is_bl ? "callbusinesslogic" : "callfunction";
+				
+				if (typeof func == "object") {
+					if (iframe_droppable_elm) {
+						var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
+						var task_menu = tasks_menu.find(".task.task_menu.task_" + task_tag);
+						var task_type = task_menu.attr("type");
+						
+						if (task_type) {
+							var edit_url = li_a.attr("edit_url");
+							var bean_name = getParameterByName(edit_url, "bean_name");
+							var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
+							
+							if (bean_ui_props) {
+								var func_name = getParameterByName(edit_url, "function");
+								var task_label = "Call " + (is_bl ? "service " : "") + func_name;
+								
+								onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
+									if (is_bl)
+										onChooseWorkflowCallBusinessLogicTask(iframe_win, li, task_id);
+									else
+										onChooseWorkflowCallFunctionTask(iframe_win, li, task_id);
+								});
+							}
+							else
+								iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+						}
+						else
+							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+					}
+					else
+						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+				}
+				else
+					StatusMessageHandler.showError("Sorry, droppable not allowed...");
+			}
+			else if (li_a.children("i.file, i.objtype, i.hibernatemodel, i.config_file, i.controller_file, i.entity_file, i.view_file, i.template_file, i.util_file, i.block_file, i.module_file").length > 0) { //file => create includefile task
+				//check if file has a php extension
+				
+				if (typeof iframe_win.IncludeFileTaskPropertyObj == "object") {
+					if (iframe_droppable_elm) {
+						var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
+						var task_menu = tasks_menu.find(".task.task_menu.task_includefile");
+						var task_type = task_menu.attr("type");
+						
+						if (task_type) {
+							var edit_url = li_a[0].hasAttribute("edit_url") ? li_a.attr("edit_url") : li_a.attr("edit_raw_file_url");
+							var bean_name = getParameterByName(edit_url, "bean_name");
+							var bean_ui_props = bean_name && iframe_win.main_layers_properties && iframe_win.main_layers_properties.hasOwnProperty(bean_name) && iframe_win.main_layers_properties[bean_name].hasOwnProperty("ui") ? main_layers_properties[bean_name]["ui"] : null;
+							
+							if (bean_ui_props) {
+								var path = getParameterByName(edit_url, "path");
+								var is_php = path.match(/\.php$/i);
+								
+								if (is_php) {
+									var iframe_url = iframe_doc.location;
+									var iframe_bean_name = getParameterByName(iframe_url, "bean_name");
+									var is_same_layer = bean_name == iframe_bean_name || iframe_bean_name == "test_unit" || !iframe_bean_name || $.inArray(bean_name, ["dao", "lib", "vendor", "test_unit"]) != -1; //if iframe_bean_name is empty, it means is in the edit test unit page.
+									
+									if (is_same_layer) {
+										var task_label = "Include " + path;
+										
+										onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
+											onChooseWorkflowIncludeFileTask(iframe_win, li, task_id);
+										});
+									}
+									else
+										iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for files that are not in the same layer.");
+								}
+								else
+									iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for non php files.");
+							}
+							else
+								iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+						}
+						else
+							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+					}
+					else
+						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+				}
+				else
+					StatusMessageHandler.showError("Sorry, droppable not allowed...");
 			}
 			else
 				StatusMessageHandler.showError("Sorry, droppable not allowed...");
-		}
-		else
-			StatusMessageHandler.showError("Sorry, droppable not allowed...");
-	};
-	
-	var getIframeElementFromPoint = function(inner_iframe, x, y, helper, helper_clone) {
-		var inner_iframe_win = inner_iframe.contentWindow;
-		var inner_iframe_doc = inner_iframe_win ? inner_iframe_win.document : null;
-		var inner_iframe_offset = $(inner_iframe).offset();
-		var inner_iframe_droppable_elm = null;
+		};
 		
-		if (inner_iframe_doc) {
-			//hide helpers
-			var helper_visible = helper.css("display") != "none";
-			var helper_clone_visible = helper_clone.css("display") != "none";
+		var getIframeElementFromPoint = function(inner_iframe, x, y, helper, helper_clone) {
+			var inner_iframe_win = inner_iframe.contentWindow;
+			var inner_iframe_doc = inner_iframe_win ? inner_iframe_win.document : null;
+			var inner_iframe_offset = $(inner_iframe).offset();
+			var inner_iframe_droppable_elm = null;
 			
-			if (helper_visible)
-				helper.hide();
+			if (inner_iframe_doc) {
+				//hide helpers
+				var helper_visible = helper.css("display") != "none";
+				var helper_clone_visible = helper_clone.css("display") != "none";
+				
+				if (helper_visible)
+					helper.hide();
+				
+				if (helper_clone_visible)
+					helper_clone.hide();
+				
+				//get droppable element
+				var inner_iframe_event_x = x - inner_iframe_offset.left;
+				var inner_iframe_event_y = y - inner_iframe_offset.top;
+				
+				var inner_iframe_droppable_elm = inner_iframe_doc.elementFromPoint(inner_iframe_event_x, inner_iframe_event_y);
+				
+				if (inner_iframe_droppable_elm && inner_iframe_droppable_elm.nodeName && inner_iframe_droppable_elm.nodeName.toUpperCase() == "IFRAME")
+					inner_iframe_droppable_elm = getIframeElementFromPoint(inner_iframe_droppable_elm, inner_iframe_event_x, inner_iframe_event_y, helper, helper_clone);
+				
+				//show helpers
+				if (helper_visible)
+					helper.show();
+				
+				if (helper_clone_visible)
+					helper_clone.show();
+			}
 			
-			if (helper_clone_visible)
-				helper_clone.hide();
+			return inner_iframe_droppable_elm;
+		};
+		
+		var folders_lis = elm.find("li > a > i").filter(droppables_selector).parent().parent();
+		var files_lis = elm.find("li > a > i").filter(draggables_selector).parent().parent();
+		
+		folders_lis.droppable({
+			greedy: true,
+			over: function(event, ui_obj) {
+				$(this).addClass("drop_hover");
+			},
+			out: function(event, ui_obj) {
+				$(this).removeClass("drop_hover");
+			},
+			drop: left_panel_droppable_handler,
+		});
+		
+		files_lis.draggable({
+			//settings for the iframe droppable
+			iframeFix:true,
+			iframeScroll: true,
+			scroll: true,
+			scrollSensitivity: 20,
 			
-			//get droppable element
-			var inner_iframe_event_x = x - inner_iframe_offset.left;
-			var inner_iframe_event_y = y - inner_iframe_offset.top;
+			//others settings
+		    	items: "li.jstree-node",
+			//containment: elm, //we can drag the tables to the DB Diagram or to LayoutUIEditor in edit_entity_simple and edit_template_simple.
+			//appendTo: elm, //disable to allow copy attribute accross different tables.
+			handle: "> a.jstree-anchor > i.jstree-icon",
+			revert: true,
+			cursor: "crosshair",
+		     tolerance: "pointer",
+			grid: [5, 5],
+			//axis: "y", //we can drag the tables to the DB Diagram or LayoutUIEditor in edit_entity_simple and edit_template_simple.
 			
-			var inner_iframe_droppable_elm = inner_iframe_doc.elementFromPoint(inner_iframe_event_x, inner_iframe_event_y);
-			
-			if (inner_iframe_droppable_elm && inner_iframe_droppable_elm.nodeName && inner_iframe_droppable_elm.nodeName.toUpperCase() == "IFRAME")
-				inner_iframe_droppable_elm = getIframeElementFromPoint(inner_iframe_droppable_elm, inner_iframe_event_x, inner_iframe_event_y, helper, helper_clone);
-			
-			//show helpers
-			if (helper_visible)
+			//handlers
+			helper: function() {
+				var clone = $(this).clone();
+				clone.addClass("sortable_helper");
+				clone.children("a").removeClass("jstree-hovered jstree-clicked");
+				clone.children("ul").remove();
+				clone.children(".sub_menu").remove();
+				
+				return clone;
+			},
+			start: function(event, ui_obj) {
+				var helper_clone = ui_obj.helper.clone();
+				$("body").append(helper_clone);
+				
+				iframe_win = iframe[0].contentWindow;
+				iframe_doc = iframe_win ? iframe_win.document : null;
+				iframe_offset = iframe.offset();
+			},
+			drag: function(event, ui_obj) {
+				//prepare scroll_parent element when the dragged element will be out of the left panel and dropped in the right panel to the DB diagram or to edit_entity_simple and edit_template_simple files.
+				var helper = ui_obj.helper;
 				helper.show();
-			
-			if (helper_clone_visible)
-				helper_clone.show();
-		}
+				
+				var right_edge = scroll_parent.offset().left + scroll_parent.width();
+				var is_in_edge = (helper.offset().left + helper.width()) > (right_edge - 20);
+				
+				if (is_in_edge && scroll_parent.hasClass("scroll")) {
+					var st = scroll_parent.scrollTop();
+					var sl = scroll_parent.scrollLeft();
+					
+					scroll_parent.data("mt", scroll_parent.css("margin-top"));
+					scroll_parent.data("ml", scroll_parent.css("margin-left"));
+					scroll_parent.data("st", st);
+					scroll_parent.data("sl", sl);
+					
+					scroll_parent.removeClass("scroll");
+					scroll_parent.css("margin-top", "-" + st + "px");
+					scroll_parent.css("margin-left", "-" + sl + "px");
+					
+					helper.css("margin-top", st + "px");
+					helper.css("margin-left", sl + "px");
+				}
+				else if (!is_in_edge && !scroll_parent.hasClass("scroll")) {
+					scroll_parent.addClass("scroll");
+					scroll_parent.css("margin-top", scroll_parent.data("mt"));
+					scroll_parent.css("margin-left", scroll_parent.data("ml"));
+					scroll_parent.scrollTop( scroll_parent.data("st") );
+					scroll_parent.scrollLeft( scroll_parent.data("sl") );
+					
+					helper.css("margin-top", "");
+					helper.css("margin-left", "");
+				}
+				
+				//prepare helper_clone
+				var helper_clone = $("body").children(".sortable_helper");
+				var is_in_right_panel = event.clientX > iframe.offset().left;
+				
+				helper_clone.offset({
+					top: event.clientY,
+					left: event.clientX,
+				});
+				
+				if (is_in_right_panel) {
+					//get droppable
+					var new_iframe_droppable_elm = getIframeElementFromPoint(iframe[0], event.clientX, event.clientY, helper, helper_clone);
+					
+					//hide helper from left panel and show the one from the right panel
+					helper_clone.show();
+					helper.hide();
+					
+					//get real droppable based in class
+					if (new_iframe_droppable_elm)
+						new_iframe_droppable_elm = new_iframe_droppable_elm.closest(available_iframe_droppables_selectors);
+					
+					//remove from old iframe_droppable_elm
+					if (iframe_droppable_elm && new_iframe_droppable_elm != iframe_droppable_elm)
+						$(iframe_droppable_elm).removeClass(iframe_droppable_over_class); 
+					
+					//set new iframe_droppable_elm
+					iframe_droppable_elm = new_iframe_droppable_elm;
+					
+					if (iframe_droppable_elm) //prepare droppable over class
+						$(iframe_droppable_elm).addClass(iframe_droppable_over_class);
+				}
+				else {
+					helper_clone.hide();
+					//helper.show(); //no need bc I already show it above
+					
+					if (iframe_droppable_elm) //remove droppable over class
+						$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
+				}
+			},
+			stop: function(event, ui_obj) {
+				var helper = ui_obj.helper;
+				var helper_clone = $("body").children(".sortable_helper");
+				
+				helper.show();
+				//helper_clone.hide(); //Do not hide helper_clone bc right_panel_droppable_handler will use its position
+				
+				//prepare scroll_parent and call stop handler
+				if (!scroll_parent.hasClass("scroll")) {
+					scroll_parent.addClass("scroll");
+					scroll_parent.css("margin-top", scroll_parent.data("mt"));
+					scroll_parent.css("margin-left", scroll_parent.data("ml"));
+					scroll_parent.scrollTop( scroll_parent.data("st") );
+					scroll_parent.scrollLeft( scroll_parent.data("sl") );
+					
+					if (iframe_droppable_elm) //remove droppable over class
+						$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
+					
+					right_panel_droppable_handler(event, ui_obj, this, helper_clone);
+				}
+				
+				helper.remove();
+				helper_clone.remove();
+				
+				//do not add "return false" otherwise the draggable will stop working for next iteractions
+			},
+		});
 		
-		return inner_iframe_droppable_elm;
-	};
-	
-	var folders_lis = elm.find("li > a > i").filter(droppables_selector).parent().parent();
-	var files_lis = elm.find("li > a > i").filter(draggables_selector).parent().parent();
-	
-	folders_lis.droppable({
-		greedy: true,
-		over: function(event, ui_obj) {
-			$(this).addClass("drop_hover");
-		},
-		out: function(event, ui_obj) {
-			$(this).removeClass("drop_hover");
-		},
-		drop: left_panel_droppable_handler,
-	});
-	
-	files_lis.draggable({
-		//settings for the iframe droppable
-		iframeFix:true,
-	     iframeScroll: true,
-	     scroll: true,
-	     scrollSensitivity: 20,
-	     
-	     //others settings
-	    	items: "li.jstree-node",
-		//containment: elm, //we can drag the tables to the DB Diagram or to LayoutUIEditor in edit_entity_simple and edit_template_simple.
-		//appendTo: elm, //disable to allow copy attribute accross different tables.
-		handle: "> a.jstree-anchor > i.jstree-icon",
-		revert: true,
-		cursor: "crosshair",
-          tolerance: "pointer",
-		grid: [5, 5],
-		//axis: "y", //we can drag the tables to the DB Diagram or LayoutUIEditor in edit_entity_simple and edit_template_simple.
-		
-		//handlers
-		helper: function() {
-			var clone = $(this).clone();
-			clone.addClass("sortable_helper");
-			clone.children("a").removeClass("jstree-hovered jstree-clicked");
-			clone.children("ul").remove();
-			clone.children(".sub_menu").remove();
-			
-			return clone;
-		},
-		start: function(event, ui_obj) {
-			var helper_clone = ui_obj.helper.clone();
-			$("body").append(helper_clone);
-			
-			iframe_win = iframe[0].contentWindow;
-			iframe_doc = iframe_win ? iframe_win.document : null;
-			iframe_offset = iframe.offset();
-		},
-		drag: function(event, ui_obj) {
-			//prepare scroll_parent element when the dragged element will be out of the left panel and dropped in the right panel to the DB diagram or to edit_entity_simple and edit_template_simple files.
-			var helper = ui_obj.helper;
-			helper.show();
-			
-			var right_edge = scroll_parent.offset().left + scroll_parent.width();
-			var is_in_edge = (helper.offset().left + helper.width()) > (right_edge - 20);
-			
-			if (is_in_edge && scroll_parent.hasClass("scroll")) {
-				var st = scroll_parent.scrollTop();
-				var sl = scroll_parent.scrollLeft();
-				
-				scroll_parent.data("mt", scroll_parent.css("margin-top"));
-				scroll_parent.data("ml", scroll_parent.css("margin-left"));
-				scroll_parent.data("st", st);
-				scroll_parent.data("sl", sl);
-				
-				scroll_parent.removeClass("scroll");
-				scroll_parent.css("margin-top", "-" + st + "px");
-				scroll_parent.css("margin-left", "-" + sl + "px");
-				
-				helper.css("margin-top", st + "px");
-				helper.css("margin-left", sl + "px");
-			}
-			else if (!is_in_edge && !scroll_parent.hasClass("scroll")) {
-				scroll_parent.addClass("scroll");
-				scroll_parent.css("margin-top", scroll_parent.data("mt"));
-				scroll_parent.css("margin-left", scroll_parent.data("ml"));
-				scroll_parent.scrollTop( scroll_parent.data("st") );
-				scroll_parent.scrollLeft( scroll_parent.data("sl") );
-				
-				helper.css("margin-top", "");
-				helper.css("margin-left", "");
-			}
-			
-			//prepare helper_clone
-			var helper_clone = $("body").children(".sortable_helper");
-			var is_in_right_panel = event.clientX > iframe.offset().left;
-			
-			helper_clone.offset({
-				top: event.clientY,
-				left: event.clientX,
-			});
-			
-			if (is_in_right_panel) {
-				//get droppable
-				var new_iframe_droppable_elm = getIframeElementFromPoint(iframe[0], event.clientX, event.clientY, helper, helper_clone);
-				
-				//hide helper from left panel and show the one from the right panel
-				helper_clone.show();
-				helper.hide();
-				
-				//get real droppable based in class
-				if (new_iframe_droppable_elm)
-					new_iframe_droppable_elm = new_iframe_droppable_elm.closest(available_iframe_droppables_selectors);
-				
-				//remove from old iframe_droppable_elm
-				if (iframe_droppable_elm && new_iframe_droppable_elm != iframe_droppable_elm)
-					$(iframe_droppable_elm).removeClass(iframe_droppable_over_class); 
-				
-				//set new iframe_droppable_elm
-				iframe_droppable_elm = new_iframe_droppable_elm;
-				
-				if (iframe_droppable_elm) //prepare droppable over class
-					$(iframe_droppable_elm).addClass(iframe_droppable_over_class);
-			}
-			else {
-				helper_clone.hide();
-				//helper.show(); //no need bc I already show it above
-				
-				if (iframe_droppable_elm) //remove droppable over class
-					$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
-			}
-		},
-		stop: function(event, ui_obj) {
-			var helper = ui_obj.helper;
-			var helper_clone = $("body").children(".sortable_helper");
-			
-			helper.show();
-			//helper_clone.hide(); //Do not hide helper_clone bc right_panel_droppable_handler will use its position
-			
-			//prepare scroll_parent and call stop handler
-			if (!scroll_parent.hasClass("scroll")) {
-				scroll_parent.addClass("scroll");
-				scroll_parent.css("margin-top", scroll_parent.data("mt"));
-				scroll_parent.css("margin-left", scroll_parent.data("ml"));
-				scroll_parent.scrollTop( scroll_parent.data("st") );
-				scroll_parent.scrollLeft( scroll_parent.data("sl") );
-				
-				if (iframe_droppable_elm) //remove droppable over class
-					$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
-				
-				right_panel_droppable_handler(event, ui_obj, this, helper_clone);
-			}
-			
-			helper.remove();
-			helper_clone.remove();
-			
-			//do not add "return false" otherwise the draggable will stop working for next iteractions
-		},
-	});
-	
-	files_lis.find(" > a > i").addClass("allow_move");
+		files_lis.find(" > a > i").addClass("allow_move");
+	}
 }
 
 //Any change in this method should be done too in the initFilesDragAndDrop method
 function initDBTablesSorting(elm) {
-	var scroll_parent = elm.parent().closest(".scroll");
 	var iframe = $("#right_panel > iframe");
-	var iframe_win = iframe[0].contentWindow;
-	var iframe_doc = iframe_win ? iframe_win.document : null;
-	var iframe_offset = iframe.offset();
-	var iframe_droppable_elm = null;
-	var iframe_droppable_over_class = "drop_hover dragging_task task_droppable_over";
-	var available_iframe_droppables_selectors = ".droppable, .tasks_flow, .connector_overlay_add_icon"; //".droppable" is related with the LayoutUIEditor, ".tasks_flow" is related with workflows and ".connector_overlay_add_icon" is related with Logic workflows.
-	var PtlLayoutUIEditor = null;
 	
-	var left_panel_droppable_handler = function(event, ui_obj) {
-		var fk_table_li = $(this);
-		var is_fk_table_li_ul = fk_table_li.is("ul") && fk_table_li.parent().is("li");
+	if (iframe[0]) {
+		var scroll_parent = elm.parent().closest(".scroll");
+		var iframe_win = iframe[0].contentWindow;
+		var iframe_doc = iframe_win ? iframe_win.document : null;
+		var iframe_offset = iframe.offset();
+		var iframe_droppable_elm = null;
+		var iframe_droppable_over_class = "drop_hover dragging_task task_droppable_over";
+		var available_iframe_droppables_selectors = ".droppable, .tasks_flow, .connector_overlay_add_icon"; //".droppable" is related with the LayoutUIEditor, ".tasks_flow" is related with workflows and ".connector_overlay_add_icon" is related with Logic workflows.
+		var PtlLayoutUIEditor = null;
 		
-		if (is_fk_table_li_ul)
-			fk_table_li = fk_table_li.parent();
-		
-		var fk_table_li_a = fk_table_li.children("a");
-		var item = ui_obj.draggable;
-		var a = item.children("a");
-		
-		fk_table_li.removeClass("drop_hover");
-		
-		if (fk_table_li_a.children("i.table").length == 1 && a.attr("table_name") != fk_table_li_a.attr("table_name")) { //if table is not it-self
-			if (a.children("i.attribute").length == 1) {
-				item.data("droppable_table_node", fk_table_li[0]);
-				
-				if (is_fk_table_li_ul)
-					item.data("is_droppable_table_ul", true);
-			}
-			else if (a.children("i.table").length == 1) {
-				var data = {
-					attribute_table: a.attr("table_name"),
-				};
-				var callback = function(a, attr_name, action, new_name, url, tree_node_id_to_be_updated) {
-					refreshAndShowNodeChildsByNodeId( fk_table_li.attr("id") ); //refresh all table's attributes
-				};
-				
-				//copy attribute to another table, adding it as a foreign key
-				manageDBTableAction(fk_table_li.children("a")[0], "add_fk_attribute_url", "add_fk_attribute", function(a, attr_name, action, new_name, url, tree_node_id_to_be_updated) {
-					if (fk_table_li.hasClass("jstree-open")) {
-						//add clone attribute
-						var pk = item.find(" > ul > li.primary_key");
-						
-						if (pk[0]) {
-							var clone = pk.clone();
-							clone.removeClass("primary_key");
-							
-							fk_table_li.children("ul").append(clone);
-						}
-					}
-					
-					callback(a, attr_name, action, new_name, url, tree_node_id_to_be_updated);
-				}, callback, data);
-			}
-		}
-		
-		//do not add "return false" otherwise the draggable will stop working for next iteractions
-	};
-	
-	var right_panel_droppable_handler = function(event, ui_obj, tree_node, helper_clone) {
-		//console.log(event);
-		//console.log(ui_obj);
-		
-		var j_iframe_droppable_elm = $(iframe_droppable_elm);
-		var li = ui_obj.helper;
-		var li_a = li.children("a");
-		
-		//if dragged item is a table
-		if (li_a.children("i.table").length > 0 && li_a.attr("table_name")) {
-			var table_name = li_a.attr("table_name");
-			var bean_name = li_a.attr("bean_name");
-			var db_driver = getIframeBeanDBDriver(iframe_win, bean_name);
+		var left_panel_droppable_handler = function(event, ui_obj) {
+			var fk_table_li = $(this);
+			var is_fk_table_li_ul = fk_table_li.is("ul") && fk_table_li.parent().is("li");
 			
-			//check if droppable is a LayoutUIEditor
-			if (PtlLayoutUIEditor && typeof iframe_win.updateCodeLayoutUIEditorDBTableWidget == "function") {
-				if (iframe_droppable_elm) { //if iframe_droppable_elm exists, it means it has the class: .droppable"
-					//create widget and append it to iframe_droppable_elm
-					var widget = $("<div></div>");
-					j_iframe_droppable_elm.append(widget);
+			if (is_fk_table_li_ul)
+				fk_table_li = fk_table_li.parent();
+			
+			var fk_table_li_a = fk_table_li.children("a");
+			var item = ui_obj.draggable;
+			var a = item.children("a");
+			
+			fk_table_li.removeClass("drop_hover");
+			
+			if (fk_table_li_a.children("i.table").length == 1 && a.attr("table_name") != fk_table_li_a.attr("table_name")) { //if table is not it-self
+				if (a.children("i.attribute").length == 1) {
+					item.data("droppable_table_node", fk_table_li[0]);
 					
-					//add widget in the right place and disable classes in LayoutUIEditor's droppable
-					var new_event = {
-						clientX: event.clientX - iframe_offset.left,
-						clientY: event.clientY - iframe_offset.top,
+					if (is_fk_table_li_ul)
+						item.data("is_droppable_table_ul", true);
+				}
+				else if (a.children("i.table").length == 1) {
+					var data = {
+						attribute_table: a.attr("table_name"),
 					};
-					PtlLayoutUIEditor.onWidgetDraggingStop(new_event, helper_clone, widget);
+					var callback = function(a, attr_name, action, new_name, url, tree_node_id_to_be_updated) {
+						refreshAndShowNodeChildsByNodeId( fk_table_li.attr("id") ); //refresh all table's attributes
+					};
 					
-					//prepare widget props
-					onChooseLayoutUIEditorDBTableWidgetOptions(iframe_win, db_driver, table_name, widget);
-				}
-				else
-					PtlLayoutUIEditor.showError("Please drop element inside of a droppable element in the design area.");
-			}
-			//check if droppable is a DB Diagram
-			else if (typeof iframe_win.addExistentTable == "function") {
-				if (iframe_droppable_elm) { //if iframe_droppable_elm exists, it means it has the class: .tasks_flow"
-					var tasks_flow_offset = j_iframe_droppable_elm.offset();
-					var tasks_flow_event_x = event.clientX - iframe_offset.left - tasks_flow_offset.left;
-					var tasks_flow_event_y = event.clientY - iframe_offset.top - tasks_flow_offset.top;
-					
-					//add table to diagram
-					iframe_win.addExistentTable(table_name, {
-						top: tasks_flow_event_y,
-						left: tasks_flow_event_x,
-					});
-				}
-				else
-					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
-			}
-			//check if droppable is Logic Diagram
-			else if (typeof iframe_win.DBDAOActionTaskPropertyObj == "object") {
-				if (iframe_droppable_elm) {
-					var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
-					var task_menu = tasks_menu.find(".task.task_menu.task_dbdaoaction");
-					var task_type = task_menu.attr("type");
-					
-					if (task_type) {
-						var url = $(tree_node).children("ul").attr("url");
+					//copy attribute to another table, adding it as a foreign key
+					manageDBTableAction(fk_table_li.children("a")[0], "add_fk_attribute_url", "add_fk_attribute", function(a, attr_name, action, new_name, url, tree_node_id_to_be_updated) {
+						if (fk_table_li.hasClass("jstree-open")) {
+							//add clone attribute
+							var pk = item.find(" > ul > li.primary_key");
+							
+							if (pk[0]) {
+								var clone = pk.clone();
+								clone.removeClass("primary_key");
+								
+								fk_table_li.children("ul").append(clone);
+							}
+						}
 						
-						//show popup with possible actions
-						onChooseWorkflowDBTableTaskOptions(event, iframe_droppable_elm, iframe_win, iframe_offset, db_driver, table_name, task_type, url);
+						callback(a, attr_name, action, new_name, url, tree_node_id_to_be_updated);
+					}, callback, data);
+				}
+			}
+			
+			//do not add "return false" otherwise the draggable will stop working for next iteractions
+		};
+		
+		var right_panel_droppable_handler = function(event, ui_obj, tree_node, helper_clone) {
+			//console.log(event);
+			//console.log(ui_obj);
+			
+			var j_iframe_droppable_elm = $(iframe_droppable_elm);
+			var li = ui_obj.helper;
+			var li_a = li.children("a");
+			
+			//if dragged item is a table
+			if (li_a.children("i.table").length > 0 && li_a.attr("table_name")) {
+				var table_name = li_a.attr("table_name");
+				var bean_name = li_a.attr("bean_name");
+				var db_driver = getIframeBeanDBDriver(iframe_win, bean_name);
+				
+				//check if droppable is a LayoutUIEditor
+				if (PtlLayoutUIEditor && typeof iframe_win.updateCodeLayoutUIEditorDBTableWidget == "function") {
+					if (iframe_droppable_elm) { //if iframe_droppable_elm exists, it means it has the class: .droppable"
+						//create widget and append it to iframe_droppable_elm
+						var widget = $("<div></div>");
+						j_iframe_droppable_elm.append(widget);
+						
+						//add widget in the right place and disable classes in LayoutUIEditor's droppable
+						var new_event = {
+							clientX: event.clientX - iframe_offset.left,
+							clientY: event.clientY - iframe_offset.top,
+						};
+						PtlLayoutUIEditor.onWidgetDraggingStop(new_event, helper_clone, widget);
+						
+						//prepare widget props
+						onChooseLayoutUIEditorDBTableWidgetOptions(iframe_win, db_driver, table_name, widget);
 					}
 					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+						PtlLayoutUIEditor.showError("Please drop element inside of a droppable element in the design area.");
+				}
+				//check if droppable is a DB Diagram
+				else if (typeof iframe_win.addExistentTable == "function") {
+					if (iframe_droppable_elm) { //if iframe_droppable_elm exists, it means it has the class: .tasks_flow"
+						var tasks_flow_offset = j_iframe_droppable_elm.offset();
+						var tasks_flow_event_x = event.clientX - iframe_offset.left - tasks_flow_offset.left;
+						var tasks_flow_event_y = event.clientY - iframe_offset.top - tasks_flow_offset.top;
+						
+						//add table to diagram
+						iframe_win.addExistentTable(table_name, {
+							top: tasks_flow_event_y,
+							left: tasks_flow_event_x,
+						});
+					}
+					else
+						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+				}
+				//check if droppable is Logic Diagram
+				else if (typeof iframe_win.DBDAOActionTaskPropertyObj == "object") {
+					if (iframe_droppable_elm) {
+						var tasks_menu = j_iframe_droppable_elm.parent().closest(".taskflowchart").children(".tasks_menu");
+						var task_menu = tasks_menu.find(".task.task_menu.task_dbdaoaction");
+						var task_type = task_menu.attr("type");
+						
+						if (task_type) {
+							var url = $(tree_node).children("ul").attr("url");
+							
+							//show popup with possible actions
+							onChooseWorkflowDBTableTaskOptions(event, iframe_droppable_elm, iframe_win, iframe_offset, db_driver, table_name, task_type, url);
+						}
+						else
+							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+					}
+					else
+						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
 				}
 				else
-					iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+					StatusMessageHandler.showError("Sorry, droppable not allowed...");
 			}
 			else
 				StatusMessageHandler.showError("Sorry, droppable not allowed...");
-		}
-		else
-			StatusMessageHandler.showError("Sorry, droppable not allowed...");
-	};
-	
-	var getIframeElementFromPoint = function(inner_iframe, x, y, helper, helper_clone) {
-		var inner_iframe_win = inner_iframe.contentWindow;
-		var inner_iframe_doc = inner_iframe_win ? inner_iframe_win.document : null;
-		var inner_iframe_offset = $(inner_iframe).offset();
-		var inner_iframe_droppable_elm = null;
+		};
 		
-		if (inner_iframe_doc) {
-			//hide helpers
-			var helper_visible = helper.css("display") != "none";
-			var helper_clone_visible = helper_clone.css("display") != "none";
+		var getIframeElementFromPoint = function(inner_iframe, x, y, helper, helper_clone) {
+			var inner_iframe_win = inner_iframe.contentWindow;
+			var inner_iframe_doc = inner_iframe_win ? inner_iframe_win.document : null;
+			var inner_iframe_offset = $(inner_iframe).offset();
+			var inner_iframe_droppable_elm = null;
 			
-			if (helper_visible)
-				helper.hide();
+			if (inner_iframe_doc) {
+				//hide helpers
+				var helper_visible = helper.css("display") != "none";
+				var helper_clone_visible = helper_clone.css("display") != "none";
+				
+				if (helper_visible)
+					helper.hide();
+				
+				if (helper_clone_visible)
+					helper_clone.hide();
+				
+				//get droppable element
+				var inner_iframe_event_x = x - inner_iframe_offset.left;
+				var inner_iframe_event_y = y - inner_iframe_offset.top;
+				
+				var inner_iframe_droppable_elm = inner_iframe_doc.elementFromPoint(inner_iframe_event_x, inner_iframe_event_y);
+				
+				if (inner_iframe_droppable_elm && inner_iframe_droppable_elm.nodeName && inner_iframe_droppable_elm.nodeName.toUpperCase() == "IFRAME")
+					inner_iframe_droppable_elm = getIframeElementFromPoint(inner_iframe_droppable_elm, inner_iframe_event_x, inner_iframe_event_y, helper, helper_clone);
+				
+				//show helpers
+				if (helper_visible)
+					helper.show();
+				
+				if (helper_clone_visible)
+					helper_clone.show();
+			}
 			
-			if (helper_clone_visible)
-				helper_clone.hide();
+			return inner_iframe_droppable_elm;
+		};
+		
+		var lis = elm.find(" > li > a > .table").parent().parent();
+		
+		lis.droppable({
+			greedy: true,
+			over: function(event, ui_obj) {
+				$(this).addClass("drop_hover");
+			},
+			out: function(event, ui_obj) {
+				$(this).removeClass("drop_hover");
+			},
+			drop: left_panel_droppable_handler,
+		})
+		.draggable({
+			//settings for the iframe droppable
+			iframeFix:true,
+			iframeScroll: true,
+			scroll: true,
+			scrollSensitivity: 20,
 			
-			//get droppable element
-			var inner_iframe_event_x = x - inner_iframe_offset.left;
-			var inner_iframe_event_y = y - inner_iframe_offset.top;
+			//others settings
+		    	items: "li.jstree-node.jstree-leaf",
+			//containment: elm, //we can drag the tables to the DB Diagram or to LayoutUIEditor in edit_entity_simple and edit_template_simple.
+			//appendTo: elm, //disable to allow copy attribute accross different tables.
+			handle: "> a.jstree-anchor > i.jstree-icon.table",
+			revert: true,
+			cursor: "crosshair",
+		     tolerance: "pointer",
+			grid: [5, 5],
+			//axis: "y", //we can drag the tables to the DB Diagram or LayoutUIEditor in edit_entity_simple and edit_template_simple.
 			
-			var inner_iframe_droppable_elm = inner_iframe_doc.elementFromPoint(inner_iframe_event_x, inner_iframe_event_y);
-			
-			if (inner_iframe_droppable_elm && inner_iframe_droppable_elm.nodeName && inner_iframe_droppable_elm.nodeName.toUpperCase() == "IFRAME")
-				inner_iframe_droppable_elm = getIframeElementFromPoint(inner_iframe_droppable_elm, inner_iframe_event_x, inner_iframe_event_y, helper, helper_clone);
-			
-			//show helpers
-			if (helper_visible)
+			//handlers
+			helper: function() {
+				var clone = $(this).clone();
+				clone.addClass("sortable_helper");
+				clone.children("a").removeClass("jstree-hovered jstree-clicked");
+				clone.children("ul").remove();
+				clone.children(".sub_menu").remove();
+				
+				return clone;
+			},
+			start: function(event, ui_obj) {
+				var helper_clone = ui_obj.helper.clone();
+				$("body").append(helper_clone);
+				
+				iframe_win = iframe[0].contentWindow;
+				iframe_doc = iframe_win ? iframe_win.document : null;
+				iframe_offset = iframe.offset();
+				PtlLayoutUIEditor = iframe[0].contentWindow.$(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+			},
+			drag: function(event, ui_obj) {
+				//prepare scroll_parent element when the dragged element will be out of the left panel and dropped in the right panel to the DB diagram or to edit_entity_simple and edit_template_simple files.
+				var helper = ui_obj.helper;
 				helper.show();
-			
-			if (helper_clone_visible)
-				helper_clone.show();
-		}
+				
+				var right_edge = scroll_parent.offset().left + scroll_parent.width();
+				var is_in_edge = (helper.offset().left + helper.width()) > (right_edge - 20);
+				
+				if (is_in_edge && scroll_parent.hasClass("scroll")) {
+					var st = scroll_parent.scrollTop();
+					var sl = scroll_parent.scrollLeft();
+					
+					scroll_parent.data("mt", scroll_parent.css("margin-top"));
+					scroll_parent.data("ml", scroll_parent.css("margin-left"));
+					scroll_parent.data("st", st);
+					scroll_parent.data("sl", sl);
+					
+					scroll_parent.removeClass("scroll");
+					scroll_parent.css("margin-top", "-" + st + "px");
+					scroll_parent.css("margin-left", "-" + sl + "px");
+					
+					helper.css("margin-top", st + "px");
+					helper.css("margin-left", sl + "px");
+				}
+				else if (!is_in_edge && !scroll_parent.hasClass("scroll")) {
+					scroll_parent.addClass("scroll");
+					scroll_parent.css("margin-top", scroll_parent.data("mt"));
+					scroll_parent.css("margin-left", scroll_parent.data("ml"));
+					scroll_parent.scrollTop( scroll_parent.data("st") );
+					scroll_parent.scrollLeft( scroll_parent.data("sl") );
+					
+					helper.css("margin-top", "");
+					helper.css("margin-left", "");
+				}
+				
+				//prepare helper_clone
+				var helper_clone = $("body").children(".sortable_helper");
+				var is_in_right_panel = event.clientX > iframe.offset().left;
+				
+				helper_clone.offset({
+					top: event.clientY,
+					left: event.clientX,
+				});
+				
+				if (is_in_right_panel) {
+					//get droppable
+					var new_iframe_droppable_elm = getIframeElementFromPoint(iframe[0], event.clientX, event.clientY, helper, helper_clone);
+					
+					//hide helper from left panel and show the one from the right panel
+					helper_clone.show();
+					helper.hide();
+					
+					//get real droppable based in class
+					if (new_iframe_droppable_elm)
+						new_iframe_droppable_elm = new_iframe_droppable_elm.closest(available_iframe_droppables_selectors);
+					
+					//remove from old iframe_droppable_elm
+					if (iframe_droppable_elm && new_iframe_droppable_elm != iframe_droppable_elm)
+						$(iframe_droppable_elm).removeClass(iframe_droppable_over_class); 
+					
+					//set new iframe_droppable_elm
+					iframe_droppable_elm = new_iframe_droppable_elm;
+					
+					//prepare PtlLayoutUIEditor
+					if (PtlLayoutUIEditor) {
+						var new_event = {
+							clientX: event.clientX - iframe_offset.left,
+							clientY: event.clientY - iframe_offset.top,
+						};
+						PtlLayoutUIEditor.onWidgetDraggingDrag(new_event, helper_clone, null);
+					}
+					else if (iframe_droppable_elm) //prepare droppable over class
+						$(iframe_droppable_elm).addClass(iframe_droppable_over_class);
+				}
+				else {
+					helper_clone.hide();
+					//helper.show(); //no need bc I already show it above
+					
+					//prepare PtlLayoutUIEditor
+					if (PtlLayoutUIEditor) {
+						var new_event = {
+							clientX: -1,
+							clientY: -1,
+						};
+						PtlLayoutUIEditor.onWidgetDraggingDrag(new_event, helper_clone, null);
+					}
+					else if (iframe_droppable_elm) //remove droppable over class
+						$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
+				}
+			},
+			stop: function(event, ui_obj) {
+				var helper = ui_obj.helper;
+				var helper_clone = $("body").children(".sortable_helper");
+				
+				helper.show();
+				//helper_clone.hide(); //Do not hide helper_clone bc right_panel_droppable_handler will use its position in PtlLayoutUIEditor
+				
+				//prepare scroll_parent and call stop handler
+				if (!scroll_parent.hasClass("scroll")) {
+					scroll_parent.addClass("scroll");
+					scroll_parent.css("margin-top", scroll_parent.data("mt"));
+					scroll_parent.css("margin-left", scroll_parent.data("ml"));
+					scroll_parent.scrollTop( scroll_parent.data("st") );
+					scroll_parent.scrollLeft( scroll_parent.data("sl") );
+					
+					if (iframe_droppable_elm) //remove droppable over class
+						$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
+					
+					right_panel_droppable_handler(event, ui_obj, this, helper_clone);
+					
+					//disable classes in LayoutUIEditor's droppable, just in case the right_panel_droppable_handler did NOT do it already
+					if (PtlLayoutUIEditor) {
+						var new_event = {
+							clientX: event.clientX - iframe_offset.left,
+							clientY: event.clientY - iframe_offset.top,
+						};
+						PtlLayoutUIEditor.onWidgetDraggingStop(new_event, helper_clone, null);
+					}
+				}
+				
+				helper.remove();
+				helper_clone.remove();
+				
+				//do not add "return false" otherwise the draggable will stop working for next iteractions
+			},
+		});
 		
-		return inner_iframe_droppable_elm;
-	};
-	
-	var lis = elm.find(" > li > a > .table").parent().parent();
-	
-	lis.droppable({
-		greedy: true,
-		over: function(event, ui_obj) {
-			$(this).addClass("drop_hover");
-		},
-		out: function(event, ui_obj) {
-			$(this).removeClass("drop_hover");
-		},
-		drop: left_panel_droppable_handler,
-	})
-	.draggable({
-		//settings for the iframe droppable
-		iframeFix:true,
-	     iframeScroll: true,
-	     scroll: true,
-	     scrollSensitivity: 20,
-	     
-	     //others settings
-	    	items: "li.jstree-node.jstree-leaf",
-		//containment: elm, //we can drag the tables to the DB Diagram or to LayoutUIEditor in edit_entity_simple and edit_template_simple.
-		//appendTo: elm, //disable to allow copy attribute accross different tables.
-		handle: "> a.jstree-anchor > i.jstree-icon.table",
-		revert: true,
-		cursor: "crosshair",
-          tolerance: "pointer",
-		grid: [5, 5],
-		//axis: "y", //we can drag the tables to the DB Diagram or LayoutUIEditor in edit_entity_simple and edit_template_simple.
-		
-		//handlers
-		helper: function() {
-			var clone = $(this).clone();
-			clone.addClass("sortable_helper");
-			clone.children("a").removeClass("jstree-hovered jstree-clicked");
-			clone.children("ul").remove();
-			clone.children(".sub_menu").remove();
-			
-			return clone;
-		},
-		start: function(event, ui_obj) {
-			var helper_clone = ui_obj.helper.clone();
-			$("body").append(helper_clone);
-			
-			iframe_win = iframe[0].contentWindow;
-			iframe_doc = iframe_win ? iframe_win.document : null;
-			iframe_offset = iframe.offset();
-			PtlLayoutUIEditor = iframe[0].contentWindow.$(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
-		},
-		drag: function(event, ui_obj) {
-			//prepare scroll_parent element when the dragged element will be out of the left panel and dropped in the right panel to the DB diagram or to edit_entity_simple and edit_template_simple files.
-			var helper = ui_obj.helper;
-			helper.show();
-			
-			var right_edge = scroll_parent.offset().left + scroll_parent.width();
-			var is_in_edge = (helper.offset().left + helper.width()) > (right_edge - 20);
-			
-			if (is_in_edge && scroll_parent.hasClass("scroll")) {
-				var st = scroll_parent.scrollTop();
-				var sl = scroll_parent.scrollLeft();
-				
-				scroll_parent.data("mt", scroll_parent.css("margin-top"));
-				scroll_parent.data("ml", scroll_parent.css("margin-left"));
-				scroll_parent.data("st", st);
-				scroll_parent.data("sl", sl);
-				
-				scroll_parent.removeClass("scroll");
-				scroll_parent.css("margin-top", "-" + st + "px");
-				scroll_parent.css("margin-left", "-" + sl + "px");
-				
-				helper.css("margin-top", st + "px");
-				helper.css("margin-left", sl + "px");
-			}
-			else if (!is_in_edge && !scroll_parent.hasClass("scroll")) {
-				scroll_parent.addClass("scroll");
-				scroll_parent.css("margin-top", scroll_parent.data("mt"));
-				scroll_parent.css("margin-left", scroll_parent.data("ml"));
-				scroll_parent.scrollTop( scroll_parent.data("st") );
-				scroll_parent.scrollLeft( scroll_parent.data("sl") );
-				
-				helper.css("margin-top", "");
-				helper.css("margin-left", "");
-			}
-			
-			//prepare helper_clone
-			var helper_clone = $("body").children(".sortable_helper");
-			var is_in_right_panel = event.clientX > iframe.offset().left;
-			
-			helper_clone.offset({
-				top: event.clientY,
-				left: event.clientX,
-			});
-			
-			if (is_in_right_panel) {
-				//get droppable
-				var new_iframe_droppable_elm = getIframeElementFromPoint(iframe[0], event.clientX, event.clientY, helper, helper_clone);
-				
-				//hide helper from left panel and show the one from the right panel
-				helper_clone.show();
-				helper.hide();
-				
-				//get real droppable based in class
-				if (new_iframe_droppable_elm)
-					new_iframe_droppable_elm = new_iframe_droppable_elm.closest(available_iframe_droppables_selectors);
-				
-				//remove from old iframe_droppable_elm
-				if (iframe_droppable_elm && new_iframe_droppable_elm != iframe_droppable_elm)
-					$(iframe_droppable_elm).removeClass(iframe_droppable_over_class); 
-				
-				//set new iframe_droppable_elm
-				iframe_droppable_elm = new_iframe_droppable_elm;
-				
-				//prepare PtlLayoutUIEditor
-				if (PtlLayoutUIEditor) {
-					var new_event = {
-						clientX: event.clientX - iframe_offset.left,
-						clientY: event.clientY - iframe_offset.top,
-					};
-					PtlLayoutUIEditor.onWidgetDraggingDrag(new_event, helper_clone, null);
-				}
-				else if (iframe_droppable_elm) //prepare droppable over class
-					$(iframe_droppable_elm).addClass(iframe_droppable_over_class);
-			}
-			else {
-				helper_clone.hide();
-				//helper.show(); //no need bc I already show it above
-				
-				//prepare PtlLayoutUIEditor
-				if (PtlLayoutUIEditor) {
-					var new_event = {
-						clientX: -1,
-						clientY: -1,
-					};
-					PtlLayoutUIEditor.onWidgetDraggingDrag(new_event, helper_clone, null);
-				}
-				else if (iframe_droppable_elm) //remove droppable over class
-					$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
-			}
-		},
-		stop: function(event, ui_obj) {
-			var helper = ui_obj.helper;
-			var helper_clone = $("body").children(".sortable_helper");
-			
-			helper.show();
-			//helper_clone.hide(); //Do not hide helper_clone bc right_panel_droppable_handler will use its position in PtlLayoutUIEditor
-			
-			//prepare scroll_parent and call stop handler
-			if (!scroll_parent.hasClass("scroll")) {
-				scroll_parent.addClass("scroll");
-				scroll_parent.css("margin-top", scroll_parent.data("mt"));
-				scroll_parent.css("margin-left", scroll_parent.data("ml"));
-				scroll_parent.scrollTop( scroll_parent.data("st") );
-				scroll_parent.scrollLeft( scroll_parent.data("sl") );
-				
-				if (iframe_droppable_elm) //remove droppable over class
-					$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
-				
-				right_panel_droppable_handler(event, ui_obj, this, helper_clone);
-				
-				//disable classes in LayoutUIEditor's droppable, just in case the right_panel_droppable_handler did NOT do it already
-				if (PtlLayoutUIEditor) {
-					var new_event = {
-						clientX: event.clientX - iframe_offset.left,
-						clientY: event.clientY - iframe_offset.top,
-					};
-					PtlLayoutUIEditor.onWidgetDraggingStop(new_event, helper_clone, null);
-				}
-			}
-			
-			helper.remove();
-			helper_clone.remove();
-			
-			//do not add "return false" otherwise the draggable will stop working for next iteractions
-		},
-	});
-	
-	//ignore if inner ul, bc the initDBTableAttributesSorting method already takes care of this
-	lis.children("ul").droppable({
-		greedy: true,
-		over: function(event, ui_obj) {
-			$(this).parent().addClass("drop_hover");
-		},
-		out: function(event, ui_obj) {
-			$(this).parent().removeClass("drop_hover");
-		},
-		drop: left_panel_droppable_handler,
-	});
+		//ignore if inner ul, bc the initDBTableAttributesSorting method already takes care of this
+		lis.children("ul").droppable({
+			greedy: true,
+			over: function(event, ui_obj) {
+				$(this).parent().addClass("drop_hover");
+			},
+			out: function(event, ui_obj) {
+				$(this).parent().removeClass("drop_hover");
+			},
+			drop: left_panel_droppable_handler,
+		});
+	}
 }
 
 function getIframeBeanDBDriver(iframe_win, bean_name) {

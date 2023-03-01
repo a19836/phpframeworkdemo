@@ -24,6 +24,7 @@
 }
 #main_menu .dropdown li label {
 	height:22px;
+	line-height:22px;
 	padding:0px 15px;
 	display:block;
 	color:#666;

@@ -76,7 +76,7 @@ CreateFormTaskPropertyObj.editor_ready_func = initLayoutUIEditorWidgetResourceOp
 CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'ui-menu-widgets-backup\';
 InlineHTMLTaskPropertyObj.editor_ready_func = initLayoutUIEditorWidgetResourceOptions;
 InlineHTMLTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'ui-menu-widgets-backup\';
-'; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= '</script>'; $query_string = str_replace(array("&edit_template_type=advanced", "&edit_template_type=simple"), "", $_SERVER["QUERY_STRING"]); $main_content = '
+'; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= '</script>'; $query_string = preg_replace("/dont_save_cookie=([^&])*/", "", str_replace(array("&edit_template_type=advanced", "&edit_template_type=simple"), "", $_SERVER["QUERY_STRING"])); $main_content = '
 	<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 		<header>
 			<div class="title" title="' . $path . '">Edit Template (Code Workspace): ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $P) . '</div>

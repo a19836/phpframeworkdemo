@@ -10,6 +10,16 @@ body.mobile_cursor,
 	cursor:url('../../img/mobile_cursor.png') 10 10, auto !important;
 }
 
+.edit_entity_droppable_disabled {
+	padding:50px 20px 0;
+	background:#eee;
+	text-align:center;
+	box-sizing:border-box;
+}
+.edit_entity_droppable_disabled > .main-droppable {
+	display:none !important;
+}
+
 .template_region .hidden {
 	display:none !important;
 }

@@ -156,6 +156,8 @@
 			
 			me.onOpenWidgetSettings = function(widget, menu_settings) {
 				ui_creator.addMenuSettingsContextMenu( menu_settings.find(" > .settings-properties input") );
+				
+				me.prepareContainerSettings(widget, menu_settings);
 			};
 
 			me.saveSettingsField = function(field, widget, status) {
@@ -187,7 +189,7 @@
 							var new_child = children.last();
 							new_child.removeClass("droppable"); //remove droppable class added by default by the saveContainerSettingsField method
 							//convert child to real widget
-							var widget_tag = ui_creator.getMenuWidgets().find(".menu-widget-list-item").length > 0 ? "list-item" : "html-tag";
+							var widget_tag = ui_creator.getMenuWidgets().find(".menu-widget-listitem").length > 0 ? "listitem" : "html-tag";
 							ui_creator.createTemplateWidgetFromMenuWidgetTag(widget_tag, widget, new_child[0]);
 						}
 					}
