@@ -489,3 +489,47 @@ function refreshNodeParentChildsByChildId(node_id) {
 		}
 	}
 }
+
+function refreshOpenNodeChildsBasedInPath(path) {
+	if (path) {
+		var items = mytree.tree_elm.find(".jstree-node.jstree-open > ul[url]");
+		
+		if (path.substr(path.length - 1) != "/")
+			path += "/";
+		
+		var regex = new RegExp("(&|\\?)path=" + path.replace(/\//g, "\\/") + "(&|$)");
+		
+		$.each(items, function(idx, item) {
+			var url = item.getAttribute("url");
+			
+			if (url && url.match(regex)) {
+				var node = $(item).parent();
+				mytree.refreshNodeChilds(node);
+				
+				return false; //exit loop
+			}
+		});
+	}
+}
+
+function refreshAndShowNodeChildsBasedInPath(path) {
+	if (path) {
+		var items = mytree.tree_elm.find(".jstree-node > ul[url]");
+		
+		if (path.substr(path.length - 1) != "/")
+			path += "/";
+		
+		var regex = new RegExp("(&|\\?)path=" + path.replace(/\//g, "\\/") + "(&|$)");
+		
+		$.each(items, function(idx, item) {
+			var url = item.getAttribute("url");
+			
+			if (url && url.match(regex)) {
+				var node = $(item).parent();
+				refreshAndShowNodeChilds(node)
+				
+				return false; //exit loop
+			}
+		});
+	}
+}

@@ -349,7 +349,7 @@ function editProject() {
 	MyFancyPopup.showPopup();
 }
 
-function onSucccessfullEditProject(opts) {
+function onSuccessfullEditProject(opts) {
 	var url = "" + document.location;
 	url = url.indexOf("#") != -1 ? url.substr(0, url.indexOf("#")) : url; //remove # so it can refresh page
 	url = url.replace(/[&]+/g, "&");
@@ -358,8 +358,8 @@ function onSucccessfullEditProject(opts) {
 		url = url.replace(/(&|\?)filter_by_layout\s*=\s*([^&#]*)/, "");
 		url += (url.indexOf("?") != -1 ? "&" : "?") + "filter_by_layout=" + opts["new_filter_by_layout"];
 		
-		if (window.parent && typeof window.parent.onSucccessfullEditProject == "function") { //if admin_advanced or other admin main page
-			window.parent.onSucccessfullEditProject(opts);
+		if (window.parent && window.parent != window && typeof window.parent.onSuccessfullEditProject == "function") { //if admin_advanced or other admin main page
+			window.parent.onSuccessfullEditProject(opts);
 			return; //avoids executing the code below.
 		}
 	}
@@ -566,11 +566,18 @@ function refreshNodeParentChildsOnSucccessfullAction(elm) {
 	refreshNodeParentChildsByChildId(node_id);
 }
 function onSucccessfullRemoveProject(elm, type, action, path, new_file_name) {
+	//refresh main window navigator files tree
+	refreshParentNavigatorFilesTree(path);
+	
 	//show project list page
 	document.location = admin_home_page_url;
 }
 function onSucccessfullRemoveFile(elm, type, action, path, new_file_name) {
 	refreshNodeParentChildsOnSucccessfullAction(elm);
+	
+	//refresh main window navigator files tree
+	var folder_path = path.substr(0, path.lastIndexOf("/"));
+	refreshParentNavigatorFilesTree(folder_path);
 }
 function onSucccessfullRemoveTemplateFolder(elm, type, action, path, new_file_name) {
 	onSucccessfullRemoveFile(elm, type, action, path, new_file_name);
@@ -599,10 +606,17 @@ function onSucccessfullRemoveTemplateFolder(elm, type, action, path, new_file_na
 }
 function onSucccessfullRenameFile(elm, type, action, path, new_file_name) {
 	refreshNodeParentChildsOnSucccessfullAction(elm);
+	
+	//refresh main window navigator files tree
+	var folder_path = path.substr(0, path.lastIndexOf("/"));
+	refreshParentNavigatorFilesTree(folder_path);
 }
 function onSucccessfullCreateFile(elm, type, action, path, new_file_name) {
 	var node = $(elm).parent().find(" > .mytree > li");
 	refreshAndShowNodeChilds(node);
+	
+	//refresh main window navigator files tree
+	refreshParentNavigatorFilesTree(path);
 	
 	//open file to edit
 	path += "/" + new_file_name + ".php";
@@ -610,8 +624,12 @@ function onSucccessfullCreateFile(elm, type, action, path, new_file_name) {
 	document.location = edit_url;
 }
 function onSucccessfullCreateFolder(elm, type, action, path, new_file_name) {
-	var node = $(elm).parent().find(" > .mytree > li");
-	refreshAndShowNodeChilds(node);
+	onSucccessfullCreateFile(elm, type, action, path, new_file_name);
+}
+
+function refreshParentNavigatorFilesTree(path) {
+	if (path && window.parent && window.parent != window && typeof window.parent.refreshOpenNodeChildsBasedInPath == "function")
+		window.parent.refreshOpenNodeChildsBasedInPath(path);
 }
 
 function importTemplates() {

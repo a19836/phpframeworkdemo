@@ -10,8 +10,8 @@
 		<id><![CDATA[school]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>48</offset_left>
-		<offset_top>26</offset_top>
+		<offset_left>100</offset_left>
+		<offset_top>10</offset_top>
 		<width>318</width>
 		<height>78</height>
 		<properties>
@@ -24,7 +24,7 @@
 			</exits>
 			<table_charset></table_charset>
 			<table_collation><![CDATA[utf8_general_ci]]></table_collation>
-			<table_storage_engine><![CDATA[innodb]]></table_storage_engine>
+			<table_storage_engine><![CDATA[InnoDB]]></table_storage_engine>
 			<table_attr_primary_keys>1</table_attr_primary_keys>
 			<table_attr_primary_keys></table_attr_primary_keys>
 			<table_attr_names><![CDATA[school_id]]></table_attr_names>
@@ -49,10 +49,10 @@
 			<table_attr_extras></table_attr_extras>
 			<table_attr_charsets></table_attr_charsets>
 			<table_attr_charsets><![CDATA[utf8]]></table_attr_charsets>
+			<table_attr_comments></table_attr_comments>
+			<table_attr_comments></table_attr_comments>
 			<table_attr_collations></table_attr_collations>
 			<table_attr_collations><![CDATA[utf8_general_ci]]></table_attr_collations>
-			<table_attr_comments></table_attr_comments>
-			<table_attr_comments></table_attr_comments>
 		</properties>
 	</task>
 	<task>
@@ -60,8 +60,8 @@
 		<id><![CDATA[student]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>46</offset_left>
-		<offset_top>220</offset_top>
+		<offset_left>101</offset_left>
+		<offset_top>215</offset_top>
 		<width>318</width>
 		<height>102</height>
 		<properties>
@@ -74,7 +74,7 @@
 			</exits>
 			<table_charset></table_charset>
 			<table_collation><![CDATA[utf8_general_ci]]></table_collation>
-			<table_storage_engine><![CDATA[innodb]]></table_storage_engine>
+			<table_storage_engine><![CDATA[InnoDB]]></table_storage_engine>
 			<table_attr_primary_keys>1</table_attr_primary_keys>
 			<table_attr_primary_keys></table_attr_primary_keys>
 			<table_attr_primary_keys></table_attr_primary_keys>
@@ -111,12 +111,12 @@
 			<table_attr_charsets></table_attr_charsets>
 			<table_attr_charsets></table_attr_charsets>
 			<table_attr_charsets><![CDATA[utf8]]></table_attr_charsets>
+			<table_attr_comments></table_attr_comments>
+			<table_attr_comments></table_attr_comments>
+			<table_attr_comments></table_attr_comments>
 			<table_attr_collations></table_attr_collations>
 			<table_attr_collations></table_attr_collations>
 			<table_attr_collations><![CDATA[utf8_general_ci]]></table_attr_collations>
-			<table_attr_comments></table_attr_comments>
-			<table_attr_comments></table_attr_comments>
-			<table_attr_comments></table_attr_comments>
 		</properties>
 		<exits>
 			<layer_exit>
@@ -137,8 +137,8 @@
 		<id><![CDATA[teacher]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>419</offset_left>
-		<offset_top>130</offset_top>
+		<offset_left>493</offset_left>
+		<offset_top>93</offset_top>
 		<width>318</width>
 		<height>126</height>
 		<properties>

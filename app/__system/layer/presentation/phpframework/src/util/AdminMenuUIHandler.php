@@ -579,7 +579,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="presentation_project_context_menu" class="mycontextmenu">
-	<li class="edit"><a onClick="return goToPopup(this, \'edit_url\', event, \'with_iframe_title edit_project_details_popup\', onSucccessfullEditProject)">Edit Project Details</a></li>
+	<li class="edit"><a onClick="return goToPopup(this, \'edit_url\', event, \'with_iframe_title edit_project_details_popup\', onSuccessfullEditProject)">Edit Project Details</a></li>
 	<li class="edit_project_global_variables"><a onClick="return goTo(this, \'edit_project_global_variables_url\', event)">Edit Project Global Variables</a></li>
 	<li class="edit_config"><a onClick="return goTo(this, \'edit_config_url\', event)">Edit Config</a></li>
 	<li class="edit_init"><a onClick="return goTo(this, \'edit_init_url\', event)">Edit Init - Advanced</a></li>

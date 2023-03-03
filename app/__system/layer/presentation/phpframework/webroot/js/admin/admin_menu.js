@@ -2633,7 +2633,7 @@ function onSuccessfullPopupAction(opts) {
 	MyFancyPopup.hidePopup();
 }
 
-function onSucccessfullEditProject(opts) {
+function onSuccessfullEditProject(opts) {
 	if (opts && opts["is_rename_project"]) {
 		var selected_project_elm = $("#top_panel .filter_by_layout > ul li.selected a");
 		var selected_project = selected_project_elm.attr("value");
@@ -2906,7 +2906,7 @@ function normalizeFileName(new_file_name, allow_upper_case) {
 }
 
 function renameProject(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated) {
-	alert("Please don't forget to go to the permissions panel and update the correspondent permissions..."); //Do not use StatusMessageHandler.showMessage bc the onSucccessfullEditProject will refresh the main page
+	alert("Please don't forget to go to the permissions panel and update the correspondent permissions..."); //Do not use StatusMessageHandler.showMessage bc the onSuccessfullEditProject will refresh the main page
 	
 	//refresh page and replace old project in url 
 	var opts = {
@@ -2950,7 +2950,7 @@ function renameProject(a, attr_name, action, new_file_name, url, tree_node_id_to
 	//console.log(opts);
 	last_selected_node_id = tree_node_id_to_be_updated;
 	
-	onSucccessfullEditProject(opts);
+	onSuccessfullEditProject(opts);
 }
 
 function triggerFileNodeAfterCreateFile(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated) {
