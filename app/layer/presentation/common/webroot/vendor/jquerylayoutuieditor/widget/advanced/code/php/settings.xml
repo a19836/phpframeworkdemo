@@ -121,8 +121,10 @@
 				
 				//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
 				text = text.replace(/\u2003/g, "\t"); 
-				//console.log(text);
 				
+				//remove the weird chars from code, this is, in the php editor appears some red dots in the code, which means there some weird chars in the code.
+				text = text.replace(/[^\x20-\x7E]/g, ''); //This will remove the end_lines too but the MyHtmlBeautify.beautify will add them again
+				//console.log(text);
 				return text;
 			};
 			

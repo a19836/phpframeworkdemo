@@ -111,8 +111,15 @@
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
-				if (!html_element) 
-					widget.attr("href", "#").append("link text");
+				if (!html_element) {
+					//check if exists first bc when we change the node names of the widgets.
+					
+					if (!widget[0].hasAttribute("href"))
+						widget.attr("href", "#");
+					
+					if (widget.contents().length == 0) //very important, otherwise everytime we change a div to a link, it will add this text.
+						widget.append("link text");
+				}
 				else {
 					var href = widget.attr("href");
 					
