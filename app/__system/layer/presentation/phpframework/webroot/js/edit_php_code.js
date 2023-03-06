@@ -2602,7 +2602,7 @@ function toggleHeader(elm) {
 	resizeCodeEditor();
 }
 
-function onClickCodeEditorTab(elm) {
+function onClickCodeEditorTab(elm, options) {
 	jsPlumbWorkFlow.jsPlumbTaskFile.stopAutoSave();
 	
 	if (auto_convert) {
@@ -2611,21 +2611,21 @@ function onClickCodeEditorTab(elm) {
 		//close properties popup in case the auto_save be active on close task properties popup, but only if is not auto_save, otherwise the task properties can become messy, like it happens with the task inlinehtml.
 		if (auto_save && jsPlumbWorkFlow.jsPlumbProperty.auto_save && !is_from_auto_save) {
 			if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedTaskPropertiesOpen())
-				jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+				jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties({do_not_call_hide_properties: true});
 			else if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedConnectionPropertiesOpen())
-				jsPlumbWorkFlow.jsPlumbProperty.saveConnectionProperties();
+				jsPlumbWorkFlow.jsPlumbProperty.saveConnectionProperties({do_not_call_hide_properties: true});
 		}
 		
-		generateCodeFromTasksFlow(true, {
-			do_not_change_to_code_tab: true, 
-			
-			success : function() {
-				StatusMessageHandler.removeMessages("info");
-			},
-			error : function() {
-				StatusMessageHandler.removeMessages("info");
-			},
-		});
+		options = $.isPlainObject(options) ? options : {};
+		options["do_not_change_to_code_tab"] = true;
+		options["success"] = function() {
+			StatusMessageHandler.removeMessages("info");
+		};
+		options["error"] = function() {
+			StatusMessageHandler.removeMessages("info");
+		};
+		
+		generateCodeFromTasksFlow(true, options);
 	}
 	
 	setTimeout(function() {
@@ -2881,6 +2881,9 @@ function generateCodeFromTasksFlow(do_not_confirm, options) {
 							$("#ui").attr("code_id", new_code_id);
 							$("#code").attr("generated_code_id", new_code_id);
 							
+							//console.log("Code updated");
+							//console.log("code:"+getEditorCodeRawValue());
+							
 							if (data["error"] && data["error"]["infinit_loop"] && data["error"]["infinit_loop"][0]) {
 								var loops = data["error"]["infinit_loop"];
 								
@@ -3022,6 +3025,12 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 							var previous_callback = jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read;
 							var previous_tasks_flow_saved_data_obj = jsPlumbWorkFlow.jsPlumbTaskFile.saved_data_obj; //save the previous jsPlumbTaskFile.saved_data_obj, bc when we run the jsPlumbTaskFile.reload method, this var will be with the new workflow data obj and then the auto_save won't run bc the jsPlumbTaskFile.isWorkFlowChangedFromLastSaving will return false. So we must save this var before and then re-put it again with the previous value.
 							
+							//check if there is any task properties open and if it is, hide then, bc they won't do anything bc the tasks will be new and with new ids, so the task properties that were previously open, doesn't belong to any of the new tasks. So for a good user-experience, we need to close them.
+							if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedTaskPropertiesOpen())
+								jsPlumbWorkFlow.jsPlumbProperty.hideSelectedTaskProperties();
+							else if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedConnectionPropertiesOpen())
+								jsPlumbWorkFlow.jsPlumbProperty.hideSelectedConnectionProperties();
+							
 							jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = function(data, text_status, jqXHR) {
 								if (!data) {
 									jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to load the workflow's tasks.");
@@ -3030,12 +3039,14 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 										options["error"]();
 								}
 								else {
+									//sort tasks
 									jsPlumbWorkFlow.jsPlumbTaskSort.sortTasks();
 									
 									setTimeout(function() { //must be in timeout otherwise the connections will appear weird
 										jsPlumbWorkFlow.jsPlumbTaskFlow.repaintAllTasks();
 									}, 5);
 									
+									//update code id
 									$("#code").attr("generated_code_id", new_code_id);
 									$("#ui").attr("code_id", new_code_id);
 									$("#ui").attr("workflow_id", getCurrentWorkFlowId());
@@ -3284,9 +3295,9 @@ function getCodeForSaving(parent_elm, options) {
 			//close properties popup in case the auto_save be active on close task properties popup, but only if is not auto_save, otherwise the task properties can become messy, like it happens with the task inlinehtml.
 			if (auto_save && jsPlumbWorkFlow.jsPlumbProperty.auto_save && !is_from_auto_save) {
 				if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedTaskPropertiesOpen())
-					jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+					jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties({do_not_call_hide_properties: true});
 				else if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedConnectionPropertiesOpen())
-					jsPlumbWorkFlow.jsPlumbProperty.saveConnectionProperties();
+					jsPlumbWorkFlow.jsPlumbProperty.saveConnectionProperties({do_not_call_hide_properties: true});
 				
 				new_workflow_id = getCurrentWorkFlowId();
 			}
@@ -3357,9 +3368,9 @@ function getCodeForSaving(parent_elm, options) {
 			//close properties popup in case the auto_save be active on close task properties popup, but only if is not auto_save, otherwise the task properties can become messy, like it happens with the task inlinehtml.
 			if (auto_save && jsPlumbWorkFlow.jsPlumbProperty.auto_save && !is_from_auto_save) {
 				if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedTaskPropertiesOpen())
-					jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+					jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties({do_not_call_hide_properties: true});
 				else if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedConnectionPropertiesOpen())
-					jsPlumbWorkFlow.jsPlumbProperty.saveConnectionProperties();
+					jsPlumbWorkFlow.jsPlumbProperty.saveConnectionProperties({do_not_call_hide_properties: true});
 				
 				new_workflow_id = getCurrentWorkFlowId();
 			}

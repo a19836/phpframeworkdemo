@@ -161,7 +161,7 @@
 				var span = widget.children("pre");
 				var default_text = span.html();
 				
-				span.html(html_element ? "" : (default_text ? default_text : "ptl:"));
+				span.html(html_element ? "" : (default_text ? default_text : "ptl:echo Via PTL code"));
 				
 				if (html_element) {
 					//console.log(html_element);

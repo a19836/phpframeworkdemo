@@ -120,18 +120,24 @@
 					text = text.replace(/\n/g, "\n" + prefix);
 				
 				//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
-				text = text.replace(/\u2003/g, "\t"); 
+				text = text.replace(/\u2003/g, "\t");
 				
 				//remove the weird chars from code, this is, in the php editor appears some red dots in the code, which means there some weird chars in the code.
-				text = text.replace(/[^\x20-\x7E]/g, ''); //This will remove the end_lines too but the MyHtmlBeautify.beautify will add them again
+				var eol_control_var = "#" + (Math.random() * 10000000) + "__SYSTEM_EOL_" + (Math.random() * 10000000) + "#";
+				text = text.replace(/\n/g, eol_control_var);
+				text = text.replace(/[^\x20-\x7E]/g, ''); //This will remove the end_lines too but I save them through the eol_control_var and then the MyHtmlBeautify.beautify will add them again
+				var regex = new RegExp(eol_control_var, "g");
+				text = text.replace(regex, "\n");
+				
 				//console.log(text);
 				return text;
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
 				var span = widget.children("pre");
+				var default_text = span.html();
 				
-				span.html("&lt;? PHP Code ?&gt;");
+				span.html(html_element ? "" : (default_text ? default_text : "&lt;? echo 'Via PHP code'; ?&gt;"));
 				
 				if (html_element) {
 					var text = html_element.textContent;

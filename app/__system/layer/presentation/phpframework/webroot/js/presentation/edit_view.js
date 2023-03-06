@@ -93,6 +93,9 @@ $(function () {
 				var luie = view_obj.find("#code > .layout-ui-editor");
 				var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
 				
+				//init auto convert so it can convert the code in to the Layout tab below
+				enableAutoConvert(onTogglePHPCodeAutoConvert);
+				
 				//show view layout panel instead of code
 				var view_layout = luie.find(" > .tabs > .view-layout");
 				view_layout.addClass("do-not-confirm");
@@ -106,7 +109,6 @@ $(function () {
 				
 				//init auto save
 				enableAutoSave(onTogglePHPCodeAutoSave);
-				enableAutoConvert(onTogglePHPCodeAutoConvert);
 				initAutoSave("#code > .code_menu li.save a");
 				
 				//add auto_save and auto_convert options to layout ui editor

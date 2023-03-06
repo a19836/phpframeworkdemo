@@ -4011,34 +4011,89 @@ function updateModuleInfoData(module_info_tooltip, data) {
 
 /* CODE TABS */
 
+//if user was in tasks flow tab, then converts layout to source first and then tasks flow to source.
+//if user was in layout tab, then converts layout to source only.
 function onClickLayoutEditorUICodeTab(elm) {
-	onClickCodeEditorTab(elm);
-	
+	var ul = $(elm).parent().closest("ul");
+	var previous_active_tab = ul.children(".ui-state-active");
+	var is_tasks_flow_tab = previous_active_tab.attr("id") == "tasks_flow_tab";
 	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+	var view_source_tab = null;
 	
 	if (PtlLayoutUIEditor) {
 		var luie = PtlLayoutUIEditor.getUI();
 		var tabs = luie.find(" > .tabs > .tab");
+		view_source_tab = tabs.filter(".view-source").first(); //leave this code here in this position. do not move it inside of the if below, otherwise the client logic won't work properly.
 		
-		if (!tabs.filter(".tab-active").is(".view-source"))
-			tabs.filter(".view-source").first().trigger("click");
+		if (is_tasks_flow_tab) {
+			var old_code_id = $("#code").attr("generated_code_id");
+			onClickCodeEditorTab(elm, {"async": false}); //only update new code into source tab but not show it.
+			
+			var new_code_id = $("#code").attr("generated_code_id");
+			
+			//if source was changed, set class is-source-changed so when we click in the layout, it will convert the new code to layout.
+			if (old_code_id != new_code_id)
+				view_source_tab.addClass("is-source-changed");
+			
+			view_source_tab.addClass("do-not-convert");
+		}
+		else if (!auto_convert)
+			view_source_tab.addClass("do-not-convert");
+		
+		view_source_tab.trigger("click");
+		
+		if (is_tasks_flow_tab || !auto_convert)
+			view_source_tab.removeClass("do-not-convert");
 	}
+	else if (is_tasks_flow_tab)
+		onClickCodeEditorTab(elm); //show and update new code into source tab
 }
 
+//if user was in tasks flow tab, then converts workflow to code first and then click in layout tab
+//if user was in code tab, then click in layout tab
 function onClickLayoutEditorUIVisualTab(elm) {
-	onClickCodeEditorTab(elm);
-	
 	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 	
 	if (PtlLayoutUIEditor) {
+		var ul = $(elm).parent().closest("ul");
+		var previous_active_tab = ul.children(".ui-state-active");
+		var is_tasks_flow_tab = previous_active_tab.attr("id") == "tasks_flow_tab";
 		var luie = PtlLayoutUIEditor.getUI();
 		var tabs = luie.find(" > .tabs > .tab");
+		var view_source_tab = tabs.filter(".view-source").first();
 		
-		if (!tabs.filter(".tab-active").is(".view-layout"))
-			tabs.filter(".view-layout").first().trigger("click");
+		//user was in tasks flow tab, then converts workflow to code first and then show the source tab, so then we can convert it to the layout tab
+		if (is_tasks_flow_tab) {
+			var old_code_id = $("#code").attr("generated_code_id");
+			onClickCodeEditorTab(elm, {"async": false}); //only update new code into source tab but not show it.
+			
+			var new_code_id = $("#code").attr("generated_code_id");
+			
+			//if source was changed, set class is-source-changed so when we click in the layout, it will convert the new code to layout.
+			if (old_code_id != new_code_id) {
+				view_source_tab.addClass("is-source-changed");
+				
+				//if shource tab is not shown and if auto_convert is active, otherwise you don't need to show the source, bc you won't convert the new code.
+				if (!tabs.filter(".tab-active").is(".view-source") && auto_convert) {
+					view_source_tab.addClass("do-not-convert");
+					view_source_tab.trigger("click"); //show source tab so then we can convert it when we click in the layout tab.
+					view_source_tab.removeClass("do-not-convert");
+				}
+			}
+		}
+		
+		//click in the layout tab and convert new code if auto_convert is active
+		if (!auto_convert)
+			view_source_tab.addClass("do-not-convert");
+		
+		tabs.filter(".view-layout").first().trigger("click");
+		
+		if (!auto_convert)
+			view_source_tab.removeClass("do-not-convert");
 	}
 }
 
+//if it comes from visual tab, generates the code before it clicks in the workflow tab
 function onClickLayoutEditorUITaskWorkflowTab(elm) {
 	//if it comes from visual tab, generates the code befoe it clicks in the workflow tab
 	if (auto_convert) {
@@ -4050,7 +4105,7 @@ function onClickLayoutEditorUITaskWorkflowTab(elm) {
 			
 			if (PtlLayoutUIEditor) {
 				//convert visual to code
-				PtlLayoutUIEditor.convertTemplateLayoutToSource();
+				PtlLayoutUIEditor.convertTemplateLayoutToSource(); //don't ask confirmation message
 			}
 		}
 	}
