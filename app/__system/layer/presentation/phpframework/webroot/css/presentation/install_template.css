@@ -231,6 +231,9 @@ body,
 	height:calc(100% - 63px) !important;
 }
 .view_store_template_popup .install_template {
-	margin:-5px 30px 0 0;
+	margin:-7px 30px 0 0;
 	float:right;
+	font-size:11px;
+	background:#8CA9FF;
+	border-color:#8CA9FF;
 }
