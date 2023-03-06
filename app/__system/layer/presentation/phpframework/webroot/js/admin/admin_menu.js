@@ -915,6 +915,7 @@ function initFilesDragAndDrop(elm) {
 		var iframe_droppable_elm = null;
 		var iframe_droppable_over_class = "drop_hover dragging_task task_droppable_over";
 		var available_iframe_droppables_selectors = ".droppable, .tasks_flow, .connector_overlay_add_icon"; //".droppable" is related with the LayoutUIEditor, ".tasks_flow" is related with workflows and ".connector_overlay_add_icon" is related with Logic workflows.
+		var PtlLayoutUIEditor = null;
 		
 		var folders_selector = "i.folder";
 		var files_selector = "i.file, i.objtype, i.hibernatemodel, i.config_file, i.controller_file, i.entity_file, i.view_file, i.template_file, i.util_file, i.block_file, i.module_file, i.undefined_file, i.js_file, i.css_file, i.img_file, i.zip_file";
@@ -1204,6 +1205,35 @@ function initFilesDragAndDrop(elm) {
 					else
 						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
 				}
+				else if (li_a.children("i.block_file").length > 0) { //file => create block widget in LayoutUIEditor
+					//check if droppable is a LayoutUIEditor
+					if (PtlLayoutUIEditor && typeof iframe_win.updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId == "function") {
+						if (iframe_droppable_elm) { //if iframe_droppable_elm exists, it means it has the class: .droppable"
+							//create widget and append it to iframe_droppable_elm
+							var widget = $("<div></div>");
+							j_iframe_droppable_elm.append(widget);
+							
+							//add widget in the right place and disable classes in LayoutUIEditor's droppable
+							var new_event = {
+								clientX: event.clientX - iframe_offset.left,
+								clientY: event.clientY - iframe_offset.top,
+							};
+							PtlLayoutUIEditor.onWidgetDraggingStop(new_event, helper_clone, widget);
+							
+							//prepare widget props
+							var edit_url = li_a[0].hasAttribute("edit_url") ? li_a.attr("edit_url") : li_a.attr("edit_raw_file_url");
+							var path = getParameterByName(edit_url, "path");
+							var pos = path.indexOf("/src/block/");
+					    		var project = path.substr(0, pos);
+					    		var block = path.substr(pos + "/src/block/".length);
+					    		block = block.substr(0, block.length - 4);
+							
+							iframe_win.updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block, project);
+						}
+						else
+							PtlLayoutUIEditor.showError("Please drop element inside of a droppable element in the design area.");
+					}
+				}
 				else
 					StatusMessageHandler.showError("Sorry, droppable not allowed...");
 			}
@@ -1297,6 +1327,7 @@ function initFilesDragAndDrop(elm) {
 				iframe_win = iframe[0].contentWindow;
 				iframe_doc = iframe_win ? iframe_win.document : null;
 				iframe_offset = iframe.offset();
+				PtlLayoutUIEditor = iframe[0].contentWindow.$(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 			},
 			drag: function(event, ui_obj) {
 				//prepare scroll_parent element when the dragged element will be out of the left panel and dropped in the right panel to the DB diagram or to edit_entity_simple and edit_template_simple files.
@@ -1361,14 +1392,30 @@ function initFilesDragAndDrop(elm) {
 					//set new iframe_droppable_elm
 					iframe_droppable_elm = new_iframe_droppable_elm;
 					
-					if (iframe_droppable_elm) //prepare droppable over class
+					//prepare PtlLayoutUIEditor
+					if (PtlLayoutUIEditor) {
+						var new_event = {
+							clientX: event.clientX - iframe_offset.left,
+							clientY: event.clientY - iframe_offset.top,
+						};
+						PtlLayoutUIEditor.onWidgetDraggingDrag(new_event, helper_clone, null);
+					}
+					else if (iframe_droppable_elm) //prepare droppable over class
 						$(iframe_droppable_elm).addClass(iframe_droppable_over_class);
 				}
 				else {
 					helper_clone.hide();
 					//helper.show(); //no need bc I already show it above
 					
-					if (iframe_droppable_elm) //remove droppable over class
+					//prepare PtlLayoutUIEditor
+					if (PtlLayoutUIEditor) {
+						var new_event = {
+							clientX: -1,
+							clientY: -1,
+						};
+						PtlLayoutUIEditor.onWidgetDraggingDrag(new_event, helper_clone, null);
+					}
+					else if (iframe_droppable_elm) //remove droppable over class
 						$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
 				}
 			},
@@ -1377,7 +1424,7 @@ function initFilesDragAndDrop(elm) {
 				var helper_clone = $("body").children(".sortable_helper");
 				
 				helper.show();
-				//helper_clone.hide(); //Do not hide helper_clone bc right_panel_droppable_handler will use its position
+				//helper_clone.hide(); //Do not hide helper_clone bc right_panel_droppable_handler will use its position in PtlLayoutUIEditor
 				
 				//prepare scroll_parent and call stop handler
 				if (!scroll_parent.hasClass("scroll")) {
@@ -1391,6 +1438,15 @@ function initFilesDragAndDrop(elm) {
 						$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
 					
 					right_panel_droppable_handler(event, ui_obj, this, helper_clone);
+					
+					//disable classes in LayoutUIEditor's droppable, just in case the right_panel_droppable_handler did NOT do it already
+					if (PtlLayoutUIEditor) {
+						var new_event = {
+							clientX: event.clientX - iframe_offset.left,
+							clientY: event.clientY - iframe_offset.top,
+						};
+						PtlLayoutUIEditor.onWidgetDraggingStop(new_event, helper_clone, null);
+					}
 				}
 				
 				helper.remove();
