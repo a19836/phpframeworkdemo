@@ -625,6 +625,21 @@ function loadAvailableBlocksList(parent, opts) {
 		loadAvailableBlocksListInRegionsBlocks(parent, opts);
 }
 
+function addBlockToAvailableBlocksList(parent, block_id, project_id) {
+	if (!$.isPlainObject(available_blocks_list))
+		available_blocks_list = {};
+	
+	if (!$.isArray(available_blocks_list[project_id]))
+		available_blocks_list[project_id] = [];
+	
+	if ($.inArray(block_id, available_blocks_list[project_id]) == -1) {
+		available_blocks_list[project_id].push(block_id);
+		
+		loadAvailableBlocksListOptionsHtml();
+		loadAvailableBlocksListInRegionsBlocks(parent);
+	}
+}
+
 function loadAvailableBlocksListOptionsHtml() {
 	var html = '<option value=""></option>';
 	
@@ -4692,6 +4707,9 @@ function updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block_id, 
 			    		widget.after(new_item); //then add new item after widget.
 		    		else
 		    			StatusMessageHandler.showError("Error trying to create new widget for block: '" + block_id + "'. Please try again...");
+		    		
+		    		//add new block to available block list
+		    		addBlockToAvailableBlocksList(new_item, block_id, project ? project : selected_project_id);
 		    		
 		    		//set block_options from new item
 		    		var block_options = new_item.children(".block_options");
