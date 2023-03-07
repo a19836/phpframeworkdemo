@@ -50,7 +50,7 @@ var is_popup = ' . ($popup ? 1 : 0) . ';
 			<label>Manage Layers</label>
 			<div class="description">Edit the framework structure by managing its\' layers</div>
 		</li>' : '') . '
-		' . ($is_manage_modules_allowed ? '<li class="manage_modules" onClick="return goTo(\'' . $project_url_prefix . 'phpframework/admin/manage_modules\', event)">
+		' . ($is_manage_modules_allowed ? '<li class="manage_modules" onClick="return goTo(\'' . $project_url_prefix . 'phpframework/admin/manage_modules?filter_by_layout=' . $filter_by_layout . '\', event)">
 			<div class="photo"></div>
 			<label>Manage Modules</label>
 			<div class="description">Install, enable, disable and edit modules...</div>

@@ -79,7 +79,7 @@ if (typeof is_global_common_file_already_included == "undefined") {
 					var msg = "Error: Repeated label.\nYou cannot have repeated labels!\nPlease try again...";
 					WF.jsPlumbStatusMessage.showError(msg);
 					
-					var msg_elm = WF.jsPlumbStatusMessage.message_html_obj.children(".error").last();
+					var msg_elm = WF.jsPlumbStatusMessage.getMessageHtmlObj().children(".error").last();
 					
 					if (!msg_elm.is(":visible"))
 						alert(msg);
@@ -92,9 +92,11 @@ if (typeof is_global_common_file_already_included == "undefined") {
 	}
 	
 	function isConnectionLabelValid(label_obj, task_id) {
-		if (!isLabelValid(label_obj)) {
+		if (label_obj.label == "") //connection label can be empty
+			return true;
+		
+		if (!isLabelValid(label_obj))
 			return false;
-		}
 		
 		return true;
 	}

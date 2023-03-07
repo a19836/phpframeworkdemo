@@ -1,25 +1,47 @@
 var StatusMessageHandler = { 
 	message_html_obj : null,
+	other_message_html_objs : {},
 	
 	init : function() {
-		this.message_html_obj = $('<div class="status_message"></div>');
-		
-		$(document.body).append(this.message_html_obj);
-		
-		this.message_html_obj.click(function() {
-			StatusMessageHandler.removeMessages();
-		});
+		this.message_html_obj = this.createMessageHtmlObj();
 	},
 	
-	showMessage : function(message, message_class) {
-		var status_message = this.getMessageElement(message, "status_message_info" + (message_class ? " " + message_class : ""));
+	createMessageHtmlObj : function(message_html_obj_class) {
+		var message_html_obj = $('<div class="status_message' + (message_html_obj_class ? " " + message_html_obj_class : "") + '"></div>');
+		
+		if (this.message_html_obj)
+			this.message_html_obj.after(message_html_obj);
+		else
+			$(document.body).append(message_html_obj);
+		
+		message_html_obj.click(function() {
+			StatusMessageHandler.removeMessages(message_html_obj_class);
+		});
+		
+		return message_html_obj;
+	},
+	
+	getMessageHtmlObj : function(message_html_obj_class) {
+		if (message_html_obj_class) {
+			if (!this.other_message_html_objs.hasOwnProperty(message_html_obj_class))
+				this.other_message_html_objs[message_html_obj_class] = this.createMessageHtmlObj(message_html_obj_class);
+			
+			return this.other_message_html_objs[message_html_obj_class];
+		}
+		
+		return this.message_html_obj;
+	},
+	
+	showMessage : function(message, message_class, message_html_obj_class) {
+		var status_message = this.getMessageElement(message, "status_message_info" + (message_class ? " " + message_class : ""), message_html_obj_class);
+		var message_html_obj = this.getMessageHtmlObj(message_html_obj_class);
 		
 		try { //if message contains a full html page with head and body we will get a javascript error. So we need to catch it.
-			if (!status_message.parent().is(this.message_html_obj))
-				this.message_html_obj.append(status_message);
+			if (!status_message.parent().is(message_html_obj))
+				message_html_obj.append(status_message);
 		}
 		catch(e) {
-			this.message_html_obj = $(document.body).children('.status_message'); //sometimes the this.message_html_obj looses the reference for the object
+			message_html_obj = $(document.body).children('.status_message'); //sometimes the message_html_obj looses the reference for the object
 			
 			if (console && console.log)
 				console.log(e);
@@ -30,15 +52,16 @@ var StatusMessageHandler = {
 		return status_message;
 	},
 
-	showError : function(message, message_class) {
-		var status_message = this.getMessageElement(message, "status_message_error" + (message_class ? " " + message_class : ""));
+	showError : function(message, message_class, message_html_obj_class) {
+		var status_message = this.getMessageElement(message, "status_message_error" + (message_class ? " " + message_class : ""), message_html_obj_class);
+		var message_html_obj = this.getMessageHtmlObj(message_html_obj_class);
 		
 		try { //if message contains a full html page with head and body we will get a javascript error. So we need to catch it.
-			if (!status_message.parent().is(this.message_html_obj))
-				this.message_html_obj.append(status_message);
+			if (!status_message.parent().is(message_html_obj))
+				message_html_obj.append(status_message);
 		}
 		catch(e) {
-			this.message_html_obj = $(document.body).children('.status_message'); //sometimes the this.message_html_obj looses the reference for the object
+			message_html_obj = $(document.body).children('.status_message'); //sometimes the message_html_obj looses the reference for the object
 			
 			if (console && console.log)
 				console.log(e);
@@ -49,10 +72,11 @@ var StatusMessageHandler = {
 		return status_message;
 	},
 	
-	getMessageElement : function(message, message_class) {
+	getMessageElement : function(message, message_class, message_html_obj_class) {
+		var message_html_obj = this.getMessageHtmlObj(message_html_obj_class);
 		var width = $(window).width();
 		var created_time = (new Date()).getTime();
-		var last_msg_elm = this.message_html_obj.children().last();
+		var last_msg_elm = message_html_obj.children().last();
 		var status_message = null;
 		
 		//prepare message text
@@ -202,13 +226,13 @@ var StatusMessageHandler = {
 		$(elm).parent().remove();
 	},
 	
-	removeLastShownMessage : function(type) {
+	removeLastShownMessage : function(type, message_html_obj_class) {
 		var selector = type ? ".status_message_" + type : ".status_message_info, .status_message_error";
-		this.message_html_obj.children(selector).last().remove();
+		this.getMessageHtmlObj(message_html_obj_class).children(selector).last().remove();
 	},
 	
-	removeMessages : function(type) {
+	removeMessages : function(type, message_html_obj_class) {
 		var selector = type ? ".status_message_" + type : ".status_message_info, .status_message_error";
-		this.message_html_obj.children(selector).remove();
+		this.getMessageHtmlObj(message_html_obj_class).children(selector).remove();
 	},
 };

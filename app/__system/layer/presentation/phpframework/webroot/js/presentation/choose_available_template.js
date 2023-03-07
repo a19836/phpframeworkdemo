@@ -45,6 +45,8 @@ function chooseAvailableTemplate(select, options) {
 			targetField: select,
 			default_project_id: project_id,
 		});
+	else
+		MyFancyPopupAvailableTemplate.settings.onOpen = null; //simply open the popup where the user left, instead of loading the on_open_func handler. 
 	
 	MyFancyPopupAvailableTemplate.showPopup();
 }

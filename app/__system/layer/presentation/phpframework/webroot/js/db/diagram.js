@@ -149,7 +149,7 @@ function saveDBDiagram() {
 		});
 	}
 	else if (!local_is_from_auto_save)
-		jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Nothing to save.");
+		StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages");
 	else
 		resetAutoSave();
 
@@ -489,7 +489,7 @@ function syncWithDBServer(do_not_simulate) {
 						else if (!local_is_from_auto_save) { //if manual action
 							if (!exists_sql) {
 								if (!$.isEmptyObject(workflow_data["tasks"]))
-									jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Nothing to sync...");
+									StatusMessageHandler.showMessage("Nothing to sync...", "", "bottom_messages");
 							}
 							//show sql and confirm with user
 							else if (show_sql)
@@ -547,7 +547,7 @@ function checkSyncWithDBServerResult(local_is_from_auto_save, workflow_data, dat
 		}
 		
 		if (!local_is_from_auto_save)
-			jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Synced successfully!");
+			StatusMessageHandler.showMessage("Synced successfully!", "", "bottom_messages");
 		
 		//save old_tables_names and old_tables_attributes_names
 		saveDBDiagram();
