@@ -161,7 +161,7 @@ function save(force) {
 							editor.focus();
 							
 							if (!is_from_auto_save) //only show message if a manual save action
-								StatusMessageHandler.showMessage("File saved successfully.");
+								StatusMessageHandler.showMessage("File saved successfully.", "", "bottom_messages");
 						}
 						else if (file_was_changed) 
 							showSavingActionConfirmation(json_data["old_code"], json_data["new_code"]);
@@ -187,7 +187,7 @@ function save(force) {
 			});
 		}
 		else if (!is_from_auto_save) {
-			StatusMessageHandler.showMessage("Nothing to save.");
+			StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages");
 		}
 		else
 			resetAutoSave();
@@ -247,7 +247,7 @@ function setWordWrap(elm) {
 	
 		editor.getSession().setUseWrapMode(wrap);
 		//alert("Wrap is now " + (wrap ? "enable" : "disable"));
-		StatusMessageHandler.showMessage("Wrap is now " + (wrap ? "enable" : "disable"));
+		StatusMessageHandler.showMessage("Wrap is now " + (wrap ? "enable" : "disable"), "", "bottom_messages");
 	}
 }
 

@@ -36,7 +36,7 @@ function flushCacheFromAdmin(url) {
 					flushCacheFromAdmin(url);
 				});
 			else if (data == "1") 
-				StatusMessageHandler.showMessage("Cache flushed!");
+				StatusMessageHandler.showMessage("Cache flushed!", "", "bottom_messages");
 			else
 				StatusMessageHandler.showError("Cache NOT flushed! Please try again..." + (data ? "\n" + data : ""));
 		},

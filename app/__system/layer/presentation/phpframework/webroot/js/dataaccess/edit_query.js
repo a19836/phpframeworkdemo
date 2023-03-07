@@ -3795,12 +3795,14 @@ function saveDataAccessObject(obj, new_obj_id, options) {
 							options["on_success"](obj, new_obj_id, data, options);
 						
 						var msg = "Saved successfully.";
+						var msg_class = "bottom_messages";
 						
 						if (old_obj_id && new_obj_id && old_obj_id.trim() != new_obj_id.trim()) {
 							if (removeDataAccessObject(old_obj_id))
 								old_obj_id = new_obj_id.trim();
 							else {
 								msg += "\nHowever we couldn't replace this object with the new id/name that you inserted, so we created a duplicated object with the new id.\n\nTo remove the old object, please try to save again...";
+								msg_class = null;
 							}
 							
 							if (window.parent && typeof window.parent.refreshLastNodeParentChilds == "function")
@@ -3812,7 +3814,7 @@ function saveDataAccessObject(obj, new_obj_id, options) {
 						}
 						
 						if (!is_from_auto_save_bkp) //only show message if a manual save action
-							StatusMessageHandler.showMessage(msg);
+							StatusMessageHandler.showMessage(msg, "", msg_class);
 						
 						//update saved_user_relationships_obj_id
 						saved_user_relationships_obj_id = new_user_relationships_obj_id;
@@ -3856,7 +3858,7 @@ function saveDataAccessObject(obj, new_obj_id, options) {
 		}
 		else {
 			if (!is_from_auto_save_bkp)
-				StatusMessageHandler.showMessage("Nothing to save.");
+				StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages");
 			else
 				resetAutoSave();
 			

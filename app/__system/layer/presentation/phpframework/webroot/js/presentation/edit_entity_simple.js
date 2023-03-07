@@ -971,7 +971,7 @@ function save(opts) {
 			}
 			else {
 				if (!is_from_auto_save_bkp)
-					StatusMessageHandler.showMessage("Nothing to save.");
+					StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages");
 				else
 					resetAutoSave();
 				
@@ -1124,7 +1124,7 @@ function confirmSave(opts) {
 			auto_save = auto_save_bkp;
 		
 		if (!is_from_auto_save)
-			StatusMessageHandler.showMessage("Nothing to save.");
+			StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages");
 		else
 			resetAutoSave();
 	}

@@ -173,7 +173,7 @@ function deleteRow(elm) {
 				success : function(data, textStatus, jqXHR) {
 					if (data == "1") {
 						row.remove();
-						StatusMessageHandler.showMessage("Record deleted successfully!");
+						StatusMessageHandler.showMessage("Record deleted successfully!", "", "bottom_messages");
 					}
 					else
 						StatusMessageHandler.showError(data ? data : "Error deleting this record. Please try again...");
@@ -281,7 +281,7 @@ function saveRow(elm, do_not_confirm) {
 				dataType : "text",
 				success : function(data, textStatus, jqXHR) {
 					if (data == "1") {
-						StatusMessageHandler.showMessage("Record saved successfully!");
+						StatusMessageHandler.showMessage("Record saved successfully!", "", "bottom_messages");
 						
 						//update pks in case the user change them
 						for (var k in pks)
@@ -395,7 +395,7 @@ function updateCurrentRow(pks) {
 	var row = $(MyFancyPopup.settings.targetRow);
 	
 	if (row[0] && !$.isEmptyObject(pks)) {
-		StatusMessageHandler.showMessage("Updating changed record...");
+		StatusMessageHandler.showMessage("Updating changed record...", "", "bottom_messages");
 		
 		//get the data for the changed record
 		$.ajax({

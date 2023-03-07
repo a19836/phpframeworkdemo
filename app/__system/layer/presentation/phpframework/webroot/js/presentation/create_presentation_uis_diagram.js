@@ -2736,7 +2736,7 @@ function saveUIsDiagramFlow() {
 		});
 	}
 	else if (!is_from_auto_save)
-		jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Nothing to save.");
+		jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Nothing to save.", "", "bottom_messages");
 	else
 		resetAutoSave();
 }

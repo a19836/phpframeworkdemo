@@ -438,7 +438,7 @@ function saveModuleWorkflowSettings(button) {
 			}
 			else {
 				if (!is_from_auto_save_bkp) {
-					StatusMessageHandler.showMessage("Nothing to save.");
+					StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages");
 					
 					MyFancyPopup.hidePopup(); //the getModuleWorkflowObj executed the showPopup, so we must hide it
 					$(".workflow_menu").show(); //show workflow_menu hidden by the getCodeForSaving method, if a manual save action

@@ -986,7 +986,7 @@ function saveModuleFormSettings(button) {
 		}
 		else {
 			if (!is_from_auto_save_bkp)
-				StatusMessageHandler.showMessage("Nothing to save.");
+				StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages");
 			else
 				resetAutoSave();
 			

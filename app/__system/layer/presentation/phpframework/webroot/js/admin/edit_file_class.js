@@ -280,7 +280,7 @@ function saveFileClass(options) {
 					}
 					
 					if (!is_from_auto_save)
-						StatusMessageHandler.showMessage("Saved successfully.");
+						StatusMessageHandler.showMessage("Saved successfully.", "", "bottom_messages");
 					else
 						resetAutoSave();
 				}
@@ -306,7 +306,7 @@ function saveFileClass(options) {
 		});
 	}
 	else if (!is_from_auto_save) {
-		StatusMessageHandler.showMessage("Nothing to save.");
+		StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages");
 	}
 	else
 		resetAutoSave();

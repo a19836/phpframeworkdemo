@@ -495,7 +495,7 @@ function saveHibernateObject() {
 			});
 		}
 		else if (!is_from_auto_save) {
-			StatusMessageHandler.showMessage("Nothing to save.");
+			StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages");
 		}
 		else
 			resetAutoSave();

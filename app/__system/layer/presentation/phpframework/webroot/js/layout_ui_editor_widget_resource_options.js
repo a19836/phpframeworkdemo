@@ -677,7 +677,7 @@ function toggleChooseLayoutUIEditorWidgetResourceDBTableAttributePopup(elm, even
 		}
 	}
 	else 
-		StatusMessageHandler.showMessage("No #choose_db_table_or_attribute elm to be open as a popup! Please talk with the sys admin...");
+		StatusMessageHandler.showError("No #choose_db_table_or_attribute elm to be open as a popup! Please talk with the sys admin...");
 }
 
 function getLayoutUIEditorWidgetResourceDBBrokers() {

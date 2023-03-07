@@ -53,7 +53,7 @@ function deleteRecord(elm) {
 						//set saved_record_obj_id
 						saved_record_obj_id = getRecordObjId();
 						
-						StatusMessageHandler.showMessage("Record deleted successfully!");
+						StatusMessageHandler.showMessage("Record deleted successfully!", "", "bottom_messages");
 						
 						window.parent.deleteCurrentRow();
 					}
@@ -89,7 +89,7 @@ function saveRecord(elm, do_not_confirm) {
 						//set saved_record_obj_id
 						saved_record_obj_id = getRecordObjId();
 						
-						StatusMessageHandler.showMessage("Record saved successfully!");
+						StatusMessageHandler.showMessage("Record saved successfully!", "", "bottom_messages");
 						
 						//update pks in case the user change them
 						for (var k in pks)
@@ -148,7 +148,7 @@ function addRecord(elm) {
 					manage_record.find("table").first().before(msg);
 					manage_record.find("table, .buttons").hide();
 					
-					StatusMessageHandler.showMessage("Record added successfully!");
+					StatusMessageHandler.showMessage("Record added successfully!", "", "bottom_messages");
 					
 					//update attributes with new values
 					if ($.isPlainObject(data))

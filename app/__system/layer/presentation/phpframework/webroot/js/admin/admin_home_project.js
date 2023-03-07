@@ -500,7 +500,7 @@ function manageFile(elm, type, action, path, handler, new_file_name) {
 							manageFile(elm, type, action, path, handler, new_file_name);
 						});
 					else if (data == "1") {
-						StatusMessageHandler.showMessage(type + " " + action_label + "d successfully!");
+						StatusMessageHandler.showMessage(type + " " + action_label + "d successfully!", "", "bottom_messages");
 						
 						if (typeof handler == "function")
 							handler(elm, type, action, path, new_file_name);
@@ -555,7 +555,7 @@ function setTemplateAsDefault(elm, path) {
 			saveObj(save_project_default_template_url, obj, opts);
 		}
 		else
-			StatusMessageHandler.showMessage("This template is already the default template!");
+			StatusMessageHandler.showMessage("This template is already the default template!", "", "bottom_messages");
 	}
 	else
 		StatusMessageHandler.showError("This template cannot be set as default!");
@@ -594,7 +594,7 @@ function onSucccessfullRemoveTemplateFolder(elm, type, action, path, new_file_na
 					onSucccessfullRemoveTemplateFolder(elm, type, action, path);
 				});
 			else if (data == "1") 
-				StatusMessageHandler.showMessage("Template webroot deleted successfully");
+				StatusMessageHandler.showMessage("Template webroot deleted successfully", "", "bottom_messages");
 			else
 				StatusMessageHandler.showError("There was a problem trying to delete the correspondent template webroot folder. Please try again...") + (data ? "\n" + data : "");
 		},

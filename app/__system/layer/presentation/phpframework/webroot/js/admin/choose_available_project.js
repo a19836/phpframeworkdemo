@@ -315,7 +315,7 @@ function manageFile(elm, type, action, path, handler, new_file_name) {
 							manageFile(elm, type, action, path, handler, new_file_name);
 						});
 					else if (data == "1") {
-						StatusMessageHandler.showMessage(file_type + " " + action_label + "d successfully!");
+						StatusMessageHandler.showMessage(file_type + " " + action_label + "d successfully!", "", "bottom_messages");
 						
 						if (typeof handler == "function")
 							handler(elm, type, action, path, new_file_name);
@@ -339,7 +339,7 @@ function refreshLayerProjects(path) {
 	var bean_file_name = option.attr("bean_file_name");
 	
 	if (layers_props && bean_name && layers_props[bean_name]) {
-		StatusMessageHandler.showMessage("Refreshing projects' list...");
+		StatusMessageHandler.showMessage("Refreshing projects' list...", "", "bottom_messages");
 		
 		var url = get_available_projects_props_url.replace("#bean_name#", bean_name).replace("#bean_file_name#", bean_file_name).replace("#path#", "/");
 		
