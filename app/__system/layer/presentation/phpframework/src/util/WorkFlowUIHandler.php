@@ -148,7 +148,9 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 		jsPlumbWorkFlow.init();
 	})();
 	
-	function flushCache() {
+	function flushCache(opts) {
+		opts = $.isPlainObject(opts) ? opts : {};
+		var do_not_show_messages = opts["do_not_show_messages"];
 		var url = \'' . $this->pcd2aca48 . 'admin/flush_cache\';
 		
 		$.ajax({
@@ -159,15 +161,20 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
 						flushCache();
 					});
-				else if (data == "1")
-					jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Cache flushed!");
-				else
-					jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Error: Cache not flushed!\nPlease try again..." + (data ? "\n" + data : ""));
+				else if (!do_not_show_messages) {
+					if (data == "1")
+						jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Cache flushed!");
+					else
+						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Error: Cache not flushed!\nPlease try again..." + (data ? "\n" + data : ""));
+				}
 			},
 			error : function(jqXHR, textStatus, errorThrown) { 
-				var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-				jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Error: Cache not flushed!\nPlease try again..." + msg);
+				if (!do_not_show_messages) {
+					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+					jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Error: Cache not flushed!\nPlease try again..." + msg);
+				}
 			},
+			async : opts.hasOwnProperty("async") ? opts["async"] : true
 		});
 		
 		return false;

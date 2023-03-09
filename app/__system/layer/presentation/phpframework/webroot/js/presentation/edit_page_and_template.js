@@ -183,16 +183,16 @@ function removeAllThatIsNotBlocksOrModulesFromTree(ul, data, tree_obj) {
 		}
 		
 		var list_items = $('<li data-jstree=\'{"icon":"table-list"}\'>'
-						+ '	<label title="List Items">List Items Html</label>'
+						+ '	<label title="List Items">List Items</label>'
 						+ '</li>');
 		var edit_item = $('<li data-jstree=\'{"icon":"table-edit"}\'>'
-						+ '	<label title="Edit Item">Edit Item Html</label>'
+						+ '	<label title="Edit Item">Edit Item</label>'
 						+ '</li>');
 		var add_item = $('<li data-jstree=\'{"icon":"table-add"}\'>'
-						+ '	<label title="Add Item">Add Item Html</label>'
+						+ '	<label title="Add Item">Add Item</label>'
 						+ '</li>');
 		var view_item = $('<li data-jstree=\'{"icon":"table-view"}\'>'
-						+ '	<label title="View Item">View Item Html</label>'
+						+ '	<label title="View Item">View Item</label>'
 						+ '</li>');
 		
 		li_ul.append(list_items);
@@ -5065,7 +5065,10 @@ function setCodeLayoutUIEditorCode(main_obj, code) {
 
 /* UTIL FUNCTIONS */
 if (typeof flushCache != "function" && flush_cache_url)
-	function flushCache(do_not_show_messages) {
+	function flushCache(opts) {
+		opts = $.isPlainObject(opts) ? opts : {};
+		var do_not_show_messages = opts["do_not_show_messages"];
+		
 		$.ajax({
 			type : "get",
 			url : flush_cache_url,
@@ -5087,6 +5090,7 @@ if (typeof flushCache != "function" && flush_cache_url)
 					jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Error: Cache not flushed!\nPlease try again..." + msg);
 				}
 			},
+			async : opts.hasOwnProperty("async") ? opts["async"] : true
 		});
 		
 		return false;

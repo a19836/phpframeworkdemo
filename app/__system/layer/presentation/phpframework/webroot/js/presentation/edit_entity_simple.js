@@ -962,7 +962,7 @@ function save(opts) {
 					
 					//flushes the cache
 					if (typeof flush_cache != "undefined" && flush_cache) {
-						flushCache(is_from_auto_save_bkp);
+						flushCache({do_not_show_messages: is_from_auto_save_bkp});
 						flush_cache = false;
 					}
 				};

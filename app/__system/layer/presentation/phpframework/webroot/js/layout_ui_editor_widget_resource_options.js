@@ -1,6 +1,7 @@
 /* LAYOUTUIEDITOR FUNCTIONS */
 var creating_resources = {};
 var creating_resources_by_table = {};
+var cache_flushed_before_create_resources = false;
 var flush_cache = false;
 
 function initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor) {
@@ -838,6 +839,16 @@ function addLayoutUIEditorWidgetResourceSLAResourceAsync(db_broker, db_driver, d
 		//console.log(post_data);
 		
 		MyFancyPopup.showLoading();
+		
+		//flushes the caches, but only the first time, so the system can find the right resources and services in the business logic and data_access layers. This is very important bc if we have execute this before, then delete some business logic services and execute this again, the system will have cached that some services already exists, which is not true anymore. So we must delete the cache first time we open the page editor. But we only do it once, so don't overload the systems. We still want the system be faster and use the cache.
+		if (!cache_flushed_before_create_resources && typeof flushCache == "function") {
+			cache_flushed_before_create_resources = true;
+			
+			flushCache({
+				do_not_show_messages: true,
+				"async": false
+			});
+		}
 		
 		$.ajax({
 			url: create_sla_resource_url,
