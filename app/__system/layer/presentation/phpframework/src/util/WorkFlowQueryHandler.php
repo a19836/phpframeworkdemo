@@ -254,7 +254,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 		</div>'; return $pf8ed4912; } public function getInludeHTML($pc24afc88 = false, $v8b6fd90a28 = false) { return '
 			<div class="include">
 				<label class="include_path">Path:</label>
-				<input class="include_path" type="text" value="' . $pc24afc88 . '" />
+				<input class="include_path" type="text" value="' . $pc24afc88 . '" onFocus="disableTemporaryAutoSaveOnInputFocus(this)" onBlur="undoDisableTemporaryAutoSaveOnInputBlur(this)" />
 				<label class="is_include_relative">Relative:</label>
 				<input class="is_include_relative" type="checkbox" value="1" ' . ($v8b6fd90a28 ? 'checked="checked"' : '') . ' />
 				<span class="icon search" onClick="getIncludePathFromFileManager(this, \'input.include_path\')" title="Get file from File Manager">Search</span>
@@ -310,10 +310,10 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 			<table>
 				<thead class="fields_title">
 					<tr>
-						<th class="input_name table_header">PHP Attribute Name</th>
-						<th class="input_type table_header">PHP Attribute Type</th>
-						<th class="output_name table_header">DB Attribute Name</th>
-						<th class="output_type table_header">DB Attribute Type</th>
+						<th class="input_name table_header">Logical/Input Attribute Name</th>
+						<th class="input_type table_header">Logical/Input Attribute Type</th>
+						<th class="output_name table_header">DB/Output Attribute Name</th>
+						<th class="output_type table_header">DB/Output Attribute Type</th>
 						<th class="mandatory table_header">Mandatory</th>
 						<th class="icon_cell"><span class="icon add" onClick="addNewParameter(this)" title="Add">Add</span></th>
 					</tr>
@@ -351,7 +351,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 			<span class="icon update_automatically" onClick="createParameterOrResultMapAutomatically(this, \'result\')" title="Create Map Automatically">Update Automatically</span>
 			<div class="map_id">
 				<label>ID:</label>
-				<input type="text" value="' . $pce128343["@"]["id"] . '" placeHolder="Id/Name" onBlur="validateMapId(this, \'result\');" />
+				<input type="text" value="' . $pce128343["@"]["id"] . '" placeHolder="Id/Name" onFocus="disableTemporaryAutoSaveOnInputFocus(this)" onBlur="undoDisableTemporaryAutoSaveOnInputBlur(this); validateMapId(this, \'result\');" />
 			</div>
 			<div class="map_class">
 				<label>Class:</label>
@@ -361,10 +361,10 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 			<table>
 				<thead class="fields_title">
 					<tr>
-						<th class="input_name table_header">DB Attribute Name</th>
-						<th class="input_type table_header">DB Attribute Type</th>
-						<th class="output_name table_header">PHP Attribute Name</th>
-						<th class="output_type table_header">PHP Attribute Type</th>
+						<th class="input_name table_header">DB/Input Attribute Name</th>
+						<th class="input_type table_header">DB/Input Attribute Type</th>
+						<th class="output_name table_header">Logical/Output Attribute Name</th>
+						<th class="output_type table_header">Logical/Output Attribute Type</th>
 						<th class="mandatory table_header">Mandatory</th>
 						<th class="icon_cell"><span class="icon add" onClick="addNewResult(this)" title="Add">Add</span></th>
 					</tr>
@@ -384,7 +384,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 			</div>
 			<div class="rel_name">
 				<label>Name:</label>
-				<input type="text" value="' . $v5e813b295b . '" placeHolder="Name" onBlur="validateRelationshipName(this);" />
+				<input type="text" value="' . $v5e813b295b . '" placeHolder="Name" onBlur="validateRelationshipName(this);" onFocus="disableTemporaryAutoSaveOnInputFocus(this)" onBlur="undoDisableTemporaryAutoSaveOnInputBlur(this)" />
 			</div>
 			<div style="float:none; clear:both;"></div>'; if ($v6d756b21eb) $pf8ed4912 .= '
 			<div class="settings collapsed">

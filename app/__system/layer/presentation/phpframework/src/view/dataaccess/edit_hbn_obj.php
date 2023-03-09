@@ -70,7 +70,7 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("Bread
 <div class="data_access_obj with_top_bar_section">
 	<div class="name">
 		<label>Name: </label>
-		<input type="text" name="name" value="' . $name . '" placeHolder="Obj Name" />
+		<input type="text" name="name" value="' . $name . '" placeHolder="Obj Name" onFocus="disableTemporaryAutoSaveOnInputFocus(this)" onBlur="undoDisableTemporaryAutoSaveOnInputBlur(this)" />
 	</div>
 	<div class="table">
 		<label>Table: </label>

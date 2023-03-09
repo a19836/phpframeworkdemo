@@ -84,7 +84,7 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->get
 	<div class="includes_obj file_class_obj with_top_bar_section' . ($popup ? " in_popup" : "") . '">
 		<div class="name">
 			<label>Name:</label>
-			<input type="text" value="' . $obj_data["name"] . '" placeHolder="Class Name" title="Class Name" />
+			<input type="text" value="' . $obj_data["name"] . '" placeHolder="Class Name" title="Class Name" onFocus="disableTemporaryAutoSaveOnInputFocus(this)" onBlur="undoDisableTemporaryAutoSaveOnInputBlur(this)" />
 		</div>
 		<div class="extend">
 			<label>Extends:</label>

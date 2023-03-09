@@ -536,7 +536,7 @@ function getTargetFieldForProgrammingTaskChooseFromFileManager(elm) {
 	if (elm.is("input, textarea"))
 		target_field = elm;
 	else if (input_selector && p.find(input_selector).length > 0)
-		target_field = p.find(input_selector).first();
+		target_field = p.find(input_selector); //selectors can have multiple items. Is the selector that should define if is the 1 or more items.
 	else if (elm.prev("input").is("input"))
 		target_field = elm.prev();
 	else if (elm.next("input").is("input"))

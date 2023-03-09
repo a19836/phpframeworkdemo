@@ -137,6 +137,22 @@ function prepareAutoSaveVars() {
 		is_from_auto_save = false;
 }
 
+function disableTemporaryAutoSaveOnInputFocus(elm) {
+	if (auto_save) {
+		$(elm).data("auto_save", auto_save);
+		disableAutoSave();
+	}
+}
+
+function undoDisableTemporaryAutoSaveOnInputBlur(elm) {
+	elm = $(elm);
+	
+	if (!auto_save && elm.data("auto_save")) {
+		enableAutoSave();
+		elm.data("auto_save", null);
+	}
+}
+
 /* Auto convert Functions */
 function addAutoConvertMenu(selector, callback) {
 	var elm = $(selector);

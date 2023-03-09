@@ -171,7 +171,7 @@ var is_obj_valid = ' . ($is_obj_valid ? "true" : "false") . ';
 		<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 			<header>
 				<div class="title" title="' . $path . '">
-					' . $title . ' <input class="name" type="text" value="' . ($obj_data ? $obj_data["name"] : "") . '" placeHolder="Name" title="Function/Method Name" /> in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($is_class_equal_to_file_name ? dirname($file_path) : $file_path, $obj, $is_class_equal_to_file_name) . '
+					' . $title . ' <input class="name" type="text" value="' . ($obj_data ? $obj_data["name"] : "") . '" placeHolder="Name" title="Function/Method Name" onFocus="disableTemporaryAutoSaveOnInputFocus(this)" onBlur="undoDisableTemporaryAutoSaveOnInputBlur(this)" /> in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($is_class_equal_to_file_name ? dirname($file_path) : $file_path, $obj, $is_class_equal_to_file_name) . '
 				</div>
 				<ul>
 					<li class="save" data-title="Save"><a onClick="' . $js_save_func_name . '()"><i class="icon save"></i> Save</a></li>

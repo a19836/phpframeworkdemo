@@ -555,7 +555,7 @@ var DBDAOActionTaskPropertyObj = {
 					+ '	<input class="attr_active" type="checkbox" onclick="DBDAOActionTaskPropertyObj.activateDBActionTableAttributeOption(this)" ' + (checked ? 'checked' : '') + '>'
 					+ '	<label>' + name + '</label>'
 					+ '	<input class="attr_value" type="text" name="' + name + '" value="' + value + '" PlaceHolder="Write the value here">'
-					+ '	<span class="icon add_variable" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>'
+					+ '	<span class="icon add_variable" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" input_selector=".attr_value">Add Variable</span>'
 					+ '	<span class="icon delete" title="Remove item" onClick="$(this).parent().remove();"></span>'
 					+ '</li>';
 			}
@@ -568,7 +568,7 @@ var DBDAOActionTaskPropertyObj = {
 					+ '	<label>' + name + '</label>'
 					+ '	<input class="attr_value" type="text" name="' + name + '" value="' + value + '" PlaceHolder="Write the value here">'
 					+ '	<input class="attr_alias" type="text" name="' + name + '" value="' + alias + '" PlaceHolder="Write the alias here">'
-					+ '	<span class="icon add_variable" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>'
+					+ '	<span class="icon add_variable" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" input_selector=".attr_value, .attr_alias">Add Variable</span>'
 					+ '	<span class="icon delete" title="Remove item" onClick="$(this).parent().remove();"></span>'
 					+ '</li>';
 			}
