@@ -52,7 +52,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $filter_by_layout_url_query =
 				<th class="object_name table_header">Object Name</th>
 				<th class="status table_header">Status</th>
 			</tr>'; $t = count($statuses); for ($i = 0; $i < $t; $i++) { $s = $statuses[$i]; $status = ($s[2] ? "ok" : "error"); $main_content .= '<tr>
-			<td class="file_path">' . $s[0] . '</td>
+			<td class="file_path">' . preg_replace("/\/+/", "/", $s[0]) . '</td>
 			<td class="object_name">' . $s[1] . '</td>
 			<td class="status status_' . $status . '">' . strtoupper($status) . '</td>
 		</tr>'; if ($s[2]) { $exists_any_status_ok = true; } } $main_content .= '

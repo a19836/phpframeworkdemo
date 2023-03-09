@@ -44,7 +44,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 				<th class="status">Status</th>
 			</tr>'; $t = count($selected_tables); for ($i = 0; $i < $t; $i++) { $data = $statuses[$i]; $main_content .= '
 			<tr>
-				<td class="path">' . $data[0] . '</td>
+				<td class="path">' . preg_replace("/\/+/", "/", $data[0]) . '</td>
 				<td class="name">' . $selected_tables[$i] . '</td>
 				<td class="status status_' . ($data[2] ? "ok" : "error") . '">' . ($data[2] ? "OK" : "ERROR") . '</td>
 			</tr>'; if ($data[2]) $exists_any_status_ok = true; else $exists_any_status_error = true; } if (empty($selected_tables)) $main_content .= '<tr><td colspan="3" style="text-align:center;">No elements available</td></tr>'; $main_content .= '</table>'; if ($exists_any_status_error) $main_content .= '<div class="desc">If any of the statuses is equal to <span class="status_error">ERROR</span>, please try again for the correspondent table...</div>'; $main_content .= '</div>'; if ($exists_any_status_ok) $main_content .= '<script>if (window.parent.refreshAndShowLastNodeChilds) window.parent.refreshAndShowLastNodeChilds();</script>'; } else if ($_POST["step_1"]) { $main_content .= '<div class="select_tables">

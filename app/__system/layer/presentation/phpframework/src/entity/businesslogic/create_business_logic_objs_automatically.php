@@ -31,8 +31,9 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 		return $broker;
 	}
 
-	public function callObject($options = null) {
-		return $this->getDataAccessBroker()->callObject("' . $pcd8c70bc . '", "' . $v9ff79a4a24 . '", $options);
+	public function callHbnObject($options = null) {
+		$obj = $this->getDataAccessBroker()->callObject("' . $pcd8c70bc . '", "' . $v9ff79a4a24 . '", $options);
+		return $obj;
 	}
 
 ' . WorkFlowBusinessLogicHandler::getAnnotationsFromParameters($pcaaa70b9, $v887e85c917, true, true, true, true, false, false) . '
@@ -42,8 +43,11 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 		unset($data["options"]);
 		
 		' . $pe7720ba3 . $v441298e472 . '
-		$obj = $this->callObject($options);
-		$status = $obj ? $obj->insert($data, $ids, $options) : null;
+		$obj = $this->callHbnObject($options);
+		$status = null;
+		
+		if ($obj)
+			$status = $obj->insert($data, $ids, $options);
 		
 		' . ($v806c8712d7 ? '$id = $status ? $ids["' . $v806c8712d7 . '"] : false; //hibernate->insert method already returns the getInsertedId in: $ids[xxx]. This code supposes that there is only 1 auto increment pk.' : '$id = $status;') . '
 		
@@ -57,8 +61,11 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 		unset($data["options"]);
 	
 		' . $pe7720ba3 . $pf9488a65 . '
-		$obj = $this->callObject($options);
-		$status = $obj ? $obj->update($data, $options) : null;
+		$obj = $this->callHbnObject($options);
+		$status = null;
+		
+		if ($obj)
+			$status = $obj->update($data, $options);
 	
 		return $status;
 	}
@@ -71,8 +78,11 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 			unset($data["options"]);
 			
 			' . $pe7720ba3 . $pf9488a65 . '
-			$obj = $this->callObject($options);
-			$status = $obj ? $obj->updateByConditions($data, $options) : null;
+			$obj = $this->callHbnObject($options);
+			$status = null;
+			
+			if ($obj)
+				$status = $obj->updateByConditions($data, $options);
 		
 			return $status;
 		}
@@ -85,8 +95,11 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 		unset($data["options"]);
 		
 		' . $pe7720ba3 . '
-		$obj = $this->callObject($options);
-		$status = $obj ? $obj->updatePrimaryKeys($data, $options) : null;
+		$obj = $this->callHbnObject($options);
+		$status = null;
+		
+		if ($obj)
+			$status = $obj->updatePrimaryKeys($data, $options);
 		
 		return $status;
 	}
@@ -98,8 +111,11 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 		unset($data["options"]);
 		
 		' . $pe7720ba3 . '
-		$obj = $this->callObject($options);
-		$status = $obj ? $obj->delete($data, $options) : null;
+		$obj = $this->callHbnObject($options);
+		$status = null;
+		
+		if ($obj)
+			$status = $obj->delete($data, $options);
 	
 		return $status;
 	}
@@ -111,8 +127,11 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 			unset($data["options"]);
 			
 			' . $pe7720ba3 . '
-			$obj = $this->callObject($options);
-			$status = $obj ? $obj->deleteByConditions($data, $options) : null;
+			$obj = $this->callHbnObject($options);
+			$status = null;
+			
+			if ($obj)
+				$status = $obj->deleteByConditions($data, $options);
 			
 			return $status;
 		}
@@ -125,8 +144,13 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 		unset($data["options"]);
 		
 		' . $pe7720ba3 . '
-		$obj = $this->callObject($options);
-		return $obj ? $obj->findById($data, $options) : null;
+		$obj = $this->callHbnObject($options);
+		$res = null;
+		
+		if ($obj)
+			$res = $obj->findById($data, $options);
+		
+		return $res;
 	}
 
 ' . WorkFlowBusinessLogicHandler::getAnnotationsFromParameters($pcaaa70b9, true, true, false, false, true, false, true) . '
@@ -136,8 +160,13 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 		unset($data["options"]);
 		
 		' . $pe7720ba3 . '
-		$obj = $this->callObject($options);
-		return $obj ? $obj->find($data, $options) : null;
+		$obj = $this->callHbnObject($options);
+		$res = null;
+		
+		if ($obj)
+			$res = $obj->find($data, $options);
+		
+		return $res;
 	}
 
 ' . WorkFlowBusinessLogicHandler::getAnnotationsFromParameters($pcaaa70b9, true, true, false, false, true, false, true) . '
@@ -147,8 +176,13 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 		unset($data["options"]);
 		
 		' . $pe7720ba3 . '
-		$obj = $this->callObject($options);
-		return $obj ? $obj->count($data, $options) : null;
+		$obj = $this->callHbnObject($options);
+		$res = null;
+		
+		if ($obj)
+			$res = $obj->count($data, $options);
+		
+		return $res;
 	}
 	' . prepareDataAccessNodes($v51d1745dbd, $pab752e34, $v872f5b4dbb, $v8b13fa2358, $v5e053dece2, $v987a981e39, $v9ff79a4a24, $pcd8c70bc, $v96235e0cbf, $pa3585c80, true, $pf232dd5a, $pcaaa70b9) . '
 	' . prepareDataAccessNodes($v51d1745dbd, $pab752e34, $v872f5b4dbb, $v8b13fa2358, $v5e053dece2, $v1612a5ddce, $v9ff79a4a24, $pcd8c70bc, $v96235e0cbf, $pa3585c80, true) . '
@@ -283,7 +317,7 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 		
 		\$rel_elm = array(\"keys\" => \$keys);
 		\$parent_conditions = \$this->filterDataByTablePrimaryKeys(\$data);
-		"; if ($v04c7684275) $v68745269c7 .= "\$result = {$pa8d2aaca}->countRelationshipObjects(\$this->getTableName(), \$rel_elm, \$parent_conditions, \$options);"; else $v68745269c7 .= "\$result = {$pa8d2aaca}->findRelationshipObjects(\$this->getTableName(), \$rel_elm, \$parent_conditions, \$options);"; } $v067674f4e4 .= getBusinessLogicServiceFunctionCode($v5e813b295b, $v9367d5be85, $pe12d2a7d, $v1dc11964f1, $v68745269c7, $pf81e7d81, $pe7720ba3); break; } } } } return $v067674f4e4; } function prepareDataAccessNodes($v51d1745dbd, $pab752e34, $v872f5b4dbb, $v8b13fa2358, $v5e053dece2, $v987a981e39, $v9ff79a4a24, $pcd8c70bc, $v96235e0cbf, $pa3585c80, $v00e5d13da1 = false, $v1eda8d978f = false, $pcaaa70b9 = false) { $v067674f4e4 = ""; $v1335217393 = WorkFlowDataAccessHandler::getClassName($v9ff79a4a24); $v0674ea4a10 = array(); $v92406677bd = $v00e5d13da1 ? "\$obj = \$this->callObject(\$options);" : ""; $pf80bd68a = $v00e5d13da1 ? "\$obj" : "\$this->getDataAccessBroker()"; $v6f1902ee66 = $v00e5d13da1 ? "" : "'$pcd8c70bc', "; if (is_array($v987a981e39)) { foreach ($v987a981e39 as $pa1c701b0 => $v16eb00c1d7) { foreach ($v16eb00c1d7 as $v6aad4fb598 => $v50819961ef) { $v5e813b295b = getFunctionName($v6aad4fb598); $v1dc11964f1 = $v68745269c7 = ""; switch($pa1c701b0) { case "insert": $pd51ed019 = false; if (substr($v6aad4fb598, - strlen("_with_ai_pk")) == "_with_ai_pk") { if ($v16eb00c1d7[ substr($v6aad4fb598, 0, - strlen("_with_ai_pk")) ]) continue 2; } else if ($v16eb00c1d7[$v6aad4fb598 . "_with_ai_pk"]) { $v50819961ef = $v16eb00c1d7[$v6aad4fb598 . "_with_ai_pk"]; $pd51ed019 = true; } $v5e813b295b = stripos($v5e813b295b, "insert") !== false || stripos($v5e813b295b, "add") !== false ? $v5e813b295b : "insert" . ucfirst($v5e813b295b); $v5e813b295b = !$v00e5d13da1 && $v5e813b295b == "insert$v1335217393" ? "insert" : $v5e813b295b; $pe7720ba3 = getDBDriverOptionsCode($v872f5b4dbb, $v8b13fa2358); $v1dc11964f1 = prepareSQLStatementCode($v50819961ef, $v987a981e39, $v51d1745dbd, $pab752e34, $v872f5b4dbb, $v5e053dece2, $v0674ea4a10, $pa3585c80, $v9367d5be85); $pe12d2a7d = WorkFlowBusinessLogicHandler::prepareAddcslashesCode($v9367d5be85); $v887e85c917 = checkTypeOfExistentPrimaryKeys($v9367d5be85, $v806c8712d7); $v441298e472 .= WorkFlowBusinessLogicHandler::prepareAttributesDefaultValueCode($v9367d5be85, true); $pf81e7d81 = WorkFlowBusinessLogicHandler::getAnnotationsFromParameters($v9367d5be85, $v887e85c917, true, true, true, true, false, false); if ($v92406677bd) $v68745269c7 .= $v92406677bd . "
+		"; if ($v04c7684275) $v68745269c7 .= "\$result = {$pa8d2aaca}->countRelationshipObjects(\$this->getTableName(), \$rel_elm, \$parent_conditions, \$options);"; else $v68745269c7 .= "\$result = {$pa8d2aaca}->findRelationshipObjects(\$this->getTableName(), \$rel_elm, \$parent_conditions, \$options);"; } $v067674f4e4 .= getBusinessLogicServiceFunctionCode($v5e813b295b, $v9367d5be85, $pe12d2a7d, $v1dc11964f1, $v68745269c7, $pf81e7d81, $pe7720ba3); break; } } } } return $v067674f4e4; } function prepareDataAccessNodes($v51d1745dbd, $pab752e34, $v872f5b4dbb, $v8b13fa2358, $v5e053dece2, $v987a981e39, $v9ff79a4a24, $pcd8c70bc, $v96235e0cbf, $pa3585c80, $v00e5d13da1 = false, $v1eda8d978f = false, $pcaaa70b9 = false) { $v067674f4e4 = ""; $v1335217393 = WorkFlowDataAccessHandler::getClassName($v9ff79a4a24); $v0674ea4a10 = array(); $v92406677bd = $v00e5d13da1 ? "\$obj = \$this->callHbnObject(\$options);" : ""; $pf80bd68a = $v00e5d13da1 ? "\$obj" : "\$this->getDataAccessBroker()"; $v6f1902ee66 = $v00e5d13da1 ? "" : "'$pcd8c70bc', "; if (is_array($v987a981e39)) { foreach ($v987a981e39 as $pa1c701b0 => $v16eb00c1d7) { foreach ($v16eb00c1d7 as $v6aad4fb598 => $v50819961ef) { $v5e813b295b = getFunctionName($v6aad4fb598); $v1dc11964f1 = $v68745269c7 = ""; switch($pa1c701b0) { case "insert": $pd51ed019 = false; if (substr($v6aad4fb598, - strlen("_with_ai_pk")) == "_with_ai_pk") { if ($v16eb00c1d7[ substr($v6aad4fb598, 0, - strlen("_with_ai_pk")) ]) continue 2; } else if ($v16eb00c1d7[$v6aad4fb598 . "_with_ai_pk"]) { $v50819961ef = $v16eb00c1d7[$v6aad4fb598 . "_with_ai_pk"]; $pd51ed019 = true; } $v5e813b295b = stripos($v5e813b295b, "insert") !== false || stripos($v5e813b295b, "add") !== false ? $v5e813b295b : "insert" . ucfirst($v5e813b295b); $v5e813b295b = !$v00e5d13da1 && $v5e813b295b == "insert$v1335217393" ? "insert" : $v5e813b295b; $pe7720ba3 = getDBDriverOptionsCode($v872f5b4dbb, $v8b13fa2358); $v1dc11964f1 = prepareSQLStatementCode($v50819961ef, $v987a981e39, $v51d1745dbd, $pab752e34, $v872f5b4dbb, $v5e053dece2, $v0674ea4a10, $pa3585c80, $v9367d5be85); $pe12d2a7d = WorkFlowBusinessLogicHandler::prepareAddcslashesCode($v9367d5be85); $v887e85c917 = checkTypeOfExistentPrimaryKeys($v9367d5be85, $v806c8712d7); $v441298e472 .= WorkFlowBusinessLogicHandler::prepareAttributesDefaultValueCode($v9367d5be85, true); $pf81e7d81 = WorkFlowBusinessLogicHandler::getAnnotationsFromParameters($v9367d5be85, $v887e85c917, true, true, true, true, false, false); if ($v92406677bd) $v68745269c7 .= $v92406677bd . "
 		"; if ($v441298e472) $v68745269c7 .= $v441298e472 . "
 		"; if ($v806c8712d7 && $pd51ed019) { $pa9b33815 = $v6aad4fb598 . "_with_ai_pk"; $v68745269c7 .= "//This code supposes that there is only 1 auto increment pk and that '$pa9b33815' is a sql with the auto increment pk, and that '$v6aad4fb598' is a sql without auto increment pks.
 		if (\$data[\"$v806c8712d7\"]) {
@@ -314,8 +348,8 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 		\$result = \$result && \$result[0] ? \$result[0][\"total\"] : null;"; $v067674f4e4 .= getBusinessLogicServiceFunctionCode($v5e813b295b, $v9367d5be85, $pe12d2a7d, $v1dc11964f1, $v68745269c7, $pf81e7d81, $pe7720ba3); break; case "procedure": $v5e813b295b = stripos($v5e813b295b, "call") !== false ? $v5e813b295b : "call" . ucfirst($v5e813b295b); $pe7720ba3 = getDBDriverOptionsCode($v872f5b4dbb, $v8b13fa2358); $v1dc11964f1 = prepareSQLStatementCode($v50819961ef, $v987a981e39, $v51d1745dbd, $pab752e34, $v872f5b4dbb, $v5e053dece2, $v0674ea4a10, $pa3585c80, $v9367d5be85); $pe12d2a7d = WorkFlowBusinessLogicHandler::prepareAddcslashesCode($v9367d5be85); $pf81e7d81 = WorkFlowBusinessLogicHandler::getAnnotationsFromParameters($v9367d5be85, true, true, false, true, true, false, false); if ($v92406677bd) $v68745269c7 .= $v92406677bd . "
 		"; $v68745269c7 .= "\$result = {$pf80bd68a}->callProcedure({$v6f1902ee66}'$v6aad4fb598', \$data, \$options);"; $v067674f4e4 .= getBusinessLogicServiceFunctionCode($v5e813b295b, $v9367d5be85, $pe12d2a7d, $v1dc11964f1, $v68745269c7, $pf81e7d81, $pe7720ba3); break; case "one_to_one": case "many_to_one": case "one_to_many": case "many_to_many": $v5e813b295b = stripos($v5e813b295b, "findrelationship") !== false || stripos($v5e813b295b, "get") !== false || stripos($v5e813b295b, "select") !== false ? $v5e813b295b : "get" . ucfirst($v5e813b295b); $pe7720ba3 = getDBDriverOptionsCode($v872f5b4dbb, $v8b13fa2358); $v1dc11964f1 = prepareRelationshipCode($v50819961ef, $v987a981e39, $v51d1745dbd, $pab752e34, $v872f5b4dbb, $v5e053dece2, $v0674ea4a10, $v1eda8d978f, $v9367d5be85); if (empty($v50819961ef["@"]["parameter_class"])) WorkFlowDataAccessHandler::addPrimaryKeysToParameters($pcaaa70b9, $v9367d5be85); $pf81e7d81 = WorkFlowBusinessLogicHandler::getAnnotationsFromParameters($v9367d5be85, true, false, true, false, true, false, false); $v68745269c7 = "unset(\$data[\"options\"]);
 		
-		\$obj = \$this->callObject(\$options);
-		\$result = \$obj ? \$obj->findRelationship('$v6aad4fb598', \$data, \$options) : null;"; $v067674f4e4 .= getBusinessLogicServiceFunctionCode($v5e813b295b, $v9367d5be85, "", $v1dc11964f1, $v68745269c7, $pf81e7d81, $pe7720ba3); if (stripos($v5e813b295b, "findrelationship") !== false) $v5e813b295b = "countRelationship" . ucfirst(str_ireplace("findrelationship", "", $v5e813b295b)); else $v5e813b295b = "count" . ucfirst(str_ireplace(array("numberof", "number", "total", "get", "select"), "", $v5e813b295b)); $v68745269c7 = "\$obj = \$this->callObject(\$options);
+		\$obj = \$this->callHbnObject(\$options);
+		\$result = \$obj ? \$obj->findRelationship('$v6aad4fb598', \$data, \$options) : null;"; $v067674f4e4 .= getBusinessLogicServiceFunctionCode($v5e813b295b, $v9367d5be85, "", $v1dc11964f1, $v68745269c7, $pf81e7d81, $pe7720ba3); if (stripos($v5e813b295b, "findrelationship") !== false) $v5e813b295b = "countRelationship" . ucfirst(str_ireplace("findrelationship", "", $v5e813b295b)); else $v5e813b295b = "count" . ucfirst(str_ireplace(array("numberof", "number", "total", "get", "select"), "", $v5e813b295b)); $v68745269c7 = "\$obj = \$this->callHbnObject(\$options);
 		\$result = \$obj ? \$obj->countRelationship('$v6aad4fb598', \$data, \$options) : null;"; $v067674f4e4 .= getBusinessLogicServiceFunctionCode($v5e813b295b, $v9367d5be85, "", $v1dc11964f1, $v68745269c7, $pf81e7d81, $pe7720ba3); break; } } } } return $v067674f4e4; } function getBusinessLogicServiceFunctionCode($v5e813b295b, $v9367d5be85, $pe12d2a7d, $v1dc11964f1, $v68745269c7, $pf81e7d81 = null, $pe7720ba3 = null) { $v067674f4e4 = ""; if ($v5e813b295b) { $v067674f4e4 .= '
 ' . $pf81e7d81 . '
 	public function ' . $v5e813b295b . '($data) {
