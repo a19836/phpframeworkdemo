@@ -332,8 +332,10 @@ input[type=submit]:not(:disabled),
 }
 .status_message.bottom_messages .status_message_info,
   .status_message.bottom_messages .status_message_error {
+  	padding:5px;
   	position:relative;
 	color:#fff;
+	font-size:13px;
 }
 .status_message.bottom_messages .status_message_info {
 	background:#51D87A;
@@ -379,8 +381,10 @@ input[type=submit]:not(:disabled),
 }
 .status_message.bottom_messages .status_message_info span.close_message, 
   .status_message.bottom_messages .status_message_error span.close_message {
-	text-indent:0 !important;
-	background:none !important;
+	margin-right:10px;
+	text-indent:0;
+	background:none;
+	font-size:16px;
 }
 .status_message .status_message_info span.close_message::before, 
   .status_message .status_message_error span.close_message::before {

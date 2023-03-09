@@ -30,7 +30,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/dataaccess/create_data_access_objs_automatically.css" type="text/css" charset="utf-8" />
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/create_data_access_objs_automatically.js"></script>'; $main_content = ''; if ($_POST["step_2"]) { $exists_any_status_ok = false; $main_content .= '<div class="statuses">
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/dataaccess/create_data_access_objs_automatically.js"></script>'; $main_content = ''; if ($_POST["step_2"]) { $exists_any_status_ok = false; $exists_any_status_error = false; $main_content .= '<div class="statuses">
 		<div class="top_bar">
 			<header>
 				<div class="title" title="' . $path . '">Automatic creation in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>
@@ -47,10 +47,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 				<td class="path">' . $data[0] . '</td>
 				<td class="name">' . $selected_tables[$i] . '</td>
 				<td class="status status_' . ($data[2] ? "ok" : "error") . '">' . ($data[2] ? "OK" : "ERROR") . '</td>
-			</tr>'; if ($data[2]) { $exists_any_status_ok = true; } } if (empty($selected_tables)) { $main_content .= '<tr><td colspan="3" style="text-align:center;">No elements available</td></tr>'; } $main_content .= '
-		</table>
-		<div class="desc">If any of the statuses is equal to <span class="status_error">ERROR</span>, please try again for the correspondent table...</div>
-	</div>'; if ($exists_any_status_ok) $main_content .= '<script>if (window.parent.refreshAndShowLastNodeChilds) window.parent.refreshAndShowLastNodeChilds();</script>'; } else if ($_POST["step_1"]) { $main_content .= '<div class="select_tables">
+			</tr>'; if ($data[2]) $exists_any_status_ok = true; else $exists_any_status_error = true; } if (empty($selected_tables)) $main_content .= '<tr><td colspan="3" style="text-align:center;">No elements available</td></tr>'; $main_content .= '</table>'; if ($exists_any_status_error) $main_content .= '<div class="desc">If any of the statuses is equal to <span class="status_error">ERROR</span>, please try again for the correspondent table...</div>'; $main_content .= '</div>'; if ($exists_any_status_ok) $main_content .= '<script>if (window.parent.refreshAndShowLastNodeChilds) window.parent.refreshAndShowLastNodeChilds();</script>'; } else if ($_POST["step_1"]) { $main_content .= '<div class="select_tables">
 		<div class="top_bar">
 			<header>
 				<div class="title" title="' . $path . '">Automatic creation in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($folder_path, $obj) . '</div>

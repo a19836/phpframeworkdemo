@@ -879,6 +879,9 @@ var DBTableTaskPropertyObj = {
 		
 		table_attr.find("select").on("change", function(event) {
 			DBTableTaskPropertyObj.onChangeShortTableAttributeTypeSelectBox(this);
+		})
+		.on("mousedown", function(event) {
+			event.stopPropagation(); //avoid to show contextmenu when we click in an input/select of the table_attr
 		});
 	},
 	
@@ -2789,7 +2792,7 @@ var DBTableTaskPropertyObj = {
 		if (!html)
 			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("Error: Couldn't detect this connection's properties. Please remove this connection, create a new one and try again...");
 		else
-			$("#" + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.main_tasks_flow_obj_id + " .db_table_connection_html .table_attrs").append(html);
+			$("#" + myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.selected_connection_properties_id + " .db_table_connection_html .table_attrs").append(html);
 	},
 	
 	removeTableForeignKey : function(elm) {

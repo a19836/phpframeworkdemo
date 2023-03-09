@@ -58,9 +58,9 @@ var add_block_url = "' . $add_block_url . '";
 			<label>' . $group_module_id . '</label>
 			<span class="icon maximize" onClick="toggleGroupOfMopdules(this, \'' . $group_module_id . '\')" title="Toggle Group of Modules">Toggle Group of Modules</span>
 		</td>
-	</tr>'; foreach ($loaded_modules_by_group as $module_id => $loaded_module) { $main_content .= '<tr class="group_module_item" group_module_id="' . $group_module_id . '">
+	</tr>'; foreach ($loaded_modules_by_group as $module_id => $loaded_module) { $image = ''; if ($loaded_module["images"][0]["url"]) { if (preg_match("/\.svg$/i", $loaded_module["images"][0]["url"]) && file_exists($loaded_module["images"][0]["path"])) $image = file_get_contents($loaded_module["images"][0]["path"]); else $image = '<img src="' . $loaded_module["images"][0]["url"] . '" />'; } $main_content .= '<tr class="group_module_item" group_module_id="' . $group_module_id . '">
 			<td class="group"></td>
-			<td class="photo">' . ($loaded_module["images"][0]["url"] ? '<img src="' . $loaded_module["images"][0]["url"] . '" />' : 'No Photo') . '</td>
+			<td class="photo">' . $image . '</td>
 			<td class="label">' . $loaded_module["label"] . '</td>
 			<td class="module_id">' . $loaded_module["id"] . '</td>
 			<td class="description">' . $loaded_module["description"] . '</td>

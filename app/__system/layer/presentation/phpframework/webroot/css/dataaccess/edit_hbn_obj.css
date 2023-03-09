@@ -125,7 +125,8 @@
 .hbn_obj_relationships .relationship .query .query_ui {
 	display:none;
 }
-.hbn_obj_relationships .relationship .query .query_settings {
+.hbn_obj_relationships .relationship .query .query_settings,
+  .hbn_obj_queries .relationship .query .query_settings {
 	padding-top:20px;
 	border-top:1px solid #eee;
 	display:block;

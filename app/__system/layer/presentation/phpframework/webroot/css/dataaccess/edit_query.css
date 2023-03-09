@@ -828,26 +828,38 @@
 	margin-left:5px;
 }
 
+.relationship .query_insert_update_delete .attributes table {
+	min-width:250px;
+	max-width:650px;
+}
 .relationship .query_insert_update_delete .attributes .column,
   .relationship .query_insert_update_delete .attributes .value {
-	width:315px;
+	width:calc((100% - 20px) / 2); /*.icons have width: 20px*/
 }
 .relationship .query_insert_update_delete .attributes .column input {
-	width:283px;
+	width:calc(100% - 20px);
+	box-sizing:border-box;
 }
 .relationship .query_insert_update_delete .attributes .value input {
-	width:308px;
+	width:100%;
+	box-sizing:border-box;
 }
 
+.relationship .query_insert_update_delete .conditions table {
+	min-width:250px;
+	max-width:650px;
+}
 .relationship .query_insert_update_delete .conditions .column,
   .relationship .query_insert_update_delete .conditions .value {
-	width:280px;
+	width:calc((100% - 85px) / 2); /* icons have width: 20px and operator width: 65px*/
 }
 .relationship .query_insert_update_delete .conditions .column input {
-	width:248px;
+	width:calc(100% - 20px);
+	box-sizing:border-box;
 }
 .relationship .query_insert_update_delete .conditions .value input {
-	width:273px;
+	width:100%;
+	box-sizing:border-box;
 }
 /** RELATIONSHIPS RELS: REL_TYPE **/
 .relationship.query_insert .result_class_id,
@@ -1026,6 +1038,9 @@
 
 #choose_map_id .contents .map .refresh {
 	margin-left:5px;
+}
+#choose_map_id .contents .map select {
+	font-size:inherit;
 }
 
 .myfancypopup .button {

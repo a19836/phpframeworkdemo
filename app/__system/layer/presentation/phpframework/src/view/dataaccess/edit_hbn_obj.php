@@ -142,12 +142,12 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("Bread
 				' . getResultClassHTML($result_type, $result_class) . '
 				' . $WorkFlowQueryHandler->getResultMapHTML($result_type, $result_map, $map_php_types, $map_db_types) . '
 			</div>
-		</div>'; $relationships = $obj_data["childs"]["relationships"][0]["childs"]; $main_content .= '
+		</div>'; $relationships = $obj_data["childs"]["relationships"][0]["childs"]; $relationships_settings = array( "init_ui" => true, "init_workflow" => false, ); $main_content .= '
 		<div id="tabs-4" class="hbn_obj_relationships">
-			' . $WorkFlowQueryHandler->getDataAccessObjHtml($relationships, true) . '
-		</div>'; $queries = $obj_data["childs"]["queries"][0]["childs"]; $main_content .= '
+			' . $WorkFlowQueryHandler->getDataAccessObjHtml($relationships, true, $relationships_settings) . '
+		</div>'; $queries = $obj_data["childs"]["queries"][0]["childs"]; $queries_settings = array( "init_ui" => true, "init_workflow" => false, ); $main_content .= '
 		<div id="tabs-5" class="hbn_obj_queries">
-			' . $WorkFlowQueryHandler->getDataAccessObjHtml($queries) . '
+			' . $WorkFlowQueryHandler->getDataAccessObjHtml($queries, false, $queries_settings) . '
 		</div>'; $main_content .= '
 	</div>
 </div>'; } else { $title = ($hbn_obj_id ? "Edit" : "Add") . " Hibernate Object"; $main_content = '

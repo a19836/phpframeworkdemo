@@ -14,11 +14,11 @@ $(function () {
 	});
 	
 	//init auto save
-	addAutoSaveMenu(".top_bar li.sub_menu li.save", "onToggleQueryAutoSave");
+	/*addAutoSaveMenu(".top_bar li.sub_menu li.save", "onToggleQueryAutoSave");
 	addAutoConvertMenu(".top_bar li.sub_menu li.save");
 	enableAutoSave(onToggleQueryAutoSave);
 	enableAutoConvert(onToggleAutoConvert);
-	initAutoSave(".top_bar li.sub_menu li.save a");
+	initAutoSave(".top_bar li.sub_menu li.save a");*/
 	
 	//init ui
 	var relationships_elm = $(".hbn_obj_relationships").children(".relationships");
@@ -215,10 +215,15 @@ function createHibernateObjectAutomatically(elm) {
 	updateRelationshipsAutomatically(elm, target_field, updateHibernateObjectAutomatically);
 }
 
-function updateHibernateObjectAutomatically(elm) {
+function updateHibernateObjectAutomatically(elm, do_not_confirm) {
 	var icon_add_automatically = MyFancyPopup.settings.targetField;
 	
-	if (confirm("This action may take a while.\nDo you wish to proceed?")) {
+	if (do_not_confirm || confirm("This action may take a while.\nDo you wish to proceed?")) {
+		/*if (do_not_confirm) {
+			StatusMessageHandler.removeLastShownMessage("info", "bottom_messages");
+			StatusMessageHandler.showMessage("This action may take a while...", "", "bottom_messages");
+		}*/
+		
 		var hbn_obj = $(icon_add_automatically).parent().parent();
 		var tabs = hbn_obj.children("#tabs");
 		
@@ -294,6 +299,11 @@ function updateHibernateObjectRelationshipsAutomaticallyForSelectedTable(elm, do
 	db_table = db_table ? db_table.trim() : "";
 	
 	if (db_table != "" && (do_not_confirm || confirm("This action may take a while.\nDo you wish to proceed?")) ) {
+		/*if (do_not_confirm) {
+			StatusMessageHandler.removeLastShownMessage("info", "bottom_messages");
+			StatusMessageHandler.showMessage("This action may take a while...", "", "bottom_messages");
+		}*/
+		
 		var data = getBrokerHbnObjRelationships(db_broker, db_driver, type, db_table, with_maps, "relationships");
 		//console.log(data);
 		
@@ -462,9 +472,9 @@ function saveHibernateObject() {
 	var hbn_obj = getHibernateClassObject();
 	var error_msg = validateHibernateObject(hbn_obj);
 	
+	prepareAutoSaveVars();
+	
 	if (error_msg == "") {
-		prepareAutoSaveVars();
-		
 		var new_hbn_class_obj_id = getHibernateClassObjectId();
 		
 		//only saves if object is different
@@ -500,8 +510,8 @@ function saveHibernateObject() {
 		else
 			resetAutoSave();
 	}
-	else
-		alert("Error:" + error_msg);
+	else if (!is_from_auto_save)
+		StatusMessageHandler.showError("Error:" + error_msg);
 }
 
 function validateHibernateObject(hbn_obj) {
@@ -526,11 +536,22 @@ function initQueriesTab(elm) {
 	
 	if (is_init != 1) {
 		$(elm).attr("is_init", 1);
+		var hbn_obj_queries = $(".hbn_obj_queries");
 		
-		var a = $(".hbn_obj_queries .query_tabs .query_sql_tab a").first();
-		a.attr("not_create_sql_from_ui", 1);
-		a.click();
-		a.removeAttr("not_create_sql_from_ui");
+		hbn_obj_queries.find(".query_tabs .query_sql_tab a").each(function(idx, a) {
+			a = $(a);
+			a.attr("not_create_sql_from_ui", 1);
+			a.click();
+			a.removeAttr("not_create_sql_from_ui");
+		})
+		.promise().done(function() {
+			var convert_to_design = hbn_obj_queries.find(".query_design_tab").length <= 10; //If we have more than 10 queries the systems be too slow. So in this case we don't convert the queries.
+			
+			if (convert_to_design)
+				showQueryDesign(hbn_obj_queries);
+			else
+				StatusMessageHandler.showMessage("Because of performance reasons the system won't convert the SQL tab to the UI tab. Please do it manually...", "", "bottom_messages");
+		});
 	}
 }
 /* END: INIT QUERIES TAB */

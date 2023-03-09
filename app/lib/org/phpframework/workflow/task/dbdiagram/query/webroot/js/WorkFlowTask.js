@@ -383,7 +383,7 @@ var DBQueryTaskPropertyObj = {
 				var source_attribute = source_attributes[i];
 				
 				for (var j = 0; j < target_attributes.length; j++) {
-					var target_attribute = target_attributes[i];
+					var target_attribute = target_attributes[j];
 					
 					if (target_attribute == source_attribute) {
 						conn_attrs[source_attribute] = target_attribute;
@@ -452,6 +452,7 @@ var DBQueryTaskPropertyObj = {
 			props["tables_join"] = "inner";
 			props["source_table"] = properties_data.source_table;
 			props["target_table"] = properties_data.target_table;
+			//console.log(props);
 			
 			//refresh connection with new configurations
 			if (typeof DBQueryTaskPropertyObj.on_complete_connection_properties == "function")

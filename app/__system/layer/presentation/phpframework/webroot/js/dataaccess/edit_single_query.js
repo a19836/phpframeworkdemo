@@ -44,9 +44,10 @@ $(function() {
 		var advanced_query_settings = query.find(".query_settings .advanced_query_settings");
 		showOrHideExtraQuerySettings(advanced_query_settings[0], rand_number);
 		
+		//DEPRECATED - this is already done in the updateSingleQueryRelationshipType method
 		//show query properties
-		if (relationship.hasClass("query_select"))
-			showOrHideSingleQuerySettings($(".top_bar .toggle_settings a")[0], rand_number);
+		//if (relationship.hasClass("query_select"))
+		//	showOrHideSingleQuerySettings($(".top_bar .toggle_settings a")[0], rand_number);
 		
 		//set sync_ui_settings_with_sql to 1 so it updates automatically the sql query on every change on UI.
 		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
@@ -103,8 +104,16 @@ function updateSingleQueryRelationshipType(elm, rand_number) {
 	var rel_type = $(elm).val();
 	var menus = $(".edit_single_query > .top_bar ul .select_query");
 	
-	if (rel_type == "select")
+	if (rel_type == "select") {
 		menus.addClass("show");
+		
+		//show query properties if there are hidden but in the menu says that is shown. This should only happen once, when we are creating a new query.
+		var settings = $(elm).parent().closest(".relationship").find(" > .query .query_select .query_settings");
+		var toggle_settings_input = $(".top_bar .toggle_settings a > input");
+		
+		if (settings.css("display") == "none" && toggle_settings_input.is(":checked"))
+			showOrHideSingleQuerySettings(toggle_settings_input.parent()[0], rand_number);
+	}
 	else
 		menus.removeClass("show");
 }

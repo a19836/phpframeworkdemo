@@ -1322,6 +1322,16 @@ function addTaskFlowChart(rand, init_now) {
 	
 	return WF;
 }
+
+function showQueryDesign(relationship_obj) {
+	//show the UI for all queries
+	relationship_obj.find(".query_design_tab a").each(function(idx, query_design_tab_a) {
+		query_design_tab_a = $(query_design_tab_a);
+		query_design_tab_a.attr("do_not_confirm", 1);
+		query_design_tab_a.trigger("click");
+		query_design_tab_a.removeAttr("do_not_confirm");
+	});
+}
 /** END: QUERY - INIT **/
 
 /** START: QUERY - UPDATE TASK TABLE AUTOMATICALLY **/
@@ -1649,12 +1659,10 @@ function addRelationshipBlock(elm, is_hbn_obj, sql) {
 	
 	var sync = main_tasks_flow_obj.attr("sync_ui_and_settings") == 1;
 	
-	if (sync) {
+	if (sync)
 		query_obj.tabs({active: 1});
-	}
-	else {
+	else
 		query_obj.tabs();
-	}
 	
 	query_obj_tab.children(".query_select").children(".query_settings").tabs();
 	query_obj_tab.children(".query_insert_update_delete").tabs();
@@ -3552,7 +3560,10 @@ function updateRelationshipsAutomatically(elm, target_field, update_function) {
 		
 		targetField: target_field,
 		hideChooseAttributesField: true,
-		updateFunction: update_function
+		updateFunction: function(sub_elm) {
+			if (typeof update_function == "function")
+				update_function(sub_elm, true);
+		}
 	});
 	
 	MyFancyPopup.showPopup();
@@ -3572,6 +3583,11 @@ function updateRelationshipsAutomaticallyForSelectedTable(elm, do_not_confirm) {
 	db_table = db_table ? db_table.trim() : "";
 	
 	if (db_table != "" && (do_not_confirm || confirm("This action may take a while.\nDo you wish to proceed?")) ) {
+		/*if (do_not_confirm) {
+			StatusMessageHandler.removeLastShownMessage("info", "bottom_messages");
+			StatusMessageHandler.showMessage("This action may take a while...", "", "bottom_messages");
+		}*/
+		
 		var data = getBrokerHbnObjRelationships(db_broker, db_driver, type, db_table, with_maps, "queries");
 		//console.log(data);
 		
@@ -3686,7 +3702,7 @@ function updateRelationshipsSqlStatementsAutomatically(relationships, rel_type, 
 	
 		var existent_rel_ids = getExistentRelationshipIds(icon_add_relationship);
 		//var relationships_obj = icon_add_relationship.parent().children(".rels");
-	
+		
 		for (var i = 0; i < relationships.length; i++) {
 			var relationship = relationships[i];
 		
@@ -3754,7 +3770,6 @@ function saveMapObject() {
 function saveIbatisObject(new_obj_id, options) {
 	var main_relationships_elm = $(".relationships");
 	var obj = getUserRelationshipsObj(main_relationships_elm);
-	//console.log(obj);
 	
 	var error_msg = validateUserRelationshipsObj(obj);
 	
@@ -3763,8 +3778,12 @@ function saveIbatisObject(new_obj_id, options) {
 	
 		saveDataAccessObject(obj, new_obj_id, options);
 	}
-	else
-		StatusMessageHandler.showError("Error:" + error_msg);
+	else {
+		prepareAutoSaveVars();
+		
+		if (!is_from_auto_save)
+			StatusMessageHandler.showError("Error:" + error_msg);
+	}
 }
 
 function saveDataAccessObject(obj, new_obj_id, options) {
@@ -3842,11 +3861,12 @@ function saveDataAccessObject(obj, new_obj_id, options) {
 						}
 					}
 					else {
-						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-						StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + msg);
-						
 						if (is_from_auto_save_bkp)
 							resetAutoSave();
+						else {
+							var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+							StatusMessageHandler.showError("Error trying to save new changes.\nPlease try again..." + msg);
+						}
 						
 						window.is_save_func_running = false;
 					}
@@ -3980,7 +4000,7 @@ function getUserRelationshipObj(relationship_elm) {
 		
 		var query_sql_tab = query.find(".query_tabs .query_sql_tab");
 		if (!query_sql_tab.hasClass("ui-tabs-selected") && !query_sql_tab.hasClass("ui-tabs-active") && rel_type != "procedure")
-			createSqlFromUI(query.children(".query_tabs").first(), rand_number, true);
+			createSqlFromUI(query.children(".query_tabs").first(), rand_number, true, true);
 		
 		var sql_text_area = query.find(".sql_text_area");
 		rel["value"] = getQuerySqlEditorValue(sql_text_area);

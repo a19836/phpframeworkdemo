@@ -665,6 +665,7 @@
 	min-width:80px;
 	max-width:80px;
 	text-align:center;
+	color:inherit;
 }
 
 .selected_connection_properties .db_table_connection_html tbody td {
