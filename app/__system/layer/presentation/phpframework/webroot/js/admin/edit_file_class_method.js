@@ -512,9 +512,13 @@ function saveFileClassMethod() {
 		}
 		else if (!is_from_auto_save_bkp)
 			StatusMessageHandler.showMessage("There is already a saving process running. Please wait a few seconds and try again...");
+		else
+			resetAutoSave();
 	}
 	else if (!is_from_auto_save_bkp)
 		alert("No object to save! Please contact the sysadmin...");
+	else
+		resetAutoSave();
 }
 
 function saveFileClassMethodObj(obj, props) {

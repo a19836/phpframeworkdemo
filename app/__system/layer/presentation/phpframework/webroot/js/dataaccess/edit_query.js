@@ -3783,6 +3783,8 @@ function saveIbatisObject(new_obj_id, options) {
 		
 		if (!is_from_auto_save)
 			StatusMessageHandler.showError("Error:" + error_msg);
+		else
+			resetAutoSave();
 	}
 }
 
@@ -3887,6 +3889,8 @@ function saveDataAccessObject(obj, new_obj_id, options) {
 	}
 	else if (!is_from_auto_save_bkp)
 		StatusMessageHandler.showMessage("There is already a saving process running. Please wait a few seconds and try again...");
+	else
+		resetAutoSave();
 }
 
 function removeDataAccessObject(obj_id) {

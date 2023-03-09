@@ -14,11 +14,11 @@ $(function () {
 	});
 	
 	//init auto save
-	/*addAutoSaveMenu(".top_bar li.sub_menu li.save", "onToggleQueryAutoSave");
+	addAutoSaveMenu(".top_bar li.sub_menu li.save", "onToggleQueryAutoSave");
 	addAutoConvertMenu(".top_bar li.sub_menu li.save");
 	enableAutoSave(onToggleQueryAutoSave);
 	enableAutoConvert(onToggleAutoConvert);
-	initAutoSave(".top_bar li.sub_menu li.save a");*/
+	initAutoSave(".top_bar li.sub_menu li.save a");
 	
 	//init ui
 	var relationships_elm = $(".hbn_obj_relationships").children(".relationships");
@@ -152,6 +152,13 @@ function updateHibernateObjectIdsAutomatically(elm) {
 	
 		var icon_add = $(MyFancyPopup.settings.targetField);
 		var fields_elm = icon_add.parent().children(".fields");
+		var inputs = fields_elm.find(" > .id > input.attr_name");
+		var existent_pks = {};
+		
+		for (var i = 0; i < inputs.length; i++) {
+			var input = $(inputs[i]);
+			existent_pks[ input.val() ] = input.parent();
+		}
 		
 		var table_attributes = getDBTableAttributesDetailedInfo(db_broker, db_driver, type, db_table);
 		
@@ -160,8 +167,12 @@ function updateHibernateObjectIdsAutomatically(elm) {
 				var pk = table_attributes[attr_name]["primary_key"];
 				
 				if (pk == "true" || pk == "1") {
-					var last_elm = addNewId(icon_add);
-					last_elm.children("input.attr_name").val(attr_name);
+					var last_elm = existent_pks[attr_name];
+					
+					if (!last_elm || !last_elm[0]) {
+						last_elm = addNewId(icon_add);
+						last_elm.children("input.attr_name").val(attr_name);
+					}
 					
 					var attribute_props = table_attributes[attr_name];
 					var el = attribute_props["extra"] ? ("" + attribute_props["extra"]).toLowerCase() : "";
@@ -389,9 +400,13 @@ function getHibernateClassObject() {
 	var hbn_obj = {};
 	
 	//PREPARING MAIN ATTRIBUTES
-	var name = data_access_elm.children(".name").children("input").val().trim();
-	var table = data_access_elm.children(".table").children("input").val().trim();
-	var ext_value = data_access_elm.children(".extends").children("select").val().trim();
+	var name = data_access_elm.children(".name").children("input").val();
+	var table = data_access_elm.children(".table").children("input").val();
+	var ext_value = data_access_elm.children(".extends").children("select").val();
+	
+	name = ("" + name).trim();
+	table = ("" + table).trim();
+	ext_value = ("" + ext_value).trim();
 	
 	var hbn_obj = {
 		"name": name,
@@ -481,7 +496,7 @@ function saveHibernateObject() {
 		if (saved_hbn_class_obj_id != new_hbn_class_obj_id) {
 			var new_obj_id = hbn_obj["name"];
 			hbn_obj = {"class": hbn_obj};
-		
+			
 			saveDataAccessObject(hbn_obj, new_obj_id, {
 				"force": true,
 				on_success: function(obj, new_obj_id, data) {
@@ -489,7 +504,7 @@ function saveHibernateObject() {
 					saved_hbn_class_obj_id = new_hbn_class_obj_id;
 					
 					//checks if name changed
-					var is_id_different = old_obj_id && new_obj_id && old_obj_id.trim() != new_obj_id.trim();
+					var is_id_different = /*old_obj_id && */new_obj_id && old_obj_id.trim() != new_obj_id.trim(); //If hbn is a new obj the old_obj_id won't exist, so we need to still refresh it.
 					
 					//If id is different, reload page with right id
 					if (is_id_different) {
@@ -497,21 +512,23 @@ function saveHibernateObject() {
 							window.parent.refreshLastNodeParentChilds();
 						
 						var url = "" + document.location;
-						url = url.replace(/(&|\?)obj=[^&]*/g, "$1obj=" + new_obj_id);
+						url = url.replace(/(&|\?)obj=[^&]*/g, "$1");
+						url += "&obj=" + new_obj_id;
 						
 						document.location = url;
 					}
 				}
 			});
 		}
-		else if (!is_from_auto_save) {
+		else if (!is_from_auto_save)
 			StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages");
-		}
 		else
 			resetAutoSave();
 	}
 	else if (!is_from_auto_save)
 		StatusMessageHandler.showError("Error:" + error_msg);
+	else
+		resetAutoSave();
 }
 
 function validateHibernateObject(hbn_obj) {
