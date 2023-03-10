@@ -315,7 +315,7 @@ function manageFile(elm, type, action, path, handler, new_file_name) {
 							manageFile(elm, type, action, path, handler, new_file_name);
 						});
 					else if (data == "1") {
-						StatusMessageHandler.showMessage(file_type + " " + action_label + "d successfully!", "", "bottom_messages");
+						StatusMessageHandler.showMessage(file_type + " " + action_label + "d successfully!", "", "bottom_messages", 1500);
 						
 						if (typeof handler == "function")
 							handler(elm, type, action, path, new_file_name);
@@ -339,7 +339,7 @@ function refreshLayerProjects(path) {
 	var bean_file_name = option.attr("bean_file_name");
 	
 	if (layers_props && bean_name && layers_props[bean_name]) {
-		StatusMessageHandler.showMessage("Refreshing projects' list...", "", "bottom_messages");
+		StatusMessageHandler.showMessage("Refreshing projects' list...", "", "bottom_messages", 5000);
 		
 		var url = get_available_projects_props_url.replace("#bean_name#", bean_name).replace("#bean_file_name#", bean_file_name).replace("#path#", "/");
 		
@@ -354,6 +354,8 @@ function refreshLayerProjects(path) {
 						refreshLayerProjects(path);
 					});
 				else {
+					StatusMessageHandler.removeLastShownMessage("info");
+					
 					layers_props[bean_name]["projects"] = data;
 					
 					path = path.replace(/[\/]+/, "/").replace(/[\/]+$/, "");

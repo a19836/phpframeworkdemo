@@ -454,7 +454,7 @@ function manageFile(icon, action, on_success_callback) {
 					url : url,
 					success : function(data, textStatus, jqXHR) {
 						if (data == "1") {
-							StatusMessageHandler.showMessage("The file was " + str + "d correctly", "", "bottom_messages");
+							StatusMessageHandler.showMessage("The file was " + str + "d correctly", "", "bottom_messages", 1500);
 							
 							if (typeof on_success_callback == "function")
 								on_success_callback(icon, action, new_file_name, url, tree_node_id_to_be_updated);

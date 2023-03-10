@@ -1079,11 +1079,11 @@ var PTLFieldsUtilObj = {
 	getParsedValue : function(value, result_in_array) {
 		var results = new Array();
 		
-		if (value && $.type(value) == "string" && value.indexOf("#") != -1) {
+		if (value && typeof value == "string" && value.indexOf("#") != -1) {
 			var offset = 0;
 			var length = value.length;
 			//var reg = /#([\p{L}\w"' \-\+\[\]\.\$]+)#/gu; //must be outside of the do-while, otherwise it will give an infinitive loop. '\w' means all words with '_' and '/u' means with accents and ç too. Cannot use this bc it does not work in IE.
-			var reg = /#([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC"' \-\+\[\]\.\$]+)#/g; //must be outside of the do-while, otherwise it will give an infinitive loop. '\w' means all words with '_' and 'u' means with accents and ç too.
+			var reg = new RegExp("#([\\w\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u024F\\u1EBD\\u1EBC\"' \\-\\+\\[\\]\\.\\$\\\\]+)#", "g"); //must be outside of the do-while, otherwise it will give an infinitive loop. '\w' means all words with '_' and 'u' means with accents and ç too. The '\' in the regex is bc we want to parse the cases of #[\$idx][name]#
 			var matches_exists = false;
 			
 			do {

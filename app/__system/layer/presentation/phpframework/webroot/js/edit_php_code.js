@@ -2428,7 +2428,7 @@ function setWordWrap(elm) {
 		$(elm).attr("wrap", wrap ? 0 : 1);
 		
 		editor.getSession().setUseWrapMode(wrap);
-		StatusMessageHandler.showMessage("Wrap is now " + (wrap ? "enable" : "disable"), "", "bottom_messages");
+		StatusMessageHandler.showMessage("Wrap is now " + (wrap ? "enable" : "disable"), "", "bottom_messages", 1500);
 	}
 }
 
@@ -2572,7 +2572,7 @@ function sortWorkflowTask(sort_type) {
 	
 	if (sort_type) {
 		jsPlumbWorkFlow.jsPlumbTaskSort.sortTasks(sort_type);
-		StatusMessageHandler.showMessage("Done sorting tasks based in the sort type: " + sort_type + ".", "", "bottom_messages");
+		StatusMessageHandler.showMessage("Done sorting tasks based in the sort type: " + sort_type + ".", "", "bottom_messages", 1500);
 	}
 	
 	jsPlumbWorkFlow.getMyFancyPopupObj().hidePopup();
@@ -2606,7 +2606,7 @@ function onClickCodeEditorTab(elm, options) {
 	jsPlumbWorkFlow.jsPlumbTaskFile.stopAutoSave();
 	
 	if (auto_convert) {
-		StatusMessageHandler.showMessage("Generating code based in workflow... Loading...", "", "bottom_messages");
+		StatusMessageHandler.showMessage("Generating code based in workflow... Loading...", "", "bottom_messages", 1500);
 		
 		//close properties popup in case the auto_save be active on close task properties popup, but only if is not auto_save, otherwise the task properties can become messy, like it happens with the task inlinehtml.
 		if (auto_save && jsPlumbWorkFlow.jsPlumbProperty.auto_save && !is_from_auto_save) {
@@ -2764,7 +2764,7 @@ function onClickTaskWorkflowTab(elm, options) {
 			jsPlumbWorkFlow.jsPlumbTaskFile.startAutoSave();
 			
 			if (auto_convert) {
-				StatusMessageHandler.showMessage("Generating workflow based in code... Loading...", "", "bottom_messages");
+				StatusMessageHandler.showMessage("Generating workflow based in code... Loading...", "", "bottom_messages", 1500);
 				
 				generateTasksFlowFromCode(true, {
 					success : function(data, textStatus, jqXHR) {
@@ -2964,7 +2964,7 @@ function generateCodeFromTasksFlow(do_not_confirm, options) {
 			if (!is_tasks_flow_tab_inited)
 				StatusMessageHandler.showMessage("Tasks flow diagram was not loaded yet. Please open the tasks flow diagram first, before any conversion...");
 			else
-				StatusMessageHandler.showMessage("The tasks flow diagram has no changes. No need to update the code.", "", "bottom_messages");
+				StatusMessageHandler.showMessage("The tasks flow diagram has no changes. No need to update the code.", "", "bottom_messages", 1500);
 		}
 		
 		if (typeof options["success"] == "function")
@@ -3113,7 +3113,7 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 		}
 		else {
 			if (!is_from_auto_save)
-				StatusMessageHandler.showMessage("The code has no changes. No need to update the tasks flow diagram.", "", "bottom_messages");
+				StatusMessageHandler.showMessage("The code has no changes. No need to update the tasks flow diagram.", "", "bottom_messages", 1500);
 			
 			if (typeof options["success"] == "function")
 				options["success"]();
@@ -3621,7 +3621,7 @@ function saveObj(save_object_url, obj, opts) {
 								//call on success 
 								if (!success_func || success_func(data, textStatus, jqXHR)) {
 									if (!is_from_auto_save_bkp) //only show message if a manual save action
-										StatusMessageHandler.showMessage("Saved successfully.", "", "bottom_messages");
+										StatusMessageHandler.showMessage("Saved successfully.", "", "bottom_messages", 1500);
 								}
 								
 								//call on complete func
@@ -3716,7 +3716,7 @@ function saveObj(save_object_url, obj, opts) {
 				complete_func();
 				
 				if (!is_from_auto_save_bkp)
-					StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages");
+					StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages", 1500);
 			}
 		}
 		else {

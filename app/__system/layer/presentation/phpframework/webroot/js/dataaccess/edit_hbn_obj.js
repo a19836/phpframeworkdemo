@@ -231,8 +231,8 @@ function updateHibernateObjectAutomatically(elm, do_not_confirm) {
 	
 	if (do_not_confirm || confirm("This action may take a while.\nDo you wish to proceed?")) {
 		/*if (do_not_confirm) {
-			StatusMessageHandler.removeLastShownMessage("info", "bottom_messages");
-			StatusMessageHandler.showMessage("This action may take a while...", "", "bottom_messages");
+			StatusMessageHandler.removeLastShownMessage("info", "bottom_messages", 1500);
+			StatusMessageHandler.showMessage("This action may take a while...", "", "bottom_messages", 5000);
 		}*/
 		
 		var hbn_obj = $(icon_add_automatically).parent().parent();
@@ -311,8 +311,8 @@ function updateHibernateObjectRelationshipsAutomaticallyForSelectedTable(elm, do
 	
 	if (db_table != "" && (do_not_confirm || confirm("This action may take a while.\nDo you wish to proceed?")) ) {
 		/*if (do_not_confirm) {
-			StatusMessageHandler.removeLastShownMessage("info", "bottom_messages");
-			StatusMessageHandler.showMessage("This action may take a while...", "", "bottom_messages");
+			StatusMessageHandler.removeLastShownMessage("info", "bottom_messages", 1500);
+			StatusMessageHandler.showMessage("This action may take a while...", "", "bottom_messages", 5000);
 		}*/
 		
 		var data = getBrokerHbnObjRelationships(db_broker, db_driver, type, db_table, with_maps, "relationships");
@@ -521,7 +521,7 @@ function saveHibernateObject() {
 			});
 		}
 		else if (!is_from_auto_save)
-			StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages");
+			StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages", 1500);
 		else
 			resetAutoSave();
 	}
@@ -567,7 +567,7 @@ function initQueriesTab(elm) {
 			if (convert_to_design)
 				showQueryDesign(hbn_obj_queries);
 			else
-				StatusMessageHandler.showMessage("Because of performance reasons the system won't convert the SQL tab to the UI tab. Please do it manually...", "", "bottom_messages");
+				StatusMessageHandler.showMessage("Because of performance reasons the system won't convert the SQL tab to the UI tab. Please do it manually...", "", "bottom_messages", 3000);
 		});
 	}
 }

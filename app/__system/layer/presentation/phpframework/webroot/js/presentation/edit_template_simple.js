@@ -749,7 +749,7 @@ function save() {
 			}
 			else {
 				if (!is_from_auto_save_bkp)
-					StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages");
+					StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages", 1500);
 				else
 					resetAutoSave();
 				

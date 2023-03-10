@@ -5079,7 +5079,7 @@ if (typeof flushCache != "function" && flush_cache_url)
 					});
 				else if (!do_not_show_messages) {
 					if (data == "1")
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Cache flushed!", "", "bottom_messages");
+						jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Cache flushed!", "", "bottom_messages", 1500);
 					else
 						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Error: Cache not flushed!\nPlease try again..." + (data ? "\n" + data : ""));
 				}

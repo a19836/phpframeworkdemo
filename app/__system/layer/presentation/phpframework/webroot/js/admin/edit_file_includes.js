@@ -203,7 +203,7 @@ function saveIncludes() {
 					saved_includes_obj_id = new_includes_obj_id;
 					
 					if (!is_from_auto_save)
-						StatusMessageHandler.showMessage("Saved successfully.", "", "bottom_messages");
+						StatusMessageHandler.showMessage("Saved successfully.", "", "bottom_messages", 1500);
 					else
 						resetAutoSave();
 				}
@@ -229,7 +229,7 @@ function saveIncludes() {
 		});
 	}
 	else if (!is_from_auto_save) {
-		StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages");
+		StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages", 1500);
 	}
 	else
 		resetAutoSave();

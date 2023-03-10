@@ -2139,8 +2139,12 @@ var FormFieldsUtilObj = {
 			var input_data_variable_name = popup.find(".input_data_variable_name input").val();
 			input_data_variable_name = input_data_variable_name ? input_data_variable_name.replace(/^\s+/g, "").replace(/\s+$/g, "") : "";
 			
-			if (input_data_variable_name)
-				main_p.children("." + type + "_props").find(".default_input_data input").val('#' + input_data_variable_name + '#');
+			if (input_data_variable_name) {
+				if (!input_data_variable_name.match(/^\$/) && !input_data_variable_name.match(/^#/) && !input_data_variable_name.match(/#$/))
+					input_data_variable_name = '#' + input_data_variable_name + '#';
+				
+				main_p.children("." + type + "_props").find(".default_input_data input").val(input_data_variable_name);
+			}
 		}
 		
 		//prepare attributes

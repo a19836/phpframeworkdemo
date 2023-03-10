@@ -3584,8 +3584,8 @@ function updateRelationshipsAutomaticallyForSelectedTable(elm, do_not_confirm) {
 	
 	if (db_table != "" && (do_not_confirm || confirm("This action may take a while.\nDo you wish to proceed?")) ) {
 		/*if (do_not_confirm) {
-			StatusMessageHandler.removeLastShownMessage("info", "bottom_messages");
-			StatusMessageHandler.showMessage("This action may take a while...", "", "bottom_messages");
+			StatusMessageHandler.removeLastShownMessage("info", "bottom_messages", 1500);
+			StatusMessageHandler.showMessage("This action may take a while...", "", "bottom_messages", 5000);
 		}*/
 		
 		var data = getBrokerHbnObjRelationships(db_broker, db_driver, type, db_table, with_maps, "queries");
@@ -3880,7 +3880,7 @@ function saveDataAccessObject(obj, new_obj_id, options) {
 		}
 		else {
 			if (!is_from_auto_save_bkp)
-				StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages");
+				StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages", 1500);
 			else
 				resetAutoSave();
 			

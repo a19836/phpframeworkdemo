@@ -238,7 +238,7 @@ function saveDeploymentDiagram() {
 		});
 	}
 	else if (!is_from_auto_save) 
-		jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Nothing to save.", "", "bottom_messages");
+		jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Nothing to save.", "", "bottom_messages", 1500);
 	else
 		resetAutoSave();
 

@@ -92,7 +92,7 @@ function saveLayersDiagram() {
 		});
 	}
 	else if (!is_from_auto_save)
-		StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages");
+		StatusMessageHandler.showMessage("Nothing to save.", "", "bottom_messages", 1500);
 	else
 		resetAutoSave();
 

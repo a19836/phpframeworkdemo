@@ -944,11 +944,13 @@
 	background:none;
 	margin-left:5px;
 	font-size:10px;
+	opacity:.8;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .form_containers .table .table_props .default_input_data .info {
 	margin-left:68px;
 	display:block;
 	font-size:80%;
+	opacity:.8;
 }
 
 
