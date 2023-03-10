@@ -2101,6 +2101,7 @@ var FormFieldsUtilObj = {
 				popup += '<div class="input_data_variable_name">' +
 					'		<label>Input Data Variable Name:</label>' +
 					'		<input type="text">' +
+					'		<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>' +
 					'		<span class="info">Change the default input data, if applies...</span>' +
 					'	</div>';
 			

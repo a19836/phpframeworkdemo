@@ -1070,8 +1070,9 @@
 	margin-top:2px;
 }
 .selected_task_properties .form_containers .add_fields_automatically_popup .input_data_variable_name .info {
-	margin:0;
+	margin:0 0 0 5px;
 	background:none;
+	opacity:.8;
 }
 
 .selected_task_properties .form_containers .add_fields_automatically_popup .attributes_name {
@@ -1107,7 +1108,7 @@
 	margin:0 5px;
 	display:inline !important;
 	float:none !important;
-	font-size:12px;
+	font-size:inherit;
 }
 
 /* ICONS */
