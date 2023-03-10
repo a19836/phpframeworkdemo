@@ -25,6 +25,7 @@ var GetBlockIdFromFilePathTaskPropertyObj = {
 		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
 		
 		var task_html_elm = $(properties_html_elm).find(".get_block_id_from_file_path_task_html");
+		ProgrammingTaskUtil.setResultVariableType(task_property_values, task_html_elm);
 		
 		BrokerOptionsUtilObj.initFields(task_html_elm.find(".broker_method_obj"), GetBlockIdFromFilePathTaskPropertyObj.brokers_options, task_property_values["method_obj"]);
 		
@@ -41,6 +42,10 @@ var GetBlockIdFromFilePathTaskPropertyObj = {
 	
 	onSubmitTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		ProgrammingTaskUtil.saveTaskLabelField(properties_html_elm, task_id);
+		
+		var task_html_elm = $(properties_html_elm).find(".get_block_id_from_file_path_task_html");
+		ProgrammingTaskUtil.saveNewVariableInWorkflowAccordingWithType(task_html_elm);
+		ProgrammingTaskUtil.onSubmitResultVariableType(task_html_elm);
 		
 		return true;
 	},
@@ -68,6 +73,8 @@ var GetBlockIdFromFilePathTaskPropertyObj = {
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
 			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+			ProgrammingTaskUtil.saveNewVariableInWorkflowAccordingWithTaskPropertiesValues(task_property_values);
+		
 			var label = GetBlockIdFromFilePathTaskPropertyObj.getDefaultExitLabel(task_property_values);
 			ProgrammingTaskUtil.updateTaskDefaultExitLabel(task_id, label);
 		
@@ -85,6 +92,6 @@ var GetBlockIdFromFilePathTaskPropertyObj = {
 	getDefaultExitLabel : function(task_property_values) {
 		var method_obj = (task_property_values["method_obj"] && task_property_values["method_obj"].trim().substr(0, 1) != "$" ? "$" : "") + task_property_values["method_obj"];
 		
-		return method_obj + "->getBlockIdFromFilePath(" + ProgrammingTaskUtil.getValueString(task_property_values["value"], task_property_values["type"]) + ")";
+		return ProgrammingTaskUtil.getResultVariableString(task_property_values) + method_obj + "->getBlockIdFromFilePath(" + ProgrammingTaskUtil.getValueString(task_property_values["value"], task_property_values["type"]) + ")";
 	},
 };
