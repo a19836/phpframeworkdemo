@@ -219,15 +219,18 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 	}
 	
 	private function getTableAttributes() {
-		return array("' . implode('", "', $pfdbbc383) . '");
+		$attributes = array("' . implode('", "', $pfdbbc383) . '");
+		return $attributes;
 	}
 	
 	private function getTablePrimaryKeys() {
-		return array("' . implode('", "', $pe2f18119) . '");
+		$pks = array("' . implode('", "', $pe2f18119) . '");
+		return $pks;
 	}
 	
 	private function getTableAutoIncrementPrimaryKeys() {
-		return array("' . implode('", "', $pa04a2fa5) . '");
+		$aipks = array("' . implode('", "', $pa04a2fa5) . '");
+		return $aipks;
 	}
 	
 	private function filterDataByTableAttributes($data, $do_not_include_pks = true) {

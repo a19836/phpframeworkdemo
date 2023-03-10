@@ -9,14 +9,13 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Page Title", "This is the 
 	<link rel="icon" href="data:;base64,=" />
 </head>
 <body>
+	<h1 class="title" style="text-align:center">
+		<?= $EVC->getCMSLayer()->getCMSTemplateLayer()->getParam("Page Title"); ?>
+	</h1>
 	<div class="menu" style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
 		<?= $EVC->getCMSLayer()->getCMSTemplateLayer()->renderRegion("Menu"); ?>
 	</div>
 	<div class="content" style="padding: 20px;">
-		<h1 class="title" style="text-align:center">
-			<?= $EVC->getCMSLayer()->getCMSTemplateLayer()->getParam("Page Title"); ?>
-		</h1>
-		
 		<?= $EVC->getCMSLayer()->getCMSTemplateLayer()->renderRegion("Content"); ?>
 	</div>
 </body>

@@ -1,7 +1,7 @@
 /* LAYOUTUIEDITOR FUNCTIONS */
 var creating_resources = {};
 var creating_resources_by_table = {};
-var cache_flushed_before_create_resources = false;
+var no_cache_for_first_resource_creation = false;
 var flush_cache = false;
 
 function initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor) {
@@ -825,6 +825,17 @@ function addLayoutUIEditorWidgetResourceSLAResourceAsync(db_broker, db_driver, d
 		//console.log("ADD RESOURCE: "+resource_name);
 		var status_message_elm = StatusMessageHandler.showMessage("Creating new resource with name: '" + resource_name + "'");
 		
+		//disable cache, but only the first time, so the system can find the right resources and services in the business logic and data_access layers. This is very important bc if we have execute this before, then delete some business logic services and execute this again, the system will have cached that some services already exists, which is not true anymore. So then the system will not create the right business loigc services, bc it thinks that they already exist, but will use them, which will give an error later on when we execute the page. So we must no use the cache the first time we open the page editor, so we can load a new cache again. But we only do it once, so don't overload the systems. We still want the system be faster and use the cache.
+		if (!no_cache_for_first_resource_creation) {
+			no_cache_for_first_resource_creation = true;
+			//console.log("no_cache_for_first_resource_creation");
+			
+			//reset no_cache_for_first_resource_creation after 60 secs, bc it might be some changes meanwhile in the business logic layer.
+			setTimeout(function() {
+				no_cache_for_first_resource_creation = false;
+			}, 60000);
+		}
+		
 		var post_data = {
 			db_broker: db_broker,
 			db_driver: db_driver,
@@ -835,20 +846,11 @@ function addLayoutUIEditorWidgetResourceSLAResourceAsync(db_broker, db_driver, d
 			resource_name: resource_name,
 			permissions: permissions,
 			resource_data: data,
+			no_cache: no_cache_for_first_resource_creation,
 		};
 		//console.log(post_data);
 		
 		MyFancyPopup.showLoading();
-		
-		//flushes the caches, but only the first time, so the system can find the right resources and services in the business logic and data_access layers. This is very important bc if we have execute this before, then delete some business logic services and execute this again, the system will have cached that some services already exists, which is not true anymore. So we must delete the cache first time we open the page editor. But we only do it once, so don't overload the systems. We still want the system be faster and use the cache.
-		if (!cache_flushed_before_create_resources && typeof flushCache == "function") {
-			cache_flushed_before_create_resources = true;
-			
-			flushCache({
-				do_not_show_messages: true,
-				"async": false
-			});
-		}
 		
 		$.ajax({
 			url: create_sla_resource_url,

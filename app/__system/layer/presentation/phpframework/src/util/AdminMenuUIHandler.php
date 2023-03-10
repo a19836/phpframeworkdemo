@@ -474,6 +474,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 <ul id="business_logic_file_context_menu" class="mycontextmenu">
 	<li class="service_obj"><a onClick="return goTo(this, \'add_service_obj_url\', event)">Add Service Object</a></li>
 	<li class="service_function"><a onClick="return goTo(this, \'add_service_func_url\', event)">Add Service Function</a></li>
+	<li class="toggle_all_children"><a onClick="return toggleAllChildren(this)">Toggle Private Services</a></li>
 	<li class="line_break"></li>
 	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit File</a></li>
 	<li class="line_break"></li>
@@ -495,6 +496,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 
 <ul id="business_logic_object_context_menu" class="mycontextmenu">
 	<li class="service_method"><a onClick="return goTo(this, \'add_service_method_url\', event)">Add Service Method</a></li>
+	<li class="toggle_all_children"><a onClick="return toggleAllChildren(this)">Toggle Private Methods</a></li>
 	<li class="line_break"></li>
 	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Visual Workspace)</a></li>
 	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Code Workspace)</a></li>
@@ -789,6 +791,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 
 <ul id="presentation_util_object_context_menu" class="mycontextmenu">
 	<li class="class_method"><a onClick="return goTo(this, \'add_class_method_url\', event)">Add Class Method</a></li>
+	<li class="toggle_all_children"><a onClick="return toggleAllChildren(this)">Toggle Private Methods</a></li>
 	<li class="line_break"></li>
 	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Visual Workspace)</a></li>
 	<!--li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Code Workspace)</a></li-->

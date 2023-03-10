@@ -334,6 +334,7 @@ input[type=submit]:not(:disabled),
   .status_message.bottom_messages .status_message_error {
   	padding:5px;
   	position:relative;
+	border-top:1px solid #fff;
 	color:#fff;
 	font-size:13px;
 }
@@ -382,6 +383,9 @@ input[type=submit]:not(:disabled),
 .status_message.bottom_messages .status_message_info span.close_message, 
   .status_message.bottom_messages .status_message_error span.close_message {
 	margin-right:10px;
+	position:absolute;
+	top:5px;
+	right:5px;
 	text-indent:0;
 	background:none;
 	font-size:16px;

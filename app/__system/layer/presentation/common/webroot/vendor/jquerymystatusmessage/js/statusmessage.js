@@ -32,7 +32,7 @@ var StatusMessageHandler = {
 		return this.message_html_obj;
 	},
 	
-	showMessage : function(message, message_class, message_html_obj_class) {
+	showMessage : function(message, message_class, message_html_obj_class, timeout) {
 		var status_message = this.getMessageElement(message, "status_message_info" + (message_class ? " " + message_class : ""), message_html_obj_class);
 		var message_html_obj = this.getMessageHtmlObj(message_html_obj_class);
 		
@@ -47,12 +47,12 @@ var StatusMessageHandler = {
 				console.log(e);
 		}
 		
-		this.prepareMessage(status_message, 5000);
+		this.prepareMessage(status_message, timeout > 0 ? timeout : 5000);
 		
 		return status_message;
 	},
 
-	showError : function(message, message_class, message_html_obj_class) {
+	showError : function(message, message_class, message_html_obj_class, timeout) {
 		var status_message = this.getMessageElement(message, "status_message_error" + (message_class ? " " + message_class : ""), message_html_obj_class);
 		var message_html_obj = this.getMessageHtmlObj(message_html_obj_class);
 		
@@ -67,7 +67,7 @@ var StatusMessageHandler = {
 				console.log(e);
 		}
 		
-		this.prepareMessage(status_message, 10000);
+		this.prepareMessage(status_message, timeout > 0 ? timeout : 10000);
 		
 		return status_message;
 	},
@@ -194,21 +194,28 @@ var StatusMessageHandler = {
 		if (height && max_height && height > max_height)
 			status_message.css("min-height", max_height + "px");
 		
-		var timeout_id = setTimeout(function() { 
+		var timeout_id = status_message.data("timeout_id");
+		timeout_id && clearTimeout(timeout_id);
+		
+		timeout_id = setTimeout(function() { 
 			close_icon.trigger("click");
 		}, timeout);
+		status_message.data("timeout_id", timeout_id);
 		
 		status_message.off();
 		status_message.click(function(event) {
 			event && typeof event.stopPropagation == "function" && event.stopPropagation(); //avoids to call the onClick event from message_html_obj
 		});
 		status_message.hover(function() { //in
-			if (timeout_id)
+			if (timeout_id) {
 				clearTimeout(timeout_id);
+				status_message.data("timeout_id", null);
+			}
 		}, function() { //out
 			timeout_id = setTimeout(function() { 
 				close_icon.trigger("click");
 			}, timeout);
+			status_message.data("timeout_id", timeout_id);
 		});
 		
 		close_icon.off();

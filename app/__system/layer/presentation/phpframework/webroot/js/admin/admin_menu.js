@@ -2904,7 +2904,7 @@ function manageFile(a, attr_name, action, on_success_callbacks) {
 							else if (action != "remove")
 								refreshNodeParentChildsByChildId(tree_node_id_to_be_updated);
 							
-							StatusMessageHandler.showMessage("File " + str + (action == "unzip" || action == "zip" ? "pe" : "") + "d correctly", "", "bottom_messages");
+							StatusMessageHandler.showMessage("File " + str + (action == "unzip" || action == "zip" ? "pe" : "") + "d correctly", "", "bottom_messages", 1500);
 							
 							on_success_callbacks = $.isArray(on_success_callbacks) ? on_success_callbacks : [on_success_callbacks];
 							for (var i = 0; i < on_success_callbacks.length; i++)
@@ -3059,7 +3059,7 @@ function managePresentationFile(a, attr_name, action, new_file_name, url, tree_n
 							managePresentationFile(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated);
 						});
 					else if (data == "1") {
-						StatusMessageHandler.showMessage("View " + str + "d successfully", "", "bottom_messages");
+						StatusMessageHandler.showMessage("View " + str + "d successfully", "", "bottom_messages", 1500);
 					
 						if (entity_folder[0]) {
 							var p = entity_folder;
@@ -3110,7 +3110,7 @@ function managePresentationFile(a, attr_name, action, new_file_name, url, tree_n
 							managePresentationFile(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated);
 						});
 					else if (data == "1") {
-						StatusMessageHandler.showMessage("Template webroot deleted successfully", "", "bottom_messages");
+						StatusMessageHandler.showMessage("Template webroot deleted successfully", "", "bottom_messages", 1500);
 						
 						var folder_name = tree_node.find(" > a > label").text();
 						var project = p.closest("li[data-jstree=\'{\"icon\":\"project\"}\']");
@@ -3177,7 +3177,7 @@ function removeItem(a, attr_name, on_success_callback) {
 				dataType : "json",
 				success : function(data, textStatus, jqXHR) {
 					if(data == 1) {
-						StatusMessageHandler.showMessage("Removed successfully", "", "bottom_messages");
+						StatusMessageHandler.showMessage("Removed successfully", "", "bottom_messages", 1500);
 						
 						if (typeof on_success_callback == "function")
 							on_success_callback(a, attr_name, tree_node_id_to_be_updated);
@@ -3215,14 +3215,30 @@ function removeBusinessLogicObject(a, attr_name) {
 }
 
 function refresh(a) {
+	var tree_node_id_to_be_refreshed = $(a).parent().parent().attr("last_selected_node_id");
+	
 	setTimeout(function() {
-		var tree_node_id_to_be_refreshed = $(a).parent().parent().attr("last_selected_node_id");
 		refreshAndShowNodeChildsByNodeId(tree_node_id_to_be_refreshed);
 	}, 100);
 	
 	MyContextMenu.hideAllContextMenu();
 	
 	return false;
+}
+
+function toggleAllChildren(a) {
+	var tree_node_id_to_show_all_Children = $(a).parent().parent().attr("last_selected_node_id");
+	var node = $("#" + tree_node_id_to_show_all_Children);
+	
+	node.toggleClass("show_all_children");
+	
+	if (node.find(" > ul > li.hidden").length == 0)
+		StatusMessageHandler.showMessage("There are no private children", "", "bottom_messages", 1500);
+	else if (node.hasClass("show_all_children"))
+		StatusMessageHandler.showMessage("Private children shown", "", "bottom_messages", 1500);
+	else
+		StatusMessageHandler.showMessage("Private children hidden", "", "bottom_messages", 1500);
+		
 }
 
 function copyFile(a) {
@@ -3237,7 +3253,7 @@ function copyOrCutFile(a, action) {
 	
 	setTimeout(function() {
 		file_to_copy_or_cut = a.getAttribute(action == "cut" ? "cut_url" : "copy_url");
-		StatusMessageHandler.showMessage("File " + (action == "cut" ? "cut" : "copied") + " successfully", "", "bottom_messages");
+		StatusMessageHandler.showMessage("File " + (action == "cut" ? "cut" : "copied") + " successfully", "", "bottom_messages", 1500);
 	}, 100);
 	
 	MyContextMenu.hideAllContextMenu();
@@ -3370,7 +3386,7 @@ function manageDBTableAction(a, attr_name, action, on_success_callback, on_error
 					on_error_callback(a, attr_name, action, new_name, url, tree_node_id_to_be_updated);
 			}
 			else {
-				StatusMessageHandler.showMessage("Saving...", "", "bottom_messages");
+				StatusMessageHandler.showMessage("Saving...", "", "bottom_messages", 1500);
 				
 				url = url.replace("#action#", action);
 				url = url.replace("#extra#", new_name);
@@ -3385,7 +3401,7 @@ function manageDBTableAction(a, attr_name, action, on_success_callback, on_error
 					type : "get",
 					url : url,
 					success : function(data, textStatus, jqXHR) {
-						StatusMessageHandler.removeLastShownMessage("info", "bottom_messages");
+						StatusMessageHandler.removeLastShownMessage("info", "bottom_messages", 1500);
 						
 						if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 							showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
@@ -3398,7 +3414,7 @@ function manageDBTableAction(a, attr_name, action, on_success_callback, on_error
 							else if (action != "remove_table" && action != "remove_attribute")
 								refreshNodeParentChildsByChildId(tree_node_id_to_be_updated);
 							
-							StatusMessageHandler.showMessage(str + " correctly", "", "bottom_messages");
+							StatusMessageHandler.showMessage(str + " correctly", "", "bottom_messages", 1500);
 							
 							if (typeof on_success_callback == "function")
 								on_success_callback(a, attr_name, action, new_name, url, tree_node_id_to_be_updated);
@@ -3434,7 +3450,7 @@ function manageDBTableAction(a, attr_name, action, on_success_callback, on_error
 						}
 					},
 					error : function(jqXHR, textStatus, errorThrown) { 
-						StatusMessageHandler.removeLastShownMessage("info", "bottom_messages");
+						StatusMessageHandler.removeLastShownMessage("info", "bottom_messages", 1500);
 						
 						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
 						StatusMessageHandler.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to execute this action.\nPlease try again..." + msg);
@@ -3524,7 +3540,7 @@ function flushCacheFromAdmin(url) {
 					flushCacheFromAdmin(url);
 				});
 			else if (data == "1") 
-				StatusMessageHandler.showMessage("Cache flushed!", "", "bottom_messages");
+				StatusMessageHandler.showMessage("Cache flushed!", "", "bottom_messages", 1500);
 			else
 				StatusMessageHandler.showError("Cache NOT flushed! Please try again..." + (data ? "\n" + data : ""));
 		},

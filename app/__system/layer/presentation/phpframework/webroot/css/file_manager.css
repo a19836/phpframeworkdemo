@@ -7,6 +7,12 @@
 
 .mytree {margin-bottom:20px;}
 
+.jstree-default .jstree-node.hidden {
+	display:none;
+}
+.jstree-default .show_all_children > ul > .jstree-node.hidden {
+	display:block;
+}
 .jstree-default .jstree-node,
   .jstree-default .jstree-node.jstree-leaf > .jstree-ocl {
 	background:none;

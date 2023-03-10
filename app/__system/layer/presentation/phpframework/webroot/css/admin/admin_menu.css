@@ -259,6 +259,7 @@
 .mycontextmenu .remove::before {content:"\f1f8";}
 .mycontextmenu .rename::before {content:"\f5b7";}
 .mycontextmenu .refresh::before {content:"\f2f1";}
+.mycontextmenu .toggle_all_children::before {content:"\f06e";}
 .mycontextmenu .copy::before {content:"\f0c5";}
 .mycontextmenu .cut::before {content:"\f0c4";}
 .mycontextmenu .paste::before {content:"\f0ea";}
