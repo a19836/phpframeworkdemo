@@ -26,9 +26,6 @@ var CreateBlockHtmlTaskPropertyObj = {
 		
 		var task_html_elm = $(properties_html_elm).find(".create_block_html_task_html");
 		
-		if (typeof ProgrammingTaskUtil.on_programming_task_choose_page_url_callback == "function")
-			task_html_elm.addClass("with_search");
-		
 		BrokerOptionsUtilObj.initFields(task_html_elm.find(".broker_method_obj"), CreateBlockHtmlTaskPropertyObj.brokers_options, task_property_values["method_obj"]);
 		
 		var block_id = task_property_values["block_id"] ? "" + task_property_values["block_id"] : "";

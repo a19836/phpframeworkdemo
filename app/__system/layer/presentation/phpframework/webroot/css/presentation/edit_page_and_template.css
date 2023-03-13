@@ -1546,6 +1546,40 @@ body > .dragging_menu_item {
 	font-size:inherit;
 }
 
+/* CHOOSE DB TABLE WIDGET OPTIONS POPUP */
+.replace_existing_db_table_widget_popup {
+	/*top:auto;
+	left:auto;
+	right:auto;
+	bottom:auto;*/
+}
+.replace_existing_db_table_widget_popup .info {
+	padding:20px;
+	text-align:center;
+}
+.replace_existing_db_table_widget_popup .button {
+	margin:0;
+	padding:0 20px 20px;
+	text-align:center;
+}
+.replace_existing_db_table_widget_popup .button input {
+	margin:0 10px;
+}
+.replace_existing_db_table_widget_popup .table_alias {
+	width:250px;
+	margin:0 auto;
+	padding:0 20px 20px;
+	text-align:center;
+}
+.replace_existing_db_table_widget_popup .table_alias label {
+	width:80px;
+	display:inline-block;
+}
+.replace_existing_db_table_widget_popup .table_alias input {
+	width:calc(100% - 90px);
+	font-size:inherit;
+}
+
 /* ERROR and INVALID */
 .error {
 	width:100%;

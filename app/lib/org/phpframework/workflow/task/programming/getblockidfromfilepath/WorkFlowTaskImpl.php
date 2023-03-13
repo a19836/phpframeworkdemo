@@ -1,73 +1,21 @@
 <?php
-namespace WorkFlowTask\programming\getblockidfromfilepath;
+/*
+ * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
+ * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * 
+ * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
+ * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
+ * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
+ * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
+ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 
-include_once get_lib("org.phpframework.workflow.WorkFlowTask");
-
-class WorkFlowTaskImpl extends \WorkFlowTask {
-	
-	public function createTaskPropertiesFromCodeStmt($stmt, $WorkFlowTaskCodeParser, &$exits = null, &$inner_tasks = null) {
-		$props = $WorkFlowTaskCodeParser->getObjectMethodProps($stmt);
-		
-		if ($props) {
-			$method_name = $props["method_name"];
-			
-			if ($method_name == "getBlockIdFromFilePath" && empty($props["method_static"])) {
-				$args = $props["method_args"];
-				
-				$value = $args[0]["value"];
-				$type = $args[0]["type"];
-				
-				unset($props["method_name"]);
-				unset($props["method_args"]);
-				unset($props["method_static"]);
-				
-				$props["value"] = $value;
-				$props["type"] = self::getConfiguredParsedType($type);
-				
-				$props["label"] = "get block id from file path: " . self::prepareTaskPropertyValueLabelFromCodeStmt($value);
-				
-				$props["exits"] = array(
-					self::DEFAULT_EXIT_ID => array(
-						"color" => "#426efa",
-					),
-				);
-				
-				return $props;
-			}
-		}
-	}
-	
-	public function parseProperties(&$task) {
-		$raw_data = $task["raw_data"];
-		
-		$properties = array(
-			"method_obj" => $raw_data["childs"]["properties"][0]["childs"]["method_obj"][0]["value"],
-			"value" => $raw_data["childs"]["properties"][0]["childs"]["value"][0]["value"],
-			"type" => $raw_data["childs"]["properties"][0]["childs"]["type"][0]["value"],
-		);
-		
-		$properties = self::parseResultVariableProperties($raw_data, $properties);
-		
-		return $properties;
-	}
-	
-	public function printCode($tasks, $stop_task_id, $prefix_tab = "", $options = null) {
-		$data = $this->data;
-		
-		$properties = $data["properties"];
-		$var_name = self::getPropertiesResultVariableCode($properties);
-		
-		$method_obj = $properties["method_obj"];
-		if ($method_obj) {
-			$static_pos = strpos($method_obj, "::");
-			$non_static_pos = strpos($method_obj, "->");
-			$method_obj = substr($method_obj, 0, 1) != '$' && (!$static_pos || ($non_static_pos && $static_pos > $non_static_pos)) ? '$' . $method_obj : $method_obj;
-			$method_obj .= "->";
-		}
-		
-		$code  = $prefix_tab . $var_name . $method_obj . "getBlockIdFromFilePath(" . self::getVariableValueCode($properties["value"], $properties["type"]) . ");\n";
-		
-		return $code . self::printTask($tasks, $data["exits"][self::DEFAULT_EXIT_ID], $stop_task_id, $prefix_tab, $options);
-	}
-}
-?>
+namespace WorkFlowTask\programming\getblockidfromfilepath; include_once get_lib("org.phpframework.workflow.WorkFlowTask"); class WorkFlowTaskImpl extends \WorkFlowTask { public function createTaskPropertiesFromCodeStmt($v5faa4b8a01, $pb16df866, &$v6939304e91 = null, &$v1f377b389c = null) { $v9073377656 = $pb16df866->getObjectMethodProps($v5faa4b8a01); if ($v9073377656) { $v603bd47baf = $v9073377656["method_name"]; if ($v603bd47baf == "getBlockIdFromFilePath" && empty($v9073377656["method_static"])) { $v86066462c3 = $v9073377656["method_args"]; $v67db1bd535 = $v86066462c3[0]["value"]; $v3fb9f41470 = $v86066462c3[0]["type"]; unset($v9073377656["method_name"]); unset($v9073377656["method_args"]); unset($v9073377656["method_static"]); $v9073377656["value"] = $v67db1bd535; $v9073377656["type"] = self::getConfiguredParsedType($v3fb9f41470); $v9073377656["label"] = "get block id from file path: " . self::prepareTaskPropertyValueLabelFromCodeStmt($v67db1bd535); $v9073377656["exits"] = array( self::DEFAULT_EXIT_ID => array( "color" => "#426efa", ), ); return $v9073377656; } } } public function parseProperties(&$v7f5911d32d) { $v3c3af72a1c = $v7f5911d32d["raw_data"]; $pef349725 = array( "method_obj" => $v3c3af72a1c["childs"]["properties"][0]["childs"]["method_obj"][0]["value"], "value" => $v3c3af72a1c["childs"]["properties"][0]["childs"]["value"][0]["value"], "type" => $v3c3af72a1c["childs"]["properties"][0]["childs"]["type"][0]["value"], ); $pef349725 = self::parseResultVariableProperties($v3c3af72a1c, $pef349725); return $pef349725; } public function printCode($v1d696dbd12, $v56dcda6d50, $v54bb17785b = "", $v5d3813882f = null) { $v539082ff30 = $this->data; $pef349725 = $v539082ff30["properties"]; $v1cfba8c105 = self::getPropertiesResultVariableCode($pef349725); $pb537c4d4 = $pef349725["method_obj"]; if ($pb537c4d4) { $v0ee64549f2 = strpos($pb537c4d4, "::"); $pd6f5fc01 = strpos($pb537c4d4, "->"); $pb537c4d4 = substr($pb537c4d4, 0, 1) != '$' && (!$v0ee64549f2 || ($pd6f5fc01 && $v0ee64549f2 > $pd6f5fc01)) ? '$' . $pb537c4d4 : $pb537c4d4; $pb537c4d4 .= "->"; } $v067674f4e4 = $v54bb17785b . $v1cfba8c105 . $pb537c4d4 . "getBlockIdFromFilePath(" . self::getVariableValueCode($pef349725["value"], $pef349725["type"]) . ");\n"; return $v067674f4e4 . self::printTask($v1d696dbd12, $v539082ff30["exits"][self::DEFAULT_EXIT_ID], $v56dcda6d50, $v54bb17785b, $v5d3813882f); } } ?>

@@ -1539,7 +1539,7 @@ function initDBTablesSorting(elm) {
 				var db_driver = getIframeBeanDBDriver(iframe_win, bean_name);
 				
 				//check if droppable is a LayoutUIEditor
-				if (PtlLayoutUIEditor && typeof iframe_win.updateCodeLayoutUIEditorDBTableWidget == "function") {
+				if (PtlLayoutUIEditor && typeof iframe_win.onChooseCodeLayoutUIEditorDBTableWidgetOptions == "function") {
 					if (iframe_droppable_elm) { //if iframe_droppable_elm exists, it means it has the class: .droppable"
 						//create widget and append it to iframe_droppable_elm
 						var widget = $("<div></div>");
@@ -1552,8 +1552,14 @@ function initDBTablesSorting(elm) {
 						};
 						PtlLayoutUIEditor.onWidgetDraggingStop(new_event, helper_clone, widget);
 						
+						var widget_group = j_iframe_droppable_elm.closest("[data-widget-group-list], [data-widget-group-form]");
+						var inside_of_widget_group = widget_group.length > 0;
+						
 						//prepare widget props
-						onChooseLayoutUIEditorDBTableWidgetOptions(iframe_win, db_driver, table_name, widget);
+						if (inside_of_widget_group)
+							iframe_win.onReplaceCodeLayoutUIEditorDBTableWidgetOptions(db_driver, "db", table_name, widget);
+						else 
+							iframe_win.onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, "db", table_name, widget);
 					}
 					else
 						PtlLayoutUIEditor.showError("Please drop element inside of a droppable element in the design area.");
@@ -2408,10 +2414,6 @@ function onChooseWorkflowDBTableTaskOptions(event, iframe_droppable_elm, iframe_
 		},
 	});
 	DBTableTaskOptionsFancyPopup.showPopup();
-}
-
-function onChooseLayoutUIEditorDBTableWidgetOptions(iframe_win, db_driver, table_name, widget) {
-	iframe_win.onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, "db", table_name, widget);
 }
 
 function initDBTableAttributesSorting(elm) {

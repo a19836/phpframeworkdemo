@@ -8,6 +8,7 @@ var TemplateSamplesFancyPopup = new MyFancyPopupClass();
 var TemplateRegionBlockHtmlEditorFancyPopup = new MyFancyPopupClass();
 var TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup = new MyFancyPopupClass();
 var DBTableWidgetOptionsFancyPopup = new MyFancyPopupClass();
+var ReplaceExistingDBTableWidgetFancyPopup = new MyFancyPopupClass();
 
 var block_params_values_list = {};
 var regions_blocks_params_latest_values = {};
@@ -4298,8 +4299,98 @@ function chooseCodeLayoutUIEditorModuleBlock(tree_obj) {
 		    		widget_action: widget_action
 	    		};
 	    		
-	    		onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_table, widget, opts);
+	    		var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+	    		var elm_from_point = PtlLayoutUIEditor && window.event && window.event.target ? PtlLayoutUIEditor.getWidgetDroppedElement(window.event, $(window.event.target)) : null;
+	    		var widget_group = elm_from_point ? $(elm_from_point).closest("[data-widget-group-list], [data-widget-group-form]") : null;
+			var inside_of_widget_group = widget_group && widget_group.length > 0;
+			
+			if (inside_of_widget_group)
+				onReplaceCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_table, widget, opts);
+			else 
+				onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_table, widget, opts);
 		}
+	}
+}
+
+function onReplaceCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_table, widget, opts) {
+	//must have settimeout bc the widget doesn't have the right parent yet.
+	setTimeout(function() {
+		var widget_parent = widget.parent();
+		widget.remove();
+		
+		var widget_group = widget_parent.closest("[data-widget-group-list], [data-widget-group-form]");
+		
+		if (widget_group[0]) {
+			//show popup asking if user wants to replace the table in existing widget or to create a sub_widget.
+			var popup = $(".replace_existing_db_table_widget_popup");
+			
+			if (!popup[0]) {
+				popup = $('<div class="myfancypopup with_title replace_existing_db_table_widget_popup">'
+						+ '<div class="title">Choose an action</div>'
+						+ '<div class="info">You are about to drop this item into an existing widget group.<br/>Do you wish to replace the table name in the existing widget settings or create a new widget inside of the existing one?</div>'
+						+ '<div class="button">'
+							+ '<input type="button" value="Replace table name" onclick="ReplaceExistingDBTableWidgetFancyPopup.settings.replaceTableNameFunction(this)">'
+							+ '<input type="button" value="Create sub-widget" onclick="ReplaceExistingDBTableWidgetFancyPopup.settings.createSubWidgetFunction(this)">'
+						+ '</div>'
+						+ '<div class="table_alias">'
+							+ '<label>Table alias:</label>'
+							+ '<input placeHolder="Leave blank for default" />'
+						+ '</div>'
+					+ '</div>');
+				$(document.body).append(popup);
+			}
+			
+			//init and show popup
+			ReplaceExistingDBTableWidgetFancyPopup.init({
+				elementToShow: popup,
+				parentElement: document,
+				
+				onClose: function() {
+					//update menu layer
+					var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+					
+					if (PtlLayoutUIEditor)
+						PtlLayoutUIEditor.deleteTemplateWidget(widget); //update menu layer from layout ui editor
+				},
+				replaceTableNameFunction: function(btn) {
+					var table_alias = popup.find(".table_alias input").val();
+					
+					replaceCodeLayoutUIEditorDBTableWidgetSettings(db_driver, db_type, db_table, table_alias, widget_group, opts);
+					ReplaceExistingDBTableWidgetFancyPopup.hidePopup();
+				},
+				createSubWidgetFunction: function(btn) {
+					onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_table, widget, opts);
+					
+					var table_alias = popup.find(".table_alias input").val();
+					$(".choose_db_table_widget_options_popup .table_alias input").val(table_alias);
+					
+					ReplaceExistingDBTableWidgetFancyPopup.hidePopup();
+				},
+			});
+			ReplaceExistingDBTableWidgetFancyPopup.showPopup();
+		}
+	}, 100);
+}
+
+function replaceCodeLayoutUIEditorDBTableWidgetSettings(db_driver, db_type, db_table, db_table_alias, widget_group, opts) {
+	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+	
+	if (PtlLayoutUIEditor) {
+		MyFancyPopup.showLoading();
+		
+		var settings = {
+			db_driver: db_driver,
+	    		db_type: db_type,
+			db_table: db_table,
+			db_table_alias: db_table_alias,
+		};
+		
+		//add db_broker
+		settings = addDBBrokerToCodeLayoutUIEditorDBTableWidgetSettings(settings);
+		
+		PtlLayoutUIEditor.LayoutUIEditorWidgetResource.replaceUserSettingsInWidgetGroup(widget_group, settings);
+		
+		MyFancyPopup.hideLoading();
 	}
 }
 
@@ -4490,31 +4581,8 @@ function updateCodeLayoutUIEditorDBTableWidget(widget, settings) {
 		widget.hide();
 		MyFancyPopup.showLoading();
 		
-		//prepare db_broker
-		if (!settings["db_broker"] && settings["db_driver"]) {
-			if (default_dal_broker && $.isPlainObject(db_brokers_drivers_tables_attributes[default_dal_broker]))
-				for (db_driver in db_brokers_drivers_tables_attributes[default_dal_broker])
-					if (db_driver == settings["db_driver"]) {
-						settings["db_broker"] = default_dal_broker;
-						break;
-					}
-			
-			if (!settings["db_broker"])
-				for (db_broker in db_brokers_drivers_tables_attributes)
-					if ($.isPlainObject(db_brokers_drivers_tables_attributes[db_broker])) {
-						for (db_driver in db_brokers_drivers_tables_attributes[db_broker])
-							if (db_driver == settings["db_driver"]) {
-								settings["db_broker"] = db_broker;
-								break;
-							}
-						
-						if (settings["db_broker"])
-							break;
-					}
-		}
-		
-		if (settings["db_broker"] == default_dal_broker)
-			settings["db_broker"] = "";
+		//add db_broker
+		settings = addDBBrokerToCodeLayoutUIEditorDBTableWidgetSettings(settings);
 		
 		//must have settimeout bc the widget doesn't have the right parent yet.
 		setTimeout(function() {
@@ -4534,6 +4602,36 @@ function updateCodeLayoutUIEditorDBTableWidget(widget, settings) {
 			MyFancyPopup.hideLoading();
 		}, 100);
 	}
+}
+
+function addDBBrokerToCodeLayoutUIEditorDBTableWidgetSettings(settings) {
+	//prepare db_broker
+	if (!settings["db_broker"] && settings["db_driver"]) {
+		if (default_dal_broker && $.isPlainObject(db_brokers_drivers_tables_attributes[default_dal_broker]))
+			for (db_driver in db_brokers_drivers_tables_attributes[default_dal_broker])
+				if (db_driver == settings["db_driver"]) {
+					settings["db_broker"] = default_dal_broker;
+					break;
+				}
+		
+		if (!settings["db_broker"])
+			for (db_broker in db_brokers_drivers_tables_attributes)
+				if ($.isPlainObject(db_brokers_drivers_tables_attributes[db_broker])) {
+					for (db_driver in db_brokers_drivers_tables_attributes[db_broker])
+						if (db_driver == settings["db_driver"]) {
+							settings["db_broker"] = db_broker;
+							break;
+						}
+					
+					if (settings["db_broker"])
+						break;
+				}
+	}
+	
+	if (settings["db_broker"] == default_dal_broker)
+		settings["db_broker"] = "";
+	
+	return settings;
 }
 
 function openCodeLayoutUIEditorDBTableUisDiagramBlockPopup(widget, settings) {

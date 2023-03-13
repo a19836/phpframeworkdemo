@@ -2,6 +2,7 @@
 var creating_resources = {};
 var creating_resources_by_table = {};
 var no_cache_for_first_resource_creation = false;
+var no_cache_for_first_resource_creation_ttl = 300000; //5 min
 var flush_cache = false;
 
 function initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor) {
@@ -833,7 +834,7 @@ function addLayoutUIEditorWidgetResourceSLAResourceAsync(db_broker, db_driver, d
 			//reset no_cache_for_first_resource_creation after 60 secs, bc it might be some changes meanwhile in the business logic layer.
 			setTimeout(function() {
 				no_cache_for_first_resource_creation = false;
-			}, 60000);
+			}, no_cache_for_first_resource_creation_ttl);
 		}
 		
 		var post_data = {
