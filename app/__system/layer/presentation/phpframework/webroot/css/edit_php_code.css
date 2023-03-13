@@ -370,6 +370,7 @@
   #choose_db_driver_table .type select, 
   #choose_db_driver_table .db_table select {
 	width:200px;
+	font-size:inherit;
 }
 
 /* EDIT TASK SOURCE POPUP */

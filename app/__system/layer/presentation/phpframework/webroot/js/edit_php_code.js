@@ -2924,8 +2924,10 @@ function generateCodeFromTasksFlow(do_not_confirm, options) {
 								options["error"]();
 						}
 						
-						MyFancyPopup.hidePopup();
-						$(".workflow_menu").show();
+						if (!is_from_auto_save) {
+							MyFancyPopup.hidePopup();
+							$(".workflow_menu").show();
+						}
 					},
 					error : function(jqXHR, textStatus, errorThrown) { 
 						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
@@ -2937,8 +2939,10 @@ function generateCodeFromTasksFlow(do_not_confirm, options) {
 						else {
 							StatusMessageHandler.showError("There was an error trying to update this code. Please try again." + msg);
 				
-							MyFancyPopup.hidePopup();
-							$(".workflow_menu").show();
+							if (!is_from_auto_save) {
+								MyFancyPopup.hidePopup();
+								$(".workflow_menu").show();
+							}
 							
 							if (typeof options["error"] == "function")
 								options["error"]();
@@ -2949,8 +2953,11 @@ function generateCodeFromTasksFlow(do_not_confirm, options) {
 			}
 			else {
 				StatusMessageHandler.showError("There was an error trying to update this code. Please try again.");
-				MyFancyPopup.hidePopup();
-				$(".workflow_menu").show();
+				
+				if (!is_from_auto_save) {
+					MyFancyPopup.hidePopup();
+					$(".workflow_menu").show();
+				}
 				
 				if (typeof options["error"] == "function")
 					options["error"]();
