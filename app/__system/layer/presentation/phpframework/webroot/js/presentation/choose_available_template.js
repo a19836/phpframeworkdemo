@@ -32,6 +32,7 @@ function chooseAvailableTemplate(select, options) {
 			available_projects_templates_props: options["available_projects_templates_props"] ? options["available_projects_templates_props"] : null,
 			get_available_templates_props_url: options["get_available_templates_props_url"] ? options["get_available_templates_props_url"] : null,
 			install_template_url: options["install_template_url"] ? options["install_template_url"] : null,
+			onInstall: options["on_install"] ? options["on_install"] : null,
 			hide_choose_different_editor: options["hide_choose_different_editor"] ? true : false,
 			hide_choose_different_project: options["hide_choose_different_project"] ? true : false,
 			
@@ -75,9 +76,12 @@ function installTemplatePopup(project_id, folder_to_filter) {
 					MyFancyPopupAvailableTemplate.settings.available_projects_templates_props[project_id] = null;
 					
 					//reload templates
-					loadAvailableProjectTemplatesHtml(project_id, function() {
+					loadAvailableProjectTemplatesHtml(project_id, function(proj_id, server_data_fetched) {
 						prepareChooseAvailableTemplateDefaultHtml(project_id);
 						prepareChooseAvailableTemplateInstalledHtml(project_id, folder_to_filter);
+						
+						if (server_data_fetched && typeof MyFancyPopupAvailableTemplate.settings.onInstall == "function")
+							MyFancyPopupAvailableTemplate.settings.onInstall(project_id, MyFancyPopupAvailableTemplate.settings.available_projects_templates_props[project_id]);
 					});
 				},
 			});
@@ -428,7 +432,7 @@ function loadAvailableProjectTemplatesHtml(project_id, handler_func) {
 				success : function(data, textStatus, jqXHR) {
 					MyFancyPopupAvailableTemplate.settings.available_projects_templates_props[project_id] = data;
 					
-					handler_func(project_id);
+					handler_func(project_id, true);
 				},
 				error : function(jqXHR, textStatus, errorThrown) { 
 					if (jqXHR.responseText)

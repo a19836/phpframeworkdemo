@@ -265,6 +265,27 @@ function onChooseAvailableTemplate(elm, show_templates_only) {
 		get_available_templates_props_url: get_available_templates_props_url,
 		install_template_url: install_template_url,
 		
+		on_install: function(project_id, installed_templates) {
+			if (installed_templates && project_id == selected_project_id) {
+				//update the list of new templates in cat_select
+				var curr_templates = [];
+				var options = cat_select.find("option");
+				
+				$.each(options, function(idx, option) {
+					curr_templates.push(option.value);
+				});
+				
+				$.each(installed_templates, function(template_id, template_data) {
+					if ($.inArray(template_id, curr_templates) == -1)
+						cat_select.append('<option value="' + template_id + '">' + template_id + '</option>');
+				});
+				
+				//refresh the template list in the navigator tree of the parent window
+				if (window.parent != window && typeof window.parent.refreshOpenNodeChildsBasedInPath == "function")
+					window.parent.refreshOpenNodeChildsBasedInPath(selected_project_id + "/src/template/");
+			}
+		},
+		
 		on_select: function(selected_template) {
 			var template_genre = template_elm.children("select[name=template_genre]");
 			
