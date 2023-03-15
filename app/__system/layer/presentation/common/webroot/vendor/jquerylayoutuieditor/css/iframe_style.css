@@ -228,6 +228,11 @@ body {
 }
 
 /* TEMPLATE WIDGET BORDERS */
+.main-droppable.borders .container.row.template-widget > .droppable.template-widget {
+	margin-left:0;
+	margin-right:0;
+}
+
 .main-droppable.borders p.template-widget,
   .main-droppable.borders h1.template-widget,
   .main-droppable.borders h2.template-widget,

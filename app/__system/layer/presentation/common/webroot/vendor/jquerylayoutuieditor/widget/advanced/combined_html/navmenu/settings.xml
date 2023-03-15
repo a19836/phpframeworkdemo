@@ -79,6 +79,7 @@
 					html_element = $(html_element);
 					
 					if (html_element.children().length == html_element.children("a").length) {
+						//DEPRECATED so the children can be converted to widgets
 						//get only the childNodes that are node.ELEMENT_NODE and check if they belong to another widget.
 						/*var children = html_element.children(default_column_node_name);
 						var t = children.length;
@@ -141,6 +142,7 @@
 				if (!html_element) {
 					//create some default children, but as normal template-widgets
 					widget.html('<a href="#" style="min-width:20px; min-height:20px;">Home</a><a href="#" style="min-width:20px; min-height:20px;">About</a><a href="#" style="min-width:20px; min-height:20px;">Contact</a>');
+					
 					ui_creator.convertHtmlElementToWidget( widget.children() );
 				}
 			};

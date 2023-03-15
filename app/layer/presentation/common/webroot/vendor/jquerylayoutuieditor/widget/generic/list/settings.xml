@@ -85,6 +85,7 @@
 				if (html_element && (html_element.nodeName.toLowerCase() == "ul" || html_element.nodeName.toLowerCase() == "ol")) {
 					html_element = $(html_element);
 					
+					//DEPRECATED so the children can be converted to widgets
 					//get only the childNodes that are node.ELEMENT_NODE and check if they belong to another widget.
 					/*var children = html_element.children(default_column_node_name);
 					var t = children.length;
@@ -126,6 +127,7 @@
 				if (!html_element) {
 					//create some default children, but as normal template-widgets
 					widget.html('<li style="min-width:20px; min-height:20px;">Li 1</li><li style="min-width:20px; min-height:20px;">Li 2</li><li style="min-width:20px; min-height:20px;">Li 3</li>');
+					
 					ui_creator.convertHtmlElementToWidget( widget.children() );
 				}
 			};
