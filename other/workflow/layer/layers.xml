@@ -2,38 +2,38 @@
 <tasks>
 	<container>
 		<id><![CDATA[layer_presentations]]></id>
-		<width>906</width>
+		<width>772</width>
 		<height>150</height>
 		<left>1</left>
 		<top>0</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_bls]]></id>
-		<width>906</width>
+		<width>772</width>
 		<height>150</height>
 		<left>1</left>
-		<top>149</top>
+		<top>150</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dals]]></id>
-		<width>906</width>
+		<width>772</width>
 		<height>150</height>
 		<left>1</left>
-		<top>298</top>
+		<top>299</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dbs]]></id>
-		<width>906</width>
+		<width>772</width>
 		<height>150</height>
 		<left>1</left>
-		<top>448</top>
+		<top>449</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_drivers]]></id>
-		<width>906</width>
+		<width>772</width>
 		<height>121</height>
 		<left>1</left>
-		<top>598</top>
+		<top>599</top>
 	</container>
 	<task>
 		<label><![CDATA[mysql]]></label>
