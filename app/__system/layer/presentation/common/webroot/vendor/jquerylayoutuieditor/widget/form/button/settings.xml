@@ -88,6 +88,8 @@
 					var html = ui_creator.getCleanedHtmlElement(clone[0]);
 					var text = html_element.innerHTML;
 					
+					clone.remove();
+					
 					return html.replace('</button>', text + '</button>');
 				}
 				

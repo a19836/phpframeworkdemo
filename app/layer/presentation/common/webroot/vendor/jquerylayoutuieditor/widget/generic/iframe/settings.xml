@@ -71,7 +71,13 @@
 			};
 			
 			me.cleanHtml = function(html_element) {
+				var html = ui_creator.getCleanedHtmlElement(html_element);
+				var html_element_tag = MyHtmlBeautify.getTagHtml(html, 0, "");
+				
+				html = html.replace(html_element_tag[0], ""); //remove the tag, so it can be replaced by the right tag.
+				
 				var clone = ui_creator.cloneHtmlElementBeforeCleanIt(html_element);
+				clone[0].innerHTML = '';
 				
 				//parse src to convert url to vars: $project_url_prefix or $project_common_url_prefix
 				var src = clone.attr("src");
@@ -81,11 +87,31 @@
 					clone.attr("src", src);
 				}
 				
-				var html = ui_creator.getCleanedHtmlElement(clone[0]);
+				var clone_html = ui_creator.getCleanedHtmlElement(clone[0]);
+				var clone_tag = MyHtmlBeautify.getTagHtml(clone_html, 0, "");
+				html = clone_tag[0] + html;
 				
 				clone.remove();
 				
 				return html;
+				
+				/*DEPRECATED: bc if the auto_save is running and don't want it to mess it with my layout editor when I'm editing at the same time, otherwise it can give a bad experience to the user.
+				var widget = $(html_element);
+				
+				//parse src to convert url to vars: $project_url_prefix or $project_common_url_prefix
+				var src = widget.attr("src");
+				
+				if (src && typeof ui_creator.options.on_convert_project_url_real_values_to_php_vars_func == "function") {
+					var new_src = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(src);
+					widget.attr("src", new_src);
+				}
+				
+				var html = ui_creator.getCleanedHtmlElement(widget[0]);
+				
+				if (src)
+					widget.attr("src", src);
+				
+				return html;*/
 			};
 			
 			me.onOpenWidgetSettings = function(widget, menu_settings) {

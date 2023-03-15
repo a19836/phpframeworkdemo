@@ -8,7 +8,7 @@
 	</settings>
 	<template_widget><![CDATA[
  <div class="navbar-container">
-    <a href="#" class="navbar-brand droppable">Title here</a>
+    <a href="#" class="navbar-brand">Title here</a>
     <div class="navbar-burger">
       <div class="navbar-burger-line"></div>
       <div class="navbar-burger-line"></div>
@@ -133,6 +133,7 @@
 			
 			me.init = function() {
 				menu_widget.attr({
+					"data-on-parse-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.navbar.parseHtml",
 					"data-on-clone-menu-widget-func": ui_creator.obj_var_name + ".menu_widgets_objs.navbar.onCloneMenuWidget",
 					"data-on-clean-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.navbar.cleanHtml",
 					"data-on-create-template-widget-func": ui_creator.obj_var_name + ".menu_widgets_objs.navbar.onCreateTemplateWidget",
@@ -207,7 +208,17 @@
 						widget[0].appendChild(s);
 					}
 				}
-			}
+			};
+			
+			me.parseHtml = function(html_element) {
+				if (html_element && html_element.getAttribute("data-navbar") == "navbar" && html_element.classList.contains("navbar") && $(html_element).children(".navbar-container").length > 0) {
+					var navbar_container = $(html_element).children(".navbar-container");
+					
+					navbar_container.addClass("ignore-widget");
+					navbar_container.find(" > .navbar-burger > .navbar-burger-line").addClass("ignore-widget");
+					navbar_container.children(".navbar-items").addClass("ignore-widget");
+				}
+			};
 			
 			me.onCloneMenuWidget = function(widget, html_element) {
 				if (!html_element) {
@@ -218,9 +229,16 @@
 					
 					//set navbar widget
 					setTimeout(function() {
-						var menu = widget.find(" > .navbar-container > .navbar-items > .navbar-menu");
-						menu.children(".navbar-menu-link").addClass("droppable");
+						var navbar_container = widget.children(".navbar-container");
+						
+						ui_creator.convertHtmlElementToWidget( navbar_container.children(".navbar-brand") );
+						
+						navbar_container.children(".navbar-burger").children().addClass("ignore-widget");
+						ui_creator.convertHtmlElementToWidget( navbar_container.children(".navbar-burger") );
+						
+						var menu = navbar_container.find(" > .navbar-items > .navbar-menu");
 						ui_creator.createTemplateWidgetFromMenuWidgetTag("navmenu", menu.parent(), menu[0]);
+						ui_creator.convertHtmlElementToWidget( menu.children() );
 					}, 1000);
 				}
 				

@@ -136,7 +136,7 @@
 				var link_file = widget.children(".link-file");
 				
 				if (html_element) {
-					var href = $(html_element).attr("href");
+					var href = html_element.getAttribute("href");
 					
 					if (href && href != "") {
 						link_file.html(href);
@@ -144,7 +144,7 @@
 						//parse href in case it contains the $project_url_prefix or $project_common_url_prefix
 						var aux = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(href) : href;
 						
-						html_element.attr("href", aux);
+						html_element.setAttribute("href", aux);
 					}
 					
 					widget.append(html_element);

@@ -220,6 +220,8 @@
 				var html = ui_creator.getCleanedHtmlElement(clone[0]);
 				var options = html_element.innerHTML;
 				
+				clone.remove();
+				
 				return html.replace('</select>', options + '</select>');*/
 			};
 			

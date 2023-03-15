@@ -229,8 +229,7 @@ body {
 
 /* TEMPLATE WIDGET BORDERS */
 .main-droppable.borders .container.row.template-widget > .droppable.template-widget {
-	margin-left:0;
-	margin-right:0;
+	margin:0;
 }
 
 .main-droppable.borders p.template-widget,

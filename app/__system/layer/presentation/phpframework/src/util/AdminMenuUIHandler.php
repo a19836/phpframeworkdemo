@@ -637,7 +637,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 
 <ul id="presentation_main_templates_group_context_menu" class="mycontextmenu">
 	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\', managePresentationFile)">Add Folder</a></li>
-	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', [managePresentationFile, triggerFileNodeAfterCreateFile])">Add File</a></li>
+	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', [managePresentationFile, triggerFileNodeAfterCreateFile])">Add Template</a></li>
 	<li class="line_break"></li>
 	<li class="install_template"><a onClick="return goTo(this, \'install_template_url\', event)">Install New Template</a></li>
 	<li class="convert_template"><a onClick="return goTo(this, \'convert_template_url\', event)">Convert Url to Template</a></li>

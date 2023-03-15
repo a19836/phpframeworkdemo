@@ -542,7 +542,7 @@ function onBlurBlockSimulatedHtmlSetting(e, elm, editable_settings, setting_sele
 	var value_hash = ("" + value).hashCode();
 	
 	if (elm.getAttribute("saved_value_hash") != value_hash) {
-		showMessage("Saving this block property... Wait a while...");
+		showMessage("Saving this block property... Wait a while...", "", "bottom_messages", 1500);
 		
 		var block_simulated_html = elm.closest(".block_simulated_html");
 		var block_code_id = block_simulated_html.getAttribute("block_code_id");
@@ -587,7 +587,7 @@ function onBlurBlockSimulatedHtmlSetting(e, elm, editable_settings, setting_sele
 									
 									elm.setAttribute("saved_value_hash", value_hash)
 									
-									showMessage("Block setting saved successfully!");
+									showMessage("Block setting saved successfully!", "", "bottom_messages", 1500);
 								}
 								else
 									showError("Error trying to save this block property. Please try again!");
@@ -684,9 +684,9 @@ function getBlockSimulatedHtmlSettingValue(elm) {
 	return value;
 }
 
-function showMessage(msg) {
+function showMessage(msg, message_class, message_html_obj_class, timeout) {
 	if (parent.StatusMessageHandler)
-		parent.StatusMessageHandler.showMessage(msg);
+		parent.StatusMessageHandler.showMessage(msg, message_class, message_html_obj_class, timeout);
 }
 
 function showError(msg) {
