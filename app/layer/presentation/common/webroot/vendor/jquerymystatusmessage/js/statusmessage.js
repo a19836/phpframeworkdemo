@@ -207,12 +207,14 @@ var StatusMessageHandler = {
 			event && typeof event.stopPropagation == "function" && event.stopPropagation(); //avoids to call the onClick event from message_html_obj
 		});
 		status_message.hover(function() { //in
+			var timeout_id = status_message.data("timeout_id");
+			
 			if (timeout_id) {
 				clearTimeout(timeout_id);
 				status_message.data("timeout_id", null);
 			}
 		}, function() { //out
-			timeout_id = setTimeout(function() { 
+			var timeout_id = setTimeout(function() { 
 				close_icon.trigger("click");
 			}, timeout);
 			status_message.data("timeout_id", timeout_id);
@@ -222,6 +224,7 @@ var StatusMessageHandler = {
 		close_icon.click(function(event) {
 			event && typeof event.stopPropagation == "function" && event.stopPropagation(); //avoids to call the onClick event from message_html_obj
 			
+			var timeout_id = status_message.data("timeout_id");
 			StatusMessageHandler.removeMessage(this);
 			
 			if (timeout_id)

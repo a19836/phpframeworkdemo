@@ -114,6 +114,11 @@ $(function () {
 								updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField(elm, html, iframe);
 							};
 							
+							var droppables_exist = iframe.contents().find(".droppable:not(.edit_entity_droppable_disabled)").length > 0;
+							
+							if (!droppables_exist)
+								StatusMessageHandler.showMessage("Looks like this template has no droppables to drag widgets. We recommend you to choose another template.", "", "bottom_messages", 10000);
+							
 							//hide loading icon
 							MyFancyPopup.hidePopup();
 							
