@@ -2,6 +2,7 @@ var old_tables_names = {};
 var old_tables_attributes_names = {};
 var auto_sync_error_message_shown = false;
 var is_workflow_already_loaded = false; //check if workflow was already loaded for the first time
+var sync_with_db_server_called = false;
 
 var MyFancyPopupCreateDiagramSQL = new MyFancyPopupClass();
 var MyFancyPopupSyncSQL = new MyFancyPopupClass();
@@ -373,6 +374,7 @@ function toggleAutoSyncWithDBServer(elm, sync_with_server) {
 		var html = elm.html();
 		var title = li.attr("title");
 		var is_sync_with_db_server = $.isPlainObject(jsPlumbWorkFlow.jsPlumbTaskFile.file_settings) && jsPlumbWorkFlow.jsPlumbTaskFile.file_settings["sync_with_db_server"] == 1;
+		var call_sync_with_db_server = false;
 		
 		if (!$.isPlainObject(jsPlumbWorkFlow.jsPlumbTaskFile.file_settings))
 			jsPlumbWorkFlow.jsPlumbTaskFile.file_settings = {};
@@ -391,8 +393,8 @@ function toggleAutoSyncWithDBServer(elm, sync_with_server) {
 			
 			jsPlumbWorkFlow.jsPlumbTaskFile.file_settings["sync_with_db_server"] = 1;
 			
-			if (sync_with_server)
-				syncWithDBServer();
+			if (sync_with_server) 
+				call_sync_with_db_server = true;
 		}
 		
 		elm.html(html);
@@ -401,8 +403,19 @@ function toggleAutoSyncWithDBServer(elm, sync_with_server) {
 		//save workflow
 		var new_is_sync_with_db_server = jsPlumbWorkFlow.jsPlumbTaskFile.file_settings["sync_with_db_server"] == 1;
 		
-		if (is_sync_with_db_server != new_is_sync_with_db_server)
-			jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {silent: true});
+		if (is_sync_with_db_server != new_is_sync_with_db_server) {
+			sync_with_db_server_called = false;
+			
+			jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
+				silent: true,
+				success: function(data, textStatus, jqXHR) {
+					if (call_sync_with_db_server && !sync_with_db_server_called) //Note that the jsPlumbWorkFlow.jsPlumbTaskFile.on_success_save already calls the syncWithDBServer, so we don't need to call it twice. This 'if statement' prevents this case.
+						syncWithDBServer();
+				},
+			});
+		}
+		else if (call_sync_with_db_server)
+			syncWithDBServer();
 	}
 }
 
@@ -412,6 +425,8 @@ function syncNowWithDBServer(elm) {
 }
 
 function syncWithDBServer(do_not_simulate) {
+	sync_with_db_server_called = true;
+	
 	prepareAutoSaveVars();
 	var local_is_from_auto_save = is_from_auto_save;
 	
@@ -775,8 +790,13 @@ function executeSyncSQLStatements(workflow_data, statements) {
 			
 			var status = checkSyncWithDBServerResult(local_is_from_auto_save, workflow_data, data);
 			
-			if (status)
+			if (status) {
 				MyFancyPopupSyncSQL.hidePopup();
+				
+				//refresh db navigator tree
+				if (window.parent != window && typeof window.parent.refreshLastNodeChilds == "function")
+					window.parent.refreshLastNodeChilds();
+			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) { 
 			if (!local_is_from_auto_save) {
