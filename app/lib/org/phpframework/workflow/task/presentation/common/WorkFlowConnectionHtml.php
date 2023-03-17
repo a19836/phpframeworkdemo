@@ -26,6 +26,10 @@
 			<option value="parent">Parent</option>
 		</select>
 	</div>
+	<div class="connection_label">
+		<label>Connection Label: </label>
+		<input class="connection_property_field" name="connection_label" />
+	</div>
 	<div class="connection_title">
 		<label>Connection Title: </label>
 		<input class="connection_property_field" name="connection_title" />

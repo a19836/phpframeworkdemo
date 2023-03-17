@@ -222,10 +222,10 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						)
 					)
 				);
-			else
+			else {
+				$settings["buttons"]["insert"]["field"]["input"]["name"] = "login"; //force button name to be login
 				$login_button = $settings["buttons"]["insert"];
-			
-			$settings["buttons"]["insert"]["field"]["input"]["name"] = "login"; //force button name to be login
+			}
 			
 			$buttons = array();
 			$buttons["submit"] = array(

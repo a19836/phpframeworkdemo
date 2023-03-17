@@ -655,7 +655,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', [managePresentationFile, triggerFileNodeAfterCreateFile])">Add Page</a></li>
 	' . ($pe847b157 ? '<li class="line_break"></li>
 	<li class="create_automatically"><a onClick="return goTo(this, \'create_automatically_url\', event)">Create UIs Automatically</a></li>
-	<li class="create_uis_diagram"><a onClick="return goTo(this, \'create_uis_diagram_url\', event)">Create Folder UIs Diagram</a></li>' : '') . '
+	<li class="create_uis_diagram"><a onClick="return goTo(this, \'create_uis_diagram_url\', event)">Folder UIs Diagram</a></li>' : '') . '
 	<li class="line_break"></li>
 	<li class="view_project"><a onClick="return openWindow(this, \'view_project_url\', \'project\')">Preview Project</a></li>
 	<li class="test_project"><a onClick="return openWindow(this, \'test_project_url\', \'project\')">Test Project</a></li>
@@ -673,7 +673,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', [managePresentationFile, triggerFileNodeAfterCreateFile])">Add Page</a></li>
 	' . ($pe847b157 ? '<li class="line_break"></li>
 	<li class="create_automatically"><a onClick="return goTo(this, \'create_automatically_url\', event)">Create UIs Automatically</a></li>
-	<li class="create_uis_diagram"><a onClick="return goTo(this, \'create_uis_diagram_url\', event)">Create Folder UIs Diagram</a></li>' : '') . '
+	<li class="create_uis_diagram"><a onClick="return goTo(this, \'create_uis_diagram_url\', event)">Folder UIs Diagram</a></li>' : '') . '
 	<li class="line_break"></li>
 	<li class="view_project"><a onClick="return openWindow(this, \'view_project_url\', \'project\')">Preview Folder</a></li>
 	<li class="test_project"><a onClick="return openWindow(this, \'test_project_url\', \'project\')">Test Folder</a></li>

@@ -37,7 +37,7 @@
 <div class="users_management_admin_panel">
 	<a href="javascript:void(0)" onClick="PresentationTaskUtil.openUsersManagementAdminPanelPopup(this)">Users Management Admin Panel</a>
 	
-	<div class="users_management_admin_panel_popup myfancypopup">
+	<div class="users_management_admin_panel_popup myfancypopup with_iframe_title">
 		<iframe></iframe>
 	</div>
 </div>

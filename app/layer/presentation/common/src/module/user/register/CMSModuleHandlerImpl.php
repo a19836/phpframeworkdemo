@@ -166,6 +166,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					)
 				)
 			);
+		else
+			$settings["buttons"]["insert"]["field"]["input"]["name"] = "save"; //force button name to be login
 		
 		$CommonModuleTableExtraAttributesUtil->prepareFileFieldsSettings($EVC, $settings);
 		

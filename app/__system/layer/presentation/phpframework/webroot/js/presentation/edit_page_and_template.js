@@ -5162,7 +5162,7 @@ function setCodeLayoutUIEditorCode(main_obj, code) {
 }
 
 /* UTIL FUNCTIONS */
-if (typeof flushCache != "function" && flush_cache_url)
+if (typeof flushCache != "function" && typeof flush_cache_url != "undefined" && flush_cache_url)
 	function flushCache(opts) {
 		opts = $.isPlainObject(opts) ? opts : {};
 		var do_not_show_messages = opts["do_not_show_messages"];

@@ -42,7 +42,7 @@
 	min-width:120px !important;
 	min-height:140px !important;
 	margin:0;
-	padding:0 0 10px !important;
+	padding:0 0 20px !important;
 	border-radius:2px !important;
 	border-style:solid !important;
 	border-color:#DFE1ED !important;
@@ -143,7 +143,7 @@
 	top:30px;
 	left:0;
 	right:0;
-	bottom:10px;
+	bottom:20px;
 	box-sizing:border-box;
 }
 .jsplumbtaskworkflow .task > .task_droppable.task_droppable_over,
@@ -658,12 +658,14 @@
 	margin:0 auto;
 }
 .selected_connection_properties .presentation_connection_html .connection_type,
+  .selected_connection_properties .presentation_connection_html .connection_label,
   .selected_connection_properties .presentation_connection_html .connection_title,
   .selected_connection_properties .presentation_connection_html .connection_class,
   .selected_connection_properties .presentation_connection_html .connection_target {
 	margin-top:10px;
 }
 .selected_connection_properties .presentation_connection_html .connection_type > label,
+  .selected_connection_properties .presentation_connection_html .connection_label > label,
   .selected_connection_properties .presentation_connection_html .connection_title > label,
   .selected_connection_properties .presentation_connection_html .connection_class > label,
   .selected_connection_properties .presentation_connection_html .connection_target > label {
@@ -671,6 +673,7 @@
 	display:inline-block;
 }
 .selected_connection_properties .presentation_connection_html .connection_type > select,
+  .selected_connection_properties .presentation_connection_html .connection_label > input,
   .selected_connection_properties .presentation_connection_html .connection_title > input,
   .selected_connection_properties .presentation_connection_html .connection_class > input,
   .selected_connection_properties .presentation_connection_html .connection_target > input {

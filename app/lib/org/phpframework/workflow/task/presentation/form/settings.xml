@@ -36,6 +36,8 @@
 			<on_task_drag_stop_end>PresentationTaskUtil.onTaskDragStopEnd</on_task_drag_stop_end>
 			
 			<on_load_connection_properties>PresentationTaskUtil.onLoadConnectionProperties</on_load_connection_properties>
+			<on_submit_connection_properties>PresentationTaskUtil.onSubmitConnectionProperties</on_submit_connection_properties>
+			<on_complete_connection_label>PresentationTaskUtil.onCompleteConnectionLabel</on_complete_connection_label>
 			<on_success_connection_drop>PresentationTaskUtil.onTaskConnection</on_success_connection_drop>
 			
 			<on_click_task>showTaskPropertiesIfExists</on_click_task>

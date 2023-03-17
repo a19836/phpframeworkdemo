@@ -213,10 +213,16 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 			j_task.append(droppable);
 			
 			WF.jsPlumbContextMenu.prepareTaskDroppables(j_task, {accept: ".task_form, .task_listing, .task_view"});
-			WF.jsPlumbTaskFlow.resizeTaskParentTask(droppable, true);
 			
 			var label_elm = WF.jsPlumbTaskFlow.getTaskLabelElement(j_task);
 			label_elm.closest("." + WF.jsPlumbTaskFlow.task_label_class_name).attr("title", label_elm.text());
+			
+			/*DEPRECATED Do not add the 'WF.jsPlumbTaskFlow.resizeTaskParentTask(droppable)' bc since we are loading the width and height of the task, we don't need this anymore, and there could be a situation where the user really wants a specific size and if we call resizeTaskParentTask the size will be overwrited.
+			//because the inner tasks will only get appended to this task, after this function get called, we need to set a timeout to resize the task
+			setTimeout(function() {
+				WF.jsPlumbTaskFlow.resizeTaskParentTask(droppable, true);
+			}, 1000);
+			*/
 		},
 		
 		onTaskCloning : function(task_id) {
@@ -284,6 +290,35 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 		onLoadConnectionProperties : function(properties_html_elm, connection, connection_property_values) {
 			var presentation_connection_html = properties_html_elm.find(".presentation_connection_html");
 			PresentationTaskUtil.onChangeConnectionType( presentation_connection_html.find(".connection_type select")[0] );
+			
+			//prepare connection label
+			var label_overlay = connection.getOverlay("label");
+			var conn_label = label_overlay.getLabel();
+			properties_html_elm.find(".connection_label input").val(conn_label);
+		},
+		
+		onSubmitConnectionProperties : function(properties_html_elm, connection, connection_property_values) {
+			//update connection label
+			var presentation_connection_html = properties_html_elm.find(".presentation_connection_html");
+			var conn_label = presentation_connection_html.find(".connection_label input").val();
+			var label_overlay = connection.getOverlay("label");
+			
+			if (label_overlay)
+				label_overlay.setLabel(conn_label);
+			
+			return true;
+		},
+		
+		onCompleteConnectionLabel : function(connection_id) {
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var label_overlay = WF.jsPlumbTaskFlow.getOverlayConnectionId(connection_id);
+			
+			if (label_overlay) {
+				var conn_label = label_overlay.getLabel();
+				WF.jsPlumbTaskFlow.connections_properties[connection_id]["connection_label"] = conn_label;
+			}
+			
+			return true;
 		},
 		
 		onTaskConnection : function(conn) {
