@@ -4,18 +4,18 @@ include $EVC->getModulePath("common/init_settings", $common_project_name);
 include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
 $installed_wordpress_folders_name = CMSPresentationLayerHandler::getWordPressInstallationsFoldersName($PEVC);
-$wordpress_url_prefix = getProjectCommonUrlPrefix($PEVC) . WordPressUrlsParser::WORDPRESS_FOLDER_PREFIX . "/#installation_name#/";
+$wordpress_url_prefix = getProjectCommonUrlPrefix($PEVC, null) . WordPressUrlsParser::WORDPRESS_FOLDER_PREFIX . "/#installation_name#/";
 $default_wordpress_installation_name = $GLOBALS["default_db_driver"];
 
 include $EVC->getModulePath("common/end_project_module_file", $common_project_name);
 
 $wordpress_installation_admin_login_url_prefix = $project_url_prefix . "phpframework/cms/wordpress/admin_login?bean_name=" . $_GET["bean_name"] . "&bean_file_name=" . $_GET["bean_file_name"] . "&path=" . $_GET["path"] . "&db_driver=#installation_name#&wordpress_admin_file_to_open=options-permalink.php";
 
-
-function getProjectCommonUrlPrefix($EVC) {
-	include $EVC->getConfigPath("config");
+/* Already set in the entity/presentation/edit.php
+function getProjectCommonUrlPrefix($EVC, $selected_project_id) {
+	include $EVC->getConfigPath("config", $selected_project_id);
 	return $project_common_url_prefix;
-}
+}*/
 
 function getJSExecutableCodeWithWordPressUrl() {
 	return "<script>
@@ -489,48 +489,65 @@ function getBlockTypeCodeHtml() {
 		</div>';
 }
 
-echo '<script>
-var block_type_input_html = \'' . addcslashes(str_replace("\n", "", getBlockTypeInputHtml()), "\\'") . '\';
-var block_type_previous_html = \'' . addcslashes(str_replace("\n", "", getBlockTypePreviousHtml()), "\\'") . '\';
-var block_type_next_html = \'' . addcslashes(str_replace("\n", "", getBlockTypeNextHtml()), "\\'") . '\';
+$block_type_input_html = getBlockTypeInputHtml();
+$block_type_previous_html = getBlockTypePreviousHtml();
+$block_type_next_html = getBlockTypeNextHtml();
 
-var block_type_full_page_html = \'' . addcslashes(str_replace("\n", "", getBlockTypeFullPageHtml()), "\\'") . '\';
-var block_type_header_html = \'' . addcslashes(str_replace("\n", "", getBlockTypeContentHtml("header")), "\\'") . '\';
-var block_type_footer_html = \'' . addcslashes(str_replace("\n", "", getBlockTypeContentHtml("footer")), "\\'") . '\';
-var block_type_content_html = \'' . addcslashes(str_replace("\n", "", getBlockTypeContentHtml("content")), "\\'") . '\';
-var block_type_post_comments_html = \'' . addcslashes(str_replace("\n", "", getBlockTypePostCommentsHtml()), "\\'") . '\';
-var block_type_widget_html = \'' . addcslashes(str_replace("\n", "", getBlockTypeWidgetHtml()), "\\'") . '\';
-var block_type_side_bar_html = \'' . addcslashes(str_replace("\n", "", getBlockTypeSidebarHtml()), "\\'") . '\';
-var block_type_menu_html = \'' . addcslashes(str_replace("\n", "", getBlockTypeMenuHtml()), "\\'") . '\';
-var block_type_menu_location_html = \'' . addcslashes(str_replace("\n", "", getBlockTypeMenuLocationHtml()), "\\'") . '\';
-var block_type_code_html = \'' . addcslashes(str_replace("\n", "", getBlockTypeCodeHtml()), "\\'") . '\';
-</script>';
+$block_type_full_page_html = getBlockTypeFullPageHtml();
+$block_type_header_html = getBlockTypeContentHtml("header");
+$block_type_footer_html = getBlockTypeContentHtml("footer");
+$block_type_content_html = getBlockTypeContentHtml("content");
+$block_type_post_comments_html = getBlockTypePostCommentsHtml();
+$block_type_widget_html = getBlockTypeWidgetHtml();
+$block_type_side_bar_html = getBlockTypeSidebarHtml();
+$block_type_menu_html = getBlockTypeMenuHtml();
+$block_type_menu_location_html = getBlockTypeMenuLocationHtml();
+$block_type_code_html = getBlockTypeCodeHtml();
 ?>
 
 <link rel="stylesheet" href="<?= $module["webroot_url"]; ?>settings.css" type="text/css" charset="utf-8" />
 <script type="text/javascript" src="<?= $module["webroot_url"]; ?>settings.js"></script>
-<script>
-var wordpress_url_prefix = '<?= $wordpress_url_prefix; ?>';
-var wordpress_installation_admin_login_url_prefix = '<?= $wordpress_installation_admin_login_url_prefix; ?>';
 
-var default_wordpress_installation_name = '<?= $default_wordpress_installation_name; ?>';
-</script>
+<?php
+echo '
+<script>
+var wordpress_url_prefix = \'' . $wordpress_url_prefix . '\';
+var wordpress_installation_admin_login_url_prefix = \'' . $wordpress_installation_admin_login_url_prefix . '\';
+
+var default_wordpress_installation_name = \'' . $default_wordpress_installation_name . '\';
+
+var block_type_input_html = \'' . addcslashes(str_replace("\n", "", $block_type_input_html), "\\'") . '\';
+var block_type_previous_html = \'' . addcslashes(str_replace("\n", "", $block_type_previous_html), "\\'") . '\';
+var block_type_next_html = \'' . addcslashes(str_replace("\n", "", $block_type_next_html), "\\'") . '\';
+
+var block_type_full_page_html = \'' . addcslashes(str_replace("\n", "", $block_type_full_page_html), "\\'") . '\';
+var block_type_header_html = \'' . addcslashes(str_replace("\n", "", $block_type_header_html), "\\'") . '\';
+var block_type_footer_html = \'' . addcslashes(str_replace("\n", "", $block_type_footer_html), "\\'") . '\';
+var block_type_content_html = \'' . addcslashes(str_replace("\n", "", $block_type_content_html), "\\'") . '\';
+var block_type_post_comments_html = \'' . addcslashes(str_replace("\n", "", $block_type_post_comments_html), "\\'") . '\';
+var block_type_widget_html = \'' . addcslashes(str_replace("\n", "", $block_type_widget_html), "\\'") . '\';
+var block_type_side_bar_html = \'' . addcslashes(str_replace("\n", "", $block_type_side_bar_html), "\\'") . '\';
+var block_type_menu_html = \'' . addcslashes(str_replace("\n", "", $block_type_menu_html), "\\'") . '\';
+var block_type_menu_location_html = \'' . addcslashes(str_replace("\n", "", $block_type_menu_location_html), "\\'") . '\';
+var block_type_code_html = \'' . addcslashes(str_replace("\n", "", $block_type_code_html), "\\'") . '\';
+</script>';
+?>
 
 <div class="module_get_html_contents_settings">
-<?php
-if (!$installed_wordpress_folders_name)
-	echo '<div class="error">Note that there is not any WordPress installation yet.<br/>Please install the wordpress first...</div>';
-?>
+	<?php
+	if (!$installed_wordpress_folders_name)
+		echo '<div class="error">Note that there is not any WordPress installation yet.<br/>Please install the wordpress first...</div>';
+	?>
 	
 	<div class="wordpress_installation_name">
 		<label>WordPress Installation:</label>
 		<select class="module_settings_property" name="wordpress_installation_name" onChange="onChangeWordPressDBDriver(this)">
 			<option value="">-- Default if exists --</option>
-<?php
-if ($installed_wordpress_folders_name)
-	foreach ($installed_wordpress_folders_name as $name)
-		echo '<option value="' . $name . '">' . ucwords(str_replace("_", " ", $name)) . '</option>';
-?>		
+			<?php
+			if ($installed_wordpress_folders_name)
+				foreach ($installed_wordpress_folders_name as $name)
+					echo '<option value="' . $name . '">' . ucwords(str_replace("_", " ", $name)) . '</option>';
+			?>		
 		</select>
 	</div>
 	
@@ -648,11 +665,11 @@ if ($installed_wordpress_folders_name)
 		<iframe></iframe>
 	</div>
 	
-<?php 
+	<?php 
 	echo CommonModuleSettingsUI::getStyleFieldsHtml(false, true);
 	echo CommonModuleSettingsUI::getCssFieldsHtml(true);
 	echo CommonModuleSettingsUI::getJsFieldsHtml( getJSFunctionsCodeWithWordPressUrl() );
-?>
+	?>
 	
 	<div class="wordpress_options">
 		<label>Internal Settings:</label>

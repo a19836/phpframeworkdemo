@@ -39,6 +39,7 @@
 	border:0;
 	font-size:inherit;
 	color:#000;
+	background:#f7f7f7;
 }
 .module_get_html_contents_settings > .path .wordpress_installation_url {
 	color:#000;
