@@ -158,7 +158,7 @@
 	display:inline-block;
 }
 .module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.widget_args > div input {
-	width:calc(100% - 170px);
+	width:calc(100% - 180px);
 	display:inline-block;
 }
 .module_get_html_contents_settings > .wordpress_blocks > li > .block_body > div.widget_options {
