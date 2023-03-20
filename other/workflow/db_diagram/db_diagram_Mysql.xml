@@ -12,8 +12,8 @@
 		<tag><![CDATA[table]]></tag>
 		<offset_left>100</offset_left>
 		<offset_top>10</offset_top>
-		<width>318</width>
-		<height>78</height>
+		<width>320</width>
+		<height>90</height>
 		<properties>
 			<exits>
 				<layer_exit>
@@ -60,10 +60,10 @@
 		<id><![CDATA[student]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>100</offset_left>
-		<offset_top>170</offset_top>
-		<width>318</width>
-		<height>102</height>
+		<offset_left>101</offset_left>
+		<offset_top>180</offset_top>
+		<width>320</width>
+		<height>114</height>
 		<properties>
 			<exits>
 				<layer_exit>
@@ -137,10 +137,10 @@
 		<id><![CDATA[teacher]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>484</offset_left>
-		<offset_top>83</offset_top>
-		<width>318</width>
-		<height>126</height>
+		<offset_left>506</offset_left>
+		<offset_top>71</offset_top>
+		<width>320</width>
+		<height>138</height>
 		<properties>
 			<exits>
 				<layer_exit>

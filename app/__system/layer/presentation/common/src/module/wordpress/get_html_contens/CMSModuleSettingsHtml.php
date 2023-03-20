@@ -3,6 +3,14 @@ $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/init_settings", $common_project_name);
 include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
+//Although the entity/presentation/edit.php already contains this function, when we obfuscate the php files for the DEMO, the edit.php:getProjectCommonUrlPrefix funciton will be obfuscated, so we need to re-create it here again.
+if (!function_exists("getProjectCommonUrlPrefix")) {
+	function getProjectCommonUrlPrefix($EVC, $selected_project_id) {
+		include $EVC->getConfigPath("config", $selected_project_id);
+		return $project_common_url_prefix;
+	}
+}
+
 $installed_wordpress_folders_name = CMSPresentationLayerHandler::getWordPressInstallationsFoldersName($PEVC);
 $wordpress_url_prefix = getProjectCommonUrlPrefix($PEVC, null) . WordPressUrlsParser::WORDPRESS_FOLDER_PREFIX . "/#installation_name#/";
 $default_wordpress_installation_name = $GLOBALS["default_db_driver"];
@@ -10,12 +18,6 @@ $default_wordpress_installation_name = $GLOBALS["default_db_driver"];
 include $EVC->getModulePath("common/end_project_module_file", $common_project_name);
 
 $wordpress_installation_admin_login_url_prefix = $project_url_prefix . "phpframework/cms/wordpress/admin_login?bean_name=" . $_GET["bean_name"] . "&bean_file_name=" . $_GET["bean_file_name"] . "&path=" . $_GET["path"] . "&db_driver=#installation_name#&wordpress_admin_file_to_open=options-permalink.php";
-
-/* Already set in the entity/presentation/edit.php
-function getProjectCommonUrlPrefix($EVC, $selected_project_id) {
-	include $EVC->getConfigPath("config", $selected_project_id);
-	return $project_common_url_prefix;
-}*/
 
 function getJSExecutableCodeWithWordPressUrl() {
 	return "<script>

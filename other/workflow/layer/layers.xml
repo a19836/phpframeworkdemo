@@ -12,28 +12,28 @@
 		<width>655</width>
 		<height>150</height>
 		<left>1</left>
-		<top>149</top>
+		<top>150</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dals]]></id>
 		<width>655</width>
 		<height>150</height>
 		<left>1</left>
-		<top>298</top>
+		<top>299</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dbs]]></id>
 		<width>655</width>
 		<height>150</height>
 		<left>1</left>
-		<top>448</top>
+		<top>449</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_drivers]]></id>
 		<width>655</width>
-		<height>122</height>
+		<height>121</height>
 		<left>1</left>
-		<top>598</top>
+		<top>599</top>
 	</container>
 	<task>
 		<label><![CDATA[mysql]]></label>
@@ -42,8 +42,8 @@
 		<tag><![CDATA[dbdriver]]></tag>
 		<offset_left>279</offset_left>
 		<offset_top>639</offset_top>
-		<width>90.4</width>
-		<height>60.4</height>
+		<width>100</width>
+		<height>70</height>
 		<properties>
 			<type><![CDATA[mysql]]></type>
 			<extension><![CDATA[mysqli]]></extension>
@@ -69,8 +69,8 @@
 		<tag><![CDATA[db]]></tag>
 		<offset_left>279</offset_left>
 		<offset_top>481</offset_top>
-		<width>90.4</width>
-		<height>60.4</height>
+		<width>100</width>
+		<height>70</height>
 		<properties>
 			<exits>
 				<layer_exit>
@@ -98,8 +98,8 @@
 		<tag><![CDATA[dataaccess]]></tag>
 		<offset_left>120</offset_left>
 		<offset_top>325</offset_top>
-		<width>90.4</width>
-		<height>60.4</height>
+		<width>100</width>
+		<height>70</height>
 		<properties>
 			<exits>
 				<layer_exit>
@@ -133,8 +133,8 @@
 		<tag><![CDATA[dataaccess]]></tag>
 		<offset_left>395</offset_left>
 		<offset_top>325</offset_top>
-		<width>90.4</width>
-		<height>60.4</height>
+		<width>100</width>
+		<height>70</height>
 		<properties>
 			<exits>
 				<layer_exit>
@@ -168,8 +168,8 @@
 		<tag><![CDATA[businesslogic]]></tag>
 		<offset_left>260</offset_left>
 		<offset_top>177</offset_top>
-		<width>90.4</width>
-		<height>60.4</height>
+		<width>100</width>
+		<height>70</height>
 		<properties>
 			<exits>
 				<layer_exit>
@@ -228,8 +228,8 @@
 		<tag><![CDATA[presentation]]></tag>
 		<offset_left>244</offset_left>
 		<offset_top>21</offset_top>
-		<width>90.4</width>
-		<height>60.4</height>
+		<width>100</width>
+		<height>70</height>
 		<properties>
 			<exits>
 				<layer_exit>

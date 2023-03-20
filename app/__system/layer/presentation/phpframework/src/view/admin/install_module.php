@@ -47,7 +47,7 @@ $head = '
 				<i class="icon sub_menu"></i>
 				<ul>
 					<li class="info" title="Info"><a onclick="$(\'.file_upload\').toggleClass(\'show_info\');"><i class="icon info"></i> Info</a></li>
-					<li class="modules_list" title="List Installed Modules"><a href="' . $project_url_prefix . 'phpframework/admin/manage_modules"><i class="icon go_up"></i> List Installed Modules</a></li>
+					<li class="modules_list" title="List Installed Modules"><a href="' . $project_url_prefix . 'phpframework/admin/manage_modules?filter_by_layout=' . $filter_by_layout . '"><i class="icon go_up"></i> List Installed Modules</a></li>
 				</ul>
 			</li>
 		</ul>
@@ -72,7 +72,7 @@ $head = '
 	
 	' . ($modules_download_page_url ? '<div class="go_to_modules_download_page">To download more modules please click <a href="' . $modules_download_page_url . '" target="download_modules">here</a></div>' : '') . '
 	
-	<div class="go_back_to_modules_list">To go back to the modules list please click <a href="' . $project_url_prefix . 'phpframework/admin/manage_modules?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&time=' . time() . '">here</a>.</div>
+	<div class="go_back_to_modules_list">To go back to the modules list please click <a href="' . $project_url_prefix . 'phpframework/admin/manage_modules?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&filter_by_layout=' . $filter_by_layout . '&time=' . time() . '">here</a>.</div>
 	
 	<div class="info">
 		<div>Why do you need to choose a project?<br>
@@ -90,7 +90,7 @@ $head = '
 			
 			alert('Please do NOT forget to activate this module and go to the \"Manage User Type Permissions\" page and add the new permissions to the correspondent files for this module, otherwise the module may NOT work propertly!');
 			
-			document.location = '" . $project_url_prefix . "phpframework/admin/manage_modules?bean_name=$bean_name&bean_file_name=$bean_file_name';
+			document.location = '" . $project_url_prefix . "phpframework/admin/manage_modules?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout';
 		</script>"); } } if ($get_store_modules_url) $main_content .= '
 <div class="install_store_module">
 	<div class="title">Choose a module to install from our store:</div>
