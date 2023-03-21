@@ -14,11 +14,11 @@ function openVideoPopup(elm) {
 	if (p.is(".card")) {
 		var p_body = p.children(".card-body");
 		title = p_body.find(".card-title").text();
-		description = p_body.find(".card-text").text();
+		description = p_body.find(".card-text").html();
 	}
 	else {
 		title = p.find(".tutorial_title").text();
-		description = p.find(".tutorial_description").text();
+		description = p.find(".tutorial_description").html();
 	}
 	
 	if (description)
