@@ -239,6 +239,7 @@ function showAjaxLoginPopup(login_url, urls_to_match, success_func) {
 	login_url = login_url + (login_url.indexOf("?") > -1 ? "&" : "?") + "popup=1";
 	urls_to_match = $.isArray(urls_to_match) ? urls_to_match : [urls_to_match];
 	var auto_save_bkp = auto_save;
+	var is_popup_opened = MyFancyPopupLogin.isPopupOpened();
 	
 	//prepare popup
 	var popup = $('.ajax_login_popup');
@@ -248,11 +249,15 @@ function showAjaxLoginPopup(login_url, urls_to_match, success_func) {
 		$("body").append(popup);
 	}
 	
-	//reset iframe so we can add the new load handlers
-	popup.children("iframe").remove();
-	popup.html('<iframe style="border-radius:5px;"></iframe>'); //set css here bc there is no css file for this popup.
+	if (!is_popup_opened) {
+		//reset iframe so we can add the new load handlers
+		popup.children("iframe").remove();
+		popup.html('<iframe style="border-radius:5px;"></iframe>'); //set css here bc there is no css file for this popup.
+	}
+	
 	var iframe = popup.children("iframe");
 	
+	//if popup is already opened, bind the new success_func too, otherwise the window.is_save_func_running or running_save_obj_actions_count from edit_php_code and edit_file_class_method may not be reset. Note that bc the edit_file_class_method:saveFileClassMethod calls the saveObj and before calls the getFileClassMethodObj which calls the getCodeSaving which calls the generateTasksFlowFromCode asynchronously (when on code editor tab), which runs at the same time than the saveObj. Which means if the user is not logged-in, then the showAjaxLoginPopup will be called twice (by the generateTasksFlowFromCode and saveObj), so we need to save the success_func everytime the showAjaxLoginPopup gets called.
 	var iframe_on_load_func = function() {
 		var current_iframe_url = decodeURI(this.contentWindow.location.href);
 		//console.log(current_iframe_url);
@@ -283,7 +288,9 @@ function showAjaxLoginPopup(login_url, urls_to_match, success_func) {
 	iframe.bind("unload", function() {
 		iframe.bind("load", iframe_on_load_func);
 	});
-	iframe[0].src = login_url;
+	
+	if (is_popup_opened)
+		iframe[0].src = login_url;
 	
 	MyFancyPopupLogin.init({
 		elementToShow: popup,
