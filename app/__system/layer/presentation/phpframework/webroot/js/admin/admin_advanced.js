@@ -547,7 +547,7 @@ function toggleTreeLayout(elm) {
 
 function toggleThemeLayout(elm) {
 	var body = $("body");
-	var theme_layout = body.hasClass("light_theme") ? "dark_theme" : "light_theme";
+	var theme_layout = body.hasClass("dark_theme") ? "light_theme" : "dark_theme"; //if no theme selected yet or if light_theme was previously selected, then set dark_theme. Otherwise choose light_theme.
 	
 	MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('theme_layout', theme_layout);
 	body.toggleClass("light_theme").toggleClass("dark_theme");
