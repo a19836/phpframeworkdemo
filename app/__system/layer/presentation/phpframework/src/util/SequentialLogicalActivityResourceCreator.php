@@ -238,11 +238,24 @@ if ($conditions && $conditions_type)
 		$attribute_operator = $attribute_condition_type == "starts_with" || $attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "like" : $attribute_condition_type;
 		$attribute_join = is_array($conditions_join) ? $conditions_join[$attribute_name] : $conditions_join;
 		
-		if ($attribute_operator && $attribute_operator != "=" && $attribute_operator != "equal")
-			$conditions[$attribute_name] = array(
-				"operator" => $attribute_operator,
-				"value" => ($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . $attribute_value . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : ""),
-			);
+		if ($attribute_operator && $attribute_operator != "=" && $attribute_operator != "equal") {
+			if (is_array($attribute_value) && $attribute_operator != "in") {
+				$conditions[$attribute_name] = array();
+				
+				foreach ($attribute_value as $v)
+					$conditions[$attribute_name][] = array(
+						"operator" => $attribute_operator,
+						"value" => ($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . $attribute_value . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : ""),
+					);
+			}
+			else
+	    			$conditions[$attribute_name] = array(
+					"operator" => $attribute_operator,
+					"value" => $attribute_operator == "in" ? $attribute_value : (
+						($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . $attribute_value . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : "")
+					),
+				);
+		}
 		
 		if (strtolower($attribute_join) == "or") {
 			$conditions[$attribute_join][$attribute_name] = $conditions[$attribute_name];

@@ -73,7 +73,7 @@
    .login_settings .register_page_url input,
    .login_settings .forgot_credentials_page_url input,
    .login_settings .single_sign_on_page_url input {
-	width:472px;
+	width:470px;
 	padding-right:20px;
 }
 

@@ -18,4 +18,4 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include $EVC->getUtilPath("WorkFlowPresentationHandler"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "write"); $file_type = "save_template"; if ($_POST["object"]["code"]) { $_POST["object"]["code"] = WorkFlowPresentationHandler::convertCodeTagsToHtmlTags($_POST["object"]["code"]); } include $EVC->getEntityPath("presentation/save"); ?>
+include $EVC->getUtilPath("WorkFlowPresentationHandler"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "write"); $file_type = "save_template"; include $EVC->getEntityPath("presentation/save"); ?>

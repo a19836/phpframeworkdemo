@@ -73,6 +73,7 @@
 }
 .module_manage_user_type_activity_objects .user_type_id select {
 	width:200px;
+	font-size:inherit;
 }
 .module_manage_user_type_activity_objects .object_type_vs_acivities_title {
 	padding:20px 0;

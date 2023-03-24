@@ -36,6 +36,10 @@ namespace __system\businesslogic; include_once $vars["current_business_logic_mod
 	 */ public function insertFailedLoginAttempt($data) { $v36b8841602 = $this->getFailedLoginAttempts($data); $pfdf1ef23 = $this->get($data); $v8f602836b9 = date("Y-m-d H:i:s"); $v342a134247 = array( "username" => $data["username"], "failed_login_attempts" => $v36b8841602 + 1, "failed_login_time" => time(), "created_date" => $pfdf1ef23["created_date"] ? $pfdf1ef23["created_date"] : $v8f602836b9, "modified_date" => $pfdf1ef23["modified_date"] ? $pfdf1ef23["modified_date"] : $v8f602836b9, ); if ($pfdf1ef23) return $this->LocalDBTableHandler->updateItem("login_control", $v342a134247, array("username")); return $this->LocalDBTableHandler->insertItem("login_control", $v342a134247, array("username")); } /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
+	 * @param (name=data[session_id], type=varchar, not_null=1, min_length=1, max_length=200)
+	 */ public function expireSession($data) { $v342a134247 = $this->getBySessionId($data); if ($v342a134247 && $v342a134247["session_id"] && $v342a134247["username"]) { $v342a134247["login_expired_time"] = time() - 1; $v342a134247["modified_date"] = date("Y-m-d H:i:s"); return $this->LocalDBTableHandler->updateItem("login_control", $v342a134247, array("username")); } return false; } /**
+	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
+	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[username], type=varchar, not_null=1, min_length=1, max_length=50)
 	 */ public function resetFailedLoginAttempts($data) { $this->initLocalDBTableHandler($data); $v342a134247 = $this->get($data); if ($v342a134247) { $v342a134247["failed_login_attempts"] = null; $v342a134247["failed_login_time"] = null; return $this->LocalDBTableHandler->updateItem("login_control", $v342a134247, array("username")); } return true; } /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)

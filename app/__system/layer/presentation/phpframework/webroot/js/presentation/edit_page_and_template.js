@@ -3178,14 +3178,15 @@ function reloadLayoutIframeFromSettings(iframe, data, iframe_html_to_parse) {
 								
 								if (body_html) {
 									//parse body html and replace the original body with that parsed html. This is very important bc if there are php codes inside of html element attributes, this will take care of this case and other cases...
-									var new_body_html = PtlLayoutUIEditor.parsedHtmlFromHtmlSource(body_html);
+									var new_body_html = PtlLayoutUIEditor.getParsedHtmlFromHtmlSource(body_html);
 									html = PtlLayoutUIEditor.replaceTagContentFromSource(html, "body", new_body_html);
 									//console.log(html);
 								}
 							}
 							else if (html && non_standard_code) { //This must execute first than the head html parser (this is, the code below), otherwise we are parsing the script_code too
-								html = PtlLayoutUIEditor.parsedHtmlFromHtmlSource(html);
+								html = PtlLayoutUIEditor.getParsedHtmlFromHtmlSource(html);
 							}
+							//console.log(html);
 							
 							//prepare head html by adding a script code that avoids showing errors, before anything runs in the html. Note that although the edit_simple_template_layout.js already contains the window.onerror already defined, it will only be loaded after some html runs first, and if this html contains javascript errors, they won't be cached by the edit_simple_template_layout.js. So we need to add the following lines of code to run before anything.
 							var script_code = '<script class="layout-ui-editor-reserved">'

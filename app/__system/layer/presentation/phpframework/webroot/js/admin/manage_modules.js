@@ -159,8 +159,10 @@ function executeActionInAllModules(elm, action) {
 		}
 	});
 	
-	if (!exists)
+	if (!exists) {
+		StatusMessageHandler.removeLastShownMessage("info");
 		StatusMessageHandler.showMessage("All Modules already " + action + "d!");
+	}
 }
 
 function toggleGroupOfMopdules(elm, group_module_id) {

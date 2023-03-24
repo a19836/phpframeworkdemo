@@ -239,10 +239,10 @@ function showAjaxLoginPopup(login_url, urls_to_match, success_func) {
 	login_url = login_url + (login_url.indexOf("?") > -1 ? "&" : "?") + "popup=1";
 	urls_to_match = $.isArray(urls_to_match) ? urls_to_match : [urls_to_match];
 	var auto_save_bkp = auto_save;
-	var is_popup_opened = MyFancyPopupLogin.isPopupOpened();
 	
 	//prepare popup
 	var popup = $('.ajax_login_popup');
+	var is_popup_opened = MyFancyPopupLogin.isPopupOpened();// && popup[0] && popup.find("iframe").attr("src");
 	
 	if (!popup[0]) {
 		popup = $('<div class="ajax_login_popup myfancypopup" style="padding:0; border-radius:5px;"></div>'); //set css here bc there is no css file for this popup.
@@ -289,7 +289,7 @@ function showAjaxLoginPopup(login_url, urls_to_match, success_func) {
 		iframe.bind("load", iframe_on_load_func);
 	});
 	
-	if (is_popup_opened)
+	if (!is_popup_opened)
 		iframe[0].src = login_url;
 	
 	MyFancyPopupLogin.init({
