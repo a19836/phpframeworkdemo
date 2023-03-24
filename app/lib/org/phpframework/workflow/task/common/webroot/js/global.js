@@ -163,12 +163,13 @@ if (typeof is_global_common_file_already_included == "undefined") {
 		return false;
 	}
 	
-	function onTaskCloning(task_id) {
+	function onTaskCloning(task_id, opts) {
 		var WF = myWFObj.getJsPlumbWorkFlow();
 		WF.jsPlumbTaskFlow.setTaskLabelByTaskId(task_id, {label: null}); //set {label: null}, so the jsPlumbTaskFlow.setTaskLabel method ignores the prompt and adds the default label or an auto generated label.
 		
 		//open properties
-		WF.jsPlumbProperty.showTaskProperties(task_id);
+		if (!opts || !opts["do_not_show_task_properties"])
+			WF.jsPlumbProperty.showTaskProperties(task_id);
 	}
 	
 	function checkIfValueIsTrue(value) {

@@ -293,7 +293,7 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 	}
 	
 	function onLayerTaskCloning(task_id) {
-		onTaskCloning(task_id);
+		onTaskCloning(task_id, {do_not_show_task_properties : true});
 		
 		var WF = myWFObj.getJsPlumbWorkFlow();
 		var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
