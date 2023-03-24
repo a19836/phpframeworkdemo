@@ -207,6 +207,11 @@ $(function() {
 				item.removeClass("with_sub_groups");
 				child.removeClass("jstree-closed").addClass("jstree-open hide_tree_item");
 				
+				if (child.is(".main_node_presentation, .main_node_businesslogic, .main_node_ibatis, .main_node_hibernate, .main_node_db")) {
+					var child_label = child.find(" > a > label").text();
+					item.children(".title").attr("title", "Layer name: " + child_label);
+				}
+				
 				if (sub_children.length == 0)
 					mytree.refreshNodeChilds(child, {ajax_callback_last: function(ul, data) {
 						//if path_to_filter exists and is main_node_presentation, the submenu is already inited with the right project node.
