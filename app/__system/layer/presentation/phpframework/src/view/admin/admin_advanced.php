@@ -51,7 +51,7 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 							<li class="all_projects' . ($filter_by_layout ? '' : ' selected') . '"><a value="" onClick="filterByLayout(this)"><i class="icon all_projects"></i> <span>All Projects</span></a></li>
 							<li class="separator"></li>'; $selected_project_name = ""; $is_single_presentation_layer = count($presentation_projects_by_layer_label_and_folders) == 1; foreach ($presentation_projects_by_layer_label_and_folders as $layer_label => $projs) { if (!$is_single_presentation_layer) $main_content .= '	<li class="projects_group">
 								<a><i class="icon project_folder"></i> <span>' . $layer_label . '</span></a>
-								</ul>'; $main_content .= getProjectsHtml($projs, $filter_by_layout); if (!$is_single_presentation_layer) $main_content .= '		</ul>
+								<ul>'; $main_content .= getProjectsHtml($projs, $filter_by_layout); if (!$is_single_presentation_layer) $main_content .= '		</ul>
 							</li>'; if ($filter_by_layout && $presentation_projects_by_layer_label[$layer_label][$filter_by_layout]) $selected_project_name = $presentation_projects_by_layer_label[$layer_label][$filter_by_layout]; } foreach ($non_projects_layout_types as $lname => $lid) $main_content .= '		<li class="project' . ($filter_by_layout == $lname ? ' selected' : '') . '">
 								<a value="' . $lname . '" onClick="filterByLayout(this)"><i class="icon project"></i> <span>' . $lname . '</span></a>
 							</li>'; $main_content .= '		</ul>
