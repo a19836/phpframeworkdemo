@@ -10,8 +10,8 @@
 		<id><![CDATA[school]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>51</offset_left>
-		<offset_top>23</offset_top>
+		<offset_left>39</offset_left>
+		<offset_top>25</offset_top>
 		<width>320</width>
 		<height>90</height>
 		<properties>
@@ -60,8 +60,8 @@
 		<id><![CDATA[student]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>53</offset_left>
-		<offset_top>188</offset_top>
+		<offset_left>44</offset_left>
+		<offset_top>184</offset_top>
 		<width>320</width>
 		<height>114</height>
 		<properties>
@@ -137,8 +137,8 @@
 		<id><![CDATA[teacher]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>448</offset_left>
-		<offset_top>96</offset_top>
+		<offset_left>455</offset_left>
+		<offset_top>79</offset_top>
 		<width>320</width>
 		<height>138</height>
 		<properties>
@@ -155,7 +155,7 @@
 			<table_attr_primary_keys>1</table_attr_primary_keys>
 			<table_attr_primary_keys></table_attr_primary_keys>
 			<table_attr_primary_keys></table_attr_primary_keys>
-			<table_attr_primary_keys></table_attr_primary_keys>
+			<table_attr_primary_keys><![CDATA[false]]></table_attr_primary_keys>
 			<table_attr_names><![CDATA[teacher_id]]></table_attr_names>
 			<table_attr_names><![CDATA[school_id]]></table_attr_names>
 			<table_attr_names><![CDATA[name]]></table_attr_names>
@@ -179,11 +179,11 @@
 			<table_attr_uniques>1</table_attr_uniques>
 			<table_attr_uniques></table_attr_uniques>
 			<table_attr_uniques></table_attr_uniques>
-			<table_attr_uniques></table_attr_uniques>
+			<table_attr_uniques><![CDATA[false]]></table_attr_uniques>
 			<table_attr_auto_increments>1</table_attr_auto_increments>
 			<table_attr_auto_increments></table_attr_auto_increments>
 			<table_attr_auto_increments></table_attr_auto_increments>
-			<table_attr_auto_increments></table_attr_auto_increments>
+			<table_attr_auto_increments><![CDATA[false]]></table_attr_auto_increments>
 			<table_attr_has_defaults></table_attr_has_defaults>
 			<table_attr_has_defaults></table_attr_has_defaults>
 			<table_attr_has_defaults></table_attr_has_defaults>

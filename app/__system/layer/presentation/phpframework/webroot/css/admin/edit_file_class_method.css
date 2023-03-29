@@ -308,7 +308,7 @@
 	width:80px;
 }
 .file_class_method_obj #settings .annotations table .type {
-	width:130px;
+	width:150px;
 }
 .file_class_method_obj #settings .annotations table .not_null {
 	width:70px;
@@ -353,7 +353,8 @@
 	width:195px;
 }
 
-.file_class_method_obj #settings .annotations table .type .textfield {
+.file_class_method_obj #settings .annotations table .type .textfield,
+  .file_class_method_obj #settings .annotations table .type .search {
 	width:14px;
 	margin:auto 0;
 }

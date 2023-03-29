@@ -104,6 +104,7 @@ include_once get_lib("org.phpframework.phpscript.PHPCodePrintingHandler"); inclu
 				</select>
 				<input type="text" value="' . str_replace('"', "&quot;", $v3fb9f41470) . '"' . (strpos($v3fb9f41470, "|") !== false ? '' : ' style="display:none"') . ' />
 				<span class="icon switch textfield" onClick="swapTypeTextField(this)" title="Swap text field type">Swap text field type</span>
+				<span class="icon search" onClick="geAnnotationTypeFromFileManager(this)" title="Get type from File Manager">Search</span>
 			</td>
 			<td class="not_null">
 				<input type="checkbox" value="1"' . ($pf6e8b316 ? ' checked' : '') . ' />

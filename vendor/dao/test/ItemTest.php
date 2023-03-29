@@ -10,11 +10,13 @@ class ItemTest extends ObjType {
 	}
 	
 	public function setData($data) {
-		parent::setData($data);
+		$s = parent::setData($data);
 
 		if(is_array($data) && isset($data["status"])) { 
 			$this->status = $data["status"]; 
 		}
+		
+		return $s;
 	}
 	
 	public function getData() {

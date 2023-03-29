@@ -147,6 +147,7 @@ function prepareFolderNodes(ul, data, main_layer_properties, parent_path) {
 				var item_type = properties && properties.item_type ? properties.item_type : "";
 				var item_label = properties && properties.item_label ? properties.item_label : key;
 				var item_class = properties && properties.item_class ? properties.item_class : "";
+				var item_title = properties && properties.item_title ? properties.item_title : "";
 				var item_id = properties && properties.item_id ? properties.item_id : false;
 				var item_menu = properties && properties.item_menu ? properties.item_menu : false;
 				
@@ -165,6 +166,9 @@ function prepareFolderNodes(ul, data, main_layer_properties, parent_path) {
 					file_path = parent_path + key + (item_type == "folder" ? "/" : "");
 				
 				var a = j_child_li.find("a");
+				
+				if (item_title)
+					a.attr("title", item_title);
 				
 				var ui_props = main_layer_properties && main_layer_properties.ui && main_layer_properties.ui[item_type] ? main_layer_properties.ui[item_type] : {};
 				

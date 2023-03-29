@@ -142,34 +142,42 @@
 	content:"\f07c";
 	color:var(--icon-folder-color);
 }
-/*.mytree i.cms_common::after {
+.mytree i.cms_common::after {
 	content:"\f187";
-	color:#888;
-}*/
+	content:"\f023";
+	color:var(--icon-alert-color);
+	opacity:.6;
+}
 .mytree i.cms_module::before {
 	content:"\f07c";
 	color:var(--icon-folder-color);
 }
-/*.mytree i.cms_module::after {
+.mytree i.cms_module::after {
 	content:"\f61f";
-	color:#888;
-}*/
+	content:"\f023";
+	color:var(--icon-alert-color);
+	opacity:.6;
+}
 .mytree i.cms_program::before {
 	content:"\f07c";
 	color:var(--icon-folder-color);
 }
-/*.mytree i.cms_program::after {
+.mytree i.cms_program::after {
 	content:"\f51f";
-	color:#888;
-}*/
+	content:"\f023";
+	color:var(--icon-alert-color);
+	opacity:.6;
+}
 .mytree i.cms_resource::before {
 	content:"\f07c";
 	color:var(--icon-folder-color);
 }
-/*.mytree i.cms_resource::after {
+.mytree i.cms_resource::after {
 	content:"\f51f";
-	color:#888;
-}*/
+	content:"\f023";
+	color:var(--icon-alert-color);
+	opacity:.6;
+}
 .mytree i.cms_folder::before {
 	content:"\f07c";
 	color:var(--icon-folder-color);
@@ -423,10 +431,12 @@
 	content:"\f07c";
 	color:var(--icon-folder-color);
 }
-/*.mytree i.properties::after {
+.mytree i.properties::after {
 	content:"\f055";
-	color:#888;
-}*/
+	content:"\f023";
+	color:var(--icon-alert-color);
+	opacity:.6;
+}
 .mytree i.controllers_folder::before {
 	content:"\f07c";
 	color:var(--icon-folder-color);
@@ -700,8 +710,9 @@
 .mytree i.main_node_dao::after {
 	/*content:"\f247";
 	color:#888;*/
-	content: "\f05e";
+	content: "\f023";
 	color:var(--icon-alert-color);
+	opacity:.6;
 }
 .mytree i.dao::before {
 	/*content:"\f247";*/
@@ -709,8 +720,9 @@
 	color:var(--icon-folder-color);
 }
 .mytree i.dao::after {
-	content: "\f05e";
+	content: "\f023";
 	color:var(--icon-alert-color);
+	opacity:.6;
 }
 .mytree i.objtype::before {
 	font:var(--fa-font-brands);
@@ -738,8 +750,9 @@
 .mytree i.code_workflow_editor::after {
 	/*content:"\f304";
 	color:#888;*/
-	content: "\f05e";
+	content: "\f023";
 	color:var(--icon-alert-color);
+	opacity:.6;
 }
 .mytree i.code_workflow_editor_task::before {
 	/*font:var(--fa-font-brands);
@@ -751,8 +764,9 @@
 .mytree i.code_workflow_editor_task::after {
 	/*content:"\f304";
 	color:#888;*/
-	content: "\f05e";
+	content: "\f023";
 	color:var(--icon-alert-color);
+	opacity:.6;
 }
 .mytree i.layout_ui_editor::before {
 	/*content:"\f53f";*/
@@ -762,8 +776,9 @@
 .mytree i.layout_ui_editor::after {
 	/*content:"\f304";
 	color:#888;*/
-	content: "\f05e";
+	content: "\f023";
 	color:var(--icon-alert-color);
+	opacity:.6;
 }
 .mytree i.layout_ui_editor_widget::before {
 	/*content:"\f0c8";*/
@@ -773,8 +788,9 @@
 .mytree i.layout_ui_editor_widget::after {
 	/*content:"\f304";
 	color:#888;*/
-	content: "\f05e";
+	content: "\f023";
 	color:var(--icon-alert-color);
+	opacity:.6;
 }
 .mytree i.test_unit::before {
 	/*content:"\f07c";*/
@@ -784,8 +800,9 @@
 .mytree i.test_unit::after {
 	/*content:"\f0ae";
 	color:#888;*/
-	content: "\f05e";
+	content: "\f023";
 	color:var(--icon-alert-color);
+	opacity:.6;
 }
 .mytree i.test_unit_obj::before {
 	content:"\f0ae";

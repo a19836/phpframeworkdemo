@@ -1,3 +1,4 @@
+var chooseDAOFromFileManagerTree = null;
 var saved_class_method_settings_id = null;
 
 $(function () {
@@ -26,6 +27,13 @@ $(function () {
 		initAutoSave("#code > .code_menu li.save a");
 		
 		//init trees
+		chooseDAOFromFileManagerTree = new MyTree({
+			multiple_selection : false,
+			toggle_children_on_click : true,
+			ajax_callback_before : prepareLayerNodes1,
+		});
+		chooseDAOFromFileManagerTree.init("choose_dao_object_from_file_manager");
+		
 		choosePropertyVariableFromFileManagerTree = new MyTree({
 			multiple_selection : false,
 			toggle_children_on_click : true,
@@ -356,6 +364,60 @@ function swapTypeTextField(elm) {
 	}
 }
 
+function geAnnotationTypeFromFileManager(elm) {
+	MyFancyPopup.init({
+		elementToShow: $("#choose_dao_object_from_file_manager"),
+		parentElement: document,
+		
+		targetField: $(elm).parent(),
+		updateFunction: updateAnnotationTypeFromFileManager
+	});
+	
+	MyFancyPopup.showPopup();
+}
+
+function updateAnnotationTypeFromFileManager(elm) {
+	var node = chooseDAOFromFileManagerTree.getSelectedNodes();
+	node = node[0];
+	
+	var file_path = null, file_name = null, is_obj_type_obj = false;
+	
+	if (node) {
+		var a = $(node).children("a");
+		
+		if (a) {
+			file_path = a.attr("file_path");
+			file_name = a.children("label").html();
+			is_obj_type_obj = a.children("i")[0].className.indexOf("objtype") != -1;
+		}
+	}
+	
+	if (file_path && is_obj_type_obj) {
+		file_path = "vendor.dao." + file_path.replace("/", ".").replace(".php", "");
+		
+		var select = MyFancyPopup.settings.targetField.children("select");
+		var input = MyFancyPopup.settings.targetField.children("input");
+		
+		select.val(file_path);
+		input.val(file_path);
+		
+		if (select.val() != file_path) {
+			var optgrp = input.children("optgroup[label=\'Composite Types\']").last();
+			
+			if (!optgrp[0])
+				optgrp = select;
+			
+			optgrp.append('<option value="' + file_path + '">' + file_name + '</option>');
+			
+			select.val(file_path);
+		}
+		
+		MyFancyPopup.hidePopup();
+	}
+	else
+		alert("Invalid File selection.\nPlease choose an object type file and then click in the button.");
+}
+
 function getFileClassMethodSettingsId() {
 	var obj_settings = getFileClassMethodSettingsObj();
 	
@@ -539,6 +601,7 @@ function saveFileClassMethodObj(obj, props) {
 			
 			//checks if name changed
 			if (original_method_id != obj["name"]) {
+				var is_new = !original_method_id;
 				original_method_id = obj["name"];
 				
 				if (window.parent && typeof window.parent.refreshLastNodeParentChilds == "function")
@@ -550,6 +613,11 @@ function saveFileClassMethodObj(obj, props) {
 				
 				url = url.replace(/(&|\\?)(method|function)=[^&]*/g, "$1");
 				url += "&" + (service_exists ? "method" : "function") + "=" + original_method_id;
+				
+				//in case be a function and this page was loaded from a folder menu and not from a file menu, which means the path is a folder path, so we must convert it to a file path based in the default file: 'functions.php'.
+				if (is_new && !service_exists && !url.match(/&path=([^&]+)functions\.php&/))
+					url = url.replace(/(&|\\?)(path=[^&]+)&/g, "$1$2/functions.php&");
+				
 				document.location = url;
 			}
 		}
