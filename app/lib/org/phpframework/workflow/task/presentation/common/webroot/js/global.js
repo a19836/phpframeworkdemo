@@ -228,11 +228,13 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 		onTaskCloning : function(task_id) {
 			var WF = myWFObj.getJsPlumbWorkFlow();
 			var j_task = WF.jsPlumbTaskFlow.getTaskById(task_id);
-			var task_parent = WF.jsPlumbTaskFlow.getTaskParentTasks(j_task);
-			task_parent = task_parent[0];
+			var parent_task = WF.jsPlumbTaskFlow.getTaskParentTasks(j_task);
 			
-			if (task_parent && $(task_parent).is(".task_page, .task_form, .task_listing, .task_view")) {
+			if (parent_task[0] && parent_task.is(".task_page, .task_form, .task_listing, .task_view")) {
 				onTaskCloning(task_id);
+				
+				WF.jsPlumbTaskFlow.resizeTaskParentTask(j_task, true); //resize parent task with the new width and height according with this inner task
+				
 				return true;
 			}
 			
