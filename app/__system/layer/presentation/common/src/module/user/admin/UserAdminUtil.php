@@ -50,7 +50,7 @@ class UserAdminUtil {
 					)
 				),
 				array(
-					"label" => "Users",
+					"label" => "Internal Users",
 					"menus" => array(
 						array(
 							"label" => "Users List",
@@ -73,18 +73,18 @@ class UserAdminUtil {
 					)
 				),
 				array(
-					"label" => "User Sessions",
+					"label" => "External Users",
 					"menus" => array(
 						array(
-							"label" => "User Sessions List",
-							"url" => $this->CommonModuleAdminUtil->getAdminFileUrl("list_user_sessions"),
-							"title" => "View List of User Sessions",
+							"label" => "External Users List",
+							"url" => $this->CommonModuleAdminUtil->getAdminFileUrl("list_external_users"),
+							"title" => "View List of External Users",
 							"class" => "",
 						),
 						array(
-							"label" => "Add User Session",
-							"url" => $this->CommonModuleAdminUtil->getAdminFileUrl("edit_user_session"),
-							"title" => "Add new User Session",
+							"label" => "Add External User",
+							"url" => $this->CommonModuleAdminUtil->getAdminFileUrl("edit_external_user"),
+							"title" => "Add new External User",
 							"class" => "",
 						),
 					)
@@ -183,18 +183,18 @@ class UserAdminUtil {
 					)
 				),
 				array(
-					"label" => "External Users",
+					"label" => "User Sessions",
 					"menus" => array(
 						array(
-							"label" => "External Users List",
-							"url" => $this->CommonModuleAdminUtil->getAdminFileUrl("list_external_users"),
-							"title" => "View List of External Users",
+							"label" => "User Sessions List",
+							"url" => $this->CommonModuleAdminUtil->getAdminFileUrl("list_user_sessions"),
+							"title" => "View List of User Sessions",
 							"class" => "",
 						),
 						array(
-							"label" => "Add External User",
-							"url" => $this->CommonModuleAdminUtil->getAdminFileUrl("edit_external_user"),
-							"title" => "Add new External User",
+							"label" => "Add User Session",
+							"url" => $this->CommonModuleAdminUtil->getAdminFileUrl("edit_user_session"),
+							"title" => "Add new User Session",
 							"class" => "",
 						),
 					)

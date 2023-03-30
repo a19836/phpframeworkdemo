@@ -969,6 +969,7 @@ function openPretifyRegionBlockComboBoxImportModuleBlockOptionPopup(select_elm, 
 			if (select_elm) {
 				var item_elm = select_elm.parent().closest(".template_region_item");
 				//var exists_multiple_items = item_elm.parent().closest(".template_region_items").find(".template_region_item").length > 1;
+				//console.log(item_elm[0]);
 				
 				if (delete_select_elm_on_cancel/* && exists_multiple_items*/) //Deprecated, bc in the layout iframe, we can remove items even if there is only one existent item.
 					item_elm.remove();
@@ -4715,6 +4716,7 @@ function chooseCodeLayoutUIEditorImportModulePopup(url) {
 							alert("Error trying to create block! Please try again...");
 							
 							var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+							
 							if (PtlLayoutUIEditor)
 								PtlLayoutUIEditor.deleteTemplateWidget(widget); //update menu layer from layout ui editor
 						}
@@ -4734,6 +4736,16 @@ function chooseCodeLayoutUIEditorImportModulePopup(url) {
 	TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.init({
 		elementToShow: popup,
 		parentElement: document,
+		onClose: function(elm) {
+			var widget = CodeLayoutUIEditorFancyPopup.settings.targetField;
+			
+			if (widget) {
+				var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+				
+				if (PtlLayoutUIEditor)
+					PtlLayoutUIEditor.deleteTemplateWidget(widget); //update menu layer from layout ui editor
+			}
+		}
 	});
 	
 	TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.showPopup();
