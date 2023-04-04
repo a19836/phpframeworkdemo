@@ -5,6 +5,8 @@ var no_cache_for_first_resource_creation = false;
 var no_cache_for_first_resource_creation_ttl = 300000; //5 min
 var flush_cache = false;
 
+var LayoutUIEditorWidgetResourceFancyPopup = new MyFancyPopupClass();
+
 function initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor) {
 	PtlLayoutUIEditor.options.on_choose_event_func = toggleChooseEventPopup;
 	var exists_choose_db_table_or_attribute_popup = $("#choose_db_table_or_attribute").length > 0;
@@ -105,10 +107,10 @@ function toggleChooseEventPopup(elm, widget, handler, available_events) {
 				
 				popup.find(".events").html(items_html);
 				
-				MyFancyPopup.updatePopup();
+				LayoutUIEditorWidgetResourceFancyPopup.updatePopup();
 			}
 			else
-				MyFancyPopup.updatePopup();
+				LayoutUIEditorWidgetResourceFancyPopup.updatePopup();
 		};
 		
 		var select = popup.find(".filter select");
@@ -127,7 +129,7 @@ function toggleChooseEventPopup(elm, widget, handler, available_events) {
 		if (style.display === "none") {
 			popup.hide(); //This popup is shared with other actions so we must hide it first otherwise the user experience will be weird bc we will see the popup changing with the new changes.
 			
-			MyFancyPopup.init({
+			LayoutUIEditorWidgetResourceFancyPopup.init({
 				elementToShow: popup,
 				parentElement: document,
 				updateFunction: function(btn) { //prepare update handler
@@ -139,14 +141,14 @@ function toggleChooseEventPopup(elm, widget, handler, available_events) {
 						if (typeof handler == "function")
 							handler(code);
 						
-						MyFancyPopup.hidePopup();
+						LayoutUIEditorWidgetResourceFancyPopup.hidePopup();
 					}
 				},
 			});
-			MyFancyPopup.showPopup();
+			LayoutUIEditorWidgetResourceFancyPopup.showPopup();
 		}
 		else {
-			MyFancyPopup.hidePopup();
+			LayoutUIEditorWidgetResourceFancyPopup.hidePopup();
 		}
 	}
 }
@@ -212,7 +214,7 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 			popup.css("height", "");
 			
 			setTimeout(function() {
-				MyFancyPopup.updatePopup();
+				LayoutUIEditorWidgetResourceFancyPopup.updatePopup();
 			}, 300);
 		});
 		
@@ -277,7 +279,7 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 				var data = getChooseLayoutUIEditorWidgetResourceValueUserData(this, elm, widget, PtlLayoutUIEditor);
 				handler(data["resource_name"], data["resource_attribute"], data["resource_index"]);
 				
-				MyFancyPopup.hidePopup();
+				LayoutUIEditorWidgetResourceFancyPopup.hidePopup();
 			});
 			
 			//get all available resources
@@ -477,14 +479,14 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 			}
 			
 			//show popup
-			MyFancyPopup.init({
+			LayoutUIEditorWidgetResourceFancyPopup.init({
 				elementToShow: popup,
 				parentElement: document,
 			});
-			MyFancyPopup.showPopup();
+			LayoutUIEditorWidgetResourceFancyPopup.showPopup();
 		}
 		else {
-			MyFancyPopup.hidePopup();
+			LayoutUIEditorWidgetResourceFancyPopup.hidePopup();
 		}
 	}
 }
@@ -514,11 +516,13 @@ function updateChooseLayoutUIEditorWidgetResourceValueDBAttributes(elm) {
 			for (var attr_name in db_attributes) {
 				var attr = db_attributes[attr_name];
 				var is_pk = attr["primary_key"];
+				var on_click_func = typeof ProgrammingTaskUtil != "undefined" && ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback ? "ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback" : "onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute";
 				
 				html += '<li' + (is_pk ? ' class="primary_key"' : '') + '>'
 						+ '<input type="checkbox" onClick="toggleChooseLayoutUIEditorWidgetResourceValueQueryCondition(this)">'
 						+ '<label>' + attr_name + ':</label>'
 						+ '<input type="text" name="conditions[' + attr_name + ']" />'
+						+ '<span class="icon add_variable" onClick="' + on_click_func + '(this)"></span>'
 					+ '</li>';
 			}
 			
@@ -529,7 +533,7 @@ function updateChooseLayoutUIEditorWidgetResourceValueDBAttributes(elm) {
 		}
 	}
 	
-	MyFancyPopup.updatePopup();
+	LayoutUIEditorWidgetResourceFancyPopup.updatePopup();
 }
 
 function toggleChooseLayoutUIEditorWidgetResourceValueQueryCondition(elm) {
@@ -660,7 +664,7 @@ function toggleChooseLayoutUIEditorWidgetResourceDBTableAttributePopup(elm, even
 			if (default_value)
 				db_attribute_elm.find("select").val(default_value);
 			
-			MyFancyPopup.init({
+			LayoutUIEditorWidgetResourceFancyPopup.init({
 				elementToShow: popup,
 				parentElement: document,
 				updateFunction: function(btn) { //prepare update handler
@@ -669,13 +673,13 @@ function toggleChooseLayoutUIEditorWidgetResourceDBTableAttributePopup(elm, even
 					
 					handler(db_attribute);
 					
-					MyFancyPopup.hidePopup();
+					LayoutUIEditorWidgetResourceFancyPopup.hidePopup();
 				},
 			});
-			MyFancyPopup.showPopup();
+			LayoutUIEditorWidgetResourceFancyPopup.showPopup();
 		}
 		else {
-			MyFancyPopup.hidePopup();
+			LayoutUIEditorWidgetResourceFancyPopup.hidePopup();
 		}
 	}
 	else 

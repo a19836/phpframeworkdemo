@@ -108,6 +108,13 @@
 }
 .choose_widget_resource_value_attribute_popup > #new_resource_attribute > div.query_conditions > ul > li > input:not([type=checkbox]) {
 	width:200px;
+	padding-right:17px;
+	box-sizing:border-box;
+}
+.choose_widget_resource_value_attribute_popup > #new_resource_attribute > div.query_conditions > ul > li > .add_variable {
+	margin-left:-17px;
+	vertical-align:middle;
+	font-size:14px;
 }
 .choose_widget_resource_value_attribute_popup > #new_resource_attribute > div.query_conditions > ul > li:not(.condition_activated) > input:not([type=checkbox]) {
 	cursor:not-allowed;
