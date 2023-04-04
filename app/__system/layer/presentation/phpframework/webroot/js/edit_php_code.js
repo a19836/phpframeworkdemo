@@ -505,11 +505,12 @@ function onProgrammingTaskEditSource(elm, data) {
 			$(document.body).append(popup);
 		}
 		
-		var html = '<form action="' + url + '" method="post" target="edit_task_source_frame" style="display:none;">'
+		var rand = parseInt(Math.random() * 10000); //this rand is very important bc if we have multiple onProgrammingTaskEditSource methods called inside of it-self, even if its inside of different iframes, the form.submit() will always get the target in the parent main window.
+		var html = '<form action="' + url + '" method="post" target="edit_task_source_frame_' + rand + '" style="display:none;">'
 			+ '<textarea name="data">' + JSON.stringify(data) + '</textarea>'
 			+ '<input type="submit">'
 		+ '</form>'
-		+ '<iframe name="edit_task_source_frame"></iframe>';
+		+ '<iframe name="edit_task_source_frame_' + rand + '"></iframe>';
 		
 		popup.html(html); //cleans the iframe so we don't see the previous html
 		
