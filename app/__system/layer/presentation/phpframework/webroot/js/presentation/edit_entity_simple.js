@@ -260,7 +260,19 @@ function onChooseAvailableTemplate(elm, show_templates_only) {
 	var entity_obj_elm = template_elm.parent();
 	var func = function(selected_template) {
 		if (!code_exists) { //only if file is new
-			updateLayoutFromSettings(entity_obj_elm, true);
+			var iframe = getContentTemplateLayoutIframe(entity_obj_elm);
+			var is_not_saved_layout_empty = true;
+			
+			//if meanwhile the user added some widgets to the layout, then the settings may not be updated bc the auto_convert_settings_from_layout may be false. So in this case, do not call the updateLayoutFromSettings and automatically the new widgets will appear in the new template bc the updateTemplateLayout method will be triggered by the selectAvailableTemplate method in the choose_available_template.js, that triggers the onChange event from the select field.
+			if (!auto_convert_settings_from_layout && iframe[0] && iframe[0].contentWindow && typeof iframe[0].contentWindow.getTemplateRegionsBlocks == "function") {
+				var iframe_data = iframe[0].contentWindow.getTemplateRegionsBlocks();
+				
+				if (iframe_data["regions_blocks"] && iframe_data["regions_blocks"].length > 0)
+					is_not_saved_layout_empty = false;
+			}
+			
+			if (is_not_saved_layout_empty)
+				updateLayoutFromSettings(entity_obj_elm, true);
 		}
 	};
 	var available_projects_templates_props = {};
