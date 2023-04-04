@@ -29,6 +29,10 @@ $(function () {
 	var template_obj = $(".template_obj");
 	
 	if (template_obj[0]) {
+		//add choose_db_table_or_attribute popup before the LayouUIEditor gets inited otherwise the choose-widget-resource icons won't be shown.
+		if (choose_db_table_or_attribute_elm)
+			template_obj.append(choose_db_table_or_attribute_elm);
+		
 		//prepare main settings tab
 		var regions_blocks_includes_settings = template_obj.find(".regions_blocks_includes_settings");
 		regions_blocks_includes_settings.tabs();

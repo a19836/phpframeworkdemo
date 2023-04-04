@@ -1,11 +1,20 @@
 var file_to_copy_or_cut = null;
 var copy_or_cut_action = null;
 var copy_or_cut_tree_node_id = null;
+var navigator_droppables_active = true;
 
 var ToolsFancyPopup = new MyFancyPopupClass();
 var ProjectsFancyPopup = new MyFancyPopupClass();
 var DBTableTaskOptionsFancyPopup = new MyFancyPopupClass();
 var LogConsoleFancyPopup = new MyFancyPopupClass();
+
+$(function() {
+	$(document).keyup( function( e ) {
+		//on escape key, disable all draggable events
+		if (e.which=== 27 || e.keyCode === 27)
+			$('.ui-draggable-dragging').trigger('mouseup');
+	});
+});
 
 function initFileTreeMenu() {
 	//prepare menu tree
@@ -1284,7 +1293,8 @@ function initFilesDragAndDrop(elm) {
 		folders_lis.droppable({
 			greedy: true,
 			over: function(event, ui_obj) {
-				$(this).addClass("drop_hover");
+				if (navigator_droppables_active)
+					$(this).addClass("drop_hover");
 			},
 			out: function(event, ui_obj) {
 				$(this).removeClass("drop_hover");
@@ -1648,7 +1658,8 @@ function initDBTablesSorting(elm) {
 		lis.droppable({
 			greedy: true,
 			over: function(event, ui_obj) {
-				$(this).addClass("drop_hover");
+				if (navigator_droppables_active)
+					$(this).addClass("drop_hover");
 			},
 			out: function(event, ui_obj) {
 				$(this).removeClass("drop_hover");
@@ -1823,7 +1834,8 @@ function initDBTablesSorting(elm) {
 		lis.children("ul").droppable({
 			greedy: true,
 			over: function(event, ui_obj) {
-				$(this).parent().addClass("drop_hover");
+				if (navigator_droppables_active)
+					$(this).parent().addClass("drop_hover");
 			},
 			out: function(event, ui_obj) {
 				$(this).parent().removeClass("drop_hover");
@@ -3014,13 +3026,17 @@ function renameProject(a, attr_name, action, new_file_name, url, tree_node_id_to
 function triggerFileNodeAfterCreateFile(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated) {
 	var node = $("#" + tree_node_id_to_be_updated);
 	
+	//normalize new file name
+	var allow_upper_case = a.getAttribute("allow_upper_case") == 1; //in case of businesslogic services class
+	new_file_name = normalizeFileName(new_file_name, allow_upper_case);
+	
 	if (node[0])
 		mytree.refreshNodeChilds(node[0], {
 			ajax_callback_last: function(ul, data) {
 				$(ul).find(" > li > a > label").each(function(idx, item) {
 					item = $(item);
 					
-					if (item.text() == new_file_name) {
+					if (item.text().toLowerCase() == new_file_name.toLowerCase()) {
 						var a = item.parent();
 						
 						if (a.attr("onClick")) {

@@ -43,6 +43,10 @@ $(function () {
 	var entity_obj = $(".entity_obj");
 	
 	if (entity_obj[0]) {
+		//add choose_db_table_or_attribute popup before the LayouUIEditor gets inited otherwise the choose-widget-resource icons won't be shown.
+		if (choose_db_table_or_attribute_elm)
+			entity_obj.append(choose_db_table_or_attribute_elm);
+		
 		//prepare main settings tab
 		var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
 		regions_blocks_includes_settings.tabs();
@@ -512,117 +516,143 @@ function onBlurExternalTemplate(elm) {
 }
 
 function updateTemplateLayout(entity_obj) {
-	//save synchronization functions
-	var update_settings_from_layout_iframe_func_bkp = update_settings_from_layout_iframe_func;
-	var update_layout_iframe_from_settings_func_bkp = update_layout_iframe_from_settings_func;
-	var update_layout_iframe_field_html_value_from_settings_func_bkp = update_layout_iframe_field_html_value_from_settings_func;
+	StatusMessageHandler.showMessage("Loading template...", "", "bottom_messages", 5000);
 	
-	//disable synchronization functions in case some call recursively by mistake
-	update_settings_from_layout_iframe_func = null;
-	update_layout_iframe_from_settings_func = null;
-	update_layout_iframe_field_html_value_from_settings_func = null;
-	
-	//prepare new template load
-	var iframe = getContentTemplateLayoutIframe(entity_obj);
-	var template = getSelectedTemplate(entity_obj);
-	var is_template_ok = template ? true : false;
-	
-	if (template == "parse_php_code") {
-		var external_template_params = entity_obj.children(".external_template_params");
-		var external_template_type = external_template_params.find(" > .external_template_type select").val();
+	var func = function() {
+		//close the widget properties if open, otherwise we will loose the reference for the selected widget in the LayoutUIEditor when the page gets reloaded. Do this by clicking in the body, which disables the selected widget automatically.
+		var PtlLayoutUIEditor = entity_obj.find(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 		
-		if (external_template_type == "project" && external_template_params.find(" > .template_id input").val() == "")
-			is_template_ok = false;
-		else if (external_template_type == "block" && external_template_params.find(" > .block_id input").val() == "")
-			is_template_ok = false;
-		else if (external_template_type == "url" && external_template_params.find(" > .url input").val() == "")
-			is_template_ok = false;
-		else if (external_template_type == "")
-			is_template_ok = false;
-	}
-	
-	if (is_template_ok) {
-		var is_external_template = isExternalTemplate(entity_obj) ? 1 : 0;
-		var external_template_params = getExternalSetTemplateParams(entity_obj);
+		if (PtlLayoutUIEditor)
+			PtlLayoutUIEditor.getTemplateWidgetsIframeBody().trigger("click");
 		
-		var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
-		var data = getSettingsTemplateRegionsBlocks(regions_blocks_includes_settings);
-		var template_includes = data["includes"];
+		//save synchronization functions
+		var update_settings_from_layout_iframe_func_bkp = update_settings_from_layout_iframe_func;
+		var update_layout_iframe_from_settings_func_bkp = update_layout_iframe_from_settings_func;
+		var update_layout_iframe_field_html_value_from_settings_func_bkp = update_layout_iframe_field_html_value_from_settings_func;
 		
-		var url = get_template_regions_and_params_url.replace(/#template#/g, template) + "&is_external_template=" + is_external_template + "&external_template_params=" + encodeURIComponent(JSON.stringify(external_template_params)) + "&template_includes=" + encodeURIComponent(JSON.stringify(template_includes));
+		//disable synchronization functions in case some call recursively by mistake
+		update_settings_from_layout_iframe_func = null;
+		update_layout_iframe_from_settings_func = null;
+		update_layout_iframe_field_html_value_from_settings_func = null;
 		
-		$.ajax({
-			type : "get",
-			url : url,
-			dataType : "json",
-			success : function(data, textStatus, jqXHR) {
-				//console.log(data);
-				
-				//update regions_blocks_list and template_params_values_list
-				var settings = getSettingsTemplateRegionsBlocks( entity_obj.find(".entity_template_settings") );
-				regions_blocks_list = settings["regions_blocks"]; //global var
-				template_params_values_list = settings["params"]; //global var
-				var template_includes = settings["includes"];
-				
-				//update settings with data
-				updateSelectedTemplateRegionsBlocks(entity_obj, data);
-				
-				//show iframe with new regions and params
-				var regions = data["regions"];
-				var template_regions = {};
-				
-				if (regions)
-					for (var i in regions) {
-						var region = regions[i];
-						template_regions[region] = "";
-						
-						for (var j in regions_blocks_list) {
-							var rbl = regions_blocks_list[j];
+		//prepare new template load
+		var iframe = getContentTemplateLayoutIframe(entity_obj);
+		var template = getSelectedTemplate(entity_obj);
+		var is_template_ok = template ? true : false;
+		
+		if (template == "parse_php_code") {
+			var external_template_params = entity_obj.children(".external_template_params");
+			var external_template_type = external_template_params.find(" > .external_template_type select").val();
+			
+			if (external_template_type == "project" && external_template_params.find(" > .template_id input").val() == "")
+				is_template_ok = false;
+			else if (external_template_type == "block" && external_template_params.find(" > .block_id input").val() == "")
+				is_template_ok = false;
+			else if (external_template_type == "url" && external_template_params.find(" > .url input").val() == "")
+				is_template_ok = false;
+			else if (external_template_type == "")
+				is_template_ok = false;
+		}
+		
+		if (is_template_ok) {
+			var is_external_template = isExternalTemplate(entity_obj) ? 1 : 0;
+			var external_template_params = getExternalSetTemplateParams(entity_obj);
+			
+			var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
+			var data = getSettingsTemplateRegionsBlocks(regions_blocks_includes_settings);
+			var template_includes = data["includes"];
+			
+			var url = get_template_regions_and_params_url.replace(/#template#/g, template) + "&is_external_template=" + is_external_template + "&external_template_params=" + encodeURIComponent(JSON.stringify(external_template_params)) + "&template_includes=" + encodeURIComponent(JSON.stringify(template_includes));
+			
+			$.ajax({
+				type : "get",
+				url : url,
+				dataType : "json",
+				success : function(data, textStatus, jqXHR) {
+					//console.log(data);
+					
+					//remove loading message
+					StatusMessageHandler.removeLastShownMessage("info", "bottom_messages");
+					
+					//update regions_blocks_list and template_params_values_list
+					var settings = getSettingsTemplateRegionsBlocks( entity_obj.find(".entity_template_settings") );
+					regions_blocks_list = settings["regions_blocks"]; //global var
+					template_params_values_list = settings["params"]; //global var
+					var template_includes = settings["includes"];
+					
+					//update settings with data
+					updateSelectedTemplateRegionsBlocks(entity_obj, data);
+					
+					//show iframe with new regions and params
+					var regions = data["regions"];
+					var template_regions = {};
+					
+					if (regions)
+						for (var i in regions) {
+							var region = regions[i];
+							template_regions[region] = "";
 							
-							if (rbl[0] == region) {
-								if (!$.isArray(template_regions[region]))
-									template_regions[region] = [];
+							for (var j in regions_blocks_list) {
+								var rbl = regions_blocks_list[j];
 								
-								template_regions[region].push(rbl);
+								if (rbl[0] == region) {
+									if (!$.isArray(template_regions[region]))
+										template_regions[region] = [];
+									
+									template_regions[region].push(rbl);
+								}
 							}
 						}
-					}
-				
-				reloadLayoutIframeFromSettings(iframe, {
-					"template": template,
-					"template_regions" : template_regions,
-					"template_params": template_params_values_list,
-					"template_includes": template_includes,
-					"is_external_template": is_external_template,
-					"external_template_params": external_template_params,
-				});
-				
-				//sets back synchronization functions
-				update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
-				update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
-				update_layout_iframe_field_html_value_from_settings_func = update_layout_iframe_field_html_value_from_settings_func_bkp;
-			},
-			error : function(jqXHR, textStatus, errorThrown) { 
-				if (jqXHR.responseText);
-					StatusMessageHandler.showError(jqXHR.responseText);
-				
-				//sets back synchronization functions
-				update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
-				update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
-				update_layout_iframe_field_html_value_from_settings_func = update_layout_iframe_field_html_value_from_settings_func_bkp;
-			}
+					
+					reloadLayoutIframeFromSettings(iframe, {
+						"template": template,
+						"template_regions" : template_regions,
+						"template_params": template_params_values_list,
+						"template_includes": template_includes,
+						"is_external_template": is_external_template,
+						"external_template_params": external_template_params,
+					});
+					
+					//sets back synchronization functions
+					update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
+					update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
+					update_layout_iframe_field_html_value_from_settings_func = update_layout_iframe_field_html_value_from_settings_func_bkp;
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					StatusMessageHandler.removeLastShownMessage("info", "bottom_messages"); //remove loading message
+					
+					if (jqXHR.responseText);
+						StatusMessageHandler.showError(jqXHR.responseText);
+					
+					//sets back synchronization functions
+					update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
+					update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
+					update_layout_iframe_field_html_value_from_settings_func = update_layout_iframe_field_html_value_from_settings_func_bkp;
+				}
+			});
+		}
+		else {
+			StatusMessageHandler.removeLastShownMessage("info", "bottom_messages"); //remove loading message
+			
+			//update new template
+			updateSelectedTemplateRegionsBlocks(entity_obj, null);
+			reloadLayoutIframeFromSettings(iframe, {template: ""});
+			
+			//sets back synchronization functions
+			update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
+			update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
+			update_layout_iframe_field_html_value_from_settings_func = update_layout_iframe_field_html_value_from_settings_func_bkp;
+		}
+	};	
+	
+	if (!auto_convert_settings_from_layout) {
+		enableAutoConvertSettingsFromLayout(function() {
+			func();
 		});
+		disableAutoConvertSettingsFromLayout();
 	}
-	else {
-		//update new template
-		updateSelectedTemplateRegionsBlocks(entity_obj, null);
-		reloadLayoutIframeFromSettings(iframe, {template: ""});
-		
-		//sets back synchronization functions
-		update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
-		update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
-		update_layout_iframe_field_html_value_from_settings_func = update_layout_iframe_field_html_value_from_settings_func_bkp;
-	}
+	else
+		func();
 }
 
 function getSelectedTemplate(entity_obj) {

@@ -27,6 +27,9 @@ class ' . $v1335217393 . ' extends HibernateModel {
 ?>'; } function getObjTypeClassContents($v1335217393) { include_once get_lib("org.phpframework.object.ObjType"); if (class_exists($v1335217393)) return false; return '<?php
 include_once get_lib("org.phpframework.object.ObjType");
 
+/*
+ * For more information about how to create ObjType classes, please read our documentation in the "Our Parameter and Result Maps" and "Our Parameter and Result Classes" sections.
+ */
 class ' . $v1335217393 . ' extends ObjType {
 	//TODO: create some properties if you wish
 	//sample: private $status;
@@ -36,13 +39,31 @@ class ' . $v1335217393 . ' extends ObjType {
 		//sample: $this->status = false;
 	}
 	
+	/*
+	 * The following code should only be used if this class should be used as a type in the Business-Logic Annotations or as a type in an attribute of a Parameter Map or Result Map in the Data-Access Layers. Additionally, it must return true or false according if the $data is valid or not.
+	 * Otherwise if this class is to be used as a Result Class in the Data-Access Layers, please use the uncommented code.
+	public function setData($value) {
+		$s = parent::setData($value);
+		
+		if ($s) {
+			//write some code here to validate your type...
+		}
+		
+		if ($s)
+			return true; //return true if valid. Additionally you can launch an exception if not valid too.
+		else {
+			//launch_exception(new ObjTypeException(get_class($this), $value)); //launch exception if not valid. This is optional...
+			return false; //return false if invalid.
+		}
+	}*/
 	public function setData($data) {
 		parent::setData($data);
-
+		
 		//TODO: change the $this->data value or assign the $this->data\'s values to some properties
 		//sample: $this->status = $this->data["status"];
 	}
 	
+	//to be called if this class is to be used as a Parameter Class in the Data-Access Layers...
 	public function getData() {
 		//TODO: change the $this->data values or the properties values
 		//sample: $this->data["status"] = $this->status;
@@ -50,7 +71,7 @@ class ' . $v1335217393 . ' extends ObjType {
 		return parent::getData();
 	}
 	
-	//TODO: create some getters and setters
+	//TODO: create some getters and setters if this class is to be used as a Parameter or Result Class in the Data-Access Layer.
 	//sample: public function setStatus($status) {$this->status = $status;}
 	//sample: public function getStatus() {return $this->status;}
 }

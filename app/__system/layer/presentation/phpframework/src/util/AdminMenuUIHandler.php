@@ -113,8 +113,8 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 
 <ul id="main_dao_group_context_menu" class="mycontextmenu">
 	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Group</a></li>
-	<li class="hbnt_obj"><a onClick="return manageFile(this, \'create_dao_hibernate_model_url\', \'create_file\', triggerFileNodeAfterCreateFile)">Add Hibernate DAO Object</a></li>
-	<li class="objt_obj"><a onClick="return manageFile(this, \'create_dao_obj_type_url\', \'create_file\', triggerFileNodeAfterCreateFile)">Add ObjectType DAO Object</a></li>
+	<li class="hbnt_obj"><a onClick="return manageFile(this, \'create_dao_hibernate_model_url\', \'create_file\', triggerFileNodeAfterCreateFile)" allow_upper_case="1">Add Hibernate DAO Object</a></li>
+	<li class="objt_obj"><a onClick="return manageFile(this, \'create_dao_obj_type_url\', \'create_file\', triggerFileNodeAfterCreateFile)" allow_upper_case="1">Add ObjectType DAO Object</a></li>
 	<li class="line_break"></li>
 	<li class="paste"><a onClick="return manageFile(this, \'paste_url\', \'paste\')">Paste</a></li>
 	<li class="line_break"></li>
@@ -126,8 +126,8 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 
 <ul id="dao_group_context_menu" class="mycontextmenu">
 	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Sub-Group</a></li>
-	<li class="hbnt_obj"><a onClick="return manageFile(this, \'create_dao_hibernate_model_url\', \'create_file\', triggerFileNodeAfterCreateFile)">Add Hibernate DAO Object</a></li>
-	<li class="objt_obj"><a onClick="return manageFile(this, \'create_dao_obj_type_url\', \'create_file\', triggerFileNodeAfterCreateFile)">Add ObjectType DAO Object</a></li>
+	<li class="hbnt_obj"><a onClick="return manageFile(this, \'create_dao_hibernate_model_url\', \'create_file\', triggerFileNodeAfterCreateFile)" allow_upper_case="1">Add Hibernate DAO Object</a></li>
+	<li class="objt_obj"><a onClick="return manageFile(this, \'create_dao_obj_type_url\', \'create_file\', triggerFileNodeAfterCreateFile)" allow_upper_case="1">Add ObjectType DAO Object</a></li>
 	<li class="line_break"></li>
 	<li class="cut"><a onClick="return cutFile(this)">Cut</a></li>
 	<li class="copy"><a onClick="return copyFile(this)">Copy</a></li>

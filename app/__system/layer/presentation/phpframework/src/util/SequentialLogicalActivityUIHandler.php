@@ -86,10 +86,11 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 		var brokers_settings = ' . json_encode($pb7b19dbe) . ';
 		var brokers_name_by_obj_code = ' . json_encode($v1f410c3f6b) . ';
 		'; if ($v9b98e0e818) { $v546cf76c77 = new WorkFlowTaskHandler($v4bf8d90f04, $pfce4d1b3); $v546cf76c77->setCacheRootPath(LAYER_CACHE_PATH); $v546cf76c77->setAllowedTaskTags(array("query")); $pb692084d = new WorkFlowUIHandler($v546cf76c77, $peb014cfd, $v37d269c4fa, $v3b2000c17b, $pb5790ec9, $v3d55458bcd, $v4bf8d90f04, $pfce4d1b3); $v0a1f4a55aa = new WorkFlowQueryHandler($pb692084d, $peb014cfd, $v37d269c4fa, $v9b98e0e818, $pd7f46171, $pc66a0204, $v5a331eab7e, "", array(), array(), array(), array()); $pbb688020 .= $v0a1f4a55aa->getDataAccessJavascript($v8ffce2a791, $pa0462a8e, $pa32be502, "presentation", null, null); $pa8dedb03 .= str_replace('<script>', '', str_replace('</script>', '', $pbb688020)); $pa8dedb03 .= 'get_broker_db_data_url += "&global_default_db_driver_broker=' . $GLOBALS["default_db_broker"] . '";'; $pf8ed4912 = $v0a1f4a55aa->getGlobalTaskFlowChar(); $pf8ed4912 .= $v0a1f4a55aa->getQueryBlockHtml(); $pa8dedb03 .= 'var query_task_html = \'' . addcslashes(str_replace("\n", "", $pf8ed4912), "\\'") . '\';'; if ($v1fac4509df) { $pf8ed4912 = $v0a1f4a55aa->getChooseQueryTableOrAttributeHtml("choose_db_table_or_attribute"); $pa8dedb03 .= '
-				var choose_db_table_or_attribute_html = $( \'' . addcslashes(str_replace("\n", "", $pf8ed4912), "\\'") . '\' );
+				var choose_db_table_or_attribute_elm = $( \'' . addcslashes(str_replace("\n", "", $pf8ed4912), "\\'") . '\' );
 				
 				$(function() {
-					$("' . $v1fac4509df . '").append(choose_db_table_or_attribute_html);
+					if ($("#choose_db_table_or_attribute").length == 0)
+						$("' . $v1fac4509df . '").append(choose_db_table_or_attribute_elm);
 				});
 				'; } $pa8dedb03 .= WorkFlowBrokersSelectedDBVarsHandler::printSelectedDBVarsJavascriptCode($peb014cfd, $v8ffce2a791, $pa0462a8e, null); $pa8dedb03 .= '
 			getDBTables("' . $pd7f46171 . '", "' . $pc66a0204 . '", "' . $v5a331eab7e . '");
@@ -101,18 +102,18 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 				for (var db_table in db_tables) {
 					html += "<option>" + db_table + "</option>";
 				}
-				choose_db_table_or_attribute_html.find(".db_table select").html(html);
+				choose_db_table_or_attribute_elm.find(".db_table select").html(html);
 			}
 			
-			choose_db_table_or_attribute_html.find(".db_broker > select").change(function() {
+			choose_db_table_or_attribute_elm.find(".db_broker > select").change(function() {
 				onChangePopupDBBrokers(this);
 			});
 			
-			choose_db_table_or_attribute_html.find(".db_driver > select").change(function() {
+			choose_db_table_or_attribute_elm.find(".db_driver > select").change(function() {
 				onChangePopupDBDrivers(this);
 			});
 			
-			choose_db_table_or_attribute_html.find(".type > select").change(function() {
+			choose_db_table_or_attribute_elm.find(".type > select").change(function() {
 				onChangePopupDBTypes(this);
 			});
 			'; $v0a9dad1fe0 .= '

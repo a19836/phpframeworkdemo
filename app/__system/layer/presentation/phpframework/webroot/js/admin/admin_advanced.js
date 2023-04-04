@@ -48,6 +48,9 @@ $(function() {
 		cursor: 'move',
 		cancel: '.button',
 		start : function(event, ui) {
+			if (typeof navigator_droppables_active != "undefined")
+				navigator_droppables_active = false;
+			
 			if ($(this).children(".button").hasClass("minimize")) {
 				$('#left_panel, #hide_panel, #right_panel').addClass("dragging"); // We need to hide the iframe bc the draggable event has some problems with iframes
 				return true;
@@ -60,6 +63,9 @@ $(function() {
 		stop : function(event, ui) {
 			updatePanelsAccordingWithHidePanel();
 			$('#left_panel, #hide_panel, #right_panel').removeClass("dragging");
+			
+			if (typeof navigator_droppables_active != "undefined")
+				navigator_droppables_active = true;
 		}
 	});
 	

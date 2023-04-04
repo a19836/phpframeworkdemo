@@ -7,6 +7,8 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Page Title", "This is the 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link rel="icon" href="data:;base64,=" />
+	
+	<?= $EVC->getCMSLayer()->getCMSTemplateLayer()->renderRegion("Head"); ?>
 </head>
 <body>
 	<h1 class="title" style="text-align:center">
