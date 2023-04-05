@@ -56,7 +56,7 @@ function toggleChooseEventPopup(elm, widget, handler, available_events) {
 					+ '</ul>'
 				+ '</div>'
 				+ '<div class="button">'
-					+ '<input type="button" value="update" onClick="MyFancyPopup.settings.updateFunction(this)" />'
+					+ '<input type="button" value="update" onClick="LayoutUIEditorWidgetResourceFancyPopup.settings.updateFunction(this)" />'
 				+ '</div>'
 			+ '</div>';
 		
