@@ -108,11 +108,29 @@
 			};
 			
 			me.parseHtml = function(html_element) {
-				return html_element && html_element.nodeName.toLowerCase() == "link";
+				if (!html_element)
+					return false;
+				
+				var node_name = html_element.nodeName.toLowerCase();
+				
+				//if html_element is a link node.
+				if (node_name == "link")
+					return true;
+				
+				//Otherwise if html_element was previously a template-widget-link node.
+				//Note that if we call the recreateWidgetChildren or convertHtmlElementToWidget methods for this widget.parent(), when the html_element is already a widget (created previously), we need to be prepared to parse it and re-convert this html_element (which is already a widget) into a new widget. So we need to detect this cases with the following code:
+				var j_html_element = $(html_element);
+				
+				if (node_name == "div" && j_html_element.hasClass("template-widget-link") && j_html_element.data("data-tag") == "link")
+					return true;
+				else if (node_name == "div" && j_html_element.children("div.link-file").length == 1 && j_html_element.children().not("link").length == 1)
+					return true;
+				
+				return false;
 			};
 			
 			me.parseSettings = function(widget, widget_settings) {
-				var link= widget.children("link");
+				var link = widget.children("link");
 				
 				var href = widget.children(".link-file").html();
 				href = href.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
@@ -127,14 +145,52 @@
 			};
 			
 			me.cleanHtml = function(html_element) {
-				var link = $(html_element).children("link");
+				var j_html_element = $(html_element);
+				var link = j_html_element.children("link"); 
+				var href = j_html_element.children(".link-file").html();
+				var href_bkp = link.attr("href");
 				
-				return ui_creator.getCleanedHtmlElement( link[0] );
+				href = getCleanedHtmlHref(href);
+				link.attr("href", href);
+				
+				var html = ui_creator.getCleanedHtmlElement( link[0] );
+				
+				link.attr("href", href_bkp);
+				
+				return html;
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
 				var link_file = widget.children(".link-file");
 				
+				if (html_element) {
+					var node_name = html_element.nodeName.toLowerCase();
+					var j_html_element = $(html_element);
+					
+					//if html_element was previously a template-widget-link node.
+					//Note that if we call the recreateWidgetChildren or convertHtmlElementToWidget methods for this widget.parent(), when the html_element is already a widget (created previously), we need to be prepared to parse it and re-convert this html_element (which is already a widget) into a new widget. So we need to detect this cases with the following code:
+					if (node_name == "div" && (
+						(j_html_element.hasClass("template-widget-link") && j_html_element.data("data-tag") == "link")
+						|| (j_html_element.children("div.link-file").length == 1 && j_html_element.children().not("link").length == 1)
+					)) {
+						var href = j_html_element.children(".link-file").html();
+						var link = j_html_element.children("link"); 
+						
+						href = getCleanedHtmlHref(href);
+						link.attr("href", href);
+						
+						//append the link node to the widget so then we can remove the j_html_element
+						widget.append(link);
+						j_html_element.remove();
+						
+						//set the new html_element to the link node
+						html_element = link[0];
+						
+						//check if properties are open for the old widget and if yes, open the properties for the new widget
+						ui_creator.reloadOpenMenuSettingsIfOpenedWithOldWidget(j_html_element, widget, 1000);
+					}
+				}
+					
 				if (html_element) {
 					var href = html_element.getAttribute("href");
 					
@@ -157,6 +213,9 @@
 				var link = widget.children("link");
 				
 				link_file.attr("contenteditable", "true")
+					.keydown(function(e) {
+						e.stopPropagation(); //otherwise if the user press ctrl+v to paste a string, it will call the ui_creator.TextSelection.options.on_create_node function which then will convert this widget into a normal html block widget, which will mess the layout.
+					})
 					.keyup(function(e) {
 						link.attr("href", link_file.text());
 						
@@ -191,7 +250,7 @@
 						var link_file = widget.children(".link-file");
 						
 						if (field_value != "") {
-							link_file.html(field_value);
+							link_file.html( field_value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
 							
 							//parse href in case it contains the $project_url_prefix or $project_common_url_prefix
 							var aux = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(field_value) : field_value;
@@ -225,6 +284,24 @@
 				
 				return status;
 			};
+			
+			function getCleanedHtmlHref(href) {
+				href = href.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
+				
+				//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
+				href = href.replace(/\u2003/g, "\t"); 
+				
+				//remove the weird chars from code, this is, in the php editor appears some red dots in the code, which means there some weird chars in the code.
+				var eol_control_var = "#" + (Math.random() * 10000000) + "__SYSTEM_EOL_" + (Math.random() * 10000000) + "#";
+				href = href.replace(/\n/g, eol_control_var);
+				
+				href = href.replace(/[^\x20-\x7E]/g, ''); //This will remove the end_lines too but I save them through the eol_control_var and then the MyHtmlBeautify.beautify will add them again
+				
+				var regex = new RegExp(eol_control_var, "g");
+				href = href.replace(regex, "\n");
+				
+				return href;
+			}
 		}
 	]]></menu_js>
 </widget>

@@ -7,7 +7,7 @@
 	</settings>
 	<menu_widget></menu_widget>
 	<template_widget><![CDATA[
-		<pre></pre>
+		<pre class="ptl-content"></pre>
 		<div class="droppable"></div>
 	]]></template_widget>
 	<properties></properties>
@@ -59,7 +59,7 @@
 			display:none;
 		}
 		
-		.template-widget.template-widget-ptl > pre {
+		.template-widget.template-widget-ptl > .ptl-content {
 			width:auto;
 			min-height:1.5em;
 			margin:0 !important; /* !important is bc of the css when .borders is active */
@@ -74,10 +74,10 @@
 			font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 			overflow:auto;
 		}
-		.template-widget.template-widget-ptl > pre::-webkit-scrollbar {
+		.template-widget.template-widget-ptl > .ptl-content::-webkit-scrollbar {
 			height:7px;
 		}
-		body > .droppable.borders .template-widget.template-widget-ptl > pre:before {
+		body > .droppable.borders .template-widget.template-widget-ptl > .ptl-content:before {
 			content:"";
 			border:0;
 			display:none;
@@ -120,25 +120,41 @@
 			};
 			
 			me.parseHtml = function(html_element) {
-				var node_name = html_element ? html_element.nodeName.toLowerCase() : "";
+				if (!html_element)
+					return false;
 				
+				var node_name = html_element.nodeName.toLowerCase();
+				var ret = {
+					"widget-droppable-selector": " > .droppable",
+				};
+				
+				//if html_element is ptl
 				if (/^\/?(php|ptl|\?):/i.test(node_name)) { //allow empty ptl codes
 					//console.log(html_element);
 					
-					return {
-						"widget-droppable-selector": " > .droppable",
-					};
+					return ret;
 				}
+				
+				//Otherwise if html_element was previously a template-widget-ptl node.
+				//Note that if we call the recreateWidgetChildren or convertHtmlElementToWidget methods for this widget.parent(), when the html_element is already a widget (created previously), we need to be prepared to parse it and re-convert this html_element (which is already a widget) into a new widget. So we need to detect this cases with the following code:
+				var j_html_element = $(html_element);
+				
+				if (node_name == "div" && j_html_element.hasClass("template-widget-ptl") && j_html_element.data("data-tag") == "ptl")
+					return ret;
+				else if (node_name == "div" && j_html_element.children("pre.ptl-content").length == 1 && j_html_element.children("div.droppable").length == 1 && j_html_element.children().length == 2)
+					return ret;
+				
+				return false;
 			};
 			
 			me.cleanHtml = function(html_element) {
 				var widget = $(html_element);
 				var children = ui_creator.getCleanedHtmlContents( widget.children(".droppable").children() );
 				
-				var html = widget.children("pre").html();
+				var html = widget.children(".ptl-content").html();
 				html = html.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
 				
-				//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
+				//replace \u2003 which is a weird white space char that is created when we call '$(.ptl-content).html()' function and it converts the \t to this char.
 				html = html.replace(/\u2003/g, "\t"); 
 				
 				html = "<" + html;
@@ -158,37 +174,56 @@
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
-				var span = widget.children("pre");
-				var default_text = span.html();
+				var ptl_content = widget.children(".ptl-content");
+				var default_text = ptl_content.html();
 				
-				span.html(html_element ? "" : (default_text ? default_text : "ptl:echo Via PTL code"));
+				ptl_content.html(html_element ? "" : (default_text ? default_text : "ptl:echo Via PTL code"));
 				
 				if (html_element) {
 					//console.log(html_element);
 					//console.log(html_element.attributes);
 					
 					var node_name = html_element.nodeName.toLowerCase();
-					var html = '<' + node_name;
-					if (html_element.attributes)
-						$.each(html_element.attributes, function(idx, attr) {
-							html += " " + attr.name + (attr.value != "" ? '="' + attr.value + '"' : "");
-						});
-					html += '/>';
+					var j_html_element = $(html_element);
+					var html = "";
 					
-					//for the cases: <input placeHolder="<ptl:echo str_replace('"', '&quot;', ($input[article_id] )) />" />
-					html = html.replace(/&/g, "&amp;");
-					
-					var temp = $(html);
-					var html = ui_creator.getCleanedHtmlElement(temp[0]);
-					temp.remove();
-					
-					if (MyHtmlBeautify && MyHtmlBeautify.isSinglePTLTag(html))
-						widget.addClass("is-single-ptl-tag");
-					
-					html = html.substr(1, html.indexOf('></' + node_name + '>') - 1);
+					//if html_element was previously a template-widget-ptl node.
+					//Note that if we call the recreateWidgetChildren or convertHtmlElementToWidget methods for this widget.parent(), when the html_element is already a widget (created previously), we need to be prepared to parse it and re-convert this html_element (which is already a widget) into a new widget. So we need to detect this cases with the following code:
+					if (node_name == "div" && (
+						(j_html_element.hasClass("template-widget-ptl") && j_html_element.data("data-tag") == "ptl")
+						|| (j_html_element.children("pre.ptl-content").length == 1 && j_html_element.children("div.droppable").length == 1 && j_html_element.children().length == 2)
+					)) {
+						html = j_html_element.children(".ptl-content").html();
+						
+						if (j_html_element.hasClass("is-single-ptl-tag"))
+							widget.addClass("is-single-ptl-tag");
+						
+						//check if properties are open for the old widget and if yes, open the properties for the new widget
+						ui_creator.reloadOpenMenuSettingsIfOpenedWithOldWidget(j_html_element, widget, 1000);
+					}
+					else {
+						html = '<' + node_name;
+						if (html_element.attributes)
+							$.each(html_element.attributes, function(idx, attr) {
+								html += " " + attr.name + (attr.value != "" ? '="' + attr.value + '"' : "");
+							});
+						html += '/>';
+						
+						//for the cases: <input placeHolder="<ptl:echo str_replace('"', '&quot;', ($input[article_id] )) />" />
+						html = html.replace(/&/g, "&amp;");
+						
+						var temp = $(html);
+						var html = ui_creator.getCleanedHtmlElement(temp[0]);
+						temp.remove();
+						
+						if (MyHtmlBeautify && MyHtmlBeautify.isSinglePTLTag(html))
+							widget.addClass("is-single-ptl-tag");
+						
+						html = html.substr(1, html.indexOf('></' + node_name + '>') - 1);
+					}
 					
 					//console.log(html);
-					span.html(html);
+					ptl_content.html(html);
 					
 					$(html_element).remove();
 				}
@@ -197,16 +232,20 @@
 				widget.attr("contenteditable", "false");
 				widget.children(".droppable").attr("contenteditable", "true");
 				
-				span.attr("contenteditable", "true").mouseup(function(e) {
-					//prevents that the TextSelection open the inline menu
-					e.preventDefault();
-					e.stopPropagation();
-					
-					ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
-				});
+				ptl_content.attr("contenteditable", "true")
+					.keydown(function(e) {
+						e.stopPropagation(); //otherwise if the user press ctrl+v to paste a string, it will call the ui_creator.TextSelection.options.on_create_node function which then will convert this widget into a normal html block widget, which will mess the layout.
+					})
+					.mouseup(function(e) {
+						//prevents that the TextSelection open the inline menu
+						e.preventDefault();
+						e.stopPropagation();
+						
+						ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
+					});
 				
 				//only allows paste with text, discarding the html. Html is not allowed here.
-				ui_creator.setPasteCallbackForOnlyText(span);
+				ui_creator.setPasteCallbackForOnlyText(ptl_content);
 			};
 		}
 	]]></menu_js>

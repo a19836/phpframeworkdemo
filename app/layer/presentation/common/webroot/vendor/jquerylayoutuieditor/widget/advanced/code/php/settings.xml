@@ -7,7 +7,7 @@
 	</settings>
 	<menu_widget></menu_widget>
 	<template_widget><![CDATA[
-		<pre></pre>
+		<pre class="php-content"></pre>
 	]]></template_widget>
 	<properties></properties>
 	<menu_css><![CDATA[
@@ -57,7 +57,7 @@
 			display:none;
 		}
 		
-		.template-widget.template-widget-php > pre {
+		.template-widget.template-widget-php > .php-content {
 			margin:0 !important; /* !important is bc of the css when .borders is active */
 			padding:0 !important; /* !important is bc of the css when .borders is active */
 			border:0 !important; /* !important is bc of the css when .borders is active */
@@ -70,15 +70,15 @@
 			text-align:left;
 			overflow:auto;
 		}
-		.template-widget.template-widget-php > pre:focus-visible {
+		.template-widget.template-widget-php > .php-content:focus-visible {
 			outline:none;
 		}
-		.template-widget.template-widget-php > pre::-webkit-scrollbar {
+		.template-widget.template-widget-php > .php-content::-webkit-scrollbar {
 			width:5px;
 			height:5px;
 			background-color:transparent;
 		}
-		body > .droppable.borders .template-widget.template-widget-php > pre:before {
+		body > .droppable.borders .template-widget.template-widget-php > .php-content:before {
 			content:"";
 			border:0;
 			display:none;
@@ -101,16 +101,30 @@
 			};
 			
 			me.parseHtml = function(html_element) {
-				var node_name = html_element ? html_element.nodeName.toLowerCase() : "";
+				if (!html_element)
+					return false;
 				
-				//<php> or <?> or <?=>
+				var node_name = html_element.nodeName.toLowerCase();
+				
+				//if html_element is <php> or <?> or <?=>
 				if (/^\/?(php|\?|\?=)$/i.test(node_name))
 					return true;
+				
+				//Otherwise if html_element was previously a template-widget-php node.
+				//Note that if we call the recreateWidgetChildren or convertHtmlElementToWidget methods for this widget.parent(), when the html_element is already a widget (created previously), we need to be prepared to parse it and re-convert this html_element (which is already a widget) into a new widget. So we need to detect this cases with the following code:
+				var j_html_element = $(html_element);
+				
+				if (node_name == "div" && j_html_element.hasClass("template-widget-php") && j_html_element.data("data-tag") == "php")
+					return true;
+				else if (node_name == "div" && j_html_element.children("pre.php-content").length == 1 && j_html_element.children().length == 1)
+					return true;
+				
+				return false;
 			};
 			
 			me.cleanHtml = function(html_element) {
 				var widget = $(html_element);
-				var text = widget.children("pre").html();
+				var text = widget.children(".php-content").html();
 				text = text.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
 				
 				//prepare prefix tabs by adding them
@@ -119,7 +133,7 @@
 				if (prefix)
 					text = text.replace(/\n/g, "\n" + prefix);
 				
-				//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
+				//replace \u2003 which is a weird white space char that is created when we call '$(.php-content).html()' function and it converts the \t to this char.
 				text = text.replace(/\u2003/g, "\t");
 				
 				//remove the weird chars from code, this is, in the php editor appears some red dots in the code, which means there some weird chars in the code.
@@ -134,36 +148,55 @@
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
-				var span = widget.children("pre");
-				var default_text = span.html();
+				var php_content = widget.children(".php-content");
+				var default_text = php_content.html();
 				
-				span.html(html_element ? "" : (default_text ? default_text : "&lt;? echo 'Via PHP code'; ?&gt;"));
+				php_content.html(html_element ? "" : (default_text ? default_text : "&lt;? echo 'Via PHP code'; ?&gt;"));
 				
 				if (html_element) {
-					var text = html_element.textContent;
+					var node_name = html_element.nodeName.toLowerCase();
+					var j_html_element = $(html_element);
+					var text = "";
 					
-					var node_name = html_element ? html_element.nodeName.toLowerCase() : "";
-					if (/^\/?(php|\?|\?=)$/i.test(node_name)) //This is for the cases: <php> or <?> or <?=>
-						text = '?php ' + text + ' ?';
-					
-					//prepare prefix tabs by removing the tabs that don't matter
-					var m = text.match(/^\?(php|=|)\r?\n(\s+)/);
-					
-					if (m && m[2]) {
-						var prefix = m[2];
-						var regex = new RegExp("(\r?\n)" + prefix, "g");
-						text = text.replace(regex, "$1");
+					//if html_element was previously a template-widget-php node.
+					//Note that if we call the recreateWidgetChildren or convertHtmlElementToWidget methods for this widget.parent(), when the html_element is already a widget (created previously), we need to be prepared to parse it and re-convert this html_element (which is already a widget) into a new widget. So we need to detect this cases with the following code:
+					if (node_name == "div" && (
+						(j_html_element.hasClass("template-widget-php") && j_html_element.data("data-tag") == "php")
+						|| (j_html_element.children("pre.php-content").length == 1 && j_html_element.children().length == 1)
+					)) {
+						text = j_html_element.children(".php-content").html();
 						
+						var prefix = j_html_element.data("prefix");
 						widget.data("prefix", prefix);
+						
+						//check if properties are open for the old widget and if yes, open the properties for the new widget
+						ui_creator.reloadOpenMenuSettingsIfOpenedWithOldWidget(j_html_element, widget, 1000);
+					}
+					else {
+						text = html_element.textContent;
+					
+						if (/^\/?(php|\?|\?=)$/i.test(node_name)) //This is for the cases: <php> or <?> or <?=>
+							text = '?php ' + text + ' ?';
+						
+						//prepare prefix tabs by removing the tabs that don't matter
+						var m = text.match(/^\?(php|=|)\r?\n(\s+)/);
+						
+						if (m && m[2]) {
+							var prefix = m[2];
+							var regex = new RegExp("(\r?\n)" + prefix, "g");
+							text = text.replace(regex, "$1");
+							
+							widget.data("prefix", prefix);
+						}
+						
+						//remove first and last white spaces - trim code
+						text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
+						
+						//prepare text
+						text = '&lt;' + text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") + '&gt;';
 					}
 					
-					//remove first and last white spaces - trim code
-					text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
-					
-					//prepare text
-					text = '&lt;' + text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") + '&gt;';
-					
-					span.html(text);
+					php_content.html(text);
 					
 					$(html_element).remove();
 				}
@@ -171,16 +204,20 @@
 				//prepare editable box
 				widget.attr("contenteditable", "false");
 				
-				span.attr("contenteditable", "true").mouseup(function(e) {
-					//prevents that the TextSelection open the inline menu
-					e.preventDefault();
-					e.stopPropagation();
-					
-					ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
-				});
+				php_content.attr("contenteditable", "true")
+					.keydown(function(e) {
+						e.stopPropagation(); //otherwise if the user press ctrl+v to paste a string, it will call the ui_creator.TextSelection.options.on_create_node function which then will convert this widget into a normal html block widget, which will mess the layout.
+					})
+					.mouseup(function(e) {
+						//prevents that the TextSelection open the inline menu
+						e.preventDefault();
+						e.stopPropagation();
+						
+						ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
+					});
 				
 				//only allows paste with text, discarding the html. Html is not allowed here.
-				ui_creator.setPasteCallbackForOnlyText(span);
+				ui_creator.setPasteCallbackForOnlyText(php_content);
 			};
 			
 			me.onDropMenuWidget = function(menu_widget, widget, event, ui_obj) {

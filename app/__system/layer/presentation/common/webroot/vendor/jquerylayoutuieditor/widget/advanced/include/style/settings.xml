@@ -107,6 +107,26 @@
 			
 			me.parseHtml = function(html_element) {
 				return html_element && html_element.nodeName.toLowerCase() == "style";
+				
+				if (!html_element)
+					return false;
+				
+				var node_name = html_element.nodeName.toLowerCase();
+				
+				//if html_element is a style node.
+				if (node_name == "style")
+					return true;
+				
+				//Otherwise if html_element was previously a template-widget-style node.
+				//Note that if we call the recreateWidgetChildren or convertHtmlElementToWidget methods for this widget.parent(), when the html_element is already a widget (created previously), we need to be prepared to parse it and re-convert this html_element (which is already a widget) into a new widget. So we need to detect this cases with the following code:
+				var j_html_element = $(html_element);
+				
+				if (node_name == "div" && j_html_element.hasClass("template-widget-style") && j_html_element.data("data-tag") == "style")
+					return true;
+				else if (node_name == "div" && j_html_element.children("pre.style-content").length == 1 && j_html_element.children().not("style").length == 1)
+					return true;
+				
+				return false;
 			};
 			
 			me.parseSettings = function(widget, widget_settings) {
@@ -114,43 +134,90 @@
 			};
 			
 			me.cleanHtml = function(html_element) {
-				var style = $(html_element).children("style");
+				var widget = $(html_element);
+				var code = widget.children(".style-content").html();
 				
-				return ui_creator.getCleanedHtmlElement( style[0] );
+				code = getCleanedHtmlCode(code);
+				
+				var html = '<style>' + code + '</style>';
+				
+				if (ui_creator.options.beautify)
+					html = MyHtmlBeautify.beautify(html); //beautify code
+				
+				return html;
+				
+				//var style = $(html_element).children("style");
+				//return ui_creator.getCleanedHtmlElement( style[0] );
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
 				var style_content = widget.children(".style-content");
 				
 				if (html_element) {
-					var code = $(html_element).html();
+					var node_name = html_element.nodeName.toLowerCase();
+					var j_html_element = $(html_element);
+					var code = "";
 					
-					if (code && code != "") {
-						//prepare prefix tabs by removing the tabs that don't matter
-						var m = code.match(/^\r?\n(\s+)/);
+					//if html_element was previously a template-widget-style node.
+					//Note that if we call the recreateWidgetChildren or convertHtmlElementToWidget methods for this widget.parent(), when the html_element is already a widget (created previously), we need to be prepared to parse it and re-convert this html_element (which is already a widget) into a new widget. So we need to detect this cases with the following code:
+					if (node_name == "div" && (
+						(j_html_element.hasClass("template-widget-style") && j_html_element.data("data-tag") == "style")
+						|| (j_html_element.children("pre.style-content").length == 1 && j_html_element.children().not("style").length == 1)
+					)) {
+						var code = j_html_element.children(".style-content").html();
 						
-						if (m && m[1]) {
-							var prefix = m[1];
-							var regex = new RegExp("(\r?\n)" + prefix, "g");
-							code = code.replace(regex, "$1");
+						//append the style node to the widget so then we can remove the j_html_element
+						var style = j_html_element.children("style");
+						widget.append(style);
+						j_html_element.remove();
+						
+						//set the new html_element to the style node
+						html_element = style[0];
+						
+						//check if properties are open for the old widget and if yes, open the properties for the new widget
+						ui_creator.reloadOpenMenuSettingsIfOpenedWithOldWidget(j_html_element, widget, 1000);
+					}
+					else {
+						code = $(html_element).html();
+						
+						if (code && code != "") {
+							var css_code = code;
 							
-							widget.data("prefix", prefix);
+							//prepare prefix tabs by removing the tabs that don't matter
+							var m = code.match(/^\r?\n(\s+)/);
+							
+							if (m && m[1]) {
+								var prefix = m[1];
+								var regex = new RegExp("(\r?\n)" + prefix, "g");
+								code = code.replace(regex, "$1");
+								
+								widget.data("prefix", prefix);
+							}
+							
+							//remove first and last white spaces - trim code
+							code = code.replace(/^\s+/g, "").replace(/\s+$/g, "");
+							
+							//prepare code
+							code = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;");
+							
+							//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
+							code = code.replace(/\u2003/g, "\t");
+							
+							//convert url vars to real urls in css_code in html_element, this is, parse css_code in case it contains the $project_url_prefix or $project_common_url_prefix
+							if (typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function") {
+								var new_css_code = ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(css_code);
+								
+								if (css_code != new_css_code)
+									$(html_element).html(new_css_code);
+							}
 						}
-						
-						//remove first and last white spaces - trim code
-						code = code.replace(/^\s+/g, "").replace(/\s+$/g, "");
-						
-						//prepare code
-						code = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;");
-						
-						//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
-						code = code.replace(/\u2003/g, "\t"); 
-						
-						style_content.html(code);
 					}
 					
-					widget.append(html_element);
+					style_content.html(code);
 				}
+				
+				if (html_element)
+					widget.append(html_element);
 				else
 					widget.append( document.createElement("style") );
 				
@@ -159,22 +226,12 @@
 				var style = widget.children("style");
 				
 				style_content.attr("contenteditable", "true")
+					.keydown(function(e) {
+						e.stopPropagation(); //otherwise if the user press ctrl+v to paste a string, it will call the ui_creator.TextSelection.options.on_create_node function which then will convert this widget into a normal html block widget, which will mess the layout.
+					})
 					.keyup(function(e) {
 						var code = style_content.html();
-						code = code.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
-						
-						//add first and last end line removed from trim code above
-						if (code)
-							code = code.replace(/^([^\n])/, "\n$1").replace(/([^\n])$/, "$1\n");
-						
-						//prepare prefix tabs by adding them
-						var prefix = widget.data("prefix");
-						
-						if (prefix)
-							code = code.replace(/\n/g, "\n" + prefix);
-						
-						//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
-						code = code.replace(/\u2003/g, "\t"); 
+						code = getCleanedHtmlCode(code);
 						
 						style.html(code);
 						
@@ -224,6 +281,36 @@
 				
 				return status;
 			};
+			
+			function getCleanedHtmlCode(code) {
+				code = code.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
+				
+				/* DEPRECATED bc the code below will remove all end lines and then execute the MyHtmlBeautify.beautify
+				//add first and last end line removed from trim code above
+				if (code)
+					code = code.replace(/^([^\n])/, "\n$1").replace(/([^\n])$/, "$1\n");
+				
+				//prepare prefix tabs by adding them
+				var prefix = widget.data("prefix");
+				
+				if (prefix)
+					code = code.replace(/\n/g, "\n" + prefix);
+				*/
+				
+				//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
+				code = code.replace(/\u2003/g, "\t"); 
+				
+				//remove the weird chars from code, this is, in the php editor appears some red dots in the code, which means there some weird chars in the code.
+				var eol_control_var = "#" + (Math.random() * 10000000) + "__SYSTEM_EOL_" + (Math.random() * 10000000) + "#";
+				code = code.replace(/\n/g, eol_control_var);
+				
+				code = code.replace(/[^\x20-\x7E]/g, ''); //This will remove the end_lines too but I save them through the eol_control_var and then the MyHtmlBeautify.beautify will add them again
+				
+				var regex = new RegExp(eol_control_var, "g");
+				code = code.replace(regex, "\n");
+				
+				return code;
+			}
 		}
 	]]></menu_js>
 </widget>

@@ -135,7 +135,25 @@
 			};
 			
 			me.parseHtml = function(html_element) {
-				return html_element && html_element.nodeName.toLowerCase() == "script";
+				if (!html_element)
+					return false;
+				
+				var node_name = html_element.nodeName.toLowerCase();
+				
+				//if html_element is a script node.
+				if (node_name == "script")
+					return true;
+				
+				//Otherwise if html_element was previously a template-widget-script node.
+				//Note that if we call the recreateWidgetChildren or convertHtmlElementToWidget methods for this widget.parent(), when the html_element is already a widget (created previously), we need to be prepared to parse it and re-convert this html_element (which is already a widget) into a new widget. So we need to detect this cases with the following code:
+				var j_html_element = $(html_element);
+				
+				if (node_name == "div" && j_html_element.hasClass("template-widget-script") && j_html_element.data("data-tag") == "script")
+					return true;
+				else if (node_name == "div" && j_html_element.children("div.script-file").length == 1 && j_html_element.children("pre.script-content").length == 1 && j_html_element.children().not("script").length == 2)
+					return true;
+				
+				return false;
 			};
 			
 			me.parseSettings = function(widget, widget_settings) {
@@ -163,35 +181,8 @@
 				var language = widget.data("widget-props-language");
 				var type = widget.data("widget-props-type");
 				
-				src = src.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
-				code = code.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
-				
-				/* DEPRECATED bc the code below will remove all end lines and then execute the MyHtmlBeautify.beautify
-				//add first and last end line removed from trim code on onCreateTemplateWidget
-				if (code)
-					code = code.replace(/^([^\n])/, "\n$1").replace(/([^\n])$/, "$1\n");
-				
-				//prepare prefix tabs by adding them
-				var prefix = widget.data("prefix");
-				
-				if (prefix)
-					code = code.replace(/\n/g, "\n" + prefix);
-				*/
-				
-				//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
-				src = src.replace(/\u2003/g, "\t"); 
-				code = code.replace(/\u2003/g, "\t"); 
-				
-				//remove the weird chars from code, this is, in the php editor appears some red dots in the code, which means there some weird chars in the code.
-				var eol_control_var = "#" + (Math.random() * 10000000) + "__SYSTEM_EOL_" + (Math.random() * 10000000) + "#";
-				src = src.replace(/\n/g, eol_control_var);
-				code = code.replace(/\n/g, eol_control_var);
-				
-				src = src.replace(/[^\x20-\x7E]/g, ''); //This will remove the end_lines too but I save them through the eol_control_var and then the MyHtmlBeautify.beautify will add them again
-				code = code.replace(/[^\x20-\x7E]/g, ''); //This will remove the end_lines too but I save them through the eol_control_var and then the MyHtmlBeautify.beautify will add them again
-				var regex = new RegExp(eol_control_var, "g");
-				src = src.replace(regex, "\n");
-				code = code.replace(regex, "\n");
+				src = getCleanedHtmlSrc(src);
+				code = getCleanedHtmlCode(code);
 				
 				var html = '<' + 'script' + (src ? ' src="' + src + '"' : '') + (language ? ' language="' + language + '"' : '') + (type ? ' type="' + type + '"' : '') + '>' + code + '<' + '/script>'; //<script must be spearate otherwise gives error.
 				
@@ -202,15 +193,41 @@
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
-				var file = widget.children(".script-file");
-				var content = widget.children(".script-content");
+				var script_file = widget.children(".script-file");
+				var script_content = widget.children(".script-content");
 				
 				if (html_element) {
+					var node_name = html_element.nodeName.toLowerCase();
 					var j_html_element = $(html_element);
-					var src = j_html_element.attr("src");
-					var language = j_html_element.attr("language");
-					var type = j_html_element.attr("type");
-					var code = j_html_element.html();
+					var src = "";
+					var language = "";
+					var type = "";
+					var code = "";
+					
+					//if html_element was previously a template-widget-script node.
+					//Note that if we call the recreateWidgetChildren or convertHtmlElementToWidget methods for this widget.parent(), when the html_element is already a widget (created previously), we need to be prepared to parse it and re-convert this html_element (which is already a widget) into a new widget. So we need to detect this cases with the following code:
+					if (node_name == "div" && (
+						(j_html_element.hasClass("template-widget-script") && j_html_element.data("data-tag") == "script")
+						|| (j_html_element.children("div.script-file").length == 1 && j_html_element.children("pre.script-content").length == 1 && j_html_element.children().not("script").length == 2)
+					)) {
+						src = j_html_element.children(".script-file").html();
+						language = j_html_element.data("widget-props-language");
+						type = j_html_element.data("widget-props-type");
+						code = j_html_element.children(".script-content").html();
+						
+						src = getCleanedHtmlSrc(src);
+						code = getCleanedHtmlCode(code);
+						
+						//check if properties are open for the old widget and if yes, open the properties for the new widget
+						ui_creator.reloadOpenMenuSettingsIfOpenedWithOldWidget(j_html_element, widget, 1000);
+					}
+					//if html_element is a script node.
+					else { //if (node_name == "script") {
+						src = j_html_element.attr("src");
+						language = j_html_element.attr("language");
+						type = j_html_element.attr("type");
+						code = j_html_element.html();
+					}
 					
 					widget[0].appendChild( document.createElement("script") ); //must be appendChild bc append doesn't work
 					var script = widget.children("script");
@@ -222,7 +239,7 @@
 					script.attr("type", type);
 					
 					if (src && src != "") {
-						file.html( src.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
+						script_file.html( src.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
 						
 						//parse src in case it contains the $project_url_prefix or $project_common_url_prefix
 						var aux = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(src) : src;
@@ -250,7 +267,11 @@
 						code = code.replace(/^\s+/g, "").replace(/\s+$/g, "");
 						
 						//show code
-						content.html( code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
+						script_content.html( code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
+						
+						//convert url vars to real urls in code, this is, parse code in case it contains the $project_url_prefix or $project_common_url_prefix
+						if (typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function")
+							code = ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(code);
 						
 						script[0].textContent = code;
 					}
@@ -261,7 +282,10 @@
 				//prepare .style-content editable
 				widget.attr("contenteditable", "false");
 				
-				$([file[0], content[0]]).attr("contenteditable", "true")
+				$([script_file[0], script_content[0]]).attr("contenteditable", "true")
+					.keydown(function(e) {
+						e.stopPropagation(); //otherwise if the user press ctrl+v to paste a string, it will call the ui_creator.TextSelection.options.on_create_node function which then will convert this widget into a normal html block widget, which will mess the layout.
+					})
 					.keyup(function(e) {
 						if (update_menu_settings_timeout_id)
 							clearTimeout(update_menu_settings_timeout_id);
@@ -279,8 +303,8 @@
 					});
 				
 				//only allows paste with text, discarding the html. Html is not allowed here.
-				ui_creator.setPasteCallbackForOnlyText(file);
-				ui_creator.setPasteCallbackForOnlyText(content);
+				ui_creator.setPasteCallbackForOnlyText(script_file);
+				ui_creator.setPasteCallbackForOnlyText(script_content);
 			};
 			
 			me.onOpenWidgetSettings = function(widget, menu_settings) {
@@ -293,8 +317,8 @@
 					var sprop = field.parent();
 					var props = ui_creator.getMenuSettingsProperties( sprop.parent().closest(".settings-properties") );
 					
-					var file = widget.children(".script-file");
-					var content = widget.children(".script-content");
+					var script_file = widget.children(".script-file");
+					var script_content = widget.children(".script-content");
 					var script = widget.children("script");
 					
 					if (!script[0] && (props["src"] != "" || props["content"] != "")) {
@@ -308,7 +332,7 @@
 					
 					if (sprop.hasClass("src")) {
 						if (props["src"] != "") {
-							file.html( ("" + props["src"]).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
+							script_file.html( ("" + props["src"]).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
 							
 							//parse src in case it contains the $project_url_prefix or $project_common_url_prefix
 							var aux = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(props["src"]) : props["src"];
@@ -316,15 +340,15 @@
 							script[0].src = aux;
 						}
 						else
-							file.html("");
+							script_file.html("");
 					}
 					else if (sprop.hasClass("content")) {
 						if (props["content"] != "") {
-							content.html( ("" + props["content"]).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
+							script_content.html( ("" + props["content"]).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
 							script[0].textContent = props["content"];
 						}
 						else if (props["src"] != "" || props["content"] == "")
-							content.html("");
+							script_content.html("");
 					}
 					else { //save the other props
 						widget.data("widget-props-" + field.attr("name"), field.val());
@@ -336,6 +360,54 @@
 				
 				return status;
 			};
+			
+			function getCleanedHtmlSrc(src) {
+				src = src.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
+				
+				//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
+				src = src.replace(/\u2003/g, "\t"); 
+				
+				//remove the weird chars from code, this is, in the php editor appears some red dots in the code, which means there some weird chars in the code.
+				var eol_control_var = "#" + (Math.random() * 10000000) + "__SYSTEM_EOL_" + (Math.random() * 10000000) + "#";
+				src = src.replace(/\n/g, eol_control_var);
+				
+				src = src.replace(/[^\x20-\x7E]/g, ''); //This will remove the end_lines too but I save them through the eol_control_var and then the MyHtmlBeautify.beautify will add them again
+				
+				var regex = new RegExp(eol_control_var, "g");
+				src = src.replace(regex, "\n");
+				
+				return src;
+			}
+			
+			function getCleanedHtmlCode(code) {
+				code = code.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&emsp;/g, "\t").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
+				
+				/* DEPRECATED bc the code below will remove all end lines and then execute the MyHtmlBeautify.beautify
+				//add first and last end line removed from trim code on onCreateTemplateWidget
+				if (code)
+					code = code.replace(/^([^\n])/, "\n$1").replace(/([^\n])$/, "$1\n");
+				
+				//prepare prefix tabs by adding them
+				var prefix = widget.data("prefix");
+				
+				if (prefix)
+					code = code.replace(/\n/g, "\n" + prefix);
+				*/
+				
+				//replace \u2003 which is a weird white space char that is created when we call 'pre.html()' function and it converts the \t to this char.
+				code = code.replace(/\u2003/g, "\t"); 
+				
+				//remove the weird chars from code, this is, in the php editor appears some red dots in the code, which means there some weird chars in the code.
+				var eol_control_var = "#" + (Math.random() * 10000000) + "__SYSTEM_EOL_" + (Math.random() * 10000000) + "#";
+				code = code.replace(/\n/g, eol_control_var);
+				
+				code = code.replace(/[^\x20-\x7E]/g, ''); //This will remove the end_lines too but I save them through the eol_control_var and then the MyHtmlBeautify.beautify will add them again
+				
+				var regex = new RegExp(eol_control_var, "g");
+				code = code.replace(regex, "\n");
+				
+				return code;
+			}
 		}
 	]]></menu_js>
 </widget>
