@@ -220,7 +220,8 @@ input:not([type]):hover:not(:focus),
   input[type=datetime-local]:hover:not(:focus),
   select:hover:not(:focus), 
   textarea:hover:not(:focus) {
-	box-shadow:0 0 0.5rem 0.1rem rgb(200 200 200 / 20%) inset;
+	box-shadow:0 0 0.5rem 0.1rem #f7f7f7 inset;
+	box-shadow:0 0 0.5rem 0.1rem rgba(200, 200, 200, .2) inset;
 }
 input:-webkit-autofill,
   input:-webkit-autofill:hover, 
@@ -259,8 +260,9 @@ input[type=submit]:hover,
 input[type=submit]:focus, 
   input[type=button]:focus, 
   button:focus {
-	/*box-shadow:0 0 0 0.2rem rgb(255 193 7 / 50%);*/
-	box-shadow:0 0 0 0.2rem rgb(200 202 213 / 50%);
+	box-shadow:0 0 0 0.2rem #f7f7f7;
+	/*box-shadow:0 0 0 0.2rem rgba(255, 193, 7, .5);*/
+	box-shadow:0 0 0 0.2rem rgba(200, 202, 213, .5);
 	border-color:#aaa;
 }
 input[type=submit]:not(:disabled), 

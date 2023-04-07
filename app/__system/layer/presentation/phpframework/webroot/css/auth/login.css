@@ -85,18 +85,31 @@ body:not(.in_popup) #main_column {
 	
 	background-color: transparent;
 	background-repeat: no-repeat;
-	background-position: center bottom, center calc(100% - 1px);
+	background-position: center bottom, center 100%;
+	background-position: center bottom, center -webkit-calc(100% - 1px);
+	-webkit-background-size:0 2px, 100% 2px;
 	background-size:0 2px, 100% 2px;
-	transition: background 0s ease-out;
 	transition:box-shadow .25s linear, border .25s linear, color .25s linear, background-color .25s linear;
+	-webkit-transition:background 0s ease-out;
+	-o-transition:background 0s ease-out;
 	transition:background 0s ease-out;
 	
 	--input-line-color:var(--link-color);
+}
+.form_fields .form_field input,
+  .form_fields .form_field input:focus {
+	/* Some IE browsers don't allow variables so we must hard coded the colors */
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#4070FF), to(#4070FF)), -webkit-gradient(linear, left top, left bottom, from(#e0e0e0), to(#e0e0e0));
+	background-image: -webkit-linear-gradient(#4070FF, #4070FF), -webkit-linear-gradient(#e0e0e0, #e0e0e0);
+	background-image: -o-linear-gradient(#4070FF, #4070FF), -o-linear-gradient(#e0e0e0, #e0e0e0);
+	background-image: linear-gradient(#4070FF, #4070FF), linear-gradient(#e0e0e0, #e0e0e0);
 	
+	/* Overwrite the colors by the variable --input-line-color for all the other browsers than IE */
 	background-image: -webkit-gradient(linear, left top, left bottom, from(var(--input-line-color)), to(var(--input-line-color))), -webkit-gradient(linear, left top, left bottom, from(#e0e0e0), to(#000));
 	background-image: -webkit-linear-gradient(var(--input-line-color), var(--input-line-color)), -webkit-linear-gradient(#e0e0e0, #000);
 	background-image: -o-linear-gradient(var(--input-line-color), var(--input-line-color)), -o-linear-gradient(#e0e0e0, #000);
 	background-image: linear-gradient(var(--input-line-color), var(--input-line-color)), linear-gradient(#e0e0e0, #000);
+	
 	border: 0;
 	border-radius: 0;
 	-webkit-box-shadow: none;
@@ -110,25 +123,47 @@ body:not(.in_popup) #main_column {
 	-o-transition-duration: .3s;
 	transition-duration: .3s;
 }
-.form_fields .form_field input:focus ~ label, 
-  .form_fields .form_field input:-webkit-autofill ~ label,
-  .form_fields .form_field input:not(:placeholder-shown) ~ label {
-	top:-.8rem;
-	left:0;
-	/*font-size:95%;*/
-	color:#aaa;
+/* Must repeate this css otherwise the hover won't work in IE */
+.form_fields .form_field input:hover:not(:focus) {
+	box-shadow:0 0 0.5rem 0.1rem #f7f7f7 inset;
+	box-shadow:0 0 0.5rem 0.1rem rgba(200, 200, 200, .2) inset;
 }
-/*.form_fields .form_field input:focus ~ label:after, 
-  .form_fields .form_field input:-webkit-autofill ~ label:after,
-  .form_fields .form_field input:not(:placeholder-shown) ~ label:after {
-	content:":";
-}*/
+.form_fields .form_field input:-webkit-autofill {
+	box-shadow:0 0 0 30px #fff inset, 0 0 0.5rem 0.2rem #fff !important; /* remove default shadow from Chrome browsers */
+	border-bottom: 2px solid #666;
+}
+.form_fields .form_field input:-webkit-autofill:focus {
+	border-bottom: 2px solid var(--input-line-color);
+}
 .form_fields .form_field input ~ label {
 	top:.9rem;
 	left:.75rem;
 	font-size:inherit;
 	color:inherit;
 }
+.form_fields .form_field input:focus ~ label,
+  .form_fields .form_field input:not(:-ms-input-placeholder) ~ label {
+	top:-.8rem;
+	left:0;
+	/*font-size:95%;*/
+	color:#aaa;
+}
+/* IE doesn't recognize this so we must repeat this in another line so it doesn't exclude the previous css statement */
+.form_fields .form_field input:not(:placeholder-shown) ~ label,
+  .form_fields .form_field input:-webkit-autofill ~ label { /* if empty value */
+	top:-.8rem;
+	left:0;
+	/*font-size:95%;*/
+	color:#aaa;
+}
+/*.form_fields .form_field input:focus ~ label:after,
+  .form_fields .form_field input:not(:-ms-input-placeholder) ~ label:after {
+	content:":";
+}
+.form_fields .form_field input:not(:placeholder-shown) ~ label:after,
+  .form_fields .form_field input:-webkit-autofill ~ label:after {
+	content:":";
+}*/
 
 .buttons { width:320px; margin:25px auto 0; text-align:center; }
 .buttons input { font-size:inherit; }

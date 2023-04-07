@@ -89,7 +89,7 @@ function chooseStoreTemplate(url) {
 	if (url) {
 		MyFancyPopupViewTemplate.hidePopup(); //in case it comes from the preview popup
 		
-		StatusMessageHandler.showMessage("Download and installing template... Please be patient...");
+		StatusMessageHandler.showMessage("Download and installing template... Please be patient...", "", "", 60000); //1 minute. This message will disappear on submit...
 		
 		var upload_url = $('<div class="upload_url"><label>Url:</label><input type="text" name="zip_url" value="' + url + '"><span class="icon delete" onClick="removeStoreTemplateUrl(this);"></span></div>');
 		
