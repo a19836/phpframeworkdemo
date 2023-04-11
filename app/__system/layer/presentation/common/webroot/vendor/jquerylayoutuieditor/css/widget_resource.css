@@ -232,6 +232,9 @@
 	margin-right:20px;
 	display:inline-block;
 }
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-permission > .group-block > li > ul > li:nth-child(n+3) label:before {
+	content:"or ";
+}
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-permission > .group-block > li > ul > li input,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-permission > .group-block > li > ul > li select {
 	max-width:calc(100% - 80px);
