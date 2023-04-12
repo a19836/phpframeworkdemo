@@ -34,6 +34,9 @@ function openVideoPopup(elm) {
 	MyFancyPopup.init({
 		elementToShow: popup,
 		parentElement: document,
+		onClose: function() {
+			popup.find("iframe").removeAttr("src"); //remove src attribute so the video stops playing, in case is playing already...
+		},
 	});
 	
 	MyFancyPopup.showPopup();

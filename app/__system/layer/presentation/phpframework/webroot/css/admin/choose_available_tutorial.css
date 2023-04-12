@@ -6,6 +6,10 @@ body,
 	background-color:#fff;
 }
 
+.choose_available_tutorial {
+	font-size:11px;
+	color:#2C2D34;
+}
 .choose_available_tutorial:not(.in_popup) {
 	/*border:1px solid var(--icon-folder-color);
 	border-radius:2px;
@@ -49,20 +53,33 @@ body,
 .choose_available_tutorial > ul li > .tutorial_header {
 	padding:3px 0;
 	cursor:pointer;
-	color:#585B69;
 }
 .choose_available_tutorial > ul > li > .tutorial_header {
 	padding:15px 0;
-	color:inherit;
 }
-.choose_available_tutorial > ul li:hover > .tutorial_header {
+.choose_available_tutorial > ul > li ul > li.open > .tutorial_header {
+	padding:3px 0 15px 0;
+}
+.choose_available_tutorial > ul li > .tutorial_header:hover {
 	color:var(--icon-folder-color);
 }
 .choose_available_tutorial > ul li > .tutorial_header > .tutorial_description {
+	opacity:.8;
+}
+.choose_available_tutorial > ul li:not(.open) > .tutorial_header > .tutorial_description {
 	display:none;
+}
+.choose_available_tutorial > ul li > .tutorial_header > .tutorial_description img {
+	max-width:100%;
+	margin:10px auto;
+	display:block;
+}
+.choose_available_tutorial > ul li > .tutorial_header > .tutorial_description a {
+	color:var(--link-color);
 }
 .choose_available_tutorial > ul li > .tutorial_header > .tutorial_title {
 	padding-left:20px;
+	font-weight:500;
 }
 .choose_available_tutorial > ul li > .tutorial_header > .tutorial_title .icon {
 	margin-left:-20px;
@@ -82,6 +99,7 @@ body,
 	content:"\f106";
 }
 .choose_available_tutorial > ul li > ul {
+	margin-left:10px;
 	margin-bottom:10px;
 }
 .choose_available_tutorial > ul li:not(.open) > ul {
@@ -183,14 +201,15 @@ body,
 /* MODAL VIDEO */
 .choose_available_tutorial .show_video_popup {
 	width:600px;
+	height:auto !important;
+	/*max-height:100vh;
+	overflow-x: visible;
+	overflow-y:auto;*/
+	box-sizing:border-box;
 	display:none;
 }
 .choose_available_tutorial .show_video_popup .content {
-	max-height:calc(100vh - 100px);
 	padding:20px;
-	box-sizing:border-box;
-	overflow-x: visible;
-	overflow-y:auto;
 }
 .choose_available_tutorial .show_video_popup .video {
 	margin-bottom:20px;
@@ -225,4 +244,12 @@ body,
 }
 .choose_available_tutorial .show_video_popup .details .description {
 	text-align:left;
+}
+.choose_available_tutorial .show_video_popup .details .description img {
+	max-width:100%;
+	margin:10px auto;
+	display:block;
+}
+.choose_available_tutorial .show_video_popup .details .description a {
+	color:var(--link-color);
 }
