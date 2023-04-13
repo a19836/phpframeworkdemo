@@ -498,8 +498,8 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 	<li class="service_method"><a onClick="return goTo(this, \'add_service_method_url\', event)">Add Service Method</a></li>
 	<li class="toggle_all_children"><a onClick="return toggleAllChildren(this)">Toggle Private Methods</a></li>
 	<li class="line_break"></li>
-	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Visual Workspace)</a></li>
-	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Code Workspace)</a></li>
+	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit Visually</a></li>
+	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit Code</a></li>
 	<li class="line_break"></li>
 	<li class="cut"><a onClick="return cutFile(this)">Cut</a></li>
 	<li class="copy"><a onClick="return copyFile(this)">Copy</a></li>
@@ -711,8 +711,8 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="presentation_page_file_context_menu" class="mycontextmenu">
-	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Visual Workspace)</a></li>
-	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Code Workspace)</a></li>
+	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit Visually</a></li>
+	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit Code</a></li>
 	<li class="line_break"></li>
 	<li class="view_project"><a onClick="return openWindow(this, \'view_project_url\', \'project\')">Preview Page</a></li>
 	<li class="test_project"><a onClick="return openWindow(this, \'test_project_url\', \'project\')">Test Page</a></li>
@@ -732,8 +732,8 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="presentation_template_file_context_menu" class="mycontextmenu">
-	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Visual Workspace)</a></li>
-	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Code Workspace)</a></li>
+	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit Visually</a></li>
+	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit Code</a></li>
 	<li class="line_break"></li>
 	<li class="cut"><a onClick="return cutFile(this)">Cut</a></li>
 	<li class="copy"><a onClick="return copyFile(this)">Copy</a></li>
@@ -750,8 +750,8 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="presentation_block_file_context_menu" class="mycontextmenu">
-	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Visual Workspace)</a></li>
-	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Code Workspace)</a></li>
+	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit Visually</a></li>
+	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit Code</a></li>
 	<li class="line_break"></li>
 	<li class="cut"><a onClick="return cutFile(this)">Cut</a></li>
 	<li class="copy"><a onClick="return copyFile(this)">Copy</a></li>
@@ -793,8 +793,8 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 	<li class="class_method"><a onClick="return goTo(this, \'add_class_method_url\', event)">Add Class Method</a></li>
 	<li class="toggle_all_children"><a onClick="return toggleAllChildren(this)">Toggle Private Methods</a></li>
 	<li class="line_break"></li>
-	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Visual Workspace)</a></li>
-	<!--li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Code Workspace)</a></li-->
+	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit Visually</a></li>
+	<!--li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit Code</a></li-->
 	<li class="line_break"></li>
 	<li class="remove"><a onClick="return manageFile(this, \'remove_url\', \'remove\')">Remove</a></li>
 	<li class="line_break"></li>
@@ -911,8 +911,8 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="test_unit_obj_context_menu" class="mycontextmenu">
-	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit (Visual Workspace)</a></li>
-	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit (Code Workspace)</a></li>
+	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit Visually</a></li>
+	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit Code</a></li>
 	<li class="line_break"></li>
 	<li class="cut"><a onClick="return cutFile(this)">Cut</a></li>
 	<li class="copy"><a onClick="return copyFile(this)">Copy</a></li>
