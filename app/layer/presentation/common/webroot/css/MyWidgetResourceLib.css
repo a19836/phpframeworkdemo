@@ -4,6 +4,12 @@
 	display:none;
 }
 
+/* WIDGET SEARCH */
+
+[data-widget-search]:not(.template-widget) [data-widget-search-added-attrs-item] {
+	display:none;
+}
+
 /* WIDGET PAGINATION */
 
 [data-widget-pagination]:not(.template-widget) [data-widget-pagination-pages-numbers-item]:not([data-widget-pagination-pages-numbers-item-loaded]):not(.template-widget) {
