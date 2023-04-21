@@ -2788,11 +2788,12 @@ function onSuccessfullEditProject(opts) {
 
 function refreshLastNodeParentChildsIfNotTreeLayoutAndMainTreeNode(opts) {
 	var pid = getLastNodeParentId();
+	var is_project = last_selected_node_id && $("#" + last_selected_node_id + " > a > i.project").length > 0;
 	
-	if (pid && $("#left_panel").is(".left_panel_with_tabs") && $("#left_panel .mytree #" + pid).is(".hide_tree_item"))
+	if (pid && is_project && $("#left_panel").is(".left_panel_with_tabs") && $("#left_panel .mytree #" + pid).is(".hide_tree_item"))
 		return ;
 	
-	if (last_selected_node_id && $("#" + last_selected_node_id + " > a > i.project")[0])
+	if (is_project)
 		refreshLastNodeParentChilds();
 	else
 		refreshLastNodeChilds();
