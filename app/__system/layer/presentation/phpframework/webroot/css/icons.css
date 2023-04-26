@@ -642,7 +642,7 @@
 }
 
 /* LOADING ICON */
-.loading {
+.loading:not(.template-widget) {
 	background:url("../common/img/loading.gif") no-repeat scroll 0 0;
 }
 /*.loading::before {	
