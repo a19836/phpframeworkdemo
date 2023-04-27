@@ -23,6 +23,8 @@
 	border:none !important;
 	display:inline-block;
 	float:none !important;
+	font-weight:normal;
+	cursor:pointer;
 }
 .admin_panel > ul li:not(:first-child) {
 	border-left:1px solid #DFE1ED !important;
@@ -34,6 +36,7 @@
 	border-bottom:1px solid transparent !important;
 	color:#83889E !important;
 	float:none !important;
+	text-decoration:none !important;
 }
 .admin_panel > ul li.ui-state-active a {
 	font-weight:bold;
@@ -57,17 +60,6 @@
 .projs > .choose_available_project > .group {
 	margin-left:0;
 	margin-right:0;
-}
-
-/* HOW IT WORKS */
-.admin_panel .how_it_works div {
-	text-align:center;
-	margin:20px 0;
-	padding:20px 0;
-	border-bottom:1px solid #ccc;
-}
-.admin_panel .how_it_works div img {
-	max-width:90vw;
 }
 
 /* TUTORIALS */

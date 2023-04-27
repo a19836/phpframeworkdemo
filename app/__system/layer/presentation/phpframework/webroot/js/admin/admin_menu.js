@@ -3672,6 +3672,44 @@ function chooseAvailableTutorial(url) {
 	return false;
 }
 
+function openOnlineTutorialsPopup(url) {
+	if (window.parent != window && typeof window.parent.openOnlineTutorialsPopup == "function") {
+		window.parent.openOnlineTutorialsPopup(url);
+		return;
+	}
+	
+	var popup = $(".choose_online_tutorials_popup");
+	
+	if (!popup[0]) {
+		popup = $('<div class="myfancypopup with_title choose_online_tutorials_popup"><div class="title">Tutorials - How to?</div><iframe></iframe></div>');
+		$(document.body).append(popup);
+	}
+	
+	var iframe = popup.children("iframe");
+	var main_navigator_reverse = $(document.body).is(".main_navigator_reverse");
+	
+	if (iframe[0].hasAttribute("src")) {
+		var src = iframe.attr("src");
+		var src_main_navigator_reverse = src.indexOf("main_navigator_reverse=1") != -1;
+		
+		if (src_main_navigator_reverse != main_navigator_reverse)
+			iframe.removeAttr("src");
+	}
+	
+	if (!iframe[0].hasAttribute("src")) {
+		url += (url.indexOf("?") != -1 ? "&" : "?") + "popup=1&main_navigator_reverse=" + (main_navigator_reverse ? 1 : 0);
+		
+		iframe.attr("src", url);
+	}
+	
+	ProjectsFancyPopup.init({
+		elementToShow: popup,
+		parentElement: document,
+	});
+	
+	ProjectsFancyPopup.showPopup();
+}
+
 function openConsole(url, originalEvent) {
 	if (url) {
 		//check if ctrlKey is pressed and if yes, open in a new window
