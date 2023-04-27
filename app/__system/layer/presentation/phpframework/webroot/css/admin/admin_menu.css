@@ -380,10 +380,13 @@
   .edit_project_details_popup iframe,
   .execute_sql_popup iframe,
   .go_to_popup iframe,
-  .log_console_popup iframe,
-  .choose_online_tutorials_popup iframe {
+  .log_console_popup iframe {
 	width:100%;
 	height:100%;
+}
+.choose_online_tutorials_popup iframe {
+	width:100%;
+	height:calc(100% - 50px);
 }
 
 .choose_db_table_task_options_popup {
