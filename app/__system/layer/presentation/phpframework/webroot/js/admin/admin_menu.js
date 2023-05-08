@@ -925,6 +925,7 @@ function initFilesDragAndDrop(elm) {
 		var iframe_droppable_over_class = "drop_hover dragging_task task_droppable_over";
 		var available_iframe_droppables_selectors = ".droppable, .tasks_flow, .connector_overlay_add_icon"; //".droppable" is related with the LayoutUIEditor, ".tasks_flow" is related with workflows and ".connector_overlay_add_icon" is related with Logic workflows.
 		var PtlLayoutUIEditor = null;
+		var is_main_navigator_reverse = $("body").hasClass("main_navigator_reverse");
 		
 		var folders_selector = "i.folder";
 		var files_selector = "i.file, i.objtype, i.hibernatemodel, i.config_file, i.controller_file, i.entity_file, i.view_file, i.template_file, i.util_file, i.block_file, i.module_file, i.undefined_file, i.js_file, i.css_file, i.img_file, i.zip_file";
@@ -1344,8 +1345,9 @@ function initFilesDragAndDrop(elm) {
 				var helper = ui_obj.helper;
 				helper.show();
 				
-				var right_edge = scroll_parent.offset().left + scroll_parent.width();
-				var is_in_edge = (helper.offset().left + helper.width()) > (right_edge - 20);
+				var left_edge = scroll_parent.offset().left;
+				var right_edge = left_edge + scroll_parent.width();
+				var is_in_edge = is_main_navigator_reverse ? false : (helper.offset().left + helper.width()) > (right_edge - 20);
 				
 				if (is_in_edge && scroll_parent.hasClass("scroll")) {
 					var st = scroll_parent.scrollTop();
@@ -1483,6 +1485,7 @@ function initDBTablesSorting(elm) {
 		var iframe_droppable_over_class = "drop_hover dragging_task task_droppable_over";
 		var available_iframe_droppables_selectors = ".droppable, .tasks_flow, .connector_overlay_add_icon"; //".droppable" is related with the LayoutUIEditor, ".tasks_flow" is related with workflows and ".connector_overlay_add_icon" is related with Logic workflows.
 		var PtlLayoutUIEditor = null;
+		var is_main_navigator_reverse = $("body").hasClass("main_navigator_reverse");
 		
 		var left_panel_droppable_handler = function(event, ui_obj) {
 			var fk_table_li = $(this);
@@ -1708,8 +1711,9 @@ function initDBTablesSorting(elm) {
 				var helper = ui_obj.helper;
 				helper.show();
 				
-				var right_edge = scroll_parent.offset().left + scroll_parent.width();
-				var is_in_edge = (helper.offset().left + helper.width()) > (right_edge - 20);
+				var left_edge = scroll_parent.offset().left;
+				var right_edge = left_edge + scroll_parent.width();
+				var is_in_edge = is_main_navigator_reverse ? false : (helper.offset().left + helper.width()) > (right_edge - 20);
 				
 				if (is_in_edge && scroll_parent.hasClass("scroll")) {
 					var st = scroll_parent.scrollTop();
