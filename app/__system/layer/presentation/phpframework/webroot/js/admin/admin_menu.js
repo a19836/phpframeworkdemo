@@ -1376,7 +1376,7 @@ function initFilesDragAndDrop(elm) {
 				
 				//prepare helper_clone
 				var helper_clone = $("body").children(".sortable_helper");
-				var is_in_right_panel = event.clientX > iframe.offset().left;
+				var is_in_right_panel = event.clientX > iframe.offset().left && event.clientX < iframe.offset().left + iframe.width();
 				
 				helper_clone.offset({
 					top: event.clientY,
@@ -1443,20 +1443,20 @@ function initFilesDragAndDrop(elm) {
 					scroll_parent.css("margin-left", scroll_parent.data("ml"));
 					scroll_parent.scrollTop( scroll_parent.data("st") );
 					scroll_parent.scrollLeft( scroll_parent.data("sl") );
-					
-					if (iframe_droppable_elm) //remove droppable over class
-						$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
-					
-					right_panel_droppable_handler(event, ui_obj, this, helper_clone);
-					
-					//disable classes in LayoutUIEditor's droppable, just in case the right_panel_droppable_handler did NOT do it already
-					if (PtlLayoutUIEditor) {
-						var new_event = {
-							clientX: event.clientX - iframe_offset.left,
-							clientY: event.clientY - iframe_offset.top,
-						};
-						PtlLayoutUIEditor.onWidgetDraggingStop(new_event, helper_clone, null);
-					}
+				}
+				
+				if (iframe_droppable_elm) //remove droppable over class
+					$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
+				
+				right_panel_droppable_handler(event, ui_obj, this, helper_clone);
+				
+				//disable classes in LayoutUIEditor's droppable, just in case the right_panel_droppable_handler did NOT do it already
+				if (PtlLayoutUIEditor) {
+					var new_event = {
+						clientX: event.clientX - iframe_offset.left,
+						clientY: event.clientY - iframe_offset.top,
+					};
+					PtlLayoutUIEditor.onWidgetDraggingStop(new_event, helper_clone, null);
 				}
 				
 				helper.remove();
@@ -1740,7 +1740,7 @@ function initDBTablesSorting(elm) {
 				
 				//prepare helper_clone
 				var helper_clone = $("body").children(".sortable_helper");
-				var is_in_right_panel = event.clientX > iframe.offset().left;
+				var is_in_right_panel = event.clientX > iframe.offset().left && event.clientX < iframe.offset().left + iframe.width();
 				
 				helper_clone.offset({
 					top: event.clientY,
@@ -1807,20 +1807,20 @@ function initDBTablesSorting(elm) {
 					scroll_parent.css("margin-left", scroll_parent.data("ml"));
 					scroll_parent.scrollTop( scroll_parent.data("st") );
 					scroll_parent.scrollLeft( scroll_parent.data("sl") );
-					
-					if (iframe_droppable_elm) //remove droppable over class
-						$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
-					
-					right_panel_droppable_handler(event, ui_obj, this, helper_clone);
-					
-					//disable classes in LayoutUIEditor's droppable, just in case the right_panel_droppable_handler did NOT do it already
-					if (PtlLayoutUIEditor) {
-						var new_event = {
-							clientX: event.clientX - iframe_offset.left,
-							clientY: event.clientY - iframe_offset.top,
-						};
-						PtlLayoutUIEditor.onWidgetDraggingStop(new_event, helper_clone, null);
-					}
+				}
+				
+				if (iframe_droppable_elm) //remove droppable over class
+					$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
+				
+				right_panel_droppable_handler(event, ui_obj, this, helper_clone);
+				
+				//disable classes in LayoutUIEditor's droppable, just in case the right_panel_droppable_handler did NOT do it already
+				if (PtlLayoutUIEditor) {
+					var new_event = {
+						clientX: event.clientX - iframe_offset.left,
+						clientY: event.clientY - iframe_offset.top,
+					};
+					PtlLayoutUIEditor.onWidgetDraggingStop(new_event, helper_clone, null);
 				}
 				
 				helper.remove();
