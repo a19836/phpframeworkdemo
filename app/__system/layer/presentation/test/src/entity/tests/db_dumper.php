@@ -1,4 +1,7 @@
 <?php
+$db_user = "";
+$db_pass = "";
+
 //http://jplpinto.localhost/__system/test/tests/db_dumper
 include_once get_lib("org.phpframework.db.DBDumperHandler");
 include_once get_lib("org.phpframework.db.driver.MSSqlDB");
@@ -110,8 +113,8 @@ $DBDriver->setOptions(array(
 	"host" => "192.168.1.170",
 	"port" => "",
 	"db_name" => "master",
-	"username" => "jplpinto",
-	"password" => "portugal",
+	"username" => $db_user,
+	"password" => $db_pass,
 	"persistent" => "1",
 	"new_link" => "0",
 	"encoding" => "",
