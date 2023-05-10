@@ -1436,11 +1436,11 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 		loadUsersPerms : function(task_html_element, users_perms) {
 			if (users_perms) {
 				if (users_perms.hasOwnProperty("user_type_id") || users_perms.hasOwnProperty("activity_id")) 
-					users_perms["user_type_id"] = [ users_perms ];
+					users_perms = [ users_perms ];
 				
 				if ($.isArray(users_perms) || $.isPlainObject(users_perms)) {
 					var add_elm = task_html_element.find(".permissions > .users_perms > table > thead .add");
-				
+					
 					$.each(users_perms, function(idx, user_perm) {
 						var row = PresentationTaskUtil.addUserPerm(add_elm[0]);
 						var user_type_id_elm = row.find(".user_type_id select");
