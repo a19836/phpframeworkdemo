@@ -1,0 +1,46 @@
+
+.my_form {
+	/*text-align:center;*/
+}
+.my_form .form_fields {
+	width:420px;
+	margin-left:auto;
+	margin-right:auto;
+}
+.my_form .form_field {
+	min-height:30px;
+}
+
+.my_form .form_field label {
+	width:160px;
+	height:20px;
+	float:left;
+}
+.my_form .form_field .extra {
+	clear:left;
+}
+.my_form .form_field input {
+	width:250px;
+	height:20px;
+}
+.my_form .form_field textarea {
+	width:250px;
+	height:100px;
+}
+.my_form .buttons {
+	width:100%;
+	height:30px;
+	text-align:center;
+	clear:left;
+}
+
+.submit_button {
+	border:1px outset #33AADD;
+	font-weight:bold;
+	text-align:center;
+	padding:3px 3px 3px 3px;
+	color:#33AADD;
+	background-color:#AACCFF;
+	text-transform:uppercase;
+	margin-top:10px;
+}

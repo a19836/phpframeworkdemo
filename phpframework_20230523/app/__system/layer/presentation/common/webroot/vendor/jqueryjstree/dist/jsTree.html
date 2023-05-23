@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>jsTree test</title>
+  <!-- 2 load the theme CSS file -->
+  <link rel="stylesheet" href="bootstrap.min.css" />
+  <link rel="stylesheet" href="themes/default/style.min.css" />
+  <!--link rel="stylesheet" href="http://static.jstree.com/3.0.8/assets/docs.css" /-->
+
+  <!-- 4 include the jQuery library -->
+  <script src="jquery-1.10.2.min.js"></script>
+  <!-- 5 include the minified jstree source -->
+  <script src="jstree.min.js"></script>
+</head>
+<body>
+<h1><a href="http://www.jstree.com/">http://www.jstree.com/</a></h1>
+  <!-- 3 setup a container element -->
+  <div id="jstree">
+    <!-- in this example the tree is populated from inline HTML -->
+    <ul>
+      <li>Root node 1
+        <ul>
+          <li id="child_node_1">Child node 1</li>
+          <li data-jstree='{"icon":"jstree-file"}'><label>Child node 2</label></li>
+        </ul>
+      </li>
+      <li data-jstree='{"icon":"jstree-file"}'><label>Root node 2</label></li>
+      <li data-jstree='{"opened":true,"selected":true}'>Root
+	  <ul>
+	    <li data-jstree='{"disabled":true}'>Child</li>
+	    <li data-jstree='{"icon":"http://www.jstree.com/tree.png"}'>
+	      Child</li>
+	    <li data-jstree='{"icon":"glyphicon glyphicon-leaf"}'>
+	      Child</li>
+	  </ul>
+       </li>
+    </ul>
+  </div>
+  <button>demo button</button>
+  <script>
+  $(function () {
+    // 6 create an instance when the DOM is ready
+    $('#jstree').jstree();
+    
+    // 7 bind to events triggered on the tree
+    $('#jstree').on("changed.jstree", function (e, data) {
+      console.log(data.selected);
+    });
+    
+    // 8 interact with the tree - either way is OK
+    $('button').on('click', function () {
+      $('#jstree').jstree(true).select_node('child_node_1');
+      $('#jstree').jstree('select_node', 'child_node_1');
+      $.jstree.reference('#jstree').select_node('child_node_1');
+    });
+    
+   /* $('#jstree').jstree({
+	  "core" : {
+	    "animation" : 0,
+	    "check_callback" : true,
+	    "themes" : { "stripes" : true },
+	    'data' : {
+	      'url' : function (node) {
+		return node.id === '#' ?
+		  'ajax_demo_roots.json' : 'ajax_demo_children.json';
+	      },
+	      'data' : function (node) {
+		return { 'id' : node.id };
+	      }
+	    }
+	  },
+	  "types" : {
+	    "#" : {
+	      "max_children" : 1, 
+	      "max_depth" : 4, 
+	      "valid_children" : ["root"]
+	    },
+	    "root" : {
+	      "icon" : "/static/3.0.8/assets/images/tree_icon.png",
+	      "valid_children" : ["default"]
+	    },
+	    "default" : {
+	      "valid_children" : ["default","file"]
+	    },
+	    "file" : {
+	      "icon" : "glyphicon glyphicon-file",
+	      "valid_children" : []
+	    }
+	  },
+	  "plugins" : [
+	    "contextmenu", "dnd", "search",
+	    "state", "types", "wholerow"
+	  ]
+	});*/
+  });
+  </script>
+</body>
+</html>

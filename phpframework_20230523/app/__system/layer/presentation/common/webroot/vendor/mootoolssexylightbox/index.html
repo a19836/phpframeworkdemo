@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!--DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"-->
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>SexyLightBox - www.coders.me</title>
+	<style type="text/css">
+	<!--
+	  #img_container { height:120px; }
+	  #img_container ul {display:block;padding:0;margin:0;list-style:none;}
+	  #img_container ul li{float:left;width:100px;margin:10px;}
+	  #img_container ul li a img {
+	      width:93px;
+	      height:93px;
+	      border:1px solid #574331;
+	      padding:5px;
+	      background:#eee;
+	  }
+	  #img_container ul li a:hover img { border-color: darkred; }
+	-->
+	</style>
+
+	<script src="../mootools/js/mootools.js" type="text/javascript"></script>
+	<script src="js/sexylightbox.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="css/sexylightbox.css" type="text/css" media="all" />
+
+	<script type="text/javascript">
+	  window.addEvent('domready', function(){
+	    new SexyLightBox({find:'mysexylightbox', OverlayStyles:{'background-color':'#fff'}, captionColor:'#FFF'});
+		
+		new SexyLightBox({find:'LGWhite', color:'white', OverlayStyles:{'background-color':'#000'}, hexcolor:'#FFFFFF', captionColor:'#000'});
+
+		
+		var mySexyLightBox = new SexyLightBox({showCaption:false});
+		mySexyLightBox.initializeElms(document.getElementById("a_independent"));
+		
+		var mySexyLightBox2 = new SexyLightBox({find:'agroup', showCaption:false});
+	    
+		mySexyLightBox2.initializeElms(document.getElementById("a_group"));
+		
+		var mySexyLightBox3 = new SexyLightBox({find:false});
+	    
+		mySexyLightBox3.initializeElms(document.getElementById("a_group_all"));
+	  });
+	</script>
+</head>
+
+<body>
+    <div id="top">
+        <div id="header">
+    		<div id="login-form" style="text-align: right;">
+			<a href="http://www.coders.me/web-html-js-css/sexy-lightbox">Volver al Blog</a>
+        	</div>
+        	<h1>Sexy <span>LightBox</span></h1>
+        </div>
+
+        <div class="hastoc">
+	    <h3>Imagen individual</h3>
+	    <div id="img_container">
+	    	<ul>
+	    		<li><a href="sexyimages/logocoders.jpg" title="www.coders.me donde sabémos de programación!" class="sexylightbox"><img src="sexyimages/small_logocoders.jpg" alt="" /></a></li>
+	    		<li><a href="sexyimages/homerin2.jpg" class="LGWhite"><img src="sexyimages/small_homerin2.jpg" alt=""/></a></li>
+	    		<li><a href="sexyimages/clapclap.jpg" class="mysexylightbox"><img src="sexyimages/small_clapclap.jpg" alt=""/></a></li>
+	    		<li><a href="test1.html" class="LGWhite">IFRAME 1</a></li>
+	    	</ul>
+	    </div>
+
+	    <h3>Galería</h3>
+	    <div id="img_container">
+	    	<ul>
+	    		<li><a href="sexyimages/senorms2.jpg" class="mysexylightbox" rel="group1" title="Microsoft CEO"><img src="sexyimages/small_senorms2.jpg" alt=""/></a></li>
+	    		<li><a href="sexyimages/senorms.jpg"  class="mysexylightbox" rel="group1" title="Microsoft CEO"><img src="sexyimages/small_senorms.jpg" alt=""/></a></li>
+	    		<li><a href="sexyimages/homerin.jpg"  class="mysexylightbox" rel="group1" title="Homerin"      ><img src="sexyimages/small_homerin.jpg" alt=""/></a></li>
+	    		<li><a href="sexyimages/futurama.jpg" class="mysexylightbox" rel="group1" title="Futurama ^_^" ><img src="sexyimages/small_futurama.jpg" alt=""/></a></li>
+	    	</ul>
+	    </div>
+	    <h3>Galería de IFRAMES</h3>
+	    <div id="img_container">
+	    	<ul>
+	    		<li><a href="test1.html"  class="LGWhite" rel="group3" title="IFRAME 1" mywidth="700" myheight="500">IFRAME 1</a></li>
+	    		<li><a href="test2.html"  class="LGWhite" rel="group3" title="IFRAME 2" mywidth="300" myheight="200">IFRAME 2</a></li>
+	    	</ul>
+	    </div>
+
+	    <h3>Gifs Animados</h3>
+	    <div id="img_container">
+	    	<ul>
+	    		<li><a href="sexyimages/yo.gif"     class="LGWhite" title="It's Me!" ><img src="sexyimages/yo.jpg" alt=""/></a></li>
+	    		<li><a href="sexyimages/ryu.gif"    class="LGWhite" title="Shinkuu Hadouken!!!" ><img src="sexyimages/small_ryu.jpg" alt=""/></a></li>
+	    	</ul>
+	    </div>
+	    
+	    <h3>La imagen no existe</h3>
+	    <p>
+	      <a href="sexyimages/imagen_inexistente.jpg" class="mysexylightbox" title="Titulo de la imagen.">Enlace a una imagen inexistente.</a>
+	    </p>
+	    
+	    <h3>Independent Image without Caption</h3>
+	    <p>
+	      <a id="a_independent" href="sexyimages/ryu.gif" title="Independent Image.">Independent Image.</a>
+	    </p>
+	    
+	    <h3>Independent Group of Images without Caption</h3>
+	    <p id="a_group">
+	      <a href="sexyimages/yo.gif" class="agroup" rel="group2" title="Independent Image."><img src="sexyimages/yo.jpg" alt=""/></a>
+	      <a href="sexyimages/ryu.gif" class="agroup" rel="group2" title="Independent Image."><img src="sexyimages/small_ryu.jpg" alt=""/></a>
+	    </p>
+	    
+	    <h3>Independent Group of Images Independent - without class</h3>
+	    <p id="a_group_all">
+	      <a href="sexyimages/yo.gif" title="Independent Image."><img src="sexyimages/yo.jpg" alt=""/></a>
+	      <a href="test2.html" title="IFRAME 2" mywidth="300" myheight="200">IFRAME 2</a>
+	    </p>
+        </div>
+</div>
+</body>
+</html>
