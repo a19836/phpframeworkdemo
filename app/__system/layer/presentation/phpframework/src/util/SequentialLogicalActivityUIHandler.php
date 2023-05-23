@@ -119,7 +119,7 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 			'; $v0a9dad1fe0 .= '
 			<!-- DBQUERY TASK - Add Edit-Query JS and CSS files -->
 			<link rel="stylesheet" href="' . $peb014cfd . 'css/dataaccess/edit_query.css" type="text/css" charset="utf-8" />
-			<script language="javascript" type="text/javascript" src="' . $peb014cfd . 'js/dataaccess/edit_query.js"></script>'; } $v902a67f557 = CMSPresentationUIAutomaticFilesHandler::getAvailableUserTypes($v188b4f5fa6); $v18e8e0c60b = CMSPresentationUIAutomaticFilesHandler::getAvailableActivities($v188b4f5fa6); $pa8dedb03 .= '
+			<script language="javascript" type="text/javascript" src="' . $peb014cfd . 'js/dataaccess/edit_query.js"></script>'; } $v3ddc0d1bd3 = CMSPresentationUIAutomaticFilesHandler::isUserModuleInstalled($v188b4f5fa6); $v902a67f557 = $v18e8e0c60b = array(); if ($v3ddc0d1bd3) { $v902a67f557 = CMSPresentationUIAutomaticFilesHandler::getAvailableUserTypes($v188b4f5fa6); $v18e8e0c60b = CMSPresentationUIAutomaticFilesHandler::getAvailableActivities($v188b4f5fa6); } $pa8dedb03 .= '
 		var available_user_types = ' . json_encode($v902a67f557) . ';
 		var available_activities = ' . json_encode($v18e8e0c60b) . ';'; $v50890f6f30 = self::getWorkflowHeader($v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pa32be502, $peb014cfd, $v37d269c4fa, $v3b2000c17b, $pb5790ec9, $v3d55458bcd, $v5039a77f9d, $v4bf8d90f04, $pfce4d1b3, $pb154d332, $pecad7cca, $pebb3f429); if ($v50890f6f30) { $pcb6a2cab = $v50890f6f30["js_head"]; $v8555f2f905 = $v50890f6f30["set_workflow_file_url"]; $v238161ae8d = $v50890f6f30["get_workflow_file_url"]; $pa8dedb03 .= $pcb6a2cab; } $pa8dedb03 .= '
 		var php_numeric_types = ' . json_encode(ObjTypeHandler::getPHPNumericTypes()) . ';

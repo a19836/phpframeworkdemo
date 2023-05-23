@@ -681,20 +681,23 @@ function chooseCreatedVariable(elm) {
 	
 	//set value_type if exists and if only input name is simple without "]" and "[" chars:
 	var input_name = input.attr("name");
+	var input_parent = input.parent();
 	
 	if (input_name && !input_name.match(/[\[\]]/)) {
-		var input_type = input.parent().children("select[name=" + input_name + "_type]");
+		var input_type = input_parent.children("select[name=" + input_name + "_type]");
+		
+		if (input_type[0])
+			input_type.val(var_type);
+		else if (input_parent.is(".value") && input_parent.parent().find(" > .type > select")[0]) //in case of return task and other tasks
+			input_parent.parent().find(" > .type > select").val(var_type);
+	}
+	else if (input.is(".value") && input_parent.is(".item")) { //in case of array items
+		var input_type = input_parent.children(".value_type");
 		
 		if (input_type[0])
 			input_type.val(var_type);
 	}
-	else if (input.is(".value") && input.parent().is(".item")) { //in case of array items
-		var input_type = input.parent().children(".value_type");
-		
-		if (input_type[0])
-			input_type.val(var_type);
-	}
-	else if (input.is(".var") && input.parent().is(".item")) { //in case of conditions items
+	else if (input.is(".var") && input_parent.is(".item")) { //in case of conditions items
 		//fins the next sibling with class .var_type
 		var node = input;
 		
@@ -721,7 +724,7 @@ function getNewVarWithSubGroupsInProgrammingTaskChooseCreatedVariablePopup(type_
 	var quotes = with_quotes ? "'" : ""; //with or without single quotes
 	
 	if (group)
-		value = group + "[" + quotes + value + quotes + "]";
+		value = group + "[" + ($.isNumeric(value) ? value : quotes + value + quotes) + "]";
 	
 	var lis = type_elm.find(".sub_group > li");
 	
@@ -729,7 +732,7 @@ function getNewVarWithSubGroupsInProgrammingTaskChooseCreatedVariablePopup(type_
 		var li = $(lis[i]);
 		var sub_group_value = li.children("input").val();
 		
-		value += "[" + quotes + sub_group_value + quotes + "]";
+		value += "[" + ($.isNumeric(sub_group_value) ? sub_group_value : quotes + sub_group_value + quotes) + "]";
 	};
 	
 	return value;

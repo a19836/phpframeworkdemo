@@ -2085,8 +2085,10 @@ function onSLAProgrammingTaskChooseCreatedVariable(elm) {
 				}
 				
 				if (value) {
+					var value_type = "string";
+					
 					target_field.val(value ? "#" + value + "#" : "");
-					target_field.parent().parent().find(".var_type select").val("string");
+					target_field.parent().parent().find(".var_type select").val(value_type);
 					
 					//set value_type if exists and if only input name is simple without "]" and "[" chars:
 					var target_field_name = target_field.attr("name");
@@ -2095,10 +2097,10 @@ function onSLAProgrammingTaskChooseCreatedVariable(elm) {
 						var target_field_type = target_field.parent().children("select[name=" + target_field_name + "_type]");
 						
 						if (target_field_type[0])
-							target_field_type.val("string");
+							target_field_type.val(value_type);
 					}
 					else if (target_field.is(".value") && target_field.parent().is(".item")) //in case of array items
-						target_field.parent().children(".value_type").val("");
+						target_field.parent().children(".value_type").val(value_type);
 					
 					//put cursor in targetField
 					target_field.focus();
