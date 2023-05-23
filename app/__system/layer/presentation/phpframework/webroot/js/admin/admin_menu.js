@@ -3216,7 +3216,7 @@ function createClassObjectOrMethodOrFunction(a, save_attr_name, edit_attr_name, 
 					//normalize new file name
 					new_file_name = normalizeFileName(new_file_name, true);
 					
-					if (type == "service_object")
+					if (type == "service_object" || type == "class_object")
 						new_file_name = new_file_name[0].toUpperCase() + new_file_name.substr(1);
 					else
 						new_file_name = new_file_name[0].toLowerCase() + new_file_name.substr(1);
