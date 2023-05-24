@@ -554,13 +554,19 @@ function onDBContextMenu(target, contextmenu, originalEvent) {
 					else {
 						input.removeAttr("disabled");
 						
-						if (set_mandatory_length && length.replace(/\s+/g, "") == "") {
-							var mandatory_length = $.isPlainObject(simple_props) && simple_props.hasOwnProperty("length") ? simple_props["length"] : (
-								$.isPlainObject(column_mandatory_length_types) && column_mandatory_length_types.hasOwnProperty(type) ? column_mandatory_length_types[type] : null
-							);
-							
-							if ($.isNumeric(mandatory_length) || mandatory_length)
-								input.val(mandatory_length);
+						if (set_mandatory_length) {
+							//if length field is empty
+							if (length.replace(/\s+/g, "") == "") {
+								var mandatory_length = $.isPlainObject(simple_props) && simple_props.hasOwnProperty("length") ? simple_props["length"] : (
+									$.isPlainObject(column_mandatory_length_types) && column_mandatory_length_types.hasOwnProperty(type) ? column_mandatory_length_types[type] : null
+								);
+								
+								if ($.isNumeric(mandatory_length) || mandatory_length)
+									input.val(mandatory_length);
+							}
+							//or if the previous primitive type is equal to the new primitive type and if the type is a simple type with length.
+							else if (type == attribute_properties["type"] && $.isPlainObject(simple_props) && simple_props.hasOwnProperty("length") && ($.isNumeric(simple_props["length"]) || simple_props["length"]))
+								input.val(simple_props["length"]);
 						}
 					}
 				};
