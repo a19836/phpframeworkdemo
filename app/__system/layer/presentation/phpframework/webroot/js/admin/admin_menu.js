@@ -3420,11 +3420,11 @@ function manageDBTableAction(a, attr_name, action, on_success_callback, on_error
 		
 		switch (action) {
 			case "remove_table": 
-				status = confirm("Do you really wish to remove this table: '" + table_name + "'?");
+				status = confirm("Do you really wish to remove this table: '" + table_name + "'?") && confirm("Are you sure you wish to remove this table? No rollback can be done!") && confirm("Last change! Do you really wish to proceed?");
 				break;
 				
 			case "remove_attribute": 
-				status = confirm("Do you really wish to remove this attribute: '" + attribute_name + "'?");
+				status = confirm("Do you really wish to remove this attribute: '" + attribute_name + "'?") && confirm("Are you sure you wish to remove this attribute? No rollback can be done!") && confirm("Last change! Do you really wish to proceed?");
 				break;
 				
 			case "add_table": 
