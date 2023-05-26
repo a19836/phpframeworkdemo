@@ -1,0 +1,50 @@
+.top_buttons {
+	margin-bottom:20px;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:right;
+	padding:5px 10px 5px 10px;
+}
+
+.top_buttons .top_button {
+	
+}
+
+.top_buttons label {
+	margin-right:10px;
+}
+
+.top_buttons a {
+	border:1px outset #33AADD;
+	font-weight:bold;
+	text-align:center;
+	vertical-align:middle;
+	color:#FFF;
+	background-color:#AACCFF;
+	padding:3px 3px 3px 3px
+	margin:5px 5px 5px 5px;
+}
+.top_buttons a img {
+	text-align:center;
+	vertical-align:middle;
+	padding:0 auto;
+	margin:0 auto;
+}
+.top_buttons .add_icon {
+	width:auto;
+	padding-left:5px;
+	padding-right:25px;
+	margin-bottom:5px;
+	
+	font-size:12px;
+	text-indent:0px;
+}
+.top_buttons .back_icon {
+	width:auto;
+	padding-left:5px;
+	padding-right:25px;
+	margin-bottom:5px;
+	
+	font-size:12px;
+	text-indent:0px;
+}

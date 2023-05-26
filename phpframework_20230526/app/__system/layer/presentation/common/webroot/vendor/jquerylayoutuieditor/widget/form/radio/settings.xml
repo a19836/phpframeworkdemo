@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget>
+	<label>Radio Box</label>
+	<tag>radiobox</tag>
+	<settings>
+		<template_node_name>input</template_node_name>
+		<create_widget_class>RadioBoxWidget</create_widget_class>
+	</settings>
+	<menu_widget></menu_widget>
+	<template_widget></template_widget>
+	<properties><![CDATA[
+		<div class="form-group settings-property is-checked">
+			<label class="col-md-4 col-sm-5 col-5 col-form-label">Is Checked: </label>
+			<input type="checkbox" name="is-checked" value="1" />
+		</div>
+		<div class="form-group row settings-property name">
+			<label class="col-md-4 col-sm-5 col-form-label">Name: </label>
+			<input class="col-md-8 col-sm-7 form-control" name="name" />
+		</div>
+		<div class="form-group row settings-property value">
+			<label class="col-md-4 col-sm-5 col-form-label">Value: </label>
+			<input class="col-md-8 col-sm-7 form-control" name="value" />
+		</div>
+	]]></properties>
+	<menu_css><![CDATA[
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-radiobox:before,
+		  body > .menu-widget.menu-widget-radiobox.ui-draggable-dragging:before {
+			background-image:url('#widget_webroot_url#logo.svg');
+		}
+		
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-radiobox {
+			border-radius:5px;
+		}
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-radiobox > label,
+		  .layout-ui-editor > .template-widgets .widget-header.widget-header-radiobox .options .option.toggle {
+			display:none;
+		}
+	]]></menu_css>
+	<menu_js><![CDATA[
+		function RadioBoxWidget(ui_creator, menu_widget) {
+			var me = this;
+			
+			
+			me.init = function() {
+				menu_widget.attr({
+					"data-on-parse-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.radiobox.parseHtml",
+					"data-on-create-template-widget-func": ui_creator.obj_var_name + ".menu_widgets_objs.radiobox.onCreateTemplateWidget",
+				});
+				
+				
+				menu_widget.children(".properties").attr({
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.radiobox.onOpenWidgetSettings",
+					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.radiobox.saveSettingsField",
+					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.radiobox.parseSettings",
+				});
+			};
+			
+			me.parseHtml = function(html_element) {
+				return html_element && html_element.nodeName.toLowerCase() == "input" && ("" + html_element.getAttribute("type")).toLowerCase() == "radio";
+			};
+			
+			me.parseSettings = function(widget, widget_settings) {
+				widget_settings["is-checked"] = widget.is(":checked") ? 1 : 0;
+				widget_settings["name"] = widget.attr("name");
+				widget_settings["value"] = widget.attr("value");
+			};
+			
+			me.onCreateTemplateWidget = function(widget, html_element) {
+				widget[0].type = "radio";
+			};
+			
+			me.onOpenWidgetSettings = function(widget, menu_settings) {
+				ui_creator.addMenuSettingsContextMenu( menu_settings.find(" > .settings-properties input") );
+			};
+			
+			me.saveSettingsField = function(field, widget, status) {
+				if (status) {
+					field = $(field);
+					var field_value = field.val();
+					var sprop = field.parent();
+					
+					if (sprop.hasClass("is-checked")) {
+						if (field.is(":checked")) {
+							widget.attr("checked", "checked").prop("checked", true);
+							widget.addClass("checked");
+						}
+						else {
+							widget.removeAttr("checked").prop("checked", false);
+							widget.removeClass("checked");
+						}
+					}
+					else if (sprop.hasClass("name")) {
+						if (field_value != "")
+							widget.attr("name", field_value);
+						else
+							widget.removeAttr("name");
+					}
+					else if (sprop.hasClass("value")) {
+						if (field_value != "")
+							widget.attr("value", field_value);
+						else
+							widget.attr("value", "");
+					}
+				}
+				
+				return status;
+			};
+		}
+	]]></menu_js>
+</widget>

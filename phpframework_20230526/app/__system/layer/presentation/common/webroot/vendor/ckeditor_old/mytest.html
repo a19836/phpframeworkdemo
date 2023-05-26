@@ -1,0 +1,34 @@
+<html>
+<body>
+<script src="ckeditor.js"></script>
+
+<textarea cols="80" id="editor1" rows="10"></textarea>
+		
+<script>
+	CKEDITOR.replace('editor1', {
+		toolbarGroups: [
+			{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+			{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+			{ name: 'editing', groups: [ 'find', 'selection' ] },
+			{ name: 'forms' },
+			'/',
+			{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+			{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
+			{ name: 'links' },
+			{ name: 'insert' },
+			'/',
+			{ name: 'styles' },
+			{ name: 'colors' },
+			{ name: 'tools' },
+			{ name: 'others' },
+		],
+		codeSnippet_theme: 'monokai_sublime',
+		height: 356,
+		//fullPage: true,
+		allowedContent: true,
+		filebrowserImageBrowseUrl: 'ckeditor/plugins/imgbrowse/imgbrowse.html',
+		filebrowserImageUploadUrl: 'ckeditor/plugins/imgupload.php',
+	});
+</script>
+</body>
+</html>
