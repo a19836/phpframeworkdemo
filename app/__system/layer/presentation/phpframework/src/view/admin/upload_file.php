@@ -42,7 +42,7 @@ $(function() {
 	
 	var myDropzone = new Dropzone(".dropzone", {
 		success: function(file, response, progress_event) {
-			console.log(response);
+			//console.log(response);
 			if (response != 1) {
 				var dz_error_message = $(file.previewElement).removeClass("dz-success").addClass("dz-error").children(".dz-error-message");
 				dz_error_message.addClass("show");

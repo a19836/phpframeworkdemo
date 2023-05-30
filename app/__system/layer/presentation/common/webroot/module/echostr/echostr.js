@@ -33,6 +33,14 @@ $(function () {
 	setTimeout(function() {
 		var luie = echostr_settings.find("#layoutui_content > .layout-ui-editor");
 		
+		//disable auto save if the html is larger than 50000 characters for better performance
+		var html = echostr_settings.children("textarea.module_settings_property").val();
+		
+		if (html.length > 50000) {
+			disableAutoSave(onToggleAutoSave);
+			StatusMessageHandler.showMessage("Html is too big, so auto save is disabled for a better user-experience...", "", "", 15000);
+		}
+		
 		//show view layout panel instead of code
 		var view_layout = luie.find(" > .tabs > .view-layout");
 		view_layout.addClass("do-not-confirm");

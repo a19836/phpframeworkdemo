@@ -13,6 +13,7 @@ var chooseImageUrlFromFileManagerTree = null; //used by the create_presentation_
 
 var TaskEditSourceFancyPopup = new MyFancyPopupClass();
 var IncludePageUrlFancyPopup = new MyFancyPopupClass();
+var UploadFancyPopup = new MyFancyPopupClass();
 
 var brokers_db_drivers = {};
 var auto_scroll_active = true;
@@ -85,7 +86,7 @@ function onTogglePHPCodeAutoConvert() {
 
 /* TREE FUNCTIONS */
 
-function removeObjectPropertiesAndMethodsFromTreeForVariables(ul, data) {
+function removeObjectPropertiesAndMethodsFromTreeForVariables(ul, data, mytree_obj) {
 	$(ul).find(".function, i.undefined_file, i.css_file, i.js_file, i.img_file, .webroot_folder").each(function(idx, elm){
 		$(elm).parent().parent().remove();
 	});
@@ -141,7 +142,7 @@ function removeObjectPropertiesAndMethodsFromTreeForVariables(ul, data) {
 	});
 }
 
-function removeObjectPropertiesAndMethodsFromTreeForMethods(ul, data) {
+function removeObjectPropertiesAndMethodsFromTreeForMethods(ul, data, mytree_obj) {
 	$(ul).find(".function, i.undefined_file, i.css_file, i.js_file, i.img_file, .webroot_folder").each(function(idx, elm){
 		$(elm).parent().parent().remove();
 	});
@@ -197,7 +198,7 @@ function removeObjectPropertiesAndMethodsFromTreeForMethods(ul, data) {
 	});
 }
 
-function removeObjectPropertiesAndMethodsFromTreeForFunctions(ul, data) {
+function removeObjectPropertiesAndMethodsFromTreeForFunctions(ul, data, mytree_obj) {
 	$(ul).find("i.service, i.class, i.test_unit_obj, i.undefined_file, i.css_file, i.js_file, i.img_file, .webroot_folder").each(function(idx, elm){
 		$(elm).parent().parent().remove();
 	});
@@ -239,7 +240,7 @@ function removeObjectPropertiesAndMethodsFromTreeForFunctions(ul, data) {
 	});
 }
 
-function removeObjectPropertiesAndFunctionsFromTree(ul, data) {
+function removeObjectPropertiesAndFunctionsFromTree(ul, data, mytree_obj) {
 	$(ul).find("i.function").each(function(idx, elm){
 		$(elm).parent().parent().remove();
 	});
@@ -290,25 +291,25 @@ function removeObjectPropertiesAndFunctionsFromTree(ul, data) {
 	});
 }
 
-function removeParametersAndResultMapsFromTree(ul, data) {
+function removeParametersAndResultMapsFromTree(ul, data, mytree_obj) {
 	$(ul).find("i.map").each(function(idx, elm){
 		$(elm).parent().parent().remove();
 	});
 }
 
-function removeQueriesAndMapsAndOtherHbnNodesFromTree(ul, data) {
+function removeQueriesAndMapsAndOtherHbnNodesFromTree(ul, data, mytree_obj) {
 	$(ul).find("i.query, i.map, i.relationship, i.hbn_native").each(function(idx, elm){
 		$(elm).parent().parent().remove();
 	});
 }
 
-function removeParametersAndResultMapsFromTree(ul, data) {
+function removeParametersAndResultMapsFromTree(ul, data, mytree_obj) {
 	$(ul).find("i.map").each(function(idx, elm){
 		$(elm).parent().parent().remove();
 	});
 }
 
-function removeAllThatIsNotPagesFromTree(ul, data) {
+function removeAllThatIsNotPagesFromTree(ul, data, mytree_obj) {
 	ul = $(ul);
 	
 	ul.find("i.file, i.view_file, i.template_file, i.util_file, i.controller_file, i.config_file, i.undefined_file, i.js_file, i.css_file, i.img_file, i.properties, i.block_file, i.module_file, .views_folder, .templates_folder, .template_folder, .utils_folder, .webroot_folder, .modules_folder, .blocks_folder, .configs_folder").each(function(idx, elm){
@@ -336,28 +337,57 @@ function removeAllThatIsNotPagesFromTree(ul, data) {
 	});
 }
 
-function removeAllThatIsNotAPossibleImageFromTree(ul, data) {
+function removeAllThatIsNotAPossibleImageFromTree(ul, data, mytree_obj) {
 	ul = $(ul);
 	
 	ul.find("i.file, i.view_file, i.template_file, i.util_file, i.controller_file, i.config_file, i.js_file, i.css_file, i.properties, i.block_file, i.module_file, .views_folder, .templates_folder, .template_folder, .utils_folder, .modules_folder, .blocks_folder, .configs_folder").each(function(idx, elm){
 		$(elm).parent().parent().remove();
 	});
 	
-	ul.find("i.folder").each(function(idx, elm){
-		var label = $(elm).parent().children("label").text();
+	ul.find("i.folder").each(function(idx, elm) {
+		var a = $(elm).parent();
+		var li = a.parent();
+		var label = a.children("label").text();
+		var parent_li_i = li.parent().parent().find(" > a > i");
 		
 		if (label == "views" || label == "templates" || label == "utils" || label == "others" || label == "modules" || label == "blocks" || label == "configs") 
-			$(elm).parent().parent().remove();
+			li.remove();
 		//else if (label == "webroot") 
-		//	$(elm).parent().parent().addClass("jstree-last");
+		//	li.addClass("jstree-last");
+		else if (parent_li_i.is("i.webroot_folder, i.webroot_sub_folder")) {
+			$(elm).addClass("webroot_sub_folder");
+			
+			if (a.attr("upload_url")) {
+				var l = a.children("label");
+				l.append('<span class="icon refresh" title="Refresh">Refresh</span><span class="icon upload" title="Upload">Upload</span>');
+				l.children(".refresh").click(function() {
+					refreshFileManagerPopupTreeNodeFromInnerIcon(this, mytree_obj);
+				});
+				l.children(".upload").click(function() {
+					openUploadPopupFromFileManagerPopupTreeNodeInnerIcon(this, mytree_obj);
+				});
+			}
+		}
 	});
 	
 	ul.find("i.webroot_folder").each(function(idx, elm) {
-		$(elm).parent().parent().addClass("jstree-last");
+		var a = $(elm).parent();
+		a.parent().addClass("jstree-last");
+		
+		if (a.attr("upload_url")) {
+			var l = a.children("label");
+			l.append('<span class="icon refresh" title="Refresh">Refresh</span><span class="icon upload" title="Upload">Upload</span>');
+			l.children(".refresh").click(function() {
+				refreshFileManagerPopupTreeNodeFromInnerIcon(this, mytree_obj);
+			});
+			l.children(".upload").click(function() {
+				openUploadPopupFromFileManagerPopupTreeNodeInnerIcon(this, mytree_obj);
+			});
+		}
 	});
 }
 
-function removeAllThatIsNotBlocksFromTree(ul, data) {
+function removeAllThatIsNotBlocksFromTree(ul, data, mytree_obj) {
 	ul = $(ul);
 	
 	ul.find("i.file, i.view_file, i.entity_file, i.template_file, i.util_file, i.controller_file, i.config_file, i.undefined_file, i.js_file, i.css_file, i.img_file, i.properties, i.module_file, .entities_folder, .views_folder, .templates_folder, .template_folder, .utils_folder, .webroot_folder, .modules_folder, .configs_folder").each(function(idx, elm){
@@ -475,6 +505,47 @@ function getFileProperties(url) {
 }
 
 /* POPUP FUNCTIONS */
+
+function refreshFileManagerPopupTreeNodeFromInnerIcon(elm, mytree_obj) {
+	window.event && typeof window.event.stopPropagation == "function" && window.event.stopPropagation(); //this function gets called by an icon which is inside of a "a" element. This avoids the event from the "a" element to be executed.
+	
+	if (mytree_obj) {
+		var node = $(elm).closest("li");
+		node.removeClass("jstree-closed").addClass("jstree-open"); //add in case it doesn't have, so we can then show the inner folder that was created.
+		mytree_obj.refreshNodeChilds(node);
+		
+		node.children("ul").show();
+	}
+}
+
+function openUploadPopupFromFileManagerPopupTreeNodeInnerIcon(elm, mytree_obj) {
+	window.event.stopPropagation(); //this function gets called by an icon which is inside of a "a" element. This avoids the event from the "a" element to be executed.
+	
+	var a = $(elm).closest("a");
+	var upload_url = a.attr("upload_url");
+	
+	if (upload_url) {
+		var popup = $("#upload_from_file_manager");
+		
+		if (!popup[0]) {
+			popup = $('<div id="upload_from_file_manager" class="myfancypopup with_iframe_title"></div>');
+			$(document.body).append(popup);
+		}
+		
+		upload_url += (upload_url.indexOf("?") != -1 ? "&" : "?") + "popup=1";
+		popup.html('<iframe src="' + upload_url + '"></iframe>');
+		
+		UploadFancyPopup.init({
+			elementToShow: popup,
+			parentElement: document,
+			onClose: function() {
+				refreshFileManagerPopupTreeNodeFromInnerIcon(elm, mytree_obj);
+			},
+		});
+		
+		UploadFancyPopup.showPopup();
+	}
+}
 
 function onFunctionTaskEditMethodCode(elm, popup) {
 	if (typeof openSubmenu == "function") 
@@ -1514,7 +1585,11 @@ function chooseIncludeImageUrl(elm) {
 				}
 				
 				MyFancyPopup.settings.targetField.val(url);
-				MyFancyPopup.settings.targetField.focus(); //if MyFancyPopup.settings.targetField is an input from the LayoutUIEditor, then we must set the cursor inside of that input, bc the value will onnly be updated in the html, with the onBlur event of that input. So we must first to focus it or trigger the onBlur event for that input element.
+				
+				//if MyFancyPopup.settings.targetField is an input from the LayoutUIEditor, then we must set the cursor inside of that input, bc the value will only be updated in the html, with the onBlur event of that input. So we must first to focus it or trigger the onBlur event for that input element.
+				MyFancyPopup.settings.targetField.focus(); 
+				MyFancyPopup.settings.targetField.blur(); //to refresh the image in the canvas editor
+				MyFancyPopup.settings.targetField.focus(); //focus again so the cursor be inside of the input field
 				
 				//update var_Type if exists
 				var var_type = MyFancyPopup.settings.targetField.parent().parent().find(".var_type select");

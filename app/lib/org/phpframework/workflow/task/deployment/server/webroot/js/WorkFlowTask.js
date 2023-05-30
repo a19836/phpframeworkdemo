@@ -1260,7 +1260,7 @@ var ServerTaskPropertyObj = {
 						var var_value = missing_vars[var_name];
 						
 						var length = tbody.children("tr").length;
-						iframe_contents.find(".add_new").trigger("click");
+						iframe_contents.find(".add").first().trigger("click");
 						
 						if (length + 1 == tbody.children("tr").length) {
 							var last = fields.find("tr:last-child").last();

@@ -373,6 +373,19 @@
 	font-size:inherit;
 }
 
+#choose_image_url_from_file_manager .mytree .jstree-anchor > label span.icon {
+	margin-left:5px;
+}
+
+#upload_from_file_manager {
+	width:95vw;
+	height:95vh;
+}
+#upload_from_file_manager iframe {
+	width:100%;
+	height:100%;
+}
+
 /* EDIT TASK SOURCE POPUP */
 .edit_task_source_popup {
 	position:absolute;

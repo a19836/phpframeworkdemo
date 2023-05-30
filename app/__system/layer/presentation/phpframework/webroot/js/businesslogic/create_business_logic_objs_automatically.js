@@ -35,7 +35,7 @@ function submitForm(elm, on_submit_func) {
 	return status;
 }
 
-function removeQueriesAndMapsAndOtherHbnNodesFromTree(ul, data) {
+function removeQueriesAndMapsAndOtherHbnNodesFromTree(ul, data, mytree_obj) {
 	$(ul).find("i.query, i.map, i.relationship, i.hbn_native, i.referenced_folder").each(function(idx, elm){
 		var li = $(elm).parent().parent();
 		

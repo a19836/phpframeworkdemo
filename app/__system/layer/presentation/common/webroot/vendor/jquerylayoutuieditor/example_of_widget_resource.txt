@@ -29,12 +29,21 @@
 		Note that the data-widget-resources could be an array too with multiple json objects. In this case the system will load multiple resources... The resources can be dependent from each-other, where I can have a second resource that is based from some attribute of the first resource. In this case, the resources must be loaded synchronously, otherwise they can be loaded assynchronously and all at once.
 	
 	Widget permissions (data-widget-permissions): json object or simple values, like:
-		user_type_ids: 
+		user_type_id,
+		[user_type_id_x, user_type_id_y],
+		user_type_ids:
 			user_type_id,
 			[user_type_id_x, user_type_id_y],
-			id/key: user_type_id,
-			id/key: [user_type_id_x, user_type_id_y],
-			activity_id: user_type_id,
+		access/view/show/hide/remove: user_type_id,
+		access/view/show/hide/remove: [user_type_id_x, user_type_id_y],
+		access/view/show/hide/remove:
+			resources: 
+				resource_name,
+				[resource_name, resource_name],
+				{name: xxx, ...}
+			user_type_ids:
+				user_type_id,
+				[user_type_id_x, user_type_id_y],
 		
 		example:
 			access/view: [...],
@@ -740,7 +749,7 @@
 					<span class="icon add" onClick="MyWidgetResourceLib.SearchHandler.addWidgetSearchDynamicAttribute(this, 1)">Add Condition</span>
 				</div>
 				<ul data-widget-search-added-attrs></ul>
-				<button onClick="MyWidgetResourceLib.SearchHandler.refreshSearchWidgetResource(this)" data-widget-search-multiple-button data-widget-search-props="{type:'contains|starts_with|ends_with', operator:'and'}">Search</button>
+				<button onClick="MyWidgetResourceLib.SearchHandler.refreshSearchWidgetResource(this)" data-widget-search-multiple-button data-widget-props="{type:'contains|starts_with|ends_with', operator:'and'}">Search</button>
 			</div>
 		</div>
 		

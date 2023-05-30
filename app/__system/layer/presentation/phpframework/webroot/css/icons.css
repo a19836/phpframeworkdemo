@@ -167,6 +167,9 @@
 .icon.refresh::before {
 	content:"\f2f1";
 }
+.icon.upload::before {
+	content:"\f093";
+}
 .icon.settings::before {
 	content:"\f7d9";
 }

@@ -58,50 +58,6 @@ class StudentResourceService extends \soa\CommonService {
 	}
 	
 	/**
-	 * Delete parsed resource record from table: student.
-	 */
-	public function delete ($data) {
-		$options = $data["options"];
-		$this->mergeOptionsWithBusinessLogicLayer($options);
-		
-		$pks = $data["pks"];
-		
-		if ($pks) {
-			$status = true;
-			
-			if (array_key_exists("student_id", $pks) && !is_numeric($pks["student_id"])) $pks["student_id"] = null;
-			if (array_key_exists("student_id", $pks) && !is_numeric($pks["student_id"])) $status = false;
-			
-			
-			if ($status) {
-				$status = $this->getBusinessLogicLayer()->callBusinessLogic("my_first_project", "StudentService.delete", array(
-					"student_id" => $pks['student_id']
-				), $options);
-			}
-			
-			return $status;
-		}
-	}
-	
-	/**
-	 * Delete multiple records at once parsed resource record from table: student.
-	 */
-	public function multipleDelete ($data) {
-		$status = true;
-		$pks = $data["pks"];
-		
-		if ($pks)
-		for ($i = 0, $t = count($pks); $i < $t; $i++) {
-			$data["pks"] = $pks[$i];
-			
-			if (!$this->delete($data))
-				$status = false;
-		}
-		
-		return $status;
-	}
-	
-	/**
 	 * Count parsed resource records from table: student.
 	 */
 	public function count ($data) {
@@ -153,6 +109,32 @@ class StudentResourceService extends \soa\CommonService {
 		$result = $this->getBusinessLogicLayer()->callBusinessLogic("my_first_project", "StudentService.countAll", $data, $options);
 		
 		return $result;
+	}
+	
+	/**
+	 * Delete parsed resource record from table: student.
+	 */
+	public function delete ($data) {
+		$options = $data["options"];
+		$this->mergeOptionsWithBusinessLogicLayer($options);
+		
+		$pks = $data["pks"];
+		
+		if ($pks) {
+			$status = true;
+			
+			if (array_key_exists("student_id", $pks) && !is_numeric($pks["student_id"])) $pks["student_id"] = null;
+			if (array_key_exists("student_id", $pks) && !is_numeric($pks["student_id"])) $status = false;
+			
+			
+			if ($status) {
+				$status = $this->getBusinessLogicLayer()->callBusinessLogic("my_first_project", "StudentService.delete", array(
+					"student_id" => $pks['student_id']
+				), $options);
+			}
+			
+			return $status;
+		}
 	}
 	
 	/**
@@ -270,6 +252,24 @@ class StudentResourceService extends \soa\CommonService {
 			
 			return $status;
 		}
+	}
+	
+	/**
+	 * Delete multiple records at once parsed resource record from table: student.
+	 */
+	public function multipleDelete ($data) {
+		$status = true;
+		$pks = $data["pks"];
+		
+		if ($pks)
+		for ($i = 0, $t = count($pks); $i < $t; $i++) {
+			$data["pks"] = $pks[$i];
+			
+			if (!$this->delete($data))
+				$status = false;
+		}
+		
+		return $status;
 	}
 }
 ?>

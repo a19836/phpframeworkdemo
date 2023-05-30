@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget>
+	<label>Bootstrap Modal</label>
+	<tag>bs-modal</tag>
+	<settings>
+		<create_widget_class>BoostrapModalWidget</create_widget_class>
+	</settings>
+	<template_widget><![CDATA[<div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>]]></template_widget>
+	<menu_js><![CDATA[
+		function BoostrapModalWidget(ui_creator, menu_widget) {
+			var me = this;
+			
+			me.init = function() {
+				menu_widget.attr({
+					"data-on-drag-stop-func": ui_creator.obj_var_name + ".menu_widgets_objs['bs-modal'].onDropMenuWidget",
+				});
+			};
+			
+			me.onDropMenuWidget = function(menu_widget, widget, event, ui_obj) {
+			    ui_creator.convertHtmlElementToWidget( widget.children() );
+			};
+		}
+	]]></menu_js>
+</widget>
