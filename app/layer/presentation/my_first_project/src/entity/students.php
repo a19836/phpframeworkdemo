@@ -366,7 +366,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->addRegionHtml("Content", "<div class
 					<thead>
 						<tr>
 							<th class=\"border-0 pt-0 text-center text-muted fw-normal align-middle small\" data-widget-list-select-items-head=\"\">
-								<input value=\"on\" type=\"checkbox\" onclick=\"MyWidgetResourceLib.ListHandler.toggleListAttributeSelectCheckboxes(this); return false;\" data-widget-list-select-items-checkbox/>
+								<input value=\"on\" type=\"checkbox\" onclick=\"MyWidgetResourceLib.ListHandler.toggleListAttributeSelectCheckboxes(this); return true;\" data-widget-list-select-items-checkbox/>
 							</th>
 							<th class=\"border-0 pt-0 text-muted fw-normal align-middle small text-nowrap\" data-widget-item-head onclick=\"MyWidgetResourceLib.ListHandler.sortListResource(this, event); return false;\" data-widget-item-attribute-name=\"student_id\">Student Id<i class=\"bi bi-filter-left ml-1 ms-1 overflow-visible icon icon-sort text-center\"></i>
 								<i class=\"bi bi-sort-down-alt ml-1 ms-1 overflow-visible icon icon-sort-asc text-center\"></i>
