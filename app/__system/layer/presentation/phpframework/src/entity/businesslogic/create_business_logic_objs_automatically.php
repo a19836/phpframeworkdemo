@@ -219,17 +219,17 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 	}
 	
 	private function getTableAttributes() {
-		$attributes = array("' . implode('", "', $pfdbbc383) . '");
+		$attributes = array(' . ($pfdbbc383 ? '"' . implode('", "', $pfdbbc383) . '"' : '') . ');
 		return $attributes;
 	}
 	
 	private function getTablePrimaryKeys() {
-		$pks = array("' . implode('", "', $pe2f18119) . '");
+		$pks = array(' . ($pe2f18119 ? '"' . implode('", "', $pe2f18119) . '"' : '') . ');
 		return $pks;
 	}
 	
 	private function getTableAutoIncrementPrimaryKeys() {
-		$aipks = array("' . implode('", "', $pa04a2fa5) . '");
+		$aipks = array(' . ($pa04a2fa5 ? '"' . implode('", "', $pa04a2fa5) . '"' : '') . ');
 		return $aipks;
 	}
 	
@@ -283,10 +283,24 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 				break;
 			}
 		
-		if (\$set_ai_pk) {
+		if (\$set_ai_pk || empty(\$ai_pks)) {
 			\$options[\"hard_coded_ai_pk\"] = true;
 			\$result = {$pa8d2aaca}->insertObject(\$this->getTableName(), \$attributes, \$options);
-			\$result = \$result ? \$data[\$set_ai_pk] : false;
+			//\$result = \$result ? \$data[\$set_ai_pk] : false;
+			
+			if (\$result) {
+	    			if (\$set_ai_pk)
+	    			    \$result = \$data[\$set_ai_pk];
+	    			else { //in case of primary keys with no auto increment.
+	    			    \$pks = \$this->getTablePrimaryKeys();
+	    			    
+	    			    foreach (\$pks as \$pk_name) 
+		       			if (\$data[\$pk_name]) {
+		       				\$result = \$data[\$pk_name];
+		       				break;
+		       			}
+	    			}
+			}
 		}
 		else {
 			\$attributes = \$this->filterDataExcludingTableAutoIncrementPrimaryKeys(\$attributes);

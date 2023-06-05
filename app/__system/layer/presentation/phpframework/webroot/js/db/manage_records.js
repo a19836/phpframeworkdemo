@@ -22,12 +22,16 @@ function updateTableHeight() {
 	var top_pagination = manage_records.children(".top_pagination");	
 	var bottom_pagination = manage_records.children(".bottom_pagination");	
 	var conditions = manage_records.children(".conditions");
+	var buttons = manage_records.children(".buttons");
+	var total = manage_records.children(".total");
 	
 	var wh = $(window).height();
 	var tph = top_pagination.is(":visible") ? top_pagination.height() + parseInt(top_pagination.css("margin-top")) + parseInt(top_pagination.css("margin-bottom")) : 0;
 	var bph = bottom_pagination.is(":visible") ? bottom_pagination.height() + parseInt(bottom_pagination.css("margin-top")) + parseInt(bottom_pagination.css("margin-bottom")) : 0;
 	var ch = conditions.height() + parseInt(conditions.css("margin-top")) + parseInt(conditions.css("margin-bottom"));
-	var h = wh - (140 + tph + bph + ch);
+	var bh = buttons.height() + parseInt(buttons.css("margin-top")) + parseInt(buttons.css("margin-bottom"));
+	var th = total.height() + parseInt(total.css("margin-top")) + parseInt(total.css("margin-bottom"));
+	var h = wh - (140 + tph + bph + ch + bh + th);
 	h = h < 200 ? 200 : h;
 	
 	manage_records.find(" > form > .responsive_table").css("height", h + "px");
