@@ -98,7 +98,7 @@ function prepareChooseAvailableTemplateTypeHtml(project_id, folder_to_filter) {
 	
 	var url = "" + document.location;
 	url = url.replace(/edit_entity_type=[^&]*/g, "");
-	url += (url.indexOf("?") != -1 ? "&" : "?") + "edit_entity_type=advanced";
+	url += (url.indexOf("?") != -1 ? "&" : "?") + "edit_entity_type=advanced&design_editor=1";
 	
 	var html = '<div class="choose_page_workspace">'
 				+ '<div class="title">How do you want to build your page?</div>'
