@@ -7,7 +7,7 @@
 	</settings>
 	<template_widget><![CDATA[<div data-widget-item-attribute-field-edit data-widget-item-attribute-field-toggle-select-input>
 	<div class="input-group show">
-		<select class="form-control custom-select form-select">
+		<select class="form-control custom-select form-select" data-allow-null="1">
 			<option value=""></option>
 		</select>
 		<div class="input-group-append">

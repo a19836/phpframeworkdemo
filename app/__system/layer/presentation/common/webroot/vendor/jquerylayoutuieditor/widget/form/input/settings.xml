@@ -129,6 +129,9 @@
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
+				if (!html_element)
+					widget.attr("data-allow-null", "1");
+				
 				widget.keydown(function() {
 					ui_creator.getWidgetHeader().hide();
 					ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.

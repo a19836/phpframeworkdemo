@@ -226,8 +226,10 @@
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
-				if (!html_element)
+				if (!html_element) {
 					widget.css({width: "100px", height:"20px"});
+					widget.attr("data-allow-null", "1");
+				}
 				
 				widget.on("focus", function() {
 					ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.

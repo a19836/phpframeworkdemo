@@ -66,6 +66,9 @@
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
+				if (!html_element)
+					widget.attr("data-allow-null", "1");
+				
 				widget[0].type = "radio";
 			};
 			
