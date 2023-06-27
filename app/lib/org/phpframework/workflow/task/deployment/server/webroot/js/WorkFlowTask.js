@@ -683,7 +683,7 @@ var ServerTaskPropertyObj = {
 		
 		//prepare task_properties - dataaccess
 		var task_html_elm = tasks_properties_elm.find(" > .task_properties_" + this.template_tasks_types_by_tag["dataaccess"] + " > .data_access_layer_task_html");
-		var files_html = this.getLayerTaskPropertiesFilesHtml(["module"]);
+		var files_html = this.getLayerTaskPropertiesFilesHtml(["common", "module"]);
 		task_html_elm.append(files_html);
 		task_html_elm.children(".type").hide();
 		

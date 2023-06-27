@@ -125,10 +125,40 @@
 						var new_node_name = field_value != "" ? "input" : "button";
 					
 						if (node_name != new_node_name) {
+							var input_value = null;
+							
+							if (new_node_name == "input") {
+								if (field_value != "")
+									widget[0].type = field_value;
+								
+								if (widget.text())
+									input_value = widget.text();
+								
+								widget.html("");
+							}
+							else {
+								if (widget[0].hasAttribute("value"))
+									input_value = widget.attr("value");
+							}
+							
 							widget = ui_creator.changeWidgetNodeName(widget, new_node_name);
 							
-							if (field_value != "")
-								widget[0].type = field_value;
+							if (widget && widget[0]) {
+								if (new_node_name == "input") {
+									if (input_value)
+										widget.attr("value", input_value);
+								}
+								else {
+									if (input_value)
+										widget.html(input_value);
+									else if (widget.text() == "")
+										widget.html("Button");
+									
+									//do not use widget.removeAttr bc gives an error
+									widget[0].removeAttribute("type");
+									widget[0].removeAttribute("value");
+								}
+							}
 						}
 					}
 					else if (sprop.hasClass("name")) {
