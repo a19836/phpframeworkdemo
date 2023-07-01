@@ -15,7 +15,6 @@
 .taskflowchart.fixed_side_properties .selected_task_properties .get_url_contents_task_html {
 	min-width:auto;
 }
-
 .get_url_contents_task_html > .info {
 	text-align:center;
 	margin-bottom:15px;

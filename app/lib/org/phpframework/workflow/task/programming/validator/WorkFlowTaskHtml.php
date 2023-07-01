@@ -18,6 +18,10 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 ?><div class="validator_task_html">
+	
+	<div class="info">This task needs the file 'lib/org/phpframework/util/text/TextValidator.php' to be included before! If is not included yet, please add it by clicking <a href="javascript:void(0)" onClick="ProgrammingTaskUtil.addIncludeFileTaskBeforeTaskFromSelectedTaskProperties(&quot;LIB_PATH . 'org/phpframework/util/text/TextValidator.php'&quot;, '', 1)">here</a>. 
+	</div>
+	
 	<div class="method">
 		<label>Check if:</label>
 		<select class="task_property_field" name="method" onChange="ValidatorTaskPropertyObj.onChangeMethodName(this)">

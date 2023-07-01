@@ -43,7 +43,7 @@ var ArrayTaskUtilObj = {
 		
 		var html = '<div class="items">' +
 				(!is_root ? 
-					'<input type="text" class="key task_property_field" name="' + parent_name + '[key]" value="' + key.replace(/"/g, "&quot;") + '" title="Item key" />' +
+					'<input type="text" class="key task_property_field" name="' + parent_name + '[key]" value="' + key.replace(/"/g, "&quot;") + '" title="Item key" onKeyUp="ArrayTaskUtilObj.onFieldValueBlur(this)" />' +
 					'<select class="key_type task_property_field" name="' + parent_name + '[key_type]" title="Item key type">' +
 						'<option></option>' +
 						'<option' + (key_type == "variable" ? " selected" : "") + '>variable</option>' +
@@ -377,6 +377,16 @@ var ArrayTaskUtilObj = {
 				
 				field.replaceWith(input);
 			}
+		}
+		
+		if (field.hasClass("key")) {
+			var l = ("" + value).length;
+			var key_type = field.parent().children(".key_type");
+			
+			if (l > 0 && key_type.val() == "null")
+				key_type.val( $.isNumeric(value) ? "" : (("" + value).substr(0, 1) == "$" ? "variable" : "string") );
+			else if (l == 0 && key_type.val() != "null")
+				key_type.val("null");
 		}
 	},
 	

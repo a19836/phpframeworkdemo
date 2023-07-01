@@ -12,6 +12,13 @@
 .soap_connector_task_html {
 	
 }
+.soap_connector_task_html > .info {
+	text-align:center;
+	margin-bottom:15px;
+}
+.soap_connector_task_html > .info a {
+	color:var(--link-color);
+}
 .soap_connector_task_html .data,
   .soap_connector_task_html > .type,
   .soap_connector_task_html .wsdl_url,

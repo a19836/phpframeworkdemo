@@ -64,6 +64,21 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			return false;
 		},
 		
+		onConnectionDrop : function(conn) {
+			//check if target is start task, and if so sets source to start task and remove target as start task.
+			if (conn.target.attr("is_start_task")) {
+				var WF = myWFObj.getJsPlumbWorkFlow();
+				
+				conn.source.attr("is_start_task", 1);
+				conn.source.addClass(WF.jsPlumbTaskFlow.start_task_class_name);
+				
+				conn.target.removeAttr("is_start_task");
+				conn.target.removeClass(WF.jsPlumbTaskFlow.start_task_class_name);
+			}
+			
+			return true;
+		},
+		
 		addCodeMenuOnShowTaskMenu : function(task_id, j_task, task_context_menu) {
 			var show_code_menu = task_context_menu.children(".show_code");
 			
@@ -94,6 +109,91 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		
 		removeCodeMenuOnShowTaskMenu : function(task_id, j_task, task_context_menu) {
 			task_context_menu.children(".show_code").remove();
+		},
+		
+		addIncludeFileTaskBeforeTaskFromSelectedTaskProperties : function(file_path, type, once) {
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var selected_task_properties = $("#" + WF.jsPlumbProperty.selected_task_properties_id);
+			var task_id = selected_task_properties.attr("task_id");
+			
+			this.addIncludeFileTaskBeforeTask(task_id, file_path, type, once);
+		},
+		
+		addIncludeFileTaskBeforeTask : function(task_id, file_path, type, once) {
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var task_tag = "includefile";
+			var task_menu = $("#" + WF.jsPlumbContextMenu.main_tasks_menu_obj_id + " .task_menu[tag=" + task_tag + "]");
+			var task_type = task_menu.attr("type");
+			
+			if (task_type) {
+				var connections = WF.jsPlumbTaskFlow.getTargetConnections(task_id);
+				var connection = connections[0];
+				var include_task_id = null;
+				
+				if (connection) //add new task between task
+					include_task_id = WF.jsPlumbContextMenu.addTaskByTypeToConnection(task_type, connection);
+				else { //add task before task
+					var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+					var task_offset = task.offset();
+					var obj_offset = {
+						top : task_offset.top - 100 > 0 ? task_offset.top - 100 : 20,
+						left : task_offset.left + 100,
+					};
+					var droppable = task.parent();
+					include_task_id = WF.jsPlumbContextMenu.addTaskByType(task_type, obj_offset, droppable);
+					
+					if (include_task_id) {
+						//connect both tasks
+						//get new task default exit - based in task properties
+						var task_properties_html_element = $("#" + WF.jsPlumbTaskFlow.main_tasks_properties_obj_id + " .task_properties_" +  task_type.toLowerCase()).html();
+						var task_property_exits = $(task_properties_html_element).find(".task_property_exit");
+						var task_property_exit = task_property_exits[0];
+						
+						if (task_property_exit && task_property_exit.hasAttribute("exit_id")) {
+							var exit_id = task_property_exit.getAttribute("exit_id");
+							var exit_color = task_property_exit.getAttribute("exit_color");
+							var exit_label = task_property_exit.getAttribute("exit_label");
+							var include_task = WF.jsPlumbTaskFlow.getTaskById(include_task_id);
+							
+							if (!exit_color) {
+								var default_color = include_task.css("border-color");
+								exit_color = default_color ? default_color : "#000";
+							}
+							
+							connection = WF.jsPlumbTaskFlow.connect(include_task_id, task_id, exit_label, null, null, {
+								id : exit_id,
+								color : exit_color,
+							});
+							
+							if (connection) {
+								//check if target is start task, and if so sets source to start task and remove target as start task.
+								if (task.attr("is_start_task")) {
+									include_task.attr("is_start_task", 1);
+									include_task.addClass(WF.jsPlumbTaskFlow.start_task_class_name);
+									
+									task.removeAttr("is_start_task");
+									task.removeClass(WF.jsPlumbTaskFlow.start_task_class_name);
+								}
+							}
+							else {
+								WF.jsPlumbTaskFlow.deleteTask(include_task_id, {to_confirm: false});
+								include_task_id = null;	
+							}
+						}
+					}
+				}
+				
+				if (include_task_id) {
+					var task_property_values = WF.jsPlumbTaskFlow.tasks_properties[include_task_id];
+					task_property_values["file_path"] = file_path;
+					task_property_values["type"] = type;
+					task_property_values["once"] = once;
+					
+					return true;
+				}
+			}
+			
+			return false;
 		},
 		
 		onSuccessTaskBetweenConnection : function(task_id) {

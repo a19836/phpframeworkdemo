@@ -52,7 +52,7 @@ if ($PEVC) {
 	
 	//PREPARING WORKFLOW TASKS
 	$allowed_tasks_tag = array(
-		"definevar", "setvar", "setarray", "setdate", "ns", "createfunction", "createclass", "setobjectproperty", "createclassobject", "callobjectmethod", "callfunction", "addheader", "if", "switch", "loop", "foreach", "includefile", "echo", "code", "break", "return", "exit", "validator", "geturlcontents", "restconnector", "soapconnector", "getbeanobject",
+		"definevar", "setvar", "setarray", "setdate", "ns", "createfunction", "createclass", "setobjectproperty", "createclassobject", "callobjectmethod", "callfunction", "addheader", "if", "switch", "loop", "foreach", "includefile", "echo", "code", "break", "return", "exit", "validator", "geturlcontents", "restconnector", "soapconnector", "getbeanobject", "sendemail",
 		"trycatchexception", "throwexception", "printexception",
 		"callpresentationlayerwebservice",
 		"inlinehtml", "createform",
@@ -92,7 +92,7 @@ if ($PEVC) {
 	//PREPARING HEAD
 	$WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url);
 	$WorkFlowUIHandler->setTasksGroupsByTag(array(
-		"Logic" => array("definevar", "setvar", "setarray", "setdate", "ns", "createfunction", "createclass", "setobjectproperty", "createclassobject", "callobjectmethod", "callfunction", "addheader", "if", "switch", "loop", "foreach", "includefile", "echo", "code", "break", "return", "exit", "validator", "geturlcontents", "getbeanobject"),
+		"Logic" => array("definevar", "setvar", "setarray", "setdate", "ns", "createfunction", "createclass", "setobjectproperty", "createclassobject", "callobjectmethod", "callfunction", "addheader", "if", "switch", "loop", "foreach", "includefile", "echo", "code", "break", "return", "exit", "validator", "geturlcontents", "getbeanobject", "sendemail"),
 		"Connectors" => array("restconnector", "soapconnector"),
 		"Exception" => array("trycatchexception", "throwexception", "printexception"),
 		"DB" => array("getdbdriver", "setquerydata", "getquerydata", "dbdaoaction", "callibatisquery", "callhibernateobject", "callhibernatemethod"),

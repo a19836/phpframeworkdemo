@@ -17,7 +17,9 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-?><div class="get_url_contents_task_html">
+
+$file_to_include = $file_to_include ? $file_to_include : "lib/org/phpframework/util/web/MyCurl.php"; $import_path = preg_replace("/^lib\//", "", $file_to_include); ?>
+<div class="get_url_contents_task_html">
 	<div class="info">
 		This can be used to connect with <b>webhooks</b> in IPAAS services, like: 
 		<a href="https://zapier.com/page/webhooks/" target="zapier">Zapier</a>, 
@@ -41,6 +43,9 @@
 		<a href="https://www.mydbsync.com/product/cloud-workflow" target="mydbsync">MyDBSync</a>, 
 		<a href="https://www.blendo.co/documents/incoming-webhook-integration/" target="blendo">Blendo</a> 
 		and others more...
+	</div>
+	
+	<div class="info">This task needs the file '<?php echo $file_to_include; ?>' to be included before! If is not included yet, please add it by clicking <a href="javascript:void(0)" onClick="ProgrammingTaskUtil.addIncludeFileTaskBeforeTaskFromSelectedTaskProperties(&quot;LIB_PATH . '<?php echo $import_path; ?>'&quot;, '', 1)">here</a>. 
 	</div>
 	
 	<div class="dts">

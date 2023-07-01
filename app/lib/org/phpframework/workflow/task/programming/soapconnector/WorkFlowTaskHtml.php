@@ -18,6 +18,10 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 ?><div class="soap_connector_task_html">
+	
+	<div class="info">This task needs the file 'lib/org/phpframework/connector/SoapConnector.php' to be included before! If is not included yet, please add it by clicking <a href="javascript:void(0)" onClick="ProgrammingTaskUtil.addIncludeFileTaskBeforeTaskFromSelectedTaskProperties(&quot;LIB_PATH . 'org/phpframework/connector/SoapConnector.php'&quot;, '', 1)">here</a>. 
+	</div>
+	
 	<div class="data">
 		<label>Data:</label>
 		<input type="text" class="task_property_field" name="data" />

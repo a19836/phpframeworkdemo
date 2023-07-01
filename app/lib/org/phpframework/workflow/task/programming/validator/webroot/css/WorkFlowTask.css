@@ -16,7 +16,13 @@
 	width:100%;
 	box-sizing:border-box;
 }
-
+.validator_task_html > .info {
+	text-align:center;
+	margin-bottom:15px;
+}
+.validator_task_html > .info a {
+	color:var(--link-color);
+}
 .validator_task_html .method,
    .validator_task_html .value,
    .validator_task_html .offset {

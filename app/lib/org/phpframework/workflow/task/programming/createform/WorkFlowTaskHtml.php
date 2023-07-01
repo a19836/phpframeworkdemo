@@ -19,6 +19,8 @@
  */
 ?><div class="create_form_task_html">
 	
+	<div class="info">This task needs the file 'lib/org/phpframework/util/web/html/HtmlFormHandler.php' to be included before!</div>
+	
 	<div class="form_settings">
 		<label>Settings: </label>
 		<input type="text" class="task_property_field" name="form_settings_data" />

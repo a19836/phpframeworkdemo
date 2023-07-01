@@ -18,4 +18,4 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include dirname(dirname($file_path)) . "/geturlcontents/WorkFlowTaskHtml.php"; ?>
+$file_to_include = "lib/org/phpframework/connector/RestConnector.php"; include dirname(dirname($file_path)) . "/geturlcontents/WorkFlowTaskHtml.php"; ?>
