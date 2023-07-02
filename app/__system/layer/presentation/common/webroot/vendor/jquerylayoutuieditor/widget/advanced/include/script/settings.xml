@@ -285,6 +285,14 @@
 				$([script_file[0], script_content[0]]).attr("contenteditable", "true")
 					.keydown(function(e) {
 						e.stopPropagation(); //otherwise if the user press ctrl+v to paste a string, it will call the ui_creator.TextSelection.options.on_create_node function which then will convert this widget into a normal html block widget, which will mess the layout.
+						
+						//avoids enter key to create unespected html elements. Only shift+enter keys are allowed.
+						var is_shift = window.event ? window.event.shiftKey : e.shiftKey;
+						
+						if (e.keyCode === 13 && !is_shift) {
+							ui_creator.showError("Please use Shift-enter keys instead...");
+							return false;
+						}
 					})
 					.keyup(function(e) {
 						if (update_menu_settings_timeout_id)

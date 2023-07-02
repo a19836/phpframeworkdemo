@@ -49,4 +49,4 @@ include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler"); $form_se
 	var form_fields = $(".db_settings .form_fields");
 	onChangeDBType( form_fields.find(".db_type select")[0] );
 	form_fields.children(".form_field_db_advanced").hide();
-</script>'; $continue_function = $diagram_already_exists ? "confirm('By changing the DB settings, you can have some issues in the future, because when you did the installation, there were some tables that were created automatically, which will not be created in this new DB.\\n\\nDo you still wish to continue?') ? $('.db_settings form').submit() : false" : "$('.db_settings form').submit()"; ?>
+</script>'; $continue_function = $diagram_already_exists ? "confirm('We detected that a previously defined diagram already exists. If this is your first installation, it is OK, otherwise by changing the DB name, you can have some issues in the future, because when you did the previous installation, there were some tables that were created automatically, which will not be created in the new DB, if apply...\\n\\nDo you still wish to continue?') ? $('.db_settings form').submit() : false" : "$('.db_settings form').submit()"; ?>
