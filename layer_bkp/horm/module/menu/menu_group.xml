@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<sql_mapping>
+	<class name="MenuGroup" table="mmenu_group">
+		<id column="group_id"></id>
+		
+		<relationships>
+			<one_to_many name="menu_items">
+				<attribute column="*" table="mmenu_item" />
+				
+				<key pcolumn="group_id" fcolumn="group_id" ftable="mmenu_item" />
+			</one_to_many>
+		</relationships>
+		
+		<queries>
+			<select id="get_menu_groups_by_object_and_conditions">
+				select g.*, og.`group` `group`, og.`order` `order`
+				from mmenu_group g
+				inner join mmenu_object_group og on og.object_type_id=#object_type_id# and og.object_id=#object_id# and og.group_id=g.group_id
+				where #conditions#
+			</select>
+	
+			<select id="count_menu_groups_by_object_and_conditions">
+				select count(g.group_id) total 
+				from mmenu_group g
+				inner join mmenu_object_group og on og.object_type_id=#object_type_id# and og.object_id=#object_id# and og.group_id=g.group_id
+				where #conditions#
+			</select>
+	
+			<select id="get_menu_groups_by_object">
+				select g.*, og.`group` `group`, og.`order` `order`
+				from mmenu_group g 
+				inner join mmenu_object_group og on og.object_type_id=#object_type_id# and og.object_id=#object_id# and og.group_id=g.group_id
+			</select>
+	
+			<select id="count_menu_groups_by_object">
+				select count(g.group_id) total
+				from mmenu_group g 
+				inner join mmenu_object_group og on og.object_type_id=#object_type_id# and og.object_id=#object_id# and og.group_id=g.group_id
+			</select>
+	
+			<select id="get_menu_groups_by_object_group">
+				select g.*, og.`group` `group`, og.`order` `order`
+				from mmenu_group g 
+				inner join mmenu_object_group og on og.object_type_id=#object_type_id# and og.object_id=#object_id# and og.`group`=#group# and og.group_id=g.group_id
+			</select>
+	
+			<select id="count_menu_groups_by_object_group">
+				select count(g.group_id) total
+				from mmenu_group g 
+				inner join mmenu_object_group og on og.object_type_id=#object_type_id# and og.object_id=#object_id# and og.`group`=#group# and og.group_id=g.group_id
+			</select>
+			
+			<select id="get_menu_groups_with_all_tags">
+				select g.*, z.tag_group, z.tag_order, z.tags_count 
+				from mmenu_group g 
+				inner join (
+					select g.group_id, group_concat(distinct ot.`group`) tag_group, max(ot.`order`) tag_order, count(t.tag) tags_count
+					from mmenu_group g 
+					inner join mt_object_tag ot on ot.object_type_id=#object_type_id# and ot.object_id=g.group_id
+					inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+					where #conditions#
+					group by g.group_id having count(t.tag) >= #tags_count#
+				) z on z.group_id=g.group_id
+			</select>
+			
+			<select id="count_menu_groups_with_all_tags">
+				select count(group_id) total
+				from (
+					select g.group_id, count(t.tag) tags_count
+					from mmenu_group g 
+					inner join mt_object_tag ot on ot.object_type_id=#object_type_id# and ot.object_id=g.group_id
+					inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+					where #conditions#
+					group by g.group_id having count(t.tag) >= #tags_count#
+				) Z
+			</select>
+			
+			<select id="get_menu_groups_by_tags">
+				select g.*, ot.`group` tag_group, ot.`order` tag_order
+				from mmenu_group g 
+				inner join mt_object_tag ot on ot.object_type_id=#object_type_id# and ot.object_id=g.group_id
+				inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+				where #conditions#
+			</select>
+			
+			<select id="count_menu_groups_by_tags">
+				select count(g.group_id) total
+				from mmenu_group g 
+				inner join mt_object_tag ot on ot.object_type_id=#object_type_id# and ot.object_id=g.group_id
+				inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+				where #conditions#
+			</select>
+		</queries>
+	</class>
+</sql_mapping>

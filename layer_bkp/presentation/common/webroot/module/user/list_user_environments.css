@@ -1,0 +1,8 @@
+.module_list_user_environments td.user_id {
+	width:120px;
+	text-align:center;
+}
+.module_list_user_environments td.environment_id {
+	width:120px;
+	text-align:center;
+}

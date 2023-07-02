@@ -1,0 +1,16 @@
+.module_list_user_type_activity_objects td.user_type_id {
+	width:100px;
+	text-align:center;
+}
+.module_list_user_type_activity_objects td.activity_id {
+	width:100px;
+	text-align:center;
+}
+.module_list_user_type_activity_objects td.object_type_id {
+	width:100px;
+	text-align:center;
+}
+.module_list_user_type_activity_objects td.object_id {
+	width:100px;
+	text-align:center;
+}

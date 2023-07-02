@@ -1,0 +1,6 @@
+.module_edit_city {
+	width:295px;
+}
+.module_edit_city .form_fields .form_field.name label {
+	width:60px;
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<sql_mapping>
+	<class name="ObjectTag" table="mt_object_tag">
+		<id column="tag_id"></id>
+		<id column="object_type_id"></id>
+		<id column="object_id"></id>
+		
+		<relationships>
+			<one_to_many name="object_tags">
+				<attribute column="*" table="mt_tag" />
+				
+				<key pcolumn="tag_id" fcolumn="tag_id" ftable="mt_tag" />
+			</one_to_many>
+		</relationships>
+	</class>
+</sql_mapping>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sql_mapping>
+	<insert id="insert_article">
+		insert into ma_article (title, sub_title, summary, content, published, photo_id, allow_comments, created_date, modified_date) values ('#title#', '#sub_title#', '#summary#', '#content#', #published#, #photo_id#, #allow_comments#, '#created_date#', '#modified_date#')
+	</insert>
+	
+	<update id="update_article">
+		update ma_article set title='#title#', sub_title='#sub_title#', summary='#summary#', content='#content#', published=#published#, photo_id=#photo_id#, allow_comments=#allow_comments#, modified_date='#modified_date#' where article_id=#article_id#
+	</update>
+	
+	<delete id="delete_article">
+		delete from ma_article where article_id=#article_id#
+	</delete>
+	
+	<select id="get_article">
+		select * from ma_article where article_id=#article_id#
+	</select>
+	
+	<select id="get_article_allow_comments">
+		select allow_comments from ma_article where article_id=#article_id#
+	</select>
+	
+	<select id="get_article_published">
+		select published from ma_article where article_id=#article_id#
+	</select>
+	
+	<select id="get_all_articles">
+		select * from ma_article
+	</select>
+	
+	<select id="count_all_articles">
+		select count(article_id) total from ma_article
+	</select>
+	
+	<select id="get_articles_by_ids">
+		select * from ma_article where article_id in (#article_ids#)
+	</select>
+	
+	<select id="get_articles_by_conditions">
+		select * from ma_article where #conditions#
+	</select>
+	
+	<select id="count_articles_by_conditions">
+		select count(article_id) total from ma_article where #conditions#
+	</select>
+	
+	<select id="get_articles_by_tags">
+		select a.*, ot.`group` tag_group, ot.`order` tag_order
+		from ma_article a
+		inner join mt_object_tag ot on ot.object_type_id=#object_type_id# and ot.object_id=a.article_id
+		inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+		where #conditions#
+	</select>
+	
+	<select id="count_articles_by_tags">
+		select count(a.article_id) total
+		from ma_article a
+		inner join mt_object_tag ot on ot.object_type_id=#object_type_id# and ot.object_id=a.article_id
+		inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+		where #conditions#
+	</select>
+	
+	<select id="get_articles_by_object_and_tags">
+		select a.*, oa.`group` `group`, oa.`order` `order`, ot.`group` tag_group, ot.`order` tag_order
+		from ma_article a
+		inner join ma_object_article oa on oa.article_id=a.article_id and oa.object_type_id=#object_type_id# and oa.object_id=#object_id#
+		inner join mt_object_tag ot on ot.object_type_id=#article_object_type_id# and ot.object_id=a.article_id
+		inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+		where #conditions#
+	</select>
+	
+	<select id="count_articles_by_object_and_tags">
+		select count(a.article_id) total
+		from ma_article a
+		inner join ma_object_article oa on oa.article_id=a.article_id and oa.object_type_id=#object_type_id# and oa.object_id=#object_id#
+		inner join mt_object_tag ot on ot.object_type_id=#article_object_type_id# and ot.object_id=a.article_id
+		inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+		where #conditions#
+	</select>
+	
+	<select id="get_articles_by_object_group_and_tags">
+		select a.*, oa.`group` `group`, oa.`order` `order`, ot.`group` tag_group, ot.`order` tag_order
+		from ma_article a
+		inner join ma_object_article oa on oa.article_id=a.article_id and oa.object_type_id=#object_type_id# and oa.object_id=#object_id# and oa.group=#group#
+		inner join mt_object_tag ot on ot.object_type_id=#article_object_type_id# and ot.object_id=a.article_id
+		inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+		where #conditions#
+	</select>
+
+	<select id="count_articles_by_object_group_and_tags">
+		select count(a.article_id) total
+		from ma_article a
+		inner join ma_object_article oa on oa.article_id=a.article_id and oa.object_type_id=#object_type_id# and oa.object_id=#object_id# and oa.group=#group#
+		inner join mt_object_tag ot on ot.object_type_id=#article_object_type_id# and ot.object_id=a.article_id
+		inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+		where #conditions#
+	</select>
+	
+	<select id="get_articles_with_all_tags">
+		select a.*, z.tag_group, z.tag_order, z.tags_count 
+		from ma_article a
+		inner join (
+			select a.article_id, group_concat(distinct ot.`group`) tag_group, max(ot.`order`) tag_order, count(t.tag) tags_count
+			from ma_article a
+			inner join mt_object_tag ot on ot.object_type_id=#object_type_id# and ot.object_id=a.article_id
+			inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+			where #conditions#
+			group by a.article_id having count(t.tag) >= #tags_count#
+		) z on z.article_id=a.article_id
+	</select>
+	
+	<select id="count_articles_with_all_tags">
+		select count(article_id) total
+		from (
+			select a.article_id, count(t.tag) tags_count
+			from ma_article a
+			inner join mt_object_tag ot on ot.object_type_id=#object_type_id# and ot.object_id=a.article_id
+			inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+			where #conditions#
+			group by a.article_id having count(t.tag) >= #tags_count#
+		) Z
+	</select>
+	
+	<select id="get_articles_by_object_with_all_tags">
+		select a.*, z.`group`, z.`order`, z.tag_group, z.tag_order, z.tags_count 
+		from ma_article a
+		inner join (
+			select a.article_id, group_concat(distinct oa.`group`) `group`, max(oa.`order`) `order`, group_concat(distinct ot.`group`) tag_group, max(ot.`order`) tag_order, count(t.tag) tags_count
+			from ma_article a
+			inner join ma_object_article oa on oa.article_id=a.article_id and oa.object_type_id=#object_type_id# and oa.object_id=#object_id#
+			inner join mt_object_tag ot on ot.object_type_id=#article_object_type_id# and ot.object_id=a.article_id
+			inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+			where #conditions#
+			group by a.article_id having count(t.tag) >= #tags_count#
+		) z on z.article_id=a.article_id
+	</select>
+	
+	<select id="count_articles_by_object_with_all_tags">
+		select count(article_id) total
+		from (
+			select a.article_id, count(t.tag) tags_count
+			from ma_article a
+			inner join ma_object_article oa on oa.article_id=a.article_id and oa.object_type_id=#object_type_id# and oa.object_id=#object_id#
+			inner join mt_object_tag ot on ot.object_type_id=#article_object_type_id# and ot.object_id=a.article_id
+			inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+			where #conditions#
+			group by a.article_id having count(t.tag) >= #tags_count#
+		) Z
+	</select>
+	
+	<select id="get_articles_by_object_group_with_all_tags">
+		select a.*, z.`group`, z.`order`, z.tag_group, z.tag_order, z.tags_count 
+		from ma_article a
+		inner join (
+			select a.article_id, group_concat(distinct oa.`group`) `group`, max(oa.`order`) `order`, group_concat(distinct ot.`group`) tag_group, max(ot.`order`) tag_order, count(t.tag) tags_count
+			from ma_article a
+			inner join ma_object_article oa on oa.article_id=a.article_id and oa.object_type_id=#object_type_id# and oa.object_id=#object_id# and oa.group=#group#
+			inner join mt_object_tag ot on ot.object_type_id=#article_object_type_id# and ot.object_id=a.article_id
+			inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+			where #conditions#
+			group by a.article_id having count(t.tag) >= #tags_count#
+		) z on z.article_id=a.article_id
+	</select>
+	
+	<select id="count_articles_by_object_group_with_all_tags">
+		select count(article_id) total
+		from (
+			select a.article_id, count(t.tag) tags_count
+			from ma_article a
+			inner join ma_object_article oa on oa.article_id=a.article_id and oa.object_type_id=#object_type_id# and oa.object_id=#object_id# and oa.group=#group#
+			inner join mt_object_tag ot on ot.object_type_id=#article_object_type_id# and ot.object_id=a.article_id
+			inner join mt_tag t on t.tag_id=ot.tag_id and t.tag in (#tags#)
+			where #conditions#
+			group by a.article_id having count(t.tag) >= #tags_count#
+		) Z
+	</select>
+	
+	<select id="get_articles_by_object">
+		select a.*, oa.`group` `group`, oa.`order` `order`
+		from ma_article a 
+		inner join ma_object_article oa on oa.article_id=a.article_id and oa.object_type_id=#object_type_id# and oa.object_id=#object_id#
+		where #conditions#
+	</select>
+	
+	<select id="count_articles_by_object">
+		select count(a.article_id) total
+		from ma_article a 
+		inner join ma_object_article oa on oa.article_id=a.article_id and oa.object_type_id=#object_type_id# and oa.object_id=#object_id#
+		where #conditions#
+	</select>
+	
+	<select id="get_articles_by_object_group">
+		select a.*, oa.`group` `group`, oa.`order` `order`
+		from ma_article a 
+		inner join ma_object_article oa on oa.article_id=a.article_id and oa.object_type_id=#object_type_id# and oa.object_id=#object_id# and oa.`group`=#group#
+		where #conditions#
+	</select>
+	
+	<select id="count_articles_by_object_group">
+		select count(a.article_id) total
+		from ma_article a 
+		inner join ma_object_article oa on oa.article_id=a.article_id and oa.object_type_id=#object_type_id# and oa.object_id=#object_id# and oa.`group`=#group#
+		where #conditions#
+	</select>
+</sql_mapping>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<sql_mapping>
+	<class name="UserAction" table="mact_user_action">
+		<id column="user_id"></id>
+		<id column="action_id"></id>
+		<id column="object_type_id"></id>
+		<id column="object_id"></id>
+		<id column="time"></id>
+		
+		<relationships>
+			<one_to_many name="action">
+				<attribute column="*" table="mact_action" />
+				
+				<key pcolumn="action_id" fcolumn="action_id" ftable="mact_action" />
+			</one_to_many>
+		</relationships>
+	</class>
+</sql_mapping>

@@ -1,0 +1,20 @@
+.module_list_menu_object_groups td.group_id {
+	width:120px;
+	text-align:center;
+}
+.module_list_menu_object_groups td.object_type_id {
+	width:120px;
+	text-align:center;
+}
+.module_list_menu_object_groups td.object_id {
+	width:100px;
+	text-align:center;
+}
+.module_list_menu_object_groups td.group {
+	width:50px;
+	text-align:center;
+}
+.module_list_menu_object_groups td.order {
+	width:50px;
+	text-align:center;
+}

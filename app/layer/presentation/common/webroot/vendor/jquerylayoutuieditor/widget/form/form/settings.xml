@@ -103,7 +103,7 @@
 				var html = '<option></option>';
 				var selected_value = widget.attr("enctype");
 				
-				$.each(default_method_options, function(idx, option) {
+				$.each(default_enctype_options, function(idx, option) {
 					html += '<option>' + option + '</option>';
 				});
 				

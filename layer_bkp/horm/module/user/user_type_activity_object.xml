@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<sql_mapping>
+	<class name="UserTypeActivityObject" table="mu_user_type_activity_object">
+		<id column="user_id"></id>
+		<id column="activity_id"></id>
+		<id column="object_id"></id>
+		<id column="object_type_id"></id>
+		
+		<queries>
+			<select id="get_user_type_activity_objects_by_user_id_and_conditions">
+				select utao.* 
+				from mu_user_type_activity_object utao
+				inner join mu_user_user_type uut on uut.user_type_id=utao.user_type_id and uut.user_id=#user_id#
+				where #conditions#
+			</select>
+			
+			<select id="count_user_type_activity_objects_by_user_id_and_conditions">
+				select count(*) total 
+				from mu_user_type_activity_object utao
+				inner join mu_user_user_type uut on uut.user_type_id=utao.user_type_id and uut.user_id=#user_id#
+				where #conditions#
+			</select>
+		</queries>
+	</class>
+</sql_mapping>

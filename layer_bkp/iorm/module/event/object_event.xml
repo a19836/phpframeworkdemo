@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sql_mapping>
+	<insert id="insert_object_event">
+		insert into me_object_event (event_id, object_type_id, object_id, `group`, `order`, created_date, modified_date) values (#event_id#, #object_type_id#, #object_id#, #group#, #order#, '#created_date#', '#modified_date#')
+	</insert>
+	
+	<update id="update_object_event">
+		update me_object_event set event_id=#new_event_id#, object_type_id=#new_object_type_id#, object_id=#new_object_id#, `group`=#group#, `order`=#order#, modified_date='#modified_date#' where event_id=#old_event_id# and object_type_id=#old_object_type_id# and object_id=#old_object_id#
+	</update>
+	
+	<update id="update_object_event_ids">
+		update me_object_event set event_id=#new_event_id#, object_type_id=#new_object_type_id#, object_id=#new_object_id#, modified_date='#modified_date#' where event_id=#old_event_id# and object_type_id=#old_object_type_id# and object_id=#old_object_id#
+	</update>
+	
+	<update id="change_object_events_object_ids">
+		update me_object_event set object_type_id=#new_object_type_id#, object_id=#new_object_id#, modified_date='#modified_date#' where object_type_id=#old_object_type_id# and object_id=#old_object_id#
+	</update>
+	
+	<update id="change_object_events_object_ids_of_parent_object">
+		update me_object_event oe
+		inner join me_object_event oe2 on oe.event_id=oe2.event_id and oe2.object_type_id=#parent_object_type_id# and oe2.object_id=#parent_object_id#
+		set oe.object_type_id=#new_object_type_id#, oe.object_id=#new_object_id#, oe.modified_date='#modified_date#' 
+		where oe.object_type_id=#old_object_type_id# and oe.object_id=#old_object_id#
+	</update>
+	
+	<update id="update_object_event_order">
+		update me_object_event set `order`=#order#, modified_date='#modified_date#' where event_id=#event_id# and object_type_id=#object_type_id# and object_id=#object_id#
+	</update>
+	
+	<delete id="delete_object_event">
+		delete from me_object_event where event_id=#event_id# and object_type_id=#object_type_id# and object_id=#object_id#
+	</delete>
+	
+	<delete id="delete_object_events_by_event_id">
+		delete from me_object_event where event_id=#event_id#
+	</delete>
+	
+	<delete id="delete_object_events_by_object">
+		delete from me_object_event where object_type_id=#object_type_id and object_id=#object_id#
+	</delete>
+	
+	<delete id="delete_object_events_by_conditions">
+		delete from me_object_event where #conditions#
+	</delete>
+	
+	<select id="get_object_event">
+		select * from me_object_event where event_id=#event_id# and object_type_id=#object_type_id# and object_id=#object_id#
+	</select>
+	
+	<select id="get_all_object_events">
+		select * from me_object_event
+	</select>
+	
+	<select id="count_all_object_events">
+		select count(*) total from me_object_event
+	</select>
+	
+	<select id="get_object_events_by_event_id">
+		select * from me_object_event where event_id=#event_id#
+	</select>
+	
+	<select id="count_object_events_by_event_id">
+		select count(*) total from me_object_event where event_id=#event_id#
+	</select>
+	
+	<select id="get_object_events_by_object">
+		select * from me_object_event where object_type_id=#object_type_id# and object_id=#object_id#
+	</select>
+	
+	<select id="get_object_events_by_conditions">
+		select * from me_object_event where #conditions#
+	</select>
+	
+	<select id="count_object_events_by_conditions">
+		select count(*) total from me_object_event where #conditions#
+	</select>
+</sql_mapping>

@@ -1,0 +1,12 @@
+.module_list_actions td.zip_id {
+	width:100px;
+	text-align:center;
+}
+.module_list_actions td.country_id {
+	width:100px;
+	text-align:center;
+}
+.module_list_actions td.zone_id {
+	width:100px;
+	text-align:center;
+}
