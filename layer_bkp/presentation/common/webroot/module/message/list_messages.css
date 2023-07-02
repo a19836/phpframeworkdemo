@@ -1,8 +1,0 @@
-.module_list_messages td.message_id,
-   .module_list_messages td.from_user_id,
-   .module_list_messages td.to_user_id,
-   .module_list_messages td.subject,
-   .module_list_messages td.seen_date {
-	width:100px;
-	text-align:center;
-}
