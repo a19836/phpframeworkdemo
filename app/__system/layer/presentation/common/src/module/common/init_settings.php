@@ -36,6 +36,7 @@ echo $tasks_data["head"];
 echo '<script>
 ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback = typeof onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute == "function" ? onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute : onProgrammingTaskChooseCreatedVariable;
 ProgrammingTaskUtil.on_programming_task_choose_file_path_callback = onIncludeFileTaskChooseFile;
+ProgrammingTaskUtil.on_programming_task_choose_folder_path_callback = onIncludeFolderTaskChooseFile;
 ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
 ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
 </script>';

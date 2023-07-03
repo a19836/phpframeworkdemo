@@ -514,6 +514,13 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				</div>
 			</div>
 	
+			<div id="choose_folder_from_file_manager" class="myfancypopup choose_from_file_manager">
+				' . $v195d5f6856 . '
+				<div class="button">
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
+				</div>
+			</div>
+	
 			<div id="choose_block_from_file_manager" class="myfancypopup choose_from_file_manager">
 				<ul class="mytree">
 					<li>
@@ -577,6 +584,13 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				</div>
 			</div>
 	
+			<div id="choose_folder_from_file_manager" class="myfancypopup choose_from_file_manager">
+				' . $v195d5f6856 . '
+				<div class="button">
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
+				</div>
+			</div>
+	
 			<div id="choose_block_from_file_manager" class="myfancypopup choose_from_file_manager">
 				<ul class="mytree">'; if (isset($pb0e92e25)) foreach ($pb0e92e25 as $v7aeaf992f5) { $pf8ed4912 .= '
 					<li>
@@ -604,6 +618,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 							<option value="_GET">Variable from URL</option>
 							<option value="_POST">Variable from POST form</option>
 							<option value="_COOKIE">Variable from Cookies</option>
+							<option value="_FILES">Variable from Files</option>
 							<option value="GLOBALS">Global variable</option>
 							<option value="_ENV">Environment variable</option>
 						</select>

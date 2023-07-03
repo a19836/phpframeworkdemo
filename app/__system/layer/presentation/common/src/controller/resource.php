@@ -208,10 +208,37 @@ if ($sla_results && array_key_exists($resource_name, $sla_results)) {
 	$result = $sla_results[$resource_name];
 	
 	//if result is from an insert, update or delete action, do not enter here, bc the $result will be true or false or numeric in case of auto_incremented primary keys.
-	if (is_array($result) || is_object($result))
-		$result = json_encode($result);
+	if (is_array($result) || is_object($result)) {
+		$json = json_encode($result);
+		
+		//if json encode didn't work, check for binary items and convert them to base64
+		if ($json === false) {
+			$result = convertResultToBase64($result);
+			$json = json_encode($result);
+			//echo "asd";print_r($result);echo "\n\nDONE with json: $json\n\n";die();
+		}
+		
+		$result = $json;
+	}
 	
 	echo $result;
+}
+
+function convertResultToBase64($result) {
+	if (is_array($result) || is_object($result))
+		foreach ($result as $k => $v) {
+			if (is_string($v) && isBinary($v))
+				$result[$k] = base64_encode($v);
+			else if (is_array($v) || is_object($v))
+				$result[$k] = convertResultToBase64($v);
+		}
+	
+	return $result;
+}
+
+//detect if a value is a binary type
+function isBinary($value) {
+	return preg_match('~[^\x20-\x7E\t\r\n]~', $value) > 0;
 }
 
 //note that we sould leave the includes bc the sla might be inside of another files. However we should remove the includes for blocks, bc we don't want to execute the blocks.

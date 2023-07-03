@@ -1105,7 +1105,7 @@ function onChangeSLAInputType(elm) {
 			var editor = section.data("editor");
 			
 			if (!editor)
-				createObjectItemCodeEditor( section.children("textarea")[0], "php", true);
+				createSLAItemCodeEditor( section.children("textarea")[0], "php", true);
 			break;
 			
 		case "array":
@@ -1608,7 +1608,7 @@ function initDrawGraphCode(elm) {
 	var editor = js_code.data("editor");
 	
 	if (!editor)
-		createObjectItemCodeEditor( js_code.children("textarea")[0], "php", true);
+		createSLAItemCodeEditor( js_code.children("textarea")[0], "php", true);
 }
 
 function loadDrawGraphSettings(draw_graph_settings_elm, action_value) {
@@ -3836,4 +3836,50 @@ function convertSLASettingsToPHPCode() {
 	}
 	
 	return {code: code, status: status};
+}
+
+function createSLAItemCodeEditor(textarea, type, save_func) {
+	if (textarea) {
+		var parent = $(textarea).parent();
+	
+		ace.require("ace/ext/language_tools");
+		var editor = ace.edit(textarea);
+		editor.setTheme("ace/theme/chrome");
+		editor.session.setMode("ace/mode/" + type);
+		//editor.setAutoScrollEditorIntoView(false);
+		editor.setOption("minLines", 10);
+		editor.setOptions({
+			enableBasicAutocompletion: true,
+			enableSnippets: true,
+			enableLiveAutocompletion: false,
+		});
+		editor.setOption("wrap", true);
+		
+		if (typeof save_func == "function" || save_func) {
+			editor.commands.addCommand({
+				name: 'saveFile',
+				bindKey: {
+					win: 'Ctrl-S',
+					mac: 'Command-S',
+					sender: 'editor|cli'
+				},
+				exec: function(env, args, request) {
+					var button = $(".top_bar .save a").first();
+					
+					if (typeof save_func == "function")
+						save_func(button[0]);
+					else if (save_func)
+						button.trigger("click");
+				},
+			});
+		}
+	
+		parent.data("editor", editor);
+		
+		parent.find("textarea.ace_text-input").removeClass("ace_text-input"); //fixing problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.
+	
+		return editor;
+	}
+	
+	return null;
 }

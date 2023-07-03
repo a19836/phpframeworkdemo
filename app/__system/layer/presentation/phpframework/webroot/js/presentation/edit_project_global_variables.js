@@ -65,6 +65,14 @@ $(function () {
 	});
 	chooseFileFromFileManagerTree.init("choose_file_from_file_manager");
 	
+	chooseFolderFromFileManagerTree = new MyTree({
+		multiple_selection : false,
+		toggle_children_on_click : true,
+		ajax_callback_before : prepareLayerNodes1,
+		ajax_callback_after : removeAllThatIsNotFoldersFromTree,
+	});
+	chooseFolderFromFileManagerTree.init("choose_folder_from_file_manager");
+	
 	//init ui
 	var global_vars_obj = $(".global_vars_obj");
 	

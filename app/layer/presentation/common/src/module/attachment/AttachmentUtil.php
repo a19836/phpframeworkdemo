@@ -581,7 +581,7 @@ if (!class_exists("AttachmentUtil")) {
 							
 							$ImageHandler = new ImageHandler();
 							
-							if (@$ImageHandler->isImageValid($src) && @$ImageHandler->imageResize($src, $dst, $width, $height) && unlink($src) && rename($dst, $src)) {
+							if (@$ImageHandler->isImageBinaryValid($src) && @$ImageHandler->imageResize($src, $dst, $width, $height) && unlink($src) && rename($dst, $src)) {
 								$attachment_data["size"] = filesize($src);
 								return self::updateAttachment($brokers, $attachment_data);
 							}

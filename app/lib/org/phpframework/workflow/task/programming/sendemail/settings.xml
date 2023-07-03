@@ -42,7 +42,7 @@
 		<center_inner_elements>0</center_inner_elements>
 	</settings>
 	<code_parser>
-		<statements>Expr_Assign,Expr_AssignOp_Concat,Expr_AssignOp_Plus,Expr_AssignOp_Minus,Expr_MethodCall,Stmt_Echo</statements>
-		<reserved_static_method_class_names>sendEmail,sendSMTPEmail</reserved_static_method_class_names>
+		<statements>Expr_Assign,Expr_AssignOp_Concat,Expr_AssignOp_Plus,Expr_AssignOp_Minus,Expr_MethodCall,Expr_StaticCall,Stmt_Echo</statements>
+		<reserved_object_method_names>SendEmailHandler::sendEmail,SendEmailHandler::sendSMTPEmail</reserved_object_method_names>
 	</code_parser>
 </task>

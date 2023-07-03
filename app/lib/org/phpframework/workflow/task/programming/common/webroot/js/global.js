@@ -30,6 +30,7 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		on_programming_task_choose_function_callback : null,
 		on_programming_task_choose_class_name_callback : null,
 		on_programming_task_choose_file_path_callback : null,
+		on_programming_task_choose_folder_path_callback : null,
 		on_programming_task_choose_page_url_callback : null,
 		on_programming_task_choose_image_url_callback : null,
 		
@@ -929,6 +930,13 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			//Do not use "this.", but "ProgrammingTaskUtil." instead, bc if we assign this function to a variable (var x = ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl), the "this." will not work.
 			if (typeof ProgrammingTaskUtil.on_programming_task_choose_file_path_callback == "function") {
 				ProgrammingTaskUtil.on_programming_task_choose_file_path_callback(elm);
+			}
+		},
+		
+		onProgrammingTaskChooseFolderPath : function(elm) {
+			//Do not use "this.", but "ProgrammingTaskUtil." instead, bc if we assign this function to a variable (var x = ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl), the "this." will not work.
+			if (typeof ProgrammingTaskUtil.on_programming_task_choose_folder_path_callback == "function") {
+				ProgrammingTaskUtil.on_programming_task_choose_folder_path_callback(elm);
 			}
 		},
 		

@@ -2,6 +2,7 @@ var choosePropertyVariableFromFileManagerTree = null;
 var chooseMethodFromFileManagerTree = null;
 var chooseFunctionFromFileManagerTree = null;
 var chooseFileFromFileManagerTree = null;
+var chooseFolderFromFileManagerTree = null;
 var chooseBusinessLogicFromFileManagerTree = null;
 var chooseQueryFromFileManagerTree = null;
 var chooseHibernateObjectFromFileManagerTree = null;
@@ -307,6 +308,14 @@ function removeParametersAndResultMapsFromTree(ul, data, mytree_obj) {
 	$(ul).find("i.map").each(function(idx, elm){
 		$(elm).parent().parent().remove();
 	});
+}
+
+function removeAllThatIsNotFoldersFromTree(ul, data, mytree_obj) {
+	$(ul).find("i.file, i.objtype, i.hibernatemodel, i.service, i.class, i.test_unit_obj").each(function(idx, elm){
+		$(elm).parent().parent().remove();
+	});
+	
+	removeObjectPropertiesAndFunctionsFromTree(ul, data, mytree_obj);
 }
 
 function removeAllThatIsNotPagesFromTree(ul, data, mytree_obj) {
@@ -1090,6 +1099,136 @@ function chooseIncludeFile(elm) {
 	}
 }
 
+function onIncludeFolderTaskChooseFile(elm) {
+	var popup = $("#choose_folder_from_file_manager");
+	
+	MyFancyPopup.init({
+		elementToShow: popup,
+		parentElement: document,
+		
+		targetField: $(elm).parent(),
+		updateFunction: chooseIncludeFolder
+	});
+	
+	MyFancyPopup.showPopup();
+}
+
+function chooseIncludeFolder(elm) {
+	var node = chooseFolderFromFileManagerTree.getSelectedNodes();
+	node = node[0];
+	
+	if (node) {
+		var a = $(node).children("a");
+		var i = a.children("i.folder, .entities_folder, .views_folder, .templates_folder, .template_folder, .utils_folder, .webroot_folder, .modules_folder, .blocks_folder, .configs_folder, i.webroot_sub_folder");
+		
+		if (i.length > 0) {
+			var ul = $(node).children("ul");
+			var url = ul.attr("url");
+			var params = getURLSearchParams(url);
+			var bean_name = params["bean_name"] ? params["bean_name"] : params["item_type"];
+			var folder_path = params["path"];
+			
+			var include_path = getNodeIncludeFolderPath(node, folder_path, bean_name);
+			
+			if (include_path) {
+				MyFancyPopup.settings.targetField.children("input").val(include_path);
+				MyFancyPopup.settings.targetField.parent().find(".type select").val("");
+				
+				//This is for the presentation task: includes and includes_once items.
+				MyFancyPopup.settings.targetField.children(".value_type").val("");
+				MyFancyPopup.settings.targetField.children(".includes_type").val("");
+				MyFancyPopup.settings.targetField.children(".includes_once_type").val("");
+			
+				MyFancyPopup.hidePopup();
+			}
+		}
+		else {
+			alert("invalid selected folder.\nPlease choose a valid folder.");
+		}
+	}
+}
+
+function getNodeIncludeFolderPath(node, folder_path, bean_name) {
+	var include_path = "";
+	
+	if (folder_path) {
+		if (bean_name == "dao")
+			include_path = "DAO_PATH";
+		else if (bean_name == "lib")
+			include_path = "LIB_PATH";
+		else if (bean_name == "vendor")
+			include_path = "VENDOR_PATH";
+		else if (bean_name == "test_unit")
+			include_path = "TEST_UNIT_PATH";
+		else if (layer_type == "bl")
+			include_path = "$vars['business_logic_path']";
+		else if (layer_type == "pres") {
+			var project_path = node ? getNodeProjectPath(node) : "";
+			project_path = project_path && project_path.substr(project_path.length - 1) == "/" ? project_path.substr(0, project_path.length - 1) : project_path;
+			
+			if (!project_path)
+				include_path = "$EVC->getPresentationLayer()->getLayerPathSetting()";
+			else {
+				var project_arg = project_path == selected_project_id ? "" : "\"" + project_path + "\"";
+				var pos;
+				
+				if ( (pos = folder_path.indexOf("/src/entity/")) != -1) {
+					folder_path = folder_path.substr(pos + 12);
+					include_path = "$EVC->getEntitiesPath(" + project_arg + ")";
+				}
+				else if ( (pos = folder_path.indexOf("/src/view/")) != -1) {
+					folder_path = folder_path.substr(pos + 10);
+					console.log("folder_path:"+folder_path);
+					include_path = "$EVC->getViewsPath(" + project_arg + ")";
+				}
+				else if ( (pos = folder_path.indexOf("/src/template/")) != -1) {
+					folder_path = folder_path.substr(pos + 14);
+					include_path = "$EVC->getTemplatesPath(" + project_arg + ")";
+				}
+				else if ( (pos = folder_path.indexOf("/src/controller/")) != -1) {
+					folder_path = folder_path.substr(pos + 16);
+					include_path = "$EVC->getControllersPath(" + project_arg + ")";
+				}
+				else if ( (pos = folder_path.indexOf("/src/util/")) != -1) {
+					folder_path = folder_path.substr(pos + 10);
+					include_path = "$EVC->getUtilsPath(" + project_arg + ")";
+				}
+				else if ( (pos = folder_path.indexOf("/src/config/")) != -1) {
+					folder_path = folder_path.substr(pos + 12);
+					include_path = "$EVC->getConfigsPath(" + project_arg + ")";
+				}
+				else if ( (pos = folder_path.indexOf("/webroot/")) != -1) {
+					folder_path = folder_path.substr(pos + 9);
+					include_path = "$EVC->getWebrootPath(" + project_arg + ")";
+				}
+				else if ( (pos = folder_path.indexOf("/src/block/")) != -1) {
+					folder_path = folder_path.substr(pos + 11);
+					include_path = "$EVC->getBLocksPath(" + project_arg + ")";
+				}
+				else if ( (pos = folder_path.indexOf("/src/module/")) != -1) {
+					folder_path = folder_path.substr(pos + 12);
+					include_path = "$EVC->getModulesPath(" + project_arg + ")";
+				}
+				else
+					include_path = "$EVC->getPresentationLayer()->getLayerPathSetting()";
+			}
+		}
+		else if (getBeanItemType(bean_name)) { //to be used by the testunit pages
+			var broker_name = getBeanBrokerName(bean_name);
+			
+			if (layer_brokers_settings["business_logic_brokers_obj"][broker_name])
+				include_path = layer_brokers_settings["business_logic_brokers_obj"][broker_name] + "->getLayerPathSetting()";
+			else if (layer_brokers_settings["presentation_brokers_obj"][broker_name])
+				include_path = layer_brokers_settings["presentation_brokers_obj"][broker_name] + "->getLayerPathSetting()";
+		}
+		
+		if (include_path && folder_path)
+			include_path += " . \"" + folder_path + "\"";
+	}
+	
+	return include_path;
+}
+
 function getNodeIncludePath(node, file_path, bean_name) {
 	var include_path = "";
 		
@@ -1384,40 +1523,52 @@ function onUrlQueryString(elm, popup, target) {
 	
 	if (url) {
 		var add_icon = popup.find(".query_string_attributes .icon.add");
+		var params = getURLSearchParams(url);
 		
-		try {
-			//try to get parameteres through URL
-			var url_obj = new URL(url);
+		for (var param_name in params) {
+			var param_value = params[param_name];
 			
-			if (url_obj)
-				url_obj.searchParams.forEach(function(param_value, param_name) {
-					var item = addUrlQueryStringAttribute(add_icon[0]);
-					
-					item.find("input.attribute_name").val(param_name);
-					item.find("input.attribute_value").val(param_value);
-				});
+			var item = addUrlQueryStringAttribute(add_icon[0]);
+			item.find("input.attribute_name").val(param_name);
+			item.find("input.attribute_value").val(param_value);
 		}
-		catch(e) {
-			//If url is invalid for 'new URL' object, then try to get parameters through regex
-			var pos = url.indexOf("?");
+	}
+}
+
+function getURLSearchParams(url) {
+	var params = {};
+	
+	try {
+		//try to get parameteres through URL
+		var url_obj = new URL(url);
+		
+		if (url_obj)
+			url_obj.searchParams.forEach(function(param_value, param_name) {
+				params[param_name] = param_value;
+			});
+	}
+	catch(e) {
+		//If url is invalid for 'new URL' object, then try to get parameters through regex
+		var pos = url.indexOf("?");
+		
+		if (pos != -1) {
+			var query_string = url.substr(pos + 1);
 			
-			if (pos != -1) {
-				var query_string = url.substr(pos + 1);
+			if (query_string) {
+				var regex = /&?([^=&]+)=([^&]*)&?/g;
+				var m;
 				
-				if (query_string) {
-					var regex = /&?([^=&]+)=([^&]*)&?/g;
-					var m;
+				while ((m = regex.exec(query_string)) !== null) {
+					var param_name = m[1];
+					var param_value = m[2];
 					
-					while ((m = regex.exec(query_string)) !== null) {
-						var item = addUrlQueryStringAttribute(add_icon[0]);
-						
-						item.find("input.attribute_name").val(m[1]);
-						item.find("input.attribute_value").val(m[2]);
-					}
+					params[param_name] = param_value;
 				}
 			}
 		}
 	}
+	
+	return params;
 }
 
 function addUrlQueryStringAttribute(elm) {
