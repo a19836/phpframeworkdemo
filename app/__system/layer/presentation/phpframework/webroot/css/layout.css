@@ -2420,6 +2420,7 @@ body .layout-ui-editor-menu-settings-context-menu li a {
 	font-family:inherit;
 	background:inherit;
 	color:inherit;
+	cursor:pointer;
 }
 body .layout-ui-editor-menu-settings-context-menu li a:hover {
 	background:inherit;

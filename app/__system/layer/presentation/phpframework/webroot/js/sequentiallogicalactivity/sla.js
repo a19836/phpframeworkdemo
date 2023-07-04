@@ -934,9 +934,12 @@ function onChangeSLAInputType(elm) {
 	if (group_body.css("display") == "none")
 		toggleGroupBody( group_item.find(" > .sla_group_header > .toggle")[0] );
 	
+	var section = null;
+	
 	switch (selection) {
 		case "html":
-			var section = sections.filter(".html_action_body").show();
+			section = sections.filter(".html_action_body");
+			section.show();
 			initSLAGroupItemTasks(group_item, {});
 			break;
 			
@@ -947,7 +950,7 @@ function onChangeSLAInputType(elm) {
 		case "count":
 		case "procedure":
 		case "getinsertedid":
-			var section = sections.filter(".database_action_body");
+			section = sections.filter(".database_action_body");
 			section.attr("class", "database_action_body database_action_body_" + selection).show();
 			
 			var db_action_body = section.children("article");
@@ -1057,7 +1060,7 @@ function onChangeSLAInputType(elm) {
 		case "callobjectmethod":
 		case "restconnector":
 		case "soapconnector":
-			var section = sections.filter(".broker_action_body");
+			section = sections.filter(".broker_action_body");
 			section.show();
 			
 			initSLAGroupItemTasks(group_item, {});
@@ -1077,11 +1080,13 @@ function onChangeSLAInputType(elm) {
 		case "alert_msg_and_stop":
 		case "alert_msg_and_redirect":
 			onMessageChange(elm[0]);
-			sections.filter(".message_action_body").show();
+			section = sections.filter(".message_action_body");
+			section.show();
 			break;
 			
 		case "redirect":
-			sections.filter(".redirect_action_body").show();
+			section = sections.filter(".redirect_action_body");
+			section.show();
 			break;
 		
 		case "refresh":
@@ -1091,15 +1096,17 @@ function onChangeSLAInputType(elm) {
 		case "return_previous_record":
 		case "return_next_record":
 		case "return_specific_record":
-			sections.filter(".records_action_body").show();
+			section = sections.filter(".records_action_body");
+			section.show();
 			break;
 			
 		case "check_logged_user_permissions":
-			sections.filter(".check_logged_user_permissions_action_body").show();
+			section = sections.filter(".check_logged_user_permissions_action_body");
+			section.show();
 			break;
 			
 		case "code":
-			var section = sections.filter(".code_action_body");
+			section = sections.filter(".code_action_body");
 			section.show();
 			
 			var editor = section.data("editor");
@@ -1109,7 +1116,7 @@ function onChangeSLAInputType(elm) {
 			break;
 			
 		case "array":
-			var section = sections.filter(".array_action_body");
+			section = sections.filter(".array_action_body");
 			section.show();
 			
 			if (!section.find(".items")[0]) {
@@ -1119,41 +1126,112 @@ function onChangeSLAInputType(elm) {
 			break;
 			
 		case "string":
-			sections.filter(".string_action_body").show();
+			section = sections.filter(".string_action_body");
+			section.show();
 			break;
 			
 		case "variable":
-			sections.filter(".variable_action_body").show();
+			section = sections.filter(".variable_action_body");
+			section.show();
 			break;
 			
 		case "sanitize_variable":
-			sections.filter(".sanitize_variable_action_body").show();
+			section = sections.filter(".sanitize_variable_action_body");
+			section.show();
 			break;
 			
 		case "list_report":
-			sections.filter(".list_report_action_body").show();
+			section = sections.filter(".list_report_action_body");
+			section.show();
 			break;
 			
 		case "call_block":
-			sections.filter(".call_block_action_body").show();
+			section = sections.filter(".call_block_action_body");
+			section.show();
 			break;
 			
 		case "include_file":
-			sections.filter(".include_file_action_body").show();
+			section = sections.filter(".include_file_action_body");
+			section.show();
 			break;
 			
 		case "draw_graph":
-			var section = sections.filter(".draw_graph_action_body").show();
+			section = sections.filter(".draw_graph_action_body");
+			section.show();
 			section.tabs();
 			break;
 		
 		case "loop":
-			sections.filter(".loop_action_body").show();
+			section = sections.filter(".loop_action_body");
+			section.show();
 			break;
 			
 		case "group":
-			sections.filter(".group_action_body").show();
+			section = sections.filter(".group_action_body");
+			section.show();
 			break;
+	}
+	
+	initSLAGroupBodySectionInputsContextMenu(section)
+}
+
+function initSLAGroupBodySectionInputsContextMenu(section) {
+	if (typeof ProgrammingTaskUtil == "object" && typeof MyContextMenu == "object" && section && section[0] && section.attr("is_context_menu_init") != 1) {
+		section.attr("is_context_menu_init", 1)
+		
+		var doc = section[0].ownerDocument || section[0].document;
+		var body = $(doc.body);
+		var context_menu = body.children("#sla_group_body_section_input_context_menu");
+		
+		if (!context_menu[0]) {
+			context_menu = $('<ul id="sla_group_body_section_input_context_menu" class="mycontextmenu layout-ui-editor-menu-settings-context-menu"></ul>');
+			
+			if (ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback) {
+				context_menu.append('<li class="choose_variable"><a>Choose Variable</a></li>');
+				context_menu.children().last("li").children("a").on("click", function() {
+					ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback( MyContextMenu.getSelectedEventTarget() );
+				});
+			}
+			
+			if (ProgrammingTaskUtil.on_programming_task_choose_file_path_callback) {
+				context_menu.append('<li class="choose_file_path"><a>Choose File Path</a></li>');
+				context_menu.children().last("li").children("a").on("click", function() {
+					ProgrammingTaskUtil.on_programming_task_choose_file_path_callback( MyContextMenu.getSelectedEventTarget() );
+				});
+			}
+			
+			if (ProgrammingTaskUtil.on_programming_task_choose_folder_path_callback) {
+				context_menu.append('<li class="choose_folder_path"><a>Choose Folder Path</a></li>');
+				context_menu.children().last("li").children("a").on("click", function() {
+					ProgrammingTaskUtil.on_programming_task_choose_folder_path_callback( MyContextMenu.getSelectedEventTarget() );
+				});
+			}
+			
+			if (ProgrammingTaskUtil.on_programming_task_choose_page_url_callback) {
+				context_menu.append('<li class="choose_page_url"><a>Choose Page Url</a></li>');
+				context_menu.children().last("li").children("a").on("click", function() {
+					ProgrammingTaskUtil.on_programming_task_choose_page_url_callback( MyContextMenu.getSelectedEventTarget() );
+				});
+			}
+			
+			if (ProgrammingTaskUtil.on_programming_task_choose_image_url_callback) {
+				context_menu.append('<li class="choose_image_url"><a>Choose Image Url</a></li>');
+				context_menu.children().last("li").children("a").on("click", function() {
+					ProgrammingTaskUtil.on_programming_task_choose_image_url_callback( MyContextMenu.getSelectedEventTarget() );
+				});
+			}
+			
+			if (context_menu.children().length > 0)
+				body.append(context_menu);
+			else
+				context_menu = null;
+		}
+		
+		if (context_menu && context_menu[0])
+			section.find("input").each(function(idx, input) {
+				if (!MyContextMenu.isContextMenuSet(input))
+					$(input).addcontextmenu(context_menu, {callback: null});
+			});
 	}
 }
 

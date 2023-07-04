@@ -107,11 +107,26 @@ function MyContextMenuClass() {
 		add_document_click_event = true;
 	};
 	
+	/* CHECKERS */
+	
+	me.isContextMenuSet = function(elm, context_menu_id) {
+		elm = $(elm);
+		var binded_context_menus = elm.data("binded_context_menus");
+		
+		return $.isArray(binded_context_menus) && binded_context_menus.length > 0 && (!context_menu_id || $.inArray(context_menu_id, binded_context_menus) != -1);
+	};
+	
 	/* INIT */
 	
 	me.initContextMenu = function(elm, context_menu_elm, options) {
 		elm = $(elm);
 		var id = context_menu_elm.attr("id");
+		
+		//save contextmenu ids to element
+		var binded_context_menus = elm.data("binded_context_menus");
+		binded_context_menus = $.isArray(binded_context_menus) ? binded_context_menus : [];
+		binded_context_menus.push(id);
+		elm.data("binded_context_menus", binded_context_menus);
 		
 		//check if context menu was not built already
 		if (!id || jQuery.inArray(id, built_context_menu_ids) == -1) {
