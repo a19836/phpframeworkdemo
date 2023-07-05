@@ -775,12 +775,20 @@ function chooseCreatedVariable(elm) {
 		else if (input_parent.is(".value") && input_parent.parent().find(" > .type > select")[0]) //in case of return task and other tasks
 			input_parent.parent().find(" > .type > select").val(var_type);
 	}
+	else if (input.is(".key") && input_parent.is(".item")) { //in case of array items
+		var input_type = input_parent.children(".key_type");
+		
+		if (input_type[0])
+			input_type.val(var_type);
+	}
 	else if (input.is(".value") && input_parent.is(".item")) { //in case of array items
 		var input_type = input_parent.children(".value_type");
 		
 		if (input_type[0])
 			input_type.val(var_type);
 	}
+	else if (input.parent().is(".table_arg_value")) //in case of method/function args
+		input.parent().parent().find(".table_arg_type select").val(value_type);
 	else if (input.is(".var") && input_parent.is(".item")) { //in case of conditions items
 		//fins the next sibling with class .var_type
 		var node = input;
@@ -952,10 +960,10 @@ function chooseObjectMethod(elm) {
 			
 			updateObjNameAccordingWithObjectPropertySelection(select, obj_field, static_field);
 			
-			if (auto_convert || confirm("Do you wish to update automatically this method arguments?")) {
+			//if (auto_convert || confirm("Do you wish to update automatically this method arguments?")) {
 				var args = getMethodArguments( select.attr("get_file_properties_url"), select.attr("file_path"), select.attr("class_name"), value);
 				ProgrammingTaskUtil.setArgs(args, dest.parent().parent().find(".method_args .args"));
-			}
+			//}
 		}
 	}
 	
@@ -1099,10 +1107,12 @@ function chooseIncludeFile(elm) {
 			p.parent().find(".type select").val("");
 			
 			//This is for the presentation task: includes and includes_once items and array items.
-			if (input.is(".key"))
+			if (input.is(".key")) //in case of array items
 				p.children(".key_type").val("");
-			else if (input.is(".value"))
+			else if (input.is(".value")) //in case of array items
 				p.children(".value_type").val("");
+			else if (p.is(".table_arg_value")) //in case of method/functions args
+				p.parent().find(".table_arg_type select").val("");
 			else {
 				p.children(".value_type").val("");
 				p.children(".includes_type").val("");
@@ -1156,10 +1166,12 @@ function chooseIncludeFolder(elm) {
 				p.parent().find(".type select").val("");
 				
 				//This is for the presentation task: includes and includes_once items and array items.
-				if (input.is(".key"))
+				if (input.is(".key")) //in case of array items
 					p.children(".key_type").val("");
-				else if (input.is(".value"))
+				else if (input.is(".value")) //in case of array items
 					p.children(".value_type").val("");
+				else if (p.is(".table_arg_value")) //in case of method/function args
+					p.parent().find(".table_arg_type select").val("");
 				else {
 					p.children(".value_type").val("");
 					p.children(".includes_type").val("");
@@ -1513,10 +1525,12 @@ function chooseIncludePageUrl(elm) {
 					var_type.val("string");
 					var_type.trigger("change");
 				}
-				else if (IncludePageUrlFancyPopup.settings.targetField.is(".key"))
+				else if (IncludePageUrlFancyPopup.settings.targetField.is(".key")) //in case of array items
 					IncludePageUrlFancyPopup.settings.targetField.parent().children(".key_type").val("string");
-				else if (IncludePageUrlFancyPopup.settings.targetField.is(".value"))
+				else if (IncludePageUrlFancyPopup.settings.targetField.is(".value")) //in case of array items
 					IncludePageUrlFancyPopup.settings.targetField.parent().children(".value_type").val("string");
+				else if (IncludePageUrlFancyPopup.settings.targetField.parent().is(".table_arg_value")) //in case of method/function args
+					IncludePageUrlFancyPopup.settings.targetField.parent().parent().find(".table_arg_type select").val("");
 				
 				IncludePageUrlFancyPopup.hidePopup();
 			}
@@ -1785,10 +1799,12 @@ function chooseIncludeImageUrl(elm) {
 					var_type.val("string");
 					var_type.trigger("change");
 				}
-				else if (MyFancyPopup.settings.targetField.is(".key"))
+				else if (MyFancyPopup.settings.targetField.is(".key")) //in case of array items
 					MyFancyPopup.settings.targetField.parent().children(".key_type").val("string");
-				else if (MyFancyPopup.settings.targetField.is(".value"))
+				else if (MyFancyPopup.settings.targetField.is(".value")) //in case of array items
 					MyFancyPopup.settings.targetField.parent().children(".value_type").val("string");
+				else if (MyFancyPopup.settings.targetField.parent().is(".table_arg_value")) //in case of method/function args
+					MyFancyPopup.settings.targetField.parent().parent().find(".table_arg_type select").val("");
 				
 				MyFancyPopup.hidePopup();
 			}

@@ -2128,8 +2128,12 @@ function onSLAProgrammingTaskChooseCreatedVariable(elm) {
 						if (target_field_type[0])
 							target_field_type.val(value_type);
 					}
+					else if (target_field.is(".key") && target_field.parent().is(".item")) //in case of array items
+						target_field.parent().children(".key_type").val(value_type);
 					else if (target_field.is(".value") && target_field.parent().is(".item")) //in case of array items
 						target_field.parent().children(".value_type").val(value_type);
+					else if (target_field.parent().is(".table_arg_value")) //in case of method/function args
+						target_field.parent().parent().find(".table_arg_type select").val(value_type);
 					
 					//put cursor in targetField
 					target_field.focus();

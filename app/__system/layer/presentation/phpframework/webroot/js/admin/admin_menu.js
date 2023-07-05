@@ -331,14 +331,17 @@ function initContextContextMenu(elm, request_data) { //business logic
 }
 
 function initPresentationContextMenu(elm, request_data) {
+	var is_entity_sub_folders = elm.parents("li").children("a").children("i.entities_folder").length > 0; //elm.parent().closest('[data-jstree=\'{"icon":"entities_folder"}\']').length > 0;
+	var is_util_sub_folders = elm.parents("li").children("a").children("i.utils_folder").length > 0; //elm.parent().closest('[data-jstree=\'{"icon":"utils_folder"}\']').length > 0;
+	
 	var projects_common = elm.find("li i.project_common");
 	var project_folders = elm.find("li i.project_folder");
 	var projects = elm.find("li i.project");
-	var folders = elm.find("li i.folder");
+	var folders = is_entity_sub_folders || is_util_sub_folders ? null : elm.find("li i.folder");
 	var files = elm.find("li i.file");
 	var entity_files = elm.find("li i.entity_file");
 	var entities_folder = elm.find("li i.entities_folder");
-	var entities_sub_folders = folders.parents("li").children("a").children("i.entities_folder").parent().parent().children("ul").find("li i.folder");
+	var entities_sub_folders = is_entity_sub_folders ? elm.find("li i.folder") : null;
 	var view_files = elm.find("li i.view_file");
 	var views_folder = elm.find("li i.views_folder");
 	var template_files = elm.find("li i.template_file");
@@ -346,6 +349,7 @@ function initPresentationContextMenu(elm, request_data) {
 	var templates_folder = elm.find("li i.templates_folder");
 	var util_files = elm.find("li i.util_file");
 	var utils_folder = elm.find("li i.utils_folder");
+	var utils_sub_folders = is_util_sub_folders ? elm.find("li i.folder") : null;
 	var config_files = elm.find("li i.config_file");
 	var configs_folder = elm.find("li i.configs_folder");
 	var controller_files = elm.find("li i.controller_file");
@@ -374,11 +378,11 @@ function initPresentationContextMenu(elm, request_data) {
 	projects_common.parent().addClass("link");
 	project_folders.parent().addClass("link");
 	projects.parent().addClass("link");
-	folders.parent().addClass("link");
+	folders && folders.parent().addClass("link");
 	files.parent().addClass("link");
 	entity_files.parent().addClass("link");
 	entities_folder.parent().addClass("link");
-	entities_sub_folders.parent().addClass("link");
+	is_entity_sub_folders && entities_sub_folders.parent().addClass("link");
 	view_files.parent().addClass("link");
 	views_folder.parent().addClass("link");
 	template_files.parent().addClass("link");
@@ -386,6 +390,7 @@ function initPresentationContextMenu(elm, request_data) {
 	templates_folder.parent().addClass("link");
 	util_files.parent().addClass("link");
 	utils_folder.parent().addClass("link");
+	utils_sub_folders && utils_sub_folders.parent().addClass("link");
 	config_files.parent().addClass("link");
 	configs_folder.parent().addClass("link");
 	controller_files.parent().addClass("link");
@@ -414,18 +419,19 @@ function initPresentationContextMenu(elm, request_data) {
 	addLiContextMenu(projects_common.parent(), "presentation_project_common_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(project_folders.parent(), "presentation_project_group_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(projects.parent(), "presentation_project_context_menu", {callback: onPresentationContextMenu});
-	addLiContextMenu(folders.parent(), "presentation_group_context_menu", {callback: onPresentationContextMenu});
+	folders && addLiContextMenu(folders.parent(), "presentation_group_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(files.parent(), "presentation_file_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(entity_files.parent(), "presentation_page_file_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(entities_folder.parent(), "presentation_main_pages_group_context_menu", {callback: onPresentationContextMenu});
-	addLiContextMenu(entities_sub_folders.parent(), "presentation_pages_group_context_menu", {callback: onPresentationContextMenu});
+	is_entity_sub_folders && addLiContextMenu(entities_sub_folders.parent(), "presentation_pages_group_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(view_files.parent(), "presentation_file_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(views_folder.parent(), "presentation_evc_group_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(template_files.parent(), "presentation_template_file_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(template_folders.parent(), "presentation_group_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(templates_folder.parent(), "presentation_main_templates_group_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(util_files.parent(), "presentation_util_file_context_menu", {callback: onPresentationContextMenu});
-	addLiContextMenu(utils_folder.parent(), "presentation_evc_group_context_menu", {callback: onPresentationContextMenu});
+	addLiContextMenu(utils_folder.parent(), "presentation_main_utils_group_context_menu", {callback: onPresentationContextMenu});
+	utils_sub_folders && addLiContextMenu(utils_sub_folders.parent(), "presentation_utils_group_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(config_files.parent(), "presentation_file_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(configs_folder.parent(), "presentation_evc_group_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(controller_files.parent(), "presentation_file_context_menu", {callback: onPresentationContextMenu});
