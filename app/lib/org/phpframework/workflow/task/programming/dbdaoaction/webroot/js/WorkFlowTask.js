@@ -575,6 +575,8 @@ var DBDAOActionTaskPropertyObj = {
 			
 			var item = $(html);
 			p.append(item);
+			
+			ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(item);
 		
 			return item;
 		}

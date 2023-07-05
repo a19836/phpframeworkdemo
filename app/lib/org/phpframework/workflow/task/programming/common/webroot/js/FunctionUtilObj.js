@@ -76,6 +76,8 @@ var FunctionUtilObj = {
 		
 		tbody.append(new_item);
 		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(new_item);
+		
 		return new_item;
 	},
 	

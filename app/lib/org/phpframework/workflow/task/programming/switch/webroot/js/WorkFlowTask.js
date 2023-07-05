@@ -73,9 +73,12 @@ var SwitchTaskPropertyObj = {
 				}
 			}
 		}
-		$(properties_html_elm).find('.switch_task_html .cases ul').first().html(html);
-		$(properties_html_elm).find('.switch_task_html .cases ul').first().attr('cases_counter', idx + 1);
-
+		var cases_ul = $(properties_html_elm).find('.switch_task_html .cases ul').first();
+		cases_ul.html(html);
+		cases_ul.attr('cases_counter', idx + 1);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( cases_ul.children("li") );
+		
 		//PREPARING DEFAULT
 		var default_color = "#000";//SwitchTaskPropertyObj.getExitColor(task_property_values, task_property_values['default'].exit);
 
@@ -175,7 +178,9 @@ var SwitchTaskPropertyObj = {
 
 		var html = this.getCaseHtml(null, case_item, cases_counter);
 
-		$(main_ul).append(html);
+		main_ul.append(html);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( main_ul.children("li").last() );
 	},
 
 	removeCase : function(a) {

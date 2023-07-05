@@ -119,14 +119,14 @@ var ConditionsTaskUtilObj = {
 		var main_ul = $(a).parent().parent();
 
 		if (main_ul) {
-			var group_name = $(main_ul).attr('group_name');
+			var group_name = main_ul.attr('group_name');
 
-			var idx = $(main_ul).attr('li_counter');
+			var idx = main_ul.attr('li_counter');
 			if (!idx || idx <= 0) {
-				idx = $(main_ul).children().length;
+				idx = main_ul.children().length;
 			}
 			++idx;
-			$(main_ul).attr('li_counter', idx);
+			main_ul.attr('li_counter', idx);
 
 			var prop_name = group_name + '[group][' + idx + ']';
 			var prop = {first : {value: '', type: 'string'}, operator : '', second : {value: '', type: 'string'}};
@@ -137,7 +137,9 @@ var ConditionsTaskUtilObj = {
 			html += this.getPropertyItemHtml(prop_name + '[item][2]', prop);
 			html += '</ul>';
 
-			$(main_ul).append(html);
+			main_ul.append(html);
+			
+			ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( main_ul.children("ul").last() );
 		}
 	},
 
@@ -145,21 +147,23 @@ var ConditionsTaskUtilObj = {
 		var main_ul = $(a).parent().parent();
 
 		if (main_ul) {
-			var group_name = $(main_ul).attr('group_name');
+			var group_name = main_ul.attr('group_name');
 
-			var idx = $(main_ul).attr('li_counter');
+			var idx = main_ul.attr('li_counter');
 			if (!idx || idx <= 0) {
-				idx = $(main_ul).children().length;
+				idx = main_ul.children().length;
 			}
 			++idx;
-			$(main_ul).attr('li_counter', idx);
+			main_ul.attr('li_counter', idx);
 
 			var prop_name = group_name + '[item][' + idx + ']';
 			var prop = {first : {value: '', type: 'string'}, operator : '', second : {value: '', type: 'string'}};
 
 			var html = this.getPropertyItemHtml(prop_name, prop);
 
-			$(main_ul).append(html);
+			main_ul.append(html);
+			
+			ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( main_ul.children("li").last() );
 		}
 	},
 

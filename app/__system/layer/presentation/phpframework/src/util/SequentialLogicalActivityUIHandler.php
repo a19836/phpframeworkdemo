@@ -47,6 +47,7 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 		ProgrammingTaskUtil.on_programming_task_choose_folder_path_callback = onIncludeFolderTaskChooseFile;
 		ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
 		ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
+		ProgrammingTaskUtil.on_programming_task_properties_new_html_callback = typeof addProgrammingTaskUtilInputsContextMenu == "function" ? addProgrammingTaskUtilInputsContextMenu : null;
 		
 		if (typeof CreateFormTaskPropertyObj != "undefined" && CreateFormTaskPropertyObj) {
 			CreateFormTaskPropertyObj.editor_ready_func = initLayoutUIEditorWidgetResourceOptions;
@@ -117,7 +118,8 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 			choose_db_table_or_attribute_elm.find(".type > select").change(function() {
 				onChangePopupDBTypes(this);
 			});
-			'; $v0a9dad1fe0 .= '
+			
+			on_new_html_callback = typeof addProgrammingTaskUtilInputsContextMenu == "function" ? addProgrammingTaskUtilInputsContextMenu : null;'; $v0a9dad1fe0 .= '
 			<!-- DBQUERY TASK - Add Edit-Query JS and CSS files -->
 			<link rel="stylesheet" href="' . $peb014cfd . 'css/dataaccess/edit_query.css" type="text/css" charset="utf-8" />
 			<script language="javascript" type="text/javascript" src="' . $peb014cfd . 'js/dataaccess/edit_query.js"></script>'; } $v3ddc0d1bd3 = CMSPresentationUIAutomaticFilesHandler::isUserModuleInstalled($v188b4f5fa6); $v902a67f557 = $v18e8e0c60b = array(); if ($v3ddc0d1bd3) { $v902a67f557 = CMSPresentationUIAutomaticFilesHandler::getAvailableUserTypes($v188b4f5fa6); $v18e8e0c60b = CMSPresentationUIAutomaticFilesHandler::getAvailableActivities($v188b4f5fa6); } $pa8dedb03 .= '

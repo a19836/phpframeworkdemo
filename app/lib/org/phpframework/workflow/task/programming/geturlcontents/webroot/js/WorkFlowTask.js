@@ -275,6 +275,8 @@ var GetUrlContentsTaskPropertyObj = {
 		key_options.attr("name", key.attr("name"));
 		key.after(key_options);
 		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(key_options);
+		
 		//show .key select
 		key_type.val("options");
 		this.onChangeGroupKeyType(key_type[0]);
@@ -459,6 +461,8 @@ var GetUrlContentsTaskPropertyObj = {
 			key_options.attr("name", key.attr("name"));
 			key.after(key_options);
 			
+			ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(key_options);
+			
 			key_options.hide(); //hide. if should be shown, it will be when called by the onChangeGroupSettingsKeyType
 		}
 		
@@ -507,6 +511,8 @@ var GetUrlContentsTaskPropertyObj = {
 		var key_options = $(html);
 		key_options.attr("name", key.attr("name"));
 		key.after(key_options);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(key_options);
 		
 		//show .key select
 		key_type.val("options");

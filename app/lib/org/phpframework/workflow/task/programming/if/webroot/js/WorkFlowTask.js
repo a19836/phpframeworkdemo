@@ -47,7 +47,10 @@ var IfTaskPropertyObj = {
 			}
 		}
 
-		$(properties_html_elm).find('.if_task_html .conditions').html(html);
+		var conditions = $(properties_html_elm).find('.if_task_html .conditions');
+		conditions.html(html);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( conditions.children() );
 	},
 
 	onSubmitTaskProperties : function(properties_html_elm, task_id, task_property_values) {

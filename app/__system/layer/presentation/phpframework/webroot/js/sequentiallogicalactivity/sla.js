@@ -1172,67 +1172,7 @@ function onChangeSLAInputType(elm) {
 			break;
 	}
 	
-	initSLAGroupBodySectionInputsContextMenu(section)
-}
-
-function initSLAGroupBodySectionInputsContextMenu(section) {
-	if (typeof ProgrammingTaskUtil == "object" && typeof MyContextMenu == "object" && section && section[0] && section.attr("is_context_menu_init") != 1) {
-		section.attr("is_context_menu_init", 1)
-		
-		var doc = section[0].ownerDocument || section[0].document;
-		var body = $(doc.body);
-		var context_menu = body.children("#sla_group_body_section_input_context_menu");
-		
-		if (!context_menu[0]) {
-			context_menu = $('<ul id="sla_group_body_section_input_context_menu" class="mycontextmenu layout-ui-editor-menu-settings-context-menu"></ul>');
-			
-			if (ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback) {
-				context_menu.append('<li class="choose_variable"><a>Choose Variable</a></li>');
-				context_menu.children().last("li").children("a").on("click", function() {
-					ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback( MyContextMenu.getSelectedEventTarget() );
-				});
-			}
-			
-			if (ProgrammingTaskUtil.on_programming_task_choose_file_path_callback) {
-				context_menu.append('<li class="choose_file_path"><a>Choose File Path</a></li>');
-				context_menu.children().last("li").children("a").on("click", function() {
-					ProgrammingTaskUtil.on_programming_task_choose_file_path_callback( MyContextMenu.getSelectedEventTarget() );
-				});
-			}
-			
-			if (ProgrammingTaskUtil.on_programming_task_choose_folder_path_callback) {
-				context_menu.append('<li class="choose_folder_path"><a>Choose Folder Path</a></li>');
-				context_menu.children().last("li").children("a").on("click", function() {
-					ProgrammingTaskUtil.on_programming_task_choose_folder_path_callback( MyContextMenu.getSelectedEventTarget() );
-				});
-			}
-			
-			if (ProgrammingTaskUtil.on_programming_task_choose_page_url_callback) {
-				context_menu.append('<li class="choose_page_url"><a>Choose Page Url</a></li>');
-				context_menu.children().last("li").children("a").on("click", function() {
-					ProgrammingTaskUtil.on_programming_task_choose_page_url_callback( MyContextMenu.getSelectedEventTarget() );
-				});
-			}
-			
-			if (ProgrammingTaskUtil.on_programming_task_choose_image_url_callback) {
-				context_menu.append('<li class="choose_image_url"><a>Choose Image Url</a></li>');
-				context_menu.children().last("li").children("a").on("click", function() {
-					ProgrammingTaskUtil.on_programming_task_choose_image_url_callback( MyContextMenu.getSelectedEventTarget() );
-				});
-			}
-			
-			if (context_menu.children().length > 0)
-				body.append(context_menu);
-			else
-				context_menu = null;
-		}
-		
-		if (context_menu && context_menu[0])
-			section.find("input").each(function(idx, input) {
-				if (!MyContextMenu.isContextMenuSet(input))
-					$(input).addcontextmenu(context_menu, {callback: null});
-			});
-	}
+	addProgrammingTaskUtilInputsContextMenu(section)
 }
 
 function onChangeBrokersLayerType(type, parent) {
@@ -1392,6 +1332,8 @@ function addUserPermission(elm) {
 	var tbody = $(elm).parent().closest("table").children("tbody");
 	tbody.children(".no_users").hide();
 	tbody.append(tr);
+	
+	addProgrammingTaskUtilInputsContextMenu(tr);
 	
 	return tr;
 }
@@ -1628,8 +1570,13 @@ function updateDBActionTableAttributes(elm, already_synced) {
 	}
 	
 	//load attributes new html
-	db_action_table.find(" > .attributes > ul").html(html);
-	db_action_table.find(" > .conditions > ul").html(html);
+	var attributes_ul = db_action_table.find(" > .attributes > ul");
+	var conditions_ul = db_action_table.find(" > .conditions > ul");
+	attributes_ul.html(html);
+	conditions_ul.html(html);
+	
+	addProgrammingTaskUtilInputsContextMenu( attributes_ul.children("li") );
+	addProgrammingTaskUtilInputsContextMenu( conditions_ul.children("li") );
 	
 	//set new attributes settings if none previously
 	if ($.isEmptyObject(previous_data)) //set new attributes settings
@@ -1738,6 +1685,8 @@ function addDrawGraphSettingsDataSet(elm) {
 	
 	ul.children("li.no_data_sets").hide();
 	
+	addProgrammingTaskUtilInputsContextMenu( ul.children("li").last() );
+	
 	return html;
 }
 
@@ -1809,9 +1758,11 @@ function addDrawGraphSettingsDataSetOtherOption(elm) {
 	var html = $( getDrawGraphSettingsDataSetOtherOptionHtml() );
 	
 	var ul = elm.parent().closest(".other_options").children("ul");
-	ul.append(html);;
+	ul.append(html);
 	
 	ul.children("li.no_other_options").hide();
+	
+	addProgrammingTaskUtilInputsContextMenu( ul.children("li").last() );
 	
 	return html;
 }

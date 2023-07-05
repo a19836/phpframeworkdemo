@@ -571,6 +571,8 @@ var FormFieldsUtilObj = {
 		
 		containers_elm.html(c[0]);
 		containers_elm.attr("count", c[1]);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( containers_elm.children() );
 	},
 	
 	addContainer : function(elm, suffix) {
@@ -586,6 +588,8 @@ var FormFieldsUtilObj = {
 		var html = this.getContainerHtml(prefix + suffix + "[" + idx + "]", {});
 		
 		parent_div.append(html);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( parent_div.children("div").last() );
 		
 		this.forceMaximizingContainer(elm);
 	},
@@ -725,6 +729,8 @@ var FormFieldsUtilObj = {
 		});
 		
 		parent_div.append(html);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( parent_div.children("div").last() );
 		
 		this.forceMaximizingContainer(elm);
 	},
@@ -1795,6 +1801,8 @@ var FormFieldsUtilObj = {
 		
 		parent_div.append(html);
 		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( parent_div.children("div").last() );
+		
 		this.forceMaximizingContainer(elm);
 	},
 	
@@ -1891,6 +1899,8 @@ var FormFieldsUtilObj = {
 		
 		parent_div.append(html);
 		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( parent_div.children("div").last() );
+		
 		this.forceMaximizingContainer(elm);
 	},
 	
@@ -1971,6 +1981,8 @@ var FormFieldsUtilObj = {
 		var html = this.getTreeHtml(prefix + suffix + "[" + idx + "]", {"recursive_input_data" : "#[0]#"});
 		
 		parent_div.append(html);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( parent_div.children("div").last() );
 		
 		this.forceMaximizingContainer(elm);
 	},
@@ -2118,6 +2130,8 @@ var FormFieldsUtilObj = {
 			popup = $(popup);
 			this.addAttributesToFieldsAutomatically( popup.find(".attributes_name .add")[0] );
 			
+			ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(popup);
+			
 			props_elm.before(popup);
 		}
 		
@@ -2190,11 +2204,13 @@ var FormFieldsUtilObj = {
 				'	<span class="icon remove" onClick="FormFieldsUtilObj.removeAttributesToFieldsAutomatically(this);">Remove attribute name</span>' +
 				'</div>';
 		
-		html = $(html);
+		var item = $(html);
 		
-		$(elm).parent().closest(".attributes_name").append(html);
+		$(elm).parent().closest(".attributes_name").append(item);
 		
-		return html;
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(item);
+		
+		return item;
 	},
 	
 	removeAttributesToFieldsAutomatically : function(elm) {
@@ -2249,8 +2265,11 @@ var FormFieldsUtilObj = {
 		table.attr("count", idx);
 	
 		var html = get_html_function(prefix + midfix + suffix + "[" + idx + "]", default_value);
-	
-		table.append(html);
+		var new_item = $(html);
+		
+		table.append(new_item);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(new_item);
 	},
 	
 	moveUp : function(elm) {

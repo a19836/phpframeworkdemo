@@ -20,6 +20,8 @@
 var ArrayTaskUtilObj = {
 	
 	onLoadArrayItems : function(array_items_html_elm, items, root_label, parent_name) {
+		array_items_html_elm = $(array_items_html_elm);
+		
 		if (!items)
 			items = {};
 		
@@ -34,7 +36,9 @@ var ArrayTaskUtilObj = {
 		
 		var html = this.getItemsHtml(parent_name, null, null, items, true, root_label);
 		
-		$(array_items_html_elm).html(html);
+		array_items_html_elm.html(html);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( array_items_html_elm.children() );
 	},
 	
 	getItemsHtml : function(parent_name, key, key_type, items, is_root, root_label) {
@@ -291,7 +295,7 @@ var ArrayTaskUtilObj = {
 				idx = $(main_ul).children().length;
 			}
 			++idx;
-			$(main_ul).attr('li_counter', idx);
+			main_ul.attr('li_counter', idx);
 
 			var parent_name = $(main_ul).attr('parent_name');
 			var sub_parent_name = parent_name + "[" + idx + "]";
@@ -299,7 +303,9 @@ var ArrayTaskUtilObj = {
 			var items = {0: {key_type: "null", value_type: "string"}};
 			var html = '<li>' + this.getItemsHtml(sub_parent_name, "", "null", items, false) + '</li>';
 			
-			$(main_ul).append(html);
+			main_ul.append(html);
+			
+			ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( main_ul.children("li").last() );
 		}
 	},
 
@@ -320,6 +326,8 @@ var ArrayTaskUtilObj = {
 			var html = this.getItemHtml(sub_parent_name, "", "null", "", "string");
 			
 			main_ul.append(html);
+			
+			ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( main_ul.children("li").last() );
 			
 			return main_ul.last();
 		}
@@ -363,6 +371,8 @@ var ArrayTaskUtilObj = {
 				textarea.val(value);
 				
 				field.replaceWith(textarea);
+				
+				ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(textarea);
 			}
 			else if (field[0].nodeName.toLowerCase() == "textarea" && value.indexOf("\n") == -1) {
 				var input = $('<input />');
@@ -376,6 +386,8 @@ var ArrayTaskUtilObj = {
 				input.val(value);
 				
 				field.replaceWith(input);
+				
+				ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(input);
 			}
 		}
 		

@@ -61,7 +61,10 @@ var LoopTaskPropertyObj = {
 				}
 			}
 		}
-		$(properties_html_elm).find('.loop_task_html .init_counters .fields ul').html(html);
+		var fields_ul= $(properties_html_elm).find('.loop_task_html .init_counters .fields ul');
+		fields_ul.html(html);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( fields_ul.children() );
 		/* END: INIT */
 
 		/* START: CONDITIONS */
@@ -84,7 +87,10 @@ var LoopTaskPropertyObj = {
 			}
 		}
 
-		$(properties_html_elm).find('.loop_task_html .test_counters .conditions').html(html);
+		var conditions = $(properties_html_elm).find('.loop_task_html .test_counters .conditions');
+		conditions.html(html);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( conditions.children() );
 		/* END: CONDITIONS */
 
 		/* START: INC */
@@ -116,7 +122,10 @@ var LoopTaskPropertyObj = {
 				}
 			}
 		}
-		$(properties_html_elm).find('.loop_task_html .increment_counters .fields ul').html(html);
+		var fields_ul = $(properties_html_elm).find('.loop_task_html .increment_counters .fields ul');
+		fields_ul.html(html);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( fields_ul.children() );
 		/* END: INC */
 	},
 	
@@ -158,6 +167,8 @@ var LoopTaskPropertyObj = {
 		
 		var html = this.getInitCounterVariableHtml(idx);
 		fields.append(html);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( fields.children("li").last() );
 	},
 	
 	addInitCounterCode : function(elm) {
@@ -166,6 +177,8 @@ var LoopTaskPropertyObj = {
 		
 		var html = this.getInitCounterCodeHtml(idx);
 		fields.append(html);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( fields.children("li").last() );
 	},
 	
 	getIncrementCounterVariableHtml : function(idx, name, type) {
@@ -202,6 +215,8 @@ var LoopTaskPropertyObj = {
 		
 		var html = this.getIncrementCounterVariableHtml(idx);
 		fields.append(html);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( fields.children("li").last() );
 	},
 	
 	addIncrementCounterCode : function(elm) {
@@ -210,6 +225,8 @@ var LoopTaskPropertyObj = {
 		
 		var html = this.getIncrementCounterCodeHtml(idx);
 		fields.append(html);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( fields.children("li").last() );
 	},
 	
 	getNewLiCounter : function(fields) {

@@ -3,6 +3,7 @@ var includesTree = null;
 var query_auto_update_sql_from_ui_func = null;
 var query_auto_update_ui_from_sql_func = null;
 var saved_user_relationships_obj_id = null;
+var on_new_html_callback = null
 
 $(function () {
 	$(window).unbind('beforeunload').bind('beforeunload', function () {
@@ -53,6 +54,11 @@ $(function () {
 		saved_user_relationships_obj_id = getUserRelationshipsObjId();
 	}
 });
+
+function onNewHtmlCallback(elm) {
+	if (typeof on_new_html_callback == "function")
+		on_new_html_callback(elm);
+}
 
 function onToggleQueryAutoSave() {
 	onToggleAutoSave();
@@ -140,6 +146,8 @@ function addNewInclude(elm) {
 	var html_obj = $(new_include_html);
 	var fields = $(elm).parent().children(".fields");
 	fields.append(html_obj);
+	
+	onNewHtmlCallback(html_obj);
 	
 	fields.children(".no_includes").hide();
 	
@@ -346,12 +354,16 @@ function addNewParameter(elm) {
 	var html_obj = $(new_parameter_html);
 	$(elm).parent().parent().parent().parent().children(".fields").append(html_obj);
 	
+	onNewHtmlCallback(html_obj);
+	
 	return html_obj;
 }
 
 function addNewResult(elm) {
 	var html_obj = $(new_result_html);
 	$(elm).parent().parent().parent().parent().children(".fields").append(html_obj);
+	
+	onNewHtmlCallback(html_obj);
 	
 	return html_obj;
 }
@@ -360,12 +372,16 @@ function addParameterMap(elm) {
 	var html_obj = $(new_parameter_map_html);
 	$(elm).parent().children(".parameters").append(html_obj);
 	
+	onNewHtmlCallback(html_obj);
+	
 	return html_obj;
 }
 
 function addResultMap(elm) {
 	var html_obj = $(new_result_map_html);
 	$(elm).parent().children(".results").append(html_obj);
+	
+	onNewHtmlCallback(html_obj);
 	
 	return html_obj;
 }
@@ -1651,6 +1667,8 @@ function addRelationshipBlock(elm, is_hbn_obj, sql) {
 	var html_obj = $(html);
 	rels.append(html_obj);
 	
+	onNewHtmlCallback(html_obj);
+	
 	var WF = addTaskFlowChart(rand_number, false);
 	
 	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
@@ -1691,12 +1709,16 @@ function addQueryAttribute1(elm, rand_number) {
 	var html_obj = $(new_relationship_attribute1_html.replace(/#rand#/g, rand_number));
 	$(elm).parent().parent().parent().parent().children(".fields").append(html_obj);
 	
+	onNewHtmlCallback(html_obj);
+	
 	return html_obj;
 }
 
 function addQueryAttribute2(elm, rand_number) {
 	var html_obj = $(new_relationship_attribute2_html.replace(/#rand#/g, rand_number));
 	$(elm).parent().parent().parent().parent().children(".fields").append(html_obj);
+	
+	onNewHtmlCallback(html_obj);
 	
 	return html_obj;
 }
@@ -1705,12 +1727,16 @@ function addQueryKey(elm, rand_number) {
 	var html_obj = $(new_relationship_key_html.replace(/#rand#/g, rand_number));
 	$(elm).parent().parent().parent().parent().children(".fields").append(html_obj);
 	
+	onNewHtmlCallback(html_obj);
+	
 	return html_obj;
 }
 
 function addQueryCondition1(elm, rand_number) {
 	var html_obj = $(new_relationship_condition1_html.replace(/#rand#/g, rand_number));
 	$(elm).parent().parent().parent().parent().children(".fields").append(html_obj);
+	
+	onNewHtmlCallback(html_obj);
 	
 	return html_obj;
 }
@@ -1719,6 +1745,8 @@ function addQueryCondition2(elm, rand_number) {
 	var html_obj = $(new_relationship_condition2_html.replace(/#rand#/g, rand_number));
 	$(elm).parent().parent().parent().parent().children(".fields").append(html_obj);
 	
+	onNewHtmlCallback(html_obj);
+	
 	return html_obj;
 }
 
@@ -1726,12 +1754,16 @@ function addQueryGroupBy(elm, rand_number) {
 	var html_obj = $(new_relationship_group_by_html.replace(/#rand#/g, rand_number));
 	$(elm).parent().parent().parent().parent().children(".fields").append(html_obj);
 	
+	onNewHtmlCallback(html_obj);
+	
 	return html_obj;
 }
 
 function addQuerySort(elm, rand_number) {
 	var html_obj = $(new_relationship_sort_html.replace(/#rand#/g, rand_number));
 	$(elm).parent().parent().parent().parent().children(".fields").append(html_obj);
+	
+	onNewHtmlCallback(html_obj);
 	
 	return html_obj;
 }
@@ -2934,7 +2966,10 @@ function onClickQueryAtributeCheckBox(checkbox, WF, rand_number) {
 		}
 		
 		if (!exists) {
-			$(fields).append(new_relationship_attribute1_html.replace(/#rand#/g, rand_number));
+			var html_obj = $(new_relationship_attribute1_html.replace(/#rand#/g, rand_number));
+			$(fields).append(html_obj);
+			
+			onNewHtmlCallback(html_obj);
 			
 			items = $(fields).children(".field");
 			var last_field = items[items.length - 1];

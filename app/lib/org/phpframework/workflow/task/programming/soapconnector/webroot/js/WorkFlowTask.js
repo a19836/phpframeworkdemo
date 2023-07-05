@@ -355,6 +355,8 @@ var SoapConnectorTaskPropertyObj = {
 		
 		tbody.append(new_item);
 		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(new_item);
+		
 		return new_item;
 	},
 	
@@ -424,6 +426,8 @@ var SoapConnectorTaskPropertyObj = {
 		ul.append(new_item);
 		
 		SoapConnectorTaskPropertyObj.onChangeClientHeaderMustUnderstandType( new_item.find(".client_header_must_understand select")[0] );
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( ul.children("li").last() );
 		
 		return new_item;
 	},

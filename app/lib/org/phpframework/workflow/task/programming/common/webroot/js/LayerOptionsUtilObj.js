@@ -67,6 +67,8 @@ var LayerOptionsUtilObj = {
 						item.remove();
 						
 						LayerOptionsUtilObj.onChangeOptionKey( new_item.find("select.key")[0] );
+						
+						ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(new_item);
 					}
 				}
 			});
@@ -107,6 +109,8 @@ var LayerOptionsUtilObj = {
 		html += "</ul>";
 		
 		options_elm.html(html);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml( options_elm.children("ul") );
 	},
 	
 	getOptionHtml : function(idx, key, key_type, value, value_type, type) {
@@ -201,6 +205,8 @@ var LayerOptionsUtilObj = {
 			item.addClass("option_" + (typeof type != "undefined" ? type : ""));
 			
 			$(main_ul).append(item);
+			
+			ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(item);
 		}
 	},
 	

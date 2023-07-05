@@ -398,6 +398,10 @@
 	font-size:inherit;
 	box-sizing:content-box;
 }
+.regions_blocks_includes_settings .sla .relationship .query_insert_update_delete .attributes .column input,
+  .regions_blocks_includes_settings .sla .relationship .query_insert_update_delete .attributes .value input {
+	box-sizing:border-box;
+}
 .regions_blocks_includes_settings .sla textarea {
 	font-size:inherit;
 }

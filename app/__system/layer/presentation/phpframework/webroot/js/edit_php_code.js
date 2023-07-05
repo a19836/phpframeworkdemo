@@ -3463,6 +3463,69 @@ function convertProjectUrlRealValuesToPHPVars(str, give_priority_to_original_pro
 	return str;
 }
 
+function addProgrammingTaskUtilInputsContextMenu(elm) {
+	if (typeof ProgrammingTaskUtil == "object" && typeof MyContextMenu == "object" && elm && elm[0] && elm.attr("is_context_menu_init") != 1) {
+		elm.attr("is_context_menu_init", 1)
+		
+		var doc = elm[0].ownerDocument || elm[0].document;
+		var body = $(doc.body);
+		var context_menu = body.children("#sla_input_context_menu");
+		
+		if (!context_menu[0]) {
+			context_menu = $('<ul id="sla_input_context_menu" class="mycontextmenu layout-ui-editor-menu-settings-context-menu"></ul>');
+			
+			if (ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback) {
+				context_menu.append('<li class="choose_variable"><a>Choose Variable</a></li>');
+				context_menu.children().last("li").children("a").on("click", function() {
+					ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback( MyContextMenu.getSelectedEventTarget() );
+				});
+			}
+			
+			if (ProgrammingTaskUtil.on_programming_task_choose_file_path_callback) {
+				context_menu.append('<li class="choose_file_path"><a>Choose File Path</a></li>');
+				context_menu.children().last("li").children("a").on("click", function() {
+					ProgrammingTaskUtil.on_programming_task_choose_file_path_callback( MyContextMenu.getSelectedEventTarget() );
+				});
+			}
+			
+			if (ProgrammingTaskUtil.on_programming_task_choose_folder_path_callback) {
+				context_menu.append('<li class="choose_folder_path"><a>Choose Folder Path</a></li>');
+				context_menu.children().last("li").children("a").on("click", function() {
+					ProgrammingTaskUtil.on_programming_task_choose_folder_path_callback( MyContextMenu.getSelectedEventTarget() );
+				});
+			}
+			
+			if (ProgrammingTaskUtil.on_programming_task_choose_page_url_callback) {
+				context_menu.append('<li class="choose_page_url"><a>Choose Page Url</a></li>');
+				context_menu.children().last("li").children("a").on("click", function() {
+					ProgrammingTaskUtil.on_programming_task_choose_page_url_callback( MyContextMenu.getSelectedEventTarget() );
+				});
+			}
+			
+			if (ProgrammingTaskUtil.on_programming_task_choose_image_url_callback) {
+				context_menu.append('<li class="choose_image_url"><a>Choose Image Url</a></li>');
+				context_menu.children().last("li").children("a").on("click", function() {
+					ProgrammingTaskUtil.on_programming_task_choose_image_url_callback( MyContextMenu.getSelectedEventTarget() );
+				});
+			}
+			
+			if (context_menu.children().length > 0)
+				body.append(context_menu);
+			else
+				context_menu = null;
+		}
+		
+		if (context_menu && context_menu[0]) {
+			var inputs = elm.is("input") ? elm : elm.find("input");
+			
+			inputs.each(function(idx, input) {
+				if ((!input.type || input.type == "text" || input.type == "search" || input.type == "url" || input.type == "hidden") && !MyContextMenu.isContextMenuSet(input))
+					$(input).addcontextmenu(context_menu, {callback: null});
+			});
+		}
+	}
+}
+
 /* SAVING FUNCTIONS */
 
 function isCodeAndWorkflowObjChanged(main_obj_with_tabs) {

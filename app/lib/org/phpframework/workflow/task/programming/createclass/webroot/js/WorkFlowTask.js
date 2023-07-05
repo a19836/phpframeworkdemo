@@ -151,6 +151,8 @@ var CreateClassTaskPropertyObj = {
 		tbody.append(new_item);
 		tbody.find(".empty").hide();
 		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(new_item);
+		
 		return new_item;
 	},
 	
@@ -208,6 +210,8 @@ var CreateClassTaskPropertyObj = {
 		var new_item = $(html);
 		
 		ul.append(new_item);
+		
+		ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(new_item);
 		
 		return new_item;
 	},

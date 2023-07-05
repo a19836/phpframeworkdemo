@@ -33,6 +33,7 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		on_programming_task_choose_folder_path_callback : null,
 		on_programming_task_choose_page_url_callback : null,
 		on_programming_task_choose_image_url_callback : null,
+		on_programming_task_properties_new_html_callback : null,
 		
 		connections_to_add_after_deletion: null,
 		
@@ -612,9 +613,12 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			
 				args_html_elm.html(html);
 				
-				var w = args_html_elm.children("table").width();
+				var table = args_html_elm.children("table");
+				var w = table.width();
 				if (w > 0)
 					args_html_elm.css("width", w + "px");
+				
+				ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(table);
 			}
 		},
 		
@@ -626,9 +630,12 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			table.attr("count", count);
 			
 			var html = this.getTableArg(class_name, "", "", "string", count);
+			var new_item = $(html);
 			
-			table.append(html);
+			table.append(new_item);
 			table.find(".table_arg_empty").remove();
+			
+			ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml(new_item);
 		},
 		
 		getTableArg : function(class_name, name, value, type, count) {
@@ -951,6 +958,13 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			//Do not use "this.", but "ProgrammingTaskUtil." instead, bc if we assign this function to a variable (var x = ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl), the "this." will not work.
 			if (typeof ProgrammingTaskUtil.on_programming_task_choose_image_url_callback == "function") {
 				ProgrammingTaskUtil.on_programming_task_choose_image_url_callback(elm);
+			}
+		},
+		
+		onProgrammingTaskPropertiesNewHtml : function(elm) {
+			//Do not use "this.", but "ProgrammingTaskUtil." instead, bc if we assign this function to a variable (var x = ProgrammingTaskUtil.onProgrammingTaskPropertiesNewHtml), the "this." will not work.
+			if (typeof ProgrammingTaskUtil.on_programming_task_properties_new_html_callback == "function") {
+				ProgrammingTaskUtil.on_programming_task_properties_new_html_callback(elm);
 			}
 		},
 	};
