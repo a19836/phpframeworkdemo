@@ -3768,69 +3768,99 @@ function chooseAvailableProject(url) {
 	return false;
 }
 
-function chooseAvailableTutorial(url) {
-	var popup = $(".choose_available_tutorial_popup");
-	
-	if (!popup[0]) {
-		popup = $('<div class="myfancypopup with_iframe_title choose_available_tutorial_popup"><iframe src="' + url + '"></iframe></div>');
-		$(document.body).append(popup);
-	}
-	
-	ProjectsFancyPopup.init({
-		elementToShow: popup,
-		parentElement: document,
+function chooseAvailableTutorial(url, originalEvent) {
+	if (url) {
+		//check if ctrlKey is pressed and if yes, open in a new window
+		originalEvent = originalEvent || window.event;
 		
-		goTo: function(url, originalEvent) {
-			ProjectsFancyPopup.hidePopup();
-			ProjectsFancyPopup.showOverlay();
-			ProjectsFancyPopup.showLoading();
+		if (originalEvent && (originalEvent.ctrlKey || originalEvent.keyCode == 65)) {
+			url = url.replace(/(\?|&)popup=1/i, ""); //remove popup parameter from url
+			var a = $('<a url="' + url + '"></a>');
+			goToNew(a[0], "url");
 			
-			setTimeout(function() {
-				document.location = url;
-			}, 300);
-		},
-	});
-	ProjectsFancyPopup.showPopup();
+			a.remove();
+			
+			return false;
+		}
+	
+		var popup = $(".choose_available_tutorial_popup");
+		
+		if (!popup[0]) {
+			popup = $('<div class="myfancypopup with_iframe_title choose_available_tutorial_popup"><iframe src="' + url + '"></iframe></div>');
+			$(document.body).append(popup);
+		}
+		
+		ProjectsFancyPopup.init({
+			elementToShow: popup,
+			parentElement: document,
+			
+			goTo: function(url, originalEvent) {
+				ProjectsFancyPopup.hidePopup();
+				ProjectsFancyPopup.showOverlay();
+				ProjectsFancyPopup.showLoading();
+				
+				setTimeout(function() {
+					document.location = url;
+				}, 300);
+			},
+		});
+		ProjectsFancyPopup.showPopup();
+	}
 	
 	return false;
 }
 
-function openOnlineTutorialsPopup(url) {
-	if (window.parent != window && typeof window.parent.openOnlineTutorialsPopup == "function") {
-		window.parent.openOnlineTutorialsPopup(url);
-		return;
-	}
-	
-	var popup = $(".choose_online_tutorials_popup");
-	
-	if (!popup[0]) {
-		popup = $('<div class="myfancypopup with_title choose_online_tutorials_popup"><div class="title">Tutorials - How to?</div><iframe></iframe></div>');
-		$(document.body).append(popup);
-	}
-	
-	var iframe = popup.children("iframe");
-	var main_navigator_reverse = $(document.body).is(".main_navigator_reverse");
-	
-	if (iframe[0].hasAttribute("src")) {
-		var src = iframe.attr("src");
-		var src_main_navigator_reverse = src.indexOf("main_navigator_reverse=1") != -1;
+function openOnlineTutorialsPopup(url, originalEvent) {
+	if (url) {
+		if (window.parent != window && typeof window.parent.openOnlineTutorialsPopup == "function") {
+			window.parent.openOnlineTutorialsPopup(url, originalEvent);
+			return;
+		}
 		
-		if (src_main_navigator_reverse != main_navigator_reverse)
-			iframe.removeAttr("src");
-	}
-	
-	if (!iframe[0].hasAttribute("src")) {
-		url += (url.indexOf("?") != -1 ? "&" : "?") + "popup=1&main_navigator_reverse=" + (main_navigator_reverse ? 1 : 0);
+		//check if ctrlKey is pressed and if yes, open in a new window
+		originalEvent = originalEvent || window.event;
 		
-		iframe.attr("src", url);
+		if (originalEvent && (originalEvent.ctrlKey || originalEvent.keyCode == 65)) {
+			url = url.replace(/(\?|&)popup=1/i, ""); //remove popup parameter from url
+			var a = $('<a url="' + url + '"></a>');
+			goToNew(a[0], "url");
+			
+			a.remove();
+			
+			return false;
+		}
+		
+		var popup = $(".choose_online_tutorials_popup");
+		
+		if (!popup[0]) {
+			popup = $('<div class="myfancypopup with_title choose_online_tutorials_popup"><div class="title">Tutorials - How to?</div><iframe></iframe></div>');
+			$(document.body).append(popup);
+		}
+		
+		var iframe = popup.children("iframe");
+		var main_navigator_reverse = $(document.body).is(".main_navigator_reverse");
+		
+		if (iframe[0].hasAttribute("src")) {
+			var src = iframe.attr("src");
+			var src_main_navigator_reverse = src.indexOf("main_navigator_reverse=1") != -1;
+			
+			if (src_main_navigator_reverse != main_navigator_reverse)
+				iframe.removeAttr("src");
+		}
+		
+		if (!iframe[0].hasAttribute("src")) {
+			url += (url.indexOf("?") != -1 ? "&" : "?") + "popup=1&main_navigator_reverse=" + (main_navigator_reverse ? 1 : 0);
+			
+			iframe.attr("src", url);
+		}
+		
+		ProjectsFancyPopup.init({
+			elementToShow: popup,
+			parentElement: document,
+		});
+		
+		ProjectsFancyPopup.showPopup();
 	}
-	
-	ProjectsFancyPopup.init({
-		elementToShow: popup,
-		parentElement: document,
-	});
-	
-	ProjectsFancyPopup.showPopup();
 }
 
 function openConsole(url, originalEvent) {

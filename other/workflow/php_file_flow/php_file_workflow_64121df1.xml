@@ -7,8 +7,8 @@
 		<tag><![CDATA[includefile]]></tag>
 		<offset_left>100</offset_left>
 		<offset_top>50</offset_top>
-		<width>180</width>
-		<height>39</height>
+		<width>70</width>
+		<height>65</height>
 		<properties>
 			<file_path><![CDATA[LIB_PATH . 'org/phpframework/util/web/UploadHandler.php']]></file_path>
 			<type></type>
@@ -36,8 +36,8 @@
 		<tag><![CDATA[upload]]></tag>
 		<offset_left>100</offset_left>
 		<offset_top>190</offset_top>
-		<width>107</width>
-		<height>39</height>
+		<width>70</width>
+		<height>65</height>
 		<properties>
 			<result_var_name><![CDATA[s]]></result_var_name>
 			<result_var_assignment></result_var_assignment>
@@ -70,8 +70,8 @@
 		<tag><![CDATA[return]]></tag>
 		<offset_left>100</offset_left>
 		<offset_top>330</offset_top>
-		<width>96</width>
-		<height>28</height>
+		<width>70</width>
+		<height>65</height>
 		<properties>
 			<value><![CDATA[$s]]></value>
 			<type><![CDATA[variable]]></type>

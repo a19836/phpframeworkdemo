@@ -601,6 +601,10 @@ function onProgrammingTaskEditSource(elm, data) {
 		TaskEditSourceFancyPopup.init({
 			elementToShow: popup,
 			parentElement: document,
+			onClose: function() {
+				//Remove iframe, bc if the iframe has a diagram with auto-save active, is saving the diagram after the popup is close, whcih is saving a messy diagram bc it looses the tasks' positions.
+				popup.find("form, iframe").remove();
+			}
 		});
 		
 		TaskEditSourceFancyPopup.showPopup();

@@ -90,8 +90,8 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 					<li class="toggle_main_navigator_side" title="Toggle Navigator Side"><a onClick="toggleNavigatorSide(this)"><i class="icon toggle_main_navigator_side"></i> <span>Show navigator on right side</span></a></li>
 					<li class="separator"></li>
 					<li class="console" title="Logs Console"><a onClick="openConsole(\'' . $project_url_prefix . 'admin/logs_console?popup=1\', event);"><i class="icon logs_console"></i> Logs Console</a></li>
-					<!--li class="question" title="Tutorials - How To?"><a onClick="chooseAvailableTutorial(\'' . $project_url_prefix . 'admin/choose_available_tutorial?popup=1\');"><i class="icon question"></i> Tutorials - How To?</a></li-->
-					<li class="question" title="Tutorials - How To?"><a onClick="openOnlineTutorialsPopup(\'' . $online_tutorials_url_prefix . '\');"><i class="icon question"></i> Tutorials - How To?</a></li>
+					<!--li class="question" title="Tutorials - How To?"><a onClick="chooseAvailableTutorial(\'' . $project_url_prefix . 'admin/choose_available_tutorial?popup=1\', event);"><i class="icon question"></i> Tutorials - How To?</a></li-->
+					<li class="question" title="Tutorials - How To?"><a onClick="openOnlineTutorialsPopup(\'' . $online_tutorials_url_prefix . '\', event);"><i class="icon question"></i> Tutorials - How To?</a></li>
 					<li class="info" title="About"><a onClick="goTo(this, \'about_url\', event)" about_url="' . $project_url_prefix . 'admin/about"><i class="icon info"></i> About</a></li>
 					<li class="separator"></li>
 					<li class="logout" title="Logout"><a onClick="document.location=this.getAttribute(\'logout_url\')" logout_url="' . $project_url_prefix . 'auth/logout"><i class="icon logout"></i> Logout</a></li>

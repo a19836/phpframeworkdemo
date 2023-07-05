@@ -1,6 +1,6 @@
 <?php
 class SchoolResourceUtil {
-
+	
 	
 	/**
 	 * Get records from table: school.
