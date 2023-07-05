@@ -130,7 +130,7 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); include $EVC->getUti
 		
 		PageTaskPropertyObj.templates = ' . json_encode($available_templates) . ';
 		PageTaskPropertyObj.on_choose_block_callback = onIncludeBlockTaskChooseFile;
-		PageTaskPropertyObj.on_choose_include_callback = onIncludeFileTaskChoosePage;
+		PageTaskPropertyObj.on_choose_include_callback = onPresentationIncludeFileTaskChoosePage;
 		PageTaskPropertyObj.get_page_settings_url = "' . $get_entity_settings_url . '";
 		PageTaskPropertyObj.is_page_hard_coded_url = "' . $are_entities_hard_coded_url . '";
 		PageTaskPropertyObj.edit_page_admin_panel_url = "' . $edit_entity_admin_panel_url . '";

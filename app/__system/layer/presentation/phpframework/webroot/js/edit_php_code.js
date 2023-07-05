@@ -832,6 +832,7 @@ function removeNewVarSubGroupToProgrammingTaskChooseCreatedVariablePopup(elm) {
 }
 
 function onProgrammingTaskChooseObjectProperty(elm) {
+	elm = $(elm);
 	var popup = $("#choose_property_variable_from_file_manager");
 	
 	var select = popup.find(".type select");
@@ -850,7 +851,7 @@ function onProgrammingTaskChooseObjectProperty(elm) {
 			select.find("option[value=new_var], option[value=existent_var]").show();
 		},
 		
-		targetField: $(elm).parent().find("input")[0],
+		targetField: getTargetFieldForProgrammingTaskChooseFromFileManager(elm), //elm.parent().find("input")[0],
 		updateFunction: chooseObjectProperty
 	});
 	
@@ -912,6 +913,7 @@ function updateObjNameAccordingWithObjectPropertySelection(select, obj_field, st
 }
 
 function onProgrammingTaskChooseObjectMethod(elm) {
+	elm = $(elm);
 	var popup = $("#choose_method_from_file_manager");
 	
 	MyFancyPopup.init({
@@ -921,7 +923,7 @@ function onProgrammingTaskChooseObjectMethod(elm) {
 			popup.find(".method").show();
 		},
 		
-		targetField: $(elm).parent().find("input")[0],
+		targetField: getTargetFieldForProgrammingTaskChooseFromFileManager(elm), //elm.parent().find("input")[0],
 		updateFunction: chooseObjectMethod
 	});
 	
@@ -961,11 +963,13 @@ function chooseObjectMethod(elm) {
 }
 
 function onProgrammingTaskChooseFunction(elm) {
+	elm = $(elm);
+	
 	MyFancyPopup.init({
 		elementToShow: $("#choose_function_from_file_manager"),
 		parentElement: document,
 		
-		targetField: $(elm).parent().find("input")[0],
+		targetField: getTargetFieldForProgrammingTaskChooseFromFileManager(elm), //elm.parent().find("input")[0],
 		updateFunction: chooseFunction
 	});
 	
@@ -993,6 +997,7 @@ function chooseFunction(elm) {
 }
 
 function onProgrammingTaskChooseClassName(elm) {
+	elm = $(elm);
 	var popup = $("#choose_method_from_file_manager");
 	
 	var do_not_update_args = $(elm).attr("do_not_update_args");
@@ -1005,7 +1010,7 @@ function onProgrammingTaskChooseClassName(elm) {
 			popup.find(".method").hide();
 		},
 		
-		targetField: $(elm).parent().find("input")[0],
+		targetField: getTargetFieldForProgrammingTaskChooseFromFileManager(elm), //elm.parent().find("input")[0],
 		updateFunction: function(element) {
 			chooseClassName(element, do_not_update_args);
 		},
@@ -1062,13 +1067,14 @@ function setTaskIncludeFileFromSelectedNode(tree) {
 }
 
 function onIncludeFileTaskChooseFile(elm) {
+	elm = $(elm);
 	var popup = $("#choose_file_from_file_manager");
 	
 	MyFancyPopup.init({
 		elementToShow: popup,
 		parentElement: document,
 		
-		targetField: $(elm).parent(),
+		targetField: getTargetFieldForProgrammingTaskChooseFromFileManager(elm), //elm.parent().find("input")[0],
 		updateFunction: chooseIncludeFile
 	});
 	
@@ -1087,14 +1093,22 @@ function chooseIncludeFile(elm) {
 		var include_path = file_path ? getNodeIncludePath(node, file_path, bean_name) : null;
 		
 		if (include_path) {
-			MyFancyPopup.settings.targetField.children("input").val(include_path);
-			MyFancyPopup.settings.targetField.parent().find(".type select").val("");
+			var input = $(MyFancyPopup.settings.targetField);
+			var p = input.parent();
+			input.val(include_path);
+			p.parent().find(".type select").val("");
 			
-			//This is for the presentation task: includes and includes_once items.
-			MyFancyPopup.settings.targetField.children(".value_type").val("");
-			MyFancyPopup.settings.targetField.children(".includes_type").val("");
-			MyFancyPopup.settings.targetField.children(".includes_once_type").val("");
-		
+			//This is for the presentation task: includes and includes_once items and array items.
+			if (input.is(".key"))
+				p.children(".key_type").val("");
+			else if (input.is(".value"))
+				p.children(".value_type").val("");
+			else {
+				p.children(".value_type").val("");
+				p.children(".includes_type").val("");
+				p.children(".includes_once_type").val("");
+			}
+			
 			MyFancyPopup.hidePopup();
 		}
 		else {
@@ -1104,13 +1118,14 @@ function chooseIncludeFile(elm) {
 }
 
 function onIncludeFolderTaskChooseFile(elm) {
+	elm = $(elm);
 	var popup = $("#choose_folder_from_file_manager");
 	
 	MyFancyPopup.init({
 		elementToShow: popup,
 		parentElement: document,
 		
-		targetField: $(elm).parent(),
+		targetField: getTargetFieldForProgrammingTaskChooseFromFileManager(elm), //elm.parent().find("input")[0],
 		updateFunction: chooseIncludeFolder
 	});
 	
@@ -1135,14 +1150,22 @@ function chooseIncludeFolder(elm) {
 			var include_path = getNodeIncludeFolderPath(node, folder_path, bean_name);
 			
 			if (include_path) {
-				MyFancyPopup.settings.targetField.children("input").val(include_path);
-				MyFancyPopup.settings.targetField.parent().find(".type select").val("");
+				var input = $(MyFancyPopup.settings.targetField);
+				var p = input.parent();
+				input.val(include_path);
+				p.parent().find(".type select").val("");
 				
-				//This is for the presentation task: includes and includes_once items.
-				MyFancyPopup.settings.targetField.children(".value_type").val("");
-				MyFancyPopup.settings.targetField.children(".includes_type").val("");
-				MyFancyPopup.settings.targetField.children(".includes_once_type").val("");
-			
+				//This is for the presentation task: includes and includes_once items and array items.
+				if (input.is(".key"))
+					p.children(".key_type").val("");
+				else if (input.is(".value"))
+					p.children(".value_type").val("");
+				else {
+					p.children(".value_type").val("");
+					p.children(".includes_type").val("");
+					p.children(".includes_once_type").val("");
+				}
+				
 				MyFancyPopup.hidePopup();
 			}
 		}
@@ -1389,8 +1412,9 @@ function chooseIncludeBlock(elm) {
 
 //target_field is used by the workflow task: GetUrlContentsTaskPropertyObj
 function onIncludePageUrlTaskChooseFile(elm) {
+	elm = $(elm);
 	var popup = $("#choose_page_url_from_file_manager");
-	var target = $(elm).parent().children("input");
+	var target = getTargetFieldForProgrammingTaskChooseFromFileManager(elm); //elm.parent().children("input");
 	
 	onUrlQueryString(elm, popup, target);
 	
@@ -1405,8 +1429,8 @@ function onIncludePageUrlTaskChooseFile(elm) {
 		},
 		
 		targetField: target,
-		updateFunction: function(elm) {
-			chooseIncludePageUrl(elm);
+		updateFunction: function(element) {
+			chooseIncludePageUrl(element);
 		}
 	});
 	
@@ -1484,8 +1508,15 @@ function chooseIncludePageUrl(elm) {
 				
 				//update var_Type if exists
 				var var_type = IncludePageUrlFancyPopup.settings.targetField.parent().parent().find(".var_type select");
-				var_type.val("string");
-				var_type.trigger("change");
+				
+				if (var_type.length > 0) {
+					var_type.val("string");
+					var_type.trigger("change");
+				}
+				else if (IncludePageUrlFancyPopup.settings.targetField.is(".key"))
+					IncludePageUrlFancyPopup.settings.targetField.parent().children(".key_type").val("string");
+				else if (IncludePageUrlFancyPopup.settings.targetField.is(".value"))
+					IncludePageUrlFancyPopup.settings.targetField.parent().children(".value_type").val("string");
 				
 				IncludePageUrlFancyPopup.hidePopup();
 			}
@@ -1655,6 +1686,7 @@ function onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute(elm) {
 
 //target_field is used by the workflow task: GetUrlContentsTaskPropertyObj
 function onIncludeImageUrlTaskChooseFile(elm) {
+	elm = $(elm);
 	var popup = $("#choose_image_url_from_file_manager");
 	
 	MyFancyPopup.init({
@@ -1667,7 +1699,7 @@ function onIncludeImageUrlTaskChooseFile(elm) {
 			}
 		},
 		
-		targetField: $(elm).parent().children("input"),
+		targetField: getTargetFieldForProgrammingTaskChooseFromFileManager(elm), //elm.parent().children("input"),
 		updateFunction: function(elm) {
 			chooseIncludeImageUrl(elm);
 		}
@@ -1748,8 +1780,15 @@ function chooseIncludeImageUrl(elm) {
 				
 				//update var_Type if exists
 				var var_type = MyFancyPopup.settings.targetField.parent().parent().find(".var_type select");
-				var_type.val("string");
-				var_type.trigger("change");
+				
+				if (var_type.length > 0) {
+					var_type.val("string");
+					var_type.trigger("change");
+				}
+				else if (MyFancyPopup.settings.targetField.is(".key"))
+					MyFancyPopup.settings.targetField.parent().children(".key_type").val("string");
+				else if (MyFancyPopup.settings.targetField.is(".value"))
+					MyFancyPopup.settings.targetField.parent().children(".value_type").val("string");
 				
 				MyFancyPopup.hidePopup();
 			}

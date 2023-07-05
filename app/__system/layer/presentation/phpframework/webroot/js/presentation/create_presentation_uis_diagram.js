@@ -176,7 +176,7 @@ function chooseIncludeBlock(elm) {
 	}
 }
 
-function onIncludeFileTaskChoosePage(elm) {
+function onPresentationIncludeFileTaskChoosePage(elm) {
 	var popup = $("#choose_presentation_include_from_file_manager");
 	
 	MyDiagramUIFancyPopup.init({
@@ -184,13 +184,13 @@ function onIncludeFileTaskChoosePage(elm) {
 		parentElement: document,
 		
 		targetField: $(elm).parent(),
-		updateFunction: chooseIncludeFile
+		updateFunction: choosePresentationIncludeFile
 	});
 	
 	MyDiagramUIFancyPopup.showPopup();
 }
 
-function chooseIncludeFile(elm) {
+function choosePresentationIncludeFile(elm) {
 	var node = choosePresentationIncludeFromFileManagerTree.getSelectedNodes();
 	node = node[0];
 	
