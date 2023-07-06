@@ -293,7 +293,7 @@ function addNewArgument(elm) {
 function removeArgument(elm) {
 	var p = $(elm).parent().parent();
 	var name = p.find(".name input").val();
-	name = ("" + name).replace(/^[&$]/g, "");
+	name = ("" + name).replace(/^&?\$?/g, "");
 	
 	if (name) {
 		name = "$" + name;
@@ -306,7 +306,7 @@ function removeArgument(elm) {
 }
 function onBlurArgumentName(elm) {
 	var name = $(elm).val();
-	name = ("" + name).replace(/^[&$]/g, "");
+	name = ("" + name).replace(/^&?\$?/g, "");
 	
 	if (name) {
 		name = "$" + name;
@@ -323,7 +323,7 @@ function addNewAnnotation(elm) {
 function removeAnnotation(elm) {
 	var p = $(elm).parent().parent();
 	var name = p.find(".name input").val();
-	name = ("" + name).replace(/^[&$]/g, "");
+	name = ("" + name).replace(/^&?\$?/g, "");
 	
 	if (name) {
 		var is_business_logic_service = $(".top_bar .is_business_logic_service").val();
@@ -341,7 +341,7 @@ function removeAnnotation(elm) {
 }
 function onBlurAnnotationName(elm) {
 	var name = $(elm).val();
-	name = ("" + name).replace(/^[&$]/g, "");
+	name = ("" + name).replace(/^&?\$?/g, "");
 	
 	if (name) {
 		var is_business_logic_service = $(".top_bar .is_business_logic_service").val();
@@ -446,11 +446,6 @@ function isClassMethodObjChanged() {
 	return saved_class_method_settings_id != new_class_method_settings_id;
 }
 
-function isClassMethodCodeWithErrors() {
-	var errors = getEditorCodeErros();
-	return errors.length > 0;
-}
-
 function getFileClassMethodObjId() {
 	var obj = getFileClassMethodObj();
 	
@@ -550,7 +545,7 @@ function saveFileClassMethod() {
 		if (!window.is_save_func_running) {
 			window.is_save_func_running = true;
 			
-			if (is_from_auto_save_bkp && (!isClassMethodObjChanged() || isClassMethodCodeWithErrors())) {
+			if (is_from_auto_save_bkp && (!isClassMethodObjChanged() || isEditorCodeWithErrors()) && checkIfWorkflowDoesNotNeedToChangePreviousCodeWithErrors(file_class_method_obj, true)) {
 				resetAutoSave();
 				window.is_save_func_running = false;
 				return;

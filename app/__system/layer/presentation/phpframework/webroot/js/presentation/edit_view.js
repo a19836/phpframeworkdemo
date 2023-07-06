@@ -168,11 +168,6 @@ function isViewCodeObjChanged() {
 	return saved_layout_ui_editor_code_id != new_layout_ui_editor_code_id;
 }
 
-function isViewCodeWithErrors() {
-	var errors = getEditorCodeErros();
-	return errors.length > 0;
-}
-
 function getViewCodeObj() {
 	var view_obj = $(".view_obj");
 	
@@ -199,7 +194,7 @@ function saveView() {
 		if (!window.is_save_func_running) {
 			window.is_save_func_running = true;
 			
-			if (is_from_auto_save_bkp && (!isViewCodeObjChanged() || isViewCodeWithErrors())) {
+			if (is_from_auto_save_bkp && (!isViewCodeObjChanged() || isEditorCodeWithErrors()) && checkIfWorkflowDoesNotNeedToChangePreviousCodeWithErrors(view_obj)) {
 				resetAutoSave();
 				window.is_save_func_running = false;
 				return;

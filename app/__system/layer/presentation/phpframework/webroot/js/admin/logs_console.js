@@ -2,6 +2,11 @@ var timeout = 10000; //10 secs
 
 $(function () {
 	setTimeout(function() {
+		var textarea = $(".logs_console .logs > textarea");
+		textarea.scrollTop(textarea[0].scrollHeight - textarea.height());
+	}, 300);
+	
+	setTimeout(function() {
 		updateLogs();
 	}, timeout);
 });
@@ -11,6 +16,7 @@ function refresh() {
 }
 
 function updateLogs() {
+	console.log("updateLogs");
 	var logs = $(".logs_console .logs");
 	var file_created_time = logs.attr("file_created_time");
 	var file_pointer = logs.attr("file_pointer");
@@ -29,7 +35,10 @@ function updateLogs() {
 			var file_pointer = data["file_pointer"];
 			
 			if (output != "") {
-				logs.children("textarea").append( document.createTextNode("\n" + output) );
+				var textarea = logs.children("textarea");
+				textarea.append( document.createTextNode("\n" + output) );
+				
+				textarea.animate({ scrollTop: textarea[0].scrollHeight - textarea.height() }, 1000);
 				
 				timeout = 10000; //reset timeout to 10 secs
 			}

@@ -19,6 +19,7 @@
 
 var SoapConnectorTaskPropertyObj = {
 	
+	dependent_file_path_to_include : "LIB_PATH . 'org/phpframework/connector/SoapConnector.php'",
 	//brokers_options : null,
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
@@ -294,6 +295,12 @@ var SoapConnectorTaskPropertyObj = {
 	
 	onCompleteLabel : function(task_id) {
 		return ProgrammingTaskUtil.onEditLabel(task_id);
+	},
+	
+	onTaskCloning : function(task_id) {
+		ProgrammingTaskUtil.onTaskCloning(task_id);
+		
+		ProgrammingTaskUtil.addIncludeFileTaskBeforeTaskIfNotExistsYet(task_id, SoapConnectorTaskPropertyObj.dependent_file_path_to_include, '', 1);
 	},
 	
 	onTaskCreation : function(task_id) {

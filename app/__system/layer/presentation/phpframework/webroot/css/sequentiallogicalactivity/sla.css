@@ -397,7 +397,8 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 
 /* BROKER TASK HTML - CALL REST CONNECTOR */
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .get_url_contents_task_html .result,
-   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .get_url_contents_task_html .task_property_exit {
+   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .get_url_contents_task_html .task_property_exit,
+   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .get_url_contents_task_html > .info {
 	display:none;
 }
 
@@ -415,7 +416,8 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 	margin-right:auto;
 }
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .soap_connector_task_html .result,
-   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .soap_connector_task_html .task_property_exit {
+   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .soap_connector_task_html .task_property_exit,
+   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .broker_action_body > .soap_connector_task_html > .info {
 	display:none;
 }
 

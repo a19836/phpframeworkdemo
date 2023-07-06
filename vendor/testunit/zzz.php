@@ -18,7 +18,7 @@ class zzz extends TestUnit {
 	 * @depends (path=sub_folder/ddff) 
 	 */
 	public function execute () {
-		$name = "Joao P. Pinto";
+		$name = "Joao P. L. Pinto";
 		
 		return $name;
 	}

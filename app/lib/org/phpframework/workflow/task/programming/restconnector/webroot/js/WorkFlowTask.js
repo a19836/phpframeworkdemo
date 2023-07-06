@@ -23,6 +23,8 @@ if (!GetUrlContentsTaskPropertyObj)
 	alert("GetUrlContentsTaskPropertyObj must be defined before the RestConnectorTaskPropertyObj gets defined!");
 else
 	RestConnectorTaskPropertyObj = {
+		
+		dependent_file_path_to_include : "LIB_PATH . 'org/phpframework/connector/RestConnector.php'",
 	
 		onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 			GetUrlContentsTaskPropertyObj.onLoadTaskProperties(properties_html_elm, task_id, task_property_values);
@@ -57,6 +59,12 @@ else
 		
 		onCompleteLabel : function(task_id) {
 			return GetUrlContentsTaskPropertyObj.onCompleteLabel(task_id);
+		},
+		
+		onTaskCloning : function(task_id) {
+			ProgrammingTaskUtil.onTaskCloning(task_id);
+		
+		ProgrammingTaskUtil.addIncludeFileTaskBeforeTaskIfNotExistsYet(task_id, RestConnectorTaskPropertyObj.dependent_file_path_to_include, '', 1);
 		},
 		
 		onTaskCreation : function(task_id) {

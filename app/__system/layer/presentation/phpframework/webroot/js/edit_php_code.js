@@ -21,6 +21,7 @@ var auto_scroll_active = true;
 var word_wrap_active = false;
 var show_low_code_first = true;
 var running_save_obj_actions_count = 0;
+var editor_code_errors_are_old = false;
 
 $(function () {
 	MyFancyPopup.init({
@@ -311,7 +312,7 @@ function removeParametersAndResultMapsFromTree(ul, data, mytree_obj) {
 }
 
 function removeAllThatIsNotFoldersFromTree(ul, data, mytree_obj) {
-	$(ul).find("i.file, i.objtype, i.hibernatemodel, i.service, i.class, i.test_unit_obj").each(function(idx, elm){
+	$(ul).find("i.file, i.objtype, i.hibernatemodel, i.service, i.class, i.test_unit_obj, i.undefined_file").each(function(idx, elm){
 		$(elm).parent().parent().remove();
 	});
 	
@@ -2831,7 +2832,7 @@ function getEditorCodeValue() {
 	return code;
 }
 
-function getEditorCodeErros() {
+function getEditorCodeErrors() {
 	var errors = [];
 	var editor = $("#code").data("editor");
 	
@@ -2846,6 +2847,34 @@ function getEditorCodeErros() {
 	}
 	
 	return errors;
+}
+
+function isEditorCodeWithErrors() {
+	var errors = getEditorCodeErrors();
+	return errors.length > 0;
+}
+
+//This function is called in the save method of the low-code editors.
+//Basically if code has errors, wokflow tab is selectd and diagram was changed meanwhile, then the system will create the new code and return false, setting the editor_code_errors_are_old var to true, so the next time the auto-save runs or this function gets called, it will return false, proceeding to the saving action...
+function checkIfWorkflowDoesNotNeedToChangePreviousCodeWithErrors(main_obj_elm, strip_php_tags) {
+	var status = true;
+	
+	if (isEditorCodeWithErrors()) {
+		//if tasks_flow_tab is selected and if diagram changed
+		if (main_obj_elm.find("#tasks_flow_tab").is("li.ui-tabs-selected, li.ui-tabs-active") && jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()) {
+			var old_code = getEditorCodeRawValue();
+			//force tasks flow tab to convert workfow into code, otherwise the code will never be rebuild again bc the auto_save will always enter in this condition.
+			var new_code = getCodeForSaving(main_obj_elm, {strip_php_tags: strip_php_tags}); //if tasks flow tab is selected ask user to convert workfow into code
+			
+			if (old_code != new_code)
+				//ace editor doesn't update the errors as soon as the code get updated in the editor, so we need to set this var to true and use it below.
+				editor_code_errors_are_old = true;
+		}
+	}
+	else if (editor_code_errors_are_old)
+		status = editor_code_errors_are_old = false;
+	
+	return status;
 }
 
 function sortWorkflowTask(sort_type) {
@@ -3275,7 +3304,7 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 	var options = typeof options == "object" ? options : {};
 	
 	//only if no errors detected
-	var errors = getEditorCodeErros();
+	var errors = getEditorCodeErrors();
 	
 	prepareAutoSaveVars();
 	

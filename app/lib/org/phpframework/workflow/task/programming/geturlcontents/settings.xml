@@ -26,7 +26,7 @@
 			
 			<on_complete_task_label>GetUrlContentsTaskPropertyObj.onCompleteLabel</on_complete_task_label>
 			
-			<on_success_task_cloning>ProgrammingTaskUtil.onTaskCloning</on_success_task_cloning>
+			<on_success_task_cloning>GetUrlContentsTaskPropertyObj.onTaskCloning</on_success_task_cloning>
 			<on_success_task_creation>GetUrlContentsTaskPropertyObj.onTaskCreation</on_success_task_creation>
 			<on_check_task_deletion>ProgrammingTaskUtil.onBeforeTaskDeletion</on_check_task_deletion>
 			<on_success_task_deletion>ProgrammingTaskUtil.onAfterTaskDeletion</on_success_task_deletion>

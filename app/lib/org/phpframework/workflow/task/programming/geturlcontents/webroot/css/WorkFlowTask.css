@@ -91,7 +91,8 @@
 	width:108px;
 }
 .get_url_contents_task_html .dts .array_items > ul > li > ul > .item select.key {
-	width:116px;
+	/*width:116px;*/
+	width:180px;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .get_url_contents_task_html .dts .array_items > ul > li > ul > .item input.value {
 	width:calc(100% - 170px);
@@ -172,9 +173,17 @@
 .get_url_contents_task_html .result_type .add_variable {
 	margin-left:-26px;
 }
-.get_url_contents_task_html .result_type .info {
+.get_url_contents_task_html .dts .info,
+  .get_url_contents_task_html .result_type .info {
 	padding-top:10px;
-	font-size:90%;
+	/*font-size:90%;*/
+}
+.get_url_contents_task_html .dts .info a {
+	color:var(--link-color);
+}
+.get_url_contents_task_html .dts .info ul li {
+	margin-left:20px;
+	list-style:disc;
 }
 .get_url_contents_task_html .result_type .info li {
 	margin-left:20px;

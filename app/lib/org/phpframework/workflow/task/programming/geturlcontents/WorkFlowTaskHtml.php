@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$file_to_include = $file_to_include ? $file_to_include : "lib/org/phpframework/util/web/MyCurl.php"; $import_path = preg_replace("/^lib\//", "", $file_to_include); ?>
+$dependent_file_path_to_include = $dependent_file_path_to_include ? $dependent_file_path_to_include : "lib/org/phpframework/util/web/MyCurl.php"; $dependent_file_path_to_include_js = $dependent_file_path_to_include_js ? $dependent_file_path_to_include_js : "GetUrlContentsTaskPropertyObj.dependent_file_path_to_include"; ?>
 <div class="get_url_contents_task_html">
 	<div class="info">
 		This can be used to connect with <b>webhooks</b> in IPAAS services, like: 
@@ -45,7 +45,7 @@ $file_to_include = $file_to_include ? $file_to_include : "lib/org/phpframework/u
 		and others more...
 	</div>
 	
-	<div class="info">This task needs the file '<?php echo $file_to_include; ?>' to be included before! If is not included yet, please add it by clicking <a href="javascript:void(0)" onClick="ProgrammingTaskUtil.addIncludeFileTaskBeforeTaskFromSelectedTaskProperties(&quot;LIB_PATH . '<?php echo $import_path; ?>'&quot;, '', 1)">here</a>. 
+	<div class="info">This task needs the file '<?php echo $dependent_file_path_to_include; ?>' to be included before! If is not included yet, please add it by clicking <a class="include_file_before" href="javascript:void(0)" onClick="ProgrammingTaskUtil.addIncludeFileTaskBeforeTaskFromSelectedTaskProperties(<?php echo $dependent_file_path_to_include_js; ?>, '', 1)">here</a>. 
 	</div>
 	
 	<div class="dts">
@@ -60,7 +60,25 @@ $file_to_include = $file_to_include ? $file_to_include : "lib/org/phpframework/u
 		</select>
 		<div class="data array_items"></div>
 		<div class="info">
-			Note that the "Other Settings" option can be "Curl Opt" settings too, like CURLOPT_xxx.
+			Note that the "Other Settings" option can be "Curl Opt" settings too, like CURLOPT_xxx.<br/>
+			For more information please visit the CURLOPT site at <a href="https://www.php.net/manual/en/function.curl-setopt.php" target="curlopt">https://www.php.net/manual/en/function.curl-setopt.php</a>.<br/>
+			<br/>
+			Here is the explanation of the defined "Other Settings" options:
+			<ul>
+				<li>Header (Boolean) - CURLOPT_HEADER - Include the request header in the server response.</li>
+				<li>Connection Timeout (Numeric) - CURLOPT_CONNECTTIMEOUT - The number of seconds to wait while trying to connect. Use 0 to wait indefinitely.</li>
+				<li>No Body (Boolean) - CURLOPT_NOBODY - True to exclude the body from the output. Request method is then set to HEAD. Changing this to false does not change it to GET.</li>
+				<li>HTTP header (Array|String) - CURLOPT_HTTPHEADER - An array or string (end-line demiliter) of HTTP header fields to set. Array in the format: array('Content-type: text/plain', 'Content-length: 100').</li>
+				<li>Referer (String) - CURLOPT_REFERER - The contents of the 'Referer: ' header to be used in a HTTP request.</li>
+				<li>Follow Location (Boolean) - CURLOPT_FOLLOWLOCATION - True to follow any 'Location: ' header that the server sends as part of the HTTP header. See also CURLOPT_MAXREDIRS.</li>
+				<li>HTTP Auth (String|Defined Var) - CURLOPT_HTTPAUTH - The HTTP authentication method(s) to use. The options are: 'basic', 'digest', CURLAUTH_BASIC, CURLAUTH_DIGEST, CURLAUTH_GSSNEGOTIATE, CURLAUTH_NTLM, CURLAUTH_ANY, and CURLAUTH_ANYSAFE.</li>
+				<li>User+Pwd (String) - CURLOPT_USERPWD - Username and password formatted as '[username]:[password]' to use for the connection.</li>
+				<li>Put (Boolean) - CURLOPT_PUT - True to HTTP PUT a file. The file to PUT must be set with CURLOPT_INFILE and CURLOPT_INFILESIZE.</li>
+				<li>In File (String) - CURLOPT_INFILE - The file that the transfer should be read from when uploading.</li>
+				<li>In File Size (Numeric) - CURLOPT_INFILESIZE - The expected size, in bytes, of the file when uploading a file to a remote site. Note that using this option will not stop libcurl from sending more data, as exactly what is sent depends on CURLOPT_READFUNCTION.</li>
+				<li>Read Cookies from File (String) - CURLOPT_COOKIEFILE - The name of the file containing the cookie data. The cookie file can be in Netscape format, or just plain HTTP-style headers dumped into a file. If the name is an empty string, no cookies are loaded, but cookie handling is still enabled.</li>
+				<li>Save Cookies to File (String) - CURLOPT_COOKIEJAR - The name of a file to save all internal cookies to when the handle is closed, e.g. after a call to curl_close.</li>
+			</ul>
 		</div>
 	</div>
 	<div class="result_type">

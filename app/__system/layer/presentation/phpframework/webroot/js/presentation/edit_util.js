@@ -168,11 +168,6 @@ function isUtilCodeObjChanged() {
 	return isCodeAndWorkflowObjChanged(util_obj);
 }
 
-function isUtilCodeWithErrors() {
-	var errors = getEditorCodeErros();
-	return errors.length > 0;
-}
-
 function getUtilCodeObj() {
 	var util_obj = $(".util_obj");
 	
@@ -195,7 +190,7 @@ function saveUtil() {
 		if (!window.is_save_func_running) {
 			window.is_save_func_running = true;
 			
-			if (is_from_auto_save_bkp && (!isUtilCodeObjChanged() || isUtilCodeWithErrors())) {
+			if (is_from_auto_save_bkp && (!isUtilCodeObjChanged() || isEditorCodeWithErrors()) && checkIfWorkflowDoesNotNeedToChangePreviousCodeWithErrors(util_obj)) {
 				resetAutoSave();
 				window.is_save_func_running = false;
 				return;

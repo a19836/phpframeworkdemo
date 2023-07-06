@@ -133,11 +133,6 @@ function isConfigCodeObjChanged() {
 	return isCodeAndWorkflowObjChanged(config_obj);
 }
 
-function isConfigCodeWithErrors() {
-	var errors = getEditorCodeErros();
-	return errors.length > 0;
-}
-
 function getConfigCodeObj() {
 	var config_obj = $(".config_obj");
 	
@@ -160,7 +155,7 @@ function saveConfig() {
 		if (!window.is_save_func_running) {
 			window.is_save_func_running = true;
 			
-			if (is_from_auto_save_bkp && (!isConfigCodeObjChanged() || isConfigCodeWithErrors())) {
+			if (is_from_auto_save_bkp && (!isConfigCodeObjChanged() || isEditorCodeWithErrors()) && checkIfWorkflowDoesNotNeedToChangePreviousCodeWithErrors(config_obj)) {
 				resetAutoSave();
 				window.is_save_func_running = false;
 				return;

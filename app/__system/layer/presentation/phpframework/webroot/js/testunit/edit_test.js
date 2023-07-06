@@ -343,11 +343,6 @@ function isTestObjChanged() {
 		(selected_tab.attr("id") == "tasks_flow_tab" && jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()); //compares if tasks' sizes and offsets are different, but only if workflow tab is selected.
 }
 
-function isTestCodeWithErrors() {
-	var errors = getEditorCodeErros();
-	return errors.length > 0;
-}
-
 function getTestObj() {
 	var obj = getTestSettings();
 	obj["code"] = getCodeForSaving($(".edit_test"), {strip_php_tags: true}); //if tasks flow tab is selected ask user to convert workfow into code
@@ -409,7 +404,7 @@ function saveTest() {
 		if (!window.is_save_func_running) {
 			window.is_save_func_running = true;
 			
-			if (is_from_auto_save_bkp && (!isTestObjChanged() || isTestCodeWithErrors())) {
+			if (is_from_auto_save_bkp && (!isTestObjChanged() || isEditorCodeWithErrors()) && checkIfWorkflowDoesNotNeedToChangePreviousCodeWithErrors(edit_test, true)) {
 				resetAutoSave();
 				window.is_save_func_running = false;
 				return;

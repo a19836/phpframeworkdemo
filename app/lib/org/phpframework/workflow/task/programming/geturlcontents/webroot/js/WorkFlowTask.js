@@ -19,6 +19,7 @@
 
 var GetUrlContentsTaskPropertyObj = {
 	
+	dependent_file_path_to_include : "LIB_PATH . 'org/phpframework/util/web/MyCurl.php'",
 	//brokers_options : null,
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
@@ -120,6 +121,12 @@ var GetUrlContentsTaskPropertyObj = {
 	
 	onCompleteLabel : function(task_id) {
 		return ProgrammingTaskUtil.onEditLabel(task_id);
+	},
+	
+	onTaskCloning : function(task_id) {
+		ProgrammingTaskUtil.onTaskCloning(task_id);
+		
+		ProgrammingTaskUtil.addIncludeFileTaskBeforeTaskIfNotExistsYet(task_id, GetUrlContentsTaskPropertyObj.dependent_file_path_to_include, '', 1);
 	},
 	
 	onTaskCreation : function(task_id) {
@@ -434,7 +441,21 @@ var GetUrlContentsTaskPropertyObj = {
 	prepareGroupSettingsItemLi : function(li) {
 		var key_type = li.children(".key_type");
 		var options = key_type.children("option");
-		var opts = ["header", "connection_timeout", "no_body", "http_header", "referer", "follow_location", "http_auth", "user_pwd", "put"];
+		var opts = {
+			"header" : "Header (Boolean)", 
+			"connection_timeout" : "Connection Timeout (Numeric)",
+			"no_body" : "No Body (Boolean)",
+			"http_header" : "HTTP header (Array|String)",
+			"referer" : "Referer (String)",
+			"follow_location" : "Follow Location (Boolean)",
+			"http_auth" : "HTTP Auth (String|Defined Var)",
+			"user_pwd" : "User+Pwd (String)",
+			"put" : "Put (Boolean)",
+			"in_file" : "In File (String)",
+			"in_file_size" : "In File Size (Numeric)",
+			"read_cookies_from_file" : "Read Cookies from File (String)",
+			"save_cookies_to_file" : "Save Cookies to File (String)",
+		};
 		var exists = false;
 		
 		for (var i = 0; i < options.length; i++)
@@ -452,8 +473,8 @@ var GetUrlContentsTaskPropertyObj = {
 			//add .key select
 			var html = '<select class="key task_property_field" title="Item key">'
 				+ '<option></option>';
-			for (var i = 0; i < opts.length; i++)
-				html += '<option>' + opts[i] + '</option>';
+			for (var k in opts)
+				html += '<option value="' + k + '">' + opts[k] + '</option>';
 			html += '</select>';
 			
 			var key = li.children(".key");
@@ -469,7 +490,7 @@ var GetUrlContentsTaskPropertyObj = {
 		//set current key value
 		var key_input_val = li.children("input.key").val();
 		
-		if (!key_input_val || $.inArray(key_input_val, opts) != -1) {
+		if (!key_input_val || opts.hasOwnProperty(key_input_val)) {
 			var key_type = li.children(".key_type");
 			key_type.val("options");
 			

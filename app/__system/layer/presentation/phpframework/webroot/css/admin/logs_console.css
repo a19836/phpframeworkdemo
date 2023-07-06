@@ -12,7 +12,7 @@ body,
 }
 
 .logs_console > .logs {
-	height:calc(100vh - 30px);
+	height:calc(100vh - 50px);
 	box-sizing:border-box;
 	overflow:hidden;
 }

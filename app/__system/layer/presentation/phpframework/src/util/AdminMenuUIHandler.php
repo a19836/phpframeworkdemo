@@ -429,7 +429,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 
 <ul id="business_logic_group_context_menu" class="mycontextmenu">
 	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Sub-Group</a></li>
-	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\')">Add File</a></li>
+	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\')" allow_upper_case="1">Add File</a></li>
 	<li class="line_break"></li>
 	<!--li class="service_obj"><a onClick="return goTo(this, \'add_service_obj_url\', event)">Add Service Object Manually</a></li-->
 	<li class="service_obj"><a onClick="return createClassObjectOrMethodOrFunction(this, \'save_service_obj_url\', \'edit_service_obj_url\', \'service_object\', null, event)">Add Service Object Manually</a></li>
@@ -454,7 +454,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 
 <ul id="business_logic_group_common_context_menu" class="mycontextmenu">
 	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Sub-Group</a></li>
-	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\')">Add File</a></li>
+	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\')" allow_upper_case="1">Add File</a></li>
 	<li class="line_break"></li>
 	<!--li class="service_obj"><a onClick="return goTo(this, \'add_service_obj_url\', event)">Add Service Object Manually</a></li-->
 	<li class="service_obj"><a onClick="return createClassObjectOrMethodOrFunction(this, \'save_service_obj_url\', \'edit_service_obj_url\', \'service_object\', null, event)">Add Service Object Manually</a></li>
@@ -702,7 +702,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 
 <ul id="presentation_main_utils_group_context_menu" class="mycontextmenu">
 	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\', managePresentationFile)">Add Folder</a></li>
-	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', [managePresentationFile, triggerFileNodeAfterCreateFile])">Add File</a></li>
+	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', [managePresentationFile, triggerFileNodeAfterCreateFile])" allow_upper_case="1">Add File</a></li>
 	<li class="line_break"></li>
 	<!--li class="class_obj"><a onClick="return goTo(this, \'add_class_obj_url\', event)">Add Class</a></li-->
 	<li class="class_obj"><a onClick="return createClassObjectOrMethodOrFunction(this, \'save_class_obj_url\', \'edit_class_obj_url\', \'class_object\', null, event)">Add Class</a></li>
@@ -719,7 +719,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 
 <ul id="presentation_utils_group_context_menu" class="mycontextmenu">
 	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\', managePresentationFile)">Add Sub-Group</a></li>
-	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', [managePresentationFile, triggerFileNodeAfterCreateFile])">Add File</a></li>
+	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', [managePresentationFile, triggerFileNodeAfterCreateFile])" allow_upper_case="1">Add File</a></li>
 	<li class="line_break"></li>
 	<!--li class="class_obj"><a onClick="return goTo(this, \'add_class_obj_url\', event)">Add Class</a></li-->
 	<li class="class_obj"><a onClick="return createClassObjectOrMethodOrFunction(this, \'save_class_obj_url\', \'edit_class_obj_url\', \'class_object\', null, event)">Add Class</a></li>

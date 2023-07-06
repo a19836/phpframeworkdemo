@@ -113,12 +113,44 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			task_context_menu.children(".show_code").remove();
 		},
 		
-		addIncludeFileTaskBeforeTaskFromSelectedTaskProperties : function(file_path, type, once) {
+		addIncludeFileTaskBeforeTaskIfNotExistsYet : function(task_id, file_path, type, once) {
 			var WF = myWFObj.getJsPlumbWorkFlow();
-			var selected_task_properties = $("#" + WF.jsPlumbProperty.selected_task_properties_id);
-			var task_id = selected_task_properties.attr("task_id");
+			WF.jsPlumbStatusMessage.showMessage("Checking if \"" + file_path + "\" exists and if not, add the correspondent include_file task");
 			
-			this.addIncludeFileTaskBeforeTask(task_id, file_path, type, once);
+			if (!this.existsIncludeFileTaskBeforeTask(task_id, file_path, type)) {
+				ProgrammingTaskUtil.addIncludeFileTaskBeforeTask(task_id, file_path, type, once);
+				
+				WF.jsPlumbStatusMessage.removeLastShownMessage("status");
+			}
+		},
+		
+		//given a task id, checks all above connections and check if before there is an include task with the same file_path
+		existsIncludeFileTaskBeforeTask : function(task_id, file_path, type) {
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var connections = WF.jsPlumbTaskFlow.getTargetConnections(task_id);
+			
+			var task_tag = "includefile";
+			var task_menu = $("#" + WF.jsPlumbContextMenu.main_tasks_menu_obj_id + " .task_menu[tag=" + task_tag + "]");
+			var task_type = task_menu.attr("type");
+			
+			for (var i = 1, t = connections.length; i < t; i++) {
+				var connection = connections[i];
+				var source_task = connection.source;
+				var source_task_id = connection.sourceId;
+				var source_task_type = source_task.attr("type");
+				
+				if (source_task_type == task_type) {
+					var task_property_values = WF.jsPlumbTaskFlow.tasks_properties[source_task_id];
+					
+					if (task_property_values && task_property_values["file_path"] == file_path && task_property_values["type"] == type)
+						return true;
+				}
+				
+				if (this.existsIncludeFileTaskBeforeTask(source_task_id, file_path, type))
+					return true;
+			}
+			
+			return false;
 		},
 		
 		addIncludeFileTaskBeforeTask : function(task_id, file_path, type, once) {
@@ -132,8 +164,29 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 				var connection = connections[0];
 				var include_task_id = null;
 				
-				if (connection) //add new task between task
+				if (connection) { //add new task between task
 					include_task_id = WF.jsPlumbContextMenu.addTaskByTypeToConnection(task_type, connection);
+					
+					//change other target connections to include_task_id
+					if (include_task_id) {
+						var include_task = WF.jsPlumbTaskFlow.getTaskById(include_task_id);
+						
+						for (var i = 1, t = connections.length; i < t; i++) {
+							var connection = connections[i];
+							
+							WF.jsPlumbContextMenu.setTaskBetweenConnection(include_task, connection);
+						}
+						
+						//bc the above code added the include_task to all the previous and after connections, creating multiple connections between the include_task and task_id, now we need to delete the extra connections between the include_task and task_id.
+						var include_source_connections = WF.jsPlumbTaskFlow.getSourceConnections(include_task_id);
+						
+						for (var i = 1, t = include_source_connections.length; i < t; i++) {
+							var connection = include_source_connections[i];
+							
+							WF.jsPlumbTaskFlow.deleteConnection(connection.id, true);
+						}
+					}
+				}
 				else { //add task before task
 					var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
 					var task_offset = task.offset();
@@ -196,6 +249,14 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			}
 			
 			return false;
+		},
+		
+		addIncludeFileTaskBeforeTaskFromSelectedTaskProperties : function(file_path, type, once) {
+			var WF = myWFObj.getJsPlumbWorkFlow();
+			var selected_task_properties = $("#" + WF.jsPlumbProperty.selected_task_properties_id);
+			var task_id = selected_task_properties.attr("task_id");
+			
+			this.addIncludeFileTaskBeforeTask(task_id, file_path, type, once);
 		},
 		
 		onSuccessTaskBetweenConnection : function(task_id) {

@@ -169,11 +169,6 @@ function isBlockCodeObjChanged() {
 	return isCodeAndWorkflowObjChanged(block_obj);
 }
 
-function isBlockCodeWithErrors() {
-	var errors = getEditorCodeErros();
-	return errors.length > 0;
-}
-
 function getBlockCodeObj() {
 	var block_obj = $(".block_obj");
 	
@@ -196,7 +191,7 @@ function saveBlock() {
 		if (!window.is_save_func_running) {
 			window.is_save_func_running = true;
 			
-			if (is_from_auto_save_bkp && (!isBlockCodeObjChanged() || isBlockCodeWithErrors())) {
+			if (is_from_auto_save_bkp && (!isBlockCodeObjChanged() || isEditorCodeWithErrors()) && checkIfWorkflowDoesNotNeedToChangePreviousCodeWithErrors(block_obj)) {
 				resetAutoSave();
 				window.is_save_func_running = false;
 				return;

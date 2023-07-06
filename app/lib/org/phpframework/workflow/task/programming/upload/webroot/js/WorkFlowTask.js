@@ -19,6 +19,8 @@
 
 var UploadTaskPropertyObj = {
 	
+	dependent_file_path_to_include : "LIB_PATH . 'org/phpframework/util/web/UploadHandler.php'",
+	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
 		
@@ -69,6 +71,12 @@ var UploadTaskPropertyObj = {
 	
 	onCompleteLabel : function(task_id) {
 		return ProgrammingTaskUtil.onEditLabel(task_id);
+	},
+	
+	onTaskCloning : function(task_id) {
+		ProgrammingTaskUtil.onTaskCloning(task_id);
+		
+		ProgrammingTaskUtil.addIncludeFileTaskBeforeTaskIfNotExistsYet(task_id, UploadTaskPropertyObj.dependent_file_path_to_include, '', 1);
 	},
 	
 	onTaskCreation : function(task_id) {

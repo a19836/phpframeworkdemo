@@ -137,11 +137,6 @@ function isTemplateCodeObjChanged() {
 	return isCodeAndWorkflowObjChanged(template_obj);
 }
 
-function isTemplateCodeWithErrors() {
-	var errors = getEditorCodeErros();
-	return errors.length > 0;
-}
-
 function getTemplateCodeObj() {
 	var template_obj = $(".template_obj");
 	
@@ -164,7 +159,7 @@ function saveTemplate() {
 		if (!window.is_save_func_running) {
 			window.is_save_func_running = true;
 			
-			if (is_from_auto_save_bkp && (!isTemplateCodeObjChanged() || isTemplateCodeWithErrors())) {
+			if (is_from_auto_save_bkp && (!isTemplateCodeObjChanged() || isEditorCodeWithErrors()) && checkIfWorkflowDoesNotNeedToChangePreviousCodeWithErrors(template_obj)) {
 				resetAutoSave();
 				window.is_save_func_running = false;
 				return;

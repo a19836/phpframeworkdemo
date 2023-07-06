@@ -19,7 +19,7 @@
  */
 ?><div class="validator_task_html">
 	
-	<div class="info">This task needs the file 'lib/org/phpframework/util/text/TextValidator.php' to be included before! If is not included yet, please add it by clicking <a href="javascript:void(0)" onClick="ProgrammingTaskUtil.addIncludeFileTaskBeforeTaskFromSelectedTaskProperties(&quot;LIB_PATH . 'org/phpframework/util/text/TextValidator.php'&quot;, '', 1)">here</a>. 
+	<div class="info">This task needs the file 'lib/org/phpframework/util/text/TextValidator.php' to be included before! If is not included yet, please add it by clicking <a class="include_file_before" href="javascript:void(0)" onClick="ProgrammingTaskUtil.addIncludeFileTaskBeforeTaskFromSelectedTaskProperties(ValidatorTaskPropertyObj.dependent_file_path_to_include, '', 1)">here</a>. 
 	</div>
 	
 	<div class="method">

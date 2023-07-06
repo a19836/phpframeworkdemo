@@ -19,6 +19,8 @@
 
 var SendEmailTaskPropertyObj = {
 	
+	dependent_file_path_to_include : "LIB_PATH . 'org/phpframework/util/web/SendEmailHandler.php'",
+	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
 		
@@ -73,6 +75,16 @@ var SendEmailTaskPropertyObj = {
 		return ProgrammingTaskUtil.onEditLabel(task_id);
 	},
 	
+	onTaskCloning : function(task_id) {
+		var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+		task_property_values["settings_type"] = "array";
+		task_property_values["settings"] = SendEmailTaskPropertyObj.getDefaultMethodArrayItems( task_property_values["method"] );
+	
+		ProgrammingTaskUtil.onTaskCloning(task_id);
+		
+		ProgrammingTaskUtil.addIncludeFileTaskBeforeTaskIfNotExistsYet(task_id, SendEmailTaskPropertyObj.dependent_file_path_to_include, '', 1);
+	},
+	
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
 			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
@@ -85,14 +97,6 @@ var SendEmailTaskPropertyObj = {
 			
 			ProgrammingTaskUtil.onTaskCreation(task_id);
 		}, 30);
-	},
-	
-	onTaskCloning : function(task_id) {
-		var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
-		task_property_values["settings_type"] = "array";
-		task_property_values["settings"] = SendEmailTaskPropertyObj.getDefaultMethodArrayItems( task_property_values["method"] );
-	
-		ProgrammingTaskUtil.onTaskCloning(task_id);
 	},
 	
 	getDefaultExitLabel : function(task_property_values) {

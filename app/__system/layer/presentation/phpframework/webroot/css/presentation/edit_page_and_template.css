@@ -459,8 +459,11 @@
   .regions_blocks_includes_settings .sla .get_url_contents_task_html .result_type select[name=result_type_type] {
 	padding:0;
 }
-.regions_blocks_includes_settings .sla .get_url_contents_task_html .dts .array_items .items {
+.regions_blocks_includes_settings .sla .get_url_contents_task_html .dts .array_items > .items {
 	margin-top:-25px;
+}
+.regions_blocks_includes_settings .sla .soap_connector_task_html .client_options table input {
+	box-sizing:border-box;
 }
 .regions_blocks_includes_settings .sla .selected_task_properties .create_form_task_html .ptl_settings .ptl_external_vars.array_items .items {
 	margin-left:0;
