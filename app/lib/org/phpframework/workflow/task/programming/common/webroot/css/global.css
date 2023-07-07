@@ -295,9 +295,12 @@
 	width:auto;
 }
 .selected_task_properties .args .table_arg_value input {
-	width:100%;
+	width:calc(100% - 20px);
 	background-color:#FFF;
 	border:0;
+}
+.selected_task_properties .args .table_arg_value .add_variable.inline {
+	margin-left:0;
 }
 .selected_task_properties .args .table_arg_type {
 	width:80px;

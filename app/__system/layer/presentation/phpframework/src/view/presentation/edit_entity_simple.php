@@ -89,7 +89,7 @@ var brokers_db_drivers = ' . json_encode($brokers_db_drivers) . ';
 			<div class="title" title="' . $path . '">Edit Page (Visual Workspace) <span class="template_fields"></span> at: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $P, true) . '</div>
 			<ul>
 				<li class="view_project_page" data-title="View Project Page"><a href="' . $view_project_url . '" target="project"><i class="icon view"></i></a></li>
-				<li class="save" data-title="Save Page"><a onClick="saveEntity()"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save Page"><a onClick="saveEntityWithDelay()"><i class="icon save"></i> Save</a></li>
 				
 				<li class="sub_menu" onclick="openSubmenu(this)">
 					<i class="icon sub_menu"></i>
@@ -107,7 +107,7 @@ var brokers_db_drivers = ' . json_encode($brokers_db_drivers) . ';
 						<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
 						<li class="separator"></li>
 						<li class="beautify" title="Disable Html beautify on save"><a onClick="toggleCodeEditorHtmlBeautify(this)"><i class="icon save"></i> Disable Html Beautify on Save</a></li>
-						<li class="save" title="Save Page"><a onClick="saveEntity()"><i class="icon save"></i> Save</a></li>
+						<li class="save" title="Save Page"><a onClick="saveEntityWithDelay()"><i class="icon save"></i> Save</a></li>
 						<li class="save_preview" title="Save & Preview Page"><a onClick="saveAndPreview();"><i class="icon save_preview_file"></i> Save & Preview Page</a></li>
 					</ul>
 				</li>

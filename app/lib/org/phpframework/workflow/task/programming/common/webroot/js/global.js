@@ -716,6 +716,7 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 				'</td>' +
 				'<td class="table_arg_value">' + 
 					'<input type="text" class="task_property_field" name="' + class_name + '[' + count + '][value]" value="' + value.replace(/"/g, "&quot;") + '" />' + 
+					'<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>' +
 				'</td>' +
 				'<td class="table_arg_type">' +
 					'<select class="task_property_field" name="' + class_name + '[' + count + '][type]">' +

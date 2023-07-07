@@ -74,7 +74,7 @@ var brokers_db_drivers = ' . json_encode($brokers_db_drivers) . ';
 			<div class="title" title="' . $path . '">Edit Template (Visual Workspace): ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $P, true) . '</div>
 			<ul>
 				<li class="preview" data-title="Preview Template"><a onClick="preview()"><i class="icon view"></i> Preview Template</a></li>
-				<li class="save" data-title="Save Template"><a onClick="saveTemplate()"><i class="icon save"></i> Save</a></li>
+				<li class="save" data-title="Save Template"><a onClick="saveTemplateWithDelay()"><i class="icon save"></i> Save</a></li>
 				
 				<li class="sub_menu" onclick="openSubmenu(this)">
 					<i class="icon sub_menu"></i>
@@ -93,7 +93,7 @@ var brokers_db_drivers = ' . json_encode($brokers_db_drivers) . ';
 						<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
 						<li class="separator"></li>
 						<li class="beautify" title="Disable Html beautify on save"><a onClick="toggleCodeEditorHtmlBeautify(this)"><i class="icon save"></i> Disable Html Beautify on Save</a></li>
-						<li class="save" title="Save Template"><a onClick="saveTemplate()"><i class="icon save"></i> Save</a></li>
+						<li class="save" title="Save Template"><a onClick="saveTemplateWithDelay()"><i class="icon save"></i> Save</a></li>
 					</ul>
 				</li>
 			</ul>

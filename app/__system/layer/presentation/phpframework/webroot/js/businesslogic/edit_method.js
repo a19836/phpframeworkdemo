@@ -49,6 +49,7 @@ function hideOrShowIsBusinessLogicService(elm) {
 			name = ("" + name).replace(/^&?\$?/g, "");
 			
 			delete ProgrammingTaskUtil.variables_in_workflow["$data[\"" + name + "\"]"];
+			delete ProgrammingTaskUtil.variables_in_workflow["$data['" + name + "']"];
 			
 			//add annotation as normal argument
 			onBlurAnnotationName(input[0]);
@@ -73,32 +74,4 @@ function hideOrShowIsBusinessLogicService(elm) {
 
 function prepareFileClassMethodSettingsObj(obj) {
 	obj["is_business_logic_service"] = $(".top_bar .title > select.is_business_logic_service").val();
-}
-
-//overwrite the removeArgument function
-function removeArgument(elm) {
-	var p = $(elm).parent().parent();
-	var name = p.find(".name input").val();
-	name = ("" + name).replace(/^&?\$?/g, "");
-	
-	if (name) {
-		var is_business_logic_service = $(".top_bar .title > select.is_business_logic_service").val();
-		name = "$" + (is_business_logic_service == 1 ? 'data["' + name + '"]' : name);
-		
-		if ($.isPlainObject(ProgrammingTaskUtil.variables_in_workflow) && ProgrammingTaskUtil.variables_in_workflow.hasOwnProperty(name))
-			delete ProgrammingTaskUtil.variables_in_workflow[name];
-	}
-	
-	p.remove();
-}
-//overwrite the onBlurArgumentName function
-function onBlurArgumentName(elm) {
-	var name = $(elm).val();
-	name = ("" + name).replace(/^&?\$?/g, "");
-	
-	if (name) {
-		var is_business_logic_service = $(".top_bar .title > select.is_business_logic_service").val();
-		name = "$" + (is_business_logic_service == 1 ? 'data["' + name + '"]' : name);
-		ProgrammingTaskUtil.variables_in_workflow[name] = {};
-	}
 }

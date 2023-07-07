@@ -668,6 +668,17 @@ function isTemplateCodeObjChanged() {
 	return saved_template_obj_id != new_saved_template_obj_id;
 }
 
+function saveTemplateWithDelay() {
+	prepareAutoSaveVars();
+	
+	if (!is_from_auto_save)
+		setTimeout(function() {
+			saveTemplate();
+		}, 500);
+	else
+		saveTemplate();
+}
+
 function saveTemplate() {
 	var template_obj = $(".template_obj");
 	

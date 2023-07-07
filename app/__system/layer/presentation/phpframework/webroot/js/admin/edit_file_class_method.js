@@ -321,37 +321,55 @@ function addNewAnnotation(elm) {
 	return html_obj;
 }
 function removeAnnotation(elm) {
-	var p = $(elm).parent().parent();
-	var name = p.find(".name input").val();
-	name = ("" + name).replace(/^&?\$?/g, "");
-	
-	if (name) {
-		var is_business_logic_service = $(".top_bar .is_business_logic_service").val();
+	if ($.isPlainObject(ProgrammingTaskUtil.variables_in_workflow)) {
+		var p = $(elm).parent().parent();
+		var name = p.find(".name input").val();
+		name = ("" + name).replace(/^&?\$?/g, "");
 		
-		if (is_business_logic_service == 1)
-			name = "$data[\"" + name + "\"]";
-		else
-			name = "$" + name;
-		
-		if ($.isPlainObject(ProgrammingTaskUtil.variables_in_workflow) && ProgrammingTaskUtil.variables_in_workflow.hasOwnProperty(name))
-			delete ProgrammingTaskUtil.variables_in_workflow[name];
+		if (name) {
+			var is_business_logic_service = $(".top_bar .is_business_logic_service").val();
+			var names = [];
+			
+			if (is_business_logic_service == 1) {
+				names.push("$data['" + name + "']");
+				names.push("$data[\"" + name + "\"]");
+			}
+			else
+				names.push("$" + name);
+			
+			for (var i = 0; i < names.length; i++) {
+				name = names[i];
+				
+				if (ProgrammingTaskUtil.variables_in_workflow.hasOwnProperty(name))
+					delete ProgrammingTaskUtil.variables_in_workflow[name];
+			}
+		}
 	}
 	
 	p.remove();
 }
 function onBlurAnnotationName(elm) {
-	var name = $(elm).val();
-	name = ("" + name).replace(/^&?\$?/g, "");
-	
-	if (name) {
-		var is_business_logic_service = $(".top_bar .is_business_logic_service").val();
+	if ($.isPlainObject(ProgrammingTaskUtil.variables_in_workflow)) {
+		elm = $(elm);
+		var name = elm.val();
+		var old_name = elm[0].hasAttribute("old_name") ? elm.attr("old_name") : null;
+		name = ("" + name).replace(/^&?\$?/g, "");
 		
-		if (is_business_logic_service == 1)
-			name = "$data[\"" + name + "\"]";
-		else
-			name = "$" + name;
+		if (name) {
+			var is_business_logic_service = $(".top_bar .is_business_logic_service").val();
+			
+			if (is_business_logic_service == 1)
+				name = "$data['" + name + "']";
+			else
+				name = "$" + name;
+			
+			ProgrammingTaskUtil.variables_in_workflow[name] = {};
+		}
 		
-		ProgrammingTaskUtil.variables_in_workflow[name] = {};
+		if (old_name != null && old_name != name && ProgrammingTaskUtil.variables_in_workflow.hasOwnProperty(old_name))
+			delete ProgrammingTaskUtil.variables_in_workflow[old_name];
+		
+		elm.attr("old_name", name);
 	}
 }
 

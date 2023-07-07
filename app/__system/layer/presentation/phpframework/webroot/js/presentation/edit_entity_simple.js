@@ -952,6 +952,18 @@ function isEntityCodeObjChanged() {
 	return saved_obj_id != new_saved_obj_id;
 }
 
+//if manual save, execute save function in a short setTimeout, bc if cursor pointer is inside of an input of a widget properties and then we click save, that input is not getting saved and the user will need to save it again. So we need to have the save function inside of a timeout so the input onBlur event be trigered before.
+function saveEntityWithDelay(opts) {
+	prepareAutoSaveVars();
+	
+	if (!is_from_auto_save)
+		setTimeout(function() {
+			saveEntity(opts);
+		}, 500);
+	else
+		saveEntity(opts);
+}
+
 function saveEntity(opts) {
 	var entity_obj = $(".entity_obj");
 	

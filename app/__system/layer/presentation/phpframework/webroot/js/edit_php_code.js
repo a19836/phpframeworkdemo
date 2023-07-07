@@ -789,7 +789,7 @@ function chooseCreatedVariable(elm) {
 			input_type.val(var_type);
 	}
 	else if (input.parent().is(".table_arg_value")) //in case of method/function args
-		input.parent().parent().find(".table_arg_type select").val(value_type);
+		input.parent().parent().find(".table_arg_type select").val(var_type);
 	else if (input.is(".var") && input_parent.is(".item")) { //in case of conditions items
 		//fins the next sibling with class .var_type
 		var node = input;
@@ -1531,7 +1531,7 @@ function chooseIncludePageUrl(elm) {
 				else if (IncludePageUrlFancyPopup.settings.targetField.is(".value")) //in case of array items
 					IncludePageUrlFancyPopup.settings.targetField.parent().children(".value_type").val("string");
 				else if (IncludePageUrlFancyPopup.settings.targetField.parent().is(".table_arg_value")) //in case of method/function args
-					IncludePageUrlFancyPopup.settings.targetField.parent().parent().find(".table_arg_type select").val("");
+					IncludePageUrlFancyPopup.settings.targetField.parent().parent().find(".table_arg_type select").val("string");
 				
 				IncludePageUrlFancyPopup.hidePopup();
 			}
@@ -1805,7 +1805,7 @@ function chooseIncludeImageUrl(elm) {
 				else if (MyFancyPopup.settings.targetField.is(".value")) //in case of array items
 					MyFancyPopup.settings.targetField.parent().children(".value_type").val("string");
 				else if (MyFancyPopup.settings.targetField.parent().is(".table_arg_value")) //in case of method/function args
-					MyFancyPopup.settings.targetField.parent().parent().find(".table_arg_type select").val("");
+					MyFancyPopup.settings.targetField.parent().parent().find(".table_arg_type select").val("string");
 				
 				MyFancyPopup.hidePopup();
 			}
