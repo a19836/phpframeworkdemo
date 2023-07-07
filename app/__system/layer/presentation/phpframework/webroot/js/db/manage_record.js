@@ -33,6 +33,27 @@ function isRecordChanged() {
 	return saved_record_obj_id != new_record_obj_id;
 }
 
+function downloadFile(elm, attr_name) {
+	if (attr_name) {
+		elm = $(elm);
+		var manage_record = elm.parent().closest(".manage_record");
+		var pks = getPKsObj(manage_record);
+		
+		if (!$.isEmptyObject(pks)) {
+			var query_string = "";
+			for (var k in pks)
+				query_string += "&pks[" + k + "]=" + pks[k];
+			
+			var url = manage_record_action_url + "&download=1&attr_name=" + attr_name + query_string;
+			window.open(url, "download_file");
+		}
+		else 
+			StatusMessageHandler.showError("Could not get primary keys for this record!");
+	}
+	else 
+		StatusMessageHandler.showError("No attribute name specify!");
+}
+
 function deleteRecord(elm) {
 	if (confirm("Do you wish to delete this record?")) {
 		elm = $(elm);
@@ -77,9 +98,10 @@ function saveRecord(elm, do_not_confirm) {
 		var manage_record = elm.parent().closest(".manage_record");
 		var pks = getPKsObj(manage_record);
 		var attributes = getAttributesObj(manage_record);
+		var file_inputs_exist = fileInputsContainsNewFiles(manage_record.find("input[type=file]"));
 		
-		if (!$.isEmptyObject(pks) && !$.isEmptyObject(attributes)) {
-			$.ajax({
+		if (!$.isEmptyObject(pks) && (!$.isEmptyObject(attributes) || file_inputs_exist)) {
+			var ajax_options = {
 				type : "post",
 				url : manage_record_action_url,
 				data : {"action" : "update", "attributes": attributes, "conditions" : pks},
@@ -92,13 +114,17 @@ function saveRecord(elm, do_not_confirm) {
 						StatusMessageHandler.showMessage("Record saved successfully!", "", "bottom_messages", 1500);
 						
 						//update pks in case the user change them
-						for (var k in pks)
-							if (attributes[k] != pks[k]) {
-								pks[k] = attributes[k];
-								
-								//update pks in html
-								manage_record.find("input[type=hidden][name=" + k + "]").val(attributes[k]);
-							}
+						if (attributes)
+							for (var k in pks)
+								if (attributes[k] != pks[k]) {
+									pks[k] = attributes[k];
+									
+									//update pks in html
+									manage_record.find("input[type=hidden][name=" + k + "]").val(attributes[k]);
+								}
+						
+						if (file_inputs_exist)
+							updateNewFileAttributes(elm, pks);
 						
 						window.parent.updateCurrentRow(pks);
 					}
@@ -109,7 +135,16 @@ function saveRecord(elm, do_not_confirm) {
 					if (jqXHR.responseText)
 						StatusMessageHandler.showError(jqXHR.responseText);
 				},
-			});
+			};
+			
+			if (file_inputs_exist) {
+				ajax_options["data"] = getFormDataObjectWithUploadedFiles(ajax_options["data"], manage_record.find("input[type=file]"));
+				ajax_options["contentType"] = false;
+				ajax_options["processData"] = false;
+				ajax_options["cache"] = false;
+			}
+			
+			$.ajax(ajax_options);
 		}
 		else 
 			StatusMessageHandler.showError("Could not get primary keys for this record!");
@@ -120,9 +155,10 @@ function addRecord(elm) {
 	elm = $(elm);
 	var manage_record = elm.parent().closest(".manage_record");
 	var attributes = getAttributesObj(manage_record);
+	var file_inputs_exist = fileInputsContainsNewFiles(manage_record.find("input[type=file]"));
 	
-	if (!$.isEmptyObject(attributes)) {
-		$.ajax({
+	if (!$.isEmptyObject(attributes) || file_inputs_exist) {
+		var ajax_options = {
 			type : "post",
 			url : manage_record_action_url,
 			data : {"action" : "insert", "attributes": attributes},
@@ -151,13 +187,18 @@ function addRecord(elm) {
 					StatusMessageHandler.showMessage("Record added successfully!", "", "bottom_messages", 1500);
 					
 					//update attributes with new values
-					if ($.isPlainObject(data))
-						for (var k in data)
-							if (attributes.hasOwnProperty(k))
-								attributes[k] = data[k];
+					if (attributes)
+						if ($.isPlainObject(data))
+							for (var k in data)
+								if (attributes.hasOwnProperty(k))
+									attributes[k] = data[k];
 					
 					//call function to add new record in table
-					window.parent.addCurrentRow(attributes); //TODO: add primary key to attributes
+					window.parent.addCurrentRow(attributes);
+					
+					//update file in table
+					if (file_inputs_exist && $.isPlainObject(data))
+						window.parent.updateCurrentRow(data);
 				}
 				else
 					StatusMessageHandler.showError(data ? data : "Error saving this record. Please try again...");
@@ -166,8 +207,105 @@ function addRecord(elm) {
 				if (jqXHR.responseText)
 					StatusMessageHandler.showError(jqXHR.responseText);
 			},
-		});
+		};
+		
+		if (file_inputs_exist) {
+			ajax_options["data"] = getFormDataObjectWithUploadedFiles(ajax_options["data"], manage_record.find("input[type=file]"));
+			ajax_options["contentType"] = false;
+			ajax_options["processData"] = false;
+			ajax_options["cache"] = false;
+		}
+		
+		$.ajax(ajax_options);
 	}
+}
+
+function updateNewFileAttributes(elm, pks) {
+	$.ajax({
+		type : "post",
+		url : manage_record_action_url,
+		data : {"action" : "get", "conditions" : pks},
+		dataType : "json",
+		success : function(data, textStatus, jqXHR) {
+			StatusMessageHandler.removeLastShownMessage("info");
+			
+			if (data && $.isPlainObject(data)) { //update record with new data
+				var manage_record = $(elm).parent().closest(".manage_record");
+				var file_inputs = manage_record.find("input[type=file]");
+				
+				$.each(file_inputs, function(idx, input) {
+					var value = input.name && data.hasOwnProperty(input.name) ? data[input.name] : "";
+					$(input).parent().children(".file_content").html(value);
+				});
+			}
+			else 
+				StatusMessageHandler.showError("Error: Could not get record data. Please refresh this page.");
+		},
+		error : function(jqXHR, textStatus, errorThrown) { 
+			StatusMessageHandler.removeLastShownMessage("info");
+			
+			if (jqXHR.responseText)
+				StatusMessageHandler.showError(jqXHR.responseText);
+		},
+	});
+}
+
+function fileInputsContainsNewFiles(file_inputs) {
+	var exists = false;
+	
+	$.each(file_inputs, function(idx, input) {
+		if (input.files && input.files.length > 0) {
+			exists = true;
+			return false;
+		}
+	});
+	
+	return exists;
+}
+
+function getFormDataObjectWithUploadedFiles(data, file_inputs) {
+	var formData = convertValueToFormData(data);
+	
+	$.each(file_inputs, function(idx, input) {
+		if (input.files)
+			for (var i = 0; i < input.files.length; i++)
+				formData.append(input.name, input.files[i]);
+	});
+	
+	return formData
+}
+
+function convertValueToFormData(val, formData, namespace) {
+	if (!formData)
+		formData = new FormData();
+	
+	var is_plain_object = $.isPlainObject(val) && !(val instanceof File);
+	
+	if (namespace || is_plain_object) {
+		if (val instanceof Date)
+			formData.append(namespace, val.toISOString());
+		else if (val instanceof Array) {
+			for (var i = 0; i < val.length; i++)
+				convertValueToFormData(val[i], formData, namespace + '[' + i + ']');
+		}
+		else if (is_plain_object) {
+			for (var property_name in val)
+				if (val.hasOwnProperty(property_name))
+					convertValueToFormData(val[property_name], formData, namespace ? namespace + '[' + property_name + ']' : property_name);
+		}
+		else if (val instanceof File) {
+			if (val.name)
+				formData.append(namespace, val, val.name);
+			else
+				formData.append(namespace, val);
+		}
+		else if (typeof val !== 'undefined' || val == null)
+			formData.append(namespace, val);
+		else
+			formData.append(namespace, val.toString());
+	}
+	
+	return formData;
 }
 
 function getPKsObj(manage_record) {
@@ -200,7 +338,7 @@ function getAttributesObj(manage_record) {
 		var input = $(input);
 		var field_name = input.attr("name");
 		
-		if (field_name)
+		if (field_name && input[0].type != "file") //Do not include inputs with type=file
 			obj[field_name] = getAttributeValue(input);
 	});
 	

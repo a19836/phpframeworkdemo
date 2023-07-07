@@ -162,6 +162,27 @@ function insertNewRecord(elm) {
 	editRow(elm);
 }
 
+function downloadFile(elm, attr_name) {
+	if (attr_name) {
+		elm = $(elm);
+		var row = elm.parent().closest("tr");
+		var pks = getPKsObj(row);
+		
+		if (!$.isEmptyObject(pks)) {
+			var query_string = "";
+			for (var k in pks)
+				query_string += "&pks[" + k + "]=" + pks[k];
+			
+			var url = manage_record_action_url + "&download=1&attr_name=" + attr_name + query_string;
+			window.open(url, "download_file");
+		}
+		else 
+			StatusMessageHandler.showError("Could not get primary keys for this record!");
+	}
+	else 
+		StatusMessageHandler.showError("No attribute name specify!");
+}
+
 function deleteRow(elm) {
 	if (confirm("Do you wish to delete this record?")) {
 		elm = $(elm);
@@ -203,26 +224,30 @@ function toggleRow(elm, already_saved) {
 	else {
 		var attributes = {};
 		
-		row.children("td:not(.select_item):not(.actions):not(.fks)").each(function(idx, td) {
+		row.children("td:not(.select_item):not(.actions):not(.fks):not(.binary)").each(function(idx, td) {
 			td = $(td);
 			var attr_name = td.attr("attr_name");
 			var current_value = getAttributeValue(td);
+			var field_html_type = table_fields_types[attr_name];
+			field_html_type = field_html_type ? field_html_type : "text";
 			
 			if (is_editable) {
-				td.html(""); //remove inputs so we can then call the setAttributeValue method
-				
-				var v = already_saved ? current_value : td.data("current_value");
-				setAttributeValue(td, v);
-				
-				attributes[attr_name] = v;
+				if (field_html_type == "file")
+					td.children("input").remove();
+				else {
+					td.html(""); //remove inputs so we can then call the setAttributeValue method
+					
+					var v = already_saved ? current_value : td.data("current_value");
+					setAttributeValue(td, v);
+					
+					attributes[attr_name] = v;
+				}
 			}
 			else {
 				attributes[attr_name] = current_value;
 				
 				var td_width = td.width();
 				var td_height = td.height();
-				var field_html_type = table_fields_types[attr_name];
-				field_html_type = field_html_type ? field_html_type : "text";
 				var options = null;
 				
 				if ($.isPlainObject(field_html_type)) {
@@ -234,6 +259,8 @@ function toggleRow(elm, already_saved) {
 				
 				if (field_html_type == "textarea")
 					html = '<textarea>' + current_value + '</textarea>';
+				else if (field_html_type == "file")
+					html = '<input type="file"/>';
 				else if (field_html_type == "select") {
 					html = '<select>';
 					var value_exists = false;
@@ -256,11 +283,16 @@ function toggleRow(elm, already_saved) {
 				else 
 					html = '<input type="' + field_html_type + '" value="' + current_value + '"/>';
 				
-				td.html(html);
-				td.data("current_value", current_value);
-				td.css({width: td_width, height: td_height});
-				
-				prepareRecordFields(td);
+				if (field_html_type == "file")
+					td.append(html);
+				else {
+					td.html(html);
+					
+					td.data("current_value", current_value);
+					td.css({width: td_width, height: td_height});
+					
+					prepareRecordFields(td);
+				}
 			}
 		});
 		
@@ -276,9 +308,10 @@ function saveRow(elm, do_not_confirm) {
 		var row = elm.parent().closest("tr");
 		var pks = getPKsObj(row);
 		var attributes = getAttributesObj(row);
+		var file_inputs_exist = fileInputsContainsNewFiles(row.find("input[type=file]"));
 		
-		if (!$.isEmptyObject(pks) && !$.isEmptyObject(attributes)) {
-			$.ajax({
+		if (!$.isEmptyObject(pks) && (!$.isEmptyObject(attributes) || file_inputs_exist)) {
+			var ajax_options = {
 				type : "post",
 				url : manage_record_action_url,
 				data : {"action" : "update", "attributes": attributes, "conditions" : pks},
@@ -296,6 +329,9 @@ function saveRow(elm, do_not_confirm) {
 						
 						//toggle input fields to non-edit mode.
 						toggleRow(elm[0], true);
+						
+						if (file_inputs_exist)
+							updateNewFileAttributes(elm, pks);
 					}
 					else
 						StatusMessageHandler.showError(data ? data : "Error saving this record. Please try again...");
@@ -304,7 +340,16 @@ function saveRow(elm, do_not_confirm) {
 					if (jqXHR.responseText)
 						StatusMessageHandler.showError(jqXHR.responseText);
 				},
-			});
+			};
+			
+			if (file_inputs_exist) {
+				ajax_options["data"] = getFormDataObjectWithUploadedFiles(ajax_options["data"], row.find("input[type=file]"));
+				ajax_options["contentType"] = false;
+				ajax_options["processData"] = false;
+				ajax_options["cache"] = false;
+			}
+			
+			$.ajax(ajax_options);
 		}
 		else 
 			StatusMessageHandler.showError("Could not get primary keys for this record!");
@@ -398,6 +443,9 @@ function addCurrentRow(attributes) {
 function updateCurrentRow(pks) {
 	var row = $(MyFancyPopup.settings.targetRow);
 	
+	if (!row[0])
+		row = $(getRowFromPks(pks));
+	
 	if (row[0] && !$.isEmptyObject(pks)) {
 		StatusMessageHandler.showMessage("Updating changed record...", "", "bottom_messages", 1500);
 		
@@ -437,6 +485,151 @@ function deleteCurrentRow() {
 	
 	if (row[0])
 		row.remove();
+}
+
+function getRowFromPks(pks) {
+	if (!$.isEmptyObject(pks)) {
+		var tds = $(".manage_records table tbody tr td.select_item");
+		
+		for (var i = 0, t1 = tds.length; i < t1; i++) {
+			var td = $(tds[i]);
+			
+			//get pks for this td
+			var inputs = td.find("input[type=hidden]");
+			var td_pks = {};
+			var td_pks_length = 0;
+			
+			for (var j = 0, t2 = inputs.length; j < t2; j++) {
+				var input = inputs[j];
+				var name = input.name;
+				
+				if (name) {
+					var m = name.match(/selected_pks\[[0-9]+\]\[([^\]]+)\]/);
+					
+					if (m && m[1]) {
+						td_pks[ m[1] ] = input.value;
+						td_pks_length++;
+					}
+				}
+			}
+			
+			//check if the name
+			var exists = true;
+			var pks_length = 0;
+			
+			for (var k in pks) {
+				var v = pks[k];
+				
+				if (v != td_pks[k]) {
+					exists = false;
+					break;
+				}
+				
+				pks_length++;
+			}
+			
+			if (pks_length != td_pks_length)
+				exists = false;
+			
+			if (exists)
+				return td.parent().closest("tr")[0];
+		}
+	}
+	
+	return null;
+}
+
+function updateNewFileAttributes(elm, pks) {
+	$.ajax({
+		type : "post",
+		url : manage_record_action_url,
+		data : {"action" : "get", "conditions" : pks},
+		dataType : "json",
+		success : function(data, textStatus, jqXHR) {
+			StatusMessageHandler.removeLastShownMessage("info");
+			
+			if (data && $.isPlainObject(data)) { //update record with new data
+				var row = elm.parent().closest("tr");
+				var file_contents = row.find(".file_content");
+				
+				$.each(file_contents, function(idx, file_content) {
+					var td = $(file_content).parent().closest("td");
+					var field_name = td.attr("attr_name");
+					var field_value = field_name && data.hasOwnProperty(field_name) ? data[field_name] : "";
+					$(file_content).html(field_value);
+				});
+			}
+			else 
+				StatusMessageHandler.showError("Error: Could not get record data. Please refresh this page.");
+		},
+		error : function(jqXHR, textStatus, errorThrown) { 
+			StatusMessageHandler.removeLastShownMessage("info");
+			
+			if (jqXHR.responseText)
+				StatusMessageHandler.showError(jqXHR.responseText);
+		},
+	});
+}
+
+function fileInputsContainsNewFiles(file_inputs) {
+	var exists = false;
+	
+	$.each(file_inputs, function(idx, input) {
+		if (input.files && input.files.length > 0) {
+			exists = true;
+			return false;
+		}
+	});
+	
+	return exists;
+}
+
+function getFormDataObjectWithUploadedFiles(data, file_inputs) {
+	var formData = convertValueToFormData(data);
+	
+	$.each(file_inputs, function(idx, input) {
+		var td = $(input).parent().closest("td");
+		var field_name = td.attr("attr_name");
+		
+		if (input.files)
+			for (var i = 0; i < input.files.length; i++) 
+				formData.append(field_name, input.files[i]);
+	});
+	
+	return formData
+}
+
+function convertValueToFormData(val, formData, namespace) {
+	if (!formData)
+		formData = new FormData();
+	
+	var is_plain_object = $.isPlainObject(val) && !(val instanceof File);
+	
+	if (namespace || is_plain_object) {
+		if (val instanceof Date)
+			formData.append(namespace, val.toISOString());
+		else if (val instanceof Array) {
+			for (var i = 0; i < val.length; i++)
+				convertValueToFormData(val[i], formData, namespace + '[' + i + ']');
+		}
+		else if (is_plain_object) {
+			for (var property_name in val)
+				if (val.hasOwnProperty(property_name))
+					convertValueToFormData(val[property_name], formData, namespace ? namespace + '[' + property_name + ']' : property_name);
+		}
+		else if (val instanceof File) {
+			if (val.name)
+				formData.append(namespace, val, val.name);
+			else
+				formData.append(namespace, val);
+		}
+		else if (typeof val !== 'undefined' || val == null)
+			formData.append(namespace, val);
+		else
+			formData.append(namespace, val.toString());
+	}
+	
+	return formData;
 }
 
 function getPKInputColumnName(input) {
@@ -534,7 +727,7 @@ function getAttributesObj(row) {
 		var td = input.parent().closest("td");
 		var field_name = td.attr("attr_name");
 		
-		if (field_name)
+		if (field_name && input[0].type != "file") //Do not include inputs with type=file
 			obj[field_name] = getAttributeValue(td);
 	});
 	
@@ -594,6 +787,8 @@ function setAttributeValue(td, v) {
 			td.html(field_html_type["options"][v]);
 			td.attr("attr_value", v);
 		}
+		else if (field_html_type == "file")
+			td.children(".file_content").html(v);
 		else
 			td.html(v);
 	}

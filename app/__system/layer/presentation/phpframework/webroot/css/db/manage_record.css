@@ -30,6 +30,20 @@
 	width:100%;
 	box-sizing:border-box;
 }
+.manage_record table td .file_content {
+	max-height:100px;
+	word-break:break-all;
+	overflow:auto;
+}
+.manage_record table td .file_content img,
+  .manage_record table td .file_content svg {
+	max-width:100px;
+	max-height:100px;
+}
+.manage_record table td .file_content a {
+	cursor:pointer;
+	color:var(--link-color);
+}
 
 /* TABLE - EDITOR */
 .manage_record table tr.with_editor th {
@@ -54,6 +68,7 @@
 	height:327px; /* which is the height of the tinymce editor */
 	padding:10px;
 }
+
 /* ERROR */
 .manage_record .error {
 	margin:20px 0;

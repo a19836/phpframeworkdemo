@@ -52,7 +52,11 @@ $head = '
 		<textarea>' . "\n" . htmlspecialchars($sql, ENT_NOQUOTES) . '</textarea>
 	</div>
 	<div class="sql_results' . ($popup ? ' in_popup' : '') . '">
-		<table class="display compact">'; $fields = $results["fields"]; $rows = $results["result"]; if ($fields) { $main_content .= '<thead><tr>'; $t = count($fields); for ($i = 0; $i < $t; $i++) { $name = $fields[$i]->name; $main_content .= '<th class="table_header">' . $name . '</th>'; } $main_content .= '</tr></thead>'; } $main_content .= '<tbody>'; if ($_POST) { if (!$is_select_sql) { $message = $results ? "SQL executed successfully." : "SQL executed unsuccessfully." . ($exception_message ? "<br/>" . $exception_message : ""); $main_content .= '<tr>
+		<table class="display compact">'; $fields = $results["fields"]; $rows = $results["result"]; if ($fields) { $main_content .= '<thead><tr>'; $t = count($fields); for ($i = 0; $i < $t; $i++) { $name = $fields[$i]->name; $main_content .= '<th class="table_header">' . $name . '</th>'; } $main_content .= '</tr></thead>'; } $main_content .= '<tbody>'; if ($_POST) { if ($exception_message) { $main_content .= '<tr>
+			<td class="message error">
+				' . $exception_message . '
+			</td>
+		</tr>'; } else if (!$is_select_sql) { $message = $results ? "SQL executed successfully." : "SQL executed unsuccessfully."; $main_content .= '<tr>
 			<td class="message ' . ($results ? 'success' : 'error') . '" colspan="' . ($fields ? count($fields) : 0) . '">
 				' . $message . '
 				<script>

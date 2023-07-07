@@ -94,10 +94,29 @@
 	line-height:20px;
 	color:#333;
 	padding:0 5px;
+	vertical-align:top;
 }
 .manage_records table .editable td {
 	padding:0;
 	background:#f4f4f4;
+}
+.manage_records table .editable td.binary {
+	opacity:.5;
+	cursor:not-allowed;
+}
+.manage_records table td .file_content {
+	max-height:100px;
+	word-break:break-all;
+	overflow:auto;
+}
+.manage_records table td .file_content img,
+  .manage_records table td .file_content svg {
+	max-width:100px;
+	max-height:100px;
+}
+.manage_records table td .file_content a {
+	cursor:pointer;
+	color:var(--link-color);
 }
 .manage_records table .empty {
 	text-align:center;
@@ -295,8 +314,9 @@
 
 /* POPUP */
 .manage_record_popup {
-	top:10px;
-	left:10px;
+	position:fixed !important;
+	top:10px !important;
+	left:10px !important;
 	right:10px;
 	bottom:10px;
 }

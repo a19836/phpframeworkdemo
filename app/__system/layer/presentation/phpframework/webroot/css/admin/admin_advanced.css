@@ -875,7 +875,7 @@ body > .sortable_helper {
 }*/
 #left_panel.left_panel_with_tabs .main_tree_node {
 	height: calc(100vh - 100px);
-	padding:0 0 0 15px;
+	padding:0 0 20px 15px;
 	background:transparent;
 	color:inherit;
 	box-sizing:border-box;
@@ -1010,8 +1010,9 @@ body > .sortable_helper {
 	padding-top:30px;
 }
 #left_panel.left_panel_without_tabs .mytree {
-	height:calc(100vh - 90px);
+	height:calc(100vh - 95px);
 	margin-bottom:0;
+	padding-bottom:20px;
 	position:relative; /* very important bc when we drag a tree item and then scroll at the same time, the dragged element must update its position automatically. If the position is relative, the position will be updated automatically. Additionally if we dragged the element to the bottom, it will scroll down automatically. The same happens when we dragged the element up. */
 }
 #left_panel.left_panel_without_tabs .mytree.scroll {

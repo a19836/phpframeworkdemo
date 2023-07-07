@@ -16,7 +16,7 @@ function refresh() {
 }
 
 function updateLogs() {
-	console.log("updateLogs");
+	//console.log("updateLogs");
 	var logs = $(".logs_console .logs");
 	var file_created_time = logs.attr("file_created_time");
 	var file_pointer = logs.attr("file_pointer");
