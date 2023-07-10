@@ -14,9 +14,9 @@ a:1:{s:44:"FileSystemServiceCacheRelatedServicesHandler";a:2:{s:7:"methods";a:9:
 	$original_key = select_item_id-
 	
 	$dir_path = .../cache/..../select_item/PHP/__related/prefix/
-	*/";}s:25:"start_comments_line_index";i:66;s:26:"start_comments_token_index";i:481;s:23:"end_comments_line_index";i:74;s:24:"end_comments_token_index";i:481;s:22:"start_args_token_index";i:488;s:20:"end_args_token_index";i:502;s:9:"arguments";a:5:{s:7:"$prefix";N;s:4:"$key";N;s:5:"$type";N;s:9:"$key_type";N;s:13:"$original_key";N;}s:25:"start_brackets_line_index";i:75;s:26:"start_brackets_token_index";i:504;s:23:"end_brackets_line_index";i:79;s:24:"end_brackets_token_index";i:549;s:14:"end_line_index";i:79;s:15:"end_token_index";i:549;}s:25:"deleteRelatedServicesKeys";a:20:{s:4:"name";s:25:"deleteRelatedServicesKeys";s:16:"start_line_index";i:91;s:17:"start_token_index";i:553;s:4:"type";s:9:"protected";s:8:"abstract";b:0;s:6:"static";b:0;s:8:"comments";a:1:{i:0;s:548:"/*
+	*/";}s:25:"start_comments_line_index";i:66;s:26:"start_comments_token_index";i:481;s:23:"end_comments_line_index";i:74;s:24:"end_comments_token_index";i:481;s:22:"start_args_token_index";i:488;s:20:"end_args_token_index";i:502;s:9:"arguments";a:5:{s:7:"$prefix";N;s:4:"$key";N;s:5:"$type";N;s:9:"$key_type";N;s:13:"$original_key";N;}s:25:"start_brackets_line_index";i:75;s:26:"start_brackets_token_index";i:504;s:23:"end_brackets_line_index";i:79;s:24:"end_brackets_token_index";i:549;s:14:"end_line_index";i:79;s:15:"end_token_index";i:549;}s:25:"deleteRelatedServicesKeys";a:20:{s:4:"name";s:25:"deleteRelatedServicesKeys";s:16:"start_line_index";i:91;s:17:"start_token_index";i:553;s:4:"type";s:9:"protected";s:8:"abstract";b:0;s:6:"static";b:0;s:8:"comments";a:1:{i:0;s:547:"/*
 	1. For each file inside of the $dir_path, cheks if it is a folder. If it is call the same function again, otherwise:
-	2. gets the content of the file, unserialized it and loop the correspondent array.
+	2. gets the content of the file, unserialize it and loop the correspondent array.
 	3. For each item:
 		3.1 checks if the item "select_item_id-1_mysql" is IN each item, this is, checkIfKeyTypeMatchValue
 		3.2 if it matches gets the item file path

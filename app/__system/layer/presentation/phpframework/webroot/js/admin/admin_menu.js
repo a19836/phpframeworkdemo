@@ -571,8 +571,15 @@ function onDBContextMenu(target, contextmenu, originalEvent) {
 									input.val(mandatory_length);
 							}
 							//or if the previous primitive type is equal to the new primitive type and if the type is a simple type with length.
-							else if (type == attribute_properties["type"] && $.isPlainObject(simple_props) && simple_props.hasOwnProperty("length") && ($.isNumeric(simple_props["length"]) || simple_props["length"]))
+							/*else if (type == attribute_properties["type"] && $.isPlainObject(simple_props) && simple_props.hasOwnProperty("length") && ($.isNumeric(simple_props["length"]) || simple_props["length"]))
+								input.val(simple_props["length"]);*/
+							//or if the type is a simple type with length.
+							else if ($.isPlainObject(simple_props) && simple_props.hasOwnProperty("length") && ($.isNumeric(simple_props["length"]) || simple_props["length"]))
 								input.val(simple_props["length"]);
+							
+							//console.log(attribute_properties);
+							//console.log(type);
+							//console.log(simple_props);
 						}
 					}
 				};
