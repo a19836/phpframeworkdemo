@@ -94,7 +94,7 @@ var step = ' . ($step ? $step : 0) . ';
 		</form>
 	</div>
 	
-	<h3>Execution Errors</h3>
+	<h3>Execution Status</h3>
 	<div class="table_errors">'; if ($error_message) $main_content .= '<div class="error">' . $error_message . ($errors ? '<br/>Please see errors bellow...' : '') . '</div>'; else $main_content .= '<div>SQL executed successfully!</div>'; if ($errors) $main_content .= '<div class="errors">
 			<label>Errors:</label>
 			<ul>

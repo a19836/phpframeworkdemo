@@ -172,6 +172,7 @@
 }
 .choose_available_template_popup > .content .choose_page_workspace .html_editor .title,
   .choose_available_template_popup > .content .choose_page_workspace .template_editor .title {
+	font-size:110%;
 	font-weight:bold;
 	text-align:center;
 	color:#000;
@@ -179,6 +180,7 @@
 .choose_available_template_popup > .content .choose_page_workspace .html_editor .description,
   .choose_available_template_popup > .content .choose_page_workspace .template_editor .description {
 	margin:10px 0 20px;
+	color:#777;
 }
 
 /* TEMPLATE POPUPS - choose_available_template_popup - content - li */

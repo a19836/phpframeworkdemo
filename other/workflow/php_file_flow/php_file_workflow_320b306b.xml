@@ -5,13 +5,16 @@
 		<id><![CDATA[b70dfcdb_9341aa1e_580]]></id>
 		<type><![CDATA[b70dfcdb]]></type>
 		<tag><![CDATA[setarray]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
+		<offset_left>100</offset_left>
+		<offset_top>50</offset_top>
 		<width>70</width>
-		<height>0</height>
+		<height>65</height>
 		<properties>
-			<result_var_name><![CDATA[options]]></result_var_name>
-			<result_var_assignment></result_var_assignment>
+			<exits>
+				<default_exit>
+					<color><![CDATA[#426efa]]></color>
+				</default_exit>
+			</exits>
 			<items>
 				<key><![CDATA[no_cache]]></key>
 				<key_type><![CDATA[string]]></key_type>
@@ -36,11 +39,9 @@
 				<value><![CDATA[$sort]]></value>
 				<value_type><![CDATA[variable]]></value_type>
 			</items>
-			<exits>
-				<default_exit>
-					<color><![CDATA[#426efa]]></color>
-				</default_exit>
-			</exits>
+			<result_var_type><![CDATA[variable]]></result_var_type>
+			<result_var_name><![CDATA[options]]></result_var_name>
+			<result_var_assignment><![CDATA[default]]></result_var_assignment>
 		</properties>
 		<exits>
 			<default_exit>
@@ -57,13 +58,16 @@
 		<id><![CDATA[b70dfcdb_a2984874_480]]></id>
 		<type><![CDATA[b70dfcdb]]></type>
 		<tag><![CDATA[setarray]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
+		<offset_left>100</offset_left>
+		<offset_top>255</offset_top>
 		<width>70</width>
-		<height>0</height>
+		<height>65</height>
 		<properties>
-			<result_var_name><![CDATA[data]]></result_var_name>
-			<result_var_assignment></result_var_assignment>
+			<exits>
+				<default_exit>
+					<color><![CDATA[#426efa]]></color>
+				</default_exit>
+			</exits>
 			<items>
 				<key><![CDATA[conditions]]></key>
 				<key_type><![CDATA[string]]></key_type>
@@ -82,11 +86,9 @@
 				<value><![CDATA[$conditions_join]]></value>
 				<value_type><![CDATA[variable]]></value_type>
 			</items>
-			<exits>
-				<default_exit>
-					<color><![CDATA[#426efa]]></color>
-				</default_exit>
-			</exits>
+			<result_var_type><![CDATA[variable]]></result_var_type>
+			<result_var_name><![CDATA[data]]></result_var_name>
+			<result_var_assignment><![CDATA[default]]></result_var_assignment>
 		</properties>
 		<exits>
 			<default_exit>
@@ -103,27 +105,28 @@
 		<id><![CDATA[1e5acc1c_99dcc8e3_515]]></id>
 		<type><![CDATA[1e5acc1c]]></type>
 		<tag><![CDATA[callbusinesslogic]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
+		<offset_left>100</offset_left>
+		<offset_top>460</offset_top>
 		<width>70</width>
-		<height>0</height>
+		<height>75</height>
 		<properties>
-			<result_var_name><![CDATA[result]]></result_var_name>
-			<result_var_assignment></result_var_assignment>
-			<method_obj><![CDATA[$EVC->getBroker("soa")]]></method_obj>
-			<module_id><![CDATA[sample/test]]></module_id>
-			<module_id_type><![CDATA[string]]></module_id_type>
-			<service_id><![CDATA[ItemResourceService.getAll]]></service_id>
-			<service_id_type><![CDATA[string]]></service_id_type>
-			<parameters><![CDATA[$data]]></parameters>
-			<parameters_type><![CDATA[variable]]></parameters_type>
-			<options><![CDATA[$options]]></options>
-			<options_type><![CDATA[variable]]></options_type>
 			<exits>
 				<default_exit>
 					<color><![CDATA[#426efa]]></color>
 				</default_exit>
 			</exits>
+			<method_obj><![CDATA[EVC->getBroker("soa")]]></method_obj>
+			<module_id><![CDATA[sample/test]]></module_id>
+			<module_id_type><![CDATA[string]]></module_id_type>
+			<service_id><![CDATA[ItemResourceService.getAll]]></service_id>
+			<service_id_type><![CDATA[string]]></service_id_type>
+			<parameters><![CDATA[data]]></parameters>
+			<parameters_type><![CDATA[variable]]></parameters_type>
+			<options><![CDATA[options]]></options>
+			<options_type><![CDATA[variable]]></options_type>
+			<result_var_type><![CDATA[variable]]></result_var_type>
+			<result_var_name><![CDATA[result]]></result_var_name>
+			<result_var_assignment><![CDATA[default]]></result_var_assignment>
 		</properties>
 		<exits>
 			<default_exit>
@@ -140,10 +143,10 @@
 		<id><![CDATA[d1e9c332_44566afb_57]]></id>
 		<type><![CDATA[d1e9c332]]></type>
 		<tag><![CDATA[return]]></tag>
-		<offset_left>0</offset_left>
-		<offset_top>0</offset_top>
+		<offset_left>100</offset_left>
+		<offset_top>675</offset_top>
 		<width>70</width>
-		<height>0</height>
+		<height>65</height>
 		<properties>
 			<value><![CDATA[$result]]></value>
 			<type><![CDATA[variable]]></type>

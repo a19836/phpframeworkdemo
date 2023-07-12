@@ -206,7 +206,7 @@
 			</layer_exit>
 		</exits>
 	</task>
-	<task>
+	<task start="1">
 		<label><![CDATA[presentation]]></label>
 		<id><![CDATA[task_7cf9ccfb_844]]></id>
 		<type><![CDATA[7cf9ccfb]]></type>

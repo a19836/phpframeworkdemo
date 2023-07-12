@@ -617,10 +617,13 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 							<option value="">Local variable</option>
 							<option value="_GET">Variable from URL</option>
 							<option value="_POST">Variable from POST form</option>
-							<option value="_COOKIE">Variable from Cookies</option>
+							<option value="_REQUEST">Variable from REQUEST form</option>
 							<option value="_FILES">Variable from Files</option>
-							<option value="GLOBALS">Global variable</option>
+							<option value="_COOKIE">Variable from Cookies</option>
 							<option value="_ENV">Environment variable</option>
+							<option value="_SERVER">Server variable</option>
+							<option value="_SESSION">Session variable</option>
+							<option value="GLOBALS">Global variable</option>
 						</select>
 					</div>
 					<div class="name">

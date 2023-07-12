@@ -7,7 +7,7 @@
 	</settings>
 	<menu_widget></menu_widget>
 	<template_widget><![CDATA[
-		<pre></pre>
+		<pre class="php-content"></pre>
 	]]></template_widget>
 	<properties></properties>
 	<menu_css><![CDATA[
