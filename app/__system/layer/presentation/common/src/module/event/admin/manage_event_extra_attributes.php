@@ -9,7 +9,7 @@ if ($PEVC) {
 	include $EVC->getModulePath("common/admin/CommonModuleAdminTableExtraAttributesUtil", $common_project_name);
 	
 	$EventAdminUtil = new EventAdminUtil($CommonModuleAdminUtil);
-	$CommonModuleAdminTableExtraAttributesUtil = new CommonModuleAdminTableExtraAttributesUtil($EVC, $PEVC, $module_path, $GLOBALS["default_db_driver"], "me_event", "event");
+	$CommonModuleAdminTableExtraAttributesUtil = new CommonModuleAdminTableExtraAttributesUtil($EVC, $PEVC, $UserAuthenticationHandler, $module_path, $GLOBALS["default_db_driver"], "me_event", "event");
 	
 	if ($_POST) {
 		$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "write");

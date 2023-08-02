@@ -27,7 +27,7 @@ $(function() {
 	jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_connector = "Straight";
 	jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_overlay = "Forward Arrow";
 	jsPlumbWorkFlow.jsPlumbTaskFlow.available_connection_overlays_type = ["Forward Arrow"];
-	jsPlumbWorkFlow.jsPlumbTaskFlow.available_connection_overlays[0][1]["location"] = 0.999; //Sets the arrow to the end to the conneciton line. Note that this cannot be 1 or we will get a javascript error from jsplumb
+	jsPlumbWorkFlow.jsPlumbTaskFlow.available_connection_overlays[0][1]["location"] = 0.999; //Sets the arrow to the end to the conneciton line. Note that this cannot be 1 or we will get a javascript error from jsplumb. This is only used by jsplumb.
 	
 	jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = updateTasksAfterFileRead;
 	jsPlumbWorkFlow.jsPlumbTaskFile.on_success_update = updateTasksAfterFileRead;

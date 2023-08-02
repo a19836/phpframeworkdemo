@@ -18,6 +18,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 	private $main_attributes_table_name;
 	private $extra_attributes_table_name;
 	private $extra_attributes_table_alias;
+	private $UserAuthenticationHandler;
 	
 	private $project_url_prefix;
 	private $project_common_url_prefix;
@@ -53,9 +54,10 @@ class CommonModuleAdminTableExtraAttributesUtil {
 	
 	private $available_file_types = array("" => "-- Not a file --", "file" => "File", "image" => "Image");
 	
-	public function __construct($EVC, $PEVC, $module_path, $default_db_driver, $main_attributes_table_name, $main_attributes_table_alias = false, $extra_attributes_table_name = false, $extra_attributes_table_alias = false) {
+	public function __construct($EVC, $PEVC, $UserAuthenticationHandler, $module_path, $default_db_driver, $main_attributes_table_name, $main_attributes_table_alias = false, $extra_attributes_table_name = false, $extra_attributes_table_alias = false) {
 		$this->EVC = $EVC;
 		$this->PEVC = $PEVC;
+		$this->UserAuthenticationHandler = $UserAuthenticationHandler;
 		$this->module_path = $module_path;
 		$this->brokers = $PEVC->getPresentationLayer()->getBrokers();
 		$this->default_db_driver = $default_db_driver;
@@ -372,6 +374,10 @@ class CommonModuleAdminTableExtraAttributesUtil {
 							$data["attributes"][$idx]["type"] = "bigint";
 					}
 				}
+				
+			//save this table into our internal register so we can detect later if a db table belongs to a module. Leave this code before the next if method, bc if the table already exists it won't not insert it in the UserAuthenticationHandler.
+			if ($this->UserAuthenticationHandler)
+				$this->UserAuthenticationHandler->insertModuleDBTableNameIfNotExistsYet(array("name" => $this->extra_attributes_table_name));
 			
 			//check first if table exists in DB and if not create it
 			if (!$this->db_driver->isTableInNamesList($this->available_tables, $this->extra_attributes_table_name)) {
@@ -398,6 +404,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 				);
 				$this->sql_statements[] = $this->db_driver->getCreateTableStatement($table_data, $this->db_driver->getOptions());
 				$this->sql_statements_labels[] = "Create table " . $table_data["table_name"];
+				
 				/*$e = $this->db_driver->setData($sql);
 				
 				if ($e !== true)

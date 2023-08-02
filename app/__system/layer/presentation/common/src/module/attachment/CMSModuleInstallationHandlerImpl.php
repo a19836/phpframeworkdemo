@@ -5,8 +5,8 @@ include_once get_lib("org.phpframework.layer.presentation.cms.module.CMSModuleIn
 
 class CMSModuleInstallationHandlerImpl extends \CMSModuleInstallationHandler {
 	
-	public function __construct($layers, $module_id, $system_presentation_settings_module_path, $system_presentation_settings_webroot_module_path, $unzipped_module_path = "", $selected_db_driver = false) {
-		parent::__construct($layers, $module_id, $system_presentation_settings_module_path, $system_presentation_settings_webroot_module_path, $unzipped_module_path, $selected_db_driver);
+	public function __construct($layers, $module_id, $system_presentation_settings_module_path, $system_presentation_settings_webroot_module_path, $unzipped_module_path = "", $selected_db_driver = false, $UserAuthenticationHandler = null) {
+		parent::__construct($layers, $module_id, $system_presentation_settings_module_path, $system_presentation_settings_webroot_module_path, $unzipped_module_path, $selected_db_driver, $UserAuthenticationHandler);
 		
 		$t = $this->presentation_webroot_module_paths ? count($this->presentation_webroot_module_paths) : 0;
 		for ($i = 0; $i < $t; $i++)

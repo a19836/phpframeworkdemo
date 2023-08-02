@@ -55,14 +55,14 @@ include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler"); include 
 			<header>
 				<div class="title">Change Auth Settings</div>
 				<ul>
-					<li class="save" data-title="Save"><a onClick="submitForm(this)"><i class="icon save"></i> Save</a></li>
+					<li class="save" data-title="Save"><a onClick="$(this).addClass(\'loading\'); submitForm(this);"><i class="icon save"></i> Save</a></li>
 				</ul>
 			</header>
 		</div>
 		
 		<div class="label">This panel is to change the authentication\'s settings in the Admin Tool:</div>'; $main_content .= HtmlFormHandler::createHtmlForm($form_settings, $data); if (!$is_local_db) $main_content .= '
 		<script>
-			var form_fields = $(".db_settings .form_fields");
+			var form_fields = $(".change_auth_settings .form_fields");
 			onChangeDBType( form_fields.find(".db_type select")[0] );
 			form_fields.children(".form_field_db_advanced").hide();
 		</script>'; $main_content .= '

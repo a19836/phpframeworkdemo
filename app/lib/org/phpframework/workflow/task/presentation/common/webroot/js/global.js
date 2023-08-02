@@ -311,11 +311,9 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 			return true;
 		},
 		
-		onCompleteConnectionLabel : function(connection_id) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var label_overlay = WF.jsPlumbTaskFlow.getOverlayConnectionId(connection_id);
-			
+		onCompleteConnectionLabel : function(label_overlay, connection_id) {
 			if (label_overlay) {
+				var WF = myWFObj.getJsPlumbWorkFlow();
 				var conn_label = label_overlay.getLabel();
 				WF.jsPlumbTaskFlow.connections_properties[connection_id]["connection_label"] = conn_label;
 			}

@@ -1904,8 +1904,7 @@ function onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_of
 	
 	//preparing droppable if is ".connector_overlay_add_icon"
 	if (j_iframe_droppable_elm.hasClass("connector_overlay_add_icon")) {
-		var overlay_id = j_iframe_droppable_elm.attr("id");
-		var droppable_connection = jsPlumbWorkFlow.jsPlumbTaskFlow.getOverlayConnectionId(overlay_id);
+		var droppable_connection = jsPlumbWorkFlow.jsPlumbTaskFlow.getOverlayConnectionId(j_iframe_droppable_elm);
 		
 		if (droppable_connection)
 			task_id = jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByTypeToConnection(task_type, droppable_connection);

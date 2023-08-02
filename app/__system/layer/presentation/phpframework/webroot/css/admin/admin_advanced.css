@@ -1097,6 +1097,29 @@ body > .sortable_helper {
 	float:left;
 }
 
+/* LEFT PANEL - BUSINESS LOGIC LAYER */
+#left_panel .mytree > ul > .business_logic_layers > ul li[data-jstree='{"icon":"cms_common"}'],
+  #left_panel .mytree > ul > .business_logic_layers > ul li[data-jstree='{"icon":"cms_module"}'],
+  #left_panel .mytree > ul > .business_logic_layers > ul li[data-jstree='{"icon":"cms_program"}'],
+  #left_panel .mytree > ul > .business_logic_layers > ul li[data-jstree='{"icon":"cms_resource"}'] {
+	display:none;
+}
+#left_panel.advanced_level .mytree > ul > .business_logic_layers > ul li[data-jstree='{"icon":"cms_common"}'],
+  #left_panel.advanced_level .mytree > ul > .business_logic_layers > ul li[data-jstree='{"icon":"cms_module"}'],
+  #left_panel.advanced_level .mytree > ul > .business_logic_layers > ul li[data-jstree='{"icon":"cms_program"}'],
+  #left_panel.advanced_level .mytree > ul > .business_logic_layers > ul li[data-jstree='{"icon":"cms_resource"}'] {
+	display:block;
+}
+
+/* LEFT PANEL - DB LAYER */
+#left_panel .mytree > ul > .db_layers > ul li.module_table {
+	display:none;
+}
+#left_panel.advanced_level .mytree > ul > .db_layers > ul li.module_table {
+	display:block;
+}
+
+
 /* LEFT PANEL - TREE ICONS */
 body.dark_theme #left_panel .mytree i.jstree-themeicon:not(.reserved_file):not(.reserved_folder):not(.undefined_file)::after, 
   body.dark_theme #left_panel .mytree i.tab_icon::after {
