@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_resetregionblockjoinpoints {
+.taskflowchartmenu .task.task_resetregionblockjoinpoints {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_resetregionblockjoinpoints .eps {
+.taskflowchartdiagram .task.task_resetregionblockjoinpoints .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_resetregionblockjoinpoints .ep {
+.taskflowchartdiagram .task.task_resetregionblockjoinpoints .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

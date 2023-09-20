@@ -273,7 +273,7 @@ function loadTask(elm, table_name, type, relationship_table) {
 		//console.log(props);
 		
 		//INIT TASK
-		jsPlumbWorkFlow.jsPlumbProperty.setPropertiesFromHtmlElm(elm.parent(), "task_property_field", props);
+		taskFlowChartObj.Property.setPropertiesFromHtmlElm(elm.parent(), "task_property_field", props);
 		eval (func + "(elm.parent(), null, props);");
 		
 		//PREPARING PARAMS
@@ -788,7 +788,7 @@ function getPanelSettings(table_panel) {
 		}
 		
 		if (status) {
-			var query_string = jsPlumbWorkFlow.jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(task_properties_elm, "task_property_field");
+			var query_string = taskFlowChartObj.Property.getPropertiesQueryStringFromHtmlElm(task_properties_elm, "task_property_field");
 			parse_str(query_string, settings);
 		}
 		

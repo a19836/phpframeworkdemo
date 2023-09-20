@@ -420,7 +420,7 @@
 	background:var(--main-settings-bg);
 }
 
-.regions_blocks_includes_settings .sla .jsplumbtaskworkflow .icon, 
+.regions_blocks_includes_settings .sla .taskflowchartdiagram .icon, 
   .regions_blocks_includes_settings .sla .selected_task_properties .icon, 
   .regions_blocks_includes_settings .sla .selected_connection_properties .icon {
 	margin:auto 3px;

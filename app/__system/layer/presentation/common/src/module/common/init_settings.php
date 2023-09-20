@@ -30,7 +30,7 @@ include $EVC->getModulePath("common/init_tasks_flow", $common_project_name);
 
 //echo head
 echo '<script>
-var jsPlumbWorkFlow = null;
+var taskFlowChartObj = null;
 </script>';
 echo $tasks_data["head"];
 echo '<script>

@@ -198,19 +198,20 @@
 	cursor:pointer; 
 }
 
-.taskflowchart ._jsPlumb_endpoint {
-	z-index:5;
+.taskflowchart .end_point {
+	z-index:12;
 	cursor:pointer;
 	border:0px;
 }
 
-.taskflowchart ._jsPlumb_connector { 
+.taskflowchart .connector { 
 	/*border:1px solid red; */
-	z-index:999;
+	/*z-index:10px;*/ /* this is set through the ConnectorZIndex option */
+	/*z-index:999;*/ /*If this zindex is uncommented, then if a conector SVG is over a task, then we cannot access the task, bc it appears below the svg. */
 }
 
-.taskflowchart ._jsPlumb_overlay {
-	z-index:7;
+.taskflowchart .connector_overlay {
+	z-index:11;
 	color:#333;
 	/*display:none;*/
 	/*background-color:#F7F7F7;*/
@@ -343,7 +344,7 @@
 		progid:DXImageTransform.Microsoft.Shadow(Color=#aaaaaa, Strength=2, Direction=180),
 		progid:DXImageTransform.Microsoft.Shadow(Color=#aaaaaa, Strength=2, Direction=270);
 	 
-	z-index:3;
+	z-index:11;
 	cursor:move;
 }
 
@@ -507,7 +508,7 @@
 }
 
 .taskflowchart .task .info {
-	z-index:4;
+	z-index:12;
 	text-align:center;
 	/*font-weight:bold;*/
 	position:relative; /* very important, otherwise when onhover the task:before will be on top of the .info element */
@@ -587,8 +588,14 @@
 	overflow:hidden;
 	cursor:pointer;
 }
+.taskflowchart .connector_overlay_label + .connector_overlay_add_icon {
+	margin-top:-5px !important;
+}
 .taskflowchart > .tasks_flow:not(.dragging_task) .connector_overlay_add_icon:not(.task_droppable_over) {
 	opacity:.03;
+}
+.taskflowchart > .tasks_flow:not(.dragging_task) .connector_over .connector_overlay_add_icon:not(.task_droppable_over) {
+	opacity:1;
 }
 .taskflowchart .connector_overlay_add_icon:hover {
 	opacity:1 !important;

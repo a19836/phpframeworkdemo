@@ -20,7 +20,7 @@
 var ListingTaskPropertyObj = {
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
+		var WF = myWFObj.getTaskFlowChart();
 		
 		var task_html_element = properties_html_elm.find(".listing_task_html"); //do not use .page_content_task_html bc if there is listing or form task in the same parent, it will get the wrong element.
 		task_html_element.attr("updateTableUIHandler", "ListingTaskPropertyObj.onChangeDBTable");

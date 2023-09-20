@@ -202,7 +202,7 @@ function prepareChooseAvailableTemplateProjectsHtml(folder_to_filter) {
 	var html = '';
 	
 	if (MyFancyPopupAvailableTemplate.settings.available_projects_props) {
-		var available_projects_props = Object.assign({}, MyFancyPopupAvailableTemplate.settings.available_projects_props);
+		var available_projects_props = assignObjectRecursively({}, MyFancyPopupAvailableTemplate.settings.available_projects_props);
 		delete available_projects_props[ MyFancyPopupAvailableTemplate.settings.default_project_id ]; //remove current project
 		//console.log(available_projects_props);
 		

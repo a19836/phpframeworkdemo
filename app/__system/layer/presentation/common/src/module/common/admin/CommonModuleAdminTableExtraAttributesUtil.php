@@ -377,7 +377,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 				
 			//save this table into our internal register so we can detect later if a db table belongs to a module. Leave this code before the next if method, bc if the table already exists it won't not insert it in the UserAuthenticationHandler.
 			if ($this->UserAuthenticationHandler)
-				$this->UserAuthenticationHandler->insertModuleDBTableNameIfNotExistsYet(array("name" => $this->extra_attributes_table_name));
+				$this->UserAuthenticationHandler->insertReservedDBTableNameIfNotExistsYet(array("name" => $this->extra_attributes_table_name));
 			
 			//check first if table exists in DB and if not create it
 			if (!$this->db_driver->isTableInNamesList($this->available_tables, $this->extra_attributes_table_name)) {

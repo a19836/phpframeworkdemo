@@ -1,13 +1,13 @@
-.jsplumbtaskmenu .task.task_if {
+.taskflowchartmenu .task.task_if {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_if .eps {
+.taskflowchartdiagram .task.task_if .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_if .eps:hover:after {
+.taskflowchartdiagram .task.task_if .eps:hover:after {
 	content:"Drag the circles to link to another box";
 }
-.jsplumbtaskworkflow .task.task_if .ep {
+.taskflowchartdiagram .task.task_if .ep {
 	width:auto;
 	height:auto;
 	position:absolute;
@@ -18,17 +18,17 @@
 	border-color:transparent !important;
 	background-color:transparent !important;
 }
-.jsplumbtaskworkflow .task.task_if .ep:nth-child(1) {
+.taskflowchartdiagram .task.task_if .ep:nth-child(1) {
 	left:-28px;
 	right:50%;
 	text-align:left;
 }
-.jsplumbtaskworkflow .task.task_if .ep:nth-child(2) {
+.taskflowchartdiagram .task.task_if .ep:nth-child(2) {
 	left:50%;
 	right:-28px;
 	text-align:right;
 }
-.jsplumbtaskworkflow .task.task_if .ep span {
+.taskflowchartdiagram .task.task_if .ep span {
 	width:30px;
 	min-width:auto;
 	max-width:none;
@@ -50,10 +50,10 @@
 	box-sizing:border-box;
 	text-align:center;
 }
-.jsplumbtaskworkflow .task.task_if .ep:nth-child(1) span {
+.taskflowchartdiagram .task.task_if .ep:nth-child(1) span {
 	background:#51D87A;
 }
-.jsplumbtaskworkflow .task.task_if .ep:nth-child(2) span {
+.taskflowchartdiagram .task.task_if .ep:nth-child(2) span {
 	background:#FF4D4D;
 }
 

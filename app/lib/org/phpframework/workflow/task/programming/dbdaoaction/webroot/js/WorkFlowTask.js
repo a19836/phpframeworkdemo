@@ -212,7 +212,7 @@ var DBDAOActionTaskPropertyObj = {
 	
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
-			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+			var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 			ProgrammingTaskUtil.saveNewVariableInWorkflowAccordingWithTaskPropertiesValues(task_property_values);
 		
 			var label = DBDAOActionTaskPropertyObj.getDefaultExitLabel(task_property_values);
@@ -222,7 +222,7 @@ var DBDAOActionTaskPropertyObj = {
 		
 			var default_method_obj_str = BrokerOptionsUtilObj.getDefaultBroker(DBDAOActionTaskPropertyObj.brokers_options);
 			if (!task_property_values["method_obj"] && default_method_obj_str)
-				myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id]["method_obj"] = default_method_obj_str;
+				myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id]["method_obj"] = default_method_obj_str;
 			
 			ProgrammingTaskUtil.onTaskCreation(task_id);
 		}, 30);
@@ -387,8 +387,8 @@ var DBDAOActionTaskPropertyObj = {
 			arr_elm.hide();
 			
 			if (elm.attr("current_type") == "array" && arr_elm.find(".item").length > 0 && confirm("Do you wish to convert this array to options?")) {
-				var WF = myWFObj.getJsPlumbWorkFlow();
-				var query_string = WF.jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(arr_elm, "task_property_field");
+				var WF = myWFObj.getTaskFlowChart();
+				var query_string = WF.Property.getPropertiesQueryStringFromHtmlElm(arr_elm, "task_property_field");
 				var items = {};
 				parse_str(query_string, items);
 				

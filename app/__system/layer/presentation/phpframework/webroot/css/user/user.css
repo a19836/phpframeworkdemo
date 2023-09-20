@@ -93,7 +93,7 @@ body.main_navigator_reverse #menu li.current_user {
 	border-bottom:1px dashed #FFF;
 }
 #menu li.manage_layout_types,
-  #menu li.manage_module_db_table_names,
+  #menu li.manage_reserved_db_table_names,
   #menu li.manage_login_controls,
   #menu li.change_db_keys,
   #menu li.change_auth_settings {
@@ -120,13 +120,13 @@ body.main_navigator_reverse #content {
 #content .users_list {padding:0 10px 10px;}
 #content .user_types_list {padding:0 10px 10px;}
 #content .layout_types_list {padding:0 10px 10px;}
-#content .module_db_table_names_list {padding:0 10px 10px;}
+#content .reserved_db_table_names_list {padding:0 10px 10px;}
 #content .object_types_list {padding:0 10px 10px;}
 #content .permissions_list {padding:0 10px 10px;}
 #content .login_controls_list {padding:0 10px 10px;}
 #content .edit_user_type {padding:0 10px 10px;}
 #content .edit_layout_type {padding:0 10px 10px;}
-#content .edit_module_db_table_name {padding:0 10px 10px;}
+#content .edit_reserved_db_table_name {padding:0 10px 10px;}
 #content .object_user_type {padding:0 10px 10px;}
 #content .edit_user {padding:0 10px 10px;}
 #content .edit_permission {padding:0 10px 10px;}
@@ -140,11 +140,11 @@ body.main_navigator_reverse #content {
 #content table .permission_id { width:50px; }
 #content table .user_type_id { width:60px; }
 #content table .layout_type_id { width:50px; }
-#content table .module_db_table_name_id { width:50px; }
+#content table .reserved_db_table_name_id { width:50px; }
 #content table .object_type_id { width:50px; }
 #content table .user_type { width:100px; }
 #content table .layout_type { width:100px; }
-#content table .module_db_table_name { width:100px; }
+#content table .reserved_db_table_name { width:100px; }
 #content table .username { width:150px; }
 #content table .name { width:150px; }
 #content table .created_date { width:150px; text-align:center; }

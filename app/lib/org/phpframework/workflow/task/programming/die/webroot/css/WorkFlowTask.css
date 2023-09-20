@@ -1,14 +1,14 @@
-.jsplumbtaskmenu .task.task_exit {
+.taskflowchartmenu .task.task_exit {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_exit .eps {
+.taskflowchartdiagram .task.task_exit .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_exit .ep {
+.taskflowchartdiagram .task.task_exit .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }
-.jsplumbtaskworkflow .task.task_exit:hover:after {
+.taskflowchartdiagram .task.task_exit:hover:after {
 	content:"Click to view menu or move. Linking to boxes is not allowed!";
 }
 

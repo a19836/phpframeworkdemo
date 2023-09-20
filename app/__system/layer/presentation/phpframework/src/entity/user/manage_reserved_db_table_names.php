@@ -18,4 +18,4 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $module_db_table_names = $UserAuthenticationHandler->getAllModuleDBTableNames(); ?>
+$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $reserved_db_table_names = $UserAuthenticationHandler->getAllReservedDBTableNames(); ?>

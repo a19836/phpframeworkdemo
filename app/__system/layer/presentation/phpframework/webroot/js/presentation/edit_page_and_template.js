@@ -1075,7 +1075,7 @@ function addRegionBlockOption(select_elm, block, project) {
 function updateSelectedTemplateRegionsBlocks(p, data) {
 	//BACKING UP GLOBAL VARS - bc the getRegionBlockHtml triggers the onChange events which changes then these global vars, if the synchronization with the template layout is active...
 	var regions_blocks_list_clone = JSON.parse(JSON.stringify(regions_blocks_list)); //cannot use Object.assign bc regions_blocks_list is an array
-	var template_params_values_list_clone = Object.assign({}, template_params_values_list);
+	var template_params_values_list_clone = assignObjectRecursively({}, template_params_values_list);
 	
 	//PREPARING TEMPLATE REGIONS
 	var regions = data && data.regions ? data.regions : [];
@@ -1456,12 +1456,18 @@ function editRegionBlock(elm, opts) {
 				}
 			
 			//set new func for on_convert_project_url_php_vars_to_real_values_func that replaces inline vars too. This is only for the edit_entity_simple. The edit_template_simple should have this flag disabled and only replace the project_url_prefix inside of the php tags.
-			PtlLayoutUIEditor.options.on_convert_project_url_php_vars_to_real_values_func = function(str) {
-				return convertProjectUrlPHPVarsToRealValues(str, typeof replace_inline_project_url_php_vars == "undefined" ? false : replace_inline_project_url_php_vars);
+			PtlLayoutUIEditor.options.on_convert_project_url_php_vars_to_real_values_func = function(str, widget) {
+				var replace_inline_vars = typeof replace_inline_project_url_php_vars == "undefined" ? false : replace_inline_project_url_php_vars;
+				replace_inline_vars = widget && $(widget).parent().closest(".template_region").length > 0 ? true : replace_inline_vars;
+				
+				return convertProjectUrlPHPVarsToRealValues(str, replace_inline_vars);
 			};
 			//set new func for on_convert_project_url_real_values_to_php_vars_func that replaces the project_url_prefix with the original_project_url_prefix var. This is only for the edit_template_simple. The edit_entity_simple should have the project_url_prefix var instead.
-			PtlLayoutUIEditor.options.on_convert_project_url_real_values_to_php_vars_func = function(str) {
-				return convertProjectUrlRealValuesToPHPVars(str, typeof give_priority_to_original_project_url_prefix == "undefined" ? false : give_priority_to_original_project_url_prefix, typeof is_code_html_base == "undefined" ? true : is_code_html_base);
+			PtlLayoutUIEditor.options.on_convert_project_url_real_values_to_php_vars_func = function(str, widget) {
+				var html_base = typeof is_code_html_base == "undefined" ? true : is_code_html_base;
+				html_base = widget && $(widget).parent().closest(".template_region").length > 0 ? false : html_base;
+				
+				return convertProjectUrlRealValuesToPHPVars(str, typeof give_priority_to_original_project_url_prefix == "undefined" ? false : give_priority_to_original_project_url_prefix, html_base);
 			};
 			
 			initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor);
@@ -2298,7 +2304,7 @@ function getIframeTemplateRegionsBlocksForSettings(iframe, settings_elm) {
 		
 		data = {
 			regions: regions,
-			//regions_blocks: Object.assign({}, settings["regions_blocks"]) //clone obj
+			//regions_blocks: assignObjectRecursively({}, settings["regions_blocks"]) //clone obj
 			regions_blocks: JSON.parse(JSON.stringify(settings["regions_blocks"])) //clone obj and convert it to an array. Do not use 'Object.assign({}, settings["regions_blocks"])', bc the settings["regions_blocks"] is a Plain Object and we must to have an array!
 		};
 	}
@@ -2307,8 +2313,8 @@ function getIframeTemplateRegionsBlocksForSettings(iframe, settings_elm) {
 		
 		iframe_available_regions = iframe[0].contentWindow.getAvailableTemplateRegions();
 	}
-	//console.log(Object.assign({}, data));
-	//console.log(Object.assign({}, settings));
+	//console.log(assignObjectRecursively({}, data));
+	//console.log(assignObjectRecursively({}, settings));
 	
 	var new_regions_blocks_list = data["regions_blocks"]; //global var
 	var new_template_params_values_list = settings["params"]; //global var
@@ -2532,8 +2538,8 @@ function areLayoutAndSettingsDifferent(iframe, settings_elm, include_order) {
 function areRegionsBlocksDifferent(regions_blocks_1, regions_blocks_2, iframe_data_regions, include_order) {
 	var are_different = false;
 	var region_block_orders_1 = {};
-	//console.log(Object.assign({}, regions_blocks_1));
-	//console.log(Object.assign({}, regions_blocks_2));
+	//console.log(assignObjectRecursively({}, regions_blocks_1));
+	//console.log(assignObjectRecursively({}, regions_blocks_2));
 	
 	$.each(regions_blocks_1, function(idx, rb_1) {
 		var region_1 = rb_1[0];
@@ -2989,9 +2995,9 @@ function checkIfReloadLayoutIframeFromSettings(iframe, iframe_data, settings_dat
 	var iframe_available_regions = iframe[0].contentWindow.getAvailableTemplateRegions();
 	var template_regions = iframe_data["template_regions"];
 	
-	//console.log(Object.assign({}, settings_data["regions_blocks"]));
-	//console.log(Object.assign({}, template_regions));
-	//console.log(Object.assign({}, regions_blocks_list));
+	//console.log(assignObjectRecursively({}, settings_data["regions_blocks"]));
+	//console.log(assignObjectRecursively({}, template_regions));
+	//console.log(assignObjectRecursively({}, regions_blocks_list));
 	
 	//check if there are any hidden template_region
 	var hidden_or_not_existent_template_regions = [];
@@ -4878,12 +4884,18 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
 				}
 			
 			//set new func for on_convert_project_url_php_vars_to_real_values_func that replaces inline vars too. This is only for the edit_entity_simple. The edit_template_simple should have this flag disabled and only replace the project_url_prefix inside of the php tags.
-			PtlLayoutUIEditor.options.on_convert_project_url_php_vars_to_real_values_func = function(str) {
-				return convertProjectUrlPHPVarsToRealValues(str, typeof replace_inline_project_url_php_vars == "undefined" ? false : replace_inline_project_url_php_vars);
+			PtlLayoutUIEditor.options.on_convert_project_url_php_vars_to_real_values_func = function(str, widget) {
+				var replace_inline_vars = typeof replace_inline_project_url_php_vars == "undefined" ? false : replace_inline_project_url_php_vars;
+				replace_inline_vars = widget && $(widget).parent().closest(".template_region").length > 0 ? true : replace_inline_vars; //in case of edit_template simple.
+				
+				return convertProjectUrlPHPVarsToRealValues(str, replace_inline_vars);
 			};
 			//set new func for on_convert_project_url_real_values_to_php_vars_func that replaces the project_url_prefix with the original_project_url_prefix var. This is only for the edit_template_simple. The edit_entity_simple should have the project_url_prefix var instead.
-			PtlLayoutUIEditor.options.on_convert_project_url_real_values_to_php_vars_func = function(str) {
-				return convertProjectUrlRealValuesToPHPVars(str, typeof give_priority_to_original_project_url_prefix == "undefined" ? false : give_priority_to_original_project_url_prefix, typeof is_code_html_base == "undefined" ? true : is_code_html_base);
+			PtlLayoutUIEditor.options.on_convert_project_url_real_values_to_php_vars_func = function(str, widget) {
+				var html_base = typeof is_code_html_base == "undefined" ? true : is_code_html_base;
+				html_base = widget && $(widget).parent().closest(".template_region").length > 0 ? false : html_base; //in case of edit_template simple.
+				
+				return convertProjectUrlRealValuesToPHPVars(str, typeof give_priority_to_original_project_url_prefix == "undefined" ? false : give_priority_to_original_project_url_prefix, html_base);
 			};
 			
 			initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor);
@@ -5198,15 +5210,15 @@ if (typeof flushCache != "function" && typeof flush_cache_url != "undefined" && 
 					});
 				else if (!do_not_show_messages) {
 					if (data == "1")
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Cache flushed!", "", "bottom_messages", 1500);
+						taskFlowChartObj.StatusMessage.showMessage("Cache flushed!", "", "bottom_messages", 1500);
 					else
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Error: Cache not flushed!\nPlease try again..." + (data ? "\n" + data : ""));
+						taskFlowChartObj.StatusMessage.showError("Error: Cache not flushed!\nPlease try again..." + (data ? "\n" + data : ""));
 				}
 			},
 			error : function(jqXHR, textStatus, errorThrown) { 
 				if (!do_not_show_messages) {
 					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-					jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Error: Cache not flushed!\nPlease try again..." + msg);
+					taskFlowChartObj.StatusMessage.showError("Error: Cache not flushed!\nPlease try again..." + msg);
 				}
 			},
 			async : opts.hasOwnProperty("async") ? opts["async"] : true

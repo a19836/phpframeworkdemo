@@ -28,7 +28,7 @@ if (typeof is_global_db_diagram_common_file_already_included == "undefined") {
 				var connection = conn.connection;
 				connection.setParameter("connection_exit_type", "StateMachine");
 				
-				myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.setNewConnectionConnector(connection);
+				myWFObj.getTaskFlowChart().TaskFlow.setNewConnectionConnector(connection);
 			}
 		}
 		
@@ -38,7 +38,7 @@ if (typeof is_global_db_diagram_common_file_already_included == "undefined") {
 	//Checks all existent connections and change them accordingly if exists any inconsistency...
 	//To be call after a xml file loads.
 	function prepareTasksTableConnections() {
-		var connections = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getConnections();
+		var connections = myWFObj.getTaskFlowChart().TaskFlow.getConnections();
 		
 		for (var i = 0; i < connections.length; i++)
 			getConfiguredTaskTableConnection(connections[i]);
@@ -48,22 +48,22 @@ if (typeof is_global_db_diagram_common_file_already_included == "undefined") {
 	//checks if this connection is "One To Many" and flip it to "Many To One"
 	//To be call on DBTableTaskPropertyObj.onCompleteConnectionProperties.
 	function getConfiguredTaskTableConnection(conn) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
+		var WF = myWFObj.getTaskFlowChart();
 		var conn_overlay = conn.getParameter("connection_exit_overlay");
 		
 		if (conn_overlay == "One To Many") {
-			var new_conn = WF.jsPlumbTaskFlow.flipConnection(conn.id);
+			var new_conn = WF.TaskFlow.flipConnection(conn.id);
 			
 			if (new_conn) {
-				WF.jsPlumbTaskFlow.changeConnectionOverlayType(new_conn, "Many To One");
+				WF.TaskFlow.changeConnectionOverlayType(new_conn, "Many To One");
 				
 				var conn_connector = conn.getParameter("connection_exit_type");
-				WF.jsPlumbTaskFlow.changeConnectionConnectorType(new_conn, conn_connector);
+				WF.TaskFlow.changeConnectionConnectorType(new_conn, conn_connector);
 				
 				//flip connection properties
-				var aux = WF.jsPlumbTaskFlow.connections_properties[new_conn.id]["source_columns"];
-				WF.jsPlumbTaskFlow.connections_properties[new_conn.id]["source_columns"] = WF.jsPlumbTaskFlow.connections_properties[new_conn.id]["target_columns"];
-				WF.jsPlumbTaskFlow.connections_properties[new_conn.id]["target_columns"] = aux;
+				var aux = WF.TaskFlow.connections_properties[new_conn.id]["source_columns"];
+				WF.TaskFlow.connections_properties[new_conn.id]["source_columns"] = WF.TaskFlow.connections_properties[new_conn.id]["target_columns"];
+				WF.TaskFlow.connections_properties[new_conn.id]["target_columns"] = aux;
 				
 				return new_conn;
 			}
@@ -99,7 +99,7 @@ if (typeof is_global_db_diagram_common_file_already_included == "undefined") {
 		}
 		
 		if (!valid)
-			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError((is_repeated ? "\n" : "") + "Invalid label. Please choose a different label.\nOnly this letters are allowed: a-z, A-Z, 0-9, '_', '.' and you must have at least 1 character.\nNote that by adding the '.' char you are adding a schema to your table.");
+			myWFObj.getTaskFlowChart().StatusMessage.showError((is_repeated ? "\n" : "") + "Invalid label. Please choose a different label.\nOnly this letters are allowed: a-z, A-Z, 0-9, '_', '.' and you must have at least 1 character.\nNote that by adding the '.' char you are adding a schema to your table.");
 		
 		return valid;
 	}
@@ -114,7 +114,7 @@ if (typeof is_global_db_diagram_common_file_already_included == "undefined") {
 			normalized = normalized.replace(/[\u0300-\u036f]/g, ""); //replaces all characters with accents with non accented characters including 'ç' to 'c'
 			
 			if (name != normalized)
-				myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("Is NOT advisable to add names with accents and with non-standard characters. Please try to only use A-Z 0-9 and '_'.");
+				myWFObj.getTaskFlowChart().StatusMessage.showError("Is NOT advisable to add names with accents and with non-standard characters. Please try to only use A-Z 0-9 and '_'.");
 		}
 	}
 	
@@ -124,9 +124,9 @@ if (typeof is_global_db_diagram_common_file_already_included == "undefined") {
 	}
 	
 	function resizeTableTaskBasedOnAttributes(task_id) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
-		var items = task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " ." + WF.jsPlumbTaskFlow.task_ep_class_name + " .table_attr .name p");
+		var WF = myWFObj.getTaskFlowChart();
+		var task = WF.TaskFlow.getTaskById(task_id);
+		var items = task.find(" > ." + WF.TaskFlow.task_eps_class_name + " ." + WF.TaskFlow.task_ep_class_name + " .table_attr .name p");
 		
 		var name_elm = null;
 		var n = "";
@@ -151,7 +151,7 @@ if (typeof is_global_db_diagram_common_file_already_included == "undefined") {
 			if (diff > 0) {
 				task.css("width", (parseInt(task.css("width")) + diff + 5) + "px");
 				
-				WF.jsPlumbTaskFlow.repaintTask(task);
+				WF.TaskFlow.repaintTask(task);
 			}
 		}
 	}

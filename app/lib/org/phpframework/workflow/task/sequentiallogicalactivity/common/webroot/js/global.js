@@ -66,14 +66,14 @@ var SLAItemTaskPropertyObj = {
 		properties = properties ? properties[0] : {};
 		SLAItemTaskPropertyObj.tmp_task_properties = properties;
 		
-		task_html_elm.html(""); //reset the task_html_elm, otherwise it will give an exception bc the myWFObj.getJsPlumbWorkFlow() will try to parse_str the createform properties, and it will give an error on the .task_property_field fields.
+		task_html_elm.html(""); //reset the task_html_elm, otherwise it will give an exception bc the myWFObj.getTaskFlowChart() will try to parse_str the createform properties, and it will give an error on the .task_property_field fields.
 		
 		return true;
 	},
 	
 	onCompleteTaskProperties : function(properties_html_elm, task_id, task_property_values, status) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		WF.jsPlumbTaskFlow.tasks_properties[task_id]["properties"] = SLAItemTaskPropertyObj.tmp_task_properties;
+		var WF = myWFObj.getTaskFlowChart();
+		WF.TaskFlow.tasks_properties[task_id]["properties"] = SLAItemTaskPropertyObj.tmp_task_properties;
 		
 		if (status)
 			SLAItemTaskPropertyObj.prepareTaskLabel(task_id);
@@ -90,16 +90,16 @@ var SLAItemTaskPropertyObj = {
 	},
 	
 	prepareTaskLabel : function(task_id) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var label = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
+		var WF = myWFObj.getTaskFlowChart();
+		var label = WF.TaskFlow.getTaskLabelByTaskId(task_id);
 		label = ("" + label).replace(/\s+/g, "");
 		
-		if (label == "" && WF.jsPlumbTaskFlow.tasks_properties[task_id]["properties"] && WF.jsPlumbTaskFlow.tasks_properties[task_id]["properties"]["action_type"]) {
-			var props = WF.jsPlumbTaskFlow.tasks_properties[task_id]["properties"] ? WF.jsPlumbTaskFlow.tasks_properties[task_id]["properties"] : {};
+		if (label == "" && WF.TaskFlow.tasks_properties[task_id]["properties"] && WF.TaskFlow.tasks_properties[task_id]["properties"]["action_type"]) {
+			var props = WF.TaskFlow.tasks_properties[task_id]["properties"] ? WF.TaskFlow.tasks_properties[task_id]["properties"] : {};
 			var task_label = (props["result_var_name"] ? "$" + props["result_var_name"] + " = " : "") + props["action_type"] + " (...)";
 			
-			WF.jsPlumbTaskFlow.getTaskById(task_id).attr("title", task_label).find(".info span").html(task_label);
-			WF.jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
+			WF.TaskFlow.getTaskById(task_id).attr("title", task_label).find(".info span").html(task_label);
+			WF.TaskFlow.repaintTaskByTaskId(task_id);
 		}
 	},
 };

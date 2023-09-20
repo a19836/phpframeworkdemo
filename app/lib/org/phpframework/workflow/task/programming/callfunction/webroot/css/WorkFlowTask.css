@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_callfunction {
+.taskflowchartmenu .task.task_callfunction {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_callfunction .eps {
+.taskflowchartdiagram .task.task_callfunction .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_callfunction .ep {
+.taskflowchartdiagram .task.task_callfunction .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

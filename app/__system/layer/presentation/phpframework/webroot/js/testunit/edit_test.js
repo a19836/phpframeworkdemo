@@ -340,7 +340,7 @@ function isTestObjChanged() {
 	return saved_test_settings_id != new_test_settings_id
 		|| old_workflow_id != new_workflow_id
 		|| old_code_id != new_code_id;
-		(selected_tab.attr("id") == "tasks_flow_tab" && jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()); //compares if tasks' sizes and offsets are different, but only if workflow tab is selected.
+		(selected_tab.attr("id") == "tasks_flow_tab" && taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving()); //compares if tasks' sizes and offsets are different, but only if workflow tab is selected.
 }
 
 function getTestObj() {
@@ -417,7 +417,7 @@ function saveTest() {
 			//Do not re-call only the ajax request below, otherwise there will be some other files that will not be saved, this is, the getCodeForSaving saves the workflow and if we only call the ajax request below, the workflow won't be saved. To avoid this situation, we call the all save function.
 			if (!is_from_auto_save_bkp && jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL)) {
 				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jquery_native_xhr_object.responseURL, function() {
-					jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+					taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 					StatusMessageHandler.removeLastShownMessage("error");
 					
 					window.is_save_func_running = false;

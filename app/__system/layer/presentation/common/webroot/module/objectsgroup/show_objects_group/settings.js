@@ -79,7 +79,7 @@ function loadShowObjectsGroupBlockSettings(settings_elm, settings_values) {
 		var create_form_task_html = block_settings.children(".create_form_task_html");
 		var tasks_values = convertSettingsToTasksValues(settings_values);
 		
-		jsPlumbWorkFlow.jsPlumbProperty.setPropertiesFromHtmlElm(create_form_task_html, "task_property_field", tasks_values);
+		taskFlowChartObj.Property.setPropertiesFromHtmlElm(create_form_task_html, "task_property_field", tasks_values);
 		js_load_function(block_settings, null, tasks_values);
 		
 		create_form_task_html.children(".inline_settings").children(".with_form, .form_method").hide();
@@ -490,7 +490,7 @@ function saveModuleShowObjectsGroupSettings(button) {
 }
 
 function parseArray(html_elm) {
-	var query_string = jsPlumbWorkFlow.jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(html_elm[0], "task_property_field");
+	var query_string = taskFlowChartObj.Property.getPropertiesQueryStringFromHtmlElm(html_elm[0], "task_property_field");
 	var form_settings = {};
 	parse_str(query_string, form_settings);
 	

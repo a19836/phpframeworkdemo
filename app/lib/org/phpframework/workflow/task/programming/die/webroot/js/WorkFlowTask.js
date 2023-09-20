@@ -37,7 +37,7 @@ var ExitTaskPropertyObj = {
 		if (status) {
 			var label = ExitTaskPropertyObj.getDefaultExitLabel(task_property_values);
 			//ProgrammingTaskUtil.updateTaskDefaultExitLabel(task_id, label);
-			myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskById(task_id).attr("title", label);
+			myWFObj.getTaskFlowChart().TaskFlow.getTaskById(task_id).attr("title", label);
 		}
 	},
 	
@@ -51,10 +51,10 @@ var ExitTaskPropertyObj = {
 	
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
-			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+			var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 			var label = ExitTaskPropertyObj.getDefaultExitLabel(task_property_values);
 			//ProgrammingTaskUtil.updateTaskDefaultExitLabel(task_id, label);
-			myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskById(task_id).attr("title", label);
+			myWFObj.getTaskFlowChart().TaskFlow.getTaskById(task_id).attr("title", label);
 		
 			onEditLabel(task_id);
 			

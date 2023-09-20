@@ -71,7 +71,7 @@ else
 			GetUrlContentsTaskPropertyObj.onTaskCreation(task_id);
 			
 			setTimeout(function() {
-				var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+				var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 				
 				if (task_property_values && !task_property_values["result_type"]) {
 					task_property_values["result_type"] = "content";

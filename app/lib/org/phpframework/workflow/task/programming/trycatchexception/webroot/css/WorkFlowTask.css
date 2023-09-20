@@ -1,13 +1,13 @@
-.jsplumbtaskmenu .task.task_trycatchexception {
+.taskflowchartmenu .task.task_trycatchexception {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_trycatchexception .eps {
+.taskflowchartdiagram .task.task_trycatchexception .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_trycatchexception .eps:hover:after {
+.taskflowchartdiagram .task.task_trycatchexception .eps:hover:after {
 	content:"Drag the small circles to link to another box";
 }
-.jsplumbtaskworkflow .task.task_trycatchexception .ep {
+.taskflowchartdiagram .task.task_trycatchexception .ep {
 	width:auto;
 	height:auto;
 	position:absolute;
@@ -18,34 +18,34 @@
 	border-color:transparent !important;
 	background-color:transparent !important;
 }
-.jsplumbtaskworkflow .task.task_trycatchexception .ep[connection_exit_id=try] {
+.taskflowchartdiagram .task.task_trycatchexception .ep[connection_exit_id=try] {
 	left:-28px;
 	right:50%;
 	text-align:left;
 }
-.jsplumbtaskworkflow .task.task_trycatchexception .ep[connection_exit_id=catch] {
+.taskflowchartdiagram .task.task_trycatchexception .ep[connection_exit_id=catch] {
 	left:50%;
 	right:-28px;
 	text-align:right;
 }
-.jsplumbtaskworkflow .task.task_trycatchexception .ep:hover:after {
+.taskflowchartdiagram .task.task_trycatchexception .ep:hover:after {
 	margin:-33px 0 0 0;
 	display:block;
 	color:#999;
 	white-space:nowrap;
 	text-align:center;
 }
-.jsplumbtaskworkflow .task.task_trycatchexception .ep[connection_exit_id=try]:hover:after {
+.taskflowchartdiagram .task.task_trycatchexception .ep[connection_exit_id=try]:hover:after {
 	content:"No exception";
 	margin-left:-25px;
 	margin-right:20px;
 }
-.jsplumbtaskworkflow .task.task_trycatchexception .ep[connection_exit_id=catch]:hover:after {
+.taskflowchartdiagram .task.task_trycatchexception .ep[connection_exit_id=catch]:hover:after {
 	content:"With exception";
 	margin-left:20px;
 	margin-right:-25px;
 }
-.jsplumbtaskworkflow .task.task_trycatchexception .ep span {
+.taskflowchartdiagram .task.task_trycatchexception .ep span {
 	width:30px;
 	min-width:auto;
 	max-width:none;
@@ -66,20 +66,20 @@
 	box-sizing:border-box;
 	text-align:center;
 }
-.jsplumbtaskworkflow .task.task_trycatchexception .ep[connection_exit_id=try] span {
+.taskflowchartdiagram .task.task_trycatchexception .ep[connection_exit_id=try] span {
 	background:#51D87A;
 }
-.jsplumbtaskworkflow .task.task_trycatchexception .ep[connection_exit_id=catch] span {
+.taskflowchartdiagram .task.task_trycatchexception .ep[connection_exit_id=catch] span {
 	background:#FF4D4D;
 }
-.jsplumbtaskworkflow .task.task_trycatchexception .ep span:before {
+.taskflowchartdiagram .task.task_trycatchexception .ep span:before {
 	display:block;
 	color:#fff;
 }
-.jsplumbtaskworkflow .task.task_trycatchexception .ep[connection_exit_id=try] span:before {
+.taskflowchartdiagram .task.task_trycatchexception .ep[connection_exit_id=try] span:before {
 	content:"Try";
 }
-.jsplumbtaskworkflow .task.task_trycatchexception .ep[connection_exit_id=catch] span:before {
+.taskflowchartdiagram .task.task_trycatchexception .ep[connection_exit_id=catch] span:before {
 	content:"Catch";
 }
 

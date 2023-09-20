@@ -111,7 +111,7 @@ if (!class_exists("\__system\businesslogic\CommonService")) {
 		 * Parse the $data[conditions] according with the $parser function. This is very useful to change attributes names from conditions or add the correspondent table prefix.
 		 * @hidden
 		 */
-		protected static function prepareInputConditionsData(&$data, $parser_func) {
+		protected static function prepareInputConditionsData(&$conditions, $parser_func) {
 			if (is_array($conditions) && $parser_func)	{
 				foreach ($conditions as $attribute_name => $attribute_value) {
 					$lower_attr_name = strtolower($attribute_name);

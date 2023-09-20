@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_callpresentationlayerwebservice {
+.taskflowchartmenu .task.task_callpresentationlayerwebservice {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_callpresentationlayerwebservice .eps {
+.taskflowchartdiagram .task.task_callpresentationlayerwebservice .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_callpresentationlayerwebservice .ep {
+.taskflowchartdiagram .task.task_callpresentationlayerwebservice .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

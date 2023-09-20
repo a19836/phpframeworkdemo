@@ -92,7 +92,7 @@
 				var src = clone.attr("src");
 				
 				if (src && typeof ui_creator.options.on_convert_project_url_real_values_to_php_vars_func == "function") {
-					src = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(src);
+					src = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(src, html_element);
 					clone.attr("src", src);
 				}
 				
@@ -111,7 +111,7 @@
 				var src = widget.attr("src");
 				
 				if (src && typeof ui_creator.options.on_convert_project_url_real_values_to_php_vars_func == "function") {
-					var new_src = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(src);
+					var new_src = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(src, html_element);
 					widget.attr("src", new_src);
 				}
 				
@@ -143,7 +143,7 @@
 					
 					//parse src in case it contains the $project_url_prefix or $project_common_url_prefix
 					if (src && typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function") {
-						src = ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(src);
+						src = ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(src, widget);
 						widget.attr("src", src);
 					}
 				}
@@ -156,7 +156,7 @@
 				
 				//parse src to convert url to vars: $project_url_prefix or $project_common_url_prefix
 				if (widget_settings["src"] && typeof ui_creator.options.on_convert_project_url_real_values_to_php_vars_func == "function")
-					widget_settings["src"] = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(widget_settings["src"]);
+					widget_settings["src"] = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(widget_settings["src"], widget);
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {
@@ -182,7 +182,7 @@
 						
 						if (field_value != "") {
 							//parse src in case it contains the $project_url_prefix or $project_common_url_prefix
-							field_value = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(field_value) : field_value;
+							field_value = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(field_value, widget) : field_value;
 							
 							widget.attr("src", field_value);
 						}

@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_usertask4 {
+.taskflowchartmenu .task.task_usertask4 {
 	
 }
-.jsplumbtaskworkflow .task.task_usertask4 .eps {
+.taskflowchartdiagram .task.task_usertask4 .eps {
 	
 }
-.jsplumbtaskworkflow .task.task_usertask4 .ep {
+.taskflowchartdiagram .task.task_usertask4 .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

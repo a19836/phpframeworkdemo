@@ -1,4 +1,4 @@
-/* START: JSPLUMB TASK */
+/* START: TASK */
 .task.task_menu.task_query {
 	min-width:7em !important;
 	min-height:2em !important;
@@ -9,10 +9,10 @@
 	border-radius:0.5em !important;
 }
 
-.jsplumbtaskworkflow path { 
+/*.taskflowchartdiagram ._jsPlumb_connector path { 
 	stroke-width:3px; 
-}
-.jsplumbtaskworkflow .task.task_query {
+}*/
+.taskflowchartdiagram .task.task_query {
 	width:200px !important;
 	height:auto !important;
 	margin:0;
@@ -23,10 +23,10 @@
 	box-sizing:border-box;
 	box-shadow:none;
 }
-.jsplumbtaskworkflow .task.task_query:hover {
+.taskflowchartdiagram .task.task_query:hover {
 	box-shadow:none !important;
 }
-.jsplumbtaskworkflow .task.task_query .info {
+.taskflowchartdiagram .task.task_query .info {
 	width:100%;
 	min-height:25px;
 	padding:5px 10px;
@@ -39,18 +39,18 @@
 	box-sizing:border-box;
 	box-shadow:0px -1px 5px #ccc;
 }
-.jsplumbtaskworkflow .task.task_query .info span {
+.taskflowchartdiagram .task.task_query .info span {
 	cursor:move;
 }
-.jsplumbtaskworkflow .task.task_query .info .icon {
+.taskflowchartdiagram .task.task_query .info .icon {
 	margin:0 !important;
 	color:inherit;
 }
-.jsplumbtaskworkflow .task.task_query:hover .short_actions {
+.taskflowchartdiagram .task.task_query:hover .short_actions {
 	top:-20px;
 	padding-bottom:5px;
 }
-.jsplumbtaskworkflow .task.task_query .eps {
+.taskflowchartdiagram .task.task_query .eps {
 	position:relative;
 	width:100%;
 	min-height:25px;
@@ -61,7 +61,7 @@
 	box-sizing:border-box;
 	box-shadow:0px 0px 5px #ccc;
 }
-.jsplumbtaskworkflow .task.task_query .ep {
+.taskflowchartdiagram .task.task_query .ep {
 	width:25px;
 	height:25px;
 	border:1px solid #4070FF !important;
@@ -72,13 +72,13 @@
 	bottom:-15px;
 	z-index:1;
 }
-.jsplumbtaskworkflow .task.task_query .table_attrs {
+.taskflowchartdiagram .task.task_query .table_attrs {
 	width:100%;
 	margin:0;
 	padding:0;
 	border:0;
 }
-.jsplumbtaskworkflow .task.task_query .table_attrs .table_attr td {
+.taskflowchartdiagram .task.task_query .table_attrs .table_attr td {
 	margin:0;
 	padding:2px 5px;
 	border-right:1px solid #4070FF;
@@ -86,21 +86,21 @@
 	font-size:8px;
 	box-sizing:border-box;
 }
-.jsplumbtaskworkflow .task.task_query .table_attrs .table_attr:last-child td {
+.taskflowchartdiagram .task.task_query .table_attrs .table_attr:last-child td {
 	border-bottom:0;
 }
-.jsplumbtaskworkflow .task.task_query .table_attrs .table_attr td:last-child {
+.taskflowchartdiagram .task.task_query .table_attrs .table_attr td:last-child {
 	border-right:0;
 }
-.jsplumbtaskworkflow .task.task_query .table_attrs .table_attr td.check {
+.taskflowchartdiagram .task.task_query .table_attrs .table_attr td.check {
 	min-width:30px;
 	max-width:30px;
 	text-align:center;
 }
-.jsplumbtaskworkflow .task.task_query .table_attrs .table_attr td.check input {
+.taskflowchartdiagram .task.task_query .table_attrs .table_attr td.check input {
 	margin:0;
 }
-.jsplumbtaskworkflow .task.task_query .table_attrs .table_attr td.name {
+.taskflowchartdiagram .task.task_query .table_attrs .table_attr td.name {
 	width:100%;
 	border-right-color:#f7f7f7;
 	text-align:left;

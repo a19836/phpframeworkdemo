@@ -605,7 +605,7 @@ function saveTemplate() {
 						
 							if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 								showAjaxLoginPopup(jquery_native_xhr_object.responseURL, save_object_url, function() {
-									jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+									taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 									StatusMessageHandler.removeLastShownMessage("error");
 									
 									saveTemplate();
@@ -637,8 +637,8 @@ function saveTemplate() {
 				if (!is_from_auto_save) {
 					MyFancyPopup.hidePopup();
 					
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, [create_entity_code_url, jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url], function() {
-						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, [create_entity_code_url, taskFlowChartObj.TaskFile.set_tasks_file_url], function() {
+						taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 						StatusMessageHandler.removeLastShownMessage("error");
 						
 						saveTemplate();

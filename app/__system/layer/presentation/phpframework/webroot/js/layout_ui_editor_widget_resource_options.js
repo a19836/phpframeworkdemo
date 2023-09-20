@@ -380,7 +380,7 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 				//prepare attributes for the available resources
 				if (show_resource_attributes) {
 					var select = $('<select></select>');
-					var variables_in_workflow = Object.assign({}, ProgrammingTaskUtil.variables_in_workflow);
+					var variables_in_workflow = assignObjectRecursively({}, ProgrammingTaskUtil.variables_in_workflow);
 					var callback = function() {
 						if (window.variables_in_workflow_loading_processes == 0) {
 							//because the updateSLAProgrammingTaskVariablesInWorkflowSelect method resets the ProgrammingTaskUtil.variables_in_workflow var, we need to update it with the variables_in_workflow var, which contains the vars created from the addLayoutUIEditorWidgetResourceSLAResourceSync method
@@ -776,8 +776,8 @@ function getLayoutUIEditorWidgetResourceSLAsDescriptionByName() {
 			resources[var_name] = input.parent().closest(".sla_group_header").find(" > .sla_group_sub_header > .action_description > textarea").val();
 	});
 	
-	if (jsPlumbWorkFlow) {
-		var tasks_properties = jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties;
+	if (taskFlowChartObj) {
+		var tasks_properties = taskFlowChartObj.TaskFlow.tasks_properties;
 		
 		if (tasks_properties)
 			$.each(tasks_properties, function(idx, task_properties) {
@@ -981,8 +981,8 @@ function removeLayoutUIEditorWidgetResourceSLAResource(resources_name, do_not_co
 			}
 		});
 		
-		if (jsPlumbWorkFlow) {
-			var tasks_properties = jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties;
+		if (taskFlowChartObj) {
+			var tasks_properties = taskFlowChartObj.TaskFlow.tasks_properties;
 			
 			if (tasks_properties)
 				for (var task_id in tasks_properties) {
@@ -1040,7 +1040,7 @@ function removeLayoutUIEditorWidgetResourceSLAResource(resources_name, do_not_co
 				for (var resource_name in task_ids_by_resource_name) {
 					$.each(task_ids_by_resource_name[resource_name], function(idx, task_id) {
 						if (repeated_task_ids.indexOf(task_id) == -1) {
-							jsPlumbWorkFlow.jsPlumbTaskFlow.deleteTask(task_id, {confirm: false});
+							taskFlowChartObj.TaskFlow.deleteTask(task_id, {confirm: false});
 							repeated_inputs.push(task_id);
 						}
 					});

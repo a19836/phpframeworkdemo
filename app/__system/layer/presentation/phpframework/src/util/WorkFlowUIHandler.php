@@ -27,11 +27,16 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 <!-- Add JSPlumb main JS and CSS files -->
 <script language="javascript" type="text/javascript" src="' . $this->v3b2000c17b . 'jqueryjsplumb/build/1.3.16/js/jquery.jsPlumb-1.3.16-all-min.js"></script>
 
+<!-- Add LeaderLine main JS and CSS files -->
+<link rel="stylesheet" href="' . $this->v00161f0c07 . 'vendor/jquerytaskflowchart/lib/leaderline/leader-line.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jquerytaskflowchart/lib/leaderline/leader-line.js"></script>
+<script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jquerytaskflowchart/lib/leaderline/LeaderLineFlowHandler.js"></script>
+
 <!-- Add TaskFlowChart main JS and CSS files -->
 <link rel="stylesheet" href="' . $this->pb5790ec9 . 'jquerytaskflowchart/css/style.css" type="text/css" charset="utf-8" />
 <link rel="stylesheet" href="' . $this->pb5790ec9 . 'jquerytaskflowchart/css/print.css" type="text/css" charset="utf-8" media="print" />
-<script type="text/javascript" src="' . $this->pb5790ec9 . 'jquerytaskflowchart/js/lib/jsPlumbCloneHandler.js"></script>
-<script type="text/javascript" src="' . $this->pb5790ec9 . 'jquerytaskflowchart/js/task_flow_chart.js"></script>
+<script type="text/javascript" src="' . $this->pb5790ec9 . 'jquerytaskflowchart/js/ExternalLibHandler.js"></script>
+<script type="text/javascript" src="' . $this->pb5790ec9 . 'jquerytaskflowchart/js/TaskFlowChart.js"></script>
 
 <!-- Add ContextMenu main JS and CSS files -->
 <link rel="stylesheet" href="' . $this->v00161f0c07 . 'vendor/jquerymycontextmenu/css/style.css" type="text/css" charset="utf-8" />
@@ -118,34 +123,34 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 	workflow_global_variables = ' . json_encode(PHPVariablesFileHandler::getVarsFromFileContent($this->v3d55458bcd)) . ';
 	
 	$(window).resize(function() {
-		jsPlumbWorkFlow.jsPlumbContainer.automaticIncreaseContainersSize();
+		taskFlowChartObj.Container.automaticIncreaseContainersSize();
 		
-		jsPlumbWorkFlow.getMyFancyPopupObj().updatePopup();
+		taskFlowChartObj.getMyFancyPopupObj().updatePopup();
 	});
 	
 	;(function() {
-'; if ($v23b252dead) $v0a9dad1fe0 .= 'jsPlumbWorkFlow.jsPlumbTaskFile.get_tasks_file_url = "' . $this->pcd2aca48 . 'workflow/get_workflow_file?path=' . $v23b252dead . '";'; if ($v10d8a653cc) $v0a9dad1fe0 .= 'jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url = "' . $this->pcd2aca48 . 'workflow/set_workflow_file?path=' . $v10d8a653cc . '";'; if ($pd05429f9) foreach ($pd05429f9 as $pe5c5e2fe => $v956913c90f) $v0a9dad1fe0 .= '
-		jsPlumbWorkFlow.setjsPlumbWorkFlowObjOption("' . $pe5c5e2fe . '", \'' . addcslashes(str_replace(array("\n", "\r"), "", $v956913c90f), "\\'") . '\')'; $v0a9dad1fe0 .= '
-		jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_connector = "Straight";
-		jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_hover_color = null;
-		jsPlumbWorkFlow.jsPlumbTaskFlow.main_tasks_flow_obj_id = "taskflowchart > .tasks_flow";
-		jsPlumbWorkFlow.jsPlumbTaskFlow.main_tasks_properties_obj_id = "taskflowchart > .tasks_properties";
-		jsPlumbWorkFlow.jsPlumbTaskFlow.main_connections_properties_obj_id = "taskflowchart > .connections_properties";
-		jsPlumbWorkFlow.jsPlumbContextMenu.main_tasks_menu_obj_id = "taskflowchart > .tasks_menu";
-		jsPlumbWorkFlow.jsPlumbContextMenu.main_tasks_menu_hide_obj_id = "taskflowchart > .tasks_menu_hide";
-		jsPlumbWorkFlow.jsPlumbContextMenu.main_workflow_menu_obj_id = "taskflowchart > .workflow_menu";
+'; if ($v23b252dead) $v0a9dad1fe0 .= 'taskFlowChartObj.TaskFile.get_tasks_file_url = "' . $this->pcd2aca48 . 'workflow/get_workflow_file?path=' . $v23b252dead . '";'; if ($v10d8a653cc) $v0a9dad1fe0 .= 'taskFlowChartObj.TaskFile.set_tasks_file_url = "' . $this->pcd2aca48 . 'workflow/set_workflow_file?path=' . $v10d8a653cc . '";'; if ($pd05429f9) foreach ($pd05429f9 as $pe5c5e2fe => $v956913c90f) $v0a9dad1fe0 .= '
+		taskFlowChartObj.setTaskFlowChartObjOption("' . $pe5c5e2fe . '", \'' . addcslashes(str_replace(array("\n", "\r"), "", $v956913c90f), "\\'") . '\')'; $v0a9dad1fe0 .= '
+		taskFlowChartObj.TaskFlow.default_connection_connector = "Straight";
+		taskFlowChartObj.TaskFlow.default_connection_hover_color = null;
+		taskFlowChartObj.TaskFlow.main_tasks_flow_obj_id = "taskflowchart > .tasks_flow";
+		taskFlowChartObj.TaskFlow.main_tasks_properties_obj_id = "taskflowchart > .tasks_properties";
+		taskFlowChartObj.TaskFlow.main_connections_properties_obj_id = "taskflowchart > .connections_properties";
+		taskFlowChartObj.ContextMenu.main_tasks_menu_obj_id = "taskflowchart > .tasks_menu";
+		taskFlowChartObj.ContextMenu.main_tasks_menu_hide_obj_id = "taskflowchart > .tasks_menu_hide";
+		taskFlowChartObj.ContextMenu.main_workflow_menu_obj_id = "taskflowchart > .workflow_menu";
 		
-		jsPlumbWorkFlow.jsPlumbProperty.tasks_settings = ' . $this->getTasksSettingsObj() . ';
-		jsPlumbWorkFlow.jsPlumbContainer.tasks_containers = ' . $this->f94ef746929($this->v85ea3272a0) . ';
+		taskFlowChartObj.Property.tasks_settings = ' . $this->getTasksSettingsObj() . ';
+		taskFlowChartObj.Container.tasks_containers = ' . $this->f94ef746929($this->v85ea3272a0) . ';
 		
-		jsPlumbWorkFlow.jsPlumbTaskFile.save_options = {
+		taskFlowChartObj.TaskFile.save_options = {
 			success: function(data, textStatus, jqXHR) {
 				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 					StatusMessageHandler.showError("Please Login first!");
 			}
 		};
 		
-		jsPlumbWorkFlow.init();
+		taskFlowChartObj.init();
 	})();
 	
 	function flushCache(opts) {
@@ -163,15 +168,15 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 					});
 				else if (!do_not_show_messages) {
 					if (data == "1")
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Cache flushed!");
+						taskFlowChartObj.StatusMessage.showMessage("Cache flushed!");
 					else
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Error: Cache not flushed!\nPlease try again..." + (data ? "\n" + data : ""));
+						taskFlowChartObj.StatusMessage.showError("Error: Cache not flushed!\nPlease try again..." + (data ? "\n" + data : ""));
 				}
 			},
 			error : function(jqXHR, textStatus, errorThrown) { 
 				if (!do_not_show_messages) {
 					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-					jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Error: Cache not flushed!\nPlease try again..." + msg);
+					taskFlowChartObj.StatusMessage.showError("Error: Cache not flushed!\nPlease try again..." + msg);
 				}
 			},
 			async : opts.hasOwnProperty("async") ? opts["async"] : true
@@ -182,29 +187,29 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 	
 	function emptyDiagam() {
 		if (confirm("If you continue, all items will be deleted from this diagram and this diagram will be empty.\nDo you still want to proceed?"))
-			jsPlumbWorkFlow.reinit();
+			taskFlowChartObj.reinit();
 	}
 	
 	function zoomInDiagram(elm) {
-		jsPlumbWorkFlow.jsPlumbTaskFlow.zoomIn();
+		taskFlowChartObj.TaskFlow.zoomIn();
 		updateCurrentZoom(elm);
 		zoomEventPropagationDiagram(elm);
 	}
 	
 	function zoomOutDiagram(elm) {
-		jsPlumbWorkFlow.jsPlumbTaskFlow.zoomOut();
+		taskFlowChartObj.TaskFlow.zoomOut();
 		updateCurrentZoom(elm);
 		zoomEventPropagationDiagram(elm);
 	}
 	
 	function zoomDiagram(input) {
-		jsPlumbWorkFlow.jsPlumbTaskFlow.zoom(input.value);
+		taskFlowChartObj.TaskFlow.zoom(input.value);
 		updateCurrentZoom(input);
 		zoomEventPropagationDiagram(input);
 	}
 	
 	function zoomResetDiagram(elm) {
-		jsPlumbWorkFlow.jsPlumbTaskFlow.zoomReset();
+		taskFlowChartObj.TaskFlow.zoomReset();
 		updateCurrentZoom(elm);
 		zoomEventPropagationDiagram(elm);
 	}
@@ -215,7 +220,7 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 	
 	function updateCurrentZoom(elm) {
 		elm = $(elm);
-		var current_zoom = jsPlumbWorkFlow.jsPlumbTaskFlow.getCurrentZoom();
+		var current_zoom = taskFlowChartObj.TaskFlow.getCurrentZoom();
 		var main_parent = elm.parent().closest("li").parent();
 		main_parent.find(".zoom span").html( parseInt(current_zoom * 100) + "%");
 		
@@ -228,10 +233,10 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 		options["url"] = url;
 		options["type"] = "iframe";
 		
-		jsPlumbWorkFlow.getMyFancyPopupObj().init(options);
-		jsPlumbWorkFlow.getMyFancyPopupObj().showPopup();
+		taskFlowChartObj.getMyFancyPopupObj().init(options);
+		taskFlowChartObj.getMyFancyPopupObj().showPopup();
 	}
-</script>'; return $v0a9dad1fe0; } public function setMenus($v243e50bc1d) { $this->v243e50bc1d = $v243e50bc1d; } public function getDefaultMenus() { $pabf7b139 = array_keys($this->v85ea3272a0); $pabf7b139 = $pabf7b139[0]; $v75c19c5e8a = $this->v85ea3272a0[$pabf7b139][0]; return array( "File" => array( "childs" => array( "Save" => array("click" => "jsPlumbWorkFlow.jsPlumbTaskFile.save();return false;"), "Flush Cache" => array("click" => "return flushCache();"), "Empty Diagram" => array("click" => "emptyDiagam();return false;"), "Flip Diagram" => array("click" => "jsPlumbWorkFlow.jsPlumbContextMenu.flipPanelsSide();return false;"), ) ), "WorkFlow" => array( "childs" => array( "Add new task $v75c19c5e8a" => array("click" => "jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByType('" . $v75c19c5e8a . "');return false;"), "Zoom In" => array("click" => "zoomInDiagram(this);return false;"), "Zoom Out" => array("click" => "zoomOutDiagram(this);return false;"), "Zoom" => array("click" => "zoomEventPropagationDiagram(this);return false;", "class" => "zoom", "html" => '<span>100%</span> <input type="range" min="0.5" max="1.5" step=".02" value="1" onInput="zoomDiagram(this);return false;" />'), "Zoom Reset" => array("click" => "zoomResetDiagram(this);return false;"), ) ), "Container" => array( "childs" => array( "Decrease Containers IF Size" => array("click" => "jsPlumbWorkFlow.jsPlumbContainer.changeContainerSize('" . $pabf7b139 . "', 400, 100);return false;"), "Increase Containers IF Size" => array("click" => "jsPlumbWorkFlow.jsPlumbContainer.changeContainerSize('" . $pabf7b139 . "', 1300, 250);return false;"), "Shrink containers" => array("click" => "jsPlumbWorkFlow.jsPlumbContainer.automaticDecreaseContainersSize();return false;"), "Enlarge containers" => array("click" => "jsPlumbWorkFlow.jsPlumbContainer.automaticIncreaseContainersSize();return false;"), ) ), ); } public function getMenusContent() { if (empty($this->v243e50bc1d) || !is_array($this->v243e50bc1d)) $this->v243e50bc1d = $this->getDefaultMenus(); return '<div id="workflow_menu" class="workflow_menu" onClick="openSubmenu(this)">' . $this->f5e52484713($this->v243e50bc1d, "dropdown") . '</div>'; } private function f5e52484713($v243e50bc1d, $v3ae55a9a2e = false) { $pf8ed4912 = ''; if (!empty($v243e50bc1d) && is_array($v243e50bc1d)) { $pf8ed4912 .= '<ul' . ($v3ae55a9a2e ? ' class="' . $v3ae55a9a2e . '"' : '') . '>'; foreach ($v243e50bc1d as $v134495e57e => $pdf6c365c) { $pf8ed4912 .= '<li class="' . $pdf6c365c["class"] . '" title="' . ($pdf6c365c["title"] ? $pdf6c365c["title"] : $v134495e57e) . '">'; if ($pdf6c365c["html"]) $pf8ed4912 .= $pdf6c365c["html"]; else $pf8ed4912 .= '<a' . ($pdf6c365c["click"] ? ' onClick="' . $pdf6c365c["click"] . '"' : '') . '>' . $v134495e57e . '</a>'; if (!empty($pdf6c365c["childs"])) $pf8ed4912 .= $this->f5e52484713($pdf6c365c["childs"]); $pf8ed4912 .= '</li>'; } $pf8ed4912 .= '</ul>'; } return $pf8ed4912; } public function getContent($v29ae981180 = "taskflowchart") { $v446c479876 = $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse"; $v6e611b5051 = '
+</script>'; return $v0a9dad1fe0; } public function setMenus($v243e50bc1d) { $this->v243e50bc1d = $v243e50bc1d; } public function getDefaultMenus() { $pabf7b139 = array_keys($this->v85ea3272a0); $pabf7b139 = $pabf7b139[0]; $v75c19c5e8a = $this->v85ea3272a0[$pabf7b139][0]; return array( "File" => array( "childs" => array( "Save" => array("click" => "taskFlowChartObj.TaskFile.save();return false;"), "Flush Cache" => array("click" => "return flushCache();"), "Empty Diagram" => array("click" => "emptyDiagam();return false;"), "Flip Diagram" => array("click" => "taskFlowChartObj.ContextMenu.flipPanelsSide();return false;"), ) ), "WorkFlow" => array( "childs" => array( "Add new task $v75c19c5e8a" => array("click" => "taskFlowChartObj.ContextMenu.addTaskByType('" . $v75c19c5e8a . "');return false;"), "Zoom In" => array("click" => "zoomInDiagram(this);return false;"), "Zoom Out" => array("click" => "zoomOutDiagram(this);return false;"), "Zoom" => array("click" => "zoomEventPropagationDiagram(this);return false;", "class" => "zoom", "html" => '<span>100%</span> <input type="range" min="0.5" max="1.5" step=".02" value="1" onInput="zoomDiagram(this);return false;" />'), "Zoom Reset" => array("click" => "zoomResetDiagram(this);return false;"), ) ), "Container" => array( "childs" => array( "Decrease Containers IF Size" => array("click" => "taskFlowChartObj.Container.changeContainerSize('" . $pabf7b139 . "', 400, 100);return false;"), "Increase Containers IF Size" => array("click" => "taskFlowChartObj.Container.changeContainerSize('" . $pabf7b139 . "', 1300, 250);return false;"), "Shrink containers" => array("click" => "taskFlowChartObj.Container.automaticDecreaseContainersSize();return false;"), "Enlarge containers" => array("click" => "taskFlowChartObj.Container.automaticIncreaseContainersSize();return false;"), ) ), ); } public function getMenusContent() { if (empty($this->v243e50bc1d) || !is_array($this->v243e50bc1d)) $this->v243e50bc1d = $this->getDefaultMenus(); return '<div id="workflow_menu" class="workflow_menu" onClick="openSubmenu(this)">' . $this->f5e52484713($this->v243e50bc1d, "dropdown") . '</div>'; } private function f5e52484713($v243e50bc1d, $v3ae55a9a2e = false) { $pf8ed4912 = ''; if (!empty($v243e50bc1d) && is_array($v243e50bc1d)) { $pf8ed4912 .= '<ul' . ($v3ae55a9a2e ? ' class="' . $v3ae55a9a2e . '"' : '') . '>'; foreach ($v243e50bc1d as $v134495e57e => $pdf6c365c) { $pf8ed4912 .= '<li class="' . $pdf6c365c["class"] . '" title="' . ($pdf6c365c["title"] ? $pdf6c365c["title"] : $v134495e57e) . '">'; if ($pdf6c365c["html"]) $pf8ed4912 .= $pdf6c365c["html"]; else $pf8ed4912 .= '<a' . ($pdf6c365c["click"] ? ' onClick="' . $pdf6c365c["click"] . '"' : '') . '>' . $v134495e57e . '</a>'; if (!empty($pdf6c365c["childs"])) $pf8ed4912 .= $this->f5e52484713($pdf6c365c["childs"]); $pf8ed4912 .= '</li>'; } $pf8ed4912 .= '</ul>'; } return $pf8ed4912; } public function getContent($v29ae981180 = "taskflowchart") { $v446c479876 = $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse"; $v6e611b5051 = '
 	<div id="' . $v29ae981180 . '" class="taskflowchart ' . $v446c479876 . '">
 		' . $this->getMenusContent() . '
 		
@@ -240,7 +245,7 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 		</div>
 		
 		<div class="tasks_menu_hide">
-			<div class="button" onclick="jsPlumbWorkFlow.jsPlumbContextMenu.toggleTasksMenuPanel(this)"></div>
+			<div class="button" onclick="taskFlowChartObj.ContextMenu.toggleTasksMenuPanel(this)"></div>
 		</div>
 		
 		<div class="tasks_flow scroll">

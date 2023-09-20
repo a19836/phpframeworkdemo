@@ -82,7 +82,7 @@ var  DBDriverTaskPropertyObj = {
 		checkIfLayerTaskPropertiesContainsGlobalVariables(selected_task_properties_elm);
 		
 		//check if there was any changes and if so alert message to change manually the correspondent wordpress installation's DB credentials too, if exist...
-		var query_string = myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(selected_task_properties_elm, "task_property_field");
+		var query_string = myWFObj.getTaskFlowChart().Property.getPropertiesQueryStringFromHtmlElm(selected_task_properties_elm, "task_property_field");
 		var new_task_property_values = {};
 		
 		try {

@@ -1,7 +1,7 @@
-.jsplumbtaskmenu .task.task_usertask3 {
+.taskflowchartmenu .task.task_usertask3 {
 	
 }
-.jsplumbtaskworkflow .task.task_usertask3 .eps .ep {
+.taskflowchartdiagram .task.task_usertask3 .eps .ep {
 	display:none;
 }
 

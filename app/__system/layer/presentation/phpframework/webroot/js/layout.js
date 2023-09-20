@@ -105,8 +105,8 @@ function onToggleWorkflowAutoSave() {
 	var span = li.find("span");
 	
 	if (auto_save) {
-		jsPlumbWorkFlow.jsPlumbTaskFile.auto_save = false; //should be false bc the saveObj calls the getCodeForSaving method which already saves the workflow by default, and we don't need 2 saves at the same time.
-		jsPlumbWorkFlow.jsPlumbProperty.auto_save = true;
+		taskFlowChartObj.TaskFile.auto_save = false; //should be false bc the saveObj calls the getCodeForSaving method which already saves the workflow by default, and we don't need 2 saves at the same time.
+		taskFlowChartObj.Property.auto_save = true;
 		$(".taskflowchart").removeClass("auto_save_disabled");
 		
 		li.addClass("active");
@@ -114,8 +114,8 @@ function onToggleWorkflowAutoSave() {
 		span.html("Disable Auto Save");
 	}
 	else {
-		jsPlumbWorkFlow.jsPlumbTaskFile.auto_save = false;
-		jsPlumbWorkFlow.jsPlumbProperty.auto_save = false;
+		taskFlowChartObj.TaskFile.auto_save = false;
+		taskFlowChartObj.Property.auto_save = false;
 		$(".taskflowchart").addClass("auto_save_disabled");
 		
 		li.removeClass("active");

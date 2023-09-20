@@ -198,7 +198,7 @@
 						link_file.html(href);
 						
 						//parse href in case it contains the $project_url_prefix or $project_common_url_prefix
-						var aux = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(href) : href;
+						var aux = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(href, widget) : href;
 						
 						html_element.setAttribute("href", aux);
 					}
@@ -261,7 +261,7 @@
 							link_file.html( field_value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
 							
 							//parse href in case it contains the $project_url_prefix or $project_common_url_prefix
-							var aux = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(field_value) : field_value;
+							var aux = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(field_value, widget) : field_value;
 							
 							link.attr("href", aux);
 						}

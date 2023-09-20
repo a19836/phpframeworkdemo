@@ -71,7 +71,7 @@ var ValidatorTaskPropertyObj = {
 	
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
-			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+			var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 			ProgrammingTaskUtil.saveNewVariableInWorkflowAccordingWithTaskPropertiesValues(task_property_values);
 		
 			var label = ValidatorTaskPropertyObj.getDefaultExitLabel(task_property_values);

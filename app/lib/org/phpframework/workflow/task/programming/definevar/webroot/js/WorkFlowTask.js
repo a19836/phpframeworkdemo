@@ -46,7 +46,7 @@ var DefineVarTaskPropertyObj = {
 	
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
-			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+			var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 			var label = DefineVarTaskPropertyObj.getDefaultExitLabel(task_property_values);
 			ProgrammingTaskUtil.updateTaskDefaultExitLabel(task_id, label);
 		

@@ -279,11 +279,11 @@ function onClickGlobalVariablesSimpleFormTab(elm) {
 			convert_code_to_vars_func();
 		else if (active_tab == active_tabs_ids["tasks_flow_tab"]) {
 			//close properties popup in case the auto_save be active on close task properties popup
-			if (auto_save && jsPlumbWorkFlow.jsPlumbProperty.auto_save) {
-				if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedTaskPropertiesOpen())
-					jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties({do_not_call_hide_properties: true});
-				else if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedConnectionPropertiesOpen())
-					jsPlumbWorkFlow.jsPlumbProperty.saveConnectionProperties({do_not_call_hide_properties: true});
+			if (auto_save && taskFlowChartObj.Property.auto_save) {
+				if (taskFlowChartObj.Property.isSelectedTaskPropertiesOpen())
+					taskFlowChartObj.Property.saveTaskProperties({do_not_call_hide_properties: true});
+				else if (taskFlowChartObj.Property.isSelectedConnectionPropertiesOpen())
+					taskFlowChartObj.Property.saveConnectionProperties({do_not_call_hide_properties: true});
 			}
 			
 			var old_code_id = $("#ui").attr("code_id");
@@ -510,7 +510,7 @@ function saveGlobalVariables() {
 			//Do not re-call only the ajax request below, otherwise there will be some other files that will not be saved, this is, the getCodeForSaving saves the workflow and if we only call the ajax request below, the workflow won't be saved. To avoid this situation, we call the all save function.
 			if (!is_from_auto_save_bkp && jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL)) {
 				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jquery_native_xhr_object.responseURL, function() {
-					jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+					taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 					StatusMessageHandler.removeLastShownMessage("error");
 					
 					window.is_save_func_running = false;

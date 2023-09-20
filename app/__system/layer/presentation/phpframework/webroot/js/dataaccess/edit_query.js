@@ -68,19 +68,19 @@ function onToggleQueryAutoSave() {
 		var rand_number = query.attr("rand_number");
 		
 		if (rand_number) {
-			eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+			eval('var WF = taskFlowChartObj_' + rand_number + ';');
 			
 			if (auto_save) {
-				WF.jsPlumbTaskFile.auto_save = false; //should be false bc the saveObj calls the getCodeForSaving method which already saves the workflow by default, and we don't need 2 saves at the same time.
-				WF.jsPlumbProperty.auto_save = true;
+				WF.TaskFile.auto_save = false; //should be false bc the saveObj calls the getCodeForSaving method which already saves the workflow by default, and we don't need 2 saves at the same time.
+				WF.Property.auto_save = true;
 				$(".taskflowchart").removeClass("auto_save_disabled");
 			}
 			else {
-				WF.jsPlumbTaskFile.auto_save = false;
-				WF.jsPlumbProperty.auto_save = false;
+				WF.TaskFile.auto_save = false;
+				WF.Property.auto_save = false;
 				$(".taskflowchart").addClass("auto_save_disabled");
 			}
-			//console.log("WF.jsPlumbProperty.auto_save:"+WF.jsPlumbProperty.auto_save);
+			//console.log("WF.Property.auto_save:"+WF.Property.auto_save);
 		}
 	});
 }
@@ -602,7 +602,7 @@ function updateDBTables(elm, rand_number, do_not_sync) {
 	if (db_broker && db_driver && type) {
 		var MyFP = MyFancyPopup;
 		if (rand_number) {
-			eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+			eval('var WF = taskFlowChartObj_' + rand_number + ';');
 			MyFP = WF.getMyFancyPopupObj();
 		}
 		
@@ -643,7 +643,7 @@ function updateDBAttributes(elm, rand_number, do_not_sync) {
 	if (db_broker && db_driver && type && db_table) {
 		var MyFP = MyFancyPopup;
 		if (rand_number) {
-			eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+			eval('var WF = taskFlowChartObj_' + rand_number + ';');
 			MyFP = WF.getMyFancyPopupObj();
 		}
 		
@@ -772,9 +772,9 @@ function updateTableField(elm, rand_number) {
 	
 	//auto update sql from settings
 	if (typeof rand_number == "number") {
-		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+		eval('var WF = taskFlowChartObj_' + rand_number + ';');
 		
-		if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
+		if ($("#" + WF.TaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
 			autoUpdateSqlFromUI(rand_number);
 	}
 	
@@ -789,9 +789,9 @@ function updateAttributeField(elm, rand_number) {
 	
 	//auto update sql from settings
 	if (typeof rand_number == "number") {
-		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+		eval('var WF = taskFlowChartObj_' + rand_number + ';');
 		
-		if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
+		if ($("#" + WF.TaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
 			autoUpdateSqlFromUI(rand_number);
 	}
 	
@@ -801,9 +801,9 @@ function updateAttributeField(elm, rand_number) {
 
 /** START: CHOOSE DB TABLE OR ATTRIBUTE - QUERY **/
 function getQueryTableFromDB(elm, rand_number) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
-	var popup = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().parent().parent().children(".query_settings").children(".choose_table_or_attribute");
+	var popup = $("#" + WF.TaskFlow.main_tasks_flow_obj_id).parent().parent().parent().children(".query_settings").children(".choose_table_or_attribute");
 	
 	popup.hide(); //This popup is shared with other actions so we must hide it first otherwise the user experience will be weird bc we will see the popup changing with the new changes.
 	
@@ -838,9 +838,9 @@ function getQueryTableFromDB(elm, rand_number) {
 
 //This function is called when the user clicks in the search button for each column or attribute field.
 function getQueryTableAttributeFromDB(elm, selector, rand_number) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 		
-	var popup = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().parent().parent().children(".query_settings").children(".choose_table_or_attribute");
+	var popup = $("#" + WF.TaskFlow.main_tasks_flow_obj_id).parent().parent().parent().children(".query_settings").children(".choose_table_or_attribute");
 	
 	popup.hide(); //This popup is shared with other actions so we must hide it first otherwise the user experience will be weird bc we will see the popup changing with the new changes.
 	
@@ -900,7 +900,7 @@ function getQueryTableAttributeFromDB(elm, selector, rand_number) {
 }
 
 function updateQueryTableField(elm, rand_number) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
 	var popup = $(elm).parent().parent();
 	var table_name = popup.find(".db_table select").val();
@@ -908,14 +908,14 @@ function updateQueryTableField(elm, rand_number) {
 	
 	var tasks = getTasksByTableName(table_name, WF);
 	if (tasks[0]) {
-		table_name = WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]);
+		table_name = WF.TaskFlow.getTaskLabel(tasks[0]);
 	}
 	
 	var input = $(WF.getMyFancyPopupObj().settings.targetField);
 	input.attr("old_value", input.val().trim());
 	input.val(table_name);
 	
-	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	var main_tasks_flow_obj = $("#" + WF.TaskFlow.main_tasks_flow_obj_id);
 	
 	if (main_tasks_flow_obj.attr("sync_ui_and_settings") == 1)
 		onBlurQueryTableField(input[0], rand_number);
@@ -928,7 +928,7 @@ function updateQueryTableField(elm, rand_number) {
 
 function updateQueryAttributeField(elm, rand_number) {
 	//WRITING SELECTED ATTRIBUTE TO INPUT 
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
 	var popup = $(elm).parent().parent();
 	var table_name = popup.find(".db_table select").val();
@@ -946,7 +946,7 @@ function updateQueryAttributeField(elm, rand_number) {
 	
 	//PREPARING TABLE NAME ALIAS ACCORDING WITH THE UI
 	var tasks = getTasksByTableName(table_name, WF);
-	var table_name_alias = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : table_name;
+	var table_name_alias = tasks[0] ? WF.TaskFlow.getTaskLabel(tasks[0]) : table_name;
 	var old_table_name = null;
 	
 	if (column_div.hasClass("column")) {
@@ -973,7 +973,7 @@ function updateQueryAttributeField(elm, rand_number) {
 	}
 	
 	//PREPARING UI
-	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	var main_tasks_flow_obj = $("#" + WF.TaskFlow.main_tasks_flow_obj_id);
 	
 	if (main_tasks_flow_obj.attr("sync_ui_and_settings") == 1)
 		prepareUIWhenChangingQueryTableAttributeField(rand_number, column_div, table_name, attribute_name, old_table_name, old_attribute_name);
@@ -989,8 +989,8 @@ function onFocusTableField(input) {
 }
 
 function onBlurQueryTableField(input, rand_number) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
-	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
+	var main_tasks_flow_obj = $("#" + WF.TaskFlow.main_tasks_flow_obj_id);
 	
 	if (main_tasks_flow_obj.attr("sync_ui_and_settings") == 1) {
 		var old_table_name = input.getAttribute("old_value");
@@ -1008,7 +1008,7 @@ function onBlurQueryTableField(input, rand_number) {
 	
 		if (!new_table_name || new_table_name == "" || !old_table_name || old_table_name == "") {
 			var tasks = getTasksByTableName(default_db_table, WF);
-			var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
+			var tb = tasks[0] ? WF.TaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 		
 			new_table_name = new_table_name == "" ? tb : new_table_name;
 			old_table_name = old_table_name == "" ? tb : old_table_name;
@@ -1028,8 +1028,8 @@ function onFocusAttributeField(input) {
 }
 
 function onBlurQueryAttributeField(input, rand_number) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
-	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
+	var main_tasks_flow_obj = $("#" + WF.TaskFlow.main_tasks_flow_obj_id);
 	
 	if (main_tasks_flow_obj.attr("sync_ui_and_settings") == 1) {
 		var old_attribute_name = input.getAttribute("old_value");
@@ -1049,7 +1049,7 @@ function onBlurQueryAttributeField(input, rand_number) {
 			table_name = default_db_table;
 		
 			var tasks = getTasksByTableName(table_name, WF);
-			table_name = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : table_name;
+			table_name = tasks[0] ? WF.TaskFlow.getTaskLabel(tasks[0]) : table_name;
 		}
 	
 		prepareUIWhenChangingQueryTableAttributeField(rand_number, column_div, table_name, attribute_name, table_name, old_attribute_name);
@@ -1062,9 +1062,9 @@ function onBlurQueryAttributeField(input, rand_number) {
 }
 
 function onBlurQueryInputField(input, rand_number) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
-	if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
+	if ($("#" + WF.TaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
 		autoUpdateSqlFromUI(rand_number);
 }
 
@@ -1126,7 +1126,7 @@ function prepareUIWhenChangingQueryTableAttributeField(rand_number, column_div, 
 function prepareWorkFlowQueryTableAttributeUI(rand_number, settings, dont_check_compatibility) {
 	//console.log(settings);
 	
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
 	//PREPARING SETTINGS
 	var table_name_to_select = settings.table_name_to_select;
@@ -1144,11 +1144,11 @@ function prepareWorkFlowQueryTableAttributeUI(rand_number, settings, dont_check_
 	var task_id_to_select = null;
 	var task_id_to_unselect = null;
 	
-	var tasks = WF.jsPlumbTaskFlow.getAllTasks();
+	var tasks = WF.TaskFlow.getAllTasks();
 	for (var i = 0; i < tasks.length; i++) {
 		var task = $(tasks[i]);
 		
-		var db_table = WF.jsPlumbTaskFlow.getTaskLabel(task);
+		var db_table = WF.TaskFlow.getTaskLabel(task);
 		
 		if (db_table == table_name_to_select || db_table == table_name_to_unselect) {
 			if (db_table == table_name_to_select) {
@@ -1164,7 +1164,7 @@ function prepareWorkFlowQueryTableAttributeUI(rand_number, settings, dont_check_
 		}
 	}
 	
-	myWFObj.setJsPlumbWorkFlow(WF);
+	myWFObj.setTaskFlowChart(WF);
 		
 	//PREPARING NEW UI ATTRIBUTES
 	if (task_to_unselect && task_id_to_unselect && table_name_to_unselect && attribute_name_to_unselect && table_name_to_unselect != table_name_to_select) {
@@ -1224,7 +1224,7 @@ function prepareWorkFlowQueryTableAttributeUI(rand_number, settings, dont_check_
 	}
 	else if (table_name_to_select) {
 		//CREATING NEW TABLE
-		var popup = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id + " .choose_table_or_attribute");
+		var popup = $("#" + WF.TaskFlow.main_tasks_flow_obj_id + " .choose_table_or_attribute");
 		var db_broker = popup.find(".db_broker select").val();
 		var db_driver = popup.find(".db_driver select").val();
 		var type = popup.find(".type select").val();
@@ -1238,7 +1238,7 @@ function prepareWorkFlowQueryTableAttributeUI(rand_number, settings, dont_check_
 		var task_id = addNewTable(rand_number, table_name_to_select, table_attr_names);
 		
 		if (!task_id) {
-			WF.jsPlumbStatusMessage.showError("Error: Couldn't create the '" + table_name_to_select + "' table.\nPlease try again...");
+			WF.StatusMessage.showError("Error: Couldn't create the '" + table_name_to_select + "' table.\nPlease try again...");
 		}
 	}
 }
@@ -1284,7 +1284,7 @@ function initQueryDesign(tab_elm, rand_number) {
 	setQuerySqlEditor(query_sql_elm_selector);
 	
 	setTimeout(function() {
-		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+		eval('var WF = taskFlowChartObj_' + rand_number + ';');
 		
 		if (!WF.isInitialized())
 			WF.init();
@@ -1302,15 +1302,15 @@ function initQueryDesign(tab_elm, rand_number) {
 function addTaskFlowChart(rand, init_now) {
 	var options = {
 		on_init_function : function(WFObj) {
-			var task_context_menu = $("#" + WFObj.jsPlumbContextMenu.task_context_menu_id);
+			var task_context_menu = $("#" + WFObj.ContextMenu.task_context_menu_id);
 			task_context_menu.children(".set_label").children("a").html("Set Table Alias");
 		
 			var delete_menu_elm = task_context_menu.children(".delete").children("a");
 			delete_menu_elm.attr("onClick", "");
 			delete_menu_elm.click(function(){
-				myWFObj.setJsPlumbWorkFlow(WFObj);
+				myWFObj.setTaskFlowChart(WFObj);
 			
-				var task_id = WFObj.jsPlumbContextMenu.getContextMenuTaskId();
+				var task_id = WFObj.ContextMenu.getContextMenuTaskId();
 				DBQueryTaskPropertyObj.deleteTable(task_id, true);
 			
 				return false;
@@ -1318,20 +1318,23 @@ function addTaskFlowChart(rand, init_now) {
 		}
 	};
 	
-	var WF = new jsPlumbWorkFlowHandler("jsPlumbWorkFlow_" + rand, options);
-	eval('window.jsPlumbWorkFlow_' + rand + ' = WF;');
+	var WF = new TaskFlowChart("taskFlowChartObj_" + rand, options);
+	eval('window.taskFlowChartObj_' + rand + ' = WF;');
 	
-	WF.jsPlumbTaskFlow.default_connection_connector = "Straight";
-	WF.jsPlumbTaskFlow.available_connection_overlays_type = ["No Arrows"];
+	WF.TaskFlow.default_connection_connector = "Straight";
+	WF.TaskFlow.available_connection_overlays_type = ["No Arrows"];
 	
-	WF.jsPlumbTaskFlow.main_tasks_flow_obj_id = "taskflowchart_" + rand + " .tasks_flow";
-	WF.jsPlumbTaskFlow.main_tasks_properties_obj_id = "taskflowchart_global .tasks_properties";
-	WF.jsPlumbTaskFlow.main_connections_properties_obj_id = "taskflowchart_global .connections_properties";
-	WF.jsPlumbContextMenu.main_tasks_menu_obj_id = "taskflowchart_global .tasks_menu";
-	WF.jsPlumbContextMenu.main_tasks_menu_hide_obj_id = "taskflowchart_global .tasks_menu_hide";
-	WF.jsPlumbContextMenu.main_workflow_menu_obj_id = "taskflowchart_global .workflow_menu";
-
-	WF.jsPlumbProperty.tasks_settings = tasks_settings;
+	WF.TaskFlow.main_tasks_flow_obj_id = "taskflowchart_" + rand + " .tasks_flow";
+	WF.TaskFlow.main_tasks_properties_obj_id = "taskflowchart_global .tasks_properties";
+	WF.TaskFlow.main_connections_properties_obj_id = "taskflowchart_global .connections_properties";
+	WF.ContextMenu.main_tasks_menu_obj_id = "taskflowchart_global .tasks_menu";
+	WF.ContextMenu.main_tasks_menu_hide_obj_id = "taskflowchart_global .tasks_menu_hide";
+	WF.ContextMenu.main_workflow_menu_obj_id = "taskflowchart_global .workflow_menu";
+	
+	WF.TaskFlow.connection_line_width = 3;
+	WF.TaskFlow.connection_from_target = true;
+	
+	WF.Property.tasks_settings = tasks_settings;
 	
 	if (init_now)
 		WF.init();
@@ -1353,9 +1356,9 @@ function showQueryDesign(relationship_obj) {
 /** START: QUERY - UPDATE TASK TABLE AUTOMATICALLY **/
 //This function will be called when we click in the "Update Tables' Attributes" button.
 function updateQueryDBBroker(rand_number, is_automatically) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
-	var popup = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id + " .choose_table_or_attribute");
+	var popup = $("#" + WF.TaskFlow.main_tasks_flow_obj_id + " .choose_table_or_attribute");
 	
 	popup.hide(); //This popup is shared with other actions so we must hide it first otherwise the user experience will be weird bc we will see the popup changing with the new changes.
 	
@@ -1388,11 +1391,11 @@ function updateQueryTablesFromDBBroker(elm, rand_number, is_automatically) {
 	//console.log(rand_number);
 	
 	//PREPARING DB TABLE ATTRIBUTES
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
 	WF.getMyFancyPopupObj().showLoading();
 	
-	var popup = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id + " .choose_table_or_attribute");
+	var popup = $("#" + WF.TaskFlow.main_tasks_flow_obj_id + " .choose_table_or_attribute");
 	var db_broker = popup.find(".db_broker select").val();
 	var db_driver = popup.find(".db_driver select").val();
 	var type = popup.find(".type select").val();
@@ -1401,7 +1404,7 @@ function updateQueryTablesFromDBBroker(elm, rand_number, is_automatically) {
 	updateDBTables( popup.find(".db_broker select")[0], rand_number );
 	popup.find(".db_table").hide();
 	
-	var tasks = WF.jsPlumbTaskFlow.getAllTasks();
+	var tasks = WF.TaskFlow.getAllTasks();
 	
 	var old_tables = {};
 	var new_tables = {};
@@ -1453,7 +1456,7 @@ function updateQueryTablesFromDBBroker(elm, rand_number, is_automatically) {
 		WF.getMyFancyPopupObj().hidePopup();
 	}
 	else {
-		myWFObj.setJsPlumbWorkFlow(WF);
+		myWFObj.setTaskFlowChart(WF);
 		
 		for (var i = 0; i < tasks.length; i++) {
 			var task = $(tasks[i]);
@@ -1472,7 +1475,7 @@ function updateQueryTablesFromDBBroker(elm, rand_number, is_automatically) {
 				}
 				
 				var data = {
-					table_name : WF.jsPlumbTaskFlow.getTaskLabel(task),
+					table_name : WF.TaskFlow.getTaskLabel(task),
 					table_attr_names : table_attr_names,
 				}
 			
@@ -1492,9 +1495,9 @@ function updateQueryTablesFromDBBroker(elm, rand_number, is_automatically) {
 }
 
 function updateQueryDBBrokerAutomatically(rand_number) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
-	var popup = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id + " .choose_table_or_attribute");
+	var popup = $("#" + WF.TaskFlow.main_tasks_flow_obj_id + " .choose_table_or_attribute");
 	var db_broker = popup.find(".db_broker select")[0];
 	var db_driver = popup.find(".db_driver select")[0];
 	
@@ -1504,11 +1507,11 @@ function updateQueryDBBrokerAutomatically(rand_number) {
 }
 
 function deleteOldAttributesThatDontExistAnymore(WF, old_attributes_to_delete) {
-	var settings = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().parent().parent().children(".query_settings");
+	var settings = $("#" + WF.TaskFlow.main_tasks_flow_obj_id).parent().parent().parent().children(".query_settings");
 		
 	if (settings) {
 		var tasks = getTasksByTableName(default_db_table, WF);
-		var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
+		var tb = tasks[0] ? WF.TaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 		
 		settings.find("tbody .field .ptable").each(function(idx, elm) {
 			elm = $(elm).parent()[0];
@@ -1564,9 +1567,9 @@ function deleteOldAttributesThatDontExistAnymore(WF, old_attributes_to_delete) {
 
 /** START: QUERY - ADD NEW TASK TABLE **/
 function addNewTask(rand_number) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
-	var popup = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id + " .choose_table_or_attribute");
+	var popup = $("#" + WF.TaskFlow.main_tasks_flow_obj_id + " .choose_table_or_attribute");
 	
 	popup.hide(); //This popup is shared with other actions so we must hide it first otherwise the user experience will be weird bc we will see the popup changing with the new changes.
 	
@@ -1611,7 +1614,7 @@ function addNewTask(rand_number) {
 }
 
 function addNewTable(rand_number, table_name, table_attr_names, offset) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
 	/*console.log(table_name);
 	console.log(table_attr_names);
@@ -1623,16 +1626,16 @@ function addNewTable(rand_number, table_name, table_attr_names, offset) {
 	if (tasks.length > 0)
 		table_name += " t" + parseInt(Math.random() * 1000);
 	
-	var task_id = WF.jsPlumbContextMenu.addTaskByType(task_table_type_id, offset);
+	var task_id = WF.ContextMenu.addTaskByType(task_table_type_id, offset);
 	
 	var data = {
 		table_name : table_name,
 		table_attr_names : table_attr_names,
 	}
-	myWFObj.setJsPlumbWorkFlow(WF);
+	myWFObj.setTaskFlowChart(WF);
 	DBQueryTaskPropertyObj.prepareTableAttributes(task_id, data, rand_number);
 		
-	$("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id + " #" + task_id + " ." + WF.jsPlumbTaskFlow.task_label_class_name + " span").each(function(idx, elm){
+	$("#" + WF.TaskFlow.main_tasks_flow_obj_id + " #" + task_id + " ." + WF.TaskFlow.task_label_class_name + " span").each(function(idx, elm){
 		var j_elm = $(elm);
 		
 		if (!j_elm.hasClass("icon")) {
@@ -1644,12 +1647,12 @@ function addNewTable(rand_number, table_name, table_attr_names, offset) {
 }
 
 function connectTables(rand_number, source_task_id, target_task_id, exit_props) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
-	var connection = WF.jsPlumbTaskFlow.connect(source_task_id, target_task_id, "", DBQueryTaskPropertyObj.connection_exit_props.type, DBQueryTaskPropertyObj.connection_exit_props.overlay, DBQueryTaskPropertyObj.connection_exit_props);
-					
+	var connection = WF.TaskFlow.connect(source_task_id, target_task_id, "", DBQueryTaskPropertyObj.connection_exit_props.type, DBQueryTaskPropertyObj.connection_exit_props.overlay, DBQueryTaskPropertyObj.connection_exit_props);
+	
 	if (exit_props && connection.id) {
-		WF.jsPlumbTaskFlow.connections_properties[connection.id] = exit_props;
+		WF.TaskFlow.connections_properties[connection.id] = exit_props;
 	}
 	
 	return connection;
@@ -1671,7 +1674,7 @@ function addRelationshipBlock(elm, is_hbn_obj, sql) {
 	
 	var WF = addTaskFlowChart(rand_number, false);
 	
-	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	var main_tasks_flow_obj = $("#" + WF.TaskFlow.main_tasks_flow_obj_id);
 	var query_obj_tab = main_tasks_flow_obj.parent().parent().parent().parent();
 	var query_obj = query_obj_tab.parent();
 	
@@ -1792,7 +1795,7 @@ function deleteQueryAttribute(elm, rand_number) {
 }
 
 function deleteQueryKey(elm, rand_number) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
 	var field = $(elm).parent().parent();
 	
@@ -1805,7 +1808,7 @@ function deleteQueryKey(elm, rand_number) {
 	var operator = field.children(".operator").children("select").val();
 	
 	var tasks = getTasksByTableName(default_db_table, WF);
-	var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
+	var tb = tasks[0] ? WF.TaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 	
 	ptable = ptable == "" ? tb : ptable;
 	ftable = ftable == "" ? tb : ftable;
@@ -1814,7 +1817,7 @@ function deleteQueryKey(elm, rand_number) {
 	
 	field.remove();
 	
-	if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
+	if ($("#" + WF.TaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
 		autoUpdateSqlFromUI(rand_number);
 }
 
@@ -1823,8 +1826,8 @@ function onFocusQueryKey(input) {
 }
 
 function onBlurQueryKey(input, rand_number) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
-	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
+	var main_tasks_flow_obj = $("#" + WF.TaskFlow.main_tasks_flow_obj_id);
 	
 	if (main_tasks_flow_obj.attr("sync_ui_and_settings") == 1) {
 		var field = $(input).parent().parent();
@@ -1930,7 +1933,7 @@ function onBlurQueryKey(input, rand_number) {
 	
 		//SETTING TABLE DEFAULT
 		var tasks = getTasksByTableName(default_db_table, WF);
-		var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
+		var tb = tasks[0] ? WF.TaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 	
 		old_ptable = !old_ptable || old_ptable == "" ? tb : old_ptable;
 		new_ptable = !new_ptable || new_ptable == "" ? tb : new_ptable;
@@ -1967,14 +1970,14 @@ function onBlurQueryKey(input, rand_number) {
 			var tasks = getTasksByTableName(new_ptable, WF);
 			var attrs = getTaskTableAttributes(tasks[0], WF);
 			if (!attrs.hasOwnProperty(new_pcolumn)) {
-				WF.jsPlumbStatusMessage.showError("The attribute '" + new_pcolumn + "' that you inserted doesn't belong to the table '" + new_ptable + "'. Please replace it with a correct attribute...");
+				WF.StatusMessage.showError("The attribute '" + new_pcolumn + "' that you inserted doesn't belong to the table '" + new_ptable + "'. Please replace it with a correct attribute...");
 			}
 		}
 		else if (column_div.hasClass("fcolumn") && new_fcolumn != "") {
 			var tasks = getTasksByTableName(new_ftable, WF);
 			var attrs = getTaskTableAttributes(tasks[0], WF);
 			if (!attrs.hasOwnProperty(new_fcolumn)) {
-				WF.jsPlumbStatusMessage.showError("The attribute '" + new_fcolumn + "' that you inserted doesn't belong to the table '" + new_ftable + "'. Please replace it with a correct attribute...");
+				WF.StatusMessage.showError("The attribute '" + new_fcolumn + "' that you inserted doesn't belong to the table '" + new_ftable + "'. Please replace it with a correct attribute...");
 			}
 		}
 	}
@@ -2191,15 +2194,15 @@ function showOrHideExtraQuerySettings(elm, rand_number) {
 }
 
 function repaintQueryTasks(rand_number) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 
-	WF.jsPlumbTaskFlow.repaintAllTasks();
+	WF.TaskFlow.repaintAllTasks();
 	WF.getMyFancyPopupObj().updatePopup();
 }
 
 function updateRelationshipType(elm, rand_number) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
-	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
+	var main_tasks_flow_obj = $("#" + WF.TaskFlow.main_tasks_flow_obj_id);
 	
 	if (main_tasks_flow_obj.attr("sync_ui_and_settings") == 1) {
 		var rel_type = $(elm).val();
@@ -2268,7 +2271,7 @@ function prepareQuerySqlFromUIOrViceVersa(tab_elm, rand_number, do_not_confirm) 
 }
 
 function createSqlFromUI(ul, rand_number, do_not_confirm, do_not_focus_sql) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
 	var query_sql_elm_selector = ul.children(".query_sql_tab").children("a").attr("href");
 	var query_sql_elm = $(query_sql_elm_selector);
@@ -2339,8 +2342,8 @@ function createUIFromSql(ul, rand_number, do_not_confirm) {
 	
 	//console.log("SQL:"+old_sql_id+"#####"+new_sql_id+"### IS EQUAL: "+(old_sql_id == new_sql_id)+"### NEW SQL: "+new_sql);
 	
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
-	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
+	var main_tasks_flow_obj = $("#" + WF.TaskFlow.main_tasks_flow_obj_id);
 	
 	if (!old_sql_id && !new_sql) {
 		WF.getMyFancyPopupObj().hidePopup();
@@ -2424,8 +2427,8 @@ function createUIFromSql(ul, rand_number, do_not_confirm) {
 }
 
 function autoUpdateSqlFromUI(rand_number) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
-	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
+	var main_tasks_flow_obj = $("#" + WF.TaskFlow.main_tasks_flow_obj_id);
 	var query = main_tasks_flow_obj.parent().closest(".query");
 	var ul = query.children(".query_tabs");
 	
@@ -2433,8 +2436,8 @@ function autoUpdateSqlFromUI(rand_number) {
 }
 
 function autoUpdateUIFromSql(rand_number) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
-	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
+	var main_tasks_flow_obj = $("#" + WF.TaskFlow.main_tasks_flow_obj_id);
 	var query = main_tasks_flow_obj.parent().closest(".query");
 	var ul = query.children(".query_tabs");
 	
@@ -2499,10 +2502,10 @@ function updateQuerySettingsFieldsTypeAddFunction(type, is_insert_update_or_dele
 }
 
 function updateQueryUITableFromQuerySettings(rand_number, main_table) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
-	if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_and_settings") == 1) {
-		var settings = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().parent().parent().children(".query_settings");
+	if ($("#" + WF.TaskFlow.main_tasks_flow_obj_id).attr("sync_ui_and_settings") == 1) {
+		var settings = $("#" + WF.TaskFlow.main_tasks_flow_obj_id).parent().parent().parent().children(".query_settings");
 		//console.log(settings);
 		
 		if (settings) {
@@ -2512,7 +2515,7 @@ function updateQueryUITableFromQuerySettings(rand_number, main_table) {
 			//console.log(main_table_regex);
 			
 			//PREPARING DBQueryTaskPropertyObj - REMOVING THE CALLBACKS
-			myWFObj.setJsPlumbWorkFlow(WF);
+			myWFObj.setTaskFlowChart(WF);
 			
 			var bkp_task_func = DBQueryTaskPropertyObj.on_delete_table;
 			var bkp_conn_func = DBQueryTaskPropertyObj.on_complete_connection_properties;
@@ -2602,7 +2605,7 @@ function updateQueryUITableFromQuerySettings(rand_number, main_table) {
 				connections[c_id]["operators"].push(operator);
 			}
 		
-			var tasks = WF.jsPlumbTaskFlow.getAllTasks();
+			var tasks = WF.TaskFlow.getAllTasks();
 			var task_ids = {};
 		
 			//GETTING EXISTENT TASKS
@@ -2611,7 +2614,7 @@ function updateQueryUITableFromQuerySettings(rand_number, main_table) {
 		
 			for (var i = 0; i < tasks.length; i++) {
 				var task = $(tasks[i]);
-				var table_name = WF.jsPlumbTaskFlow.getTaskLabel(task);
+				var table_name = WF.TaskFlow.getTaskLabel(task);
 				
 				existent_tasks[table_name] = false;
 				task_ids[table_name] = task.attr("id");
@@ -2669,7 +2672,7 @@ function updateQueryUITableFromQuerySettings(rand_number, main_table) {
 		
 			for (var table_name in tables) {
 				var task_id = task_ids[table_name];
-				var task = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id + " #" + task_id);
+				var task = $("#" + WF.TaskFlow.main_tasks_flow_obj_id + " #" + task_id);
 			
 				task.css({top: top + "px", left: left + "px"});
 			
@@ -2688,9 +2691,9 @@ function updateQueryUITableFromQuerySettings(rand_number, main_table) {
 			}
 		
 			//PREPARING CONNECTIONS
-			var existent_connections = WF.jsPlumbTaskFlow.getConnections();
+			var existent_connections = WF.TaskFlow.getConnections();
 			var existent_connections_id = {};
-		
+			
 			for (var c_id in connections) {
 				var props = connections[c_id];
 			
@@ -2704,7 +2707,7 @@ function updateQueryUITableFromQuerySettings(rand_number, main_table) {
 						var c = existent_connections[i];
 			
 						if (c.sourceId == source_task_id && c.targetId == target_task_id) {
-							var c_props = WF.jsPlumbTaskFlow.connections_properties[c.id];
+							var c_props = WF.TaskFlow.connections_properties[c.id];
 						
 							if (c_props["tables_join"] == props["tables_join"]) {
 								connection_id = c.id;
@@ -2716,19 +2719,19 @@ function updateQueryUITableFromQuerySettings(rand_number, main_table) {
 					if (connection_id) {
 						existent_connections_id[connection_id] = true;
 					
-						WF.jsPlumbTaskFlow.connections_properties[connection_id] = props;
+						WF.TaskFlow.connections_properties[connection_id] = props;
 					}
 					else
 						connectTables(rand_number, source_task_id, target_task_id, props);
 				}
 			}
-		
+			
 			//DELETING OLD CONNECTIONS
 			for (var i in existent_connections) {
 				var c = existent_connections[i];
 			
 				if (c.id && !existent_connections_id[c.id]) 
-					WF.jsPlumbTaskFlow.deleteConnection(c.id, true);
+					WF.TaskFlow.deleteConnection(c.id, true);
 			}
 		
 			//PREPARING DBQueryTaskPropertyObj - ADDING THE CALLBACKS AGAIN
@@ -2746,9 +2749,9 @@ function updateQueryUITableFromQuerySettings(rand_number, main_table) {
 					DBQueryTaskPropertyObj.setStartTaskById(table_task_id);
 			}
 			else {
-				var tasks = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id + " ." + WF.jsPlumbTaskFlow.task_class_name);
+				var tasks = $("#" + WF.TaskFlow.main_tasks_flow_obj_id + " ." + WF.TaskFlow.task_class_name);
 				
-				if (tasks.length > 0 && tasks.filter("." + WF.jsPlumbTaskFlow.start_task_class_name).length == 0)
+				if (tasks.length > 0 && tasks.filter("." + WF.TaskFlow.start_task_class_name).length == 0)
 					DBQueryTaskPropertyObj.setStartTaskById( tasks.first().attr("id") );
 			}
 				
@@ -2759,9 +2762,9 @@ function updateQueryUITableFromQuerySettings(rand_number, main_table) {
 }
 
 function getQueryFieldsDataObj(rand_number, main_table) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
-	var relationship_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().parent().parent().parent().parent().parent();
+	var relationship_obj = $("#" + WF.TaskFlow.main_tasks_flow_obj_id).parent().parent().parent().parent().parent().parent();
 	var rel_type = relationship_obj.children(".rel_type").children("select").val();
 	var query_settings;
 	var query_table;
@@ -2776,13 +2779,13 @@ function getQueryFieldsDataObj(rand_number, main_table) {
 		if (main_table)
 			query_table = main_table;
 		else {
-			var start_task = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id + " ." + WF.jsPlumbTaskFlow.task_class_name + "." + WF.jsPlumbTaskFlow.start_task_class_name);
-			query_table = WF.jsPlumbTaskFlow.getTaskLabel(start_task);
+			var start_task = $("#" + WF.TaskFlow.main_tasks_flow_obj_id + " ." + WF.TaskFlow.task_class_name + "." + WF.TaskFlow.start_task_class_name);
+			query_table = WF.TaskFlow.getTaskLabel(start_task);
 		}
 	}
 	
 	var tasks = getTasksByTableName(default_db_table, WF);
-	var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
+	var tb = tasks[0] ? WF.TaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 	
 	var data = {
 		"type": rel_type,
@@ -2897,9 +2900,9 @@ function getQuerySqlEditor(selector) {
 
 function onBlurQuerySqlEditor(rand_number) {
 	if (rand_number) {
-		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+		eval('var WF = taskFlowChartObj_' + rand_number + ';');
 		
-		if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_sql_with_ui_settings") == 1)
+		if ($("#" + WF.TaskFlow.main_tasks_flow_obj_id).attr("sync_sql_with_ui_settings") == 1)
 			autoUpdateUIFromSql(rand_number);
 	}
 }
@@ -2940,13 +2943,13 @@ function onClickQueryAtributeCheckBox(checkbox, WF, rand_number) {
 	var task = checkbox.parent().closest(".task");
 	var settings = task.parent().closest(".taskflowchart").parent().parent().children(".query_settings")[0];
 	
-	var table_name = WF.jsPlumbTaskFlow.getTaskLabel(task);
+	var table_name = WF.TaskFlow.getTaskLabel(task);
 	var attribute_name = checkbox.attr("attribute");
 	var fields = $(settings).find(".attributes .fields");
 	var items = $(fields).children(".field");
 	
 	var tasks = getTasksByTableName(default_db_table, WF);
-	var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
+	var tb = tasks[0] ? WF.TaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 	
 	if (checkbox.is(':checked')) {
 		var exists = false;
@@ -2994,20 +2997,20 @@ function onClickQueryAtributeCheckBox(checkbox, WF, rand_number) {
 		}
 	}
 	
-	if ($("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
+	if ($("#" + WF.TaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
 		autoUpdateSqlFromUI(rand_number);
 }
 
 function onDeleteQueryTable(task, WF) {
 	if (task[0]) {
 		var table_name = getTaskTableName(task, WF);
-		var table_name_alias = WF.jsPlumbTaskFlow.getTaskLabel(task);
+		var table_name_alias = WF.TaskFlow.getTaskLabel(task);
 		
-		var settings = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().parent().parent().children(".query_settings");
+		var settings = $("#" + WF.TaskFlow.main_tasks_flow_obj_id).parent().parent().parent().children(".query_settings");
 		
 		if (settings) {
 			var tasks = getTasksByTableName(default_db_table, WF);
-			var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
+			var tb = tasks[0] ? WF.TaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 			
 			settings.find("tbody .field td").each(function(idx, elm) {
 				var j_elm = $(elm);
@@ -3023,22 +3026,22 @@ function onDeleteQueryTable(task, WF) {
 			//auto update sql from ui
 			var rand_number = settings.parent().closest(".query").attr("rand_number");
 			
-			if (rand_number && $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
+			if (rand_number && $("#" + WF.TaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
 				autoUpdateSqlFromUI(rand_number);
 		}
 		
 		//If any table gets deleted reset the obj id, so if the user generates again a new diagram based in the same sql, it will work fine!
-		var query_sql_elm_selector = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().closest(".query").find(" > .query_tabs > .query_sql_tab > a").attr("href");
+		var query_sql_elm_selector = $("#" + WF.TaskFlow.main_tasks_flow_obj_id).parent().closest(".query").find(" > .query_tabs > .query_sql_tab > a").attr("href");
 		$(query_sql_elm_selector).attr("obj", "");
 	}	
 }
 
 function prepareTableLabelSettings(WF, task_id, old_table_name, new_table_name) {
-	var settings = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().parent().parent().children(".query_settings");
+	var settings = $("#" + WF.TaskFlow.main_tasks_flow_obj_id).parent().parent().parent().children(".query_settings");
 	
 	if (settings[0]) {
 		var tasks = getTasksByTableName(default_db_table, WF);
-		var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
+		var tb = tasks[0] ? WF.TaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 		
 		settings.find(".fields .table input, .fields .ptable input, .fields .ftable input").each(function(idx, elm) {
 			var table_name = elm.value.trim();
@@ -3051,7 +3054,7 @@ function prepareTableLabelSettings(WF, task_id, old_table_name, new_table_name) 
 		//auto update sql from ui
 		var rand_number = settings.parent().closest(".query").attr("rand_number");
 		
-		if (rand_number && $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
+		if (rand_number && $("#" + WF.TaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
 			autoUpdateSqlFromUI(rand_number);
 	}
 }
@@ -3060,14 +3063,14 @@ function prepareTablesRelationshipKeys(WF, connection, old_connection_property_v
 	//console.log(old_connection_property_values);
 	//console.log(new_connection_property_values);
 	
-	var settings = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().parent().parent().find(".query_settings");
+	var settings = $("#" + WF.TaskFlow.main_tasks_flow_obj_id).parent().parent().parent().find(".query_settings");
 	var settings_fields = settings.find(".keys .fields");
 	
 	if (settings_fields[0] && (new_connection_property_values || old_connection_property_values)) {
 		new_connection_property_values = !new_connection_property_values ? {} : new_connection_property_values;
 		
 		var tasks = getTasksByTableName(default_db_table, WF);
-		var tb = tasks[0] ? WF.jsPlumbTaskFlow.getTaskLabel(tasks[0]) : default_db_table;
+		var tb = tasks[0] ? WF.TaskFlow.getTaskLabel(tasks[0]) : default_db_table;
 		
 		var source_table = new_connection_property_values.source_table;
 		var target_table = new_connection_property_values.target_table;
@@ -3084,7 +3087,7 @@ function prepareTablesRelationshipKeys(WF, connection, old_connection_property_v
 		var target_task_id = target_task.attr("id");
 		
 		var selected_connection_id = connection.id;
-		var connections = WF.jsPlumbTaskFlow.getSourceConnections(source_task_id);
+		var connections = WF.TaskFlow.getSourceConnections(source_task_id);
 		
 		var new_tables_join = new_connection_property_values.tables_join;
 		
@@ -3106,7 +3109,7 @@ function prepareTablesRelationshipKeys(WF, connection, old_connection_property_v
 					var connection_id = connections[i].id;
 			
 					if (connection_id != selected_connection_id && connections[i].targetId == target_task_id) {
-						var props = WF.jsPlumbTaskFlow.connections_properties[connection_id];
+						var props = WF.TaskFlow.connections_properties[connection_id];
 			
 						if (props && props.tables_join == old_tables_join) {
 							for (var w in props.source_columns) {
@@ -3192,14 +3195,14 @@ function prepareTablesRelationshipKeys(WF, connection, old_connection_property_v
 		//auto update sql from ui
 		var rand_number = settings.parent().closest(".query").attr("rand_number");
 		
-		if (rand_number && $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
+		if (rand_number && $("#" + WF.TaskFlow.main_tasks_flow_obj_id).attr("sync_ui_settings_with_sql") == 1)
 			autoUpdateSqlFromUI(rand_number);
 	}
 }
 
 function prepareTableStartTask(WF, task_id, task) {
 	//auto update sql from ui
-	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	var main_tasks_flow_obj = $("#" + WF.TaskFlow.main_tasks_flow_obj_id);
 	var rand_number = main_tasks_flow_obj.parent().closest(".query").attr("rand_number");
 	
 	if (rand_number && main_tasks_flow_obj.attr("sync_ui_settings_with_sql") == 1)
@@ -3243,7 +3246,7 @@ function getQueryKeyFieldElement(settings_fields, source_table, target_table, so
 
 /** START: QUERY - UTIL **/
 function deleteQueryKeyFromConnectionsProperties(rand_number, source_table, source_column, target_table, target_column, column_value, tables_join, operator) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
 	var source_task = getTasksByTableName(source_table, WF);
 	source_task = $(source_task[0]);
@@ -3254,12 +3257,12 @@ function deleteQueryKeyFromConnectionsProperties(rand_number, source_table, sour
 	var target_task_id = target_task.attr("id");
 	
 	if (source_task_id && target_task_id && source_task_id != target_task_id) {
-		var connections = WF.jsPlumbTaskFlow.getSourceConnections(source_task_id);
+		var connections = WF.TaskFlow.getSourceConnections(source_task_id);
 		var existent_connections = {};
 	
 		for (var i = 0; i < connections.length; i++) {
 			var connection_id = connections[i].id;
-			var props = WF.jsPlumbTaskFlow.connections_properties[connection_id];
+			var props = WF.TaskFlow.connections_properties[connection_id];
 		
 			if (props && connections[i].targetId == target_task_id && props.tables_join == tables_join) {
 				var new_source_columns = [];
@@ -3281,10 +3284,10 @@ function deleteQueryKeyFromConnectionsProperties(rand_number, source_table, sour
 				props.column_values = new_column_values;
 				props.operators = new_operators;
 			
-				WF.jsPlumbTaskFlow.connections_properties[connection_id] = props;
+				WF.TaskFlow.connections_properties[connection_id] = props;
 				
 				if (new_source_columns.length == 0) {
-					WF.jsPlumbTaskFlow.deleteConnection(connection_id, true);
+					WF.TaskFlow.deleteConnection(connection_id, true);
 				}
 				else {
 					existent_connections[connection_id] = true;
@@ -3299,7 +3302,7 @@ function deleteQueryKeyFromConnectionsProperties(rand_number, source_table, sour
 }
 
 function addQueryKeyToConnectionsProperties(rand_number, source_table, source_column, target_table, target_column, column_value, tables_join, operator) {
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
 	var source_task = getTasksByTableName(source_table, WF);
 	source_task = $(source_task[0]);
@@ -3310,20 +3313,20 @@ function addQueryKeyToConnectionsProperties(rand_number, source_table, source_co
 	var target_task_id = target_task.attr("id");
 	
 	if (source_task_id && target_task_id && source_task_id != target_task_id) {
-		var connections = WF.jsPlumbTaskFlow.getSourceConnections(source_task_id);
+		var connections = WF.TaskFlow.getSourceConnections(source_task_id);
 	
 		var existent_connections = deleteQueryKeyFromConnectionsProperties(rand_number, source_table, source_column, target_table, target_column, column_value, tables_join, operator);
 	
 		var exists = false;
 		for (var connection_id in existent_connections) {
-			var props = WF.jsPlumbTaskFlow.connections_properties[connection_id];
+			var props = WF.TaskFlow.connections_properties[connection_id];
 		
 			props.source_columns.push(source_column);
 			props.target_columns.push(target_column);
 			props.column_values.push(column_value);
 			props.operators.push(operator);
 				
-			WF.jsPlumbTaskFlow.connections_properties[connection_id] = props;
+			WF.TaskFlow.connections_properties[connection_id] = props;
 			
 			exists = true;
 		}
@@ -3492,7 +3495,7 @@ function getBrokerHbnObjRelationships(db_broker, db_driver, type, db_table, with
 }
 
 function getTaskTableName(task, WF) {
-	var label = WF.jsPlumbTaskFlow.getTaskLabel(task);
+	var label = WF.TaskFlow.getTaskLabel(task);
 	
 	var parts = label.split(" ");
 	
@@ -3503,11 +3506,11 @@ function getTaskTableName(task, WF) {
 function getTasksByTableName(table_name, WF) {
 	var new_tasks = [];
 	
-	var tasks = WF.jsPlumbTaskFlow.getAllTasks();
+	var tasks = WF.TaskFlow.getAllTasks();
 	
 	for (var i = 0; i < tasks.length; i++) {
 		var task = $(tasks[i]);
-		var label = WF.jsPlumbTaskFlow.getTaskLabel(task);
+		var label = WF.TaskFlow.getTaskLabel(task);
 		
 		if (label == table_name) {
 			new_tasks.push(task);
@@ -3530,7 +3533,7 @@ function getTasksByTableName(table_name, WF) {
 }
 
 function getTaskTableAttributes(task, WF) {
-	var db_attrs = task.find("." + WF.jsPlumbTaskFlow.task_eps_class_name + " .table_attrs .table_attr .check input");
+	var db_attrs = task.find("." + WF.TaskFlow.task_eps_class_name + " .table_attrs .table_attr .check input");
 	
 	var attrs = {};	
 	for (var j = 0; j < db_attrs.length; j++) {

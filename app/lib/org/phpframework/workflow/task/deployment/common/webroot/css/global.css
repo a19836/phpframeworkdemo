@@ -1,13 +1,13 @@
-.jsplumbtaskworkflow .task:hover:before,
-  .jsplumbtaskworkflow .task .task_info {
+.taskflowchartdiagram .task:hover:before,
+  .taskflowchartdiagram .task .task_info {
 	display:none !important;
 }
-.jsplumbtaskworkflow .task:hover:after {
+.taskflowchartdiagram .task:hover:after {
 	bottom:-25px !important;
 	left:-5px !important;
 	background:none !important;
 }
-.jsplumbtaskworkflow .task:hover .short_actions {
+.taskflowchartdiagram .task:hover .short_actions {
 	padding:10px;
 	top:-30px;
 	left:-5px;

@@ -84,7 +84,7 @@
 				var href = clone.attr("href");
 				
 				if (href && typeof ui_creator.options.on_convert_project_url_real_values_to_php_vars_func == "function") {
-					href = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(href);
+					href = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(href, html_element);
 					clone.attr("href", href);
 				}
 				
@@ -103,7 +103,7 @@
 				var href = widget.attr("href");
 				
 				if (href && typeof ui_creator.options.on_convert_project_url_real_values_to_php_vars_func == "function") {
-					var new_href = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(href);
+					var new_href = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(href, html_element);
 					widget.attr("href", new_href);
 				}
 				
@@ -133,7 +133,7 @@
 				
 				//parse href to convert url to vars: $project_url_prefix or $project_common_url_prefix
 				if (widget_settings["href"] && typeof ui_creator.options.on_convert_project_url_real_values_to_php_vars_func == "function")
-					widget_settings["href"] = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(widget_settings["href"]);
+					widget_settings["href"] = ui_creator.options.on_convert_project_url_real_values_to_php_vars_func(widget_settings["href"], widget);
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
@@ -151,7 +151,7 @@
 					
 					//parse href in case it contains the $project_url_prefix or $project_common_url_prefix
 					if (href && typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function") {
-						href = ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(href);
+						href = ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(href, widget);
 						widget.attr("href", href);
 					}
 				}
@@ -166,7 +166,7 @@
 					if (sprop.hasClass("href")) {
 						if (field_value != "") {
 							//parse href in case it contains the $project_url_prefix or $project_common_url_prefix
-							field_value = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(field_value) : field_value;
+							field_value = typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function" ? ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(field_value, widget) : field_value;
 							
 							widget.attr("href", field_value);
 						}

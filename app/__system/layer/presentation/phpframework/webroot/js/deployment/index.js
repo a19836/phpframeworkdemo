@@ -4,7 +4,7 @@ var MyDeploymentUIFancyPopup = new MyFancyPopupClass();
 
 $(function() {
 	$(window).bind('beforeunload', function () {
-		if (jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()) {
+		if (taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving()) {
 			if (window.parent && window.parent.iframe_overlay)
 				window.parent.iframe_overlay.hide();
 			
@@ -25,13 +25,13 @@ $(function() {
 	$(".taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.auto_save_activation").addClass("with_padding");
 	
 	//init workflow
-	jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_connector = "Flowchart";
-	jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_overlay = "One To One";
-	//jsPlumbWorkFlow.jsPlumbTaskFlow.available_connection_connectors_type = ["Flowchart"];
-	jsPlumbWorkFlow.jsPlumbTaskFlow.available_connection_overlays_type = ["One To One"];
+	taskFlowChartObj.TaskFlow.default_connection_connector = "Flowchart";
+	taskFlowChartObj.TaskFlow.default_connection_overlay = "One To One";
+	//taskFlowChartObj.TaskFlow.available_connection_connectors_type = ["Flowchart"];
+	taskFlowChartObj.TaskFlow.available_connection_overlays_type = ["One To One"];
 	
-	jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = updateTasksAfterFileRead;
-	jsPlumbWorkFlow.jsPlumbTaskFile.on_success_update = updateTasksAfterFileRead;
+	taskFlowChartObj.TaskFile.on_success_read = updateTasksAfterFileRead;
+	taskFlowChartObj.TaskFile.on_success_update = updateTasksAfterFileRead;
 	
 	//init trees
 	chooseTemplateTaskLayerFileFromFileManagerTree = new MyTree({
@@ -55,7 +55,7 @@ $(function() {
 });
 
 function onToggleFullScreen(in_full_screen) {
-	jsPlumbWorkFlow.resizePanels();
+	taskFlowChartObj.resizePanels();
 }
 
 function removeAllInvalidTemplateTaskLayerFilesFromTree(ul, data) {
@@ -207,8 +207,8 @@ function updateTemplateTaskLayerUrlFileManager(elm) {
 
 function prepareTaskContextMenu() {
 	/*;(function() {
-		jsPlumbWorkFlow.onReady(function() {
-			$("#" + jsPlumbWorkFlow.jsPlumbContextMenu.task_context_menu_id + " .set_label a").html("Edit Server Name");
+		taskFlowChartObj.onReady(function() {
+			$("#" + taskFlowChartObj.ContextMenu.task_context_menu_id + " .set_label a").html("Edit Server Name");
 		});
 	})();*/
 }
@@ -220,17 +220,17 @@ function updateTasksAfterFileRead() {
 function saveDeploymentDiagram() {
 	prepareAutoSaveVars();
 	
-	if (jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()) {
-		jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
+	if (taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving()) {
+		taskFlowChartObj.TaskFile.save(null, {
 			success: function(data, textStatus, jqXHR) {
 				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url, function() {
-						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, taskFlowChartObj.TaskFile.set_tasks_file_url, function() {
+						taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 						
 						saveDeploymentDiagram();
 					});
 				else if (is_from_auto_save) {
-					jsPlumbWorkFlow.jsPlumbStatusMessage.removeMessages("status");
+					taskFlowChartObj.StatusMessage.removeMessages("status");
 					resetAutoSave();
 				}
 			},
@@ -238,7 +238,7 @@ function saveDeploymentDiagram() {
 		});
 	}
 	else if (!is_from_auto_save) 
-		jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Nothing to save.", "", "bottom_messages", 1500);
+		taskFlowChartObj.StatusMessage.showMessage("Nothing to save.", "", "bottom_messages", 1500);
 	else
 		resetAutoSave();
 
@@ -249,13 +249,13 @@ function addNewServer() {
 	var auto_save_bkp = auto_save;
 	
 	var server_task_type_id = ServerTaskPropertyObj.template_tasks_types_by_tag["server"];
-	var task_id = jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByType(server_task_type_id);
+	var task_id = taskFlowChartObj.ContextMenu.addTaskByType(server_task_type_id);
 	
-	jsPlumbWorkFlow.jsPlumbTaskFlow.setTaskLabelByTaskId(task_id, {label: null}); //set {label: null}, so the jsPlumbTaskFlow.setTaskLabel method ignores the prompt and adds the default label or an auto generated label.
+	taskFlowChartObj.TaskFlow.setTaskLabelByTaskId(task_id, {label: null}); //set {label: null}, so the TaskFlow.setTaskLabel method ignores the prompt and adds the default label or an auto generated label.
 	
 	//set auto_save from bkp bc when we call addTaskByType, it will call the loadTaskProperties which then calls the onOpenServerPropertiesPopup, but then it doesn't call the onCloseServerPropertiesPopup, which will return a wrong auto_save value.
 	auto_save = auto_save_bkp;
 	
 	//open properties
-	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+	taskFlowChartObj.Property.showTaskProperties(task_id);
 }

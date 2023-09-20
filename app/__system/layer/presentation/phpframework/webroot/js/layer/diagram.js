@@ -3,7 +3,7 @@ if (typeof allow_connections_to_multiple_levels == "undefined")
 
 $(function() {
 	$(window).bind('beforeunload', function () {
-		if (jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()) {
+		if (taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving()) {
 			if (window.parent && window.parent.iframe_overlay)
 				window.parent.iframe_overlay.hide();
 			
@@ -24,13 +24,13 @@ $(function() {
 	$(".taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.auto_save_activation").addClass("with_padding");
 	
 	//init workflow
-	jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_connector = "Straight";
-	jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_overlay = "Forward Arrow";
-	jsPlumbWorkFlow.jsPlumbTaskFlow.available_connection_overlays_type = ["Forward Arrow"];
-	jsPlumbWorkFlow.jsPlumbTaskFlow.available_connection_overlays[0][1]["location"] = 0.999; //Sets the arrow to the end to the conneciton line. Note that this cannot be 1 or we will get a javascript error from jsplumb. This is only used by jsplumb.
+	taskFlowChartObj.TaskFlow.default_connection_connector = "Straight";
+	taskFlowChartObj.TaskFlow.default_connection_overlay = "Forward Arrow";
+	taskFlowChartObj.TaskFlow.available_connection_overlays_type = ["Forward Arrow"];
+	taskFlowChartObj.TaskFlow.available_connection_overlays[0][1]["location"] = 0.999; //Sets the arrow to the end to the conneciton line. Note that this cannot be 1 or we will get a javascript error from jsplumb. This is only used by jsplumb. If Leaderline is used, we won't need the "location" attribute.
 	
-	jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = updateTasksAfterFileRead;
-	jsPlumbWorkFlow.jsPlumbTaskFile.on_success_update = updateTasksAfterFileRead;
+	taskFlowChartObj.TaskFile.on_success_read = updateTasksAfterFileRead;
+	taskFlowChartObj.TaskFile.on_success_update = updateTasksAfterFileRead;
 	
 	//allow connections to only 1 level below.
 	if (!allow_connections_to_multiple_levels) {
@@ -39,27 +39,27 @@ $(function() {
 	}
 	
 	//add default function to reset the top positon of the tasksflow panels, if with_top_bar class exists 
-	onResizeTaskFlowChartPanels(jsPlumbWorkFlow, 0);
+	onResizeTaskFlowChartPanels(taskFlowChartObj, 0);
 });
 
 function onToggleFullScreen(in_full_screen) {
-	jsPlumbWorkFlow.resizePanels();
+	taskFlowChartObj.resizePanels();
 }
 
 function onResizeTaskFlowChartPanels(WF, height) {
-	if ($("#" + WF.jsPlumbContextMenu.main_tasks_menu_obj_id).parent().hasClass("with_top_bar_menu"))
-		$("#" + WF.jsPlumbContextMenu.main_tasks_menu_obj_id + ", #" + WF.jsPlumbContextMenu.main_tasks_menu_hide_obj_id + ", #" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).css("top", "");
+	if ($("#" + WF.ContextMenu.main_tasks_menu_obj_id).parent().hasClass("with_top_bar_menu"))
+		$("#" + WF.ContextMenu.main_tasks_menu_obj_id + ", #" + WF.ContextMenu.main_tasks_menu_hide_obj_id + ", #" + WF.TaskFlow.main_tasks_flow_obj_id).css("top", "");
 }
 
 function updateTasksAfterFileRead() {
 	//load tasks properties
-	var tasks = jsPlumbWorkFlow.jsPlumbTaskFlow.getAllTasks();
+	var tasks = taskFlowChartObj.TaskFlow.getAllTasks();
 	
 	if (tasks)
 		for (var i = 0, l = tasks.length; i < l; i++) {
 			var task = $(tasks[i]);
 			var task_id = task.attr("id");
-			var task_properties = jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id];
+			var task_properties = taskFlowChartObj.TaskFlow.tasks_properties[task_id];
 			var is_active = task_properties && parseInt(task_properties["active"]) == 1 || ("" + task_properties["active"]).toLowerCase() == "true";
 			
 			if (is_active)
@@ -74,17 +74,17 @@ function updateTasksAfterFileRead() {
 function saveLayersDiagram() {
 	prepareAutoSaveVars();
 	
-	if (jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()) {
-		jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
+	if (taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving()) {
+		taskFlowChartObj.TaskFile.save(null, {
 			success: function(data, textStatus, jqXHR) {
 				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url, function() {
-						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, taskFlowChartObj.TaskFile.set_tasks_file_url, function() {
+						taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 						
 						saveLayersDiagram();
 					});
 				else if (is_from_auto_save) {
-					jsPlumbWorkFlow.jsPlumbStatusMessage.removeMessages("status");
+					taskFlowChartObj.StatusMessage.removeMessages("status");
 					resetAutoSave();
 				}
 			},
@@ -102,7 +102,7 @@ function saveLayersDiagram() {
 function openGlobalSettingsAndVarsPopup(url, options) {
 	openIframePopup(url, options);
 	
-	var popup = jsPlumbWorkFlow.getMyFancyPopupObj().getPopup();
+	var popup = taskFlowChartObj.getMyFancyPopupObj().getPopup();
 	popup.addClass("with_iframe_title")
 }
 
@@ -111,14 +111,14 @@ function onOpenGlobalSettingsAndVars() {
 		e.preventDefault();
 		
 		if (confirm("You are about to close this popup and loose the unsaved changes. Do you wish to proceed?"))
-			jsPlumbWorkFlow.getMyFancyPopupObj().hidePopup();
+			taskFlowChartObj.getMyFancyPopupObj().hidePopup();
 	};
 	
-	var close_btn = jsPlumbWorkFlow.getMyFancyPopupObj().getPopupCloseButton();
+	var close_btn = taskFlowChartObj.getMyFancyPopupObj().getPopupCloseButton();
 	close_btn.off("click");
 	close_btn.click(close_popup_func);
 	
-	var overlay = jsPlumbWorkFlow.getMyFancyPopupObj().getOverlay();
+	var overlay = taskFlowChartObj.getMyFancyPopupObj().getOverlay();
 	overlay.off("click");
 	overlay.click(close_popup_func);*/
 }

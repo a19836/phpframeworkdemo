@@ -49,7 +49,7 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 		/* TASK HANDLERS */
 		
 		onLoadTaskProperties : function(task_html_element, task_id, task_property_values) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
+			var WF = myWFObj.getTaskFlowChart();
 			
 			//prepare tabs
 			task_html_element.tabs();
@@ -61,8 +61,8 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 			});
 			
 			//prepare interface type
-			var j_task = WF.jsPlumbTaskFlow.getTaskById(task_id);
-			var task_parent = WF.jsPlumbTaskFlow.getTaskParentTasks(j_task);
+			var j_task = WF.TaskFlow.getTaskById(task_id);
+			var task_parent = WF.TaskFlow.getTaskParentTasks(j_task);
 			var task_parent_tag = $(task_parent[0]).attr("tag");
 			var is_task_inner_child = task_parent[0] && task_parent_tag != "page"; //if is a child task inside of another task that is not a page
 			var inner_task_settings = task_html_element.find(".inner_task_settings");
@@ -206,45 +206,45 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 		},
 		
 		onTaskCreation : function(task_id) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var j_task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+			var WF = myWFObj.getTaskFlowChart();
+			var j_task = WF.TaskFlow.getTaskById(task_id);
 			
-			var droppable = $('<div class="' + WF.jsPlumbTaskFlow.task_droppable_class_name + '"></div>');
+			var droppable = $('<div class="' + WF.TaskFlow.task_droppable_class_name + '"></div>');
 			j_task.append(droppable);
 			
-			WF.jsPlumbContextMenu.prepareTaskDroppables(j_task, {accept: ".task_form, .task_listing, .task_view"});
+			WF.ContextMenu.prepareTaskDroppables(j_task, {accept: ".task_form, .task_listing, .task_view"});
 			
-			var label_elm = WF.jsPlumbTaskFlow.getTaskLabelElement(j_task);
-			label_elm.closest("." + WF.jsPlumbTaskFlow.task_label_class_name).attr("title", label_elm.text());
+			var label_elm = WF.TaskFlow.getTaskLabelElement(j_task);
+			label_elm.closest("." + WF.TaskFlow.task_label_class_name).attr("title", label_elm.text());
 			
-			/*DEPRECATED Do not add the 'WF.jsPlumbTaskFlow.resizeTaskParentTask(droppable)' bc since we are loading the width and height of the task, we don't need this anymore, and there could be a situation where the user really wants a specific size and if we call resizeTaskParentTask the size will be overwrited.
+			/*DEPRECATED Do not add the 'WF.TaskFlow.resizeTaskParentTask(droppable)' bc since we are loading the width and height of the task, we don't need this anymore, and there could be a situation where the user really wants a specific size and if we call resizeTaskParentTask the size will be overwrited.
 			//because the inner tasks will only get appended to this task, after this function get called, we need to set a timeout to resize the task
 			setTimeout(function() {
-				WF.jsPlumbTaskFlow.resizeTaskParentTask(droppable, true);
+				WF.TaskFlow.resizeTaskParentTask(droppable, true);
 			}, 1000);
 			*/
 		},
 		
 		onTaskCloning : function(task_id) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var j_task = WF.jsPlumbTaskFlow.getTaskById(task_id);
-			var parent_task = WF.jsPlumbTaskFlow.getTaskParentTasks(j_task);
+			var WF = myWFObj.getTaskFlowChart();
+			var j_task = WF.TaskFlow.getTaskById(task_id);
+			var parent_task = WF.TaskFlow.getTaskParentTasks(j_task);
 			
 			if (parent_task[0] && parent_task.is(".task_page, .task_form, .task_listing, .task_view")) {
 				onTaskCloning(task_id);
 				
-				WF.jsPlumbTaskFlow.resizeTaskParentTask(j_task, true); //resize parent task with the new width and height according with this inner task
+				WF.TaskFlow.resizeTaskParentTask(j_task, true); //resize parent task with the new width and height according with this inner task
 				
 				return true;
 			}
 			
 			//delete task
 			j_task.hide();
-			WF.jsPlumbStatusMessage.showError("This task cannot be dropped here!");
+			WF.StatusMessage.showError("This task cannot be dropped here!");
 			
 			setTimeout(function() {
-				WF.jsPlumbTaskFlow.deleteTask(task_id, {confirm: false});
-			}, 3000); //wait until jsPlumbTaskFlow finish to create the task successfully, otherwise it will break or the browser becomes very slow or freezes, bc jsPlumbTaskFlow is trying to do something to a element that doesn't exist anymore...
+				WF.TaskFlow.deleteTask(task_id, {confirm: false});
+			}, 3000); //wait until TaskFlow finish to create the task successfully, otherwise it will break or the browser becomes very slow or freezes, bc TaskFlow is trying to do something to a element that doesn't exist anymore...
 			
 			return false;
 		},
@@ -253,7 +253,7 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 			var droppable = j_task.data("droppable");
 			
 			if (droppable) {
-				var droppable_parent = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskParentTasks( $(droppable) );
+				var droppable_parent = myWFObj.getTaskFlowChart().TaskFlow.getTaskParentTasks( $(droppable) );
 				droppable_parent = droppable_parent[0];
 				
 				return droppable_parent && $(droppable_parent).is(".task_page, .task_form, .task_listing, .task_view");
@@ -262,11 +262,11 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 		},
 		
 		onTaskDragStopEnd : function(j_task) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var parent_task = WF.jsPlumbTaskFlow.getTaskParentTasks(j_task);
+			var WF = myWFObj.getTaskFlowChart();
+			var parent_task = WF.TaskFlow.getTaskParentTasks(j_task);
 			
 			if (parent_task[0])
-				WF.jsPlumbTaskFlow.resizeTaskParentTask(j_task, true); //resize parent task with the new width and height according with this inner task
+				WF.TaskFlow.resizeTaskParentTask(j_task, true); //resize parent task with the new width and height according with this inner task
 		},
 		
 		onCheckLabel : function(label_obj, task_id) {
@@ -278,11 +278,11 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 		},
 
 		onCompleteLabel : function(task_id) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var label_elm = WF.jsPlumbTaskFlow.getTaskLabelElementByTaskId(task_id);
-			label_elm.closest("." + WF.jsPlumbTaskFlow.task_label_class_name).attr("title", label_elm.text());
+			var WF = myWFObj.getTaskFlowChart();
+			var label_elm = WF.TaskFlow.getTaskLabelElementByTaskId(task_id);
+			label_elm.closest("." + WF.TaskFlow.task_label_class_name).attr("title", label_elm.text());
 			
-			WF.jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
+			WF.TaskFlow.repaintTaskByTaskId(task_id);
 			
 			return true;
 		},
@@ -313,31 +313,31 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 		
 		onCompleteConnectionLabel : function(label_overlay, connection_id) {
 			if (label_overlay) {
-				var WF = myWFObj.getJsPlumbWorkFlow();
+				var WF = myWFObj.getTaskFlowChart();
 				var conn_label = label_overlay.getLabel();
-				WF.jsPlumbTaskFlow.connections_properties[connection_id]["connection_label"] = conn_label;
+				WF.TaskFlow.connections_properties[connection_id]["connection_label"] = conn_label;
 			}
 			
 			return true;
 		},
 		
 		onTaskConnection : function(conn) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
+			var WF = myWFObj.getTaskFlowChart();
 			var source_task_id = conn.sourceId;
 		  	var target_task_id = conn.targetId;
 			
-			var source_task = WF.jsPlumbTaskFlow.getTaskById(source_task_id);
-			var target_task = WF.jsPlumbTaskFlow.getTaskById(target_task_id);
+			var source_task = WF.TaskFlow.getTaskById(source_task_id);
+			var target_task = WF.TaskFlow.getTaskById(target_task_id);
 			
-			var is_inner_task = WF.jsPlumbTaskFlow.isTaskAncestorTask(target_task, source_task) || WF.jsPlumbTaskFlow.isTaskAncestorTask(source_task, target_task);
+			var is_inner_task = WF.TaskFlow.isTaskAncestorTask(target_task, source_task) || WF.TaskFlow.isTaskAncestorTask(source_task, target_task);
 			var is_page = target_task.attr("tag") == "page";
 			
 			if (is_inner_task) {
-				WF.jsPlumbStatusMessage.showError("You cannot link these tasks. Inner tasks connections are not allowed!");
+				WF.StatusMessage.showError("You cannot link these tasks. Inner tasks connections are not allowed!");
 				return false;
 			}
 			else if (!is_page) {
-				WF.jsPlumbStatusMessage.showError("You cannot link these tasks. You can only connect a task to a Page task!");
+				WF.StatusMessage.showError("You cannot link these tasks. You can only connect a task to a Page task!");
 				return false;
 			}
 			
@@ -379,7 +379,7 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 		isTaskFileLabelValid : function(label_obj, task_id) {
 			//if (!isInputTextValid(label_obj.label, /[^\p{L}\w\-\. ]+/u)) { //'\w' means all words with '_' and '/u' means with accents and ç too. Cannot use this bc it does not work in IE.
 			if (!isInputTextValid(label_obj.label, /[^\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC\-\. ]+/)) { //'\w' means all words with '_' and 'u' means with accents and ç too.
-				myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("Invalid label. Please choose a different label.\nOnly this letters are allowed: a-z, A-Z, 0-9, '-', '_', '.' and you must have at least 1 character.");
+				myWFObj.getTaskFlowChart().StatusMessage.showError("Invalid label. Please choose a different label.\nOnly this letters are allowed: a-z, A-Z, 0-9, '-', '_', '.' and you must have at least 1 character.");
 				return false;
 			}
 			
@@ -513,7 +513,7 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 					this.prepareUIAttributesProperties(task_html_element, ui_attributes_props);
 				
 				//update popup size bc the content of the UI tab is dynamic
-				myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().updatePopup();
+				myWFObj.getTaskFlowChart().getMyFancyPopupObj().updatePopup();
 			}
 			else
 				alert("Invalid updateTableUIHandler function in PresentationTaskUtil.updateTableUI.");
@@ -587,7 +587,7 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 					var attr_name = PresentationTaskUtil.getAttributePropertiesName(attribute_name, db_attributes); 
 					
 					if (attr_name) {
-						var new_attribute = $.extend(true, {}, filter_by_attributes[attribute_name]); //clone this object, otherwise it will be passed by reference. Do not change directly the value of filter_by_attributes[attribute_name], bc is being passed by reference and it will change the main filter_by_attributes object, which could be the WF.jsPlumbTaskFlow.tasks_properties object
+						var new_attribute = $.extend(true, {}, filter_by_attributes[attribute_name]); //clone this object, otherwise it will be passed by reference. Do not change directly the value of filter_by_attributes[attribute_name], bc is being passed by reference and it will change the main filter_by_attributes object, which could be the WF.TaskFlow.tasks_properties object
 						
 						new_attribute["db_details"] = db_attributes[attr_name];
 						new_table_attributes[attr_name] = new_attribute;
@@ -627,7 +627,7 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 			var table_attributes = {};
 			var table = task_html_element.find(" > .ui > .ui_html > table");
 			
-			var query_string = myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(table, "task_property_field");
+			var query_string = myWFObj.getTaskFlowChart().Property.getPropertiesQueryStringFromHtmlElm(table, "task_property_field");
 			
 			try {
 				parse_str(query_string, table_attributes);
@@ -1280,7 +1280,7 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 		
 		getUIAttributesProperties : function(task_html_element) {
 			var attributes_properties = {};
-			var query_string = myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(task_html_element.find(".ui"), "task_property_field");
+			var query_string = myWFObj.getTaskFlowChart().Property.getPropertiesQueryStringFromHtmlElm(task_html_element.find(".ui"), "task_property_field");
 			
 			try {
 				parse_str(query_string, attributes_properties);

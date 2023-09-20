@@ -415,7 +415,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 			<div style="float:none; clear:both;"></div>
 		'; if ($v6d756b21eb) $pf8ed4912 .= '</div>'; $pf8ed4912 .= $this->getQueryHtml($pab85d90e, $pa1c701b0, $pcdd6ebdf, $pfdbbc383, $v9994512d98, $paf1bc6f6, $pe4b1434e, $v04003a4f53, $v552b831ecd, $v7e4b517c18, $v3c76382d93, $v30857f7eca); $pf8ed4912 .= '</div>'; if ($v6cf0577ade && $v483eef20da) { $pf8ed4912 .= '<script>
 			$(function () {
-				$("#" + jsPlumbWorkFlow_#rand#.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().parent().parent().parent().parent().parent().children(".header_buttons").children(".minimize").first().click();
+				$("#" + taskFlowChartObj_#rand#.TaskFlow.main_tasks_flow_obj_id).parent().parent().parent().parent().parent().parent().children(".header_buttons").children(".minimize").first().click();
 			});
 			</script>'; } return $pf8ed4912; } public function getQueryHtml($pab85d90e = false, $pa1c701b0 = false, $pcdd6ebdf = true, $pfdbbc383 = false, $v9994512d98 = false, $paf1bc6f6 = false, $pe4b1434e = false, $v04003a4f53 = false, $v552b831ecd = false, $v7e4b517c18 = false, $v3c76382d93 = false, $v30857f7eca = null) { $pf8ed4912 = '
 		<div rand_number="#rand#" class="query">
@@ -490,7 +490,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 					<li class="query_settings_tabs_limit"><a href="#query_settings_tabs_#rand#-6">Limit/Start</a></li>
 				</ul> 
 			
-				' . $this->getChooseQueryTableOrAttributeHtml(false, "jsPlumbWorkFlow_#rand#.getMyFancyPopupObj()") . '
+				' . $this->getChooseQueryTableOrAttributeHtml(false, "taskFlowChartObj_#rand#.getMyFancyPopupObj()") . '
 			
 				<span class="icon view advanced_query_settings" onClick="showOrHideExtraQuerySettings(this, #rand#)">Toggle Advanced Settings</span>
 				<div id="query_settings_tabs_#rand#-1" class="attributes query_settings_tab">
@@ -587,7 +587,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 			</div>'; return $pf8ed4912; } public function getQueryWorkFlow($pab85d90e = false, $pfdbbc383 = false, $v9994512d98 = false, $paf1bc6f6 = false, $v30857f7eca = null) { $v6cf0577ade = $v30857f7eca["init_ui"]; $v1e8fddc00c = $v30857f7eca["init_workflow"]; $v243e50bc1d = array( "Add new Table" => array( "class" => "add_new_table", "html" => '<a class="icon" onClick="return addNewTask(#rand#);">Add new Table</a>' ), "Update Tables' Attributes" => array( "class" => "update_tables_attributes", "html" => '<a class="icon" onClick="return updateQueryDBBroker(#rand#, false);">Update Tables\' Attributes</a>' ), "Toggle UI" => array( "class" => "toggle_ui", "html" => '<a class="icon" onClick="return showOrHideQueryUI(this, #rand#);">Toggle UI</a>' ), "Toggle Settings" => array( "class" => "toggle_settings", "html" => '<a class="icon" onClick="return showOrHideQuerySettings(this, #rand#);">Toggle Settings</a>' ), ); $this->pcfdeae4e->setMenus($v243e50bc1d); $pf8ed4912 = '<div id="taskflowchart_#rand#" class="taskflowchart">
 			' . $this->pcfdeae4e->getMenusContent() . '
 			<div class="tasks_flow" sync_ui_and_settings="' . ($pab85d90e ? 0 : 1) . '">
-				' . $this->getChooseQueryTableOrAttributeHtml(false, "jsPlumbWorkFlow_#rand#.getMyFancyPopupObj()") . '
+				' . $this->getChooseQueryTableOrAttributeHtml(false, "taskFlowChartObj_#rand#.getMyFancyPopupObj()") . '
 			</div>
 		</div>'; if ($v6cf0577ade) { $pf8ed4912 .= '
 			<script>
@@ -595,7 +595,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 					addTaskFlowChart(#rand#, ' . ($v1e8fddc00c ? "true" : "false") . ');
 					
 					' . ($v1e8fddc00c ? '
-					setTimeout(function() {//wait until jsPlumbWorkFlow is initialized.
+					setTimeout(function() {//wait until taskFlowChartObj is initialized.
 						updateQueryUITableFromQuerySettings(#rand#);
 					}, 1000);' : '') . '
 				})();

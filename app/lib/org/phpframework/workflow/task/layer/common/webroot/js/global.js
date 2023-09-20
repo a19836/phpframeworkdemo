@@ -91,9 +91,9 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 		var layer_connection_html = properties_html_elm.find(".layer_connection_html");
 		
 		//prepare connection_type
-		var WF = myWFObj.getJsPlumbWorkFlow();
+		var WF = myWFObj.getTaskFlowChart();
 		var target_task_id = connection.targetId;
-		var target_task_properties = WF.jsPlumbTaskFlow.tasks_properties[target_task_id];
+		var target_task_properties = WF.TaskFlow.tasks_properties[target_task_id];
 		var layer_brokers = target_task_properties && target_task_properties.hasOwnProperty("layer_brokers") && $.isPlainObject(target_task_properties["layer_brokers"]) ? target_task_properties["layer_brokers"] : null;
 		var available_connection_types = [""];
 		
@@ -121,7 +121,7 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 			select.val(""); 
 			
 			//shows warning message
-			var task_label = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(target_task_id);
+			var task_label = WF.TaskFlow.getTaskLabelByTaskId(target_task_id);
 			select.parent().append('<span class="info">Note that the current saved connection type is "' + connection_property_values["connection_type"].toUpperCase() + '" but there is any ' + connection_property_values["connection_type"] + ' server defined in the "' + task_label + '" layer. If you continue with these settings the "LOCAL" connection type will be used instead!</span>');
 		}
 		
@@ -173,11 +173,11 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 		if (!invalidateTaskConnectionIfItIsToItSelf(conn))
 			return false;
 		
-		var WF = myWFObj.getJsPlumbWorkFlow();
+		var WF = myWFObj.getTaskFlowChart();
 		var source_task_id = conn.sourceId;
 		var target_task_id = conn.targetId;
-		var source_task = WF.jsPlumbTaskFlow.getTaskById(source_task_id);
-		var target_task = WF.jsPlumbTaskFlow.getTaskById(target_task_id);
+		var source_task = WF.TaskFlow.getTaskById(source_task_id);
+		var target_task = WF.TaskFlow.getTaskById(target_task_id);
 		var source_task_tag = source_task.attr("tag");
   		var target_task_tag = target_task.attr("tag");
   		
@@ -237,7 +237,7 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 	  	
 	  	//check if already a connection with the same tasks
 	  	if (status) {
-	  		var source_connections = WF.jsPlumbTaskFlow.getSourceConnections(source_task_id);
+	  		var source_connections = WF.TaskFlow.getSourceConnections(source_task_id);
 	  		var count = 0;
 	  		//console.log(source_connections);
 	  		
@@ -251,10 +251,10 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 	  	}
   		
   		if (!status) {
-  			var source_label = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(source_task_id);
-  			var target_label = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(target_task_id);
+  			var source_label = WF.TaskFlow.getTaskLabelByTaskId(source_task_id);
+  			var target_label = WF.TaskFlow.getTaskLabelByTaskId(target_task_id);
   			
-  			WF.jsPlumbStatusMessage.showError("ERROR: You cannot connect the task '" + source_label + "' to the task '" + target_label + "'.");
+  			WF.StatusMessage.showError("ERROR: You cannot connect the task '" + source_label + "' to the task '" + target_label + "'.");
   		}
   		else //set connection color based if task is active or not
   			changeLayerTaskConnectionColorBasedInTaskActiveStatus(conn.connection);
@@ -263,7 +263,7 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 	}
 	
 	function onCompleteLayerTaskProperties(properties_html_elm, task_id, task_property_values, status) {
-		var task = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskById(task_id);
+		var task = myWFObj.getTaskFlowChart().TaskFlow.getTaskById(task_id);
 		task_property_values["active"] = task.hasClass("active") ? 1 : 0;
 	}
 	
@@ -286,8 +286,8 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 	}
 	
 	function onLayerTaskCreation(task_id) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+		var WF = myWFObj.getTaskFlowChart();
+		var task = WF.TaskFlow.getTaskById(task_id);
 		
 		task.addClass("layer_task");
 	}
@@ -295,8 +295,8 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 	function onLayerTaskCloning(task_id) {
 		onTaskCloning(task_id, {do_not_show_task_properties : true});
 		
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+		var WF = myWFObj.getTaskFlowChart();
+		var task = WF.TaskFlow.getTaskById(task_id);
 		task.addClass("active");
 		
 		prepareLayerTaskActiveStatus(task);
@@ -305,29 +305,29 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 	/* TASK */
 	
 	function setLayerTaskMenuDefaultLayer() {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var task_id = WF.jsPlumbContextMenu.getContextMenuTaskId();
-		WF.jsPlumbContextMenu.setSelectedStartTask();
+		var WF = myWFObj.getTaskFlowChart();
+		var task_id = WF.ContextMenu.getContextMenuTaskId();
+		WF.ContextMenu.setSelectedStartTask();
 		
-		var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+		var task = WF.TaskFlow.getTaskById(task_id);
 		
 		if (parseInt(task.attr("is_start_task")) > 0)
 			task.attr("is_start_task", 1);
 		
-		WF.jsPlumbTaskFlow.getAllTasks().each(function(idx, task) {
+		WF.TaskFlow.getAllTasks().each(function(idx, task) {
 			var task = $(task);
 			
 			if (task.attr("id") != task_id)
-				task.removeClass(WF.jsPlumbTaskFlow.start_task_class_name).removeAttr("is_start_task");
+				task.removeClass(WF.TaskFlow.start_task_class_name).removeAttr("is_start_task");
 		});
 	}
 	
 	function setLayerTaskMenuActiveStatus() {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var task_id = WF.jsPlumbContextMenu.getContextMenuTaskId();
-		var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+		var WF = myWFObj.getTaskFlowChart();
+		var task_id = WF.ContextMenu.getContextMenuTaskId();
+		var task = WF.TaskFlow.getTaskById(task_id);
 		
-		WF.jsPlumbContextMenu.hideContextMenus();
+		WF.ContextMenu.hideContextMenus();
 		
 		task.toggleClass("active");
 		
@@ -335,17 +335,17 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 	}
 	
 	function prepareLayerTaskActiveStatus(task) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
+		var WF = myWFObj.getTaskFlowChart();
 		var is_active = task.hasClass("active");
 		var task_id = task.attr("id");
-		var source_connections = WF.jsPlumbTaskFlow.getSourceConnections(task_id);
-		var target_connections = WF.jsPlumbTaskFlow.getTargetConnections(task_id);
+		var source_connections = WF.TaskFlow.getSourceConnections(task_id);
+		var target_connections = WF.TaskFlow.getTargetConnections(task_id);
 		
 		//prepare properties
-		if (!WF.jsPlumbTaskFlow.tasks_properties.hasOwnProperty(task_id))
-			WF.jsPlumbTaskFlow.tasks_properties[task_id] = {};
+		if (!WF.TaskFlow.tasks_properties.hasOwnProperty(task_id))
+			WF.TaskFlow.tasks_properties[task_id] = {};
 		
-		WF.jsPlumbTaskFlow.tasks_properties[task_id]["active"] = is_active ? 1 : 0;
+		WF.TaskFlow.tasks_properties[task_id]["active"] = is_active ? 1 : 0;
 		
 		//prepare connections
 		if (source_connections)
@@ -358,8 +358,8 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 	}
 	
 	function changeLayerTaskConnectionColorBasedInTaskActiveStatus(connection) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var is_conn_active = WF.jsPlumbTaskFlow.getTaskById(connection.sourceId).hasClass("active") && WF.jsPlumbTaskFlow.getTaskById(connection.targetId).hasClass("active");
+		var WF = myWFObj.getTaskFlowChart();
+		var is_conn_active = WF.TaskFlow.getTaskById(connection.sourceId).hasClass("active") && WF.TaskFlow.getTaskById(connection.targetId).hasClass("active");
 		
 		var parameters = connection.getParameters();
 		var color = parameters.connection_exit_color;
@@ -367,7 +367,7 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 		color = ("" + color).length == "4" && color[0] == "#" ? color + color.substr(1) : color; //in case of #000 convert it to #000000
 		color = ("" + color).length > 7 ? color.substr(0, 7) : color; //color could be already with the transparency #00000033.
 		
-		WF.jsPlumbTaskFlow.changeConnectionColor(connection, color + (is_conn_active ? "" : "33"));
+		WF.TaskFlow.changeConnectionColor(connection, color + (is_conn_active ? "" : "33"));
 	}
 	
 	/* TASK LABEL */
@@ -395,7 +395,7 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 			}
 		
 			if (variables_not_defined.length > 0) {
-				myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("You are calling the following Gobal Variables: " + variables_not_defined.join(", ") + "; which are not yet defined as Global-Variables.\nPlease be sure that these Global Variables are defined correctly in the 'Global Variables' Menu bar.");
+				myWFObj.getTaskFlowChart().StatusMessage.showError("You are calling the following Gobal Variables: " + variables_not_defined.join(", ") + "; which are not yet defined as Global-Variables.\nPlease be sure that these Global Variables are defined correctly in the 'Global Variables' Menu bar.");
 			}
 			
 			return true;
@@ -433,7 +433,7 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 			elms.hide();
 		
 		//update popup
-		myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().updatePopup();
+		myWFObj.getTaskFlowChart().getMyFancyPopupObj().updatePopup();
 	}
 	
 	function activateLayerSoapServer(elm) {

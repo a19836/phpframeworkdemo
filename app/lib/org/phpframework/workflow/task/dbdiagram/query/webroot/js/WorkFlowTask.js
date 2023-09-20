@@ -38,21 +38,21 @@ var DBQueryTaskPropertyObj = {
 	/** START: TASK METHODS **/
 	prepareTableAttributes : function(task_id, data, rand_number) {
 		if (data) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+			var WF = myWFObj.getTaskFlowChart();
+			var task = WF.TaskFlow.getTaskById(task_id);
 			
 			if (task[0]) {
 				var table_name = data.table_name;
 				
-				WF.jsPlumbTaskFlow.getTaskLabelElement(task).html(table_name);//the label has now 2 span elements: 1 for the label and another for the delete icon
+				WF.TaskFlow.getTaskLabelElement(task).html(table_name);//the label has now 2 span elements: 1 for the label and another for the delete icon
 				
 				onEditLabel(task_id);
-				WF.jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
+				WF.TaskFlow.repaintTaskByTaskId(task_id);
 		
-				var attributes_elm = task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " .table_attrs");
+				var attributes_elm = task.find(" > ." + WF.TaskFlow.task_eps_class_name + " .table_attrs");
 				if (!attributes_elm[0]) {
 					attributes_elm = $('<table class="table_attrs"></table>');
-					task.children("." + WF.jsPlumbTaskFlow.task_eps_class_name).append(attributes_elm);
+					task.children("." + WF.TaskFlow.task_eps_class_name).append(attributes_elm);
 				}
 			
 				var attr_names = data.table_attr_names;
@@ -80,7 +80,7 @@ var DBQueryTaskPropertyObj = {
 						}
 					});
 					
-					var label_height = parseInt( task.children("." + WF.jsPlumbTaskFlow.task_label_class_name).height() );
+					var label_height = parseInt( task.children("." + WF.TaskFlow.task_label_class_name).height() );
 					var min_height = parseInt( task.css("min-height") );
 					
 					var height = count * 20 + label_height; 
@@ -95,31 +95,31 @@ var DBQueryTaskPropertyObj = {
 	},
 	
 	deleteTable : function(task_id, to_confirm) {
-		var task = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskById(task_id);
+		var task = myWFObj.getTaskFlowChart().TaskFlow.getTaskById(task_id);
 		
 		if (task[0]) {
-			var status = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.deleteTask(task_id, {confirm: to_confirm});
+			var status = myWFObj.getTaskFlowChart().TaskFlow.deleteTask(task_id, {confirm: to_confirm});
 			
 			if (status) {
 				if (typeof DBQueryTaskPropertyObj.on_delete_table == "function") {
-					DBQueryTaskPropertyObj.on_delete_table(task, myWFObj.getJsPlumbWorkFlow());
+					DBQueryTaskPropertyObj.on_delete_table(task, myWFObj.getTaskFlowChart());
 				}
 			}
 			else {
-				myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("Error: Couldn't delete the selected table.\nPlease try again...");
+				myWFObj.getTaskFlowChart().StatusMessage.showError("Error: Couldn't delete the selected table.\nPlease try again...");
 			}
 		}
 	},
 	
 	onStartLabel : function(task_id) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
+		var WF = myWFObj.getTaskFlowChart();
 	
-		var label = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
+		var label = WF.TaskFlow.getTaskLabelByTaskId(task_id);
 		var parts = label.split(" ");
 		var table_name = parts[0];
 		var alias = parts[1] ? parts[1] : "";
 		
-		var span = WF.jsPlumbTaskFlow.getTaskLabelElementByTaskId(task_id);
+		var span = WF.TaskFlow.getTaskLabelElementByTaskId(task_id);
 		span.html(alias);
 		span.attr("table_name", table_name);
 		span.attr("table_alias", alias);
@@ -128,15 +128,15 @@ var DBQueryTaskPropertyObj = {
 	},
 	
 	onCheckLabel : function(label_obj, task_id) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var span = WF.jsPlumbTaskFlow.getTaskLabelElementByTaskId(task_id);
+		var WF = myWFObj.getTaskFlowChart();
+		var span = WF.TaskFlow.getTaskLabelElementByTaskId(task_id);
 		var table_name = span.attr("table_name");
 		
 		if (label_obj.label.trim() == "")
 			return isTaskLabelRepeated({label: table_name}, task_id) == false;
 		else if (isTaskTableLabelValid(label_obj, task_id)) {
 			if (label_obj.label == "as") {
-				WF.jsPlumbStatusMessage.showError("Invalid Label! Please try again...");
+				WF.StatusMessage.showError("Invalid Label! Please try again...");
 				return false;
 			}
 			
@@ -148,8 +148,8 @@ var DBQueryTaskPropertyObj = {
 	},
 	
 	onCompleteLabel : function(task_id) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var span = WF.jsPlumbTaskFlow.getTaskLabelElementByTaskId(task_id);
+		var WF = myWFObj.getTaskFlowChart();
+		var span = WF.TaskFlow.getTaskLabelElementByTaskId(task_id);
 		
 		if (span[0].hasAttribute("table_name")) {
 			var table_name = span.attr("table_name");
@@ -165,26 +165,26 @@ var DBQueryTaskPropertyObj = {
 			span.removeAttr("table_alias");
 			
 			onEditLabel(task_id);
-			WF.jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
+			WF.TaskFlow.repaintTaskByTaskId(task_id);
 			
 			if (old_label != new_label && typeof DBQueryTaskPropertyObj.on_complete_table_label == "function")
 				DBQueryTaskPropertyObj.on_complete_table_label(WF, task_id, old_label, new_label);
 		}
 		else {
 			onEditLabel(task_id);
-			WF.jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
+			WF.TaskFlow.repaintTaskByTaskId(task_id);
 		}
 	},
 	
 	onTaskCreation : function(task_id) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+		var WF = myWFObj.getTaskFlowChart();
+		var task = WF.TaskFlow.getTaskById(task_id);
 		
 		if (task[0]) {
-			task.children("." + WF.jsPlumbTaskFlow.task_label_class_name).append('<i class="icon delete"></i></i>');//do not use span
+			task.children("." + WF.TaskFlow.task_label_class_name).append('<i class="icon delete"></i></i>');//do not use span
 			
-			task.find(" > ." + WF.jsPlumbTaskFlow.task_label_class_name + " .delete").click(function(){
-				myWFObj.setJsPlumbWorkFlow(WF);
+			task.find(" > ." + WF.TaskFlow.task_label_class_name + " .delete").click(function(){
+				myWFObj.setTaskFlowChart(WF);
 				DBQueryTaskPropertyObj.deleteTable(task.attr("id"), true);
 			});
 		}
@@ -193,11 +193,11 @@ var DBQueryTaskPropertyObj = {
 	
 	/** START: CONNECTION METHODS **/
 	initSelectedConnectionPropertiesData : function(connection) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var source_table = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(connection.sourceId);
-		var target_table = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(connection.targetId);
+		var WF = myWFObj.getTaskFlowChart();
+		var source_table = WF.TaskFlow.getTaskLabelByTaskId(connection.sourceId);
+		var target_table = WF.TaskFlow.getTaskLabelByTaskId(connection.targetId);
 		
-		var attrs = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id + " #" + connection.sourceId + " > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " .table_attrs .table_attr .check input");
+		var attrs = $("#" + WF.TaskFlow.main_tasks_flow_obj_id + " #" + connection.sourceId + " > ." + WF.TaskFlow.task_eps_class_name + " .table_attrs .table_attr .check input");
 		
 		var source_attributes = [];
 		for (var i = 0; i < attrs.length; i++) {
@@ -207,7 +207,7 @@ var DBQueryTaskPropertyObj = {
 				source_attributes.push(attr);
 		}
 		
-		attrs = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id + " #" + connection.targetId + " > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " .table_attrs .table_attr .check input");
+		attrs = $("#" + WF.TaskFlow.main_tasks_flow_obj_id + " #" + connection.targetId + " > ." + WF.TaskFlow.task_eps_class_name + " .table_attrs .table_attr .check input");
 		
 		var target_attributes = [];
 		for (var i = 0; i < attrs.length; i++) {
@@ -275,7 +275,7 @@ var DBQueryTaskPropertyObj = {
 		}
 		
 		if (!html) {
-			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("Error: Couldn't detect this connection's properties. Please remove this connection, create a new one and try again...");
+			myWFObj.getTaskFlowChart().StatusMessage.showError("Error: Couldn't detect this connection's properties. Please remove this connection, create a new one and try again...");
 		}
 		else {
 			properties_html_elm.find(".db_table_connection_html .table_attrs").html(html);
@@ -307,7 +307,7 @@ var DBQueryTaskPropertyObj = {
 		}
 		
 		if (!status) {
-			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError(error_message);
+			myWFObj.getTaskFlowChart().StatusMessage.showError(error_message);
 		}
 		
 		return status;
@@ -316,7 +316,7 @@ var DBQueryTaskPropertyObj = {
 	onCompleteConnectionProperties : function(properties_html_elm, connection, connection_property_values, status) {
 		if (status) {
 			if (typeof DBQueryTaskPropertyObj.on_complete_connection_properties == "function") {
-				DBQueryTaskPropertyObj.on_complete_connection_properties(myWFObj.getJsPlumbWorkFlow(), connection, DBQueryTaskPropertyObj.old_connection_property_values, connection_property_values);
+				DBQueryTaskPropertyObj.on_complete_connection_properties(myWFObj.getTaskFlowChart(), connection, DBQueryTaskPropertyObj.old_connection_property_values, connection_property_values);
 			}
 			
 			DBQueryTaskPropertyObj.selected_connection_properties_data = null;
@@ -324,10 +324,10 @@ var DBQueryTaskPropertyObj = {
 	},
 	
 	onSuccessConnectionDeletion : function(connection) {
-		var props = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.connections_properties[connection.id];
+		var props = myWFObj.getTaskFlowChart().TaskFlow.connections_properties[connection.id];
 		
 		if (typeof DBQueryTaskPropertyObj.on_complete_connection_properties == "function") {
-			DBQueryTaskPropertyObj.on_complete_connection_properties(myWFObj.getJsPlumbWorkFlow(), connection, props);
+			DBQueryTaskPropertyObj.on_complete_connection_properties(myWFObj.getTaskFlowChart(), connection, props);
 		}
 		
 		return true;
@@ -335,7 +335,7 @@ var DBQueryTaskPropertyObj = {
 	
 	onSuccessConnectionDrag : function(conn) {
 		if (!invalidateTaskConnectionIfItIsToItSelf(conn)) {
-			myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.hideSelectedConnectionProperties();
+			myWFObj.getTaskFlowChart().Property.hideSelectedConnectionProperties();
 			
 			return false;
 		}
@@ -345,12 +345,12 @@ var DBQueryTaskPropertyObj = {
 	
 	onSuccessConnectionDrop : function(conn) {
 		if (conn.sourceId == conn.targetId) {
-			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("Invalid connection. You cannot create self-connections.\nIf you wish to create a connection between the same tables, please create another task with the table name but with a different alias.");
+			myWFObj.getTaskFlowChart().StatusMessage.showError("Invalid connection. You cannot create self-connections.\nIf you wish to create a connection between the same tables, please create another task with the table name but with a different alias.");
 			return false;
 		}
 		
 		//checks if already exists the same connection.
-		var connections = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getSourceConnections(conn.sourceId);
+		var connections = myWFObj.getTaskFlowChart().TaskFlow.getSourceConnections(conn.sourceId);
 	
 		var exists = false;
 		for (var i = 0; i < connections.length; i++) {
@@ -363,7 +363,7 @@ var DBQueryTaskPropertyObj = {
 		}
 		
 		if (exists) {
-			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("Already exists a connection with these tables.\nYou cannot create repeated connections.\nPlease use the existent connection.");
+			myWFObj.getTaskFlowChart().StatusMessage.showError("Already exists a connection with these tables.\nYou cannot create repeated connections.\nPlease use the existent connection.");
 			return false;
 		}
 		
@@ -393,11 +393,11 @@ var DBQueryTaskPropertyObj = {
 			}
 			
 			//add connection properties with correspondent attributes
-			var props = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.connections_properties[conn.connection.id];
+			var props = myWFObj.getTaskFlowChart().TaskFlow.connections_properties[conn.connection.id];
 			var old_props = props;
 			
 			if (!props)
-				myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.connections_properties[conn.connection.id] = props = {};
+				myWFObj.getTaskFlowChart().TaskFlow.connections_properties[conn.connection.id] = props = {};
 			
 			if (!props.source_columns) {
 				props.source_columns = [];
@@ -456,11 +456,11 @@ var DBQueryTaskPropertyObj = {
 			
 			//refresh connection with new configurations
 			if (typeof DBQueryTaskPropertyObj.on_complete_connection_properties == "function")
-				DBQueryTaskPropertyObj.on_complete_connection_properties(myWFObj.getJsPlumbWorkFlow(), conn.connection, old_props, props);
+				DBQueryTaskPropertyObj.on_complete_connection_properties(myWFObj.getTaskFlowChart(), conn.connection, old_props, props);
 		}
 		
 		if (DBQueryTaskPropertyObj.show_properties_on_connection_drop)
-			myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.showConnectionProperties(conn.connection.id);
+			myWFObj.getTaskFlowChart().Property.showConnectionProperties(conn.connection.id);
 		
 		return status;
 	},
@@ -469,10 +469,10 @@ var DBQueryTaskPropertyObj = {
 		var html = DBQueryTaskPropertyObj.getTableJoinKey();
 		
 		if (!html) {
-			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("Error: Couldn't detect this connection's properties. Please remove this connection, create a new one and try again...");
+			myWFObj.getTaskFlowChart().StatusMessage.showError("Error: Couldn't detect this connection's properties. Please remove this connection, create a new one and try again...");
 		}
 		else {
-			$("#" + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.main_tasks_flow_obj_id + " .db_table_connection_html .table_attrs").append(html);
+			$("#" + myWFObj.getTaskFlowChart().TaskFlow.main_tasks_flow_obj_id + " .db_table_connection_html .table_attrs").append(html);
 		}
 	},
 	
@@ -534,29 +534,29 @@ var DBQueryTaskPropertyObj = {
 	},
 	
 	setSelectedStartTask : function() {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		WF.jsPlumbContextMenu.hideContextMenus();
+		var WF = myWFObj.getTaskFlowChart();
+		WF.ContextMenu.hideContextMenus();
 		
-		var task_id = WF.jsPlumbContextMenu.getContextMenuTaskId();
+		var task_id = WF.ContextMenu.getContextMenuTaskId();
 		this.setStartTaskById(task_id);
 		
 		return false;
 	},
 	
 	setStartTaskById : function(task_id) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var tasks = WF.jsPlumbTaskFlow.getAllTasks();
-		var j_task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+		var WF = myWFObj.getTaskFlowChart();
+		var tasks = WF.TaskFlow.getAllTasks();
+		var j_task = WF.TaskFlow.getTaskById(task_id);
 		
 		for (var i = 0, l = tasks.length; i < l; i++) {
 			var task = $(tasks[i]);
 			task.removeAttr("is_start_task");
-			task.removeClass(WF.jsPlumbTaskFlow.start_task_class_name);
+			task.removeClass(WF.TaskFlow.start_task_class_name);
 		}
 		
 		if (j_task[0]) {
 			j_task.attr("is_start_task", 1);
-			j_task.addClass(WF.jsPlumbTaskFlow.start_task_class_name);
+			j_task.addClass(WF.TaskFlow.start_task_class_name);
 		}
 		
 		this.onCompleteSelectStartTask(task_id, j_task);
@@ -564,7 +564,7 @@ var DBQueryTaskPropertyObj = {
 	
 	onCompleteSelectStartTask : function(task_id, j_task) {
 		if (typeof DBQueryTaskPropertyObj.on_complete_select_start_task == "function")
-			DBQueryTaskPropertyObj.on_complete_select_start_task(myWFObj.getJsPlumbWorkFlow(), task_id, j_task);
+			DBQueryTaskPropertyObj.on_complete_select_start_task(myWFObj.getTaskFlowChart(), task_id, j_task);
 	},
 	/** END: MENUS METHODS **/
 };

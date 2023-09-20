@@ -132,7 +132,7 @@ var SoapConnectorTaskPropertyObj = {
 								header["parameters"] = [ header["parameters"] ];
 							
 							ArrayTaskUtilObj.onLoadArrayItems( client_header_parameters.children(".parameters").first(), header["parameters"], "", client_header_parameters.children(".parameters_code").attr("name"));
-							client_header_parameters.children(".parameters_code").val("").removeClass("task_property_field"); //removeClass("task_property_field") is very important here otherwise the jsPlumbWorkFlow will give an error when trying to saveTaskPropertiesFromHtmlElm. Error is in the parse_str.
+							client_header_parameters.children(".parameters_code").val("").removeClass("task_property_field"); //removeClass("task_property_field") is very important here otherwise the taskFlowChartObj will give an error when trying to saveTaskPropertiesFromHtmlElm. Error is in the parse_str.
 						}
 						else {
 							var parameters = header["parameters"] ? "" + header["parameters"] : "";
@@ -161,7 +161,7 @@ var SoapConnectorTaskPropertyObj = {
 			
 			if (data["remote_function_args_type"] == "array") {
 				ArrayTaskUtilObj.onLoadArrayItems( remote_function_arguments.children(".remote_function_args").first(), data["remote_function_args"], "", remote_function_arguments.children(".remote_function_args_code").attr("name"));
-				remote_function_arguments.children(".remote_function_args_code").val("").removeClass("task_property_field"); //removeClass("task_property_field") is very important here otherwise the jsPlumbWorkFlow will give an error when trying to saveTaskPropertiesFromHtmlElm. Error is in the parse_str.
+				remote_function_arguments.children(".remote_function_args_code").val("").removeClass("task_property_field"); //removeClass("task_property_field") is very important here otherwise the taskFlowChartObj will give an error when trying to saveTaskPropertiesFromHtmlElm. Error is in the parse_str.
 			}
 			else {
 				var args = data["remote_function_args"] ? "" + data["remote_function_args"] : "";
@@ -305,7 +305,7 @@ var SoapConnectorTaskPropertyObj = {
 	
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
-			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+			var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 			ProgrammingTaskUtil.saveNewVariableInWorkflowAccordingWithTaskPropertiesValues(task_property_values);
 			
 			var label = SoapConnectorTaskPropertyObj.getDefaultExitLabel(task_property_values);

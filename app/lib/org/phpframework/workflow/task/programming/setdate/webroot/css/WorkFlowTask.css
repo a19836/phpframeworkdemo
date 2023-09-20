@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_setdate {
+.taskflowchartmenu .task.task_setdate {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_setdate .eps {
+.taskflowchartdiagram .task.task_setdate .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_setdate .ep {
+.taskflowchartdiagram .task.task_setdate .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

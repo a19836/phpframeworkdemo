@@ -188,7 +188,7 @@ var SwitchTaskPropertyObj = {
 	},
 	
 	onSubmitTaskProperties : function(properties_html_elm, task_id, task_property_values) {
-		SwitchTaskPropertyObj.previous_task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+		SwitchTaskPropertyObj.previous_task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 		
 		ProgrammingTaskUtil.saveTaskLabelField(properties_html_elm, task_id);
 		
@@ -243,7 +243,7 @@ var SwitchTaskPropertyObj = {
 	
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
-			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+			var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 			var labels = SwitchTaskPropertyObj.getExitLabels(task_property_values);
 			ProgrammingTaskUtil.updateTaskExitsLabels(task_id, labels);
 			ProgrammingTaskUtil.updateTaskExitsConnectionExitLabelAttribute(task_id, labels);

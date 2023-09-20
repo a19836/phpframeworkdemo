@@ -131,7 +131,7 @@ var GetBeanObjectTaskPropertyObj = {
 	
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
-			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+			var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 			ProgrammingTaskUtil.saveNewVariableInWorkflowAccordingWithTaskPropertiesValues(task_property_values);
 		
 			var label = GetBeanObjectTaskPropertyObj.getDefaultExitLabel(task_property_values);
@@ -141,7 +141,7 @@ var GetBeanObjectTaskPropertyObj = {
 		
 			var default_phpframework_obj_str = BrokerOptionsUtilObj.getDefaultBroker(GetBeanObjectTaskPropertyObj.phpframeworks_options);
 			if (!task_property_values["phpframework_obj"] && default_phpframework_obj_str)
-				myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id]["phpframework_obj"] = default_phpframework_obj_str;
+				myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id]["phpframework_obj"] = default_phpframework_obj_str;
 			
 			ProgrammingTaskUtil.onTaskCreation(task_id);
 		}, 30);

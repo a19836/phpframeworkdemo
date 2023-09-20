@@ -669,7 +669,7 @@ function importTemplatePTLCode(elm, module) {
 					success: function(code) {
 						if (code) {
 							MyFancyPopup.hidePopup();
-							console.log(code);
+							//console.log(code);
 							
 							setPtlElementTemplateSourceEditorValue(ptl, code);
 						}

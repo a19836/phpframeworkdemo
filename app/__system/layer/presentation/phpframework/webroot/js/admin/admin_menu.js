@@ -1044,16 +1044,16 @@ function initFilesDragAndDrop(elm) {
 									});
 								}
 								else
-									iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+									iframe_win.taskFlowChartObj.StatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 							}
 							else
-								iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+								iframe_win.taskFlowChartObj.StatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 						}
 						else
-							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+							iframe_win.taskFlowChartObj.StatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 					}
 					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+						iframe_win.taskFlowChartObj.StatusMessage.showError("Please drop element inside of diagram");
 				}
 				else
 					StatusMessageHandler.showError("Sorry, droppable not allowed...");
@@ -1079,13 +1079,13 @@ function initFilesDragAndDrop(elm) {
 								});
 							}
 							else
-								iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+								iframe_win.taskFlowChartObj.StatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 						}
 						else
-							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+							iframe_win.taskFlowChartObj.StatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 					}
 					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+						iframe_win.taskFlowChartObj.StatusMessage.showError("Please drop element inside of diagram");
 				}
 				else
 					StatusMessageHandler.showError("Sorry, droppable not allowed...");
@@ -1111,13 +1111,13 @@ function initFilesDragAndDrop(elm) {
 								});
 							}
 							else
-								iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+								iframe_win.taskFlowChartObj.StatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 						}
 						else
-							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+							iframe_win.taskFlowChartObj.StatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 					}
 					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+						iframe_win.taskFlowChartObj.StatusMessage.showError("Please drop element inside of diagram");
 				}
 				else
 					StatusMessageHandler.showError("Sorry, droppable not allowed...");
@@ -1151,13 +1151,13 @@ function initFilesDragAndDrop(elm) {
 								});
 							}
 							else
-								iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+								iframe_win.taskFlowChartObj.StatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 						}
 						else
-							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+							iframe_win.taskFlowChartObj.StatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 					}
 					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+						iframe_win.taskFlowChartObj.StatusMessage.showError("Please drop element inside of diagram");
 				}
 				else
 					StatusMessageHandler.showError("Sorry, droppable not allowed...");
@@ -1190,13 +1190,13 @@ function initFilesDragAndDrop(elm) {
 								});
 							}
 							else
-								iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+								iframe_win.taskFlowChartObj.StatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 						}
 						else
-							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+							iframe_win.taskFlowChartObj.StatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 					}
 					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+						iframe_win.taskFlowChartObj.StatusMessage.showError("Please drop element inside of diagram");
 				}
 				else
 					StatusMessageHandler.showError("Sorry, droppable not allowed...");
@@ -1232,19 +1232,19 @@ function initFilesDragAndDrop(elm) {
 										});
 									}
 									else
-										iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for files that are not in the same layer.");
+										iframe_win.taskFlowChartObj.StatusMessage.showError("This diagram doesn't allow the drop action for files that are not in the same layer.");
 								}
 								else
-									iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for non php files.");
+									iframe_win.taskFlowChartObj.StatusMessage.showError("This diagram doesn't allow the drop action for non php files.");
 							}
 							else
-								iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+								iframe_win.taskFlowChartObj.StatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 						}
 						else
-							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+							iframe_win.taskFlowChartObj.StatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 					}
 					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+						iframe_win.taskFlowChartObj.StatusMessage.showError("Please drop element inside of diagram");
 				}
 				else if (li_a.children("i.block_file").length > 0) { //file => create block widget in LayoutUIEditor
 					//check if droppable is a LayoutUIEditor
@@ -1622,7 +1622,7 @@ function initDBTablesSorting(elm) {
 						});
 					}
 					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+						iframe_win.taskFlowChartObj.StatusMessage.showError("Please drop element inside of diagram");
 				}
 				//check if droppable is Logic Diagram
 				else if (typeof iframe_win.DBDAOActionTaskPropertyObj == "object") {
@@ -1638,10 +1638,10 @@ function initDBTablesSorting(elm) {
 							onChooseWorkflowDBTableTaskOptions(event, iframe_droppable_elm, iframe_win, iframe_offset, db_driver, table_name, task_type, url);
 						}
 						else
-							iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("This diagram doesn't allow the drop action for this element.");
+							iframe_win.taskFlowChartObj.StatusMessage.showError("This diagram doesn't allow the drop action for this element.");
 					}
 					else
-						iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please drop element inside of diagram");
+						iframe_win.taskFlowChartObj.StatusMessage.showError("Please drop element inside of diagram");
 				}
 				else
 					StatusMessageHandler.showError("Sorry, droppable not allowed...");
@@ -1899,15 +1899,15 @@ function getIframeBeanDBDriver(iframe_win, bean_name) {
 
 function onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, on_success_func) {
 	var task_id = null;
-	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
+	var taskFlowChartObj = iframe_win.taskFlowChartObj;
 	var j_iframe_droppable_elm = $(iframe_droppable_elm);
 	
 	//preparing droppable if is ".connector_overlay_add_icon"
 	if (j_iframe_droppable_elm.hasClass("connector_overlay_add_icon")) {
-		var droppable_connection = jsPlumbWorkFlow.jsPlumbTaskFlow.getOverlayConnectionId(j_iframe_droppable_elm);
+		var droppable_connection = taskFlowChartObj.TaskFlow.getOverlayConnectionId(j_iframe_droppable_elm);
 		
 		if (droppable_connection)
-			task_id = jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByTypeToConnection(task_type, droppable_connection);
+			task_id = taskFlowChartObj.ContextMenu.addTaskByTypeToConnection(task_type, droppable_connection);
 	}
 	//preparing droppable if is ".tasks_flow"
 	else {
@@ -1915,7 +1915,7 @@ function onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_of
 		var tasks_flow_event_x = event.clientX - iframe_offset.left - tasks_flow_offset.left;
 		var tasks_flow_event_y = event.clientY - iframe_offset.top - tasks_flow_offset.top;
 		
-		task_id = jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByType(task_type, {
+		task_id = taskFlowChartObj.ContextMenu.addTaskByType(task_type, {
 			top: tasks_flow_event_y,
 			left: tasks_flow_event_x,
 		});
@@ -1926,16 +1926,16 @@ function onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_of
 		//set task label
 		var label_obj = {label: task_label};
 		
-		jsPlumbWorkFlow.jsPlumbTaskFlow.setTaskLabelByTaskId(task_id, label_obj); //set {label: table_name}, so the jsPlumbTaskFlow.setTaskLabel method ignores the prompt and adds the default label or an auto generated label.
+		taskFlowChartObj.TaskFlow.setTaskLabelByTaskId(task_id, label_obj); //set {label: table_name}, so the TaskFlow.setTaskLabel method ignores the prompt and adds the default label or an auto generated label.
 		
 		//open properties
-		jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+		taskFlowChartObj.Property.showTaskProperties(task_id);
 		
 		if (typeof on_success_func == "function")
 			on_success_func(task_id);
 	}
 	
-	iframe_win.jsPlumbWorkFlow.getMyFancyPopupObj().hideLoading();
+	iframe_win.taskFlowChartObj.getMyFancyPopupObj().hideLoading();
 }
 
 //Note that this logic was taken from edit_php_code.js:chooseIncludeFile
@@ -1947,8 +1947,8 @@ function onChooseWorkflowIncludeFileTask(iframe_win, file_tree_item, task_id) {
 	var file_path = getParameterByName(edit_url, "path");
 	
 	//preparing task properties according with dragged and dropped table
-	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
-	var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+	var taskFlowChartObj = iframe_win.taskFlowChartObj;
+	var selected_task_properties = iframe_win.$("#" + taskFlowChartObj.Property.selected_task_properties_id);
 	var task_html_elm = selected_task_properties.find(".include_file_task_html");
 	
 	//set include path
@@ -1961,10 +1961,10 @@ function onChooseWorkflowIncludeFileTask(iframe_win, file_tree_item, task_id) {
 	}
 	
 	//save properties
-	jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+	taskFlowChartObj.Property.saveTaskProperties();
 	
 	//load again task
-	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+	taskFlowChartObj.Property.showTaskProperties(task_id);
 }
 
 //Note that this logic was taken from edit_php_code.js:chooseObjectMethod
@@ -1978,8 +1978,8 @@ function onChooseWorkflowCallObjectMethodTask(iframe_win, file_tree_item, task_i
 	var method = getParameterByName(edit_url, "method");
 	
 	//preparing task properties according with dragged and dropped table
-	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
-	var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+	var taskFlowChartObj = iframe_win.taskFlowChartObj;
+	var selected_task_properties = iframe_win.$("#" + taskFlowChartObj.Property.selected_task_properties_id);
 	var task_html_elm = selected_task_properties.find(".call_object_method_task_html");
 	
 	//set include path
@@ -2020,10 +2020,10 @@ function onChooseWorkflowCallObjectMethodTask(iframe_win, file_tree_item, task_i
 		}
 	
 	//save properties
-	jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+	taskFlowChartObj.Property.saveTaskProperties();
 	
 	//load again task
-	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+	taskFlowChartObj.Property.showTaskProperties(task_id);
 }
 
 //Note that this logic was taken from edit_php_code.js:chooseFunction
@@ -2036,8 +2036,8 @@ function onChooseWorkflowCallFunctionTask(iframe_win, file_tree_item, task_id) {
 	var func_name = getParameterByName(edit_url, "function");
 	
 	//preparing task properties according with dragged and dropped table
-	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
-	var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+	var taskFlowChartObj = iframe_win.taskFlowChartObj;
+	var selected_task_properties = iframe_win.$("#" + taskFlowChartObj.Property.selected_task_properties_id);
 	var task_html_elm = selected_task_properties.find(".call_function_task_html");
 	
 	//set include path
@@ -2062,10 +2062,10 @@ function onChooseWorkflowCallFunctionTask(iframe_win, file_tree_item, task_id) {
 		}
 	
 	//save properties
-	jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+	taskFlowChartObj.Property.saveTaskProperties();
 	
 	//load again task
-	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+	taskFlowChartObj.Property.showTaskProperties(task_id);
 }
 
 //Note that this logic was taken from edit_php_code.js:chooseBusinessLogic
@@ -2085,8 +2085,8 @@ function onChooseWorkflowCallBusinessLogicTask(iframe_win, file_tree_item, task_
 	var service_id = service && method ? service + "." + method : func_name;
 	
 	//preparing task properties according with dragged and dropped table
-	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
-	var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+	var taskFlowChartObj = iframe_win.taskFlowChartObj;
+	var selected_task_properties = iframe_win.$("#" + taskFlowChartObj.Property.selected_task_properties_id);
 	var task_html_elm = selected_task_properties.find(".call_business_logic_task_html");
 	
 	//preparing broker method obj
@@ -2108,10 +2108,10 @@ function onChooseWorkflowCallBusinessLogicTask(iframe_win, file_tree_item, task_
 		iframe_win.updateBusinessLogicParams(task_html_elm, bean_file_name, bean_name, file_path, service_id);
 	
 	//save properties
-	jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+	taskFlowChartObj.Property.saveTaskProperties();
 	
 	//load again task
-	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+	taskFlowChartObj.Property.showTaskProperties(task_id);
 }
 
 //Note that this logic was taken from edit_php_code.js:chooseClassName
@@ -2124,8 +2124,8 @@ function onChooseWorkflowCreateClassObjectTask(iframe_win, file_tree_item, task_
 	var class_obj = getParameterByName(edit_url, "class");
 	
 	//preparing task properties according with dragged and dropped table
-	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
-	var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+	var taskFlowChartObj = iframe_win.taskFlowChartObj;
+	var selected_task_properties = iframe_win.$("#" + taskFlowChartObj.Property.selected_task_properties_id);
 	var task_html_elm = selected_task_properties.find(".create_class_object_task_html");
 	
 	//set include path
@@ -2150,10 +2150,10 @@ function onChooseWorkflowCreateClassObjectTask(iframe_win, file_tree_item, task_
 		}
 	
 	//save properties
-	jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+	taskFlowChartObj.Property.saveTaskProperties();
 	
 	//load again task
-	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+	taskFlowChartObj.Property.showTaskProperties(task_id);
 }
 
 //Note that this logic was taken from edit_php_code.js:chooseHibernateObject
@@ -2169,8 +2169,8 @@ function onChooseWorkflowCallHibernateObjectTask(iframe_win, file_tree_item, tas
 	var service_id = hbn_obj;
 	
 	//preparing task properties according with dragged and dropped table
-	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
-	var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+	var taskFlowChartObj = iframe_win.taskFlowChartObj;
+	var selected_task_properties = iframe_win.$("#" + taskFlowChartObj.Property.selected_task_properties_id);
 	var task_html_elm = selected_task_properties.find(".call_hibernate_object_task_html");
 	
 	//preparing broker method obj
@@ -2186,10 +2186,10 @@ function onChooseWorkflowCallHibernateObjectTask(iframe_win, file_tree_item, tas
 	task_html_elm.find(".service_id select").val("string");
 	
 	//save properties
-	jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+	taskFlowChartObj.Property.saveTaskProperties();
 	
 	//load again task
-	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+	taskFlowChartObj.Property.showTaskProperties(task_id);
 }
 
 //Note that this logic was taken from edit_php_code.js:chooseHibernateObjectMethod
@@ -2209,8 +2209,8 @@ function onChooseWorkflowCallHibernateMethodTask(iframe_win, file_tree_item, tas
 	module_id = module_id.replace(/\//g, ".");
 	
 	//preparing task properties according with dragged and dropped table
-	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
-	var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+	var taskFlowChartObj = iframe_win.taskFlowChartObj;
+	var selected_task_properties = iframe_win.$("#" + taskFlowChartObj.Property.selected_task_properties_id);
 	var task_html_elm = selected_task_properties.find(".call_hibernate_method_task_html");
 	
 	//preparing broker method obj
@@ -2264,10 +2264,10 @@ function onChooseWorkflowCallHibernateMethodTask(iframe_win, file_tree_item, tas
 	}
 	
 	//save properties
-	jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+	taskFlowChartObj.Property.saveTaskProperties();
 	
 	//load again task
-	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+	taskFlowChartObj.Property.showTaskProperties(task_id);
 }
 
 //Note that this logic was taken from edit_php_code.js:chooseQuery
@@ -2286,8 +2286,8 @@ function onChooseWorkflowCallIbatisQueryTask(iframe_win, file_tree_item, task_id
 	module_id = module_id.replace(/\//g, ".");
 	
 	//preparing task properties according with dragged and dropped table
-	var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
-	var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+	var taskFlowChartObj = iframe_win.taskFlowChartObj;
+	var selected_task_properties = iframe_win.$("#" + taskFlowChartObj.Property.selected_task_properties_id);
 	var task_html_elm = selected_task_properties.find(".call_ibatis_query_task_html");
 	
 	//preparing broker method obj
@@ -2319,10 +2319,10 @@ function onChooseWorkflowCallIbatisQueryTask(iframe_win, file_tree_item, task_id
 	}
 	
 	//save properties
-	jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+	taskFlowChartObj.Property.saveTaskProperties();
 	
 	//load again task
-	jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+	taskFlowChartObj.Property.showTaskProperties(task_id);
 }
 
 function onChooseWorkflowTaskBrokerMethodObj(iframe_win, task_html_elm, broker_name) {
@@ -2376,7 +2376,7 @@ function onChooseWorkflowDBTableTaskOptions(event, iframe_droppable_elm, iframe_
 				var j_iframe_droppable_elm = $(iframe_droppable_elm);
 				
 				//show workflow loading
-				iframe_win.jsPlumbWorkFlow.getMyFancyPopupObj().showLoading();
+				iframe_win.taskFlowChartObj.getMyFancyPopupObj().showLoading();
 				
 				//fetch url
 				$.ajax({
@@ -2387,7 +2387,7 @@ function onChooseWorkflowDBTableTaskOptions(event, iframe_droppable_elm, iframe_
 						var task_label = method_name.replace(/_/g, " ") + " " + table_name;
 						
 						onChooseWorkflowTask(event, iframe_droppable_elm, iframe_win, iframe_offset, task_type, task_label, function(task_id) {
-							var jsPlumbWorkFlow = iframe_win.jsPlumbWorkFlow;
+							var taskFlowChartObj = iframe_win.taskFlowChartObj;
 							var DBDAOActionTaskPropertyObj = iframe_win.DBDAOActionTaskPropertyObj;
 							
 							//prepare table attributes
@@ -2407,7 +2407,7 @@ function onChooseWorkflowDBTableTaskOptions(event, iframe_droppable_elm, iframe_
 								}
 							
 							//preparing task properties according with dragged and dropped table
-							var selected_task_properties = iframe_win.$("#" + jsPlumbWorkFlow.jsPlumbProperty.selected_task_properties_id);
+							var selected_task_properties = iframe_win.$("#" + taskFlowChartObj.Property.selected_task_properties_id);
 							var task_html_elm = selected_task_properties.find(".db_dao_action_task_html");
 							
 							var select = task_html_elm.find(".method_name select");
@@ -2421,10 +2421,10 @@ function onChooseWorkflowDBTableTaskOptions(event, iframe_droppable_elm, iframe_
 							DBDAOActionTaskPropertyObj.chooseTable(select[0], table_and_attributes);
 							
 							//save properties
-							jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties();
+							taskFlowChartObj.Property.saveTaskProperties();
 							
 							//get saved task properties
-							var task_property_values = jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id];
+							var task_property_values = taskFlowChartObj.TaskFlow.tasks_properties[task_id];
 							task_property_values = task_property_values ? task_property_values : {};
 							
 							//set db driver, if not the default one
@@ -2439,22 +2439,22 @@ function onChooseWorkflowDBTableTaskOptions(event, iframe_droppable_elm, iframe_
 							}
 							
 							//set new task properties
-							jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id] = task_property_values;
+							taskFlowChartObj.TaskFlow.tasks_properties[task_id] = task_property_values;
 							
 							//load again task
-							jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id);
+							taskFlowChartObj.Property.showTaskProperties(task_id);
 						});
 					},
 					error : function(jqXHR, textStatus, errorThrown) { 
 						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to get table attributes.\nPlease try again..." + msg);
+						taskFlowChartObj.StatusMessage.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to get table attributes.\nPlease try again..." + msg);
 						
-						iframe_win.jsPlumbWorkFlow.getMyFancyPopupObj().hideLoading();
+						iframe_win.taskFlowChartObj.getMyFancyPopupObj().hideLoading();
 					},
 				});
 			}
 			else
-				iframe_win.jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Could not get table attributes because there is no table correspondent url!");
+				iframe_win.taskFlowChartObj.StatusMessage.showError("Could not get table attributes because there is no table correspondent url!");
 			
 			DBTableTaskOptionsFancyPopup.hidePopup();
 		},

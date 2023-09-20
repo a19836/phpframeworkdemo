@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_callibatisquery {
+.taskflowchartmenu .task.task_callibatisquery {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_callibatisquery .eps {
+.taskflowchartdiagram .task.task_callibatisquery .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_callibatisquery .ep {
+.taskflowchartdiagram .task.task_callibatisquery .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

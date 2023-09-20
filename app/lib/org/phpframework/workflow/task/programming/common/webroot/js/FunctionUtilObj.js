@@ -21,8 +21,8 @@ var FunctionUtilObj = {
 	
 	EditFunctionCodeMyFancyPopupObject : new MyFancyPopupClass(),
 	EditFunctionCodeEditor : null,
-	EditFunctionCodeJsPlumbWorkFlow : null,
-	OriginalJsPlumbWorkFlowObject : null,
+	EditFunctionCodeTaskFlowChart : null,
+	OriginalTaskFlowChartObject : null,
 	set_tmp_workflow_file_url : null,
 	get_tmp_workflow_file_url : null,
 	create_code_from_workflow_file_url : null,
@@ -85,11 +85,11 @@ var FunctionUtilObj = {
 		var function_code_textarea = $(elm).parent().children("textarea.function_code");
 		var code = "<?php\n" + function_code_textarea.val() + "\n?>";
 		
-		//backup original JsPlumbWorkFlowObject
-		this.OriginalJsPlumbWorkFlowObject = myWFObj.getJsPlumbWorkFlow();
-		this.OriginalJsPlumbWorkFlowObject.getMyFancyPopupObj().getPopupCloseButton().hide();
+		//backup original OriginalTaskFlowChartObject
+		this.OriginalTaskFlowChartObject = myWFObj.getTaskFlowChart();
+		this.OriginalTaskFlowChartObject.getMyFancyPopupObj().getPopupCloseButton().hide();
 		
-		var main_tasks_flow_parent = $("#" + this.OriginalJsPlumbWorkFlowObject.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent();
+		var main_tasks_flow_parent = $("#" + this.OriginalTaskFlowChartObject.TaskFlow.main_tasks_flow_obj_id).parent();
 		var main_div_id = "edit_function_code_" + main_tasks_flow_parent.attr("id");
 		
 		this.auto_convert = typeof auto_convert != "undefined" ? auto_convert : false;
@@ -138,7 +138,7 @@ var FunctionUtilObj = {
 				+ '				<div class="tasks_menu scroll"></div>'
 				+ '				'
 				+ '				<div class="tasks_menu_hide">'
-				+ '					<div class="button minimize" onClick="myWFObj.getJsPlumbWorkFlow().jsPlumbContextMenu.toggleTasksMenuPanel(this)"></div>'
+				+ '					<div class="button minimize" onClick="myWFObj.getTaskFlowChart().ContextMenu.toggleTasksMenuPanel(this)"></div>'
 				+ '				</div>'
 				+ '				'
 				+ '				<div class="tasks_flow scroll"></div>'
@@ -167,11 +167,11 @@ var FunctionUtilObj = {
 		
 		//init workflow
 		var tasks_menu = popup.find(" > #ui > .taskflowchart > .tasks_menu");
-		tasks_menu.html( main_tasks_flow_parent.children("#" + this.OriginalJsPlumbWorkFlowObject.jsPlumbContextMenu.main_tasks_menu_obj_id).html() );
+		tasks_menu.html( main_tasks_flow_parent.children("#" + this.OriginalTaskFlowChartObject.ContextMenu.main_tasks_menu_obj_id).html() );
 		tasks_menu.find(".cloned_task").remove();
-		tasks_menu.find("." + this.OriginalJsPlumbWorkFlowObject.jsPlumbContextMenu.task_menu_class_name).off().removeClass("ui-draggable ui-draggable-handle");
+		tasks_menu.find("." + this.OriginalTaskFlowChartObject.ContextMenu.task_menu_class_name).off().removeClass("ui-draggable ui-draggable-handle");
 		
-		$.each(tasks_menu.find("." + this.OriginalJsPlumbWorkFlowObject.jsPlumbContextMenu.tasks_group_tasks_class_name), function(idx, item) {
+		$.each(tasks_menu.find("." + this.OriginalTaskFlowChartObject.ContextMenu.tasks_group_tasks_class_name), function(idx, item) {
 			item = $(item);
 			item.attr("bkp-height", item.css("height"));
 		});
@@ -215,7 +215,7 @@ var FunctionUtilObj = {
 		var edit_function_code = $(elm).parent().closest(".edit_function_code");
 		var selected_tab = edit_function_code.children("ul.tabs").children("li.ui-tabs-selected, li.ui-tabs-active").first();
 		
-		if (FunctionUtilObj.auto_convert && FunctionUtilObj.EditFunctionCodeJsPlumbWorkFlow && selected_tab.attr("id") == "tasks_flow_tab")
+		if (FunctionUtilObj.auto_convert && FunctionUtilObj.EditFunctionCodeTaskFlowChart && selected_tab.attr("id") == "tasks_flow_tab")
 			FunctionUtilObj.generateCodeFromTasksFlow(elm, true);
 		
 		var code = FunctionUtilObj.getEditFunctionCodeEditorValue(elm);
@@ -227,13 +227,13 @@ var FunctionUtilObj = {
 	},
 	
 	hideEditFunctionCodeMyFancyPopup : function() {
-		if (this.EditFunctionCodeJsPlumbWorkFlow)
-			this.EditFunctionCodeJsPlumbWorkFlow.destroy();
+		if (this.EditFunctionCodeTaskFlowChart)
+			this.EditFunctionCodeTaskFlowChart.destroy();
 		
-		this.EditFunctionCodeJsPlumbWorkFlow = null;
+		this.EditFunctionCodeTaskFlowChart = null;
 		
-		myWFObj.setJsPlumbWorkFlow(this.OriginalJsPlumbWorkFlowObject);
-		this.OriginalJsPlumbWorkFlowObject.getMyFancyPopupObj().getPopupCloseButton().show();
+		myWFObj.setTaskFlowChart(this.OriginalTaskFlowChartObject);
+		this.OriginalTaskFlowChartObject.getMyFancyPopupObj().getPopupCloseButton().show();
 		
 		this.EditFunctionCodeMyFancyPopupObject.hidePopup();
 		
@@ -265,25 +265,27 @@ var FunctionUtilObj = {
 			if (FunctionUtilObj.EditFunctionCodeEditor && $(elm).closest(".edit_function_code").children("#code").is(":visible"))
 				FunctionUtilObj.EditFunctionCodeEditor.focus();
 			
-			if (FunctionUtilObj.auto_convert && FunctionUtilObj.EditFunctionCodeJsPlumbWorkFlow)
+			if (FunctionUtilObj.auto_convert && FunctionUtilObj.EditFunctionCodeTaskFlowChart)
 				FunctionUtilObj.generateCodeFromTasksFlow(elm, true);
 		}, 10);
 	},
 	
 	onClickTaskWorkflowTab : function(elm) {
 		elm = $(elm);
-		var WF = this.EditFunctionCodeJsPlumbWorkFlow;
+		var popup = elm.parent().closest(".edit_function_code");
+		var z_index = popup.css("z-index");
+		var WF = this.EditFunctionCodeTaskFlowChart;
 		
 		if (!WF) {
-			//prepare new jsPlumbWorkFlowHandler obj
+			//prepare new TaskFlowChart obj
 			var selector = elm.attr("href");
-			var main_div = elm.parent().closest(".edit_function_code").children(selector).children(".taskflowchart");
+			var main_div = popup.children(selector).children(".taskflowchart");
 			var main_div_id = main_div.attr("id");
 			
-			WF = new jsPlumbWorkFlowHandler(main_div_id, {
+			WF = new TaskFlowChart(main_div_id, {
 				on_init_function: function(innerWF) {
 					//prepare tasks menus
-					$("#" + innerWF.jsPlumbContextMenu.main_tasks_menu_obj_id + " ." + innerWF.jsPlumbContextMenu.tasks_group_tasks_class_name).each(function(idx, item) {
+					$("#" + innerWF.ContextMenu.main_tasks_menu_obj_id + " ." + innerWF.ContextMenu.tasks_group_tasks_class_name).each(function(idx, item) {
 						item = $(item);
 						item.css("height", item.attr("bkp-height"));
 					});
@@ -292,20 +294,31 @@ var FunctionUtilObj = {
 			});
 			eval('window.' + main_div_id + ' = WF;');
 			
-			WF.jsPlumbTaskFlow.main_tasks_flow_obj_id = main_div_id + " .tasks_flow";
-			WF.jsPlumbTaskFlow.main_tasks_properties_obj_id = main_div_id + " .tasks_properties";
-			WF.jsPlumbTaskFlow.main_connections_properties_obj_id = main_div_id + " .connections_properties";
-			WF.jsPlumbContextMenu.main_tasks_menu_obj_id = main_div_id + " .tasks_menu";
-			WF.jsPlumbContextMenu.main_tasks_menu_hide_obj_id = main_div_id + " .tasks_menu_hide";
-			WF.jsPlumbContextMenu.main_workflow_menu_obj_id = main_div_id + " .workflow_menu";
+			WF.TaskFlow.main_tasks_flow_obj_id = main_div_id + " .tasks_flow";
+			WF.TaskFlow.main_tasks_properties_obj_id = main_div_id + " .tasks_properties";
+			WF.TaskFlow.main_connections_properties_obj_id = main_div_id + " .connections_properties";
+			WF.ContextMenu.main_tasks_menu_obj_id = main_div_id + " .tasks_menu";
+			WF.ContextMenu.main_tasks_menu_hide_obj_id = main_div_id + " .tasks_menu_hide";
+			WF.ContextMenu.main_workflow_menu_obj_id = main_div_id + " .workflow_menu";
 			
-			WF.jsPlumbProperty.tasks_settings = Object.assign({}, this.OriginalJsPlumbWorkFlowObject.jsPlumbProperty.tasks_settings);
-			WF.jsPlumbTaskFile.set_tasks_file_url = this.OriginalJsPlumbWorkFlowObject.jsPlumbTaskFile.set_tasks_file_url;
-			WF.jsPlumbTaskFile.get_tasks_file_url = this.OriginalJsPlumbWorkFlowObject.jsPlumbTaskFile.get_tasks_file_url;
+			WF.TaskFlow.connection_line_width = this.OriginalTaskFlowChartObject.TaskFlow.connection_line_width;
 			
-			WF.jsPlumbContainer.tasks_containers = [];
+			//set z-index bc of leader-line
+			if ($.isNumeric(z_index)) {
+				z_index = parseInt(z_index) + 10;
+				WF.TaskFlow.connection_z_index = z_index;
+				
+				popup.children("style.edit_function_code_leader_line_z_index_style").remove();
+				popup.append('<style class="edit_function_code_leader_line_z_index_style"> body > .leader-line {z-index:' + z_index + ';} </style>');
+			}
 			
-			WF.jsPlumbWorkFlowObjOptions.on_resize_panels_function = function() {
+			WF.Property.tasks_settings = assignObjectRecursively({}, this.OriginalTaskFlowChartObject.Property.tasks_settings);
+			WF.TaskFile.set_tasks_file_url = this.OriginalTaskFlowChartObject.TaskFile.set_tasks_file_url;
+			WF.TaskFile.get_tasks_file_url = this.OriginalTaskFlowChartObject.TaskFile.get_tasks_file_url;
+			
+			WF.Container.tasks_containers = [];
+			
+			WF.taskFlowChartObjOptions.on_resize_panels_function = function() {
 				//reset top in style attribute, so it can have the css from the FunctionUtilObj.css file.
 				main_div.find(".workflow_menu, .tasks_menu, .tasks_menu_hide, .tasks_flow").css("top", "");
 			};
@@ -313,26 +326,25 @@ var FunctionUtilObj = {
 			//init flow
 			WF.init();
 			
-			this.EditFunctionCodeJsPlumbWorkFlow = WF;
+			this.EditFunctionCodeTaskFlowChart = WF;
 			
 			setTimeout(function() {
 				WF.resizePanels();
 			}, 500);
 		}
 		
-		//set the new JsPlumbWorkFlow
-		myWFObj.setJsPlumbWorkFlow(WF);
+		//set the new TaskFlowChart
+		myWFObj.setTaskFlowChart(WF);
 		
 		if (this.auto_convert)
 			this.generateTasksFlowFromCode(elm, true);
 		
 		//prepare some z-index bc of the popup
-		var zindex = $(elm).closest(".edit_function_code").css("z-index");
-		var main_tasks_flow_elm = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+		var main_tasks_flow_elm = $("#" + WF.TaskFlow.main_tasks_flow_obj_id);
 		
-		main_tasks_flow_elm.children("#" + WF.jsPlumbContextMenu.task_context_menu_id).css("z-index", zindex);
-		main_tasks_flow_elm.children("#" + WF.jsPlumbContextMenu.connection_context_menu_id).css("z-index", zindex);
-		main_tasks_flow_elm.children("#" + WF.jsPlumbStatusMessage.message_html_obj_id).css("z-index", zindex);
+		main_tasks_flow_elm.children("#" + WF.ContextMenu.task_context_menu_id).css("z-index", z_index);
+		main_tasks_flow_elm.children("#" + WF.ContextMenu.connection_context_menu_id).css("z-index", z_index);
+		main_tasks_flow_elm.children("#" + WF.StatusMessage.message_html_obj_id).css("z-index", z_index);
 	},
 	
 	generateCodeFromTasksFlow : function(elm, do_not_confirm) {
@@ -345,8 +357,8 @@ var FunctionUtilObj = {
 			var ui_elm = edit_function_code.children("#ui");
 			var code_elm = edit_function_code.children("#code");
 			var old_workflow_id = ui_elm.attr("workflow_id");
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var data = WF.jsPlumbTaskFile.getWorkFlowData();
+			var WF = myWFObj.getTaskFlowChart();
+			var data = WF.TaskFile.getWorkFlowData();
 			var new_workflow_id = $.md5(JSON.stringify(data));
 			
 			var generated_code_id = code_elm.attr("generated_code_id");
@@ -367,13 +379,13 @@ var FunctionUtilObj = {
 						success: function(data, textStatus, jqXHR) {
 							if (typeof jquery_native_xhr_object != "undefined" && jquery_native_xhr_object && typeof isAjaxReturnedResponseLogin == "function" && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 								showAjaxLoginPopup(jquery_native_xhr_object.responseURL, set_tmp_workflow_file_url, function() {
-									WF.jsPlumbStatusMessage.removeLastShownMessage("error");
+									WF.StatusMessage.removeLastShownMessage("error");
 									FunctionUtilObj.generateCodeFromTasksFlow(elm, true);
 								});
 						},
 					};
 					
-					if (WF.jsPlumbTaskFile.save(set_tmp_workflow_file_url, save_options)) {
+					if (WF.TaskFile.save(set_tmp_workflow_file_url, save_options)) {
 						$.ajax({
 							type : "get",
 							url : this.create_code_from_workflow_file_url,
@@ -392,14 +404,14 @@ var FunctionUtilObj = {
 										var msg = "";
 										for (var i = 0; i < loops.length; i++) {
 											var loop = loops[i];
-											var slabel = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(loop["source_task_id"]);
-											var tlabel = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(loop["target_task_id"]);
+											var slabel = WF.TaskFlow.getTaskLabelByTaskId(loop["source_task_id"]);
+											var tlabel = WF.TaskFlow.getTaskLabelByTaskId(loop["target_task_id"]);
 											
 											msg += (i > 0 ? "\n" : "") + "- '" + slabel + "' => '" + tlabel + "'";
 										}
 										
 										msg = "The system detected the following invalid loops and discarded them from the code:\n" + msg + "\n\nYou should remove them from the workflow and apply the correct 'loop task' for doing loops.";
-										WF.jsPlumbStatusMessage.showError(msg);
+										WF.StatusMessage.showError(msg);
 										alert(msg);
 									}
 									else {
@@ -455,7 +467,7 @@ var FunctionUtilObj = {
 					status = false;
 				
 					var workflow_menu = ui_elm.find(" > .taskflowchart > .workflow_menu");
-					var WF = myWFObj.getJsPlumbWorkFlow();
+					var WF = myWFObj.getTaskFlowChart();
 					
 					this.EditFunctionCodeMyFancyPopupObject.showLoading();
 					workflow_menu.hide();
@@ -471,34 +483,34 @@ var FunctionUtilObj = {
 									FunctionUtilObj.generateTasksFlowFromCode(elm, true);
 								});
 							else if (data == 1) {
-								var previous_callback = WF.jsPlumbTaskFile.on_success_read;
+								var previous_callback = WF.TaskFile.on_success_read;
 								
-								WF.jsPlumbTaskFile.on_success_read = function(data, text_status, jqXHR) {
+								WF.TaskFile.on_success_read = function(data, text_status, jqXHR) {
 									if (!data)
-										WF.jsPlumbStatusMessage.showError("There was an error trying to load the workflow's tasks.");
+										WF.StatusMessage.showError("There was an error trying to load the workflow's tasks.");
 									else {
 										ui_elm.attr("code_id", new_code_id);
 										ui_elm.attr("workflow_id", $.md5(JSON.stringify(data)) );
 									
-										WF.jsPlumbTaskSort.sortTasks();
+										WF.TaskSort.sortTasks();
 										
 										status = true;
 									}
 									
-									WF.jsPlumbTaskFile.on_success_read = previous_callback;
+									WF.TaskFile.on_success_read = previous_callback;
 								}
 								
-								WF.jsPlumbTaskFile.reload(get_tmp_workflow_file_url, {"async": true});
+								WF.TaskFile.reload(get_tmp_workflow_file_url, {"async": true});
 							}
 							else 
-								WF.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again." + (data ? "\n" + data : ""));
+								WF.StatusMessage.showError("There was an error trying to update this workflow. Please try again." + (data ? "\n" + data : ""));
 						
 							FunctionUtilObj.EditFunctionCodeMyFancyPopupObject.hideLoading();
 							workflow_menu.show();
 						},
 						error : function(jqXHR, textStatus, errorThrown) { 
 							var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-							WF.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again." + msg);
+							WF.StatusMessage.showError("There was an error trying to update this workflow. Please try again." + msg);
 							
 							FunctionUtilObj.EditFunctionCodeMyFancyPopupObject.hideLoading();
 							workflow_menu.show();
@@ -515,10 +527,10 @@ var FunctionUtilObj = {
 	},
 	
 	sortWorkflowTask : function(elm, sort_type) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
+		var WF = myWFObj.getTaskFlowChart();
 		
 		WF.getMyFancyPopupObj().init({
-			parentElement: $(elm).closest(".edit_function_code").find("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id),
+			parentElement: $(elm).closest(".edit_function_code").find("#" + WF.TaskFlow.main_tasks_flow_obj_id),
 			popup_class: "edit_function_popup",
 		});
 		WF.getMyFancyPopupObj().showOverlay();
@@ -528,16 +540,16 @@ var FunctionUtilObj = {
 			sort_type = prompt("Please choose the sort type that you wish? You can choose 1, 2, 3 or 4.");
 		
 		if (sort_type) {
-			WF.jsPlumbTaskSort.sortTasks(sort_type);
-			WF.jsPlumbStatusMessage.showMessage("Done sorting tasks based in the sort type: " + sort_type + ".");
+			WF.TaskSort.sortTasks(sort_type);
+			WF.StatusMessage.showMessage("Done sorting tasks based in the sort type: " + sort_type + ".");
 		}
 		
 		WF.getMyFancyPopupObj().hidePopup();
 	},
 	
 	flipTasksFlowPanelsSide : function(elm) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		WF.jsPlumbContextMenu.flipPanelsSide();
+		var WF = myWFObj.getTaskFlowChart();
+		WF.ContextMenu.flipPanelsSide();
 	},
 	
 	createEditor : function(textarea) {

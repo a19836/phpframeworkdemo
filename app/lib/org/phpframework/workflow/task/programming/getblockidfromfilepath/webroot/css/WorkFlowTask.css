@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_getblockidfromfilepath {
+.taskflowchartmenu .task.task_getblockidfromfilepath {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_getblockidfromfilepath .eps {
+.taskflowchartdiagram .task.task_getblockidfromfilepath .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_getblockidfromfilepath .ep {
+.taskflowchartdiagram .task.task_getblockidfromfilepath .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

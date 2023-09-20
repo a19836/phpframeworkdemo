@@ -1,15 +1,15 @@
-.jsplumbtaskworkflow path { 
+/*.taskflowchartdiagram ._jsPlumb_connector path { 
 	stroke-width:2px; 
-}
-.jsplumbtaskworkflow ._jsPlumb_endpoint {
+}*/
+.taskflowchartdiagram .end_point {
 	opacity:0;
 }
-.jsplumbtaskworkflow .connector_overlay_label {
+.taskflowchartdiagram .connector_overlay_label {
 	color:#000 !important;
 }
 
 /* MENU TASKS */
-.jsplumbtaskmenu .task,
+.taskflowchartmenu .task,
   .taskflowchart > .tasks_menu .task {
 	width:40px;
 	margin:15px 22px 30px;
@@ -19,7 +19,7 @@
 	background-image:url('../img/user_generated_task_bg.svg');
 	box-sizing:border-box;
 }
-.jsplumbtaskmenu .task span {
+.taskflowchartmenu .task span {
 	width:70px;
 	max-height:26px;
 	line-height:13px;
@@ -38,7 +38,7 @@
 }
 
 /* FLOW TASKS */
-.jsplumbtaskworkflow .task {
+.taskflowchartdiagram .task {
 	min-width:120px !important;
 	min-height:140px !important;
 	margin:0;
@@ -50,25 +50,25 @@
 	background-color:transparent;
 	box-sizing:border-box;
 }
-.jsplumbtaskworkflow .task:not(.is_start_task):hover {
+.taskflowchartdiagram .task:not(.is_start_task):hover {
 	opacity:1 !important;
 }
-.jsplumbtaskworkflow .task:hover:before {
+.taskflowchartdiagram .task:hover:before {
 	display:none !important;
 }
-.jsplumbtaskworkflow .task .task_info {
+.taskflowchartdiagram .task .task_info {
 	min-height:auto;
 	background:none;
 	color:rgb(0, 0, 0, .3);
 }
-.jsplumbtaskworkflow .task:hover:after {
+.taskflowchartdiagram .task:hover:after {
 	bottom:-25px !important;
 	left:-5px !important;
 	background:none !important;
 	
 	display:none !important; /* This causes noise in the diagram. The diagrams should be as simple as possible, so we should reduce the noise. */
 }
-.jsplumbtaskworkflow .task .info {
+.taskflowchartdiagram .task .info {
 	width:calc(100% + 2px);
 	min-height:25px;
 	margin-left:-1px;
@@ -83,7 +83,7 @@
 	box-sizing:border-box;
 	box-shadow:0px -1px 5px #ccc;
 }
-.jsplumbtaskworkflow .task .info:before {
+.taskflowchartdiagram .task .info:before {
 	content:"";
 	width:18px;
 	height:18px;
@@ -96,12 +96,12 @@
 	background-size:15px 12px;
 	border-radius:100%;
 }
-.jsplumbtaskworkflow .task:hover .short_actions {
+.taskflowchartdiagram .task:hover .short_actions {
 	padding:10px;
 	top:-30px;
 	right:-5px;
 }
-.jsplumbtaskworkflow .task .eps {
+.taskflowchartdiagram .task .eps {
 	width:20px;
 	height:20px;
 	margin:0;
@@ -112,7 +112,7 @@
 	box-sizing:border-box;
 	z-index:99; /* bc of the .ui-resizable-handle items */
 }
-.jsplumbtaskworkflow .task .ep {
+.taskflowchartdiagram .task .ep {
 	width:16px;
 	height:16px;
 	margin:0;
@@ -121,7 +121,7 @@
 	background:#4070FF !important;
 	box-shadow:0px -1px 5px #ccc;
 }
-.jsplumbtaskworkflow .task .ep:hover:after {
+.taskflowchartdiagram .task .ep:hover:after {
 	content:"Drag me to another box to connect with it";
 	padding:5px;
 	display:block;
@@ -137,7 +137,7 @@
 	display:none !important; /* This causes noise in the diagram. The diagrams should be as simple as possible, so we should reduce the noise. */
 }
 
-.jsplumbtaskworkflow .task > .task_droppable {
+.taskflowchartdiagram .task > .task_droppable {
 	min-height:100px;
 	position:absolute;
 	top:30px;
@@ -146,12 +146,12 @@
 	bottom:20px;
 	box-sizing:border-box;
 }
-.jsplumbtaskworkflow .task > .task_droppable.task_droppable_over,
+.taskflowchartdiagram .task > .task_droppable.task_droppable_over,
   .taskflowchart .tasks_flow .task .task_droppable.task_droppable_over {
 	background-color:rgba(0, 0, 0, .04);
 	opacity:1 !important;
 }
-.jsplumbtaskworkflow .task .task_droppable .task:hover:after {
+.taskflowchartdiagram .task .task_droppable .task:hover:after {
 	display:none;
 }
 

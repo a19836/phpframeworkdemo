@@ -38,8 +38,8 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		connections_to_add_after_deletion: null,
 		
 		onTaskCreation : function(task_id) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+			var WF = myWFObj.getTaskFlowChart();
+			var task = WF.TaskFlow.getTaskById(task_id);
 			
 			task.addClass("logic_task");
 		},
@@ -48,8 +48,8 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			onTaskCloning(task_id);
 			
 			//add default label
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			WF.jsPlumbTaskFlow.setTaskLabelByTaskId(task_id, {label: "Add your label"});
+			var WF = myWFObj.getTaskFlowChart();
+			WF.TaskFlow.setTaskLabelByTaskId(task_id, {label: "Add your label"});
 		},
 		
 		onConnectionDrag : function(conn) {
@@ -69,13 +69,13 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		onConnectionDrop : function(conn) {
 			//check if target is start task, and if so sets source to start task and remove target as start task.
 			if (conn.target.attr("is_start_task")) {
-				var WF = myWFObj.getJsPlumbWorkFlow();
+				var WF = myWFObj.getTaskFlowChart();
 				
 				conn.source.attr("is_start_task", 1);
-				conn.source.addClass(WF.jsPlumbTaskFlow.start_task_class_name);
+				conn.source.addClass(WF.TaskFlow.start_task_class_name);
 				
 				conn.target.removeAttr("is_start_task");
-				conn.target.removeClass(WF.jsPlumbTaskFlow.start_task_class_name);
+				conn.target.removeClass(WF.TaskFlow.start_task_class_name);
 			}
 			
 			return true;
@@ -88,9 +88,9 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 				var li = $('<li class="show_code"><a href="#">Show Code</a></li>');
 				
 				li.click(function(originalEvent) {
-					var WF = myWFObj.getJsPlumbWorkFlow();
-					var selected_task_id = WF.jsPlumbContextMenu.getContextMenuTaskId();
-					var selected_task = WF.jsPlumbTaskFlow.getTaskById(selected_task_id);
+					var WF = myWFObj.getTaskFlowChart();
+					var selected_task_id = WF.ContextMenu.getContextMenuTaskId();
+					var selected_task = WF.TaskFlow.getTaskById(selected_task_id);
 					var show_code_timeout_id = selected_task.data("show_code_timeout_id");
 					
 					if (show_code_timeout_id)
@@ -114,23 +114,23 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		},
 		
 		addIncludeFileTaskBeforeTaskIfNotExistsYet : function(task_id, file_path, type, once) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			WF.jsPlumbStatusMessage.showMessage("Checking if \"" + file_path + "\" exists and if not, add the correspondent include_file task");
+			var WF = myWFObj.getTaskFlowChart();
+			WF.StatusMessage.showMessage("Checking if \"" + file_path + "\" exists and if not, add the correspondent include_file task");
 			
 			if (!this.existsIncludeFileTaskBeforeTask(task_id, file_path, type)) {
 				ProgrammingTaskUtil.addIncludeFileTaskBeforeTask(task_id, file_path, type, once);
 				
-				WF.jsPlumbStatusMessage.removeLastShownMessage("status");
+				WF.StatusMessage.removeLastShownMessage("status");
 			}
 		},
 		
 		//given a task id, checks all above connections and check if before there is an include task with the same file_path
 		existsIncludeFileTaskBeforeTask : function(task_id, file_path, type) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var connections = WF.jsPlumbTaskFlow.getTargetConnections(task_id);
+			var WF = myWFObj.getTaskFlowChart();
+			var connections = WF.TaskFlow.getTargetConnections(task_id);
 			
 			var task_tag = "includefile";
-			var task_menu = $("#" + WF.jsPlumbContextMenu.main_tasks_menu_obj_id + " .task_menu[tag=" + task_tag + "]");
+			var task_menu = $("#" + WF.ContextMenu.main_tasks_menu_obj_id + " .task_menu[tag=" + task_tag + "]");
 			var task_type = task_menu.attr("type");
 			
 			for (var i = 1, t = connections.length; i < t; i++) {
@@ -140,7 +140,7 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 				var source_task_type = source_task.attr("type");
 				
 				if (source_task_type == task_type) {
-					var task_property_values = WF.jsPlumbTaskFlow.tasks_properties[source_task_id];
+					var task_property_values = WF.TaskFlow.tasks_properties[source_task_id];
 					
 					if (task_property_values && task_property_values["file_path"] == file_path && task_property_values["type"] == type)
 						return true;
@@ -154,53 +154,53 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		},
 		
 		addIncludeFileTaskBeforeTask : function(task_id, file_path, type, once) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
+			var WF = myWFObj.getTaskFlowChart();
 			var task_tag = "includefile";
-			var task_menu = $("#" + WF.jsPlumbContextMenu.main_tasks_menu_obj_id + " .task_menu[tag=" + task_tag + "]");
+			var task_menu = $("#" + WF.ContextMenu.main_tasks_menu_obj_id + " .task_menu[tag=" + task_tag + "]");
 			var task_type = task_menu.attr("type");
 			
 			if (task_type) {
-				var connections = WF.jsPlumbTaskFlow.getTargetConnections(task_id);
+				var connections = WF.TaskFlow.getTargetConnections(task_id);
 				var connection = connections[0];
 				var include_task_id = null;
 				
 				if (connection) { //add new task between task
-					include_task_id = WF.jsPlumbContextMenu.addTaskByTypeToConnection(task_type, connection);
+					include_task_id = WF.ContextMenu.addTaskByTypeToConnection(task_type, connection);
 					
 					//change other target connections to include_task_id
 					if (include_task_id) {
-						var include_task = WF.jsPlumbTaskFlow.getTaskById(include_task_id);
+						var include_task = WF.TaskFlow.getTaskById(include_task_id);
 						
 						for (var i = 1, t = connections.length; i < t; i++) {
 							var connection = connections[i];
 							
-							WF.jsPlumbContextMenu.setTaskBetweenConnection(include_task, connection);
+							WF.ContextMenu.setTaskBetweenConnection(include_task, connection);
 						}
 						
 						//bc the above code added the include_task to all the previous and after connections, creating multiple connections between the include_task and task_id, now we need to delete the extra connections between the include_task and task_id.
-						var include_source_connections = WF.jsPlumbTaskFlow.getSourceConnections(include_task_id);
+						var include_source_connections = WF.TaskFlow.getSourceConnections(include_task_id);
 						
 						for (var i = 1, t = include_source_connections.length; i < t; i++) {
 							var connection = include_source_connections[i];
 							
-							WF.jsPlumbTaskFlow.deleteConnection(connection.id, true);
+							WF.TaskFlow.deleteConnection(connection.id, true);
 						}
 					}
 				}
 				else { //add task before task
-					var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+					var task = WF.TaskFlow.getTaskById(task_id);
 					var task_offset = task.offset();
 					var obj_offset = {
 						top : task_offset.top - 100 > 0 ? task_offset.top - 100 : 20,
 						left : task_offset.left + 100,
 					};
 					var droppable = task.parent();
-					include_task_id = WF.jsPlumbContextMenu.addTaskByType(task_type, obj_offset, droppable);
+					include_task_id = WF.ContextMenu.addTaskByType(task_type, obj_offset, droppable);
 					
 					if (include_task_id) {
 						//connect both tasks
 						//get new task default exit - based in task properties
-						var task_properties_html_element = $("#" + WF.jsPlumbTaskFlow.main_tasks_properties_obj_id + " .task_properties_" +  task_type.toLowerCase()).html();
+						var task_properties_html_element = $("#" + WF.TaskFlow.main_tasks_properties_obj_id + " .task_properties_" +  task_type.toLowerCase()).html();
 						var task_property_exits = $(task_properties_html_element).find(".task_property_exit");
 						var task_property_exit = task_property_exits[0];
 						
@@ -208,14 +208,14 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 							var exit_id = task_property_exit.getAttribute("exit_id");
 							var exit_color = task_property_exit.getAttribute("exit_color");
 							var exit_label = task_property_exit.getAttribute("exit_label");
-							var include_task = WF.jsPlumbTaskFlow.getTaskById(include_task_id);
+							var include_task = WF.TaskFlow.getTaskById(include_task_id);
 							
 							if (!exit_color) {
 								var default_color = include_task.css("border-color");
 								exit_color = default_color ? default_color : "#000";
 							}
 							
-							connection = WF.jsPlumbTaskFlow.connect(include_task_id, task_id, exit_label, null, null, {
+							connection = WF.TaskFlow.connect(include_task_id, task_id, exit_label, null, null, {
 								id : exit_id,
 								color : exit_color,
 							});
@@ -224,14 +224,14 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 								//check if target is start task, and if so sets source to start task and remove target as start task.
 								if (task.attr("is_start_task")) {
 									include_task.attr("is_start_task", 1);
-									include_task.addClass(WF.jsPlumbTaskFlow.start_task_class_name);
+									include_task.addClass(WF.TaskFlow.start_task_class_name);
 									
 									task.removeAttr("is_start_task");
-									task.removeClass(WF.jsPlumbTaskFlow.start_task_class_name);
+									task.removeClass(WF.TaskFlow.start_task_class_name);
 								}
 							}
 							else {
-								WF.jsPlumbTaskFlow.deleteTask(include_task_id, {to_confirm: false});
+								WF.TaskFlow.deleteTask(include_task_id, {to_confirm: false});
 								include_task_id = null;	
 							}
 						}
@@ -239,7 +239,7 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 				}
 				
 				if (include_task_id) {
-					var task_property_values = WF.jsPlumbTaskFlow.tasks_properties[include_task_id];
+					var task_property_values = WF.TaskFlow.tasks_properties[include_task_id];
 					task_property_values["file_path"] = file_path;
 					task_property_values["type"] = type;
 					task_property_values["once"] = once;
@@ -252,21 +252,21 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		},
 		
 		addIncludeFileTaskBeforeTaskFromSelectedTaskProperties : function(file_path, type, once) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var selected_task_properties = $("#" + WF.jsPlumbProperty.selected_task_properties_id);
+			var WF = myWFObj.getTaskFlowChart();
+			var selected_task_properties = $("#" + WF.Property.selected_task_properties_id);
 			var task_id = selected_task_properties.attr("task_id");
 			
 			this.addIncludeFileTaskBeforeTask(task_id, file_path, type, once);
 		},
 		
 		onSuccessTaskBetweenConnection : function(task_id) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
+			var WF = myWFObj.getTaskFlowChart();
 			
 			//set new created task on the same position than the following task.
-			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
-			var extra_top = WF.jsPlumbTaskSort.task_margins_top_and_bottom_average * 2;
-			var parent_connections = WF.jsPlumbTaskFlow.getTargetConnections(task_id);
-			var child_connections = WF.jsPlumbTaskFlow.getSourceConnections(task_id);
+			var task = WF.TaskFlow.getTaskById(task_id);
+			var extra_top = WF.TaskSort.task_margins_top_and_bottom_average * 2;
+			var parent_connections = WF.TaskFlow.getTargetConnections(task_id);
+			var child_connections = WF.TaskFlow.getSourceConnections(task_id);
 			var pl = parent_connections.length;
 			var cl = child_connections.length;
 			var parent_id = null;
@@ -289,8 +289,8 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			}
 			
 			if (child_id) {
-				var parent_task = WF.jsPlumbTaskFlow.getTaskById(parent_id);
-				var child_task = WF.jsPlumbTaskFlow.getTaskById(child_id);
+				var parent_task = WF.TaskFlow.getTaskById(parent_id);
+				var child_task = WF.TaskFlow.getTaskById(child_id);
 				var parent_top = parseInt(parent_task.css("top"));
 				var child_top = parseInt(child_task.css("top"));
 				var push_tasks_down = true;
@@ -314,11 +314,12 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 				if (push_tasks_down) {
 					var new_top = parent_top + parent_task.height() + extra_top;
 					task.css("top", new_top + "px");
+					var push_down_ignore_tasks_id = [parent_id, task_id];
 					
 					//then push down all following tasks that are connected to this new task.
 					for (var i = 0; i < cl; i++) {
 						var child_id = child_connections[i].targetId;
-						var child_task = WF.jsPlumbTaskFlow.getTaskById(child_id);
+						var child_task = WF.TaskFlow.getTaskById(child_id);
 						var child_top = parseInt(child_task.css("top"));
 						
 						if (child_top > parent_top + parent_task.height()) {
@@ -326,26 +327,32 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 							var diff = child_top - (parent_top + parent_task.height()) + task.height();
 							
 							//push children down
-							ProgrammingTaskUtil.pushDownFollowingTask(child_id, diff);
+							ProgrammingTaskUtil.pushDownFollowingTask(child_id, diff, push_down_ignore_tasks_id);
 						}
 					}
 				}
 				
-				WF.jsPlumbTaskFlow.repaintAllTasks();
+				WF.TaskFlow.repaintAllTasks();
 			}
 		},
 		
-		pushDownFollowingTask : function(task_id, extra_top) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
-			var top = parseInt(task.css("top")) + extra_top;
-			task.css("top", top + "px");
+		pushDownFollowingTask : function(task_id, extra_top, ignore_tasks_id) {
+			ignore_tasks_id = $.isArray(ignore_tasks_id) ? ignore_tasks_id : [];
 			
-			var child_connections = WF.jsPlumbTaskFlow.getSourceConnections(task_id);
-			var cl = child_connections.length;
-			
-			for (var i = 0; i < cl; i++)
-				ProgrammingTaskUtil.pushDownFollowingTask(child_connections[i].targetId, extra_top);
+			if (ignore_tasks_id.indexOf(task_id) == -1) { //ignore_tasks_id are very important bc if there is an infinit loop the repeated tasks should be stopped.
+				ignore_tasks_id.push(task_id);
+				
+				var WF = myWFObj.getTaskFlowChart();
+				var task = WF.TaskFlow.getTaskById(task_id);
+				var top = parseInt(task.css("top")) + extra_top;
+				task.css("top", top + "px");
+				
+				var child_connections = WF.TaskFlow.getSourceConnections(task_id);
+				var cl = child_connections.length;
+				
+				for (var i = 0; i < cl; i++)
+					ProgrammingTaskUtil.pushDownFollowingTask(child_connections[i].targetId, extra_top, ignore_tasks_id);
+			}
 		},
 		
 		prepareEditSourceIcon : function(task_html_elm) {
@@ -358,7 +365,7 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		},
 		
 		createTaskLabelField : function(properties_html_elm, task_id) {
-			var label = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
+			var label = myWFObj.getTaskFlowChart().TaskFlow.getTaskLabelByTaskId(task_id);
 			label = label ? label.replace(/"/g, "&quot;") : "";
 			
 			properties_html_elm.find(".properties_task_id").html('<input type="text" value="' + label + '" old_value="' + label + '" />');
@@ -369,7 +376,7 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			
 			updateTaskLabelInShownTaskProperties(task_id, ".properties_task_id input");
 			
-			myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
+			myWFObj.getTaskFlowChart().TaskFlow.repaintTaskByTaskId(task_id);
 			
 			return true;
 		},
@@ -379,7 +386,7 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			var new_label = properties_html_elm.find(".properties_task_id input").val();
 			
 			if (new_label && old_label != new_label) {
-				myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskLabelElementByTaskId(task_id).html(new_label);
+				myWFObj.getTaskFlowChart().TaskFlow.getTaskLabelElementByTaskId(task_id).html(new_label);
 				
 				onEditLabel(task_id);
 			}
@@ -478,7 +485,7 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		
 			var type = elm.val();
 			var task_html_elm = elm.parent().parent().parent();
-			var WF = myWFObj.getJsPlumbWorkFlow();
+			var WF = myWFObj.getTaskFlowChart();
 			
 			switch(type) {
 				case "variable":
@@ -737,9 +744,9 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		},
 		
 		updateTaskExitsLabels : function(task_id, labels) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
-			var exits = task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " ." + WF.jsPlumbTaskFlow.task_ep_class_name);
+			var WF = myWFObj.getTaskFlowChart();
+			var task = WF.TaskFlow.getTaskById(task_id);
+			var exits = task.find(" > ." + WF.TaskFlow.task_eps_class_name + " ." + WF.TaskFlow.task_ep_class_name);
 			
 			var exit, connection_exit_id, span, bg, title;
 			
@@ -780,14 +787,14 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			if (resize_height) {
 				task.css("height", height + "px");
 			
-				WF.jsPlumbTaskFlow.repaintTask(task);
+				WF.TaskFlow.repaintTask(task);
 			}
 		},
 		
 		updateTaskExitsConnectionExitLabelAttribute : function(task_id, labels) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
-			var exits = task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " ." + WF.jsPlumbTaskFlow.task_ep_class_name);
+			var WF = myWFObj.getTaskFlowChart();
+			var task = WF.TaskFlow.getTaskById(task_id);
+			var exits = task.find(" > ." + WF.TaskFlow.task_eps_class_name + " ." + WF.TaskFlow.task_ep_class_name);
 			
 			var exit, connection_exit_id;
 			
@@ -807,8 +814,8 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		
 		updateTaskExitsConnectionsLabels : function(task_id, labels) {
 			//update exits that were changed
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var child_connections = WF.jsPlumbTaskFlow.getSourceConnections(task_id);
+			var WF = myWFObj.getTaskFlowChart();
+			var child_connections = WF.TaskFlow.getSourceConnections(task_id);
 			var cl = child_connections.length;
 			
 			for (var i = 0; i < cl; i++) {
@@ -836,8 +843,8 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 			this.new_start_task_id = null;
 			this.new_start_task_order = null;
 			
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var child_connections = WF.jsPlumbTaskFlow.getSourceConnections(task_id);
+			var WF = myWFObj.getTaskFlowChart();
+			var child_connections = WF.TaskFlow.getSourceConnections(task_id);
 			var cl = child_connections.length;
 			var target_id = cl > 0 && child_connections[0] ? child_connections[0].targetId : null;
 			
@@ -851,7 +858,7 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 				}
 				
 				//prepare parent connections
-				var parent_connections = WF.jsPlumbTaskFlow.getTargetConnections(task_id);
+				var parent_connections = WF.TaskFlow.getTargetConnections(task_id);
 				var pl = parent_connections.length;
 				
 				if (pl > 0)
@@ -885,11 +892,11 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		},
 		
 		onAfterTaskDeletion : function(task_id, task) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
+			var WF = myWFObj.getTaskFlowChart();
 			
 			//prepare new start task
 			if (this.new_start_task_id) {
-				var new_task = WF.jsPlumbTaskFlow.getTaskById(this.new_start_task_id);
+				var new_task = WF.TaskFlow.getTaskById(this.new_start_task_id);
 				new_task.attr("is_start_task", this.new_start_task_order).addClass("is_start_task");
 			}
 			
@@ -904,7 +911,7 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 					var connection_overlay = c[4];
 					var connection_exit_props = c[5];
 					
-					WF.jsPlumbTaskFlow.connect(source_task_id, target_task_id, connection_label, connector_type, connection_overlay, connection_exit_props);
+					WF.TaskFlow.connect(source_task_id, target_task_id, connection_label, connector_type, connection_overlay, connection_exit_props);
 				}
 			}
 			
@@ -935,8 +942,8 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 		
 		onEditSource : function(elm, task_html_elm, type) {
 			data = {};
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var query_string = WF.jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(task_html_elm, "task_property_field");
+			var WF = myWFObj.getTaskFlowChart();
+			var query_string = WF.Property.getPropertiesQueryStringFromHtmlElm(task_html_elm, "task_property_field");
 			
 			try {
 				parse_str(query_string, data);
@@ -950,7 +957,7 @@ if (typeof is_global_programming_common_file_already_included == "undefined") {
 				ProgrammingTaskUtil.onProgrammingTaskEditSource(elm, data);
 			}
 			else
-				WF.jsPlumbStatusMessage.showError("Cannot edit file");
+				WF.StatusMessage.showError("Cannot edit file");
 		},
 		
 		onProgrammingTaskEditSource : function(elm, data) {

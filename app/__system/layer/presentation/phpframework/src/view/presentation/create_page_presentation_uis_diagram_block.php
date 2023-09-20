@@ -101,7 +101,7 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 		top_bar_header.append(\'<ul><li class="continue" title="Continue"><a onclick="createPageUIFiles(this)"><i class="icon continue"></i> Continue</a></li></ul>\');
 		
 		//prepare workflow
-		var WF = jsPlumbWorkFlow;
+		var WF = taskFlowChartObj;
 		var taskflowchart = $(".taskflowchart");
 		taskflowchart.children(".workflow_menu").remove();
 		var tasks_menu = taskflowchart.children(".tasks_menu");
@@ -112,26 +112,26 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 		page_task_menu.hide();
 		
 		//add default page task to the tasks_flow
-		WF.jsPlumbProperty.tasks_settings[page_task_type]["is_resizable_task"] = false;
-		var page_task_id = WF.jsPlumbContextMenu.addTaskByType(page_task_type);
+		WF.Property.tasks_settings[page_task_type]["is_resizable_task"] = false;
+		var page_task_id = WF.ContextMenu.addTaskByType(page_task_type);
 
 		if (page_task_id) {
-			var tasks_flow = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
-			var task = WF.jsPlumbTaskFlow.getTaskById(page_task_id);
+			var tasks_flow = $("#" + WF.TaskFlow.main_tasks_flow_obj_id);
+			var task = WF.TaskFlow.getTaskById(page_task_id);
 			var task_droppable = task.children(".task_droppable");
 			
-			WF.jsPlumbTaskFlow.setTaskLabelByTaskId(page_task_id, {label: "' . $page_name . '"});
+			WF.TaskFlow.setTaskLabelByTaskId(page_task_id, {label: "' . $page_name . '"});
 			
-			if (!WF.jsPlumbTaskFlow.tasks_properties[page_task_id])
-				WF.jsPlumbTaskFlow.tasks_properties[page_task_id] = {};
+			if (!WF.TaskFlow.tasks_properties[page_task_id])
+				WF.TaskFlow.tasks_properties[page_task_id] = {};
 			
-			WF.jsPlumbTaskFlow.tasks_properties[page_task_id]["join_type"] = "list";
+			WF.TaskFlow.tasks_properties[page_task_id]["join_type"] = "list";
 			
 			//add selected task to page task
 			var selected_task = tasks_menu.find(".task_' . $task_tag . '");
 			var selected_task_type = selected_task.attr("type");
 			
-			var selected_task_id = WF.jsPlumbContextMenu.addTaskByType(selected_task_type, {top: 0, left: 0}, task_droppable);
+			var selected_task_id = WF.ContextMenu.addTaskByType(selected_task_type, {top: 0, left: 0}, task_droppable);
 			
 			//prepare selected task properties
 			PresentationTaskUtil.getDBTables("' . $db_driver . '", "' . $db_type . '"); //update db tables list
@@ -142,31 +142,31 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 				for (var attribute_name in db_attributes)
 					uis_attributes.push( {active: 1, name: attribute_name} );
 			
-			if (!WF.jsPlumbTaskFlow.tasks_properties[selected_task_id])
-				WF.jsPlumbTaskFlow.tasks_properties[selected_task_id] = {};
+			if (!WF.TaskFlow.tasks_properties[selected_task_id])
+				WF.TaskFlow.tasks_properties[selected_task_id] = {};
 			
-			if (!WF.jsPlumbTaskFlow.tasks_properties[selected_task_id]["choose_db_table"])
-				WF.jsPlumbTaskFlow.tasks_properties[selected_task_id]["choose_db_table"] = {};
+			if (!WF.TaskFlow.tasks_properties[selected_task_id]["choose_db_table"])
+				WF.TaskFlow.tasks_properties[selected_task_id]["choose_db_table"] = {};
 			
-			if (!WF.jsPlumbTaskFlow.tasks_properties[selected_task_id]["action"])
-				WF.jsPlumbTaskFlow.tasks_properties[selected_task_id]["action"] = {};
+			if (!WF.TaskFlow.tasks_properties[selected_task_id]["action"])
+				WF.TaskFlow.tasks_properties[selected_task_id]["action"] = {};
 			
-			WF.jsPlumbTaskFlow.tasks_properties[selected_task_id]["choose_db_table"]["db_driver"] = "' . $db_driver . '";
-			WF.jsPlumbTaskFlow.tasks_properties[selected_task_id]["choose_db_table"]["db_type"] = "' . $db_type . '";
-			WF.jsPlumbTaskFlow.tasks_properties[selected_task_id]["choose_db_table"]["db_table"] = "' . $db_table . '";
-			WF.jsPlumbTaskFlow.tasks_properties[selected_task_id]["attributes"] = uis_attributes;
+			WF.TaskFlow.tasks_properties[selected_task_id]["choose_db_table"]["db_driver"] = "' . $db_driver . '";
+			WF.TaskFlow.tasks_properties[selected_task_id]["choose_db_table"]["db_type"] = "' . $db_type . '";
+			WF.TaskFlow.tasks_properties[selected_task_id]["choose_db_table"]["db_table"] = "' . $db_table . '";
+			WF.TaskFlow.tasks_properties[selected_task_id]["attributes"] = uis_attributes;
 			
 			'; if ($task_tag_action) foreach ($task_tag_action as $tta) $head .= '
-			WF.jsPlumbTaskFlow.tasks_properties[selected_task_id]["action"]["single_' . $tta . '"] = 1;
-			' . ($task_tag == "listing" ? 'WF.jsPlumbTaskFlow.tasks_properties[selected_task_id]["action"]["multiple_' . $tta . '"] = 1;' : '') . '
+			WF.TaskFlow.tasks_properties[selected_task_id]["action"]["single_' . $tta . '"] = 1;
+			' . ($task_tag == "listing" ? 'WF.TaskFlow.tasks_properties[selected_task_id]["action"]["multiple_' . $tta . '"] = 1;' : '') . '
 			
 			'; $head .= '
 			//prepare page properties
-			var page_properties = $("#" + WF.jsPlumbTaskFlow.main_tasks_properties_obj_id + " .task_properties_" + page_task_type.toLowerCase());
+			var page_properties = $("#" + WF.TaskFlow.main_tasks_properties_obj_id + " .task_properties_" + page_task_type.toLowerCase());
 			page_properties.find(".file_name, .template, .links, .authentication_tab, .advanced_settings_tab").hide();
-			WF.jsPlumbProperty.tasks_settings[page_task_type]["task_menu"]["show_set_label_menu"] = false;
-			WF.jsPlumbProperty.tasks_settings[page_task_type]["task_menu"]["show_start_task_menu"] = false;
-			WF.jsPlumbProperty.tasks_settings[page_task_type]["task_menu"]["show_delete_menu"] = false;
+			WF.Property.tasks_settings[page_task_type]["task_menu"]["show_set_label_menu"] = false;
+			WF.Property.tasks_settings[page_task_type]["task_menu"]["show_start_task_menu"] = false;
+			WF.Property.tasks_settings[page_task_type]["task_menu"]["show_delete_menu"] = false;
 			
 			createPageUIFiles();
 		}
@@ -237,7 +237,7 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 	}
 
 	function createPageUIFiles() {
-		var tasks = jsPlumbWorkFlow.jsPlumbTaskFlow.getAllTasks();
+		var tasks = taskFlowChartObj.TaskFlow.getAllTasks();
 		var exists_tasks = false;
 		var exists_permissions = false;
 		
@@ -249,7 +249,7 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 				exists_tasks = true;
 				
 				var task_id = task.attr("id");
-				if (jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id] && !$.isEmptyObject(jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id]["users_perms"])) {
+				if (taskFlowChartObj.TaskFlow.tasks_properties[task_id] && !$.isEmptyObject(taskFlowChartObj.TaskFlow.tasks_properties[task_id]["users_perms"])) {
 					exists_permissions = true;
 					break;
 				}
@@ -265,7 +265,7 @@ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($
 			}
 		}
 		else
-			jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please create some tasks first...");
+			taskFlowChartObj.StatusMessage.showError("Please create some tasks first...");
 	}
 	</script>'; $main_content .= '<script>
 	$(".top_bar").addClass("in_popup");

@@ -39,7 +39,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>' . $pf8ed4912; if (strpos($pf8ed4912, 'vendor/jquery/js/jquery.md5.js') === false) $pf8ed4912 = '
 				<!-- Add MD5 JS Files -->
 				<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/jquery/js/jquery.md5.js"></script>' . $pf8ed4912; if ($v8555f2f905) { $pf8ed4912 .= '<script>
-				jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url = \'' . $v8555f2f905 . '\';
+				taskFlowChartObj.TaskFile.set_tasks_file_url = \'' . $v8555f2f905 . '\';
 				</script>'; } if (!$v8c5b4fe0d4) { if (!$pcfdeae4e) $pf8ed4912 .= '
 				<!-- Add Fontawsome Icons CSS -->
 				<link rel="stylesheet" href="' . $v37d269c4fa . 'vendor/fontawesome/css/all.min.css">
@@ -60,7 +60,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 			'; } if ($pcfdeae4e) { $pf8ed4912 .= '
 			<!-- add default function to reset the top positon of the tasksflow panels, if with_top_bar class exists -->
 			<script>
-				jsPlumbWorkFlow.setjsPlumbWorkFlowObjOption("on_resize_panels_function", onResizeTaskFlowChartPanels);
+				taskFlowChartObj.setTaskFlowChartObjOption("on_resize_panels_function", onResizeTaskFlowChartPanels);
 			</script>
 			'; $pf8ed4912 .= $pcfdeae4e->getJS(false, false, array("is_droppable_connection" => true, "add_default_start_task" => true, "resizable_task_properties" => true, "resizable_connection_properties" => true)); } if ($pbd963c11) $pf8ed4912 .= '
 			<!-- Add CKEditor JS Files  -->

@@ -1,7 +1,7 @@
-.jsplumbtaskmenu .task.task_presentation {
+.taskflowchartmenu .task.task_presentation {
 	background-image:url('../img/logo.svg');
 }
-.jsplumbtaskworkflow .task.task_presentation {
+.taskflowchartdiagram .task.task_presentation {
 	background-image:url('../img/logo.svg');
 }
 

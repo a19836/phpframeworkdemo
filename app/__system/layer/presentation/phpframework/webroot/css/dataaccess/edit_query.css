@@ -1063,7 +1063,7 @@
 }
 
 /* CONNECTION */
-.jsplumbtaskworkflow .selected_connection_properties .db_table_connection_html {
+.taskflowchartdiagram .selected_connection_properties .db_table_connection_html {
 	margin-top:20px;
 }
 

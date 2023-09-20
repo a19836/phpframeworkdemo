@@ -594,18 +594,21 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .relationship .query .taskflowchart .workflow_menu .toggle_ui {
 	display:none;
 }
-.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .relationship .query .taskflowchart .jsplumbtaskworkflow {
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .relationship .query .taskflowchart .taskflowchartdiagram {
 	width:100%;
 }
-.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .relationship .query .taskflowchart .jsplumbtaskworkflow .choose_table_or_attribute {
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .relationship .query .taskflowchart .taskflowchartdiagram .choose_table_or_attribute {
 	border:1px solid #999;
 }
-.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .relationship .query .taskflowchart .jsplumbtaskworkflow .task.task_query .info span:not(.icon) {
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .relationship .query .taskflowchart .taskflowchartdiagram .task.task_query .info span:not(.icon) {
 	margin-top:-4px;
 	display:inline-block;
 }
-.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .relationship .query .taskflowchart .jsplumbtaskworkflow .task.task_query .eps {
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .relationship .query .taskflowchart .taskflowchartdiagram .task.task_query .eps {
 	background:#fff;
+}
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .relationship .query .taskflowchart .taskflowchartdiagram .end_point {
+	opacity:0 !important;
 }
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .relationship .query .query_settings .advanced_query_settings {
 	margin-top:177px;

@@ -325,8 +325,8 @@ function prepareWorkerArgsArrayItem(elm) {
 }
 
 function getJsonCodeFromArgsArray(set_array_task_elm) {
-	var WF = myWFObj.getJsPlumbWorkFlow();
-	var query_string = WF.jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(set_array_task_elm, "task_property_field");
+	var WF = myWFObj.getTaskFlowChart();
+	var query_string = WF.Property.getPropertiesQueryStringFromHtmlElm(set_array_task_elm, "task_property_field");
 	var args_data = {};
 	parse_str(query_string, args_data);
 	

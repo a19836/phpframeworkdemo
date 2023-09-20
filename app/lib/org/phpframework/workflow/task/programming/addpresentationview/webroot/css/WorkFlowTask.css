@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_addpresentationview {
+.taskflowchartmenu .task.task_addpresentationview {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_addpresentationview .eps {
+.taskflowchartdiagram .task.task_addpresentationview .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_addpresentationview .ep {
+.taskflowchartdiagram .task.task_addpresentationview .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

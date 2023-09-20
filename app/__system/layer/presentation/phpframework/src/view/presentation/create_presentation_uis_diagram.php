@@ -25,8 +25,6 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); include $EVC->getUti
 	<!-- Add ACE JS and CSS files -->
 	<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ace.js"></script>
 	<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
-	<script language="javascript" type="text/javascript" src="' . $proprietary_js_url_prefix . 'jquerytaskflowchart/js/lib/jsPlumbCloneHandler.js"></script>
-	<script language="javascript" type="text/javascript" src="' . $proprietary_js_url_prefix . 'jquerytaskflowchart/js/task_flow_chart.js"></script>
 	
 	<!-- Add MyTree main JS and CSS files -->
 	<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerymytree/css/style.min.css" type="text/css" charset="utf-8" />
@@ -88,7 +86,10 @@ include $EVC->getUtilPath("CMSPresentationLayerUIHandler"); include $EVC->getUti
 		
 		var page_task_type= "d7975b77"; //page task type id
 		
-		jsPlumbWorkFlow.setjsPlumbWorkFlowObjOption("on_resize_panels_function", onResizeTaskFlowChartPanels); //add default function to reset the top positon of the tasksflow panels, if with_top_bar class exists
+		taskFlowChartObj.TaskFlow.connection_line_width = 2;
+		taskFlowChartObj.TaskFlow.connection_from_target = true;
+		
+		taskFlowChartObj.setTaskFlowChartObjOption("on_resize_panels_function", onResizeTaskFlowChartPanels); //add default function to reset the top positon of the tasksflow panels, if with_top_bar class exists
 		
 		ProgrammingTaskUtil.on_programming_task_edit_source_callback = onProgrammingTaskEditSource;
 		ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback = onProgrammingTaskChooseCreatedVariable;

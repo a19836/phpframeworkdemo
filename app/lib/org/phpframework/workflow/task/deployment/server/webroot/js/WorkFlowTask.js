@@ -51,7 +51,7 @@ var ServerTaskPropertyObj = {
 	server_time_diff_in_milliseconds : 0,
 	
 	TemplatesWorkflowHandlerObject : null,
-	JsPlumbWorkFlowObject : null,
+	TaskFlowChartObject : null,
 	workflow_global_variables : null,
 	TemplatePropertiesMyFancyPopupObject : new MyFancyPopupClass(),
 	TemplatePropertiesGlobalSettingsAndVarsMyFancyPopupObject : new MyFancyPopupClass(),
@@ -66,16 +66,16 @@ var ServerTaskPropertyObj = {
 		if (typeof ServerTaskPropertyObj.on_open_server_properties_popup_callback == "function")
 			ServerTaskPropertyObj.on_open_server_properties_popup_callback(properties_html_elm, task_id, task_property_values);
 		
-		//init JsPlumbWorkFlowObject and workflow_global_variables
-		ServerTaskPropertyObj.JsPlumbWorkFlowObject = myWFObj.getJsPlumbWorkFlow();
-		ServerTaskPropertyObj.workflow_global_variables = Object.assign({}, window.workflow_global_variables);
+		//init TaskFlowChartObject and workflow_global_variables
+		ServerTaskPropertyObj.TaskFlowChartObject = myWFObj.getTaskFlowChart();
+		ServerTaskPropertyObj.workflow_global_variables = assignObjectRecursively({}, window.workflow_global_variables);
 		
 		//prepare tabs
 		task_html_element.tabs();
 		template_properties.tabs();
 		
 		task_html_element.find(" > ul > li > a").click(function() {
-			ServerTaskPropertyObj.JsPlumbWorkFlowObject.getMyFancyPopupObj().resizeOverlay();
+			ServerTaskPropertyObj.TaskFlowChartObject.getMyFancyPopupObj().resizeOverlay();
 		});
 		template_properties.find(" > ul > li > a").click(function() {
 			ServerTaskPropertyObj.TemplatePropertiesMyFancyPopupObject.resizeOverlay();
@@ -104,7 +104,7 @@ var ServerTaskPropertyObj = {
 				if (!props.hasOwnProperty("template_id"))
 					props["template_id"] = template_id;
 				
-				ServerTaskPropertyObj.templates_properties[template_id] = Object.assign({}, props["properties"]); //very important otherwise the ServerTaskPropertyObj.templates_properties[template_id] will be the same object that the task_property_values["templates"][template_id] which will mess all the ServerTaskPropertyObj logic code.
+				ServerTaskPropertyObj.templates_properties[template_id] = assignObjectRecursively({}, props["properties"]); //very important otherwise the ServerTaskPropertyObj.templates_properties[template_id] will be the same object that the task_property_values["templates"][template_id] which will mess all the ServerTaskPropertyObj logic code.
 				
 				ServerTaskPropertyObj.addTemplate(add_icon, props);
 			});
@@ -132,8 +132,8 @@ var ServerTaskPropertyObj = {
 		ServerTaskPropertyObj.destroyTemplatesWorkflow(template_properties);
 		
 		//saved deployments bc after this method it will be reseted!
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		ServerTaskPropertyObj.saved_deployments = WF.jsPlumbTaskFlow.tasks_properties[task_id]["deployments"];
+		var WF = myWFObj.getTaskFlowChart();
+		ServerTaskPropertyObj.saved_deployments = WF.TaskFlow.tasks_properties[task_id]["deployments"];
 		
 		return true;
 	},
@@ -190,8 +190,8 @@ var ServerTaskPropertyObj = {
 	},
 	
 	onTaskConnection : function(conn) {
-		//init JsPlumbWorkFlowObject
-		ServerTaskPropertyObj.JsPlumbWorkFlowObject = myWFObj.getJsPlumbWorkFlow();
+		//init TaskFlowChartObject
+		ServerTaskPropertyObj.TaskFlowChartObject = myWFObj.getTaskFlowChart();
 		
 		return true;
 	},
@@ -205,11 +205,11 @@ var ServerTaskPropertyObj = {
 	},
 
 	onCompleteLabel : function(task_id) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var label_elm = WF.jsPlumbTaskFlow.getTaskLabelElementByTaskId(task_id);
-		label_elm.closest("." + WF.jsPlumbTaskFlow.task_label_class_name).attr("title", label_elm.text());
+		var WF = myWFObj.getTaskFlowChart();
+		var label_elm = WF.TaskFlow.getTaskLabelElementByTaskId(task_id);
+		label_elm.closest("." + WF.TaskFlow.task_label_class_name).attr("title", label_elm.text());
 		
-		WF.jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
+		WF.TaskFlow.repaintTaskByTaskId(task_id);
 		
 		return true;
 	},
@@ -237,7 +237,7 @@ var ServerTaskPropertyObj = {
 		}
 		
 		//refresh popup
-		ServerTaskPropertyObj.JsPlumbWorkFlowObject.getMyFancyPopupObj().updatePopup();
+		ServerTaskPropertyObj.TaskFlowChartObject.getMyFancyPopupObj().updatePopup();
 	},
 	
 	/* TEMPLATE FUNCTIONS */
@@ -316,8 +316,8 @@ var ServerTaskPropertyObj = {
 		this.openTemplateProperties(elm, template_id);
 		
 		//validate workflow
-		var server_task_id = ServerTaskPropertyObj.JsPlumbWorkFlowObject.jsPlumbContextMenu.getContextMenuTaskId();
-		var server_label = ServerTaskPropertyObj.JsPlumbWorkFlowObject.jsPlumbTaskFlow.getTaskLabelByTaskId(server_task_id);
+		var server_task_id = ServerTaskPropertyObj.TaskFlowChartObject.ContextMenu.getContextMenuTaskId();
+		var server_label = ServerTaskPropertyObj.TaskFlowChartObject.TaskFlow.getTaskLabelByTaskId(server_task_id);
 		ServerTaskPropertyObj.validateTemplateProperties(server_label, template_id);
 	},
 	
@@ -420,10 +420,10 @@ var ServerTaskPropertyObj = {
 				
 				setTimeout(function() {
 					var z_index = parseInt( template_properties.css("z-index") ) + 5; //must be 5!
-					var WF = myWFObj.getJsPlumbWorkFlow();
+					var WF = myWFObj.getTaskFlowChart();
 					
 					if (z_index)
-						$("#" + WF.jsPlumbContextMenu.task_context_menu_id + ", #" + WF.jsPlumbContextMenu.connection_context_menu_id).css("z-index", z_index);
+						$("#" + WF.ContextMenu.task_context_menu_id + ", #" + WF.ContextMenu.connection_context_menu_id).css("z-index", z_index);
 				}, 800);
 			},
 			onClose: function() {
@@ -432,13 +432,13 @@ var ServerTaskPropertyObj = {
 				if (ServerTaskPropertyObj.TemplatePropertiesMyFancyPopupObject.settings.saveTemplateProperties)
 					ServerTaskPropertyObj.saveTemplateProperties(template_properties);
 				
-				var WF = myWFObj.getJsPlumbWorkFlow();
-				WF.jsPlumbProperty.hideSelectedConnectionProperties();
-				WF.jsPlumbProperty.hideSelectedTaskProperties();
-				WF.jsPlumbStatusMessage.removeMessages();
+				var WF = myWFObj.getTaskFlowChart();
+				WF.Property.hideSelectedConnectionProperties();
+				WF.Property.hideSelectedTaskProperties();
+				WF.StatusMessage.removeMessages();
 				
-				myWFObj.setJsPlumbWorkFlow(ServerTaskPropertyObj.JsPlumbWorkFlowObject);
-				window.workflow_global_variables = Object.assign({}, ServerTaskPropertyObj.workflow_global_variables);
+				myWFObj.setTaskFlowChart(ServerTaskPropertyObj.TaskFlowChartObject);
+				window.workflow_global_variables = assignObjectRecursively({}, ServerTaskPropertyObj.workflow_global_variables);
 				
 				//should be the last to execute
 				server_templates_icons.show();
@@ -500,7 +500,7 @@ var ServerTaskPropertyObj = {
 	//check if there is any connection that is incompatible with the layers diagram
 	//check if there is any task that is incompatible with the layers diagram
 	validateTemplateProperties : function(server_label, template_id, options) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
+		var WF = myWFObj.getTaskFlowChart();
 		var url = ("" + this.validate_template_properties_url).replace("#server#", server_label).replace("#template_id#", template_id);
 		
 		$.ajax({
@@ -508,13 +508,13 @@ var ServerTaskPropertyObj = {
 			dataType : "json",
 			success : function(data, text_status, jqXHR) {
 				if ($.isNumeric(data) && parseInt(data) == 1) {
-					WF.jsPlumbStatusMessage.showMessage("Template is valid!");
+					WF.StatusMessage.showMessage("Template is valid!");
 					
 					if (options && typeof options.success == "function")
 						options.success();
 				}
 				else {
-					WF.jsPlumbStatusMessage.showError("There was an error trying to update this code. Please try again." + (data ? "<br/>" + data : ""));
+					WF.StatusMessage.showError("There was an error trying to update this code. Please try again." + (data ? "<br/>" + data : ""));
 					
 					if (options && typeof options.error == "function")
 						options.error();
@@ -522,7 +522,7 @@ var ServerTaskPropertyObj = {
 			},
 			error : function(jqXHR, textStatus, errorThrown) { 
 				var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-				WF.jsPlumbStatusMessage.showError("Error: Could not validate template!\nPlease try again..." + msg);
+				WF.StatusMessage.showError("Error: Could not validate template!\nPlease try again..." + msg);
 				
 				if (options && typeof options.error == "function")
 					options.error();
@@ -550,54 +550,57 @@ var ServerTaskPropertyObj = {
 	editTemplateWorkflow : function() {
 		var WF = this.TemplatesWorkflowHandlerObject;
 		
-		myWFObj.setJsPlumbWorkFlow(WF);
+		myWFObj.setTaskFlowChart(WF);
 		
-		WF.jsPlumbTaskFile.reload();
+		WF.TaskFile.reload();
 	},
 	
 	addTemplateWorkflow : function(rand) {
-		//create jsPlumbWorkFlowHandler
-		var WF = new jsPlumbWorkFlowHandler("jsPlumbWorkFlow_" + rand);
-		eval('window.jsPlumbWorkFlow_' + rand + ' = WF;');
+		//create TaskFlowChart
+		var WF = new TaskFlowChart("taskFlowChartObj_" + rand);
+		eval('window.taskFlowChartObj_' + rand + ' = WF;');
 		
-		WF.jsPlumbTaskFlow.main_tasks_flow_obj_id = "taskflowchart_" + rand + " .tasks_flow";
-		WF.jsPlumbTaskFlow.main_tasks_properties_obj_id = "taskflowchart_" + rand + " .tasks_properties";
-		WF.jsPlumbTaskFlow.main_connections_properties_obj_id = "taskflowchart_" + rand + " .connections_properties";
-		WF.jsPlumbContextMenu.main_tasks_menu_obj_id = "taskflowchart_" + rand + " .tasks_menu";
-		WF.jsPlumbContextMenu.main_tasks_menu_hide_obj_id = "taskflowchart_" + rand + " .tasks_menu_hide";
-		WF.jsPlumbContextMenu.main_workflow_menu_obj_id = "taskflowchart_" + rand + " .workflow_menu";
+		WF.TaskFlow.main_tasks_flow_obj_id = "taskflowchart_" + rand + " .tasks_flow";
+		WF.TaskFlow.main_tasks_properties_obj_id = "taskflowchart_" + rand + " .tasks_properties";
+		WF.TaskFlow.main_connections_properties_obj_id = "taskflowchart_" + rand + " .connections_properties";
+		WF.ContextMenu.main_tasks_menu_obj_id = "taskflowchart_" + rand + " .tasks_menu";
+		WF.ContextMenu.main_tasks_menu_hide_obj_id = "taskflowchart_" + rand + " .tasks_menu_hide";
+		WF.ContextMenu.main_workflow_menu_obj_id = "taskflowchart_" + rand + " .workflow_menu";
 		
-		myWFObj.setJsPlumbWorkFlow(WF);
+		WF.TaskFlow.connection_line_width = 2;
+		WF.TaskFlow.connection_from_target = true;
 		
-		WF.jsPlumbTaskFile.on_success_read = function() {
+		myWFObj.setTaskFlowChart(WF);
+		
+		WF.TaskFile.on_success_read = function() {
 			//disable draggable event to all tasks
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var tasks = WF.jsPlumbTaskFlow.getAllTasks();
+			var WF = myWFObj.getTaskFlowChart();
+			var tasks = WF.TaskFlow.getAllTasks();
 			
 			if (tasks)
 				for (var i = 0; i < tasks.length; i++) {
 					var task = $(tasks[i]);
 					task.draggable('disable'); //disallow draggable events for tasks
 					
-					task.find("." + WF.jsPlumbTaskFlow.task_label_class_name + " span").off();
-					task.find("." + WF.jsPlumbTaskFlow.task_eps_class_name + " ." + WF.jsPlumbTaskFlow.task_ep_class_name).off();
+					task.find("." + WF.TaskFlow.task_label_class_name + " span").off();
+					task.find("." + WF.TaskFlow.task_eps_class_name + " ." + WF.TaskFlow.task_ep_class_name).off();
 				}
 			
-			var template_workflow = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().closest(".template_workflow");
+			var template_workflow = $("#" + WF.TaskFlow.main_tasks_flow_obj_id).parent().closest(".template_workflow");
 			ServerTaskPropertyObj.loadTemplateFlowProperties(template_workflow);
 		};
 		
-		WF.jsPlumbTaskFile.get_tasks_file_url = this.get_layers_tasks_file_url;
+		WF.TaskFile.get_tasks_file_url = this.get_layers_tasks_file_url;
 
 		//prepare tasks settings
-		WF.jsPlumbProperty.tasks_settings = Object.assign({}, ServerTaskPropertyObj.JsPlumbWorkFlowObject.jsPlumbProperty.tasks_settings);
+		WF.Property.tasks_settings = assignObjectRecursively({}, ServerTaskPropertyObj.TaskFlowChartObject.Property.tasks_settings);
 		
 		var server_type_id = this.template_tasks_types_by_tag["server"];
-		WF.jsPlumbProperty.tasks_settings[server_type_id] = null;
-		delete WF.jsPlumbProperty.tasks_settings[server_type_id];
+		WF.Property.tasks_settings[server_type_id] = null;
+		delete WF.Property.tasks_settings[server_type_id];
 		var db_type_id = this.template_tasks_types_by_tag["db"];
 		
-		$.each(WF.jsPlumbProperty.tasks_settings, function(type_id, task_settings) {
+		$.each(WF.Property.tasks_settings, function(type_id, task_settings) {
 			if (!task_settings.hasOwnProperty("task_menu") || !$.isPlainObject(task_settings["task_menu"]))
 				task_settings["task_menu"] = {};
 			
@@ -645,11 +648,11 @@ var ServerTaskPropertyObj = {
 					break;
 			}
 			
-			WF.jsPlumbProperty.tasks_settings[type_id] = task_settings;
+			WF.Property.tasks_settings[type_id] = task_settings;
 		});
 		
 		//prepare html
-		var workflow_elm = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent();
+		var workflow_elm = $("#" + WF.TaskFlow.main_tasks_flow_obj_id).parent();
 		
 		workflow_elm.find(".tasks_flow #layer_presentations").html("<span class=\"layer_title\">Presentation Layers</span>");
 		workflow_elm.find(".tasks_flow #layer_bls").html("<span class=\"layer_title\">Business Logic Layers</span>");
@@ -658,7 +661,7 @@ var ServerTaskPropertyObj = {
 		workflow_elm.find(".tasks_flow #layer_drivers").html("<span class=\"layer_title\">DB Drivers</span>");
 		
 		//prepare tasks_properties
-		var tasks_properties_elm = $("#" + WF.jsPlumbTaskFlow.main_tasks_properties_obj_id);
+		var tasks_properties_elm = $("#" + WF.TaskFlow.main_tasks_properties_obj_id);
 		
 		//prepare task_properties - dbdriver
 		var task_html_elm = tasks_properties_elm.find(" > .task_properties_" + this.template_tasks_types_by_tag["dbdriver"] + " > .db_driver_task_html");
@@ -734,43 +737,43 @@ var ServerTaskPropertyObj = {
 	
 	getTemplateFlowPropertiesToSave : function(template_workflow) {
 		var template_properties = {connection : [], task: []};
-		var WF = myWFObj.getJsPlumbWorkFlow();
+		var WF = myWFObj.getTaskFlowChart();
 		
 		//save connections
-		if (WF.jsPlumbTaskFlow.connections_properties)
-			for (var connection_id in WF.jsPlumbTaskFlow.connections_properties) {
-				var connection = WF.jsPlumbTaskFlow.getConnection(connection_id);
+		if (WF.TaskFlow.connections_properties)
+			for (var connection_id in WF.TaskFlow.connections_properties) {
+				var connection = WF.TaskFlow.getConnection(connection_id);
 				
 				if (connection) {
-					var source_label = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(connection.sourceId);
-					var target_label = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(connection.targetId);
+					var source_label = WF.TaskFlow.getTaskLabelByTaskId(connection.sourceId);
+					var target_label = WF.TaskFlow.getTaskLabelByTaskId(connection.targetId);
 					
 					template_properties["connection"].push({
 						source_label: source_label,
 						target_label: target_label,
-						properties: WF.jsPlumbTaskFlow.connections_properties[connection_id]
+						properties: WF.TaskFlow.connections_properties[connection_id]
 					});
 				}
 			}
 		
 		//save tasks
-		var tasks = WF.jsPlumbTaskFlow.getAllTasks();
+		var tasks = WF.TaskFlow.getAllTasks();
 		
 		if (tasks) {
 			for (var i = 0, l = tasks.length; i < l; i++) {
 				var task = $(tasks[i]);
-				var task_label = WF.jsPlumbTaskFlow.getTaskLabel(task);
+				var task_label = WF.TaskFlow.getTaskLabel(task);
 				
 				if (task_label) {
 					var task_properties = {};
 					var task_id = task.attr("id");
 					
-					if (WF.jsPlumbTaskFlow.tasks_properties && WF.jsPlumbTaskFlow.tasks_properties.hasOwnProperty(task_id) && $.isPlainObject(WF.jsPlumbTaskFlow.tasks_properties[task_id]))
-						for (var k in WF.jsPlumbTaskFlow.tasks_properties[task_id])
-							if (k != "exits" || (WF.jsPlumbTaskFlow.tasks_properties[task_id][k] && !$.isEmptyObject(WF.jsPlumbTaskFlow.tasks_properties[task_id][k])))
-								task_properties[k] = WF.jsPlumbTaskFlow.tasks_properties[task_id][k];
+					if (WF.TaskFlow.tasks_properties && WF.TaskFlow.tasks_properties.hasOwnProperty(task_id) && $.isPlainObject(WF.TaskFlow.tasks_properties[task_id]))
+						for (var k in WF.TaskFlow.tasks_properties[task_id])
+							if (k != "exits" || (WF.TaskFlow.tasks_properties[task_id][k] && !$.isEmptyObject(WF.TaskFlow.tasks_properties[task_id][k])))
+								task_properties[k] = WF.TaskFlow.tasks_properties[task_id][k];
 					
-					task_properties["active"] = task.hasClass("active") ? "1" : "0"; //important to be a string bc the xml will load the tasks properties has strings. Must be at the end bc the WF.jsPlumbTaskFlow.tasks_properties[task_id] contains an active property too.
+					task_properties["active"] = task.hasClass("active") ? "1" : "0"; //important to be a string bc the xml will load the tasks properties has strings. Must be at the end bc the WF.TaskFlow.tasks_properties[task_id] contains an active property too.
 					
 					//prepare default layer, this is if layer is start it means is the default layer
 					task_properties["start"] = parseInt(task.attr("is_start_task")) > 0 ? "1" : "0"; //important to be a string bc the xml will load the tasks properties has strings.
@@ -790,7 +793,7 @@ var ServerTaskPropertyObj = {
 		var template_id = template_workflow.parent().closest(".template_properties").attr("template_id");
 		
 		if ($.isNumeric(template_id)) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
+			var WF = myWFObj.getTaskFlowChart();
 			var template_properties = this.templates_properties[template_id];
 			template_properties = template_properties ? template_properties : {};
 			
@@ -798,7 +801,7 @@ var ServerTaskPropertyObj = {
 			//console.log(JSON.stringify(this.templates_properties[template_id]));
 			
 			//load task connections properties
-			var connections = WF.jsPlumbTaskFlow.getConnections();
+			var connections = WF.TaskFlow.getConnections();
 			
 			if (connections && template_properties.hasOwnProperty("connection") && template_properties["connection"]) {
 				//convert template_properties["connection"] to an associative array
@@ -820,8 +823,8 @@ var ServerTaskPropertyObj = {
 				//prepare connections
 				for (var i = 0, l = connections.length; i < l; i++) {
 					var connection = connections[i];
-					var source_label = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(connection.sourceId);
-					var target_label = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(connection.targetId);
+					var source_label = WF.TaskFlow.getTaskLabelByTaskId(connection.sourceId);
+					var target_label = WF.TaskFlow.getTaskLabelByTaskId(connection.targetId);
 					var connection_properties = tasks_connections.hasOwnProperty(source_label) && $.isPlainObject(tasks_connections[source_label]) && tasks_connections[source_label].hasOwnProperty(target_label) ? tasks_connections[source_label][target_label] : null;
 					
 					//try to find the connection_properties case insensitive
@@ -844,12 +847,12 @@ var ServerTaskPropertyObj = {
 					
 					//update connection properties
 					if (connection_properties)
-						WF.jsPlumbTaskFlow.connections_properties[connection.id] = connection_properties;
+						WF.TaskFlow.connections_properties[connection.id] = connection_properties;
 				}
 			}
 			
 			//load tasks properties
-			var tasks = WF.jsPlumbTaskFlow.getAllTasks();
+			var tasks = WF.TaskFlow.getAllTasks();
 			
 			if (tasks) {
 				//convert template_properties["connection"] to an associative array
@@ -870,8 +873,8 @@ var ServerTaskPropertyObj = {
 				for (var i = 0, l = tasks.length; i < l; i++) {
 					var task = $(tasks[i]);
 					var task_id = task.attr("id");
-					var task_label = WF.jsPlumbTaskFlow.getTaskLabel(task);
-					var task_props = WF.jsPlumbTaskFlow.tasks_properties[task_id];
+					var task_label = WF.TaskFlow.getTaskLabel(task);
+					var task_props = WF.TaskFlow.tasks_properties[task_id];
 					
 					task_label = task_label ? ("" + task_label).toLowerCase() : "";
 					var task_properties = task_label && tasks_properties.hasOwnProperty(task_label) && $.isPlainObject(tasks_properties[task_label]) ? tasks_properties[task_label] : null;
@@ -897,18 +900,18 @@ var ServerTaskPropertyObj = {
 						is_start = parseInt(task_properties["start"]) > 0 || ("" + task_properties["start"]).toLowerCase() == "true";
 					
 					if (is_start)
-						task.addClass(WF.jsPlumbTaskFlow.start_task_class_name).attr("is_start_task", 1);
+						task.addClass(WF.TaskFlow.start_task_class_name).attr("is_start_task", 1);
 					else
-						task.removeClass(WF.jsPlumbTaskFlow.start_task_class_name).removeAttr("is_start_task");
+						task.removeClass(WF.TaskFlow.start_task_class_name).removeAttr("is_start_task");
 					
 					//prepare WF task properties
 					if (task_properties) {
 						if (!task_props)
-							WF.jsPlumbTaskFlow.tasks_properties[task_id] = {};
+							WF.TaskFlow.tasks_properties[task_id] = {};
 						
 						for (var k in task_properties)
 							if (k != "active" && k != "start") 
-								WF.jsPlumbTaskFlow.tasks_properties[task_id][k] = task_properties[k];
+								WF.TaskFlow.tasks_properties[task_id][k] = task_properties[k];
 					}
 				}
 			}
@@ -963,17 +966,17 @@ var ServerTaskPropertyObj = {
 		
 		//get available wordpress installations
 		if (typeof this.on_get_layer_wordpress_installations_url_callback == "function") {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var task_label = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
+			var WF = myWFObj.getTaskFlowChart();
+			var task_label = WF.TaskFlow.getTaskLabelByTaskId(task_id);
 			var url = this.on_get_layer_wordpress_installations_url_callback(task_label);
 			
-			WF.jsPlumbStatusMessage.showMessage("Loading available wordpress installations...");
+			WF.StatusMessage.showMessage("Loading available wordpress installations...");
 			
 			$.ajax({
 				url : url,
 				dataType : "json",
 				success : function(data, text_status, jqXHR) {
-					WF.jsPlumbStatusMessage.removeLastShownMessage();
+					WF.StatusMessage.removeLastShownMessage();
 					
 					if (data && ($.isPlainObject(data) || $.isArray(data))) {
 						var ul = wordpress_installations_elm.children("ul");
@@ -996,13 +999,13 @@ var ServerTaskPropertyObj = {
 						});
 					}
 					else
-						WF.jsPlumbStatusMessage.showError("There was an error trying to get the wordpress installations. Please try again." + (data ? "<br/>" + data : ""));
+						WF.StatusMessage.showError("There was an error trying to get the wordpress installations. Please try again." + (data ? "<br/>" + data : ""));
 				},
 				error : function(jqXHR, textStatus, errorThrown) { 
-					WF.jsPlumbStatusMessage.removeLastShownMessage();
+					WF.StatusMessage.removeLastShownMessage();
 					
 					var msg = jqXHR.responseText ? "<br/>" + jqXHR.responseText : "";
-					WF.jsPlumbStatusMessage.showError("There was an error trying to get the wordpress installations. Please try again..." + msg);
+					WF.StatusMessage.showError("There was an error trying to get the wordpress installations. Please try again..." + msg);
 				},
 			});
 		}
@@ -1102,9 +1105,9 @@ var ServerTaskPropertyObj = {
 	
 	chooseTemplateFlowTaskFile : function(elm) {
 		if (typeof this.on_choose_template_flow_layer_file_callback == "function") {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var task_id = WF.jsPlumbContextMenu.getContextMenuTaskId();
-			var task_label = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
+			var WF = myWFObj.getTaskFlowChart();
+			var task_id = WF.ContextMenu.getContextMenuTaskId();
+			var task_label = WF.TaskFlow.getTaskLabelByTaskId(task_id);
 			
 			this.on_choose_template_flow_layer_file_callback(elm, task_label);
 		}
@@ -1123,7 +1126,7 @@ var ServerTaskPropertyObj = {
 			var global_properties = this.templates_properties[template_id]["global_vars"];
 			var vars_name = global_properties["vars_name"];
 			var vars_value = global_properties["vars_value"];
-			var local_workflow_global_variables = Object.assign({}, window.workflow_global_variables);
+			var local_workflow_global_variables = assignObjectRecursively({}, window.workflow_global_variables);
 			
 			if (vars_name) {
 				if (!$.isPlainObject(vars_name) && !$.isArray(vars_name)) {
@@ -1409,11 +1412,11 @@ var ServerTaskPropertyObj = {
 	},
 	
 	getTemplateGlobalVarsOrSettingsToSaveLater : function(iframe_contents) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
+		var WF = myWFObj.getTaskFlowChart();
 		var global_properties = {};
 		var fields = $(iframe_contents).find(".form_fields, .vars");
 		fields.find("input:not([disabled]), select:not([disabled]), textarea:not([disabled])").addClass("task_property_field");
-		var query_string = WF.jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(fields, "task_property_field");
+		var query_string = WF.Property.getPropertiesQueryStringFromHtmlElm(fields, "task_property_field");
 		
 		try {
 			parse_str(query_string, global_properties);
@@ -1702,9 +1705,9 @@ var ServerTaskPropertyObj = {
 		template_actions.find(" > .server_installation_folder_path > input").addClass("task_property_field");
 		template_actions.find(" > .server_installation_url > input").addClass("task_property_field");
 		
-		var WF = myWFObj.getJsPlumbWorkFlow();
+		var WF = myWFObj.getTaskFlowChart();
 		var template_properties = {};
-		var query_string = WF.jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(template_actions, "task_property_field");
+		var query_string = WF.Property.getPropertiesQueryStringFromHtmlElm(template_actions, "task_property_field");
 		
 		try {
 			parse_str(query_string, template_properties);
@@ -2129,13 +2132,13 @@ var ServerTaskPropertyObj = {
 	},
 	
 	showDeploymentLogs : function(elm) {
-		var WF = this.JsPlumbWorkFlowObject;
-		var server_task_id = WF.jsPlumbContextMenu.getContextMenuTaskId();
+		var WF = this.TaskFlowChartObject;
+		var server_task_id = WF.ContextMenu.getContextMenuTaskId();
 		var template_id = $(elm).parent().closest("tr").children(".template").attr("template_id");
 		var deployment_id = $(elm).parent().closest("tr").children(".deployment_id").attr("deployment_id");
 		
-		if (server_task_id && template_id && deployment_id && WF.jsPlumbTaskFlow.tasks_properties.hasOwnProperty(server_task_id) && WF.jsPlumbTaskFlow.tasks_properties[server_task_id].hasOwnProperty("deployments"))
-			$.each(WF.jsPlumbTaskFlow.tasks_properties[server_task_id]["deployments"], function (idx, deployment) {
+		if (server_task_id && template_id && deployment_id && WF.TaskFlow.tasks_properties.hasOwnProperty(server_task_id) && WF.TaskFlow.tasks_properties[server_task_id].hasOwnProperty("deployments"))
+			$.each(WF.TaskFlow.tasks_properties[server_task_id]["deployments"], function (idx, deployment) {
 				if (deployment["template_id"] == template_id && deployment["deployment_id"] == deployment_id) {
 					var logs = deployment["logs"];
 					alert(logs ? logs : "No logs!");
@@ -2146,16 +2149,16 @@ var ServerTaskPropertyObj = {
 	},
 	
 	updateDeploymentLogs : function(server_task_id, template_id, deployment_id, msg) {
-		var WF = this.JsPlumbWorkFlowObject;
+		var WF = this.TaskFlowChartObject;
 		
-		if (msg && WF.jsPlumbTaskFlow.tasks_properties.hasOwnProperty(server_task_id) && WF.jsPlumbTaskFlow.tasks_properties[server_task_id].hasOwnProperty("deployments"))
-			$.each(WF.jsPlumbTaskFlow.tasks_properties[server_task_id]["deployments"], function (idx, deployment) {
+		if (msg && WF.TaskFlow.tasks_properties.hasOwnProperty(server_task_id) && WF.TaskFlow.tasks_properties[server_task_id].hasOwnProperty("deployments"))
+			$.each(WF.TaskFlow.tasks_properties[server_task_id]["deployments"], function (idx, deployment) {
 				if (deployment["template_id"] == template_id && deployment["deployment_id"] == deployment_id) {
 					var logs = deployment["logs"];
 					logs = logs ? logs : "";
 					logs += (logs ? "\n\n" : "") + msg;
 					
-					WF.jsPlumbTaskFlow.tasks_properties[server_task_id]["deployments"][idx]["logs"] = logs;
+					WF.TaskFlow.tasks_properties[server_task_id]["deployments"][idx]["logs"] = logs;
 					
 					return false;
 				}
@@ -2174,16 +2177,16 @@ var ServerTaskPropertyObj = {
 				var template_properties = task_html_elm.find(" > .templates_container > .template_properties");
 				this.destroyTemplatesWorkflow(template_properties);
 				
-				var WF = this.JsPlumbWorkFlowObject;
-				myWFObj.setJsPlumbWorkFlow(WF);
-				var saved = WF.jsPlumbTaskFile.save();
+				var WF = this.TaskFlowChartObject;
+				myWFObj.setTaskFlowChart(WF);
+				var saved = WF.TaskFile.save();
 				
 				if (saved) {
-					WF.jsPlumbStatusMessage.removeLastShownMessage();
+					WF.StatusMessage.removeLastShownMessage();
 					this.showDeploymentServerActionLoading(task_html_elm);
 					
-					var server_task_id = WF.jsPlumbContextMenu.getContextMenuTaskId();
-					var server_label = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(server_task_id);
+					var server_task_id = WF.ContextMenu.getContextMenuTaskId();
+					var server_label = WF.TaskFlow.getTaskLabelByTaskId(server_task_id);
 					
 					this.validateTemplateProperties(server_label, template_id, {
 						success: function() {
@@ -2192,24 +2195,24 @@ var ServerTaskPropertyObj = {
 							//getting new deployment_id
 							var deployment_id = 1;
 							
-							if (WF.jsPlumbTaskFlow.tasks_properties.hasOwnProperty(server_task_id) && WF.jsPlumbTaskFlow.tasks_properties[server_task_id].hasOwnProperty("deployments"))
-								$.each (WF.jsPlumbTaskFlow.tasks_properties[server_task_id]["deployments"], function(idx, deployment) {
+							if (WF.TaskFlow.tasks_properties.hasOwnProperty(server_task_id) && WF.TaskFlow.tasks_properties[server_task_id].hasOwnProperty("deployments"))
+								$.each (WF.TaskFlow.tasks_properties[server_task_id]["deployments"], function(idx, deployment) {
 									if (parseInt(deployment["deployment_id"]) >= deployment_id)
 										deployment_id = parseInt(deployment["deployment_id"]) + 1;
 								});
 							
 							var url = ("" + ServerTaskPropertyObj.deploy_template_to_server_url).replace("#server#", server_label).replace("#template_id#", template_id).replace("#deployment_id#", deployment_id).replace("#action#", "deploy");
 							
-							WF.jsPlumbStatusMessage.showMessage("Deploying...");
+							WF.StatusMessage.showMessage("Deploying...");
 							
 							$.ajax({
 								url : url,
 								dataType : "json",
 								success : function(data, text_status, jqXHR) {
-									WF.jsPlumbStatusMessage.removeLastShownMessage();
+									WF.StatusMessage.removeLastShownMessage();
 									
 									if (data && $.isPlainObject(data)) {
-										WF.jsPlumbStatusMessage.showMessage("Deployment is done...");
+										WF.StatusMessage.showMessage("Deployment is done...");
 										
 										var status = data["status"];
 										var error_message = data["error_message"];
@@ -2231,34 +2234,34 @@ var ServerTaskPropertyObj = {
 											};
 											
 											//add deployment to task properties
-											if (!WF.jsPlumbTaskFlow.tasks_properties.hasOwnProperty(server_task_id))
-												WF.jsPlumbTaskFlow.tasks_properties[server_task_id] = {};
+											if (!WF.TaskFlow.tasks_properties.hasOwnProperty(server_task_id))
+												WF.TaskFlow.tasks_properties[server_task_id] = {};
 											
-											if (!WF.jsPlumbTaskFlow.tasks_properties[server_task_id].hasOwnProperty("deployments"))
-												WF.jsPlumbTaskFlow.tasks_properties[server_task_id]["deployments"] = {};
+											if (!WF.TaskFlow.tasks_properties[server_task_id].hasOwnProperty("deployments"))
+												WF.TaskFlow.tasks_properties[server_task_id]["deployments"] = {};
 											
 											var next_idx = 0;
-											$.each (WF.jsPlumbTaskFlow.tasks_properties[server_task_id]["deployments"], function(idx, deployment) {
+											$.each (WF.TaskFlow.tasks_properties[server_task_id]["deployments"], function(idx, deployment) {
 												if (idx >= next_idx)
 													next_idx = idx + 1;
 											});
 											
-											WF.jsPlumbTaskFlow.tasks_properties[server_task_id]["deployments"][next_idx] = deployment;
+											WF.TaskFlow.tasks_properties[server_task_id]["deployments"][next_idx] = deployment;
 											
 											//add deployment html
 											ServerTaskPropertyObj.addDeployment(tbody, deployment);
 											
 											//set last deployment executed
-											ServerTaskPropertyObj.seSelectedDeployment(task_html_elm, WF.jsPlumbTaskFlow.tasks_properties[server_task_id], template_id, deployment_id);
+											ServerTaskPropertyObj.seSelectedDeployment(task_html_elm, WF.TaskFlow.tasks_properties[server_task_id], template_id, deployment_id);
 											
 											//save workflow with this deployment
 											var saved = ServerTaskPropertyObj.saveDeploymentServerActionWorkflow(task_html_elm);
 											
-											//Do not use WF.jsPlumbStatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.jsPlumbStatusMessage.showMessage/showError the user will not see the message!
+											//Do not use WF.StatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.StatusMessage.showMessage/showError the user will not see the message!
 											if (status) {
 												if (saved) {
 													alert("Template deployed successfully to server!" + (error_message ? "\n" + error_message : "")); 
-													WF.jsPlumbStatusMessage.showMessage("Workflow already saved!");
+													WF.StatusMessage.showMessage("Workflow already saved!");
 												}
 												else
 													alert("Template deployed successfully to server, but not saved. Please save this workflow manually!" + (error_message ? "\n" + error_message : ""));
@@ -2266,13 +2269,13 @@ var ServerTaskPropertyObj = {
 												if (ServerTaskPropertyObj.existsDeploymentServerTemplateWordPressInstallations(server_task_id, template_id)) {
 													var msg = "Note that you moved some WordPress installations to different servers, with probably different root folders or domains.\n\nIn order to these installations work correctly, you must update manually all the WordPress permanent links. Please login to your WordPress installations and follow the tutorial in https://wordpress.org/support/article/moving-wordpress/";
 													alert(msg);
-													WF.jsPlumbStatusMessage.showMessage( msg.replace(/\n/g, "<br/>").replace("https://wordpress.org/support/article/moving-wordpress/", '<a href="https://wordpress.org/support/article/moving-wordpress/" target="wordpress.org">https://wordpress.org/support/article/moving-wordpress/</a>') );
+													WF.StatusMessage.showMessage( msg.replace(/\n/g, "<br/>").replace("https://wordpress.org/support/article/moving-wordpress/", '<a href="https://wordpress.org/support/article/moving-wordpress/" target="wordpress.org">https://wordpress.org/support/article/moving-wordpress/</a>') );
 												}
 											}
 											else {
 												if (saved) {
 													alert("Template NOT deployed successfully to server!" + (error_message ? "\n" + error_message : "")); 
-													WF.jsPlumbStatusMessage.showMessage("Workflow already saved!");
+													WF.StatusMessage.showMessage("Workflow already saved!");
 												}
 												else
 													alert("Template NOT deployed successfully to server and workflow not saved. Please save this workflow manually!" + (error_message ? "\n" + error_message : ""));
@@ -2286,15 +2289,15 @@ var ServerTaskPropertyObj = {
 										}
 									}
 									else
-										alert("There was an error trying to deploy this template to server. Please try again." + (data ? "\n" + data : "")); //Do not use WF.jsPlumbStatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.jsPlumbStatusMessage.showMessage/showError the user will not see the message!
+										alert("There was an error trying to deploy this template to server. Please try again." + (data ? "\n" + data : "")); //Do not use WF.StatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.StatusMessage.showMessage/showError the user will not see the message!
 									
 									ServerTaskPropertyObj.hideDeploymentServerActionLoading(task_html_elm);
 								},
 								error : function(jqXHR, textStatus, errorThrown) { 
-									WF.jsPlumbStatusMessage.removeLastShownMessage();
+									WF.StatusMessage.removeLastShownMessage();
 									
 									var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-									alert("Error: Could not deploy template!\nPlease try again..." + msg); //Do not use WF.jsPlumbStatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.jsPlumbStatusMessage.showMessage/showError the user will not see the message!
+									alert("Error: Could not deploy template!\nPlease try again..." + msg); //Do not use WF.StatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.StatusMessage.showMessage/showError the user will not see the message!
 									
 									ServerTaskPropertyObj.hideDeploymentServerActionLoading(task_html_elm);
 								},
@@ -2320,15 +2323,15 @@ var ServerTaskPropertyObj = {
 				
 				if (status) {
 					//remove deployment from html table 
-					ServerTaskPropertyObj.removeDeployment(task_html_elm, WF.jsPlumbTaskFlow.tasks_properties[server_task_id], template_id, deployment_id);
+					ServerTaskPropertyObj.removeDeployment(task_html_elm, WF.TaskFlow.tasks_properties[server_task_id], template_id, deployment_id);
 					
 					//save workflow with this deployment
 					var saved = ServerTaskPropertyObj.saveDeploymentServerActionWorkflow(task_html_elm);
 					
-					//Do not use WF.jsPlumbStatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.jsPlumbStatusMessage.showMessage/showError the user will not see the message!
+					//Do not use WF.StatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.StatusMessage.showMessage/showError the user will not see the message!
 					if (saved) {
 						alert("Template deleted successfully to server!" + (error_message ? "\n" + error_message : "")); 
-						WF.jsPlumbStatusMessage.showMessage("Workflow already saved!");
+						WF.StatusMessage.showMessage("Workflow already saved!");
 					}
 					else
 						alert("Template deleted successfully to server, but not saved. Please save this workflow manually!" + (error_message ? "\n" + error_message : ""));
@@ -2337,7 +2340,7 @@ var ServerTaskPropertyObj = {
 					alert("Deployment NOT deleted in server!" + (error_message ? "\n" + error_message : "")); 
 			}
 			else
-				alert("There was an error trying to delete this deployment in the server. Please try again." + (data ? "<br/>" + data : "")); //Do not use WF.jsPlumbStatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.jsPlumbStatusMessage.showMessage/showError the user will not see the message!
+				alert("There was an error trying to delete this deployment in the server. Please try again." + (data ? "<br/>" + data : "")); //Do not use WF.StatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.StatusMessage.showMessage/showError the user will not see the message!
 		});
 	},
 	
@@ -2358,16 +2361,16 @@ var ServerTaskPropertyObj = {
 					
 					//set last deployment executed
 					if (redeployed_deployment_id)
-						ServerTaskPropertyObj.seSelectedDeployment(task_html_elm, WF.jsPlumbTaskFlow.tasks_properties[server_task_id], template_id, redeployed_deployment_id);
+						ServerTaskPropertyObj.seSelectedDeployment(task_html_elm, WF.TaskFlow.tasks_properties[server_task_id], template_id, redeployed_deployment_id);
 					
 					//save workflow with this deployment
 					var saved = ServerTaskPropertyObj.saveDeploymentServerActionWorkflow(task_html_elm);
 					
-					//Do not use WF.jsPlumbStatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.jsPlumbStatusMessage.showMessage/showError the user will not see the message!
+					//Do not use WF.StatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.StatusMessage.showMessage/showError the user will not see the message!
 					if (status) {
 						if (saved) {
 							alert("Template redeployed successfully to server!" + (error_message ? "\n" + error_message : "")); 
-							WF.jsPlumbStatusMessage.showMessage("Workflow already saved!");
+							WF.StatusMessage.showMessage("Workflow already saved!");
 						}
 						else
 							alert("Template redeployed successfully to server, but not saved. Please save this workflow manually!" + (error_message ? "\n" + error_message : ""));
@@ -2375,7 +2378,7 @@ var ServerTaskPropertyObj = {
 					else {
 						if (saved) {
 							alert("Template NOT redeployed successfully to server!" + (error_message ? "\n" + error_message : "")); 
-							WF.jsPlumbStatusMessage.showMessage("Workflow already saved!");
+							WF.StatusMessage.showMessage("Workflow already saved!");
 						}
 						else
 							alert("Template NOT redeployed successfully to server and workflow not saved. Please save this workflow manually!" + (error_message ? "\n" + error_message : ""));
@@ -2385,7 +2388,7 @@ var ServerTaskPropertyObj = {
 					alert("Template not redeployed to server!" + (error_message ? "\n" + error_message : ""));
 			}
 			else
-				alert("There was an error trying to redeploy this deployment in the server. Please try again." + (data ? "<br/>" + data : "")); //Do not use WF.jsPlumbStatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.jsPlumbStatusMessage.showMessage/showError the user will not see the message!
+				alert("There was an error trying to redeploy this deployment in the server. Please try again." + (data ? "<br/>" + data : "")); //Do not use WF.StatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.StatusMessage.showMessage/showError the user will not see the message!
 		});
 	},
 	
@@ -2404,16 +2407,16 @@ var ServerTaskPropertyObj = {
 				
 				//set last deployment executed
 				if ($.isNumeric(rollbacked_deployment_id))
-					ServerTaskPropertyObj.seSelectedDeployment(task_html_elm, WF.jsPlumbTaskFlow.tasks_properties[server_task_id], template_id, rollbacked_deployment_id);
+					ServerTaskPropertyObj.seSelectedDeployment(task_html_elm, WF.TaskFlow.tasks_properties[server_task_id], template_id, rollbacked_deployment_id);
 				
 				//save workflow with this deployment
 				var saved = ServerTaskPropertyObj.saveDeploymentServerActionWorkflow(task_html_elm);
 				
-				//Do not use WF.jsPlumbStatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.jsPlumbStatusMessage.showMessage/showError the user will not see the message!
+				//Do not use WF.StatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.StatusMessage.showMessage/showError the user will not see the message!
 				if (status) {
 					if (saved) {
 						alert("Template rollbacked successfully to server!" + (error_message ? "\n" + error_message : "")); 
-						WF.jsPlumbStatusMessage.showMessage("Workflow already saved!");
+						WF.StatusMessage.showMessage("Workflow already saved!");
 					}
 					else
 						alert("Template rollbacked successfully to server, but not saved. Please save this workflow manually!" + (error_message ? "\n" + error_message : ""));
@@ -2421,14 +2424,14 @@ var ServerTaskPropertyObj = {
 				else {
 					if (saved) {
 						alert("Template NOT rollbacked successfully to server!" + (error_message ? "\n" + error_message : "")); 
-						WF.jsPlumbStatusMessage.showMessage("Workflow already saved!");
+						WF.StatusMessage.showMessage("Workflow already saved!");
 					}
 					else
 						alert("Template NOT rollbacked successfully to server and workflow not saved. Please save this workflow manually!" + (error_message ? "\n" + error_message : ""));
 				}
 			}
 			else
-				alert("There was an error trying to rollback this deployment in the server. Please try again." + (data ? "<br/>" + data : "")); //Do not use WF.jsPlumbStatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.jsPlumbStatusMessage.showMessage/showError the user will not see the message!
+				alert("There was an error trying to rollback this deployment in the server. Please try again." + (data ? "<br/>" + data : "")); //Do not use WF.StatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.StatusMessage.showMessage/showError the user will not see the message!
 			
 		});
 	},
@@ -2439,14 +2442,14 @@ var ServerTaskPropertyObj = {
 				var status = data["status"];
 				var error_message = data["error_message"];
 				
-				//Do not use WF.jsPlumbStatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.jsPlumbStatusMessage.showMessage/showError the user will not see the message!
+				//Do not use WF.StatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.StatusMessage.showMessage/showError the user will not see the message!
 				if (status)
 					alert("Template cleaned successfully to server!" + (error_message ? "\n" + error_message : "")); 
 				else 
 					alert("Template NOT cleaned successfully to server!" + (error_message ? "\n" + error_message : ""));
 			}
 			else
-				alert("There was an error trying to clean this deployment in the server. Please try again." + (data ? "<br/>" + data : "")); //Do not use WF.jsPlumbStatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.jsPlumbStatusMessage.showMessage/showError the user will not see the message!
+				alert("There was an error trying to clean this deployment in the server. Please try again." + (data ? "<br/>" + data : "")); //Do not use WF.StatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.StatusMessage.showMessage/showError the user will not see the message!
 		});
 	},
 	
@@ -2456,17 +2459,17 @@ var ServerTaskPropertyObj = {
 			var deployment_id = tr.children("td.deployment_id").attr("deployment_id");
 			var template_id = tr.children("td.template").attr("template_id");
 			
-			var WF = this.JsPlumbWorkFlowObject;
-			myWFObj.setJsPlumbWorkFlow(WF);
+			var WF = this.TaskFlowChartObject;
+			myWFObj.setTaskFlowChart(WF);
 			
-			var server_task_id = WF.jsPlumbContextMenu.getContextMenuTaskId();
-			var server_label = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(server_task_id);
+			var server_task_id = WF.ContextMenu.getContextMenuTaskId();
+			var server_label = WF.TaskFlow.getTaskLabelByTaskId(server_task_id);
 			
 			if (server_label && template_id && deployment_id) {
 				var tbody = tr.parent();
 				var task_html_elm = tbody.parent().closest(".server_task_html");
 				
-				WF.jsPlumbStatusMessage.removeLastShownMessage();
+				WF.StatusMessage.removeLastShownMessage();
 				this.showDeploymentServerActionLoading(task_html_elm);
 				
 				//delete templates workflow
@@ -2476,13 +2479,13 @@ var ServerTaskPropertyObj = {
 				var url = ("" + ServerTaskPropertyObj.deploy_template_to_server_url).replace("#server#", server_label).replace("#template_id#", template_id).replace("#deployment_id#", deployment_id).replace("#action#", action);
 				
 				var act = action == "delete" ? "delet" : action;
-				WF.jsPlumbStatusMessage.showMessage(act + "ing...");
+				WF.StatusMessage.showMessage(act + "ing...");
 							
 				$.ajax({
 					url : url,
 					dataType : "json",
 					success : function(data, text_status, jqXHR) {
-						WF.jsPlumbStatusMessage.removeLastShownMessage();
+						WF.StatusMessage.removeLastShownMessage();
 						
 						if (typeof func == "function")
 							func(server_task_id, server_label, template_id, deployment_id, WF, task_html_elm, data);
@@ -2492,10 +2495,10 @@ var ServerTaskPropertyObj = {
 						ServerTaskPropertyObj.hideDeploymentServerActionLoading(task_html_elm);
 					},
 					error : function(jqXHR, textStatus, errorThrown) { 
-						WF.jsPlumbStatusMessage.removeLastShownMessage();
+						WF.StatusMessage.removeLastShownMessage();
 							
 						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-						alert("Error: Could not " + action + " deployment!\nPlease try again..." + msg); //Do not use WF.jsPlumbStatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.jsPlumbStatusMessage.showMessage/showError the user will not see the message!
+						alert("Error: Could not " + action + " deployment!\nPlease try again..." + msg); //Do not use WF.StatusMessage.showMessage/showError bc the deployments take too long and the user can leave the computer alone and only come back later. If we use WF.StatusMessage.showMessage/showError the user will not see the message!
 						
 						ServerTaskPropertyObj.hideDeploymentServerActionLoading(task_html_elm);
 					},
@@ -2505,7 +2508,7 @@ var ServerTaskPropertyObj = {
 	},
 	
 	showDeploymentServerActionLoading : function(task_html_elm) {
-		var WF = this.JsPlumbWorkFlowObject;
+		var WF = this.TaskFlowChartObject;
 		WF.getMyFancyPopupObj().showLoading();
 		
 		var frozen_overlay = task_html_elm.children(".frozen_overlay");
@@ -2533,14 +2536,14 @@ var ServerTaskPropertyObj = {
 	},
 	
 	hideDeploymentServerActionLoading : function(task_html_elm) {
-		var WF = this.JsPlumbWorkFlowObject;
+		var WF = this.TaskFlowChartObject;
 		WF.getMyFancyPopupObj().hideLoading();
 		
 		task_html_elm.children(".frozen_overlay").hide();
 	},
 	
 	saveDeploymentServerActionWorkflow : function(task_html_elm) {
-		var WF = this.JsPlumbWorkFlowObject;
+		var WF = this.TaskFlowChartObject;
 		
 		//hide template properties in case be open
 		if (this.TemplatePropertiesMyFancyPopupObject.settings) //maybe it wasn't inited yet
@@ -2567,18 +2570,18 @@ var ServerTaskPropertyObj = {
 		ServerTaskPropertyObj.destroyTemplatesWorkflow(template_properties);
 		
 		//save workflow with this deployment
-		var saved = WF.jsPlumbTaskFile.save();
-		WF.jsPlumbStatusMessage.removeLastShownMessage();
+		var saved = WF.TaskFile.save();
+		WF.StatusMessage.removeLastShownMessage();
 		
 		return saved;
 	},
 	
 	existsDeploymentServerTemplateWordPressInstallations : function(server_task_id, template_id) {
 		var exists_wordpress_installations = false;
-		var WF = this.JsPlumbWorkFlowObject;
+		var WF = this.TaskFlowChartObject;
 		
-		if (WF.jsPlumbTaskFlow.tasks_properties.hasOwnProperty(server_task_id) && WF.jsPlumbTaskFlow.tasks_properties[server_task_id]["templates"] && WF.jsPlumbTaskFlow.tasks_properties[server_task_id]["templates"][template_id] && WF.jsPlumbTaskFlow.tasks_properties[server_task_id]["templates"][template_id]["properties"]) {
-			var template_tasks = WF.jsPlumbTaskFlow.tasks_properties[server_task_id]["templates"][template_id]["properties"]["task"];
+		if (WF.TaskFlow.tasks_properties.hasOwnProperty(server_task_id) && WF.TaskFlow.tasks_properties[server_task_id]["templates"] && WF.TaskFlow.tasks_properties[server_task_id]["templates"][template_id] && WF.TaskFlow.tasks_properties[server_task_id]["templates"][template_id]["properties"]) {
+			var template_tasks = WF.TaskFlow.tasks_properties[server_task_id]["templates"][template_id]["properties"]["task"];
 			//console.log(template_tasks);
 			
 			if (template_tasks)
@@ -2612,28 +2615,28 @@ var ServerTaskPropertyObj = {
 	
 	onClickServerDetailsTab : function(elm) {
 		//remove width and height style so the popup get updated automatically
-		myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().getPopup().css({width: "", height: ""});
+		myWFObj.getTaskFlowChart().getMyFancyPopupObj().getPopup().css({width: "", height: ""});
 	},
 	
 	onClickServerTemplatesTab : function(elm) {
 		//remove width and height style so the popup get updated automatically
-		myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().getPopup().css({width: "", height: ""});
+		myWFObj.getTaskFlowChart().getMyFancyPopupObj().getPopup().css({width: "", height: ""});
 	},
 	
 	onClickServerDeploymentsTab : function(elm) {
 		this.updateAvailableTemplates(elm);
 		
 		//remove width and height style so the popup get updated automatically
-		myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().getPopup().css({width: "", height: ""});
+		myWFObj.getTaskFlowChart().getMyFancyPopupObj().getPopup().css({width: "", height: ""});
 	},
 	
 	updateAvailableTemplates : function(elm) {
 		var task_html_elm = $(elm).parent().closest(".server_task_html");
 		var select = task_html_elm.find(" > .deployments_container > .deploy_template > select");
 		var inputs = task_html_elm.find(" > .templates_container > table > tbody > tr > td.name > input");
-		var server_task_id = ServerTaskPropertyObj.JsPlumbWorkFlowObject.jsPlumbContextMenu.getContextMenuTaskId();
+		var server_task_id = ServerTaskPropertyObj.TaskFlowChartObject.ContextMenu.getContextMenuTaskId();
 		
-		var props = ServerTaskPropertyObj.JsPlumbWorkFlowObject.jsPlumbTaskFlow.tasks_properties;
+		var props = ServerTaskPropertyObj.TaskFlowChartObject.TaskFlow.tasks_properties;
 		props = props && props.hasOwnProperty(server_task_id) ? props[server_task_id] : null;
 		props = props ? props["templates"] : null;
 		

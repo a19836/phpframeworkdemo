@@ -1022,7 +1022,7 @@ function addRegionBlockOption(select_elm, block, project) {
 function updateSelectedTemplateRegionsBlocks(p, data) {
 	//BACKING UP GLOBAL VARS - bc the getRegionBlockHtml triggers the onChange events which changes then these global vars, if the synchronization with the template layout is active...
 	var regions_blocks_list_clone = JSON.parse(JSON.stringify(regions_blocks_list)); //cannot use Object.assign bc regions_blocks_list is an array
-	var template_params_values_list_clone = Object.assign({}, template_params_values_list);
+	var template_params_values_list_clone = assignObjectRecursively({}, template_params_values_list);
 	
 	//PREPARING TEMPLATE REGIONS
 	var regions = data && data.regions ? data.regions : [];
@@ -2200,7 +2200,7 @@ function getIframeTemplateRegionsBlocksForSettings(iframe, settings_elm) {
 		
 		data = {
 			regions: regions,
-			//regions_blocks: Object.assign({}, settings["regions_blocks"]) //clone obj
+			//regions_blocks: assignObjectRecursively({}, settings["regions_blocks"]) //clone obj
 			regions_blocks: JSON.parse(JSON.stringify(settings["regions_blocks"])) //clone obj and convert it to an array. Do not use 'Object.assign({}, settings["regions_blocks"])', bc the settings["regions_blocks"] is a Plain Object and we must to have an array!
 		};
 	}

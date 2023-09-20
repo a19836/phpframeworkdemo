@@ -121,7 +121,7 @@ var SetVarTaskPropertyObj = {
 	
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
-			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+			var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 			ProgrammingTaskUtil.saveNewVariableInWorkflowAccordingWithTaskPropertiesValues(task_property_values);
 			
 			var label = SetVarTaskPropertyObj.getDefaultExitLabel(task_property_values);
@@ -164,7 +164,7 @@ var SetVarTaskPropertyObj = {
 				this.createTextareEditor(textarea);
 			}
 			
-			myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().resizeOverlay();
+			myWFObj.getTaskFlowChart().getMyFancyPopupObj().resizeOverlay();
 		}
 		else {
 			if (editor) {
@@ -232,7 +232,7 @@ var SetVarTaskPropertyObj = {
 		var element = editor ? parent.children(".ace_editor") : textarea;
 		
 		if (!element[0].hasAttribute("is_maximize")) {
-			var popup = myWFObj.getJsPlumbWorkFlow().getMyFancyPopupObj().getPopup();
+			var popup = myWFObj.getTaskFlowChart().getMyFancyPopupObj().getPopup();
 			var w = popup.width() - 20;
 			var h = popup.height() - 20;
 			var o = popup.offset();

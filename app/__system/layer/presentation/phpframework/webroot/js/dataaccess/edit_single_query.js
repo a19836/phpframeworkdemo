@@ -50,8 +50,8 @@ $(function() {
 		//	showOrHideSingleQuerySettings($(".top_bar .toggle_settings a")[0], rand_number);
 		
 		//set sync_ui_settings_with_sql to 1 so it updates automatically the sql query on every change on UI.
-		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
-		var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+		eval('var WF = taskFlowChartObj_' + rand_number + ';');
+		var main_tasks_flow_obj = $("#" + WF.TaskFlow.main_tasks_flow_obj_id);
 		main_tasks_flow_obj.attr("sync_ui_settings_with_sql", 1);
 		main_tasks_flow_obj.attr("sync_sql_with_ui_settings", 1);
 		
@@ -83,8 +83,8 @@ function onToggleQueryAutoConvert() {
 	onToggleAutoConvert();
 	
 	var rand_number = $(".edit_single_query .data_access_obj .relationships .relationship .query").attr("rand_number");
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
-	var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
+	var main_tasks_flow_obj = $("#" + WF.TaskFlow.main_tasks_flow_obj_id);
 	
 	if (auto_convert) {
 		main_tasks_flow_obj.attr("sync_ui_settings_with_sql", 1);
@@ -134,7 +134,7 @@ function showOrHideSingleQuerySettings(elm, rand_number) {
 	}
 	
 	if (settings[0]) {
-		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+		eval('var WF = taskFlowChartObj_' + rand_number + ';');
 		
 		if(settings.css("display") == "none") {//show
 			input.attr("checked", "checked").prop("checked", true);
@@ -182,7 +182,7 @@ function showOrHideSingleQueryUI(elm, rand_number) {
 	if (a) {
 		var is_shown = elm.hasClass("active");
 		
-		eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+		eval('var WF = taskFlowChartObj_' + rand_number + ';');
 		
 		if (is_shown) {
 			elm.removeClass("active");
@@ -229,7 +229,7 @@ function resizeQuerySqlEditor() {
 function onToggleFullScreen(in_full_screen) {
 	var query = $(".edit_single_query .data_access_obj .relationships .relationship .query");
 	var rand_number = query.attr("rand_number");
-	eval('var WF = jsPlumbWorkFlow_' + rand_number + ';');
+	eval('var WF = taskFlowChartObj_' + rand_number + ';');
 	
 	setTimeout(function() {
 		MyFancyPopup.updatePopup();
@@ -259,6 +259,15 @@ function onChangeIsConvertableSQL(elm) {
 			
 			var rand_number = query.attr("rand_number");
 			onBlurQuerySqlEditor(rand_number);
+			
+			//REPAINT UI
+			repaintQueryTasks(rand_number);
+			
+			//set z-index of popup if it is active
+			eval('var WF = taskFlowChartObj_' + rand_number + ';');
+			
+			if (WF.getMyFancyPopupObj().isPopupOpened())
+				WF.getMyFancyPopupObj().reinitZIndex();
 		}
 	}
 	else {

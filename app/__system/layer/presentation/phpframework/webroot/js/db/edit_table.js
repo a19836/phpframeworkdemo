@@ -101,7 +101,7 @@ function onSaveButton(elm) {
 	var fields = DBTableTaskPropertyObj.getParsedTaskPropertyFields(properties_html_elm, null);
 	
 	if (fields) {
-		var query_string = jsPlumbWorkFlow.jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(properties_html_elm, "task_property_field");
+		var query_string = taskFlowChartObj.Property.getPropertiesQueryStringFromHtmlElm(properties_html_elm, "task_property_field");
 		var table_attr_old_names = [];
 		
 		try {

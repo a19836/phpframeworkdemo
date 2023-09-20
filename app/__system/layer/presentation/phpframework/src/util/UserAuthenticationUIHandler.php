@@ -42,8 +42,8 @@ class UserAuthenticationUIHandler { public static function getMenu($pdf77ee66, $
 			<!--li><a href="' . $peb014cfd . 'user/edit_layout_type">Add Layout Type</a></li-->
 			<li class="manage_menu_item manage_layout_type_permissions"><a href="' . $peb014cfd . 'user/manage_layout_type_permissions">Manage Layout Type Permissions</a></li>
 			
-			<li class="manage_menu_item manage_module_db_table_names"><a href="' . $peb014cfd . 'user/manage_module_db_table_names">Manage Module DB Table Name</a></li>
-			<!--li><a href="' . $peb014cfd . 'user/edit_module_db_table_name">Add Module DB Table Name</a></li-->
+			<li class="manage_menu_item manage_reserved_db_table_names"><a href="' . $peb014cfd . 'user/manage_reserved_db_table_names">Manage Reserved DB Table Name</a></li>
+			<!--li><a href="' . $peb014cfd . 'user/edit_reserved_db_table_name">Add Reserved DB Table Name</a></li-->
 			
 			<li class="manage_menu_item manage_login_controls"><a href="' . $peb014cfd . 'user/manage_login_controls">Manage Login Controls</a></li>
 			

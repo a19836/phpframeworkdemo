@@ -22,7 +22,7 @@ include $EVC->getViewPath("/layer/diagram"); $confirm_msg = $diagram_already_exi
 <script>
 	function continueSetup(do_not_confirm) {
 		if (do_not_confirm || confirm("' . $confirm_msg . '")) {
-			var popup = jsPlumbWorkFlow.getMyFancyPopupObj();
+			var popup = taskFlowChartObj.getMyFancyPopupObj();
 			MyFancyPopup.init();
 			MyFancyPopup.showOverlay();
 			MyFancyPopup.showLoading();
@@ -32,14 +32,14 @@ include $EVC->getViewPath("/layer/diagram"); $confirm_msg = $diagram_already_exi
 			var save_options = {
 				success: function(data, textStatus, jqXHR) {
 					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url, function() {
-							jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, taskFlowChartObj.TaskFile.set_tasks_file_url, function() {
+							taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 							continueSetup(true);
 						});
 				},
 			};
 			
-			if (jsPlumbWorkFlow.jsPlumbTaskFile.save(null, save_options))
+			if (taskFlowChartObj.TaskFile.save(null, save_options))
 				$("#layer_form form").submit();
 			else
 				MyFancyPopup.hidePopup();

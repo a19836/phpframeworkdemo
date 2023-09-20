@@ -1,16 +1,16 @@
-.jsplumbtaskworkflow path {
+/*.taskflowchartdiagram ._jsPlumb_connector path {
 	stroke-width:unset !important;
-}
-.jsplumbtaskworkflow ._jsPlumb_endpoint {
+}*/
+.taskflowchartdiagram .end_point {
 	opacity:1 !important;
 }
-.jsplumbtaskworkflow .task.logic_task.is_start_task:not(:hover):before,
-  .jsplumbtaskworkflow .task.logic_task:hover:not(.dragActive):before, 
-  .jsplumbtaskworkflow .task.logic_task.is_start_task:not(:hover) .task_info,
-  .jsplumbtaskworkflow .task.logic_task:hover:not(.dragActive) > .task_info {
+.taskflowchartdiagram .task.logic_task.is_start_task:not(:hover):before,
+  .taskflowchartdiagram .task.logic_task:hover:not(.dragActive):before, 
+  .taskflowchartdiagram .task.logic_task.is_start_task:not(:hover) .task_info,
+  .taskflowchartdiagram .task.logic_task:hover:not(.dragActive) > .task_info {
 	display:block !important;
 }
-.jsplumbtaskworkflow .task.logic_task .short_actions {
+.taskflowchartdiagram .task.logic_task .short_actions {
 	top:-28px !important;
 	right:-55px !important;
 }

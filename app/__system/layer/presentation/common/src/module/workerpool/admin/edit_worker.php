@@ -70,8 +70,8 @@ if ($PEVC) {
 	<!-- Layout UI Editor - Add ACE-Editor -->
 	<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ace.js"></script>
 	<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
-	<script type="text/javascript" src="' . $proprietary_js_url_prefix . 'jquerytaskflowchart/js/lib/jsPlumbCloneHandler.js"></script>
-	<script type="text/javascript" src="' . $proprietary_js_url_prefix . 'jquerytaskflowchart/js/task_flow_chart.js"></script>
+	<script type="text/javascript" src="' . $proprietary_js_url_prefix . 'jquerytaskflowchart/js/ExternalLibHandler.js"></script>
+	<script type="text/javascript" src="' . $proprietary_js_url_prefix . 'jquerytaskflowchart/js/TaskFlowChart.js"></script>
 	
 	<!-- Add Code Beautifier -->
 	<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/mycodebeautifier/js/codebeautifier.js"></script>

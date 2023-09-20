@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_throwexception {
+.taskflowchartmenu .task.task_throwexception {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_throwexception .eps {
+.taskflowchartdiagram .task.task_throwexception .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_throwexception .ep {
+.taskflowchartdiagram .task.task_throwexception .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

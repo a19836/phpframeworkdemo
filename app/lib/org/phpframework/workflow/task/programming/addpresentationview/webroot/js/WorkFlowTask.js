@@ -61,7 +61,7 @@ var AddPresentationViewTaskPropertyObj = {
 	
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
-			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+			var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 			var label = AddPresentationViewTaskPropertyObj.getDefaultExitLabel(task_property_values);
 			ProgrammingTaskUtil.updateTaskDefaultExitLabel(task_id, label);
 		
@@ -69,7 +69,7 @@ var AddPresentationViewTaskPropertyObj = {
 			
 			var default_method_obj_str = BrokerOptionsUtilObj.getDefaultBroker(AddPresentationViewTaskPropertyObj.brokers_options);
 			if (!task_property_values["method_obj"] && default_method_obj_str) {
-				myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id]["method_obj"] = default_method_obj_str;
+				myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id]["method_obj"] = default_method_obj_str;
 			}
 			
 			ProgrammingTaskUtil.onTaskCreation(task_id);

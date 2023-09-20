@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_addregionblock {
+.taskflowchartmenu .task.task_addregionblock {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_addregionblock .eps {
+.taskflowchartdiagram .task.task_addregionblock .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_addregionblock .ep {
+.taskflowchartdiagram .task.task_addregionblock .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_getdbdriver {
+.taskflowchartmenu .task.task_getdbdriver {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_getdbdriver .eps {
+.taskflowchartdiagram .task.task_getdbdriver .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_getdbdriver .ep {
+.taskflowchartdiagram .task.task_getdbdriver .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

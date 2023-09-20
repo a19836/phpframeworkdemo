@@ -1,7 +1,7 @@
-.jsplumbtaskmenu .task.task_dataaccess {
+.taskflowchartmenu .task.task_dataaccess {
 	background-image:url('../img/logo.svg');
 }
-.jsplumbtaskworkflow .task.task_dataaccess {
+.taskflowchartdiagram .task.task_dataaccess {
 	background-image:url('../img/logo.svg');
 }
 

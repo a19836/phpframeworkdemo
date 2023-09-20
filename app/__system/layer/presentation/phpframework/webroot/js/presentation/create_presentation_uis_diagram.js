@@ -8,7 +8,7 @@ var MyDiagramUIFancyPopup = new MyFancyPopupClass();
 
 $(function () {
 	$(window).bind('beforeunload', function () {
-		if (jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()) {
+		if (taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving()) {
 			if (window.parent && window.parent.iframe_overlay)
 				window.parent.iframe_overlay.hide();
 			
@@ -29,11 +29,11 @@ $(function () {
 	$(".taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.auto_save_activation").addClass("with_padding");
 	
 	//init workflow
-	jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_connector = "Straight";
-	jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_overlay = "Forward Arrow";
-	jsPlumbWorkFlow.jsPlumbTaskFlow.available_connection_connectors_type = ["Straight"];
-	jsPlumbWorkFlow.jsPlumbTaskFlow.available_connection_overlays_type = ["Forward Arrow"];
-	jsPlumbWorkFlow.jsPlumbTaskFlow.available_connection_overlays[0][1]["location"] = 0.999; //Sets the arrow to the end to the conneciton line. Note that this cannot be 1 or we will get a javascript error from jsplumb. This is only used by jsplumb.
+	taskFlowChartObj.TaskFlow.default_connection_connector = "Straight";
+	taskFlowChartObj.TaskFlow.default_connection_overlay = "Forward Arrow";
+	taskFlowChartObj.TaskFlow.available_connection_connectors_type = ["Straight"];
+	taskFlowChartObj.TaskFlow.available_connection_overlays_type = ["Forward Arrow"];
+	taskFlowChartObj.TaskFlow.available_connection_overlays[0][1]["location"] = 0.999; //Sets the arrow to the end to the conneciton line. Note that this cannot be 1 or we will get a javascript error from jsplumb. This is only used by jsplumb. If Leaderline is used, we won't need the "location" attribute.
 	
 	//init trees
 	choosePageUrlFromFileManagerTree = new MyTree({
@@ -119,13 +119,13 @@ $(function () {
 	});
 	
 	//add default function to reset the top positon of the tasksflow panels, if with_top_bar class exists 
-	onResizeTaskFlowChartPanels(jsPlumbWorkFlow, 0);
+	onResizeTaskFlowChartPanels(taskFlowChartObj, 0);
 	
 	MyFancyPopup.hidePopup();
 });
 
 function onToggleFullScreen(in_full_screen) {
-	jsPlumbWorkFlow.resizePanels();
+	taskFlowChartObj.resizePanels();
 }
 
 function onIncludeBlockTaskChooseFile(elm) {
@@ -227,17 +227,17 @@ function removeAllInvalidPresentationIncludePagesFromTree(ul, data) {
 }
 
 function createUIFiles() {
-	var tasks = jsPlumbWorkFlow.jsPlumbTaskFlow.getAllTasks();
+	var tasks = taskFlowChartObj.TaskFlow.getAllTasks();
 	
 	//check if there are no tasks
 	if (tasks.length == 0) 
-		jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Please create some tasks first...");
+		taskFlowChartObj.StatusMessage.showError("Please create some tasks first...");
 	else {
 		//check if there is any task with an undefined db_table
 		var invalid_task_label = getTaskLabelWithUndefinedTable(tasks);
 		
 		if (invalid_task_label) 
-			jsPlumbWorkFlow.jsPlumbStatusMessage.showError("The task '" + invalid_task_label + "' has an undefined db table selected. Please correct this before you proceed!");
+			taskFlowChartObj.StatusMessage.showError("The task '" + invalid_task_label + "' has an undefined db table selected. Please correct this before you proceed!");
 		else { //if everyting is correct show popup
 			var popup = $("#create_uis_files");
 			
@@ -274,10 +274,10 @@ function getTaskLabelWithUndefinedTable(tasks) {
 		
 		if (task_tag == "listing" || task_tag == "form" || task_tag == "view") {
 			var task_id = task.attr("id");
-			var task_properties = jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id];
+			var task_properties = taskFlowChartObj.TaskFlow.tasks_properties[task_id];
 			
 			if (!task_properties || !task_properties["choose_db_table"] || !task_properties["choose_db_table"]["db_table"]) {
-				invalid_task_label = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
+				invalid_task_label = taskFlowChartObj.TaskFlow.getTaskLabelByTaskId(task_id);
 				break;
 			}
 		}
@@ -305,7 +305,7 @@ function loadNewExistentFiles() {
 					
 					if (pages.length > 0) {
 						var existent_pages = [];
-						var tasks = jsPlumbWorkFlow.jsPlumbTaskFlow.getAllTasks();
+						var tasks = taskFlowChartObj.TaskFlow.getAllTasks();
 						var added = false;
 						
 						for (var i = 0; i < tasks.length; i++) {
@@ -314,7 +314,7 @@ function loadNewExistentFiles() {
 							
 							if (task_tag == "page") {
 								var task_id = task.attr("id");
-								var task_properties = jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id];
+								var task_properties = taskFlowChartObj.TaskFlow.tasks_properties[task_id];
 								
 								if (task_properties && task_properties["file_name"])
 									existent_pages.push(("" + task_properties["file_name"]).toLowerCase());
@@ -328,7 +328,7 @@ function loadNewExistentFiles() {
 								added = true;
 								
 								//create new page task
-								var task_id = jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByType(page_task_type);
+								var task_id = taskFlowChartObj.ContextMenu.addTaskByType(page_task_type);
 								prepareNewExistentPageTask(task_id, page_name);
 							}
 						}
@@ -353,8 +353,8 @@ function loadNewExistentFiles() {
 
 function prepareNewExistentPageTask(task_id, page_name) {
 	if (task_id) {
-		jsPlumbWorkFlow.jsPlumbTaskFlow.setTaskLabelByTaskId(task_id, {"label": page_name});
-		jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id]["file_name"] = page_name;
+		taskFlowChartObj.TaskFlow.setTaskLabelByTaskId(task_id, {"label": page_name});
+		taskFlowChartObj.TaskFlow.tasks_properties[task_id]["file_name"] = page_name;
 		
 		//prepare page properties
 		$.ajax({
@@ -403,8 +403,8 @@ function prepareNewExistentPageTask(task_id, page_name) {
 						});
 					}
 					
-					jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id]["page_settings"] = page_settings_props;
-					jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id]["template"] = page_settings["template"] ? page_settings["template"] : "";
+					taskFlowChartObj.TaskFlow.tasks_properties[task_id]["page_settings"] = page_settings_props;
+					taskFlowChartObj.TaskFlow.tasks_properties[task_id]["template"] = page_settings["template"] ? page_settings["template"] : "";
 				}
 				else
 					StatusMessageHandler.showError("Error: Couldn't load \'" + page_name + "\' file's settings correctly. Please try again.");
@@ -536,8 +536,8 @@ function goToStepAutomaticCreation(elm, step) {
 }
 
 function getWorkflowTasksTables() {
-	//var tasks = jsPlumbWorkFlow.jsPlumbTaskFlow.getAllTasks();
-	var workflow_data = jsPlumbWorkFlow.jsPlumbTaskFile.getWorkFlowData();
+	//var tasks = taskFlowChartObj.TaskFlow.getAllTasks();
+	var workflow_data = taskFlowChartObj.TaskFile.getWorkFlowData();
 	var tasks = workflow_data && workflow_data["tasks"] ? workflow_data["tasks"] : {};
 	tasks = JSON.parse(JSON.stringify(tasks)); //clones the tasks object, otherwise all new objects added in this script to this array (tasks_details) will be added to the properties of each task and saved to the workflow XML. WE DO NOT WANT THIS!
 	tasks = prepareWorkflowTasksTablesProps(tasks);
@@ -1651,7 +1651,7 @@ function loadTask(elm, task_id, type, relationship_table) {
 		//console.log(props);
 		
 		//INIT TASK
-		jsPlumbWorkFlow.jsPlumbProperty.setPropertiesFromHtmlElm(elm.parent(), "task_property_field", props);
+		taskFlowChartObj.Property.setPropertiesFromHtmlElm(elm.parent(), "task_property_field", props);
 		eval (func + "(elm.parent(), null, props);");
 		
 		//PREPARING PARAMS
@@ -1739,7 +1739,7 @@ function loadExtraTask(elm, task_id, type, ui_props) {
 		//console.log(props);
 		
 		//INIT TASK
-		jsPlumbWorkFlow.jsPlumbProperty.setPropertiesFromHtmlElm(elm.parent(), "task_property_field", props);
+		taskFlowChartObj.Property.setPropertiesFromHtmlElm(elm.parent(), "task_property_field", props);
 		eval (func + "(elm.parent(), null, props);");
 		
 		//PREPARING PARAMS
@@ -2058,7 +2058,7 @@ function getTableUIPanelServicesAndRulesSettings(table_ui_panel) {
 		}
 		
 		if (status) {
-			var query_string = jsPlumbWorkFlow.jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(task_properties_elm, "task_property_field");
+			var query_string = taskFlowChartObj.Property.getPropertiesQueryStringFromHtmlElm(task_properties_elm, "task_property_field");
 			parse_str(query_string, settings);
 		}
 		
@@ -2153,7 +2153,7 @@ function checkUISFiles(elm, settings) {
 			var msg = "Error requesting url: " + url;
 			msg += jqXHR.responseText ? "\n" + jqXHR.responseText : "";
 			$('<div class="error">' + msg + '</div>').show().insertBefore(ul);
-			jsPlumbWorkFlow.jsPlumbStatusMessage.showError(msg);
+			taskFlowChartObj.StatusMessage.showError(msg);
 			
 			updateMyDiagramUIFancyPopup();
 		},
@@ -2449,7 +2449,7 @@ function checkFileCode(elm, file_path) {
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-			jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Error requesting url: " + url + msg);
+			taskFlowChartObj.StatusMessage.showError("Error requesting url: " + url + msg);
 		},
 	});
 }
@@ -2628,10 +2628,10 @@ function saveUISFiles(elm, settings) {
 							
 							//update modified date for each file in task_properties
 							if (file_status && file_id && modified_time && file_selected && files_to_create && files_to_create[file_path]) {
-								if (!jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id]["created_files"])
-									jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id]["created_files"] = {};
+								if (!taskFlowChartObj.TaskFlow.tasks_properties[task_id]["created_files"])
+									taskFlowChartObj.TaskFlow.tasks_properties[task_id]["created_files"] = {};
 								
-								jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id]["created_files"][file_id] = modified_time;
+								taskFlowChartObj.TaskFlow.tasks_properties[task_id]["created_files"][file_id] = modified_time;
 							}
 						});
 					}
@@ -2650,12 +2650,12 @@ function saveUISFiles(elm, settings) {
 			
 			tbody.html(html);
 			
-			//set include_db_driver prop in jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties
+			//set include_db_driver prop in taskFlowChartObj.TaskFlow.tasks_properties
 			prepareSavedTasksProperties(settings["tasks_details"]);
 			
 			//save workflow with new modified dates 
-			//console.log(jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties);
-			jsPlumbWorkFlow.jsPlumbTaskFile.save();
+			//console.log(taskFlowChartObj.TaskFlow.tasks_properties);
+			taskFlowChartObj.TaskFile.save();
 			
 			elm.removeAttr("disabled").removeClass("loading");
 			
@@ -2681,7 +2681,7 @@ function saveUISFiles(elm, settings) {
 			var msg = "Error requesting url: " + url;
 			msg += jqXHR.responseText ? "\n" + jqXHR.responseText : "";
 			tbody.html('<tr><td class="error" colspan="3">' + msg + '</td></tr>').children("td").show();
-			jsPlumbWorkFlow.jsPlumbStatusMessage.showError(msg);
+			taskFlowChartObj.StatusMessage.showError(msg);
 				
 			updateMyDiagramUIFancyPopup();
 		},
@@ -2701,8 +2701,8 @@ function prepareSavedTasksProperties(tasks) {
 			var sub_tasks = task["tasks"];
 			
 			if (task_tag == "listing" || task_tag == "form" || task_tag == "view") {
-				if (task["properties"] && task["properties"]["choose_db_table"] && jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id]) {
-					jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id]["choose_db_table"]["include_db_driver"] = task["properties"]["choose_db_table"]["include_db_driver"];
+				if (task["properties"] && task["properties"]["choose_db_table"] && taskFlowChartObj.TaskFlow.tasks_properties[task_id]) {
+					taskFlowChartObj.TaskFlow.tasks_properties[task_id]["choose_db_table"]["include_db_driver"] = task["properties"]["choose_db_table"]["include_db_driver"];
 				}
 			}
 			
@@ -2719,16 +2719,16 @@ function updateMyDiagramUIFancyPopup() {
 function saveUIsDiagramFlow() {
 	prepareAutoSaveVars();
 	
-	if (jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()) {
-		jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
+	if (taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving()) {
+		taskFlowChartObj.TaskFile.save(null, {
 			success: function(data, textStatus, jqXHR) {
 				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url, function() {
-						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, taskFlowChartObj.TaskFile.set_tasks_file_url, function() {
+						taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 						saveUIsDiagramFlow();
 					});
 				else if (is_from_auto_save) {
-					jsPlumbWorkFlow.jsPlumbStatusMessage.removeMessages("status");
+					taskFlowChartObj.StatusMessage.removeMessages("status");
 					resetAutoSave();
 				}
 			},
@@ -2736,7 +2736,7 @@ function saveUIsDiagramFlow() {
 		});
 	}
 	else if (!is_from_auto_save)
-		jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Nothing to save.", "", "bottom_messages", 1500);
+		taskFlowChartObj.StatusMessage.showMessage("Nothing to save.", "", "bottom_messages", 1500);
 	else
 		resetAutoSave();
 }

@@ -1,4 +1,4 @@
-.jsplumbtaskworkflow .icon.search_page::after,
+.taskflowchartdiagram .icon.search_page::after,
   .selected_task_properties .icon.search_page::after,
   .selected_connection_properties .icon.search_page::after {
 	font-size:10px;
@@ -338,7 +338,7 @@
 
 
 /* MENU TASKS */
-.jsplumbtaskmenu .task,
+.taskflowchartmenu .task,
   .taskflowchart > .tasks_menu .task {
 	width:40px;
 	margin:15px 22px 30px;
@@ -349,11 +349,11 @@
 	box-sizing:border-box;
 	opacity:.5;
 }
-.jsplumbtaskmenu .task:hover,
+.taskflowchartmenu .task:hover,
   .taskflowchart > .tasks_menu .task:hover {
 	opacity:.3;
 }
-.jsplumbtaskmenu .task span {
+.taskflowchartmenu .task span {
 	width:70px;
 	max-height:26px;
 	line-height:13px;
@@ -372,13 +372,13 @@
 }
 
 /* FLOW TASKS */
-.jsplumbtaskworkflow .connector_overlay_add_icon {
+.taskflowchartdiagram .connector_overlay_add_icon {
 	background:url('../img/add_middle_task.svg') center center no-repeat !important;
 }
-.jsplumbtaskworkflow .connector_overlay_add_icon.task_droppable_over {
+.taskflowchartdiagram .connector_overlay_add_icon.task_droppable_over {
 	background-size:30px 30px !important;
 }
-.jsplumbtaskworkflow .task.logic_task {
+.taskflowchartdiagram .task.logic_task {
 	width:70px !important;
 	height:auto !important;
 	min-height:50px !important;
@@ -387,11 +387,11 @@
 	border:0 !important;
 	box-shadow:none !important;
 }
-.jsplumbtaskworkflow .task.logic_task:hover {
+.taskflowchartdiagram .task.logic_task:hover {
 	opacity:1 !important;
 	z-index:9999;
 }
-.jsplumbtaskworkflow .task.logic_task:before {
+.taskflowchartdiagram .task.logic_task:before {
 	width:180px;
 	left:-55px !important;
 	right:auto !important;
@@ -401,20 +401,20 @@
 	box-shadow:3px 3px 4px rgba(0, 0, 0, 0.05);
 	/*background:#fff;*/
 }
-.jsplumbtaskworkflow .task.logic_task.is_start_task:not(:hover):not(.dragActive):before {
+.taskflowchartdiagram .task.logic_task.is_start_task:not(:hover):not(.dragActive):before {
 	display:block;
 }
-.jsplumbtaskworkflow .task.logic_task:hover:after {
+.taskflowchartdiagram .task.logic_task:hover:after {
 	background:none !important;
 	left:-55px !important;
 	bottom:-36px !important;
 	
 	display:none !important; /* reduce noise in UI */
 }
-.jsplumbtaskworkflow .task.logic_task.is_start_task .start_task_overlay {
+.taskflowchartdiagram .task.logic_task.is_start_task .start_task_overlay {
 	display:none;
 }
-.jsplumbtaskworkflow .task.logic_task .task_info {
+.taskflowchartdiagram .task.logic_task .task_info {
 	width:182px; /*bc box-sizing is border-box, we need to add the borderleft and right widths. */
 	padding-left:10px;
 	left:-55px;
@@ -424,11 +424,11 @@
 	border-top-left-radius:2px;
 	border-top-right-radius:2px;
 }
-.jsplumbtaskworkflow .task.logic_task.is_start_task:not(:hover):not(.dragActive) .task_info {
+.taskflowchartdiagram .task.logic_task.is_start_task:not(:hover):not(.dragActive) .task_info {
 	display:block;
 	background:#83889E;
 }
-.jsplumbtaskworkflow .task.logic_task.is_start_task:not(:hover):not(.dragActive) .task_info:before {
+.taskflowchartdiagram .task.logic_task.is_start_task:not(:hover):not(.dragActive) .task_info:before {
 	content:"Start Task";
 	line-height:15px;
 	font-size:9px;
@@ -442,7 +442,7 @@
   .taskflowchart .task.logic_task.is_start_task:not(:hover):not(.dragActive) .task_info .task_info_label {
 	display:none;
 }
-.jsplumbtaskworkflow .task.logic_task .info {
+.taskflowchartdiagram .task.logic_task .info {
 	width:180px;
 	min-height:20px;
 	line-height:15px;
@@ -453,31 +453,31 @@
 	box-sizing:border-box;
 	font-size:11px;
 }
-.jsplumbtaskworkflow .task.logic_task:hover:not(.ui-draggable-dragging):not(.dragActive) > .info {
+.taskflowchartdiagram .task.logic_task:hover:not(.ui-draggable-dragging):not(.dragActive) > .info {
 	width:auto;
 	min-width:180px;
 	text-overflow:unset;
 	overflow:visible;
 }
-.jsplumbtaskworkflow .task.logic_task .info span {
+.taskflowchartdiagram .task.logic_task .info span {
 	color:#426efa;
 	word-break:break-all;
 }
-.jsplumbtaskworkflow .task.logic_task:hover:not(.ui-draggable-dragging):not(.dragActive) > .info span {
+.taskflowchartdiagram .task.logic_task:hover:not(.ui-draggable-dragging):not(.dragActive) > .info span {
 	color:#585B69;
 }
-.jsplumbtaskworkflow .task.logic_task:hover:not(.is_start_task):not(.ui-draggable-dragging):not(.dragActive) > .info span {
+.taskflowchartdiagram .task.logic_task:hover:not(.is_start_task):not(.ui-draggable-dragging):not(.dragActive) > .info span {
 	background:#fff;
 }
-.jsplumbtaskworkflow .task.logic_task .short_actions {
+.taskflowchartdiagram .task.logic_task .short_actions {
 	top:-20px;
 	right:-45px;
 	color:#fff;
 }
-.jsplumbtaskworkflow .task.logic_task .short_actions .move_action {
+.taskflowchartdiagram .task.logic_task .short_actions .move_action {
 	display:none;
 }
-.jsplumbtaskworkflow .task.logic_task .eps {
+.taskflowchartdiagram .task.logic_task .eps {
 	width:40px;
 	height:35px;
 	min-height:20px;
@@ -495,7 +495,7 @@
 	background-size:100% 100%;
 	float:none;
 }
-.jsplumbtaskworkflow .task.logic_task .eps:hover:after {
+.taskflowchartdiagram .task.logic_task .eps:hover:after {
 	width:175px;
 	content:"Drag the icon to link to another box";
 	position:absolute;
@@ -507,13 +507,13 @@
 	
 	display:none; /* reduce noise in UI */
 }
-.jsplumbtaskworkflow .task.logic_task.dragActive .eps {
+.taskflowchartdiagram .task.logic_task.dragActive .eps {
 	box-shadow:0px 0px 20px 5px #ccc !important;
 }
-.jsplumbtaskworkflow .task.logic_task.dragHover .eps {
+.taskflowchartdiagram .task.logic_task.dragHover .eps {
 	box-shadow:0px 0px 20px 5px #aaa !important;
 }
-.jsplumbtaskworkflow .task.logic_task .ep {
+.taskflowchartdiagram .task.logic_task .ep {
 	width:100%;
 	height:100%;
 	margin:0;
@@ -523,7 +523,7 @@
 	border-color:transparent !important;
 	background-color:transparent !important;*/
 }
-.jsplumbtaskworkflow .task.logic_task .ep span {
+.taskflowchartdiagram .task.logic_task .ep span {
 	min-width:190px;
 	max-width:300px;
 	padding:3px 5px;
@@ -542,9 +542,9 @@
 	pointer-events:none;
 	z-index:1;
 }
-.jsplumbtaskworkflow .task.logic_task:not(.show_code) .ep span {
+.taskflowchartdiagram .task.logic_task:not(.show_code) .ep span {
 	display:none;
 }
-.jsplumbtaskworkflow .task.logic_task.show_code:hover:after {
+.taskflowchartdiagram .task.logic_task.show_code:hover:after {
 	display:none;
 }

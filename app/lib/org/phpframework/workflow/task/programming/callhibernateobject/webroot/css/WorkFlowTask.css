@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_callhibernateobject {
+.taskflowchartmenu .task.task_callhibernateobject {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_callhibernateobject .eps {
+.taskflowchartdiagram .task.task_callhibernateobject .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_callhibernateobject .ep {
+.taskflowchartdiagram .task.task_callhibernateobject .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

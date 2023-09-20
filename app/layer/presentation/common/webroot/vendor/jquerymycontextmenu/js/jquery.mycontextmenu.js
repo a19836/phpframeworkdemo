@@ -412,7 +412,10 @@ function MyContextMenuClass() {
 		
 		if (context_menu_elm && context_menu_elm[0])
 			me.initContextMenu(elm, context_menu_elm, options);
-		else if (debug && console && console.log)
-			console.log("#" + context_menu_id + " html element is undefined!");
+		else if (debug && console && console.log) {
+			var msg = "#" + context_menu_id + " html element is undefined!";
+			console.log(msg);
+			//console.log(new Error(msg));
+		}
 	};
 };

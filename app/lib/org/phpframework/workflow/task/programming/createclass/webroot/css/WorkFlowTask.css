@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_createclass {
+.taskflowchartmenu .task.task_createclass {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_createclass .eps {
+.taskflowchartdiagram .task.task_createclass .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_createclass .ep {
+.taskflowchartdiagram .task.task_createclass .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

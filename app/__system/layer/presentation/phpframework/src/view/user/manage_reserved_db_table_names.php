@@ -35,27 +35,27 @@ include $EVC->getUtilPath("UserAuthenticationUIHandler"); $head = '
 <div id="content">
 	<div class="top_bar">
 		<header>
-			<div class="title">Manage Module DB Table Names</div>
+			<div class="title">Manage Reserved DB Table Names</div>
 		</header>
 	</div>
 	
-	<div class="module_db_table_names_list">
+	<div class="reserved_db_table_names_list">
 	<table>
 		<tr>
-			<th class="table_header module_db_table_name_id">Id</th>
+			<th class="table_header reserved_db_table_name_id">Id</th>
 			<th class="table_header name">Name</th>
 			<th class="table_header created_date">Created Date</th>
 			<th class="table_header modified_date">Modified Date</th>
 			<th class="table_header buttons">
-				<a class="icon add" href="' . $project_url_prefix . 'user/edit_module_db_table_name" title="Add">Add</a>
+				<a class="icon add" href="' . $project_url_prefix . 'user/edit_reserved_db_table_name" title="Add">Add</a>
 			</th>
-		</tr>'; $t = count($module_db_table_names); for ($i = 0; $i < $t; $i++) { $module_db_table_name = $module_db_table_names[$i]; $main_content .= '<tr>
-		<td class="module_db_table_name_id">' . $module_db_table_name["module_db_table_name_id"] . '</td>
-		<td class="name">' . $module_db_table_name["name"] . '</td>
-		<td class="created_date">' . $module_db_table_name["created_date"] . '</td>
-		<td class="modified_date">' . $module_db_table_name["modified_date"] . '</td>
+		</tr>'; $t = count($reserved_db_table_names); for ($i = 0; $i < $t; $i++) { $reserved_db_table_name = $reserved_db_table_names[$i]; $main_content .= '<tr>
+		<td class="reserved_db_table_name_id">' . $reserved_db_table_name["reserved_db_table_name_id"] . '</td>
+		<td class="name">' . $reserved_db_table_name["name"] . '</td>
+		<td class="created_date">' . $reserved_db_table_name["created_date"] . '</td>
+		<td class="modified_date">' . $reserved_db_table_name["modified_date"] . '</td>
 		<td class="buttons">
-			<a class="icon edit" href="' . $project_url_prefix . 'user/edit_module_db_table_name?module_db_table_name_id=' . $module_db_table_name["module_db_table_name_id"] . '" title="Edit">Edit</a>
+			<a class="icon edit" href="' . $project_url_prefix . 'user/edit_reserved_db_table_name?reserved_db_table_name_id=' . $reserved_db_table_name["reserved_db_table_name_id"] . '" title="Edit">Edit</a>
 		</td>
 	</tr>'; } $main_content .= '</table>
 	</div>

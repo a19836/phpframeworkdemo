@@ -42,10 +42,10 @@ var DroppableTestTaskPropertyObj = {
 	},
 	
 	onTaskCreation : function(task_id) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var j_task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+		var WF = myWFObj.getTaskFlowChart();
+		var j_task = WF.TaskFlow.getTaskById(task_id);
 		
-		var droppable1 = $('<div class="' + WF.jsPlumbTaskFlow.task_droppable_class_name + '"></div>');
+		var droppable1 = $('<div class="' + WF.TaskFlow.task_droppable_class_name + '"></div>');
 		droppable1.css({
 			"height":"100px",
 			"position":"absolute",
@@ -56,7 +56,7 @@ var DroppableTestTaskPropertyObj = {
 			"background":"green",
 		});
 		
-		var droppable2 = $('<div class="' + WF.jsPlumbTaskFlow.task_droppable_class_name + '"></div>');
+		var droppable2 = $('<div class="' + WF.TaskFlow.task_droppable_class_name + '"></div>');
 		droppable2.css({
 			"position":"absolute",
 			"top":"150px",
@@ -71,8 +71,8 @@ var DroppableTestTaskPropertyObj = {
 		j_task.append(droppable1);
 		j_task.append(droppable2);
 		
-		WF.jsPlumbContextMenu.prepareTaskDroppables(j_task);
-		WF.jsPlumbTaskFlow.resizeTaskParentTask(droppable1, true);
+		WF.ContextMenu.prepareTaskDroppables(j_task);
+		WF.TaskFlow.resizeTaskParentTask(droppable1, true);
 		
 		ProgrammingTaskUtil.onTaskCreation(task_id);
 	},

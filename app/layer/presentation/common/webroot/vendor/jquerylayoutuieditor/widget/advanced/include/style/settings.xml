@@ -205,7 +205,7 @@
 							
 							//convert url vars to real urls in css_code in html_element, this is, parse css_code in case it contains the $project_url_prefix or $project_common_url_prefix
 							if (typeof ui_creator.options.on_convert_project_url_php_vars_to_real_values_func == "function") {
-								var new_css_code = ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(css_code);
+								var new_css_code = ui_creator.options.on_convert_project_url_php_vars_to_real_values_func(css_code, widget);
 								
 								if (css_code != new_css_code)
 									$(html_element).html(new_css_code);

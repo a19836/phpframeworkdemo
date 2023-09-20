@@ -116,7 +116,7 @@ function getConfigCodeObjId() {
 	
 	//remove error messages bc when we call the getCodeForSaving method, it will save try to save the workflow but it will give an error bc we are calling the isTestObjChanged on window before load, which will kill the ongoing ajax requests...
 	StatusMessageHandler.removeMessages("error");
-	jsPlumbWorkFlow.jsPlumbStatusMessage.removeMessages("error");
+	taskFlowChartObj.StatusMessage.removeMessages("error");
 	
 	$(".workflow_menu").show();
 	MyFancyPopup.hidePopup();
@@ -168,7 +168,7 @@ function saveConfig() {
 			//Do not re-call only the ajax request below, otherwise there will be some other files that will not be saved, this is, the getCodeForSaving saves the workflow and if we only call the ajax request below, the workflow won't be saved. To avoid this situation, we call the all save function.
 			if (!is_from_auto_save_bkp && jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL)) {
 				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jquery_native_xhr_object.responseURL, function() {
-					jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+					taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 					StatusMessageHandler.removeLastShownMessage("error");
 					
 					window.is_save_func_running = false;

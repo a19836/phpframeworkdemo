@@ -1,4 +1,4 @@
-.jsplumbtaskmenu .task.task_server {
+.taskflowchartmenu .task.task_server {
 	width:70px !important;
 	height:60px !important;
 	
@@ -11,14 +11,14 @@
 	border:0 !important;
 	box-shadow:none !important;
 }
-.jsplumbtaskmenu .task.task_server span {
+.taskflowchartmenu .task.task_server span {
 	line-height:normal;
 	margin-top:40px;
 	display:block;
 	color:#FFF;
 	font-size:11px;
 }
-.jsplumbtaskworkflow .task.task_server {
+.taskflowchartdiagram .task.task_server {
 	height:auto !important;
 	min-height:60px !important;
 	
@@ -30,7 +30,7 @@
 	border-radius:5px;
 	border:0 !important;
 }
-.jsplumbtaskworkflow .task.task_server > .info {
+.taskflowchartdiagram .task.task_server > .info {
 	width:100% !important;
 	line-height:normal;
 	margin-top:40px !important;
@@ -194,6 +194,9 @@
 }
 .server_task_html .template_workflow > .taskflowchart .tasks_flow .task .ep {
 	cursor:pointer;
+}
+.server_task_html .template_workflow > .taskflowchart .tasks_flow .task .short_actions .move_action {
+	display:none;
 }
 
 /* templates_container - task_context_menu (task_context_menu is a child of body) */

@@ -1,13 +1,13 @@
-.jsplumbtaskmenu .task.task_return {
+.taskflowchartmenu .task.task_return {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_return .eps {
+.taskflowchartdiagram .task.task_return .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_return .eps .ep {
+.taskflowchartdiagram .task.task_return .eps .ep {
 	display:none;
 }
-.jsplumbtaskworkflow .task.task_return:hover:after {
+.taskflowchartdiagram .task.task_return:hover:after {
 	content:"Click to view menu or move. Linking to boxes is not allowed!";
 }
 

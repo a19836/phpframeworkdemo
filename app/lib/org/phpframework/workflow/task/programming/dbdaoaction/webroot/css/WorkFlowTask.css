@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_dbdaoaction {
+.taskflowchartmenu .task.task_dbdaoaction {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_dbdaoaction .eps {
+.taskflowchartdiagram .task.task_dbdaoaction .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_dbdaoaction .ep {
+.taskflowchartdiagram .task.task_dbdaoaction .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

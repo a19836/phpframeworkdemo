@@ -100,6 +100,82 @@ if (typeof filterSelectorInNodes != "function")
 		return (elements.length) ? elements[0] : null;
 	};
 
+//Leave this code here, because is a generic function that is used in multiple places
+if (typeof assignObjectRecursively != "function")
+	function assignObjectRecursively(to_obj, from_obj) {
+		//return Object.assign(to_obj, from_obj); //Note that Object.assign doesn't copy the inner objects, which means it will remain with the references for the inner objects. Basically the Object.assign only clones the properties in the first level.
+		//Do not use JSON.parse(JSON.stringify(from_obj)), bc obj may contain DOM objects that will loose its references, and this elements we want to keep their reference.
+		
+		//Simulates the jquery function: $.isPlainObject(obj); Copied from jquery 3.6.0
+		var is_plain_object = function(obj) {
+			//return (typeof obj === "object" && obj !== null && typeof Array.isArray == "function" && !Array.isArray(obj)) || Object.prototype.toString.call(obj) === "[object Object]";
+			
+			//defined some jquery global vars
+			var getProto = Object.getPrototypeOf;
+			var class2type = {};
+			var toString = class2type.toString;
+			var hasOwn = class2type.hasOwnProperty;
+			var fnToString = hasOwn.toString;
+			var ObjectFunctionString = fnToString.call( Object );
+			
+			//code from isPlainObject in jquery 3.6.0
+			var proto, Ctor;
+
+			// Detect obvious negatives
+			// Use toString instead of jQuery.type to catch host objects
+			if ( !obj || toString.call( obj ) !== "[object Object]" ) {
+				return false;
+			}
+
+			proto = getProto( obj );
+
+			// Objects with no prototype (e.g., `Object.create( null )`) are plain
+			if ( !proto ) {
+				return true;
+			}
+
+			// Objects with prototype are plain iff they were constructed by a global Object function
+			Ctor = hasOwn.call( proto, "constructor" ) && proto.constructor;
+			return typeof Ctor === "function" && fnToString.call( Ctor ) === ObjectFunctionString;
+		};
+		
+		//Simulates the jquery function: $.isArray(obj);
+		var is_array = function(obj) {
+			return (typeof Array.isArray == "function" && Array.isArray(obj)) || Object.prototype.toString.call(obj) === '[object Array]';
+		};
+		
+		if (is_plain_object(from_obj)) { //if is plain object
+			for (var k in from_obj) {
+				var v = from_obj[k];
+				
+				if (is_plain_object(v))
+					to_obj[k] = assignObjectRecursively({}, v);
+				else if (is_array(v))
+					to_obj[k] = assignObjectRecursively([], v);
+				else
+					to_obj[k] = v;
+			}
+			
+			return to_obj;
+		}
+		else if (is_array(from_obj)) { //if is array
+			for (var i = 0, t = from_obj.length; i < t; i++) {
+				var v = from_obj[i];
+				
+				if (is_plain_object(v))
+					to_obj[i] = assignObjectRecursively({}, v);
+				else if (is_array(v))
+					to_obj[i] = assignObjectRecursively([], v);
+				else
+					to_obj[i] = v;
+			}
+			
+			return to_obj;
+		}
+		
+		return from_obj;
+	}
+
 //Leave this code here, because is adding the TRIM function to the IE browsers. Otherwise the browser gives errors.
 if(typeof String.prototype.trim !== 'function')
 	String.prototype.trim = function() {

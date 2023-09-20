@@ -46,6 +46,9 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHan
 			</ul>
 		</header>
 	</div>'; $main_content .= $WorkFlowUIHandler->getContent(); if ($DBDriver) $main_content .= '<script>
+			taskFlowChartObj.TaskFlow.connection_line_width = 2;
+			taskFlowChartObj.TaskFlow.connection_from_target = true;
+			
 			DBTableTaskPropertyObj.column_types = ' . json_encode($DBDriver->getDBColumnTypes()) . ';
 			DBTableTaskPropertyObj.column_simple_types = ' . json_encode($DBDriver->getDBColumnSimpleTypes()) . ';
 			DBTableTaskPropertyObj.column_numeric_types = ' . json_encode($DBDriver->getDBColumnNumericTypes()) . ';

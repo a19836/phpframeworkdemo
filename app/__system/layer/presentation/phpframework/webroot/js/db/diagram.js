@@ -9,7 +9,7 @@ var MyFancyPopupSyncSQL = new MyFancyPopupClass();
 
 $(function () {
 	$(window).bind('beforeunload', function () {
-		if (jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()) {
+		if (taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving()) {
 			if (window.parent && window.parent.iframe_overlay)
 				window.parent.iframe_overlay.hide();
 			
@@ -33,26 +33,26 @@ $(function () {
 	$(".taskflowchart.with_top_bar_menu .workflow_menu.top_bar_menu li.auto_convert_activation").addClass("with_padding");
 	
 	//init workflow
-	jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_connector = "Flowchart";
-	jsPlumbWorkFlow.jsPlumbTaskFlow.default_connection_overlay = "One To One";
-	//jsPlumbWorkFlow.jsPlumbTaskFlow.available_connection_connectors_type = ["Flowchart"];
-	jsPlumbWorkFlow.jsPlumbTaskFlow.available_connection_overlays_type = ["One To One", "Many To One", "One To Many"]; //Do not add "Many To Many" bc it doesn't make sense for the db relational diagram.
+	taskFlowChartObj.TaskFlow.default_connection_connector = "Flowchart";
+	taskFlowChartObj.TaskFlow.default_connection_overlay = "One To One";
+	//taskFlowChartObj.TaskFlow.available_connection_connectors_type = ["Flowchart"];
+	taskFlowChartObj.TaskFlow.available_connection_overlays_type = ["One To One", "Many To One", "One To Many"]; //Do not add "Many To Many" bc it doesn't make sense for the db relational diagram.
 	
-	jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = updateTasksAfterFileRead;
-	jsPlumbWorkFlow.jsPlumbTaskFile.on_success_update = updateTasksAfterFileRead;
-	jsPlumbWorkFlow.jsPlumbTaskFile.on_success_save = updateTasksAfterFileSave;
+	taskFlowChartObj.TaskFile.on_success_read = updateTasksAfterFileRead;
+	taskFlowChartObj.TaskFile.on_success_update = updateTasksAfterFileRead;
+	taskFlowChartObj.TaskFile.on_success_save = updateTasksAfterFileSave;
 	
 	//prepare task contextmenu
-	jsPlumbWorkFlow.onReady(function() {
-		$("#" + jsPlumbWorkFlow.jsPlumbContextMenu.task_context_menu_id + " .set_label a").html("Edit Table Name");
+	taskFlowChartObj.onReady(function() {
+		$("#" + taskFlowChartObj.ContextMenu.task_context_menu_id + " .set_label a").html("Edit Table Name");
 		
-		var start_task = $("#" + jsPlumbWorkFlow.jsPlumbContextMenu.task_context_menu_id + " .start_task a");
+		var start_task = $("#" + taskFlowChartObj.ContextMenu.task_context_menu_id + " .start_task a");
 		start_task.html("Get DB Table\'s Attributes");
 		start_task.attr("onClick", "");
 		start_task.click(function() {
-			jsPlumbWorkFlow.jsPlumbContextMenu.hideContextMenus();
+			taskFlowChartObj.ContextMenu.hideContextMenus();
 			
-			var task_id = jsPlumbWorkFlow.jsPlumbContextMenu.getContextMenuTaskId();
+			var task_id = taskFlowChartObj.ContextMenu.getContextMenuTaskId();
 			
 			updateTaskTableAttributes(task_id);
 		});
@@ -62,12 +62,12 @@ $(function () {
 });
 
 function onToggleFullScreen(in_full_screen) {
-	jsPlumbWorkFlow.resizePanels();
+	taskFlowChartObj.resizePanels();
 }
 
 function updateTaskTableAttributes(task_id, do_not_confirm, opts) {
 	if (task_id) {
-		var table_name = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
+		var table_name = taskFlowChartObj.TaskFlow.getTaskLabelByTaskId(task_id);
 		table_name = table_name ? table_name.trim() : "";
 
 		if (table_name && (do_not_confirm || confirm("The system will now get the DB\'s attributes for the table '" + table_name + "'.\nDo you wish to proceed?"))) {
@@ -103,11 +103,11 @@ function updateTaskTableAttributes(task_id, do_not_confirm, opts) {
 				error : function(jqXHR, textStatus, errorThrown) { 
 					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
-							jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+							taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 							updateTaskTableAttributes(task_id, true);
 						});
 					else if (jqXHR.responseText) {
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showError(jqXHR.responseText);
+						taskFlowChartObj.StatusMessage.showError(jqXHR.responseText);
 						
 						if ($.isPlainObject(opts) && typeof opts["error"] == "function")
 							opts["error"](task_id, data);
@@ -125,24 +125,24 @@ function saveDBDiagram() {
 	var local_is_from_auto_save = is_from_auto_save;
 	
 	//prepare old_tables_names and old_tables_attributes_names settings
-	if (!$.isPlainObject(jsPlumbWorkFlow.jsPlumbTaskFile.file_settings)) 
-		jsPlumbWorkFlow.jsPlumbTaskFile.file_settings = {};
+	if (!$.isPlainObject(taskFlowChartObj.TaskFile.file_settings)) 
+		taskFlowChartObj.TaskFile.file_settings = {};
 	
-	jsPlumbWorkFlow.jsPlumbTaskFile.file_settings["old_tables_names"] = old_tables_names;
-	jsPlumbWorkFlow.jsPlumbTaskFile.file_settings["old_tables_attributes_names"] = old_tables_attributes_names;
+	taskFlowChartObj.TaskFile.file_settings["old_tables_names"] = old_tables_names;
+	taskFlowChartObj.TaskFile.file_settings["old_tables_attributes_names"] = old_tables_attributes_names;
 	
-	if (jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()) {
+	if (taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving()) {
 		//save workflow
-		jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
+		taskFlowChartObj.TaskFile.save(null, {
 			success: function(data, textStatus, jqXHR) {
 				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url, function() {
-						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, taskFlowChartObj.TaskFile.set_tasks_file_url, function() {
+						taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 						
 						saveDBDiagram();
 					});
 				else if (local_is_from_auto_save) {
-					jsPlumbWorkFlow.jsPlumbStatusMessage.removeMessages("status");
+					taskFlowChartObj.StatusMessage.removeMessages("status");
 					resetAutoSave();
 				}
 			},
@@ -161,11 +161,11 @@ function updateDBDiagram() {
 	prepareAutoSaveVars();
 	var local_is_from_auto_save = is_from_auto_save;
 	
-	jsPlumbWorkFlow.jsPlumbTaskFile.update(get_updated_db_diagram_url, {
+	taskFlowChartObj.TaskFile.update(get_updated_db_diagram_url, {
 		success: function(data, textStatus, jqXHR) {
 			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url, function() {
-					jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, taskFlowChartObj.TaskFile.set_tasks_file_url, function() {
+					taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 					updateDBDiagram();
 				});
 			else if (local_is_from_auto_save)
@@ -173,8 +173,8 @@ function updateDBDiagram() {
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, [ jsPlumbWorkFlow.jsPlumbTaskFile.set_tasks_file_url, get_updated_db_diagram_url ], function() {
-					jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, [ taskFlowChartObj.TaskFile.set_tasks_file_url, get_updated_db_diagram_url ], function() {
+					taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 					updateDBDiagram();
 				});
 			else if (local_is_from_auto_save)
@@ -193,17 +193,17 @@ function addNewTable() {
 		
 		//check if table already exists
 		if (isTaskTableLabelValid(label_obj)) {
-			var task_id = jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByType(task_type_id);
+			var task_id = taskFlowChartObj.ContextMenu.addTaskByType(task_type_id);
 			
 			if (task_id) {
-				jsPlumbWorkFlow.jsPlumbTaskFlow.setTaskLabelByTaskId(task_id, label_obj); //set {label: table_name}, so the jsPlumbTaskFlow.setTaskLabel method ignores the prompt and adds the default label or an auto generated label.
+				taskFlowChartObj.TaskFlow.setTaskLabelByTaskId(task_id, label_obj); //set {label: table_name}, so the TaskFlow.setTaskLabel method ignores the prompt and adds the default label or an auto generated label.
 			
 				//add id, created_date and modified_date attributes by default
-				var task_label = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
+				var task_label = taskFlowChartObj.TaskFlow.getTaskLabelByTaskId(task_id);
 				var id_attribute_name = task_label.toLowerCase().replace(/ /g, "_").replace(/_/g, "_") + "_id";
 				id_attribute_name = normalizeTaskTableName(id_attribute_name);
 				
-				var task_property_values = jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id];
+				var task_property_values = taskFlowChartObj.TaskFlow.tasks_properties[task_id];
 				task_property_values = task_property_values ? task_property_values : {};
 				
 				task_property_values.table_attr_names = [id_attribute_name, "created_date", "created_user_id", "modified_date", "modified_user_id"];
@@ -221,12 +221,12 @@ function addNewTable() {
 				task_property_values.table_attr_collations = [null, null, null, null, null];
 				task_property_values.table_attr_comments = [null, null, null, null, null];
 				
-				jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id] = task_property_values;
+				taskFlowChartObj.TaskFlow.tasks_properties[task_id] = task_property_values;
 				
 				DBTableTaskPropertyObj.prepareShortTableAttributes(task_id, task_property_values);
 				
 				//open properties
-				//jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id); //disable show proeprties bc is annoying
+				//taskFlowChartObj.Property.showTaskProperties(task_id); //disable show proeprties bc is annoying
 				
 				 old_tables_names[task_id] = "";
 				 old_tables_attributes_names[task_id] = {};
@@ -234,11 +234,11 @@ function addNewTable() {
 				return task_id;
 			}
 			else
-				jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Could not add table '" + table_name + "' to diagram. Please try again...");
+				taskFlowChartObj.StatusMessage.showError("Could not add table '" + table_name + "' to diagram. Please try again...");
 		}
 	}
 	else
-		jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Table name cannot be empty!");
+		taskFlowChartObj.StatusMessage.showError("Table name cannot be empty!");
 }
 
 //default_task are used in the admin_menu.js when we dragged tables from the Left_panel tree to the DB diagram.
@@ -248,36 +248,36 @@ function addExistentTable(table_name, offset) {
 		
 		//check if table already exists
 		if (isTaskTableLabelValid(label_obj)) {
-			var task_id = jsPlumbWorkFlow.jsPlumbContextMenu.addTaskByType(task_type_id, offset);
+			var task_id = taskFlowChartObj.ContextMenu.addTaskByType(task_type_id, offset);
 			
 			if (task_id) {
-				jsPlumbWorkFlow.jsPlumbTaskFlow.setTaskLabelByTaskId(task_id, label_obj); //set {label: table_name}, so the jsPlumbTaskFlow.setTaskLabel method ignores the prompt and adds the default label or an auto generated label.
+				taskFlowChartObj.TaskFlow.setTaskLabelByTaskId(task_id, label_obj); //set {label: table_name}, so the TaskFlow.setTaskLabel method ignores the prompt and adds the default label or an auto generated label.
 				
 				//update real table attributes
 				updateTaskTableAttributes(task_id, true, {
 					success: function() {
 						//open properties
-						//jsPlumbWorkFlow.jsPlumbProperty.showTaskProperties(task_id); //disable show proeprties bc is annoying
+						//taskFlowChartObj.Property.showTaskProperties(task_id); //disable show proeprties bc is annoying
 						
 						//re-update old_tables_names and old_tables_attributes_names
 						onDBTableTaskCreation(task_id);
 					},
 					error: function() {
 						//delete task
-						jsPlumbWorkFlow.jsPlumbTaskFlow.deleteTask(task_id, {confirm: false});
+						taskFlowChartObj.TaskFlow.deleteTask(task_id, {confirm: false});
 						
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Could not add table '" + table_name + "' to diagram. Please try again...");
+						taskFlowChartObj.StatusMessage.showError("Could not add table '" + table_name + "' to diagram. Please try again...");
 					}
 				});
 				
 				return task_id;
 			}
 			else
-				jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Could not add table '" + table_name + "' to diagram. Please try again...");
+				taskFlowChartObj.StatusMessage.showError("Could not add table '" + table_name + "' to diagram. Please try again...");
 		}
 	}
 	else
-		jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Table name cannot be empty!");
+		taskFlowChartObj.StatusMessage.showError("Table name cannot be empty!");
 }
 
 function createDiagamSQL() {
@@ -305,17 +305,17 @@ function createDiagamSQL() {
 
 function sortWorkflowTables() {
 	var sort_type = 1;
-	jsPlumbWorkFlow.jsPlumbTaskSort.sortTasks(sort_type);
+	taskFlowChartObj.TaskSort.sortTasks(sort_type);
 }
 
 /* SYNC Methods */
 
 function prepareDiagramSettings() {
-	var file_settings = jsPlumbWorkFlow.jsPlumbTaskFile.file_settings;
-	var workflow_menu = $("#" + jsPlumbWorkFlow.jsPlumbContextMenu.main_workflow_menu_obj_id);
+	var file_settings = taskFlowChartObj.TaskFile.file_settings;
+	var workflow_menu = $("#" + taskFlowChartObj.ContextMenu.main_workflow_menu_obj_id);
 	
 	if ($.isPlainObject(file_settings)) {
-		var workflow_data = jsPlumbWorkFlow.jsPlumbTaskFile.getWorkFlowData();
+		var workflow_data = taskFlowChartObj.TaskFile.getWorkFlowData();
 		var existent_tasks = workflow_data && workflow_data["tasks"] ? workflow_data["tasks"] : {};
 		
 		//prepare old_tables_names setting
@@ -347,11 +347,11 @@ function prepareDiagramSettings() {
 		if (!sync_enable)
 			toggleAutoSyncWithDBServer( sync_automatically_with_db_server.children("a")[0] );
 		else if (!$.isPlainObject(file_settings) || !file_settings.hasOwnProperty("sync_with_db_server")) {
-			if (!$.isPlainObject(jsPlumbWorkFlow.jsPlumbTaskFile.file_settings))
-				jsPlumbWorkFlow.jsPlumbTaskFile.file_settings = {};
+			if (!$.isPlainObject(taskFlowChartObj.TaskFile.file_settings))
+				taskFlowChartObj.TaskFile.file_settings = {};
 			
-			jsPlumbWorkFlow.jsPlumbTaskFile.file_settings["sync_with_db_server"] = 1;
-			jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {silent: true});
+			taskFlowChartObj.TaskFile.file_settings["sync_with_db_server"] = 1;
+			taskFlowChartObj.TaskFile.save(null, {silent: true});
 		}
 	}
 	else if (sync_enable && $.isPlainObject(file_settings) && file_settings["sync_with_db_server"] != 1)
@@ -373,25 +373,25 @@ function toggleAutoSyncWithDBServer(elm, sync_with_server) {
 		var li = elm.parent();
 		var html = elm.html();
 		var title = li.attr("title");
-		var is_sync_with_db_server = $.isPlainObject(jsPlumbWorkFlow.jsPlumbTaskFile.file_settings) && jsPlumbWorkFlow.jsPlumbTaskFile.file_settings["sync_with_db_server"] == 1;
+		var is_sync_with_db_server = $.isPlainObject(taskFlowChartObj.TaskFile.file_settings) && taskFlowChartObj.TaskFile.file_settings["sync_with_db_server"] == 1;
 		var call_sync_with_db_server = false;
 		
-		if (!$.isPlainObject(jsPlumbWorkFlow.jsPlumbTaskFile.file_settings))
-			jsPlumbWorkFlow.jsPlumbTaskFile.file_settings = {};
+		if (!$.isPlainObject(taskFlowChartObj.TaskFile.file_settings))
+			taskFlowChartObj.TaskFile.file_settings = {};
 		
 		if (sync_enable) {
 			li.removeClass("sync_enable");
 			html = html.replace("Disable", "Enable");
 			title = title.replace("Disable", "Enable");
 			
-			jsPlumbWorkFlow.jsPlumbTaskFile.file_settings["sync_with_db_server"] = 0;
+			taskFlowChartObj.TaskFile.file_settings["sync_with_db_server"] = 0;
 		}
 		else {
 			li.addClass("sync_enable");
 			html = html.replace("Enable", "Disable");
 			title = title.replace("Enable", "Disable");
 			
-			jsPlumbWorkFlow.jsPlumbTaskFile.file_settings["sync_with_db_server"] = 1;
+			taskFlowChartObj.TaskFile.file_settings["sync_with_db_server"] = 1;
 			
 			if (sync_with_server) 
 				call_sync_with_db_server = true;
@@ -401,15 +401,15 @@ function toggleAutoSyncWithDBServer(elm, sync_with_server) {
 		li.attr("title", title);
 		
 		//save workflow
-		var new_is_sync_with_db_server = jsPlumbWorkFlow.jsPlumbTaskFile.file_settings["sync_with_db_server"] == 1;
+		var new_is_sync_with_db_server = taskFlowChartObj.TaskFile.file_settings["sync_with_db_server"] == 1;
 		
 		if (is_sync_with_db_server != new_is_sync_with_db_server) {
 			sync_with_db_server_called = false;
 			
-			jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
+			taskFlowChartObj.TaskFile.save(null, {
 				silent: true,
 				success: function(data, textStatus, jqXHR) {
-					if (call_sync_with_db_server && !sync_with_db_server_called) //Note that the jsPlumbWorkFlow.jsPlumbTaskFile.on_success_save already calls the syncWithDBServer, so we don't need to call it twice. This 'if statement' prevents this case.
+					if (call_sync_with_db_server && !sync_with_db_server_called) //Note that the taskFlowChartObj.TaskFile.on_success_save already calls the syncWithDBServer, so we don't need to call it twice. This 'if statement' prevents this case.
 						syncWithDBServer();
 				},
 			});
@@ -430,7 +430,7 @@ function syncWithDBServer(do_not_simulate) {
 	prepareAutoSaveVars();
 	var local_is_from_auto_save = is_from_auto_save;
 	
-	var workflow_data = jsPlumbWorkFlow.jsPlumbTaskFile.getWorkFlowData();
+	var workflow_data = taskFlowChartObj.TaskFile.getWorkFlowData();
 	
 	//set original tables names and attributes names in workflow_data
 	if (workflow_data && workflow_data["tasks"]) {
@@ -438,7 +438,7 @@ function syncWithDBServer(do_not_simulate) {
 			var task = workflow_data["tasks"][task_id];
 			
 			//clone task properties, otherwise any change in the task properties will be saved in the workflow too
-			task["properties"] = Object.assign({}, task["properties"]); 
+			task["properties"] = assignObjectRecursively({}, task["properties"]); 
 			
 			//set old/original table name
 			task["old_label"] = old_tables_names.hasOwnProperty(task_id) ? old_tables_names[task_id] : "";
@@ -512,14 +512,14 @@ function syncWithDBServer(do_not_simulate) {
 						}
 						else if (show_sql && !auto_sync_error_message_shown) { //if automatically saving action and exists sql to show, shows error_message, but only show it once!
 							//if auto-sync is enabled
-							if (jsPlumbWorkFlow.jsPlumbTaskFile.file_settings["sync_with_db_server"] == 1) {
+							if (taskFlowChartObj.TaskFile.file_settings["sync_with_db_server"] == 1) {
 								alert("System could NOT sync diagram with DB Server automatically! Please do it manually..."); //show in an ALERT box so the user can see it and don't automatically disappear...
 								auto_sync_error_message_shown = true;
 							}
 						}
 					}
 					else
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Something went wrong with the syncronization with the DB server. Please try again...");
+						taskFlowChartObj.StatusMessage.showError("Something went wrong with the syncronization with the DB server. Please try again...");
 				}
 				else
 					checkSyncWithDBServerResult(local_is_from_auto_save, workflow_data, data);
@@ -528,11 +528,11 @@ function syncWithDBServer(do_not_simulate) {
 				if (!local_is_from_auto_save) {
 					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
-							jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+							taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 							syncWithDBServer(do_not_simulate);
 						});
 					else if (jqXHR.responseText) 
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showError(jqXHR.responseText);
+						taskFlowChartObj.StatusMessage.showError(jqXHR.responseText);
 				}
 			},
 		});
@@ -556,7 +556,7 @@ function checkSyncWithDBServerResult(local_is_from_auto_save, workflow_data, dat
 				
 				//set old/original attributes names
 				old_tables_attributes_names[task_id] = task["properties"] && task["properties"]["table_attr_names"] ? 
-					$.map(Object.assign({}, task["properties"]["table_attr_names"]), function(value, idx) { return [value]; }) //clone object/array and convert it to array
+					$.map(assignObjectRecursively({}, task["properties"]["table_attr_names"]), function(value, idx) { return [value]; }) //clone object/array and convert it to array
 				: [];
 			}
 		}
@@ -580,10 +580,10 @@ function checkSyncWithDBServerResult(local_is_from_auto_save, workflow_data, dat
 					msg += "\n" + error;
 				});
 				
-				jsPlumbWorkFlow.jsPlumbStatusMessage.showError(msg);
+				taskFlowChartObj.StatusMessage.showError(msg);
 			}
 			else 
-				jsPlumbWorkFlow.jsPlumbStatusMessage.showMessage("Please confirm with your diagram changes were saved correctly in the DB server.");
+				taskFlowChartObj.StatusMessage.showMessage("Please confirm with your diagram changes were saved correctly in the DB server.");
 		}
 		
 		//fetch new server data and update old/original table and attributes names with new server data, bc even if there were errors, some sql may hv been executed correctly to the server, so we need to get and update that changes...
@@ -656,7 +656,7 @@ function checkSyncWithDBServerResult(local_is_from_auto_save, workflow_data, dat
 						}
 						
 						if (msg)
-							jsPlumbWorkFlow.jsPlumbStatusMessage.showError("The system detected some inconsistencies between the diagram and server:" + msg + "\n\nPlease correct them before you continue...");
+							taskFlowChartObj.StatusMessage.showError("The system detected some inconsistencies between the diagram and server:" + msg + "\n\nPlease correct them before you continue...");
 						
 						//save old_tables_names and old_tables_attributes_names
 						saveDBDiagram();
@@ -665,7 +665,7 @@ function checkSyncWithDBServerResult(local_is_from_auto_save, workflow_data, dat
 			});
 	}
 	else if (!local_is_from_auto_save) 
-		jsPlumbWorkFlow.jsPlumbStatusMessage.showError("Error trying to sync diagram with DB server. Please try again");
+		taskFlowChartObj.StatusMessage.showError("Error trying to sync diagram with DB server. Please try again");
 	
 	return status;
 }
@@ -802,11 +802,11 @@ function executeSyncSQLStatements(workflow_data, statements) {
 			if (!local_is_from_auto_save) {
 				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
-						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+						taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 						executeSyncSQLStatements(workflow_data, sql_statements);
 					});
 				else if (jqXHR.responseText) 
-					jsPlumbWorkFlow.jsPlumbStatusMessage.showError(jqXHR.responseText);
+					taskFlowChartObj.StatusMessage.showError(jqXHR.responseText);
 			}
 		},
 	});
@@ -845,7 +845,7 @@ function createSqlEditor(textarea) {
 /* TASKFLOWCHART Callbacks */
 
 function updateTasksAfterFileRead(data) {
-	$(jsPlumbWorkFlow.jsPlumbTaskFlow.target_selector).each(function(idx, elm) {
+	$(taskFlowChartObj.TaskFlow.target_selector).each(function(idx, elm) {
 		var task_id = $(elm).attr("id");
 		
 		//update short foreign keys
@@ -865,7 +865,7 @@ function updateTasksAfterFileRead(data) {
 function updateTasksAfterFileSave() {
 	prepareAutoSaveVars();
 	
-	var is_sync_with_db_server = $.isPlainObject(jsPlumbWorkFlow.jsPlumbTaskFile.file_settings) && jsPlumbWorkFlow.jsPlumbTaskFile.file_settings["sync_with_db_server"] == 1;
+	var is_sync_with_db_server = $.isPlainObject(taskFlowChartObj.TaskFile.file_settings) && taskFlowChartObj.TaskFile.file_settings["sync_with_db_server"] == 1;
 	
 	if (is_sync_with_db_server && (auto_convert || (
 		!is_from_auto_save && confirm("You are about to sync this diagram with DB server. Do you wish to proceed?")
@@ -921,12 +921,12 @@ function onSubmitDBTableTaskProperties(properties_html_elm, task_id, task_proper
 
 function onDBTableTaskCreation(task_id) {
 	//backup original tables names for the sync action
-	var table_name = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
-	var task_property_values = jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id];
+	var table_name = taskFlowChartObj.TaskFlow.getTaskLabelByTaskId(task_id);
+	var task_property_values = taskFlowChartObj.TaskFlow.tasks_properties[task_id];
 	
 	old_tables_names[task_id] = table_name;
 	old_tables_attributes_names[task_id] = task_property_values && task_property_values.table_attr_names ? 
-		$.map(Object.assign({}, task_property_values.table_attr_names), function(value, idx) { return [value]; }) //clone object/array and convert it to array
+		$.map(assignObjectRecursively({}, task_property_values.table_attr_names), function(value, idx) { return [value]; }) //clone object/array and convert it to array
 	: null;
 }
 
@@ -980,7 +980,7 @@ function onAddTaskPropertiesAttribute(task_id, attribute_name, attribute_data, n
 }
 
 function onBeforeRemoveTaskPropertiesAttribute(task_id, attribute_name) {
-	var task_property_values = jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id];
+	var task_property_values = taskFlowChartObj.TaskFlow.tasks_properties[task_id];
 	
 	//remove attribute from task properties
 	if (task_property_values && task_property_values.table_attr_names)
@@ -1000,10 +1000,10 @@ function onBeforeRemoveTaskPropertiesAttribute(task_id, attribute_name) {
 
 function onBeforeSortTaskPropertiesAttributes(task_id, attributes_names) {
 	if (attributes_names) {
-		var task_property_values = jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties[task_id];
+		var task_property_values = taskFlowChartObj.TaskFlow.tasks_properties[task_id];
 		
 		if (task_property_values && task_property_values.table_attr_names) {
-			var table_attr_names = $.map(Object.assign({}, task_property_values.table_attr_names), function(value, idx) { return [value]; }); //clone object/array and convert it to array
+			var table_attr_names = $.map(assignObjectRecursively({}, task_property_values.table_attr_names), function(value, idx) { return [value]; }); //clone object/array and convert it to array
 			
 			$.each(task_property_values.table_attr_names, function(i, table_attr_name) {
 				var from_index = table_attr_names.indexOf(table_attr_name);

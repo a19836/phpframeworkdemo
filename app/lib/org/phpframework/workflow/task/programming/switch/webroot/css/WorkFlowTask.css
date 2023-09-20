@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_switch {
+.taskflowchartmenu .task.task_switch {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_switch {
+.taskflowchartdiagram .task.task_switch {
 	height:auto !important;
 }
-.jsplumbtaskworkflow .task.task_switch:not(:hover):before {
+.taskflowchartdiagram .task.task_switch:not(.is_start_task):not(:hover):before {
 	content:" ";
 	position:absolute;
 	top:-5px !important;
@@ -14,13 +14,13 @@
 	border:1px solid #426efa;
 	border-radius:5px;
 }
-.jsplumbtaskworkflow .task.task_switch:hover:before {
+.taskflowchartdiagram .task.task_switch:hover:before {
 	bottom:-5px !important;
 }
-.jsplumbtaskworkflow .task.task_switch:hover:after {
+.taskflowchartdiagram .task.task_switch:hover:after {
 	bottom:-25px !important;
 }
-.jsplumbtaskworkflow .task.task_switch .eps {
+.taskflowchartdiagram .task.task_switch .eps {
 	width:100%;
 	height:auto;
 	min-height:50px;
@@ -32,16 +32,16 @@
 	background-position:center 0;
 	float:none;
 }
-.jsplumbtaskworkflow .task.task_switch:hover .eps {
+.taskflowchartdiagram .task.task_switch:hover .eps {
 	width:175px;
 	margin-left:-52px;
 }
-.jsplumbtaskworkflow .task.task_switch .eps:hover:after {
+.taskflowchartdiagram .task.task_switch .eps:hover:after {
 	content:"Drag the rectangles to link to another box";
 	left:0;
 	bottom:-5px;
 }
-.jsplumbtaskworkflow .task.task_switch .ep {
+.taskflowchartdiagram .task.task_switch .ep {
 	height:20px;
 	border-radius:3px;
 	margin:0 5px 5px;
@@ -51,7 +51,7 @@
 	float:none;
 	clear:both;
 }
-.jsplumbtaskworkflow .task.task_switch .ep span {
+.taskflowchartdiagram .task.task_switch .ep span {
 	width:100%;
 	min-width:auto;
 	max-width:none;

@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_droppabletest {
+.taskflowchartmenu .task.task_droppabletest {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_droppabletest .eps {
+.taskflowchartdiagram .task.task_droppabletest .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_droppabletest .ep {
+.taskflowchartdiagram .task.task_droppabletest .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

@@ -76,7 +76,7 @@ var SendEmailTaskPropertyObj = {
 	},
 	
 	onTaskCloning : function(task_id) {
-		var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+		var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 		task_property_values["settings_type"] = "array";
 		task_property_values["settings"] = SendEmailTaskPropertyObj.getDefaultMethodArrayItems( task_property_values["method"] );
 	
@@ -87,7 +87,7 @@ var SendEmailTaskPropertyObj = {
 	
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
-			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+			var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 			ProgrammingTaskUtil.saveNewVariableInWorkflowAccordingWithTaskPropertiesValues(task_property_values);
 		
 			var label = SendEmailTaskPropertyObj.getDefaultExitLabel(task_property_values);
@@ -257,7 +257,7 @@ var SendEmailTaskPropertyObj = {
 	getCurrentSettings : function(task_html_elm) {
 		var settings_elm = task_html_elm.find(".settngs .settings");
 		var items = {};
-		var query_string = myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(settings_elm, "task_property_field");
+		var query_string = myWFObj.getTaskFlowChart().Property.getPropertiesQueryStringFromHtmlElm(settings_elm, "task_property_field");
 		parse_str(query_string, items);
 		items = items.hasOwnProperty("settings") ? items["settings"] : {};
 		

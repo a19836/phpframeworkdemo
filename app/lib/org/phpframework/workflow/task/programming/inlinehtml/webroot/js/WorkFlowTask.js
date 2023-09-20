@@ -195,7 +195,7 @@ var InlineHTMLTaskPropertyObj = {
 			var label = InlineHTMLTaskPropertyObj.getDefaultExitLabel(task_property_values);
 			ProgrammingTaskUtil.updateTaskDefaultExitLabel(task_id, label);
 			
-			//When the onCompleteTaskProperties function is called, the myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.hideSelectedTaskProperties() function was already called, which removed the html from properties popup. This means that we can call then the InlineHTMLTaskPropertyObj.ptl_editor.resetDroppables().
+			//When the onCompleteTaskProperties function is called, the myWFObj.getTaskFlowChart().Property.hideSelectedTaskProperties() function was already called, which removed the html from properties popup. This means that we can call then the InlineHTMLTaskPropertyObj.ptl_editor.resetDroppables().
 			
 			//check all droppables from jquery and resetting, this is, remove the invalid droppables.
 			//if we create a jquery droppable element inside of an iframe and then move the iframe or delete it or reload it, the droppable elements stop to exist, but jquery continues with them registered. So we need to call the resetDroppables() function to fix this cases, otherwise we will have weird javascript errors.
@@ -218,7 +218,7 @@ var InlineHTMLTaskPropertyObj = {
 		
 		if (ptl_editor) {
 			//hide popup first and empty html from properties popup
-			myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.hideSelectedTaskProperties();
+			myWFObj.getTaskFlowChart().Property.hideSelectedTaskProperties();
 			
 			//check all droppables from jquery and resetting, this is, remove the invalid droppables.
 			//if we create a jquery droppable element inside of an iframe and then move the iframe or delete it or reload it, the droppable elements stop to exist, but jquery continues with them registered. So we need to call the resetDroppables() function to fix this cases, otherwise we will have weird javascript errors.
@@ -235,7 +235,7 @@ var InlineHTMLTaskPropertyObj = {
 	
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
-			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+			var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 			var label = InlineHTMLTaskPropertyObj.getDefaultExitLabel(task_property_values);
 			ProgrammingTaskUtil.updateTaskDefaultExitLabel(task_id, label);
 		

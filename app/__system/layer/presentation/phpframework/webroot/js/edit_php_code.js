@@ -42,8 +42,8 @@ function onTogglePHPCodeAutoSave() {
 	var spans = lis.find("span");
 	
 	if (auto_save) {
-		jsPlumbWorkFlow.jsPlumbTaskFile.auto_save = false; //should be false bc the saveObj calls the getCodeForSaving method which already saves the workflow by default, and we don't need 2 saves at the same time.
-		jsPlumbWorkFlow.jsPlumbProperty.auto_save = true;
+		taskFlowChartObj.TaskFile.auto_save = false; //should be false bc the saveObj calls the getCodeForSaving method which already saves the workflow by default, and we don't need 2 saves at the same time.
+		taskFlowChartObj.Property.auto_save = true;
 		$(".taskflowchart").removeClass("auto_save_disabled");
 		
 		lis.addClass("active");
@@ -51,8 +51,8 @@ function onTogglePHPCodeAutoSave() {
 		spans.html("Disable Auto Save");
 	}
 	else {
-		jsPlumbWorkFlow.jsPlumbTaskFile.auto_save = false;
-		jsPlumbWorkFlow.jsPlumbProperty.auto_save = false;
+		taskFlowChartObj.TaskFile.auto_save = false;
+		taskFlowChartObj.Property.auto_save = false;
 		$(".taskflowchart").addClass("auto_save_disabled");
 		
 		lis.removeClass("active");
@@ -2583,7 +2583,7 @@ function onLoadTaskFlowChartAndCodeEditor(opts) {
 			MyFancyPopup.updatePopup();
 		});
 		
-		jsPlumbWorkFlow.onReady(function() {
+		taskFlowChartObj.onReady(function() {
 			workflow_menu.show();
 			parent.find(".big_white_panel").hide();
 		});
@@ -2652,12 +2652,12 @@ function createCodeEditor(textarea, options) {
 function resizeTaskFlowChart() {
 	$(".taskflowchart").height(getTaskFlowChartHeight() + "px");
 	
-	jsPlumbWorkFlow.resizePanels();
+	taskFlowChartObj.resizePanels();
 }
 
 function onResizeTaskFlowChartPanels(WF, height) {
-	if ($("#" + WF.jsPlumbContextMenu.main_tasks_menu_obj_id).parent().hasClass("with_top_bar_menu"))
-		$("#" + WF.jsPlumbContextMenu.main_tasks_menu_obj_id + ", #" + WF.jsPlumbContextMenu.main_tasks_menu_hide_obj_id + ", #" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).css("top", "");
+	if ($("#" + WF.ContextMenu.main_tasks_menu_obj_id).parent().hasClass("with_top_bar_menu"))
+		$("#" + WF.ContextMenu.main_tasks_menu_obj_id + ", #" + WF.ContextMenu.main_tasks_menu_hide_obj_id + ", #" + WF.TaskFlow.main_tasks_flow_obj_id).css("top", "");
 }
 
 function resizeCodeEditor(code_elm) {
@@ -2861,7 +2861,7 @@ function checkIfWorkflowDoesNotNeedToChangePreviousCodeWithErrors(main_obj_elm, 
 	
 	if (isEditorCodeWithErrors()) {
 		//if tasks_flow_tab is selected and if diagram changed
-		if (main_obj_elm.find("#tasks_flow_tab").is("li.ui-tabs-selected, li.ui-tabs-active") && jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving()) {
+		if (main_obj_elm.find("#tasks_flow_tab").is("li.ui-tabs-selected, li.ui-tabs-active") && taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving()) {
 			var old_code = getEditorCodeRawValue();
 			//force tasks flow tab to convert workfow into code, otherwise the code will never be rebuild again bc the auto_save will always enter in this condition.
 			var new_code = getCodeForSaving(main_obj_elm, {strip_php_tags: strip_php_tags}); //if tasks flow tab is selected ask user to convert workfow into code
@@ -2878,26 +2878,26 @@ function checkIfWorkflowDoesNotNeedToChangePreviousCodeWithErrors(main_obj_elm, 
 }
 
 function sortWorkflowTask(sort_type) {
-	jsPlumbWorkFlow.getMyFancyPopupObj().init({
-		parentElement: $("#" + jsPlumbWorkFlow.jsPlumbTaskFlow.main_tasks_flow_obj_id),
+	taskFlowChartObj.getMyFancyPopupObj().init({
+		parentElement: $("#" + taskFlowChartObj.TaskFlow.main_tasks_flow_obj_id),
 	});
-	jsPlumbWorkFlow.getMyFancyPopupObj().showOverlay();
-	jsPlumbWorkFlow.getMyFancyPopupObj().showLoading();
+	taskFlowChartObj.getMyFancyPopupObj().showOverlay();
+	taskFlowChartObj.getMyFancyPopupObj().showLoading();
 	
 	if (!sort_type) {
 		sort_type = prompt("Please choose the sort type that you wish? You can choose 1, 2, 3 or 4.");
 	}
 	
 	if (sort_type) {
-		jsPlumbWorkFlow.jsPlumbTaskSort.sortTasks(sort_type);
+		taskFlowChartObj.TaskSort.sortTasks(sort_type);
 		StatusMessageHandler.showMessage("Done sorting tasks based in the sort type: " + sort_type + ".", "", "bottom_messages", 1500);
 	}
 	
-	jsPlumbWorkFlow.getMyFancyPopupObj().hidePopup();
+	taskFlowChartObj.getMyFancyPopupObj().hidePopup();
 }
 
 function flipTasksFlowPanelsSide(elm) {
-	jsPlumbWorkFlow.jsPlumbContextMenu.flipPanelsSide();
+	taskFlowChartObj.ContextMenu.flipPanelsSide();
 }
 
 function toggleHeader(elm) {
@@ -2921,17 +2921,17 @@ function toggleHeader(elm) {
 }
 
 function onClickCodeEditorTab(elm, options) {
-	jsPlumbWorkFlow.jsPlumbTaskFile.stopAutoSave();
+	taskFlowChartObj.TaskFile.stopAutoSave();
 	
 	if (auto_convert) {
 		StatusMessageHandler.showMessage("Generating code based in workflow... Loading...", "", "bottom_messages", 1500);
 		
 		//close properties popup in case the auto_save be active on close task properties popup, but only if is not auto_save, otherwise the task properties can become messy, like it happens with the task inlinehtml.
-		if (auto_save && jsPlumbWorkFlow.jsPlumbProperty.auto_save && !is_from_auto_save) {
-			if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedTaskPropertiesOpen())
-				jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties({do_not_call_hide_properties: true});
-			else if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedConnectionPropertiesOpen())
-				jsPlumbWorkFlow.jsPlumbProperty.saveConnectionProperties({do_not_call_hide_properties: true});
+		if (auto_save && taskFlowChartObj.Property.auto_save && !is_from_auto_save) {
+			if (taskFlowChartObj.Property.isSelectedTaskPropertiesOpen())
+				taskFlowChartObj.Property.saveTaskProperties({do_not_call_hide_properties: true});
+			else if (taskFlowChartObj.Property.isSelectedConnectionPropertiesOpen())
+				taskFlowChartObj.Property.saveConnectionProperties({do_not_call_hide_properties: true});
 		}
 		
 		options = $.isPlainObject(options) ? options : {};
@@ -2982,13 +2982,13 @@ function onClickTaskWorkflowTab(elm, options) {
 		if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
 			auto_save = false;
 		
-		jsPlumbWorkFlow.jsPlumbTaskFile.read(get_workflow_file_url, {
+		taskFlowChartObj.TaskFile.read(get_workflow_file_url, {
 			"success": function(data, textStatus, jqXHR) {
 				resizeTaskFlowChart();
 				
 				MyFancyPopup.hidePopup();
 				workflow_menu.show();
-				jsPlumbWorkFlow.resizePanels();
+				taskFlowChartObj.resizePanels();
 				
 				if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
 					auto_save = auto_save_bkp;
@@ -2996,7 +2996,7 @@ function onClickTaskWorkflowTab(elm, options) {
 				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, get_workflow_file_url, function() {
 						elm.removeAttr("is_init");
-						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+						taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 						onClickTaskWorkflowTab(elm[0], options);
 					});
 				else {
@@ -3026,10 +3026,10 @@ function onClickTaskWorkflowTab(elm, options) {
 										options["on_success"]();
 									
 									//save new workflow for the first time
-									jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
+									taskFlowChartObj.TaskFile.save(null, {
 										overwrite: true, 
 										silent: true, 
-										success: jsPlumbWorkFlow.jsPlumbTaskFile.save_options["success"], 
+										success: taskFlowChartObj.TaskFile.save_options["success"], 
 									});
 								},
 								error : function(jqXHR, textStatus, errorThrown) {
@@ -3052,7 +3052,7 @@ function onClickTaskWorkflowTab(elm, options) {
 				
 				MyFancyPopup.hidePopup();
 				workflow_menu.show();
-				jsPlumbWorkFlow.resizePanels();
+				taskFlowChartObj.resizePanels();
 				
 				if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
 					auto_save = auto_save_bkp;
@@ -3060,7 +3060,7 @@ function onClickTaskWorkflowTab(elm, options) {
 				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, get_workflow_file_url, function() {
 						elm.removeAttr("is_init");
-						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+						taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 						onClickTaskWorkflowTab(elm[0], options);
 					});
 				else if (typeof options == "object" && typeof options["on_error"] == "function")
@@ -3072,14 +3072,14 @@ function onClickTaskWorkflowTab(elm, options) {
 		//when editing code, if auto_save is active, the system will try to convert the code to a workflow, but ig the php code contains errors (bc the user didn't finish yet his code, the generateTasksFlowFromCode will show errors, so we must remove this errors first, before generateTasksFlowFromCode.
 		if (auto_save) {
 			StatusMessageHandler.removeMessages("error");
-			jsPlumbWorkFlow.jsPlumbStatusMessage.removeMessages("error");
+			taskFlowChartObj.StatusMessage.removeMessages("error");
 		}
 		
 		setTimeout(function() {
 			updateTasksFlow();
 			resizeTaskFlowChart();
 			
-			jsPlumbWorkFlow.jsPlumbTaskFile.startAutoSave();
+			taskFlowChartObj.TaskFile.startAutoSave();
 			
 			if (auto_convert) {
 				StatusMessageHandler.showMessage("Generating workflow based in code... Loading...", "", "bottom_messages", 1500);
@@ -3104,21 +3104,21 @@ function onClickTaskWorkflowTab(elm, options) {
 }
 
 function updateTasksFlow() {
-	jsPlumbWorkFlow.getMyFancyPopupObj().updatePopup();
+	taskFlowChartObj.getMyFancyPopupObj().updatePopup();
 		
-	var tasks = jsPlumbWorkFlow.jsPlumbTaskFlow.getAllTasks();
+	var tasks = taskFlowChartObj.TaskFlow.getAllTasks();
 	
 	for (var i = 0; i < tasks.length; i++) {
 		var task = tasks[i];
 		
 		onEditLabel(task.id);
-		jsPlumbWorkFlow.jsPlumbTaskFlow.repaintTask( $(task) );
+		taskFlowChartObj.TaskFlow.repaintTask( $(task) );
 	}
 }
 
 function getCurrentWorkFlowId() {
-	var data = jsPlumbWorkFlow.jsPlumbTaskFile.getWorkFlowData();
-	data = Object.assign({}, data);
+	var data = taskFlowChartObj.TaskFile.getWorkFlowData();
+	data = assignObjectRecursively({}, data);
 	
 	//regularize the sizes and offsets from tasks, so we can get the real workflow id and check if there were changes or not in the workflow...
 	if (data && data["tasks"])
@@ -3169,17 +3169,17 @@ function generateCodeFromTasksFlow(do_not_confirm, options) {
 				success: function(data, textStatus, jqXHR) {
 					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, set_tmp_workflow_file_url, function() {
-							jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+							taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 							StatusMessageHandler.removeLastShownMessage("error");
 							generateCodeFromTasksFlow(true, options);
 						});
 				},
 			};
 			
-			if (jsPlumbWorkFlow.jsPlumbTaskFile.save(set_tmp_workflow_file_url, save_options)) {
+			if (taskFlowChartObj.TaskFile.save(set_tmp_workflow_file_url, save_options)) {
 				//if not default start task, the system will try to figure out one by default, but is always good to show a message to the user alerting him of this situation...
 				if (!is_from_auto_save) {
-					var exists_start_tasks = $("#" + jsPlumbWorkFlow.jsPlumbTaskFlow.main_tasks_flow_obj_id + " ." + jsPlumbWorkFlow.jsPlumbTaskFlow.task_class_name + "." + jsPlumbWorkFlow.jsPlumbTaskFlow.start_task_class_name).length > 0;
+					var exists_start_tasks = $("#" + taskFlowChartObj.TaskFlow.main_tasks_flow_obj_id + " ." + taskFlowChartObj.TaskFlow.task_class_name + "." + taskFlowChartObj.TaskFlow.start_task_class_name).length > 0;
 					
 					if (!exists_start_tasks)
 						StatusMessageHandler.showMessage("There is no startup task selected. The system tried to select a default one, but is more reliable if you define one manually...");
@@ -3208,14 +3208,14 @@ function generateCodeFromTasksFlow(do_not_confirm, options) {
 								var msg = "";
 								for (var i = 0; i < loops.length; i++) {
 									var loop = loops[i];
-									var slabel = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(loop["source_task_id"]);
-									var tlabel = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(loop["target_task_id"]);
+									var slabel = taskFlowChartObj.TaskFlow.getTaskLabelByTaskId(loop["source_task_id"]);
+									var tlabel = taskFlowChartObj.TaskFlow.getTaskLabelByTaskId(loop["target_task_id"]);
 									
 									msg += (i > 0 ? "\n" : "") + "- '" + slabel + "' => '" + tlabel + "'";
 								}
 								
 								msg = "The system detected the following invalid loops and discarded them from the code:\n" + msg + "\n\nYou should remove them from the workflow and apply the correct 'loop task' for doing loops.";
-								jsPlumbWorkFlow.jsPlumbStatusMessage.showError(msg);
+								taskFlowChartObj.StatusMessage.showError(msg);
 								
 								if (typeof options["error"] == "function")
 									options["error"]();
@@ -3318,7 +3318,7 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 				status = false;
 				
 				if (!is_from_auto_save) {
-					jsPlumbWorkFlow.getMyFancyPopupObj().hidePopup();
+					taskFlowChartObj.getMyFancyPopupObj().hidePopup();
 					MyFancyPopup.init({
 						parentElement: window,
 					});
@@ -3347,28 +3347,28 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 							});
 						}
 						else if (data == 1) {
-							var previous_callback = jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read;
-							var previous_tasks_flow_saved_data_obj = jsPlumbWorkFlow.jsPlumbTaskFile.saved_data_obj; //save the previous jsPlumbTaskFile.saved_data_obj, bc when we run the jsPlumbTaskFile.reload method, this var will be with the new workflow data obj and then the auto_save won't run bc the jsPlumbTaskFile.isWorkFlowChangedFromLastSaving will return false. So we must save this var before and then re-put it again with the previous value.
+							var previous_callback = taskFlowChartObj.TaskFile.on_success_read;
+							var previous_tasks_flow_saved_data_obj = taskFlowChartObj.TaskFile.saved_data_obj; //save the previous TaskFile.saved_data_obj, bc when we run the TaskFile.reload method, this var will be with the new workflow data obj and then the auto_save won't run bc the TaskFile.isWorkFlowChangedFromLastSaving will return false. So we must save this var before and then re-put it again with the previous value.
 							
 							//check if there is any task properties open and if it is, hide then, bc they won't do anything bc the tasks will be new and with new ids, so the task properties that were previously open, doesn't belong to any of the new tasks. So for a good user-experience, we need to close them.
-							if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedTaskPropertiesOpen())
-								jsPlumbWorkFlow.jsPlumbProperty.hideSelectedTaskProperties();
-							else if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedConnectionPropertiesOpen())
-								jsPlumbWorkFlow.jsPlumbProperty.hideSelectedConnectionProperties();
+							if (taskFlowChartObj.Property.isSelectedTaskPropertiesOpen())
+								taskFlowChartObj.Property.hideSelectedTaskProperties();
+							else if (taskFlowChartObj.Property.isSelectedConnectionPropertiesOpen())
+								taskFlowChartObj.Property.hideSelectedConnectionProperties();
 							
-							jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = function(data, text_status, jqXHR) {
+							taskFlowChartObj.TaskFile.on_success_read = function(data, text_status, jqXHR) {
 								if (!data) {
-									jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to load the workflow's tasks.");
+									taskFlowChartObj.StatusMessage.showError("There was an error trying to load the workflow's tasks.");
 									
 									if (typeof options["error"] == "function")
 										options["error"]();
 								}
 								else {
 									//sort tasks
-									jsPlumbWorkFlow.jsPlumbTaskSort.sortTasks();
+									taskFlowChartObj.TaskSort.sortTasks();
 									
 									setTimeout(function() { //must be in timeout otherwise the connections will appear weird
-										jsPlumbWorkFlow.jsPlumbTaskFlow.repaintAllTasks();
+										taskFlowChartObj.TaskFlow.repaintAllTasks();
 									}, 5);
 									
 									//update code id
@@ -3385,15 +3385,15 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 								if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
 									auto_save = auto_save_bkp;
 								
-								//The jsPlumbTaskFile will call after this function the jsPlumbTaskFile.startAutoSave method which updates the jsPlumbTaskFile.saved_data_obj var with the new workflow data obj. So we must execute a setTimeout so we can then update the old value to the jsPlumbTaskFile.saved_data_obj var.
+								//The TaskFile will call after this function the TaskFile.startAutoSave method which updates the TaskFile.saved_data_obj var with the new workflow data obj. So we must execute a setTimeout so we can then update the old value to the TaskFile.saved_data_obj var.
 								setTimeout(function() {
-									jsPlumbWorkFlow.jsPlumbTaskFile.saved_data_obj = previous_tasks_flow_saved_data_obj;
+									taskFlowChartObj.TaskFile.saved_data_obj = previous_tasks_flow_saved_data_obj;
 								}, 100);
 								
-								jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = previous_callback;
+								taskFlowChartObj.TaskFile.on_success_read = previous_callback;
 							}
 							
-							jsPlumbWorkFlow.jsPlumbTaskFile.reload(get_tmp_workflow_file_url, {
+							taskFlowChartObj.TaskFile.reload(get_tmp_workflow_file_url, {
 								"async": true,
 								error: function() {
 									if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
@@ -3402,7 +3402,7 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 							});
 						}
 						else {
-							jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again." + (data ? "\n" + data : ""));
+							taskFlowChartObj.StatusMessage.showError("There was an error trying to update this workflow. Please try again." + (data ? "\n" + data : ""));
 							
 							if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
 								auto_save = auto_save_bkp;
@@ -3418,7 +3418,7 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 					},
 					error : function(jqXHR, textStatus, errorThrown) { 
 						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again." + msg);
+						taskFlowChartObj.StatusMessage.showError("There was an error trying to update this workflow. Please try again." + msg);
 						if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
 							auto_save = auto_save_bkp;
 						
@@ -3634,7 +3634,7 @@ function isCodeAndWorkflowObjChanged(main_obj_with_tabs) {
 			if (!is_changed) {
 				var selected_tab = main_obj_with_tabs.children("ul").find("li.ui-tabs-selected, li.ui-tabs-active").first();
 				
-				is_changed = selected_tab.attr("id") == "tasks_flow_tab" && jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving(); //compares if tasks' sizes and offsets are different, but only if workflow tab is selected.
+				is_changed = selected_tab.attr("id") == "tasks_flow_tab" && taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving(); //compares if tasks' sizes and offsets are different, but only if workflow tab is selected.
 			}
 		}
 	}
@@ -3681,22 +3681,22 @@ function getCodeForSaving(parent_elm, options) {
 			updateTasksFlow();
 			
 			//close properties popup in case the auto_save be active on close task properties popup, but only if is not auto_save, otherwise the task properties can become messy, like it happens with the task inlinehtml.
-			if (auto_save && jsPlumbWorkFlow.jsPlumbProperty.auto_save && !is_from_auto_save) {
-				if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedTaskPropertiesOpen())
-					jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties({do_not_call_hide_properties: true});
-				else if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedConnectionPropertiesOpen())
-					jsPlumbWorkFlow.jsPlumbProperty.saveConnectionProperties({do_not_call_hide_properties: true});
+			if (auto_save && taskFlowChartObj.Property.auto_save && !is_from_auto_save) {
+				if (taskFlowChartObj.Property.isSelectedTaskPropertiesOpen())
+					taskFlowChartObj.Property.saveTaskProperties({do_not_call_hide_properties: true});
+				else if (taskFlowChartObj.Property.isSelectedConnectionPropertiesOpen())
+					taskFlowChartObj.Property.saveConnectionProperties({do_not_call_hide_properties: true});
 				
 				new_workflow_id = getCurrentWorkFlowId();
 			}
 			
 			//save workflow
-			if (jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving() || !is_from_auto_save) //if it is a manual save action, saves workflow
-				status = jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
+			if (taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving() || !is_from_auto_save) //if it is a manual save action, saves workflow
+				status = taskFlowChartObj.TaskFile.save(null, {
 					overwrite: true, 
 					silent: true, 
 					do_not_silent_errors: !is_from_auto_save, //only show errors if not from auto_save
-					success: jsPlumbWorkFlow.jsPlumbTaskFile.save_options["success"], 
+					success: taskFlowChartObj.TaskFile.save_options["success"], 
 				});
 			
 			//generate code if some changes in workflow
@@ -3725,11 +3725,11 @@ function getCodeForSaving(parent_elm, options) {
 							updateTasksFlow();
 							
 							//save workflow
-							jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
+							taskFlowChartObj.TaskFile.save(null, {
 								overwrite: true, 
 								silent: true, 
 								do_not_silent_errors: true,
-								success: jsPlumbWorkFlow.jsPlumbTaskFile.save_options["success"],
+								success: taskFlowChartObj.TaskFile.save_options["success"],
 							});
 							
 							//click in code tab
@@ -3754,22 +3754,22 @@ function getCodeForSaving(parent_elm, options) {
 			updateTasksFlow();
 			
 			//close properties popup in case the auto_save be active on close task properties popup, but only if is not auto_save, otherwise the task properties can become messy, like it happens with the task inlinehtml.
-			if (auto_save && jsPlumbWorkFlow.jsPlumbProperty.auto_save && !is_from_auto_save) {
-				if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedTaskPropertiesOpen())
-					jsPlumbWorkFlow.jsPlumbProperty.saveTaskProperties({do_not_call_hide_properties: true});
-				else if (jsPlumbWorkFlow.jsPlumbProperty.isSelectedConnectionPropertiesOpen())
-					jsPlumbWorkFlow.jsPlumbProperty.saveConnectionProperties({do_not_call_hide_properties: true});
+			if (auto_save && taskFlowChartObj.Property.auto_save && !is_from_auto_save) {
+				if (taskFlowChartObj.Property.isSelectedTaskPropertiesOpen())
+					taskFlowChartObj.Property.saveTaskProperties({do_not_call_hide_properties: true});
+				else if (taskFlowChartObj.Property.isSelectedConnectionPropertiesOpen())
+					taskFlowChartObj.Property.saveConnectionProperties({do_not_call_hide_properties: true});
 				
 				new_workflow_id = getCurrentWorkFlowId();
 			}
 			
 			//save workflow
-			if (jsPlumbWorkFlow.jsPlumbTaskFile.isWorkFlowChangedFromLastSaving() || !is_from_auto_save) //if it is a manual save action, saves workflow
-				status = jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {
+			if (taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving() || !is_from_auto_save) //if it is a manual save action, saves workflow
+				status = taskFlowChartObj.TaskFile.save(null, {
 					overwrite: true, 
 					silent: true, 
 					do_not_silent_errors: !is_from_auto_save, //only show errors if not from auto_save
-					success: jsPlumbWorkFlow.jsPlumbTaskFile.save_options["success"], 
+					success: taskFlowChartObj.TaskFile.save_options["success"], 
 				});
 			
 			//generate code if some changes in workflow
@@ -4032,7 +4032,7 @@ function saveObj(save_object_url, obj, opts) {
 												MyFancyPopup.showLoading();
 												
 												//prepare url, by removing the file_modified_time from the url, so the ajax request doesn't check if the file was changed. 
-												var ajax_options_clone = Object.assign({}, ajax_options);
+												var ajax_options_clone = assignObjectRecursively({}, ajax_options);
 												ajax_options_clone.url = ajax_options_clone.url.replace(/(&|\?)file_modified_time=([0-9]*)/g, "");
 												
 												//call saveObj again

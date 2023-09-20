@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_soapconnector {
+.taskflowchartmenu .task.task_soapconnector {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_soapconnector .eps {
+.taskflowchartdiagram .task.task_soapconnector .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_soapconnector .ep {
+.taskflowchartdiagram .task.task_soapconnector .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

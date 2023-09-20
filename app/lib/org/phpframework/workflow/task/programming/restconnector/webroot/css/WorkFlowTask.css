@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_restconnector {
+.taskflowchartmenu .task.task_restconnector {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_restconnector .eps {
+.taskflowchartdiagram .task.task_restconnector .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_restconnector .ep {
+.taskflowchartdiagram .task.task_restconnector .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

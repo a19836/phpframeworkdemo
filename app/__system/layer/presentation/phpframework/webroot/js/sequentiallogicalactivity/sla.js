@@ -418,7 +418,7 @@ function loadSLASettingsAction(action, group_item, asynchronous) {
 									
 									//close settings ui popup automatically
 									setTimeout(function() {
-										eval('var WF = jsPlumbWorkFlow_' + rel_query_elm.attr("rand_number") + ';');
+										eval('var WF = taskFlowChartObj_' + rel_query_elm.attr("rand_number") + ';');
 										WF.getMyFancyPopupObj().hidePopup();
 										
 										//just in case
@@ -823,7 +823,7 @@ function initSLAGroupItemTasks(group_item, values) {
 						exists = $.isEmptyObject(values) || values.hasOwnProperty(tag);
 					
 					//prepare properties
-					jsPlumbWorkFlow.jsPlumbProperty.setPropertiesFromHtmlElm(m, "task_property_field", s);
+					taskFlowChartObj.Property.setPropertiesFromHtmlElm(m, "task_property_field", s);
 					
 					//console.log(func);
 					//console.log(m);
@@ -2210,8 +2210,8 @@ function updateSLAProgrammingTaskVariablesInWorkflowSelect(select) {
 		});
 	}
 	
-	if (update_sla_programming_task_variables_from_workflow && jsPlumbWorkFlow) {
-		var tasks_properties = jsPlumbWorkFlow.jsPlumbTaskFlow.tasks_properties;
+	if (update_sla_programming_task_variables_from_workflow && taskFlowChartObj) {
+		var tasks_properties = taskFlowChartObj.TaskFlow.tasks_properties;
 		
 		if (tasks_properties) {
 			var include_paths = [];
@@ -3553,7 +3553,7 @@ function parseArgs(html_elm, attr_name) {
 }
 
 function parseArray(html_elm) {
-	var query_string = jsPlumbWorkFlow.jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(html_elm[0], "task_property_field");
+	var query_string = taskFlowChartObj.Property.getPropertiesQueryStringFromHtmlElm(html_elm[0], "task_property_field");
 	var settings = {};
 	parse_str(query_string, settings);
 	
@@ -3582,7 +3582,7 @@ function getSLASettings(sla) {
 			updateTasksFlow();
 		}
 		
-		status = jsPlumbWorkFlow.jsPlumbTaskFile.save(null, {overwrite: true, silent: true});
+		status = taskFlowChartObj.TaskFile.save(null, {overwrite: true, silent: true});
 	
 		if (status && confirm("Do you wish to generate new Groups based in the Workflow tab, before you save?\nIf you click the cancel button, the system will discard the changes in the Workflow tab and give preference to the Groups tab."))
 			status = generateSLAGroupsFromTasksFlow(true);
@@ -3630,14 +3630,14 @@ function generateSLAGroupsFromTasksFlow(do_not_confirm) {
 			success: function(data, textStatus, jqXHR) {
 				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, set_tmp_workflow_file_url, function() {
-						jsPlumbWorkFlow.jsPlumbStatusMessage.removeLastShownMessage("error");
+						taskFlowChartObj.StatusMessage.removeLastShownMessage("error");
 						StatusMessageHandler.removeLastShownMessage("error");
 						generateSLAGroupsFromTasksFlow(true);
 					});
 			},
 		};
 		
-		if (jsPlumbWorkFlow.jsPlumbTaskFile.save(set_tmp_workflow_file_url, save_options)) {
+		if (taskFlowChartObj.TaskFile.save(set_tmp_workflow_file_url, save_options)) {
 			$.ajax({
 				type : "get",
 				url : create_sla_settings_from_workflow_file_url,
@@ -3665,14 +3665,14 @@ function generateSLAGroupsFromTasksFlow(do_not_confirm) {
 							var msg = "";
 							for (var i = 0; i < loops.length; i++) {
 								var loop = loops[i];
-								var slabel = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(loop["source_task_id"]);
-								var tlabel = jsPlumbWorkFlow.jsPlumbTaskFlow.getTaskLabelByTaskId(loop["target_task_id"]);
+								var slabel = taskFlowChartObj.TaskFlow.getTaskLabelByTaskId(loop["source_task_id"]);
+								var tlabel = taskFlowChartObj.TaskFlow.getTaskLabelByTaskId(loop["target_task_id"]);
 								
 								msg += (i > 0 ? "\n" : "") + "- '" + slabel + "' => '" + tlabel + "'";
 							}
 							
 							msg = "The system detected the following invalid loops and discarded them from the Groups settings:\n" + msg + "\n\nYou should remove them from the workflow and apply the correct 'loop task' for doing loops.";
-							jsPlumbWorkFlow.jsPlumbStatusMessage.showError(msg);
+							taskFlowChartObj.StatusMessage.showError(msg);
 							alert(msg);
 						}
 						else {
@@ -3681,7 +3681,7 @@ function generateSLAGroupsFromTasksFlow(do_not_confirm) {
 						}
 					}
 					else 
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update Groups. Please try again.");
+						taskFlowChartObj.StatusMessage.showError("There was an error trying to update Groups. Please try again.");
 					
 					MyFancyPopup.hidePopup();
 					workflow_menu.show();
@@ -3692,7 +3692,7 @@ function generateSLAGroupsFromTasksFlow(do_not_confirm) {
 							generateSLAGroupsFromTasksFlow(true);
 						});
 					else {
-						jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update Groups. Please try again.");
+						taskFlowChartObj.StatusMessage.showError("There was an error trying to update Groups. Please try again.");
 				
 						MyFancyPopup.hidePopup();
 						workflow_menu.show();
@@ -3702,7 +3702,7 @@ function generateSLAGroupsFromTasksFlow(do_not_confirm) {
 			});
 		}
 		else 
-			jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update Groups. Please try again.");
+			taskFlowChartObj.StatusMessage.showError("There was an error trying to update Groups. Please try again.");
 	}
 	
 	return status;
@@ -3716,7 +3716,7 @@ function generateSLATasksFlowFromGroups(do_not_confirm) {
 		
 		var sla = $(".sla");
 		
-		jsPlumbWorkFlow.getMyFancyPopupObj().hidePopup();
+		taskFlowChartObj.getMyFancyPopupObj().hidePopup();
 		MyFancyPopup.init({
 			parentElement: window,
 		});
@@ -3737,29 +3737,29 @@ function generateSLATasksFlowFromGroups(do_not_confirm) {
 						generateSLATasksFlowFromGroups(true);
 					});
 				else if (data == 1) {
-					var previous_callback = jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read;
+					var previous_callback = taskFlowChartObj.TaskFile.on_success_read;
 					
-					jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = function(data, text_status, jqXHR) {
+					taskFlowChartObj.TaskFile.on_success_read = function(data, text_status, jqXHR) {
 						if (!data)
-							jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to load the workflow's tasks.");
+							taskFlowChartObj.StatusMessage.showError("There was an error trying to load the workflow's tasks.");
 						else {
-							jsPlumbWorkFlow.jsPlumbTaskSort.sortTasks();
+							taskFlowChartObj.TaskSort.sortTasks();
 							status = true;
 						}
 						
-						jsPlumbWorkFlow.jsPlumbTaskFile.on_success_read = previous_callback;
+						taskFlowChartObj.TaskFile.on_success_read = previous_callback;
 					}
 				
-					jsPlumbWorkFlow.jsPlumbTaskFile.reload(get_tmp_workflow_file_url, {"async": true});
+					taskFlowChartObj.TaskFile.reload(get_tmp_workflow_file_url, {"async": true});
 				}
 				else
-					jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again.");
+					taskFlowChartObj.StatusMessage.showError("There was an error trying to update this workflow. Please try again.");
 				
 				MyFancyPopup.hidePopup();
 				sla.find(".workflow_menu").show();
 			},
 			error : function() { 
-				jsPlumbWorkFlow.jsPlumbStatusMessage.showError("There was an error trying to update this workflow. Please try again.");
+				taskFlowChartObj.StatusMessage.showError("There was an error trying to update this workflow. Please try again.");
 			
 				MyFancyPopup.hidePopup();
 				sla.find(".workflow_menu").show();

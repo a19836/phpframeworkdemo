@@ -21,13 +21,13 @@ if (typeof is_global_common_file_already_included == "undefined") {
 	var is_global_common_file_already_included = 1;
 	
 	var myWFObj = {
-		WF: jsPlumbWorkFlow,
+		WF: taskFlowChartObj,
 		
-		setJsPlumbWorkFlow : function(WF) {
+		setTaskFlowChart : function(WF) {
 			this.WF = WF;
 		},
 		
-		getJsPlumbWorkFlow : function() {
+		getTaskFlowChart : function() {
 			return this.WF;
 		}
 	};
@@ -50,7 +50,7 @@ if (typeof is_global_common_file_already_included == "undefined") {
 		if (!isInputTextValid(label_obj.label, /[^\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC\-\.\$ ]+/)) { //'\w' means all words with '_' and 'u' means with accents and ç too.
 			var msg = "Invalid label. Please choose a different label.\nOnly this letters are allowed: a-z, A-Z, 0-9, '-', '_', '.', '$' and you must have at least 1 character.";
 			alert(msg);
-			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError(msg);
+			myWFObj.getTaskFlowChart().StatusMessage.showError(msg);
 			return false;
 		}
 		return true;
@@ -64,22 +64,22 @@ if (typeof is_global_common_file_already_included == "undefined") {
 	}
 	
 	function isTaskLabelRepeated(label_obj, task_id, ignore_msg) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
+		var WF = myWFObj.getTaskFlowChart();
 		var l = label_obj.label.toLowerCase();
 		
-		var tasks = WF.jsPlumbTaskFlow.getAllTasks();
+		var tasks = WF.TaskFlow.getAllTasks();
 		var total = tasks.length;
 		
 		for (var i = 0; i < total; i++) {
 			var t = $(tasks[i]);
-			var elm_label = WF.jsPlumbTaskFlow.getTaskLabel(t);
+			var elm_label = WF.TaskFlow.getTaskLabel(t);
 			
 			if (l == elm_label.toLowerCase() && t.attr("id") != task_id) {
 				if (!ignore_msg) {
 					var msg = "Error: Repeated label.\nYou cannot have repeated labels!\nPlease try again...";
-					WF.jsPlumbStatusMessage.showError(msg);
+					WF.StatusMessage.showError(msg);
 					
-					var msg_elm = WF.jsPlumbStatusMessage.getMessageHtmlObj().children(".error").last();
+					var msg_elm = WF.StatusMessage.getMessageHtmlObj().children(".error").last();
 					
 					if (!msg_elm.is(":visible"))
 						alert(msg);
@@ -102,24 +102,24 @@ if (typeof is_global_common_file_already_included == "undefined") {
 	}
 	
 	function prepareLabelIfUserLabelIsInvalid(task_id) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
+		var WF = myWFObj.getTaskFlowChart();
 		
 		//console.debug(task_id);
-		var tasks = WF.jsPlumbTaskFlow.getAllTasks();
+		var tasks = WF.TaskFlow.getAllTasks();
 		var total = tasks.length;
 		
-		var task_label = WF.jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
+		var task_label = WF.TaskFlow.getTaskLabelByTaskId(task_id);
 		
 		for (var i = 0; i < total; i++) {
 			var t = $(tasks[i]);
-			var elm_label = WF.jsPlumbTaskFlow.getTaskLabel(t);
+			var elm_label = WF.TaskFlow.getTaskLabel(t);
 			
 			if (task_label == elm_label && t.attr("id") != task_id) {
 				var r = parseInt(Math.random() * 10000);
 				var new_label = task_label + "_" + r;
 				
-				WF.jsPlumbTaskFlow.getTaskLabelElementByTaskId(task_id).html(new_label);
-				WF.jsPlumbTaskFlow.centerTaskInnerElements(task_id);
+				WF.TaskFlow.getTaskLabelElementByTaskId(task_id).html(new_label);
+				WF.TaskFlow.centerTaskInnerElements(task_id);
 				
 				break;
 			}
@@ -134,7 +134,7 @@ if (typeof is_global_common_file_already_included == "undefined") {
 	
 	function invalidateTaskConnectionIfItIsToItSelf(conn) {
 		if (isTaskConnectionToItSelf(conn)) {
-			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("WARNING: Sorry but you cannot create a connection to a task it-self!");
+			myWFObj.getTaskFlowChart().StatusMessage.showError("WARNING: Sorry but you cannot create a connection to a task it-self!");
 			return false;	
 		}
 		return true;
@@ -146,14 +146,14 @@ if (typeof is_global_common_file_already_included == "undefined") {
 			var connection_exit_id = conn.connection.getParameter("connection_exit_id");
 			
 			if (connection_exit_id) {
-				var connections = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getSourceConnections(source_id);
+				var connections = myWFObj.getTaskFlowChart().TaskFlow.getSourceConnections(source_id);
 				
 				for (var i = 0; i < connections.length; i++) {
 					var c = connections[i];
 					var ceid = c.getParameter("connection_exit_id");
 					
 					if (ceid && c.id != conn.connection.id && ceid == connection_exit_id) {
-						myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("You can only have 1 connection from the each exit point.");
+						myWFObj.getTaskFlowChart().StatusMessage.showError("You can only have 1 connection from the each exit point.");
 						return false
 					}
 				}
@@ -164,12 +164,12 @@ if (typeof is_global_common_file_already_included == "undefined") {
 	}
 	
 	function onTaskCloning(task_id, opts) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		WF.jsPlumbTaskFlow.setTaskLabelByTaskId(task_id, {label: null}); //set {label: null}, so the jsPlumbTaskFlow.setTaskLabel method ignores the prompt and adds the default label or an auto generated label.
+		var WF = myWFObj.getTaskFlowChart();
+		WF.TaskFlow.setTaskLabelByTaskId(task_id, {label: null}); //set {label: null}, so the TaskFlow.setTaskLabel method ignores the prompt and adds the default label or an auto generated label.
 		
 		//open properties
 		if (!opts || !opts["do_not_show_task_properties"])
-			WF.jsPlumbProperty.showTaskProperties(task_id);
+			WF.Property.showTaskProperties(task_id);
 	}
 	
 	function checkIfValueIsTrue(value) {
@@ -179,7 +179,7 @@ if (typeof is_global_common_file_already_included == "undefined") {
 	}
 	
 	function onEditLabel(task_id) {
-		var task = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskById(task_id);
+		var task = myWFObj.getTaskFlowChart().TaskFlow.getTaskById(task_id);
 		var info = task.find(".info");
 		var span = info.find("span").first();
 		
@@ -200,16 +200,16 @@ if (typeof is_global_common_file_already_included == "undefined") {
 	
 	function updateTaskLabelInShownTaskProperties(task_id, task_properties_input_selector) {
 		//if task properties is open, update label
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+		var WF = myWFObj.getTaskFlowChart();
+		var task = WF.TaskFlow.getTaskById(task_id);
 		var task_type = task.attr("type");
-		var show_task_properties = WF.jsPlumbProperty.isTaskSubSettingTrue(task_type, "task_menu", "show_properties_menu", true);
+		var show_task_properties = WF.Property.isTaskSubSettingTrue(task_type, "task_menu", "show_properties_menu", true);
 		
 		if (show_task_properties) {
-			var selected_task_properties = $("#" + WF.jsPlumbProperty.selected_task_properties_id);
+			var selected_task_properties = $("#" + WF.Property.selected_task_properties_id);
 			
 			if (selected_task_properties.is(":visible") && selected_task_properties.attr("task_id") == task_id)
-				selected_task_properties.find(task_properties_input_selector).val( WF.jsPlumbTaskFlow.getTaskLabel(task) );
+				selected_task_properties.find(task_properties_input_selector).val( WF.TaskFlow.getTaskLabel(task) );
 		}
 	}
 	
@@ -287,31 +287,31 @@ if (typeof is_global_common_file_already_included == "undefined") {
 	}
 	
 	function showTaskPropertiesIfExists(task_id, task) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
+		var WF = myWFObj.getTaskFlowChart();
 		var task_type = task.attr("type");
-		var show_task_properties = WF.jsPlumbProperty.isTaskSubSettingTrue(task_type, "task_menu", "show_properties_menu", true);
+		var show_task_properties = WF.Property.isTaskSubSettingTrue(task_type, "task_menu", "show_properties_menu", true);
 		
 		if (show_task_properties) {
-			WF.jsPlumbProperty.showTaskProperties(task_id, {do_not_call_hide_properties : true});
+			WF.Property.showTaskProperties(task_id, {do_not_call_hide_properties : true});
 			
 			//if properties are open, then closes the contextmenu
-			if (WF.jsPlumbProperty.isSelectedTaskPropertiesOpen())
-				WF.jsPlumbContextMenu.hideContextMenus();
+			if (WF.Property.isSelectedTaskPropertiesOpen())
+				WF.ContextMenu.hideContextMenus();
 		}
 	}
 	
 	function showConnectionPropertiesIfExists(connection) {
 		if (connection) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
+			var WF = myWFObj.getTaskFlowChart();
 			var task_type = $("#" + connection.sourceId).attr("type");
-			var show_connection_properties = WF.jsPlumbProperty.isTaskSubSettingTrue(task_type, "connection_menu", "show_properties_menu", true);
+			var show_connection_properties = WF.Property.isTaskSubSettingTrue(task_type, "connection_menu", "show_properties_menu", true);
 			
 			if (show_connection_properties) {
-				WF.jsPlumbProperty.showConnectionProperties(connection.id, {do_not_call_hide_properties : true});
+				WF.Property.showConnectionProperties(connection.id, {do_not_call_hide_properties : true});
 				
 				//if properties are open, then closes the contextmenu
-				if (WF.jsPlumbProperty.isSelectedConnectionPropertiesOpen())
-					WF.jsPlumbContextMenu.hideContextMenus();
+				if (WF.Property.isSelectedConnectionPropertiesOpen())
+					WF.ContextMenu.hideContextMenus();
 			}
 		}
 	}

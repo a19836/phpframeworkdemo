@@ -1,11 +1,11 @@
-.jsplumbtaskworkflow path { 
+/*.taskflowchartdiagram ._jsPlumb_connector path { 
 	stroke-width:2px; 
 }
-.jsplumbtaskworkflow path { 
+.taskflowchartdiagram ._jsPlumb_connector path { 
 	stroke-width:1px; 
-}
+}*/
 
-/* START: JSPLUMB TASK */
+/* START: TASK */
 .task.task_menu.task_table {
 	min-width:7em !important;
 	min-height:2em !important;
@@ -16,7 +16,7 @@
 	border-radius:0.5em !important;
 }
 
-.jsplumbtaskworkflow .task.task_table {
+.taskflowchartdiagram .task.task_table {
 	width:300px !important;
 	height:auto !important;
 	margin:0;
@@ -27,13 +27,13 @@
 	box-sizing:border-box;
 	box-shadow:none;
 }
-.jsplumbtaskworkflow .task.task_table.allow_sort {
+.taskflowchartdiagram .task.task_table.allow_sort {
 	width:320px !important;
 }
-.jsplumbtaskworkflow .task.task_table:hover {
+.taskflowchartdiagram .task.task_table:hover {
 	box-shadow:none !important;
 }
-.jsplumbtaskworkflow .task.task_table .info {
+.taskflowchartdiagram .task.task_table .info {
 	width:100%;
 	min-height:25px;
 	padding:5px 10px;
@@ -47,11 +47,11 @@
 	box-sizing:border-box;
 	box-shadow:0px -1px 5px #ccc;
 }
-.jsplumbtaskworkflow .task.task_table:hover .short_actions {
+.taskflowchartdiagram .task.task_table:hover .short_actions {
 	top:-20px;
 	padding-bottom:5px;
 }
-.jsplumbtaskworkflow .task.task_table .short_actions .add_attribute_action {
+.taskflowchartdiagram .task.task_table .short_actions .add_attribute_action {
 	width:16px;
 	height:16px;
 	margin-right:5px;
@@ -59,7 +59,7 @@
 	background:url(../../common/img/add_icon.gif);
 	cursor:pointer;
 }
-.jsplumbtaskworkflow .task.task_table .eps {
+.taskflowchartdiagram .task.task_table .eps {
 	position:relative;
 	width:100%;
 	min-height:25px;
@@ -70,7 +70,7 @@
 	box-sizing:border-box;
 	box-shadow:0px 0px 5px #ccc;
 }
-.jsplumbtaskworkflow .task.task_table .ep {
+.taskflowchartdiagram .task.task_table .ep {
 	width:16px;
 	height:16px;
 	border:1px solid #4070FF !important;
@@ -81,13 +81,13 @@
 	bottom:-12px;
 	z-index:1;
 }
-.jsplumbtaskworkflow .task.task_table .table_attrs {
+.taskflowchartdiagram .task.task_table .table_attrs {
 	width:100%;
 	margin:0;
 	padding:0;
 	border:0;
 }
-.jsplumbtaskworkflow .task.task_table .table_attrs .table_attr td {
+.taskflowchartdiagram .task.task_table .table_attrs .table_attr td {
 	margin:0;
 	padding:0;
 	border-right:1px solid #4070FF;
@@ -97,44 +97,44 @@
 	word-break:break-word;
 	vertical-align:middle;
 }
-.jsplumbtaskworkflow .task.task_table .table_attrs .table_attr:last-child td {
+.taskflowchartdiagram .task.task_table .table_attrs .table_attr:last-child td {
 	border-bottom:0;
 }
-.jsplumbtaskworkflow .task.task_table .table_attrs .table_attr td:last-child {
+.taskflowchartdiagram .task.task_table .table_attrs .table_attr td:last-child {
 	border-right:0;
 }
-.jsplumbtaskworkflow .task.task_table .table_attrs .table_attr td.key_type {
+.taskflowchartdiagram .task.task_table .table_attrs .table_attr td.key_type {
 	min-width:30px;
 	max-width:30px;
 	text-align:center;
 	color:#FF4D4D;
 }
-.jsplumbtaskworkflow .task.task_table .table_attrs .table_attr td.name {
+.taskflowchartdiagram .task.task_table .table_attrs .table_attr td.name {
 	width:100%;
 	border-right-color:#f7f7f7;
 }
-.jsplumbtaskworkflow .task.task_table .table_attrs .table_attr td.type {
+.taskflowchartdiagram .task.task_table .table_attrs .table_attr td.type {
 	min-width:150px;
 	max-width:150px;
 	color:#999;
 	text-align:right;
 	font-size:8px;
 }
-.jsplumbtaskworkflow .task.task_table .table_attrs .table_attr td.button {
+.taskflowchartdiagram .task.task_table .table_attrs .table_attr td.button {
 	min-width:20px;
 	max-width:20px;
 	color:rgb(0, 0, 0, .3);
 	text-align:center;
 }
-.jsplumbtaskworkflow .task.task_table.allow_sort .table_attrs .table_attr td.button {
+.taskflowchartdiagram .task.task_table.allow_sort .table_attrs .table_attr td.button {
 	min-width:40px;
 	max-width:40px;
 }
-.jsplumbtaskworkflow .task.task_table .table_attrs .table_attr td.button .icon {
+.taskflowchartdiagram .task.task_table .table_attrs .table_attr td.button .icon {
 	margin:0 auto;
 }
-.jsplumbtaskworkflow .task.task_table .table_attrs .table_attr td input,
-  .jsplumbtaskworkflow .task.task_table .table_attrs .table_attr td select {
+.taskflowchartdiagram .task.task_table .table_attrs .table_attr td input,
+  .taskflowchartdiagram .task.task_table .table_attrs .table_attr td select {
 	width:100%;
 	height:100%;
 	padding:5px;
@@ -145,32 +145,32 @@
 	box-sizing:border-box;
 	cursor:text;
 }
-.jsplumbtaskworkflow .task.task_table .table_attrs .table_attr td select {
+.taskflowchartdiagram .task.task_table .table_attrs .table_attr td select {
 	-webkit-appearance:none; /* for Chrome */
 	-moz-appearance:none; /* for Firefox */
 	cursor:pointer;
 }
-.jsplumbtaskworkflow .task.task_table .table_attrs .table_attr td select::-ms-expand {
+.taskflowchartdiagram .task.task_table .table_attrs .table_attr td select::-ms-expand {
     display:none; /* For IE10 */
 }
-.jsplumbtaskworkflow .task.task_table .table_attrs .table_attr td.type.with_length select {
+.taskflowchartdiagram .task.task_table .table_attrs .table_attr td.type.with_length select {
 	width:calc(100% - 30px);
 }
-.jsplumbtaskworkflow .task.task_table .table_attrs .table_attr td.type.with_length input {
+.taskflowchartdiagram .task.task_table .table_attrs .table_attr td.type.with_length input {
 	width:30px;
 	text-align:center;
 	border-left:1px solid #f7f7f7;
 }
-.jsplumbtaskworkflow .task.task_table .table_attrs .table_attr td.key_type select {
+.taskflowchartdiagram .task.task_table .table_attrs .table_attr td.key_type select {
 	text-align:center;
 }
 
-.jsplumbtaskworkflow .connector_overlay_text_many, 
-  .jsplumbtaskworkflow .connector_overlay_text_one {
+.taskflowchartdiagram .connector_overlay_text_many, 
+  .taskflowchartdiagram .connector_overlay_text_one {
 	color:#31498f;
 }
-.jsplumbtaskworkflow .connector_overlay_text_one.from_one, 
-  .jsplumbtaskworkflow .connector_overlay_text_one.to_one {
+.taskflowchartdiagram .connector_overlay_text_one.from_one, 
+  .taskflowchartdiagram .connector_overlay_text_one.to_one {
 	font-size:12px;
 	margin-top:0;
 }

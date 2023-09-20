@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_slaitemsingle {
+.taskflowchartmenu .task.task_slaitemsingle {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_slaitemsingle .eps {
+.taskflowchartdiagram .task.task_slaitemsingle .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_slaitemsingle .ep {
+.taskflowchartdiagram .task.task_slaitemsingle .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

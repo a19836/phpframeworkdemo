@@ -150,7 +150,7 @@ var CreateFormTaskPropertyObj = {
 			
 			//console.log(task_property_values);
 			
-			//When the onCompleteTaskProperties function is called, the myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.hideSelectedTaskProperties() function was already called, which removed the html from properties popup. This means that we can call then the CreateFormTaskPropertyObj.ptl_editor.resetDroppables().
+			//When the onCompleteTaskProperties function is called, the myWFObj.getTaskFlowChart().Property.hideSelectedTaskProperties() function was already called, which removed the html from properties popup. This means that we can call then the CreateFormTaskPropertyObj.ptl_editor.resetDroppables().
 			
 			//check all droppables from jquery and resetting, this is, remove the invalid droppables.
 			//if we create a jquery droppable element inside of an iframe and then move the iframe or delete it or reload it, the droppable elements stop to exist, but jquery continues with them registered. So we need to call the resetDroppables() function to fix this cases, otherwise we will have weird javascript errors.
@@ -171,7 +171,7 @@ var CreateFormTaskPropertyObj = {
 		
 		if (ptl_editor) {
 			//hide popup first and empty html from properties popup
-			myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.hideSelectedTaskProperties();
+			myWFObj.getTaskFlowChart().Property.hideSelectedTaskProperties();
 			
 			//check all droppables from jquery and resetting, this is, remove the invalid droppables.
 			//if we create a jquery droppable element inside of an iframe and then move the iframe or delete it or reload it, the droppable elements stop to exist, but jquery continues with them registered. So we need to call the resetDroppables() function to fix this cases, otherwise we will have weird javascript errors.
@@ -190,7 +190,7 @@ var CreateFormTaskPropertyObj = {
 	
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
-			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+			var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 			ProgrammingTaskUtil.saveNewVariableInWorkflowAccordingWithTaskPropertiesValues(task_property_values);
 		
 			var label = CreateFormTaskPropertyObj.getDefaultExitLabel(task_property_values);
@@ -238,8 +238,8 @@ var CreateFormTaskPropertyObj = {
 				CreateFormTaskPropertyObj.createCodeEditor(form_js.children("textarea.editor")[0], "javascript", CreateFormTaskPropertyObj.editor_save_func);
 			
 			if (old_type == "array" && confirm("Do you wish to convert automatically the array items into form settings?")) {
-				var WF = myWFObj.getJsPlumbWorkFlow();
-				var query_string = WF.jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(form_settings_data_elm, "task_property_field");
+				var WF = myWFObj.getTaskFlowChart();
+				var query_string = WF.Property.getPropertiesQueryStringFromHtmlElm(form_settings_data_elm, "task_property_field");
 				var form_settings_data = {};
 				parse_str(query_string, form_settings_data);
 				form_settings_data = form_settings_data["form_settings_data"] ? form_settings_data["form_settings_data"] : {};
@@ -336,8 +336,8 @@ var CreateFormTaskPropertyObj = {
 			//Preparing migration from settings and array to ptl code
 			if ((old_type == "settings" && confirm("Do you wish to convert automatically the form settings into ptl code?")) || (old_type == "array" && confirm("Do you wish to convert automatically the array items into ptl code?"))) {
 				if (old_type == "array") {
-					var WF = myWFObj.getJsPlumbWorkFlow();
-					var query_string = WF.jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(form_settings_data_elm, "task_property_field");
+					var WF = myWFObj.getTaskFlowChart();
+					var query_string = WF.Property.getPropertiesQueryStringFromHtmlElm(form_settings_data_elm, "task_property_field");
 					var form_settings_data = {};
 					parse_str(query_string, form_settings_data);
 					form_settings_data = form_settings_data["form_settings_data"] ? form_settings_data["form_settings_data"] : {};

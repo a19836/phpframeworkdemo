@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_setvar {
+.taskflowchartmenu .task.task_setvar {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_setvar .eps {
+.taskflowchartdiagram .task.task_setvar .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_setvar .ep {
+.taskflowchartdiagram .task.task_setvar .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

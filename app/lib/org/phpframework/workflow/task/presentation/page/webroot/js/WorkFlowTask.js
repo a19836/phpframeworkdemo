@@ -33,7 +33,7 @@ var PageTaskPropertyObj = {
 		PresentationTaskUtil.onLoadTaskProperties(task_html_element, task_id, task_property_values);
 		
 		//prepare file name
-		var task_label = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
+		var task_label = myWFObj.getTaskFlowChart().TaskFlow.getTaskLabelByTaskId(task_id);
 		task_html_element.find(".file_name input").val(task_label);
 		
 		//prepare template
@@ -121,9 +121,9 @@ var PageTaskPropertyObj = {
 		
 		if (PresentationTaskUtil.isTaskFileLabelValid(label_obj, task_id)) {
 			//update label
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
-			WF.jsPlumbTaskFlow.getTaskLabelElement(task).html(task_label);
+			var WF = myWFObj.getTaskFlowChart();
+			var task = WF.TaskFlow.getTaskById(task_id);
+			WF.TaskFlow.getTaskLabelElement(task).html(task_label);
 			PresentationTaskUtil.onCompleteLabel(task_id);
 			
 			return PresentationTaskUtil.onSubmitTaskProperties(properties_html_elm, task_id, task_property_values);
@@ -133,10 +133,10 @@ var PageTaskPropertyObj = {
 	},
 	
 	onTaskCloning : function(task_id) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var j_task = WF.jsPlumbTaskFlow.getTaskById(task_id);
-		var main_tasks_flow_obj = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id);
-		var task_parent = WF.jsPlumbTaskFlow.getTaskParentTasks(j_task);
+		var WF = myWFObj.getTaskFlowChart();
+		var j_task = WF.TaskFlow.getTaskById(task_id);
+		var main_tasks_flow_obj = $("#" + WF.TaskFlow.main_tasks_flow_obj_id);
+		var task_parent = WF.TaskFlow.getTaskParentTasks(j_task);
 		task_parent = task_parent[0];
 		
 		if (!task_parent || $(task_parent).is(main_tasks_flow_obj)) {
@@ -145,14 +145,14 @@ var PageTaskPropertyObj = {
 		}
 		
 		//delete task
-		WF.jsPlumbTaskFlow.deleteTask(task_id, {confirm: false});
-		WF.jsPlumbStatusMessage.showError("This task cannot be dropped here!");
+		WF.TaskFlow.deleteTask(task_id, {confirm: false});
+		WF.StatusMessage.showError("This task cannot be dropped here!");
 	},
 
 	onCompleteLabel : function(task_id) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var label_elm = WF.jsPlumbTaskFlow.getTaskLabelElementByTaskId(task_id);
-		WF.jsPlumbTaskFlow.tasks_properties[task_id]["file_name"] = label_elm.text();
+		var WF = myWFObj.getTaskFlowChart();
+		var label_elm = WF.TaskFlow.getTaskLabelElementByTaskId(task_id);
+		WF.TaskFlow.tasks_properties[task_id]["file_name"] = label_elm.text();
 		
 		PresentationTaskUtil.onCompleteLabel(task_id);
 		

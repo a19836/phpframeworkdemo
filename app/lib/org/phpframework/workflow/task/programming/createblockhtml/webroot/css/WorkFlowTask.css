@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_createblockhtml {
+.taskflowchartmenu .task.task_createblockhtml {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_createblockhtml .eps {
+.taskflowchartdiagram .task.task_createblockhtml .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_createblockhtml .ep {
+.taskflowchartdiagram .task.task_createblockhtml .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

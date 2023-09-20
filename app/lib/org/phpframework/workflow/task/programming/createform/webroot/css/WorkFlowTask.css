@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_createform {
+.taskflowchartmenu .task.task_createform {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_createform .eps {
+.taskflowchartdiagram .task.task_createform .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_createform .ep {
+.taskflowchartdiagram .task.task_createform .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

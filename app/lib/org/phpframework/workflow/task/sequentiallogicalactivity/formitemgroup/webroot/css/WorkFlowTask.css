@@ -1,13 +1,13 @@
-.jsplumbtaskmenu .task.task_slaitemgroup {
+.taskflowchartmenu .task.task_slaitemgroup {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_slaitemgroup .eps {
+.taskflowchartdiagram .task.task_slaitemgroup .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_slaitemgroup .eps:hover:after {
+.taskflowchartdiagram .task.task_slaitemgroup .eps:hover:after {
 	content:"Drag the small circles to link to another box";
 }
-.jsplumbtaskworkflow .task.task_slaitemgroup .ep {
+.taskflowchartdiagram .task.task_slaitemgroup .ep {
 	width:auto;
 	height:auto;
 	position:absolute;
@@ -18,17 +18,17 @@
 	border-color:transparent !important;
 	background-color:transparent !important;
 }
-.jsplumbtaskworkflow .task.task_slaitemgroup .ep[connection_exit_id=inside_group_exit] {
+.taskflowchartdiagram .task.task_slaitemgroup .ep[connection_exit_id=inside_group_exit] {
 	left:-28px;
 	right:50%;
 	text-align:left;
 }
-.jsplumbtaskworkflow .task.task_slaitemgroup .ep[connection_exit_id=outside_group_exit] {
+.taskflowchartdiagram .task.task_slaitemgroup .ep[connection_exit_id=outside_group_exit] {
 	left:50%;
 	right:-28px;
 	text-align:right;
 }
-.jsplumbtaskworkflow .task.task_slaitemgroup .ep span {
+.taskflowchartdiagram .task.task_slaitemgroup .ep span {
 	width:30px;
 	min-width:auto;
 	max-width:none;
@@ -49,20 +49,20 @@
 	box-sizing:border-box;
 	text-align:center;
 }
-.jsplumbtaskworkflow .task.task_slaitemgroup .ep[connection_exit_id=inside_group_exit] span {
+.taskflowchartdiagram .task.task_slaitemgroup .ep[connection_exit_id=inside_group_exit] span {
 	background:#31498f;
 }
-.jsplumbtaskworkflow .task.task_slaitemgroup .ep[connection_exit_id=outside_group_exit] span {
+.taskflowchartdiagram .task.task_slaitemgroup .ep[connection_exit_id=outside_group_exit] span {
 	background:#2C2D34;
 }
-.jsplumbtaskworkflow .task.task_slaitemgroup .ep span:before {
+.taskflowchartdiagram .task.task_slaitemgroup .ep span:before {
 	display:block;
 	color:#fff;
 }
-.jsplumbtaskworkflow .task.task_slaitemgroup .ep[connection_exit_id=inside_group_exit] span:before {
+.taskflowchartdiagram .task.task_slaitemgroup .ep[connection_exit_id=inside_group_exit] span:before {
 	content:"In";
 }
-.jsplumbtaskworkflow .task.task_slaitemgroup .ep[connection_exit_id=outside_group_exit] span:before {
+.taskflowchartdiagram .task.task_slaitemgroup .ep[connection_exit_id=outside_group_exit] span:before {
 	content:"Out";
 }
 

@@ -64,6 +64,7 @@ var DBTableTaskPropertyObj = {
 		//console.debug(task_property_values);
 		
 		var task_html_elm = properties_html_elm.find('.db_table_task_html');
+		var WF = myWFObj.getTaskFlowChart();
 		
 		task_html_elm.tabs();
 		
@@ -77,7 +78,7 @@ var DBTableTaskPropertyObj = {
 		var storage_engines = $.isPlainObject(DBTableTaskPropertyObj.table_storage_engines) ? DBTableTaskPropertyObj.table_storage_engines : {};
 		
 		//PREPARING TABLE NAME
-		var task_label = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskLabelByTaskId(task_id);
+		var task_label = WF.TaskFlow.getTaskLabelByTaskId(task_id);
 		task_html_elm.find('.table_name input').val(task_label);
 		
 		//PREPARING CHARSETS
@@ -198,7 +199,7 @@ var DBTableTaskPropertyObj = {
 			task_html_elm.find(".simple_attributes > ul > .no_simple_attributes").hide();
 		
 		//converts table to list by default if taskflowchart is fixed_side_properties
-		var is_fixed_properties_panel = $("#" + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().closest(".taskflowchart").hasClass("fixed_side_properties");
+		var is_fixed_properties_panel = $("#" + WF.TaskFlow.main_tasks_flow_obj_id).parent().closest(".taskflowchart").hasClass("fixed_side_properties");
 		
 		if (is_fixed_properties_panel)
 			DBTableTaskPropertyObj.convertTableToList( task_html_elm.find(".attributes .switch")[0] );
@@ -237,7 +238,7 @@ var DBTableTaskPropertyObj = {
 		
 		//check which tab is selected and if is Simple UI tab, convert the attributes to advanced UI
 		var active_tab = task_html_elm.tabs('option', 'active');
-		var auto_save = myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.auto_save;
+		var auto_save = myWFObj.getTaskFlowChart().Property.auto_save;
 		
 		if (active_tab == 0) {
 			if (auto_save || auto_convert || confirm("in order to save, the system will now convert the Simple UI's attributes into the Advanced UI. Do you wish to proceed?"))
@@ -344,7 +345,7 @@ var DBTableTaskPropertyObj = {
 		if (isTaskTableLabelValid(label_obj, task_id, true))
 			return true;
 		
-		myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.removeLastShownMessage("error");
+		myWFObj.getTaskFlowChart().StatusMessage.removeLastShownMessage("error");
 		return false;
 	},
 	
@@ -357,13 +358,13 @@ var DBTableTaskPropertyObj = {
 		
 		updateTaskLabelInShownTaskProperties(task_id, ".db_table_task_html .table_name input");
 		
-		myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.repaintTaskByTaskId(task_id);
+		myWFObj.getTaskFlowChart().TaskFlow.repaintTaskByTaskId(task_id);
 		
 		return true;
 	},
 	
 	onTaskCreation : function(task_id) {
-		var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+		var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 		
 		if (task_property_values && task_property_values.table_attr_names && task_property_values.table_attr_names.length > 0) {
 			DBTableTaskPropertyObj.regularizeTaskPropertyValues(task_property_values);
@@ -386,8 +387,8 @@ var DBTableTaskPropertyObj = {
 	
 	sortTaskPropertiesAttributes : function(task_id, attributes_names) {
 		if (attributes_names) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var task_property_values = WF.jsPlumbTaskFlow.tasks_properties[task_id];
+			var WF = myWFObj.getTaskFlowChart();
+			var task_property_values = WF.TaskFlow.tasks_properties[task_id];
 			
 			if (task_property_values && task_property_values.table_attr_names) {
 				var changed = false;
@@ -396,7 +397,7 @@ var DBTableTaskPropertyObj = {
 				if (typeof DBTableTaskPropertyObj.on_before_sort_task_properties_attributes == "function")
 					changed = DBTableTaskPropertyObj.on_before_sort_task_properties_attributes(task_id, attributes_names);
 				
-				var table_attr_names = Object.assign({}, task_property_values.table_attr_names);
+				var table_attr_names = assignObjectRecursively({}, task_property_values.table_attr_names);
 				
 				//console.log(table_attr_names);
 				//console.log(attributes_names);
@@ -436,7 +437,7 @@ var DBTableTaskPropertyObj = {
 				});
 				
 				if (changed)
-					WF.jsPlumbTaskFlow.tasks_properties[task_id] = task_property_values;
+					WF.TaskFlow.tasks_properties[task_id] = task_property_values;
 			}
 		}
 	},
@@ -445,8 +446,8 @@ var DBTableTaskPropertyObj = {
 		if (attribute_name && (!$.isPlainObject(attribute_data) || !attribute_data["name"]))
 			this.removeTaskPropertiesAttribute(task_id, attribute_name);
 		else if ($.isPlainObject(attribute_data) && attribute_data["name"]) { //Do not add attribute_name here, bc it may be empty in case be a new attribute
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var task_property_values = WF.jsPlumbTaskFlow.tasks_properties[task_id];
+			var WF = myWFObj.getTaskFlowChart();
+			var task_property_values = WF.TaskFlow.tasks_properties[task_id];
 			var exists = false;
 			
 			//update attribute in task properties
@@ -503,7 +504,7 @@ var DBTableTaskPropertyObj = {
 				//sort data
 				if ($.isNumeric(attribute_index) && attribute_index >= 0 && attribute_index != new_index) { //attribute_index can be -1
 					//prepare new attributes names with the right order based in the attribute_index
-					var attributes_names = $.map(Object.assign({}, task_property_values.table_attr_names), function(value, idx) { return [value]; }); //clone object/array and convert it to array
+					var attributes_names = $.map(assignObjectRecursively({}, task_property_values.table_attr_names), function(value, idx) { return [value]; }); //clone object/array and convert it to array
 					var name = attributes_names.splice(new_index, 1)[0];
 					attributes_names.splice(attribute_index, 0, name);
 					
@@ -513,14 +514,14 @@ var DBTableTaskPropertyObj = {
 			}
 			
 			//update task properties
-			WF.jsPlumbTaskFlow.tasks_properties[task_id] = task_property_values;
+			WF.TaskFlow.tasks_properties[task_id] = task_property_values;
 		}
 	},
 	
 	removeTaskPropertiesAttribute : function(task_id, attribute_name) {
 		if (attribute_name) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var task_property_values = WF.jsPlumbTaskFlow.tasks_properties[task_id];
+			var WF = myWFObj.getTaskFlowChart();
+			var task_property_values = WF.TaskFlow.tasks_properties[task_id];
 			
 			//remove attribute from task properties
 			if (task_property_values && task_property_values.table_attr_names) {
@@ -552,15 +553,15 @@ var DBTableTaskPropertyObj = {
 					});
 					
 					if (exists)
-						WF.jsPlumbTaskFlow.tasks_properties[task_id] = task_property_values;
+						WF.TaskFlow.tasks_properties[task_id] = task_property_values;
 				}
 			}
 		}
 	},
 	
 	addShortActionsButton : function(task_id) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+		var WF = myWFObj.getTaskFlowChart();
+		var task = WF.TaskFlow.getTaskById(task_id);
 		var short_actions = task.find(".short_actions");
 		var html = '<span class="add_attribute_action" onClick="DBTableTaskPropertyObj.addShortTableAttribute(this, event)"></span>';
 		var add_attribute_icon = $(html);
@@ -577,8 +578,8 @@ var DBTableTaskPropertyObj = {
 		var task = elm.parent().closest(".task");
 		var task_id = task.attr("id");
 		
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var eps = task.children("." + WF.jsPlumbTaskFlow.task_eps_class_name);
+		var WF = myWFObj.getTaskFlowChart();
+		var eps = task.children("." + WF.TaskFlow.task_eps_class_name);
 		var table_attrs = eps.find(" > table.table_attrs > tbody");
 		
 		var html = this.getShortTableAttributeRowHtml();
@@ -589,7 +590,7 @@ var DBTableTaskPropertyObj = {
 		table_attrs.append(attribute);
 		
 		//repaint task so it can update its connections
-		WF.jsPlumbTaskFlow.repaintTask(task);
+		WF.TaskFlow.repaintTask(task);
 		
 		//focus on name input
 		attribute.find(".name input").focus();
@@ -622,16 +623,16 @@ var DBTableTaskPropertyObj = {
 		table_attr.remove();
 		
 		//repaint task so it can update its connections
-		myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.repaintTask(task);
+		myWFObj.getTaskFlowChart().TaskFlow.repaintTask(task);
 	},
 	
 	prepareShortTableAttributes : function(task_id, data) {
 		if (data) {
 			var label = data.table_name;
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
+			var WF = myWFObj.getTaskFlowChart();
+			var task = WF.TaskFlow.getTaskById(task_id);
 			
-			WF.jsPlumbTaskFlow.getTaskLabelElement(task).html(label);
+			WF.TaskFlow.getTaskLabelElement(task).html(label);
 			onEditLabel(task_id);
 			
 			var primary_keys = data.table_attr_primary_keys;
@@ -698,7 +699,7 @@ var DBTableTaskPropertyObj = {
 				
 				html += "</tbody></table>";
 				
-				var eps = task.children("." + WF.jsPlumbTaskFlow.task_eps_class_name);
+				var eps = task.children("." + WF.TaskFlow.task_eps_class_name);
 				eps.children(".table_attrs").remove();
 				eps.append(html);
 				
@@ -733,7 +734,7 @@ var DBTableTaskPropertyObj = {
 							//TODO: maybe add handler to disable auto_save. In the future check if this is needed or not???
 						},
 						sort: function(event, ui_obj) {
-							WF.jsPlumbContextMenu.hideContextMenus();
+							WF.ContextMenu.hideContextMenus();
 						},
 						stop: function(event, ui_obj) {
 							//reorder attributes
@@ -756,7 +757,7 @@ var DBTableTaskPropertyObj = {
 					});
 				}
 				
-				var label_height = parseInt( task.children("." + WF.jsPlumbTaskFlow.task_label_class_name).height() );
+				var label_height = parseInt( task.children("." + WF.TaskFlow.task_label_class_name).height() );
 				var min_height = parseInt( task.css("min-height") );
 	
 				var height = names.length * 18 + label_height;
@@ -768,7 +769,7 @@ var DBTableTaskPropertyObj = {
 				
 				resizeTableTaskBasedOnAttributes(task_id);
 				
-				WF.jsPlumbTaskFlow.repaintTask(task);
+				WF.TaskFlow.repaintTask(task);
 			}
 		}
 	},
@@ -928,7 +929,7 @@ var DBTableTaskPropertyObj = {
 						//if there is more than 0 auto_increment fields, than reset this field, bc there can only be 1 auto_increment field!
 						if (auto_increments_count > 0) {
 							elm.val("");
-							myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("You cannot have more than one auto increment field! Please choose another type...");
+							myWFObj.getTaskFlowChart().StatusMessage.showError("You cannot have more than one auto increment field! Please choose another type...");
 						}
 					}
 				}
@@ -1229,9 +1230,9 @@ var DBTableTaskPropertyObj = {
 	
 	prepareShortTableAttributesRowTitle : function(task_id) {
 		if (task_id) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
-			var table_attrs = task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " .table_attrs .table_attr");
+			var WF = myWFObj.getTaskFlowChart();
+			var task = WF.TaskFlow.getTaskById(task_id);
+			var table_attrs = task.find(" > ." + WF.TaskFlow.task_eps_class_name + " .table_attrs .table_attr");
 			
 			if (table_attrs) {
 				var fks = this.getTaskForeignKeys(task_id);
@@ -1253,9 +1254,9 @@ var DBTableTaskPropertyObj = {
 	
 	prepareShortTableAttributeRowTitle : function(task_id, attribute_name) {
 		if (task_id) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
-			var table_attrs = task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " .table_attrs .table_attr");
+			var WF = myWFObj.getTaskFlowChart();
+			var task = WF.TaskFlow.getTaskById(task_id);
+			var table_attrs = task.find(" > ." + WF.TaskFlow.task_eps_class_name + " .table_attrs .table_attr");
 			
 			if (table_attrs) {
 				for (var i = 0; i < table_attrs.length; i++) {
@@ -1280,9 +1281,9 @@ var DBTableTaskPropertyObj = {
 	
 	updateShortTableForeignKeys : function(task_id) {
 		if (task_id) {
-			var WF = myWFObj.getJsPlumbWorkFlow();
-			var task = WF.jsPlumbTaskFlow.getTaskById(task_id);
-			var table_attrs = task.find(" > ." + WF.jsPlumbTaskFlow.task_eps_class_name + " .table_attrs .table_attr");
+			var WF = myWFObj.getTaskFlowChart();
+			var task = WF.TaskFlow.getTaskById(task_id);
+			var table_attrs = task.find(" > ." + WF.TaskFlow.task_eps_class_name + " .table_attrs .table_attr");
 			
 			if (table_attrs) {
 				var fks = this.getTaskForeignKeys(task_id);
@@ -1312,7 +1313,7 @@ var DBTableTaskPropertyObj = {
 	},
 	
 	updateTaskPropertiesFromTableAttributes : function(task_id, table_attributes) {
-		var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+		var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 		task_property_values = task_property_values ? task_property_values : {};
 		
 		for (var i = 0; i < DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.length; i++) {
@@ -1362,7 +1363,7 @@ var DBTableTaskPropertyObj = {
 			}
 		}
 
-		myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id] = task_property_values;
+		myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id] = task_property_values;
 
 		this.prepareShortTableAttributes(task_id, task_property_values);
 	},
@@ -1622,7 +1623,7 @@ var DBTableTaskPropertyObj = {
 		var html = DBTableTaskPropertyObj.getTableAttributeHtml();
 		var item = $(html);
 		var task_html_elm = $(elm).parent().closest('.db_table_task_html');
-		//var task_html_elm = $("#" + myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.main_tasks_flow_obj_id + " .db_table_task_html");
+		//var task_html_elm = $("#" + myWFObj.getTaskFlowChart().TaskFlow.main_tasks_flow_obj_id + " .db_table_task_html");
 		
 		//callback - Call this before calling the convertTableRowToListItem, bc this method may add new attributes to the table
 		if (typeof DBTableTaskPropertyObj.on_add_table_attribute_callback == "function")
@@ -1657,14 +1658,14 @@ var DBTableTaskPropertyObj = {
 	getTaskForeignKeys : function(task_id) {
 		var fks = [];
 		
-		var source_connections = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getSourceConnections(task_id);
-		var target_connections = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTargetConnections(task_id);
+		var source_connections = myWFObj.getTaskFlowChart().TaskFlow.getSourceConnections(task_id);
+		var target_connections = myWFObj.getTaskFlowChart().TaskFlow.getTargetConnections(task_id);
 		var connections = source_connections.concat(target_connections);
 	
 		for (var i = 0; i < connections.length; i++) {
 			var connection = connections[i];
 			var overlay = connection.getParameter("connection_exit_overlay");
-			var props = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.connections_properties[connection.id];
+			var props = myWFObj.getTaskFlowChart().TaskFlow.connections_properties[connection.id];
 			
 			if (overlay && props) {
 				if (connection.sourceId == task_id && overlay != "One To Many") {
@@ -1695,7 +1696,7 @@ var DBTableTaskPropertyObj = {
 	},
 	
 	updateSimpleAttributesHtmlWithTableAttributes : function(elm, do_not_confirm) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
+		var WF = myWFObj.getTaskFlowChart();
 		
 		if (do_not_confirm || auto_convert || confirm("Do you wish to convert the Advanced UI's attributes into the Simple UI?")) {
 			var task_html_elm = $(elm).closest(".db_table_task_html");
@@ -1704,7 +1705,7 @@ var DBTableTaskPropertyObj = {
 			var task_property_values = {};
 			var selector = task_html_elm.hasClass("attributes_list_shown") ? ".list_attributes .list_attrs" : ".table_attrs";
 			var selector_elm = task_html_elm.find(selector);
-			var query_string = WF.jsPlumbProperty.getPropertiesQueryStringFromHtmlElm(selector_elm, "task_property_field");
+			var query_string = WF.Property.getPropertiesQueryStringFromHtmlElm(selector_elm, "task_property_field");
 			
 			try {
 				parse_str(query_string, task_property_values);
@@ -1750,7 +1751,7 @@ var DBTableTaskPropertyObj = {
 		}
 		
 		//remove width and height style so the popup get updated automatically, but only if not fixed properties
-		var taskflowchart = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().closest(".taskflowchart");
+		var taskflowchart = $("#" + WF.TaskFlow.main_tasks_flow_obj_id).parent().closest(".taskflowchart");
 		
 		if (!taskflowchart.is(".fixed_properties, .fixed_side_properties"))
 			WF.getMyFancyPopupObj().getPopup().css({
@@ -1762,7 +1763,7 @@ var DBTableTaskPropertyObj = {
 	/** START: TASK METHODS - SIMPLE UI **/
 	
 	updateTableAttributesHtmlWithSimpleAttributes : function(elm, do_not_confirm) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
+		var WF = myWFObj.getTaskFlowChart();
 		
 		if (do_not_confirm || auto_convert || confirm("Do you wish to convert the Simple UI's attributes into the Advanced UI?")) {
 			var task_html_elm = $(elm).closest(".db_table_task_html");
@@ -1787,7 +1788,7 @@ var DBTableTaskPropertyObj = {
 		}
 		
 		//remove width and height style so the popup get updated automatically, but only if not fixed side
-		var taskflowchart = $("#" + WF.jsPlumbTaskFlow.main_tasks_flow_obj_id).parent().closest(".taskflowchart");
+		var taskflowchart = $("#" + WF.TaskFlow.main_tasks_flow_obj_id).parent().closest(".taskflowchart");
 		
 		if (!taskflowchart.is(".fixed_properties, .fixed_side_properties"))
 			WF.getMyFancyPopupObj().getPopup().css({width: "", height: ""});
@@ -1874,7 +1875,7 @@ var DBTableTaskPropertyObj = {
 	
 	getSimpleAttributeHtml : function(data) {
 		//console.debug(data);
-		//console.log(Object.assign({}, data));
+		//console.log(assignObjectRecursively({}, data));
 		
 		//prepare attributes
 		var column_types_hidden_props = $.isArray(DBTableTaskPropertyObj.column_types_hidden_props) ? DBTableTaskPropertyObj.column_types_hidden_props : [];
@@ -2195,7 +2196,7 @@ var DBTableTaskPropertyObj = {
 					j_elm.val("");
 					value = "";
 					
-					myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("You cannot have more than one auto increment field! Please choose another type...");
+					myWFObj.getTaskFlowChart().StatusMessage.showError("You cannot have more than one auto increment field! Please choose another type...");
 				}
 			}
 		}
@@ -2376,17 +2377,18 @@ var DBTableTaskPropertyObj = {
 	
 	/** START: CONNECTION METHODS **/
 	initSelectedConnectionPropertiesData : function(connection) {
-		//console.debug(myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[connection.sourceId]);
-		//console.debug(myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[connection.targetId]);
+		//console.debug(myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[connection.sourceId]);
+		//console.debug(myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[connection.targetId]);
 		
+		var WF = myWFObj.getTaskFlowChart();
 		var relationship = connection.getParameter("connection_exit_overlay");
 		
-		var source_table = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskLabelByTaskId(connection.sourceId);
-		var target_table = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskLabelByTaskId(connection.targetId);
+		var source_table = WF.TaskFlow.getTaskLabelByTaskId(connection.sourceId);
+		var target_table = WF.TaskFlow.getTaskLabelByTaskId(connection.targetId);
 		
-		var source_attributes = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[connection.sourceId] && myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[connection.sourceId].table_attr_names ? myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[connection.sourceId].table_attr_names : [];
+		var source_attributes = WF.TaskFlow.tasks_properties[connection.sourceId] && WF.TaskFlow.tasks_properties[connection.sourceId].table_attr_names ? WF.TaskFlow.tasks_properties[connection.sourceId].table_attr_names : [];
 		
-		var target_attributes = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[connection.targetId] && myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[connection.targetId].table_attr_names ? myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[connection.targetId].table_attr_names : [];
+		var target_attributes = WF.TaskFlow.tasks_properties[connection.targetId] && WF.TaskFlow.tasks_properties[connection.targetId].table_attr_names ? WF.TaskFlow.tasks_properties[connection.targetId].table_attr_names : [];
 		
 		//the first time we load the task proeprties from a file, the source_attributes is an array, but when we save new properties from the selected_task_properties panel, the source_attributes becomes an object. So we need always to do the following:
 		var new_source_attributes = new Array();
@@ -2420,7 +2422,9 @@ var DBTableTaskPropertyObj = {
 		
 		properties_html_elm.find('.db_table_connection_html').hide();
 		
-		var overlays = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.available_connection_overlays_type;
+		var WF = myWFObj.getTaskFlowChart();
+		var overlays = WF.TaskFlow.available_connection_overlays_type;
+		
 		if (overlays) {
 			//PREPARE HTML
 			properties_html_elm.find('.db_table_connection_html .table_attrs').html("");
@@ -2465,7 +2469,7 @@ var DBTableTaskPropertyObj = {
 			}
 		
 			if (!html) {
-				myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("Error: Couldn't detect this connection's properties. Please remove this connection, create a new one and try again...");
+				WF.StatusMessage.showError("Error: Couldn't detect this connection's properties. Please remove this connection, create a new one and try again...");
 			}
 			else {
 				properties_html_elm.find(".db_table_connection_html .table_attrs").html(html);
@@ -2478,6 +2482,7 @@ var DBTableTaskPropertyObj = {
 		//console.log(connection);
 		//console.log(connection_property_values);
 		
+		var WF = myWFObj.getTaskFlowChart();
 		var properties_data = DBTableTaskPropertyObj.selected_connection_properties_data;
 		var is_inner_connection = properties_data && properties_data.source_table && properties_data.source_table == properties_data.target_table;
 		
@@ -2511,9 +2516,9 @@ var DBTableTaskPropertyObj = {
 		}
 		
 		if (status)
-			myWFObj.getJsPlumbWorkFlow().jsPlumbContextMenu.setSelectedConnectionOverlay(overlay, {do_not_call_hide_properties : true});
+			WF.ContextMenu.setSelectedConnectionOverlay(overlay, {do_not_call_hide_properties : true});
 		else 
-			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError(error_message);
+			WF.StatusMessage.showError(error_message);
 		
 		return status;
 	},
@@ -2530,7 +2535,7 @@ var DBTableTaskPropertyObj = {
 			var new_connection = getConfiguredTaskTableConnection(connection);
 			
 			if (new_connection && connection.id != new_connection.id) {
-				myWFObj.getJsPlumbWorkFlow().jsPlumbContextMenu.setContextMenuConnectionId(new_connection.id);
+				myWFObj.getTaskFlowChart().ContextMenu.setContextMenuConnectionId(new_connection.id);
 				connection = new_connection;
 			}
 			
@@ -2547,10 +2552,11 @@ var DBTableTaskPropertyObj = {
 	
 	onTableConnectionDrop : function(conn) {
 		var status = onTableConnectionDrop(conn);
+		var WF = myWFObj.getTaskFlowChart();
 		
 		if (status) {
-			var source_task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[conn.sourceId];
-			var target_task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[conn.targetId];
+			var source_task_property_values = WF.TaskFlow.tasks_properties[conn.sourceId];
+			var target_task_property_values = WF.TaskFlow.tasks_properties[conn.targetId];
 			
 			//prepare source_task_property_values in case the task_property_values_table_attr_prop_names be a string instead of an array/object.
 			if (source_task_property_values && source_task_property_values.table_attr_names && source_task_property_values.table_attr_names.length > 0)
@@ -2597,7 +2603,7 @@ var DBTableTaskPropertyObj = {
 				else { //finds if PKs from one table exist in another, and if not, add them
 					//check if pk attr exists in source_task_property_values.table_attr_names
 					if (source_task_property_values && source_task_property_values.table_attr_names && source_task_property_values.table_attr_names.length > 0) {
-						var target_table_name = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTaskLabelByTaskId(conn.targetId);
+						var target_table_name = WF.TaskFlow.getTaskLabelByTaskId(conn.targetId);
 						
 						for (var pk_name in target_pks) {
 							var exists = false;
@@ -2635,7 +2641,7 @@ var DBTableTaskPropertyObj = {
 				if (!$.isEmptyObject(attrs_to_add)) {
 					//if source_task_property_values is null, sets it an empty object 
 					if (!source_task_property_values)
-						myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[conn.sourceId] = source_task_property_values = {};
+						WF.TaskFlow.tasks_properties[conn.sourceId] = source_task_property_values = {};
 					
 					//if source_task_property_values.table_attr_names is null, sets to it an empty array
 					if (!$.isArray(source_task_property_values.table_attr_names) && !$.isPlainObject(source_task_property_values.table_attr_names))
@@ -2679,10 +2685,10 @@ var DBTableTaskPropertyObj = {
 				}
 				
 				//add connection properties with correspondent attributes
-				var props = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.connections_properties[conn.connection.id];
+				var props = WF.TaskFlow.connections_properties[conn.connection.id];
 				
 				if (!props)
-					myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.connections_properties[conn.connection.id] = props = {};
+					WF.TaskFlow.connections_properties[conn.connection.id] = props = {};
 				
 				if (!props.source_columns) {
 					props.source_columns = [];
@@ -2727,7 +2733,7 @@ var DBTableTaskPropertyObj = {
 				}
 				
 				//refresh tasks and connection with new configurations
-				myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.changeConnectionOverlayType(conn.connection, "Many To One");
+				WF.TaskFlow.changeConnectionOverlayType(conn.connection, "Many To One");
 				DBTableTaskPropertyObj.prepareShortTableAttributes(conn.sourceId, source_task_property_values);
 				DBTableTaskPropertyObj.updateShortTableForeignKeys(conn.sourceId);
 				DBTableTaskPropertyObj.updateShortTableForeignKeys(conn.targetId);
@@ -2735,7 +2741,7 @@ var DBTableTaskPropertyObj = {
 		}
 		
 		if (DBTableTaskPropertyObj.show_properties_on_connection_drop)
-			myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.showConnectionProperties(conn.connection.id);
+			WF.Property.showConnectionProperties(conn.connection.id);
 		
 		return status;
 	},
@@ -2787,12 +2793,13 @@ var DBTableTaskPropertyObj = {
 	},
 	
 	addTableForeignKey : function() {
+		var WF = myWFObj.getTaskFlowChart();
 		var html = DBTableTaskPropertyObj.getTableForeignKeyHtml();
 		
 		if (!html)
-			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("Error: Couldn't detect this connection's properties. Please remove this connection, create a new one and try again...");
+			WF.StatusMessage.showError("Error: Couldn't detect this connection's properties. Please remove this connection, create a new one and try again...");
 		else
-			$("#" + myWFObj.getJsPlumbWorkFlow().jsPlumbProperty.selected_connection_properties_id + " .db_table_connection_html .table_attrs").append(html);
+			$("#" + WF.Property.selected_connection_properties_id + " .db_table_connection_html .table_attrs").append(html);
 	},
 	
 	removeTableForeignKey : function(elm) {
@@ -2808,23 +2815,25 @@ var DBTableTaskPropertyObj = {
 	},
 	
 	checkingTaskConnectionsPropertiesFromTaskProperties : function(task_id) {
-		var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+		var WF = myWFObj.getTaskFlowChart();
+		var task_property_values = WF.TaskFlow.tasks_properties[task_id];
 		var table_attr_names = task_property_values && task_property_values["table_attr_names"] ? task_property_values["table_attr_names"] : [];
 		
 		//PREPARING SOURCE CONNECTIONS
-		var connections = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getSourceConnections(task_id);
+		var connections = WF.TaskFlow.getSourceConnections(task_id);
 		var source_inconsistencies = this.checkingTaskConnectionsPropertiesFromTaskPropertiesAux(connections, table_attr_names, "source");
 		
 		//PREPARING TARGET CONNECTIONS
-		var connections = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.getTargetConnections(task_id);
+		var connections = WF.TaskFlow.getTargetConnections(task_id);
 		var target_inconsistencies = this.checkingTaskConnectionsPropertiesFromTaskPropertiesAux(connections, table_attr_names, "target");
 		
 		if (source_inconsistencies || target_inconsistencies)
-			myWFObj.getJsPlumbWorkFlow().jsPlumbStatusMessage.showError("The system detected some inconsistencies in some connections' properties for this table, but they were fixed and removed successfully.");
+			WF.StatusMessage.showError("The system detected some inconsistencies in some connections' properties for this table, but they were fixed and removed successfully.");
 	},
 	
 	checkingTaskConnectionsPropertiesFromTaskPropertiesAux : function(connections, table_attr_names, type) {
 		var inconsistencies = false;
+		var WF = myWFObj.getTaskFlowChart();
 		
 		if ($.isPlainObject(table_attr_names)) {
 			var arr = new Array();
@@ -2836,7 +2845,7 @@ var DBTableTaskPropertyObj = {
 		for (var i = 0; i < connections.length; i++) {
 			var c = connections[i];
 			
-			var props = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.connections_properties[c.id];
+			var props = WF.TaskFlow.connections_properties[c.id];
 			
 			if (props) {
 				if (!$.isArray(props.source_columns) && !$.isPlainObject(props.source_columns)) {
@@ -2864,7 +2873,7 @@ var DBTableTaskPropertyObj = {
 					}
 				});
 				
-				myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.connections_properties[c.id] = new_props.source_columns.length > 0 ? new_props : null;
+				WF.TaskFlow.connections_properties[c.id] = new_props.source_columns.length > 0 ? new_props : null;
 			}
 		}
 		
@@ -3003,8 +3012,8 @@ var DBTableTaskPropertyObj = {
 	},
 	
 	getTaskTableAttributesData : function(task_id, fks) {
-		var WF = myWFObj.getJsPlumbWorkFlow();
-		var task_property_values = WF.jsPlumbTaskFlow.tasks_properties[task_id];
+		var WF = myWFObj.getTaskFlowChart();
+		var task_property_values = WF.TaskFlow.tasks_properties[task_id];
 		
 		if (task_property_values && task_property_values.table_attr_names) {
 			var data = {};
@@ -3052,7 +3061,7 @@ var DBTableTaskPropertyObj = {
 		attribute_data["key_type"] = this.getShortTableAttributeKeyType(attribute_data, fks);
 		
 		//find current field matches with any simple type
-		var current_simple_props = Object.assign({}, attribute_data); //must clone attribute_data, bc the isSimpleAttribute method changes this object
+		var current_simple_props = assignObjectRecursively({}, attribute_data); //must clone attribute_data, bc the isSimpleAttribute method changes this object
 		var simple_type = this.isSimpleAttribute(current_simple_props);
 		
 		if (simple_type) {

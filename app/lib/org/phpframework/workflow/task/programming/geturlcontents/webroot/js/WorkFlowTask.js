@@ -40,7 +40,7 @@ var GetUrlContentsTaskPropertyObj = {
 		
 		if (task_property_values["data_type"] == "array") {
 			GetUrlContentsTaskPropertyObj.onLoadData( task_html_elm.find(".dts > .data").first(), data, "");
-			task_html_elm.find(".dts > .data_code").val("").removeClass("task_property_field"); //removeClass("task_property_field") is very important here otherwise the jsPlumbWorkFlow will give an error when trying to saveTaskPropertiesFromHtmlElm. Error is in the parse_str.
+			task_html_elm.find(".dts > .data_code").val("").removeClass("task_property_field"); //removeClass("task_property_field") is very important here otherwise the taskFlowChartObj will give an error when trying to saveTaskPropertiesFromHtmlElm. Error is in the parse_str.
 		}
 		else {
 			data = data ? "" + data + "" : "";
@@ -131,7 +131,7 @@ var GetUrlContentsTaskPropertyObj = {
 	
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
-			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+			var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 			ProgrammingTaskUtil.saveNewVariableInWorkflowAccordingWithTaskPropertiesValues(task_property_values);
 			
 			var label = GetUrlContentsTaskPropertyObj.getDefaultExitLabel(task_property_values);

@@ -1,10 +1,10 @@
-.jsplumbtaskmenu .task.task_validator {
+.taskflowchartmenu .task.task_validator {
 	background-image:url('../img/bg.svg');
 }
-.jsplumbtaskworkflow .task.task_validator .eps {
+.taskflowchartdiagram .task.task_validator .eps {
 	background-image:url('../img/bg_hover.svg');
 }
-.jsplumbtaskworkflow .task.task_validator .ep {
+.taskflowchartdiagram .task.task_validator .ep {
 	border-color:transparent !important;
 	background-color:transparent !important;
 }

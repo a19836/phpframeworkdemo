@@ -25,7 +25,7 @@ var SLAItemGroupTaskPropertyObj = {
 	
 	onTaskCreation : function(task_id) {
 		setTimeout(function() {
-			var task_property_values = myWFObj.getJsPlumbWorkFlow().jsPlumbTaskFlow.tasks_properties[task_id];
+			var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 			var labels = SLAItemGroupTaskPropertyObj.getExitLabels(task_property_values);
 			ProgrammingTaskUtil.updateTaskExitsLabels(task_id, labels);
 			
