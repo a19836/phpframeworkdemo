@@ -85,6 +85,9 @@
 #Redirect to the real document root in the phpframework
 <IfModule mod_rewrite.c>
    RewriteEngine on
+   
+   #Secure some sensible folders by disabling access to .git or .svn folders
+   RewriteRule (^|/)\.(git|svn)(/.*)?$ - [F,NC]
 
    #Disable all request methods that are not GET or POST
    RewriteCond %{REQUEST_METHOD} !^(GET|POST|HEAD) [NC]
