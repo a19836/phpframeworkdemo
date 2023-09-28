@@ -438,6 +438,7 @@ function prepareRecordFields(item) {
 }
 
 function createEditor(items) {
+  if (typeof tinymce != "undefined")
     $.each(items, function(idx, textarea) {
         if (textarea) {
             textarea = $(textarea);
@@ -454,7 +455,7 @@ function createEditor(items) {
             mh = mh > 0 ? mh : $(window).height() - 200;
             h = h > 0 && h < mh ? h : mh;
             h = h > 200 ? h : 200;
-        
+        	
             var upload_url = textarea.attr("editor-upload-url");
                 
            var menubar = textarea[0].hasAttribute("menubar") ? (textarea.attr("menubar") == "" || textarea.attr("menubar") == 0 || textarea.attr("menubar").toLowerCase() == "false" ? false : true) : true;

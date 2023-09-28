@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include $EVC->getUtilPath("WorkFlowUIHandler"); $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $WorkFlowUIHandler->setTasksOrderByTag($tasks_order_by_tag); $head = $WorkFlowUIHandler->getHeader(); $head .= '
+include $EVC->getUtilPath("WorkFlowUIHandler"); $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $external_libs_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $WorkFlowUIHandler->setTasksOrderByTag($tasks_order_by_tag); $head = $WorkFlowUIHandler->getHeader(); $head .= '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -49,8 +49,9 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); $WorkFlowUIHandler = new WorkFlo
 	
 	//allow_connections_to_multiple_levels = false; //allow connections to only 1 level below.
 	
-	taskFlowChartObj.TaskFlow.connection_line_width = 2;
-	taskFlowChartObj.TaskFlow.connection_from_target = true;
+	taskFlowChartObj.TaskFlow.default_connection_line_width = 2;
+	taskFlowChartObj.TaskFlow.default_connection_from_target = true;
+	//taskFlowChartObj.TaskFlow.default_connection_z_index = 11; //done in css only on hover
 	
 	//add default function to reset the top positon of the tasksflow panels, if with_top_bar class exists
 	taskFlowChartObj.setTaskFlowChartObjOption("on_resize_panels_function", onResizeTaskFlowChartPanels);

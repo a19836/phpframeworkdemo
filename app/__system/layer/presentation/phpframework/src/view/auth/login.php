@@ -20,7 +20,7 @@
 
 include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler"); $head = '
 <!-- Bootstrap core CSS -->
-<link href="' . $project_common_url_prefix . 'vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="' . $project_url_prefix . 'vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">

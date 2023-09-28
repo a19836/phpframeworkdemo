@@ -4,6 +4,10 @@
 .taskflowchartdiagram ._jsPlumb_connector path { 
 	stroke-width:1px; 
 }*/
+.taskflowchartdiagram .connector:hover,
+  .taskflowchartdiagram .leader-line-overlay-label.connector_over {
+	z-index:11 !important; /* show connection over the tasks, instead of show it behind them */
+}
 
 /* START: TASK */
 .task.task_menu.task_table {
@@ -168,6 +172,7 @@
 .taskflowchartdiagram .connector_overlay_text_many, 
   .taskflowchartdiagram .connector_overlay_text_one {
 	color:#31498f;
+	margin:0 !important;
 }
 .taskflowchartdiagram .connector_overlay_text_one.from_one, 
   .taskflowchartdiagram .connector_overlay_text_one.to_one {

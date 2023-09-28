@@ -285,11 +285,19 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			var content_upload_url = "' . str_replace("#article_id#", $article_id ? $article_id : 0, str_replace("#group#", \ArticleUtil::ARTICLE_CONTENT_HTML_IMAGE_GROUP_ID, $settings["upload_url"])) . '";
 		</script>';
 		
-		if (empty($settings["style_type"]))
+		$exists_ckeditor = file_exists($EVC->getWebrootPath($common_project_name) . "vendor/ckeditor/ckeditor.js");
+		
+		if (empty($settings["style_type"]) && $exists_ckeditor)
 			$html .= '<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/ckeditor/ckeditor.js"></script>
 			<script>
 			summary_ckeditor_active = typeof summary_ckeditor_active_prev != "undefined" ? summary_ckeditor_active_prev : true;
 			content_ckeditor_active = typeof content_ckeditor_active_prev != "undefined" ? content_ckeditor_active_prev : true;
+			</script>';
+		
+		if (!$exists_ckeditor) //be sure that ckeditor is inactive
+			$html .= '<script>
+			summary_ckeditor_active = false;
+			content_ckeditor_active = false;
 			</script>';
 		
 		\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "article/edit_article", $settings);

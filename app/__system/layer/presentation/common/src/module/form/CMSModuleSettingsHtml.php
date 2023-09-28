@@ -25,7 +25,7 @@ if ($PEVC) {
 		"workflow_tasks_id" => "presentation_block_form_sla",
 		"path_extra" => hash('crc32b', "$bean_file_name/$bean_name/$path"),
 	);
-	$sla = SequentialLogicalActivityUIHandler::getHeader($EVC, $PEVC, $UserAuthenticationHandler, $bean_name, $bean_file_name, $path, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $user_beans_folder_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $filter_by_layout, $opts);
+	$sla = SequentialLogicalActivityUIHandler::getHeader($EVC, $PEVC, $UserAuthenticationHandler, $bean_name, $bean_file_name, $path, $project_url_prefix, $project_common_url_prefix, $external_libs_url_prefix, $user_global_variables_file_path, $user_beans_folder_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $filter_by_layout, $opts);
 	$sla_head = $sla["head"];
 	$sla_js_head = $sla["js_head"];
 	$tasks_contents = $sla["tasks_contents"];

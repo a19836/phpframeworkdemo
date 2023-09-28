@@ -17,7 +17,9 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-?><div class="send_email_task_html">
+
+$exists_phpmailer = file_exists( get_lib("lib.vendor.phpmailer.PHPMailerAutoload") ); if (!$exists_phpmailer) echo '<script>SendEmailTaskPropertyObj.exists_phpmailer = false;</script>'; ?>
+<div class="send_email_task_html">
 	
 	<div class="info">This task needs the file 'lib/org/phpframework/util/web/SendEmailHandler' to be included before! If is not included yet, please add it by clicking <a class="include_file_before" href="javascript:void(0)" onClick="ProgrammingTaskUtil.addIncludeFileTaskBeforeTaskFromSelectedTaskProperties(SendEmailTaskPropertyObj.dependent_file_path_to_include, '', 1)">here</a>. 
 	</div>

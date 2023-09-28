@@ -19,7 +19,7 @@ $get_workflow_file_path = "/home/jplpinto/Desktop/phpframework/trunk/app/lib/org
 $set_workflow_file_path = "/tmp/test_tasks.xml";
 
 //view
-$WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url);
+$WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $external_libs_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url);
 
 $head = $WorkFlowUIHandler->getHeader();
 $head .= $WorkFlowUIHandler->getJS($get_workflow_file_path, $set_workflow_file_path);

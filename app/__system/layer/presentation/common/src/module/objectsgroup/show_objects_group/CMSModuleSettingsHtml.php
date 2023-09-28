@@ -22,8 +22,8 @@ $js_load_function = $tasks_data["js_load_functions"]["createform"];
 
 echo '
 <!-- Add TaskFlowChart main JS and CSS files -->
-<script type="text/javascript" src="' . $proprietary_js_url_prefix . 'jquerytaskflowchart/js/ExternalLibHandler.js"></script>
-<script type="text/javascript" src="' . $proprietary_js_url_prefix . 'jquerytaskflowchart/js/TaskFlowChart.js"></script>';
+<script type="text/javascript" src="' . $external_libs_url_prefix["taskflowchart"] . 'js/ExternalLibHandler.js"></script>
+<script type="text/javascript" src="' . $external_libs_url_prefix["taskflowchart"] . 'js/TaskFlowChart.js"></script>';
 
 echo $WorkFlowUIHandler->getHeader(array("tasks_css_and_js" => false, "icons_and_edit_code_already_included" => true, "ui_editor" => true, "taskflowchart_already_included" => true));
 /*echo '

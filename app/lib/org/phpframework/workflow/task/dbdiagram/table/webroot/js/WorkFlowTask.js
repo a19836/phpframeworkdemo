@@ -2515,8 +2515,10 @@ var DBTableTaskPropertyObj = {
 			}
 		}
 		
-		if (status)
+		if (status) {
+			WF.ContextMenu.setContextMenuConnectionId(connection.id);
 			WF.ContextMenu.setSelectedConnectionOverlay(overlay, {do_not_call_hide_properties : true});
+		}
 		else 
 			WF.StatusMessage.showError(error_message);
 		

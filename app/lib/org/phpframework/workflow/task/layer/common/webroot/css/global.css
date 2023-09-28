@@ -4,6 +4,9 @@
 .taskflowchartdiagram .end_point {
 	opacity:0;
 }
+.taskflowchartdiagram .connector:hover {
+	z-index:11 !important; /* show connection over the tasks, instead of show it behind them */
+}
 
 /* Menu Task */
 .taskflowchartmenu .tasks_group:first-child {

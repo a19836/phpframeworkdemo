@@ -16,7 +16,8 @@
 	margin-top:5px;
 	margin-bottom:5px;
 }
-.module_edit .form_fields .form_field input {
+.module_edit .form_fields .form_field input,
+  .module_edit .form_fields .form_field textarea {
 	width:790px;
 }
 .module_edit .form_fields .form_field.allow_comments label {

@@ -28,11 +28,11 @@ include_once get_lib("org.phpframework.util.text.TextValidator"); include_once g
 <script src="' . $project_common_url_prefix . 'vendor/jquerytimepickeraddon/dist/i18n/jquery-ui-timepicker-addon-i18n.min.js" type="text/javascript"></script>
 <script src="' . $project_common_url_prefix . 'vendor/jquerytimepickeraddon/dist/jquery-ui-sliderAccess.js" type="text/javascript"></script>
 <script src="' . $project_common_url_prefix . 'vendor/jquerytimepickeraddon/dist/i18n/jquery-ui-timepicker-pt.js" type="text/javascript"></script>
-
+'; $exists_tinymce = file_exists($EVC->getWebrootPath($EVC->getCommonProjectName()) . "vendor/tinymce/js/tinymce/tinymce.min.js"); if ($exists_tinymce) $head .= '
 <!-- Tinymce -->
 <script src="' . $project_common_url_prefix . 'vendor/tinymce/js/tinymce/tinymce.min.js" type="text/javascript"></script>
 <script src="' . $project_common_url_prefix . 'vendor/tinymce/js/tinymce/jquery.tinymce.min.js" type="text/javascript"></script>
-
+'; $head .= '
 <!-- Modernizr  -->
 <script src="' . $project_common_url_prefix . 'vendor/modernizr/modernizr.min.js"></script>
 

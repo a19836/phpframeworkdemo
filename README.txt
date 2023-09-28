@@ -173,4 +173,20 @@ To check if this is OFF please type the following commands:
 	   	* * * * * sudo -u www-data php /var/www/html/livingroop/demo/app/layer/presentation/condo/webroot/script.php  --documentroot="/var/www/html/livingroop/demo/" --url="http://jplpinto.localhost/demo/condo/module/workerpool/run_worker_pool_script" --urlpath="module/workerpool/run_worker_pool_script" --loglevel=3
 		
 		0 2 * * * sudo -u www-data php /var/www/html/livingroop/default/app/layer/presentation/condo/webroot/script.php  --documentroot="/var/www/html/livingroop/default/" --url="http://jplpinto.localhost/condo/script/purge_old_data" --urlpath="script/purge_old_data" --loglevel=3
+
+- Other Notes:
+	This framework uses some external libraries (with LGPL licences) to improve their usability and add new functionalities, which means that if you wish to have all features, you should installed them, but this is optional.
+	When you run the framework installation script (through the url: "<your domain>/setup.php"), you will be prompted to install them or not.
+	
+	The external libraries, with LGPL and GPL licences, are:
+	- phpjavascriptpacker: that should be copied to the app/lig/vendor/ folder;
+	- phpmailer: that should be copied to the app/lig/vendor/ folder;
+	- xsssanitizer: that should be copied to the app/lig/vendor/ folder;
+	
+	- ckeditor: that should be copied to the app/__system/layer/presentation/common/webroot/vendor/ and app/layer/presentation/common/webroot/vendor/ folders;
+	- tinymce: that should be copied to the app/__system/layer/presentation/common/webroot/vendor/ and app/layer/presentation/common/webroot/vendor/ folders;
+	
+	The external libraries, with GPL licences, are:
+	- wordpress (wordpress.zip): that should be copied to the app/__system/layer/presentation/phpframework/webroot/vendor/ folder;
+	
 	

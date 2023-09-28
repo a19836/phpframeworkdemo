@@ -24,8 +24,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 	private $project_common_url_prefix;
 	private $user_global_variables_file_path;
 	private $user_beans_folder_path;
-	private $gpl_js_url_prefix;
-	private $proprietary_js_url_prefix;
+	private $external_libs_url_prefix;
 	private $webroot_cache_folder_path;
 	private $webroot_cache_folder_url;
 	
@@ -88,7 +87,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		$this->WorkFlowTaskHandler->setAllowedTaskTypes(array("table"));
 		
 		//get task table workflow settings
-		$WorkFlowUIHandler = new WorkFlowUIHandler($this->WorkFlowTaskHandler, $this->project_url_prefix, $this->project_common_url_prefix, $this->gpl_js_url_prefix, $this->proprietary_js_url_prefix, $this->user_global_variables_file_path, $this->webroot_cache_folder_path, $this->webroot_cache_folder_url);
+		$WorkFlowUIHandler = new WorkFlowUIHandler($this->WorkFlowTaskHandler, $this->project_url_prefix, $this->project_common_url_prefix, $this->external_libs_url_prefix, $this->user_global_variables_file_path, $this->webroot_cache_folder_path, $this->webroot_cache_folder_url);
 		
 		//prepare DBTableTaskPropertyObj properties 
 		$charsets = $this->db_driver->getTableCharsets();
@@ -749,8 +748,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		$this->project_common_url_prefix = $project_common_url_prefix;
 		$this->user_global_variables_file_path = $user_global_variables_file_path;
 		$this->user_beans_folder_path = $user_beans_folder_path;
-		$this->gpl_js_url_prefix = $gpl_js_url_prefix;
-		$this->proprietary_js_url_prefix = $proprietary_js_url_prefix;
+		$this->external_libs_url_prefix = $external_libs_url_prefix;
 		$this->webroot_cache_folder_path = $webroot_cache_folder_path;
 		$this->webroot_cache_folder_url = $webroot_cache_folder_url;
 	}

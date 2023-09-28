@@ -7,7 +7,7 @@ if ($tasks) {
 	$WorkFlowTaskHandler->setCacheRootPath(LAYER_CACHE_PATH);
 	$WorkFlowTaskHandler->setAllowedTaskTags($tasks);
 
-	$WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url);
+	$WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $external_libs_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url);
 	$tasks_settings = $WorkFlowTaskHandler->getLoadedTasksSettings();
 
 	$head = $WorkFlowUIHandler->printTasksCSSAndJS();

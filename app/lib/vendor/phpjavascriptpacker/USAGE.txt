@@ -1,0 +1,3 @@
+This library is used in the following file:
+- app/__system/layer/presentation/phpframework/src/util/CMSObfuscateJSFilesHandler.php
+

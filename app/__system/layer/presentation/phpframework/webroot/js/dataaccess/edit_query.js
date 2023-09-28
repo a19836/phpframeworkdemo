@@ -1331,8 +1331,8 @@ function addTaskFlowChart(rand, init_now) {
 	WF.ContextMenu.main_tasks_menu_hide_obj_id = "taskflowchart_global .tasks_menu_hide";
 	WF.ContextMenu.main_workflow_menu_obj_id = "taskflowchart_global .workflow_menu";
 	
-	WF.TaskFlow.connection_line_width = 3;
-	WF.TaskFlow.connection_from_target = true;
+	WF.TaskFlow.default_connection_line_width = 3;
+	WF.TaskFlow.default_connection_from_target = true;
 	
 	WF.Property.tasks_settings = tasks_settings;
 	

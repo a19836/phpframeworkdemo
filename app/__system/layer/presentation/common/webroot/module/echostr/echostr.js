@@ -181,7 +181,7 @@ function createLayoutUIEditor(textarea) {
 }
 
 function createTinyMCEEditor(textarea) {
-	if (textarea) {
+	if (textarea && typeof tinymce != "undefined") {
 		textarea = $(textarea);
 		var parent = textarea.parent();
 		
@@ -210,7 +210,7 @@ function createTinyMCEEditor(textarea) {
 }
 
 function createCKEditor(textarea) {
-	if (textarea) {
+	if (textarea && typeof CKEDITOR != "undefined") {
 		textarea = $(textarea);
 		
 		var toolbar = [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat','-','NumberedList','BulletedList','-','Outdent','Indent','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl','-','Link','Unlink'/*,'Anchor'*/,'-','Image','Flash','Embed','Table','HorizontalRule'/*,'Smiley','SpecialChar','PageBreak','Iframe'*/,'-',/*'Styles',*/'Format','Font','FontSize','TextColor','BGColor','-','Blockquote','CreateDiv','-'/*,'About'*/,'-','Templates','ShowBlocks','Maximize','Source' ];
@@ -249,29 +249,31 @@ function createCKEditor(textarea) {
 }
 
 function resizeTinyMCEEditor() {
-	setTimeout(function() {
-		var parent = $(".echostr_settings > #tinymce_content");
-		var editor_elm = parent.children(".mce-tinymce");
-		
-		if (!editor_elm.hasClass("mce-fullscreen")) {
-			var editor_body_elm = editor_elm.children(".mce-container-body");
-			var toolbar_height = editor_body_elm.height() - editor_body_elm.children(".mce-edit-area").height();
-			var height = parent.height() - toolbar_height;
+	if (typeof tinymce != "undefined")
+		setTimeout(function() {
+			var parent = $(".echostr_settings > #tinymce_content");
+			var editor_elm = parent.children(".mce-tinymce");
 			
-			tinymce.activeEditor.theme.resizeTo(null, height);
-		}
-	}, 500);
+			if (!editor_elm.hasClass("mce-fullscreen")) {
+				var editor_body_elm = editor_elm.children(".mce-container-body");
+				var toolbar_height = editor_body_elm.height() - editor_body_elm.children(".mce-edit-area").height();
+				var height = parent.height() - toolbar_height;
+				
+				tinymce.activeEditor.theme.resizeTo(null, height);
+			}
+		}, 500);
 }
 
 function resizeCKEditor() {
-	setTimeout(function() {
-		var parent = $(".echostr_settings > #ckeditor_content");
-		var editor_body_elm = parent.find(" > .cke > .cke_inner");
-		var toolbar_height = editor_body_elm.height() - editor_body_elm.children(".cke_contents").height();
-		var height = parent.height() - toolbar_height;
-		
-		CKEDITOR.instances.editor1.resize(CKEDITOR.instances.editor1.width, height, true);
-	}, 500);
+	if (typeof CKEDITOR != "undefined")
+		setTimeout(function() {
+			var parent = $(".echostr_settings > #ckeditor_content");
+			var editor_body_elm = parent.find(" > .cke > .cke_inner");
+			var toolbar_height = editor_body_elm.height() - editor_body_elm.children(".cke_contents").height();
+			var height = parent.height() - toolbar_height;
+			
+			CKEDITOR.instances.editor1.resize(CKEDITOR.instances.editor1.width, height, true);
+		}, 500);
 }
 
 function getActiveEditorValue() {
@@ -301,7 +303,7 @@ function getActiveEditorValue() {
 	else if (active_tab == 1) {
 		var editor_elm = echostr_settings.children("#tinymce_content");
 		var id = editor_elm.children(".mce-tinymce").attr("id");
-		str = tinymce.get(id) ? tinymce.get(id).getContent() : editor_elm.children("textarea").val();
+		str = typeof tinymce != "undefined" && tinymce.get(id) ? tinymce.get(id).getContent() : editor_elm.children("textarea").val();
 	}
 	else if (active_tab == 2) {
 		var editor_elm = echostr_settings.children("#ckeditor_content");

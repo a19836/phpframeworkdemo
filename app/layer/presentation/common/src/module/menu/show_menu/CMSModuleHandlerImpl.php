@@ -29,15 +29,15 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					$accordion_style_class .= str_replace("accordion_", "", $type);
 					$class = trim($accordion_style_class . " $class");
 					
-					$html_aux = '<link href="' . $project_common_url_prefix . 'vendor/jqueryverticalaccordionmenu/css/skins/' . $accordion_style_class . '.css" rel="stylesheet" type="text/css" />';
+					$html_aux = '<link href="' . $project_common_url_prefix . 'module/menu/jqueryverticalaccordionmenu/css/skins/' . $accordion_style_class . '.css" rel="stylesheet" type="text/css" />';
 				}
 				
 				$html .= '
 	<!-- Add VerticalAccordionMenu main JS and CSS files -->
-	<link href="' . $project_common_url_prefix . 'vendor/jqueryverticalaccordionmenu/css/dcaccordion.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jqueryverticalaccordionmenu/js/jquery.cookie.js"></script>
-	<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jqueryverticalaccordionmenu/js/jquery.hoverIntent.minified.js"></script>
-	<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jqueryverticalaccordionmenu/js/jquery.dcjqaccordion.2.7.min.js"></script>
+	<link href="' . $project_common_url_prefix . 'module/menu/jqueryverticalaccordionmenu/css/dcaccordion.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="' . $project_common_url_prefix . 'module/menu/jqueryverticalaccordionmenu/js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="' . $project_common_url_prefix . 'module/menu/jqueryverticalaccordionmenu/js/jquery.hoverIntent.minified.js"></script>
+	<script type="text/javascript" src="' . $project_common_url_prefix . 'module/menu/jqueryverticalaccordionmenu/js/jquery.dcjqaccordion.2.7.min.js"></script>
 	' . $html_aux . '
 	<script type="text/javascript">
 	(function($){ //create closure so we can safely use $ as alias for jQuery
@@ -77,18 +77,18 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				
 				if ($type == "horizontal_superfish_navbar") {
 					$ul_class .= " sf-navbar";
-					$html_aux = '<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerysuperfishmenu/dist/css/superfish-navbar.css" media="screen">';
+					$html_aux = '<link rel="stylesheet" href="' . $project_common_url_prefix . 'module/menu/jquerysuperfishmenu/dist/css/superfish-navbar.css" media="screen">';
 				}
 				else if ($type == "vertical_superfish") {
 					$ul_class .= " sf-vertical";
-					$html_aux = '<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerysuperfishmenu/dist/css/superfish-vertical.css" media="screen">';
+					$html_aux = '<link rel="stylesheet" href="' . $project_common_url_prefix . 'module/menu/jquerysuperfishmenu/dist/css/superfish-vertical.css" media="screen">';
 				}
 				
 				$html .= '
-	<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerysuperfishmenu/dist/css/superfish.css" media="screen">
+	<link rel="stylesheet" href="' . $project_common_url_prefix . 'module/menu/jquerysuperfishmenu/dist/css/superfish.css" media="screen">
 	' . $html_aux . '
-	<script src="' . $project_common_url_prefix . 'vendor/jquerysuperfishmenu/dist/js/hoverIntent.js"></script>
-	<script src="' . $project_common_url_prefix . 'vendor/jquerysuperfishmenu/dist/js/superfish.js"></script>
+	<script src="' . $project_common_url_prefix . 'module/menu/jquerysuperfishmenu/dist/js/hoverIntent.js"></script>
+	<script src="' . $project_common_url_prefix . 'module/menu/jquerysuperfishmenu/dist/js/superfish.js"></script>
 	<script>
 	(function($){ //create closure so we can safely use $ as alias for jQuery
 		$(document).ready(function() {

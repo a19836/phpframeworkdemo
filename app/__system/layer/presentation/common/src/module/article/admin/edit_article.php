@@ -92,8 +92,11 @@ if ($PEVC) {
 	);
 	
 	$head = '<link rel="stylesheet" href="' . $CommonModuleAdminUtil->getWebrootAdminFolderUrl() . 'edit_article.css" type="text/css" charset="utf-8" />
-	<script type="text/javascript" src="' . $CommonModuleAdminUtil->getWebrootAdminFolderUrl() . 'edit_article.js"></script>
-	<script type="text/javascript" src="' . $CommonModuleAdminUtil->getProjectCommonUrlPrefix() . 'vendor/ckeditor/ckeditor.js"></script>';
+	<script type="text/javascript" src="' . $CommonModuleAdminUtil->getWebrootAdminFolderUrl() . 'edit_article.js"></script>';
+	
+	if ($CommonModuleAdminUtil->existsCKEditor())
+		$head .= '<script type="text/javascript" src="' . $CommonModuleAdminUtil->getProjectCommonUrlPrefix() . 'vendor/ckeditor/ckeditor.js"></script>';
+	
 	$menu_settings = $ArticleAdminUtil->getMenuSettings();
 	$main_content = $CommonModuleAdminUtil->getFormContent($form_settings);
 }

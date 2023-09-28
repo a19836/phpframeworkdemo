@@ -194,6 +194,13 @@ class CommonModuleAdminUtil {
 		include $EVC->getModulePath("common/admin/template", $EVC->getCommonProjectName());
 	}
 	
+	/* EXISTS FUNCTIONS */
+	public function existsCKEditor() {
+		$file = $this->EVC->getWebrootPath($this->EVC->getCommonProjectName()) . "vendor/ckeditor/ckeditor.js";
+		
+		return file_exists($file);
+	}
+	
 	/* OPTIONS AND AVAILABLE ITEMS FUNCTIONS */
 	public function initObjectTypes($brokers) {
 		if (!isset($this->object_types)) {

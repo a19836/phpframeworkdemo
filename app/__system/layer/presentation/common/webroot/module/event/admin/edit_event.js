@@ -26,20 +26,24 @@ $(function () {
 });
 
 function createBodyCodeEditor(textarea, height) {
-	var editor = CKEDITOR.replace(textarea, {
-		toolbarGroups: [
-			{ name: "my_bar", groups: [ "mode", "undo", "basicstyles", "cleanup", "list", "indent", "blocks", "align", "bidi", "links", "forms", "insert" ] },
-			{ name: "insert", groups: [ "styles", "colors", "tools", "others" ] },
-		],
-		codeSnippet_theme: "monokai_sublime",
-		//fullPage: true,
-		//allowedContent: true,
-		//filebrowserImageBrowseUrl: '...',//disabled
-		//filebrowserImageUploadUrl: '...',//disabled
-		height: height,
-	});
+	var editor = null;
 	
-	CKEDITOR.config.removeDialogTabs = 'link:upload;image:Upload';
+	if (typeof CKEDITOR != "undefined") {
+		editor = CKEDITOR.replace(textarea, {
+			toolbarGroups: [
+				{ name: "my_bar", groups: [ "mode", "undo", "basicstyles", "cleanup", "list", "indent", "blocks", "align", "bidi", "links", "forms", "insert" ] },
+				{ name: "insert", groups: [ "styles", "colors", "tools", "others" ] },
+			],
+			codeSnippet_theme: "monokai_sublime",
+			//fullPage: true,
+			//allowedContent: true,
+			//filebrowserImageBrowseUrl: '...',//disabled
+			//filebrowserImageUploadUrl: '...',//disabled
+			height: height,
+		});
+		
+		CKEDITOR.config.removeDialogTabs = 'link:upload;image:Upload';
+	}
 	
 	return editor;
 }

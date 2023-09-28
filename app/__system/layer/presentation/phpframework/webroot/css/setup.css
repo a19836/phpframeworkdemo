@@ -123,19 +123,24 @@ body,
 #terms_and_conditions .info {
 	width:100%;
 	height:300px;
-	height:calc(100vh - 180px);
+	height:calc(100vh - 200px);
 	overflow:auto;
 	border:1px inset #CCC;
 	text-align:left;
 	margin-bottom:10px;
 }
-#terms_and_conditions .acceptance label {
+#terms_and_conditions .dependencies {
+	margin-top:10px;
+}
+#terms_and_conditions .acceptance label,
+  #terms_and_conditions .dependencies label {
     display: block;
     padding-left: 17px;
     text-indent: -17px;
     font-weight:normal;
 }
-#terms_and_conditions .acceptance input {
+#terms_and_conditions .acceptance input,
+  #terms_and_conditions .dependencies input {
     width: 15px;
     height: 15px;
     padding: 0;

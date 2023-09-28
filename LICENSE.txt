@@ -5,8 +5,10 @@
  * All files in this folder correspond to this license, excluding the files below:
  * - vendor/*
  * - app/lib/vendor/*
- * - app/layer/presentation/common/webroot/vendor
- * - app/__system/layer/presentation/common/webroot/vendor
+ * - app/layer/presentation/common/webroot/vendor/
+ * - app/layer/presentation/common/webroot/cms/
+ * - app/__system/layer/presentation/common/webroot/vendor/
+ * - app/__system/layer/presentation/phpframework/webroot/vendor/
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
  * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 

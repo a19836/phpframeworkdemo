@@ -193,7 +193,7 @@
 	text-align:left;
 }
 .server_task_html .template_workflow > .taskflowchart .tasks_flow .task .ep {
-	cursor:pointer;
+	cursor:default;
 }
 .server_task_html .template_workflow > .taskflowchart .tasks_flow .task .short_actions .move_action {
 	display:none;

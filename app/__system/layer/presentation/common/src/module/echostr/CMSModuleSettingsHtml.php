@@ -20,7 +20,7 @@ if ($PEVC) {
 	$WorkFlowTaskHandler->setCacheRootPath(LAYER_CACHE_PATH);
 	$WorkFlowTaskHandler->setAllowedTaskTags($allowed_tasks_tag);
 	
-	$WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url);
+	$WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $external_libs_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url);
 	
 	//load createform js files and load all files for the LayoutUIEditor
 	echo $WorkFlowUIHandler->getHeader(array("tasks_css_and_js" => true, "icons_and_edit_code_already_included" => true, "ui_editor" => true));
@@ -34,6 +34,9 @@ if ($PEVC) {
 }
 
 include $EVC->getModulePath("common/end_project_module_file", $common_project_name);
+
+$exists_tinymce = file_exists($EVC->getWebrootPath($common_project_name) . "vendor/tinymce/js/tinymce/tinymce.min.js");
+$exists_ckeditor = file_exists($EVC->getWebrootPath($common_project_name) . "vendor/ckeditor/ckeditor.js");
 
 /* The code below is already included by the $WorkFlowUIHandler->getHeader(...) method
 echo '
@@ -99,14 +102,20 @@ echo '
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/layout_ui_editor_widget_resource_options.js"></script>
 ';*/
 
-echo '
+if ($exists_tinymce)
+	echo '
 <!-- TinyMCE JS Files  -->
 <script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/tinymce/js/tinymce/tinymce.min.js"></script>	
 <script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
+';
 
+if ($exists_ckeditor)
+	echo '
 <!-- CKEDITOR JS Files  -->
 <script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/ckeditor/ckeditor.js"></script>
+';
 
+echo '
 <script>
 var create_echostr_settings_code_url = \'' . $project_url_prefix . 'module/echostr/create_echostr_settings_code\';
 var reverse_class = \'' . $reverse_class . '\';
@@ -124,8 +133,15 @@ $ui_menu_widgets_html .= WorkFlowPresentationHandler::getUserUIEditorWidgetsHtml
 <div class="echostr_settings">
 	<ul class="tabs">
 		<li class="textarea_tab"><a href="#layoutui_content">Ace Editor</a></li>
-		<li class="tinymce_tab"><a href="#tinymce_content" onClick="resizeTinyMCEEditor()">TinyMCE Editor</a></li>
-		<li class="ckeditor_tab"><a href="#ckeditor_content" onClick="resizeCKEditor()">CK Editor</a></li>
+		<?php 
+			if ($exists_tinymce)
+				echo '
+		<li class="tinymce_tab"><a href="#tinymce_content" onClick="resizeTinyMCEEditor()">TinyMCE Editor</a></li>';
+			
+			if ($exists_ckeditor)
+				echo '
+		<li class="ckeditor_tab"><a href="#ckeditor_content" onClick="resizeCKEditor()">CK Editor</a></li>';
+		?>
 	</ul>
 	
 	<textarea class="module_settings_property" name="str">Write here what you wish to echo...</textarea>
@@ -138,11 +154,19 @@ $ui_menu_widgets_html .= WorkFlowPresentationHandler::getUserUIEditorWidgetsHtml
 		</div>
 	</div>
 	
+	<?php 
+		echo "exists_tinymce: $exists_tinymce\n<br/>exists_ckeditor:$exists_ckeditor";
+		
+		if ($exists_tinymce)
+			echo '
 	<div id="tinymce_content" class="editor">
 		<textarea>Write here what you wish to echo...</textarea>
-	</div>
-	
+	</div>';
+		
+		if ($exists_ckeditor)
+			echo '
 	<div id="ckeditor_content" class="editor">
 		<textarea>Write here what you wish to echo...</textarea>
-	</div>
+	</div>';
+	?>
 </div>

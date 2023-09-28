@@ -1,0 +1,6 @@
+This library is used in the following file:
+- app/__system/layer/presentation/phpframework/webroot/js/db/manage_record.js
+
+This library is used in the following file, after the correspondent module be installed:
+- app/__system/layer/presentation/common/webroot/module/echostr/echostr.js
+

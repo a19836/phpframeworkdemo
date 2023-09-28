@@ -13,7 +13,8 @@
 .module_edit_event .form_fields .form_field.allow_comments label {
 	width:130px;
 }
-.module_edit_event .form_fields .form_field input {
+.module_edit_event .form_fields .form_field input,
+  .module_edit_article .form_fields .form_field textarea {
 	width:590px;
 }
 .module_edit_event .form_fields .form_field.published input, .module_edit_event .form_fields .form_field.allow_comments input {

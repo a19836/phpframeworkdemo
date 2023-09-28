@@ -20,6 +20,7 @@
 var SendEmailTaskPropertyObj = {
 	
 	dependent_file_path_to_include : "LIB_PATH . 'org/phpframework/util/web/SendEmailHandler.php'",
+	exists_phpmailer: true,
 	
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
 		ProgrammingTaskUtil.createTaskLabelField(properties_html_elm, task_id);
@@ -115,7 +116,12 @@ var SendEmailTaskPropertyObj = {
 		var method = task_html_elm.find(".method select").val();
 		
 		//set info
-		var info = "The settings below should have the following attributes:<ul>";
+		var info = "The settings below should have the following attributes:";
+		
+		if (!SendEmailTaskPropertyObj.exists_phpmailer && method == "SendEmailHandler::sendSMTPEmail")
+			info += "<div class=\"error\">Note that this function won't because the PHPMailer library is not installed!</div>";
+		
+		info += "<ul>";
 		
 		if (method == "SendEmailHandler::sendSMTPEmail")
 			info += "<li>smtp_host: domain name for the smtp server;</li>"

@@ -1,0 +1,5 @@
+This library is used in the following files, after the correspondent modules be installed:
+- app/layer/presentation/common/webroot/module/article/edit_article.js
+- app/__system/layer/presentation/common/webroot/module/echostr/echostr.js
+- app/layer/presentation/common/webroot/module/event/edit_event.js
+

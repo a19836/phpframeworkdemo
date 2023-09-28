@@ -301,12 +301,12 @@ var FunctionUtilObj = {
 			WF.ContextMenu.main_tasks_menu_hide_obj_id = main_div_id + " .tasks_menu_hide";
 			WF.ContextMenu.main_workflow_menu_obj_id = main_div_id + " .workflow_menu";
 			
-			WF.TaskFlow.connection_line_width = this.OriginalTaskFlowChartObject.TaskFlow.connection_line_width;
+			WF.TaskFlow.default_connection_line_width = this.OriginalTaskFlowChartObject.TaskFlow.default_connection_line_width;
 			
 			//set z-index bc of leader-line
 			if ($.isNumeric(z_index)) {
 				z_index = parseInt(z_index) + 10;
-				WF.TaskFlow.connection_z_index = z_index;
+				WF.TaskFlow.default_connection_z_index = z_index;
 				
 				popup.children("style.edit_function_code_leader_line_z_index_style").remove();
 				popup.append('<style class="edit_function_code_leader_line_z_index_style"> body > .leader-line {z-index:' + z_index + ';} </style>');

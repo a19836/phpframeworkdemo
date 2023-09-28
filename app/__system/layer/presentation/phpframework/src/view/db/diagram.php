@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $gpl_js_url_prefix, $proprietary_js_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $head = '
+include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $external_libs_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $head = '
 	<!-- Add ACE Editor JS files -->
 	<script src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ace.js"></script>
 	<script src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
@@ -46,8 +46,9 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHan
 			</ul>
 		</header>
 	</div>'; $main_content .= $WorkFlowUIHandler->getContent(); if ($DBDriver) $main_content .= '<script>
-			taskFlowChartObj.TaskFlow.connection_line_width = 2;
-			taskFlowChartObj.TaskFlow.connection_from_target = true;
+			taskFlowChartObj.TaskFlow.default_connection_line_width = 2;
+			taskFlowChartObj.TaskFlow.default_connection_from_target = true;
+			taskFlowChartObj.TaskFlow.default_similar_connections_gap = 100;
 			
 			DBTableTaskPropertyObj.column_types = ' . json_encode($DBDriver->getDBColumnTypes()) . ';
 			DBTableTaskPropertyObj.column_simple_types = ' . json_encode($DBDriver->getDBColumnSimpleTypes()) . ';

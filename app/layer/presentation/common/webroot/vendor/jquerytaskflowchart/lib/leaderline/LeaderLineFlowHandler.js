@@ -1,8 +1,4 @@
 /* 
-Main TODOs:
-- multiple connections from a task to another has overlaps connections. See DB Diagram
-- DB Diagram: it should be possible to create a connection to the same task
-
 Other TODOs:
 - fix droppable feature that is not working on drop arrow.
 - update setConnector to have all options defined in available_connection_connectors
@@ -82,6 +78,7 @@ function LeaderLineFlowHandler() {
 		end_point_class: "",
 		scroll_inc: 50,
 		scroll_margin: 10,
+		similar_lines_gap: 10,
 	};
 	me.line_sample_options = {
 		startPlug: "diamond",
@@ -519,14 +516,7 @@ function LeaderLineFlowHandler() {
 				
 				if (status) {
 					try {
-						var opts = {start: props["start"], end: props["end"]};
-						
-						//Note that if source and target are the same element, the LeaderLine class will give an exception
-						if (dragged_line.source.is(dragged_line.target) && props["start"] != props["end"]) {
-							opts["startSocket"] = "top";
-							opts["endSocket"] = "right";
-						}
-						
+						var opts = me.prepareLineStartEndOptionsBasedInProps(dragged_line, props);
 						dragged_line.setOptions(opts);
 						//console.log(dragged_line);
 						
@@ -902,10 +892,15 @@ function LeaderLineFlowHandler() {
 		var start_line_options = line.options;
 		var end_line_options = end_elm.options;
 		
+		//start_line_options["anchor"] = {x:5,y:5};
+		//end_line_options["anchor"] = {x:5,y:5};
+		
 		if (start_line_options["anchor"]) {
 			var anchor_offset = me.getAnchorOffset(start_line_options["anchor"]);
 			
 			if (anchor_offset) {
+				line.start_anchor = start_line_options["anchor"];
+				
 				start = LeaderLine.pointAnchor(start_elm, anchor_offset);
 				start.element = start_elm;
 				start.offset = anchor_offset;
@@ -916,6 +911,8 @@ function LeaderLineFlowHandler() {
 			var anchor_offset = me.getAnchorOffset(end_line_options["anchor"]);
 			
 			if (anchor_offset) {
+				line.end_anchor = end_line_options["anchor"];
+				
 				end = LeaderLine.pointAnchor(end_elm, anchor_offset);
 				end.element = end_elm;
 				end.offset = anchor_offset;
@@ -968,9 +965,8 @@ function LeaderLineFlowHandler() {
 				line.orig_start = props["orig_start"];
 				line.orig_end = props["orig_end"];
 				
-				//Note that if source and target are the same element, the LeaderLine class will give an exception
-				
-				line.setOptions({start: props["start"], end: props["end"]});
+				var opts = me.prepareLineStartEndOptionsBasedInProps(line, props);
+				line.setOptions(opts);
 				
 				line = me.endConnection(line);
 			}
@@ -1002,6 +998,28 @@ function LeaderLineFlowHandler() {
 		}
 		
 		return line;
+	};
+	
+	me.prepareLineStartEndOptionsBasedInProps = function(line, props) {
+		var opts = {start: props["start"], end: props["end"]};
+		
+		//Note that if source and target are the same element, the LeaderLine class will give an exception, so we need to create a dummy inner div inside of that target so the LeaderLine can create the connection.
+		if (props["start"] == props["end"]) {
+			var anchor_offset = {x:10, y:0};
+			var div = LeaderLine.pointAnchor(props["end"], anchor_offset);
+			div.element = props["end"];
+			div.offset = anchor_offset;
+			
+			opts["end"] = props["end"] = div;
+			line.options["path"] = opts["path"] = "magnet";
+		}
+		
+		if (line.source.is(line.target)) {
+			opts["startSocket"] = "top";
+			opts["endSocket"] = "top";
+		}
+		
+		return opts;
 	};
 	
 	me.startConnection = function(options) {
@@ -1108,6 +1126,9 @@ function LeaderLineFlowHandler() {
 		//console.log(line);
 		//console.log(line._id);
 		//console.log(line_canvas);
+		
+		//set right anchors, if there is no anchors defined and repeated lines with the source and target
+		me.prepareLineAnchors(line);
 		
 		//prepare endPlugColor in target_line_options if paintStyle is defined
 		me.setOptionsPropBasedInPaintStyle(target_line_options, "endPlugColor", ["fillStyle", "color"]);
@@ -1298,7 +1319,7 @@ function LeaderLineFlowHandler() {
 			return $(this.canvas); //return jquery node, not native.
 		};
 		line.setConnector = function(connector, do_not_repaint) {
-			/* TODO
+			/* TODO: use startSocketGravity and endSocketGravity
 			connector = [ "Straight", { stub:5, gap:0}, { cssClass:"myCssClass" } ],
 			or
 			connector = [ "Bezier", { curviness:10 }, { cssClass:"myCssClass" } ],
@@ -1349,6 +1370,195 @@ function LeaderLineFlowHandler() {
 		me.trigger("connection", line, window.event);
 		
 		return line;
+	};
+	
+	//set right anchors, if there is no anchors defined and repeated lines with the source and target. Additionally, unset other anchors if were created unnecessary
+	me.prepareLineAnchors = function(line, diff) {
+		var auto_anchor_start = !line.start_anchor;
+		var auto_anchor_end = !line.end_anchor;
+		
+		//only if there is not an user-defined anchor
+		if (auto_anchor_start || auto_anchor_end) {
+			var line_anchors_offsets = me.getLinePointsOffsets(line, true); //get original offsets discarding the previous end_points
+			
+			if ($.isPlainObject(line_anchors_offsets)) {
+				diff = diff > 0 ? diff : line.options.similar_lines_gap;
+				//console.log(diff);
+				
+				if (diff > 0) {
+					var change_position_start = false;
+					var change_position_end = false;
+					
+					//reset available_anchors_offsets
+					if (!$.isPlainObject(line.available_anchors_offsets) || !$.isPlainObject(line.current_anchors_offsets))
+						line.available_anchors_offsets = {};
+					else {
+						if (!$.isPlainObject(line.current_anchors_offsets.start) || line.current_anchors_offsets.start.x != line_anchors_offsets.start.x || line.current_anchors_offsets.start.y != line_anchors_offsets.start.y) {
+							line.available_anchors_offsets.start = {};
+							change_position_start = true;
+						}
+						
+						if (!$.isPlainObject(line.current_anchors_offsets.end) || line.current_anchors_offsets.end.x != line_anchors_offsets.end.x || line.current_anchors_offsets.end.y != line_anchors_offsets.end.y) {
+							line.available_anchors_offsets.end = {};
+							change_position_end = true;
+						}
+					}
+					
+					//prepare available_anchors_offsets if empty
+					if (auto_anchor_start && 
+						(!$.isPlainObject(line.available_anchors_offsets.start) || $.isEmptyObject(line.available_anchors_offsets.start))
+					)
+						line.available_anchors_offsets.start = me.getAvailableAnchorsOffsets(line_anchors_offsets.start, diff);
+					
+					if (auto_anchor_end && 
+						(!$.isPlainObject(line.available_anchors_offsets.end) || $.isEmptyObject(line.available_anchors_offsets.end))
+					) 
+						line.available_anchors_offsets.end = me.getAvailableAnchorsOffsets(line_anchors_offsets.end, diff);
+					
+					if (!$.isEmptyObject(line.available_anchors_offsets.start) || !$.isEmptyObject(line.available_anchors_offsets.end)) {
+						//prepare used_anchors_offsets
+						var line_start_ref = line.start.element ? line.start.element : line.start;
+						var line_end_ref = line.end.element ? line.end.element : line.end;
+						var used_anchors_offsets = {
+							start: {},
+							end: {}
+						};
+						
+						for (var i = 0, t = lines.length; i < t; i++) {
+							var l = lines[i];
+							
+							if (l._id != line._id) {
+								var l_start_ref = l.start.element ? l.start.element : l.start;
+								var l_end_ref = l.end.element ? l.end.element : l.end;
+								var similar_start = auto_anchor_start && l_start_ref == line_start_ref;
+								var similar_end = auto_anchor_end && l_end_ref == line_end_ref;
+								
+								if (similar_start || similar_end) {
+									var l_point_offsets = me.getLinePointsOffsets(l);
+									
+									if (similar_start) {
+										var l_point_offsets_start_str = l_point_offsets.start.x + "_" + l_point_offsets.start.y;
+										used_anchors_offsets.start[l_point_offsets_start_str] = l_point_offsets.start;
+									}
+									
+									if (similar_end) {
+										var l_point_offsets_end_str = l_point_offsets.end.x + "_" + l_point_offsets.end.y;
+										used_anchors_offsets.end[l_point_offsets_end_str] = l_point_offsets.end;
+									}
+								}
+								//in case the connection is flipped
+								else if (l_start_ref == line_end_ref && l_end_ref == line_start_ref && (auto_anchor_start || auto_anchor_end)) {
+									var l_point_offsets = me.getLinePointsOffsets(l);
+									
+									if (auto_anchor_start) {
+										var l_point_offsets_end_str = l_point_offsets.end.x + "_" + l_point_offsets.end.y;
+										used_anchors_offsets.start[l_point_offsets_end_str] = l_point_offsets.end; //set used_anchors_offsets.start with l_point_offsets.end
+									}
+									
+									if (auto_anchor_end) {
+										var l_point_offsets_start_str = l_point_offsets.start.x + "_" + l_point_offsets.start.y;
+										used_anchors_offsets.end[l_point_offsets_start_str] = l_point_offsets.start; //set used_anchors_offsets.end with l_point_offsets.start
+									}
+								}
+							}
+						}
+						
+						/*console.log(line_end_ref);
+						console.log(line._id);
+						console.log(line_anchors_offsets.end);
+						console.log(used_anchors_offsets.end);
+						console.log(line.available_anchors_offsets.end);*/
+						
+						var status_start = setNewPointAnchor(line, "start", line_start_ref, line_anchors_offsets.start, used_anchors_offsets.start, line.available_anchors_offsets.start, change_position_start);
+						var status_end = setNewPointAnchor(line, "end", line_end_ref, line_anchors_offsets.end, used_anchors_offsets.end, line.available_anchors_offsets.end, change_position_end);
+						
+						//set line.current_anchors_offsets
+						if (status_start || status_end)
+							line.current_anchors_offsets = line_anchors_offsets;
+						
+						//create setNewPointAnchor function
+						function setNewPointAnchor(line_obj, anchor_type, anchor_element, default_anchor_offset, used_anchor_offsets, available_anchor_offsets, change_position) {
+							if ($.isEmptyObject(used_anchor_offsets))
+								unsetOldPointAnchor(line_obj, anchor_type, anchor_element, default_anchor_offset, used_anchor_offsets);
+							else if (available_anchor_offsets && available_anchor_offsets.length > 0) {
+								var default_anchor_offset_str = default_anchor_offset.x + "_" + default_anchor_offset.y;
+								var used = used_anchor_offsets.hasOwnProperty(default_anchor_offset_str);
+								
+								//if default position is not used anymore and previously anchor was sent, then remove anchor and set original element, without anchor. Return true just in case the change_position is true.
+								if (!used) {
+									if (unsetOldPointAnchor(line_obj, anchor_type, anchor_element, default_anchor_offset, used_anchor_offsets))
+										return true;
+								}
+								
+								//if position is already used, create new anchor. Or if anchor already exists, updates its position. 
+								if (used || change_position)
+									for (var i = 0, t = available_anchor_offsets.length; i < t; i++) {
+										var point_offset = available_anchor_offsets[i];
+										var point_offset_str = point_offset.x + "_" + point_offset.y;
+										
+										if (!used_anchor_offsets.hasOwnProperty(point_offset_str)) {
+											var anchor_offset = {
+												x: point_offset.x - default_anchor_offset.points[3].x,
+												y: point_offset.y - default_anchor_offset.points[0].y,
+											};
+											//console.log(anchor_offset.y);
+											
+											if (anchor_offset.x < 0)
+												anchor_offset.x = 0;
+											
+											if (anchor_offset.y < 0)
+												anchor_offset.y = 0;
+											
+											var orig_anchor_offset = anchor_offset;
+											
+											if (me.zoom != 1) {
+												orig_anchor_offset = Object.assign({}, anchor_offset);
+												
+												anchor_offset.x = anchor_offset.x * me.zoom;
+												anchor_offset.y = anchor_offset.y * me.zoom;
+											}
+											
+											//console.log(anchor_type);
+											//console.log(default_anchor_offset);
+											//console.log(used_anchor_offsets);
+											//console.log(available_anchor_offsets);
+											//console.log(point_offset);
+											//console.log(anchor_offset);
+											//console.log(anchor_element);
+											
+											line_obj[anchor_type] = LeaderLine.pointAnchor(anchor_element, anchor_offset);
+											line_obj[anchor_type].element = anchor_element;
+											line_obj[anchor_type].offset = orig_anchor_offset;
+											
+											return true;
+										}
+									}
+							}
+							
+							return false;
+						}
+						
+						//create unsetOldPointAnchor function
+						function unsetOldPointAnchor(line_obj, anchor_type, anchor_element, default_anchor_offset, used_anchor_offsets) {
+							var default_anchor_offset_str = default_anchor_offset.x + "_" + default_anchor_offset.y;
+							
+							if (line_obj[anchor_type].element && 
+								($.isEmptyObject(used_anchor_offsets) || !used_anchor_offsets.hasOwnProperty(default_anchor_offset_str))
+							) {
+								//console.log(default_anchor_offset);
+								//console.log(used_anchor_offsets);
+								
+								line_obj[anchor_type] = anchor_element;
+								
+								return true;
+							}
+							
+							return false;
+						}
+					}
+				}
+			}
+		}
 	};
 	
 	me.getConnectionIdNumber = function(elm) {
@@ -1682,7 +1892,11 @@ function LeaderLineFlowHandler() {
 		
 		//add line text canvas if not exists
 		if (!line[type + "LabelCanvas"]) {
-			line[type + "Label"] = "."; //set label to line so it can create the text node. Do not add space bc the leaderline removes it. Put some other character
+			//create pathlabel so the labels be in the right positions. This is very important for the DB Diagram, otherwise the labels will appear in wrong positions.
+			var label_offset = type == "start" ? -100 : (type == "end" ? 100 : 0);
+			var pl = LeaderLine.pathLabel(".", {lineOffset: label_offset});
+			
+			line[type + "Label"] = pl; //set label to line so it can create the text node. Do not add space bc the leaderline removes it. Put some other character
 			label_elm = line_canvas.find(" > svg > text:last-child");
 			line[type + "LabelCanvas"] = label_elm[0];
 			
@@ -1847,8 +2061,8 @@ function LeaderLineFlowHandler() {
 			var elm = $(this.getElement());
 			var width = elm.width();
 			var height = elm.height();
-			var mt = parseInt(height / 2);
-			var ml = parseInt(width / 2);
+			var mt = me.parseFloatWithOneDecimalPlace(height / 2);
+			var ml = me.parseFloatWithOneDecimalPlace(width / 2);
 			
 			elm.css({
 				"margin-top": (- mt) + "px",
@@ -2247,8 +2461,8 @@ function LeaderLineFlowHandler() {
 					var point_offsets = me.getLinePointsOffsets(l);
 					var point_offset = type == "start" ? point_offsets.start : point_offsets.end;
 					var offset = {
-						top: point_offset.y - parseInt(j_end_point.height() / 2), 
-						left: point_offset.x - parseInt(j_end_point.width() / 2)
+						top: point_offset.y - me.parseFloatWithOneDecimalPlace(j_end_point.height() / 2), 
+						left: point_offset.x - me.parseFloatWithOneDecimalPlace(j_end_point.width() / 2)
 					}
 					
 					j_end_point.offset(offset);
@@ -2611,8 +2825,8 @@ function LeaderLineFlowHandler() {
 			var parent_scroll_left = parent.scrollLeft();
 			
 			//prepare pointer with parent scroll or zoom
-			pointer_y = (event.pageY - parent_offset.top + parent_scroll_top) / me.zoom - parseInt( $(event.target).css('top') );
-			pointer_x = (event.pageX - parent_offset.left + parent_scroll_left) / me.zoom - parseInt( $(event.target).css('left') );
+			pointer_y = (event.pageY - parent_offset.top + parent_scroll_top) / me.zoom - parseFloat( $(event.target).css('top') );
+			pointer_x = (event.pageX - parent_offset.left + parent_scroll_left) / me.zoom - parseFloat( $(event.target).css('left') );
 			
 			//prepare related lines
 			elm_lines = [];
@@ -2653,8 +2867,8 @@ function LeaderLineFlowHandler() {
 			var parent_scroll_left = parent.scrollLeft();
 			
 			//fix for zoom or with parent scroll
-			ui.position.top = Math.round((event.pageY - parent_offset.top + parent_scroll_top) / me.zoom - pointer_y); 
-			ui.position.left = Math.round((event.pageX - parent_offset.left + parent_scroll_left) / me.zoom - pointer_x); 
+			ui.position.top = me.parseFloatWithOneDecimalPlace((event.pageY - parent_offset.top + parent_scroll_top) / me.zoom - pointer_y); 
+			ui.position.left = me.parseFloatWithOneDecimalPlace((event.pageX - parent_offset.left + parent_scroll_left) / me.zoom - pointer_x); 
 			
 			//check if element is outside of containment
 			if (options["containment"]) {
@@ -2677,15 +2891,17 @@ function LeaderLineFlowHandler() {
 			}
 			
 			//finally, make sure offset aligns with position
-			ui.offset.top = Math.round(ui.position.top + parent_offset.top);
-			ui.offset.left = Math.round(ui.position.left + parent_offset.left);
+			ui.offset.top = me.parseFloatWithOneDecimalPlace(ui.position.top + parent_offset.top);
+			ui.offset.left = me.parseFloatWithOneDecimalPlace(ui.position.left + parent_offset.left);
 			
 			//prepare lines
 			for (var i = 0, t = elm_lines.length; i < t; i++) {
 				var line = elm_lines[i];
 				
-				if (line)
+				if (line) {
+					me.prepareLineAnchors(line); //set some line anchors if necessary or unset them if were created unnecessary
 					me.repaintLine(line, {do_not_zoom: line.svg_canvas ? true : false});
+				}
 			}
 			
 			if (typeof drag == "function")
@@ -2804,16 +3020,18 @@ function LeaderLineFlowHandler() {
 							
 							if (anchor_offset) {
 								if (line.isSource) {
-									var point_element = line.start;
+									var point_element = line.start.element ? line.start.element : line.start;
 									line.start = LeaderLine.pointAnchor(point_element, anchor_offset);
 									line.start.element = point_element;
 									line.start.offset = anchor_offset;
+									line.start_anchor = line_options["anchor"];
 								}
 								else if (line.isTarget) {
-									var point_element = line.end;
+									var point_element = line.end.element ? line.end.element : line.end;
 									line.end = LeaderLine.pointAnchor(point_element, anchor_offset);
 									line.end.element = point_element;
 									line.end.offset = anchor_offset;
+									line.end_anchor = line_options["anchor"];
 								}
 							}
 						}
@@ -2838,17 +3056,64 @@ function LeaderLineFlowHandler() {
 		else if (selector instanceof Node)
 			return selector;
     		
-		var elm = document.querySelector(selector);
+    		var elm = me.querySelector(document, selector);
 		
 		if (!elm)
 			for (var i = 0, t = docs.length; i < t; i++) {
-				elm = docs[i].querySelector(selector);
+				elm = me.querySelector(docs[i], selector);
 				
 				if (elm)
 					break;
 			}
 		
 		return elm;
+	};
+	
+	//This is very important bc querySelector method uses CSS3 selectors for querying the DOM and CSS3 doesn't support ID selectors that start with a digit. For these cases, we must use dcoument.getElementById method.
+	//https://stackoverflow.com/questions/37270787/uncaught-syntaxerror-failed-to-execute-queryselector-on-document
+	me.querySelector = function(parent, selector) {
+		try {
+			return parent.querySelector(selector);
+		}
+		catch(e1) {
+			if (typeof selector == "string" && selector.substr(0, 1) == "#") {
+				var parts = selector.split(" ");
+				var id = parts[0].substr(1);
+				
+				if (id) {
+					var doc = parent.getElementById ? parent : (parent.ownerDocument || parent.document);
+					
+					try {
+						var elm = doc.getElementById(id);
+						
+						if (elm) {
+							parts.shift();
+							
+							if (parts.length > 0) {
+								var sub_selector = parts.join(" ");
+								
+								return me.querySelector(elm, sub_selector);
+							}
+							else
+								return elm;
+						}
+						
+						return null;
+					}
+					catch(e2) {
+						if (console && console.log)
+							console.log(e2);
+						
+						return null;
+					}
+				}
+			}
+			
+			if (console && console.log)
+				console.log(e1);
+			
+			return null;
+		}
 	};
 	
 	me.appendLineCanvasSVGToBody = function(line, opts) {
@@ -2858,12 +3123,13 @@ function LeaderLineFlowHandler() {
 			//1 step: get offset. offset is relative to body
 			var line_canvas = $(line.canvas);
 			var offset = line_canvas.offset(); //get offset related with window.body. Note that this is Not related with container, is related with body.
-			var top = parseInt(line_canvas[0].style.top);
-			var left = parseInt(line_canvas[0].style.left);
-			var width = parseInt(line_canvas[0].style.width);
-			var height = parseInt(line_canvas[0].style.height);
+			var top = parseFloat(line_canvas[0].style.top);
+			var left = parseFloat(line_canvas[0].style.left);
+			var width = parseFloat(line_canvas[0].style.width);
+			var height = parseFloat(line_canvas[0].style.height);
 			var z_index = line_canvas[0].style.zIndex;
 			var svg = line_canvas.children("svg");
+			//console.log("1- GET DIV style:"+line_canvas.attr("style"));
 			
 			svg[0].classList.add("leader-line");
 			svg.css("width", width + "px");
@@ -2891,16 +3157,17 @@ function LeaderLineFlowHandler() {
 				var sl = line_container.scrollLeft();
 				
 				//st and sl must be added in the zoom calculation and not after
-				top = parseInt((top - st) * me.zoom);
-				left = parseInt((left - sl) * me.zoom);
+				top = me.parseFloatWithOneDecimalPlace((top - st) * me.zoom);
+				left = me.parseFloatWithOneDecimalPlace((left - sl) * me.zoom);
 				top = top + co.top;
 				left = left + co.left;
 				
-				//console.log("zoom_exists before:"+width+":"+parseInt(width * me.zoom));
+				//console.log("zoom_exists before:"+width+":"+me.parseFloatWithOneDecimalPlace(width * me.zoom));
 				svg.css("top", top + "px");
 				svg.css("left", left + "px");
-				svg.css("width", parseInt(width * me.zoom) + "px");
-				svg.css("height", parseInt(height * me.zoom) + "px");
+				svg.css("width", me.parseFloatWithOneDecimalPlace(width * me.zoom) + "px");
+				svg.css("height", me.parseFloatWithOneDecimalPlace(height * me.zoom) + "px");
+				//console.log("2- SET SVG style:"+svg.attr("style"));
 			}
 			
 			line.svg_canvas = svg[0];
@@ -2915,12 +3182,13 @@ function LeaderLineFlowHandler() {
 			var line_canvas = $(line.canvas);
 			var svg = $(line.svg_canvas);
 			var offset = svg.offset();
-			var top = parseInt(svg[0].style.top);
-			var left = parseInt(svg[0].style.left);
-			var width = parseInt(svg[0].style.width);
-			var height = parseInt(svg[0].style.height);
+			var top = parseFloat(svg[0].style.top);
+			var left = parseFloat(svg[0].style.left);
+			var width = parseFloat(svg[0].style.width);
+			var height = parseFloat(svg[0].style.height);
 			var z_index = svg[0].style.zIndex;
 			//console.log("svg style in body after position: "+svg.attr("style"));
+			//console.log("3- GET SVG style:"+svg.attr("style"));
 			
 			//2 step: append line canvas to previous parent. Note that now the line canvas has a new offset related with the new parent.
 			line_canvas.append(svg);
@@ -2951,14 +3219,15 @@ function LeaderLineFlowHandler() {
 				//st and sl must be added after the zoom calculation
 				top = top - co.top;
 				left = left - co.left;
-				top = parseInt(top / me.zoom) + st;
-				left = parseInt(left / me.zoom) + sl;
+				top = me.parseFloatWithOneDecimalPlace(top / me.zoom) + st;
+				left = me.parseFloatWithOneDecimalPlace(left / me.zoom) + sl;
 				
-				//console.log("zoom_exists after:"+width+":"+parseInt(width / me.zoom));
+				//console.log("zoom_exists after:"+width+":"+me.parseFloatWithOneDecimalPlace(width / me.zoom));
 				line_canvas.css("top", top + "px");
 				line_canvas.css("left", left + "px");
-				line_canvas.css("width", parseInt(width / me.zoom) + "px");
-				line_canvas.css("height", parseInt(height / me.zoom) + "px");
+				line_canvas.css("width", me.parseFloatWithOneDecimalPlace(width / me.zoom) + "px");
+				line_canvas.css("height", me.parseFloatWithOneDecimalPlace(height / me.zoom) + "px");
+				//console.log("4- SET DIV style:"+line_canvas.attr("style"));
 			}
 			
 			delete line.svg_canvas;
@@ -3027,7 +3296,7 @@ function LeaderLineFlowHandler() {
 			line.endPointCanvas.repaint(opts);
 	};
 	
-	me.repaint = function(elm, position) { //elm: task
+	me.repaint = function(elm, position, opts) { //elm: task
 		elm = elm instanceof jQuery ? elm[0] : elm;
 		
 		if (position && $.isPlainObject(position))
@@ -3037,16 +3306,16 @@ function LeaderLineFlowHandler() {
 			var line = lines[i];
 			
 			if (line && (line.source[0] == elm || line.target[0] == elm))
-				me.repaintLine(line);
+				me.repaintLine(line, opts);
 		}
 	};
 	
-	me.repaintEverything = function() {
+	me.repaintEverything = function(opts) {
 		for (var i = 0, t = lines.length; i < t; i++) {
 			var line = lines[i];
 			
 			if (line)
-				me.repaintLine(line);
+				me.repaintLine(line, opts);
 		}
 	};
 	
@@ -3236,8 +3505,8 @@ function LeaderLineFlowHandler() {
 		var direction = null;
 		
 		if (line.start && line.end) {
-			var start = $(line.start);
-			var end = $(line.end);
+			var start = $(line.start.element ? line.start.element : line.start);
+			var end = $(line.end.element ? line.end.element : line.end);
 			var so = start.offset();
 			var eo = end.offset();
 			var sw = start.width();
@@ -3248,16 +3517,16 @@ function LeaderLineFlowHandler() {
 			var horizontal_direction = null;
 			
 			if (sw > 0)
-				so.left += parseInt(sw / 2);
+				so.left += me.parseFloatWithOneDecimalPlace(sw / 2);
 			
 			if (sh > 0)
-				so.top += parseInt(sh / 2);
+				so.top += me.parseFloatWithOneDecimalPlace(sh / 2);
 			
 			if (ew > 0)
-				eo.left += parseInt(ew / 2);
+				eo.left += me.parseFloatWithOneDecimalPlace(ew / 2);
 			
 			if (eh > 0)
-				eo.top += parseInt(eh / 2);
+				eo.top += me.parseFloatWithOneDecimalPlace(eh / 2);
 			
 			if (eo.top < so.top)
 				vertical_direction = "top";
@@ -3289,23 +3558,31 @@ function LeaderLineFlowHandler() {
 		var lco = line_canvas.offset();
 		var lcw = line_canvas.width();
 		var lch = line_canvas.height();
+		
+		return me.getOffsetSocketType(lco, lcw, lch, sto, stw, sth);
+	};
+	
+	me.getOffsetSocketType = function(a_offset, a_width, a_height, b_offset, b_width, b_height) {
 		var diff_x = 0;
 		var diff_y = 0;
 		var type = null;
 		
-		lco.bottom = lco.top + lch;
-		lco.right = lco.left + lcw;
-		sto.bottom = sto.top + sth;
-		sto.right = sto.left + stw;
+		a_offset = Object.assign({}, a_offset);
+		b_offset = Object.assign({}, b_offset);
+		
+		a_offset.bottom = a_offset.top + a_height;
+		a_offset.right = a_offset.left + a_width;
+		b_offset.bottom = b_offset.top + b_height;
+		b_offset.right = b_offset.left + b_width;
 		
 		for (var i = 0; i < 30; i++) {
-			if (lco.top + diff_y >= sto.bottom)
+			if (a_offset.top + diff_y >= b_offset.bottom)
 				type = "bottom";
-			else if (lco.bottom - diff_y <= sto.top)
+			else if (a_offset.bottom - diff_y <= b_offset.top)
 				type = "top";
-			else if (lco.left + diff_x >= sto.right)
+			else if (a_offset.left + diff_x >= b_offset.right)
 				type = "right";
-			else if (lco.right - diff_x <= sto.left)
+			else if (a_offset.right - diff_x <= b_offset.left)
 				type = "left";
 			
 			if (type)
@@ -3352,8 +3629,8 @@ function LeaderLineFlowHandler() {
 			offset.left -= socket_width/2;
 		
 		//round offsets but leave decimal place
-		offset.top = Math.round(offset.top * 10) / 10;
-		offset.left = Math.round(offset.left * 10) / 10;
+		offset.top = me.parseFloatWithOneDecimalPlace(offset.top);
+		offset.left = me.parseFloatWithOneDecimalPlace(offset.left);
 		
 		return offset;
 	};
@@ -3368,10 +3645,10 @@ function LeaderLineFlowHandler() {
 		var sth = source_target.height();
 		
 		if (("" + x).indexOf("%") != -1)
-			x = parseInt(x) / 100 * stw;
+			x = parseFloat(x) / 100 * stw;
 		
 		if (("" + y).indexOf("%") != -1)
-			y = parseInt(y) / 100 * sth;
+			y = parseFloat(y) / 100 * sth;
 		
 		offset.top = sto.top + y;
 		offset.left = sto.left + x;
@@ -3383,8 +3660,8 @@ function LeaderLineFlowHandler() {
 			offset.left -= socket_width/2;
 		
 		//round offsets but leave decimal place
-		offset.top = Math.round(offset.top * 10) / 10;
-		offset.left = Math.round(offset.left * 10) / 10;
+		offset.top = me.parseFloatWithOneDecimalPlace(offset.top);
+		offset.left = me.parseFloatWithOneDecimalPlace(offset.left);
 		
 		return offset;
 	};
@@ -3404,7 +3681,7 @@ function LeaderLineFlowHandler() {
 	};
 	
 	me.getAnchorOffset = function(anchor) {
-		if (anchor) {
+		if (anchor && typeof anchor == "string") {
 			anchor = ("" + anchor).toLowerCase();
 			
 			switch(anchor) {
@@ -3450,11 +3727,81 @@ function LeaderLineFlowHandler() {
 					return {y: "100%", x: "100%"};
 			}
 		}
+		else if ($.isPlainObject(anchor))
+			return anchor;
 		
 		return null;
 	};
 	
-	me.getLinePointsOffsets = function(line) {
+	me.getAvailableAnchorsOffsets = function(point_offset, diff) {
+		function getNewAnchorOffset(prop_name, prop_value, point_offset) {
+			var new_po = {};
+			
+			if (prop_name == "x") {
+				new_po.x = prop_value;
+				new_po.y = point_offset.y;
+			}
+			else {
+				new_po.x = point_offset.x;
+				new_po.y = prop_value;
+			}
+			
+			return new_po;
+		}
+		
+		var available_anchors_offsets = [];
+		
+		if (point_offset.type) {
+			var prop_name = null, begin = null, finish = null;
+			
+			if (point_offset.type == "top" || point_offset.type == "bottom") {
+				prop_name = "x";
+				begin = point_offset.points[3].x;
+				finish = point_offset.points[1].x;
+			}
+			else {
+				prop_name = "y";
+				begin = point_offset.points[0].y;
+				finish = point_offset.points[2].y;
+			}
+			
+			var s = point_offset[prop_name];
+			var e = point_offset[prop_name];
+			var s_ok = true;
+			var e_ok = true;
+			
+			while (s_ok || e_ok) {
+				if (s <= begin)
+					s = begin;
+				
+				if (e >= finish)
+					e = finish;
+				
+				if (s_ok) {
+					var new_point_offset = getNewAnchorOffset(prop_name, s, point_offset);
+					available_anchors_offsets.push(new_point_offset);
+				}
+				
+				if (e_ok && s != e) {
+					var new_point_offset = getNewAnchorOffset(prop_name, e, point_offset);
+					available_anchors_offsets.push(new_point_offset);
+				}
+				
+				if (s == begin)
+					s_ok = false;
+				
+				if (e == finish)
+					e_ok = false;
+				
+				s = s - diff;
+				e = e + diff;
+			}
+		}
+		
+		return available_anchors_offsets;
+	};
+	
+	me.getLinePointsOffsets = function(line, original_offsets) {
 		function getPointsOnSides(element) {
 			var rect = element.getBoundingClientRect(),
 				top = rect.top,
@@ -3472,13 +3819,13 @@ function LeaderLineFlowHandler() {
 				var st = line_container.scrollTop();
 				var sl = line_container.scrollLeft();
 				
-				//st and sl must be only added outside the zoom calculation. Do not add st and sl inside of the parseInt.
-				top = co.top + st + parseInt((top - co.top) / me.zoom);
-				left = co.left + sl + parseInt((left - co.left) / me.zoom);
-				right = co.left + sl + parseInt((right - co.left) / me.zoom);
-				bottom = co.top + st + parseInt((bottom - co.top) / me.zoom);
-				width = parseInt(width / me.zoom);
-				height = parseInt(height / me.zoom);
+				//st and sl must be only added outside the zoom calculation. Do not add st and sl inside of the me.parseFloatWithOneDecimalPlace.
+				top = co.top + st + me.parseFloatWithOneDecimalPlace((top - co.top) / me.zoom);
+				left = co.left + sl + me.parseFloatWithOneDecimalPlace((left - co.left) / me.zoom);
+				right = co.left + sl + me.parseFloatWithOneDecimalPlace((right - co.left) / me.zoom);
+				bottom = co.top + st + me.parseFloatWithOneDecimalPlace((bottom - co.top) / me.zoom);
+				width = me.parseFloatWithOneDecimalPlace(width / me.zoom);
+				height = me.parseFloatWithOneDecimalPlace(height / me.zoom);
 			}
 			
 			top += window.pageYOffset;
@@ -3500,9 +3847,28 @@ function LeaderLineFlowHandler() {
 			
 			return Math.sqrt(lx * lx + ly * ly);
 		}
-
-		var points_start = getPointsOnSides(line.start);
-		var points_end = getPointsOnSides(line.end);
+		
+		function getAnchorPoints(anchor, points) {
+			var offset_x = anchor.offset.x;
+			var offset_y = anchor.offset.y;
+			
+			if (("" + offset_x).indexOf("%") != -1)
+				offset_x = me.parseFloatWithOneDecimalPlace($(anchor.element).width() * parseFloat(offset_x) / 100);
+			
+			if (("" + offset_y).indexOf("%") != -1)
+				offset_y = me.parseFloatWithOneDecimalPlace($(anchor.element).height() * parseFloat(offset_y) / 100);
+			
+			return {
+				x: points[3].x + offset_x, //left + offset_x
+				y: points[0].y + offset_y, //top + offset_y
+			};
+		}
+		
+		//prepare point offsets
+		var line_start_ref = line.start.element ? line.start.element : line.start;
+		var line_end_ref = line.end.element ? line.end.element : line.end;
+		var points_start = getPointsOnSides(line_start_ref);
+		var points_end = getPointsOnSides(line_end_ref);
 		
 		var min_len = null;
 		var min_points = null;
@@ -3516,10 +3882,35 @@ function LeaderLineFlowHandler() {
 				
 				if (min_len == null || len < min_len) {
 					min_len = len;
-					min_points = {start: point_start, end: point_end};
+					min_points = {
+						start: Object.assign({}, point_start), 
+						end: Object.assign({}, point_end)
+					};
 				}
 			}
 		}
+		
+		//prepare anchors offsets, if exists
+		if (!original_offsets) {
+			if (line.start.element)
+				min_points.start = getAnchorPoints(line.start, points_start);
+			
+			if (line.end.element)
+				min_points.end = getAnchorPoints(line.end, points_end);
+		}
+		
+		//prepare offsets type
+		var offset = {left: points_start[3].x, top: points_start[0].y};
+		var width = points_start[1].x - points_start[3].x;
+		var height = points_start[2].y - points_start[0].y;
+		min_points.start.type = me.getOffsetSocketType({left: min_points.start.x, top: min_points.start.y}, 1, 1, offset, width, height);
+		min_points.start.points = points_start;
+		
+		var offset = {left: points_end[3].x, top: points_end[0].y};
+		var width = points_end[1].x - points_end[3].x;
+		var height = points_end[2].y - points_end[0].y;
+		min_points.end.type = me.getOffsetSocketType({left: min_points.end.x, top: min_points.end.y}, 1, 1, offset, width, height);
+		min_points.end.points = points_end;
 		
 		return min_points;
 	};
@@ -3661,5 +4052,10 @@ function LeaderLineFlowHandler() {
 		}
 		
 		return null;
+	};
+	
+	//round value but leave decimal place
+	me.parseFloatWithOneDecimalPlace = function(value) {
+		return parseInt( Math.round(parseFloat(value) * 10) ) / 10;
 	};
 }

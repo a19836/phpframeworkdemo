@@ -25,7 +25,7 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 	<script language="javascript" type="text/javascript" src="../jqueryuitouchpunch/jquery.ui.touch-punch.min.js"></script>
 	
 	<!-- Bootstrap -->
-	<!--link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" type="text/css" charset="utf-8" /-->
+	<!--link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css" type="text/css" charset="utf-8" /-->
 	
 	<!-- Layout UI Editor - Jquery Tap-Hold Event JS file -->
 	<script language="javascript" type="text/javascript" src="../jquerytaphold/taphold.js"></script>

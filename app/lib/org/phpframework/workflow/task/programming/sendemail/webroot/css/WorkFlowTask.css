@@ -49,6 +49,12 @@
 	margin-top:10px;
 	margin-bottom:10px;
 }
+.send_email_task_html .method .info .error {
+	margin-top:10px;
+	margin-bottom:10px;
+	color:#FF0000;
+	font-weight:bold;
+}
 .send_email_task_html .method .info li {
 	margin-left:20px;
 	list-style:disc;
