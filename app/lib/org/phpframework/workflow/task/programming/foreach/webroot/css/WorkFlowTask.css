@@ -8,7 +8,7 @@
 	content:"Drag the small circles to link to another box";
 }
 .taskflowchartdiagram .task.task_foreach .ep {
-	width:auto;
+	width:30px;
 	height:auto;
 	position:absolute;
 	top:0;
@@ -20,11 +20,11 @@
 }
 .taskflowchartdiagram .task.task_foreach .ep[connection_exit_id=start_exit] {
 	left:-28px;
-	right:50%;
+	right:auto;
 	text-align:left;
 }
 .taskflowchartdiagram .task.task_foreach .ep[connection_exit_id=default_exit] {
-	left:50%;
+	left:auto;
 	right:-28px;
 	text-align:right;
 }
