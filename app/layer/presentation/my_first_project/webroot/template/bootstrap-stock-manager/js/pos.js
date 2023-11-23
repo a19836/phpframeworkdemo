@@ -328,6 +328,7 @@ function searchInTable(table, input) {
 }
 
 function createEditor(items) {
+  if (typeof tinymce != "undefined")
     $.each(items, function(idx, textarea) {
         if (textarea) {
             textarea = $(textarea);

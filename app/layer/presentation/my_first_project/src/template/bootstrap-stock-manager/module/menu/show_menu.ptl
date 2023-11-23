@@ -1,5 +1,5 @@
 <ptl:if is_array(\$input)>
-	<!-- Note that this does not need the UL element bc the template already contains the UL. -->
+	<ul class="nav flex-column \$list_class">
 	
 	<ptl:foreach \$input i item>
 		
@@ -27,4 +27,6 @@
 			</ptl:if>
 		</li>
 	</ptl:foreach>
+	
+	</ul>
 </ptl:if>	
