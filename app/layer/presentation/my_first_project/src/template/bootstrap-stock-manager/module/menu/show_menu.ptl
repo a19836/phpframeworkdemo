@@ -1,5 +1,5 @@
 <ptl:if is_array(\$input)>
-	<ul class="nav flex-column \$list_class">
+	<ul class="nav flex-column <ptl:echo \$list_class/>">
 	
 	<ptl:foreach \$input i item>
 		
