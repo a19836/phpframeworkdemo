@@ -37,9 +37,9 @@
 
 <script>
 if (typeof overwriteBootstrapNavSubMenuToggle != "function") 
-    function overwriteBootstrapNavSubMenuToggle() {
+    function overwriteBootstrapNavSubMenuToggle(list_class) {
         window.addEventListener("load", function() {
-            var menus_selector = ".<ptl:echo \$list_class/> .nav-item a[data-toggle=collapse][data-target]";
+            var menus_selector = ".module_menu > " + list_class + " .nav-item a[data-toggle=collapse][data-target]";
             
             if (typeof jQuery == "function" && typeof $ == "function") {
         	   $(menus_selector).each(function(idx, item) {
@@ -104,5 +104,5 @@ if (typeof overwriteBootstrapNavSubMenuToggle != "function")
         });
     }
 
-overwriteBootstrapNavSubMenuToggle();
+overwriteBootstrapNavSubMenuToggle(".<ptl:echo str_replace(" ", ".", preg_replace("/ +/", " ", trim(\$list_class)))/>");
 </script>
