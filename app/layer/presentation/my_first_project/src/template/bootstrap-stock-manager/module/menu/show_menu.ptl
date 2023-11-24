@@ -1,32 +1,108 @@
-<ptl:if is_array(\$input)>
-	<ul class="nav flex-column <ptl:echo \$list_class/>">
-	
-	<ptl:foreach \$input i item>
-		
-		<!-- Nav Item - Components Collapse Menu -->
-		<li class="nav-item <ptl:echo \$item[class]/>">
-			<ptl:echo \$item[previous_html]/>
-			
-			<ptl:if \$item[menus]>
-				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts-<ptl:echo \$i/>" aria-expanded="false" aria-controls="collapseLayouts-<ptl:echo \$i/>" title="<ptl:echo \$item[title]/>" <ptl:echo \$item[attrs]/>>
-					<span class="sb-nav-link-icon"><i class="fas fa-table"></i></span>
-					<span><ptl:echo \$item[label]/></span>
-					<span class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></span>
-				</a>
-				<ptl:echo \$item[next_html]/>
-				<div class="collapse" id="collapseLayouts-<ptl:echo \$i/>" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-					<nav class="sb-sidenav-menu-nested nav">
-						<ptl:foreach \$item[menus] j sub_item>
-							<a class="nav-link <ptl:echo \$sub_item[class]/>" href="<ptl:echo \$sub_item[url]/>" title="<ptl:echo \$sub_item[title]/>" <ptl:echo \$sub_item[attrs]/>><ptl:echo \$sub_item[label]/></a>
-						</ptl:foreach>
-					</nav>
-				</div>
-		    	<ptl:else>
-		    		<a class="nav-link" href="<ptl:echo \$item[url]/>" title="<ptl:echo \$item[title]/>" <ptl:echo \$item[attrs]/>><ptl:echo \$item[label]/></a>
-		    		<ptl:echo \$item[next_html]/>
-			</ptl:if>
-		</li>
-	</ptl:foreach>
-	
-	</ul>
-</ptl:if>	
+<ptl:if !function_exists("getMenuItemHTML_bs_sm")>
+	<ptl:function:getMenuItemHTML_bs_sm list_class item prefix>
+		<ptl:if is_array(\$item)>
+			<!-- Nav Item - Components Collapse Menu -->
+			<li class="nav-item <ptl:echo \$item[class]/>" <ptl:echo \$item[attrs]/> >
+				<ptl:echo \$item[previous_html]/>
+				
+				<ptl:if !empty(\$item[menus]) && is_array(\$item[menus])>
+					<a class="nav-link dropdown-item collapsed" href="javascript:void(0)" data-toggle="collapse" data-target="#collapseLayouts-<ptl:echo \$prefix/>" aria-expanded="false" aria-controls="collapseLayouts-<ptl:echo \$prefix/>" title="<ptl:echo \$item[title]/>">
+						<span><ptl:echo \$item[label]/></span>
+						<span class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></span>
+					</a>
+					<ptl:echo \$item[next_html]/>
+					<div class="collapse" id="collapseLayouts-<ptl:echo \$prefix/>" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+						<ul class="sb-sidenav-menu-nested nav flex-column ml-0 <ptl:echo \$list_class/>">
+							<ptl:foreach \$item[menus] j sub_item>
+								<ptl:getMenuItemHTML_bs_sm \$list_class \$sub_item "{\$prefix}_\$j">
+							</ptl:foreach>
+						</ul>
+					</div>
+				<ptl:else>
+					<a class="nav-link dropdown-item" href="<ptl:if \$item[url]><ptl:echo \$item[url]/><ptl:else><ptl:echo 'javascript:void(0)'/></ptl:if>" title="<ptl:echo \$item[title]/>"><ptl:echo \$item[label]/></a>
+					<ptl:echo \$item[next_html]/>
+				</ptl:if>
+			</li>
+		</ptl:if>
+	</ptl:function>
+</ptl:if>
+
+<ul class="nav flex-column <ptl:echo \$list_class/>">
+	<ptl:if is_array(\$input)>
+		<ptl:foreach \$input i item>
+			<ptl:getMenuItemHTML_bs_sm \$list_class \$item \$i>
+		</ptl:foreach>
+	</ptl:if>
+</ul>
+
+<script>
+if (typeof overwriteBootstrapNavSubMenuToggle != "function") 
+    function overwriteBootstrapNavSubMenuToggle() {
+        window.addEventListener("load", function() {
+            var menus_selector = ".<ptl:echo \$list_class/> .nav-item a[data-toggle=collapse][data-target]";
+            
+            if (typeof jQuery == "function" && typeof $ == "function") {
+        	   $(menus_selector).each(function(idx, item) {
+        	       item = $(item);
+        	       
+        	       if (item.data("bs_menu_click_event_init") != 1) {
+        	           item.data("bs_menu_click_event_init", 1);
+        	           
+        	           item.on("click", function(e) {
+        	               e.stopPropagation();
+        	               
+        	               var selector = item.attr("data-target");
+        	               var target = item.parent().find(selector);
+        	               
+        	               if (target[0])
+			   	          target.toggle({
+		   	                   duration: "slow", 
+		   	                   start: function() {
+		   	                       target.addClass("collapsing show");
+		   	                       target.removeClass("collapse");
+		   	                   },
+		   	                   complete: function() {
+		   	                       target.removeClass("collapsing show");
+		   	                       
+		   	                       if (target.css("display") == "none")
+		   	                           target.addClass("collapse");
+		   	                       else
+		   	                           target.removeClass("collapse");
+		   	                       
+		   	                       target.css("display", "");
+		   	                   }
+		   	               });
+        	           });
+        	       }
+        	   });
+            }
+            else {
+        	   var items = document.querySelectorAll(menus_selector);
+        	   
+        	   for (var i = 0, t = items.length; i < t; i++) {
+        	       var item = items[i];
+        	       
+        	       if (item.bs_menu_click_event_init != 1) {
+        	           item.bs_menu_click_event_init = 1;
+        	           
+        	           item.addEventListener("click", function(e) {
+        	               e.stopPropagation();
+        	               
+        	               var selector = this.getAttribute("data-target");
+        	               
+        	               if (selector) {
+        	                   var p = this.parentNode;
+        	                   var target = p.querySelector(selector);
+        	                   
+        	                   if (target)
+        	                       target.classList.toggle("collapse");
+        	               }
+        	           });    
+        	       }
+        	   }
+            }
+        });
+    }
+
+overwriteBootstrapNavSubMenuToggle();
+</script>
