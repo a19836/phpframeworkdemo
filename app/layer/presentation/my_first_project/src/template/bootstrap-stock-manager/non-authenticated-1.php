@@ -4,7 +4,8 @@
 $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Page Keywords", "Admin Panel");
 $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Page Description", "Company Name - Automatic Admin Panel Template");
 $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Icon Url", "{$original_project_url_prefix}template/bootstrap-stock-manager/img/favicon.png");
-$EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Color", "#000");
+$EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Background Color", "#000");
+$EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Text Color", "#fff");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,16 +28,18 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Color", "#000");
 	
 	<style>
 	    :root {
-		  --template-color:<?php echo $EVC->getCMSLayer()->getCMSTemplateLayer()->getParam("Template Color"); ?>;
+		  --template-bg-color:<?php echo $EVC->getCMSLayer()->getCMSTemplateLayer()->getParam("Template Background Color"); ?>;
+	   	  --template-text-color:<?php echo $EVC->getCMSLayer()->getCMSTemplateLayer()->getParam("Template Text Color"); ?>;
 	    }
-	    .template-bg {
-		   background-color:var(--template-color) !important;
+	    .template-color {
+		   background-color:var(--template-bg-color) !important;
+		   color:var(--template-text-color) !important;
 	    }
 	</style>
 
 	<?= $EVC->getCMSLayer()->getCMSTemplateLayer()->renderRegion("Head"); ?>
 </head>
-<body class="template-bg">
+<body class="template-color">
 	<div id="layoutAuthentication">
 		<div id="layoutAuthentication_content">
 			<main>

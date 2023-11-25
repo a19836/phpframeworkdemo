@@ -7,7 +7,8 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Profile Url", $edit_profil
 $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Users Url", $list_users_url ? $list_users_url : null);
 $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Admin Url", $admin_url ? $admin_url : "{$project_url_prefix}");
 $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Logout Url", $logout_url ? $logout_url : "#");
-$EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Color", "#000");
+$EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Background Color", "#000");
+$EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Text Color", "#fff");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,10 +42,12 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Color", "#000");
 	
 	<style>
 	    :root {
-		  --template-color:<?php echo $EVC->getCMSLayer()->getCMSTemplateLayer()->getParam("Template Color"); ?>;
+		  --template-bg-color:<?php echo $EVC->getCMSLayer()->getCMSTemplateLayer()->getParam("Template Background Color"); ?>;
+	   	  --template-text-color:<?php echo $EVC->getCMSLayer()->getCMSTemplateLayer()->getParam("Template Text Color"); ?>;
 	    }
-	    .template-bg {
-		   background-color:var(--template-color) !important;
+	    .template-color {
+		   background-color:var(--template-bg-color) !important;
+		   color:var(--template-text-color) !important;
 	    }
 	</style>
 
@@ -118,7 +121,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Color", "#000");
 	</nav>
 	<div id="layoutSidenav">
 		<div id="layoutSidenav_nav">
-			<nav class="sb-sidenav accordion template-bg" id="sidenavAccordion">
+			<nav class="sb-sidenav accordion template-color" id="sidenavAccordion">
 				<img class="bloxtor-logo" src="<?= $original_project_url_prefix ?>template/bootstrap-stock-manager/img/bloxtor_logo_white.svg"/>
 				<div class="sb-sidenav-menu">
 					<ul class="nav">
@@ -160,7 +163,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Color", "#000");
 		<div id="layoutSidenav_content">
 			<main>
 				<div class="sb-topnav-menu">
-					<ul class="nav template-bg">
+					<ul class="nav template-color">
 						<? echo $EVC->getCMSLayer()->getCMSTemplateLayer()->renderRegion("Sub Menu"); ?>
 					</ul>
 				</div>
