@@ -7,6 +7,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Profile Url", $edit_profil
 $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Users Url", $list_users_url ? $list_users_url : null);
 $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Admin Url", $admin_url ? $admin_url : "{$project_url_prefix}");
 $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Logout Url", $logout_url ? $logout_url : "#");
+$EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Color", "#000");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,6 +39,15 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Logout Url", $logout_url ?
 	<link href="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/css/authenticated-1.css" rel="stylesheet">
 	<link href="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/css/authenticated.css" rel="stylesheet">
 	
+	<style>
+	    :root {
+		  --template-color:<?php echo $EVC->getCMSLayer()->getCMSTemplateLayer()->getParam("Template Color"); ?>;
+	    }
+	    .template-bg {
+		   background-color:var(--template-color) !important;
+	    }
+	</style>
+
 	<?= $EVC->getCMSLayer()->getCMSTemplateLayer()->renderRegion("Head"); ?>
 </head>
 <body class="sb-nav-fixed">
@@ -108,7 +118,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Logout Url", $logout_url ?
 	</nav>
 	<div id="layoutSidenav">
 		<div id="layoutSidenav_nav">
-			<nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+			<nav class="sb-sidenav accordion template-bg" id="sidenavAccordion">
 				<img class="bloxtor-logo" src="<?= $original_project_url_prefix ?>template/bootstrap-stock-manager/img/bloxtor_logo_white.svg"/>
 				<div class="sb-sidenav-menu">
 					<ul class="nav">
@@ -150,7 +160,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Logout Url", $logout_url ?
 		<div id="layoutSidenav_content">
 			<main>
 				<div class="sb-topnav-menu">
-					<ul class="nav sb-sidenav-dark">
+					<ul class="nav template-bg">
 						<? echo $EVC->getCMSLayer()->getCMSTemplateLayer()->renderRegion("Sub Menu"); ?>
 					</ul>
 				</div>

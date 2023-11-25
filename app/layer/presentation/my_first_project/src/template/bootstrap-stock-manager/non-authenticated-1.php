@@ -4,6 +4,7 @@
 $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Page Keywords", "Admin Panel");
 $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Page Description", "Company Name - Automatic Admin Panel Template");
 $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Icon Url", "{$original_project_url_prefix}template/bootstrap-stock-manager/img/favicon.png");
+$EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Color", "#000");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,9 +25,18 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Icon Url", "{$original_pro
 	<link href="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/css/non-authenticated-1.css" rel="stylesheet">
 	<link href="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/css/non-authenticated.css" rel="stylesheet">
 	
+	<style>
+	    :root {
+		  --template-color:<?php echo $EVC->getCMSLayer()->getCMSTemplateLayer()->getParam("Template Color"); ?>;
+	    }
+	    .template-bg {
+		   background-color:var(--template-color) !important;
+	    }
+	</style>
+
 	<?= $EVC->getCMSLayer()->getCMSTemplateLayer()->renderRegion("Head"); ?>
 </head>
-<body class="bg-black">
+<body class="template-bg">
 	<div id="layoutAuthentication">
 		<div id="layoutAuthentication_content">
 			<main>

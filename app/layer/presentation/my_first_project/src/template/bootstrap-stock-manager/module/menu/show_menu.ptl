@@ -11,7 +11,7 @@
 						<span class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></span>
 					</a>
 					<ptl:echo \$item[next_html]/>
-					<div class="collapse" id="collapseLayouts-<ptl:echo \$prefix/>" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+					<div class="collapse" id="collapseLayouts-<ptl:echo \$prefix/>" aria-labelledby="headingOne">
 						<ul class="sb-sidenav-menu-nested nav flex-column ml-0 <ptl:echo \$list_class/>">
 							<ptl:foreach \$item[menus] j sub_item>
 								<ptl:getMenuItemHTML_bs_sm \$list_class \$sub_item "{\$prefix}_\$j">
