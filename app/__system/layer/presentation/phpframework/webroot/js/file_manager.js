@@ -495,7 +495,7 @@ function refreshNodeParentChildsByChildId(node_id) {
 }
 
 function refreshOpenNodeChildsBasedInPath(path) {
-	if (path) {
+	if (path && mytree && mytree.tree_elm) {
 		var items = mytree.tree_elm.find(".jstree-node.jstree-open > ul[url]");
 		
 		if (path.substr(path.length - 1) != "/")
@@ -517,7 +517,7 @@ function refreshOpenNodeChildsBasedInPath(path) {
 }
 
 function refreshAndShowNodeChildsBasedInPath(path) {
-	if (path) {
+	if (path && mytree && mytree.tree_elm) {
 		var items = mytree.tree_elm.find(".jstree-node > ul[url]");
 		
 		if (path.substr(path.length - 1) != "/")
