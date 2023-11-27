@@ -162,7 +162,13 @@ function setDefaultTemplatePTL() {
 	
 	$(".menu_settings .els > .ptl > .layout-ui-editor > .template-source > textarea").text(ptl);
 	
-	var css = "a.nav-link { color:inherit; }";
+	var css = "a.nav-link {\n"
+		+ "  color:inherit;\n"
+		+ "}\n"
+		+ "a.nav-link:focus, a.nav-link:hover {\n"
+		+ "  opacity:.8;\n"
+		+ "  color:inherit;\n"
+		+ "}";
 	var editor_parent = $(".menu_settings .block_css");
 	var editor = editor_parent.data("editor");
 	if (editor)
