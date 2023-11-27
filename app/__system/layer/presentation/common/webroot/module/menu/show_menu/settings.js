@@ -16,22 +16,22 @@ $(function () {
 function setDefaultTemplatePTL() {
 	var r = Math.floor(Math.random() * 1000);
 	
-	var ptl =   '<ptl:if !function_exists("getMenusHTML_' + r + '")>' +
+	/*var ptl =   '<ptl:if !function_exists("getMenusHTML_' + r + '")>' +
 		"\n" + '	<!--ul-->' +
 		"\n" + '	' +
-		"\n" + '	<ptl:function:getMenusHTML_' + r + ' menus>' +
+		"\n" + '	<ptl:function:getMenusHTML_' + r + ' list_class menus>' +
 		"\n" + '		<ptl:if is_array(\\$menus)>' +
 		"\n" + '			<ptl:foreach \\$menus i item>' +
-		"\n" + '				<li class="module_menu_item_class <ptl:echo \\$item[class]/>" title="<ptl:echo \\$item[title]/>" <ptl:echo \\$item[attrs]/> >' +
-		"\n" + '					<ptl:echo \\$item[previous-html]/>' +
+		"\n" + '				<li class="<ptl:echo \\$item[class]/>" title="<ptl:echo \\$item[title]/>" <ptl:echo \\$item[attrs]/> >' +
+		"\n" + '					<ptl:echo \\$item[previous_html]/>' +
 		"\n" + '					' +
 		"\n" + '					<a href="<ptl:if \\$item[url]><ptl:echo \\$item[url]/><ptl:else><ptl:echo \'javascript:void(0)\'/></ptl:if>">' +
 		"\n" + '						<label><ptl:echo \\$item[label]/></label>' +
 		"\n" + '					</a>' +
 		"\n" + '					' +
 		"\n" + '					<ptl:if is_array(\\$item[menus])>' +
-		"\n" + '						<ul>' +
-		"\n" + '							<ptl:getMenusHTML_' + r + ' \\$item[menus]>' +
+		"\n" + '						<ul class="<ptl:echo \\$list_class/>">' +
+		"\n" + '							<ptl:getMenusHTML_' + r + ' \\$list_class \\$item[menus]>' +
 		"\n" + '						</ul>' +
 		"\n" + '					</ptl:if>' +
 		"\n" + '					' +
@@ -44,11 +44,131 @@ function setDefaultTemplatePTL() {
 		"\n" + '	<!--/ul-->' +
 		"\n" + '</ptl:if>' +
 		"\n" + '' +
-		"\n" + '<ul class="menu_main_ul">' +
-		"\n" + '	<ptl:getMenusHTML_' + r + ' \\$input>' +
-		"\n" + '</ul>';
+		"\n" + '<ul class="<ptl:echo \\$list_class/>">' +
+		"\n" + '	<ptl:getMenusHTML_' + r + ' \\$list_class \\$input>' +
+		"\n" + '</ul>';*/
+	
+	var ptl =   '<ptl:if !function_exists("getMenuItemHTML_' + r + '")>' +
+		"\n" + '	<ptl:function:getMenuItemHTML_' + r + ' list_class item prefix>' +
+		"\n" + '		<ptl:if is_array(\\$item)>' +
+		"\n" + '			<li class="nav-item <ptl:echo \\$item[class]/>" <ptl:echo \\$item[attrs]/> >' +
+		"\n" + '				<ptl:echo \\$item[previous_html]/>' +
+		"\n" + '				' +
+		"\n" + '				<ptl:if !empty(\\$item[menus]) && is_array(\\$item[menus])>' +
+		"\n" + '					<a class="nav-link dropdown-item collapsed" href="javascript:void(0)" data-toggle="collapse" data-toggle="collapse" data-target="#collapseLayouts-<ptl:echo \\$prefix/>" aria-expanded="false" aria-controls="collapseLayouts-<ptl:echo \\$prefix/>" title="<ptl:echo \\$item[title]/>">' +
+		"\n" + '						<span class="sb-nav-link-icon"><i class="fas fa-table"></i></span>' +
+		"\n" + '						<span><ptl:echo \\$item[label]/></span>' +
+		"\n" + '						<span class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></span>' +
+		"\n" + '					</a>' +
+		"\n" + '					<ptl:echo \\$item[next_html]/>' +
+		"\n" + '					<div class="collapse" id="collapseLayouts-<ptl:echo \\$prefix/>" aria-labelledby="headingOne">' +
+		"\n" + '						<ul class="sb-sidenav-menu-nested nav flex-column ml-0 <ptl:echo \\$list_class/>">' +
+		"\n" + '							<ptl:foreach \\$item[menus] j sub_item>' +
+		"\n" + '								<ptl:getMenuItemHTML_' + r + ' \\$list_class \\$sub_item "{\\$prefix}_\\$j">' +
+		"\n" + '							</ptl:foreach>' +
+		"\n" + '						</ul>' +
+		"\n" + '					</div>' +
+	    	"\n" + '				<ptl:else>' +
+	    	"\n" + '					<a class="nav-link dropdown-item" href="<ptl:if \\$item[url]><ptl:echo \\$item[url]/><ptl:else><ptl:echo \'javascript:void(0)\'/></ptl:if>" title="<ptl:echo \\$item[title]/>">' +
+		"\n" + '						<span class="sb-nav-link-icon"><i class="fas fa-table"></i></span>' +
+		"\n" + '						<span><ptl:echo \\$item[label]/></span>' +
+		"\n" + '					</a>' +
+	    	"\n" + '					<ptl:echo \\$item[next_html]/>' +
+		"\n" + '				</ptl:if>' +
+		"\n" + '			</li>' +
+		"\n" + '		</ptl:if>' +
+		"\n" + '	</ptl:function>' +
+		"\n" + '</ptl:if>' +
+		"\n" + '' +
+		"\n" + '<ul class="nav flex-column <ptl:echo \\$list_class/>">' +
+		"\n" + '	<ptl:if is_array(\\$input)>' +
+		"\n" + '		<ptl:foreach \\$input i item>' +
+		"\n" + '			<ptl:getMenuItemHTML_' + r + ' \\$list_class \\$item \\$i>' +
+		"\n" + '		</ptl:foreach>' +
+		"\n" + '	</ptl:if>' +
+		"\n" + '</ul>' +
+		"\n" + '' +
+		"\n" + '<script>' +
+		"\n" + '	if (typeof overwriteBootstrapNavSubMenuToggle != "function") ' +
+		"\n" + '	    function overwriteBootstrapNavSubMenuToggle(list_class) {' +
+		"\n" + '		   window.addEventListener("load", function() {' +
+		"\n" + '			  var menus_selector = ".module_menu > " + list_class + " .nav-item a[data-toggle=collapse][data-target]";' +
+		"\n" + '			  ' +
+		"\n" + '			  if (typeof jQuery == "function" && typeof $ == "function") {' +
+		"\n" + '		   	   $(menus_selector).each(function(idx, item) {' +
+		"\n" + '		   	       item = $(item);' +
+		"\n" + '		   	       ' +
+		"\n" + '		   	       if (item.data("bs_menu_click_event_init") != 1) {' +
+		"\n" + '		   	           item.data("bs_menu_click_event_init", 1);' +
+		"\n" + '		   	           ' +
+		"\n" + '		   	           item.on("click", function(e) {' +
+		"\n" + '		   	               e.stopPropagation();' +
+		"\n" + '		   	               ' +
+		"\n" + '		   	               var selector = item.attr("data-target");' +
+		"\n" + '		   	               var target = item.parent().find(selector);' +
+		"\n" + '		   	               ' +
+		"\n" + '		   	               if (target[0])' +
+		"\n" + '				   	          target.toggle({' +
+		"\n" + '			   	                   duration: "slow", ' +
+		"\n" + '			   	                   start: function() {' +
+		"\n" + '			   	                       target.addClass("collapsing show");' +
+		"\n" + '			   	                       target.removeClass("collapse");' +
+		"\n" + '			   	                   },' +
+		"\n" + '			   	                   complete: function() {' +
+		"\n" + '			   	                       target.removeClass("collapsing show");' +
+		"\n" + '			   	                       ' +
+		"\n" + '			   	                       if (target.css("display") == "none")' +
+		"\n" + '			   	                           target.addClass("collapse");' +
+		"\n" + '			   	                       else' +
+		"\n" + '			   	                           target.removeClass("collapse");' +
+		"\n" + '			   	                       ' +
+		"\n" + '			   	                       target.css("display", "");' +
+		"\n" + '			   	                   }' +
+		"\n" + '			   	               });' +
+		"\n" + '		   	           });' +
+		"\n" + '		   	       }' +
+		"\n" + '		   	   });' +
+		"\n" + '			  }' +
+		"\n" + '			  else {' +
+		"\n" + '		   	   var items = document.querySelectorAll(menus_selector);' +
+		"\n" + '		   	   ' +
+		"\n" + '		   	   for (var i = 0, t = items.length; i < t; i++) {' +
+		"\n" + '		   	       var item = items[i];' +
+		"\n" + '		   	       ' +
+		"\n" + '		   	       if (item.bs_menu_click_event_init != 1) {' +
+		"\n" + '		   	           item.bs_menu_click_event_init = 1;' +
+		"\n" + '		   	           ' +
+		"\n" + '		   	           item.addEventListener("click", function(e) {' +
+		"\n" + '		   	               e.stopPropagation();' +
+		"\n" + '		   	               ' +
+		"\n" + '		   	               var selector = this.getAttribute("data-target");' +
+		"\n" + '		   	               ' +
+		"\n" + '		   	               if (selector) {' +
+		"\n" + '		   	                   var p = this.parentNode;' +
+		"\n" + '		   	                   var target = p.querySelector(selector);' +
+		"\n" + '		   	                   ' +
+		"\n" + '		   	                   if (target)' +
+		"\n" + '		   	                       target.classList.toggle("collapse");' +
+		"\n" + '		   	               }' +
+		"\n" + '		   	           });' +
+		"\n" + '		   	       }' +
+		"\n" + '		   	   }' +
+		"\n" + '			  }' +
+		"\n" + '		   });' +
+		"\n" + '	    }' +
+		"\n" + '	' +
+		"\n" + '	overwriteBootstrapNavSubMenuToggle(".<ptl:echo str_replace(" ", ".", preg_replace("/ +/", " ", trim(\\$list_class)))/>");' +
+		"\n" + '</script>';
 	
 	$(".menu_settings .els > .ptl > .layout-ui-editor > .template-source > textarea").text(ptl);
+	
+	var css = "a.nav-link { color:inherit; }";
+	var editor_parent = $(".menu_settings .block_css");
+	var editor = editor_parent.data("editor");
+	if (editor)
+		editor.setValue(css);
+	else
+		editor_parent.children("textarea.css").first().val(css);
 }
 
 function loadShowMenuBlockSettings(settings_elm, settings_values) {

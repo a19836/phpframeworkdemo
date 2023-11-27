@@ -267,7 +267,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 			<span class="icon add" onClick="addNewInclude(this)" title="Add new include">Add</span>
 			<div class="fields">'; if ($v280898d986) { $pc37695cb = count($v280898d986); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $pc24afc88 = $v280898d986[$v43dd7d0051]["value"]; $v8b6fd90a28 = $v280898d986[$v43dd7d0051]["@"]["relative"]; $pf8ed4912 .= $this->getInludeHTML($pc24afc88, $v8b6fd90a28); } } else $pf8ed4912 .= '<div class="no_includes">There are includes...</div>'; $pf8ed4912 .= '
 			</div>
-		</div>'; return $pf8ed4912; } public function getMapSelectOptions($pe3573e1b, $pb92c3c9b, $v4b559a4220 = "org.phpframework.object.php.Primitive", $v0a938c6790 = true, $v4cad1832a9 = true) { $pb92c3c9b = ObjTypeHandler::convertSimpleTypeIntoCompositeType($pb92c3c9b, $v4b559a4220); $pf8ed4912 = $v0a938c6790 ? '<option></option>' : ''; $pf8ed4912 .= '<optgroup label="Primitive Types">'; if ($pe3573e1b) foreach ($pe3573e1b as $pb13127fc => $v945fda93f2) { if (strpos($pb13127fc, $v4b559a4220) === 0) { $pf8ed4912 .= '<option value="' . $pb13127fc . '" ' . ($pb92c3c9b == $pb13127fc ? 'selected' : '') . '>' . $v945fda93f2 . '</option>'; } } $pf8ed4912 .= '</optgroup>
+		</div>'; return $pf8ed4912; } public static function getMapSelectOptions($pe3573e1b, $pb92c3c9b, $v4b559a4220 = "org.phpframework.object.php.Primitive", $v0a938c6790 = true, $v4cad1832a9 = true) { $pb92c3c9b = ObjTypeHandler::convertSimpleTypeIntoCompositeType($pb92c3c9b, $v4b559a4220); $pf8ed4912 = $v0a938c6790 ? '<option></option>' : ''; $pf8ed4912 .= '<optgroup label="Primitive Types">'; if ($pe3573e1b) foreach ($pe3573e1b as $pb13127fc => $v945fda93f2) { if (strpos($pb13127fc, $v4b559a4220) === 0) { $pf8ed4912 .= '<option value="' . $pb13127fc . '" ' . ($pb92c3c9b == $pb13127fc ? 'selected' : '') . '>' . $v945fda93f2 . '</option>'; } } $pf8ed4912 .= '</optgroup>
 			<optgroup label="Composite Types">'; if ($pe3573e1b) foreach ($pe3573e1b as $pb13127fc => $v945fda93f2) { if (strpos($pb13127fc, $v4b559a4220) === false) { $pf8ed4912 .= '<option value="' . $pb13127fc . '" ' . ($pb92c3c9b == $pb13127fc ? 'selected' : '') . '>' . $v945fda93f2 . '</option>'; } } $pf8ed4912 .= '</optgroup>
 			<optgroup label="Other Types">'; if ($v4cad1832a9 && $pb92c3c9b && !isset($pe3573e1b[$pb92c3c9b])) { $pbd1bc7b0 = strrpos($pb92c3c9b, "."); $v02a69d4e0f = $pbd1bc7b0 !== false ? substr($pb92c3c9b, $pbd1bc7b0 + 1) : $pb92c3c9b; $pf8ed4912 .= '<option value="' . $pb92c3c9b . '" selected>' . $v02a69d4e0f . '</option>'; } $pf8ed4912 .= '</optgroup>'; return $pf8ed4912; } public function getParameterHTML($v197630b0cc, $v1167f1d261, $v8dca298c48 = false, $v5a911d8233 = false, $v1c301b29c5 = false, $v10353796a8 = false, $v18d8ec0406 = false) { $pf8ed4912 = '
 		<tr class="parameter field">
@@ -276,7 +276,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 			</td>
 			<td class="input_type">
 				<select>
-		 			' . $this->getMapSelectOptions($v197630b0cc, $v5a911d8233) . '
+		 			' . self::getMapSelectOptions($v197630b0cc, $v5a911d8233) . '
 				</select>
 				<span class="icon search" onClick="geMapPHPTypeFromFileManager(this, \'select\')" title="Get type from File Manager">Search</span>
 			</td>
@@ -286,7 +286,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 			</td>
 			<td class="output_type">
 				<select>
-					' . $this->getMapSelectOptions($v1167f1d261, $v10353796a8, "org.phpframework.object.db.DBPrimitive") . '
+					' . self::getMapSelectOptions($v1167f1d261, $v10353796a8, "org.phpframework.object.db.DBPrimitive") . '
 				</select>
 			</td>
 			<td class="mandatory">
@@ -328,7 +328,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 			</td>
 			<td class="input_type">
 				<select>
-					' . $this->getMapSelectOptions($v1167f1d261, $v5a911d8233, "org.phpframework.object.db.DBPrimitive") . '
+					' . self::getMapSelectOptions($v1167f1d261, $v5a911d8233, "org.phpframework.object.db.DBPrimitive") . '
 				</select>
 			</td>
 			<td class="output_name">
@@ -336,7 +336,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 			</td>
 			<td class="output_type">
 				<select>
-					' . $this->getMapSelectOptions($v197630b0cc, $v10353796a8) . '
+					' . self::getMapSelectOptions($v197630b0cc, $v10353796a8) . '
 				</select>
 				<span class="icon search" onClick="geMapPHPTypeFromFileManager(this, \'select\')" title="Get type from File Manager">Search</span>
 			</td>

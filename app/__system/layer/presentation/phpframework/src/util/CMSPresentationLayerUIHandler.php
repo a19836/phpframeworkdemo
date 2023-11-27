@@ -59,12 +59,16 @@ include_once get_lib("org.phpframework.phpscript.PHPUICodeExpressionHandler"); i
 <script type="text/javascript" src="' . $v37d269c4fa . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
 
 <!-- Layout UI Editor - Add Code Beautifier -->
-<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/mycodebeautifier/js/codebeautifier.js"></script>
+<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/mycodebeautifier/js/MyCodeBeautifier.js"></script>
 
 <!-- Layout UI Editor - Add Html/CSS/JS Beautify code -->
 <script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/jsbeautify/js/lib/beautify.js"></script>
 <script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/jsbeautify/js/lib/beautify-css.js"></script>
 <script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/myhtmlbeautify/MyHtmlBeautify.js"></script>
+
+<!-- Add Auto complete -->
+<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/myautocomplete/js/MyAutoComplete.js"></script>
+<link rel="stylesheet" href="' . $v37d269c4fa . 'vendor/myautocomplete/css/style.css">
 
 <!-- Layout UI Editor - Material-design-iconic-font -->
 <link rel="stylesheet" href="' . $v37d269c4fa . 'vendor/jquerylayoutuieditor/vendor/materialdesigniconicfont/css/material-design-iconic-font.min.css">
@@ -127,7 +131,7 @@ include_once get_lib("org.phpframework.phpscript.PHPUICodeExpressionHandler"); i
 					' . $pefdd2109 . '
 				</ul>
 			</div>
-		</div>'; } public static function getRegionsBlocksAndIncludesHtml($v7b2ad4afbf, $v3f8f1acfdb, $v2b1e634696, $v5aaf0d3496, $v5e5b435544, $peb496cef, $pc06f1034, $v3fd37663c7, $v1fb4b254d3) { $pf8ed4912 = '
+		</div>'; } public static function getRegionsBlocksAndIncludesHtml($v7b2ad4afbf, $v3f8f1acfdb, $v2b1e634696, $v5aaf0d3496, $v5e5b435544, $peb496cef, $pc06f1034, $v3fd37663c7, $v1fb4b254d3, $pbbf03f8a = null) { $pf8ed4912 = '
 			<div class="region_blocks">
 				<label>Selected Template Regions:</label>
 			
@@ -154,7 +158,7 @@ include_once get_lib("org.phpframework.phpscript.PHPUICodeExpressionHandler"); i
 			<div class="template_params">
 				<label>Selected Template Params:</label>
 			
-				<div class="items">'; $v0db218b458 = array(); if ($v7b2ad4afbf && $v3fd37663c7) { $pc37695cb = count($v3fd37663c7); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v58b61e02bc = $v3fd37663c7[$v43dd7d0051]; $v72eb975550 = $v1fb4b254d3[$v58b61e02bc]; if ($v58b61e02bc && !isset($v0db218b458[$v58b61e02bc])) $pf8ed4912 .= self::getTemplateParamHtml($v58b61e02bc, $v72eb975550); $v0db218b458[$v58b61e02bc] = true; } } $pf8ed4912 .= '</div>
+				<div class="items">'; $v0db218b458 = array(); if ($v7b2ad4afbf) { if ($v3fd37663c7) { $pc37695cb = count($v3fd37663c7); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v58b61e02bc = $v3fd37663c7[$v43dd7d0051]; if ($v58b61e02bc && !isset($v0db218b458[$v58b61e02bc])) { $v72eb975550 = $v1fb4b254d3[$v58b61e02bc]; $pd6bf10d2 = $pbbf03f8a[$v58b61e02bc]; $pf8ed4912 .= self::getTemplateParamHtml($v58b61e02bc, $v72eb975550, $pd6bf10d2); } $v0db218b458[$v58b61e02bc] = true; } } if ($pbbf03f8a) { foreach ($pbbf03f8a as $v58b61e02bc => $pd6bf10d2) { if ($v58b61e02bc && !isset($v0db218b458[$v58b61e02bc])) { $v72eb975550 = $v1fb4b254d3[$v58b61e02bc]; $pf8ed4912 .= self::getTemplateParamHtml($v58b61e02bc, $v72eb975550, $pd6bf10d2); $v0db218b458[$v58b61e02bc] = true; } } } } $pf8ed4912 .= '</div>
 				<div class="no_items' . ($v7b2ad4afbf && $v3fd37663c7 ? ' hidden' : '') . '">There are no params in this template</div>
 			</div>
 		
@@ -162,7 +166,7 @@ include_once get_lib("org.phpframework.phpscript.PHPUICodeExpressionHandler"); i
 				<label>Extra Params:</label>
 				<span class="icon add" onClick="addOtherTemplateParam(this)" title="Add">Add</span>
 			
-				<div class="items">'; $v7959970a41 = false; foreach ($v1fb4b254d3 as $v58b61e02bc => $v72eb975550) { if ($v58b61e02bc && !isset($v0db218b458[$v58b61e02bc])) { $pf8ed4912 .= self::getTemplateParamHtml($v58b61e02bc, $v72eb975550); $v7959970a41 = true; } } $pf8ed4912 .= '	</div>
+				<div class="items">'; $v7959970a41 = false; foreach ($v1fb4b254d3 as $v58b61e02bc => $v72eb975550) { if ($v58b61e02bc && !isset($v0db218b458[$v58b61e02bc])) { $pf8ed4912 .= self::getTemplateParamHtml($v58b61e02bc, isset($v72eb975550) ? $v72eb975550 : ""); $v7959970a41 = true; } } $pf8ed4912 .= '	</div>
 				<div class="no_items' . ($v7959970a41 ? ' hidden' : '') . '">There are no extra params in this file</div>
 			</div>'; return $pf8ed4912; } public static function getRegionBlockHtml($v9b9b8653bc, $paa7b7454, $v7eefa5ee2c, $v2b9707135d, $v5aaf0d3496, $v5e5b435544 = array(), $peb496cef = array(), $pe603f3eb = 0) { $v5aaf0d3496 = is_array($v5aaf0d3496) ? $v5aaf0d3496 : array(); $v23caa16bce = $v36aefa195e = array(); if (!$v2b9707135d) { $v23caa16bce = $v5e5b435544[$v9b9b8653bc][$paa7b7454]; $v36aefa195e = $peb496cef[$v9b9b8653bc][$paa7b7454][$pe603f3eb]; $v56b1e1a2b7 = substr($paa7b7454, 0, 1) == '"' ? str_replace('"', '', $paa7b7454) : $paa7b7454; $pc611e727 = substr($v7eefa5ee2c, 0, 1) == '"' ? str_replace('"', '', $v7eefa5ee2c) : $v7eefa5ee2c; $pd45d0d0d = $v5aaf0d3496[$pc611e727]; $pb29e9f6d = strpos($v56b1e1a2b7, "\n") || strip_tags($v56b1e1a2b7) != $v56b1e1a2b7; $v7959970a41 = empty($v56b1e1a2b7) || ($pd45d0d0d && !$pb29e9f6d && in_array($v56b1e1a2b7, $pd45d0d0d)); $peb283674 = strpos($paa7b7454, "\n") !== false; $pada21496 = strpos($paa7b7454, "\n") === false && substr($paa7b7454, 0, 1) == '$' && strpos($paa7b7454, "->") === false; $pe7eba739 = !$pada21496 && !$peb283674 && strlen($paa7b7454); $pade4502c = $pe7eba739 && substr($paa7b7454, 0, 1) == '"'; $pb30921ad = $pe7eba739 && !$pade4502c; $v7fa8301bf0 = ($v7959970a41 && !$pb30921ad) || !strlen($paa7b7454); if ($v7fa8301bf0) $peb283674 = $pada21496 = $pe7eba739 = $pade4502c = $pb30921ad = false; $v3ae55a9a2e = $pe7eba739 || $pada21496 ? ' is_input' : ($peb283674 ? ' is_text' : ''); $v3ae55a9a2e .= $v7fa8301bf0 && $paa7b7454 ? ' has_edit' : ''; } else { $v3fb9f41470 = PHPUICodeExpressionHandler::getValueType($paa7b7454, array("empty_string_type" => "string", "non_set_type" => "string")); $pf8ed4912 = PHPUICodeExpressionHandler::getArgumentCode($paa7b7454, $v3fb9f41470); $v3ae55a9a2e = ' is_html has_edit'; } $v7a1b9c07b3 = substr($v9b9b8653bc, 0, 1) == '"' ? str_replace('"', '', $v9b9b8653bc) : $v9b9b8653bc; $v9b9b8653bc = str_replace('"', "&quot;", $v9b9b8653bc); $pf8ed4912 = '<div class="template_region_item' . $v3ae55a9a2e . '" rb_index="' . $pe603f3eb . '">
 			<span class="icon info invisible" onClick="openTemplateRegionInfoPopup(this)" title="View region samples">View region samples</span>
@@ -215,11 +219,12 @@ include_once get_lib("org.phpframework.phpscript.PHPUICodeExpressionHandler"); i
 			<input class="once" type="checkbox" value="1"' . ($v311012acc5 ? ' checked' : '') . ' title="Check here to active the include ONCE feature" onchange="onChangeIncludeOnce(this)" />
 			<span class="icon search" onClick="onPresentationIncludeTaskChoosePage(this)" title="Choose a file to include">Search</span>
 			<span class="icon delete" onClick="removeInclude(this)">Remove</span>
-		</div>'; } public static function getTemplateParamHtml($v58b61e02bc, $v67db1bd535) { $v9acf40c110 = substr($v58b61e02bc, 0, 1) == '"' ? str_replace('\\"', '"', substr($v58b61e02bc, 1, -1)) : $v58b61e02bc; $v956913c90f = substr($v67db1bd535, 0, 1) == '"' ? str_replace('\\"', '"', substr($v67db1bd535, 1, -1)) : $v67db1bd535; $v58b61e02bc = str_replace('"', "&quot;", $v58b61e02bc); return '<div class="item">
+		</div>'; } public static function getTemplateParamHtml($v58b61e02bc, $v67db1bd535, $pd6bf10d2 = null) { $v755ae117fd = isset($pd6bf10d2) && !isset($v67db1bd535); $pb499669e = isset($pd6bf10d2) && isset($v67db1bd535); if ($v755ae117fd) $v67db1bd535 = $pd6bf10d2; $v9acf40c110 = substr($v58b61e02bc, 0, 1) == '"' ? str_replace('\\"', '"', substr($v58b61e02bc, 1, -1)) : $v58b61e02bc; $v956913c90f = substr($v67db1bd535, 0, 1) == '"' ? str_replace('\\"', '"', substr($v67db1bd535, 1, -1)) : $v67db1bd535; $v58b61e02bc = str_replace('"', "&quot;", $v58b61e02bc); return '<div class="item' . ($v755ae117fd ? " inactive" : "") . '">
+			<input class="template_param_active" type="checkbox" onChange="onActivateTemplateParam(this)" ' . ($v755ae117fd ? "" : ($pb499669e ? "checked" : "checked disabled")) . '/>
 			<label title="' . str_replace('"', "&quot;", $v9acf40c110) . '">' . $v9acf40c110 . ':</label>
-			<input class="template_param_name" type="hidden" value="' . $v58b61e02bc . '" />
-			<input class="template_param_value' . (strpos($v67db1bd535, "\n") !== false ? ' hidden' : '') . '" type="text" value="' . str_replace('"', "&quot;", $v956913c90f) . '" onBlur="onBlurTemplateParam(this)" />
-			<select onChange="onChangeTemplateParamType(this)">
+			<input class="template_param_name" type="hidden" value="' . $v58b61e02bc . '"' . ($v755ae117fd ? " disabled" : "") . ' />
+			<input class="template_param_value' . (strpos($v67db1bd535, "\n") !== false ? ' hidden' : '') . '" type="text" value="' . str_replace('"', "&quot;", $v956913c90f) . '" onBlur="onBlurTemplateParam(this)"' . ($v755ae117fd ? " disabled" : "") . ' />
+			<select onChange="onChangeTemplateParamType(this)"' . ($v755ae117fd ? " disabled" : "") . '>
 				<option value="">default</option>
 				<option' . (strpos($v67db1bd535, "\n") === false && (substr($v67db1bd535, 0, 1) == '"' || !strlen($v67db1bd535)) ? ' selected' : '') . '>string</option>
 				<option' . (strpos($v67db1bd535, "\n") !== false ? ' selected' : '') . '>text</option>
@@ -228,8 +233,9 @@ include_once get_lib("org.phpframework.phpscript.PHPUICodeExpressionHandler"); i
 			<span class="icon search search_page" onclick="onPresentationIncludePageUrlTaskChooseFile(this)" title="Choose a page url">Search Page</span>
 			<span class="icon search search_image" onclick="onPresentationIncludeImageUrlTaskChooseFile(this)" title="Choose an image url">Search Image</span>
 			<span class="icon add_variable search_variable" onclick="onPresentationProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Search Variable</span>
+			<input type="color" class="color-selector" title="Choose a color" onInput="onPresentationChooseColor(this)">
 			<span class="icon delete" onClick="removeTemplateParam(this);">Remove</span>
-			<div class="template_param_text' . (strpos($v67db1bd535, "\n") === false ? ' hidden' : '') . '"><textarea onBlur="onBlurTemplateParam(this)">' . htmlspecialchars($v956913c90f, ENT_NOQUOTES) . '</textarea></div>
+			<div class="template_param_text' . (strpos($v67db1bd535, "\n") === false ? ' hidden' : '') . '"><textarea onBlur="onBlurTemplateParam(this)"' . ($v755ae117fd ? " disabled" : "") . '>' . htmlspecialchars($v956913c90f, ENT_NOQUOTES) . '</textarea></div>
 		</div>'; } public static function getTabContentTemplateLayoutIframeToolbarContentsHtml() { $pf8ed4912 = '
 			<i class="icon desktop active" data-title="Show in Desktop" onClick="onChangeTemplateLayoutScreenToDesktop(this)"></i>
 			<i class="icon mobile" data-title="Show in Mobile" onClick="onChangeTemplateLayoutScreenToMobile(this)"></i>

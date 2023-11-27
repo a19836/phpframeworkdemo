@@ -4,7 +4,7 @@ function isCommandLineScript() {
 }
 
 function prepareCommandLineScript($settings = array()) {
-	$default_apache_user = $settings && $settings["default_apache_user"] ? $settings["default_apache_user"] : "www-data";
+	$default_apache_user = $settings && !empty($settings["default_apache_user"]) ? $settings["default_apache_user"] : "www-data";
 	$app_path = realpath(__DIR__ . "/../../../../../") . "/";
 	$app_path = basename($app_path) == "app" ? $app_path : realpath($app_path . "../") . "/";
 	
@@ -69,49 +69,53 @@ Some sample commands:
 		
 		//Check is cmd is being executed by the apache user
 		$current_user = null;
-		if ($_SERVER["USER"])
+		if (!empty($_SERVER["USER"]))
 			$current_user = $_SERVER["USER"];
-		else if ($_SERVER["USERNAME"])
+		else if (!empty($_SERVER["USERNAME"]))
 			$current_user = $_SERVER["USERNAME"];
 		else {
 			//$is_windows_os = strtoupper(substr(PHP_OS, 0, 3)) === "WIN";//Detect if OS is Windows
 			//$current_user = !$is_windows_os ? exec('whoami') : null;
-			$current_user = function_exists("posix_getpwuid") ? posix_getpwuid(posix_geteuid())['name'] : null; //posix_getpwuid does not exists in windows.
+			
+			if (function_exists("posix_getpwuid")) { //posix_getpwuid does not exists in windows.
+				$current_user = posix_getpwuid(posix_geteuid());
+				$current_user = isset($current_user['name']) ? $current_user['name'] : null;
+			}
 		}
 		
-		$server_user = $options["serveruser"] ? $options["serveruser"] : $default_apache_user;//apache user
+		$server_user = !empty($options["serveruser"]) ? $options["serveruser"] : $default_apache_user;//apache user
 		
 		if ($current_user && $current_user != $server_user) //$current_user may not exists on windows
 			trigger_error("Warning: You should execute this script with the web server user", E_USER_WARNING);
 		
 		//Check if url and documentroot exist
-		if (!$options["url"] || !$options["documentroot"]) {
+		if (empty($options["url"]) || empty($options["documentroot"])) {
 			trigger_error("Options 'url' and 'documentroot' cannot be undefined! For more information add the option -h or --help.", E_USER_WARNING);
 			die();
 		}
 		
-		$original_script_name = $options["scriptname"] ? $options["scriptname"] : $_SERVER["SCRIPT_NAME"];
+		$original_script_name = !empty($options["scriptname"]) ? $options["scriptname"] : (isset($_SERVER["SCRIPT_NAME"]) ? $_SERVER["SCRIPT_NAME"] : null);
 		
 		//Prepare Env Variables
-		if ($options["env"]) {
+		if (!empty($options["env"])) {
 			parse_str($options["env"], $vars);
 			if ($vars)
 				$_ENV = $_ENV ? array_merge($_ENV, $vars) : $vars;
 		}
 		
 		//Simulate Apache server behaviour
-		$script_name = $options["scriptname"] ? $options["scriptname"] : "index.php";
-		$url = $options["url"];
-		$method = $options["method"] ? $options["method"] : (isset($options["post"]) ? "post" : "get");
-		$post_body = $options["post"] ? $options["post"] : "";
-		$body_content_type = $options["contenttype"] ? $options["contenttype"] : "application/x-www-form-urlencoded";
+		$script_name = !empty($options["scriptname"]) ? $options["scriptname"] : "index.php";
+		$url = isset($options["url"]) ? $options["url"] : null;
+		$method = !empty($options["method"]) ? $options["method"] : (isset($options["post"]) ? "post" : "get");
+		$post_body = !empty($options["post"]) ? $options["post"] : "";
+		$body_content_type = !empty($options["contenttype"]) ? $options["contenttype"] : "application/x-www-form-urlencoded";
 		
 		$server = new \Jelix\FakeServerConf\ApacheCGI(null, $script_name);
         	$server->setHttpRequest($url, $method, $post_body, $body_content_type);
 		//print_r($_ENV);print_r($_SERVER);print_r($_GET);print_r($_POST);print_r($_COOKIE);print_r($_REQUEST);die();
 		
 		//Set other cookies
-		if ($options["cookies"]) {
+		if (!empty($options["cookies"])) {
 			parse_str($options["cookies"], $vars);
 			if ($vars) {
 				$_COOKIE = $_COOKIE ? array_merge($_COOKIE, $vars) : $vars;
@@ -120,7 +124,7 @@ Some sample commands:
 		}
 		
 		//Set other get variables
-		if ($options["get"]) {
+		if (!empty($options["get"])) {
 			parse_str($options["get"], $vars);
 			if ($vars) {
 				$_GET = $_GET ? array_merge($_GET, $vars) : $vars;
@@ -131,22 +135,24 @@ Some sample commands:
 		$pos = strpos($url, "?");
 		$last_url_char = substr($url, $pos - 1, 1);
 		
-		$url_path = $options["urlpath"] ? $options["urlpath"] : parse_url($url, PHP_URL_PATH);
+		$url_path = !empty($options["urlpath"]) ? $options["urlpath"] : parse_url($url, PHP_URL_PATH);
 		$url_path = substr($url_path, 0, 1) == "/" ? substr($url_path, 1) : $url_path;
 		$url_path .= substr($url_path, -1) != "/" && $last_url_char == "/" ? "/" : "";
 		$url_path = substr($url_path, -1) == "/" && $last_url_char != "/" ? substr($url_path, 0, -1) : $url_path;
 		$rel_url = $url_path . ($pos !== false ? "?" . substr($url, $pos) : "");
 		
 		//Simulate the .htaccess behaviour
-		if ($options["scriptname"]) {
+		if (!empty($options["scriptname"])) {
+			$documentroot = isset($options["documentroot"]) ? $options["documentroot"] : null;
+			
 			$_SERVER["SCRIPT_NAME"] = str_replace("//", "/", $options["scriptname"]); //relative path
-			$_SERVER["SCRIPT_FILENAME"] = str_replace("//", "/", $options["documentroot"] . $options["scriptname"]); //absolute path
+			$_SERVER["SCRIPT_FILENAME"] = str_replace("//", "/", $documentroot . $options["scriptname"]); //absolute path
 		}
 		else {
 			$current_script_name = realpath($original_script_name);
 			$script_document_root = dirname($current_script_name) . "/";
 			
-			if ($options["documentroot"]) {
+			if (!empty($options["documentroot"])) {
 				$document_root = realpath($options["documentroot"]);
 				
 				if (substr($current_script_name, 0, strlen($document_root)) == $document_root) {
@@ -161,14 +167,14 @@ Some sample commands:
 		}
 		
 		$_SERVER["PHP_SELF"] = $_SERVER["SCRIPT_NAME"];
-		$_SERVER["DOCUMENT_ROOT"] = $options["documentroot"];
+		$_SERVER["DOCUMENT_ROOT"] = isset($options["documentroot"]) ? $options["documentroot"] : null;
 		$_SERVER["CONTEXT_DOCUMENT_ROOT"] = ""; //context document root on script is always empty string
-		$_SERVER["QUERY_STRING"] = "url=" . $url_path . "&" . $_SERVER["QUERY_STRING"];
+		$_SERVER["QUERY_STRING"] = "url=" . $url_path . "&" . (isset($_SERVER["QUERY_STRING"]) ? $_SERVER["QUERY_STRING"] : null);
 		
 		$_GET["url"] = $url_path;
 		$_REQUEST["url"] = $url_path;
 		
-		if (is_numeric($options["loglevel"]))
+		if (isset($options["loglevel"]) && is_numeric($options["loglevel"]))
 			$GLOBALS["log_level"] = $options["loglevel"];
 		
 		//print_r($_ENV);print_r($_SERVER);print_r($_GET);print_r($_POST);print_r($_COOKIE);print_r($_REQUEST);die();

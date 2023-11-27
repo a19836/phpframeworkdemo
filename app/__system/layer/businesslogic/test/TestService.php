@@ -6,11 +6,11 @@ include_once $vars["business_logic_modules_service_common_file_path"];
 class TestService extends CommonService {
 	
 	public function getQuery($data) {
-		$module = $data["module"];
-		$type = $data["type"];
-		$service = $data["service"];
-		$parameters = $data["parameters"];
-		$options = $data["options"];
+		$module = isset($data["module"]) ? $data["module"] : null;
+		$type = isset($data["type"]) ? $data["type"] : null;
+		$service = isset($data["service"]) ? $data["service"] : null;
+		$parameters = isset($data["parameters"]) ? $data["parameters"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 	
 		$result = $this->getBroker($options)->callQuery($module, $type, $service, $parameters, $options);
 		
@@ -37,19 +37,19 @@ class TestService extends CommonService {
 	}
 	
 	public function getQuerySQL($data) {
-		$options = $data["options"];
-		$type = $data["type"];
-		$module = $data["module"];
-		$service = $data["service"];
-		$parameters = $data["parameters"];
+		$options = isset($data["options"]) ? $data["options"] : null;
+		$type = isset($data["type"]) ? $data["type"] : null;
+		$module = isset($data["module"]) ? $data["module"] : null;
+		$service = isset($data["service"]) ? $data["service"] : null;
+		$parameters = isset($data["parameters"]) ? $data["parameters"] : null;
 		
-		return $this->getBroker($options["dal_broker"])->callQuerySQL($module, $type, $service, $parameters);
+		return $this->getBroker(isset($options["dal_broker"]) ? $options["dal_broker"] : null)->callQuerySQL($module, $type, $service, $parameters);
 	}
 	
 	public function getObj($data) {
-		$module = $data["module"];
-		$service = $data["service"];
-		$options = $data["options"];
+		$module = isset($data["module"]) ? $data["module"] : null;
+		$service = isset($data["service"]) ? $data["service"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		
 		$obj = $this->getBusinessLogicLayer()->getBroker(2)->callObject($module, $service, $options);
 		

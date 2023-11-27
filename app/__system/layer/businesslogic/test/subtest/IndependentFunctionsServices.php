@@ -16,7 +16,7 @@ function foo($function_vars, $value) {
 
 function bar($function_vars, $value) {
 	$content = print_r(array_keys($function_vars), true);
-	$content .= print_r($function_vars["vars"], true);
+	$content .= isset($function_vars["vars"]) ? print_r($function_vars["vars"], true) : "";
 	
 	//file_put_contents("/tmp/test.log", $content);
 	

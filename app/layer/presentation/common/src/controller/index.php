@@ -30,9 +30,9 @@ for ($i = 0; $i < $parameters_count; $i++) {
 }
 
 //PREPARE DEFAULTS
-$default_entity = $page ? $page : ($GLOBALS["project_default_entity"] ? $GLOBALS["project_default_entity"] : "index");
-$default_view = $default_entity && $GLOBALS["project_with_auto_view"] ? $default_entity : ($GLOBALS["project_default_view"] ? $GLOBALS["project_default_view"] : null);
-$default_template = $GLOBALS["project_default_template"];
+$default_entity = $page ? $page : (!empty($GLOBALS["project_default_entity"]) ? $GLOBALS["project_default_entity"] : "index");
+$default_view = $default_entity && !empty($GLOBALS["project_with_auto_view"]) ? $default_entity : (!empty($GLOBALS["project_default_view"]) ? $GLOBALS["project_default_view"] : null);
+$default_template = isset($GLOBALS["project_default_template"]) ? $GLOBALS["project_default_template"] : null;
 
 $EVC->setEntity($default_entity);
 
@@ -54,8 +54,8 @@ for ($entity_index = 0; $entity_index < count($entities); ++$entity_index) {
 	$entity = $entities[$entity_index];
 	
 	if ($entity) {
-		$entity_params = $entities_params[$entity_index];
-		$entity_project_id = $entity_params ? $entity_params["project_id"] : false;
+		$entity_params = isset($entities_params[$entity_index]) ? $entities_params[$entity_index] : null;
+		$entity_project_id = $entity_params && isset($entity_params["project_id"]) ? $entity_params["project_id"] : false;
 		$entity = substr($entity, 0, 1) == "/" ? $entity : $page_prefix . $entity;
 		$entity_path = $EVC->getEntityPath($entity, $entity_project_id);
 		
@@ -80,8 +80,8 @@ for ($view_index = 0; $view_index < count($views); ++$view_index) {
 	$view = $views[$view_index];
 	
 	if ($view) {
-		$view_params = $views_params[$view_index];
-		$view_project_id = $view_params ? $view_params["project_id"] : false;
+		$view_params = isset($views_params[$view_index]) ? $views_params[$view_index] : null;
+		$view_project_id = $view_params && isset($view_params["project_id"]) ? $view_params["project_id"] : false;
 		$view = substr($view, 0, 1) == "/" ? $view : $page_prefix . $view;
 		$view_path = $EVC->getViewPath($view, $view_project_id);
 		
@@ -106,8 +106,8 @@ for ($template_index = 0; $template_index < count($templates); ++$template_index
 	$template = $templates[$template_index];
 	
 	if ($template) {
-		$template_params = $templates_params[$template_index];
-		$template_project_id = $template_params ? $template_params["project_id"] : false;
+		$template_params = isset($templates_params[$template_index]) ? $templates_params[$template_index] : null;
+		$template_project_id = $template_params && isset($template_params["project_id"]) ? $template_params["project_id"] : false;
 		$template_path = $EVC->getTemplatePath($template, $template_project_id);
 		
 		if (file_exists($template_path)) {

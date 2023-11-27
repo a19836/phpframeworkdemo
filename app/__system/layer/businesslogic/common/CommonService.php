@@ -50,7 +50,7 @@ if (!class_exists("\__system\businesslogic\CommonService")) {
 		 * @hidden
 		 */
 		public function getBroker($broker_name_or_options = false) {
-			$broker_name = is_array($broker_name_or_options) ? $broker_name_or_options["dal_broker"] : $broker_name_or_options;
+			$broker_name = is_array($broker_name_or_options) ? (isset($broker_name_or_options["dal_broker"]) ? $broker_name_or_options["dal_broker"] : null) : $broker_name_or_options;
 		
 			return $this->getBusinessLogicLayer()->getBroker($broker_name);
 		}
@@ -95,15 +95,17 @@ if (!class_exists("\__system\businesslogic\CommonService")) {
 		protected static function prepareInputData(&$data) {
 			self::prepareSearch($data);
 			
-			if ($data && $data["conditions"]) {
+			if ($data && !empty($data["conditions"])) {
 				if (!self::$db_lib_included)
 					include_once get_lib("org.phpframework.db.DB"); //leave this here, otherwise it could be over-loading for every request to include without need it...
 				
 				self::$db_lib_included = true;
 				
-				$cond = \DB::getSQLConditions($data["conditions"], $data["conditions_join"]);
+				$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+				$cond = \DB::getSQLConditions($data["conditions"], $conditions_join);
+				
 				if ($cond)
-					$data["searching_condition"] = ($data["searching_condition"] ? $data["searching_condition"] : "") . " and (" . $cond . ")";
+					$data["searching_condition"] = (!empty($data["searching_condition"]) ? $data["searching_condition"] : "") . " and (" . $cond . ")";
 			}
 		}
 	
@@ -155,22 +157,22 @@ if (!class_exists("\__system\businesslogic\CommonService")) {
 		protected static function prepareSearch(&$data) {
 			$condition = "";
 		
-			if($data && $data["searching"] && is_array($data["searching"]) && $data["searching"]["fields"]) {
+			if ($data && !empty($data["searching"]) && is_array($data["searching"]) && !empty($data["searching"]["fields"])) {
 				if (!self::$db_lib_included)
 					include_once get_lib("org.phpframework.db.DB"); //leave this here, otherwise it could be over-loading for every request to include without need it...
 				
 				self::$db_lib_included = true;
 				
-				$search_fields = $data["searching"]["fields"];
-				$search_values = $data["searching"]["values"];
-				$search_types = $data["searching"]["types"];
+				$search_fields = isset($data["searching"]["fields"]) ? $data["searching"]["fields"] : null;
+				$search_values = isset($data["searching"]["values"]) ? $data["searching"]["values"] : null;
+				$search_types = isset($data["searching"]["types"]) ? $data["searching"]["types"] : null;
 				
 				$t = count($search_fields);
 				for ($i = 0; $i < $t; $i++) {
 					$field = $search_fields[$i];
-					$value = strtolower($search_values[$i]);
-					$type = $search_types[$i];
-				
+					$value = isset($search_values[$i]) ? strtolower($search_values[$i]) : "";
+					$type = isset($search_types[$i]) ? $search_types[$i] : null;
+					
 					$condition .= ($condition ? " and " : "") . "lower(" . \SQLQueryHandler::getParsedSqlColumnName($field) . ")";
 				
 					$with_quote = !is_numeric($value) ? "'" : "";

@@ -174,6 +174,11 @@ class CommonModuleUI {
 						if ($template_extension == "php")
 							$code = PHPScriptHandler::parseContent($code, $external_vars);
 						
+						//This is very important bc the template PTL coming from the templates may contain variables like '\$' to be parsed after when the ptl code runs. In this case, we need to replace the '\$' with '$', otherwise it will give error when executing the PTL. 
+						//One example of this is the menu, when there is no PTL code in the menu block, but the template it self contains a ptl code for the menu modules. In this case the template PTL code will be used, but it contains '\$' which will give error when parses and run the PTL code. so we ned to replace '\$' with '$'.
+						//Additionally note that the PTL code inside of the templates, should contain vars with \$xxx and vars with $xxx. The $xxx will be parsed in the block, and the '\$' will be parsed when the PTL gets executed. This give us the ability to add the $project_url_prefix in the template PTL code, which will then get the right value in the block.
+						$code = str_replace('\\$', '$', $code);
+						
 						$settings["ptl"] = array(
 							"code" => $code,
 							"external_vars" => $external_vars,

@@ -122,6 +122,10 @@
 	box-sizing:border-box;
 }
 
+.template_obj .regions_blocks_includes_settings .template_params .items .item > input[type=checkbox] {
+  	visibility:hidden;
+}
+
 /* To print the workflow */
 @media print {
 	.template_obj {

@@ -1,15 +1,15 @@
 <?php
-if ($GLOBALS["force_https"] && (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off')) { 
-    $actual_link = "https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
+if (!empty($GLOBALS["force_https"]) && (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off')) { 
+    $actual_link = "https://" . $_SERVER["HTTP_HOST"] . (isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : "");
     header('Location: ' . $actual_link, true, 302);
     echo "<script>document.location='$actual_link';</script>";
     die();
 }
 
-$presentation_id = $GLOBALS["presentation_id"];
+$presentation_id = isset($GLOBALS["presentation_id"]) ? $GLOBALS["presentation_id"] : null;
 $project_protocol = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? "https://" : "http://"; //Do not add " || $_SERVER['SERVER_PORT'] == 443" bc the ssl port may not be 443 depending of the server configuration
 
-$uri = explode("?", $_SERVER["REQUEST_URI"]);
+$uri = explode("?", (isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : ""));
 $uri = $uri[0]; //be sure that uri does not have the query string
 $parts = explode("/$presentation_id/", $uri);
 if (count($parts) > 1) {
@@ -17,7 +17,7 @@ if (count($parts) > 1) {
 	$project_common_relative_url_prefix = $parts[0] . "/" . $EVC->getCommonProjectName() . "/";
 }
 else {
-	$document_root = str_replace("//", "/", (isset($_SERVER["CONTEXT_DOCUMENT_ROOT"]) ? $_SERVER["CONTEXT_DOCUMENT_ROOT"] : $_SERVER["DOCUMENT_ROOT"]) . "/");
+	$document_root = str_replace("//", "/", (isset($_SERVER["CONTEXT_DOCUMENT_ROOT"]) ? $_SERVER["CONTEXT_DOCUMENT_ROOT"] : (isset($_SERVER["DOCUMENT_ROOT"]) ? $_SERVER["DOCUMENT_ROOT"] : "") ) . "/");
 	$project_relative_url_prefix = "/" . (strpos($document_root, "/$presentation_id/") !== false ? "" : "$presentation_id/"); //if is a direct domain to the project, doesn't add the presentation_id.
 	$project_common_relative_url_prefix = "/" . $EVC->getCommonProjectName() . "/"; //if is a direct domain to the project, the vhosts need to have the /common/ path defined to the right folder, otherwise this won't work correctly.
 }

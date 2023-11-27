@@ -1,6 +1,6 @@
 var pagesFromFileManagerTree = null;
 var templatesFromFileManagerTree = null;
-var default_available_templates = ["empty", "ajax", "default"];
+var default_available_templates = ["empty", "ajax", "blank", "default"];
 
 $(function() {
 	var project_files = $(".admin_panel .project_files");
@@ -40,6 +40,15 @@ $(function() {
 		$(window).resize(function() {
 			MyFancyPopup.updatePopup();
 		});
+		
+		//if number of created pages are 1 or 0, then show popup so user can create new page
+		if (num_of_created_pages <= 1) {
+			var msg = '<h1>Create your first page by clicking in the button below</h1>'
+					+ '<div>'
+						+ '<button onClick="showCreateFilePopupThroughMessage(this, \'' + project_id + '/src/entity/\')" title="Create a new folder or page">Add New</button>'
+					+ '</div>';
+			StatusMessageHandler.showMessage(msg, "create_new_page_message", "", 60000 * 60 * 24); //1 day of expiration
+		}
 	}
 	
 	MyFancyPopup.hidePopup();
@@ -78,9 +87,9 @@ function prepareProjectLayerNodes2(ul, data) {
 				var html = '<div class="sub_menu" onClick="openProjectFileSubmenu(this)">'
 							+ '<i class="icon sub_menu_vertical"></i>'
 							+ '<ul class="mycontextmenu with_top_right_triangle">'
-								+ '<li class="rename"><a onclick="return manageFile(this, \'folder\', \'rename\', \'' + file_path + '\', onSucccessfullRenameFile)">Rename Folder</a></li>'
+								+ '<li class="rename"><a onclick="return manageFile(this, \'folder\', \'rename\', \'' + file_path + '\', onSuccessfullRenameFile)">Rename Folder</a></li>'
 							+ '<li class="line_break"></li>'
-								+ '<li class="remove"><a onclick="return manageFile(this, \'folder\', \'remove\', \'' + file_path + '\', ' + (is_template_folder ? 'onSucccessfullRemoveTemplateFolder' : 'onSucccessfullRemoveFile') + ')">Delete Folder</a></li>'
+								+ '<li class="remove"><a onclick="return manageFile(this, \'folder\', \'remove\', \'' + file_path + '\', ' + (is_template_folder ? 'onSuccessfullRemoveTemplateFolder' : 'onSuccessfullRemoveFile') + ')">Delete Folder</a></li>'
 							+ '</ul>'
 						+ '</div>';
 				
@@ -106,11 +115,11 @@ function prepareProjectLayerNodes2(ul, data) {
 						+ '<i class="icon sub_menu_vertical"></i>'
 						+ '<ul class="mycontextmenu with_top_right_triangle">'
 							+ '<li class="edit"><a href="' + edit_url + '">Edit Page</a></li>'
-							+ '<li class="rename"><a onclick="return manageFile(this, \'file\', \'rename\', \'' + file_path + '\', onSucccessfullRenameFile)">Rename Page</a></li>'
+							+ '<li class="rename"><a onclick="return manageFile(this, \'file\', \'rename\', \'' + file_path + '\', onSuccessfullRenameFile)">Rename Page</a></li>'
 							+ '<li class="line_break"></li>'
 							+ '<li class="view_project"><a href="' + view_url + '" target="project">Preview Page</a></li>'
 							+ '<li class="line_break"></li>'
-							+ '<li class="remove"><a onclick="return manageFile(this, \'file\', \'remove\', \'' + file_path + '\', onSucccessfullRemoveFile)">Delete Page</a></li>'
+							+ '<li class="remove"><a onclick="return manageFile(this, \'file\', \'remove\', \'' + file_path + '\', onSuccessfullRemoveFile)">Delete Page</a></li>'
 						+ '</ul>'
 					+ '</div>';
 			
@@ -133,11 +142,11 @@ function prepareProjectLayerNodes2(ul, data) {
 						+ '<i class="icon sub_menu_vertical"></i>'
 						+ '<ul class="mycontextmenu with_top_right_triangle">'
 							+ '<li class="edit"><a href="' + edit_url + '">Edit Template</a></li>'
-							+ '<li class="rename"><a onclick="return manageFile(this, \'file\', \'rename\', \'' + file_path + '\', onSucccessfullRenameFile)">Rename Template</a></li>'
+							+ '<li class="rename"><a onclick="return manageFile(this, \'file\', \'rename\', \'' + file_path + '\', onSuccessfullRenameFile)">Rename Template</a></li>'
 							+ '<li class="line_break"></li>'
 							+ '<li class="set_default"><a onclick="return setTemplateAsDefault(this, \'' + file_path + '\')">Set Template as Default</a></li>'
 							+ '<li class="line_break"></li>'
-							+ '<li class="remove"><a onclick="return manageFile(this, \'file\', \'remove\', \'' + file_path + '\', onSucccessfullRemoveFile)">Delete Template</a></li>'
+							+ '<li class="remove"><a onclick="return manageFile(this, \'file\', \'remove\', \'' + file_path + '\', onSuccessfullRemoveFile)">Delete Template</a></li>'
 						+ '</ul>'
 					+ '</div>';
 			
@@ -396,6 +405,12 @@ function searchFiles(elm) {
 	});
 }
 
+function showCreateFilePopupThroughMessage(elm, path_prefix) {
+	StatusMessageHandler.removeLastShownMessage("info");
+	
+	showCreateFilePopup(elm, path_prefix);
+}
+
 function showCreateFilePopup(elm, path_prefix) {
 	//get popup
 	var popup = $(".admin_panel > .create_file_popup");
@@ -418,10 +433,13 @@ function createFile(elm, path_prefix, popup) {
 	var file_name = popup.find(".name > input").val();
 	var action = type == "page" ? "create_file" : "create_folder";
 	var handler = function(elm, type, action, path, new_file_name) {
-		if (type == "page")
-			onSucccessfullCreateFile(elm, type, action, path, new_file_name);
+		if (type == "page") {
+			onSuccessfullCreateFile(elm, type, action, path, new_file_name);
+			
+			StatusMessageHandler.showMessage("Wait a while... Page editor is loading");
+		}
 		else
-			onSucccessfullCreateFolder(elm, type, action, path, new_file_name);
+			onSuccessfullCreateFolder(elm, type, action, path, new_file_name);
 		
 		MyFancyPopup.hidePopup();
 	};
@@ -561,26 +579,39 @@ function setTemplateAsDefault(elm, path) {
 		StatusMessageHandler.showError("This template cannot be set as default!");
 }
 
-function refreshNodeParentChildsOnSucccessfullAction(elm) {
+function refreshNodeParentChildsOnSuccessfullAction(elm) {
 	var node_id = $(elm).parent().closest(".sub_menu").parent().closest("li").attr("id");
 	refreshNodeParentChildsByChildId(node_id);
 }
-function onSucccessfullRemoveProject(elm, type, action, path, new_file_name) {
+
+function onSuccessfullRemoveProject(elm, type, action, path, new_file_name) {
 	//refresh main window navigator files tree
 	refreshParentNavigatorFilesTree(path);
 	
-	//show project list page
-	document.location = admin_home_page_url;
+	if (window.parent && window.parent != window) {
+		var parent_url = window.parent.location;
+		parent_url = "" + parent_url; //convert to string
+		parent_url = parent_url.indexOf("#") != -1 ? parent_url.substr(0, parent_url.indexOf("#")) : parent_url; //remove # so it can refresh parent page
+		parent_url = parent_url.replace(/(bean_name|bean_file_name|project|filter_by_layout)=([^&]*)&?/g, ""); //erase previous bean_name|bean_file_name|project|filter_by_layout attributes
+		
+		//set cookie with default page
+		window.parent.MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('default_page', ''); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+		
+		//refresh main window with new params
+		window.parent.location = parent_url;
+	}
+	else //show project list page
+		document.location = admin_home_page_url;
 }
-function onSucccessfullRemoveFile(elm, type, action, path, new_file_name) {
-	refreshNodeParentChildsOnSucccessfullAction(elm);
+function onSuccessfullRemoveFile(elm, type, action, path, new_file_name) {
+	refreshNodeParentChildsOnSuccessfullAction(elm);
 	
 	//refresh main window navigator files tree
 	var folder_path = path.substr(0, path.lastIndexOf("/"));
 	refreshParentNavigatorFilesTree(folder_path);
 }
-function onSucccessfullRemoveTemplateFolder(elm, type, action, path, new_file_name) {
-	onSucccessfullRemoveFile(elm, type, action, path, new_file_name);
+function onSuccessfullRemoveTemplateFolder(elm, type, action, path, new_file_name) {
+	onSuccessfullRemoveFile(elm, type, action, path, new_file_name);
 	
 	var url = manage_file_url.replace("#action#", action).replace("#path#", path).replace("#extra#", "");
 	url = url.replace("/src/template/", "/webroot/template/"); //does not need encodeUrlWeirdChars bc the url is already encoded
@@ -591,7 +622,7 @@ function onSucccessfullRemoveTemplateFolder(elm, type, action, path, new_file_na
 			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, template_url, function() {
 					StatusMessageHandler.removeLastShownMessage("error");
-					onSucccessfullRemoveTemplateFolder(elm, type, action, path);
+					onSuccessfullRemoveTemplateFolder(elm, type, action, path);
 				});
 			else if (data == "1") 
 				StatusMessageHandler.showMessage("Template webroot deleted successfully", "", "bottom_messages", 1500);
@@ -604,14 +635,14 @@ function onSucccessfullRemoveTemplateFolder(elm, type, action, path, new_file_na
 		},
 	});
 }
-function onSucccessfullRenameFile(elm, type, action, path, new_file_name) {
-	refreshNodeParentChildsOnSucccessfullAction(elm);
+function onSuccessfullRenameFile(elm, type, action, path, new_file_name) {
+	refreshNodeParentChildsOnSuccessfullAction(elm);
 	
 	//refresh main window navigator files tree
 	var folder_path = path.substr(0, path.lastIndexOf("/"));
 	refreshParentNavigatorFilesTree(folder_path);
 }
-function onSucccessfullCreateFile(elm, type, action, path, new_file_name) {
+function onSuccessfullCreateFile(elm, type, action, path, new_file_name) {
 	var node = $(elm).parent().find(" > .mytree > li");
 	refreshAndShowNodeChilds(node);
 	
@@ -623,8 +654,8 @@ function onSucccessfullCreateFile(elm, type, action, path, new_file_name) {
 	var edit_url = edit_entity_url.replace(/#path#/g, path);
 	document.location = edit_url;
 }
-function onSucccessfullCreateFolder(elm, type, action, path, new_file_name) {
-	onSucccessfullCreateFile(elm, type, action, path, new_file_name);
+function onSuccessfullCreateFolder(elm, type, action, path, new_file_name) {
+	onSuccessfullCreateFile(elm, type, action, path, new_file_name);
 }
 
 function refreshParentNavigatorFilesTree(path) {
@@ -657,7 +688,7 @@ function importTemplates() {
 	
 	MyFancyPopup.showPopup();
 }
-function onSucccessfullInstallTemplate() {
+function onSuccessfullInstallTemplate() {
 	StatusMessageHandler.showMessage("Refreshing templates...");
 	
 	var url = "" + document.location;

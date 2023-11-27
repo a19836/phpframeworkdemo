@@ -3,7 +3,7 @@ $block_id = $EVC->getCMSLayer()->getCMSBlockLayer()->getBlockIdFromFilePath(__FI
 
 $block_settings[$block_id] = array(
 	"form_class" => "yyy",
-	"form_id" => $block_local_variables["Enter here The form id"],
+	"form_id" => isset($block_local_variables["Enter here The form id"]) ? $block_local_variables["Enter here The form id"] : null,
 	
 	//...
 );

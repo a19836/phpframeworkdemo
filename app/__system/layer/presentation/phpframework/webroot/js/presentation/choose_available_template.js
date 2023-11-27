@@ -1,7 +1,7 @@
 var MyFancyPopupAvailableTemplate = new MyFancyPopupClass();
 var MyFancyPopupInstallTemplate = new MyFancyPopupClass();
 var MyFancyPopupAvailableTemplateDemo = new MyFancyPopupClass();
-var default_available_templates = ["empty", "ajax", "default"];
+var default_available_templates = ["empty", "ajax", "blank", "default"];
 
 function chooseAvailableTemplate(select, options) {
 	options = options ? options : {};
@@ -26,6 +26,8 @@ function chooseAvailableTemplate(select, options) {
 	if (!MyFancyPopupAvailableTemplate.settings) //only init if not inited before
 		MyFancyPopupAvailableTemplate.init({
 			//options vars
+			include_template_samples: options["include_template_samples"] ? options["include_template_samples"] : null,
+			include_template_samples_in_regions: options["include_template_samples_in_regions"] == "all" ? "all" : "empty",
 			onSelect: options["on_select"] ? options["on_select"] : null,
 			onSelectFromOtherProject: options["on_select_from_other_project"] ? options["on_select_from_other_project"] : null,
 			available_projects_props: options["available_projects_props"] ? options["available_projects_props"] : null,
@@ -96,22 +98,16 @@ function prepareChooseAvailableTemplateTypeHtml(project_id, folder_to_filter) {
 	var popup = $(".choose_available_template_popup");
 	popup.children(".back, .choose_different_editor, .install_template").remove();
 	
-	var url = "" + document.location;
-	url = url.replace(/edit_entity_type=[^&]*/g, "");
-	url += (url.indexOf("?") != -1 ? "&" : "?") + "edit_entity_type=advanced&design_editor=1";
-	
 	var html = '<div class="choose_page_workspace">'
 				+ '<div class="title">How do you want to build your page?</div>'
 				+ '<div class="html_editor">'
-					+ '<div class="title">Design Editor</div>'
-					+ '<div class="sub_title">(Code Workspace)</div>'
-					+ '<div class="description">Create static pages from scratch by designing your HTML by drag&drop.<br/>You can also create dynamic pages programmatically.</div>'
-					+ '<button onClick="document.location=\'' + url + '\';">Empty Canvas</button>'
+					+ '<div class="title">Canvas Editor</div>'
+					+ '<div class="description">Create static pages from scratch by designing your HTML by drag&drop.<br/>You can also create dynamic pages.<br/>Recommended for all web-designers...</div>'
+					+ '<button onClick="selectAvailableTemplate(\'' + project_id + '\', \'blank\')">Empty Canvas</button>'
 				+ '</div>'
 				+ '<div class="template_editor">'
-					+ '<div class="title">Content Editor</div>'
-					+ '<div class="sub_title">(Visual Workspace)</div>'
-					+ '<div class="description">Accelerate your design process by starting with a customizable template and dynamic pages.<br/>Recommended for all non-programmers...</div>'
+					+ '<div class="title">Choose Template</div>'
+					+ '<div class="description">Accelerate your design process by starting with a customizable template and dynamic pages.<br/>Recommended for all non-web-designers...</div>'
 					+ '<button onClick="prepareChooseAvailableTemplateMainProjectHtml(\'' + project_id + '\', \'' + folder_to_filter + '\')">Browse Templates</button>'
 				+ '</div>'
 			+ '</div>';
@@ -125,6 +121,8 @@ function prepareChooseAvailableTemplateTypeHtml(project_id, folder_to_filter) {
 function prepareChooseAvailableTemplateMainProjectHtml(project_id, folder_to_filter) {
 	var popup = $(".choose_available_template_popup");
 	var popup_content = popup.children(".content");
+	var include_template_samples = MyFancyPopupAvailableTemplate.settings.include_template_samples;
+	var include_template_samples_in_regions = MyFancyPopupAvailableTemplate.settings.include_template_samples_in_regions;
 	
 	if (!MyFancyPopupAvailableTemplate.settings.hide_choose_different_editor && !popup.children(".choose_different_editor")[0])
 		popup_content.before('<button class="choose_different_editor" onClick="prepareChooseAvailableTemplateTypeHtml(\'' + project_id + '\', \'' + folder_to_filter + '\');"><i class="icon palette"></i> Choose different editor</button>');
@@ -154,7 +152,19 @@ function prepareChooseAvailableTemplateMainProjectHtml(project_id, folder_to_fil
 					+ '<li class="loading_templates"><span class="icon loading"></span> Loading projects...</li>'
 				+ '</ul>'
 			+ '</div>';
-		
+	
+	html += '<div class="options">'
+				+ '<div class="include_template_samples">'
+					+ '<input type="checkbox" ' + (include_template_samples ? " checked" : "") + ' onChange="onChangeIncludeTemplateSamples(this)"/>'
+					+ '<label>Include samples from selected template?</label>'
+					+ '<select onChange="onChangeIncludeTemplateSamplesInRegions(this)">'
+						+ '<option value="empty"' + (include_template_samples_in_regions == "empty" ? " selected" : "") + '>Only on empty regions</option>'
+						+ '<option value="all"' + (include_template_samples_in_regions == "all" ? " selected" : "") + '>In all regions</option>'
+					+ '</select>'
+					+ '<span class="info" title="Each template comes with samples for each region. If this option is active, the system will add these code to the correspondent regions of the selected template."><i class="icon info"></i></span>'
+				+ '</div>'
+			+ '</div>'
+	
 	popup_content.html(html).scrollTop(0);
 	
 	//load templates
@@ -331,7 +341,7 @@ function getChooseAvailableTemplateHtml(project_id, folder_to_filter, fp, templa
 		if (logo)
 			html += '<div class="image"><img src="' + logo + '" onError="$(this).parent().parent().children(\'.photo\').removeClass(\'hidden\'); $(this).parent().remove();" /></div>';
 		
-		html += '<div class="photo' + (fp == "ajax" || fp == "empty" || fp == "default" ? "_" + fp : "") + (logo ? " hidden" : "") + '">' /*+ (fp == "empty" ? "Blank" : (fp == "default" ? "Default" : ""))*/ + '</div>';
+		html += '<div class="photo' + (default_available_templates.indexOf(fp) != -1 ? "_" + fp : "") + (logo ? " hidden" : "") + '">' /*+ (fp == "empty" ? "Blank" : (fp == "default" ? "Default" : ""))*/ + '</div>';
 		
 		html += '<label>' + label + '</label>';
 		
@@ -475,7 +485,10 @@ function selectAvailableTemplate(project_id, selected_template) {
 		MyFancyPopupAvailableTemplate.hidePopup();
 		
 		if (typeof MyFancyPopupAvailableTemplate.settings.onSelect == "function")
-			MyFancyPopupAvailableTemplate.settings.onSelect(selected_template);
+			MyFancyPopupAvailableTemplate.settings.onSelect(selected_template, {
+				include_template_samples: MyFancyPopupAvailableTemplate.settings.include_template_samples,
+				include_template_samples_in_regions: MyFancyPopupAvailableTemplate.settings.include_template_samples_in_regions
+			});
 	}
 	else {
 		StatusMessageHandler.showMessage("This template is already the current selected template!");
@@ -552,4 +565,11 @@ function getAvailableFilesPropsConvertedWithFolders(available_props, folder_to_f
 	return ats;
 }
 
+function onChangeIncludeTemplateSamples(elm) {
+	MyFancyPopupAvailableTemplate.settings.include_template_samples = elm.checked ? true : false;
+}
+
+function onChangeIncludeTemplateSamplesInRegions(elm) {
+	MyFancyPopupAvailableTemplate.settings.include_template_samples_in_regions = $(elm).val();
+}
 

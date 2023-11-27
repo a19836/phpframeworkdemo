@@ -1713,6 +1713,14 @@ body .layout-ui-editor {
 	--editor-info-msg-bg:rgba(204, 255, 153, 0.8);
 	--editor-error-msg-bg:rgba(255, 0, 0, 0.8);
 	--editor-error-msg-color:#fff;
+	
+	/* auto complete */
+	--auto-complete-bg:var(--menu-settings-input-bg);
+	--auto-complete-color:var(--menu-settings-input-color);
+	--auto-complete-hover-bg:var(--main-settings-bg);
+	--auto-complete-hover-color:var(--main-settings-color);
+	--auto-complete-active-bg:#4070ff;
+	--auto-complete-active-color:#fff;
 }
 body .layout-ui-editor > .menu-widgets, 
   body .layout-ui-editor > .menu-layers, 

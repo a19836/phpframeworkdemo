@@ -205,9 +205,11 @@
 	font-style:normal;
 	white-space:nowrap;
 }
-.regions_blocks_includes_settings .other_region_blocks .template_region_items .template_region_item > label, 
-   .regions_blocks_includes_settings .other_template_params .items .item > label {
+.regions_blocks_includes_settings .other_region_blocks .template_region_items .template_region_item > label {
 	width:130px;
+}
+.regions_blocks_includes_settings .other_template_params .items .item > label {
+	width:145px;
 }
 .regions_blocks_includes_settings input:not([type=button]):not([type=submit]),
   .regions_blocks_includes_settings select {
@@ -228,9 +230,28 @@
    .regions_blocks_includes_settings .template_region_items .template_region_item > .pretty_block_options_button {
 	width:200px !important; /* !important must be here bc if block_options is hidden then pretty_block_options_button will have the width:0. so we need to overright this issue! */
 }
+.regions_blocks_includes_settings .template_params .items .item.inactive *:not(input[type=checkbox]) {
+	cursor:not-allowed;
+	opacity:.3;
+}
 .regions_blocks_includes_settings .template_params .items .item > input,
   .regions_blocks_includes_settings .other_template_params .items .item > input {
-	width:265px;
+	width:240px;
+}
+.regions_blocks_includes_settings .template_params .items .item > input[type=checkbox] {
+  	width:auto;
+  	margin:0;
+}
+.regions_blocks_includes_settings .other_template_params .items .item > input[type=checkbox] {
+  	display:none;
+}
+.regions_blocks_includes_settings .template_params .items .item > input[type=color],
+  .regions_blocks_includes_settings .other_template_params .items .item > input[type=color] {
+	width:20px;
+	margin:auto 0 auto 10px;
+	padding:0;
+	border:0;
+	background:transparent;
 }
 .regions_blocks_includes_settings .template_region_items .template_region_item > .pretty_block_options_button {
 	height:24px;

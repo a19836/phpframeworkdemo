@@ -31,9 +31,9 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/jsbeautify/js/lib/beautify.js"></script>
 				<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/jsbeautify/js/lib/beautify-css.js"></script>
 				<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/myhtmlbeautify/MyHtmlBeautify.js"></script>
-			' . $pf8ed4912; if (strpos($pf8ed4912, 'vendor/mycodebeautifier/js/codebeautifier.js') === false) $pf8ed4912 = '
+			' . $pf8ed4912; if (strpos($pf8ed4912, 'vendor/mycodebeautifier/js/MyCodeBeautifier.js') === false) $pf8ed4912 = '
 				<!-- Add Code Beautifier -->
-				<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/mycodebeautifier/js/codebeautifier.js"></script>' . $pf8ed4912; if (strpos($pf8ed4912, 'vendor/acecodeeditor/src-min-noconflict/ace.js') === false) $pf8ed4912 = '		
+				<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/mycodebeautifier/js/MyCodeBeautifier.js"></script>' . $pf8ed4912; if (strpos($pf8ed4912, 'vendor/acecodeeditor/src-min-noconflict/ace.js') === false) $pf8ed4912 = '		
 				<!-- Add Code Editor JS files -->
 				<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/acecodeeditor/src-min-noconflict/ace.js"></script>
 				<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>' . $pf8ed4912; if (strpos($pf8ed4912, 'vendor/jquery/js/jquery.md5.js') === false) $pf8ed4912 = '

@@ -29,7 +29,7 @@ namespace __system\businesslogic; include_once $vars["current_business_logic_mod
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[name], type=varchar, not_null=1, min_length=1, max_length=50)
-	 */ public function insert($data) { $this->initLocalDBTableHandler($data); $data["created_date"] = $data["created_date"] ? $data["created_date"] : date("Y-m-d H:i:s"); $data["modified_date"] = $data["modified_date"] ? $data["modified_date"] : $data["created_date"]; if (!$data["user_type_id"]) $data["user_type_id"] = $this->LocalDBTableHandler->getPKMaxValue("user_type", "user_type_id") + 1; return $this->LocalDBTableHandler->insertItem("user_type", $data, array("user_type_id")) ? $data["user_type_id"] : null; } /**
+	 */ public function insert($data) { $this->initLocalDBTableHandler($data); $data["created_date"] = !empty($data["created_date"]) ? $data["created_date"] : date("Y-m-d H:i:s"); $data["modified_date"] = !empty($data["modified_date"]) ? $data["modified_date"] : $data["created_date"]; if (empty($data["user_type_id"])) $data["user_type_id"] = $this->LocalDBTableHandler->getPKMaxValue("user_type", "user_type_id") + 1; return $this->LocalDBTableHandler->insertItem("user_type", $data, array("user_type_id")) ? $data["user_type_id"] : null; } /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[user_type_id], type=bigint, not_null=1, length=19)
@@ -42,7 +42,7 @@ namespace __system\businesslogic; include_once $vars["current_business_logic_mod
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[user_type_id], type=bigint, not_null=1, length=19)
-	 */ public function get($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("user_type"); $v2f228af834 = $this->LocalDBTableHandler->filterItems($pf72c1d58, array("user_type_id" => $data["user_type_id"]), false); return $v2f228af834 ? $v2f228af834[0] : null; } /**
+	 */ public function get($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("user_type"); $v2f228af834 = $this->LocalDBTableHandler->filterItems($pf72c1d58, array("user_type_id" => $data["user_type_id"]), false); return isset($v2f228af834[0]) ? $v2f228af834[0] : null; } /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 */ public function getAll($data) { $this->initLocalDBTableHandler($data); return $this->LocalDBTableHandler->getItems("user_type"); } /**
@@ -50,4 +50,4 @@ namespace __system\businesslogic; include_once $vars["current_business_logic_mod
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[conditions][user_type_id], type=bigint, length=19)
 	 * @param (name=data[conditions][name], type=varchar, length=50)
-	 */ public function search($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("user_type"); return $this->LocalDBTableHandler->filterItems($pf72c1d58, $data["conditions"], false); } } ?>
+	 */ public function search($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("user_type"); $paf1bc6f6 = isset($data["conditions"]) ? $data["conditions"] : null; return $this->LocalDBTableHandler->filterItems($pf72c1d58, $paf1bc6f6, false); } } ?>

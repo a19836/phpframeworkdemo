@@ -19,12 +19,12 @@ $MyCurl->initSingle(
 		),
 		"cookie" => $_COOKIE,
 		"settings" => array(
-			"referer" => $_SERVER["HTTP_REFERER"],
+			"referer" => isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : null,
 			"follow_location" => 1,
 			"connection_timeout" => 10,
 			"header" => 1,
-			"http_auth" => $_SERVER["AUTH_TYPE"] ? $_SERVER["AUTH_TYPE"] : null,
-			"user_pwd" => $_SERVER["PHP_AUTH_USER"] ? $_SERVER["PHP_AUTH_USER"] . ":" . $_SERVER["PHP_AUTH_PW"] : null,
+			"http_auth" => !empty($_SERVER["AUTH_TYPE"]) ? $_SERVER["AUTH_TYPE"] : null,
+			"user_pwd" => !empty($_SERVER["PHP_AUTH_USER"]) ? $_SERVER["PHP_AUTH_USER"] . ":" . (isset($_SERVER["PHP_AUTH_PW"]) ? $_SERVER["PHP_AUTH_PW"] : "") : null,
 		)
 	)
 );

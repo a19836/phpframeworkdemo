@@ -29,11 +29,11 @@ namespace __system\businesslogic; include_once $vars["current_business_logic_mod
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[name], type=varchar, not_null=1, min_length=1, max_length=100)
-	 */ public function insert($data) { $this->initLocalDBTableHandler($data); $pfdf1ef23 = $this->get($data); $data["created_date"] = $data["created_date"] ? $data["created_date"] : date("Y-m-d H:i:s"); $data["modified_date"] = $data["modified_date"] ? $data["modified_date"] : $data["created_date"]; if ($pfdf1ef23) { $data["created_date"] = $pfdf1ef23["created_date"]; $v5c1c342594 = $this->LocalDBTableHandler->updateItem("user_stats", $data, array("name")); } else $v5c1c342594 = $this->LocalDBTableHandler->insertItem("user_stats", $data, array("name")); return $v5c1c342594 ? $data["name"] : null; } /**
+	 */ public function insert($data) { $this->initLocalDBTableHandler($data); $pfdf1ef23 = $this->get($data); $data["created_date"] = !empty($data["created_date"]) ? $data["created_date"] : date("Y-m-d H:i:s"); $data["modified_date"] = !empty($data["modified_date"]) ? $data["modified_date"] : $data["created_date"]; if ($pfdf1ef23) { $data["created_date"] = $pfdf1ef23["created_date"]; $v5c1c342594 = $this->LocalDBTableHandler->updateItem("user_stats", $data, array("name")); } else $v5c1c342594 = $this->LocalDBTableHandler->insertItem("user_stats", $data, array("name")); return $v5c1c342594 ? $data["name"] : null; } /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[name], type=varchar, not_null=1, min_length=1, max_length=100)
-	 */ public function get($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("user_stats"); $v2f228af834 = $this->LocalDBTableHandler->filterItems($pf72c1d58, array("name" => $data["name"]), false); return $v2f228af834 ? $v2f228af834[0] : null; } /**
+	 */ public function get($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("user_stats"); $v2f228af834 = $this->LocalDBTableHandler->filterItems($pf72c1d58, array("name" => $data["name"]), false); return isset($v2f228af834[0]) ? $v2f228af834[0] : null; } /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 */ public function getAll($data) { $this->initLocalDBTableHandler($data); return $this->LocalDBTableHandler->getItems("user_stats"); } } ?>

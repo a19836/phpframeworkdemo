@@ -496,3 +496,42 @@ function openPopup(a, attr_name, originalEvent) {
 	
 	MyFancyPopup.showPopup();
 }
+
+function createPage(elm) {
+	var entities_folder = $('#file_tree.list_entity .entities_folder').parent();
+	var create_file_icon = entities_folder.find(' > .icons > .create_file > [context_menu_on_click]');
+	create_file_icon.click();
+	
+}
+
+//overright this method from admin_menu.js
+function triggerFileNodeAfterCreateFile(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated) {
+	var node = $("#" + tree_node_id_to_be_updated);
+	
+	//normalize new file name
+	var allow_upper_case = a.getAttribute("allow_upper_case") == 1; //in case of businesslogic services class
+	new_file_name = normalizeFileName(new_file_name, allow_upper_case);
+	
+	if (node[0])
+		mytree.refreshNodeChilds(node[0], {
+			ajax_callback_last: function(ul, data) {
+				$(ul).find(" > li > a > label").each(function(idx, item) {
+					item = $(item);
+					
+					if (item.text().toLowerCase() == new_file_name.toLowerCase()) {
+						if (item.attr("onClick")) {
+							try {
+								item.trigger("click");
+							}
+							catch(e) {
+								if (console && console.log)
+									console.log(e);
+							}
+						}
+						
+						return false;
+					}
+				});
+			},
+		});
+}

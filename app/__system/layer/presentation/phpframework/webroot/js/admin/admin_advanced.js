@@ -1,239 +1,249 @@
 var iframe_overlay = null; //To be used by sub-pages
 
 $(function() {
+	var hide_panel = $("#hide_panel");
+	var left_panel = $("#left_panel");
+	var right_panel = $("#right_panel");
+	
 	//prepare right panel iframe
-	var win_url = "" + document.location;
-	win_url = win_url.indexOf("#") != -1 ? win_url.substr(0, win_url.indexOf("#")) : win_url;
-	
-	iframe_overlay = $('#right_panel .iframe_overlay');
-	var iframe = $('#right_panel iframe');
-	var iframe_unload_func = function (e) {
-		iframe_overlay.show();
-	};
-	
-	iframe.load(function() {
+	if (right_panel[0]) {
+		var win_url = "" + document.location;
+		win_url = win_url.indexOf("#") != -1 ? win_url.substr(0, win_url.indexOf("#")) : win_url;
+		
+		iframe_overlay = right_panel.find('.iframe_overlay');
+		var iframe = right_panel.find('iframe');
+		
+		var iframe_unload_func = function (e) {
+			iframe_overlay.show();
+		};
+		
+		iframe.load(function() {
+			$(iframe[0].contentWindow).unload(iframe_unload_func);
+		
+			iframe_overlay.hide();
+			
+			//prepare redirect when user is logged out
+			try {
+				iframe[0].contentWindow.$.ajaxSetup({
+					complete: function(jqXHR, textStatus) {
+						if (jqXHR.status == 200 && jqXHR.responseText.indexOf('<div class="login">') > 0 && jqXHR.responseText.indexOf('<div id="layoutAuthentication">') > 0) 
+							document.location = win_url;
+				    	}
+				});
+			}
+			catch (e) {}
+		});
 		$(iframe[0].contentWindow).unload(iframe_unload_func);
-	
-		iframe_overlay.hide();
 		
 		//prepare redirect when user is logged out
-		try {
-			iframe[0].contentWindow.$.ajaxSetup({
-				complete: function(jqXHR, textStatus) {
-					if (jqXHR.status == 200 && jqXHR.responseText.indexOf('<div class="login">') > 0 && jqXHR.responseText.indexOf('<div id="layoutAuthentication">') > 0) 
-						document.location = win_url;
-			    	}
-			});
-		}
-		catch (e) {}
-	});
-	$(iframe[0].contentWindow).unload(iframe_unload_func);
-	
-	//prepare redirect when user is logged out
-	$.ajaxSetup({
-		complete: function(jqXHR, textStatus) {
-			if (jqXHR.status == 200 && jqXHR.responseText.indexOf('<div class="login">') > 0 && jqXHR.responseText.indexOf('<div id="layoutAuthentication">') > 0)
-				document.location = win_url;
-	    	}
-	});
+		$.ajaxSetup({
+			complete: function(jqXHR, textStatus) {
+				if (jqXHR.status == 200 && jqXHR.responseText.indexOf('<div class="login">') > 0 && jqXHR.responseText.indexOf('<div id="layoutAuthentication">') > 0)
+					document.location = win_url;
+		    	}
+		});
+	}
 	
 	//set scroll to where the select project is
 	initFilterByLayout();
 	
 	//prepare hide_panel
-	$("#hide_panel").draggable({
-		axis: "x",
-		appendTo: 'body',
-		containment: $("#hide_panel").parent(),
-		cursor: 'move',
-		cancel: '.button',
-		start : function(event, ui) {
-			if (typeof navigator_droppables_active != "undefined")
-				navigator_droppables_active = false;
-			
-			if ($(this).children(".button").hasClass("minimize")) {
-				$('#left_panel, #hide_panel, #right_panel').addClass("dragging"); // We need to hide the iframe bc the draggable event has some problems with iframes
-				return true;
-			}
-			return false;
-		},
-		drag : function(event, ui) {
-			updatePanelsAccordingWithHidePanel();
-		},
-		stop : function(event, ui) {
-			updatePanelsAccordingWithHidePanel();
-			$('#left_panel, #hide_panel, #right_panel').removeClass("dragging");
-			
-			if (typeof navigator_droppables_active != "undefined")
-				navigator_droppables_active = true;
-		}
-	});
-	
-	//prepare path_to_filter
-	path_to_filter = path_to_filter.replace(/\/+/g, "/").replace(/^\//g, "").replace(/\/$/g, ""); //remove duplicated slashes and at the begin and at the end. Then converts path_to_filter to an array.
-	var path_to_filter_exists = path_to_filter != "";
-	
-	var is_left_panel_with_tabs = $("#left_panel").is(".left_panel_with_tabs");
-	
-	if (!is_left_panel_with_tabs) {
-		initFileTreeMenu();	//prepare menu tree
-		
-		//open pages li for the filtered project
-		var file_tree_ul = $("#file_tree > ul");
-		var lis = file_tree_ul.children("li");
-		var pres_item = lis.filter(".presentation_layers");
-		
-		if (pres_item[0]) {
-			var new_label = "Interface - " + pres_item.find(" > a > label > label").text();
-			pres_item.find(" > a > label > label").text(new_label);
-			
-			if (path_to_filter_exists)
-				openMainNodeTreeItemByPath(pres_item, path_to_filter + "/src/entity");
-		}
-		
-		var da_item = lis.filter(".data_access_layers");
-		if (da_item[0]) {
-			var new_label = "SQL - " + da_item.find(" > a > label > label").text();
-			da_item.find(" > a > label > label").text(new_label);
-		}
-		
-		lis.filter(":not(.presentation_layers)").each(function(idx, li) {
-			$(li).removeClass("jstree-open").addClass("jstree-closed");
-		});
-	}
-	else { //change tree to be separated with tabs
-		//prepare menu tree
-		mytree.options.toggle_selection = false;
-		mytree.options.ajax_callback_before = prepareLayerFileNodes1;
-		mytree.options.ajax_callback_after = prepareLayerFileNodes2;
-		
-		initFileTreeMenu();
-		
-		//prepare file_tree with tabs
-		var file_tree_ul = $("#file_tree > ul");
-		var lis = file_tree_ul.children("li");
-		var tabs_html = '<ul class="tabs">';
-		
-		$.each(lis, function(idx, li) {
-			li = $(li);
-			var id = li.attr("id");
-			var label = li.find(" > a > label").text();
-			var djst = li.attr("data-jstree");
-			var m = djst.match(/"icon"\s*:\s*"(.*)"/);
-			var classes = m[1];
-			var tab_classes = "tab_main_node tab_" + classes.split(" ").join(" tab_");
-			var tab_label = "";
-			
-			if (classes.indexOf("main_node_presentation_layers") != -1)
-				tab_label = "Interface";
-			else if (classes.indexOf("main_node_business_logic_layers") != -1)
-				tab_label = "Logic";
-			else if (classes.indexOf("main_node_data_access_layers") != -1)
-				tab_label = "SQL";
-			else if (classes.indexOf("main_node_db_layers") != -1)
-				tab_label = "DB";
-			else if (classes.indexOf("main_node_library") != -1)
-				tab_label = "Library";
-			
-			tabs_html	+= '<li class="' + tab_classes + '"><a href="#' + id + '" title="' + tab_label + '"><i class="tab_icon ' + classes + '"></i><span class="tab_label">' + tab_label + '</span></a></li>';
-			
-			li.addClass("main_tree_node scroll");
-		});
-		
-		tabs_html	+= '</ul>';
-		
-		file_tree_ul.prepend(tabs_html);
-		file_tree_ul.tabs();
-		
-		file_tree_ul.find(" > ul.tabs > .tab_main_node a").click(function(originalEvent){
-			MyContextMenu.hideAllContextMenu();
-			
-			prepareLayerActiveTab( $(this).parent() );
-		});
-		
-		file_tree_ul.children("li.main_tree_node").each(function(idx, item) {
-			item = $(item);
-			item.addClass("hide_tree_item");
-			
-			var main_tree_node_label = item.find(" > a > label").text();
-			
-			if (item.is(".presentation_layers"))
-				main_tree_node_label = "Interface - " + main_tree_node_label;
-			else if (item.is(".data_access_layers"))
-				main_tree_node_label = "SQL - " + main_tree_node_label;
-			
-			item.prepend('<div class="title">' + main_tree_node_label + '</div>');
-			
-			var main_ul = item.children("ul");
-			var children = main_ul.children("li");
-			
-			//if multiple presentation layers and path_to_filter exists, remove the presentation layers that don't have the correspondent project
-			if (children.length > 1 && item.is(".presentation_layers") && path_to_filter_exists) {
-				var selected_bean_name = null;
-				var selected_bean_file_name = null;
+	if (hide_panel[0]) 
+		hide_panel.draggable({
+			axis: "x",
+			appendTo: 'body',
+			containment: $("#hide_panel").parent(),
+			cursor: 'move',
+			cancel: '.button',
+			start : function(event, ui) {
+				if (typeof navigator_droppables_active != "undefined")
+					navigator_droppables_active = false;
 				
-				for (var bean_name in main_layers_properties) {
-					var layer_props = main_layers_properties[bean_name];
-					var layer_bean_folder_name = layer_props["layer_bean_folder_name"];
+				if ($(this).children(".button").hasClass("minimize")) {
+					$('#left_panel, #hide_panel, #right_panel').addClass("dragging"); // We need to hide the iframe bc the draggable event has some problems with iframes
+					return true;
+				}
+				return false;
+			},
+			drag : function(event, ui) {
+				updatePanelsAccordingWithHidePanel();
+			},
+			stop : function(event, ui) {
+				updatePanelsAccordingWithHidePanel();
+				$('#left_panel, #hide_panel, #right_panel').removeClass("dragging");
+				
+				if (typeof navigator_droppables_active != "undefined")
+					navigator_droppables_active = true;
+			}
+		});
+	
+	if (left_panel[0]) {
+		//prepare path_to_filter
+		path_to_filter = path_to_filter.replace(/\/+/g, "/").replace(/^\//g, "").replace(/\/$/g, ""); //remove duplicated slashes and at the begin and at the end. Then converts path_to_filter to an array.
+		var path_to_filter_exists = path_to_filter != "";
+		
+		var is_left_panel_with_tabs = left_panel.is(".left_panel_with_tabs");
+		
+		if (!is_left_panel_with_tabs) {
+			initFileTreeMenu();	//prepare menu tree
+			
+			//open pages li for the filtered project
+			var file_tree_ul = $("#file_tree > ul");
+			var lis = file_tree_ul.children("li");
+			var pres_item = lis.filter(".presentation_layers");
+			
+			if (pres_item[0]) {
+				var new_label = "Interface - " + pres_item.find(" > a > label > label").text();
+				pres_item.find(" > a > label > label").text(new_label);
+				
+				if (path_to_filter_exists)
+					openMainNodeTreeItemByPath(pres_item, path_to_filter + "/src/entity");
+			}
+			
+			var da_item = lis.filter(".data_access_layers");
+			if (da_item[0]) {
+				var new_label = "SQL - " + da_item.find(" > a > label > label").text();
+				da_item.find(" > a > label > label").text(new_label);
+			}
+			
+			lis.filter(":not(.presentation_layers)").each(function(idx, li) {
+				$(li).removeClass("jstree-open").addClass("jstree-closed");
+			});
+		}
+		else { //change tree to be separated with tabs
+			//prepare menu tree
+			mytree.options.toggle_selection = false;
+			mytree.options.ajax_callback_before = prepareLayerFileNodes1;
+			mytree.options.ajax_callback_after = prepareLayerFileNodes2;
+			
+			initFileTreeMenu();
+			
+			//prepare file_tree with tabs
+			var file_tree_ul = $("#file_tree > ul");
+			var lis = file_tree_ul.children("li");
+			var tabs_html = '<ul class="tabs">';
+			
+			$.each(lis, function(idx, li) {
+				li = $(li);
+				var id = li.attr("id");
+				var label = li.find(" > a > label").text();
+				var djst = li.attr("data-jstree");
+				var m = djst.match(/"icon"\s*:\s*"(.*)"/);
+				var classes = m[1];
+				var tab_classes = "tab_main_node tab_" + classes.split(" ").join(" tab_");
+				var tab_label = "";
+				
+				if (classes.indexOf("main_node_presentation_layers") != -1)
+					tab_label = "Interface";
+				else if (classes.indexOf("main_node_business_logic_layers") != -1)
+					tab_label = "Logic";
+				else if (classes.indexOf("main_node_data_access_layers") != -1)
+					tab_label = "SQL";
+				else if (classes.indexOf("main_node_db_layers") != -1)
+					tab_label = "DB";
+				else if (classes.indexOf("main_node_library") != -1)
+					tab_label = "Library";
+				
+				tabs_html	+= '<li class="' + tab_classes + '"><a href="#' + id + '" title="' + tab_label + '"><i class="tab_icon ' + classes + '"></i><span class="tab_label">' + tab_label + '</span></a></li>';
+				
+				li.addClass("main_tree_node scroll");
+			});
+			
+			tabs_html	+= '</ul>';
+			
+			file_tree_ul.prepend(tabs_html);
+			file_tree_ul.tabs();
+			
+			file_tree_ul.find(" > ul.tabs > .tab_main_node a").click(function(originalEvent){
+				MyContextMenu.hideAllContextMenu();
+				
+				prepareLayerActiveTab( $(this).parent() );
+			});
+			
+			file_tree_ul.children("li.main_tree_node").each(function(idx, item) {
+				item = $(item);
+				item.addClass("hide_tree_item");
+				
+				var main_tree_node_label = item.find(" > a > label").text();
+				
+				if (item.is(".presentation_layers"))
+					main_tree_node_label = "Interface - " + main_tree_node_label;
+				else if (item.is(".data_access_layers"))
+					main_tree_node_label = "SQL - " + main_tree_node_label;
+				
+				item.prepend('<div class="title">' + main_tree_node_label + '</div>');
+				
+				var main_ul = item.children("ul");
+				var children = main_ul.children("li");
+				
+				//if multiple presentation layers and path_to_filter exists, remove the presentation layers that don't have the correspondent project
+				if (children.length > 1 && item.is(".presentation_layers") && path_to_filter_exists) {
+					var selected_bean_name = null;
+					var selected_bean_file_name = null;
 					
-					layer_bean_folder_name = layer_bean_folder_name.replace(/\/+/g, "/").replace(/^\//g, "").replace(/\/$/g, ""); //remove duplicated slashes and at the begin and at the end. Then converts path_to_filter to an array.
+					for (var bean_name in main_layers_properties) {
+						var layer_props = main_layers_properties[bean_name];
+						var layer_bean_folder_name = layer_props["layer_bean_folder_name"];
+						
+						layer_bean_folder_name = layer_bean_folder_name.replace(/\/+/g, "/").replace(/^\//g, "").replace(/\/$/g, ""); //remove duplicated slashes and at the begin and at the end. Then converts path_to_filter to an array.
+						
+						if (path_to_filter.indexOf(layer_bean_folder_name) == 0) {
+							selected_bean_name = bean_name;
+							selected_bean_file_name = layer_props["bean_file_name"];
+							break;
+						}
+					}
 					
-					if (path_to_filter.indexOf(layer_bean_folder_name) == 0) {
-						selected_bean_name = bean_name;
-						selected_bean_file_name = layer_props["bean_file_name"];
-						break;
+					if (selected_bean_name && selected_bean_file_name) {
+						$.each(children, function(idx, child) {
+							child = $(child);
+							var child_ul_url = child.children("ul").attr("url");
+							
+							if (child_ul_url.indexOf("?bean_name=" + selected_bean_name + "&bean_file_name=" + selected_bean_file_name + "&") != -1) 
+								child.addClass("jstree-last");
+							else
+								child.remove();
+						});
+						
+						children = main_ul.children("li");
 					}
 				}
 				
-				if (selected_bean_name && selected_bean_file_name) {
-					$.each(children, function(idx, child) {
-						child = $(child);
-						var child_ul_url = child.children("ul").attr("url");
-						
-						if (child_ul_url.indexOf("?bean_name=" + selected_bean_name + "&bean_file_name=" + selected_bean_file_name + "&") != -1) 
-							child.addClass("jstree-last");
-						else
-							child.remove();
-					});
+				//if layer is unique, then show only its content
+				if (item.find(" > a > i").is(".main_node_management, .main_node_vendor")) {
+					item.removeClass("jstree-closed").addClass("jstree-open hide_tree_item");
 					
-					children = main_ul.children("li");
+					iniSubMenu(item);
 				}
-			}
-			
-			//if layer is unique, then show only its content
-			if (item.find(" > a > i").is(".main_node_management, .main_node_vendor")) {
-				item.removeClass("jstree-closed").addClass("jstree-open hide_tree_item");
-				
-				iniSubMenu(item);
-			}
-			else if (children.length == 1) {
-				var child = children.first();
-				var sub_children = child.find(" > ul > li");
-				
-				item.removeClass("with_sub_groups");
-				child.removeClass("jstree-closed").addClass("jstree-open hide_tree_item");
-				
-				if (child.is(".main_node_presentation, .main_node_businesslogic, .main_node_ibatis, .main_node_hibernate, .main_node_db")) {
-					var child_label = child.find(" > a > label").text();
-					item.children(".title").attr("title", "Layer name: " + child_label);
+				else if (children.length == 1) {
+					var child = children.first();
+					var sub_children = child.find(" > ul > li");
+					
+					item.removeClass("with_sub_groups");
+					child.removeClass("jstree-closed").addClass("jstree-open hide_tree_item");
+					
+					if (child.is(".main_node_presentation, .main_node_businesslogic, .main_node_ibatis, .main_node_hibernate, .main_node_db")) {
+						var child_label = child.find(" > a > label").text();
+						item.children(".title").attr("title", "Layer name: " + child_label);
+					}
+					
+					if (sub_children.length == 0)
+						mytree.refreshNodeChilds(child, {ajax_callback_last: function(ul, data) {
+							//if path_to_filter exists and is main_node_presentation, the submenu is already inited with the right project node.
+							if (!child.is(".main_node_presentation") || !path_to_filter_exists) {
+								iniSubMenu(child);
+								//console.log(child[0]);
+							}
+						}});
+					else if (!child.is(".main_node_presentation") || !path_to_filter_exists) { //if path_to_filter exists and is main_node_presentation, the submenu is already inited with the right project node.
+						iniSubMenu(child);
+						//console.log(child[0]);
+					}
 				}
-				
-				if (sub_children.length == 0)
-					mytree.refreshNodeChilds(child, {ajax_callback_last: function(ul, data) {
-						//if path_to_filter exists and is main_node_presentation, the submenu is already inited with the right project node.
-						if (!child.is(".main_node_presentation") || !path_to_filter_exists) {
-							iniSubMenu(child);
-							//console.log(child[0]);
-						}
-					}});
-				else if (!child.is(".main_node_presentation") || !path_to_filter_exists) { //if path_to_filter exists and is main_node_presentation, the submenu is already inited with the right project node.
-					iniSubMenu(child);
-					//console.log(child[0]);
-				}
-			}
-			else 
-				item.addClass("with_sub_groups");
-		});
+				else 
+					item.addClass("with_sub_groups");
+			});
+		}
 	}
 });
 
@@ -631,7 +641,7 @@ function filterByLayout(elm) {
 	}
 	else {
 		var url = ("" + document.location);
-		url = url.replace(/(&?)(filter_by_layout|default_page)=[^&]*/g, "");
+		url = url.replace(/(&?)(filter_by_layout|default_page|bean_name|bean_file_name|project)=[^&]*/g, "");
 		url += (url.indexOf("?") != -1 ? "&" : "?") + "filter_by_layout=" + proj_id;
 		url = url.replace(/[&]+/g, "&");
 		

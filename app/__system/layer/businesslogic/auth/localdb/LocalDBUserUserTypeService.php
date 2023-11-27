@@ -30,7 +30,7 @@ namespace __system\businesslogic; include_once $vars["current_business_logic_mod
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[user_id], type=bigint, not_null=1, length=19)
 	 * @param (name=data[user_type_id], type=bigint, not_null=1, length=19)
-	 */ public function insert($data) { $this->initLocalDBTableHandler($data); $data["created_date"] = $data["created_date"] ? $data["created_date"] : date("Y-m-d H:i:s"); $data["modified_date"] = $data["modified_date"] ? $data["modified_date"] : $data["created_date"]; return $this->LocalDBTableHandler->insertItem("user_user_type", $data, array("user_id", "user_type_id")); } /**
+	 */ public function insert($data) { $this->initLocalDBTableHandler($data); $data["created_date"] = !empty($data["created_date"]) ? $data["created_date"] : date("Y-m-d H:i:s"); $data["modified_date"] = !empty($data["modified_date"]) ? $data["modified_date"] : $data["created_date"]; return $this->LocalDBTableHandler->insertItem("user_user_type", $data, array("user_id", "user_type_id")); } /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[user_id], type=bigint, not_null=1, length=19)
@@ -40,12 +40,12 @@ namespace __system\businesslogic; include_once $vars["current_business_logic_mod
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[conditions][use_id], type=bigint, length=19)
 	 * @param (name=data[conditions][user_type_id], type=bigint, length=19)
-	 */ public function deleteByConditions($data) { $this->initLocalDBTableHandler($data); return $this->LocalDBTableHandler->deleteItem("user_user_type", $data["conditions"]); } /**
+	 */ public function deleteByConditions($data) { $this->initLocalDBTableHandler($data); $paf1bc6f6 = isset($data["conditions"]) ? $data["conditions"] : null; return $this->LocalDBTableHandler->deleteItem("user_user_type", $paf1bc6f6); } /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[user_id], type=bigint, not_null=1, length=19)
 	 * @param (name=data[user_type_id], type=bigint, not_null=1, length=19)
-	 */ public function get($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("user_user_type"); $v2f228af834 = $this->LocalDBTableHandler->filterItems($pf72c1d58, array("user_id" => $data["user_id"], "user_type_id" => $data["user_type_id"]), false); return $v2f228af834 ? $v2f228af834[0] : null; } /**
+	 */ public function get($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("user_user_type"); $v2f228af834 = $this->LocalDBTableHandler->filterItems($pf72c1d58, array("user_id" => $data["user_id"], "user_type_id" => $data["user_type_id"]), false); return isset($v2f228af834[0]) ? $v2f228af834[0] : null; } /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 */ public function getAll($data) { $this->initLocalDBTableHandler($data); return $this->LocalDBTableHandler->getItems("user_user_type"); } /**
@@ -53,4 +53,4 @@ namespace __system\businesslogic; include_once $vars["current_business_logic_mod
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[conditions][user_id], type=bigint, length=19)
 	 * @param (name=data[conditions][user_type_id], type=bigint, length=19)
-	 */ public function search($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("user_user_type"); return $this->LocalDBTableHandler->filterItems($pf72c1d58, $data["conditions"], false); } } ?>
+	 */ public function search($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("user_user_type"); $paf1bc6f6 = isset($data["conditions"]) ? $data["conditions"] : null; return $this->LocalDBTableHandler->filterItems($pf72c1d58, $paf1bc6f6, false); } } ?>

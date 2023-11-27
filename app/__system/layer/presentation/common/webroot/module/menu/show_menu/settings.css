@@ -8,8 +8,9 @@
 	margin-bottom:5px;
 	float:left;
 }
-.menu_settings .menu_class {
-	width:315px;
+.menu_settings .menu_class,
+   .menu_settings .menu_list_class {
+	width:350px;
 	height:25px;
 	float:left;
 }
@@ -44,7 +45,8 @@
 	clear:both;
 }
 .menu_settings .menu_type label, 
-   .menu_settings .menu_class label, 
+   .menu_settings .menu_class label,
+   .menu_settings .menu_list_class label, 
    .menu_settings .menu_title label {
    	width:100px;
 	display:inline-block;
@@ -69,7 +71,8 @@
    	width:140px;
 	display:inline-block;
 }
-.menu_settings .menu_class input {
+.menu_settings .menu_class input,
+   .menu_settings .menu_list_class input {
 	width:200px;
 }
 .menu_settings .menu_title input {

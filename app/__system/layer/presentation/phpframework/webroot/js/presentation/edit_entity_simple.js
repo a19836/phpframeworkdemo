@@ -142,7 +142,7 @@ $(function () {
 		});
 		
 		if (!code_exists)
-			onChooseAvailableTemplate( entity_obj.find(".template .search")[0], show_templates_only ); //open template popup automatically if entity is new
+			onChooseAvailableTemplate( entity_obj.find(".template .search")[0], show_templates_only, true ); //open template popup automatically if entity is new
 	}
 });
 
@@ -255,12 +255,12 @@ function onChangeTemplateGenre(elm) {
 	}
 }
 
-function onChooseAvailableTemplate(elm, show_templates_only) {
+function onChooseAvailableTemplate(elm, show_templates_only, include_template_samples) {
 	var template_elm = $(elm).parent();
-	var entity_obj_elm = template_elm.parent();
+	var entity_obj = template_elm.parent();
 	var func = function(selected_template) {
 		if (!code_exists) { //only if file is new
-			var iframe = getContentTemplateLayoutIframe(entity_obj_elm);
+			var iframe = getContentTemplateLayoutIframe(entity_obj);
 			var is_not_saved_layout_empty = true;
 			
 			//if meanwhile the user added some widgets to the layout, then the settings may not be updated bc the auto_convert_settings_from_layout may be false. So in this case, do not call the updateLayoutFromSettings and automatically the new widgets will appear in the new template bc the updateTemplateLayout method will be triggered by the selectAvailableTemplate method in the choose_available_template.js, that triggers the onChange event from the select field.
@@ -272,7 +272,7 @@ function onChooseAvailableTemplate(elm, show_templates_only) {
 			}
 			
 			if (is_not_saved_layout_empty)
-				updateLayoutFromSettings(entity_obj_elm, true);
+				updateLayoutFromSettings(entity_obj, true);
 		}
 	};
 	var available_projects_templates_props = {};
@@ -281,6 +281,7 @@ function onChooseAvailableTemplate(elm, show_templates_only) {
 	var cat_select = template_elm.children("select[name=template]");
 	var cat_props = {
 		show_templates_only: show_templates_only,
+		include_template_samples: include_template_samples,
 		available_projects_templates_props: available_projects_templates_props,
 		available_projects_props: available_projects_props,
 		get_available_templates_props_url: get_available_templates_props_url,
@@ -307,7 +308,12 @@ function onChooseAvailableTemplate(elm, show_templates_only) {
 			}
 		},
 		
-		on_select: function(selected_template) {
+		on_select: function(selected_template, opts) {
+			//add template samples, if apply
+			if ($.isPlainObject(opts) && opts["include_template_samples"])
+				addTemplateSamples(entity_obj, selected_template, opts["include_template_samples"], opts["include_template_samples_in_regions"]);
+			
+			//trigger change
 			var template_genre = template_elm.children("select[name=template_genre]");
 			
 			if (template_genre.val() != "") {
@@ -315,6 +321,7 @@ function onChooseAvailableTemplate(elm, show_templates_only) {
 				template_genre.trigger("change");
 			}
 			
+			//execute refresh template if new entity
 			func(selected_template);
 		},
 		on_select_from_other_project: function(selected_template, choose_template_selected_project_id) {
@@ -322,7 +329,7 @@ function onChooseAvailableTemplate(elm, show_templates_only) {
 			template_genre.val("external_template");
 			template_genre.trigger("change");
 			
-			var external_template_params = entity_obj_elm.children(".external_template_params");
+			var external_template_params = entity_obj.children(".external_template_params");
 			var external_template_type = external_template_params.find(" > .external_template_type select");
 			external_template_type.val("project");
 			external_template_type.trigger("change");
@@ -393,6 +400,87 @@ function onChooseAvailableTemplate(elm, show_templates_only) {
 	}
 	
 	chooseAvailableTemplate(cat_select[0], cat_props);
+}
+
+function addTemplateSamples(entity_obj, template, include_template_samples, include_template_samples_in_regions) {
+	var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
+	var data = getSettingsTemplateRegionsBlocks(regions_blocks_includes_settings);
+	var template_regions = data["template_regions"];
+	var ignore_regions = [];
+	
+	if (template_regions) {
+		for (var region in template_regions) {
+			var regions = template_regions[region];
+			
+			if (include_template_samples_in_regions == "empty" && $.isArray(regions) && regions.length > 0) //include_template_samples_in_regions == "empty" => only in regions that are empty
+				ignore_regions.push(region);
+		}
+	
+		//get template samples
+		var samples = getTemplateSamplesHtml(template);
+		
+		//console.log(regions_blocks_list);
+		//console.log(data);
+		//console.log(samples);
+		
+		//add that template samples where region is not inside of ignore_regions
+		if (samples) {
+			var region_blocks = regions_blocks_includes_settings.find(".region_blocks .template_region_items");
+			var other_region_blocks = regions_blocks_includes_settings.find(".other_region_blocks .template_region_items");
+			
+			for (var region in samples)
+				if (ignore_regions.indexOf(region) == -1) {
+					var region_samples = samples[region];
+					
+					if (region_samples) {
+						for (var i = 0, t = region_samples.length; i < t; i++) {
+							var sample_code = region_samples[i];
+							
+							//add new html to region
+							var block = sample_code;
+							var proj = null;
+							var is_html = true;
+							var rb_index = 0;
+							var rb_html = getRegionBlockHtml(region, block, proj, is_html, rb_index);
+							
+							if (template_regions.hasOwnProperty(region))
+								region_blocks.append(rb_html);
+							else
+								other_region_blocks.append(rb_html);
+							
+							regions_blocks_list.push([region, block, proj, is_html, rb_index]);
+						}
+					}
+				}
+		}
+	}
+}
+
+function getTemplateSamplesHtml(template) {
+	var url = get_template_regions_samples_url.replace("#template#", template);
+	var samples = null;
+	
+	StatusMessageHandler.showMessage("Loading template region samples...", "", "bottom_messages", 3000);
+	
+	$.ajax({
+		type : "get",
+		url : url,
+		dataType : "json",
+		success : function(data, textStatus, jqXHR) {
+			samples = data;
+			
+			StatusMessageHandler.removeLastShownMessage("info", "bottom_messages");
+		},
+		error : function(jqXHR, textStatus, errorThrown) { 
+			StatusMessageHandler.removeLastShownMessage("info", "bottom_messages");
+			
+			if (jqXHR.responseText);
+				StatusMessageHandler.showError(jqXHR.responseText);
+		},
+		async: false
+	});
+	
+	return samples;
 }
 
 function toggleExternalTemplateParams(elm) {

@@ -32,6 +32,8 @@ var DBDAOActionTaskPropertyObj = {
 		
 		LayerOptionsUtilObj.onLoadTaskProperties(task_html_elm, task_property_values);
 		
+		task_property_values = assignObjectRecursively({}, task_property_values); //very important otherwise the convertArrayToSimpleSettings changes the attributes_type, conditions_type, xxx_type in myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id], which will then mess the convertion to code, bc we cannot types = options
+		
 		task_property_values = DBDAOActionTaskPropertyObj.convertArrayToSimpleSettings(task_property_values, "attributes");
 		task_property_values = DBDAOActionTaskPropertyObj.convertArrayToSimpleSettings(task_property_values, "conditions");
 		task_property_values = DBDAOActionTaskPropertyObj.convertArrayToSimpleSettings(task_property_values, "relations");
@@ -299,6 +301,9 @@ var DBDAOActionTaskPropertyObj = {
 			//prepare numeric indexes to be as an array
 			var new_arr_data = [];
 			$.each(task_property_values[key], function(i, item) {
+				if (item["value"] == null && item["value_type"] == "string") //uniform the value so we can compare it with the arr variable
+					item["value"] = "";
+				
 				new_arr_data.push(item);
 			});
 			

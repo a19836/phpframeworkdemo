@@ -4,7 +4,8 @@
 
 include $EVC->getUtilPath("util");
 
-$item_id = 1; //$_GET["item_id"]
+$item_id = 1;
+//$item_id = isset($_GET["item_id"]) ? $_GET["item_id"] : null;
 
 echo "<br/>DELETE THE CACHE FOR IBATIS:";
 CacheHandlerUtil::deleteFolder(LAYER_CACHE_PATH . "sysdataaccess/ibatis/", false);

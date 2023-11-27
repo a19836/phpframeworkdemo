@@ -14,7 +14,12 @@ try {
 	define('EVC_DISPATCHER_BEAN_NAME', 'EVCDispatcher');
 	define('EVC_BEAN_NAME', 'EVC');
 
-	echo call_presentation_layer_web_service(array("presentation_id" => $presentation_id, "external_vars" => $external_vars, "includes" => $includes, "includes_once" => $includes_once));
+	echo call_presentation_layer_web_service(array(
+		"presentation_id" => isset($presentation_id) ? $presentation_id : null, 
+		"external_vars" => isset($external_vars) ? $external_vars : null, 
+		"includes" => isset($includes) ? $includes : null, 
+		"includes_once" => isset($includes_once) ? $includes_once : null, 
+	));
 }
 catch(Exception $e) {
 	$GlobalExceptionLogHandler->log($e);

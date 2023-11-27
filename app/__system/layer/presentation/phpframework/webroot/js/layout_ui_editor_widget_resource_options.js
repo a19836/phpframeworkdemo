@@ -331,7 +331,7 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 											+ '<label>Choose an attribute:</label>'
 											+ '<ul>'
 												+ '<li class="user_defined_item">'
-													+ 'If you wish a different attribute than the below ones, please fill the following text box:<br/>'
+													+ 'If you wish a different attribute than the below ones, please fill the text box below.<br/>Or if you wish the resource it-self, choose the text box below but leave it empty.<br/>'
 													+ '<input type="radio" name="selected_resource_attribute" value="" />'
 													+ '<input type="text" />'
 												+ '</li>'
@@ -347,8 +347,8 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 							$(this).parent().closest("li").addClass("selected");
 						});
 						
-						//set keypress event to update value of selected_resource_attribute input
-						li.find(".sla_resource_attributes li.user_defined_item > input[type=text]").on("keypress", function() {
+						//set keydown event to update value of selected_resource_attribute input
+						li.find(".sla_resource_attributes li.user_defined_item > input[type=text]").on("keydown", function() {
 							var input_text = $(this);
 							
 							if (input_text.data("set_timeout_id"))
@@ -361,6 +361,7 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 								
 								input_radio.prop("checked", true).attr("checked", "checked");
 								input_radio.val( input_text.val() );
+								console.log(input_text.val());
 							}, 500);
 							
 							input_text.data("set_timeout_id", set_timeout_id);
@@ -430,13 +431,14 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 								var resource_attributes = available_resources_attributes[resource_name];
 								var resource_li = ul.find(" > li[resource_name='" + resource_name + "']");
 								var resource_ul = resource_li.find(".sla_resource_attributes > ul");
-								var attribute_lis = resource_ul.children(":not(.empty_items)");
+								var attribute_lis = resource_ul.children(":not(.empty_items):not(.user_defined_item)");
 								
 								if (resource_li && resources_multiple[resource_name])
 									resource_li.addClass("is_multiple");
 								
 								if (resource_attributes.length > 0) {
 									resource_ul.children(".empty_items").hide();
+									resource_ul.children(".user_defined_item").show();
 									
 									//remove old attributes
 									for (var i = 0, t = attribute_lis.length; i < t; i++) {
@@ -465,6 +467,7 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 								}
 								else {
 									resource_ul.children(".empty_items").show();
+									resource_ul.children(".user_defined_item").hide();
 									attribute_lis.remove();
 								}
 							}

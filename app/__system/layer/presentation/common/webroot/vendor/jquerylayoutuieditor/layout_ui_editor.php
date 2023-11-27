@@ -54,12 +54,16 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 	<script language="javascript" type="text/javascript" src="../acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
 	
 	<!-- Add Code Beautifier -->
-	<script language="javascript" type="text/javascript" src="../mycodebeautifier/js/codebeautifier.js"></script>
+	<script language="javascript" type="text/javascript" src="../mycodebeautifier/js/MyCodeBeautifier.js"></script>
 
 	<!-- Add Html/CSS/JS Beautify code -->
 	<script language="javascript" type="text/javascript" src="../jsbeautify/js/lib/beautify.js"></script>
 	<script language="javascript" type="text/javascript" src="../jsbeautify/js/lib/beautify-css.js"></script>
 	<script language="javascript" type="text/javascript" src="../myhtmlbeautify/MyHtmlBeautify.js"></script>
+	
+	<!-- Add Auto complete -->
+	<script language="javascript" type="text/javascript" src="../myautocomplete/js/MyAutoComplete.js"></script>
+	<link rel="stylesheet" href="../myautocomplete/css/style.css">
 	
 	<!-- CONTEXT MENU -->
 		<link rel="stylesheet" href="../jquerymycontextmenu/css/style.css" type="text/css" charset="utf-8" />

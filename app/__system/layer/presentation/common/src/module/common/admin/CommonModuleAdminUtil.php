@@ -349,7 +349,7 @@ class CommonModuleAdminUtil {
 				
 				$title = $menu["title"] ? 'title="' . $menu["title"] . '"' : "";
 				
-				$html .= '<li class="module_menu_item_class ' . $menu["class"] . '" ' . $title . '><a href="' . ($menu["url"] ? $menu["url"] : '#') . '"><label>' . $menu["label"] . '</label></a>';
+				$html .= '<li class="' . $menu["class"] . '" ' . $title . '><a href="' . ($menu["url"] ? $menu["url"] : '#') . '"><label>' . $menu["label"] . '</label></a>';
 				
 				if ($menu["menus"])
 					$html .= '<ul>' . self::getMenusHTML($menu["menus"]) . '</ul>';

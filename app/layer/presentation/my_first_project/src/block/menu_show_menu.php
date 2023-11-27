@@ -4,6 +4,7 @@ $block_id = $EVC->getCMSLayer()->getCMSBlockLayer()->getBlockIdFromFilePath(__FI
 $block_settings[$block_id] = array(
 	"type" => "",
 	"class" => "menu",
+	"list_class" => "",
 	"title" => "",
 	"items_type" => "",
 	"menus" => array(
@@ -98,6 +99,13 @@ $block_settings[$block_id] = array(
 	"css" => ".menu ul {
     padding:0;
     list-style:none;
+}
+a.nav-link { 
+    color:inherit; 
+}
+a.nav-link:focus, a.nav-link:hover {
+    opacity:.8;
+    color:inherit; 
 }",
 	"js" => "",
 );

@@ -643,6 +643,10 @@
 	margin-top:1px;
 	display:block;
 }
+.icon.install_template::before {
+	content:"\f13b";
+	font:var(--fa-font-brands);
+}
 
 /* LOADING ICON */
 .loading:not(.template-widget) {

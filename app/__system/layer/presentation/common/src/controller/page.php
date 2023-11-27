@@ -1,15 +1,18 @@
 <?php
 /******* SET DEFAULT EVC *******/
-$default_template = $GLOBALS["project_default_template"] ? $GLOBALS["project_default_template"] : "pages";
+$default_template = !empty($GLOBALS["project_default_template"]) ? $GLOBALS["project_default_template"] : "pages";
 
 /******* PREPARE EVC *******/
+$parameter_0 = isset($parameters[0]) ? $parameters[0] : null;
+$parameter_1 = isset($parameters[1]) ? $parameters[1] : null;
+
 $EVC->setController( basename(__FILE__, ".php") );
-$EVC->setEntity($parameters[0]);
-$EVC->setView($parameters[1] ? $parameters[1] : $parameters[0]);
+$EVC->setEntity($parameter_0);
+$EVC->setView($parameter_1 ? $parameter_1 : $parameter_0);
 $EVC->setTemplate($default_template);
 
 $CMSHtmlParserLayer = $EVC->getCMSLayer()->getCMSHtmlParserLayer();
-$CMSHtmlParserLayer->init($parameters[0], $project_url_prefix, $project_common_url_prefix);
+$CMSHtmlParserLayer->init($parameter_0, $project_url_prefix, $project_common_url_prefix);
 
 /******* SHOW EVC *******/
 $entity_path = $EVC->getEntityPath( $EVC->getEntity() );
@@ -22,7 +25,7 @@ else {
 }
 
 $view_params = $EVC->getViewParams();
-$view_path = $EVC->getViewPath( $EVC->getView(), $view_params ? $view_params["project_id"] : false );
+$view_path = $EVC->getViewPath( $EVC->getView(), $view_params && isset($view_params["project_id"]) ? $view_params["project_id"] : false );
 if(file_exists($view_path)) {
 	include $view_path;
 }
@@ -32,7 +35,7 @@ else if ($EVC->getView() != $EVC->getEntity()) {
 }
 
 $template_params = $EVC->getTemplateParams();
-$template_path = $EVC->getTemplatePath( $EVC->getTemplate(), $template_params ? $template_params["project_id"] : false );
+$template_path = $EVC->getTemplatePath( $EVC->getTemplate(), $template_params && isset($template_params["project_id"]) ? $template_params["project_id"] : false );
 if(file_exists($template_path)) {
 	$CMSHtmlParserLayer->beforeIncludeTemplate($template_path);
 	

@@ -9,7 +9,7 @@ class CMSModuleSimulatorHandlerImpl extends \CMSModuleSimulatorHandler {
 		if (!$s["items_type"] && !$s["template_type"])
 			$editable_settings = array(
 				"elements" => array(
-					".module_menu > ul.menu_main_ul li.module_menu_item_class > a > label" => "xxx",
+					".module_menu > ul.module_menu_ul li.module_menu_li > a > label" => "xxx",
 				),
 				"handlers" => array(
 					"on_prepare_post_data" => "prepareModuleMenuPostDataWithRightMenuItemPath"
@@ -21,7 +21,7 @@ class CMSModuleSimulatorHandlerImpl extends \CMSModuleSimulatorHandler {
 						
 						do {
 							var ul = li.parentNode;
-							var is_main_node = ul.classList.contains("menu_main_ul");
+							var is_main_node = ul.classList.contains("module_menu_ul");
 							var path_index = 0;
 							
 							for (var i = 0; i < ul.childNodes.length; i++) {

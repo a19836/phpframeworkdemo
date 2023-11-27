@@ -1929,7 +1929,7 @@ if (!class_exists("UserUtil")) {
 				$user_session = $user_sessions[0] ? $user_sessions[0]: array();
 				
 				if ($user_session["username"]) {
-					$expired_time = $expired_time ? $expired_time : self::getConstantVariable("DEFAULT_USER_SESSION_EXPIRATION_TTL");
+					$expired_time = $expired_time ? $expired_time : self::getConstantVariable("DEFAULT_USER_SESSION_BLOCKED_TTL");
 					
 					if ($settings["maximum_login_attempts_to_block_user"] && $user_session["failed_login_attempts"] >= $settings["maximum_login_attempts_to_block_user"] && $user_session["failed_login_time"] + $expired_time > time())
 						return self::USER_BLOCKED;
@@ -1974,7 +1974,7 @@ if (!class_exists("UserUtil")) {
 					$user_session = $user_sessions[0] ? $user_sessions[0]: array();
 					
 					if ($user_session["username"]) {
-						$expired_time = $expired_time ? $expired_time : self::getConstantVariable("DEFAULT_USER_SESSION_EXPIRATION_TTL");
+						$expired_time = $expired_time ? $expired_time : self::getConstantVariable("DEFAULT_USER_SESSION_BLOCKED_TTL");
 						
 						if ($settings["maximum_login_attempts_to_block_user"] && $user_session["failed_login_attempts"] >= $settings["maximum_login_attempts_to_block_user"] && $user_session["failed_login_time"] + $expired_time > time())
 							return self::USER_BLOCKED;

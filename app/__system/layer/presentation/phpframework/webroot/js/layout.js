@@ -18,6 +18,15 @@ if (typeof _orgAjax == "undefined") { //this avoids the infinit loop if this fil
 	};
 }
 
+/* Prepare full screen when press F11 key or escape when fullscreen */
+if (document.addEventListener) {
+	document.addEventListener("keydown", onF11KeyPress);
+	document.addEventListener('webkitfullscreenchange', onEscapeF11KeyPress, false);
+	document.addEventListener('mozfullscreenchange', onEscapeF11KeyPress, false);
+	document.addEventListener('fullscreenchange', onEscapeF11KeyPress, false);
+	document.addEventListener('MSFullscreenChange', onEscapeF11KeyPress, false);
+}
+
 /* Auto Save Functions */
 function addAutoSaveMenu(selector, callback) {
 	var elm = $(selector);
@@ -308,27 +317,48 @@ function showAjaxLoginPopup(login_url, urls_to_match, success_func) {
 
 function isInFullScreen() {
 	return !window.screenTop && !window.screenY;
+	//return document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement ? true : false;
 }
 
-function toggleFullScreen(elm) {
+function toggleFullScreen(elm, already_executed, in_full_screen) {
 	elm = $(elm);
 	var html = elm.html();
+	var doc = elm[0].ownerDocument || elm[0].document;
+	var win = doc.defaultView || doc.parentWindow;
+	var parent_win = win;
 	
-	var in_full_screen = isInFullScreen();
+	while (parent_win.parent != parent_win && typeof parent_win.parent.toggleFullScreen == "function")
+		parent_win = parent_win.parent;
 	
-	if (in_full_screen) {
-		closeFullscreen();
-		elm.removeClass("active");
-		elm.html( html.replace("Minimize", "Maximize") );
+	var in_full_screen = typeof in_full_screen != "undefined" ? in_full_screen : win.isInFullScreen();
+	
+	if (already_executed) { //after full screen action be executed
+		if (in_full_screen) {
+			elm.addClass("active");
+			elm.html( html.replace("Maximize", "Minimize") );
+		}
+		else {
+			elm.removeClass("active");
+			elm.html( html.replace("Minimize", "Maximize") );
+		}
 	}
 	else {
-		openFullscreen();
-		elm.addClass("active");
-		elm.html( html.replace("Maximize", "Minimize") );
+		if (in_full_screen) {
+			parent_win.closeFullscreen();
+			
+			elm.removeClass("active");
+			elm.html( html.replace("Minimize", "Maximize") );
+		}
+		else {
+			parent_win.openFullscreen();
+			
+			elm.addClass("active");
+			elm.html( html.replace("Maximize", "Minimize") );
+		}
 	}
 	
-	if (typeof onToggleFullScreen == "function")
-		onToggleFullScreen(!in_full_screen);
+	if (typeof win.onToggleFullScreen == "function")
+		win.onToggleFullScreen(already_executed ? in_full_screen : !in_full_screen);
 }
 
 function openFullscreen(elm) {
@@ -354,6 +384,48 @@ function closeFullscreen() {
 	}
 	catch(e) {
 		//if no fullscreen and this function gets called, it will give an exception
+	}
+}
+
+function onF11KeyPress(event) { //on enter full screen
+	var code = event.keyCode || event.which;
+	
+	if (code == 122 && !isInFullScreen()) { //F11
+		event.preventDefault();
+		event.stopPropagation();
+		
+		/*var target = event.target;
+		var doc = target ? (target.ownerDocument || target.document) : document;
+		var win = doc.defaultView || doc.parentWindow || window;*/
+		var win = window;
+		
+		while (win.parent != win && typeof win.parent.toggleFullScreen == "function")
+			win = win.parent;
+		
+		var elm = win.$("#top_panel .full_screen, .top_bar .full_screen > a").first();
+		
+		if (elm[0] && typeof win.toggleFullScreen == "function") {
+			win.toggleFullScreen(elm[0]);
+			win.f11_pressed = true;
+		}
+	}
+}
+
+function onEscapeF11KeyPress(event) { //when exit full screen
+	if (!isInFullScreen()) {
+		var win = window;
+		
+		while (win.parent != win && typeof win.parent.toggleFullScreen == "function")
+			win = win.parent;
+		
+		if (win.f11_pressed) { //check if f11_pressed from parent window
+			win.f11_pressed = false;
+			
+			var elm = win.$("#top_panel .full_screen, .top_bar .full_screen > a").first();
+			
+			if (elm[0] && typeof win.toggleFullScreen == "function")
+				win.toggleFullScreen(elm[0], true, false);
+		}
 	}
 }
 

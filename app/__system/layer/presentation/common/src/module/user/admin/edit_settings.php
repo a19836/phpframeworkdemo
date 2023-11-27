@@ -15,6 +15,7 @@ if ($PEVC) {
 		
 		$properties = array(
 			"DEFAULT_USER_SESSION_EXPIRATION_TTL" => is_numeric($_POST["DEFAULT_USER_SESSION_EXPIRATION_TTL"]) ? $_POST["DEFAULT_USER_SESSION_EXPIRATION_TTL"] : 86400,//60 secs => 1 min; 3600 secs => 1 hour; 86400 secs => 1 day.
+			"DEFAULT_USER_SESSION_BLOCKED_TTL" => is_numeric($_POST["DEFAULT_USER_SESSION_BLOCKED_TTL"]) ? $_POST["DEFAULT_USER_SESSION_BLOCKED_TTL"] : 3600,//60 secs => 1 min; 3600 secs => 1 hour; 86400 secs => 1 day.
 		);
 		
 		if ($CommonModuleAdminUtil->setModuleSettings($PEVC, "user/UserSettings", $properties)) {
@@ -32,6 +33,7 @@ if ($PEVC) {
 		"title" => "Edit Settings",
 		"fields" => array(
 			"DEFAULT_USER_SESSION_EXPIRATION_TTL" => array("type" => "text", "label" => "Default login session TTL (secs): "),
+			"DEFAULT_USER_SESSION_BLOCKED_TTL" => array("type" => "text", "label" => "Default login blocked TTL (secs): "),
 		),
 		"data" => $data,
 		"status_message" => $status_message,

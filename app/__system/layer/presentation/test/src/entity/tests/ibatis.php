@@ -9,7 +9,9 @@
 
 include $EVC->getUtilPath("util");
 
-if($_GET["step"] == 1) {//1st step
+$step = isset($_GET["step"]) ? $_GET["step"] : null;
+
+if($step == 1) {//1st step
 	echo "<br/>GET SQL FROM DATA ACCESS THAT IS NOT REGISTER IN THE dataaccess/ibatis/xxx/SERVICES.xml";
 	$parameters = array("title" => "ibatis item test X");
 	echo "<br/>sql: ".$EVC->getBroker()->callBusinessLogic("test", "get_query_sql", array("module" => "test", "type" => "insert", "service" => "insert_item_not_registered", "parameters" => $parameters));
@@ -42,8 +44,8 @@ if($_GET["step"] == 1) {//1st step
 	setcookie("item_id", $new_id);
 	$_COOKIE["item_id"] = $new_id;
 }
-elseif($_GET["step"] == 2) {//2nd step
-	$item_id = $_COOKIE["item_id"];
+elseif($step == 2) {//2nd step
+	$item_id = isset($_COOKIE["item_id"]) ? $_COOKIE["item_id"] : null;
 	
 	
 	echo "<br/>SELECT ITEM {$item_id}:";
@@ -53,10 +55,9 @@ elseif($_GET["step"] == 2) {//2nd step
 	echo "<br/>result: <pre>";print_r($result);echo "</pre>";
 	echo "<hr/>";
 }
-elseif($_GET["step"] == 3) {//3rd step
-	$item_id = $_COOKIE["item_id"];
-
-
+elseif($step == 3) {//3rd step
+	$item_id = isset($_COOKIE["item_id"]) ? $_COOKIE["item_id"] : null;
+	
 	echo "<br/>SELECT CACHED ITEM {$item_id}:";
 	$parameters = $item_id;
 	echo "<br/>sql: ".$EVC->getBroker()->callBusinessLogic("TEST", "get_query_sql", array("module" => "TEST", "type" => "select", "service" => "select_item", "parameters" => $parameters));
@@ -118,7 +119,7 @@ elseif($_GET["step"] == 3) {//3rd step
 	echo "<br/>result: <pre>";print_r($result);echo "</pre>";
 	echo "<hr/>";
 }
-elseif($_GET["step"] == 4) {//4th step
+elseif($step == 4) {//4th step
 	include_once get_lib("vendor.dao.test.ItemTest");
 	$ItemTest = new ItemTest();
 	$ItemTest->setTitle("Molo AHAH");
@@ -138,7 +139,7 @@ elseif($_GET["step"] == 4) {//4th step
 	echo "<br/>result: <pre>";print_r($result);echo "</pre>";
 	echo "<hr/>";
 }
-elseif($_GET["step"] == 5) {//5th step
+elseif($step == 5) {//5th step
 	include_once get_lib("vendor.dao.test.ItemTest");
 	class X extends ItemTest { 
 		public function setData($data) {$this->data = $data;}
@@ -156,7 +157,7 @@ elseif($_GET["step"] == 5) {//5th step
 	echo "<br/>result: <pre>";print_r($result);echo "</pre>";
 	echo "<hr/>";
 }
-elseif($_GET["step"] == 6) {//6th step
+elseif($step == 6) {//6th step
 	$status = CacheHandlerUtil::deleteFolder(LAYER_CACHE_PATH . "sysdataaccess/ibatis/", false);
 	echo "\n<br/>status: $status";
 	echo "<hr/>";
@@ -165,9 +166,9 @@ elseif($_GET["step"] == 6) {//6th step
 	for($i = 0; $i < 300; $i++) {
 		$result = $EVC->getBroker()->callBusinessLogic("TEST", "get_query", array("module" => "TEST", "type" => "select", "service" => "select_item", "parameters" => $i, "options" => array("no_cache" => true)));
 		
-		if($result[0] && get_class($result[0]) == "ItemTest") {
+		if(!empty($result[0]) && get_class($result[0]) == "ItemTest") {
 			$data = $result[0]->getData();
-			echo "\n<br/>item ".$data["id"];
+			echo "\n<br/>item ".(isset($data["id"]) ? $data["id"] : null);
 		}
 	}
 	$no_cache_end = microtime(true);
@@ -178,9 +179,9 @@ elseif($_GET["step"] == 6) {//6th step
 	for($i = 0; $i < 300; $i++) {
 		$result = $EVC->getBroker()->callBusinessLogic("TEST", "get_query", array("module" => "TEST", "type" => "select", "service" => "select_item", "parameters" => $i));
 		
-		if($result[0] && get_class($result[0]) == "ItemTest") {
+		if(!empty($result[0]) && get_class($result[0]) == "ItemTest") {
 			$data = $result[0]->getData();
-			echo "\n<br/>item ".$data["id"];
+			echo "\n<br/>item ".(isset($data["id"]) ? $data["id"] : null);
 		}
 	}
 	$cache_end = microtime(true);
@@ -192,7 +193,7 @@ elseif($_GET["step"] == 6) {//6th step
 	$files = listLastDirectoryFiles(LAYER_CACHE_PATH."sysdataaccess/ibatis/TEST/select_item/php/");
 	echo "<pre>Cached files: \n" . print_r($files, 1) . "</pre>";
 }
-elseif($_GET["step"] == 7) {//7th step
+elseif($step == 7) {//7th step
 	$item_id = 3;
 	
 	$sql = $EVC->getBroker()->callBusinessLogic("TEST", "get_query_sql", array("module" => "TEST", "type" => "select", "service" => "select_item", "parameters" => $item_id));

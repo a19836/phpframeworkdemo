@@ -1517,6 +1517,7 @@ function initDBTablesSorting(elm) {
 		var available_iframe_droppables_selectors = ".droppable, .tasks_flow, .connector_overlay_add_icon"; //".droppable" is related with the LayoutUIEditor, ".tasks_flow" is related with workflows and ".connector_overlay_add_icon" is related with Logic workflows.
 		var PtlLayoutUIEditor = null;
 		var is_main_navigator_reverse = $("body").hasClass("main_navigator_reverse");
+		var is_in_right_panel = false;
 		
 		var left_panel_droppable_handler = function(event, ui_obj) {
 			var fk_table_li = $(this);
@@ -1643,11 +1644,15 @@ function initDBTablesSorting(elm) {
 					else
 						iframe_win.taskFlowChartObj.StatusMessage.showError("Please drop element inside of diagram");
 				}
-				else
+				else {
 					StatusMessageHandler.showError("Sorry, droppable not allowed...");
+					console.log("orry, droppable not allowed..");
+				}
 			}
-			else
+			else {
 				StatusMessageHandler.showError("Sorry, droppable not allowed...");
+				//console.log("orry, droppable not allowed..");
+			}
 		};
 		
 		var getIframeElementFromPoint = function(inner_iframe, x, y, helper, helper_clone) {
@@ -1736,6 +1741,8 @@ function initDBTablesSorting(elm) {
 				iframe_doc = iframe_win ? iframe_win.document : null;
 				iframe_offset = iframe.offset();
 				PtlLayoutUIEditor = iframe[0].contentWindow.$(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+				
+				is_in_right_panel = false;
 			},
 			drag: function(event, ui_obj) {
 				//prepare scroll_parent element when the dragged element will be out of the left panel and dropped in the right panel to the DB diagram or to edit_entity_simple and edit_template_simple files.
@@ -1775,7 +1782,7 @@ function initDBTablesSorting(elm) {
 				
 				//prepare helper_clone
 				var helper_clone = $("body").children(".sortable_helper");
-				var is_in_right_panel = event.clientX > iframe.offset().left && event.clientX < iframe.offset().left + iframe.width();
+				is_in_right_panel = event.clientX > iframe.offset().left && event.clientX < iframe.offset().left + iframe.width();
 				
 				helper_clone.offset({
 					top: event.clientY,
@@ -1847,7 +1854,8 @@ function initDBTablesSorting(elm) {
 				if (iframe_droppable_elm) //remove droppable over class
 					$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
 				
-				right_panel_droppable_handler(event, ui_obj, this, helper_clone);
+				if (is_in_right_panel) 
+					right_panel_droppable_handler(event, ui_obj, this, helper_clone);
 				
 				//disable classes in LayoutUIEditor's droppable, just in case the right_panel_droppable_handler did NOT do it already
 				if (PtlLayoutUIEditor) {
@@ -2818,6 +2826,39 @@ function onSuccessfullEditProject(opts) {
 	}
 	else
 		refreshLastNodeParentChildsIfNotTreeLayoutAndMainTreeNode(opts);
+}
+
+function onSuccessfullRemoveProject(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated) {
+	var url = a.getAttribute(attr_name);
+	
+	if (url) {
+		var bean_name = getParameterByName(url, "bean_name");
+		var bean_file_name = getParameterByName(url, "bean_file_name");
+		var project = getParameterByName(url, "path");
+		
+		var current_url = "" + document.location;
+		var current_bean_name = getParameterByName(current_url, "bean_name");
+		var current_bean_file_name = getParameterByName(current_url, "bean_file_name");
+		var current_project = getParameterByName(current_url, "project");
+		var current_filter_by_layout = getParameterByName(current_url, "filter_by_layout");
+		
+		project = project.replace(/^\/+/g, "").replace(/\/+$/g, "");
+		current_project = current_project.replace(/^\/+/g, "").replace(/\/+$/g, "");
+		current_filter_by_layout = current_filter_by_layout.replace(/^\/+/g, "").replace(/\/+$/g, "");
+		
+		var is_removed_project_selected = (bean_name == current_bean_name && bean_file_name == current_bean_file_name && project == current_project) || current_filter_by_layout.substr(- (project.length + 1)) == "/" + project;
+		
+		if (is_removed_project_selected) {
+			current_url = current_url.indexOf("#") != -1 ? current_url.substr(0, current_url.indexOf("#")) : current_url; //remove # so it can refresh page
+			current_url = current_url.replace(/(bean_name|bean_file_name|project|filter_by_layout)=([^&]*)&?/g, ""); //erase previous bean_name|bean_file_name|project|filter_by_layout attributes
+			
+			//set cookie with default page
+			window.MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('default_page', ''); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+			
+			//refresh main window with new params
+			document.location = current_url;
+		}
+	}
 }
 
 function refreshLastNodeParentChildsIfNotTreeLayoutAndMainTreeNode(opts) {
@@ -3907,3 +3948,13 @@ function openConsole(url, originalEvent) {
 	
 	return false;
 }
+
+if (typeof onToggleFullScreen != "function")
+	function onToggleFullScreen(in_full_screen) {
+		$("iframe").each(function(idx, iframe) {
+			var full_screen_elm = $(iframe).contents().find(".top_bar .full_screen > a").first();
+			
+			if (full_screen_elm[0] && typeof iframe.contentWindow.toggleFullScreen == "function")
+				iframe.contentWindow.toggleFullScreen(full_screen_elm[0], true, in_full_screen);
+		});
+	}

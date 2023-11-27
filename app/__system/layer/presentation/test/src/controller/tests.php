@@ -1,6 +1,7 @@
 <?php
 /******* PREPARE EVC *******/
-$entity = file_exists($EVC->getEntityPath("tests/" . $parameters[0])) ? "tests/" . $parameters[0] : "tests/home";
+$parameter_0 = isset($parameters[0]) ? $parameters[0] : null;
+$entity = file_exists($EVC->getEntityPath("tests/" . $parameter_0)) ? "tests/" . $parameter_0 : "tests/home";
 
 $EVC->setEntity($entity);
 $EVC->setView("tests/empty");

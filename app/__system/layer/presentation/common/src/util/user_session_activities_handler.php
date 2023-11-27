@@ -9,7 +9,7 @@ function validateModuleUserActivity($EVC, $activity, $module_path) {
 	if ($activity && $module_path) {
 		initUserSessionActivitiesHandler($EVC);
 		
-		if ($GLOBALS["UserSessionActivitiesHandler"]) {
+		if (!empty($GLOBALS["UserSessionActivitiesHandler"])) {
 			return $GLOBALS["UserSessionActivitiesHandler"]->validateUserActivityByModule($activity, $module_path);
 		}
 	}
@@ -19,7 +19,7 @@ function validatePageUserActivity($EVC, $activity, $entity_path) {
 	if ($activity && $module_path) {
 		initUserSessionActivitiesHandler($EVC);
 		
-		if ($GLOBALS["UserSessionActivitiesHandler"]) {
+		if (!empty($GLOBALS["UserSessionActivitiesHandler"])) {
 			return $GLOBALS["UserSessionActivitiesHandler"]->validateUserActivityByPage($activity, $entity_path);
 		}
 	}
@@ -29,7 +29,7 @@ function moduleUserActivityExists($EVC, $activity, $module_path) {
 	if ($activity && $module_path) {
 		initUserSessionActivitiesHandler($EVC);
 		
-		if ($GLOBALS["UserSessionActivitiesHandler"]) {
+		if (!empty($GLOBALS["UserSessionActivitiesHandler"])) {
 			return $GLOBALS["UserSessionActivitiesHandler"]->userActivityExistsByModule($activity, $module_path);
 		}
 	}
@@ -39,14 +39,14 @@ function pageUserActivityExists($EVC, $activity, $entity_path) {
 	if ($activity && $entity_path) {
 		initUserSessionActivitiesHandler($EVC);
 		
-		if ($GLOBALS["UserSessionActivitiesHandler"]) {
+		if (!empty($GLOBALS["UserSessionActivitiesHandler"])) {
 			return $GLOBALS["UserSessionActivitiesHandler"]->userActivityExistsByPage($activity, $entity_path);
 		}
 	}
 }
 
 function initUserSessionActivitiesHandler($EVC) {
-	if (!$GLOBALS["UserSessionActivitiesHandler"]) {
+	if (empty($GLOBALS["UserSessionActivitiesHandler"])) {
 		$fp = $EVC->getModulePath("user/include_user_session_activities_handler", $EVC->getCommonProjectName());
 		
 		if (file_exists($fp)) {

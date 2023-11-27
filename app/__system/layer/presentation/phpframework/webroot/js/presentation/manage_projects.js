@@ -123,7 +123,7 @@ function editProject(elm, url) {
 	addProject(elm, url);
 }
 
-function onSucccessfullAddProject() {
+function onSuccessfullAddProject() {
 	var url = document.location;
 	
 	if (window.parent && window.parent != window) {

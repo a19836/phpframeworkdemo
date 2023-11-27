@@ -57,12 +57,16 @@ echo '
 <script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
 
 <!-- Layout UI Editor - Add Code Beautifier -->
-<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/mycodebeautifier/js/codebeautifier.js"></script>
+<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/mycodebeautifier/js/MyCodeBeautifier.js"></script>
 
 <!-- Layout UI Editor - Add Html/CSS/JS Beautify code -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jsbeautify/js/lib/beautify.js"></script>
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jsbeautify/js/lib/beautify-css.js"></script>
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/myhtmlbeautify/MyHtmlBeautify.js"></script>
+
+<!-- Add Auto complete -->
+<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/myautocomplete/js/MyAutoComplete.js"></script>
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/myautocomplete/css/style.css">
 
 <!-- Layout UI Editor - Material-design-iconic-font -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/vendor/materialdesigniconicfont/css/material-design-iconic-font.min.css">
@@ -155,7 +159,7 @@ $ui_menu_widgets_html .= WorkFlowPresentationHandler::getUserUIEditorWidgetsHtml
 	</div>
 	
 	<?php 
-		echo "exists_tinymce: $exists_tinymce\n<br/>exists_ckeditor:$exists_ckeditor";
+		//echo "exists_tinymce: $exists_tinymce\n<br/>exists_ckeditor:$exists_ckeditor";
 		
 		if ($exists_tinymce)
 			echo '

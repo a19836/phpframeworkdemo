@@ -28,7 +28,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 <script src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
 
 <!-- Layout UI Editor - Add Code Beautifier -->
-<script src="' . $project_common_url_prefix . 'vendor/mycodebeautifier/js/codebeautifier.js"></script>
+<script src="' . $project_common_url_prefix . 'vendor/mycodebeautifier/js/MyCodeBeautifier.js"></script>
 
 <!-- Layout UI Editor - Add Html/CSS/JS Beautify code -->
 <script src="' . $project_common_url_prefix . 'vendor/jsbeautify/js/lib/beautify.js"></script>

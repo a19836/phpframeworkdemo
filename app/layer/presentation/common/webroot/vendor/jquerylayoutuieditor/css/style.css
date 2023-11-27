@@ -173,6 +173,14 @@
 	--editor-info-msg-bg:rgba(204, 255, 153, 0.8);
 	--editor-error-msg-bg:rgba(255, 0, 0, 0.8);
 	--editor-error-msg-color:#fff;
+	
+	/* auto complete */
+	--auto-complete-bg:#fff;
+	--auto-complete-color:#b9a5a6;
+	--auto-complete-hover-bg:#e9e9e9;
+	--auto-complete-hover-color:#b9a5a6;
+	--auto-complete-active-bg:DodgerBlue;
+	--auto-complete-active-color:#ffffff;
 }
 
 /* UI */
@@ -1678,7 +1686,7 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 }
 .layout-ui-editor > .menu-settings li.group li.settings-style > textarea {
 	width:100%;
-	height:4em;
+	height:10em;
 	text-align:left;
 	resize:vertical;
 }
@@ -2447,3 +2455,22 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	color:inherit;
 }
 
+/* AUTO COMPLETE */
+.layout-ui-editor .autocomplete-items {
+	z-index:1;
+}
+.layout-ui-editor > .menu-settings .autocomplete-items {
+	font-size:80%;
+}
+.layout-ui-editor .autocomplete-items div {
+  background-color:var(--auto-complete-bg, #fff);
+  color:var(--auto-complete-color, #b9a5a6);
+}
+.layout-ui-editor .autocomplete-items div:hover:not(.autocomplete-active) {
+  background-color:var(--auto-complete-hover-bg, #e9e9e9);
+  color:var(--auto-complete-hover-color, #b9a5a6);
+}
+.layout-ui-editor .autocomplete-items div.autocomplete-active {
+  background-color:var(--auto-complete-active-bg, DodgerBlue);
+  color:var(--auto-complete-active-color, #ffffff);
+}

@@ -13,6 +13,8 @@
 include_once get_lib("vendor.dao.test.MyItemHbnModel"); //if broker is REST, php does not have this class yet included
 include $EVC->getUtilPath("util");
 
+$step = isset($_GET["step"]) ? $_GET["step"] : null;
+
 echo "<br/>GET ITEM OBJ FROM AN OBJECT WHICH IS NOT REGISTER IN THE dataaccess/hibernate/xxx/SERVICES.xml:";
 $ItemObj = $EVC->getBroker()->callBusinessLogic("TEST", "get_obj", array("module" => "TEST", "service" => "ItemObjNotRegistered"));
 $ItemObj = is_a($ItemObj, "MyItemHbnModel") ? $ItemObj : ObjectHandler::objectToObject($ItemObj, "MyItemHbnModel"); //if broker is REST, we must convert the unserilized object to MyItemHbnModel, otherwise the $ItemObj is __PHP_Incomplete_Class 
@@ -31,7 +33,7 @@ $ItemObj = is_a($ItemObj, "MyItemHbnModel") ? $ItemObj : ObjectHandler::objectTo
 echo "<br/>obj class: ".get_class($ItemObj);
 echo "<hr/>";
 
-if($_GET["step"] == 1) {//1st step
+if($step == 1) {//1st step
 	echo "<br/>ITEM OBJ SETTINGS:";
 	echo "<br/>getIds: <pre>";print_r($ItemObj->getIds());echo "</pre>";
 	echo "<br/>getManyToOne: <pre>";print_r($ItemObj->getManyToOne());echo "</pre>";
@@ -43,7 +45,7 @@ if($_GET["step"] == 1) {//1st step
 	echo "<br/>getPropertiesToAttributes: <pre>";print_r($ItemObj->getPropertiesToAttributes());echo "</pre>";
 	echo "<hr/>";
 }
-elseif($_GET["step"] == 2) {//2nd step
+elseif($step == 2) {//2nd step
 	echo "<br/>INSERT NEW ITEM:";
 	echo "<br/>status: ".$ItemObj->insert(array("name" => "hibernate item test X", "status" => 0), $ids);
 	$new_id = $ItemObj->getInsertedId();
@@ -67,9 +69,8 @@ elseif($_GET["step"] == 2) {//2nd step
 	setcookie("item_id", $new_id);
 	$_COOKIE["item_id"] = $new_id;
 }
-elseif($_GET["step"] == 3) {//3rd step
-	$item_id = (int)$_COOKIE["item_id"];
-	
+elseif($step == 3) {//3rd step
+	$item_id = isset($_COOKIE["item_id"]) ? (int)$_COOKIE["item_id"] : null;
 	
 	echo "<br/>UPDATE AND INSERT ITEMS:";
 	echo "<br/>status: ".$ItemObj->insertOrUpdateAll(
@@ -80,7 +81,7 @@ elseif($_GET["step"] == 3) {//3rd step
 						$statuses,
 						$ids
 				      );
-	$new_id = $ids[1]["pk_id"];
+	$new_id = isset($ids[1]["pk_id"]) ? $ids[1]["pk_id"] : null;
 	echo "<br/>updated_id: {$item_id}";
 	echo "<br/>new_id: {$new_id}";
 	echo "<br/>news_ids: <pre>";print_r($ids);echo "</pre>";
@@ -101,9 +102,8 @@ elseif($_GET["step"] == 3) {//3rd step
 	echo "<br/>find result: <pre>";print_r($result);echo "</pre>";
 	echo "<hr/>";
 }
-elseif($_GET["step"] == 4) {//4th step
-	$item_id = $_COOKIE["item_id"];
-	
+elseif($step == 4) {//4th step
+	$item_id = isset($_COOKIE["item_id"]) ? $_COOKIE["item_id"] : null;
 	
 	echo "<br/>GET SUBITEM OBJ:";
 	$SubItemObj = $EVC->getBroker()->callBusinessLogic("TEST", "get_obj", array("module" => "TEST", "service" => "SubItem"));
@@ -158,9 +158,8 @@ elseif($_GET["step"] == 4) {//4th step
 	echo "<br/>find result: <pre>";print_r($result);echo "</pre>";
 	echo "<hr/>";
 }
-elseif($_GET["step"] == 5) {//5th step
-	$item_id = $_COOKIE["item_id"];
-	
+elseif($step == 5) {//5th step
+	$item_id = isset($_COOKIE["item_id"]) ? $_COOKIE["item_id"] : null;
 	
 	echo "<br/>UPDATE ITEM:";
 	echo "<br/>status: ".$ItemObj->update(array("pk_id" => $item_id, "name" => "hibernate item test Y", "status" => 1));
@@ -176,9 +175,8 @@ elseif($_GET["step"] == 5) {//5th step
 	echo "<br/>find result: <pre>";print_r($result);echo "</pre>";
 	echo "<hr/>";
 }
-elseif($_GET["step"] == 6) {//6th step
-	$item_id = $_COOKIE["item_id"];
-	
+elseif($step == 6) {//6th step
+	$item_id = isset($_COOKIE["item_id"]) ? $_COOKIE["item_id"] : null;
 	
 	echo "<br/>SELECT ITEM $new_id BEFORE DELETION:";
 	$result = $ItemObj->find(array("CONDITIONS" =>  array("pk_id" => $item_id) ) );
@@ -202,7 +200,7 @@ elseif($_GET["step"] == 6) {//6th step
 	echo "<br/>find result: <pre>";print_r($result);echo "</pre>";
 	echo "<hr/>";
 }
-elseif($_GET["step"] == 7) {//7th step
+elseif($step == 7) {//7th step
 	include_once get_lib("vendor.dao.test.ItemTest");
 	$ItemTest = new ItemTest();
 	$ItemTest->setTitle("Molo EHEHE...");
@@ -222,7 +220,7 @@ elseif($_GET["step"] == 7) {//7th step
 	echo "<br/>result: <pre>";print_r($result);echo "</pre>";
 	echo "<hr/>";
 }
-elseif($_GET["step"] == 8) {//8th step
+elseif($step == 8) {//8th step
 	$status = CacheHandlerUtil::deleteFolder(LAYER_CACHE_PATH . "sysdataaccess/hibernate/", false);
 	echo "\n<br/>status: $status";
 	echo "<hr/>";
@@ -231,7 +229,7 @@ elseif($_GET["step"] == 8) {//8th step
 	for($i = 0; $i < 300; $i++) {
 		$result = $ItemObj->findById($i, false, array("no_cache" => true));
 				
-		if($result["ItemObj"]["pk_id"]) {
+		if(!empty($result["ItemObj"]["pk_id"])) {
 			echo "\n<br/>item ".$result["ItemObj"]["pk_id"];
 		}
 	}
@@ -243,7 +241,7 @@ elseif($_GET["step"] == 8) {//8th step
 	for($i = 0; $i < 300; $i++) {
 		$result = $ItemObj->findById($i);
 				
-		if($result["ItemObj"]["pk_id"]) {
+		if(!empty($result["ItemObj"]["pk_id"])) {
 			echo "\n<br/>item ".$result["ItemObj"]["pk_id"];
 		}
 	}
@@ -256,7 +254,7 @@ elseif($_GET["step"] == 8) {//8th step
 	$files = listLastDirectoryFiles(LAYER_CACHE_PATH."sysdataaccess/hibernate/TEST/Item.findById/php/");
 	echo "<pre>Cached files: \n" . print_r($files, 1) . "</pre>";
 }
-elseif($_GET["step"] == 9) {//9th step
+elseif($step == 9) {//9th step
 	$sql = "DESCRIBE item";
 	echo "<br/>CONNECT TO THE DEFAULT DRIVER AND GET THE AVAILABLE ITEM COLUMNS:";	
 	echo "<br/>sql: $sql";
@@ -294,7 +292,7 @@ elseif($_GET["step"] == 9) {//9th step
 	echo "<br/>result: <pre>";print_r($result);echo "</pre>";
 	echo "<hr/>";
 }
-elseif($_GET["step"] == 10) {//10th step
+elseif($step == 10) {//10th step
 	echo "<br/>GET MYSQL ITEM OBJ:";
 	$MySQLItemObj = $EVC->getBroker()->callBusinessLogic("TEST", "get_obj", array("module" => "TEST", "service" => "Item"));
 	echo "<br/>obj class: ".get_class($MySQLItemObj);

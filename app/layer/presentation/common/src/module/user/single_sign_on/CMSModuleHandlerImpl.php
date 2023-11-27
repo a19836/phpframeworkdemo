@@ -240,7 +240,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 							if (!$error_message) {
 								//prepare new session
 								if (!$user_session || !$user_session["session_id"] || $user_session["user_id"] != $found_ea["user_id"]) {
-									$user_session = \UserUtil::externalLogin($brokers, $found_ea["external_user_id"], \UserUtil::getConstantVariable("DEFAULT_USER_SESSION_EXPIRATION_TTL"), $settings, true);
+									$user_session = \UserUtil::externalLogin($brokers, $found_ea["external_user_id"], \UserUtil::getConstantVariable("DEFAULT_USER_SESSION_BLOCKED_TTL"), $settings, true);
 									
 									if ($user_session == \UserUtil::USER_BLOCKED) //This should only happen if user tries to login manually via the native login panel...
 										$error_message = "This user is blocked. Please try again later...";

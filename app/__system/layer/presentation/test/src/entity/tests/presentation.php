@@ -4,7 +4,7 @@
 //http://jplpinto.localhost/__system/test/tests/presentation?value=3
 // and then execute the cmd: ls -l /tmp/phpframework/cache/layer/syspresentation/test/tests/text/*/*/*/*
 
-$value = $_GET["value"];
+$value = isset($_GET["value"]) ? $_GET["value"] : null;
 
 echo "Presentation time for '".$value."':" . date("Y-m-d H:i:s:u");
 echo "<br/>";

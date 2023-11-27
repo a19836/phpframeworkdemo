@@ -21,6 +21,11 @@ body.mobile_cursor,
 	display:none !important;
 }
 
+.template_region.full_body {
+	min-width:100vw !important;
+	min-height:100vh !important;
+}
+
 .template_region .hidden {
 	display:none !important;
 }
@@ -155,6 +160,9 @@ body.mobile_cursor,
 	position:relative !important;
 	overflow:visible !important;
 	z-index:1 !important;
+}
+.template_region.full_body > .template_region_items {
+	min-height:calc(100vh - 35px) !important;
 }
 .template_region > .template_region_items:focus-visible {
 	outline:1px solid #000 !important;

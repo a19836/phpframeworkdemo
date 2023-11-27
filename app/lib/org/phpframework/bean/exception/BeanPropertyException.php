@@ -18,4 +18,4 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-class BeanPropertyException extends Exception { public $problem; public function __construct($v6de691233b, $v67db1bd535) { switch($v6de691233b) { case 1: $this->problem = "Bean property name cannot be undefined: '{$v67db1bd535}'!"; break; case 2: $this->problem = "Bean property cannot have value and reference at the same time: value: '".$v67db1bd535[0]."', reference: '".$v67db1bd535[1]."'!"; break; } } } ?>
+class BeanPropertyException extends Exception { public $problem; public function __construct($v6de691233b, $v67db1bd535) { switch($v6de691233b) { case 1: $this->problem = "Bean property name cannot be undefined: '{$v67db1bd535}'!"; break; case 2: $this->problem = "Bean property cannot have value and reference at the same time: value: '".(isset($v67db1bd535[0]) ? $v67db1bd535[0] : "")."', reference: '".$v67db1bd535[1]."'!"; break; } } } ?>

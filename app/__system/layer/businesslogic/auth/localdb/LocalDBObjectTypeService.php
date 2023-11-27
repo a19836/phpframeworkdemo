@@ -29,7 +29,7 @@ namespace __system\businesslogic; include_once $vars["current_business_logic_mod
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[name], type=varchar, not_null=1, min_length=1, max_length=50)
-	 */ public function insert($data) { $this->initLocalDBTableHandler($data); $data["created_date"] = $data["created_date"] ? $data["created_date"] : date("Y-m-d H:i:s"); $data["modified_date"] = $data["modified_date"] ? $data["modified_date"] : $data["created_date"]; if (!$data["object_type_id"]) { $data["object_type_id"] = $this->LocalDBTableHandler->getPKMaxValue("object_type", "object_type_id") + 1; } return $this->LocalDBTableHandler->insertItem("object_type", $data, array("object_type_id")) ? $data["object_type_id"] : null; } /**
+	 */ public function insert($data) { $this->initLocalDBTableHandler($data); $data["created_date"] = !empty($data["created_date"]) ? $data["created_date"] : date("Y-m-d H:i:s"); $data["modified_date"] = !empty($data["modified_date"]) ? $data["modified_date"] : $data["created_date"]; if (empty($data["object_type_id"])) { $data["object_type_id"] = $this->LocalDBTableHandler->getPKMaxValue("object_type", "object_type_id") + 1; } return $this->LocalDBTableHandler->insertItem("object_type", $data, array("object_type_id")) ? $data["object_type_id"] : null; } /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[object_type_id], type=bigint, not_null=1, length=19)
@@ -50,4 +50,4 @@ namespace __system\businesslogic; include_once $vars["current_business_logic_mod
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[conditions][object_type_id], type=bigint, length=19)
 	 * @param (name=data[conditions][name], type=varchar, length=50)
-	 */ public function search($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("object_type"); return $this->LocalDBTableHandler->filterItems($pf72c1d58, $data["conditions"], false); } } ?>
+	 */ public function search($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("object_type"); $paf1bc6f6 = isset($data["conditions"]) ? $data["conditions"] : null; return $this->LocalDBTableHandler->filterItems($pf72c1d58, $paf1bc6f6, false); } } ?>

@@ -487,7 +487,7 @@ $input_data = array(
 //$form_settings["ptl"] = false;
 $html = HtmlFormHandler::createHtmlForm($form_settings, $input_data);
 
-if ($form_settings["ptl"]) {
+if (!empty($form_settings["ptl"])) {
 	echo "<!--";
 	echo "********************* TEMPLATE ***************************\n";
 	$HtmlFormHandler = new HtmlFormHandler($form_settings);

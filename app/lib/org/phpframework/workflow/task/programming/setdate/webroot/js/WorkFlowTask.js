@@ -68,4 +68,12 @@ var SetDateTaskPropertyObj = {
 	getDefaultExitLabel : function(task_property_values) {
 		return ProgrammingTaskUtil.getResultVariableString(task_property_values) + "date(" + ProgrammingTaskUtil.getValueString(task_property_values["format"], "string") + ")";
 	},
+	
+	onChangeSample : function(elm) {
+		elm = $(elm);
+		var format = elm.val();
+		var task_html_elm = elm.parent().closest(".set_date_task_html");
+		
+		task_html_elm.find(".format input").val(format);
+	},
 };

@@ -6,13 +6,13 @@ include_once $vars["business_logic_modules_service_common_file_path"];
 class TestExtendCommonService extends CommonService {
 	
 	public function getQuerySQL($data) {
-		$options = $data["options"];
-		$type = $data["type"];
-		$module = $data["module"];
-		$service = $data["service"];
-		$parameters = $data["parameters"];
+		$options = isset($data["options"]) ? $data["options"] : null;
+		$type = isset($data["type"]) ? $data["type"] : null;
+		$module = isset($data["module"]) ? $data["module"] : null;
+		$service = isset($data["service"]) ? $data["service"] : null;
+		$parameters = isset($data["parameters"]) ? $data["parameters"] : null;
 		
-		return $this->getBroker($options["dal_broker"])->callQuerySQL($module, $type, $service, $parameters);
+		return $this->getBroker(isset($options["dal_broker"]) ? $options["dal_broker"] : null)->callQuerySQL($module, $type, $service, $parameters);
 	}
 }
 ?>

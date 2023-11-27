@@ -18,4 +18,4 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-class LayerException extends Exception { public $problem; public function __construct($v6de691233b, $v67db1bd535 = "") { switch($v6de691233b) { case 1: $this->problem = "Broker Layer '{$v67db1bd535}' does not exist!"; break; } } } ?>
+class LayerException extends Exception { public $problem; public function __construct($v6de691233b, $v67db1bd535 = "") { switch($v6de691233b) { case 1: $this->problem = "Broker Layer '{$v67db1bd535}' does not exist!"; break; case 2: $this->problem = "'{$v67db1bd535}' variable cannot be empty!"; break; } } } ?>

@@ -59,12 +59,12 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			else if (rand(0, 100) > 80 && \UserUtil::usersCountExceedLimit($EVC)) //check if users count exceeded the licence limit. This should only happen if the user hacked this module and delete the same checks in other modules. Otherwise this should not happen ever!!!
 				$error_message = translateProjectText($EVC, "Users count exceeded the licence limit. Please renew your licence with more users...");
 			else {
-				$user_session = \UserUtil::login($brokers, $username, $password, $captcha, \UserUtil::getConstantVariable("DEFAULT_USER_SESSION_EXPIRATION_TTL"), $settings, true);
+				$user_session = \UserUtil::login($brokers, $username, $password, $captcha, \UserUtil::getConstantVariable("DEFAULT_USER_SESSION_BLOCKED_TTL"), $settings, true);
 				
 				if ($user_session == \UserUtil::USER_BLOCKED) {
 					//blocked_user
 					$show_captcha = true;
-					$error_message = "This user is blocked. Please try again later...";
+					$error_message = translateProjectText($EVC, "This user is blocked. Please try again later...") . str_replace("#hours#", \UserUtil::getConstantVariable("DEFAULT_USER_SESSION_BLOCKED_TTL") / 60 / 60, translateProjectText($EVC, "User blocked for #hours# hours."));
 					unset($user_session);
 				}
 				else if ($user_session == \UserUtil::WRONG_CAPTCHA) {

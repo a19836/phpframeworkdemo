@@ -24,7 +24,7 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); $head = AdminMenuUIHandler
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/list.js"></script>'; $main_content = AdminMenuUIHandler::getContextMenus($exists_db_drivers); if ($item_type == "presentation") { $et = $element_type == "entity" ? "Pages" : ( $element_type == "webroot" ? "Webroot Files" : ( $element_type == "util" ? "Actions" : ( substr($element_type, -1) == "y" ? ucfirst(substr($element_type, 0, -1)) . "ies" : ucfirst($element_type) . "s" ) ) ); } else $et = ucwords($item_type) . " Files"; $main_content .= '
 	<div class="top_bar">
 		<header>
-			<div class="title">' . $et . ' List:'; if ($element_type == "template") $main_content .= '<a class="sub_title" href="' . $project_url_prefix . 'phpframework/presentation/install_template?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $path . '/src/template/">(Install new Template)</a>'; $main_content .= '</div>
+			<div class="title">' . $et . ' List:'; if ($element_type == "entity") $main_content .= '<a class="sub_title" href="javascript:void(0)" onClick="createPage(this)">Add Page</a>'; else if ($element_type == "template") $main_content .= '<a class="sub_title" href="' . $project_url_prefix . 'phpframework/presentation/install_template?bean_name=' . $bean_name . '&bean_file_name=' . $bean_file_name . '&path=' . $path . '/src/template/">Install new Template</a>'; $main_content .= '</div>
 		</header>
 	</div>'; $main_content .= '
 <div id="file_tree" class="mytree hidden ' . ($element_type ? "list_$element_type" : "") . ($path ? ' mytree_filtered' : '') . '">

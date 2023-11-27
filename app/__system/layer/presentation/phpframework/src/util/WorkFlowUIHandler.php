@@ -72,12 +72,16 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 <script type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
 
 <!-- Layout UI Editor - Add Code Beautifier -->
-<script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/mycodebeautifier/js/codebeautifier.js"></script>
+<script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/mycodebeautifier/js/MyCodeBeautifier.js"></script>
 
 <!-- Layout UI Editor - Add Html/CSS/JS Beautify code -->
 <script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jsbeautify/js/lib/beautify.js"></script>
 <script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jsbeautify/js/lib/beautify-css.js"></script>
 <script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/myhtmlbeautify/MyHtmlBeautify.js"></script>
+
+<!-- Add Auto complete -->
+<script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/myautocomplete/js/MyAutoComplete.js"></script>
+<link rel="stylesheet" href="' . $this->v00161f0c07 . 'vendor/myautocomplete/css/style.css">
 
 <!-- Layout UI Editor - Material-design-iconic-font -->
 <link rel="stylesheet" href="' . $this->v00161f0c07 . 'vendor/jquerylayoutuieditor/vendor/materialdesigniconicfont/css/material-design-iconic-font.min.css">

@@ -403,7 +403,8 @@ function saveTemplate() {
 			data : JSON.stringify(data),
 			dataType : "json",
 			processData: false,
-			contentType: 'application/json', //typically 'application/x-www-form-urlencoded', but the service you are calling may expect 'text/json'... check with the service to see what they expect as content-type in the HTTP header.
+			contentType: 'text/html',
+			//contentType: 'application/json', //typically 'application/x-www-form-urlencoded', but the service you are calling may expect 'text/json'... check with the service to see what they expect as content-type in the HTTP header.
 			success : function(status, textStatus, jqXHR) {
 				if (status) {
 					if (status == 1) {

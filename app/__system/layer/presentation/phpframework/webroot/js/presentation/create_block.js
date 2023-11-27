@@ -1,4 +1,5 @@
 function addBlock(elm, module_id) {
+	$(elm).addClass("loading").removeAttr("onClick");
 	document.location = add_block_url.replace("#module_id#", module_id);
 }
 

@@ -2,7 +2,7 @@
 include_once get_lib("org.phpframework.workflow.WorkFlowTask");
 
 //VALIDATE REQUESTED RESOURCE
-$resource_name = $_GET["resource"];
+$resource_name = isset($_GET["resource"]) ? $_GET["resource"] : null;
 
 if (!$resource_name && $resource_name !== 0) {
 	header("HTTP/1.0 404 Not Found");
@@ -41,8 +41,8 @@ for ($i = 0; $i < $parameters_count; $i++) {
 }
 
 //PREPARE DEFAULTS
-$default_entity = $page ? $page : ($GLOBALS["project_default_entity"] ? $GLOBALS["project_default_entity"] : "index");
-$default_template = $GLOBALS["project_default_template"];
+$default_entity = $page ? $page : (!empty($GLOBALS["project_default_entity"]) ? $GLOBALS["project_default_entity"] : "index");
+$default_template = isset($GLOBALS["project_default_template"]) ? $GLOBALS["project_default_template"] : null;
 
 $EVC->setEntity($default_entity);
 
@@ -85,8 +85,8 @@ if (!$file_included) {
 		$entity = $entities[$entity_index];
 		
 		if ($entity) {
-			$entity_params = $entities_params[$entity_index];
-			$entity_project_id = $entity_params ? $entity_params["project_id"] : false;
+			$entity_params = isset($entities_params[$entity_index]) ? $entities_params[$entity_index] : null;
+			$entity_project_id = $entity_params && isset($entity_params["project_id"]) ? $entity_params["project_id"] : false;
 			$entity = substr($entity, 0, 1) == "/" ? $entity : $page_prefix . $entity;
 			$entity_path = $EVC->getEntityPath($entity, $entity_project_id);
 			
@@ -100,7 +100,8 @@ if (!$file_included) {
 					$temp = tmpfile();
 					fwrite($temp, $parsed_contents);
 					
-					$path = stream_get_meta_data($temp)['uri'];
+					$meta_data = stream_get_meta_data($temp);
+					$path = isset($meta_data['uri']) ? $meta_data['uri'] : null;
 					include $path;
 					
 					fclose($temp); // this removes the file
@@ -140,8 +141,8 @@ if (!$file_included) {
 		$template = $templates[$template_index];
 		
 		if ($template) {
-			$template_params = $templates_params[$template_index];
-			$template_project_id = $template_params ? $template_params["project_id"] : false;
+			$template_params = isset($templates_params[$template_index]) ? $templates_params[$template_index] : null;
+			$template_project_id = $template_params && isset($template_params["project_id"]) ? $template_params["project_id"] : false;
 			$template_path = $EVC->getTemplatePath($template, $template_project_id);
 			
 			$new_vars = get_defined_vars();
@@ -154,7 +155,8 @@ if (!$file_included) {
 					$temp = tmpfile();
 					fwrite($temp, $parsed_contents);
 					
-					$path = stream_get_meta_data($temp)['uri'];
+					$meta_data = stream_get_meta_data($temp);
+					$path = isset($meta_data['uri']) ? $meta_data['uri'] : null;
 					include $path;
 					
 					fclose($temp); // this removes the file

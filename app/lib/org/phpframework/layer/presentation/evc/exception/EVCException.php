@@ -18,4 +18,4 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-class EVCException extends Exception { public $problem; public $file_not_found = true; public function __construct($v6de691233b, $v67db1bd535) { switch($v6de691233b) { case 1: $this->problem = "EVC Controller '".$v67db1bd535."' does not exist."; break; case 2: $this->problem = "EVC Entity '".$v67db1bd535."' does not exist."; break; case 3: $this->problem = "EVC View '".$v67db1bd535."' does not exist."; break; case 4: $this->problem = "EVC Template '".$v67db1bd535."' does not exist."; break; } } } ?>
+class EVCException extends Exception { public $problem; public $file_not_found = true; public function __construct($v6de691233b, $v67db1bd535) { switch($v6de691233b) { case 1: $this->problem = "EVC Controller '".$v67db1bd535."' does not exist."; break; case 2: $this->problem = "EVC Entity '".$v67db1bd535."' does not exist."; break; case 3: $this->problem = "EVC View '".$v67db1bd535."' does not exist."; break; case 4: $this->problem = "EVC Template '".$v67db1bd535."' does not exist."; break; case 5: $this->problem = "'$v67db1bd535' variable cannot be empty!"; break; } } } ?>

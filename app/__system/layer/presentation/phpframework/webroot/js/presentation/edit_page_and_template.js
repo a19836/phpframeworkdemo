@@ -263,7 +263,10 @@ function onPresentationProgrammingTaskChooseCreatedVariable(elm) {
 	elm = $(elm);
 	var p = $(elm).parent();
 	var select = p.children("select");
-	var target_field = p.children("input[type=text], input").first(); //input may not have the type attribute
+	var target_field = p.children("input[type=text]").first();
+	
+	if (!target_field[0]) //input may not have the type attribute
+		target_field = p.children("input").first(); 
 	
 	var auto_save_bkp = auto_save;
 	auto_save = false;
@@ -285,7 +288,10 @@ function onPresentationProgrammingTaskChooseCreatedVariable(elm) {
 function onPresentationIncludePageUrlTaskChooseFile(elm) {
 	var p = $(elm).parent();
 	var select = p.children("select");
-	var target_field = p.children("input[type=text], input").first(); //input may not have the type attribute
+	var target_field = p.children("input[type=text]").first();
+	
+	if (!target_field[0]) //input may not have the type attribute
+		target_field = p.children("input").first(); 
 	
 	var auto_save_bkp = auto_save;
 	auto_save = false;
@@ -310,7 +316,10 @@ function onPresentationIncludePageUrlTaskChooseFile(elm) {
 function onPresentationIncludeImageUrlTaskChooseFile(elm) {
 	var p = $(elm).parent();
 	var select = p.children("select");
-	var target_field = p.children("input[type=text], input").first(); //input may not have the type attribute
+	var target_field = p.children("input[type=text]").first();
+	
+	if (!target_field[0]) //input may not have the type attribute
+		target_field = p.children("input").first(); 
 	
 	var auto_save_bkp = auto_save;
 	auto_save = false;
@@ -327,6 +336,18 @@ function onPresentationIncludeImageUrlTaskChooseFile(elm) {
 		select.val("string");
 		select.trigger("change");
 	};
+}
+
+//target_field is used by the workflow task: GetUrlContentsTaskPropertyObj
+function onPresentationChooseColor(elm) {
+	var color = elm.value;
+	var p = $(elm).parent();
+	var target_field = p.children("input[type=text]").first();
+	
+	if (!target_field[0]) //input may not have the type attribute
+		target_field = p.children("input").first(); 
+	
+	target_field.val(color);
 }
 
 function openTemplateSamples() {
@@ -1198,7 +1219,8 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 	
 	//PREPARING TEMPLATE PARAMS
 	var params = data && data.params ? data.params : [];
-		
+	var params_values = data && data.params_values ? data.params_values : [];
+	
 	var template_params = p.find(".template_params .items");
 	var other_template_params = p.find(".other_template_params .items");
 	var template_params_no_items = p.find(".template_params .no_items");
@@ -1218,14 +1240,34 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 		for (var i = 0; i < params.length; i++) {
 			var param = params[i];
 			var param_value = null;
+			var default_value = null;
 			
 			if (param && !existent_params.hasOwnProperty(param)) {
 				if (template_params_values_list_clone.hasOwnProperty(param))
 					param_value = template_params_values_list_clone[param];
 				
-				var param_html = getTemplateParamHtml(param, param_value);
+				if (params_values && params_values.hasOwnProperty(param))
+					default_value = params_values[$param];
+				
+				var param_html = getTemplateParamHtml(param, param_value, default_value);
 				template_params.append(param_html);
 				existent_params[param] = true;
+			}
+		}
+		
+		if (params_values) {
+			for (var param in params_values) {
+				if (param && !existent_params.hasOwnProperty(param)) {
+					var default_value= params_values[param];
+					var param_value = null;
+					
+					if (template_params_values_list_clone.hasOwnProperty(param))
+						param_value = template_params_values_list_clone[param];
+					
+					var param_html = getTemplateParamHtml(param, param_value, default_value);
+					template_params.append(param_html);
+					existent_params[param] = true;
+				}
 			}
 		}
 	}
@@ -1234,7 +1276,7 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 	for (var param in template_params_values_list_clone) {
 		if (param && !existent_params.hasOwnProperty(param)) {
 			var param_value = template_params_values_list_clone[param];
-			var param_html = getTemplateParamHtml(param, param_value);
+			var param_html = getTemplateParamHtml(param, param_value === null || param_value === undefined ? "" : param_value);
 	
 			other_template_params.append(param_html);
 			exists = true;
@@ -1930,14 +1972,35 @@ function onChangeRegionBlockParamType(elm) {
 	updateLayoutIframeFromSettingsField();
 }
 
-function getTemplateParamHtml(param, value) {
-	value = value ? value : "";
+function getTemplateParamHtml(param, value, default_value) {
+	var is_inative = default_value !== null && default_value !== undefined && (value === null || value === undefined);
+	var is_default_value_overwrited = default_value !== null && default_value !== undefined && value !== null && value !== undefined;
+	//console.log(param+", "+value+", "+default_value+", "+is_inative+", "+is_default_value_overwrited);
+	
+	if (is_inative)
+		value = default_value;
+	
+	value = value || $.isNumeric(value) ? value : "";
 	var v = value.substr(0, 1) == '"' ? value.substr(1, value.length - 2).replace(/\\"/g, '"') : value;
 	var vt = value.substr(0, 1) == '"' && value.substr(value.length - 1) == '"' ? value.substr(1, value.length - 2) : value;
 	
 	var par = param.replace(/"/g, "&quot;");
 	var val = value.replace(/"/g, "&quot;");
 	var tp_html = $( template_param_html.replace(/#param#/g, par).replace(/#value#/g, val) );
+	var template_param_active = tp_html.children(".template_param_active");
+	
+	template_param_active.removeAttr("checked").prop("checked", false).removeAttr("disabled").prop("disabled", false);
+	
+	if (is_inative) {
+		tp_html.addClass("inactive");
+		tp_html.children(".template_param_name, .template_param_value, select, .template_param_text > textarea").attr("disabled", "").prop("disabled", true);
+	}
+	else {
+		template_param_active.attr("checked", "").prop("checked", true);
+		
+		if (!is_default_value_overwrited)
+			template_param_active.attr("disabled", "").prop("disabled", true);
+	}
 	
 	var label = tp_html.children("label").first();
 	label.html( label.text().replace(/"/g, "") );
@@ -1999,6 +2062,21 @@ function onChangeTemplateParamType(elm) {
 	}
 	
 	updateLayoutIframeFromSettingsField();
+}
+
+function onActivateTemplateParam(elm) {
+	elm = $(elm);
+	var p = elm.parent();
+	var inputs = p.find("input:not([type=checkbox]), select, textarea");
+	
+	if (elm[0].checked) {
+		p.removeClass("inactive");
+		inputs.removeAttr("disabled");
+	}
+	else {
+		p.addClass("inactive");
+		inputs.attr("disabled", "");
+	}
 }
 
 function onBlurTemplateParam(elm) {
@@ -2162,20 +2240,23 @@ function getTemplateParamsItems(template_params_elm) {
 	var items = template_params_elm.find(".items .item");
 	for (var i = 0; i < items.length; i++) {
 		var item = $(items[i]);
+		var is_param_disabled = item.children("input.template_param_name[disabled]").length > 0;
 		
-		var param_name = item.children("input.template_param_name").val();
-		var param_name_type = getArgumentType(param_name);
-		param_name = param_name_type == "string" ? param_name.replace(/"/g, "") : param_name;
-		
-		var param_value_type = item.children("select").val();
-		var param_value = param_value_type == "text" ? item.children(".template_param_text").children("textarea").val() : item.children("input.template_param_value").val();
-		
-		template_params.push({
-			"param": param_name, 
-			"param_type": param_name_type == "text" ? "string" : param_name_type, 
-			"value": param_value, 
-			"value_type": param_value_type == "text" ? "string" : param_value_type,
-		});
+		if (!is_param_disabled) {
+			var param_name = item.children("input.template_param_name").val();
+			var param_name_type = getArgumentType(param_name);
+			param_name = param_name_type == "string" ? param_name.replace(/"/g, "") : param_name;
+			
+			var param_value_type = item.children("select").val();
+			var param_value = param_value_type == "text" ? item.children(".template_param_text").children("textarea").val() : item.children("input.template_param_value").val();
+			
+			template_params.push({
+				"param": param_name, 
+				"param_type": param_name_type == "text" ? "string" : param_name_type, 
+				"value": param_value, 
+				"value_type": param_value_type == "text" ? "string" : param_value_type,
+			});
+		}
 	}
 	
 	return template_params;
@@ -2212,23 +2293,27 @@ function getSettingsTemplateRegionsBlocks(ets) {
 	var items = ets.find(".template_params, .other_template_params").find(".items .item input.template_param_name");
 	
 	$.each(items, function (idx, input) {
-		input = $(input);
-		var param_name = input.attr("value");
-		var item = input.parent();
+		var is_param_disabled = input.hasAttribute("disabled");
 		
-		var type = item.children("select").val();
-		var param_value = null;
-		
-		if (type == "text") {
-			param_value = item.find(".template_param_text textarea").val();
-			param_value = param_value ? getArgumentCode(param_value, "string") : "";
+		if (!is_param_disabled) {
+			input = $(input);
+			var param_name = input.attr("value");
+			var item = input.parent();
+			
+			var type = item.children("select").val();
+			var param_value = null;
+			
+			if (type == "text") {
+				param_value = item.find(".template_param_text textarea").val();
+				param_value = param_value ? getArgumentCode(param_value, "string") : "";
+			}
+			else {
+				param_value = item.children("input.template_param_value").val();
+				param_value = param_value ? getArgumentCode(param_value, type) : "";
+			}
+			
+			params[param_name] = param_value;
 		}
-		else {
-			param_value = item.children("input.template_param_value").val();
-			param_value = param_value ? getArgumentCode(param_value, type) : "";
-		}
-		
-		params[param_name] = param_value;
 	});
 	
 	var items = ets.find(".includes .items .item");
@@ -2406,8 +2491,12 @@ function getIframeTemplateRegionsBlocksForSettings(iframe, settings_elm) {
 	var orig_template_params = [];
 	var inputs = settings_elm.find(".template_params .items .item input.template_param_name");
 	$.each(inputs, function (idx, input) {
-		var param_name = $(input).attr("value");
-		orig_template_params.push(param_name);
+		var is_param_disabled = input.hasAttribute("disabled");
+		
+		if (!is_param_disabled) {
+			var param_name = $(input).attr("value");
+			orig_template_params.push(param_name);
+		}
 	});
 	
 	//create the params array with only the original template params
@@ -5023,7 +5112,10 @@ function onChangeLayoutUIEditorWidgets() {
 //To be used in the toggleFullScreen function
 function onToggleCodeEditorFullScreen(in_full_screen, main_obj) {
 	setTimeout(function() {
-		var PtlLayoutUIEditor = main_obj.find(".layout-ui-editor").data("LayoutUIEditor");
+		var PtlLayoutUIEditor = main_obj.find(".code_layout_ui_editor > .layout-ui-editor").data("LayoutUIEditor");
+		
+		if (!PtlLayoutUIEditor)
+			PtlLayoutUIEditor = main_obj.find(".layout-ui-editor").data("LayoutUIEditor");
 		
 		if (PtlLayoutUIEditor) {
 			var menu_settings = PtlLayoutUIEditor.getMenuSettings();

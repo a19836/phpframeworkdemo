@@ -35,12 +35,16 @@ echo $WorkFlowUIHandler->getHeader(array("tasks_css_and_js" => false, "icons_and
 <script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
 
 <!-- Add Code Beautifier -->
-<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/mycodebeautifier/js/codebeautifier.js"></script>
+<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/mycodebeautifier/js/MyCodeBeautifier.js"></script>
 
 <!-- Add Html/CSS/JS Beautify code -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jsbeautify/js/lib/beautify.js"></script>
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jsbeautify/js/lib/beautify-css.js"></script>
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/myhtmlbeautify/MyHtmlBeautify.js"></script>
+
+<!-- Add Auto complete -->
+<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/myautocomplete/js/MyAutoComplete.js"></script>
+<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/myautocomplete/css/style.css">
 
 <!-- Layout UI Editor - Jquery Touch Punch to work on mobile devices with touch -->
 <script language="javascript" type="text/javascript" src="http://jplpinto.localhost/__system/common/vendor/jqueryuitouchpunch/jquery.ui.touch-punch.min.js"></script>

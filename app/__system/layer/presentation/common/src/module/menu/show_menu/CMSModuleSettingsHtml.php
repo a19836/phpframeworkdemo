@@ -77,6 +77,11 @@ var menu_item_html = \'' . addcslashes(str_replace("\n", "", $menu_item_html), "
 		<input class="module_settings_property" type="text" name="class" value="" value_type="string" />
 		<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
 	</div>
+	<div class="menu_list_class">
+		<label>Menu List Class:</label>
+		<input class="module_settings_property" type="text" name="list_class" value="" value_type="string" />
+		<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+	</div>
 	<div class="menu_title">
 		<label>Menu Title:</label>
 		<input class="module_settings_property" type="text" name="title" value="" value_type="string" />
@@ -188,7 +193,7 @@ var menu_item_html = \'' . addcslashes(str_replace("\n", "", $menu_item_html), "
 		<label>Template Type:</label>
 		<select class="module_settings_property" name="template_type" onChange="onChangeTemplateType(this)">
 			<option value="">-- default --</option>
-			<option value="user_defined">User defined</option>
+			<option value="user_defined" selected>User defined</option>
 		</select>
 	</div>
 	

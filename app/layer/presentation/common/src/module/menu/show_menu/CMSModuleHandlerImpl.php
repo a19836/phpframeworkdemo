@@ -13,7 +13,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$html = "";
 		$type = $settings["type"];
 		$class = trim($settings["class"] . " " .  $settings["block_class"]);
-		$ul_class = "";
+		$list_class = "module_menu_ul" . ($settings["list_class"] ? " " . $settings["list_class"] : "");
 		
 		switch ($type) {
 			case "accordion":
@@ -23,7 +23,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			case "accordion_demo":
 			case "accordion_graphite":
 			case "accordion_grey":
-				$ul_class = "accordion";
+				$list_class .= " accordion";
 				
 				if ($type != "accordion") {
 					$accordion_style_class .= str_replace("accordion_", "", $type);
@@ -42,7 +42,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	<script type="text/javascript">
 	(function($){ //create closure so we can safely use $ as alias for jQuery
 		$(document).ready(function($){
-			$(".module_menu' . ($class ? "." . implode(".", explode(" ", $class)) : "") . ' .menu_main_ul.' . $ul_class . '").dcAccordion({
+			$(".module_menu' . ($class ? "." . implode(".", explode(" ", $class)) : "") . " ." . implode(".", explode(" ", $list_class)) . '").dcAccordion({
 				eventType: "click",
 				autoClose: false,
 				//menuClose: true,
@@ -60,7 +60,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				break;
 			
 			case "horizontal_simple_dropdown":
-				$ul_class = "dropdown";
+				$list_class .= " dropdown";
 				
 				$html .= '
 	<!-- Add SimpleDropDown main JS and CSS files -->
@@ -73,14 +73,14 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			case "horizontal_superfish_basic":
 			case "horizontal_superfish_navbar":
 			case "vertical_superfish":
-				$ul_class = "sf-menu";
+				$list_class .= " sf-menu";
 				
 				if ($type == "horizontal_superfish_navbar") {
-					$ul_class .= " sf-navbar";
+					$list_class .= " sf-navbar";
 					$html_aux = '<link rel="stylesheet" href="' . $project_common_url_prefix . 'module/menu/jquerysuperfishmenu/dist/css/superfish-navbar.css" media="screen">';
 				}
 				else if ($type == "vertical_superfish") {
-					$ul_class .= " sf-vertical";
+					$list_class .= " sf-vertical";
 					$html_aux = '<link rel="stylesheet" href="' . $project_common_url_prefix . 'module/menu/jquerysuperfishmenu/dist/css/superfish-vertical.css" media="screen">';
 				}
 				
@@ -92,7 +92,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	<script>
 	(function($){ //create closure so we can safely use $ as alias for jQuery
 		$(document).ready(function() {
-			$(".module_menu' . ($class ? "." . implode(".", explode(" ", $class)) : "") . ' .menu_main_ul.' . implode(".", explode(" ", $ul_class)) . '").superfish({
+			$(".module_menu' . ($class ? "." . implode(".", explode(" ", $class)) : "") . ' .' . implode(".", explode(" ", $list_class)) . '").superfish({
 				animation: {height:"show"},
 				speed: "fast",
 			});
@@ -101,9 +101,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	</script>';
 				break;
 			case "vertical":
-				$ul_class = "vertical-menu";
+				$list_class .= " vertical-menu";
 				$css_main_class = '.module_menu' . ($class ? "." . implode(".", explode(" ", $class)) : "");
-				$css_main_ul_class = $css_main_class . ' .menu_main_ul.' . $ul_class;
+				$css_main_ul_class = $css_main_class . ' .' . implode(".", explode(" ", $list_class));
 				
 				$html .= '
 	<style>
@@ -147,9 +147,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	</style>';
 				break;
 			case "horizontal":
-				$ul_class = "horizontal-menu";
+				$list_class .= " horizontal-menu";
 				$css_main_class = '.module_menu' . ($class ? "." . implode(".", explode(" ", $class)) : "");
-				$css_main_ul_class = $css_main_class . ' .menu_main_ul.' . $ul_class;
+				$css_main_ul_class = $css_main_class . ' .' . implode(".", explode(" ", $list_class));
 				
 				$html .= '
 	<style>
@@ -203,7 +203,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$menus = $settings["items_type"] == "from_db" ? self::getMenuGroupItems($EVC, $settings) : $settings["menus"];
 		self::prepareMenus($EVC, $menus);
 		
-		$extra_css = self::getMenuExtraStyles($settings, $class, $ul_class);
+		$extra_css = self::getMenuExtraStyles($settings, $class, $list_class);
 		if ($extra_css)
 			$settings["css"] = $extra_css . "\n" . $settings["css"];
 		
@@ -219,18 +219,29 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		if ($settings["template_type"] == "user_defined") {
 			$form_settings["ptl"] = $settings["ptl"];
+			
+			if ($form_settings["ptl"]) {
+				$external_vars = !empty($form_settings["ptl"]["external_vars"]) ? $form_settings["ptl"]["external_vars"] : array();
+				$external_vars["EVC"] = $EVC;
+				$external_vars["CMSModuleHandlerImpl"] = $this;
+				$external_vars["settings"] = $settings;
+				$external_vars["list_class"] = $list_class;
+				
+				$form_settings["ptl"]["external_vars"] = $external_vars;
+			}
+			
 			$html .= \HtmlFormHandler::createHtmlForm($form_settings, $menus);
 		}
 		else {
 			$settings["ptl"] = null;
-			\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "menu/show_menu", $settings, array("ul_class" => $ul_class));
+			\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "menu/show_menu", $settings, array("list_class" => $list_class));
 			
 			if (isset($settings["ptl"])) {
 				$form_settings["ptl"] = $settings["ptl"];
 				$html .= \HtmlFormHandler::createHtmlForm($form_settings, $menus);
 			}
 			else
-				$html .= '<ul class="menu_main_ul ' . $ul_class . '">' . self::getMenusHTML($menus) . '</ul>';
+				$html .= '<ul class="' . $list_class . '">' . self::getMenusHTML($menus) . '</ul>';
 		}
 		
 		$html .= '</div>';
@@ -238,11 +249,11 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		return $html;
 	}
 	
-	private static function getMenuExtraStyles($settings, $class, $ul_class) {
+	private static function getMenuExtraStyles($settings, $class, $list_class) {
 		$css = "";
 		
 		$css_main_class = '.module_menu' . ($class ? "." . implode(".", explode(" ", $class)) : "");
-		$css_main_ul_class = $css_main_class . ' .menu_main_ul.' . $ul_class;
+		$css_main_ul_class = $css_main_class . ' ' . ($list_class ? "." . implode(".", explode(" ", $list_class)) : "");
 		
 		if ($settings["menu_background_color"])
 			$css .= '
@@ -258,21 +269,34 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		if ($settings["menu_text_color"])
 			$css .= '
-' . $css_main_class . ' li,
-  ' . $css_main_class . ' li a,
-  ' . $css_main_class . ' li a label {
+' . $css_main_ul_class . ' li,
+  ' . $css_main_ul_class . ' li a,
+  ' . $css_main_ul_class . ' li a label,
+  ' . $css_main_ul_class . ' .module_menu_li {
 	color:' . $settings["menu_text_color"] . ';
 }';
 		
 		if ($settings["sub_menu_background_color"])
 			$css .= '
-' . $css_main_ul_class . ' li ul {
+' . $css_main_ul_class . ' li ul,
+  ' . $css_main_ul_class . ' li nav,
+  ' . $css_main_ul_class . ' li .dropdown-menu,
+  ' . $css_main_ul_class . ' .module_menu_li ul,
+  ' . $css_main_ul_class . ' .module_menu_li nav,
+  ' . $css_main_ul_class . ' .module_menu_li .dropdown-menu,
+  ' . $css_main_ul_class . ' .module_menu_li .module_menu_ul {
 	background-color:' . $settings["sub_menu_background_color"] . ';
 }';
 		
 		if ($settings["sub_menu_background_image"])
 			$css .= '
-' . $css_main_ul_class . ' li ul {
+' . $css_main_ul_class . ' li ul,
+  ' . $css_main_ul_class . ' li nav,
+  ' . $css_main_ul_class . ' li .dropdown-menu,
+  ' . $css_main_ul_class . ' .module_menu_li ul,
+  ' . $css_main_ul_class . ' .module_menu_li nav,
+  ' . $css_main_ul_class . ' .module_menu_li .dropdown-menu,
+  ' . $css_main_ul_class . ' .module_menu_li .module_menu_ul {
 	background-image:url("' . addcslashes($settings["sub_menu_background_image"], '"') . ');
 }';
 		
@@ -280,7 +304,24 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			$css .= '
 ' . $css_main_ul_class . ' li ul li,
   ' . $css_main_ul_class . ' li ul li a,
-  ' . $css_main_ul_class . ' li ul li a label {
+  ' . $css_main_ul_class . ' li ul li a label,
+  ' . $css_main_ul_class . ' li nav li,
+  ' . $css_main_ul_class . ' li nav li a,
+  ' . $css_main_ul_class . ' li nav li a label,
+  ' . $css_main_ul_class . ' li .dropdown-menu li,
+  ' . $css_main_ul_class . ' li .dropdown-menu li a,
+  ' . $css_main_ul_class . ' li .dropdown-menu li a label,
+  ' . $css_main_ul_class . ' .module_menu_li ul li,
+  ' . $css_main_ul_class . ' .module_menu_li ul li a,
+  ' . $css_main_ul_class . ' .module_menu_li ul li a label,
+  ' . $css_main_ul_class . ' .module_menu_li nav li,
+  ' . $css_main_ul_class . ' .module_menu_li nav li a,
+  ' . $css_main_ul_class . ' .module_menu_li nav li a label,
+  ' . $css_main_ul_class . ' .module_menu_li .dropdown-menu li,
+  ' . $css_main_ul_class . ' .module_menu_li .dropdown-menu li a,
+  ' . $css_main_ul_class . ' .module_menu_li .dropdown-menu li a label,
+  ' . $css_main_ul_class . ' .module_menu_li .module_menu_ul li a label,
+  ' . $css_main_ul_class . ' .module_menu_li .module_menu_ul .module_menu_li a label {
 	color:' . $settings["sub_menu_text_color"] . ';
 }';
 		
@@ -361,13 +402,17 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				$menu = $menus[$i];
 				
 				$title = $menu["title"] ? 'title="' . $menu["title"] . '"' : "";
+				$class = $menu["class"];
 				
-				$html .= '<li class="module_menu_item_class ' . $menu["class"] . '" ' . $title . ' ' . $menu["attrs"] . '>
+				if (strpos($class, "module_menu_li") === false)
+					$class = "module_menu_li " . $class;
+				
+				$html .= '<li class="' . $menu["class"] . '" ' . $title . ' ' . $menu["attrs"] . '>
 					' . $menu["previous_html"] . '
 					<a href="' . ($menu["url"] ? str_replace(" ", "%20", $menu["url"]) : 'javascript:void(0)') . '"><label>' . $menu["label"] . '</label></a>';
 				
 				if ($menu["menus"])
-					$html .= '<ul>' . self::getMenusHTML($menu["menus"]) . '</ul>';
+					$html .= '<ul class="module_menu_ul">' . self::getMenusHTML($menu["menus"]) . '</ul>';
 				
 				$html .= $menu["next_html"] . '
 					</li>';
@@ -383,10 +428,10 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			for ($i = 0; $i < $t; $i++) {
 				if ($menus[$i]["parent_id"]) //to be used by the ptl
 					$menus[$i]["parent-id"] = $menus[$i]["parent_id"];
-					
+				
 				if ($menus[$i]["previous_html"]) //to be used by the ptl
 					$menus[$i]["previous-html"] = $menus[$i]["previous_html"];
-					
+				
 				if ($menus[$i]["next_html"]) //to be used by the ptl
 					$menus[$i]["next-html"] = $menus[$i]["next_html"];
 					
@@ -395,6 +440,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			
 				if ($menus[$i]["label"])
 					$menus[$i]["label"] = translateProjectText($EVC, $menus[$i]["label"]);
+				
+				$menus[$i]["class"] = trim("module_menu_li " . $menus[$i]["class"]);
 				
 				if ($menus[$i]["menus"])
 					self::prepareMenus($EVC, $menus[$i]["menus"]);

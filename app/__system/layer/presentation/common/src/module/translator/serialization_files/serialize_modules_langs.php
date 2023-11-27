@@ -129,6 +129,7 @@ echo serialize(array(
 	"Register?" => "Registar-se?",
 	"Forgot Credentials?" => "Esqueceu-se das Credenciais?",
 	"This user is blocked. Please try again later..." => "Este utilizador está bloqueado. Por favor tente mais tarde...",
+	"User blocked for #hours# hours." => "Utilizador bloqueado durante #hours# horas.",
 	"Please insert the right captcha text!" => "Insira por favor o texto correcto de captcha!",
 	"There was an internal error because it seems your username is repeated in the DB. Please contact the sysadmin before continue..." => "Erro interno devido à repetição do seu username na BD. Por favor contacte o administrador de sistemas antes de continuar...",
 	"This user is inactive." => "Utilizador está inativo.",

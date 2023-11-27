@@ -18,4 +18,4 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); include $EVC->getUtilPath("admin_uis_permissions"); ?>
+$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $filter_by_layout = $_GET["filter_by_layout"]; $filter_by_layout = str_replace("../", "", $filter_by_layout); include $EVC->getUtilPath("admin_uis_permissions"); ?>

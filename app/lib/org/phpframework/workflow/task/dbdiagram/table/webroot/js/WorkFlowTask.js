@@ -858,7 +858,7 @@ var DBTableTaskPropertyObj = {
 			event.stopPropagation();
 		});
 		
-		//set onkeypress, onblur and onchange events
+		//set onkeyup, onblur and onchange events
 		table_attr.find("input").on("blur", function(event) {
 			var timeout_id = table_attr.data("timeout_id");
 			timeout_id && clearTimeout(timeout_id);
@@ -1552,6 +1552,9 @@ var DBTableTaskPropertyObj = {
 				if ($.isNumeric(column_mandatory_length_type) || column_mandatory_length_type) 
 					length_field.val(column_mandatory_length_type);
 			}
+			
+			if ($.inArray("default", column_type_ignored_props) != -1)
+				column_type_ignored_props.push("has_default");
 			
 			for (var i = 0; i < column_type_ignored_props.length; i++) {
 				var field_name = column_type_ignored_props[i];

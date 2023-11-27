@@ -95,9 +95,9 @@ function getChooseAvailableProjectHtml(folder_to_filter, fp, project_props) {
 		html += '<div class="sub_menu" onClick="openProjectFileSubmenu(this)">'
 				+ '<i class="icon sub_menu_vertical"></i>'
 				+ '<ul class="mycontextmenu with_top_center_triangle">'
-					+ '<li class="sub_menu_item rename"><a onclick="return manageFile(this, \'project_folder\', \'rename\', \'' + project_id + '\', onSucccessfullRenameFile)">Rename Folder</a></li>'
+					+ '<li class="sub_menu_item rename"><a onclick="return manageFile(this, \'project_folder\', \'rename\', \'' + project_id + '\', onSuccessfullRenameFile)">Rename Folder</a></li>'
 					+ '<li class="sub_menu_item line_break"></li>'
-					+ '<li class="sub_menu_item remove"><a onclick="return manageFile(this, \'project_folder\', \'remove\', \'' + project_id + '\', onSucccessfullRemoveFile)">Delete Folder</a></li>'
+					+ '<li class="sub_menu_item remove"><a onclick="return manageFile(this, \'project_folder\', \'remove\', \'' + project_id + '\', onSuccessfullRemoveFile)">Delete Folder</a></li>'
 				+ '</ul>'
 			+ '</div>';
 	
@@ -197,7 +197,7 @@ function getAvailableProjectsConvertedWithFolders(layer_projects, folder_to_filt
 }
 
 function addProject() {
-	var choose_available_project= $(".choose_available_project");
+	var choose_available_project = $(".choose_available_project");
 	var option = choose_available_project.find(" > .layer select option:selected").first();
 	var folder_to_filter = choose_available_project.find(".top_bar .breadcrumbs").attr("folder_to_filter");
 	var bean_name = option.attr("bean_name");
@@ -228,7 +228,7 @@ function addProject() {
 	MyFancyPopup.showPopup();
 }
 
-function onSucccessfullAddProject() {
+function onSuccessfullAddProject(opts) {
 	var choose_available_project= $(".choose_available_project");
 	var folder_to_filter = choose_available_project.find(".top_bar .breadcrumbs").attr("folder_to_filter");
 	var url = "" + document.location;
@@ -238,10 +238,28 @@ function onSucccessfullAddProject() {
 		url += "&folder_to_filter=" + folder_to_filter;
 	
 	if (window.parent && window.parent != window) {
+		var parent_url = window.parent.location;
+		
+		if (opts) {
+			var filter_by_layout = opts["new_filter_by_layout"];
+			var bean_name = opts["new_bean_name"];
+			var bean_file_name = opts["new_bean_file_name"];
+			var project = opts["new_project"];
+			
+			url = admin_home_project_page_url.replace("#filter_by_layout#", filter_by_layout);
+			
+			parent_url = "" + parent_url; //convert to string
+			parent_url = parent_url.indexOf("#") != -1 ? parent_url.substr(0, parent_url.indexOf("#")) : parent_url; //remove # so it can refresh parent page
+			parent_url = parent_url.replace(/(bean_name|bean_file_name|project|filter_by_layout)=([^&]*)&?/g, ""); //erase previous bean_name|bean_file_name|project|filter_by_layout attributes
+			parent_url += parent_url.indexOf("?") != -1 ? "" : "?"; //add "?" if apply
+			parent_url += "&bean_name=" + bean_name + "&bean_file_name=" + bean_file_name + "&project=" + project + "&filter_by_layout=" + filter_by_layout; //add new bean_name|bean_file_name|project|filter_by_layout
+			parent_url = parent_url.replace(/\?&+/, "?"); //replace "?&&&" with "?"
+		}
+		
 		//set cookie with default page
 		window.parent.MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('default_page', url); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
 		
-		var parent_url = window.parent.location;
+		//refresh main window with new params
 		window.parent.location = parent_url;
 	}
 	else
@@ -374,14 +392,14 @@ function refreshLayerProjects(path) {
 	}
 }
 
-function onSucccessfullRenameFile(elm, type, action, path, new_file_name) {
+function onSuccessfullRenameFile(elm, type, action, path, new_file_name) {
 	refreshLayerProjects(path);
 }
 
-function onSucccessfullRemoveFile(elm, type, action, path, new_file_name) {
+function onSuccessfullRemoveFile(elm, type, action, path, new_file_name) {
 	refreshLayerProjects(path);
 }
 
-function onSucccessfullCreateFile(elm, type, action, path, new_file_name) {
+function onSuccessfullCreateFile(elm, type, action, path, new_file_name) {
 	refreshLayerProjects(path);
 }

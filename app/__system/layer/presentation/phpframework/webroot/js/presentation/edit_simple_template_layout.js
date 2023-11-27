@@ -8,6 +8,15 @@ window.onerror = function(msg, url, line, col, error) {
 	return true; //return true, avoids the error to be shown and other scripts to stop.
 };
 
+//prepare full screen when press F11 key
+if (document.addEventListener) 
+	document.addEventListener("keydown", function(event) {
+		var code = event.keyCode || event.which;
+		
+		if (code == 122 && typeof window.parent.onF11KeyPress == "function")
+			window.parent.onF11KeyPress(event);
+	});
+
 //Note that this function is called in the edit_page_and_template.js file too
 function onLoadEditSimpleTemplateLayout() {
 	//console.log("onLoadEditSimpleTemplateLayout");

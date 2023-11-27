@@ -343,11 +343,14 @@
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul {
 	padding-bottom:0;
 }
-.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value:not(.widget-advanced-options) > ul > li:not(.widget-display-resource-value-resource-reference):not(.widget-display-resource-value-resource-attribute) {
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value:not(.widget-advanced-options) > ul > li:not(.widget-display-resource-value-resource-reference):not(.widget-display-resource-value-resource-display):not(.widget-display-resource-value-resource-attribute) {
 	display:none;
 }
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value  > ul > li.widget-display-resource-value-resource-attribute > label {
 	max-width:calc(100% - 140px);
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value  > ul > li.widget-display-resource-value-resource-attribute > input[readonly] {
+	cursor:not-allowed;
 }
 .layout-ui-editor > .menu-settings:not(.menu-settings-select) li.group.settings-widget .widget-display-resource-value  > ul > li.widget-display-resource-value-allow-new-options {
 	display:none;

@@ -4,7 +4,7 @@ $head =	'<title>View 1</title>';
 $left_content = "LEFT CONTENT";
 $main_content = "{$result}<br>";
 
-/*if(is_array($result[0])) {
+/*if(isset($result[0]) && is_array($result[0])) {
 	$main_content .= '<table>';
 	$columns = array_keys($result[0]);
 	$t = count($columns);
