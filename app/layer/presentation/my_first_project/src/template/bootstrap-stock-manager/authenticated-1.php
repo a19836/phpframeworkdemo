@@ -121,7 +121,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Text Color", "#ff
 	</nav>
 	<div id="layoutSidenav">
 		<div id="layoutSidenav_nav">
-			<nav class="sb-sidenav accordion template-color" id="sidenavAccordion">
+			<nav class="sb-sidenav accordion sb-sidenav-dark template-color" id="sidenavAccordion">
 				<img class="bloxtor-logo" src="<?= $original_project_url_prefix ?>template/bootstrap-stock-manager/img/bloxtor_logo_white.svg"/>
 				<div class="sb-sidenav-menu">
 					<ul class="nav">
