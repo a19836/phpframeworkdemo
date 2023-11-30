@@ -71,6 +71,12 @@ var InlineHTMLTaskPropertyObj = {
 					MyFancyPopup.settings.is_code_html_base = InlineHTMLTaskPropertyObj.is_code_html_base;
 				}
 			
+			if (typeof ProgrammingTaskUtil.on_programming_task_choose_webroot_file_url_callback == "function")
+				PtlLayoutUIEditor.options.on_choose_webroot_file_url_func = function(elm) {
+					ProgrammingTaskUtil.onProgrammingTaskChooseWebrootFileUrl(elm);
+					MyFancyPopup.settings.is_code_html_base = InlineHTMLTaskPropertyObj.is_code_html_base;
+				}
+			
 			PtlLayoutUIEditor.options.on_ready_func = function() {
 				//show php widgets, borders and background
 				PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();

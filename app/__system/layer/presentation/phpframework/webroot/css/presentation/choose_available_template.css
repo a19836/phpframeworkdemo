@@ -44,6 +44,50 @@
 	color:inherit;
 }
 
+/* TEMPLATE POPUPS - choose_available_template_popup - options */
+.choose_available_template_popup > .options {
+	padding:10px;
+	position:absolute;
+	left:0;
+	right:0;
+	bottom:0;
+	background:var(--main-iframe-bg);
+	color:var(--main-iframe-color);
+	text-align:left;
+}
+.choose_available_template_popup > .options > .include_template_samples input {
+	margin-right:5px;
+	vertical-align:sub;
+}
+.choose_available_template_popup > .options > .include_template_samples select {
+	margin-left:10px;
+	font:inherit;
+	background:transparent;
+	border:1px solid #ccc;
+	color:inherit;
+}
+.choose_available_template_popup > .options > .include_template_samples > .info {
+	margin-left:10px;
+	font-size:10pt;
+	cursor:pointer;
+}
+.choose_available_template_popup > .options > .include_template_samples > .info:active:after {
+	content:attr(title);
+	padding:5px;
+	position:absolute;
+	top:auto;
+	left:435px;
+	right:auto;
+	bottom:0;
+	display:block;
+	font:inherit;
+	font-size:8pt;
+	border-radius:var(--info-label-tooltip-border-radius);
+	border:1px solid var(--info-label-tooltip-border);
+	background:var(--info-label-tooltip-bg);
+	color:var(--info-label-tooltip-color);
+}
+
 /* TEMPLATE POPUPS - choose_available_template_popup - content */
 .choose_available_template_popup > .content {
 	padding:10px 15px 0;
@@ -51,7 +95,7 @@
 	top:50px;
 	left:0;
 	right:0;
-	bottom:0;
+	bottom:40px;
 	display:block;
 	clear:both;
 	overflow-y:auto;
@@ -71,16 +115,6 @@
 }
 
 /* TEMPLATE POPUPS - choose_available_template_popup - content - div */
-.choose_available_template_popup > .content > .options {
-	margin:0 -15px;
-	padding:10px;
-	position:sticky;
-	left:0;
-	right:0;
-	bottom:0;
-	background:var(--main-iframe-bg);
-	color:var(--main-iframe-color);
-}
 .choose_available_template_popup > .content > .default_templates,
   .choose_available_template_popup > .content > .installed_templates,
   .choose_available_template_popup > .content > .projects_templates {
@@ -100,40 +134,6 @@
   .choose_available_template_popup > .content > .installed_templates > ul,
   .choose_available_template_popup > .content > .projects_templates > ul {
 	margin-top:10px;
-}
-
-/* TEMPLATE POPUPS - choose_available_template_popup - content - options */
-.choose_available_template_popup > .content > .options > .include_template_samples input {
-	margin-right:5px;
-	vertical-align:sub;
-}
-.choose_available_template_popup > .content > .options > .include_template_samples select {
-	margin-left:10px;
-	font:inherit;
-	background:transparent;
-	border:1px solid #ccc;
-	color:inherit;
-}
-.choose_available_template_popup > .content > .options > .include_template_samples > .info {
-	margin-left:10px;
-	font-size:10pt;
-	cursor:pointer;
-}
-.choose_available_template_popup > .content > .options > .include_template_samples > .info:active:after {
-	content:attr(title);
-	padding:5px;
-	position:absolute;
-	top:auto;
-	left:435px;
-	right:auto;
-	bottom:0;
-	display:block;
-	font:inherit;
-	font-size:8pt;
-	border-radius:var(--info-label-tooltip-border-radius);
-	border:1px solid var(--info-label-tooltip-border);
-	background:var(--info-label-tooltip-bg);
-	color:var(--info-label-tooltip-color);
 }
 
 /* TEMPLATE POPUPS - choose_available_template_popup - content - back */

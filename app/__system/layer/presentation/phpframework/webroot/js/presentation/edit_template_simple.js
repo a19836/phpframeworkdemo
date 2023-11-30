@@ -112,7 +112,7 @@ $(function () {
 				//DEPRECATED - waits until the load params and joinpoints gets loaded. No need this anymorebc the initPageAndTemplateLayout method already covers this case.
 				//setTimeout(function() {
 					//load js and css files
-					loadCodeEditorLayoutJSAndCSSFilesToSettings();
+					loadTemplateCodeEditorLayoutJSAndCSSFilesToSettings();
 					
 					var func = function() {
 						if (init_finished) {
@@ -142,6 +142,9 @@ $(function () {
 							update_layout_iframe_field_html_value_from_settings_func = function(elm, html) { //set handler to update directly the the html in the template layout without refreshing the entire layout.
 								//console.log("update_layout_iframe_field_html_value_from_settings_func");
 								updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField(elm, html, iframe);
+								
+								//update css and js files from region blocks
+								loadTemplateRegionsBlocksHtmlJSAndCSSFilesToSettings();
 							};
 							
 							//hide loading icon
@@ -287,6 +290,7 @@ function updateCodeEditorLayoutFromSettings(template_obj, reload_iframe, do_not_
 		
 		if (!are_different) //if head is different
 			are_different = getTemplateHeadEditorCode() != saved_head_code;
+		//console.log("are_different:"+are_different);
 		
 		if (force || (are_different /*&& confirm("Do you wish to convert the template settings to the layout panel?\n\nNote: You must save the html code first, in order to see the new changes that you made (if you made any).")*/)) {
 			//prepare iframe with new data
@@ -299,6 +303,7 @@ function updateCodeEditorLayoutFromSettings(template_obj, reload_iframe, do_not_
 			
 			var current_html = getTemplateCodeForSaving(true);
 			MyFancyPopup.hidePopup();
+			//console.log(current_html);
 			
 			if (reload_iframe)
 				reloadLayoutIframeFromSettings(iframe, iframe_data, current_html); //show template preview based in the html source
@@ -313,6 +318,9 @@ function updateCodeEditorLayoutFromSettings(template_obj, reload_iframe, do_not_
 			
 			//update includes_list
 			includes_list = data["includes"];
+			
+			//update css and js files from region blocks
+			loadTemplateRegionsBlocksHtmlJSAndCSSFilesToSettings();
 		}
 	}
 }
@@ -337,6 +345,9 @@ function updateCodeEditorSettingsFromLayout(template_obj) {
 				regions: data["regions"], 
 				params: data["params"], 
 			});
+			
+			//update css and js files from region blocks
+			loadTemplateRegionsBlocksHtmlJSAndCSSFilesToSettings();
 		}
 	}
 }
@@ -373,7 +384,7 @@ function updateRegionsFromBodyEditor(show_info_message, do_not_update_layout) {
 	});
 	
 	//update js and css files in main settings
-	loadCodeEditorLayoutJSAndCSSFilesToSettings();
+	loadTemplateCodeEditorLayoutJSAndCSSFilesToSettings();
 	
 	//sets back synchronization functions
 	update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
@@ -390,7 +401,7 @@ function updateRegionsFromBodyEditor(show_info_message, do_not_update_layout) {
 		auto_save = auto_save_bkp;
 }
 
-function updateCodeEditorLayoutHeadFromSettings(obj) {
+function updateCodeEditorLayoutHeadFromSettings() {
 	//for each character changed or writen this function wil be called, so we must add a settimeout and only execute this function when the user finishes to write
 	var head_code = getTemplateHeadEditorCode();
 	
@@ -539,6 +550,74 @@ function getTemplateEditorCode() {
 	var code = getCodeLayoutUIEditorCode(code_layout_ui_editor);
 	
 	return code;
+}
+
+function loadTemplateCodeEditorLayoutJSAndCSSFilesToSettings() {
+	var opts = {
+		remove: removeTemplateWebrootFile,
+		create: function(file, li, func_opts) {
+			if (func_opts && typeof func_opts["head_code"] == "string" && func_opts["head_code"].indexOf(file) != -1)
+				li.addClass("from_head");
+			else
+				li.addClass("from_body");
+		}
+	};
+	loadCodeEditorLayoutJSAndCSSFilesToSettings(opts);
+	
+	loadTemplateRegionsBlocksHtmlJSAndCSSFilesToSettings();
+}
+
+function loadTemplateRegionsBlocksHtmlJSAndCSSFilesToSettings() {
+	//remove all files coming from region blocks html
+	var regions_blocks_includes_settings = $(".regions_blocks_includes_settings");
+	regions_blocks_includes_settings.find(".css_files, js_files").find(" > ul > li.from_region_block").remove();
+	
+	var region_opts = {
+		remove: removeTemplateWebrootFile,
+		create: function(file, li, func_opts) {
+			li.addClass("from_region_block");
+		}
+	};
+	appendRegionsBlocksHtmlFileInSettings(null, region_opts);
+}
+
+function addTemplateWebrootFile(elm, type, file_name, file_url, file_code) {
+	var head_code = getTemplateHeadEditorCode();
+	head_code += "\n" + file_code;
+	head_code = head_code.replace(/^\s+/g, "").replace(/\s+$/g, ""); //trim html
+	setTemplateHeadEditorCode(head_code);
+	
+	updateCodeEditorLayoutHeadFromSettings();
+}
+
+function removeTemplateWebrootFile(elm, file) {
+	var head_code = getTemplateHeadEditorCode();
+	var new_head_code = removeFileFromCode(head_code, file);
+	var li = $(elm).parent().closest("li");
+	var changed = false;
+	
+	if (head_code != new_head_code) {
+		setTemplateHeadEditorCode(new_head_code);
+		changed = true;
+	}
+	else {
+		var template_code = getTemplateEditorCode();
+		var new_template_code = removeFileFromCode(template_code, file);
+		
+		if (template_code != new_template_code)
+			StatusMessageHandler.showMessage("This file is not in the HEAD html tag. Please remove it directly from the canvas area");
+	}
+	
+	//check if file exists in head region also.
+	var status = removeFileFromRegionBlockHtml(file);
+	
+	if (status || changed)
+		li.remove();
+	
+	//if removeFileFromRegionBlockHtml didn't change anything but the head editor was changed. Note that the update_layout_iframe_from_settings_func will call the updateCodeEditorLayoutFromSettings, that will call getTemplateCodeForSaving which calls the getTemplateHeadEditorCode, getting the new head code and updating it in the iframe
+	if (!status && changed && typeof update_layout_iframe_from_settings_func == "function")
+		updateCodeEditorLayoutFromSettings($(".template_obj"), true, true);
+		//update_layout_iframe_from_settings_func(); //Do not call update_layout_iframe_from_settings_func bc the reload_iframe argument in the updateCodeEditorLayoutFromSettings method is false. And we want to force to reload the iframe, so we need to call this method directly.
 }
 
 /* SAVING FUNCTIONS */

@@ -153,7 +153,10 @@ function prepareChooseAvailableTemplateMainProjectHtml(project_id, folder_to_fil
 				+ '</ul>'
 			+ '</div>';
 	
-	html += '<div class="options">'
+	popup_content.html(html).scrollTop(0);
+	
+	//add options
+	popup_content.after('<div class="options">'
 				+ '<div class="include_template_samples">'
 					+ '<input type="checkbox" ' + (include_template_samples ? " checked" : "") + ' onChange="onChangeIncludeTemplateSamples(this)"/>'
 					+ '<label>Include samples from selected template?</label>'
@@ -163,9 +166,7 @@ function prepareChooseAvailableTemplateMainProjectHtml(project_id, folder_to_fil
 					+ '</select>'
 					+ '<span class="info" title="Each template comes with samples for each region. If this option is active, the system will add these code to the correspondent regions of the selected template."><i class="icon info"></i></span>'
 				+ '</div>'
-			+ '</div>'
-	
-	popup_content.html(html).scrollTop(0);
+			+ '</div>');
 	
 	//load templates
 	prepareChooseAvailableTemplateDefaultHtml(project_id);

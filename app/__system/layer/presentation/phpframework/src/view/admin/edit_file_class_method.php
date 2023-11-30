@@ -88,6 +88,7 @@ var is_obj_valid = ' . ($is_obj_valid ? "true" : "false") . ';
 	'; if ($item_type == "presentation") $head .= '
 	ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
 	ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
+	ProgrammingTaskUtil.on_programming_task_choose_webroot_file_url_callback = onIncludeWebrootFileUrlTaskChooseFile;
 
 	if (typeof IncludeBlockTaskPropertyObj != "undefined" && IncludeBlockTaskPropertyObj)
 		IncludeBlockTaskPropertyObj.on_choose_file_callback = onIncludeBlockTaskChooseFile;

@@ -6,6 +6,11 @@ var no_cache_for_first_resource_creation_ttl = 300000; //5 min
 var flush_cache = false;
 
 var LayoutUIEditorWidgetResourceFancyPopup = new MyFancyPopupClass();
+var AddLayoutUIEditorWidgetResourceSLAResourceAsyncFancyPopup = new MyFancyPopupClass();
+
+AddLayoutUIEditorWidgetResourceSLAResourceAsyncFancyPopup.init({
+	parentElement: window,
+});
 
 function initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor) {
 	PtlLayoutUIEditor.options.on_choose_event_func = toggleChooseEventPopup;
@@ -858,7 +863,7 @@ function addLayoutUIEditorWidgetResourceSLAResourceAsync(db_broker, db_driver, d
 		};
 		//console.log(post_data);
 		
-		MyFancyPopup.showLoading();
+		AddLayoutUIEditorWidgetResourceSLAResourceAsyncFancyPopup.showLoading();
 		
 		$.ajax({
 			url: create_sla_resource_url,
@@ -871,7 +876,7 @@ function addLayoutUIEditorWidgetResourceSLAResourceAsync(db_broker, db_driver, d
 				delete creating_resources[resource_name];
 				
 				creating_resources_by_table[resource_table_id] = null;
-				delete creating_resources[resource_table_id];
+				delete creating_resources_by_table[resource_table_id];
 				
 				status_message_elm.remove();
 				
@@ -920,16 +925,18 @@ function addLayoutUIEditorWidgetResourceSLAResourceAsync(db_broker, db_driver, d
 				else
 					StatusMessageHandler.showError("Error trying to create resource '" + resource_name + "'! Please create it manually...");
 				
-				MyFancyPopup.hideLoading();
+				if ($.isEmptyObject(creating_resources_by_table))
+					AddLayoutUIEditorWidgetResourceSLAResourceAsyncFancyPopup.hideLoading();
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 				creating_resources[resource_name] = null;
 				delete creating_resources[resource_name];
 				
 				creating_resources_by_table[resource_table_id] = null;
-				delete creating_resources[resource_table_id];
+				delete creating_resources_by_table[resource_table_id];
 				
-				MyFancyPopup.hideLoading();
+				if ($.isEmptyObject(creating_resources_by_table))
+					AddLayoutUIEditorWidgetResourceSLAResourceAsyncFancyPopup.hideLoading();
 				
 				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, create_sla_resource_url, function() {

@@ -4,7 +4,7 @@ var show_popup_interval_id = null;
 var chooseProjectTemplateUrlFromFileManagerTree = null; //used by the create_presentation_uis_diagram.js and module/menu/show_menu/settings.js and others
 var MyFancyPopupEditTemplateFile = new MyFancyPopupClass();
 var MyFancyPopupEditWebrootFile = new MyFancyPopupClass();
-var is_code_html_base = false; //sets the callbacks (like on_choose_page_url_func and on_choose_image_url_func) in the edit_page_and_template.js to return the choosen file as an inline php code.
+var is_code_html_base = false; //sets the callbacks (like on_choose_page_url_func and on_choose_image_url_func and on_choose_webroot_file_url_func) in the edit_page_and_template.js to return the choosen file as an inline php code.
 var replace_inline_project_url_php_vars = true; //set this to true so the method edit_page_and_template.js:convertProjectUrlPHPVarsToRealValues can replace the inline vars: $project_url_prefix and $project_common_url_prefix with the real url values
 
 //var start = (new Date()).getTime();
@@ -80,13 +80,13 @@ $(function () {
 				//set on_template_widgets_iframe_reload_func so everytime the template layout is changed or reload we update the css and js files.
 				PtlLayoutUIEditor.options.on_template_widgets_iframe_reload_func = function() {
 					//reload js and css files
-					loadCodeEditorLayoutJSAndCSSFilesToSettings();
+					loadPageCodeEditorLayoutJSAndCSSFilesToSettings();
 				};
 				
 				//DEPRECATED - waits until the load params and joinpoints gets loaded. No need this anymorebc the initPageAndTemplateLayout method already covers this case.
 				//setTimeout(function() {
 					//load js and css files
-					loadCodeEditorLayoutJSAndCSSFilesToSettings();
+					loadPageCodeEditorLayoutJSAndCSSFilesToSettings();
 					
 					var func = function() {
 						if (init_finished) {
@@ -116,6 +116,9 @@ $(function () {
 							update_layout_iframe_field_html_value_from_settings_func = function(elm, html) { //set handler to update directly the the html in the template layout without refreshing the entire layout.
 								//console.log("updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField");
 								updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField(elm, html, iframe);
+								
+								//update css and js files from region blocks
+								loadPageRegionsBlocksHtmlJSAndCSSFilesToSettings();
 							};
 							
 							var droppables_exist = iframe.contents().find(".droppable:not(.edit_entity_droppable_disabled)").length > 0;
@@ -960,6 +963,9 @@ function updateLayoutFromSettings(entity_obj, reload_iframe) {
 			
 			//update includes_list
 			includes_list = data["includes"];
+			
+			//update css and js files from region blocks
+			loadPageRegionsBlocksHtmlJSAndCSSFilesToSettings();
 		}
 	}
 }
@@ -980,11 +986,105 @@ function updateSettingsFromLayout(entity_obj) {
 				regions: data["regions"], 
 				params: data["params"], 
 			});
+			
+			//update css and js files from region blocks
+			loadPageRegionsBlocksHtmlJSAndCSSFilesToSettings();
 		}
 	}
 }
 
-/* ADVACNED SETTINGS FUNCTIONS */
+function loadPageCodeEditorLayoutJSAndCSSFilesToSettings() {
+	var opts = {
+		inline_html: true,
+	};
+	loadCodeEditorLayoutJSAndCSSFilesToSettings(opts);
+	
+	loadPageRegionsBlocksHtmlJSAndCSSFilesToSettings();
+}
+
+function loadPageRegionsBlocksHtmlJSAndCSSFilesToSettings() {
+	//remove all files coming from region blocks html
+	var regions_blocks_includes_settings = $(".regions_blocks_includes_settings");
+	regions_blocks_includes_settings.find(".css_files, js_files").find(" > ul > li.from_region_block").remove();
+	
+	var region_opts = {
+		inline_html: true,
+		force: true,
+		remove: removePageWebrootFile,
+		create: function(file, li, func_opts) {
+			li.addClass("from_region_block");
+		}
+	};
+	appendRegionsBlocksHtmlFileInSettings(null, region_opts);
+}
+
+function addPageWebrootFile(elm, type, file_name, file_url, file_code) {
+	var entity_obj= $(".entity_obj");
+	var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
+	var data = getSettingsTemplateRegionsBlocks(regions_blocks_includes_settings);
+	var template_regions = data["template_regions"];
+	
+	if (template_regions) {
+		var selected_region = null;
+		
+		for (var region in template_regions) {
+			var regions = template_regions[region];
+			var r = region.substr(0, 1) == '"' ? region.replace(/"/g, "") : region;
+			
+			if (r.toLowerCase() == "head") {
+				selected_region = region;
+				break;
+			}
+			else
+				selected_region = region;
+		}
+		
+		if (selected_region) {
+			//add new html to region
+			var block = file_code;
+			var proj = null;
+			var is_html = true;
+			var rb_index = 0;
+			var rb_html = getRegionBlockHtml(region, block, proj, is_html, rb_index);
+			
+			var region_blocks = regions_blocks_includes_settings.find(".region_blocks .template_region_items");
+			region_blocks.append(rb_html);
+			
+			regions_blocks_list.push([region, block, proj, is_html, rb_index]);
+			
+			updateLayoutFromSettings(entity_obj, true);
+		}
+		else
+			StatusMessageHandler.showError("Cannot add new file because this template doesn't contain any region defined.");
+	}
+}
+
+function removePageWebrootFile(elm, file) {
+	//disalbed the update_layout_iframe_from_settings_func, bc the reload_iframe argument in the updateLayoutFromSettings method is false. And we want to force to reload the iframe, so we need to call below this method directly.	
+	
+	//save synchronization functions
+	var update_layout_iframe_from_settings_func_bkp = update_layout_iframe_from_settings_func;
+	
+	//disable synchronization functions bc the updateSelectedTemplateRegionsBlocks calls the sync func, when it triggers the on change event from the blok_type in the getRegionBlockHtml
+	update_layout_iframe_from_settings_func = null;
+	
+	//check if file exists in head region also, but do not refresh iframe.
+	var status = removeFileFromRegionBlockHtml(file);
+	
+	//sets back synchronization functions
+	update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
+	
+	if (status) {
+		$(elm).parent().closest("li").remove();
+		
+		//reload iframe
+		updateLayoutFromSettings($(".entity_obj"), true);
+	}
+	else
+		StatusMessageHandler.showError("Could not find this file in the \"Head\" region blocks.");
+}
+
+/* ADVANCED SETTINGS FUNCTIONS */
 
 function initPageAdvancedSettings(elm) {
 	onChangeParseHtml( elm.find(".parser .parse_html select")[0] );

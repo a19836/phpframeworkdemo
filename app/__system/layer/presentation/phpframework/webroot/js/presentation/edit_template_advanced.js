@@ -91,6 +91,14 @@ $(function () {
 	});
 	chooseImageUrlFromFileManagerTree.init("choose_image_url_from_file_manager");
 	
+	chooseWebrootFileUrlFromFileManagerTree = new MyTree({
+		multiple_selection : false,
+		toggle_children_on_click : true,
+		ajax_callback_before : prepareLayerNodes1,
+		ajax_callback_after : removeAllThatIsNotWebrootFileFromTree,
+	});
+	chooseWebrootFileUrlFromFileManagerTree.init("choose_webroot_file_url_from_file_manager");
+	
 	//init ui
 	var template_obj = $(".template_obj");
 	

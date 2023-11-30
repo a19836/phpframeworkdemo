@@ -302,6 +302,7 @@ var CreateFormTaskPropertyObj = {
 					PtlLayoutUIEditor.options.on_choose_variable_func = ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable;
 					PtlLayoutUIEditor.options.on_choose_page_url_func = ProgrammingTaskUtil.onProgrammingTaskChoosePageUrl;
 					PtlLayoutUIEditor.options.on_choose_image_url_func = ProgrammingTaskUtil.onProgrammingTaskChooseImageUrl;
+					PtlLayoutUIEditor.options.on_choose_webroot_file_url_func = ProgrammingTaskUtil.onProgrammingTaskChooseWebrootFileUrl;
 					
 					PtlLayoutUIEditor.options.on_ready_func = function() {
 						//hide php menu widget bc it doesn't apply here

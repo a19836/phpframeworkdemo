@@ -373,7 +373,8 @@
 	font-size:inherit;
 }
 
-#choose_image_url_from_file_manager .mytree .jstree-anchor > label span.icon {
+#choose_image_url_from_file_manager .mytree .jstree-anchor > label span.icon,
+  #choose_webroot_file_url_from_file_manager .mytree .jstree-anchor > label span.icon {
 	margin-left:5px;
 }
 

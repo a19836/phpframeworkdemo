@@ -47,6 +47,20 @@
 			display:none;
 		}
 		
+		.layout-ui-editor > .menu-settings.menu-settings-script > .settings-properties .src.with-search-icon input {
+			padding-right:20px;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-script > .settings-properties .src .search {
+			display:inline-block;
+			float:none;
+			clear:both;
+			position:absolute;
+			right:10px;
+			margin:8px 0 0;
+			background:none;
+			cursor:pointer;
+		}
+		
 		.layout-ui-editor > .menu-layers .group.group-script > ul {
 			display:none !important;
 		}
@@ -316,6 +330,14 @@
 			};
 			
 			me.onOpenWidgetSettings = function(widget, menu_settings) {
+				if (typeof ui_creator.options.on_choose_webroot_file_url_func == "function") {
+					var icon = $('<span class="zmdi zmdi-search-in-file search"></span>');
+					icon.on("click", function() {
+						ui_creator.options.on_choose_webroot_file_url_func(this);
+					});
+					menu_settings.find(" > .settings-properties .settings-property.src").addClass("with-search-icon").append(icon);
+				}
+				
 				ui_creator.addMenuSettingsContextMenu( menu_settings.find(".settings-properties").find("input, textarea") );
 			};
 			

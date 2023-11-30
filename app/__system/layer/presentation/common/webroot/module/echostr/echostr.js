@@ -124,6 +124,7 @@ function createLayoutUIEditor(textarea) {
 			);
 			PtlLayoutUIEditor.options.on_choose_page_url_func = typeof onIncludePageUrlTaskChooseFile == "function" ? onIncludePageUrlTaskChooseFile : null;
 			PtlLayoutUIEditor.options.on_choose_image_url_func = typeof onIncludeImageUrlTaskChooseFile == "function" ? onIncludeImageUrlTaskChooseFile : null;
+			PtlLayoutUIEditor.options.on_choose_webroot_file_url_func = typeof onIncludeWebrootFileUrlTaskChooseFile == "function" ? onIncludeWebrootFileUrlTaskChooseFile : null;
 			
 			//set the convert php vars to url, but only if the code is not php type, where we will have: ' somehting ' . $project_url_prefix . ' something '
 			if (!is_code_type) { 

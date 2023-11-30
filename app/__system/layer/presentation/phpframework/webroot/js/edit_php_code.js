@@ -11,6 +11,7 @@ var choosePresentationFromFileManagerTree = null;
 var chooseBlockFromFileManagerTree = null;
 var choosePageUrlFromFileManagerTree = null; //used by the create_presentation_uis_diagram.js and module/menu/show_menu/settings.js and others
 var chooseImageUrlFromFileManagerTree = null; //used by the create_presentation_uis_diagram.js and module/menu/show_menu/settings.js and others
+var chooseWebrootFileUrlFromFileManagerTree = null; //used by the create_presentation_uis_diagram.js and module/menu/show_menu/settings.js and others
 
 var TaskEditSourceFancyPopup = new MyFancyPopupClass();
 var IncludePageUrlFancyPopup = new MyFancyPopupClass();
@@ -361,6 +362,56 @@ function removeAllThatIsNotAPossibleImageFromTree(ul, data, mytree_obj) {
 		var parent_li_i = li.parent().parent().find(" > a > i");
 		
 		if (label == "views" || label == "templates" || label == "utils" || label == "others" || label == "modules" || label == "blocks" || label == "configs") 
+			li.remove();
+		//else if (label == "webroot") 
+		//	li.addClass("jstree-last");
+		else if (parent_li_i.is("i.webroot_folder, i.webroot_sub_folder")) {
+			$(elm).addClass("webroot_sub_folder");
+			
+			if (a.attr("upload_url")) {
+				var l = a.children("label");
+				l.append('<span class="icon refresh" title="Refresh">Refresh</span><span class="icon upload" title="Upload">Upload</span>');
+				l.children(".refresh").click(function() {
+					refreshFileManagerPopupTreeNodeFromInnerIcon(this, mytree_obj);
+				});
+				l.children(".upload").click(function() {
+					openUploadPopupFromFileManagerPopupTreeNodeInnerIcon(this, mytree_obj);
+				});
+			}
+		}
+	});
+	
+	ul.find("i.webroot_folder").each(function(idx, elm) {
+		var a = $(elm).parent();
+		a.parent().addClass("jstree-last");
+		
+		if (a.attr("upload_url")) {
+			var l = a.children("label");
+			l.append('<span class="icon refresh" title="Refresh">Refresh</span><span class="icon upload" title="Upload">Upload</span>');
+			l.children(".refresh").click(function() {
+				refreshFileManagerPopupTreeNodeFromInnerIcon(this, mytree_obj);
+			});
+			l.children(".upload").click(function() {
+				openUploadPopupFromFileManagerPopupTreeNodeInnerIcon(this, mytree_obj);
+			});
+		}
+	});
+}
+
+function removeAllThatIsNotWebrootFileFromTree(ul, data, mytree_obj) {
+	ul = $(ul);
+	
+	ul.find("i.entity_file, i.view_file, i.template_file, i.util_file, i.controller_file, i.config_file, i.properties, i.block_file, i.module_file, .entities_folder, .views_folder, .templates_folder, .template_folder, .utils_folder, .modules_folder, .blocks_folder, .configs_folder").each(function(idx, elm){
+		$(elm).parent().parent().remove();
+	});
+	
+	ul.find("i.folder").each(function(idx, elm) {
+		var a = $(elm).parent();
+		var li = a.parent();
+		var label = a.children("label").text();
+		var parent_li_i = li.parent().parent().find(" > a > i");
+		
+		if (label == "pages (entities)" || label == "views" || label == "templates" || label == "utils" || label == "others" || label == "modules" || label == "blocks" || label == "configs") 
 			li.remove();
 		//else if (label == "webroot") 
 		//	li.addClass("jstree-last");
@@ -1778,6 +1829,104 @@ function chooseIncludeImageUrl(elm) {
 				var m = previous_url ? previous_url.match(/[^<]\?[^>]/) : null;
 				var query_string = m ? previous_url.substr(m.index + 2) : ""; //m.index is the char before the "?"
 				url += img_path;
+				
+				if (query_string != "") 
+					url += "?" + query_string;
+				else {
+					var url_suffix = MyFancyPopup.settings.targetField.attr("url_suffix");
+					url += url_suffix ? url_suffix : "";
+				}
+				
+				MyFancyPopup.settings.targetField.val(url);
+				
+				//if MyFancyPopup.settings.targetField is an input from the LayoutUIEditor, then we must set the cursor inside of that input, bc the value will only be updated in the html, with the onBlur event of that input. So we must first to focus it or trigger the onBlur event for that input element.
+				MyFancyPopup.settings.targetField.focus(); 
+				MyFancyPopup.settings.targetField.blur(); //to refresh the image in the canvas editor
+				MyFancyPopup.settings.targetField.focus(); //focus again so the cursor be inside of the input field
+				
+				//update var_Type if exists
+				var var_type = MyFancyPopup.settings.targetField.parent().parent().find(".var_type select");
+				
+				if (var_type.length > 0) {
+					var_type.val("string");
+					var_type.trigger("change");
+				}
+				else if (MyFancyPopup.settings.targetField.is(".key")) //in case of array items
+					MyFancyPopup.settings.targetField.parent().children(".key_type").val("string");
+				else if (MyFancyPopup.settings.targetField.is(".value")) //in case of array items
+					MyFancyPopup.settings.targetField.parent().children(".value_type").val("string");
+				else if (MyFancyPopup.settings.targetField.parent().is(".table_arg_value")) //in case of method/function args
+					MyFancyPopup.settings.targetField.parent().parent().find(".table_arg_type select").val("string");
+				
+				MyFancyPopup.hidePopup();
+			}
+		}
+		else
+			alert("invalid selected file.\nPlease choose a valid file.");
+	}
+}
+
+//target_field is used by the workflow task: GetUrlContentsTaskPropertyObj
+function onIncludeWebrootFileUrlTaskChooseFile(elm) {
+	elm = $(elm);
+	var popup = $("#choose_webroot_file_url_from_file_manager");
+	
+	MyFancyPopup.init({
+		elementToShow: popup,
+		parentElement: document,
+		onOpen: function() {
+			var html = popup.find(".mytree ul").html();
+			if (!html) {
+				updateLayerUrlFileManager( popup.find(".broker select")[0] );
+			}
+		},
+		
+		targetField: getTargetFieldForProgrammingTaskChooseFromFileManager(elm), //elm.parent().children("input"),
+		updateFunction: function(elm) {
+			chooseIncludeWebrootFileUrl(elm);
+		}
+	});
+	
+	MyFancyPopup.showPopup();
+}
+
+function chooseIncludeWebrootFileUrl(elm) {
+	var node = chooseWebrootFileUrlFromFileManagerTree.getSelectedNodes();
+	node = node[0];
+	
+	if (node) {
+		var a = $(node).children("a");
+		var i = a.children("i").first();
+		var is_folder = i.hasClass("folder");
+		var file_path = is_folder ? a.attr("folder_path") : a.attr("file_path");
+		
+		if (file_path) {
+			var bean_name = a.attr("bean_name");
+			var webroot_pos = file_path.indexOf("/webroot/");
+			var is_possible_file = !is_folder && webroot_pos != -1;
+			
+			if (!is_possible_file)
+				alert("Selected item must be a valid file!\nPlease try again...");
+			else {
+				var project_path = getNodeProjectPath(node);
+				project_path = project_path && project_path.substr(project_path.length - 1) == "/" ? project_path.substr(0, project_path.length - 1) : project_path;
+				project_path = project_path == selected_project_id ? "" : project_path + "/";
+				
+				var new_file_path = file_path.substr(webroot_pos + ("/webroot/").length);
+				
+				var url_str = project_path == "common/" ? "project_common_url_prefix" : "project_url_prefix";
+				var url = MyFancyPopup.settings.is_code_html_base ? "<?= $" + url_str + " ?>" : "{$" + url_str + "}";
+				url += project_path == "common/" ? "" : project_path;
+				var selected_project_name = project_path ? project_path.replace(/\/+$/g, "") : selected_project_id;
+				
+				//used in the testunit/edit_test.php
+				if (typeof layers_projects_urls != "undefined" && $.isPlainObject(layers_projects_urls) && layers_projects_urls.hasOwnProperty(bean_name) && $.isPlainObject(layers_projects_urls[bean_name]) && layers_projects_urls[bean_name].hasOwnProperty(selected_project_name) && layers_projects_urls[bean_name][selected_project_name])
+					url = layers_projects_urls[bean_name][selected_project_name];
+				
+				var previous_url = MyFancyPopup.settings.targetField.val();
+				var m = previous_url ? previous_url.match(/[^<]\?[^>]/) : null;
+				var query_string = m ? previous_url.substr(m.index + 2) : ""; //m.index is the char before the "?"
+				url += new_file_path;
 				
 				if (query_string != "") 
 					url += "?" + query_string;

@@ -120,6 +120,7 @@ var create_form_settings_code_url = \'' . $project_url_prefix . 'module/objectsg
 
 ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
 ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
+ProgrammingTaskUtil.on_programming_task_choose_webroot_file_url_callback = onIncludeWebrootFileUrlTaskChooseFile;
 
 CreateFormTaskPropertyObj.editor_ready_func = initLayoutUIEditorWidgetResourceOptions;
 CreateFormTaskPropertyObj.layout_ui_editor_menu_widgets_elm_selector = \'.ui_menu_widgets_backup\';

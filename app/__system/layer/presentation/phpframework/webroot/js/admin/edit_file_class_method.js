@@ -139,6 +139,14 @@ $(function () {
 					ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
 				});
 				chooseImageUrlFromFileManagerTree.init("choose_image_url_from_file_manager");
+				
+				chooseWebrootFileUrlFromFileManagerTree = new MyTree({
+					multiple_selection : false,
+					toggle_children_on_click : true,
+					ajax_callback_before : prepareLayerNodes1,
+					ajax_callback_after : removeAllThatIsNotWebrootFileFromTree,
+				});
+				chooseWebrootFileUrlFromFileManagerTree.init("choose_webroot_file_url_from_file_manager");
 			}
 		}
 		
@@ -156,6 +164,8 @@ $(function () {
 		}
 		
 		//load workflow
+		var start_tll = Date.now();
+		
 		onLoadTaskFlowChartAndCodeEditor({do_not_hide_popup : true});
 		
 		//init tasks flow tab
@@ -166,6 +176,18 @@ $(function () {
 				//saved_obj_id = getFileClassMethodObjId(); //Do not uncomment this code, otherwise the it will save the workflow on page load.
 				
 				MyFancyPopup.hidePopup();
+				
+				//if flow took more than 30 seconds, than disable auto-save for better performance and user experience.
+				var end_tll = Date.now();
+				var secs = (end_tll - start_tll) / 1000;
+				
+				if (secs > 30) {
+					disableAutoSave(onTogglePHPCodeAutoSave);
+					
+					setTimeout(function() {
+						StatusMessageHandler.showMessage("Auto-save disable for better experience", "", "bottom_messages", 10000); //stays for 10 seconds
+					}, 2000); //only show after 2 seconds, for better user experience bc flow is still ending load
+				}
 			},
 			on_error: function() {
 				file_class_method_obj.tabs("option", "active", 0); //show code tab
@@ -175,6 +197,10 @@ $(function () {
 				//saved_obj_id = getFileClassMethodObjId(); //Do not uncomment this code, otherwise the it will save the workflow on page load.
 				
 				MyFancyPopup.hidePopup();
+				
+				//disable auto-save
+				disableAutoSave(onTogglePHPCodeAutoSave);
+				StatusMessageHandler.showMessage("Auto-save disable due to loading error...", "", "bottom_messages", 5000); //stays for 5 seconds
 			}
 		});
 		

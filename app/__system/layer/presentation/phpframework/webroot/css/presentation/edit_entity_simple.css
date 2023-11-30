@@ -234,7 +234,7 @@
 }
 
 /* DESIGN SETTINGS */
-.regions_blocks_includes_settings .design_settings .current_template_file a {
+.entity_obj .regions_blocks_includes_settings .design_settings .current_template_file a {
 	color:var(--link-color);
 }
 

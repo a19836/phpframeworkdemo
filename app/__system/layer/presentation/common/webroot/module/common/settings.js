@@ -60,6 +60,7 @@ function initObjectBlockSettings(class_name, save_func, save_func_name) {
 		);
 		ElsLayoutUIEditor.options.on_choose_page_url_func = typeof onIncludePageUrlTaskChooseFile == "function" ? onIncludePageUrlTaskChooseFile : null;
 		ElsLayoutUIEditor.options.on_choose_image_url_func = typeof onIncludeImageUrlTaskChooseFile == "function" ? onIncludeImageUrlTaskChooseFile : null;
+		ElsLayoutUIEditor.options.on_choose_webroot_file_url_func = typeof onIncludeWebrootFileUrlTaskChooseFile == "function" ? onIncludeWebrootFileUrlTaskChooseFile : null;
 		
 		if (typeof convertProjectUrlPHPVarsToRealValues == "function")
 			ElsLayoutUIEditor.options.on_convert_project_url_php_vars_to_real_values_func = function(str) {

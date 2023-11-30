@@ -121,6 +121,10 @@
 	margin:0;
 	box-sizing:border-box;
 }
+.template_obj .regions_blocks_includes_settings .css_files > ul li.from_body .icon,
+  .template_obj .regions_blocks_includes_settings .js_files > ul li.from_body .icon {
+	opacity:.3;
+}
 
 .template_obj .regions_blocks_includes_settings .template_params .items .item > input[type=checkbox] {
   	visibility:hidden;

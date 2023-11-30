@@ -12,6 +12,10 @@ $project_protocol = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? "
 $uri = explode("?", (isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : ""));
 $uri = $uri[0]; //be sure that uri does not have the query string
 $parts = explode("/$presentation_id/", $uri);
+
+if (count($parts) <= 1) //Very important: The __system needs this, bc when the __system is trying to figure out the project url, it needs to have this check, when we have multiple installations in the same host accessable through different REQUEST_URI. This is to be used for the cases where the framework is installed in: localhost/foo/bar/__system/
+	$parts = explode("/__system/", $uri);
+
 if (count($parts) > 1) {
 	$project_relative_url_prefix = $parts[0] . "/$presentation_id/";
 	$project_common_relative_url_prefix = $parts[0] . "/" . $EVC->getCommonProjectName() . "/";

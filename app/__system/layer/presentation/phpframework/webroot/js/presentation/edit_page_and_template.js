@@ -338,6 +338,31 @@ function onPresentationIncludeImageUrlTaskChooseFile(elm) {
 	};
 }
 
+function onPresentationIncludeWebrootFileUrlTaskChooseFile(elm) {
+	var p = $(elm).parent();
+	var select = p.children("select");
+	var target_field = p.children("input[type=text]").first();
+	
+	if (!target_field[0]) //input may not have the type attribute
+		target_field = p.children("input").first(); 
+	
+	var auto_save_bkp = auto_save;
+	auto_save = false;
+	
+	onIncludeWebrootFileUrlTaskChooseFile(elm);
+	
+	MyFancyPopup.settings.targetField = target_field;
+	MyFancyPopup.settings.onClose = function() {
+		auto_save = auto_save_bkp;
+	};
+	MyFancyPopup.settings.updateFunction = function(sub_elm) {
+		chooseIncludeWebrootFileUrl(sub_elm);
+		
+		select.val("string");
+		select.trigger("change");
+	};
+}
+
 //target_field is used by the workflow task: GetUrlContentsTaskPropertyObj
 function onPresentationChooseColor(elm) {
 	var color = elm.value;
@@ -1494,6 +1519,12 @@ function editRegionBlock(elm, opts) {
 			if (typeof onPresentationIncludeImageUrlTaskChooseFile == "function")
 				PtlLayoutUIEditor.options.on_choose_image_url_func = function(elm) {
 					onPresentationIncludeImageUrlTaskChooseFile(elm);
+					MyFancyPopup.settings.is_code_html_base = typeof is_code_html_base == "undefined" ? true : is_code_html_base;
+				}
+			
+			if (typeof onPresentationIncludeWebrootFileUrlTaskChooseFile == "function")
+				PtlLayoutUIEditor.options.on_choose_webroot_file_url_func = function(elm) {
+					onPresentationIncludeWebrootFileUrlTaskChooseFile(elm);
 					MyFancyPopup.settings.is_code_html_base = typeof is_code_html_base == "undefined" ? true : is_code_html_base;
 				}
 			
@@ -3543,6 +3574,14 @@ function initPageAndTemplateLayout(main_parent_elm, opts) {
 	});
 	chooseImageUrlFromFileManagerTree.init("choose_image_url_from_file_manager");
 	
+	chooseWebrootFileUrlFromFileManagerTree = new MyTree({
+		multiple_selection : false,
+		toggle_children_on_click : true,
+		ajax_callback_before : prepareLayerNodes1,
+		ajax_callback_after : removeAllThatIsNotWebrootFileFromTree,
+	});
+	chooseWebrootFileUrlFromFileManagerTree.init("choose_webroot_file_url_from_file_manager");
+	
 	createChoosePresentationIncludeFromFileManagerTree();
 	
 	//disable auto_convert_settings_from_layout
@@ -3908,24 +3947,91 @@ function getMenuItemModuleId(menu_item) {
 
 /* DESIGN SETTINGS PANEL */
 
-function loadCodeEditorLayoutJSAndCSSFilesToSettings() {
-	var js_and_css_files = getCurrentCodeJSAndCSSFiles();
+function loadCodeEditorLayoutJSAndCSSFilesToSettings(opts) {
+	var head_code = getTemplateHeadEditorCode(); //The getTemplateHeadEditorCode function needs to be defined in the js files that call this method, bc it doesn't exists here.
+	var body_code = getTemplateBodyEditorCode(); //The getTemplateBodyEditorCode function needs to be defined in the js files that call this method, bc it doesn't exists here.
+	var code = "<html><head>" + head_code + "</head><body>" + body_code + "</body></html>";
+	
+	//return css and js files
+	var js_and_css_files = getCodeJSAndCSSFiles(code);
 	var css_files = js_and_css_files["css_files"];
 	var js_files = js_and_css_files["js_files"];
 	var regions_blocks_includes_settings = $(".regions_blocks_includes_settings");
 	
-	updateCodeEditorLayoutFilesInSettings(css_files, regions_blocks_includes_settings.find(".css_files > ul"));
-	updateCodeEditorLayoutFilesInSettings(js_files, regions_blocks_includes_settings.find(".js_files > ul"));
+	//prepare opts with head and body code
+	if (!$.isPlainObject(opts))
+		opts = {};
+	
+	opts["head_code"] = head_code;
+	opts["body_code"] = body_code;
+	
+	updateCodeEditorLayoutFilesInSettings(css_files, regions_blocks_includes_settings.find(".css_files > ul"), opts);
+	updateCodeEditorLayoutFilesInSettings(js_files, regions_blocks_includes_settings.find(".js_files > ul"), opts);
+
 }
 
 function getCurrentCodeJSAndCSSFiles() {
-	var css_files = [];
-	var js_files = [];
 	var head_code = getTemplateHeadEditorCode(); //The getTemplateHeadEditorCode function needs to be defined in the js files that call this method, bc it doesn't exists here.
 	var body_code = getTemplateBodyEditorCode(); //The getTemplateBodyEditorCode function needs to be defined in the js files that call this method, bc it doesn't exists here.
 	
 	var code = "<html><head>" + head_code + "</head><body>" + body_code + "</body></html>";
+	
+	//return css and js files
+	return getCodeJSAndCSSFiles(code);
+}
+
+function stripHtmlTagCode(tag_name, html) {
+	var html_lower = html.toLowerCase();
+	var pos = 0;
+	
+	tag_name = tag_name.toLowerCase();
+	
+	do {
+		var start_pos = html_lower.indexOf("<" + tag_name, pos);
+		
+		if (start_pos != -1) {
+			var tag_code = MyHtmlBeautify.getTagContent(html, start_pos, tag_name);
+			var start_tag_settings = MyHtmlBeautify.getTagHtml(html, start_pos);
+			var is_short_tag = start_tag_settings[0].substr(start_tag_settings[0].length - 2) == "/>";
+			
+			start_pos = start_tag_settings[1] + 1;
+			
+			if (is_short_tag)
+				pos = start_pos;
+			else {
+				var end_pos = html_lower.indexOf("</" + tag_name, start_pos + (tag_code ? tag_code.length : 0));
+				
+				if (end_pos != -1) {
+					var end_tag_settings = MyHtmlBeautify.getTagHtml(html, end_pos);
+					end_pos = (end_tag_settings[1] + 1) - end_tag_settings[0].length;
+					pos = start_pos + end_tag_settings[0].length;
+				}
+				else {
+					end_pos = html.length;
+					pos = end_pos;
+				}
+				
+				html = html.substr(0, start_pos) + html.substr(end_pos);
+				html_lower = html_lower.substr(0, start_pos) + html_lower.substr(end_pos);
+			}
+		}
+	}
+	while(start_pos != -1);
+	
+	return html;
+}
+
+function getCodeJSAndCSSFiles(code) {
+	var css_files = [];
+	var js_files = [];
 	var regex = /<(script|link)\s+/gi;
+	
+	//strip script/style/textarea content, just it may contain css or js code inside. bc in this case we should ignore it
+	code = stripHtmlTagCode("script", code);
+	code = stripHtmlTagCode("style", code);
+	code = stripHtmlTagCode("textarea", code);
+	
+	//find css and js code
 	var m = regex.exec(code);
 	
 	while (m != null) {
@@ -3968,7 +4074,7 @@ function getCurrentCodeJSAndCSSFiles() {
 	return {"css_files": css_files, "js_files": js_files};
 }
 
-function updateCodeEditorLayoutFilesInSettings(files, ul) {
+function updateCodeEditorLayoutFilesInSettings(files, ul, opts) {
 	//console.log(files);
 	var empty_files_li = ul.children(".empty_files");
 	
@@ -3978,46 +4084,286 @@ function updateCodeEditorLayoutFilesInSettings(files, ul) {
 	//prepare new files
 	if (files.length > 0) {
 		empty_files_li.hide();
-		var html = '';
 		
-		//prepare non https or http urls
-		var selected_project_url_prefix_aux = selected_project_url_prefix.match(/^http:/) ? selected_project_url_prefix.replace(/^http:/, "https:") : selected_project_url_prefix.replace(/^https:/, "http:");
-		var selected_project_common_url_prefix_aux = selected_project_common_url_prefix.match(/^http:/) ? selected_project_common_url_prefix.replace(/^http:/, "https:") : selected_project_common_url_prefix.replace(/^https:/, "http:");
-		
-		for (var i = 0; i < files.length; i++) {
-			var file = files[i];
-			var path = null;
-			
-			if (file.indexOf(selected_project_url_prefix) === 0) //checks if file starts with url in vars: selected_project_url_prefix
-				path = selected_project_id + "/webroot/" + file.substr(selected_project_url_prefix.length);
-			else if (file.indexOf(selected_project_common_url_prefix) === 0) //checks if file starts with url in vars: selected_project_common_url_prefix
-				path = common_project_name + "/webroot/" + file.substr(selected_project_common_url_prefix.length);
-			else if (file.indexOf(selected_project_url_prefix_aux) === 0) //checks if file starts with url in vars: selected_project_url_prefix_aux
-				path = selected_project_id + "/webroot/" + file.substr(selected_project_url_prefix_aux.length);
-			else if (file.indexOf(selected_project_common_url_prefix_aux) === 0) //checks if file starts with url in vars: selected_project_common_url_prefix_aux
-				path = common_project_name + "/webroot/" + file.substr(selected_project_common_url_prefix_aux.length);
-			else { //checks if file starts with php code: $project_url_prefix or $project_common_url_prefix
-				var m = /^<\?(|=|php)\s*(|echo|print)\s*(\$[a-z_]+)\s*;?\s*\?>/g.exec(file);
-				
-				if (m && (m[3] == "$project_url_prefix" || m[3] == "$original_project_url_prefix" || m[3] == "$project_common_url_prefix"/* || m[3] == "$original_project_common_url_prefix"*/)) { 
-					var relative_file = file.substr(m[0].length);
-					
-					path = (m[3] == "$project_url_prefix" || m[3] == "$original_project_url_prefix" ? selected_project_id : common_project_name) + "/webroot/" + relative_file;
-				}
-			}
-			
-			var file_name = file.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-			
-			if (path)
-				file_name = '<a href="javascript:void(0)" onClick="editWebrootFile(\'' + path + '\')" title="Click to edit file">' + file_name + '</a>';
-			
-			html += '<li>' + file_name + '</li>';
-		}
-		
-		ul.append(html);
+		for (var i = 0; i < files.length; i++)
+			addCodeEditorLayoutFileInSettings(files[i], ul, opts);
 	}
 	else
 		empty_files_li.show();
+}
+
+function addCodeEditorLayoutFileInSettings(file, ul, opts) {
+	var li_id = $.md5(file);
+	var li = ul.children("li[data_file_id='" + li_id + "']");
+	var force = opts && opts["force"];
+	
+	if (li[0] && !force) 
+		return li;
+	
+	var path = null;
+	var inline_html = opts && opts["inline_html"];
+	
+	//prepare non https or http urls
+	var selected_project_url_prefix_aux = selected_project_url_prefix.match(/^http:/) ? selected_project_url_prefix.replace(/^http:/, "https:") : selected_project_url_prefix.replace(/^https:/, "http:");
+	var selected_project_common_url_prefix_aux = selected_project_common_url_prefix.match(/^http:/) ? selected_project_common_url_prefix.replace(/^http:/, "https:") : selected_project_common_url_prefix.replace(/^https:/, "http:");
+	
+	//prepare file if inline html
+	var parsed_file = file;
+	
+	if (inline_html) {
+		var m = /(\{\$|\$\{)(project_url_prefix|original_project_url_prefix|project_common_url_prefix|original_project_common_url_prefix)\}?/.exec(file);
+		
+		if (!m)
+			m = /(\$)(project_url_prefix|original_project_url_prefix|project_common_url_prefix|original_project_common_url_prefix)[^a-z0-9_]?/.exec(file);
+		
+		if (m) {
+			var var_code = m[0];
+			var var_name = m[2];
+			
+			parsed_file = file.replace(var_code, '<? echo \$' + var_name + ';?>');
+		}
+	}
+	
+	//prepare file path
+	if (parsed_file.indexOf(selected_project_url_prefix) === 0) //checks if file starts with url in vars: selected_project_url_prefix
+		path = selected_project_id + "/webroot/" + parsed_file.substr(selected_project_url_prefix.length);
+	else if (parsed_file.indexOf(selected_project_common_url_prefix) === 0) //checks if file starts with url in vars: selected_project_common_url_prefix
+		path = common_project_name + "/webroot/" + parsed_file.substr(selected_project_common_url_prefix.length);
+	else if (parsed_file.indexOf(selected_project_url_prefix_aux) === 0) //checks if file starts with url in vars: selected_project_url_prefix_aux
+		path = selected_project_id + "/webroot/" + parsed_file.substr(selected_project_url_prefix_aux.length);
+	else if (parsed_file.indexOf(selected_project_common_url_prefix_aux) === 0) //checks if file starts with url in vars: selected_project_common_url_prefix_aux
+		path = common_project_name + "/webroot/" + parsed_file.substr(selected_project_common_url_prefix_aux.length);
+	else { //checks if file starts with php code: $project_url_prefix or $project_common_url_prefix
+		var m = /^<\?(|=|php)\s*(|echo|print)\s*(\$[a-z_]+)\s*;?\s*\?>/g.exec(parsed_file);
+		
+		if (m && (m[3] == "$project_url_prefix" || m[3] == "$original_project_url_prefix" || m[3] == "$project_common_url_prefix"/* || m[3] == "$original_project_common_url_prefix"*/)) { 
+			var relative_file = parsed_file.substr(m[0].length);
+			
+			path = (m[3] == "$project_url_prefix" || m[3] == "$original_project_url_prefix" ? selected_project_id : common_project_name) + "/webroot/" + relative_file;
+		}
+	}
+	
+	var file_name = file.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+	
+	if (path)
+		file_name = '<a href="javascript:void(0)" onClick="editWebrootFile(\'' + path + '\')" title="Click to edit file">' + file_name + '</a>';
+	
+	var html = '<li data_file_id="' + li_id + '">' + file_name;
+	
+	if (opts && opts["remove"] && typeof opts["remove"] == "string")
+		html += '<span class="icon delete" onClick="' + opts["remove"] + '(this, \'' + file + '\')" title="Remove this file">Remove</span>';
+	
+	html += '</li>';
+	
+	var new_li = $(html);
+	
+	if (opts && opts["remove"] && typeof opts["remove"] == "function") {
+		var remove_icon = $('<span class="icon delete" title="Remove this file">Remove</span>');
+		remove_icon.on("click", function() {
+			opts["remove"](this, file);
+		});
+		new_li.append(remove_icon);
+	}
+	
+	if (force && li[0]) {
+		li.before(new_li);
+		li.remove();
+	}
+	else
+		ul.append(new_li);
+	
+	if (opts && opts["create"] && typeof opts["create"] == "function")
+		opts["create"](file, new_li, opts);
+	
+	return new_li;
+}
+
+function appendRegionsBlocksHtmlFileInSettings(filter_by_region_name, opts) {
+	var regions_blocks_includes_settings = $(".regions_blocks_includes_settings");
+	var data = getSettingsTemplateRegionsBlocks(regions_blocks_includes_settings);
+	var template_regions = data["template_regions"];
+	var regions_code = "";
+	
+	filter_by_region_name = filter_by_region_name ? filter_by_region_name.replace(/"/g, "").toLowerCase() : "";
+	
+	if (template_regions)
+		for (var region in template_regions) {
+			var regions = template_regions[region];
+			var r = region.substr(0, 1) == '"' ? region.replace(/"/g, "") : region;
+			
+			if ((!filter_by_region_name || r.toLowerCase() == filter_by_region_name) && $.isArray(regions)) {
+				for (var i = 0, t = regions.length; i < t; i++) {
+					var item = regions[i];
+					var block_html = item[1];
+					var is_html = item[3];
+					
+					if (is_html && block_html)
+						regions_code += block_html;
+				}
+			}
+		}
+	
+	if (regions_code) {
+		var js_and_css_files = getCodeJSAndCSSFiles(regions_code);
+		var css_files = js_and_css_files["css_files"];
+		var js_files = js_and_css_files["js_files"];
+		
+		if (!$.isPlainObject(opts))
+			opts = {};
+		
+		opts["inline_html"] = true;
+		
+		if (css_files)
+			for (var i = 0, t = css_files.length; i < t; i++)
+				addCodeEditorLayoutFileInSettings(css_files[i], regions_blocks_includes_settings.find(".css_files > ul"), opts);
+		
+		if (js_files)
+			for (var i = 0, t = js_files.length; i < t; i++)
+				addCodeEditorLayoutFileInSettings(js_files[i], regions_blocks_includes_settings.find(".js_files > ul"), opts);
+	}
+}
+
+function removeFileFromCode(code, file) {
+	var regex = /<(script|link)\s+/gi;
+	var m = regex.exec(code);
+	
+	while (m != null) {
+		var tag_start = m.index;
+		var tag_html = MyHtmlBeautify.getTagHtml(code, tag_start, "");
+		var tag_code = tag_html[0];
+		var tag_end = tag_html[1];
+		
+		/*console.log(m);
+		console.log("tag_code:"+tag_code);
+		console.log("tag_start:"+tag_start);
+		console.log("tag_end:"+tag_end);*/
+		
+		//parse tag_code, ignoring the layout-ui-editor-reserved
+		if (tag_code && tag_code.indexOf("layout-ui-editor-reserved") == -1) {
+			var is_script = m[1].toLowerCase() == "script";
+			var sub_regex = new RegExp("\\s+(" + (is_script ? "src" : "href") + ")\\s*=\\s*(\"|'|)", "gi");
+			var sub_m = sub_regex.exec(tag_code);
+			
+			if (sub_m != null) {
+				var attr_start = sub_m.index + sub_m[0].length;
+				var attr = MyHtmlBeautify.getAttribute(tag_code, attr_start, sub_m[2]);
+				var attr_html = attr[0];
+				var attr_end = attr[1];
+				//console.log("tag_code:"+tag_code);
+				//console.log("attr_html:"+attr_html);
+				
+				if (attr_html && attr_html == file) {
+					if (is_script) {
+						var tag_content_html = MyHtmlBeautify.getNonParseInnerTagsNodeContent(code, tag_end + 1, "script");
+						var tag_content_code = tag_content_html[0];
+						var tag_content_pos = tag_content_html[1];
+						
+						var tag_end_html = MyHtmlBeautify.getTagHtml(code, tag_content_pos + 1, "");
+						var tag_end_code = tag_end_html[0];
+						var tag_end_pos = tag_end_html[1];
+						
+						tag_code += tag_content_code + tag_end_code;
+					}
+					
+					while(code.indexOf(tag_code) != -1)
+						code = code.replace(tag_code, "");
+				}
+			}
+		}
+		
+		m = regex.exec(code);
+	}
+	
+	return code;
+}
+
+function removeFileFromRegionBlockHtml(file, region_name) {
+	//check if file exists in head region also.
+	var regions_blocks_includes_settings = $(".regions_blocks_includes_settings");
+	var items = regions_blocks_includes_settings.find(".region_blocks, .other_region_blocks").find(".template_region_items .template_region_item");
+	var status = false;
+	
+	region_name = region_name ? region_name.replace(/"/g, "").toLowerCase() : "";
+	
+	//save synchronization functions
+	var update_settings_from_layout_iframe_func_bkp = update_settings_from_layout_iframe_func;
+	var update_layout_iframe_from_settings_func_bkp = update_layout_iframe_from_settings_func;
+	var update_layout_iframe_field_html_value_from_settings_func_bkp = update_layout_iframe_field_html_value_from_settings_func;
+	
+	//disable synchronization functions bc the updateSelectedTemplateRegionsBlocks calls the sync func, when it triggers the on change event from the blok_type in the getRegionBlockHtml
+	update_settings_from_layout_iframe_func = null;
+	update_layout_iframe_from_settings_func = null;
+	update_layout_iframe_field_html_value_from_settings_func = null;
+	
+	//remove file from all regions blocks
+	$.each(items, function (idx, item) {
+		var item_data = getSettingsTemplateRegionBlockValues(item);
+		var region = item_data["region"];
+		var block_html = item_data["block"];
+		var is_html = item_data["type"] == "html";
+		
+		var r = region.substr(0, 1) == '"' ? region.replace(/"/g, "") : region;
+		
+		if ((!region_name || r.toLowerCase() == region_name) && block_html && is_html) {
+			var new_block_html = removeFileFromCode(block_html, file);
+			
+			//update code in this region block
+			if (block_html != new_block_html) {
+				new_block_html = new_block_html.replace(/^\s+/g, "").replace(/\s+$/g, ""); //trim html
+				
+				var block_html_elm = $(item).find(".block_html");
+				setRegionBlockHtmlEditorValue(block_html_elm, new_block_html);
+				
+				status = true;
+			}
+		}
+	});
+	
+	//sets back synchronization functions
+	update_settings_from_layout_iframe_func = update_settings_from_layout_iframe_func_bkp;
+	update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
+	update_layout_iframe_field_html_value_from_settings_func = update_layout_iframe_field_html_value_from_settings_func_bkp;
+	
+	if (status && typeof update_layout_iframe_from_settings_func == "function")
+		update_layout_iframe_from_settings_func();
+	
+	//set click event on the Content tab (but only once), to refresh all opened and visible editors, so the editors can update the new values in the editors. This is to fix the bug, where the setRegionBlockHtmlEditorValue removes new code, and this new code doesn't appear until the user mouse click inside the editor.
+	if (status)
+		setOnClickEventToContentSettingsTabToUpdateRegionsBlocksHtmlEditorValue(true);
+	
+	return status;
+}
+
+function setOnClickEventToContentSettingsTabToUpdateRegionsBlocksHtmlEditorValue(only_once) {
+	var regions_blocks_includes_settings = $(".regions_blocks_includes_settings");
+	var content_settings_elm = regions_blocks_includes_settings.find(" > ul.tabs > li > a[href='#content_settings']");
+	
+	//only add 1 click event
+	if (content_settings_elm.data("with_on_click_content_settings_tab") != 1) {
+		var on_click_content_settings_tab_func = function() {
+			//console.log("on_click_content_settings_tab_func");
+			
+			setTimeout(function() { //must be in a settimeout, otherwsie it won't refresh the new values. Basically the ace editor only shows the new values when its visible or something like this...
+				updateRegionsBlocksHtmlEditorValue();
+			}, 300);
+			
+			if (only_once) {
+				content_settings_elm.unbind("click", on_click_content_settings_tab_func);
+				content_settings_elm.data("with_on_click_content_settings_tab", null);
+			}
+		};
+		content_settings_elm.bind("click", on_click_content_settings_tab_func);
+		content_settings_elm.data("with_on_click_content_settings_tab", 1);
+	}
+}
+
+function updateRegionsBlocksHtmlEditorValue() {
+	//when click on the Content tab, all open and visible editors should be resized, so the editors can update the new values in the editors. This is to fix the bug, where the some other panel sets (add or remove) new code in some region block editor, and this new code doesn't appear until the user mouse click inside the editor.
+	var regions_blocks_includes_settings = $(".regions_blocks_includes_settings");
+	regions_blocks_includes_settings.find(".region_blocks, .other_region_blocks").find(" > .template_region_items > .template_region_item.is_html > .block_html.editor").each(function (idx, block_html) {
+		if (block_html.editor)
+			block_html.editor.resize(); //the refresh action in the ace editor is the resize method.
+	});
 }
 
 /* MODULE INFO POPUP */
@@ -4972,6 +5318,12 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
 					MyFancyPopup.settings.is_code_html_base = typeof is_code_html_base == "undefined" ? true : is_code_html_base;
 				}
 			
+			if (typeof onPresentationIncludeWebrootFileUrlTaskChooseFile == "function")
+				PtlLayoutUIEditor.options.on_choose_webroot_file_url_func = function(elm) {
+					onPresentationIncludeWebrootFileUrlTaskChooseFile(elm);
+					MyFancyPopup.settings.is_code_html_base = typeof is_code_html_base == "undefined" ? true : is_code_html_base;
+				}
+			
 			//set new func for on_convert_project_url_php_vars_to_real_values_func that replaces inline vars too. This is only for the edit_entity_simple. The edit_template_simple should have this flag disabled and only replace the project_url_prefix inside of the php tags.
 			PtlLayoutUIEditor.options.on_convert_project_url_php_vars_to_real_values_func = function(str, widget) {
 				var replace_inline_vars = typeof replace_inline_project_url_php_vars == "undefined" ? false : replace_inline_project_url_php_vars;
@@ -5284,6 +5636,72 @@ function setCodeLayoutUIEditorCode(main_obj, code) {
 	
 	var editor = PtlLayoutUIEditor.data("editor");
 	return editor ? editor.setValue(code) : main_obj.find(".layout-ui-editor > .template-source > textarea").first().val(code);
+}
+
+/* DESIGN TAB FUNCTIONS */
+function addWebrootFile(elm, type, is_str_html_base, add_handler, remove_handler) {
+	if (type) {
+		var file_name = prompt("Please write the file name:");
+		
+		if (file_name) {
+			//trim name
+			file_name = ("" + file_name).replace(/^\s+/g, "").replace(/\s+$/g, "");
+			
+			//normalize new file name
+			file_name = normalizeFileName(file_name, true);
+			
+			//set extension
+			if (file_name.toLowerCase().substr(- (type.length + 1)) != "." + type)
+				file_name += "." + type;
+			
+			//prepare url
+			var url = create_webroot_file_url.replace("#folder#", type).replace("#file_name#", file_name);
+			
+			url = encodeUrlWeirdChars(url); //Note: Is very important to add the encodeUrlWeirdChars otherwise if a value has accents, won't work in IE.
+			
+			$.ajax({
+				type : "get",
+				url : url,
+				success : function(data, textStatus, jqXHR) {
+					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
+							StatusMessageHandler.removeLastShownMessage("error");
+							addWebrootFile(elm, type);
+						});
+					else if (data == "1") {
+						StatusMessageHandler.showMessage("File created correctly", "", "bottom_messages", 1500);
+						
+						//add file based on selected_project_url_prefix
+						var var_name = typeof give_priority_to_original_project_url_prefix != "undefined" && give_priority_to_original_project_url_prefix ? "original_project_url_prefix" : "project_url_prefix";
+						var replacement = is_str_html_base ? "<? echo $" + var_name + " ?>" : "{$" + var_name + "}";
+						var file_url = replacement + type + "/" + file_name;
+						var file_code = type == "css" ? '<link rel="stylesheet" href="' + file_url + '" />' : '<script language="javascript" type="text/javascript" src="' + file_url + '"></script>';
+						
+						var ul = $(elm).parent().closest(".css_files, .js_files").children("ul");
+						var template_file_url = is_str_html_base ? file_url : file_url.replace("{$" + var_name + "}", selected_project_url_prefix);
+						var li = addCodeEditorLayoutFileInSettings(template_file_url, ul, {remove: remove_handler});
+						
+						//call handler
+						if (typeof add_handler == "function")
+							add_handler(elm, type, file_name, file_url, file_code);
+						
+						//open edit popup
+						li.children("a").trigger("click");
+					}
+					else
+						StatusMessageHandler.showError("There was a problem trying to create file. Please try again..." + (data ? "\n" + data : ""));
+				},
+				error : function(jqXHR, textStatus, errorThrown) { 
+					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+					StatusMessageHandler.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to create file.\nPlease try again..." + msg);
+				},
+			});
+		}
+		else if (typeof file_name == "string")
+			StatusMessageHandler.showError("File name cannot be empty");
+	}
+	else
+		StatusMessageHandler.showError("File type cannot be empty");
 }
 
 /* UTIL FUNCTIONS */

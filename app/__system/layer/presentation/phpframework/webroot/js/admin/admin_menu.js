@@ -3027,30 +3027,6 @@ function manageFile(a, attr_name, action, on_success_callbacks) {
 	return false;
 }
 
-function normalizeFileName(new_file_name, allow_upper_case) {
-	//normalize new file name
-	if (new_file_name) {
-		var has_accents = new_file_name.match(/([\x7f-\xff\u1EBD\u1EBC]+)/gi);
-		var has_spaces = new_file_name.match(/\s+/g);
-		var has_upper_case = !allow_upper_case && new_file_name.toLowerCase() != new_file_name;
-		//var has_weird_chars = new_file_name.match(/([\p{L}\w\.]+)/giu).join("") != new_file_name; // \. is very important bc the new_file_name is the complete filename with the extension. \p{L} and /../u is to get parameters with accents and ç. Already includes the a-z. Cannot use this bc it does not work in IE.
-		var has_weird_chars = new_file_name.match(/([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC\.]+)/gi);
-		has_weird_chars = has_weird_chars && has_weird_chars.join("") != new_file_name; // \. is very important bc the new_file_name is the complete filename with the extension. '\w' means all words with '_' and 'u' means with accents and ç too.
-		
-		if ((has_accents || has_spaces || has_upper_case || has_weird_chars) && confirm("Is NOT advisable to have file names with spaces, dashes, letters with accents, upper case letters or weird characters.\nYou should only use the following letters: A-Z, 0-9 and '_'.\nCan I normalize this name and convert it to a proper name?")) {
-			if (typeof new_file_name.normalize == "function") //This doesn't work in IE11
-				new_file_name = new_file_name.normalize("NFD");
-			
-			new_file_name = new_file_name.replace(/[\u0300-\u036f]/g, "").replace(/[\s\-]+/g, "_").match(/[\w\.]+/g).join(""); // \. is very important bc the new_file_name is the complete filename with the extension.
-			
-			if (!allow_upper_case)
-				new_file_name = new_file_name.toLowerCase();
-		}
-	}
-	
-	return new_file_name;
-}
-
 function renameProject(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated) {
 	alert("Please don't forget to go to the permissions panel and update the correspondent permissions..."); //Do not use StatusMessageHandler.showMessage bc the onSuccessfullEditProject will refresh the main page
 	

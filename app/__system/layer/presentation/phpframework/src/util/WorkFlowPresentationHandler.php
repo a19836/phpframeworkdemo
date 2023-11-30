@@ -695,6 +695,23 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				<div class="button">
 					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
+			</div>
+			
+			<div id="choose_webroot_file_url_from_file_manager" class="myfancypopup choose_from_file_manager">
+				<div class="broker' . ($pc37695cb == 1 ? " single_broker" : "") . '">
+					<label>Broker:</label>
+					<select onChange="updateLayerUrlFileManager(this)">'; for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $pb0e92e25[$v43dd7d0051]; $pf8ed4912 .= '<option bean_file_name="' . $v7aeaf992f5[1] . '" bean_name="' . $v7aeaf992f5[2] . '" value="' . $v7aeaf992f5[0] . '">' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</option>'; } $pf8ed4912 .= '
+					</select>
+				</div>
+				<ul class="mytree">
+					<li>
+						<label>Root</label>
+						<ul layer_url="' . $pf7b73b3a . '"></ul>
+					</li>
+				</ul>
+				<div class="button">
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
+				</div>
 			</div>'; } return $pf8ed4912; } public static function getCodeEditorMenuHtml($v5d3813882f) { $v2101769c38 = $v5d3813882f["show_pretty_print"] ? $v5d3813882f["show_pretty_print"] : true; $pe7b2a888 = $v5d3813882f["generate_tasks_flow_from_code_label"] ? $v5d3813882f["generate_tasks_flow_from_code_label"] : "Generate Diagram from Code"; $pd880cf7e = $v5d3813882f["generate_tasks_flow_from_code_func"] ? $v5d3813882f["generate_tasks_flow_from_code_func"] : "generateTasksFlowFromCode"; $v13b5585fac = $v5d3813882f["generate_code_from_tasks_flow_label"] ? $v5d3813882f["generate_code_from_tasks_flow_label"] : "Generate Code From Diagram"; $v0fa2a905e0 = $v5d3813882f["generate_code_from_tasks_flow_func"] ? $v5d3813882f["generate_code_from_tasks_flow_func"] : "generateCodeFromTasksFlow"; return '<ul>
 			<li class="editor_settings" title="Open Editor Setings"><a onClick="openEditorSettings()"><i class="icon settings"></i> Open Editor Setings</a></li>
 			' . ($v2101769c38 ? '<li class="pretty_print" title="Pretty Print Code"><a onClick="prettyPrintCode()"><i class="icon pretty_print"></i> Pretty Print Code</a></li>' : '') . '

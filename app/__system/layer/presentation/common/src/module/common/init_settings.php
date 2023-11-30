@@ -39,6 +39,7 @@ ProgrammingTaskUtil.on_programming_task_choose_file_path_callback = onIncludeFil
 ProgrammingTaskUtil.on_programming_task_choose_folder_path_callback = onIncludeFolderTaskChooseFile;
 ProgrammingTaskUtil.on_programming_task_choose_page_url_callback = onIncludePageUrlTaskChooseFile;
 ProgrammingTaskUtil.on_programming_task_choose_image_url_callback = onIncludeImageUrlTaskChooseFile;
+ProgrammingTaskUtil.on_programming_task_choose_webroot_file_url_callback = onIncludeWebrootFileUrlTaskChooseFile;
 </script>';
 
 echo $WorkFlowUIHandler->getHeader(array("tasks_css_and_js" => false, "icons_and_edit_code_already_included" => true, "ui_editor" => true, "taskflowchart_already_included" => true));
