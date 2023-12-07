@@ -988,7 +988,7 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 	clear:both;
 }
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .draw_graph_action_body > .draw_graph_settings .graph_data_sets .other_options li input.option_value {
-	width:calc(100% - 197px);
+	width:calc(50% - 15px);
 	height:20px;
 }
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .draw_graph_action_body > .draw_graph_settings .graph_data_sets .other_options li .add_variable {

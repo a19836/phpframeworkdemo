@@ -65,11 +65,12 @@ class SchoolService extends \soa\CommonService {
 		return $data;
 	}
 	
+	
 	/**
-	 * @param (name=data[school_id], type=org.phpframework.object.db.DBPrimitive(bigint), length=20)  
-	 * @param (name=data[name], type=org.phpframework.object.db.DBPrimitive(varchar), not_null=1, default="", length=50, add_sql_slashes=1, sanitize_html=1)  
+	 * @param (name=data[school_id], type=org.phpframework.object.db.DBPrimitive(bigint), max_length=20) 
+	 * @param (name=data[name], type=org.phpframework.object.db.DBPrimitive(varchar), not_null=1, add_sql_slashes=1, sanitize_html=1, max_length=50) 
 	 */
-	public function insert($data) {
+	public function insert ($data) {
 		$options = $data["options"];
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
@@ -98,11 +99,12 @@ class SchoolService extends \soa\CommonService {
 		return $result;
 	}
 	
+	
 	/**
-	 * @param (name=data[name], type=org.phpframework.object.db.DBPrimitive(varchar), not_null=1, default="", length=50, add_sql_slashes=1, sanitize_html=1)  
-	 * @param (name=data[school_id], type=org.phpframework.object.db.DBPrimitive(bigint), not_null=1, length=20)  
+	 * @param (name=data[name], type=org.phpframework.object.db.DBPrimitive(varchar), not_null=1, add_sql_slashes=1, sanitize_html=1, max_length=50) 
+	 * @param (name=data[school_id], type=org.phpframework.object.db.DBPrimitive(bigint), not_null=1, max_length=20) 
 	 */
-	public function update($data) {
+	public function update ($data) {
 		$options = $data["options"];
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		

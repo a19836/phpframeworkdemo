@@ -34,15 +34,16 @@ var ServerTaskPropertyObj = {
 	on_close_server_properties_popup_callback : null,
 	show_php_obfuscation_option : true,
 	show_js_obfuscation_option : true,
-	projects_max_expiration_date_allowed : "",
-	sysadmin_max_expiration_date_allowed : "",
-	projects_max_num_allowed : "",
-	users_max_num_allowed : "",
-	end_users_max_num_allowed : "",
-	actions_max_num_allowed : "",
+	projects_max_expiration_date : "",
+	sysadmin_max_expiration_date : "",
+	projects_max_num : "",
+	users_max_num : "",
+	end_users_max_num : "",
+	actions_max_num : "",
 	allowed_paths : "",
 	allowed_domains : "",
 	check_allowed_domains_port : false,
+	allowed_sysadmin_migration : false,
 	
 	//private attributes
 	templates_properties : {},
@@ -461,6 +462,15 @@ var ServerTaskPropertyObj = {
 			
 			for (var k in workflow_properties)
 				properties[k] = workflow_properties[k];
+			
+			//disallow actions[xxx][copy_layers][sysadmin] if not allowed and someone hack the systems
+			if (!this.allowed_sysadmin_migration && $.isPlainObject(properties["actions"]))
+				$.each(properties["actions"], function(idx, action) {
+					if ($.isPlainObject(action) && action.hasOwnProperty("copy_layers") && $.isPlainObject(action["copy_layers"]) && action["copy_layers"].hasOwnProperty("sysadmin")) {
+						properties["actions"][idx]["copy_layers"]["sysadmin"] = null;
+						delete properties["actions"][idx]["copy_layers"]["sysadmin"];
+					}
+				});
 			
 			if (!this.templates_properties.hasOwnProperty(template_id))
 				this.templates_properties[template_id] = {};
@@ -1494,7 +1504,7 @@ var ServerTaskPropertyObj = {
 					
 				case "copy_layers":
 					html += '	<div class="sysadmin">'
-						+ '		<input type="checkbox" class="task_property_field" name="actions[' + action_id + '][copy_layers][sysadmin]" value="1" onClick="ServerTaskPropertyObj.onSelectSysAdmin(this)" checked />'
+						+ '		<input type="checkbox" class="task_property_field" name="actions[' + action_id + '][copy_layers][sysadmin]" value="1" onClick="ServerTaskPropertyObj.onSelectSysAdmin(this)" ' + (this.allowed_sysadmin_migration ? 'checked' : 'disabled') + ' />'
 						+ '		<label>Include SysAdmin Panel</label>'
 						+ '	</div>'
 						+ '	<div class="vendor">'
@@ -1530,48 +1540,48 @@ var ServerTaskPropertyObj = {
 						+ '		<label>Create Licence</label>'
 						+ '		<ul style="display:none">';
 					
-					if (this.projects_max_expiration_date_allowed)
+					if (this.projects_max_expiration_date)
 						html += ''
 						+ '			<li class="projects_expiration_date">'
 						+ '				<label>Projects Expiration Date: </label>'
-						+ '				<input type="text" class="task_property_field" name="actions[' + action_id + '][copy_layers][projects_expiration_date]" value="" placeHolder="YYYY-mm-dd' + (this.projects_max_expiration_date_allowed == "-1" ? ' or -1' : '') + '" />'
-						+ '				<div class="info">' + (this.projects_max_expiration_date_allowed == "-1" ? 'If empty value, the system will replace this with "-1".' : 'If empty value, the system will replace this with the default date "' + this.projects_max_expiration_date_allowed + '". If not empty value, it cannot exceed the default date.') + '</div>'
+						+ '				<input type="text" class="task_property_field" name="actions[' + action_id + '][copy_layers][projects_expiration_date]" value="" placeHolder="YYYY-mm-dd' + (this.projects_max_expiration_date == "-1" ? ' or -1' : '') + '" />'
+						+ '				<div class="info">' + (this.projects_max_expiration_date == "-1" ? 'If empty value, the system will replace this with "-1".' : 'If empty value, the system will replace this with the default date "' + this.projects_max_expiration_date + '". If not empty value, it cannot exceed the default date.') + '</div>'
 						+ '			</li>';
 					
-					if (this.sysadmin_max_expiration_date_allowed)
+					if (this.sysadmin_max_expiration_date)
 						html += ''
 						+ '			<li class="sysadmin_expiration_date">'
 						+ '				<label>SysAdmin Panel Expiration Date: </label>'
 						+ '				<input type="text" class="task_property_field" name="actions[' + action_id + '][copy_layers][sysadmin_expiration_date]" value="" placeHolder="YYYY-mm-dd" />'
-						+ '				<div class="info">If empty value, the system will replace this for a default expiration date of +30 days trial... The maximum date allowed is: "' + this.sysadmin_max_expiration_date_allowed + '"</div>'
+						+ '				<div class="info">If empty value, the system will replace this for a default expiration date of +30 days trial... The maximum date allowed is: "' + this.sysadmin_max_expiration_date + '"</div>'
 						+ '			</li>';
 					
-					if ($.isNumeric(this.projects_max_num_allowed)) //if not numeric it means the system was hacked, so we don't show this option.
+					if ($.isNumeric(this.projects_max_num)) //if not numeric it means the system was hacked, so we don't show this option.
 						html += ''
 						+ '			<li class="projects_maximum_number">'
 						+ '				<label>Maximum Projects Number Allowed: </label>'
-						+ '				<input type="number" class="task_property_field" name="actions[' + action_id + '][copy_layers][projects_maximum_number]" value="" min="-1" ' + (parseInt(this.projects_max_num_allowed) > -1 ? 'max="' + this.projects_max_num_allowed + '"' : '') + ' />'
+						+ '				<input type="number" class="task_property_field" name="actions[' + action_id + '][copy_layers][projects_maximum_number]" value="" min="-1" ' + (parseInt(this.projects_max_num) > -1 ? 'max="' + this.projects_max_num + '"' : '') + ' />'
 						+ '			</li>';
 					
-					if ($.isNumeric(this.users_max_num_allowed)) //if not numeric it means the system was hacked, so we don't show this option.
+					if ($.isNumeric(this.users_max_num)) //if not numeric it means the system was hacked, so we don't show this option.
 						html += ''
 						+ '			<li class="users_maximum_number">'
 						+ '				<label>Maximum Developer-Users Number Allowed: </label>'
-						+ '				<input type="number" class="task_property_field" name="actions[' + action_id + '][copy_layers][users_maximum_number]" value="" min="-1" ' + (parseInt(this.users_max_num_allowed) > -1 ? 'max="' + this.users_max_num_allowed + '"' : '') + ' />'
+						+ '				<input type="number" class="task_property_field" name="actions[' + action_id + '][copy_layers][users_maximum_number]" value="" min="-1" ' + (parseInt(this.users_max_num) > -1 ? 'max="' + this.users_max_num + '"' : '') + ' />'
 						+ '			</li>';
 					
-					if ($.isNumeric(this.end_users_max_num_allowed)) //if not numeric it means the system was hacked, so we don't show this option.
+					if ($.isNumeric(this.end_users_max_num)) //if not numeric it means the system was hacked, so we don't show this option.
 						html += ''
 						+ '			<li class="end_users_maximum_number">'
 						+ '				<label>Maximum End-Users Number Allowed: </label>'
-						+ '				<input type="number" class="task_property_field" name="actions[' + action_id + '][copy_layers][end_users_maximum_number]" value="" min="-1" ' + (parseInt(this.end_users_max_num_allowed) > -1 ? 'max="' + this.end_users_max_num_allowed + '"' : '') + ' />'
+						+ '				<input type="number" class="task_property_field" name="actions[' + action_id + '][copy_layers][end_users_maximum_number]" value="" min="-1" ' + (parseInt(this.end_users_max_num) > -1 ? 'max="' + this.end_users_max_num + '"' : '') + ' />'
 						+ '			</li>';
 					
-					if ($.isNumeric(this.actions_max_num_allowed)) //if not numeric it means the system was hacked, so we don't show this option.
+					if ($.isNumeric(this.actions_max_num)) //if not numeric it means the system was hacked, so we don't show this option.
 						html += ''
 						+ '			<li class="actions_maximum_number">'
 						+ '				<label>Maximum Actions Number Allowed: </label>'
-						+ '				<input type="number" class="task_property_field" name="actions[' + action_id + '][copy_layers][actions_maximum_number]" value="" min="-1" ' + (parseInt(this.actions_max_num_allowed) > -1 ? 'max="' + this.actions_max_num_allowed + '"' : '') + ' />'
+						+ '				<input type="number" class="task_property_field" name="actions[' + action_id + '][copy_layers][actions_maximum_number]" value="" min="-1" ' + (parseInt(this.actions_max_num) > -1 ? 'max="' + this.actions_max_num + '"' : '') + ' />'
 						+ '				<div class="info">An action is a "save" of a file!</div>'
 						+ '			</li>';
 					

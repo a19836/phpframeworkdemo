@@ -20,6 +20,7 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 	<!-- JQuery -->
 	<script language="javascript" type="text/javascript" src="../jquery/js/jquery-1.8.1.min.js"></script>
 	<script language="javascript" type="text/javascript" src="../jqueryui/js/jquery-ui-1.11.4.min.js"></script>
+	<link rel="stylesheet" href="../jqueryui/css/jquery-ui-1.11.4.css">
 	
 	<!-- To work on mobile devices with touch -->
 	<script language="javascript" type="text/javascript" src="../jqueryuitouchpunch/jquery.ui.touch-punch.min.js"></script>

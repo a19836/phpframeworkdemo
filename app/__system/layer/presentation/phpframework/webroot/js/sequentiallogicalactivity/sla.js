@@ -1838,10 +1838,13 @@ function onDrawGraphJSCodeTabClick(elm) {
 				var aux = getDrawGraphSettingValueToJSCode(values_variable, true, false, false);
 				labels_variable = '<?php echo json_encode(is_array(' + aux + ') ? array_keys(' + aux + ') : null); ?>';
 				labels_and_values_type = null;
+				
+				values_variable = '<?php echo json_encode(is_array(' + aux + ') ? array_values(' + aux + ') : null); ?>';
 			}
+			else
+				values_variable = getDrawGraphSettingValueToJSCode(values_variable, true, true, true);
 			
 			item_label = getDrawGraphSettingValueToJSCode(item_label, false, false, true);
-			values_variable = getDrawGraphSettingValueToJSCode(values_variable, true, true, true);
 			background_colors = getDrawGraphSettingValueToJSCode(background_colors, false, true, true);
 			border_colors = getDrawGraphSettingValueToJSCode(border_colors, false, true, true);
 			border_width = getDrawGraphSettingValueToJSCode(border_width, false, false, true);
@@ -1854,7 +1857,7 @@ function onDrawGraphJSCodeTabClick(elm) {
 					if (option_name == "order")
 						order_exists = true;
 					
-					var option_value = other_option.find(".option_value").val()
+					var option_value = other_option.find(".option_value").val();
 					option_value = getDrawGraphSettingValueToJSCode(option_value, false, true, true);
 					
 					data_set_options_code += "\t\t\t\t" + option_name + ': ' + option_value+ ',' + "\n";

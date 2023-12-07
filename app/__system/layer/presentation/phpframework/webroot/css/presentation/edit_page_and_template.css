@@ -1288,6 +1288,11 @@ body > .dragging_menu_item {
 	z-index:3;
 }
 
+/* CODE - ELS UI - LAYOUT UI EDITOR - TOP BAR MENU - POPUP */
+.code_layout_ui_editor .layout-ui-editor > .layout-ui-editor-popup {
+	margin-top:-40px;
+}
+
 /* CODE - MYTREE */
 .code_layout_ui_editor .mytree .icon {	
 	margin-left:5px;

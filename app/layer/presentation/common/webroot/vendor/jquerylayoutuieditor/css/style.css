@@ -183,6 +183,15 @@
 	--auto-complete-active-color:#ffffff;
 }
 
+/* when moving an element */
+.moveable-widget {
+	min-width:1em;
+	min-height:1em;
+	display:block;
+	background:rgba(0, 0, 0, .1);
+	border:2px dashed rgba(0, 0, 0, .1);
+}
+
 /* UI */
 
 .layout-ui-editor {
@@ -2438,6 +2447,54 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	color:var(--editor-error-msg-color, #fff);
 	background-color:#FF0000;
 	background-color:var(--editor-error-msg-bg, rgba(255, 0, 0, 0.8));
+}
+
+/* POPUP */
+
+.layout-ui-editor > .layout-ui-editor-popup {
+	font-size:inherit;
+	background:#fff;
+}
+
+.layout-ui-editor > .layout-ui-editor-popup.clone {
+	padding-top:50px;
+	position:fixed;
+	top:20px;
+	left:20px;
+	right:20px;
+	bottom:20px;
+	width:auto;
+	height:auto;
+	box-sizing:border-box;
+	border:1px solid var(--add-widget-popup-border);
+	z-index:10;
+}
+.layout-ui-editor > .layout-ui-editor-popup.clone:before {
+	content:"";
+	display:block;
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	z-index:-1;
+	background:rgba(0,0,0,.5);
+}
+.layout-ui-editor > .layout-ui-editor-popup.clone > .popup_close,
+  .layout-ui-editor > .layout-ui-editor-popup.clone > .close {
+	position:absolute;
+	top:15px;
+	right:15px;
+	cursor:pointer;
+	font-size:14px;
+	z-index:1;
+	color:var(--add-widget-popup-color);
+	
+}
+.layout-ui-editor > .layout-ui-editor-popup.clone > .popup_close:before,
+  .layout-ui-editor > .layout-ui-editor-popup.clone > .close:before {
+	content:"x";
+	display:block;
 }
 
 /* MENU SETTINGS CONTEXT MENU */

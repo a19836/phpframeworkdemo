@@ -50,6 +50,15 @@
 		StatusMessageHandler.init();
 	});
 	</script>
+	
+	<script type='text/javascript'>
+	window.smartlook||(function(d) {
+		var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];
+		var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';
+	c.charset='utf-8';c.src='https://web-sdk.smartlook.com/recorder.js';h.appendChild(c);
+	})(document);
+	smartlook('init', '51ec78273cda170da574d0133c29cfc4d073c304', { region: 'eu' });
+	</script>
 
 	<!-- Hotjar Tracking Code for https://jplpinto.ddns.net/ -->
 	<script>

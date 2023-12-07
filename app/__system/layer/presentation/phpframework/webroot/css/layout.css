@@ -2435,6 +2435,14 @@ body .layout-ui-editor-menu-settings-context-menu li a:hover {
 	color:inherit;
 }
 
+/* BOOTSTRAP WIDGETS POPUP */
+body .layout-ui-editor-bootstrap-widgets-popup {
+	max-height:calc(100vh - 90px);
+}
+body .layout-ui-editor-bootstrap-widgets-popup > .buttons > button {
+	padding:10px 15px;
+}
+
 /* TABS */
 .tabs.tabs_transparent {
 	background:none;

@@ -57,6 +57,11 @@ body {
 
 /* GENERIC */
 
+/* bootstrap */
+.modal-backdrop.show { /* when user click s in button to open popup, the div.modal-backdrop gets created and doesn't allow us to click in the other widgets. So we need to hide it. */
+	display:none !important;
+}
+
 /* when dropping an element */
 .main-droppable.highlight {
 	-ms-box-shadow: inset 0px 0px 10px 5px rgba(0, 0, 0, 0.3) !important;

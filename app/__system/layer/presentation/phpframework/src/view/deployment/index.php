@@ -52,15 +52,16 @@ ServerTaskPropertyObj.on_open_server_properties_popup_callback = onOpenServerPro
 ServerTaskPropertyObj.on_close_server_properties_popup_callback = onCloseServerPropertiesPopup;
 ServerTaskPropertyObj.show_php_obfuscation_option = ' . ($show_php_obfuscation_option ? "true" : "false") . ';
 ServerTaskPropertyObj.show_js_obfuscation_option = ' . ($show_js_obfuscation_option ? "true" : "false") . ';
-ServerTaskPropertyObj.projects_max_expiration_date_allowed = "' . $projects_max_expiration_date_allowed . '";
-ServerTaskPropertyObj.sysadmin_max_expiration_date_allowed = "' . $sysadmin_max_expiration_date_allowed . '";
-ServerTaskPropertyObj.projects_max_num_allowed = "' . $projects_max_num_allowed . '";
-ServerTaskPropertyObj.users_max_num_allowed = "' . $users_max_num_allowed . '";
-ServerTaskPropertyObj.end_users_max_num_allowed = "' . $end_users_max_num_allowed . '";
-ServerTaskPropertyObj.actions_max_num_allowed = "' . $actions_max_num_allowed . '";
+ServerTaskPropertyObj.projects_max_expiration_date = "' . $projects_max_expiration_date . '";
+ServerTaskPropertyObj.sysadmin_max_expiration_date = "' . $sysadmin_max_expiration_date . '";
+ServerTaskPropertyObj.projects_max_num = "' . $projects_max_num . '";
+ServerTaskPropertyObj.users_max_num = "' . $users_max_num . '";
+ServerTaskPropertyObj.end_users_max_num = "' . $end_users_max_num . '";
+ServerTaskPropertyObj.actions_max_num = "' . $actions_max_num . '";
 ServerTaskPropertyObj.allowed_paths = "' . $allowed_paths . '";
 ServerTaskPropertyObj.allowed_domains = "' . $allowed_domains . '";
 ServerTaskPropertyObj.check_allowed_domains_port = ' . ($check_allowed_domains_port ? "true" : "false") . ';
+ServerTaskPropertyObj.allowed_sysadmin_migration = ' . ($allowed_sysadmin_migration ? "true" : "false") . ';
 
 var wordpress_installations_relative_path = "' . $EVC->getCommonProjectName() . '/webroot/' . WordPressUrlsParser::WORDPRESS_FOLDER_PREFIX . '/";
 '; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, "", $upload_bean_layer_files_from_file_manager_url); $head .= WorkFlowPresentationHandler::getBusinessLogicBrokersHtml($business_logic_brokers, $choose_bean_layer_files_from_file_manager_url, ""); $head .= WorkFlowPresentationHandler::getDataAccessBrokersHtml($data_access_brokers, $choose_bean_layer_files_from_file_manager_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_test_units_files_from_file_manager_url, "", "", ""); foreach ($layer_brokers_settings as $k => $layer_brokers) if ($k == "data_access_brokers" || $k == "business_logic_brokers" || $k == "presentation_brokers") { $t = count($layer_brokers); for ($i = 0; $i < $t; $i++) { $l = $layer_brokers[$i]; $head .= '
