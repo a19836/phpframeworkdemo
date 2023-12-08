@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 interface IFileCompressionHandler { public function open($pf3dc0762); public function write($v327f72fb62); public function close(); } ?>

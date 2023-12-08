@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 interface ICMSProgramInstallationHandler { public static function getProgramSettingsHtml(); public function getStepHtml($v6602edb5ab, $pd9c013d5 = null, $pd65a9318 = null); public function installStep($v6602edb5ab, $pd9c013d5 = null, $pd65a9318 = null); public function validate(); public function install($pe8b53bc6 = false); public function uninstall(); } ?>

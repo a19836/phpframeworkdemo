@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 interface IMemcacheHandler { public function connect($v244067a7fe = "", $v7e782022ec = "", $v50623da9ca = null); public function close(); public function ok(); public function getConn(); public function get($pbfa01ed1); public function set($pbfa01ed1, $v57b4b0200b, $pea3723af = 0); } ?>

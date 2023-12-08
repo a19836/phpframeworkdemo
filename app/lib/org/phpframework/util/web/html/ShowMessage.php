@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class ShowMessage { public static function printStatus($v1db8fcc7cd, $v5c1c342594) { $pf8ed4912 = '<div class="msg">'; if($v5c1c342594 === true) { $pf8ed4912 .= '<div class="ok">'.$v1db8fcc7cd.'</div>'; } elseif(is_array($v1db8fcc7cd) && count($v1db8fcc7cd)) { $pf8ed4912 .= '<div class="error">
 				ERRORS: <br/><ul><li>- 
 				'.implode("</li><li>- ", $v1db8fcc7cd).'

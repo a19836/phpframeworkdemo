@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 $head = ""; include $EVC->getViewPath($page); $head .= '<link rel="stylesheet" href="' . $project_url_prefix . 'css/setup.css" type="text/css" charset="utf-8" />
 
 <script>

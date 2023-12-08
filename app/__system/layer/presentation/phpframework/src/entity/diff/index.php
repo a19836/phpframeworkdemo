@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); include_once $EVC->getEntityPath("admin/admin_advanced"); unset($layers["db_layers"]); if ($layers["presentation_layers"]) foreach ($layers["presentation_layers"] as $layer_name => $layer) foreach ($layer as $fn => $f) if ($fn != "properties" && $fn != "aliases") unset($layers["presentation_layers"][$layer_name][$fn]); ?>

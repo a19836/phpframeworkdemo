@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include_once get_lib("org.phpframework.broker.client.local.LocalDataAccessBrokerClient"); include_once get_lib("org.phpframework.broker.client.IHibernateDataAccessBrokerClient"); class LocalHibernateDataAccessBrokerClient extends LocalDataAccessBrokerClient implements IHibernateDataAccessBrokerClient { public function callObject($pcd8c70bc, $v20b8676a9f, $v5d3813882f = false) { return $this->getBrokerServer()->callObject($pcd8c70bc, $v20b8676a9f, $v5d3813882f); } } ?>

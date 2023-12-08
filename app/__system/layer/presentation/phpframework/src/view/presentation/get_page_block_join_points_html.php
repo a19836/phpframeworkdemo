@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 echo CMSPresentationLayerJoinPointsUIHandler::getBlockJoinPointsHtml($module_join_points, $block, false, $module["module_handler_impl_file_path"]); $EVC->setTemplate("empty"); ?>

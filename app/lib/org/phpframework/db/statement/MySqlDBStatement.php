@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 trait MySqlDBStatement { public static function getCreateDBStatement($pb67a2609, $v5d3813882f = false) { return "CREATE DATABASE IF NOT EXISTS `" . $pb67a2609 . "`" . (!empty($v5d3813882f["encoding"]) ? " DEFAULT CHARACTER SET " . $v5d3813882f["encoding"] : ""); } public static function getDropDatabaseStatement($pb67a2609, $v5d3813882f = false) { return "/*!40000 DROP DATABASE IF EXISTS `$pb67a2609`*/;"; } public static function getSelectedDBStatement($v5d3813882f = false) { return "SELECT DATABASE() AS db"; } public static function getDBsStatement($v5d3813882f = false) { return "SHOW DATABASES"; } public static function getTablesStatement($pb67a2609 = false, $v5d3813882f = false) { $pa51282b5 = $v5d3813882f && !empty($v5d3813882f["schema"]) ? $v5d3813882f["schema"] : null; $pb67a2609 = $pb67a2609 ? $pb67a2609 : $pa51282b5; $v3c76382d93 = "SELECT 
 				TABLE_NAME AS 'table_name', 
 				TABLE_TYPE AS 'table_type',

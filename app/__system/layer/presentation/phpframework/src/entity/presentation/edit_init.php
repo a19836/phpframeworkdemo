@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); if ($_POST) $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "write"); include $EVC->getEntityPath("admin/edit_raw_file"); ?>

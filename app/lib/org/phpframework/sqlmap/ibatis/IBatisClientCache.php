@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include_once get_lib("org.phpframework.sqlmap.SQLMapClientCache"); class IBatisClientCache extends SQLMapClientCache { const CACHE_DIR_NAME = "__system/ibatis/"; public function initCacheDirPath($v17be587282) { if(!$this->cache_root_path) { if($v17be587282) { CacheHandlerUtil::configureFolderPath($v17be587282); $v17be587282 .= self::CACHE_DIR_NAME; if(CacheHandlerUtil::preparePath($v17be587282)) { CacheHandlerUtil::configureFolderPath($v17be587282); $this->cache_root_path = $v17be587282; } } } } } ?>

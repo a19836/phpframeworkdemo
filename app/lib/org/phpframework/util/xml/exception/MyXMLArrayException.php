@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class MyXMLArrayException extends Exception { public $problem; public function __construct($v6de691233b, $v67db1bd535) { switch($v6de691233b) { case 1: $this->problem = "ERROR: Node conditions can only contain attribute or numeric indexes. Sub-nodes conditions are not supported! Please remove the '{$v67db1bd535}' sub-node condition please."; break; case 2: $this->problem = "ERROR: Node conditions contains a unknown character. Please check the '{$v67db1bd535}' character, please."; break; } } } ?>

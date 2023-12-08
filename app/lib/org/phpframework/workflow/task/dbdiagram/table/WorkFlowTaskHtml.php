@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include_once get_lib("org.phpframework.db.DB"); $column_types = DB::getAllSharedColumnTypes(); $numeric_column_types = DB::getAllSharedColumnNumericTypes(); $column_types_ignored_props = DB::getAllSharedColumnTypesIgnoredProps(); $column_types_hidden_props = DB::getAllSharedColumnTypesHiddenProps(); $charsets = null; $table_collations = null; $column_collations = null; $table_storage_engines = null; $column_simple_types = DB::getAllSharedColumnSimpleTypes(); echo '<script>
 //These types will be re-defined again in the diagram.php according with the correspondent DB DRIVER. Only define here, if not yet defined. Note that this will be called everytime that the Task Table Properties gets loaded!
 DBTableTaskPropertyObj.column_types = DBTableTaskPropertyObj.column_types ? DBTableTaskPropertyObj.column_types : ' . json_encode($column_types) . ';

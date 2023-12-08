@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class GlobalVars { function getUserGlobalVars() { $pde8b84cb = $GLOBALS; $pbb9a4285 = array("GLOBALS", "_ENV", "HTTP_ENV_VARS", "_POST", "HTTP_POST_VARS", "_GET", "HTTP_GET_VARS", "_COOKIE", "HTTP_COOKIE_VARS", "_SERVER", "HTTP_SERVER_VARS", "_FILES", "HTTP_POST_FILES", "_REQUEST", "_SESSION", "HTTP_SESSION_VARS"); $v798939f4bb = array(); foreach($pde8b84cb as $v9ac031280c => $pcc23f958) if(array_search($v9ac031280c, $pbb9a4285) === false) if(!strpos($v9ac031280c, "-")) $v798939f4bb[$v9ac031280c] = $pcc23f958; return $v798939f4bb; } } ?>

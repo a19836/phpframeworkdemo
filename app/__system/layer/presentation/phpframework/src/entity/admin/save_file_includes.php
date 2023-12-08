@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "write"); $file_type = "save_file_includes"; if (!isset($_POST["object"])) $_POST["object"] = array(); include $EVC->getEntityPath("admin/save_php_file_props"); ?>

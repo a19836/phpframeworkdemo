@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include_once get_lib("org.phpframework.compression.IFileCompressionHandler"); class Bzip2FileCompressionHandler implements IFileCompressionHandler { protected $file_pointer = null; public function __construct() { if (!function_exists("bzopen")) throw new Exception("Bzip2 lib is not installed or bzopen function does NOT exists!"); } public function open($pf3dc0762) { $this->file_pointer = bzopen($pf3dc0762, "w"); if ($this->file_pointer === false) throw new Exception("Could not open file! Please check if the '" . basename($pf3dc0762) . "' file is writeable..."); return true; } public function write($v327f72fb62) { $v8d6672117e = bzwrite($this->file_pointer, $v327f72fb62); if ($v8d6672117e === false) throw new Exception("Could not write to file! Please check if you have enough free space..."); return $v8d6672117e; } public function close() { return bzclose($this->file_pointer); } } ?>

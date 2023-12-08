@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 $head = '<style>
 h1 {width:100%; text-align:center; font-size:20px; font-weight:bold; margin-top:100px;}
 h2 {width:100%; text-align:center; font-size:16px; margin-top:10px;}

@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 $exists_phpmailer = file_exists( get_lib("lib.vendor.phpmailer.PHPMailerAutoload") ); if (!$exists_phpmailer) echo '<script>SendEmailTaskPropertyObj.exists_phpmailer = false;</script>'; ?>
 <div class="send_email_task_html">
 	

@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include_once $EVC->getUtilPath("WorkFlowBusinessLogicHandler"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "write"); if ($_POST["object"]) WorkFlowBusinessLogicHandler::prepareServiceObjectForsaving($_POST["object"]); $do_not_die_on_save = true; include $EVC->getEntityPath("admin/save_file_includes"); if ($obj && is_a($obj, "BusinessLogicLayer") && $_POST && $status) CacheHandlerUtil::deleteFolder($obj->getCacheLayer()->getCachedDirPath(), false); die($status); ?>

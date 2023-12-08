@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include_once get_lib("org.phpframework.broker.Broker"); include_once get_lib("org.phpframework.layer.Layer"); abstract class BrokerServer extends Broker { protected $Layer; public function __construct(Layer $v847a7225e0) { $this->Layer = $v847a7225e0; parent::__construct(); } public function getBrokerLayer() { return $this->Layer; } } ?>

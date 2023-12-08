@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 function getVarsHtml($v3fb9f41470) { $v761f4d757f = $_POST ? $_POST[$v3fb9f41470 . '_vars'] : null; $v6c3cc118c9 = ""; if ($v761f4d757f) foreach ($v761f4d757f as $v43dd7d0051 => $v847e7d0a83) if ($v847e7d0a83["name"] || $v847e7d0a83["value"]) $v6c3cc118c9 .= getVarHtml($v3fb9f41470, $v43dd7d0051, $v847e7d0a83["name"], $v847e7d0a83["value"]); $pf8ed4912 = '<div class="vars ' . $v3fb9f41470 . '_vars">
 		<label>' . ucfirst($v3fb9f41470) . ' Variables:</label>
 		<table>

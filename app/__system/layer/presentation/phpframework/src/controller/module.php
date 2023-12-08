@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 define("PROJECTS_CHECKED", 123); include $EVC->getConfigPath("config"); include $EVC->getUtilPath("sanitize_html_in_post_request", $EVC->getCommonProjectName()); include $EVC->getConfigPath("authentication"); include $EVC->getControllerPath("module", $EVC->getCommonProjectName()); ?>

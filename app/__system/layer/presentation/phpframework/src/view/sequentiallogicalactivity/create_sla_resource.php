@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 $obj = array( "status" => $status, "actions" => $actions, "error_message" => $error_message, "flush_cache" => $flush_cache ); $EVC->setTemplate("json"); ?>

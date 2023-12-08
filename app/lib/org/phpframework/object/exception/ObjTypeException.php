@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class ObjTypeException extends Exception { public $problem; public function __construct($v1335217393, $v67db1bd535) { $v67db1bd535 = is_object($v67db1bd535) ? get_class($v67db1bd535) : $v67db1bd535; $this->problem = "Wrong {$v1335217393} value: '{$v67db1bd535}' "; } } ?>

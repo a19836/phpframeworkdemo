@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 use PhpParser\Node; class PHPParserTraverserNodeVisitor extends PhpParser\NodeVisitorAbstract { public function leaveNode(Node $v6694236c2c) { $pcc2fe66c = $v6694236c2c->getAttribute("comments"); if ($pcc2fe66c) { $v6694236c2c->setAttribute("comments", array()); $v6694236c2c->setAttribute("my_comments", $pcc2fe66c); } } } ?>

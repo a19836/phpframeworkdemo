@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include_once get_lib("org.phpframework.broker.server.local.LocalBrokerServer"); include_once get_lib("org.phpframework.broker.server.IBusinessLogicBrokerServer"); class LocalBusinessLogicBrokerServer extends LocalBrokerServer implements IBusinessLogicBrokerServer { public function callBusinessLogic($pc8b88eb4, $v95eeadc9e9, $v9367d5be85 = false, $v5d3813882f = false) { return $this->Layer->callBusinessLogic($pc8b88eb4, $v95eeadc9e9, $v9367d5be85, $v5d3813882f); } public function getBrokersDBDriversName() { return $this->Layer->getBrokersDBDriversName(); } } ?>

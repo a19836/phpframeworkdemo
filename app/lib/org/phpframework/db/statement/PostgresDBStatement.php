@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 trait PostgresDBStatement { public static function getCreateDBStatement($pb67a2609, $v5d3813882f = false) { $v3c76382d93 = "CREATE DATABASE \"" . $pb67a2609 . "\""; if (!empty($v5d3813882f["encoding"]) || !empty($v5d3813882f["collation"])) { $v3c76382d93 .= " WITH"; if (!empty($v5d3813882f["encoding"])) $v3c76382d93 .= " ENCODING '" . strtoupper($v5d3813882f["encoding"]) . "'"; if (!empty($v5d3813882f["collation"])) $v3c76382d93 .= " LC_COLLATE '" . strtoupper($v5d3813882f["collation"]) . "'"; } return $v3c76382d93; } public static function getDropDatabaseStatement($pb67a2609, $v5d3813882f = false) { return "/*!40000 DROP DATABASE IF EXISTS \"$pb67a2609\" */;"; } public static function getSelectedDBStatement($v5d3813882f = false) { return "SELECT current_database() AS db"; } public static function getDBsStatement($v5d3813882f = false) { return "SELECT datname AS name FROM pg_database"; } public static function getTablesStatement($pb67a2609 = false, $v5d3813882f = false) { $pa51282b5 = $v5d3813882f && !empty($v5d3813882f["schema"]) ? $v5d3813882f["schema"] : null; $v3c76382d93 = "SELECT 
 				t.table_name AS \"table_name\",
 				t.table_schema AS \"table_schema\"

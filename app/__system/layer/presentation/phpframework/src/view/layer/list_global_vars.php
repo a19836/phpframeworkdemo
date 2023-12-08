@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 $var_html = '<tr>
 		<td class="var_name"><input type="text" class="var_name" name="vars_name[]" value="#var_name#" allownull="false" validationtype="Variable Name" validationregex="/^([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC]+)$/g" validationmessage="Invalid variable name." /></td>
 		<td class="var_value"><input type="text" class="var_value" name="vars_value[]" value="#var_value#" allownull="true" /></td>

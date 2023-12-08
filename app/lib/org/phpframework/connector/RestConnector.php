@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include_once get_lib("org.phpframework.util.web.MyCurl"); include_once get_lib("org.phpframework.util.xml.MyXML"); class RestConnector { public static function connect($v539082ff30, $pbd9f98de = null) { return MyCurl::getUrlContents($v539082ff30, $pbd9f98de); } } ?>

@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269c4fa) { return '
 <!-- Add Jquery Tap-Hold Event JS file -->
 <script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/jquerytaphold/taphold.js"></script>

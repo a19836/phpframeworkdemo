@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresentationHandler { public static function getHeader($peb014cfd, $v37d269c4fa, $pcfdeae4e = false, $v8555f2f905 = false, $pbd963c11 = false, $v8c5b4fe0d4 = false) { $pf8ed4912 = '
 			<!-- Add MyTree main JS and CSS files -->
 			<link rel="stylesheet" href="' . $v37d269c4fa . 'vendor/jquerymytree/css/style.min.css" type="text/css" charset="utf-8" />

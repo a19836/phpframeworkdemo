@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include_once get_lib("org.phpframework.cache.CacheHandlerUtil"); include_once get_lib("org.phpframework.cache.xmlsettings.IXmlSettingsCacheHandler"); abstract class XmlSettingsCacheHandler implements IXmlSettingsCacheHandler { protected $cache_ttl = 30758400; public function setCacheTTL($v61de9a39ed) {$this->cache_ttl = $v61de9a39ed;} public function getCacheTTL() {return $this->cache_ttl;} protected function prepareFilePath(&$pf3dc0762) { $pf3dc0762 = CacheHandlerUtil::getCacheFilePath($pf3dc0762); } } ?>

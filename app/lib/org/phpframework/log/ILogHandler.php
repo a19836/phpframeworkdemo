@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 interface ILogHandler { public function setLogLevel($v471bf34077); public function getLogLevel(); public function setEchoActive($pe9578251); public function getEchoActive(); public function setFilePath($pf3dc0762); public function getFilePath(); public function setCSS($v67ec30e2c2); public function getCSS(); public function setExceptionLog($pa4e4963d, $pb82223e4 = null); public function setErrorLog($pa4e4963d, $pb82223e4 = null); public function setInfoLog($pa4e4963d, $pb82223e4 = null); public function setDebugLog($pa4e4963d, $pb82223e4 = null); } ?>

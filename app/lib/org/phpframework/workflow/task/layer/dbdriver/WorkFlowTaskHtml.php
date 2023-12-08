@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include_once get_lib("org.phpframework.db.DB"); $extensions = DB::getAllExtensionsByType(); $encodings = DB::getAllDBCharsetsByType(); $driver_labels = DB::getAllDriverLabelsByType(); $ignore_connection_options = DB::getAllIgnoreConnectionOptionsByType(); $ignore_connection_options_by_extension = DB::getAllIgnoreConnectionOptionsByExtensionAndType(); echo '<script>
 DBDriverTaskPropertyObj.encodings = ' . json_encode($encodings) . ';
 DBDriverTaskPropertyObj.extensions = ' . json_encode($extensions) . ';

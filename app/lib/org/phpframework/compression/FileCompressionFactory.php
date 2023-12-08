@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class FileCompressionFactory { public static function create($v74128956c0) { $v0ff021f094 = self::isValid($v74128956c0); if (!$v0ff021f094) throw new Exception("Compression method ($v74128956c0) is not allowed!"); $v1335217393 = "{$v74128956c0}FileCompressionHandler"; return new $v1335217393(); } public static function isValid($v74128956c0) { $v1335217393 = "{$v74128956c0}FileCompressionHandler"; $pf3dc0762 = get_lib("org.phpframework.compression.{$v1335217393}"); if (file_exists($pf3dc0762)) { include_once $pf3dc0762; return is_a($v1335217393, "IFileCompressionHandler", true); } return false; } } ?>

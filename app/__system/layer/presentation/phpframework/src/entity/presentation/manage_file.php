@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); if ($_GET["action"] == "remove") $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "delete"); else { $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "write"); if ($_GET["action"] == "paste_and_remove") $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "delete"); } include $EVC->getEntityPath("admin/manage_file"); ?>

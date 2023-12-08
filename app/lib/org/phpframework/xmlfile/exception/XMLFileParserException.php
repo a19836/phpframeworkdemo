@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class XMLFileParserException extends Exception { public $problem; public function __construct($v6de691233b, $v67db1bd535 = array()) { switch($v6de691233b) { case 1: $this->problem = "ERROR trying to include the '".$v67db1bd535."' file."; break; } } } ?>

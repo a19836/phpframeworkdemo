@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
  include __DIR__ . "/OpenSSLCipherHandler.php"; $salt = "some string here. whatever you want!!!"; $text = "some message to be encrypted"; echo "\n**** SIMPLE TEXT TO ENCRYPT ****"; $cipher_text = OpenSSLCipherHandler::encryptText($text, $salt); $decrypted_text = OpenSSLCipherHandler::decryptText($cipher_text, $salt); echo "
 salt: $salt
 text: $text

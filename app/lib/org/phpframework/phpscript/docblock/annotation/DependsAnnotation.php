@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 namespace DocBlockParser\Annotation; class DependsAnnotation extends Annotation { public function __construct() { $this->vectors = array("path", "desc"); } public function parseArgs($v6da2e4df28, $v86066462c3) { $this->args = $v86066462c3; } public function checkMethodAnnotations(&$v5730eacfdc, $pcc2d93a5) { return true; } } ?>

@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include get_lib("org.phpframework.bean.exception.BeanArgumentException"); class BeanArgument { const AK = "x1qMj9Bx3BxeefcvT4/FtHadhrNOM/J31akctINwSmsLWcn6YJ7g7fJrPjkwZtRO"; public $index; public $value = false; public $reference = false; public function __construct($v8a4df75785, $v67db1bd535 = false, $v6da63250f5 = false) { $this->index = $v8a4df75785; $this->value = $v67db1bd535; $this->reference = $v6da63250f5; $this->f085037e150(); } private function f085037e150() { if(!is_numeric($this->index)) { launch_exception(new BeanArgumentException(1, $this->index)); return false; } elseif($this->index <= 0) { launch_exception(new BeanArgumentException(2, $this->index)); return false; } elseif($this->value && $this->reference) { launch_exception(new BeanArgumentException(3, array($this->value, $this->reference))); return false; } return true; } } ?>

@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
  include __DIR__ . "/pre_init_config.php"; include dirname(dirname(dirname(__DIR__))) . "/init.php"; ?>

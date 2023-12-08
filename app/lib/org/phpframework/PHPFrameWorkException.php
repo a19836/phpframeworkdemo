@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class PHPFrameWorkException extends Exception { public $problem; public function __construct($v6de691233b, $v67db1bd535) { switch($v6de691233b) { case 1: $this->problem = "PHPFrameWork obj '{$v67db1bd535}' does not exist!"; break; case 2: $this->problem = "Bean obj '{$v67db1bd535}' does not exist!"; break; } } } ?>

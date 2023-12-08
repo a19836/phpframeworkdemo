@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class MyIOManagerException extends Exception { public $problem; function __construct($v6de691233b, $v67db1bd535) { switch($v6de691233b) { case 1: $this->problem = "FILEMANAGER_DATA cannot be undefined."; break; case 2: $this->problem = "FileManager cannot be undefined. Current filemanager type is:'$v67db1bd535'!"; break; } } } ?>

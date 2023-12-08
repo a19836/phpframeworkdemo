@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include_once get_lib("org.phpframework.object.ObjType"); include_once get_lib("org.phpframework.object.exception.ObjTypeException"); class Integer extends ObjType { public function __construct($v5c1105bd54 = false) { if($v5c1105bd54 !== false) $this->setData($v5c1105bd54); } public function getData() {return (int)$this->data;} public function setData($v539082ff30) { if(is_numeric($v539082ff30)) { $this->data = (int)$v539082ff30; return true; } launch_exception(new ObjTypeException(get_class($this), $v539082ff30)); return false; } } ?>

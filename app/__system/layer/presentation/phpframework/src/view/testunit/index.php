@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include $EVC->getUtilPath("WorkFlowPresentationHandler"); $choose_test_units_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=test_unit&path=#path#"; $open_test_unit_file_url = $project_url_prefix . "testunit/edit_test?path=#path#"; $execute_tests_url = $project_url_prefix . "testunit/execute_tests"; $manage_file_url = $project_url_prefix . "admin/manage_file?bean_name=test_unit&bean_file_name=&path=#path#&action=#action#&item_type=test_unit&extra=#extra#"; $create_test_url = $project_url_prefix . "phpframework/testunit/create_test?path=#path#&file_name=#extra#"; $head = '
 <!-- Add MyTree main JS and CSS files -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerymytree/css/style.min.css" type="text/css" charset="utf-8" />

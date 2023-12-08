@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 $obj = array( "html" => $html, "editable_settings" => $editable_settings, "block_code_id" => $block_code_id, "block_code_time" => $block_code_time ); $EVC->setTemplate("json"); ?>

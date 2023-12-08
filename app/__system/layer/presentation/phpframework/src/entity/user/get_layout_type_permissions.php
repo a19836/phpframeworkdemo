@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $layout_type_id = $_GET["layout_type_id"]; if ($layout_type_id) { $layout_type_permissions = $UserAuthenticationHandler->searchLayoutTypePermissions(array("layout_type_id" => $layout_type_id)); } ?>

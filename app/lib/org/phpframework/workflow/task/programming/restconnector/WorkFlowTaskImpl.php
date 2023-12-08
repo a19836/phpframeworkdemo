@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 namespace WorkFlowTask\programming\restconnector; include_once dirname(__DIR__) . "/geturlcontents/WorkFlowTaskImpl.php"; class WorkFlowTaskImpl extends \WorkFlowTask\programming\geturlcontents\WorkFlowTaskImpl { public function __construct() { $this->method_obj = "RestConnector"; $this->method_name = "connect"; } } ?>

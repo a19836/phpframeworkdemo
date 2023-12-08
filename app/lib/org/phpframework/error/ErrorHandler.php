@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class ErrorHandler { private $v0f9512fda4; public function __construct() { $this->start(); } public function stop() { $this->v0f9512fda4 = true; } public function start() { $this->v0f9512fda4 = false; } public function ok() { return !$this->v0f9512fda4; } } ?>

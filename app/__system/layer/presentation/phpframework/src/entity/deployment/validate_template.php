@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include_once $EVC->getUtilPath("WorkFlowDeploymentHandler"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $server_name = $_GET["server"]; $template_id = $_GET["template_id"]; $li = $EVC->getPresentationLayer()->getPHPFrameWork()->gLI(); $status = WorkFlowDeploymentHandler::validateTemplate($server_name, $template_id, $workflow_paths_id, $li, $error_message); echo $error_message ? $error_message : $status; die(); ?>

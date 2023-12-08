@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 namespace __system\businesslogic; include_once $vars["business_logic_modules_service_common_file_path"]; include_once get_lib("org.phpframework.localdb.LocalDBTableHandler"); class LocalDBAuthService extends CommonService { protected $LocalDBTableHandler; protected function initLocalDBTableHandler(&$data) { if (!$this->LocalDBTableHandler) { $v4ab372da3a = isset($data["root_path"]) ? $data["root_path"] : null; $pbdcbd484 = isset($data["encryption_key"]) ? $data["encryption_key"] : null; $this->LocalDBTableHandler = new \LocalDBTableHandler($v4ab372da3a, $pbdcbd484); } unset($data["root_path"]); unset($data["encryption_key"]); } } ?>

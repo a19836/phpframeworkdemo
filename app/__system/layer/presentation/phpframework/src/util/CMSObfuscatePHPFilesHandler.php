@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include_once get_lib("org.phpframework.phpscript.PHPCodeObfuscator"); class CMSObfuscatePHPFilesHandler { private $v65a3fffe5d; public function __construct($v65a3fffe5d) { $this->v65a3fffe5d = $v65a3fffe5d; } public function obfuscate($pebb3f429, $paad98334, $pd5dfe038, $v63c9ec8e00) { $paad98334 = $this->mf3abb0be10a2($paad98334); $v3c7f4e8209 = new PHPCodeObfuscator($paad98334, $pd5dfe038); $v5c1c342594 = $v3c7f4e8209->obfuscateFiles($pebb3f429); $pfbb0cd41 = $v3c7f4e8209->getIncludesWarningMessage($v63c9ec8e00); $v8a29987473 = $v3c7f4e8209->getErrors(); return array( "status" => $v5c1c342594, "errors" => $v8a29987473, "warning_msg" => $pfbb0cd41, ); } public function getConfiguredOptions($v5d3813882f) { $pebb3f429 = array(); if (!is_array($v5d3813882f)) parse_str($v5d3813882f, $pebb3f429); else $pebb3f429 = $v5d3813882f; if (!isset($pebb3f429["strip_comments"])) $pebb3f429["strip_comments"] = 1; if (!isset($pebb3f429["strip_doc_comments"])) $pebb3f429["strip_doc_comments"] = 1; if (!isset($pebb3f429["copyright"])) $pebb3f429["copyright"] = '/*
  * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
  * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com

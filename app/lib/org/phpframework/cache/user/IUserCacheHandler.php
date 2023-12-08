@@ -17,5 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 interface IUserCacheHandler { public function read($v250a1176c9); public function write($v250a1176c9, $v539082ff30); public function isValid($v250a1176c9); public function exists($v250a1176c9); public function delete($v250a1176c9); } ?>

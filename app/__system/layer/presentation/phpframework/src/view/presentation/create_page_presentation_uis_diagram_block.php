@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if ($new_path) { $page_name = $db_table . "_" . $task_tag . ($task_tag_action ? "_" . implode("_", $task_tag_action) : ""); $head .= '
 	<style>
 	.taskflowchart .tasks_menu_hide,

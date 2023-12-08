@@ -17,7 +17,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 trait MSSqlDBStatement { public static function getCreateDBStatement($pb67a2609, $v5d3813882f = false) { if (!empty($v5d3813882f["encoding"])) { $pf6d213c3 = self::$db_charsets_to_collations[ $v5d3813882f["encoding"] ]; $pf6d213c3 = $pf6d213c3 ? " COLLATE " . $pf6d213c3 : ""; } return "IF DB_ID ('" . $pb67a2609 . "') IS NULL CREATE DATABASE " . $pb67a2609 . $pf6d213c3; } public static function getDropDatabaseStatement($pb67a2609, $v5d3813882f = false) { return "/* DROP DATABASE IF EXISTS [$pb67a2609] */;"; } public static function getSelectedDBStatement($v5d3813882f = false) { return "SELECT DB_NAME() AS db"; } public static function getDBsStatement($v5d3813882f = false) { return "SELECT name, database_id FROM sys.databases"; } public static function getTablesStatement($pb67a2609 = false, $v5d3813882f = false) { $pa51282b5 = $v5d3813882f && !empty($v5d3813882f["schema"]) ? $v5d3813882f["schema"] : null; $v3c76382d93 ="SELECT 
 				t.TABLE_NAME AS 'table_name', 
 				t.TABLE_TYPE AS 'table_type',
