@@ -6,18 +6,18 @@
 	<var name="mysql_options">
 		<list>
 			<item name="extension">mysqli</item>
-			<item name="host">127.0.0.1</item>
+			<item name="host"><![CDATA[127.0.0.1]]></item>
 			<item name="port"></item>
-			<item name="db_name">&lt;?php echo $GLOBALS['default_db_name']; ?></item>
-			<item name="username">&lt;?php echo $GLOBALS['default_db_user']; ?></item>
-			<item name="password">&lt;?php echo $GLOBALS['default_db_pass']; ?></item>
+			<item name="db_name"><![CDATA[&lt;?php echo $GLOBALS['default_db_name']; ?>]]></item>
+			<item name="username"><![CDATA[&lt;?php echo $GLOBALS['default_db_user']; ?>]]></item>
+			<item name="password"><![CDATA[&lt;?php echo $GLOBALS['default_db_pass']; ?>]]></item>
 			<item name="persistent">1</item>
 			<item name="new_link">0</item>
 			<item name="encoding">utf8</item>
-			<item name="schema"></item>
-			<item name="odbc_data_source"></item>
-			<item name="odbc_driver"></item>
-			<item name="extra_dsn"></item>
+			<item name="schema"><![CDATA[]]></item>
+			<item name="odbc_data_source"><![CDATA[]]></item>
+			<item name="odbc_driver"><![CDATA[]]></item>
+			<item name="extra_dsn"><![CDATA[]]></item>
 		</list>
 	</var>
 	<bean name="Mysql" path="lib.org.phpframework.db.driver.MySqlDB" bean_group="dbdriver">
