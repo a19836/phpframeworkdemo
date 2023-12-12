@@ -10,6 +10,10 @@
 		update sysauth_login_control set session_id='#session_id#', login_expired_time=#login_expired_time#, failed_login_attempts=#failed_login_attempts#, failed_login_time=#failed_login_time#, modified_date='#modified_date#' where username='#username#'
 	</update>
 	
+	<delete id="delete_login_control">
+		delete from sysauth_login_control where username=#username#
+	</delete>
+	
 	<delete id="delete_all_login_controls">
 		delete from sysauth_login_control
 	</delete>

@@ -32,35 +32,46 @@ if (typeof is_global_common_file_already_included == "undefined") {
 		}
 	};
 	
-	function isInputTextValid(text, invalid_text_regex) {
+	function inputTextContainsRegex(text, valid_text_regex) {
 		if (text && text.length > 0) {
 			text = text.replace(/\n/g, ""); //if text has \n then the regex won't work. So we need to use .replace(/\n/g, "")
-				
-			var invalid = typeof invalid_text_regex == "string" ? (new RegExp(invalid_text_regex)).test(text) : invalid_text_regex.exec(text); 
-			var at_least_one_character = /[a-z]+/i.exec(text);
 			
-			return !invalid && at_least_one_character;
+			var ret = typeof valid_text_regex == "string" ? (new RegExp(valid_text_regex)).test(text) : valid_text_regex.exec(text);
+			
+			return ret ? true : false;
 		}
 		
 		return false;
 	}
 	
-	function isLabelValid(label_obj) {
-		//if (!isInputTextValid(label_obj.label, /[^\p{L}\w\-\.\$ ]+/u)) { //'\w' means all words with '_' and '/u' means with accents and ç too. Cannot use this bc it does not work in IE.
-		if (!isInputTextValid(label_obj.label, /[^\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC\-\.\$ ]+/)) { //'\w' means all words with '_' and 'u' means with accents and ç too.
-			var msg = "Invalid label. Please choose a different label.\nOnly this letters are allowed: a-z, A-Z, 0-9, '-', '_', '.', '$' and you must have at least 1 character.";
-			alert(msg);
-			myWFObj.getTaskFlowChart().StatusMessage.showError(msg);
-			return false;
-		}
-		return true;
+	function inputTextContainsAtLeastOneLetter(text) {
+		return inputTextContainsRegex(text, /[a-z]+/i);
 	}
 	
-	function isTaskLabelValid(label_obj, task_id) {
-		if (!isLabelValid(label_obj))
+	function isLabelValid(label_obj, ignore_msg) {
+		//var valid = !inputTextContainsRegex(label_obj.label, /[^\p{L}\w\-\.\$ ]+/u); //'\w' means all words with '_' and '/u' means with accents and ç too. Cannot use this bc it does not work in IE.
+		var valid = !inputTextContainsRegex(label_obj.label, /[^\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC\-\.\$ ]+/); //'\w' means all words with '_' and 'u' means with accents and ç too.
+		
+		if (valid)
+			valid = inputTextContainsAtLeastOneLetter(label_obj.label); //checks if label has at least one letter
+		
+		if (!valid && !ignore_msg) {
+			var msg = "Invalid label. Please choose a different label.\nOnly this characters are allowed: a-z, A-Z, 0-9, '-', '_', '.', ' ', '$' and you must have at least 1 character.";
+			
+			if (label_obj.from_prompt)
+				alert(msg);
+			else
+				myWFObj.getTaskFlowChart().StatusMessage.showError(msg);
+		}
+		
+		return valid;
+	}
+	
+	function isTaskLabelValid(label_obj, task_id, ignore_msg) {
+		if (!isLabelValid(label_obj, ignore_msg))
 			return false;
 		
-		return isTaskLabelRepeated(label_obj, task_id) == false;
+		return isTaskLabelRepeated(label_obj, task_id, ignore_msg) == false;
 	}
 	
 	function isTaskLabelRepeated(label_obj, task_id, ignore_msg) {

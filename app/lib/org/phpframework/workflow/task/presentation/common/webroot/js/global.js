@@ -377,9 +377,15 @@ if (typeof is_global_presentation_common_file_already_included == "undefined") {
 		/* UTILS - File Name Functions */
 		
 		isTaskFileLabelValid : function(label_obj, task_id) {
-			//if (!isInputTextValid(label_obj.label, /[^\p{L}\w\-\. ]+/u)) { //'\w' means all words with '_' and '/u' means with accents and ç too. Cannot use this bc it does not work in IE.
-			if (!isInputTextValid(label_obj.label, /[^\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC\-\. ]+/)) { //'\w' means all words with '_' and 'u' means with accents and ç too.
-				myWFObj.getTaskFlowChart().StatusMessage.showError("Invalid label. Please choose a different label.\nOnly this letters are allowed: a-z, A-Z, 0-9, '-', '_', '.' and you must have at least 1 character.");
+			//var valid = !inputTextContainsRegex(label_obj.label, /[^\p{L}\w\-\. ]+/u)); //'\w' means all words with '_' and '/u' means with accents and ç too. Cannot use this bc it does not work in IE.
+			var valid = !inputTextContainsRegex(label_obj.label, /[^\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC\-\. ]+/); //'\w' means all words with '_' and 'u' means with accents and ç too.
+			
+			if (valid)
+				valid = inputTextContainsAtLeastOneLetter(label_obj.label); //checks if label has at least one letter
+			
+			if (!valid) {
+				myWFObj.getTaskFlowChart().StatusMessage.showError("Invalid label. Please choose a different label.\nOnly this characters are allowed: a-z, A-Z, 0-9, '-', '_', '.', ' ' and you must have at least 1 letter.");
+				
 				return false;
 			}
 			

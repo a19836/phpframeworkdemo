@@ -25,6 +25,9 @@ namespace __system\businesslogic; include_once $vars["business_logic_modules_ser
 	 * @param (name=data[type_id], type=tinyint, not_null=1, default=0, length=1)
 	 * @param (name=data[name], type=varchar, not_null=1, min_length=1, max_length=255)
 	 */ public function update($data) { $v5d3813882f = isset($data["options"]) ? $data["options"] : null; $data["name"] = addcslashes($data["name"], "\\'"); $data["modified_date"] = date("Y-m-d H:i:s"); return $this->getBroker()->callUpdate("auth", "update_layout_type", $data, $v5d3813882f); } /**
+	 * @param (name=data[old_name_prefix], type=varchar, not_null=1, min_length=1, max_length=255)
+	 * @param (name=data[new_name_prefix], type=varchar, not_null=1, min_length=1, max_length=255)
+	 */ public function updateByNamePrefix($data) { $v5d3813882f = isset($data["options"]) ? $data["options"] : null; $pf72c1d58 = $this->getAll(array("options" => $v5d3813882f)); if ($pf72c1d58) { $v86bd693a16 = strlen($data["old_name_prefix"]); $pc37695cb = count($pf72c1d58); $v5c1c342594 = true; for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v342a134247 = $pf72c1d58[$v43dd7d0051]; $v5e813b295b = $v342a134247["name"]; if (substr($v5e813b295b, 0, $v86bd693a16) == $data["old_name_prefix"]) { $v342a134247["name"] = $data["new_name_prefix"] . substr($v5e813b295b, $v86bd693a16); $v342a134247["options"] = $v5d3813882f; if (!$this->update($v342a134247)) $v5c1c342594 = false; } } return $v5c1c342594; } return true; } /**
 	 * @param (name=data[layout_type_id], type=bigint, not_null=1, length=19)
 	 */ public function delete($data) { $v1a222c94d4 = $data["layout_type_id"]; $v5d3813882f = isset($data["options"]) ? $data["options"] : null; return $this->getBroker()->callDelete("auth", "delete_layout_type", array("layout_type_id" => $v1a222c94d4), $v5d3813882f); } /**
 	 * @param (name=data[layout_type_id], type=bigint, not_null=1, length=19)

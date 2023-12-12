@@ -20,6 +20,7 @@
 if (typeof is_global_layer_common_file_already_included == "undefined") {
 	var is_global_layer_common_file_already_included = 1;
 	var workflow_global_variables = {};
+	var normalize_task_layer_label = true;
 	
 	/* HANDLERS */
 	
@@ -372,13 +373,76 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 	
 	/* TASK LABEL */
 	
-	function isTaskLayerLabelValid(label_obj, task_id) {
-		var status = isTaskLabelValid(label_obj, task_id);
+	function onCheckTaskLayerLabel(label_obj, task_id) {
+		var status = isTaskLayerLabelValid(label_obj, task_id, true);
+		
+		if (!status && normalize_task_layer_label) {
+			myWFObj.getTaskFlowChart().StatusMessage.removeLastShownMessage("error");
+			
+			label_obj.label = normalizeTaskLayerName(label_obj.label);
+			
+			status = isTaskLayerLabelValid(label_obj, task_id, true);
+		}
+		else if (normalize_task_layer_label)
+			label_obj.label = normalizeTaskLayerName(label_obj.label);
+		
+		if (!status) {
+			myWFObj.getTaskFlowChart().StatusMessage.removeLastShownMessage("error");
+			
+			var msg = label_obj.error;
+			
+			if (label_obj.from_prompt)
+				alert(msg);
+			else
+				myWFObj.getTaskFlowChart().StatusMessage.showError(msg);
+		}
 		
 		if (status)
 			containsLayerGlobalVariables(label_obj.label);
 		
 		return status;
+	}
+	
+	function isTaskLayerLabelValid(label_obj, task_id, ignore_msg) {
+		var valid = false;
+		
+		if (label_obj.label && label_obj.label.length > 0) {
+			var valid = isTaskLabelValid(label_obj, task_id, ignore_msg);
+			
+			if (valid)
+				isTaskLayerNameAdvisable(label_obj.label);
+		}
+		
+		if (!valid) {
+			var already_exists_error = myWFObj.getTaskFlowChart().StatusMessage.getMessageHtmlObj().children(".error").last().text();
+			var msg = (already_exists_error ? "\n" : "") + "Invalid label. Please choose a different label.\nYou cannot have repeated labels, only this characters are allowed: a-z, A-Z, 0-9 and '_'" + (normalize_task_layer_label ? "" : ", '-', '.', ' ', '$'") + " and you must have at least 1 letter.";
+			myWFObj.getTaskFlowChart().StatusMessage.showError(msg);
+			//console.log(msg);
+			
+			label_obj.error = msg;
+		}
+		
+		return valid;
+	}
+	
+	function isTaskLayerNameAdvisable(name) {
+		if (name) {
+			var normalized = ("" + name);
+			
+			if (typeof normalized.normalize == "function") //This doesn't work in IE11
+				normalized = normalized.normalize("NFD");
+				
+			normalized = normalized.replace(/\./g, "_"); //replaces '.' by '_'
+			normalized = normalized.replace(/[\u0300-\u036f]/g, ""); //replaces all characters with accents with non accented characters including 'ç' to 'c'
+			
+			if (name != normalized)
+				myWFObj.getTaskFlowChart().StatusMessage.showError("Is NOT advisable to add names with accents and with non-standard characters. Please try to only use A-Z 0-9 and '_'.");
+		}
+	}
+	
+	function normalizeTaskLayerName(name) {
+		//return name ? ("" + name).replace(/\n/g, "").replace(/[ \-\.]+/g, "_").match(/[\p{L}\w]+/giu).join("") : name; //\p{L} and /../u is to get parameters with accents and ç. Already includes the a-z. Cannot use this bc it does not work in IE.
+		return name ? ("" + name).replace(/(^\s+|\s+$)/g, "").replace(/\n/g, "").replace(/[ \-\.]+/g, "_").match(/[\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC]+/gi).join("") : name; //'\w' means all words with '_' and 'u' means with accents and ç too.
 	}
 
 	function containsLayerGlobalVariables(label) {

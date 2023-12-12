@@ -148,6 +148,13 @@ var PageTaskPropertyObj = {
 		WF.TaskFlow.deleteTask(task_id, {confirm: false});
 		WF.StatusMessage.showError("This task cannot be dropped here!");
 	},
+	
+	onCheckLabel : function(label_obj, task_id) {
+		//if (label_obj && typeof label_obj.label == "string") //spaces are allowed in files including at the begin and end.
+		//	label_obj.label = label_obj.label.replace(/(^\s+|\s+$)/g, ""); //trim
+		
+		return PresentationTaskUtil.onCheckLabel(label_obj, task_id);
+	},
 
 	onCompleteLabel : function(task_id) {
 		var WF = myWFObj.getTaskFlowChart();

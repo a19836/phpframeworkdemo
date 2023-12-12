@@ -51,17 +51,17 @@
 	});
 	</script>
 	
-	<script type='text/javascript'>
+	<!--script type='text/javascript'>
 	window.smartlook||(function(d) {
 		var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];
 		var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';
 	c.charset='utf-8';c.src='https://web-sdk.smartlook.com/recorder.js';h.appendChild(c);
 	})(document);
 	smartlook('init', '51ec78273cda170da574d0133c29cfc4d073c304', { region: 'eu' });
-	</script>
+	</script-->
 
 	<!-- Hotjar Tracking Code for https://jplpinto.ddns.net/ -->
-	<script>
+	<!--script>
 	(function(h,o,t,j,a,r){
 		h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
 		h._hjSettings={hjid:3766012,hjsv:6};
@@ -70,7 +70,7 @@
 		r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
 		a.appendChild(r);
 	})(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-	</script>
+	</script-->
 	
 	<? echo $head; ?>
 </head>

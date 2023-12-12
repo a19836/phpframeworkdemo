@@ -32,7 +32,7 @@ var PresentationLayerTaskPropertyObj = {
 	},
 	
 	onCheckLabel : function(label_obj, task_id) {
-		return isTaskLayerLabelValid(label_obj, task_id);
+		return onCheckTaskLayerLabel(label_obj, task_id);
 	},
 	
 	onCancelLabel : function(task_id) {

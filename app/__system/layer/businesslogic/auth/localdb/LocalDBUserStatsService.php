@@ -32,7 +32,7 @@ namespace __system\businesslogic; include_once $vars["current_business_logic_mod
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[name], type=varchar, not_null=1, min_length=1, max_length=100)
-	 */ public function get($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("user_stats"); $v2f228af834 = $this->LocalDBTableHandler->filterItems($pf72c1d58, array("name" => $data["name"]), false); return isset($v2f228af834[0]) ? $v2f228af834[0] : null; } /**
+	 */ public function get($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("user_stats"); $v2f228af834 = $this->LocalDBTableHandler->filterItems($pf72c1d58, array("name" => $data["name"]), false, 1); return isset($v2f228af834[0]) ? $v2f228af834[0] : null; } /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 */ public function getAll($data) { $this->initLocalDBTableHandler($data); return $this->LocalDBTableHandler->getItems("user_stats"); } } ?>

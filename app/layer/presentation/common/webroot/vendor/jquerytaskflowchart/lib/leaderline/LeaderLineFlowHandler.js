@@ -2759,9 +2759,23 @@ function LeaderLineFlowHandler() {
 				var svg = $(div).children("svg");
 				var doc = div.ownerDocument || div.document;
 				
-				//remove overlays and end points
-				me.removeLineOverlays(line);
-				me.removeLinePoints(line);
+				try {
+					//remove overlays
+					me.removeLineOverlays(line);
+				}
+				catch(e) {
+					if (dragged_line != line && console && console.log)
+						console.log(e);
+				}
+				
+				try {
+					//remove end points
+					me.removeLinePoints(line);
+				}
+				catch(e) {
+					if (dragged_line != line && console && console.log)
+						console.log(e);
+				}
 				
 				//remove line svg
 				if (svg[0])
@@ -2779,7 +2793,7 @@ function LeaderLineFlowHandler() {
 				if (found_index >= 0)
 					lines.splice(found_index, 0, line);
 				
-				if (div)
+				if (div && div.parentNode && svg[0])
 					div.appendChild(svg[0]);
 				
 				if (console && console.log)

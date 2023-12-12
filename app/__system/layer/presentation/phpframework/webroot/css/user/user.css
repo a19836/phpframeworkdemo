@@ -176,7 +176,7 @@ body.main_navigator_reverse #content {
 #content .form_fields .form_field select { width:205px; font-size:inherit; }
 #content .buttons { width:150px; height:20px; margin:15px auto 20px auto; float:none; clear:left; }
 #content .buttons .submit_button { float:left; width:70px; text-align:center; }
-#content .buttons .submit_button input { font-size:10px; font-weight:bold; height:20px; line-height:15px; }
+#content .buttons .submit_button input { font-size:10px; font-weight:bold; line-height:15px; }
 #content form > .buttons { display:none; }
 
 #content .change_db_keys { width:560px; margin:0 auto; }
@@ -208,6 +208,7 @@ body.main_navigator_reverse #content {
 #content .change_auth_settings .buttons { display:none; }
 
 #content .edit_user .error { width:100%; text-align:center; font-weight:bold; color:#B51E3F; }
+#content .edit_login_control .error { width:100%; text-align:center; font-weight:bold; color:#B51E3F; }
 
 #content .user_type_permissions_list table {min-width:350px; font-size:80%;}
 #content .user_type_permissions_list table .user_type_permission {width:50px; text-align:center;}

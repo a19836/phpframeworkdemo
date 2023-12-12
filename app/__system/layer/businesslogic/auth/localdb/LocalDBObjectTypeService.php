@@ -41,7 +41,7 @@ namespace __system\businesslogic; include_once $vars["current_business_logic_mod
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[object_type_id], type=bigint, not_null=1, length=19)
-	 */ public function get($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("object_type"); $v2f228af834 = $this->LocalDBTableHandler->filterItems($pf72c1d58, array("object_type_id" => $data["object_type_id"]), false); return $v2f228af834 ? $v2f228af834[0] : null; } /**
+	 */ public function get($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("object_type"); $v2f228af834 = $this->LocalDBTableHandler->filterItems($pf72c1d58, array("object_type_id" => $data["object_type_id"]), false, 1); return $v2f228af834 ? $v2f228af834[0] : null; } /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 */ public function getAll($data) { $this->initLocalDBTableHandler($data); return $this->LocalDBTableHandler->getItems("object_type"); } /**

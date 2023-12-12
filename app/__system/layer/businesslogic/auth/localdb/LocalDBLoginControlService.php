@@ -40,7 +40,11 @@ namespace __system\businesslogic; include_once $vars["current_business_logic_mod
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[username], type=varchar, not_null=1, min_length=1, max_length=50)
-	 */ public function resetFailedLoginAttempts($data) { $this->initLocalDBTableHandler($data); $v342a134247 = $this->get($data); if ($v342a134247) { $v342a134247["failed_login_attempts"] = null; $v342a134247["failed_login_time"] = null; return $this->LocalDBTableHandler->updateItem("login_control", $v342a134247, array("username")); } return true; } /**
+	 */ public function resetFailedLoginAttempts($data) { $this->initLocalDBTableHandler($data); $v342a134247 = $this->get($data); if ($v342a134247) { $v342a134247["failed_login_attempts"] = null; $v342a134247["failed_login_time"] = null; $v342a134247["modified_date"] = date("Y-m-d H:i:s"); return $this->LocalDBTableHandler->updateItem("login_control", $v342a134247, array("username")); } return true; } /**
+	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
+	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
+	 * @param (name=data[username], type=varchar, not_null=1, min_length=1, max_length=50)
+	 */ public function delete($data) { $this->initLocalDBTableHandler($data); return $this->LocalDBTableHandler->deleteItem("login_control", array("username" => $data["username"])); } /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[username], type=varchar, not_null=1, min_length=1, max_length=50)
@@ -48,11 +52,11 @@ namespace __system\businesslogic; include_once $vars["current_business_logic_mod
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[username], type=varchar, not_null=1, min_length=1, max_length=50)
-	 */ public function get($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("login_control"); $v2f228af834 = $this->LocalDBTableHandler->filterItems($pf72c1d58, array("username" => $data["username"]), false); return isset($v2f228af834[0]) ? $v2f228af834[0] : null; } /**
+	 */ public function get($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("login_control"); $v2f228af834 = $this->LocalDBTableHandler->filterItems($pf72c1d58, array("username" => $data["username"]), false, 1); return isset($v2f228af834[0]) ? $v2f228af834[0] : null; } /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[session_id], type=varchar, not_null=1, min_length=1, max_length=200)
-	 */ public function getBySessionId($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("login_control"); $v2f228af834 = $this->LocalDBTableHandler->filterItems($pf72c1d58, array("session_id" => $data["session_id"]), false); return isset($v2f228af834[0]) ? $v2f228af834[0] : null; } /**
+	 */ public function getBySessionId($data) { $this->initLocalDBTableHandler($data); $pf72c1d58 = $this->LocalDBTableHandler->getItems("login_control"); $v2f228af834 = $this->LocalDBTableHandler->filterItems($pf72c1d58, array("session_id" => $data["session_id"]), false, 1); return isset($v2f228af834[0]) ? $v2f228af834[0] : null; } /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[username], type=varchar, not_null=1, min_length=1, max_length=50)

@@ -1,3 +1,4 @@
+<?php
 /*
  * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
  * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
@@ -16,17 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
-var BusinessLogicLayerTaskPropertyObj = {
-	allow_multi_lower_level_layer_connections : true, //false: only allow connections to data-access layers
-	allow_same_layer_connection : true, //false: do not allow connections between multiple business logic layers.
-	allow_dbdriver_connections : false, //false: do not allow connections with dbdrivers. If allow_multi_lower_level_layer_connections and allow_dbdriver_connections are true, it means we must connect with the DB layer to get the DBDrivers. DB Layer has same methods than DBDriver, so any connection to a DB Layer, should work with a direct connection with a DBDriver too, but just in case this option is disabled bc is not well tested!
-	
-	onCheckLabel : function(label_obj, task_id) {
-		return onCheckTaskLayerLabel(label_obj, task_id);
-	},
-	
-	onCancelLabel : function(task_id) {
-		return prepareLabelIfUserLabelIsInvalid(task_id);
-	},
-};
+$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $username = $_GET["username"]; if ($username) { $login_control_data = $UserAuthenticationHandler->getLoginControl($username); } if ($_POST) { if ($username && $login_control_data) { if ($_POST["delete"]) { $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "delete"); if ($username && $UserAuthenticationHandler->deleteLoginControl($username)) { die("<script>alert('Username data deleted successfully'); document.location = '$project_url_prefix/user/manage_login_controls';</script>"); } else { $error_message = "There was an error trying to delete this Username data. Please try again..."; } } else if ($_POST["reset_failed_login_attempts"]) { $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "write"); if ($UserAuthenticationHandler->resetFailedLoginAttempts($username)) { die("<script>alert('Username reset successfully'); document.location = '$project_url_prefix/user/manage_login_controls';</script>"); } else { $error_message = "There was an error trying to reset this username. Please try again..."; } } } else { $error_message = "No username data to reset."; } } ?>

@@ -19,21 +19,21 @@
 		<width>655</width>
 		<height>150</height>
 		<left>1</left>
-		<top>296</top>
+		<top>300</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dbs]]></id>
 		<width>655</width>
 		<height>150</height>
 		<left>1</left>
-		<top>446</top>
+		<top>450</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_drivers]]></id>
 		<width>655</width>
-		<height>124</height>
+		<height>120</height>
 		<left>1</left>
-		<top>596</top>
+		<top>600</top>
 	</container>
 	<task>
 		<label><![CDATA[mysql]]></label>

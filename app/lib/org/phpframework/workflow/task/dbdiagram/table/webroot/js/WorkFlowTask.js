@@ -340,12 +340,13 @@ var DBTableTaskPropertyObj = {
 		if (isTaskTableLabelValid(label_obj, task_id))
 			return true;
 		
+		myWFObj.getTaskFlowChart().StatusMessage.removeLastShownMessage("error");
+		
 		label_obj.label = normalizeTaskTableName(label_obj.label);
 		
-		if (isTaskTableLabelValid(label_obj, task_id, true))
+		if (isTaskTableLabelValid(label_obj, task_id))
 			return true;
 		
-		myWFObj.getTaskFlowChart().StatusMessage.removeLastShownMessage("error");
 		return false;
 	},
 	

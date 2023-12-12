@@ -42,6 +42,12 @@ $(function() {
 	onResizeTaskFlowChartPanels(taskFlowChartObj, 0);
 });
 
+function toggleLayersNameAutoNormalization(elm) {
+	normalize_task_layer_label = !normalize_task_layer_label; //This var is defined in the app/lib/org/phpframework/workflow/task/layer/common/webroot/js/global.js
+	
+	$(elm).children("span").html(normalize_task_layer_label ? "Disable" : "Enable");
+}
+
 function onToggleFullScreen(in_full_screen) {
 	taskFlowChartObj.resizePanels();
 }

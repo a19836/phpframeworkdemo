@@ -77,17 +77,14 @@ if (typeof is_global_db_diagram_common_file_already_included == "undefined") {
 		var is_repeated = false;
 		
 		if (label_obj.label && label_obj.label.length > 0) {
-			var text = label_obj.label;
-			text = text.replace(/\n/g, ""); //if text has \n then the regex won't work. So we need to use .replace(/\n/g, "")
+			//var valid = inputTextContainsRegex(label_obj.label, /^[\p{L}\w\.]+$/ugi); //\p{L} and /../u is to get parameters with accents and ç. Already includes the a-z. Cannot use this bc it does not work in IE.
+			var valid = inputTextContainsRegex(label_obj.label, /^[\w\.\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC]+$/gi); //'\w' means all words with '_' and 'u' means with accents and ç too.
 			
-			//var m = text.match(/^[\p{L}\w\.]+$/giu); //\p{L} and /../u is to get parameters with accents and ç. Already includes the a-z. Cannot use this bc it does not work in IE.
-			var m = text.match(/^[\w\.\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC]+$/gi); //'\w' means all words with '_' and 'u' means with accents and ç too.
-			var valid = m && m[0];
+			if (valid)
+				valid = inputTextContainsAtLeastOneLetter(label_obj.label); //checks if label has at least one letter
 			
-			if (valid) {
-				m = text.match(/[a-z]+/i); //checks if label has at least one letter
-				valid = m && m[0];
-			}
+			if (valid)
+				valid = inputTextContainsRegex(label_obj.label, /^[^\.]/); //checks if label starts with a word and not a '.'
 			
 			if (valid) {
 				is_repeated = isTaskLabelRepeated(label_obj, task_id, ignore_msg);
@@ -95,11 +92,14 @@ if (typeof is_global_db_diagram_common_file_already_included == "undefined") {
 			}
 			
 			if (valid)
-				isTaskTableNameAdvisable(text);
+				isTaskTableNameAdvisable(label_obj.label);
 		}
 		
-		if (!valid)
-			myWFObj.getTaskFlowChart().StatusMessage.showError((is_repeated ? "\n" : "") + "Invalid label. Please choose a different label.\nOnly this letters are allowed: a-z, A-Z, 0-9, '_', '.' and you must have at least 1 character.\nNote that by adding the '.' char you are adding a schema to your table.");
+		if (!valid) {
+			var msg = (is_repeated ? "\n" : "") + "Invalid label. Please choose a different label.\nOnly this characters are allowed: a-z, A-Z, 0-9, '_', '.' and you must have at least 1 letter.\nNote that by adding the '.' char you are adding a schema to your table.";
+			myWFObj.getTaskFlowChart().StatusMessage.showError(msg);
+			//console.log(msg);
+		}
 		
 		return valid;
 	}
@@ -120,7 +120,7 @@ if (typeof is_global_db_diagram_common_file_already_included == "undefined") {
 	
 	function normalizeTaskTableName(name) {
 		//return name ? ("" + name).replace(/\n/g, "").replace(/[ \-]+/g, "_").match(/[\p{L}\w\.]+/giu).join("") : name; //\p{L} and /../u is to get parameters with accents and ç. Already includes the a-z. Cannot use this bc it does not work in IE.
-		return name ? ("" + name).replace(/\n/g, "").replace(/[ \-]+/g, "_").match(/[\w\.\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC]+/gi).join("") : name; //'\w' means all words with '_' and 'u' means with accents and ç too.
+		return name ? ("" + name).replace(/(^\s+|\s+$)/g, "").replace(/\n/g, "").replace(/[ \-]+/g, "_").match(/[\w\.\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC]+/gi).join("") : name; //'\w' means all words with '_' and 'u' means with accents and ç too.
 	}
 	
 	function resizeTableTaskBasedOnAttributes(task_id) {

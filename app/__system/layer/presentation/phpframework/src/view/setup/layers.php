@@ -49,7 +49,8 @@ include $EVC->getViewPath("/layer/diagram"); $confirm_msg = $diagram_already_exi
 	
 	<form method="post" style="display:none">
 		<input type="hidden" name="create_layers_workflow" value="1" />'; if ($tasks_folders) foreach ($tasks_folders as $task_id => $folder) $main_content .= '
-		<input type="hidden" name="tasks_folders[' . $task_id . ']" value="' . $folder . '" />'; $main_content .= '
+		<input type="hidden" name="tasks_folders[' . $task_id . ']" value="' . $folder . '" />'; if ($tasks_labels) foreach ($tasks_labels as $task_id => $task_label) $main_content .= '
+		<input type="hidden" name="tasks_labels[' . $task_id . ']" value="' . $task_label . '" />'; $main_content .= '
 	</form>
 </div>'; if ($hide_setup) { $main_content .= '<script>
 		var html = \'<li class="continue" title="Save and Rebuild Layers"><a onclick="return continueSetup();"><i class="icon continue"></i> Save and Rebuild Layers</a></li>\';
