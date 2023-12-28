@@ -44,7 +44,7 @@ var manage_file_url = \'' . $manage_file_url . '\';
 var save_project_default_template_url = \'' . $save_project_default_template_url . '\';
 var install_template_url = \'' . $install_template_url . '\';
 var available_templates_props = ' . json_encode($available_templates_props) . ';
-var num_of_created_pages = ' . ($num_of_created_pages ? $num_of_created_pages : 0) . ';
+var is_fresh_project = ' . ($is_fresh_project ? "true" : "false") . ';
 var project_id = \'' . $project_details["project_id"] . '\';
 '; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url, $upload_bean_layer_files_from_file_manager_url); $head .= '</script>'; $main_content = '
 <div class="admin_panel">

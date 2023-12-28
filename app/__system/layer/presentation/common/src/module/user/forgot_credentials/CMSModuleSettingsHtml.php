@@ -87,8 +87,11 @@ include_once $EVC->getModulePath("user/UserUI", $EVC->getCommonProjectName());
 	
 <?php 
 	echo UserUI::getUserEnvironmentFieldsHtml();
-	echo CommonModuleSettingsUI::getStyleFieldsHtml(); 
-	echo CommonModuleSettingsUI::getCssFieldsHtml();
+	echo CommonModuleSettingsUI::getStyleFieldsHtml("template"); 
+	echo CommonModuleSettingsUI::getCssFieldsHtml(".forgot_credentials .write_security_answers form label {
+    max-width: none;
+    flex: auto;
+}");
 	echo CommonModuleSettingsUI::getJsFieldsHtml();
 ?>
 </div>

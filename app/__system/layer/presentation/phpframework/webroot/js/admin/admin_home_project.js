@@ -42,7 +42,7 @@ $(function() {
 		});
 		
 		//if number of created pages are 1 or 0, then show popup so user can create new page
-		if (num_of_created_pages <= 1) {
+		if (is_fresh_project) {
 			var msg = '<h1>Create your first page by clicking in the button below</h1>'
 					+ '<div>'
 						+ '<button onClick="showCreateFilePopupThroughMessage(this, \'' + project_id + '/src/entity/\')" title="Create a new folder or page">Add New</button>'

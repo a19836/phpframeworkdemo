@@ -1,6 +1,112 @@
 <?php
 class EventUI {
 	
+	public static function prepareEvents($EVC, $settings, &$events) {
+		if ($events) {
+			$t = count($events);
+			for ($i = 0; $i < $t; $i++)
+				self::prepareEvent($EVC, $settings, $events[$i]);
+		}
+	}
+	
+	public static function prepareEvent($EVC, $settings, &$event) {
+		if ($event) {
+			$translations = array(
+				"from" => translateProjectText($EVC, "From"),
+				"to" => translateProjectText($EVC, "to"),
+			);
+			
+			//Preparing dates and location
+			$parsed_begin_date = $event["begin_date"] ? $event["begin_date"] : "";
+			$parsed_begin_date = $parsed_begin_date && substr_count($parsed_begin_date, ':') >= 2 ? substr($parsed_begin_date, 0, strrpos($parsed_begin_date, ":")) : $parsed_begin_date;
+			$parsed_begin_date = $parsed_begin_date == '0000-00-00 00:00' ? '' : $parsed_begin_date;
+			
+			$parsed_end_date = $event["end_date"] ? $event["end_date"] : "";
+			$parsed_end_date = $parsed_end_date && substr_count($parsed_end_date, ':') >= 2 ? substr($parsed_end_date, 0, strrpos($parsed_end_date, ":")) : $parsed_end_date;
+			$parsed_end_date = $parsed_end_date == '0000-00-00 00:00' ? '' : $parsed_end_date;
+			
+			$begin_date = explode(" ", $parsed_begin_date);
+			$end_date = explode(" ", $parsed_end_date);
+			
+			$bd_time = strtotime($parsed_begin_date);
+			$bdi = translateProjectText($EVC, date("l", $bd_time)) . date(", d ", $bd_time) . translateProjectText($EVC, date("F", $bd_time)) . (date("Y", $bd_time) != date("Y") ? date(" Y,", $bd_time) : "") . date(" H:i", $bd_time);
+			$event["date_interval"] = $bdi;
+			
+			$event["date"] = '
+				<label class="from">' . $translations["from"] . '</label>
+				<label class="from_date">' . $begin_date[0] . '</label>';
+			
+			$event["time"] = '
+				<label class="from">' . $translations["from"] . '</label>
+				<label class="from_time">' . $begin_date[1] . '</label>';
+			
+			$date_parts = explode("-", $begin_date[0]);
+			$time_parts = explode(":", $begin_date[1]);
+			$event["begin_date_time"] = '
+			<div class="date">
+				<label class="month_text">' . translateProjectText($EVC, date("M", $bd_time)) . '</label>
+				<label class="month">' . $date_parts[1] . '</label>
+				<label class="day">' . $date_parts[2] . '</label>
+				<label class="year">' . $date_parts[0] . '</label>
+			</div>
+			<div class="time">
+				<label class="hour">' . $time_parts[0] . '</label>
+				<label class="minute">' . $time_parts[1] . '</label>
+			</div>';
+			$event["begin_time"] = $time_parts[0] . ":" . $time_parts[1];
+			$event["begin_year"] = $date_parts[0];
+			$event["begin_month"] = $date_parts[1];
+			$event["begin_month_short_text"] = date("M", $bd_time);
+			$event["begin_month_long_text"] = date("F", $bd_time);
+			$event["begin_day"] = $date_parts[2];
+			$event["begin_hour"] = $time_parts[0];
+			$event["begin_minute"] = $time_parts[1];
+			
+			if ($parsed_end_date) {
+				$ed_time = strtotime($parsed_end_date);
+				$edi = $begin_date[0] == $end_date[0] ? "" : translateProjectText($EVC, date("l", $ed_time)) . date(", d ", $ed_time) . translateProjectText($EVC, date("F", $ed_time)) . (date("Y", $ed_time) != date("Y") ? date(" Y,", $ed_time) : "") . " ";
+				$edi .= $begin_date[0] == $end_date[0] && $begin_date[1] == $end_date[1] ? "" : date("H:i", $ed_time);
+				$event["date_interval"] .= $edi ? " - $edi" : "";
+				
+				$event["date"] .= '
+				<label class="to">' . $translations["to"] . '</label>
+				<label class="to_date">' . $end_date[0] . '</label>';
+				
+				$event["time"] .= '
+				<label class="to">' . $translations["to"] . '</label>
+				<label class="to_time">' . $end_date[1] . '</label>';
+				
+				$date_parts = explode("-", $end_date[0]);
+				$time_parts = explode(":", $end_date[1]);
+				$event["end_date_time"] = '
+				<div class="date">
+					<label class="month_text">' . translateProjectText($EVC, date("M", $ed_time)) . '</label>
+					<label class="month">' . $date_parts[1] . '</label>
+					<label class="day">' . $date_parts[2] . '</label>
+					<label class="year">' . $date_parts[0] . '</label>
+				</div>
+				<div class="time">
+					<label class="hour">' . $time_parts[0] . '</label>
+					<label class="minute">' . $time_parts[1] . '</label>
+				</div>';
+				$event["end_time"] = $time_parts[0] . ":" . $time_parts[1];
+				$event["end_year"] = $date_parts[0];
+				$event["end_month"] = $date_parts[1];
+				$event["end_month_short_text"] = date("M", $ed_time);
+				$event["end_month_long_text"] = date("F", $ed_time);
+				$event["end_day"] = $date_parts[2];
+				$event["end_hour"] = $time_parts[0];
+				$event["end_minute"] = $time_parts[1];
+			}
+			
+			$event["map_url"] = self::getMapUrl($event, false);
+			$event["embed_map_url"] = self::getMapUrl($event);
+			$event["map"] = $event["embed_map_url"] ? '<span class="map" onClick="openMap(this, \'' . $event["embed_map_url"] . '\'); return false;"></span>' : '';
+			$event["full_address"] = $event["address"] ? '<span class="address">' . $event["address"] . ($event["zip_id"] ? ', ' . $event["zip_id"] : '') . ($event["locality"] ? ' ' . $event["locality"] : '') . '</span>' : '';
+			$event["location"] = '<span class="location">' . $event["full_address"] . $event["map"] . '</span>';
+		}
+	}
+	
 	public static function getEventsFromSettings($EVC, $settings, $brokers, &$options) {
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -105,6 +211,9 @@ class EventUI {
 		
 		//get photos
 		EventUtil::prepareEventsPhotos($EVC, $events, false, $brokers);
+		
+		//prepare events data
+		self::prepareEvents($EVC, $settings, $events);
 		
 		return array($total, $events);
 	}

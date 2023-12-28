@@ -7,7 +7,15 @@
 	echo CommonModuleSettingsUI::getHtmlPTLCode(array(
 		"style_type" => true,
 	 	"block_class" => true,
-		"fields" => array("answer_id", "question_id", "title", "description", "value", "created_date", "modified_date"),
+		"fields" => array(
+			"answer_id", 
+			"question_id", 
+			"title", 
+			"description" => array("show" => 0), 
+			"value", 
+			"created_date", 
+			"modified_date"
+		),
 	 	"is_list" => true,
 		"buttons" => array(
 	 		"edit" => true,
@@ -15,6 +23,7 @@
 	 	),
 	 	"css" => true,
 	 	"js" => true,
+	 	"table_class" => "list_table table table-striped table-hover table-sm"
 	));
 ?>
 </div>

@@ -78,8 +78,14 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 							$status = \UserUtil::insertUser($EVC, $data, $brokers);
 							$user_id = $status;
 							
-							if ($status && !\UserUtil::insertUserUserType($brokers, array("user_id" => $user_id, "user_type_id" => $user_type_id)))
-								$status = false;
+							if ($status) {
+								if (!is_array($user_type_id))
+									$user_type_id = explode(",", $user_type_id);
+								
+								for ($i = 0, $t = count($user_type_id); $i < $t; $i++) 
+									if (!\UserUtil::insertUserUserType($brokers, array("user_id" => $user_id, "user_type_id" => $user_type_id[$i])))
+										$status = false;
+							}
 							
 							if ($status) {	
 								//save user attachments

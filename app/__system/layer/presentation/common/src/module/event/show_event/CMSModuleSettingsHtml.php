@@ -22,18 +22,34 @@
 		"begin_date" => array("type" => "label", "label" => "", "class" => "event_begin_date", "show" => 0),
 		"end_date" => array("type" => "label", "label" => "", "class" => "event_end_date", "show" => 0),
 		"begin_date_time" => array("type" => "label", "label" => "", "class" => "event_begin_date_time", "show" => 0),
+		"begin_time" => array("type" => "label", "label" => "", "class" => "event_begin_time"),
+		"begin_year" => array("type" => "label", "label" => "", "class" => "event_begin_year", "show" => 0),
+		"begin_month" => array("type" => "label", "label" => "", "class" => "event_begin_month", "show" => 0),
+		"begin_month_short_text" => array("type" => "label", "label" => "", "class" => "event_begin_month_short_text"),
+		"begin_month_long_text" => array("type" => "label", "label" => "", "class" => "event_begin_month_long_text", "show" => 0),
+		"begin_day" => array("type" => "label", "label" => "", "class" => "event_begin_day"),
+		"begin_hour" => array("type" => "label", "label" => "", "class" => "event_begin_hour", "show" => 0),
+		"begin_minute" => array("type" => "label", "label" => "", "class" => "event_begin_minute", "show" => 0),
 		"end_date_time" => array("type" => "label", "label" => "", "class" => "event_end_date_time", "show" => 0),
+		"end_time" => array("type" => "label", "label" => "", "class" => "event_end_time"),
+		"end_year" => array("type" => "label", "label" => "", "class" => "event_end_year", "show" => 0),
+		"end_month" => array("type" => "label", "label" => "", "class" => "event_end_month", "show" => 0),
+		"end_month_short_text" => array("type" => "label", "label" => "", "class" => "event_end_month_short_text", "show" => 0),
+		"end_month_long_text" => array("type" => "label", "label" => "", "class" => "event_end_month_long_text", "show" => 0),
+		"end_day" => array("type" => "label", "label" => "", "class" => "event_end_day", "show" => 0),
+		"end_hour" => array("type" => "label", "label" => "", "class" => "event_end_hour", "show" => 0),
+		"end_minute" => array("type" => "label", "label" => "", "class" => "event_end_minute", "show" => 0),
 		"address" => array("type" => "label", "label" => "", "class" => "event_address", "show" => 0),
 		"zip_id" => array("type" => "label", "label" => "", "class" => "event_zip_id", "show" => 0),
 		"country_id" => array("type" => "label", "label" => "", "class" => "event_country_id", "show" => 0),
 		"country" => array("type" => "label", "label" => "", "class" => "event_country", "show" => 0),
-		"map_url" => array("type" => "label", "label" => "", "class" => "catalog_event_map_url", "show" => 0),
-		"embed_map_url" => array("type" => "label", "label" => "", "class" => "catalog_event_embed_map_url", "show" => 0),
+		"map_url" => array("type" => "label", "label" => "", "class" => "event_map_url", "show" => 0),
+		"embed_map_url" => array("type" => "label", "label" => "", "class" => "event_embed_map_url", "show" => 0),
 		"map" => array("type" => "label", "label" => "", "class" => "event_map", "show" => 0),
 		"full_address" => array("type" => "label", "label" => "", "class" => "event_full_address", "show" => 0),
 		"location" => array("type" => "label", "label" => "", "class" => "event_location"),
-		"title" => array("type" => "h1", "label" => "", "class" => "event_title"), 
-		"sub_title" => array("type" => "h2", "label" => "", "class" => "event_sub_title"),
+		"title" => array("type" => "label", "label" => "", "class" => "event_title"), 
+		"sub_title" => array("type" => "label", "label" => "", "class" => "event_sub_title"),
 		"created_date" => array("type" => "label", "label" => "", "class" => "event_created_date", "show" => 0),
 		"modified_date" => array("type" => "label", "label" => "", "class" => "event_modified_date", "show" => 0),
 		"tags" => array("type" => "label", "label" => "Tags", "class" => "event_tags", "show" => 0),
@@ -49,7 +65,27 @@
 	 	"block_class" => true,
 		"fields" => $fields,
 		"buttons" => false,
-	 	"css" => true,
+	 	"css" => '
+.module_event .event_location .map {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: \'Glyphicons Halflings\';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    font-size: 15px;
+    margin-left: 10px;
+    vertical-align: text-top;
+    cursor:pointer;
+}
+.module_event .event_location .map:before {
+    content: \'\\\\e062\';
+}
+',
 	 	"js" => true,
 	));
 	

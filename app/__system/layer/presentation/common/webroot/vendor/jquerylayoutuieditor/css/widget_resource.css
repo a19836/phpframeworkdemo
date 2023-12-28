@@ -328,6 +328,11 @@
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource:not(.widget-resource-url) .widget-resource-value {
 	display:none;
 }
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-reference > .mandatory {
+	position:absolute;
+	margin:2px 0 0 2px;
+	color:var(--main-iframe-top-title-color);
+}
 
 /* MENU SETTINGS - WIDGET - DISPLAY RESOURCE ATTRIBUTE */
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > .group-title > .widget-display-resource-value-toggle {

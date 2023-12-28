@@ -51,6 +51,7 @@ var layer_type = "pres";
 var file_modified_time = ' . $file_modified_time . '; //for version control
 
 var page_preview_url = \'' . $page_preview_url . '\';
+var view_project_url = \'' . $view_project_url . '\';
 var save_object_url = \'' . $save_url . '\';
 var get_block_handler_source_code_url = \'' . $get_block_handler_source_code_url . '\';
 var get_page_block_join_points_html_url = \'' . $get_page_block_join_points_html_url . '\';
@@ -84,12 +85,12 @@ var confirm_save = ' . ($confirm_save ? 'true' : 'false') . ';
 
 var sla_settings_obj = ' . json_encode($sla_settings_obj) . ';
 var brokers_db_drivers = ' . json_encode($brokers_db_drivers) . ';
-'; $head .= $sla_js_head; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url, $upload_bean_layer_files_from_file_manager_url); $head .= WorkFlowPresentationHandler::getBusinessLogicBrokersHtml($business_logic_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDataAccessBrokersHtml($data_access_brokers, $choose_bean_layer_files_from_file_manager_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= '</script>'; $head .= CMSPresentationLayerUIHandler::getHeader($project_url_prefix, $project_common_url_prefix, $get_available_blocks_list_url, $get_block_params_url, $create_entity_code_url, $available_blocks_list, $regions_blocks_list, $block_params_values_list, $template_includes, $blocks_join_points, $template_params_values_list, $selected_project_id, false, $head); $head .= LayoutTypeProjectUIHandler::getHeader(); $confirm_save = $obj_data["code"] && $cached_modified_date != $file_modified_time; $query_string = preg_replace("/dont_save_cookie=([^&])*/", "", str_replace(array("&edit_entity_type=advanced", "&edit_entity_type=simple"), "", $_SERVER["QUERY_STRING"])); $main_content = '
+'; $head .= $sla_js_head; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url, $upload_bean_layer_files_from_file_manager_url); $head .= WorkFlowPresentationHandler::getBusinessLogicBrokersHtml($business_logic_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url); $head .= WorkFlowPresentationHandler::getDataAccessBrokersHtml($data_access_brokers, $choose_bean_layer_files_from_file_manager_url); $head .= WorkFlowPresentationHandler::getDaoLibAndVendorBrokersHtml($choose_dao_files_from_file_manager_url, $choose_lib_files_from_file_manager_url, $choose_vendor_files_from_file_manager_url, $get_file_properties_url); $head .= '</script>'; $head .= CMSPresentationLayerUIHandler::getHeader($project_url_prefix, $project_common_url_prefix, $get_available_blocks_list_url, $get_block_params_url, $create_entity_code_url, $available_blocks_list, $regions_blocks_list, $block_params_values_list, $template_includes, $blocks_join_points, $template_params_values_list, $selected_project_id, false, $head, $defined_regions_list, $available_params_values_list); $head .= LayoutTypeProjectUIHandler::getHeader(); $confirm_save = $obj_data["code"] && $cached_modified_date != $file_modified_time; $query_string = preg_replace("/dont_save_cookie=([^&])*/", "", str_replace(array("&edit_entity_type=advanced", "&edit_entity_type=simple"), "", $_SERVER["QUERY_STRING"])); $main_content = '
 	<div class="top_bar' . ($is_external_template ? " is_external_template" : "") . '">
 		<header>
 			<div class="title" title="' . $path . '">Edit Page (Visual Workspace) <span class="template_fields"></span> at: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $P, true) . '</div>
 			<ul>
-				<li class="view_project_page" data-title="View Project Page"><a href="' . $view_project_url . '" target="project"><i class="icon view"></i></a></li>
+				<li class="view_project_page" data-title="View Project Page"><a onClick="previewWithDelay()"><i class="icon view"></i></a></li>
 				<li class="save" data-title="Save Page"><a onClick="saveEntityWithDelay()"><i class="icon save"></i> Save</a></li>
 				
 				<li class="sub_menu" onclick="openSubmenu(this)">
@@ -103,7 +104,7 @@ var brokers_db_drivers = ' . json_encode($brokers_db_drivers) . ';
 						<li class="update_layout_from_settings" title="Update Main Settings to Layout UI"><a onClick="updateLayoutFromSettings( $(\'.entity_obj\'), true )"><i class="icon update_layout_from_settings"></i> Update Main Settings to Layout Area</a></li>
 						<li class="separator"></li>
 						<li class="view_template_samples" title="View Template Samples"><a onClick="openTemplateSamples()"><i class="icon view_template_samples"></i> View Template Samples</a></li>
-						<li class="preview" title="Preview & Test Page"><a onClick="preview()"><i class="icon preview_file"></i> Preview & Test Page</a></li>
+						<li class="preview" title="Preview & Test Page"><a onClick="testAndPreviewWithDelay()"><i class="icon preview_file"></i> Preview & Test Page</a></li>
 						<li class="separator"></li>
 						<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
 						<li class="separator"></li>
@@ -169,7 +170,7 @@ var brokers_db_drivers = ' . json_encode($brokers_db_drivers) . ';
 			</div>
 			
 			<div id="content_settings" class="content_settings">
-				' . CMSPresentationLayerUIHandler::getRegionsBlocksAndIncludesHtml($selected_or_default_template, $available_regions_list, $regions_blocks_list, $available_blocks_list, $available_block_params_list, $block_params_values_list, $includes, $available_params_list, $template_params_values_list, $available_params_values_list) . '
+				' . CMSPresentationLayerUIHandler::getRegionsBlocksAndIncludesHtml($selected_or_default_template, $available_regions_list, $regions_blocks_list, $available_blocks_list, $available_block_params_list, $block_params_values_list, $includes, $available_params_list, $template_params_values_list, $defined_regions_list, $available_params_values_list) . '
 			</div>
 			
 			<div id="resource_settings" class="resource_settings">

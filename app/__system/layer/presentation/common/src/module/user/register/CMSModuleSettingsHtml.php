@@ -14,7 +14,7 @@ include_once $EVC->getModulePath("user/UserUI", $EVC->getCommonProjectName());
 <div class="edit_settings">
 	<div class="user_type_id">
 		<label>User Type:</label>
-		<select class="module_settings_property" name="user_type_id">
+		<select class="module_settings_property" name="user_type_id" multiple>
 		</select>
 	</div>
 	<div class="redirect_page_url">
@@ -58,7 +58,13 @@ include_once $EVC->getModulePath("user/UserUI", $EVC->getCommonProjectName());
 	 			"value" => "Register",
 	 		),
 	 	),
-	 	"css" => true,
+	 	"css" => "
+.module_register .password > .password_generator {
+    margin-top:5px;
+    text-align:right;
+    font-size:90%;
+    display:block;
+}",
 	 	"js" => true,
 	));
 	echo UserUI::getUserEnvironmentFieldsHtml();

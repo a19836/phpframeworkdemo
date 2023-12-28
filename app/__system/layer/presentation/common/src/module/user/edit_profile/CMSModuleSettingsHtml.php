@@ -42,7 +42,17 @@ include_once $EVC->getModulePath("user/UserUI", $EVC->getCommonProjectName());
 		"buttons" => array(
 	 		"update" => array("show" => true, "button_show_option_hidden" => true),
 	 	),
-	 	"css" => true,
+	 	"css" => "
+.module_edit_profile .password > .password_generator {
+    margin-top:5px;
+    text-align:right;
+    font-size:90%;
+    display:block;
+}
+.module_edit_profile .current_password > label {
+    max-width:none;
+    flex:auto;
+}",
 	 	"js" => true,
 	));
 	echo UserUI::getUserEnvironmentFieldsHtml();

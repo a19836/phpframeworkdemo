@@ -17,20 +17,20 @@ include_once $EVC->getModulePath("user/UserUI", $EVC->getCommonProjectName());
 <div class="edit_settings login_settings">
 	<div class="maximum_login_attempts_to_block_user">
 		<label>Maximum number of login attempts until the system blocks user:</label>
-		<input type="text" class="module_settings_property" name="maximum_login_attempts_to_block_user" value="" maxlength="2" />
+		<input type="text" class="module_settings_property" name="maximum_login_attempts_to_block_user" value="5" maxlength="2" />
 	</div>
 	<div class="show_captcha">
 		<label>Show Captcha:</label>
-		<input type="checkbox" class="module_settings_property" name="show_captcha" value="1" onClick="togglePanelFromCheckbox(this, 'maximum_login_attempts_to_show_captcha')" />
+		<input type="checkbox" class="module_settings_property" name="show_captcha" value="1" checked onClick="togglePanelFromCheckbox(this, 'maximum_login_attempts_to_show_captcha')" />
 	</div>
 	<div class="maximum_login_attempts_to_show_captcha">
 		<label>Maximum number of login attempts until the system shows captcha:</label>
-		<input type="text" class="module_settings_property" name="maximum_login_attempts_to_show_captcha" value="" maxlength="2" />
+		<input type="text" class="module_settings_property" name="maximum_login_attempts_to_show_captcha" value="3" maxlength="2" />
 	</div>
 	
 	<div class="redirect_page_url">
 		<label>Login Redirect Page Url:</label>
-		<input type="text" class="module_settings_property" name="redirect_page_url" value="" />
+		<input type="text" class="module_settings_property" name="redirect_page_url" value="{$project_url_prefix}/" />
 		<span class="icon search search_page_url" onclick="onIncludePageUrlTaskChooseFile(this)" title="Search Page">Search page</span>
 	</div>
 	<div class="welcoming_message">

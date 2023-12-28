@@ -6,6 +6,140 @@ function loadListAndEditUsersWitUserTypesSettingsBlockSettings(settings_elm, set
 	MyFancyPopup.showLoading();
 	
 	var list_settings = settings_elm.children(".list_settings");
+	var empty_settings_values = !settings_values || ($.isArray(settings_values) && settings_values.length == 0);
+	
+	if (empty_settings_values) {
+		settings_values = {
+			ptl: {
+				code: '<div class="card">' + "\n"
+					+ '    <div class="card-body">' + "\n"
+					+ '        <div class="list_container table-responsive">' + "\n"
+					+ '            <table class="list_table table table-striped table-hover table-sm">' + "\n"
+					+ '            	<thead>' + "\n"
+					+ '            		<tr>	' + "\n"
+					+ '            			<th class="list_column selected_item border-0">' + "\n"
+					+ '            			    <input type="checkbox" onChange="toggleUsersSelection(this)" />' + "\n"
+					+ '            			</th>' + "\n"
+					+ '			            <th class="list_column user_id border-0 text-left hidden"><ptl:block:field:label:user_id/></th>' + "\n"
+					+ '            			<th class="list_column name border-0 text-left"><ptl:block:field:label:name/></th>' + "\n"
+					+ '            			<th class="list_column username border-0 text-left"><ptl:block:field:label:username/></th>' + "\n"
+					+ '            			<th class="list_column password border-0 text-left"><ptl:block:field:label:password/></th>' + "\n"
+					+ '            			<th class="list_column email border-0 text-left"><ptl:block:field:label:email/></th>' + "\n"
+					+ '            			<th class="list_column active border-0 text-center"><ptl:block:field:label:active/></th>' + "\n"
+					+ '            			<th class="list_column user_type_ids border-0 text-left"><ptl:block:field:label:user_type_ids/></th>' + "\n"
+            			+ '            			<th class="list_column edit_action border-0">' + "\n"
+					+ '            			    <span class="cursor-pointer text-danger" onClick="onListAddUser(this)"><i class="fa fa-plus"></i></span>' + "\n"
+					+ '						</th>' + "\n"
+					+ '            			</tr>' + "\n"
+					+ '            	</thead>' + "\n"
+					+ '            	<tbody>' + "\n"
+					+ '            		<ptl:if is_array(\\$input)>' + "\n"
+					+ '            			<ptl:foreach \\$input i item>' + "\n"
+					+ '            				<tr>' + "\n"
+					+ '            					<td class="list_column selected_item"><ptl:block:field:input:selected_item/></td>' + "\n"
+					+ '            					<td class="list_column user_id hidden"><ptl:block:field:input:user_id/></td>' + "\n"
+					+ '            					<td class="list_column name"><ptl:block:field:input:name/></td>' + "\n"
+					+ '            					<td class="list_column username"><ptl:block:field:input:username/></td>' + "\n"
+					+ '            					<td class="list_column password"><ptl:block:field:input:password/></td>' + "\n"
+					+ '            					<td class="list_column email"><ptl:block:field:input:email/></td>' + "\n"
+					+ '            					<!--td class="list_column active text-center pt-2">' + "\n"
+					+ '					    				<div class="form-check form-switch m-n3">' + "\n"
+					+ '					 					<input class="form-check-input" type="checkbox" <ptl:echo \\$item[active] ? checked : \'\'/>>' + "\n"
+					+ '				    					</div>' + "\n"
+					+ '            					</td-->' + "\n"
+					+ '            					<td class="list_column active text-center"><ptl:block:field:input:active/></td>' + "\n"
+					+ '            					<td class="list_column user_type_ids"><ptl:block:field:input:user_type_ids/></td>' + "\n"
+					+ '            					<td class="list_column edit_action"></td>' + "\n"
+					+ '            				</tr>' + "\n"
+					+ '            			</ptl:foreach>' + "\n"
+					+ '            		</ptl:if>' + "\n"
+					+ '            	</tbody>' + "\n"
+					+ '            </table>' + "\n"
+					+ '        </div>' + "\n"
+					+ '    </div>' + "\n"
+					+ '</div>' + "\n"
+					+ '' + "\n"
+					+ '<div class="bottom_pagination">' + "\n"
+					+ '	<ptl:block:bottom-pagination/>' + "\n"
+					+ '</div>' + "\n"
+					+ '' + "\n"
+					+ '<div class="buttons">' + "\n"
+					+ '	<ptl:block:button:update/>' + "\n"
+					+ '	<ptl:block:button:delete/>' + "\n"
+					+ '</div>'
+			},
+			fields: {
+				name: {
+					field: {
+						input: {
+							"class": "form-control h-100 bg-transparent border-0 p-0"
+						}
+					}
+				},
+				username: {
+					field: {
+						input: {
+							"class": "form-control h-100 bg-transparent border-0 p-0"
+						}
+					}
+				},
+				password: {
+					field: {
+						input: {
+							"class": "form-control h-100 bg-transparent border-0 p-0"
+						}
+					}
+				},
+				email: {
+					field: {
+						input: {
+							"class": "form-control h-100 bg-transparent border-0 p-0"
+						}
+					}
+				},
+				active: {
+					field: {
+						input: {
+							"class": "form-control form-select h-100 bg-transparent border-0 p-0"
+						}
+					}
+				},
+				user_type_ids: {
+					field: {
+						input: {
+							"class": "form-control form-select h-100 bg-transparent border-0 p-0"
+						}
+					}
+				}
+			},
+			buttons: {
+				insert: {
+					field: {
+						"class": "button_save submit_button text-center",
+						input: {
+							"class": "btn btn-success"
+						}
+					}
+				},
+				update: {
+					field: {
+						"class": "button_save submit_button d-inline float-right float-end",
+						input: {
+							"class": "btn btn-primary"
+						}
+					}
+				},
+				"delete": {
+					field: {
+						"class": "button_delete submit_button d-inline float-left float-start",
+						input: {
+							"class": "btn btn-danger"
+						}
+					}
+				}
+			}
+		};
+	}
 	
 	$.ajax({
 		url: call_module_file_prefix_url.replace("#module_file_path#", "get_data"),
@@ -36,8 +170,29 @@ function loadListAndEditUsersWitUserTypesSettingsBlockSettings(settings_elm, set
 		async: false,
 	});
 	
-	loadListSettingsBlockSettings(settings_elm, settings_values);
+	loadListSettingsBlockSettings(settings_elm, settings_values, empty_settings_values ? {"remove": 0, "sort": 0} : null);
 	onChangeQueryType( list_settings.children(".query_type").children("select")[0] );
+	
+	if (empty_settings_values) {
+		//prepare fields with extra_attributes
+		for (var field_id in settings_values["fields"]) {
+			var input_extra_attributes = list_settings.find(".prop_" + field_id + " > .selected_task_properties > .form_containers > .fields > .field > .input_settings > .input_extra_attributes");
+			
+			if (input_extra_attributes.find(" > .attributes .task_property_field").length > 0)
+				input_extra_attributes.find(" > .extra_attributes_type").val("array").trigger("change");
+		}
+		
+		//set active with options type: array
+		list_settings.find(".prop_active > .selected_task_properties > .form_containers > .fields > .field > .input_settings > .input_options > .options_type").val("array").trigger("change");
+		
+		//prepare buttons with extra_attributes
+		for (var button_id in settings_values["buttons"]) {
+			var input_extra_attributes = list_settings.find(".button_settings_" + button_id + " > .selected_task_properties > .form_containers > .fields > .field > .input_settings > .input_extra_attributes");
+			
+			if (input_extra_attributes.find(" > .attributes .task_property_field").length > 0)
+				input_extra_attributes.find(" > .extra_attributes_type").val("array").trigger("change");
+		}
+	}
 	
 	//prepare fields
 	list_settings.find(".settings_prop.prop_user_id > .selected_task_properties > .form_containers > .fields > .field > .input_settings > .input_type").hide();
@@ -61,7 +216,7 @@ function loadListAndEditUsersWitUserTypesSettingsBlockSettings(settings_elm, set
 	input_settings.children(".input_type").hide();
 	input_settings.children(".input_options").remove();
 	
-	if (!settings_values || $.isEmptyObject(settings_values)) {
+	if (empty_settings_values) {
 		list_settings.find(".status_action_delete > .on_ok_action > select").val("show_message");
 		
 		field.find(" > .label_settings > .label_value > .task_property_field").val("");

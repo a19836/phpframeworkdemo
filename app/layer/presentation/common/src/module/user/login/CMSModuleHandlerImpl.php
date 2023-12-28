@@ -228,6 +228,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			}
 			
 			$buttons = array();
+			$buttons["insert"] = $login_button;
 			$buttons["submit"] = array(
 				"container" => array(
 					"class" => "buttons",

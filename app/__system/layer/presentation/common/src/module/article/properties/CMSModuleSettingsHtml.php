@@ -11,8 +11,8 @@
 	</div>
 <?php 
 	$fields = array(
-		"title" => array("type" => "h1", "label" => "", "class" => "article_title"), 
-		"sub_title" => array("type" => "h2", "label" => "", "class" => "article_sub_title"),
+		"title" => array("type" => "label", "label" => "", "class" => "article_title"), 
+		"sub_title" => array("type" => "label", "label" => "", "class" => "article_sub_title"),
 		"created_date" => array("type" => "label", "label" => "", "class" => "article_created_date", "show" => 0),
 		"modified_date" => array("type" => "label", "label" => "", "class" => "article_modified_date"),
 		"tags" => array("type" => "label", "label" => "Tags", "class" => "article_tags"),
@@ -33,7 +33,40 @@
 	 	"block_class" => true,
 		"fields" => $fields,
 		"buttons" => false,
-	 	"css" => true,
+	 	"css" => '
+.module_article label {
+    margin-bottom:0;
+}
+.module_article .article_content img {
+    border-radius:.25rem;
+}
+.module_article .article_comments {
+    margin-top:20px;
+    padding-top:20px;
+    border-top:1px solid #ccc;
+}
+.module_article .article_comments .add_object_comment textarea {
+    width:100%;
+    border-radius:.25rem;
+}
+.module_article .article_comments .add_object_comment input {
+    width:auto;
+    height:auto;
+    border-radius:.25rem;
+    border:1px solid #007bff;
+    background-color: #007bff;
+    color:#fff;
+    margin: 10px 0 10px auto;
+    display: block;
+    text-transform:capitalize;
+}
+.module_article .article_comments .comments .user_name {
+    height:20px;
+    font-size:80%;
+}
+.module_article .article_comments .comments .date {
+    margin-top:-1.5em;
+}',
 	 	"js" => true,
 	));
 	echo '<div class="allow_not_published">

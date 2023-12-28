@@ -78,12 +78,12 @@ class CommonModuleSettingsUI {
 			$html .= '
 				<div class="table_class">
 					<label>Table Class:</label>
-					<input type="text" class="module_settings_property" name="table_class" />
+					<input type="text" class="module_settings_property" name="table_class" value="' . $settings["table_class"] . '" />
 					<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 				</div>
 				<div class="rows_class">
 					<label>Rows Class:</label>
-					<input type="text" class="module_settings_property" name="rows_class" />
+					<input type="text" class="module_settings_property" name="rows_class" value="' . $settings["rows_class"] . '" />
 					<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 				</div>
 				<div class="clear"></div>';
@@ -99,7 +99,7 @@ class CommonModuleSettingsUI {
 			$html .= self::getJsFieldsHtml($settings["js"]);
 		
 		if (isset($settings["fields"]))
-			$html .= self::getAttributeFieldsHtml($settings["fields"], $settings["is_list"]);
+			$html .= self::getAttributeFieldsHtml($settings["fields"], $settings["is_list"], $settings["search_values"]);
 		
 		if (is_array($settings["buttons"])) {
 			if ($settings["is_list"])
@@ -313,7 +313,8 @@ class CommonModuleSettingsUI {
 					<li class="draggable menu-widget menu-widget-ptl menu-widget-block-' . $class_suffix . '" data-tag="' . $tag . '" title="' . $label . '"  data-create-widget-class="' . $js_func . '">
 						<span>' . $label . '</span>
 						<div class="template-widget template-widget-ptl template-widget-block-' . $class_suffix . '" data-label="' . $label . '">
-							<pre>ptl:block:' . $ptl_code_prefix . ':' . $name . '</pre>
+							<pre class="ptl-content">ptl:block:' . $ptl_code_prefix . ':' . $name . '</pre>
+							<div class="droppable"></div>
 						</div>' . 
 						/*'<style>
 						.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-ptl.menu-widget-block-' . $class_suffix . ',
@@ -347,7 +348,7 @@ class CommonModuleSettingsUI {
 		return $html;
 	}
 	
-	public static function getAttributeFieldsHtml($fields, $is_list = false) {
+	public static function getAttributeFieldsHtml($fields, $is_list = false, $search_values = false) {
 		$html = '<div class="settings_props">';
 		
 		foreach ($fields as $field_id => $field) {
@@ -358,7 +359,7 @@ class CommonModuleSettingsUI {
 				unset($field);
 			}
 			
-			$html .= self::getAttributeFieldHtml($field, $field_id, $is_list);
+			$html .= self::getAttributeFieldHtml($field, $field_id, $is_list, $search_values);
 		}
 	
 		$html .= '</div>
@@ -377,7 +378,7 @@ class CommonModuleSettingsUI {
 		return $html;
 	}
 
-	public static function getAttributeFieldHtml($field, $field_id, $is_list = false) {
+	public static function getAttributeFieldHtml($field, $field_id, $is_list = false, $search_values = false) {
 		if (is_array($field)) {
 			$type = $field["type"];
 			$label = $field["label"];
@@ -444,7 +445,8 @@ class CommonModuleSettingsUI {
 				<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 			</div>';
 		}
-		else {
+		
+		if ($is_list || $search_values) {
 			$html .= '
 			<div class="settings_prop_search_value">
 				<label>Search Value: </label>

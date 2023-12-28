@@ -20,7 +20,7 @@ include_once $EVC->getModulePath("user/UserUI", $EVC->getCommonProjectName());
 	
 <?php 
 	$fields = array(
-		"user_id" => array("validation_type" => "bigint"),
+		"user_id" => array("validation_type" => "bigint", "show" => 0),
 		"user_type_id" => array("validation_type" => "bigint"),
 		"username", 
 		"password" => array("type" => "password", "allow_null" => 1),
@@ -33,7 +33,7 @@ include_once $EVC->getModulePath("user/UserUI", $EVC->getCommonProjectName());
 		"security_question_3" => array("type" => "select"),
 		"security_answer_3",
 		"user_attachments" => array("show" => 0),
-		"active" => array("show" => 0, "type" => "select", "options" => array(
+		"active" => array("type" => "select", "options" => array(
 			array("value" => 0, "label" => "new"),
 			array("value" => 1, "label"=> "active"),
 			array("value" => 2, "label"=> "inative"),
@@ -52,7 +52,13 @@ include_once $EVC->getModulePath("user/UserUI", $EVC->getCommonProjectName());
 	 		"delete" => true,
 	 		"undefined" => true,
 	 	),
-	 	"css" => true,
+	 	"css" => "
+.module_edit_user .password > .password_generator {
+    margin-top:5px;
+    text-align:right;
+    font-size:90%;
+    display:block;
+}",
 	 	"js" => true,
 	));
 	echo UserUI::getUserEnvironmentFieldsHtml();

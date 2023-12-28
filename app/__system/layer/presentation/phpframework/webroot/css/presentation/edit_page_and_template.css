@@ -165,6 +165,12 @@
   .regions_blocks_includes_settings .template_region_items {
 	margin-left:20px;
 }
+.regions_blocks_includes_settings .defined_regions .template_region_items {
+	margin-left:35px;
+}
+.regions_blocks_includes_settings .defined_template_params .items {
+	margin-left:5px;
+}
 .regions_blocks_includes_settings .template label {
 	width:150px;
 	display:inline-block;
@@ -173,19 +179,25 @@
 	background-color:#FFF;
 }
 .regions_blocks_includes_settings .other_region_blocks, 
+   .regions_blocks_includes_settings .defined_regions, 
    .regions_blocks_includes_settings .includes, 
    .regions_blocks_includes_settings .template_params, 
-   .regions_blocks_includes_settings .other_template_params {
+   .regions_blocks_includes_settings .other_template_params, 
+   .regions_blocks_includes_settings .defined_template_params {
 	margin-top:20px;
 }
 .regions_blocks_includes_settings .other_region_blocks,
-   .regions_blocks_includes_settings .other_template_params {
+   .regions_blocks_includes_settings .defined_regions,
+   .regions_blocks_includes_settings .other_template_params, 
+   .regions_blocks_includes_settings .defined_template_params {
 	margin-left:20px;
 }
 .regions_blocks_includes_settings .region_blocks .template_region_items .template_region_item, 
    .regions_blocks_includes_settings .other_region_blocks .template_region_items .template_region_item,
+   .regions_blocks_includes_settings .defined_regions .template_region_items .template_region_item,
    .regions_blocks_includes_settings .template_params .items .item,
-   .regions_blocks_includes_settings .other_template_params .items .item {
+   .regions_blocks_includes_settings .other_template_params .items .item,
+   .regions_blocks_includes_settings .defined_template_params .items .item {
 	width:625px;
 	margin-top:10px;
 }
@@ -207,6 +219,18 @@
 }
 .regions_blocks_includes_settings .other_region_blocks .template_region_items .template_region_item > label {
 	width:130px;
+}
+.regions_blocks_includes_settings .defined_regions .template_region_items .template_region_item,
+  .regions_blocks_includes_settings .defined_template_params .items .item {
+	margin:10px 0;
+}
+.regions_blocks_includes_settings .defined_regions .template_region_items .template_region_item:before,
+  .regions_blocks_includes_settings .defined_template_params .items .item:before {
+    content:"·";
+    font-size:40px;
+    vertical-align:middle;
+    line-height:20px;
+    margin-right:10px;
 }
 .regions_blocks_includes_settings .other_template_params .items .item > label {
 	width:145px;
@@ -526,7 +550,10 @@
 	display:inline-block;
 }
 .regions_blocks_includes_settings .design_settings > div > input {
-	width:calc(100% - 105px);
+	width:calc(100% - 125px);
+}
+.regions_blocks_includes_settings .design_settings > div.special_body_attributes > input {
+	width:calc(100% - 160px);
 }
 
 .regions_blocks_includes_settings .css_files {

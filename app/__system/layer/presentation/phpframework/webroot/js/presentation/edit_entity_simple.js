@@ -683,6 +683,9 @@ function updateTemplateLayout(entity_obj) {
 					template_params_values_list = settings["params"]; //global var
 					var template_includes = settings["includes"];
 					
+					defined_regions_list = data["defined_regions"]; //global var
+					defined_template_params_values = data["params_values"]; //global var
+					
 					//update settings with data
 					updateSelectedTemplateRegionsBlocks(entity_obj, data);
 					
@@ -1045,12 +1048,12 @@ function addPageWebrootFile(elm, type, file_name, file_url, file_code) {
 			var proj = null;
 			var is_html = true;
 			var rb_index = 0;
-			var rb_html = getRegionBlockHtml(region, block, proj, is_html, rb_index);
+			var rb_html = getRegionBlockHtml(selected_region, block, proj, is_html, rb_index);
 			
 			var region_blocks = regions_blocks_includes_settings.find(".region_blocks .template_region_items");
 			region_blocks.append(rb_html);
 			
-			regions_blocks_list.push([region, block, proj, is_html, rb_index]);
+			regions_blocks_list.push([selected_region, block, proj, is_html, rb_index]);
 			
 			updateLayoutFromSettings(entity_obj, true);
 		}
@@ -1259,7 +1262,7 @@ function saveAndPreview() {
 			//open popup with preview
 			//setTimeout very important bc if confirmSave, after this success function be executed the MyFancyPopup will be hided.
 			setTimeout(function() {
-				preview();
+				testAndPreview(false);
 			}, 300);
 		}
 	};
@@ -1398,26 +1401,83 @@ function confirmSave(opts) {
 	}
 }
 
-function preview() {
-	if (page_preview_url) {
-		//get popup
-		var popup= $(".page_preview_popup");
-		
-		if (!popup[0]) {
-			popup = $('<div class="myfancypopup page_preview_popup"></div>');
-			$(document.body).append(popup);
-		}
-		
-		popup.html('<iframe></iframe>'); //cleans the iframe so we don't see the previous html
-		popup.children("iframe").attr("src", page_preview_url);
-		
-		//open popup
+function testAndPreviewWithDelay(do_not_check_for_changes) {
+	if (!auto_convert_settings_from_layout) {
 		MyFancyPopup.init({
-			elementToShow: popup,
-			parentElement: document,
+			parentElement: window,
 		});
+		MyFancyPopup.showOverlay();
+		MyFancyPopup.showLoading();
 		
-		MyFancyPopup.showPopup();
+		enableAutoConvertSettingsFromLayout(function() {
+			if (!is_from_auto_save)				
+				MyFancyPopup.hidePopup();
+			
+			testAndPreview(do_not_check_for_changes);
+		});
+		disableAutoConvertSettingsFromLayout();
+	}
+	else
+		testAndPreview(do_not_check_for_changes);
+}
+
+function testAndPreview(do_not_check_for_changes) {
+	if (page_preview_url) {
+		var status = do_not_check_for_changes || !isEntityCodeObjChanged() || confirm("You didn't save your new changes.\nIf you proceed you will only preview the saved changes.\nDo you wish to continue?");
+		
+		if (status) {
+			//get popup
+			var popup= $(".page_preview_popup");
+			
+			if (!popup[0]) {
+				popup = $('<div class="myfancypopup page_preview_popup"></div>');
+				$(document.body).append(popup);
+			}
+			
+			popup.html('<iframe></iframe>'); //cleans the iframe so we don't see the previous html
+			popup.children("iframe").attr("src", page_preview_url);
+			
+			//open popup
+			MyFancyPopup.init({
+				elementToShow: popup,
+				parentElement: document,
+			});
+			
+			MyFancyPopup.showPopup();
+		}
+	}
+}
+
+function previewWithDelay(do_not_check_for_changes) {
+	if (!auto_convert_settings_from_layout) {
+		MyFancyPopup.init({
+			parentElement: window,
+		});
+		MyFancyPopup.showOverlay();
+		MyFancyPopup.showLoading();
+		
+		enableAutoConvertSettingsFromLayout(function() {
+			if (!is_from_auto_save)				
+				MyFancyPopup.hidePopup();
+			
+			preview(do_not_check_for_changes);
+		});
+		disableAutoConvertSettingsFromLayout();
+	}
+	else
+		preview(do_not_check_for_changes);
+}
+
+function preview(do_not_check_for_changes) {
+	if (view_project_url) {
+		var status = do_not_check_for_changes || !isEntityCodeObjChanged() || confirm("You didn't save your new changes.\nIf you proceed you will only preview the saved changes.\nDo you wish to continue?");
+		
+		if (status) {
+			var win = window.open(view_project_url, "preview_tab");
+			
+			if(win) //Browser has allowed it to be opened
+				win.focus();
+		}
 	}
 }
 

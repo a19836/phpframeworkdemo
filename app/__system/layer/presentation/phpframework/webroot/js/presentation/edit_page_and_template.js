@@ -1128,16 +1128,20 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 	
 	var region_blocks = p.find(".region_blocks .template_region_items");
 	var other_region_blocks = p.find(".other_region_blocks .template_region_items");
+	var defined_regions = p.find(".defined_regions .template_region_items");
 	var region_blocks_no_items = p.find(".region_blocks .no_items");
 	var other_region_blocks_no_items = p.find(".other_region_blocks .no_items");
+	var defined_regions_no_items = p.find(".defined_regions .no_items");
 	
 	cleanRegionBlockHtmlEditorInstances(region_blocks); //clean editor instances before it empty the html from region_blocks. This is very important, otherwise the editor is overloading the browser memory with too many instances...
 	
 	region_blocks.html("");
 	other_region_blocks.html("");
+	defined_regions.html("");
 	
 	region_blocks_no_items.show();
 	other_region_blocks_no_items.show();
+	defined_regions_no_items.show();
 	
 	var existent_regions_blocks = {};
 	var rb_indexes = {};
@@ -1242,20 +1246,39 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 	pretifyRegionsBlocksComboBox(p);
 	createRegionsBlocksHtmlEditor(p);
 	
+	//prepare defined regions
+	if ($.isArray(defined_regions_list)) {
+		var defined_regions_exists = false;
+		
+		for (var i = 0; i < defined_regions_list.length; i++) {
+			var region = defined_regions_list[i];
+			var rb_html = getDefinedRegionHtml(region);
+			
+			defined_regions.append(rb_html);
+			defined_regions_exists = true;
+		}
+		
+		if (defined_regions_exists) 
+			defined_regions_no_items.hide();
+	}
+	
 	//PREPARING TEMPLATE PARAMS
 	var params = data && data.params ? data.params : [];
-	var params_values = data && data.params_values ? data.params_values : [];
 	
 	var template_params = p.find(".template_params .items");
 	var other_template_params = p.find(".other_template_params .items");
+	var defined_template_params = p.find(".defined_template_params .items");
 	var template_params_no_items = p.find(".template_params .no_items");
 	var other_template_params_no_items = p.find(".other_template_params .no_items");
+	var defined_template_params_no_items = p.find(".defined_template_params .no_items");
 	
 	template_params.html("");
 	other_template_params.html("");
+	defined_template_params.html("");
 	
 	template_params_no_items.show();
 	other_template_params_no_items.show();
+	defined_template_params_no_items.show();
 	
 	var existent_params = {};
 	
@@ -1271,8 +1294,8 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 				if (template_params_values_list_clone.hasOwnProperty(param))
 					param_value = template_params_values_list_clone[param];
 				
-				if (params_values && params_values.hasOwnProperty(param))
-					default_value = params_values[$param];
+				if (defined_template_params_values && defined_template_params_values.hasOwnProperty(param))
+					default_value = defined_template_params_values[$param];
 				
 				var param_html = getTemplateParamHtml(param, param_value, default_value);
 				template_params.append(param_html);
@@ -1280,10 +1303,10 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 			}
 		}
 		
-		if (params_values) {
-			for (var param in params_values) {
+		if (defined_template_params_values) {
+			for (var param in defined_template_params_values) {
 				if (param && !existent_params.hasOwnProperty(param)) {
-					var default_value= params_values[param];
+					var default_value= defined_template_params_values[param];
 					var param_value = null;
 					
 					if (template_params_values_list_clone.hasOwnProperty(param))
@@ -1297,6 +1320,7 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 		}
 	}
 	
+	//prepare other params
 	var exists = false;
 	for (var param in template_params_values_list_clone) {
 		if (param && !existent_params.hasOwnProperty(param)) {
@@ -1311,11 +1335,32 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 	if (exists) 
 		other_template_params_no_items.hide();
 	
+	//prepare defined params
+	if (defined_template_params_values) {
+		var exists = false;
+		for (var param in defined_template_params_values) {
+			if (param) {
+				var param_html = getDefinedTemplateParamHtml(param);
+				defined_template_params.append(param_html);
+				exists = true;
+			}
+		}
+		
+		if (exists) 
+			defined_template_params_no_items.hide();
+	}
+	
 	//resizeAllLabels();
 	
 	//setting again the global vars with the correct values, bc if the synchronization with the template layout is active, it will change these global vars
 	regions_blocks_list = regions_blocks_list_clone;
 	template_params_values_list = template_params_values_list_clone;
+}
+
+function getDefinedRegionHtml(region) {
+	var label = region.replace(/"/g, "");
+	
+	return $( defined_region_html.replace(/#region#/g, label) ); //replace #block# with empty strnig bc if block is an html string, it will break the javascript. So, the block value will be assigned in the code bellow.
 }
 
 function getRegionBlockHtml(region, block, block_project, is_html, rb_index) {
@@ -2001,6 +2046,12 @@ function onChangeRegionBlockParamType(elm) {
 	}
 	
 	updateLayoutIframeFromSettingsField();
+}
+
+function getDefinedTemplateParamHtml(param) {
+	var label = param.replace(/"/g, "");
+	
+	return $( defined_template_param_html.replace(/#param#/g, label) );
 }
 
 function getTemplateParamHtml(param, value, default_value) {

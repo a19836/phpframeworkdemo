@@ -664,6 +664,7 @@ function getTemplateCodeForSaving(without_regions_blocks_and_includes) {
 	var doc_type_attributes = template_obj.find(".code_editor_settings .doc_type_attributes input").val();
 	var html_attributes = template_obj.find(".code_editor_settings .html_attributes input").val();
 	var head_attributes = template_obj.find(".code_editor_settings .head_attributes input").val();
+	var special_body_attributes = template_obj.find(".code_editor_settings .special_body_attributes input").val();
 	var head_code = getTemplateHeadEditorCode();
 	var template_code = getTemplateEditorCode();
 	
@@ -674,6 +675,12 @@ function getTemplateCodeForSaving(without_regions_blocks_and_includes) {
 	template_code = PtlLayoutUIEditor.replaceTagAttributesFromSource(template_code, "html", html_attributes);
 	template_code = PtlLayoutUIEditor.replaceTagAttributesFromSource(template_code, "head", head_attributes);
 	template_code = PtlLayoutUIEditor.replaceTagContentFromSource(template_code, "head", head_code);
+	
+	var new_special_body_attributes = removeDuplicatesFromSpecialBodyAttributes(PtlLayoutUIEditor, template_code, special_body_attributes);
+	template_code = getHtmlWithSpecialBodyAttributes(PtlLayoutUIEditor, template_code, new_special_body_attributes);
+	
+	if (new_special_body_attributes != special_body_attributes)
+		template_obj.find(".code_editor_settings .special_body_attributes input").val(new_special_body_attributes);
 	
 	if (PtlLayoutUIEditor.options.beautify)
 		template_code = MyHtmlBeautify.beautify(template_code); //do not beautify the code, bc sometimes it messes the php code and the inner html inside of the addRegionHtml method
@@ -688,6 +695,53 @@ function getTemplateCodeForSaving(without_regions_blocks_and_includes) {
 	update_layout_iframe_field_html_value_from_settings_func = update_layout_iframe_field_html_value_from_settings_func_bkp;
 	
 	return status ? code : null;
+}
+
+//add special body attributes to body attributes
+function getHtmlWithSpecialBodyAttributes(PtlLayoutUIEditor, html, special_body_attributes) {
+	if (special_body_attributes && html) {
+		var body_attributes = PtlLayoutUIEditor.getTagAttributesFromSource(html, "body");
+		var body_attributes_str = special_body_attributes;
+		
+		if (body_attributes && body_attributes.length) {
+			var body_attributes_html = MyHtmlBeautify.convertAttributesToHtml(body_attributes);
+			body_attributes_str = MyHtmlBeautify.joinAttributesHtmls(special_body_attributes, body_attributes_html);
+		}
+		
+		if (body_attributes_str)
+			body_attributes_str = body_attributes_str.replace(/(^\s+|\s+$)/, ""); //trim
+		
+		html = PtlLayoutUIEditor.replaceTagAttributesFromSource(html, "body", body_attributes_str);
+		
+		/*console.log(body_attributes);
+		console.log(special_body_attributes);
+		console.log(body_attributes_str);
+		console.log(html);*/
+	}
+	
+	return html;
+}
+
+function removeDuplicatesFromSpecialBodyAttributes(PtlLayoutUIEditor, html, special_body_attributes) {
+	if (special_body_attributes && html) {
+		var body_attributes = PtlLayoutUIEditor.getTagAttributesFromSource(html, "body");
+		
+		if (body_attributes && body_attributes.length) {
+			var body_attributes_html = MyHtmlBeautify.convertAttributesToHtml(body_attributes);
+			var body_attributes_str = MyHtmlBeautify.diffAttributesHtmls(special_body_attributes, body_attributes_html);
+			
+			if (body_attributes_str)
+				body_attributes_str = body_attributes_str.replace(/(^\s+|\s+$)/, ""); //trim
+			
+			/*console.log(body_attributes);
+			console.log(special_body_attributes);
+			console.log(body_attributes_str);*/
+			
+			special_body_attributes = body_attributes_str;
+		}
+	}
+	
+	return special_body_attributes;
 }
 
 function getRegionsBlocksAndIncludesObjCodeToSave(opts) {

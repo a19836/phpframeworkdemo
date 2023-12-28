@@ -110,8 +110,8 @@
 		"photo" => array("type" => "image", "src" => '#[\\$idx][photo_url]#', "label" => "Photo", "extra_attributes" => array(
 			array("name" => "onError", "value" => '"$(this).remove();"'),
 		)),
-		"summary", 
-		"content", 
+		"summary" => array("show" => 0), 
+		"content" => array("show" => 0), 
 		"created_date", 
 		"modified_date"
 	);
@@ -126,8 +126,11 @@
 	 		"edit" => true,
 	 		"delete" => true,
 	 	),
-	 	"css" => true,
+	 	"css" => ".module_list_articles table img {
+	width:100px;
+}",
 	 	"js" => true,
+	 	"table_class" => "list_table table table-striped table-hover table-sm"
 	));
 ?>
 </div>

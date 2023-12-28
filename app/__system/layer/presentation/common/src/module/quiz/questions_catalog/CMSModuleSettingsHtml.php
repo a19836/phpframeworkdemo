@@ -97,12 +97,15 @@
 	 	"block_class" => true,
 		"fields" => array(
 			"created_date" => array("type" => "label", "label" => "", "class" => "catalog_question_created_date", "show" => 0),
-			"modified_date" => array("type" => "label", "label" => "", "class" => "catalog_question_modified_date", "show" => 0),
+			"modified_date" => array("type" => "label", "label" => "", "class" => "catalog_question_modified_date"),
 			"title" => array("type" => "label", "label" => "", "class" => "catalog_question_title"), 
-			"description" => array("type" => "label", "label" => "", "class" => "catalog_question_description", "show" => 0),
+			"description" => array("type" => "label", "label" => "", "class" => "catalog_question_description"),
 		),
+	 	"search_values" => true,
 		"buttons" => false,
-	 	"css" => true,
+	 	"css" => '.module_questions_catalog .question {
+	display:inline-block;
+}',
 	 	"js" => true,
 	));
 ?>

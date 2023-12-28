@@ -20,11 +20,11 @@ class CommonModuleSettingsUtil {
 	
 	public static function getTemplatesAction($EVC, $data) {
 		if ($data["action"] == "available_templates") {
-			$data = CommonModuleSettingsUtil::getInstalledTemplates($EVC, $data["module"]);
+			$data = self::getInstalledTemplates($EVC, $data["module"]);
 			return $data ? json_encode($data) : null;
 		}
 		else if ($data["action"] == "template_ptl")
-			return CommonModuleSettingsUtil::getTemplatePTLCode($EVC, $data["module"], $data["template"]);
+			return self::getTemplatePTLCode($EVC, $data["module"], $data["template"], $data["template_module"]);
 	}
 	
 	public static function getInstalledTemplates($EVC, $module) {
@@ -47,7 +47,19 @@ class CommonModuleSettingsUtil {
 						$fp = "$templates_path$file/module/$module.ptl";
 						
 						if (file_exists($fp))
-							$templates[] = $file;
+							$templates[$file] = array();
+						else {
+							$fp = "$templates_path$file/module/$module/";
+							
+							if (is_dir($fp)) {
+								$sub_files = array_diff(scandir($fp), array('..', '.'));
+								$templates[$file] = array();
+								
+								foreach ($sub_files as $sub_file)
+									if (pathinfo($sub_file, PATHINFO_EXTENSION) == "ptl")
+										$templates[$file][] = pathinfo($sub_file, PATHINFO_FILENAME);
+							}
+						}
 					}
 			}
 
@@ -57,7 +69,7 @@ class CommonModuleSettingsUtil {
 		return $templates;
 	}
 	
-	public static function getTemplatePTLCode($EVC, $module, $template) {
+	public static function getTemplatePTLCode($EVC, $module, $template, $template_module = null) {
 		if ($module && $template) {
 			include $EVC->getConfigPath("config");
 
@@ -68,7 +80,7 @@ class CommonModuleSettingsUtil {
 				include $EVC->getModulePath("object/ObjectUtil", $common_project_name);
 				
 				$module = preg_replace("/\/+$/", "", $module);
-				$fp = $PEVC->getTemplatesPath() . "$template/module/$module.ptl";
+				$fp = $PEVC->getTemplatesPath() . "$template/module/$module" . ($template_module ? "/$template_module" : "") . ".ptl";
 				$code = file_exists($fp) ? file_get_contents($fp) : "";
 			}
 

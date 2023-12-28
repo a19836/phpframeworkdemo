@@ -160,15 +160,15 @@
 	
 	$fields = array(
 		"created_date" => array("type" => "label", "label" => "", "class" => "catalog_article_created_date", "show" => 0),
-		"modified_date" => array("type" => "label", "label" => "", "class" => "catalog_article_modified_date", "show" => 0),
+		"modified_date" => array("type" => "label", "label" => "", "class" => "catalog_article_modified_date", "show" => 1),
 		"photo" => array("type" => "image", "label" => "", "class" => "catalog_article_photo", 
 			"src" => "#photo_url#", 
 			"extra_attributes" => array(array("name" => "onError", "value" => '\$(this).parent().remove()'))
 		),
-		"title" => array("type" => "h1", "label" => "", "class" => "catalog_article_title"), 
-		"sub_title" => array("type" => "h2", "label" => "", "class" => "catalog_article_sub_title"),
-		"summary" => array("type" => "label", "label" => "", "class" => "catalog_article_summary"),
-		"content" => array("type" => "label", "label" => "", "class" => "catalog_article_content", "show" => 0),
+		"title" => array("type" => "label", "label" => "", "class" => "catalog_article_title", "search_value" => '$_GET'), 
+		"sub_title" => array("type" => "label", "label" => "", "class" => "catalog_article_sub_title", "search_value" => '$_GET'),
+		"summary" => array("type" => "label", "label" => "", "class" => "catalog_article_summary", "search_value" => '$_GET'),
+		"content" => array("type" => "label", "label" => "", "class" => "catalog_article_content", "show" => 0, "search_value" => '$_GET'),
 	);
 	$CommonModuleTableExtraAttributesSettingsUtil->prepareNewFieldsSettings("article", $fields, array("type" => "label"));
 	
@@ -176,8 +176,11 @@
 		"style_type" => true,
 	 	"block_class" => true,
 		"fields" => $fields,
+	 	"search_values" => true,
 		"buttons" => false,
-	 	"css" => true,
+	 	"css" => '.module_articles_catalog .article {
+	display:inline-block;
+}',
 	 	"js" => '
 \$(function () {
 	\$(".module_articles_catalog .catalog_article_photo img[src=\'\']").parent().remove();

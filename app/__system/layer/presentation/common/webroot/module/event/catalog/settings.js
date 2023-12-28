@@ -9,7 +9,7 @@ $(function () {
 	initObjectBlockSettings("edit_settings", saveEditSettings, "saveEditSettings");
 	
 	$(".catalog_settings > .els > .els_tabs > li").click(function (idx, li) {
-		updateEventsCatalogType( $(".catalog_settings > .catalog_type > select")[0] );
+		updateEventsCatalogType( $(".catalog_settings > .catalog_type > select")[0], true );
 	});
 });
 
@@ -47,7 +47,7 @@ function onEventCatalogUpdatePTLFromFieldsSettings(elm, settings, code, external
 	return code;
 }
 
-function updateEventsCatalogType(elm) {
+function updateEventsCatalogType(elm, do_not_load_user_list_code) {
 	elm = $(elm);
 	
 	var value = elm.val();
@@ -69,6 +69,19 @@ function updateEventsCatalogType(elm) {
 		if (value == "user_list" && ptl_tab_selected) {
 			alignments.hide();
 			event_properties_url.hide();
+			
+			if (!do_not_load_user_list_code && confirm("Do you wish to load the default ptl code?")) {
+				var ptl = catalog_settings.find(".els > .ptl");
+				var external_vars = {};
+				var code = getPtlElementTemplateSourceEditorValue(ptl);
+				code = onEventCatalogUpdatePTLFromFieldsSettings(ptl, null, code, external_vars);
+				
+				//show code
+				setPtlElementTemplateSourceEditorValue(ptl, code, true);
+				
+				//Add External vars
+				loadPTLExternalVars(ptl.children(".ptl_external_vars"), external_vars);
+			}
 		}
 	}
 }
@@ -110,9 +123,61 @@ function loadEventsCatalogBlockSettings(settings_elm, settings_values) {
 	MyFancyPopup.showLoading();
 	
 	var catalog_settings = settings_elm.children(".catalog_settings");
+	var empty_settings_values = !settings_values || ($.isArray(settings_values) && settings_values.length == 0);
 	
-	if (!settings_values || ($.isArray(settings_values) && settings_values.length == 0)) {
-		settings_values = {};
+	if (empty_settings_values) {
+		settings_values = {
+			ptl: {
+				code: '<div class="card d-inline-block align-top border border-light rounded m-2 p-4 shadow-sm text-start text-left" style="width: 300px;">' + "\n"
+					+ '	<div class="row">' + "\n"
+					+ '		<div class="col-4 text-center text-danger">' + "\n"
+					+ '			<div class="small text-secondary">' + "\n"
+					+ '			    <span class="glyphicon glyphicon-calendar fas fa-fw fa-calendar"></span>' + "\n"
+					+ '			</div>' + "\n"
+					+ '			<div class="fs-3 h3 mt-1 mb-0 font-weight-bold">' + "\n"
+					+ '				<ptl:block:field:value:begin_day/>' + "\n"
+					+ '			</div>' + "\n"
+					+ '			<div class="text-uppercase">' + "\n"
+					+ '				<ptl:block:field:value:begin_month_short_text/>' + "\n"
+					+ '			</div>' + "\n"
+					+ '		</div>' + "\n"
+					+ '		<div class="col-8">' + "\n"
+					+ '			<div class="small text-secondary">' + "\n"
+					+ '				<span class="glyphicon glyphicon-calendar fas fa-fw fa-clock"></span>' + "\n"
+					+ '				<ptl:block:field:value:begin_time/> - <ptl:block:field:value:end_time/>' + "\n"
+					+ '			</div>' + "\n"
+					+ '			<div class="text-dark mt-1 text-capitalize">' + "\n"
+					+ '				<ptl:block:field:input:title/>' + "\n"
+					+ '			</div>' + "\n"
+					+ '		</div>' + "\n"
+					+ '	</div>' + "\n"
+					+ '	<div class="mt-3 mb-3">' + "\n"
+					+ '		<ptl:block:field:photo/>' + "\n"
+					+ '	</div>' + "\n"
+					+ '	<div class="text-dark text-capitalize">' + "\n"
+					+ '		<ptl:block:field:sub_title/>' + "\n"
+					+ '	</div>' + "\n"
+					+ '	<div class="text-dark small text-truncate text-wrap text-capitalize" style="max-height:40px;">' + "\n"
+					+ '		<ptl:block:field:description/>' + "\n"
+					+ '	</div>' + "\n"
+					+ '	<div class="small text-right text-end mt-2">' + "\n"
+					+ '		<span class="glyphicon glyphicon-user fas fa-fw fa-user align-middle"></span>' + "\n"
+					+ '		<span class="small">' + "\n"
+					+ '			By <ptl:block:field:input:user/>' + "\n"
+					+ '		</span>' + "\n"
+					+ '	</div>' + "\n"
+					+ '</div>'
+			},
+			fields: {
+				photo: {
+					field: {
+						input: {
+							"class": "card-img-top rounded"
+						}
+					}
+				},
+			}
+		};
 	}
 	
 	if (!settings_values.hasOwnProperty("blog_introduction_events_num")) {
@@ -128,9 +193,19 @@ function loadEventsCatalogBlockSettings(settings_elm, settings_values) {
 		settings_values["blog_listed_events_num"] = {"value": 10};
 	}
 	
-	loadEditSettingsBlockSettings(settings_elm, settings_values);
+	loadEditSettingsBlockSettings(settings_elm, settings_values, empty_settings_values ? {"remove": 0, "sort": 0} : null);
 	
-	updateEventsCatalogType( catalog_settings.find(".catalog_type select")[0] );
+	if (empty_settings_values) {
+		//prepare fields with extra_attributes
+		for (var field_id in settings_values["fields"]) {
+			var input_extra_attributes = catalog_settings.find(".prop_" + field_id + " > .selected_task_properties > .form_containers > .fields > .field > .input_settings > .input_extra_attributes");
+			
+			if (input_extra_attributes.find(" > .attributes .task_property_field").length > 0)
+				input_extra_attributes.find(" > .extra_attributes_type").val("array").trigger("change");
+		}
+	}
+	
+	updateEventsCatalogType( catalog_settings.find(".catalog_type select")[0], true );
 	updateEventsSelectionType( catalog_settings.find(".events_type select")[0] );
 	
 	var event_ids = prepareBlockSettingsItemValue(settings_values["event_ids"]);

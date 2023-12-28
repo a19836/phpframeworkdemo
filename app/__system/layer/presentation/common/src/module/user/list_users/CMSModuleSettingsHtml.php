@@ -40,7 +40,7 @@
 	</div>
 <?php 
 	$fields = array(
-		"user_id", 
+		"user_id" => array("show" => 0), 
 		"username", 
 		"password" => array("show" => 0), 
 		"name", 
@@ -51,9 +51,13 @@
 		"security_answer_2" => array("show" => 0), 
 		"security_question_3" => array("show" => 0), 
 		"security_answer_3" => array("show" => 0), 
-		"active" => array("show" => 0), 
+		"active" => array("available_values" => array(
+			array("old_value" => "0", "new_value" => "New"),
+			array("old_value" => "1", "new_value" => "Active"),
+			array("old_value" => "2", "new_value" => "Inactive"),
+		)),
 		"created_date" => array("show" => 0), 
-		"modified_date"
+		"modified_date" => array("show" => 0)
 	);
 	$CommonModuleTableExtraAttributesSettingsUtil->prepareNewFieldsSettings("user", $fields, null, array("is_list" => true));
 	

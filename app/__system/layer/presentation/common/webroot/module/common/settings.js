@@ -1,3 +1,5 @@
+var available_templates_ptls = null;
+
 $(function () {
 	var els = $(".els");
 	
@@ -82,20 +84,20 @@ function initObjectBlockSettings(class_name, save_func, save_func_name) {
 	}
 }
 
-function loadEditSettingsBlockSettings(settings_elm, settings_values) {
+function loadEditSettingsBlockSettings(settings_elm, settings_values, options) {
 	if (typeof loadObjectToObjectsBlockSettings == "function")
 		loadObjectToObjectsBlockSettings(settings_elm.children(".edit_settings"), settings_values, "object_to_objects");
 	
 	loadObjectBlockSettings(settings_elm, settings_values, "edit_settings");
-	loadTaskFormFieldsBlockSettings(settings_elm, settings_values, "edit_settings");
+	loadTaskFormFieldsBlockSettings(settings_elm, settings_values, "edit_settings", options);
 	loadTaskPTLFieldsBlockSettings(settings_elm, settings_values, "edit_settings");
 	
 	onElsTabChange( settings_elm.find(" > .edit_settings > .els > .els_tabs > li")[0] );
 }
 
-function loadListSettingsBlockSettings(settings_elm, settings_values) {
+function loadListSettingsBlockSettings(settings_elm, settings_values, options) {
 	loadObjectListBlockSettings(settings_elm, settings_values, "list_settings");
-	loadTaskFormFieldsBlockSettings(settings_elm, settings_values, "list_settings");
+	loadTaskFormFieldsBlockSettings(settings_elm, settings_values, "list_settings", options);
 	loadTaskPTLFieldsBlockSettings(settings_elm, settings_values, "list_settings");
 	
 	if (!settings_values || !settings_values.hasOwnProperty("fields")) {
@@ -119,8 +121,16 @@ function loadObjectListBlockSettings(settings_elm, settings_values, class_name) 
 	togglePanelFromCheckbox(settings_elm.children("." + class_name).children(".show_edit_button").children("input")[0], "edit_page_url");
 }
 
-function loadTaskFormFieldsBlockSettings(settings_elm, settings_values, class_name) {
+function loadTaskFormFieldsBlockSettings(settings_elm, settings_values, class_name, options) {
 	var block_settings = settings_elm.children("." + class_name);
+	
+	var form_field_options = {"remove" : 1, "sort" : 1};
+	
+	if ($.isPlainObject(options) && options.hasOwnProperty("remove") && !options["remove"])
+		form_field_options["remove"] = 0;
+	
+	if ($.isPlainObject(options) && options.hasOwnProperty("sort") && !options["sort"])
+		form_field_options["sort"] = 0;
 	
 	var fields = prepareBlockSettingsItemValue(settings_values["fields"]);
 	if (fields) {
@@ -133,7 +143,7 @@ function loadTaskFormFieldsBlockSettings(settings_elm, settings_values, class_na
 			if (prop_elm[0]) {
 				var field_elm = prop_elm.children(".selected_task_properties").children(".form_containers").children(".fields").children(".field");
 				
-				FormFieldsUtilObj.loadInputFieldData(field_elm, field_data["field"], {"remove" : 1, "sort" : 1});
+				FormFieldsUtilObj.loadInputFieldData(field_elm, field_data["field"], form_field_options);
 			}
 			else { //add field with default html to show that this field exists but is deprecated! This happens when we add extra attributes to some modules, like in the 'article', 'event' and 'user' modules, and then delete some extra attribute after we save a block.
 				var field_name = field_data["field"] && field_data["field"].hasOwnProperty("label") && field_data["field"]["label"] && field_data["field"]["label"].hasOwnProperty("value") && field_data["field"]["label"]["value"] ? field_data["field"]["label"]["value"] : field_id;
@@ -146,12 +156,14 @@ function loadTaskFormFieldsBlockSettings(settings_elm, settings_values, class_na
 			}
 			
 			//Move prop_elm to the correspondent position;
-			if (previous_prop_elm)
-				settings_props[0].insertBefore(prop_elm[0], previous_prop_elm[0].nextSibling);//if nextSibling doesn't exist, the prop_elm will be inserted at the end, which is correct!
-			else //insert to first position
-				settings_props[0].insertBefore(prop_elm[0], settings_props[0].firstChild);
-			
-			previous_prop_elm = prop_elm;
+			if (form_field_options && form_field_options["sort"]) {
+				if (previous_prop_elm)
+					settings_props[0].insertBefore(prop_elm[0], previous_prop_elm[0].nextSibling);//if nextSibling doesn't exist, the prop_elm will be inserted at the end, which is correct!
+				else //insert to first position
+					settings_props[0].insertBefore(prop_elm[0], settings_props[0].firstChild);
+				
+				previous_prop_elm = prop_elm;
+			}
 		});
 	}
 	
@@ -160,7 +172,7 @@ function loadTaskFormFieldsBlockSettings(settings_elm, settings_values, class_na
 		$.each(buttons, function(button_id, button_data) {
 			var button_elm = block_settings.children(".button_settings_" + button_id).children(".selected_task_properties").children(".form_containers").children(".fields").children(".field");
 			
-			FormFieldsUtilObj.loadInputFieldData(button_elm, button_data["field"], {"remove" : 1, "sort" : 1});
+			FormFieldsUtilObj.loadInputFieldData(button_elm, button_data["field"], form_field_options);
 		});
 	}
 }
@@ -609,9 +621,13 @@ function importTemplatePTLCode(elm, module) {
 		var html = '<div class="myfancypopup import_template_ptl_code_popup">'
 			+ '	<div class="template">'
 			+ '		<label>Installed Templates with PTL:</label>'
-			+ '		<select>'
+			+ '		<select onChange="onChangeAvailableTemplatePTL(this)">'
 			+ '			<option value="">Loading templates...</option>'
 			+ '		</select>'
+			+ '	</div>'
+			+ '	<div class="template_module">'
+			+ '		<label>Sub Templates:</label>'
+			+ '		<select></select>'
 			+ '	</div>'
 			+ '	<div class="button">'
 			+ '		<input type="button" value="IMPORT" onClick="MyFancyPopup.settings.updateFunction(this)" />'
@@ -629,14 +645,20 @@ function importTemplatePTLCode(elm, module) {
 			dataType: "json",
 			success: function(data) {
 				if (data) {
+					available_templates_ptls = data;
+					
 					popup.attr("inited", 1);
 					
 					var options = '';
-					$.each(data, function(idx, template) {
+					
+					$.each(data, function(template, items) {
 						options += '<option>' + template + '</option>';
 					});
 					
-					popup.find(".template select").html(options);
+					var select= popup.find(".template select");
+					select.html(options);
+					
+					onChangeAvailableTemplatePTL(select[0]);
 				}
 				else
 					StatusMessageHandler.showError("No templates installed.");
@@ -660,12 +682,16 @@ function importTemplatePTLCode(elm, module) {
 			button_elm.parent().children(".info").show();
 			
 			var template = popup.find(".template select").val();
+			var template_module = popup.find(".template_module select").val();
+			
+			template = template ? template : "";
+			template_module = template_module ? template_module : "";
 			
 			if (!template) 
 				StatusMessageHandler.showError("Please choose a valid template");
 			else
 				$.ajax({
-					url: call_module_file_prefix_url.replace("#module_file_path#", "get_templates_action") + "&action=template_ptl&module=" + module + "&template=" + template,
+					url: call_module_file_prefix_url.replace("#module_file_path#", "get_templates_action") + "&action=template_ptl&module=" + module + "&template=" + template + "&template_module=" + template_module,
 					dataType: "text",
 					success: function(code) {
 						if (code) {
@@ -685,6 +711,27 @@ function importTemplatePTLCode(elm, module) {
 	});
 	
 	MyFancyPopup.showPopup();
+}
+
+function onChangeAvailableTemplatePTL(elm) {
+	elm = $(elm);
+	var popup = elm.parent().closest(".import_template_ptl_code_popup");
+	var template = elm.val();
+	var items = available_templates_ptls && available_templates_ptls.hasOwnProperty(template) ? available_templates_ptls[template] : null;
+	var sub_options = '';
+	
+	if ($.isArray(items))
+		$.each(items, function(idx, template_module) {
+			if (template_module)
+				sub_options += '<option>' + template_module + '</option>';
+		});
+	
+	popup.find(".template_module select").html(sub_options);
+	
+	if (sub_options)
+		popup.find(".template_module").show();
+	else
+		popup.find(".template_module").hide();
 }
 
 function togglePanelFromCheckbox(checkbox, panel_class_name) {

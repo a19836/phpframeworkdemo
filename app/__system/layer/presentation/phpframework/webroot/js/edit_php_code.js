@@ -2740,7 +2740,7 @@ function onLoadTaskFlowChartAndCodeEditor(opts) {
 		//init the code_id in #ui and #code so the system doesn't re-generate the code and workflow when clicked in the code and taskflow tabs and bc of the isCodeAndWorkflowObjChanged method, when the #tasks_flow_tab is not inited yet.
 		if (ui_panel.length && code_panel.length) {
 			var code = getEditorCodeRawValue();
-			var code_id = $.md5(code);
+			var code_id = getCodeId(code);
 			
 			code_panel.attr("generated_code_id", code_id);
 			ui_panel.attr("code_id", code_id);
@@ -2769,6 +2769,15 @@ function createCodeEditor(textarea, options) {
 	});
 	editor.setOption("wrap", true);
 	
+	//add on key press event
+	/*editor.keyBinding.addKeyboardHandler(function(data, hashId, keyString, keyCode, e) {
+		console.log(data);
+		console.log(hashId);
+		console.log(keyString);
+		console.log(keyCode);
+		console.log(e);
+	});*/
+	
 	if (options && typeof options.save_func == "function") {
 		editor.commands.addCommand({
 			name: 'saveFile',
@@ -2782,6 +2791,31 @@ function createCodeEditor(textarea, options) {
 			},
 		});
 	}
+	
+	var on_change_timeout_id, auto_convert_bkp, auto_save_bkp;
+	
+	//add on change event to disable auto save and convert when user is writing code.
+	editor.on("change", function(data, ed) {
+		//console.log(on_change_timeout_id);
+		if (on_change_timeout_id) {
+			clearTimeout(on_change_timeout_id);
+			
+			auto_convert = auto_convert_bkp;
+			auto_save = auto_save_bkp;
+		}
+		
+		auto_convert_bkp = auto_convert;
+		auto_convert = false;
+		
+		auto_save_bkp = auto_save;
+		auto_save = false;
+		
+		on_change_timeout_id = setTimeout(function() {
+			auto_convert = auto_convert_bkp;
+			auto_save = auto_save_bkp;
+			//console.log("edit end");
+		}, 5000);
+	});
 	
 	if (options && typeof options.change_func == "function")
 		editor.on("change", options.change_func);
@@ -2925,6 +2959,13 @@ function toggleEditorFullScreen(elm) {
 		code.children(".layout-ui-editor, .layout_ui_editor_right_container").addClass("full-screen");
 	   	code.find(".layout-ui-editor .options .full-screen").addClass("zmdi-fullscreen-exit").removeClass("zmdi-fullscreen");
 	}
+}
+
+function getCodeId(code) {
+	if (code == undefined)
+		code = getEditorCodeRawValue();
+	
+	return $.md5(code.replace(/\s/g)); //remove white spaces to be sure that the code is not different bc of simple spaces
 }
 
 function setEditorCodeRawValue(code) {
@@ -3142,6 +3183,15 @@ function onClickTaskWorkflowTab(elm, options) {
 				if (auto_save_bkp && isPHPCodeAutoSaveMenuEnabled())
 					auto_save = auto_save_bkp;
 				
+				//set code_id from data
+				var saved_code_id = $.isPlainObject(taskFlowChartObj.TaskFile.file_settings) ? taskFlowChartObj.TaskFile.file_settings["code_id"] : null;
+				//console.log("saved_code_id:"+saved_code_id);
+				//console.log("ui_code_id:"+$("#ui").attr("code_id"));
+				
+				if (saved_code_id)
+					$("#ui").attr("code_id", saved_code_id);
+				
+				//check if user is logged in
 				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, get_workflow_file_url, function() {
 						elm.removeAttr("is_init");
@@ -3152,7 +3202,7 @@ function onClickTaskWorkflowTab(elm, options) {
 					//set workflow_id to #ui so it doesn't re-generate the code when clicked in the code tab
 					var workflow_id = getCurrentWorkFlowId();
 					var code = getEditorCodeRawValue();
-					var new_code_id = $.md5(code);
+					var new_code_id = getCodeId(code);
 					
 					//Note that the code_id and the generated_code_id were already set in the onLoadTaskFlowChartAndCodeEditor, when the page loads
 					$("#ui").attr("workflow_id", workflow_id);
@@ -3218,7 +3268,7 @@ function onClickTaskWorkflowTab(elm, options) {
 		});
 	}
 	else {
-		//when editing code, if auto_save is active, the system will try to convert the code to a workflow, but ig the php code contains errors (bc the user didn't finish yet his code, the generateTasksFlowFromCode will show errors, so we must remove this errors first, before generateTasksFlowFromCode.
+		//when editing code, if auto_save is active, the system will try to convert the code to a workflow, but if the php code contains errors (bc the user didn't finish yet his code, the generateTasksFlowFromCode will show errors, so we must remove this errors first, before generateTasksFlowFromCode.
 		if (auto_save) {
 			StatusMessageHandler.removeMessages("error");
 			taskFlowChartObj.StatusMessage.removeMessages("error");
@@ -3292,7 +3342,8 @@ function generateCodeFromTasksFlow(do_not_confirm, options) {
 	
 	var generated_code_id = $("#code").attr("generated_code_id");
 	var code = getEditorCodeRawValue();
-	var new_code_id = $.md5(code);
+	var new_code_id = getCodeId(code);
+	//console.log(generated_code_id+"="+new_code_id);
 	
 	var is_tasks_flow_tab_inited = $("#code").parent().find(" > ul > #tasks_flow_tab > a").attr("is_init") == 1;
 	
@@ -3342,11 +3393,18 @@ function generateCodeFromTasksFlow(do_not_confirm, options) {
 						if (data && data.hasOwnProperty("code")) {
 							var code = "<?php\n" + data.code.trim() + "\n?>";
 							setEditorCodeRawValue(code);
-							var new_code_id = $.md5(code);
+							var new_code_id = getCodeId(code);
 							
 							$("#ui").attr("workflow_id", new_workflow_id);
 							$("#ui").attr("code_id", new_code_id);
 							$("#code").attr("generated_code_id", new_code_id);
+							
+							//set new code id into file settings
+							if (!$.isPlainObject(taskFlowChartObj.TaskFile.file_settings))
+								taskFlowChartObj.TaskFile.file_settings = {};
+							
+							taskFlowChartObj.TaskFile.file_settings["code_id"] = new_code_id;
+							//console.log(taskFlowChartObj.TaskFile.file_settings);
 							
 							//console.log("Code updated");
 							//console.log("code:"+getEditorCodeRawValue());
@@ -3460,7 +3518,7 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 	if (errors.length == 0) {
 		var old_code_id = $("#ui").attr("code_id");
 		var code = getEditorCodeRawValue();
-		var new_code_id = $.md5(code);
+		var new_code_id = getCodeId(code);
 		
 		if (old_code_id != new_code_id || options["force"]) {
 			if (do_not_confirm || auto_convert || confirm("Do you wish to update this workflow accordingly with the code in the editor?")) {
@@ -3524,6 +3582,13 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 									$("#code").attr("generated_code_id", new_code_id);
 									$("#ui").attr("code_id", new_code_id);
 									$("#ui").attr("workflow_id", getCurrentWorkFlowId());
+									
+									//set new code id into file settings
+									if (!$.isPlainObject(taskFlowChartObj.TaskFile.file_settings))
+										taskFlowChartObj.TaskFile.file_settings = {};
+									
+									taskFlowChartObj.TaskFile.file_settings["code_id"] = new_code_id;
+									//console.log(taskFlowChartObj.TaskFile.file_settings);
 									
 									status = true;
 									
@@ -3764,7 +3829,7 @@ function addProgrammingTaskUtilInputsContextMenu(elm) {
 function isCodeAndWorkflowObjChanged(main_obj_with_tabs) {
 	//checks if code is different
 	var code = getEditorCodeRawValue();
-	var new_code_id = $.md5(code);
+	var new_code_id = getCodeId(code);
 	var old_code_id = $("#ui").attr("code_id");
 	
 	var is_changed = old_code_id != new_code_id;
@@ -3814,7 +3879,7 @@ function getCodeForSaving(parent_elm, options) {
 	
 	var raw_code = getEditorCodeRawValue();
 	var code = options.strip_php_tags ? getEditorCodeValue() : raw_code;
-	var new_code_id = $.md5(raw_code);
+	var new_code_id = getCodeId(raw_code);
 	var old_code_id = $("#ui").attr("code_id");
 	
 	var is_tasks_flow_tab_inited = parent_elm.find("#tasks_flow_tab a").attr("is_init");
@@ -3840,13 +3905,21 @@ function getCodeForSaving(parent_elm, options) {
 			}
 			
 			//save workflow
-			if (taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving() || !is_from_auto_save) //if it is a manual save action, saves workflow
+			if (taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving() || !is_from_auto_save) { //if it is a manual save action, saves workflow
+				//set old code id into file
+				if (!$.isPlainObject(taskFlowChartObj.TaskFile.file_settings))
+					taskFlowChartObj.TaskFile.file_settings = {code_id: old_code_id};
+				else if (!taskFlowChartObj.TaskFile.file_settings.hasOwnProperty("code_id"))
+					taskFlowChartObj.TaskFile.file_settings["code_id"] = old_code_id;
+				//console.log(taskFlowChartObj.TaskFile.file_settings);
+				
 				status = taskFlowChartObj.TaskFile.save(null, {
 					overwrite: true, 
 					silent: true, 
 					do_not_silent_errors: !is_from_auto_save, //only show errors if not from auto_save
 					success: taskFlowChartObj.TaskFile.save_options["success"], 
 				});
+			}
 			
 			//generate code if some changes in workflow
 			if (status && ((old_workflow_id != new_workflow_id) || (old_code_id != new_code_id))) {
@@ -3913,13 +3986,21 @@ function getCodeForSaving(parent_elm, options) {
 			}
 			
 			//save workflow
-			if (taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving() || !is_from_auto_save) //if it is a manual save action, saves workflow
+			if (taskFlowChartObj.TaskFile.isWorkFlowChangedFromLastSaving() || !is_from_auto_save) { //if it is a manual save action, saves workflow
+				//set old code id into file
+				if (!$.isPlainObject(taskFlowChartObj.TaskFile.file_settings))
+					taskFlowChartObj.TaskFile.file_settings = {code_id: old_code_id};
+				else if (!taskFlowChartObj.TaskFile.file_settings.hasOwnProperty("code_id"))
+					taskFlowChartObj.TaskFile.file_settings["code_id"] = old_code_id;
+				//console.log(taskFlowChartObj.TaskFile.file_settings);
+				
 				status = taskFlowChartObj.TaskFile.save(null, {
 					overwrite: true, 
 					silent: true, 
 					do_not_silent_errors: !is_from_auto_save, //only show errors if not from auto_save
 					success: taskFlowChartObj.TaskFile.save_options["success"], 
 				});
+			}
 			
 			//generate code if some changes in workflow
 			if (status && ((old_workflow_id != new_workflow_id) || (old_code_id != new_code_id))) {
@@ -4150,8 +4231,15 @@ function saveObj(save_object_url, obj, opts) {
 									
 									if (!is_tasks_flow_tab_inited) {
 										var raw_code = getEditorCodeRawValue();
-										var new_code_id = $.md5(raw_code);
+										var new_code_id = getCodeId(raw_code);
 										$("#ui").attr("code_id", new_code_id);
+										
+										//set new code id into file settings
+										if (!$.isPlainObject(taskFlowChartObj.TaskFile.file_settings))
+											taskFlowChartObj.TaskFile.file_settings = {};
+										
+										taskFlowChartObj.TaskFile.file_settings["code_id"] = new_code_id;
+										//console.log(taskFlowChartObj.TaskFile.file_settings);
 									}
 								}
 								

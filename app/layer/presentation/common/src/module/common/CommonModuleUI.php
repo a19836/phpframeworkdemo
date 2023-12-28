@@ -125,6 +125,25 @@ class CommonModuleUI {
 		return $exists_form_handler_msg ? "$msg $label." : str_replace("#label#", $label, $msg);
 	}
 	
+	/*
+	 * $settings = array(
+	 * 	"title_search_value" => "jp",
+	 * 	"sub_title_search_value" => array(
+	 * 		"search_attrs" => "jp" || array("sub_title" => "jp"),
+	 * 		"search_types" => "contains" || array("sub_title" => "contains"), //contains, starts_with, ends_with or equal 
+	 * 		"search_operators" => "or" || array("sub_title" => "or") //"or" or "and"
+	 * 	),
+	 * 	"summary_search_value" => array(
+	 * 		"conditions" => "jp" || array("sub_title" => "jp"),
+	 * 		"conditions_type" => "contains" || array("sub_title" => "contains"), //contains, starts_with, ends_with or equal 
+	 * 		"conditions_join" => "or" || array("sub_title" => "or") //"or" or "and"
+	 * 	),
+	 * 	"xxx_search_value" => array(
+	 * 		"value" => "%jp%",
+	 * 		"operator" => "like"
+	 * 	)
+	 * )
+	 */
 	public static function getConditionsFromSearchValues($settings) {
 		$conditions = array();
 		
@@ -132,7 +151,68 @@ class CommonModuleUI {
 			foreach ($settings["fields"] as $field_name => $field) {
 				$sv = $settings[$field_name . "_search_value"];
 				
-				if (strlen($sv)) {
+				//parse conditions based in the search_attrs from MyWidgetResourceLib.js
+				if (is_array($sv)) {
+					$attribute_value = null;
+					
+					//if $sv is: array("search_attrs" => array($field_name => "jp"), "search_types" => array($field_name => "contains"), "search_operators" => array($field_name => "or"))
+					if (isset($sv["search_attrs"])) {
+						if (is_array($sv["search_attrs"]) && array_key_exists($field_name, $sv["search_attrs"]))
+							$attribute_value = $sv["search_attrs"][$field_name];
+						else
+							$attribute_value = $sv["search_attrs"];
+					}
+					
+					//if $sv is: array("conditions" => "jp", "conditions_type" => "contains", "conditions_join" => "or")
+					if (!isset($attribute_value) && isset($sv["conditions"])) {
+						if (is_array($sv["conditions"]) && array_key_exists($field_name, $sv["conditions"]))
+							$attribute_value = $sv["conditions"][$field_name];
+						else
+							$attribute_value = $sv["conditions"];
+					}
+					
+					//if $sv is: array("value" => "%jp%", "operator" => "like")
+					if (!isset($attribute_value) && array_key_exists("value", $sv)) {
+						$conditions[$field_name] = $sv;
+					}
+					//if $sv is: search_attrs or conditions
+					else if (is_numeric($attribute_value) || $attribute_value) {
+						$conditions_type = isset($sv["search_types"]) ? $sv["search_types"] : (isset($sv["conditions_type"]) ? $sv["conditions_type"] : null);
+						$conditions_join = isset($sv["search_operators"]) ? $sv["search_operators"] : (isset($sv["conditions_join"]) ? $sv["conditions_join"] : null);
+						
+						$field_condition_type = is_array($conditions_type) ? $conditions_type[$field_name] : $conditions_type;
+						$attribute_operator = $field_condition_type == "starts_with" || $field_condition_type == "ends_with" || $field_condition_type == "contains" ? "like" : $field_condition_type;
+						$field_join = is_array($conditions_join) ? $conditions_join[$field_name] : $conditions_join;
+						
+						if ($attribute_operator && $attribute_operator != "=" && $attribute_operator != "equal") {
+							if (is_array($attribute_value) && $attribute_operator != "in") {
+								$conditions[$field_name] = array();
+								
+								foreach ($attribute_value as $v)
+									$conditions[$field_name][] = array(
+										"operator" => $attribute_operator, 
+										"value" => ($field_condition_type == "starts_with" || $field_condition_type == "contains" ? "%" : "") . $attribute_value . ($field_condition_type == "ends_with" || $field_condition_type == "contains" ? "%" : ""), 
+									);
+							}
+							else
+								$conditions[$field_name] = array(
+									"operator" => $attribute_operator, 
+									"value" => $attribute_operator == "in" ? $attribute_value : (
+										($field_condition_type == "starts_with" || $field_condition_type == "contains" ? "%" : "") . $attribute_value . ($field_condition_type == "ends_with" || $field_condition_type == "contains" ? "%" : "")
+									), 
+								);
+						}
+						else
+							$conditions[$field_name] = $attribute_value;
+						
+						if (strtolower($field_join) == "or") {
+							$conditions[$field_join][$field_name] = $conditions[$field_name];
+							unset($conditions[$field_name]);
+						}
+					}
+				}
+				//parse normal value with operator/condition_join: "and"
+				else if (is_numeric($sv) || $sv) {
 					$conditions[$field_name] = $sv;
 				}
 			}
@@ -611,7 +691,7 @@ class CommonModuleUI {
 						break;
 						
 					case "value": 
-						$field_code = $field["field"]["input"]["value"];
+						$field_code = $HtmlFormHandler->getParsedValueFromData($field["field"]["input"]["value"], $form_data);
 						break;
 					
 					default:

@@ -50,7 +50,11 @@
 <?php 
 	$fields = array(
 		"selected_item" => array("type" => "checkbox", "value" => "", "allow_null" => 1),
-		"user_id" => array("type" => "label"), 
+		"user_id" => array("type" => "label", "class" => "user_id hidden"), 
+		"name" => array("type" => "text", "extra_attributes" => array(
+			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
+			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
+		)), 
 		"username" => array("type" => "text", "extra_attributes" => array(
 			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
 			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
@@ -59,55 +63,51 @@
 			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
 			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
 		)), 
-		"name" => array("type" => "text", "extra_attributes" => array(
-			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
-			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
-		)), 
 		"email" => array("type" => "email", "allow_null" => 1, "extra_attributes" => array(
 			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
 			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
 		)), 
-		"security_question_1" => array("type" => "text", "allow_null" => 1, "extra_attributes" => array(
-			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
-			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
-		)), 
-		"security_answer_1" => array("type" => "text", "allow_null" => 1, "extra_attributes" => array(
-			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
-			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
-		)), 
-		"security_question_2" => array("type" => "text", "allow_null" => 1, "extra_attributes" => array(
-			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
-			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
-		)), 
-		"security_answer_2" => array("type" => "text", "allow_null" => 1, "extra_attributes" => array(
-			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
-			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
-		)), 
-		"security_question_3" => array("type" => "text", "allow_null" => 1, "extra_attributes" => array(
-			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
-			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
-		)), 
-		"security_answer_3" => array("type" => "text", "allow_null" => 1, "extra_attributes" => array(
-			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
-			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
-		)), 
-		"created_date" => array("type" => "datetime", "allow_null" => 1, "extra_attributes" => array(
-			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
-			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
-		)), 
-		"modified_date" => array("type" => "datetime", "allow_null" => 1, "extra_attributes" => array(
-			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
-			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
-		)), 
-		"active" => array("show" => 0, "type" => "select", "options" => array(
+		"active" => array("type" => "select", "options" => array(
 			array("value" => 0, "label" => "new"),
 			array("value" => 1, "label"=> "active"),
 			array("value" => 2, "label"=> "inative"),
 		)),
 		"user_type_ids" => array("type" => "select", "label" => "User Types", "allow_null" => 1, "extra_attributes" => array(
-			//array("name" => "multiple", "value" => 'multiple'),
+			array("name" => "multiple", "value" => 'multiple'),
 			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
 		)),
+		"security_question_1" => array("type" => "text", "allow_null" => 1, "extra_attributes" => array(
+			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
+			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
+		), "show" => 0), 
+		"security_answer_1" => array("type" => "text", "allow_null" => 1, "extra_attributes" => array(
+			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
+			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
+		), "show" => 0), 
+		"security_question_2" => array("type" => "text", "allow_null" => 1, "extra_attributes" => array(
+			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
+			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
+		), "show" => 0), 
+		"security_answer_2" => array("type" => "text", "allow_null" => 1, "extra_attributes" => array(
+			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
+			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
+		), "show" => 0), 
+		"security_question_3" => array("type" => "text", "allow_null" => 1, "extra_attributes" => array(
+			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
+			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
+		), "show" => 0), 
+		"security_answer_3" => array("type" => "text", "allow_null" => 1, "extra_attributes" => array(
+			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
+			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
+		), "show" => 0), 
+		"created_date" => array("type" => "datetime", "allow_null" => 1, "extra_attributes" => array(
+			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
+			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
+		), "show" => 0), 
+		"modified_date" => array("type" => "datetime", "allow_null" => 1, "extra_attributes" => array(
+			array("name" => "onKeyPress", "value" => '"onListItemFieldKeyPress(this)"'),
+			array("name" => "onChange", "value" => '"onListItemFieldKeyPress(this)"'),
+		), "show" => 0), 
 	);
 	$CommonModuleTableExtraAttributesSettingsUtil->prepareNewFieldsSettings("user", $fields, array(
 		"type" => "text", 
@@ -123,7 +123,11 @@
 	 	"block_class" => true,
 		"fields" => $fields,
 	 	"is_list" => true,
-	 	"css" => true,
+	 	"css" => "
+.module_list_and_edit_users_with_user_types table .new_user input,
+  .module_list_and_edit_users_with_user_types table .new_user select {
+	border:1px solid #ccc !important;
+}",
 	 	"js" => '
 function onListItemFieldKeyPress(elm) {
 	$(elm).parent().closest("tr").find(" > .selected_item > input").prop("checked", true);
@@ -153,7 +157,12 @@ function onListAddUser(elm) {
 	
 	var new_item = $(new_user_html.replace(/#idx#/g, new_index)); //new_user_html is a variable that will be created automatically with the correspondent html.
 	
+	new_item.addClass("new_user");
+	
 	tbody.append(new_item);
+	
+	if (typeof onNewHtml == "function") 
+		onNewHtml(elm, new_item);
 	
 	return new_item;
 }
@@ -220,11 +229,11 @@ function prepareSelectedUsersForAction(tbody) {
 	$save_button_settings = array("extra_attributes" => array(array(
 		"name" => "onClick",
 		"value" => "return onSaveMultipleUsers(this);"
-	)));
+	)), "show" => 1);
 	$delete_button_settings = array("extra_attributes" => array(array(
 		"name" => "onClick",
 		"value" => "return onDeleteMultipleUsers(this, 'Do you wish to delete these users?');"
-	)));
+	)), "show" => 1);
 	echo CommonModuleSettingsUI::getEditButtonFieldsHtml(false, $save_button_settings, $save_button_settings, $delete_button_settings, false);
 ?>
 </div>

@@ -99,6 +99,11 @@
 }
 
 /* Settings */
+.template_obj .regions_blocks_includes_settings .defined_regions,
+  .template_obj .regions_blocks_includes_settings .defined_template_params {
+	display:none;
+}
+
 /*.template_obj .regions_blocks_includes_settings .update_automatically:not(.icon) {
 	width:250px;
 	position:absolute;

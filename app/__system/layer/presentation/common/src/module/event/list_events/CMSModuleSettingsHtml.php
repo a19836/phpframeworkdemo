@@ -108,7 +108,7 @@
 
 	$fields = array(
 		"event_id", 
-		"title", 
+		"title" => array("label" => "Details"), 
 		"sub_title",
 		"published" => array("available_values" => array(
 			array("old_value" => "0", "new_value" => "No"),
@@ -117,7 +117,7 @@
 		"photo" => array("type" => "image", "src" => '#[\\$idx][photo_url]#', "label" => "Photo", "extra_attributes" => array(
 			array("name" => "onError", "value" => '"$(this).remove();"'),
 		)),
-		"description" => array("show" => 0), 
+		"description", 
 		"address" => array("show" => 0), 
 		"zip_id" => array("show" => 0), 
 		"locality" => array("show" => 0), 
@@ -134,10 +134,26 @@
 		"date_interval" => array("show" => 0),
 		"date" => array("show" => 0),
 		"time" => array("show" => 0),
-		"begin_date", 
-		"end_date", 
+		"begin_date" => array("show" => 0), 
+		"end_date" => array("show" => 0), 
 		"begin_date_time" => array("show" => 0),
+		"begin_time" => array("label" => "When"),
+		"begin_year" => array("show" => 0),
+		"begin_month" => array("show" => 0),
+		"begin_month_short_text",
+		"begin_month_long_text" => array("show" => 0),
+		"begin_day",
+		"begin_hour" => array("show" => 0),
+		"begin_minute" => array("show" => 0),
 		"end_date_time" => array("show" => 0),
+		"end_time",
+		"end_year" => array("show" => 0),
+		"end_month" => array("show" => 0),
+		"end_month_short_text" => array("show" => 0),
+		"end_month_long_text" => array("show" => 0),
+		"end_day" => array("show" => 0),
+		"end_hour" => array("show" => 0),
+		"end_minute" => array("show" => 0),
 		"created_date" => array("show" => 0), 
 		"modified_date" => array("show" => 0)
 	);
@@ -152,8 +168,11 @@
 	 		"edit" => true,
 	 		"delete" => true,
 	 	),
-	 	"css" => true,
+	 	"css" => ".module_list_events table img {
+	width:100px;
+}",
 	 	"js" => true,
+	 	"table_class" => "list_table table table-hover"
 	));
 ?>
 </div>

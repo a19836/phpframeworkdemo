@@ -957,6 +957,7 @@ function initFilesDragAndDrop(elm) {
 		var available_iframe_droppables_selectors = ".droppable, .tasks_flow, .connector_overlay_add_icon"; //".droppable" is related with the LayoutUIEditor, ".tasks_flow" is related with workflows and ".connector_overlay_add_icon" is related with Logic workflows.
 		var PtlLayoutUIEditor = null;
 		var is_main_navigator_reverse = $("body").hasClass("main_navigator_reverse");
+		var is_in_right_panel = false;
 		
 		var folders_selector = "i.folder";
 		var files_selector = "i.file, i.objtype, i.hibernatemodel, i.config_file, i.controller_file, i.entity_file, i.view_file, i.template_file, i.util_file, i.block_file, i.module_file, i.undefined_file, i.js_file, i.css_file, i.img_file, i.zip_file";
@@ -975,6 +976,7 @@ function initFilesDragAndDrop(elm) {
 			var a = item.children("a");
 			
 			file_li.removeClass("drop_hover");
+			file_li.parents().removeClass("drop_hover");
 			
 			if (item.is(".jstree-node")) { //be sure that the draggable item is a jstree node, bc it can be the "div#hide_panel" from the left navigator.
 				if (a.children(files_selector + ", " + folders_selector).length == 0)
@@ -1376,6 +1378,8 @@ function initFilesDragAndDrop(elm) {
 				iframe_doc = iframe_win ? iframe_win.document : null;
 				iframe_offset = iframe.offset();
 				PtlLayoutUIEditor = iframe[0].contentWindow.$(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+				
+				is_in_right_panel = false;
 			},
 			drag: function(event, ui_obj) {
 				//prepare scroll_parent element when the dragged element will be out of the left panel and dropped in the right panel to the DB diagram or to edit_entity_simple and edit_template_simple files.
@@ -1415,7 +1419,7 @@ function initFilesDragAndDrop(elm) {
 				
 				//prepare helper_clone
 				var helper_clone = $("body").children(".sortable_helper");
-				var is_in_right_panel = event.clientX > iframe.offset().left && event.clientX < iframe.offset().left + iframe.width();
+				is_in_right_panel = event.clientX > iframe.offset().left && event.clientX < iframe.offset().left + iframe.width();
 				
 				helper_clone.offset({
 					top: event.clientY,
@@ -1487,7 +1491,8 @@ function initFilesDragAndDrop(elm) {
 				if (iframe_droppable_elm) //remove droppable over class
 					$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
 				
-				right_panel_droppable_handler(event, ui_obj, this, helper_clone);
+				if (is_in_right_panel) 
+					right_panel_droppable_handler(event, ui_obj, this, helper_clone);
 				
 				//disable classes in LayoutUIEditor's droppable, just in case the right_panel_droppable_handler did NOT do it already
 				if (PtlLayoutUIEditor) {
@@ -1537,6 +1542,7 @@ function initDBTablesSorting(elm) {
 			var a = item.children("a");
 			
 			fk_table_li.removeClass("drop_hover");
+			fk_table_li.parents().removeClass("drop_hover");
 			
 			if (item.is(".jstree-node")) { //be sure that the draggable item is a jstree node, bc it can be the "div#hide_panel" from the left navigator.
 				if (fk_table_li_a.children("i.table").length == 1 && a.attr("table_name") != fk_table_li_a.attr("table_name")) { //if table is not it-self

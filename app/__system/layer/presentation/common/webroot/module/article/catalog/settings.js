@@ -9,7 +9,7 @@ $(function () {
 	initObjectBlockSettings("edit_settings", saveEditSettings, "saveEditSettings");
 	
 	$(".catalog_settings > .els > .els_tabs > li").click(function (idx, li) {
-		updateArticlesCatalogType( $(".catalog_settings > .catalog_type > select")[0] );
+		updateArticlesCatalogType( $(".catalog_settings > .catalog_type > select")[0], true );
 	});
 });
 
@@ -47,7 +47,7 @@ function onArticleCatalogUpdatePTLFromFieldsSettings(elm, settings, code, extern
 	return code;
 }
 
-function updateArticlesCatalogType(elm) {
+function updateArticlesCatalogType(elm, do_not_load_user_list_code) {
 	elm = $(elm);
 	
 	var value = elm.val();
@@ -69,6 +69,19 @@ function updateArticlesCatalogType(elm) {
 		if (value == "user_list" && ptl_tab_selected) {
 			alignments.hide();
 			article_properties_url.hide();
+			
+			if (!do_not_load_user_list_code && confirm("Do you wish to load the default ptl code?")) {
+				var ptl = catalog_settings.find(".els > .ptl");
+				var external_vars = {};
+				var code = getPtlElementTemplateSourceEditorValue(ptl);
+				code = onArticleCatalogUpdatePTLFromFieldsSettings(ptl, null, code, external_vars);
+				
+				//show code
+				setPtlElementTemplateSourceEditorValue(ptl, code, true);
+				
+				//Add External vars
+				loadPTLExternalVars(ptl.children(".ptl_external_vars"), external_vars);
+			}
 		}
 	}
 }
@@ -110,9 +123,46 @@ function loadArticlesCatalogBlockSettings(settings_elm, settings_values) {
 	MyFancyPopup.showLoading();
 	
 	var catalog_settings = settings_elm.children(".catalog_settings");
+	var empty_settings_values = !settings_values || ($.isArray(settings_values) && settings_values.length == 0);
 	
-	if (!settings_values || ($.isArray(settings_values) && settings_values.length == 0)) {
-		settings_values = {};
+	if (empty_settings_values) {
+		settings_values = {
+			ptl: {
+				code: '<div class=\"card d-inline-block align-top border border-light rounded m-2 p-0 shadow-sm text-start text-left\" style=\"width: 300px;\">' + "\n"
+			      + '	<ptl:block:field:photo/>' + "\n"
+			      + '	<div class=\"card-body\">' + "\n"
+			      + '		<h5 class=\"card-title\">' + "\n"
+			      + '			<ptl:block:field:title/>' + "\n"
+			      + '		</h5>' + "\n"
+			      + '		<div class=\"card-text text-secondary\">' + "\n"
+			      + '			<small class=\"text-body-secondary\">' + "\n"
+			      + '			    <ptl:block:field:sub_title/>' + "\n"
+			      + '			</small>' + "\n"
+			      + '		</div>' + "\n"
+			      + '		<div class=\"card-text mt-2\">' + "\n"
+			      + '			<ptl:block:field:summary/>' + "\n"
+			      + '		</div>' + "\n"
+			      + '		<div class=\"card-text text-end text-right text-secondary small mt-2\">Last updated <ptl:block:field:input:modified_date/></div>' + "\n"
+			      + '	</div>' + "\n"
+				  + '</div>'
+			},
+			fields: {
+				photo: {
+					field: {
+						input: {
+							"class": "card-img-top rounded-top"
+						}
+					}
+				},
+				modified_date: {
+					field: {
+						input: {
+							"class": "small"
+						}
+					}
+				}
+			}
+		};
 	}
 	
 	if (!settings_values.hasOwnProperty("blog_introduction_articles_num")) {
@@ -128,9 +178,19 @@ function loadArticlesCatalogBlockSettings(settings_elm, settings_values) {
 		settings_values["blog_listed_articles_num"] = {"value": 10};
 	}
 	
-	loadEditSettingsBlockSettings(settings_elm, settings_values);
+	loadEditSettingsBlockSettings(settings_elm, settings_values, empty_settings_values ? {"remove": 0, "sort": 0} : null);
 	
-	updateArticlesCatalogType( catalog_settings.find(".catalog_type select")[0] );
+	if (empty_settings_values) {
+		//prepare fields with extra_attributes
+		for (var field_id in settings_values["fields"]) {
+			var input_extra_attributes = catalog_settings.find(".prop_" + field_id + " > .selected_task_properties > .form_containers > .fields > .field > .input_settings > .input_extra_attributes");
+			
+			if (input_extra_attributes.find(" > .attributes .task_property_field").length > 0)
+				input_extra_attributes.find(" > .extra_attributes_type").val("array").trigger("change");
+		}
+	}
+	
+	updateArticlesCatalogType( catalog_settings.find(".catalog_type select")[0], true );
 	updateArticlesSelectionType( catalog_settings.find(".articles_type select")[0] );
 	
 	var article_ids = prepareBlockSettingsItemValue(settings_values["article_ids"]);

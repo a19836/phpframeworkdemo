@@ -171,13 +171,29 @@
 		"begin_date" => array("type" => "label", "label" => "", "class" => "catalog_event_begin_date", "show" => 0),
 		"end_date" => array("type" => "label", "label" => "", "class" => "catalog_event_end_date", "show" => 0),
 		"begin_date_time" => array("type" => "label", "label" => "", "class" => "catalog_event_begin_date_time", "show" => 0),
+		"begin_time" => array("type" => "label", "label" => "", "class" => "catalog_event_begin_time"),
+		"begin_year" => array("type" => "label", "label" => "", "class" => "catalog_event_begin_year", "show" => 0),
+		"begin_month" => array("type" => "label", "label" => "", "class" => "catalog_event_begin_month", "show" => 0),
+		"begin_month_short_text" => array("type" => "label", "label" => "", "class" => "catalog_event_begin_month_short_text"),
+		"begin_month_long_text" => array("type" => "label", "label" => "", "class" => "catalog_event_begin_month_long_text", "show" => 0),
+		"begin_day" => array("type" => "label", "label" => "", "class" => "catalog_event_begin_day"),
+		"begin_hour" => array("type" => "label", "label" => "", "class" => "catalog_event_begin_hour", "show" => 0),
+		"begin_minute" => array("type" => "label", "label" => "", "class" => "catalog_event_begin_minute", "show" => 0),
 		"end_date_time" => array("type" => "label", "label" => "", "class" => "catalog_event_end_date_time", "show" => 0),
+		"end_time" => array("type" => "label", "label" => "", "class" => "catalog_event_end_time"),
+		"end_year" => array("type" => "label", "label" => "", "class" => "catalog_event_end_year", "show" => 0),
+		"end_month" => array("type" => "label", "label" => "", "class" => "catalog_event_end_month", "show" => 0),
+		"end_month_short_text" => array("type" => "label", "label" => "", "class" => "catalog_event_end_month_short_text", "show" => 0),
+		"end_month_long_text" => array("type" => "label", "label" => "", "class" => "catalog_event_end_month_long_text", "show" => 0),
+		"end_day" => array("type" => "label", "label" => "", "class" => "catalog_event_end_day", "show" => 0),
+		"end_hour" => array("type" => "label", "label" => "", "class" => "catalog_event_end_hour", "show" => 0),
+		"end_minute" => array("type" => "label", "label" => "", "class" => "catalog_event_end_minute", "show" => 0),
 		"photo" => array("type" => "image", "label" => "", "class" => "catalog_event_photo", 
 			"src" => "#photo_url#", 
 			"extra_attributes" => array(array("name" => "onError", "value" => '"\$(this).parent().addClass(\'no_photo\');\$(this).remove();"'))
 		),
-		"title" => array("type" => "h1", "label" => "", "class" => "catalog_event_title"), 
-		"sub_title" => array("type" => "h2", "label" => "", "class" => "catalog_event_sub_title"),
+		"title" => array("type" => "label", "label" => "", "class" => "catalog_event_title"), 
+		"sub_title" => array("type" => "label", "label" => "", "class" => "catalog_event_sub_title"),
 		"address" => array("type" => "label", "label" => "", "class" => "catalog_event_address", "show" => 0),
 		"zip_id" => array("type" => "label", "label" => "", "class" => "catalog_event_zip_id", "show" => 0),
 		"country_id" => array("type" => "label", "label" => "", "class" => "catalog_event_country_id", "show" => 0),
@@ -187,8 +203,8 @@
 		"map" => array("type" => "label", "label" => "", "class" => "catalog_event_map", "show" => 0),
 		"full_address" => array("type" => "label", "label" => "", "class" => "catalog_event_full_address", "show" => 0),
 		"location" => array("type" => "label", "label" => "", "class" => "catalog_event_location", "extra_attributes" => array(array("name" => "onClick", "value" => 'return false'))),
-		"description" => array("type" => "label", "label" => "", "class" => "catalog_event_description", "show" => 0),
-		"user" => array("type" => "label", "label" => "", "class" => "catalog_event_user", "value" => "#[user][name]#", "show" => 0),
+		"description" => array("type" => "label", "label" => "", "class" => "catalog_event_description"),
+		"user" => array("type" => "label", "label" => "", "class" => "catalog_event_user", "value" => "#[user][name]#"),
 		"created_date" => array("type" => "label", "label" => "", "class" => "catalog_event_created_date", "show" => 0),
 		"modified_date" => array("type" => "label", "label" => "", "class" => "catalog_event_modified_date", "show" => 0),
 	);
@@ -198,10 +214,18 @@
 		"style_type" => true,
 	 	"block_class" => true,
 		"fields" => $fields,
+	 	"search_values" => true,
 	 	"buttons" => false,
 	 	"css" => '
-.module_events_catalog .catalog_event_location {
+.module_events_catalog .event .catalog_event_location {
 	cursor:auto;
+}
+.module_events_catalog .event {
+	display:inline-block;
+}
+.module_events_catalog .event .catalog_event_description * {
+    margin:0;
+    padding:0;
 }',
 	 	"js" => '
 \$(function () {

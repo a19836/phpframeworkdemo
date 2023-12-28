@@ -47,10 +47,13 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		if ($event_id) {
 			$data = \EventUtil::getEventProperties($EVC, $event_id, true);
 			
-			//Getting Event Extra Details
 			if ($data) {
+				//Getting Event Extra Details
 				$data_extra = $CommonModuleTableExtraAttributesUtil->getTableExtra(array("event_id" => $event_id), true);
 				$data = $data_extra ? array_merge($data, $data_extra) : $data;
+				
+				//Preparing event data
+				\EventUI::prepareEvent($EVC, $settings, $data);
 			}
 			
 			//Add join point changing the event properties.
@@ -66,67 +69,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					$html .= '<h3 class="event_error">' . translateProjectText($EVC, "Event not Published!") . '</h3>';
 				}
 				else if ($settings["fields"]) {
-					$begin_date = explode(" ", $data["begin_date"]);
-					$end_date = explode(" ", $data["end_date"]);
-					
-					$bd_time = strtotime($data["begin_date"]);
-					$bdi = translateProjectText($EVC, date("l", $bd_time)) . date(", d ", $bd_time) . translateProjectText($EVC, date("F", $bd_time)) . (date("Y", $bd_time) != date("Y") ? date(" Y,", $bd_time) : "") . date(" H:i", $bd_time);
-					$data["date_interval"] = $bdi;
-					
-					$from_label = translateProjectText($EVC, "From");
-					$to_label = translateProjectText($EVC, "to");
-					
-					$data["date"] = '
-						<label class="from">' . $from_label . '</label>
-						<label class="from_date">' . $begin_date[0] . '</label>';
-					
-					$data["time"] = '
-						<label class="from">' . $from_label . '</label>
-						<label class="from_time">' . $begin_date[1] . '</label>';
-					
-					$date_parts = explode("-", $begin_date[0]);
-					$time_parts = explode(":", $begin_date[1]);
-					$data["begin_date_time"] = '
-					<div class="date">
-						<label class="month_text">' . translateProjectText($EVC, date("M", $bd_time)) . '</label>
-						<label class="month">' . $date_parts[1] . '</label>
-						<label class="day">' . $date_parts[2] . '</label>
-						<label class="year">' . $date_parts[0] . '</label>
-					</div>
-					<div class="time">
-						<label class="hour">' . $time_parts[0] . '</label>
-						<label class="minute">' . $time_parts[1] . '</label>
-					</div>';
-					
-					if ($data["end_date"]) {
-						$ed_time = strtotime($data["end_date"]);
-						$edi = $begin_date[0] == $end_date[0] ? "" : translateProjectText($EVC, date("l", $ed_time)) . date(", d ", $ed_time) . translateProjectText($EVC, date("F", $ed_time)) . (date("Y", $ed_time) != date("Y") ? date(" Y,", $ed_time) : "") . " ";
-						$edi .= $begin_date[0] == $end_date[0] && $begin_date[1] == $end_date[1] ? "" : date("H:i", $ed_time);
-						$data["date_interval"] .= $edi ? " - $edi" : "";
-						
-						$data["date"] .= '
-						<label class="to">' . $to_label . '</label>
-						<label class="to_date">' . $end_date[0] . '</label>';
-					
-						$data["time"] .= '
-						<label class="to">' . $to_label . '</label>
-						<label class="to_time">' . $end_date[1] . '</label>';
-					
-						$date_parts = explode("-", $end_date[0]);
-						$time_parts = explode(":", $end_date[1]);
-						$data["end_date_time"] = '
-						<div class="date">
-							<label class="month_text">' . translateProjectText($EVC, date("M", $ed_time)) . '</label>
-							<label class="month">' . $date_parts[1] . '</label>
-							<label class="day">' . $date_parts[2] . '</label>
-							<label class="year">' . $date_parts[0] . '</label>
-						</div>
-						<div class="time">
-							<label class="hour">' . $time_parts[0] . '</label>
-							<label class="minute">' . $time_parts[1] . '</label>
-						</div>';
-					}
-					else if ($settings["show_end_date"])
+					if (!$data["end_date"] && $settings["show_end_date"])
 						$settings["show_end_date"] = false;
 					
 					if ($data["country_id"]) {
@@ -139,12 +82,6 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 									break;
 								}
 					}
-					
-					$data["map_url"] = \EventUI::getMapUrl($data, false);
-					$data["embed_map_url"] = \EventUI::getMapUrl($data);
-					$data["map"] = $data["embed_map_url"] ? '<span class="map" onClick="openMap(this, \'' . $data["embed_map_url"] . '\')"></span>' : '';
-					$data["full_address"] = $data["address"] ? '<span class="address">' . $data["address"] . ($data["zip_id"] ? ', ' . $data["zip_id"] : '') . ($data["locality"] ? ' ' . $data["locality"] : '') . '</span>' : '';
-					$data["location"] = '<span class="location">' . $data["full_address"] . $data["map"] . '</span>';
 					
 					//Preparing user data
 					if ($settings["show_user"]) {
