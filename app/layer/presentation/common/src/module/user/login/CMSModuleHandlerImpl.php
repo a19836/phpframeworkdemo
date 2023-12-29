@@ -330,8 +330,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			else {
 				$form_settings["form_containers"][0]["container"]["elements"] = $settings["fields"];
 				
-				foreach ($buttons as $button)
-					$form_settings["form_containers"][] = $button;
+				foreach ($buttons as $button_id => $button)
+					if ($button_id != "insert") //ignore insert button bc we already have the submit button which is the same than the insert button
+						$form_settings["form_containers"][] = $button;
 			}
 			
 			$form_data = array(

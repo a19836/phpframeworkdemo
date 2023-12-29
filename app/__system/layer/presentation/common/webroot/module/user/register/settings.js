@@ -216,6 +216,7 @@ function loadRegisterBlockSettings(settings_elm, settings_values) {
 	else {
 		var tasks_values = convertBlockSettingsValuesIntoBasicArray(settings_values);
 		
+		//set password generator
 		if (tasks_values && tasks_values.hasOwnProperty("fields") && tasks_values["fields"].hasOwnProperty("password") && tasks_values["fields"]["password"].hasOwnProperty("field") && tasks_values["fields"]["password"]["field"].hasOwnProperty("input") && tasks_values["fields"]["password"]["field"]["input"].hasOwnProperty("password_generator")) {
 			var password_generator = tasks_values["fields"]["password"]["field"]["input"]["password_generator"];
 			var input = password_generator_elm.children("input");
@@ -226,6 +227,7 @@ function loadRegisterBlockSettings(settings_elm, settings_values) {
 				input.removeAttr("checked").prop("checked", false);
 		}
 		
+		//set user type id
 		if (tasks_values && tasks_values.hasOwnProperty("user_type_id") && tasks_values["user_type_id"]) {
 			if (typeof tasks_values["user_type_id"] == "string")
 				tasks_values["user_type_id"] = tasks_values["user_type_id"].split(",");
