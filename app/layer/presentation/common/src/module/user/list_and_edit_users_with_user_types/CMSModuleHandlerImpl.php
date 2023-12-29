@@ -456,15 +456,20 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					//save user extra
 					$new_extra_data = $new_data;
 					$new_extra_data["user_id"] = $user_id;
-					$status = $this->CommonModuleTableExtraAttributesUtil->insertOrUpdateTableExtra($new_extra_data, $files);
+					$s = $this->CommonModuleTableExtraAttributesUtil->insertOrUpdateTableExtra($new_extra_data, $files);
 					//No need to call the $this->CommonModuleTableExtraAttributesUtil->reloadSavedTableExtra bc we will get the new items from the DB after after this method.
+					
+					if (!$s) //note that on insert the status contains the new user id
+						$status = false;
 					
 					if ($settings["show_username"] && $username && strtolower($old_user["username"]) != strtolower($username))
 						\UserUtil::changeUserSessionUsernameByUsername($brokers, $settings, $old_user["username"], $username);
 					
 					//save user active status
-					if ($settings["show_active"])
+					if ($settings["show_active"]) {
+						$active = strlen($active) ? $active : 0; //set active to a 0 if empty, otherwise the updateUserActiveStatus method returns false
 						$status = \UserUtil::updateUserActiveStatus($brokers, array("user_id" => $user_id, "active" => $active));
+					}
 				}
 				else if ($settings["allow_insertion"] && empty($old_user["user_id"]) && $inserted_user_id)
 					\UserUtil::deleteUser($EVC, $inserted_user_id, $brokers);
