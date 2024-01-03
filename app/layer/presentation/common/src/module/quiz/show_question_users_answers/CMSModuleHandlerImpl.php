@@ -40,14 +40,26 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				"settings" => &$settings,
 				"data" => &$data,
 			), "Use this join point to change the loaded question data.");
-			
-			$user_answers_by_user_ids = array();
-			$user_answer_ids_by_user_ids = array();
-			if ($data["user_answers"])
-				foreach ($data["user_answers"] as $ua) {
-					$user_answers_by_user_ids[ $ua["user_id"] ][] = $ua;
-					$user_answer_ids_by_user_ids[ $ua["user_id"] ][ $ua["answer_id"] ] = true;
-				}
+		}
+		
+		//Preparing questions html
+		if ($data) {
+			if ($settings["ptl"]) {
+				//prepare new settings field
+				$settings["fields"]["users_answers"] = array(
+					"field" => array(
+						"disable_field_group" => 1,
+						"input" => array(
+							"type" => "label",
+							"value" => " ", //leave space on purpose, so the CommonModuleUI::getFormHtml does NOT replace it by #users_answers#
+							"next_html" => self::getQuestionUsersAnswers($settings, $data),
+						),
+					),
+				);
+				$settings["show_users_answers"] = 1;
+			}
+			else
+				$settings["next_html"] = self::getQuestionUsersAnswers($settings, $data);
 		}
 		
 		$settings["data"] = $data;
@@ -56,7 +68,23 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$settings["class"] = "module_show_question_users_answers";
 		$settings["allow_view"] = true;
 		
+		\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "quiz/show_question_users_answers", $settings);
+		return \CommonModuleUI::getFormHtml($EVC, $settings);
+	}
+	
+	private static function getQuestionUsersAnswers($settings, $data) {
+		$html = "";
+		
 		if ($data["answers"]) {
+			$user_answers_by_user_ids = array();
+			$user_answer_ids_by_user_ids = array();
+			
+			if ($data["user_answers"])
+				foreach ($data["user_answers"] as $ua) {
+					$user_answers_by_user_ids[ $ua["user_id"] ][] = $ua;
+					$user_answer_ids_by_user_ids[ $ua["user_id"] ][ $ua["answer_id"] ] = true;
+				}
+			
 			$html = '
 			<div class="question_user_answers">
 				<table class="table table-condensed table-hover">
@@ -82,7 +110,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					
 					foreach ($data["answers"] as $answer) {
 						$selected = $user_answer_ids_by_user_ids[$user_id][ $answer["answer_id"] ];
-						$html .= '<td class="answer' . ($selected ? ' selected' : '') . '">' . ($selected ? "X" : "") . '</td>';
+						$html .= '<td class="answer' . ($selected ? ' selected' : '') . '">' . ($selected ? 'X' : "") . '</td>';
 					}
 					
 					$html .= '</tr>';
@@ -91,12 +119,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			$html .= '</tbody>
 				</table>
 			</div>';
-			
-			$settings["next_html"] = $html;
 		}
 		
-		\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "quiz/show_question_users_answers", $settings);
-		return \CommonModuleUI::getFormHtml($EVC, $settings);
+		return $html;
 	}
 	
 	private static function getNextQuestion($questions, $previous_order) {

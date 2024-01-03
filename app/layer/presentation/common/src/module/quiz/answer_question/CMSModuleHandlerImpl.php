@@ -131,6 +131,26 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			}
 		}
 		
+		//Preparing questions html
+		if ($data) {
+			if ($settings["ptl"]) {
+				//prepare new settings field
+				$settings["fields"]["question_answers"] = array(
+					"field" => array(
+						"disable_field_group" => 1,
+						"input" => array(
+							"type" => "label",
+							"value" => " ", //leave space on purpose, so the CommonModuleUI::getFormHtml does NOT replace it by #question_answers#
+							"next_html" => \QuizUI::getQuestionAnswersHtml($settings, $data),
+						),
+					),
+				);
+				$settings["show_question_answers"] = 1;
+			}
+			else
+				$settings["next_html"] = \QuizUI::getQuestionAnswersHtml($settings, $data);
+		}
+		
 		$form_data = $settings["allow_view"] && $data ? $data : array();
 		
 		$settings["data"] = $data;
@@ -142,10 +162,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		if (empty($settings["style_type"]))
 			$settings["css_file"] = $project_common_url_prefix . 'module/quiz/answer_question.css';
 		
-		if ($data["answers"]) {
-			$settings["next_html"] = \QuizUI::getQuestionAnswersJavascript($settings);
-			$settings["next_html"] .= \QuizUI::getQuestionAnswersHtml($settings, $data);
-		}
+		if ($data["answers"])
+			$settings["next_html"] = \QuizUI::getQuestionAnswersJavascript($settings) . $settings["next_html"]; //Preparing some javascript
 		
 		$settings["allow_deletion"] = false;//so it doesn't show the delete button. Leave this line here - at the end!
 		

@@ -12,6 +12,38 @@ $(function () {
 
 function loadAnswerQuestionBlockSettings(settings_elm, settings_values) {
 	var block_settings = settings_elm.children(".edit_settings");
+	var empty_settings_values = !settings_values || ($.isArray(settings_values) && settings_values.length == 0);
+	
+	if (empty_settings_values) {
+		settings_values = {
+			fields: {
+				title: {
+					field: {
+						input: {
+							"class": "border-0 d-inline mb-0 pl-2 ps-2 pt-0 pb-0"
+						}
+					}
+				},
+				description: {
+					field: {
+						disable_field_group: 1,
+						input: {
+							"class": "d-block border-0 p-0 mb-0 ml-2 ms-2 text-secondary"
+						}
+					}
+				}
+			},
+			buttons: {
+				update: {
+					field: {
+						input: {
+							"class": "btn btn-primary"
+						}
+					}
+				},
+			}
+		};
+	}
 	
 	$.ajax({
 		url: call_module_file_prefix_url.replace("#module_file_path#", "get_object_types"),
@@ -44,6 +76,19 @@ function loadAnswerQuestionBlockSettings(settings_elm, settings_values) {
 	}
 	
 	onChangeQuestionType( block_settings.children(".question_type").children("select")[0] );
+}
+
+function onUserAnswersUpdatePTLFromFieldsSettings(elm, settings, code, external_vars) {
+	//adds answers
+	var extra_code = "<ptl:block:field:question_answers/>";
+	var pos = code.indexOf("<div");
+	
+	if (pos != -1)
+		code = code.substr(0, pos) + extra_code + "\n" + code.substr(pos);
+	else
+		code += "\n" + extra_code;
+	
+	return code;
 }
 
 function onChangeQuestionType(elm) {

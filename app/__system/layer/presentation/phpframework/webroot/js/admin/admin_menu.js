@@ -606,10 +606,28 @@ function onDBContextMenu(target, contextmenu, originalEvent) {
 									
 									for (var j = 0; j < props_value.length; j++) {
 										if (prop_name == "name") { //prop_name=="name" is a different property that will check if name contains the searching string.
-											if (!attribute_properties[prop_name] || attribute_properties[prop_name].toLowerCase().indexOf( props_value[j].toLowerCase() ) != -1) {
+											if (!attribute_properties[prop_name]) {
 												sub_exists = true;
 												break;
 											}
+											else if ($.isArray(attribute_properties[prop_name])) {
+												for (var w = 0; w < attribute_properties[prop_name].length; w++) {
+													var n = attribute_properties[prop_name][w];
+													
+													if (("" + n).toLowerCase().indexOf( props_value[j].toLowerCase() ) != -1) {
+														sub_exists = true;
+														w = attribute_properties[prop_name].length;
+													}
+												}
+												
+												if (sub_exists = true)
+													break;
+											}
+											else if (("" + attribute_properties[prop_name]).toLowerCase().indexOf( props_value[j].toLowerCase() ) != -1) {
+												sub_exists = true;
+												break;
+											}
+											
 										}
 										else if (props_value[j] == attribute_properties[prop_name] || (!props_value[j] && !attribute_properties[prop_name])) { //if both values are false (null or empty string or 0), then the values are the same
 											sub_exists = true;

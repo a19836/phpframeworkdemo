@@ -12,6 +12,40 @@ $(function () {
 
 function loadShowQuestionUsersAnswersBlockSettings(settings_elm, settings_values) {
 	var block_settings = settings_elm.children(".edit_settings");
+	var empty_settings_values = !settings_values || ($.isArray(settings_values) && settings_values.length == 0);
+	
+	if (empty_settings_values) {
+		settings_values = {
+			ptl: {
+				code: '<div class=\"card border border-light rounded m-2 shadow-sm text-start text-left\">' + "\n"
+			      + '	<div class=\"card-header\">' + "\n"
+			      + '		<ptl:block:field:title/>' + "\n"
+			      + '		<ptl:block:field:description/>' + "\n"
+			      + '	</div>' + "\n"
+			      + '	<div class=\"card-body\">' + "\n"
+			      + '		<ptl:block:field:users_answers/>' + "\n"
+			      + '	</div>' + "\n"
+				 + '</div>'
+			},
+			fields: {
+				title: {
+					field: {
+						input: {
+							"class": "border-0 d-inline mb-0 pl-2 ps-2 pt-0 pb-0"
+						}
+					}
+				},
+				description: {
+					field: {
+						disable_field_group: 1,
+						input: {
+							"class": "d-block border-0 p-0 mb-0 ml-2 ms-2 text-secondary small"
+						}
+					}
+				}
+			}
+		};
+	}
 	
 	$.ajax({
 		url: call_module_file_prefix_url.replace("#module_file_path#", "get_object_types"),
@@ -43,6 +77,10 @@ function loadShowQuestionUsersAnswersBlockSettings(settings_elm, settings_values
 	}
 	
 	onChangeQuestionType( block_settings.children(".question_type").children("select")[0] );
+}
+
+function onUserAnswersUpdatePTLFromFieldsSettings(elm, settings, code, external_vars) {
+	return code + "\n<ptl:block:field:users_answers/>";
 }
 
 function onChangeQuestionType(elm) {

@@ -2,6 +2,9 @@
 
 <link rel="stylesheet" href="<?= $module["webroot_url"]; ?>settings.css" type="text/css" charset="utf-8" />
 <script type="text/javascript" src="<?= $module["webroot_url"]; ?>settings.js"></script>
+<script>
+	onUpdatePTLFromFieldsSettings = onUserAnswersUpdatePTLFromFieldsSettings;
+</script>
 
 <div class="edit_settings">
 	<div class="session_id">
@@ -61,13 +64,13 @@
 <?php 
 	echo CommonModuleSettingsUI::getHtmlPTLCode(array(
 		"style_type" => true,
-	 	"block_class" => true,
+	 	"block_class" => "quiz_answer_question",
 		"fields" => array(
 			"question_id" => array("type" => "label", "label" => "", "class" => "question_id", "show" => 0), 
-			"title" => array("type" => "h1", "label" => "", "class" => "question_title"), 
-			"description" => array("type" => "h3", "label" => "", "class" => "question_description"), 
-			"created_date" => array("type" => "label", "label" => "", "class" => "question_created_date"), 
-			"modified_date" => array("type" => "label", "label" => "", "class" => "question_modified_date")
+			"title" => array("type" => "label", "label" => "", "class" => "question_title"), 
+			"description" => array("type" => "label", "label" => "", "class" => "question_description"), 
+			"created_date" => array("type" => "label", "label" => "", "class" => "question_created_date", "show" => 0), 
+			"modified_date" => array("type" => "label", "label" => "", "class" => "question_modified_date", "show" => 0)
 		),
 		"buttons" => array(
 	 		"view" => true,
@@ -76,8 +79,72 @@
 	 		"delete" => true,
 	 		"undefined" => true,
 	 	),
-	 	"css" => true,
-	 	"js" => true,
+	 	"css" => "
+.quiz_answer_question {
+    margin-bottom:15px;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+.quiz_answer_question ul,
+  .quiz_answer_question li {
+    margin-bottom:0;
+    list-style:none;
+}
+.quiz_answer_question.answered .question_title:after,
+  .quiz_answer_question.changed .question_title:after {
+    content:'answered';
+    margin-top:2px;
+    margin-right:10px;
+    float:right;
+    font-size:80%;
+    color:#ccc;
+}
+.quiz_answer_question.changed .question_title:after {
+    content:'not saved';
+}
+.quiz_answer_question.answered.changed .question_title:after {
+    content:'answered - not saved';
+}
+.quiz_answer_question .question_answers {
+    padding:15px 10px 0;
+}
+.quiz_answer_question .question_answers > li {
+    line-height:normal;
+    margin-bottom:10px;
+}
+.quiz_answer_question .question_answers input  {
+    vertical-align:middle;
+}
+.quiz_answer_question .question_answers > li .answer_description {
+	margin-left:20px;
+	color:#6c757d;
+}
+.quiz_answer_question .question_answers > li .answer_description:not(:empty) {
+	padding-bottom:10px;
+}",
+	 	"js" => "
+$(function() {
+    var question = $('.quiz_answer_question');
+    
+    question.find('.question_answers .answer_title input:checked').each(function(idx, input) {
+        question.addClass('answered').attr('saved_answer', input.value);
+    });
+    
+    //Do not use on change event bc if the form allows the user to unselect its option, then the on change event wont work.
+    question.find('.question_answers .answer_title input').on('click', function() {
+        var input = $(this);
+    	
+        setTimeout(function() {
+    	   	var new_answer = question.find('.question_answers .answer_title input:checked').val();
+    	    
+    	   	if (question.attr('saved_answer') != new_answer)
+    	        question.addClass('changed');
+    	   	else
+    	        question.removeClass('changed');
+        }, 300);
+    });
+});",
 	));
 ?>
 </div>

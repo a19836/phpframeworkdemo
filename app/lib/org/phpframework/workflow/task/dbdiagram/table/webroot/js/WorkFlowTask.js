@@ -828,6 +828,48 @@ var DBTableTaskPropertyObj = {
 		return html;
 	},
 	
+	prepareShortTableAttributeRowEvents : function(table_attr) {
+		//avoid to show contextmenu when we click in an input/select of the table_attr
+		table_attr.click(function(event) {
+			event.stopPropagation();
+		});
+		
+		//set onkeyup, onblur and onchange events
+		table_attr.find("input").on("blur", function(event) {
+			var input = $(this);
+			var timeout_id = table_attr.data("timeout_id");
+			timeout_id && clearTimeout(timeout_id);
+			
+			if (input.parent().is(".name"))
+				DBTableTaskPropertyObj.onChangeShortTableAttributeNameInput( input[0] );
+			else
+				DBTableTaskPropertyObj.onChangeShortTableAttribute( input[0] );
+		})
+		.on("keyup", function(event) {
+			var input = $(this);
+			var timeout_id = table_attr.data("timeout_id");
+			timeout_id && clearTimeout(timeout_id);
+			
+			timeout_id = setTimeout(function() {
+				table_attr.data("timeout_id", null);
+				
+				if (input.parent().is(".name"))
+					DBTableTaskPropertyObj.onChangeShortTableAttributeNameInput( input[0] );
+				else
+					DBTableTaskPropertyObj.onChangeShortTableAttribute( input[0] );
+			}, 2000);
+			
+			table_attr.data("timeout_id", timeout_id);
+		});
+		
+		table_attr.find("select").on("change", function(event) {
+			DBTableTaskPropertyObj.onChangeShortTableAttributeTypeSelectBox(this);
+		})
+		.on("mousedown", function(event) {
+			event.stopPropagation(); //avoid to show contextmenu when we click in an input/select of the table_attr
+		});
+	},
+	
 	onChangeShortTableAttributeType : function(elm) {
 		elm = $(elm);
 		var type = elm.val();
@@ -851,40 +893,6 @@ var DBTableTaskPropertyObj = {
 			if ($.isNumeric(column_mandatory_length_type) || column_mandatory_length_type)
 				length_input.val(column_mandatory_length_type);
 		}
-	},
-	
-	prepareShortTableAttributeRowEvents : function(table_attr) {
-		//avoid to show contextmenu when we click in an input/select of the table_attr
-		table_attr.click(function(event) {
-			event.stopPropagation();
-		});
-		
-		//set onkeyup, onblur and onchange events
-		table_attr.find("input").on("blur", function(event) {
-			var timeout_id = table_attr.data("timeout_id");
-			timeout_id && clearTimeout(timeout_id);
-			
-			DBTableTaskPropertyObj.onChangeShortTableAttribute(this);
-		})
-		.on("keyup", function(event) {
-			var input = $(this);
-			var timeout_id = table_attr.data("timeout_id");
-			timeout_id && clearTimeout(timeout_id);
-			
-			timeout_id = setTimeout(function() {
-				table_attr.data("timeout_id", null);
-				DBTableTaskPropertyObj.onChangeShortTableAttribute( input[0] );
-			}, 2000);
-			
-			table_attr.data("timeout_id", timeout_id);
-		});
-		
-		table_attr.find("select").on("change", function(event) {
-			DBTableTaskPropertyObj.onChangeShortTableAttributeTypeSelectBox(this);
-		})
-		.on("mousedown", function(event) {
-			event.stopPropagation(); //avoid to show contextmenu when we click in an input/select of the table_attr
-		});
 	},
 	
 	onChangeShortTableAttributeTypeSelectBox : function(elm) {
@@ -972,6 +980,34 @@ var DBTableTaskPropertyObj = {
 		DBTableTaskPropertyObj.onChangeShortTableAttribute(elm[0]);
 	},
 	
+	onChangeShortTableAttributeNameInput : function(elm) {
+		var elm = $(elm);
+		var td = elm.parent();
+		
+		if (td.is(".name")) {
+			var table_attr = td.parent().closest(".table_attr");
+			var attribute_name = table_attr.attr("data_attribute_name");
+			var new_attribute_name = elm.val().replace(/\s/g, "");
+			var is_attribute_name_different = attribute_name != new_attribute_name;
+			
+			//set new simple type according with attribute name
+			if (is_attribute_name_different) {
+				var type = this.getSimpleTypeBasedInAttributeName(new_attribute_name);
+				
+				if (type) {
+					table_attr.find(".type input").val("");
+					
+					var select = table_attr.find(".type select");
+					select.val(type);
+					this.onChangeShortTableAttributeType(select[0]);
+				}
+			}
+		}
+		
+		//call handler
+		this.onChangeShortTableAttribute(elm[0]);
+	},
+	
 	onChangeShortTableAttribute : function(elm) {
 		var table_attr = $(elm).parent().closest(".table_attr");
 		var attribute_name = table_attr.attr("data_attribute_name");
@@ -1016,6 +1052,21 @@ var DBTableTaskPropertyObj = {
 				default:
 					attribute_data["primary_key"] = false;
 					attribute_data["unique"] = false;
+			}
+			
+			//prepare simple type
+			var column_simple_types = $.isPlainObject(DBTableTaskPropertyObj.column_simple_types) ? DBTableTaskPropertyObj.column_simple_types : {};
+			var column_simple_custom_types = $.isPlainObject(DBTableTaskPropertyObj.column_simple_custom_types) ? DBTableTaskPropertyObj.column_simple_custom_types : {};
+			
+			var simple_props = type && column_simple_types.hasOwnProperty(type) ? column_simple_types[type] : (
+				type && column_simple_custom_types.hasOwnProperty(type) ? column_simple_custom_types[type] : null
+			);
+			
+			if (simple_props) { //type must be overwrite by the simple_props so we can have the native type
+				type = simple_props["type"];
+				
+				if ($.isArray(type)) //if type is an array
+					type = type[0];
 			}
 			
 			//prepare other attributes if primary key
@@ -1065,17 +1116,9 @@ var DBTableTaskPropertyObj = {
 			else
 				attribute_data["auto_increment"] = false;
 			
-			//prepare attribute data with new simple type
-			var column_simple_types = $.isPlainObject(DBTableTaskPropertyObj.column_simple_types) ? DBTableTaskPropertyObj.column_simple_types : {};
-			var column_simple_custom_types = $.isPlainObject(DBTableTaskPropertyObj.column_simple_custom_types) ? DBTableTaskPropertyObj.column_simple_custom_types : {};
-			
-			var simple_props = type && column_simple_types.hasOwnProperty(type) ? column_simple_types[type] : (
-				type && column_simple_custom_types.hasOwnProperty(type) ? column_simple_custom_types[type] : null
-			);
-			
 			if (simple_props) {
 				for (var prop_name in simple_props)
-					if (prop_name != "name" && prop_name != "length") { //type must be overwrite by the simple_props so we can have the native type
+					if (prop_name != "name" && prop_name != "length") {
 						var prop_value = simple_props[prop_name];
 						
 						if ($.isArray(prop_value)) //if prop_name=="type" then the prop_value could be an array
@@ -2129,7 +2172,7 @@ var DBTableTaskPropertyObj = {
 						
 						for (var j = 0; j < props_value.length; j++) {
 							if (prop_name == "name") { //prop_name=="name" is a different property that will check if name contains the searching string.
-								if (!current_simple_props[prop_name] || current_simple_props[prop_name].toLowerCase().indexOf( props_value[j].toLowerCase() ) != -1) {
+								if (DBTableTaskPropertyObj.isAttributeNameASimpleAttributeName(props_value[j], current_simple_props[prop_name])) {
 									sub_exists = true;
 									break;
 								}
@@ -2156,8 +2199,69 @@ var DBTableTaskPropertyObj = {
 		return null;
 	},
 	
+	isAttributeNameASimpleAttributeName : function(attribute_name, simple_prop_name) {
+		if (!simple_prop_name)
+			return true;
+		else {
+			var anl = attribute_name.toLowerCase();
+			
+			if ($.isArray(simple_prop_name)) {
+				for (var i = 0, t = simple_prop_name.length; i < t; i++) {
+					var n = simple_prop_name[i];
+					
+					if (("" + n).toLowerCase().indexOf(anl) != -1)
+						return true;
+				}
+			}
+			else if (("" + simple_prop_name).toLowerCase().indexOf(anl) != -1)
+				return true;
+		}
+		
+		return false;
+	},
+	
+	getSimpleTypeBasedInAttributeName : function(attribute_name) {
+		var column_simple_types = $.isPlainObject(this.column_simple_types) ? this.column_simple_types : {};
+		var column_simple_custom_types = $.isPlainObject(this.column_simple_custom_types) ? this.column_simple_custom_types : {};
+		
+		for (var simple_type in column_simple_types) {
+			var simple_props = column_simple_types[simple_type];
+			
+			if ($.isPlainObject(simple_props) && simple_props.hasOwnProperty("name") && simple_props["name"] && this.isAttributeNameASimpleAttributeName(attribute_name, simple_props["name"]))
+				return simple_type;
+		}
+		
+		for (var simple_type in column_simple_custom_types) {
+			var simple_props = column_simple_custom_types[simple_type];
+			
+			if ($.isPlainObject(simple_props) && simple_props.hasOwnProperty("name") && simple_props["name"] && this.isAttributeNameASimpleAttributeName(attribute_name, simple_props["name"]))
+				return simple_type;
+		}
+		
+		return null;
+	},
+	
 	onBlurSimpleAttributeInputBox : function(elm) {
+		elm = $(elm);
+		var attribute_name = elm.attr("data_attribute_name");
+		var new_attribute_name = elm.val().replace(/\s/g, "");
+		var is_attribute_name_different = attribute_name != new_attribute_name;
+		
+		//set new simple type according with attribute name
+		if (is_attribute_name_different) {
+			var type = this.getSimpleTypeBasedInAttributeName(new_attribute_name);
+			
+			if (type) {
+				var select = elm.parent().find(".simple_attr_type");
+				select.val(type);
+				this.onChangeSimpleAttributeTypeSelectBox(select[0]);
+			}
+		}
+		
 		this.onBlurTableAttributeInputBox(elm);
+		
+		if (new_attribute_name)
+			elm.attr("data_attribute_name", new_attribute_name);
 	},
 	
 	onClickSimpleAttributeHasDefaultCheckBox : function(elm) {

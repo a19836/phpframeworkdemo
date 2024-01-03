@@ -2,6 +2,9 @@
 
 <link rel="stylesheet" href="<?= $module["webroot_url"]; ?>settings.css" type="text/css" charset="utf-8" />
 <script type="text/javascript" src="<?= $module["webroot_url"]; ?>settings.js"></script>
+<script>
+	onUpdatePTLFromFieldsSettings = onUserAnswersUpdatePTLFromFieldsSettings;
+</script>
 
 <div class="edit_settings">
 	<div class="question_type">
@@ -38,16 +41,40 @@
 <?php 
 	echo CommonModuleSettingsUI::getHtmlPTLCode(array(
 		"style_type" => true,
-	 	"block_class" => true,
+	 	"block_class" => "show_question_users_answers",
 		"fields" => array(
 			"question_id" => array("type" => "label", "label" => "", "class" => "question_id", "show" => 0), 
-			"title" => array("type" => "h1", "label" => "", "class" => "question_title"), 
-			"description" => array("type" => "h3", "label" => "", "class" => "question_description"), 
-			"created_date" => array("type" => "label", "label" => "", "class" => "question_created_date"), 
-			"modified_date" => array("type" => "label", "label" => "", "class" => "question_modified_date")
+			"title" => array("type" => "label", "label" => "", "class" => "question_title"), 
+			"description" => array("type" => "label", "label" => "", "class" => "question_description"), 
+			"created_date" => array("type" => "label", "label" => "", "class" => "question_created_date", "show" => 0), 
+			"modified_date" => array("type" => "label", "label" => "", "class" => "question_modified_date", "show" => 0)
 		),
 		"buttons" => false,
-	 	"css" => true,
+	 	"css" => "
+.show_question_users_answers table {
+    margin:0;
+}
+.show_question_users_answers table .answer {
+    vertical-align:top;
+    text-align:center;
+    font-weight:700;
+}
+.show_question_users_answers table .answer.selected {
+	font-family: 'Glyphicons Halflings';
+    font-size: 0;
+    color:green;
+}
+.show_question_users_answers table .answer.selected:before {
+    content: \"\\\\e013\";
+    font-size:13px;
+}
+.show_question_users_answers table .answer .answer_description {
+    font-weight:normal;
+    font-size:90%;
+}
+.show_question_users_answers table .user {
+    font-size:80%;
+}",
 	 	"js" => true,
 	));
 ?>

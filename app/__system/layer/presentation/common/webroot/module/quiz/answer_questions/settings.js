@@ -12,6 +12,38 @@ $(function () {
 
 function loadAnswerQuestionsBlockSettings(settings_elm, settings_values) {
 	var block_settings = settings_elm.children(".edit_settings");
+	var empty_settings_values = !settings_values || ($.isArray(settings_values) && settings_values.length == 0);
+	
+	if (empty_settings_values) {
+		settings_values = {
+			fields: {
+				title: {
+					field: {
+						input: {
+							"class": "border-0 d-inline mb-0 pl-2 ps-2 pt-0 pb-0"
+						}
+					}
+				},
+				description: {
+					field: {
+						disable_field_group: 1,
+						input: {
+							"class": "d-block border-0 p-0 mb-0 ml-2 ms-2 text-secondary"
+						}
+					}
+				}
+			},
+			buttons: {
+				update: {
+					field: {
+						input: {
+							"class": "btn btn-primary"
+						}
+					}
+				},
+			}
+		};
+	}
 	
 	$.ajax({
 		url: call_module_file_prefix_url.replace("#module_file_path#", "get_object_types"),
@@ -31,7 +63,7 @@ function loadAnswerQuestionsBlockSettings(settings_elm, settings_values) {
 		async: false,
 	});
 	
-	loadEditSettingsBlockSettings(settings_elm, settings_values);
+	loadEditSettingsBlockSettings(settings_elm, settings_values, empty_settings_values ? {"remove": 0, "sort": 0} : null);
 	
 	onChangeQuestionsType( block_settings.children(".questions_type").children("select")[0] );
 }
