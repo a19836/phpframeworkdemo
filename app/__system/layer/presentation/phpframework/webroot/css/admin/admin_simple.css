@@ -9,6 +9,32 @@
 	vertical-align:sub;
 }
 
+#top_panel ul.center {
+	margin-top:7px;
+}
+#top_panel > .center > li.link {
+	font-size:13px;
+}
+
+#top_panel > ul > li.sub_menu > ul li.label {
+	margin:-10px 0 10px;
+	padding:10px 0;
+	cursor:auto;
+	position:sticky;
+	top:0;
+	border-bottom:1px solid var(--top-panel-sub-menu-item-color);
+}
+#top_panel > ul > li.sub_menu > ul li.label:hover {
+	background:var(--top-panel-sub-menu-item-bg);
+	color:var(--top-panel-sub-menu-item-color);
+}
+#top_panel > ul > li.sub_menu > ul li.label a {
+	text-transform: none;
+}
+#top_panel > ul > li.sub_menu.filter_by_layout > ul {
+	margin-left:0;
+}
+
 #right_panel {
 	left:0;
 	top:45px;

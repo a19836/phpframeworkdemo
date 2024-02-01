@@ -1366,7 +1366,7 @@ function getDefinedRegionHtml(region) {
 function getRegionBlockHtml(region, block, block_project, is_html, rb_index) {
 	var select = null;
 	
-	var block = block ? block : "";
+	block = block ? block : "";
 	block_project = block_project ? block_project : "";
 	rb_index = $.isNumeric(rb_index) ? rb_index : "";
 	
@@ -1702,7 +1702,7 @@ function deleteRegionBlock(elm) {
 		else {
 			resetRegionBlock(item); //resetRegionBlock already triggers the onChange and onBlur events for the selected field which calls the updateLayoutIframeFromSettingsField method.
 			
-			StatusMessageHandler.showError("Cannot remove this region-block because is the only one of his kind. You must leave at least 1 block-region for each region.");
+			StatusMessageHandler.showError("Cannot remove this region-block because is the only one of his kind. You must leave at least 1 block-region for each region.", "", "bottom_messages", 1500);
 		}
 	}
 }
@@ -3918,6 +3918,27 @@ function toggleSettingsPanel(elm) {
 	}
 }
 
+function toggleAdvancedOptions() {
+	var main_obj = $(".entity_obj, .template_obj");
+	var top_bar = $(".top_bar");
+	var toggle_advanced_options = top_bar.find("li.toggle_advanced_options");
+	var input = toggle_advanced_options.find("input");
+	var span = toggle_advanced_options.find("span");
+	
+	toggle_advanced_options.toggleClass("active");
+	main_obj.toggleClass("with_advanced_options");
+	top_bar.toggleClass("with_advanced_options");
+	
+	if (toggle_advanced_options.hasClass("active")) {
+		input.attr("checked", "checked").prop("checked", true);
+		span.html("Hide Advanced Features");
+	}
+	else {
+		input.removeAttr("checked").prop("checked", false);
+		span.html("Show Advanced Features");
+	}
+}
+
 function enableAutoConvertSettingsFromLayout(on_complete) {
 	auto_convert_settings_from_layout = true;
 	
@@ -4031,6 +4052,7 @@ function getCurrentCodeJSAndCSSFiles() {
 	return getCodeJSAndCSSFiles(code);
 }
 
+//remove the inner html from a specific tag
 function stripHtmlTagCode(tag_name, html) {
 	var html_lower = html.toLowerCase();
 	var pos = 0;
@@ -4050,7 +4072,7 @@ function stripHtmlTagCode(tag_name, html) {
 			if (is_short_tag)
 				pos = start_pos;
 			else {
-				var end_pos = html_lower.indexOf("</" + tag_name, start_pos + (tag_code ? tag_code.length : 0));
+				var end_pos = html_lower.indexOf("</" + tag_name, start_pos + (tag_code && tag_code[0] ? tag_code[0].length : 0));
 				
 				if (end_pos != -1) {
 					var end_tag_settings = MyHtmlBeautify.getTagHtml(html, end_pos);
@@ -4075,14 +4097,15 @@ function stripHtmlTagCode(tag_name, html) {
 function getCodeJSAndCSSFiles(code) {
 	var css_files = [];
 	var js_files = [];
-	var regex = /<(script|link)\s+/gi;
 	
 	//strip script/style/textarea content, just it may contain css or js code inside. bc in this case we should ignore it
 	code = stripHtmlTagCode("script", code);
 	code = stripHtmlTagCode("style", code);
 	code = stripHtmlTagCode("textarea", code);
+	//console.log("code without script|style|textarea content:"+code);
 	
 	//find css and js code
+	var regex = /<(script|link)\s+/gi;
 	var m = regex.exec(code);
 	
 	while (m != null) {
@@ -5407,11 +5430,15 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
         			
         			var right_container_icon = $('<i class="zmdi zmdi-view-dashboard option show-right-container hidden" title="Show Modules, Blocks and DBs"></i>');
         			right_container_icon.click(function() {
-        				right_container.fadeIn("slow");
+					luie.addClass("switching-panel");
 					menu_widgets.fadeOut("slow");
 					menu_layers.fadeOut("slow");
 					template_widgets_options.fadeOut("slow");
+        				right_container.fadeIn("slow", function() {
+						luie.removeClass("switching-panel");
+					});
 					
+					options.find(".show-option-panel").val("show-right-container");
 					options.find(".show-widgets, .show-layers, .show-layout-options").removeClass("option-active");
 					$(this).addClass("option-active");
 					

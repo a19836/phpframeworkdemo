@@ -166,8 +166,10 @@
 	--add-widget-popup-input-color:#b9a5a6;
 	
 	/* template-widget-source-popup */
+	--template-widget-source-popup-border:#b9a5a6;
 	--template-widget-source-popup-bg:#b9a5a6;
 	--template-widget-source-popup-color:#463a3c;
+	--template-widget-source-popup-size:10px;
 	
 	/* messages */
 	--editor-info-msg-bg:rgba(204, 255, 153, 0.8);
@@ -1018,11 +1020,11 @@
 	-webkit-box-sizing:border-box;
 	box-sizing:border-box;
 }
-.layout-ui-editor:not(.resizing-fixed-properties):not(.resizing) > .menu-widgets,
-  .layout-ui-editor:not(.resizing-fixed-properties):not(.resizing) > .menu-layers,
-  .layout-ui-editor:not(.resizing-fixed-properties):not(.resizing) > .menu-settings:not(.fixed-properties),
-  .layout-ui-editor:not(.resizing-fixed-properties):not(.resizing) > .template-widgets-options { 
-	transition:left .2s ease-in-out, right .2s ease-in-out, width .2s ease-in-out, height .2s ease-in-out; /* must specify each property (left, right, width, height) bc we use the fadeout and fadein in the JS and if we set the transition to "all", then the fadeOut and fadeIn functions will do a weird effect. */
+.layout-ui-editor:not(.resizing-fixed-properties):not(.resizing):not(.switching-panel) > .menu-widgets,
+  .layout-ui-editor:not(.resizing-fixed-properties):not(.resizing):not(.switching-panel) > .menu-layers,
+  .layout-ui-editor:not(.resizing-fixed-properties):not(.resizing):not(.switching-panel) > .menu-settings:not(.fixed-properties),
+  .layout-ui-editor:not(.resizing-fixed-properties):not(.resizing):not(.switching-panel) > .template-widgets-options { 
+	transition:left .2s ease-in-out, right .2s ease-in-out, width .2s ease-in-out, height .2s ease-in-out, opacity .5s; /* must specify each property (left, right, width, height) bc we use the fadeout and fadein in the JS and if we set the transition to "all", then the fadeOut and fadeIn functions will do a weird effect. */
 }
 .layout-ui-editor.reverse > .menu-widgets,
   .layout-ui-editor.reverse > .menu-layers,
@@ -1033,13 +1035,15 @@
 }
 .layout-ui-editor.with-minimized-panels > .menu-widgets,
   .layout-ui-editor.with-minimized-panels > .menu-layers,
-  .layout-ui-editor.with-minimized-panels > .menu-settings,
+  .layout-ui-editor.with-minimized-panels.fixed-side-properties > .menu-settings,
   .layout-ui-editor.with-minimized-panels > .template-widgets-options {
+	left:-10px;
 	right:100% !important;
+	opacity:0;
 }
 .layout-ui-editor.reverse.with-minimized-panels > .menu-widgets,
   .layout-ui-editor.reverse.with-minimized-panels > .menu-layers,
-  .layout-ui-editor.reverse.with-minimized-panels > .menu-settings,
+  .layout-ui-editor.reverse.with-minimized-panels.fixed-side-properties > .menu-settings,
   .layout-ui-editor.reverse.with-minimized-panels > .template-widgets-options {
 	left:100% !important;
 	right:0 !important;
@@ -2400,6 +2404,23 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	color:var(--template-widget-source-popup-color, #463a3c);
 	border-radius:3px;
 	box-sizing:border-box;
+	overflow:hidden;
+}
+.layout-ui-editor .template-widget-source-popup .title {
+	width:100%;
+	padding:10px;
+	display:inline-block;
+	font-size:var(--template-widget-source-popup-size);
+	border-bottom:1px solid var(--template-widget-source-popup-border);
+	box-sizing:border-box;
+}
+.layout-ui-editor .template-widget-source-popup .pretty_print {
+	padding:10px;
+	display:inline-block;
+	font-size:var(--template-widget-source-popup-size);
+	position:absolute;
+	top:0;
+	right:30px;
 }
 .layout-ui-editor .template-widget-source-popup .close {
 	position:absolute;
@@ -2410,15 +2431,16 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 }
 .layout-ui-editor .template-widget-source-popup textarea {
 	width:100% !important;
-	height:100% !important;
+	height:calc(100% - 36px) !important;
 	/*background:none !important;*/
 	border:0 !important;
 	resize:none;
 	box-sizing:border-box !important;
 	font-size:80%;
 }
-.layout-ui-editor .template-widget-source-popup .ace_editor {
-	height:100%;
+.layout-ui-editor .template-widget-source-popup > .ace_editor {
+	width:100%;
+	height:calc(100% - 36px);
 	margin:0;
 }
 

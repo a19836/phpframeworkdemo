@@ -291,6 +291,7 @@ function showAjaxLoginPopup(login_url, urls_to_match, success_func) {
 			
 			iframe.css({width: w + "px", height: h + "px"});*/
 			iframe.css({width: "380px", height: "290px"});
+			MyFancyPopupLogin.updatePopup(); //recenter popup
 		}
 	};
 	iframe.bind("load", iframe_on_load_func);

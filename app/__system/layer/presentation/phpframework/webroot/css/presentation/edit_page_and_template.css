@@ -27,7 +27,7 @@
 	overflow:auto; /* must have overflow auto and then overlay, otherwise scroll will be hidden in Firefox */
 	overflow:overlay;
 	box-sizing:border-box;
-	z-index:4;
+	z-index:5;
 	color:var(--main-settings-color);
 	background:var(--main-settings-bg);
 	font-size:8pt;
@@ -766,8 +766,14 @@ body > .dragging_menu_item {
     
 }
 .code_layout_ui_editor .layout-ui-editor > .menu-settings {
-	/* This is very important otherwise the layout_ui_editor_right_container will appear in the background of the menu-settings */
-	z-index:1;
+	/* This is very important otherwise the layout_ui_editor_right_container will appear in the background of the menu-settings: z-index must be at least 1 */
+	/* This is very important otherwise the .options-left will appear above of the ".fixed-properties > .menu-settings": z-index must be at least 4 */
+	/* This is very important otherwise the border will not be shown bc the .options-left appears above the ".fixed-side-properties > .menu-settings": z-index must be at least 4 */
+	z-index:4;
+}
+.code_layout_ui_editor .layout-ui-editor.sidebar_options_left.fixed-properties > .menu-settings {
+	/* This is very important otherwise the .options-left will appear above of the menu-settings */
+	z-index:4;
 }
 .template_region_block_html_editor_popup .layout-ui-editor > .menu-widgets > li:first-child {
 	display:none; /*hide code group menu bc ptl and php are not allowed in the template_region_block_html_editor_popup */
@@ -866,7 +872,8 @@ body > .dragging_menu_item {
 	color:var(--main-popup-header-color) !important;
 }
 
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-left {
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu:not(.sidebar_options_left) > .options > .options-left {
+	width:auto;
 	height:30px;
 	padding:5px;
 	top:0;
@@ -877,29 +884,53 @@ body > .dragging_menu_item {
 	white-space:nowrap;
 	z-index:3;
 }
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .options .options-left {
+	width:135px;
+	height:auto;
+	padding-top:0;
+	top:0;
+	left:0 !important;
+	right:auto !important; /* important is to overwrite the value set when resize */
+	bottom:0;
+	border-right:1px solid var(--resize-bar-border);
+	background:var(--main-iframe-bg);
+	color:var(--main-iframe-color);
+	z-index:3;
+}
 .dark_theme .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-left {
 	background:var(--main-iframe-bg);
 }
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.reverse > .options > .options-left {
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.reverse:not(.sidebar_options_left) > .options > .options-left {
 	left:calc(100% - 205px);
 	right:0;
 	text-align:center;
 	direction:ltr;
 }
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-left::before {
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.reverse.sidebar_options_left > .options > .options-left {
+	left:auto !important; /* important is to overwrite the value set when resize */
+	right:0 !important;
+	border-left:1px solid var(--resize-bar-border);
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-left .option {
+	color:var(--main-iframe-color);
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-left .option.option-disabled {
+	opacity:.35 !important;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu:not(.sidebar_options_left) > .options > .options-left .option:hover:after {
+	margin-top:5px;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu:not(.sidebar_options_left) > .options > .options-left .option:not(.show-option-panel) {
+	display:none;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu:not(.sidebar_options_left) > .options > .options-left::before {
 	content:"List:";
 	display:inline-block;
 	font:var(--main-font-family);
 	font-size:8pt;
 	color:var(--main-iframe-color);
 }
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-left .option {
-	color:var(--main-iframe-color);
-}
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-left .option:not(.show-option-panel) {
-	display:none;
-}
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-left .option.show-option-panel {
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu:not(.sidebar_options_left) > .options > .options-left .option.show-option-panel {
 	width:calc(100% - 20px);
 	margin:0;
 	/*border-color:var(--main-context-menu-border);*/
@@ -912,14 +943,82 @@ body > .dragging_menu_item {
 	box-shadow:none; /* bc of on hover and focus events */
 	vertical-align:baseline;
 }
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-left .option.show-option-panel:hover {
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu:not(.sidebar_options_left) > .options > .options-left .option.show-option-panel:hover {
 	color:var(--link-color) !important;
 }
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .options-left .option.option-disabled {
-	opacity:.35 !important;
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .options > .options-left .option {
+	width:auto;
+	height:auto;
+	padding:10px;
+	display:block;
+	text-align:left;
+	direction:ltr;
+	position:absolute;
+	left:0;
+	right:0;
+	border-top:1px solid transparent;
+	border-bottom:1px solid transparent;
+	white-space:nowrap;
 }
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options .options-left .option:hover:after {
-	margin-top:5px;
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .options > .options-left .option.option-active {
+	padding-right:11px;
+	right:-1px;
+	background:var(--main-template-bg);
+	color:var(--main-iframe-top-title-color) !important;
+	border-top-color:var(--resize-bar-border);
+	border-bottom-color:var(--resize-bar-border);
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.reverse.sidebar_options_left > .options > .options-left .option.option-active {
+	padding-left:11px;
+	left:-1px;
+	right:0;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .options > .options-left .option.show-option-panel,
+  .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .options > .options-left .option.show-settings {
+	display:none;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left.hide-template-widgets-options > .options > .options-left .option.show-layout-options {
+	display:none;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .options > .options-left .option.show-widgets {
+	top:0;
+	border-top:none !important;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .options > .options-left .option.show-layers {
+	top:40px;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .options > .options-left .option.show-right-container {
+	top:80px;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .options > .options-left .option.show-layout-options {
+	top:120px;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .options > .options-left .option.choose-template {
+	padding:8px 10px; /* 8px so this option be aligned with ".fixed-side-properties > .menu-settings.collapsed" */
+	bottom:0;
+	border-bottom:none !important;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .options > .options-left .option:after {
+	margin:5px 0 0 10px;
+	display:inline-block;
+	font-family:var(--main-editor-font-family);
+	font-size:8pt;
+	vertical-align:middle;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .options > .options-left .option.show-widgets:after {
+	content:"Widgets";
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .options > .options-left .option.show-layers:after {
+	content:"Layers";
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .options > .options-left .option.show-right-container:after {
+	content:"Modules & Blocks";
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .options > .options-left .option.show-layout-options:after {
+	content:"Layout Options";
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .options > .options-left .option.choose-template:after {
+	content:"Switch Template";
 }
 
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center {
@@ -1279,14 +1378,57 @@ body > .dragging_menu_item {
   .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .template-widgets-options {
 	top:30px;
 }
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .menu-widgets, 
+  .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .menu-layers, 
+  .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.sidebar_options_left > .template-widgets-options {
+	top:0;
+	border-top:none;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu:not(.reverse).sidebar_options_left > .menu-widgets, 
+  .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu:not(.reverse).sidebar_options_left > .menu-layers, 
+  .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu:not(.reverse).sidebar_options_left > .template-widgets-options {
+	left:135px;
+	right:calc(100% - 340px);
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.reverse.sidebar_options_left > .menu-widgets, 
+  .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.reverse.sidebar_options_left > .menu-layers, 
+  .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.reverse.sidebar_options_left > .template-widgets-options {
+	left:calc(100% - 340px);
+	right:135px;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu:not(.reverse).fixed-side-properties.sidebar_options_left > .menu-settings {
+	left:135px;
+	right:calc(100% - 340px);
+	border-left:1px solid var(--resize-bar-border);
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.reverse.fixed-side-properties.sidebar_options_left > .menu-settings {
+	left:calc(100% - 340px);
+	right:136px;
+	border-right:1px solid var(--resize-bar-border);
+}
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.reverse > .template-widgets {
 	margin-right:2px;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu:not(.reverse).sidebar_options_left > .template-widgets {
+	left:345px;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.reverse.sidebar_options_left > .template-widgets {
+	right:345px;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu:not(.reverse).sidebar_options_left > .resize-panels {
+	left:340px;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu.reverse.sidebar_options_left > .resize-panels {
+	right:340px;
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .menu-layers {
 	padding:10px;
 }
 .code_layout_ui_editor .layout-ui-editor.fixed-side-properties > .menu-settings.full-screen {
 	top:30px !important;
+}
+.code_layout_ui_editor .layout-ui-editor.fixed-side-properties.sidebar_options_left > .menu-settings.full-screen {
+	top:0 !important;
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .template-source,
   .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .template-full-source {
@@ -1420,13 +1562,25 @@ body > .dragging_menu_item {
 	font-size:11px;
 	transition:.2s all;
 }
+.code_layout_ui_editor .layout-ui-editor.sidebar_options_left .layout_ui_editor_right_container {
+	top:0;
+	border-top:none;
+}
 .code_layout_ui_editor .layout-ui-editor:not(.reverse) .layout_ui_editor_right_container {
 	left:0;
 	right:calc(100% - 205px);
 }
+.code_layout_ui_editor .layout-ui-editor:not(.reverse).sidebar_options_left .layout_ui_editor_right_container {
+	left:135px;
+	right:calc(100% - 340px);
+}
 .code_layout_ui_editor .layout-ui-editor.reverse .layout_ui_editor_right_container {
 	left:calc(100% - 205px);
 	right:0;
+}
+.code_layout_ui_editor .layout-ui-editor.reverse.sidebar_options_left .layout_ui_editor_right_container {
+	left:calc(100% - 340px);
+	right:135px;
 }
 .code_layout_ui_editor .layout-ui-editor:not(.reverse).with-minimized-panels > .layout_ui_editor_right_container {
 	right:100%;
@@ -1660,7 +1814,7 @@ body > .dragging_menu_item {
 	background:#fff;
 	border:1px solid #B51E3F;
 	color:#B51E3F;
-	z-index:5;
+	z-index:6;
 }
 .invalid a {
 	text-decoration:underline;

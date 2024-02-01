@@ -2816,6 +2816,15 @@ function createCodeEditor(textarea, options) {
 			//console.log("edit end");
 		}, 5000);
 	});
+	editor.on("blur", function(data, ed) {
+		//console.log(on_change_timeout_id);
+		if (on_change_timeout_id) {
+			clearTimeout(on_change_timeout_id);
+			
+			auto_convert = auto_convert_bkp;
+			auto_save = auto_save_bkp;
+		}
+	});
 	
 	if (options && typeof options.change_func == "function")
 		editor.on("change", options.change_func);
@@ -3114,8 +3123,6 @@ function onClickCodeEditorTab(elm, options) {
 	taskFlowChartObj.TaskFile.stopAutoSave();
 	
 	if (auto_convert) {
-		StatusMessageHandler.showMessage("Generating code based in workflow... Loading...", "", "bottom_messages", 1500);
-		
 		//close properties popup in case the auto_save be active on close task properties popup, but only if is not auto_save, otherwise the task properties can become messy, like it happens with the task inlinehtml.
 		if (auto_save && taskFlowChartObj.Property.auto_save && !is_from_auto_save) {
 			if (taskFlowChartObj.Property.isSelectedTaskPropertiesOpen())
@@ -3134,6 +3141,9 @@ function onClickCodeEditorTab(elm, options) {
 		};
 		
 		generateCodeFromTasksFlow(true, options);
+		
+		if (options["generating"])
+			StatusMessageHandler.showMessage("Generating code based in workflow... Loading...", "", "bottom_messages", 1500);
 	}
 	
 	setTimeout(function() {
@@ -3281,9 +3291,7 @@ function onClickTaskWorkflowTab(elm, options) {
 			taskFlowChartObj.TaskFile.startAutoSave();
 			
 			if (auto_convert) {
-				StatusMessageHandler.showMessage("Generating workflow based in code... Loading...", "", "bottom_messages", 1500);
-				
-				generateTasksFlowFromCode(true, {
+				var opts = {
 					success : function(data, textStatus, jqXHR) {
 						StatusMessageHandler.removeMessages("info");
 						
@@ -3296,7 +3304,11 @@ function onClickTaskWorkflowTab(elm, options) {
 						if (typeof options == "object" && typeof options["on_error"] == "function")
 							options["on_error"]();
 					},
-				});
+				};
+				generateTasksFlowFromCode(true, opts);
+				
+				if (opts["generating"])
+					StatusMessageHandler.showMessage("Generating workflow based in code... Loading...", "", "bottom_messages", 1500);
 			}
 		}, 10);
 	}
@@ -3318,17 +3330,18 @@ function updateTasksFlow() {
 function getCurrentWorkFlowId() {
 	var data = taskFlowChartObj.TaskFile.getWorkFlowData();
 	data = assignObjectRecursively({}, data);
+	var tasks = data && data["tasks"]; //only use tasks so it can ignore the settings and containers items inside of data var.
 	
 	//regularize the sizes and offsets from tasks, so we can get the real workflow id and check if there were changes or not in the workflow...
-	if (data && data["tasks"])
-		for (var task_id in data["tasks"]) {
-			data["tasks"][task_id]["width"] = 100;
-			data["tasks"][task_id]["height"] = 100;
-			data["tasks"][task_id]["offset_top"] = 0;
-			data["tasks"][task_id]["offset_left"] = 0;
+	if (tasks)
+		for (var task_id in tasks) {
+			tasks[task_id]["width"] = 100;
+			tasks[task_id]["height"] = 100;
+			tasks[task_id]["offset_top"] = 0;
+			tasks[task_id]["offset_left"] = 0;
 		}
 	
-	var workflow_id = $.md5(JSON.stringify(data));
+	var workflow_id = $.md5(JSON.stringify(tasks));
 	
 	return workflow_id;
 }
@@ -3336,6 +3349,7 @@ function getCurrentWorkFlowId() {
 function generateCodeFromTasksFlow(do_not_confirm, options) {
 	var status = true;
 	var options = typeof options == "object" ? options : {};
+	options["generating"] = false;
 	
 	var old_workflow_id = $("#ui").attr("workflow_id");
 	var new_workflow_id = getCurrentWorkFlowId();
@@ -3343,15 +3357,18 @@ function generateCodeFromTasksFlow(do_not_confirm, options) {
 	var generated_code_id = $("#code").attr("generated_code_id");
 	var code = getEditorCodeRawValue();
 	var new_code_id = getCodeId(code);
+	//console.log("generateCodeFromTasksFlow");
 	//console.log(generated_code_id+"="+new_code_id);
+	//console.log(old_workflow_id+"="+new_workflow_id);
 	
 	var is_tasks_flow_tab_inited = $("#code").parent().find(" > ul > #tasks_flow_tab > a").attr("is_init") == 1;
 	
 	if (is_tasks_flow_tab_inited && (
-		old_workflow_id != new_workflow_id || (generated_code_id && generated_code_id != new_code_id) || options["force"]
-	)) {
+		(old_workflow_id && old_workflow_id != new_workflow_id) || (generated_code_id && generated_code_id != new_code_id) || options["force"]
+	)) { //check if old_workflow_id exists bc the workflow may be still loading and opening and in this case the workflow_id attribute is not yet set.
 		if (do_not_confirm || auto_convert || confirm("Do you wish to update this code accordingly with the workflow tasks?")) {
 			status = false;
+			options["generating"] = true;
 			
 			if (!is_from_auto_save) {
 				MyFancyPopup.init({
@@ -3509,6 +3526,7 @@ function generateCodeFromTasksFlow(do_not_confirm, options) {
 function generateTasksFlowFromCode(do_not_confirm, options) {
 	var status = true;
 	var options = typeof options == "object" ? options : {};
+	options["generating"] = false;
 	
 	//only if no errors detected
 	var errors = getEditorCodeErrors();
@@ -3519,10 +3537,13 @@ function generateTasksFlowFromCode(do_not_confirm, options) {
 		var old_code_id = $("#ui").attr("code_id");
 		var code = getEditorCodeRawValue();
 		var new_code_id = getCodeId(code);
+		//console.log("generateTasksFlowFromCode");
+		//console.log(old_code_id+"="+new_code_id);
 		
 		if (old_code_id != new_code_id || options["force"]) {
 			if (do_not_confirm || auto_convert || confirm("Do you wish to update this workflow accordingly with the code in the editor?")) {
 				status = false;
+				options["generating"] = true;
 				
 				if (!is_from_auto_save) {
 					taskFlowChartObj.getMyFancyPopupObj().hidePopup();

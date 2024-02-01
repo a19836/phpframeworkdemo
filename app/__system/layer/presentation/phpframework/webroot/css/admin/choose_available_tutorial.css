@@ -3,7 +3,7 @@ body,
 	background:#fff !important;
 }
 ::-webkit-scrollbar-track {
-	background-color:#fff;
+	background-color:transparent;
 }
 
 .choose_available_tutorial {

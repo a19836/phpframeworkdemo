@@ -137,7 +137,7 @@
 		"begin_date" => array("show" => 0), 
 		"end_date" => array("show" => 0), 
 		"begin_date_time" => array("show" => 0),
-		"begin_time" => array("label" => "When"),
+		"begin_time",
 		"begin_year" => array("show" => 0),
 		"begin_month" => array("show" => 0),
 		"begin_month_short_text",

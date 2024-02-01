@@ -3,7 +3,7 @@ body,
 	background:#fff !important;
 }
 ::-webkit-scrollbar-track {
-	background-color:#fff;
+	background-color:transparent;
 }
 
 /* TOP BAR */
@@ -24,7 +24,7 @@ body,
 	font-weight:bold;
 }
 
-/* PROJECTS */
+/* PROJECTS - title */
 
 .choose_available_project > .title {
 	height:25px;
@@ -43,6 +43,7 @@ body,
 	clear:both;
 }
 
+/* PROJECTS - selected_project */
 .choose_available_project > .selected_project {
 	margin:0 0 20px;
 	font-size:9px;
@@ -55,6 +56,7 @@ body,
 	color:inherit;
 }
 
+/* PROJECTS - layer */
 .choose_available_project > .layer {
 	text-align:center;
 	color:#666;
@@ -66,8 +68,10 @@ body,
 	color:inherit;
 }
 
+/* PROJECTS - projects_list_type */
 .choose_available_project > .projects_list_type {
 	text-align:center;
+	display:none; /* Only show the list_view */
 }
 .choose_available_project.no_projects > .projects_list_type {
 	display:none;
@@ -87,19 +91,63 @@ body,
 	opacity:1;
 }
 
-.choose_available_project > .new_project {
+/* PROJECTS - new_first_project and new_project */
+.choose_available_project > .new_first_project,
+  .choose_available_project > .new_project {
 	margin:55px 20px;
 	text-align:center;
 }
-.choose_available_project > .new_project .button {
+.choose_available_project > .new_first_project .button,
+  .choose_available_project > .new_project .button {
 	font-size:8pt;
 }
-.choose_available_project > .new_project .description {
+.choose_available_project > .new_first_project .description,
+  .choose_available_project > .new_project .description {
 	margin-top:15px;
 	color:#585B69;
 	font-size:11px;
 }
 
+/* PROJECTS - sort_projects and search_project */
+.choose_available_project > .projects_actions {
+	margin-bottom:30px;
+	text-align:center;
+}
+.choose_available_project > .projects_actions > .sort_projects {
+	margin:10px 30px 10px 0;
+	padding:10px;
+	color:var(--icon-active-color);
+	border-color:var(--icon-active-color);
+	border-radius:0.2rem;
+	font-size:8pt;
+}
+.choose_available_project > .projects_actions > .search_project {
+	margin:10px 0px 10px 10px;
+	white-space:nowrap;
+}
+.choose_available_project > .projects_actions > .search_project .icon.search {
+	cursor:default;
+	color:var(--icon-active-color);
+}
+.choose_available_project > .projects_actions > .search_project input {
+	width:150px;
+	margin-left:-28px;
+	padding:10px 20px 10px 25px;
+	color:var(--icon-active-color);
+	border-color:var(--icon-active-color);
+	border-radius:0.2rem;
+	font-size:8pt;
+}
+.choose_available_project > .projects_actions > .search_project input::placeholder {
+	color:var(--icon-active-color);
+}
+.choose_available_project > .projects_actions > .search_project .icon.close {
+	color:var(--icon-active-color);
+	position:absolute;
+	margin:25px 0 0 -18px;
+}
+
+/* PROJECTS - loading_projects */
 .choose_available_project > .loading_projects {
 	display:block;
 	text-align:center;
@@ -111,6 +159,7 @@ body,
 	vertical-align:middle;
 }
 
+/* PROJECTS - group projects */
 .choose_available_project > .group {
 	margin:0 20px;
 	text-align:center;
@@ -362,19 +411,10 @@ body,
 	top:auto;
 	left:auto;
 	right:-100px;
+	bottom:25px;
 	text-align:left;
 	white-space:nowrap;
 }
-
-/* POPUP */
-.edit_project_details_popup {
-	/*position:fixed !important;
-	top:5px !important;
-	left:5px !important;
-	right:5px !important;
-	bottom:5px !important;*/
-}
-.edit_project_details_popup iframe {
-	width:100%;
-	height:100%;
+.choose_available_project .list_view li > div.sub_menu.open > ul {
+	right:0px;
 }

@@ -18,6 +18,7 @@ function updateLayerProjects(folder_to_filter) {
 
 function prepareChooseAvailableProjectsHtml(layer_projects, folder_to_filter) {
 	var aps = getAvailableProjectsConvertedWithFolders(layer_projects, folder_to_filter);
+	var choose_available_project = $(".choose_available_project");
 	
 	if (folder_to_filter) {
 		folder_to_filter = folder_to_filter.replace(/[\/]+/, "/").replace(/[\/]+$/, "");
@@ -48,15 +49,24 @@ function prepareChooseAvailableProjectsHtml(layer_projects, folder_to_filter) {
 	var projects_html = '';
 	
 	if (!$.isEmptyObject(aps)) {
-		//add files 
-		for (var k in aps) 
-			if (aps[k])
+		choose_available_project.children(".new_project").removeClass("hidden");
+		choose_available_project.children(".new_first_project").addClass("hidden");
+		
+		//add files
+		for (var k in aps)
+			if (aps[k] && (folder_to_filter || k != "common"))
 				projects_html += getChooseAvailableProjectHtml(folder_to_filter, k, aps[k]);
 	}
-	else
-		projects_html += '<li class="no_projects">There are no available projects...</li>';
 	
-	var choose_available_project = $(".choose_available_project");
+	if (!projects_html) {
+		choose_available_project.children(".new_project").addClass("hidden");
+		choose_available_project.children(".new_first_project").removeClass("hidden");
+		
+		//open popup to create new project, if root folder
+		if (!folder_to_filter)
+			addProject();
+	}
+	
 	var group_projects = choose_available_project.children(".group.projects");
 	
 	group_projects.children("ul").html(/*folders_html + */projects_html);
@@ -67,7 +77,14 @@ function prepareChooseAvailableProjectsHtml(layer_projects, folder_to_filter) {
 		choose_available_project.removeClass("in_sub_folder");
 	
 	choose_available_project.find(".top_bar .breadcrumbs").attr("folder_to_filter", folder_to_filter).html(folder_to_filter ? '<span class="breadcrumb-item"><a href="javascript:void(0)" onClick="updateLayerProjects(\'\')">Home</a></span>' + getChooseAvailableProjectCurrentFolderHtml(folder_to_filter) : "");
+	
 	choose_available_project.children(".loading_projects").hide();
+	
+	if (!$.isEmptyObject(aps)) {
+		var projects_actions = choose_available_project.children(".projects_actions");
+		searchProjects( projects_actions.find(" > .search_project > input")[0] );
+		sortProjects( projects_actions.children(".sort_projects")[0] );
+	}
 }
 
 function getChooseAvailableProjectHtml(folder_to_filter, fp, project_props) {
@@ -213,6 +230,11 @@ function addProject() {
 		$(document.body).append(popup);
 	}
 	
+	if (show_programs_on_add_project)
+		popup.addClass("big");
+	else
+		popup.removeClass("big");
+	
 	popup.html('<iframe></iframe>'); //cleans the iframe so we don't see the previous html
 	
 	//prepare popup iframe
@@ -262,8 +284,12 @@ function onSuccessfullAddProject(opts) {
 		//refresh main window with new params
 		window.parent.location = parent_url;
 	}
-	else
+	else {
+		if (opts && opts["new_filter_by_layout"])
+			url = admin_home_project_page_url.replace("#filter_by_layout#", opts["new_filter_by_layout"]);
+		
 		document.location = url;
+	}
 }
 
 function openProjectFileSubmenu(elm) {
@@ -402,4 +428,60 @@ function onSuccessfullRemoveFile(elm, type, action, path, new_file_name) {
 
 function onSuccessfullCreateFile(elm, type, action, path, new_file_name) {
 	refreshLayerProjects(path);
+}
+
+function searchProjects(elm) {
+	elm = $(elm);
+	var to_search = elm.val().toLowerCase().replace(/^\s*/, "").replace(/\s*$/, "");
+	var ul = elm.parent().closest(".choose_available_project").find(" > .projects > ul");
+	var lis = ul.children("li");
+	
+	if (to_search == "")
+		lis.removeClass("hidden");
+	else
+		lis.each(function(idx, li) {
+			li = $(li);
+			var file_name = li.children("label").text();
+			var matched = to_search != "" ? file_name.toLowerCase().indexOf(to_search) != -1 : true;
+			
+			if (matched)
+				li.removeClass("hidden");
+			else
+				li.addClass("hidden");
+		});
+}
+
+function resetSearchProjects(elm) {
+	var input = $(elm).parent().children("input");
+	input.val("");
+	searchProjects(input[0]);
+}
+
+function sortProjects(elm) {
+	elm = $(elm);
+	var sort_type = elm.val();
+	var ul = elm.parent().closest(".choose_available_project").find(" > .projects > ul");
+	var lis = ul.children("li");
+	var selector = " > label";
+	
+	lis.sort(function(li_a, li_b) {
+		var a = $(li_a).find(selector).text();
+		var b = $(li_b).find(selector).text();
+		
+		if (sort_type == "a_z") {
+			if(a > b)
+				return 1;
+			if(a < b)
+				return -1;
+		}
+		else {
+			if(a > b)
+				return -1;
+			if(a < b)
+				return 1;
+		}
+		
+		return 0;
+	});
+	lis.detach().appendTo(ul);
 }

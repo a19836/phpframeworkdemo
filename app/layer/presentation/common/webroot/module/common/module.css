@@ -238,7 +238,8 @@ input, select, textarea {
 }
 .module_edit th, .module_list th {
 	min-height:20px;
-	padding:2px 5px;
+	/*padding:2px 5px;*/
+	padding:5px;
 	border-bottom:1px solid #ccc;
 	border-right:1px solid #eee;
 	
@@ -252,7 +253,8 @@ input, select, textarea {
 .module_edit td, .module_list td {
 	border-bottom:1px solid #ccc;
 	border-right:1px solid #eee;
-	padding:0px 4px;
+	/*padding:0px 4px;*/
+	padding:5px;
 	text-align:left;
 }
 
@@ -290,6 +292,7 @@ input, select, textarea {
 }
 .module_edit .form_fields .form_field input {
 	width:200px;
+	font-size:inherit;
 }
 .module_edit .form_fields .form_field input.checkbox,
   .module_edit .form_fields .form_field .checkbox input {
@@ -302,11 +305,13 @@ input, select, textarea {
 }
 .module_edit .form_fields .form_field select {
 	background-color:#FFF;
+	font-size:inherit;
 }
 .module_edit .form_fields .form_field textarea {
 	width:200px;
 	height:100px;
 	background-color:#FFF;
+	font-size:inherit;
 }
 
 .module_edit .buttons {

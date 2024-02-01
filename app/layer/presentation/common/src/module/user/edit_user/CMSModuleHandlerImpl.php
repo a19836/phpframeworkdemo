@@ -130,6 +130,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						
 						\CommonModuleUI::prepareFieldsWithDefaultValue($settings, $new_data);
 						
+						if (strlen($new_data["active"]) == 0) //if active is allow_null and is a checkbox the POST will not contain the active field and bc is allow null, the prepareFieldsWithDefaultValue won't set the default value. So we need to do it manually.
+							$new_data["active"] = is_numeric($settings["active_default_value"]) ? $settings["active_default_value"] : 0;
+						
 						$active = $new_data["active"]; //set $active with default values with apply
 						
 						if (empty($new_data["user_type_id"]))

@@ -1,7 +1,9 @@
 <?php
 $main_app_folder_path = dirname(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
 $main_app_folder_path = basename($main_app_folder_path) == "app" ? $main_app_folder_path : dirname($main_app_folder_path); //it measn it is inside of the __system
-include_once $main_app_folder_path . "/lib/org/phpframework/util/web/html/CssAndJSFilesOptimizer.php";
+
+if (!class_exists("CssAndJSFilesOptimizer")) //Note that this is very important, bc this file is called from the __system files and we have multiple installations of bloxtor with the common/webroot folder shared across that installations (as a symbolic link) then this class may be already included from another installation.
+	include_once $main_app_folder_path . "/lib/org/phpframework/util/web/html/CssAndJSFilesOptimizer.php";
 
 $GLOBALS["layout_ui_editor_widgets_files_included"] = array();
 

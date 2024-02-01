@@ -94,6 +94,100 @@ $(function() {
 	//else Do not close popup bc it will be closed in the prepareLayerFileNodes2 method
 });
 
+function toggleListType(elm, type) {
+	elm = $(elm);
+	var p = elm.parent();
+	
+	p.find(".icon").removeClass("active");
+	elm.find(".icon").addClass("active");
+	
+	p.closest(".top_bar").parent().children("#file_tree").removeClass(type == "block_view" ? "list_view" : "block_view").addClass(type == "block_view" ? "block_view" : "list_view");
+}
+
+function searchFiles(elm) {
+	elm = $(elm);
+	var to_search = elm.val().toLowerCase().replace(/^\s*/, "").replace(/\s*$/, "");
+	var mytree = elm.parent().closest(".top_bar").parent().children("#file_tree");
+	var main_ul = mytree.find(" > ul > li > ul");
+	
+	var searchFilesInUl = function(ul, to_search) {
+		var found = false;
+		
+		$.each(ul.find(" > li > a.jstree-anchor"), function(idx, a) {
+			a = $(a);
+			var li = a.parent();
+			var name = a.children("label").text();
+			var matched = name.toLowerCase().indexOf(to_search) != -1;
+			var sub_ul = li.children("ul");
+			
+			if (sub_ul.children().length > 0 && searchFilesInUl(sub_ul, to_search))
+				matched = true;
+			
+			if (matched) {
+				li.removeClass("hidden");
+				found = true;
+			}
+			else
+				li.addClass("hidden");
+		});
+		
+		return found;
+	}
+	
+	if (to_search == "")
+		main_ul.find("li").removeClass("hidden");
+	else
+		searchFilesInUl(main_ul, to_search);
+}
+
+function resetSearchFiles(elm) {
+	var input = $(elm).parent().children("input");
+	input.val("");
+	searchFiles(input[0]);
+}
+
+function sortFiles(elm) {
+	elm = $(elm);
+	var sort_type = elm.val();
+	var mytree = elm.parent().closest(".top_bar").parent().children("#file_tree");
+	var main_ul = mytree.find(" > ul > li > ul");
+	
+	var sortFilesInUl = function(ul, sort_type) {
+		var lis = ul.children("li");
+		var selector = " > a > label";
+		
+		lis.sort(function(li_a, li_b) {
+			var a = $(li_a).find(selector).text();
+			var b = $(li_b).find(selector).text();
+			
+			if (sort_type == "a_z") {
+				if(a > b)
+					return 1;
+				if(a < b)
+					return -1;
+			}
+			else {
+				if(a > b)
+					return -1;
+				if(a < b)
+					return 1;
+			}
+			
+			return 0;
+		});
+		lis.detach().appendTo(ul);
+		
+		lis.each(function(idx, li) {
+			var sub_ul = $(li).children("ul");
+			
+			if (sub_ul.children().length > 0)
+				sortFilesInUl(sub_ul, sort_type);
+		});
+	};
+	
+	sortFilesInUl(main_ul, sort_type);
+}
+
 function prepareLayerFileNodes1(ul, data) {
 	//filter data by path
 	if (path_to_filter != "" && data) {
@@ -233,7 +327,7 @@ function prepareLayerFileNodes2(ul, data) {
 					//add refresh icon
 					lis.find(" > a > .icons").each(function(idx, icons) {
 						icons = $(icons);
-						icons.children(".sub_menu").before('<span class="icon refresh" title="Refresh" onClick="refreshAndShowNodeChilds( $(this).parent().closest(\'li\') )">Add File</span>');
+						icons.children(".sub_menu").before('<span class="icon refresh" title="Refresh" onClick="refreshAndShowNodeChildsFromIcon(this)">Add File</span>');
 						
 						//add sub menus to context_menu.
 						var menu_items_classes = {};
@@ -289,7 +383,16 @@ function prepareLayerFileNodes2(ul, data) {
 		}
 		else
 			MyFancyPopup.hidePopup();
+		
+		var title = $(".top_bar > header > .title");
+		searchFiles( title.find(" > .search_file > input")[0] );
+		sortFiles( title.children(".sort_files")[0] );
 	}
+}
+
+function refreshAndShowNodeChildsFromIcon(elm) {
+	window.event.stopPropagation();
+	refreshAndShowNodeChilds( $(elm).parent().closest('li') )
 }
 
 function addTreeNodeIcons(icon_classes, li_a, sub_a) {
@@ -463,6 +566,18 @@ function goToHandler(url, a, attr_name, originalEvent) {
 	MyFancyPopup.showOverlay();
 	MyFancyPopup.showLoading();
 	
+	try {
+		//save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+		MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('default_page', url); //usually the list.php is open in the admin_simple so we need to set the default_page cookie, so the next time we return to the framework, it opens the last page.
+		//console.log(url);
+	}
+	catch(e) {
+		//sometimes gives an error bc of the iframe beforeunload event. This doesn't matter, but we should catch it and ignore it.
+		if (console && console.log)
+			console.log(e);
+	}
+	
+	//open url
 	document.location = url;
 }
 

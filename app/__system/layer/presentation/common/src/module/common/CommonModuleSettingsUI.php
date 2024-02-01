@@ -99,7 +99,7 @@ class CommonModuleSettingsUI {
 			$html .= self::getJsFieldsHtml($settings["js"]);
 		
 		if (isset($settings["fields"]))
-			$html .= self::getAttributeFieldsHtml($settings["fields"], $settings["is_list"], $settings["search_values"]);
+			$html .= self::getAttributeFieldsHtml($settings["fields"], $settings["is_list"], $settings["search_values"], $settings["default_values"]);
 		
 		if (is_array($settings["buttons"])) {
 			if ($settings["is_list"])
@@ -348,7 +348,7 @@ class CommonModuleSettingsUI {
 		return $html;
 	}
 	
-	public static function getAttributeFieldsHtml($fields, $is_list = false, $search_values = false) {
+	public static function getAttributeFieldsHtml($fields, $is_list = false, $search_values = false, $default_values = false) {
 		$html = '<div class="settings_props">';
 		
 		foreach ($fields as $field_id => $field) {
@@ -359,7 +359,7 @@ class CommonModuleSettingsUI {
 				unset($field);
 			}
 			
-			$html .= self::getAttributeFieldHtml($field, $field_id, $is_list, $search_values);
+			$html .= self::getAttributeFieldHtml($field, $field_id, $is_list, $search_values, $default_values);
 		}
 	
 		$html .= '</div>
@@ -378,7 +378,7 @@ class CommonModuleSettingsUI {
 		return $html;
 	}
 
-	public static function getAttributeFieldHtml($field, $field_id, $is_list = false, $search_values = false) {
+	public static function getAttributeFieldHtml($field, $field_id, $is_list = false, $search_values = false, $default_values = false) {
 		if (is_array($field)) {
 			$type = $field["type"];
 			$label = $field["label"];
@@ -437,7 +437,7 @@ class CommonModuleSettingsUI {
 				<option value="1"' . ($show ? ' selected' : '') . '>Show this field</option>
 			</select>';
 		
-		if (!$is_list) {	
+		if (!$is_list || $default_values) {	
 			$html .= '
 			<div class="settings_prop_default_value">
 				<label>Default Value: </label>

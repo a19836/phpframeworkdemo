@@ -29,10 +29,10 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_advanced
 var path_to_filter = "' . $filter_by_layout . '";
 var admin_home_project_page_url = "' . $admin_home_project_page_url . '";
 var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
-</script>'; $main_content = AdminMenuUIHandler::getContextMenus($exists_db_drivers); $main_content .= '
+</script>'; $main_content = AdminMenuUIHandler::getContextMenus($exists_db_drivers, $get_store_programs_url); $main_content .= '
 	<div id="top_panel">
 		<ul class="left">
-			<li class="logo"></li>
+			<li class="logo"><a href="' . $bloxtor_home_page_url . '" target="bloxtor_homepage"></a></li>
 		</ul>
 		<ul class="center">
 			<li class="sub_menu filter_by_layout" data-title="Filter by project" current_selected_project="' . $filter_by_layout . '">
@@ -58,7 +58,7 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 				</ul>
 				
 				<!--span class="icon project" onClick="chooseAvailableProject(\'' . $project_url_prefix . 'admin/choose_available_project?redirect_path=admin&popup=1\');" data-title="' . ($selected_project_name ? 'Selected Project: \'' . $selected_project_name . '\'. ' : '') . 'Please click here to choose another project."></span-->
-				<!--a class="got_to_project_home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/admin_home_project?filter_by_layout=' . $filter_by_layout . '" data-title="Go to project homepage"><span class="icon project_home"></span></a-->
+				<!--a class="got_to_project_home" onClick="goTo(this, \'url\', event)" url="' . $project_url_prefix . 'admin/admin_home_project?filter_by_layout=' . $filter_by_layout . '" data-title="Go to project homepage"><span class="icon project_home"></span></a-->
 			</li>
 		</ul>
 		<ul class="right">
@@ -72,7 +72,7 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 			<li class="separator">|</li>
 			
 			<li class="icon tools" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&popup=1" . '\')" data-title="Tools"></li>
-			<li class="icon home" data-title="Home" onClick="goTo(this, \'home_url\', event)" home_url="' . $admin_home_projects_page_url . '"></li>
+			<li class="icon home" data-title="Home" onClick="goTo(this, \'url\', event)" url="' . $admin_home_projects_page_url . '"></li>
 			<li class="separator">|</li>
 			
 			<li class="sub_menu sub_menu_user" data-title="Others" onClick="openSubmenu(this)">
@@ -91,7 +91,8 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 					<li class="console" title="Logs Console"><a onClick="openConsole(\'' . $project_url_prefix . 'admin/logs_console?popup=1\', event);"><i class="icon logs_console"></i> Logs Console</a></li>
 					<!--li class="question" title="Tutorials - How To?"><a onClick="chooseAvailableTutorial(\'' . $project_url_prefix . 'admin/choose_available_tutorial?popup=1\', event);"><i class="icon question"></i> Tutorials - How To?</a></li-->
 					<li class="question" title="Tutorials - How To?"><a onClick="openOnlineTutorialsPopup(\'' . $online_tutorials_url_prefix . '\', event);"><i class="icon question"></i> Tutorials - How To?</a></li>
-					<li class="info" title="About"><a onClick="goTo(this, \'about_url\', event)" about_url="' . $project_url_prefix . 'admin/about"><i class="icon info"></i> About</a></li>
+					<li class="info" title="About"><a onClick="goTo(this, \'url\', event)" url="' . $project_url_prefix . 'admin/about"><i class="icon info"></i> About</a></li>
+					<li class="feedback" title="Feedback"><a onClick="goToPopup(this, \'url\', event, \'with_title\')" url="' . $project_url_prefix . 'admin/feedback?popup=1"><i class="icon chat"></i> Feedback</a></li>
 					<li class="separator"></li>
 					<li class="logout" title="Logout"><a onClick="document.location=this.getAttribute(\'logout_url\')" logout_url="' . $project_url_prefix . 'auth/logout"><i class="icon logout"></i> Logout</a></li>
 				</ul>

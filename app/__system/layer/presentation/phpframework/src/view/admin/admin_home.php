@@ -30,7 +30,7 @@ var is_popup = 1; //must be 1 so when we choose the project, it refresh the main
 	<div class="title">Welcome to Bloxtor, ' . $logged_name . '</div>
 	
 	<ul>
-		<li><a href="#projs">Projects</a></li>
+		<li><a href="#projs">All Projects</a></li>
 		<li><a href="#tutorials">Tutorials</a></li>
 		<li><a onClick="openOnlineTutorialsPopup(\'' . $online_tutorials_url_prefix . '\')">How it works?</a></li>
 	</ul>

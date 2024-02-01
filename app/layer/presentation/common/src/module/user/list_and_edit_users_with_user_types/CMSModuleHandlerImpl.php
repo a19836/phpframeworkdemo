@@ -403,6 +403,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				
 				\CommonModuleUI::prepareFieldsWithDefaultValue($settings, $new_data, $files);
 				
+				if (strlen($new_data["active"]) == 0) //if active is allow_null and is a checkbox the POST will not contain the active field and bc is allow null, the prepareFieldsWithDefaultValue won't set the default value. So we need to do it manually.
+					$new_data["active"] = is_numeric($settings["active_default_value"]) ? $settings["active_default_value"] : 0;
+				
 				$active = $new_data["active"]; //set $active with default values with apply
 				
 				if (empty($new_data["user_type_ids"]))
@@ -466,10 +469,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						\UserUtil::changeUserSessionUsernameByUsername($brokers, $settings, $old_user["username"], $username);
 					
 					//save user active status
-					if ($settings["show_active"]) {
-						$active = strlen($active) ? $active : 0; //set active to a 0 if empty, otherwise the updateUserActiveStatus method returns false
+					if ($settings["show_active"]) 
 						$status = \UserUtil::updateUserActiveStatus($brokers, array("user_id" => $user_id, "active" => $active));
-					}
 				}
 				else if ($settings["allow_insertion"] && empty($old_user["user_id"]) && $inserted_user_id)
 					\UserUtil::deleteUser($EVC, $inserted_user_id, $brokers);

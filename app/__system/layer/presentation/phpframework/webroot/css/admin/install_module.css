@@ -1,9 +1,12 @@
+body {
+	overflow:overlay;
+}
 body,
   #main_column {
 	background:#fff !important;
 }
 ::-webkit-scrollbar-track {
-	background-color:#fff;
+	background-color:transparent;
 }
 
 /* TOP BAR */
@@ -15,103 +18,160 @@ body,
 	display:block;
 }
 
-/* DIFF */
-.file_upload {
-	width:400px;
+/* file_upload */
+.install_module {
+	padding:0 20px;
+	border:0;
+}
+
+/* project and db_driver */
+.install_module .project,
+  .install_module .db_driver {
+	max-width:500px;
+	margin:40px auto 5px;
+	color:#999;
+}
+.install_module .project + .db_driver {
+	margin-top:0;
+}
+.install_module .project select,
+  .install_module .db_driver select {
+	min-width:100%;
+	max-width:100%;
+	font-size:inherit;
+	color:inherit;
+}
+
+/* tabs */
+.install_module > ul {
+	margin-top:40px !important;
+	background:none;
+	border:0;
+	text-align:center;
+	font-size:13px;
+}
+.install_module > ul li {
+	margin:0 !important;
+	background:none !important;
+	border:none !important;
+	display:inline-block;
+	float:none !important;
+	font-weight:normal;
+	cursor:pointer;
+}
+.install_module > ul li:not(:first-child) {
+	border-left:1px solid #DFE1ED !important;
+	border-radius:0;
+}
+.install_module > ul li a {
+	margin:0 5px;
+	padding:0 10px !important;
+	border-bottom:1px solid transparent !important;
+	color:#83889E !important;
+	float:none !important;
+	text-decoration:none !important;
+}
+.install_module > ul li.ui-state-active a {
+	font-weight:bold;
+	/*border-bottom-color:var(--icon-active-color) !important;*/
+	color:#2C2D34 !important;
+}
+
+/* file_upload */
+.install_module .file_upload {
 	margin:0 auto;
 	text-align:center;
 }
-.file_upload form {
-	width:auto;
+.install_module > .file_upload > .title {
+	margin:20px 0 0;
+	color:#999;
+}
+.install_module .file_upload form {
+	width:100%;
+	max-width:500px;
 	margin:0 auto;
 	display:inline-block;
 	text-align:left;
 }
-.file_upload label {
-	display:block;
-	width:100%;
-	height:20px;
-	margin-bottom:10px;
-	font-weight:normal;
-}
-.file_upload select[name=project] {
-	min-width:100%;
-	max-width:100%;
-	margin-bottom:10px;
-	font-size:inherit;
-}
-.file_upload select[name=db_driver] {
-	min-width:calc(100% - 30px);
-	max-width:calc(100% - 30px);
-	font-size:inherit;
-}
-.file_upload select {
-	/*text-align:center;*/
-}
-.file_upload .upload_file {
+.install_module .file_upload .upload_file {
 	display:block;
 	margin:10px 0;
 }
-.file_upload .upload_file input {
-	width:calc(100% - 38px);
+.install_module .file_upload .upload_file input {
+	width:calc(100% - 80px);
+	margin:auto 0 auto 35px;
+	display:inline-block;
 	border:1px solid #eee;
-	border-radius:3px;
-	direction:rtl;
 	font-size:inherit;
 }
-.file_upload .upload_file .delete {
+.install_module .file_upload .upload_file input::file-selector-button {
+	padding:10px;
+	border:1px solid rgba(0,0,0, .1);
+	border-radius:inherit;
+}
+.install_module .file_upload .upload_file .delete {
 	margin:0 0 0 5px;
 	display:inline-block;
 	float:none;
 	vertical-align:middle;
 	font-size:14px;
 }
-.file_upload .add {
+.install_module .file_upload .add_new_file {
+	text-align:center;
+}
+.install_module .file_upload .add {
 	margin:0 0 0 5px;
 	display:inline-block;
 	float:none;
 	vertical-align:middle;
 	font-size:16px;
 }
-.file_upload .upload_url {
+.install_module .file_upload .upload_url {
 	margin:10px 0;
+	display:none;
 }
-.file_upload .upload_url label {
+.install_module .file_upload .upload_url label {
 	width:25px;
 	margin:0 10px 0 0;
 	display:inline-block;
 }
-.file_upload .upload_url input {
+.install_module .file_upload .upload_url input {
 	width:calc(100% - 73px);
+	padding:10px;
+	box-sizing:border-box;
 	border:1px solid #eee;
 	border-radius:3px;
-	direction:rtl;
 	font-size:inherit;
 }
-.file_upload .upload_url .delete {
+.install_module .file_upload .upload_url .delete {
 	margin:0 0 0 8px;
 	display:inline-block;
 	float:none;
 	vertical-align:middle;
 	font-size:14px;
 }
-.file_upload .button {
-	display:block;
-	margin:10px auto 20px auto;
-	height:20px;
-	line-height:15px;
-	font-size:10px;
-	font-weight:bold;
-}
-.file_upload .installing {
+.install_module .file_upload .installing {
 	margin:10px auto;
 	text-align:center;
 }
-.file_upload:not(.show_info) .info {
-	display:none;
+
+.install_module .file_upload .go_to_modules_download_page {
+	width:100%;
+	margin:40px 0 30px;
+	text-align:center;
+	color:#999;
 }
-.file_upload .info {
-	position:absolute;
+.install_module .file_upload .go_back_to_modules_list {
+	width:100%;
+	text-align:center;
+	color:#999;
+	margin-bottom:30px;
+	display:none; /* No need this anymore bc now we have the back button at the top bar of the framework */
+}
+
+/* info */
+.install_module .info {
+	position:fixed;
 	top:50px;
 	left:0;
 	right:0;
@@ -119,8 +179,12 @@ body,
 	text-align:center;
 	background:#f7f7f7;
 	border-bottom:1px solid #ccc;
+	z-index:1;
 }
-.file_upload .warning {
+.install_module:not(.show_info) .info {
+	display:none;
+}
+.install_module .warning {
 	margin-top:20px;
 	padding:20px;
 	border:1px solid #efbebe;
@@ -129,25 +193,23 @@ body,
 	color:#B51E3F;
 }
 
-.go_to_modules_download_page {
-	width:100%;
-	margin:20px 0 0;
-	text-align:center;
-	color:#999;
-}
-.go_back_to_modules_list {
-	width:100%;
-	text-align:center;
-	color:#999;
-	margin-bottom:30px;
-	display:none; /* No need this anymore bc now we have the back button at the top bar of the framework */
-}
-
+/* messages */
 .messages {
-	margin:20px 10px 20px 10px;
-	padding:10px;
+	padding:30px 10px;
 	background-color:#CCC;
-	border:1px solid #999;
+	position:fixed;
+	top:50px;
+	left:0;
+	right:0;
+	bottom:0;
+	overflow:auto;
+	z-index:1;
+}
+.messages > .close {
+	position:absolute;
+	top:10px;
+	right:10px;
+	font-size:16px;
 }
 .messages li.space {
 	margin-top:20px;
@@ -190,7 +252,7 @@ body,
 /* MODULE POPUPS - install_store_module + view_store_module_popup */
 
 .install_store_module {
-	margin:40px 20px 20px;
+	text-align:center;
 }
 .view_store_module_popup {
 	position:fixed;
@@ -199,48 +261,132 @@ body,
 	right:10px !important;
 	bottom:10px !important;
 }
+body.in_popup .view_store_module_popup {
+	top:50px !important;
+}
 .install_store_module > .title {
-	text-align:left;
-	padding-bottom:5px;
-	border-bottom:1px solid #ccc;
+	margin:20px 0 0;
+	color:#999;
+}
+.install_store_module > .search_module {
+	margin:10px 0 0;
+	color:#999;
+}
+.install_store_module > .search_module .icon.search {
+	cursor:default;
+	color:inherit;
+}
+.install_store_module > .search_module input {
+	width:200px;
+	margin-left:-28px;
+	padding:10px 20px 10px 25px;
+	color:inherit;
+	border-color:inherit;
+	border-radius:0.2rem;
+	font-size:8pt;
+}
+.install_store_module > .search_module input::placeholder {
+	color:inherit;
+}
+.install_store_module > .search_module .icon.close {
+	position:absolute;
+	margin:15px 0 0 -18px;
 }
 .install_store_module ul,
   .view_store_module_popup ul {
+	padding: 10px;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: flex-start;
-	padding: 10px;
+}
+.install_store_module ul {
+	margin:20px 0 0;
 }
 .view_store_module_popup ul {
 	max-height: calc(100% - 60px);
 	overflow: auto;
 }
-.install_store_module ul li,
-  .view_store_module_popup ul li {
+.install_store_module ul li:not(.loading):not(.empty),
+  .view_store_module_popup ul li:not(.loading):not(.empty) {
 	flex: 25%;
 	max-width: 200px;
-	margin: 10px;
+	margin: 30px;
 	padding: 10px;
 	display: inline-block;
 	background: #fff;
-	border: 1px solid #ccc;
+	border: 1px solid var(--main-iframe-bg, #ccc);
 	border-radius: 5px;
-	font-size: 80%;
+	font-size: 10px;
 	text-align:center;
+	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 5%);
+}
+.install_store_module ul li:not(.loading):not(.empty) {
+	min-width:120px;
+	min-height:190px;
+	padding-bottom:50px;
+	position:relative;
+}
+.install_store_module ul li:not(.loading):not(.empty):hover {
+	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 20%);
+}
+.install_store_module ul li.hidden {
+	display:none !important;
+}
+.install_store_module ul li.selected:not(.loading):not(.empty) {
+	border-color:var(--link-color);
+	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 70%);
+}
+.install_store_module ul li.module.with_view_module {
+	cursor:pointer;
+}
+.install_store_module ul li.module.with_view_module:hover::before {
+	content:"Click to preview sub modules";
+	position:absolute;
+	top:-15px;
+	left:0;
+	font-size:8px;
+	color:#999;
+}
+.view_store_module_popup ul li.sub_module {
+	cursor:auto;
 }
 .install_store_module ul li img,
   .view_store_module_popup ul li img {
+	width:50%;
+}
+.install_store_module ul li .photo,
+  .view_store_module_popup ul li .photo {
+	display:inline-block;
 	width:100%;
-	border-bottom:1px solid #ddd;
+}
+.install_store_module ul li .photo .image,
+  .view_store_module_popup ul li .photo .image {
+	width:auto;
+	font-size:70px;
+	opacity:1;
+	color:#000;
+	cursor:inherit;
+}
+.install_store_module ul li .photo .image::before,
+  .view_store_module_popup ul li .photo .image::before {
+	content:"\f1b3";
 }
 .install_store_module ul li label,
   .view_store_module_popup ul li label {
-	margin:15px 0 10px;
+	margin:5px 0 10px;
 	display: block;
 	text-align: center;
 	font-weight:normal;
 	color:#666;
+}
+.install_store_module ul li img + label,
+  .view_store_module_popup ul li img + label,
+  .install_store_module ul li .photo + label,
+  .view_store_module_popup ul li .photo + label {
+	margin:10px -10px 10px;
+	padding:10px 10px 0;
+	border-top:1px solid var(--main-iframe-bg, #ddd);
 }
 .install_store_module ul li div,
   .view_store_module_popup ul li div {
@@ -250,15 +396,28 @@ body,
 	font-weight:normal;
 	color:#999;
 }
-.install_store_module ul li .choose_module.with_view_module {
-	float:left;
+.install_store_module ul li .choose_module,
+  .install_store_module ul li .view_module {
+	position:absolute;
+	bottom:10px;
 }
 .install_store_module ul li .view_module {
-	float:right;
+	left:10px;
+}
+.install_store_module ul li .choose_module {
+	width:120px;
+	margin:auto;
+	left:0;
+	right:0;
+}
+.install_store_module ul li .view_module + .choose_module {
+	left:auto;
+	right:10px;
 }
 .install_store_module ul li.loading {
+	margin-top:20px;
 	padding-left:30px;
-	border:none;
-	background:transparent;
-	text-align:center;
+}
+.install_store_module ul li.empty {
+	margin-top:20px;
 }

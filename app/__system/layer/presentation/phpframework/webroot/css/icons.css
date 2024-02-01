@@ -194,6 +194,23 @@
 	content:"\f05a";
 	margin-left:1px;
 }
+.icon.database::before,
+  .icon.db::before,
+  .icon.no_database::before,
+  .icon.no_db::before {
+	content:"\f1c0";
+	margin-left:1px;
+}
+.icon.no_database::after,
+  .icon.no_db::after {
+	content:"\f715";
+	top:0;
+	left:-1px;
+	font-size:20px;
+}
+.icon.chat::before {
+	content:"\f4ad";
+}
 .icon.switch::before {
 	content:"\f074";
 }

@@ -36,10 +36,10 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 '; $main_content = '
 <div id="top_panel">
 	<ul class="left">
-		<li class="logo"></li>
+		<li class="logo"><a href="' . $bloxtor_home_page_url . '" target="bloxtor_homepage"></a></li>
 		' . ($layers["presentation_layers"] ? '
-			<li class="pages link" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=entity&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">Pages</li>
-			<!--li class="sub_menu templates" data-title="Template Options" onClick="openSubmenu(this)">
+			<!--li class="pages link" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=entity&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">Pages</li>
+			<li class="sub_menu templates" data-title="Template Options" onClick="openSubmenu(this)">
 				<span>Templates</span>
 				<i class="icon dropdown_arrow"></i>
 				
@@ -51,13 +51,13 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 				</ul>
 			</li>
 			<li class="blocks link" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=block&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">Blocks</li>
-			<li class="utils link" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=util&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">Actions</li-->
-			<li class="webroot link" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=webroot&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">Webroot</li>
+			<li class="utils link" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=util&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">Actions</li>
+			<li class="webroot link" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=webroot&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">Webroot</li-->
 		' : '') . '
 	</ul>
 	<ul class="center">
-		<li class="sub_menu filter_by_layout" data-title="Filter by project" current_selected_project="' . $filter_by_layout . '">
-			<label>Project: </label>
+		<li class="sub_menu filter_by_layout" data-title="Selected project" current_selected_project="' . $filter_by_layout . '">
+			<!--label>Project: </label-->
 			<span class="selected_project" onClick="openFilterByLayoutSubMenu(this)">
 				<span>' . ($filter_by_layout ? basename($filter_by_layout) : '') . '</span>
 				<i class="icon dropdown_arrow"></i>
@@ -67,7 +67,8 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 				<div class="triangle_up"></div>
 				
 				<li class="scroll">
-					<ul>'; $selected_project_name = ""; $is_single_presentation_layer = count($presentation_projects_by_layer_label_and_folders) == 1; foreach ($presentation_projects_by_layer_label_and_folders as $layer_label => $projs) { if (!$is_single_presentation_layer) $main_content .= '<li class="projects_group">
+					<ul>
+						<li class="label"><a>Select a Project:</a></li>'; $selected_project_name = ""; $is_single_presentation_layer = count($presentation_projects_by_layer_label_and_folders) == 1; foreach ($presentation_projects_by_layer_label_and_folders as $layer_label => $projs) { if (!$is_single_presentation_layer) $main_content .= '<li class="projects_group">
 							<a><i class="icon project_folder"></i> <span>' . $layer_label . '</span></a>
 							<ul>'; $main_content .= getProjectsHtml($projs, $filter_by_layout); if (!$is_single_presentation_layer) $main_content .= '	</ul>
 						</li>'; if ($filter_by_layout && $presentation_projects_by_layer_label[$layer_label][$filter_by_layout]) $selected_project_name = $presentation_projects_by_layer_label[$layer_label][$filter_by_layout]; } foreach ($non_projects_layout_types as $lname => $lid) $main_content .= '<li class="project' . ($filter_by_layout == $lname ? ' selected' : '') . '">
@@ -77,8 +78,12 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 			</ul>
 			
 			<!--span class="icon project" onClick="chooseAvailableProject(\'' . $project_url_prefix . 'admin/choose_available_project?redirect_path=admin&popup=1\');" data-title="' . ($selected_project_name ? 'Selected Project: \'' . $selected_project_name . '\'. ' : '') . 'Please click here to choose another project."></span-->
-			<!--a class="got_to_project_home" onClick="goTo(this, \'home_url\', event)" home_url="' . $project_url_prefix . 'admin/admin_home_project?filter_by_layout=' . $filter_by_layout . '" data-title="Go to project homepage"><span class="icon project_home"></span></a-->
+			<!--a class="got_to_project_home" onClick="goTo(this, \'url\', event)" url="' . $project_url_prefix . 'admin/admin_home_project?filter_by_layout=' . $filter_by_layout . '" data-title="Go to project homepage"><span class="icon project_home"></span></a-->
 		</li>
+		
+		' . ($layers["presentation_layers"] ? '
+		<li class="separator">|</li>
+		<li class="pages link" onClick="goTo(this, \'url\', event)" url="' . str_replace("#filter_by_layout#", $filter_by_layout, $admin_home_project_page_url) . '">Pages</li>' : '') . '
 	</ul>
 	<ul class="right">
 		<li class="icon go_back" onClick="goBack()" data-title="Go Back"></li>
@@ -91,7 +96,7 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 		<li class="separator">|</li>
 		
 		<li class="icon tools" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?element_type=util&bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$project&popup=1" . '\')" data-title="Tools"></li>
-		<li class="icon home" data-title="Home" onClick="goTo(this, \'home_url\', event)" home_url="' . "{$project_url_prefix}admin/admin_home?selected_layout_project=$filter_by_layout" . '"></li>
+		<li class="icon home" data-title="Home" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}admin/admin_home?selected_layout_project=$filter_by_layout" . '"></li>
 		<li class="separator">|</li>
 		
 		<li class="sub_menu sub_menu_user" data-title="Others" onClick="openSubmenu(this)">
@@ -106,6 +111,8 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 				<li class="separator"></li>
 				
 				' . ($layers["presentation_layers"] ? '
+					<li><a href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=webroot&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '"><i class="icon list_view"></i> Manage Webroot Files</a></li>
+					<li class="separator"></li>
 					<li><a href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/install_template?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$project/src/template/" . '"><i class="icon install_template"></i> Install New Template</a></li>
 					<li><a href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=template&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '"><i class="icon list_view"></i> List Templates</a></li>
 					<li><a href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=block&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '"><i class="icon list_view"></i> List Blocks</a></li>
@@ -119,7 +126,8 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 				<li class="console" title="Logs Console"><a onClick="openConsole(\'' . $project_url_prefix . 'admin/logs_console?popup=1\', event);"><i class="icon logs_console"></i> Logs Console</a></li>
 				<!--li class="question" title="Tutorials - How To?"><a onClick="chooseAvailableTutorial(\'' . $project_url_prefix . 'admin/choose_available_tutorial?popup=1\', event);"><i class="icon question"></i> Tutorials - How To?</a></li-->
 				<li class="question" title="Tutorials - How To?"><a onClick="openOnlineTutorialsPopup(\'' . $online_tutorials_url_prefix . '\', event);"><i class="icon question"></i> Tutorials - How To?</a></li>
-				<li class="info" title="About"><a onClick="goTo(this, \'about_url\', event)" about_url="' . $project_url_prefix . 'admin/about"><i class="icon info"></i> About</a></li>
+				<li class="info" title="About"><a onClick="goTo(this, \'url\', event)" url="' . $project_url_prefix . 'admin/about"><i class="icon info"></i> About</a></li>
+				<li class="feedback" title="Feedback"><a onClick="goToPopup(this, \'url\', event, \'with_title\')" url="' . $project_url_prefix . 'admin/feedback?popup=1"><i class="icon chat"></i> Feedback</a></li>
 				<li class="separator"></li>
 				<li class="logout" title="Logout"><a onClick="document.location=this.getAttribute(\'logout_url\')" logout_url="' . $project_url_prefix . 'auth/logout"><i class="icon logout"></i> Logout</a></li>
 			</ul>

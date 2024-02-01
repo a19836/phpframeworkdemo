@@ -57,7 +57,8 @@ var project_id = \'' . $project_details["project_id"] . '\';
 		</header>
 	</div>'; if ($project_details) { $project_name = basename($project_details["project_id"]); $main_content .= '
 	<div class="project' . ($project_details["logo_url"] ? ' with_image' : '') . ($is_project_common ? ' project_common' : '') . '">
-		<div class="project_title">'; if ($is_project_common) $main_content .= '<span class="name">' . $project_name . '</span>'; else $main_content .= '
+		<div class="project_title">
+			<div class="label">Dashboard for project</div>'; if ($is_project_common) $main_content .= '<span class="name">' . $project_name . '</span>'; else $main_content .= '
 			<span class="name" onClick="editProject()">' . $project_name . '</span>
 			<span class="sub_menu" onClick="openSubmenu(this)">
 				<i class="icon sub_menu_vertical active"></i>
@@ -66,16 +67,27 @@ var project_id = \'' . $project_details["project_id"] . '\';
 					<li class="edit">
 						<a onClick="editProject()">Edit Project Details</a>
 					</li>
+					<li class="show_project_details">
+						<a onClick="toggleProjectDetails(this)">Show Project Details</a>
+					</li>
+					<li class="line_break"></li>
 					<li class="view_project">
 						<a href="' . str_replace("#path#", $project_details["project_id"], $view_entity_url) . '" target="project">Preview Project</a>
 					</li>
 					<li class="line_break"></li>
 					<li class="remove">
-						<a onClick="manageFile(this, \'project\', \'remove\', \'' . $project_details["project_id"] . '\', onSuccessfullRemoveProject)">Delete Project</a>
+						<a onClick="manageFile(this, \'project\', \'remove\', \'' . $project_details["project_id"] . '\', onSuccessfullRemoveProject)">Remove Project</a>
+					</li>
+					<li class="line_break"></li>
+					<li class="rename">
+						<a onClick="manageFile(this, \'project\', \'rename\', \'' . $project_details["project_id"] . '\', onSuccessfullRenameProject)">Rename Project</a>
 					</li>
 					<li class="line_break"></li>
 					<li class="edit_project_global_variables">
 						<a href="' . $project_url_prefix . "phpframework/presentation/edit_project_global_variables?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . '/src/config/pre_init_config.php">Edit Project Global Variables</a>
+					</li>
+					<li class="manage_users">
+						<a href="' . $project_url_prefix . "phpframework/module/user/admin/index?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . '">Manage Users</a>
 					</li>
 					<li class="install_program">
 						<a href="' . $project_url_prefix . "phpframework/admin/install_program?bean_name=$bean_name&bean_file_name=$bean_file_name&path=" . $project_details["project_id"] . '">Install Program</a>
@@ -94,16 +106,24 @@ var project_id = \'' . $project_details["project_id"] . '\';
 			<li><a href="#templates" onClick="onClickTemplatesTab()">Templates</a></li>
 		</ul>
 		
-		<div id="pages" class="pages" root_path="' . $project_details["project_id"] . '/src/entity/">
+		<div id="pages" class="pages" root_path="' . $project_details["project_id"] . '/src/entity/" current_path="' . $project_details["project_id"] . '/src/entity/">
 			<div class="projects_list_type">
 				<a href="javascript:void(0)" onclick="toggleProjectsListType(this, \'block_view\')" title="Show blocks view"><span class="icon block_view active"></span></a>
 				<a href="javascript:void(0)" onclick="toggleProjectsListType(this, \'list_view\')" title="Show list view"><span class="icon list_view"></span></a>
 			</div>
 			
-			<button onClick="showCreateFilePopup(this, \'' . $project_details["project_id"] . '/src/entity/\')" title="Create a new folder or page">Add New</button>
+			<button onClick="showCreateFilePopup()" title="Create a new folder or page">Add New</button>
+			<select class="sort_files" onChange="sortFiles(this)">
+				<option disabled>Sort by:</option>
+				<option value="a_z" select>A to Z</option>
+				<option value="z_a">Z to A</option>
+				<option value="first_updated">First Updated</option>
+				<option value="last_updated">Last Updated</option>
+			</select>
 			<span class="search_file">
 				<i class="icon search active"></i>
 				<input placeHolder="Search" onKeyUp="searchFiles(this)" />
+				<i class="icon close" onClick="resetSearchFiles(this)"></i>
 			</span>
 			
 			<ul class="mytree block_view">
@@ -121,6 +141,13 @@ var project_id = \'' . $project_details["project_id"] . '\';
 			</div>
 			
 			<button onClick="importTemplates()" title="Upload or choose a template from our store to install it">Add New</button>
+			<select class="sort_files" onChange="sortFiles(this)">
+				<option disabled>Sort by:</option>
+				<option value="a_z">A to Z</option>
+				<option value="z_a">Z to A</option>
+				<option value="first_updated">First Updated</option>
+				<option value="last_updated">Last Updated</option>
+			</select>
 			<span class="search_file">
 				<i class="icon search active"></i>
 				<input placeHolder="Search" onKeyUp="searchFiles(this)" />
@@ -143,18 +170,11 @@ var project_id = \'' . $project_details["project_id"] . '\';
 		<div class="title">Create new</div>
 		
 		<div class="create_file_popup_content">
-			<div class="type">
-				<label>Type: </label>
-				<select>
-					<option value="page">Page</option>
-					<option value="folder">Folder</option>
-				</select>
-			</div>
-			
-			<div class="name">
-				<label>Name: </label>
-				<input />
-			</div>
+			<select>
+				<option value="page">Page</option>
+				<option value="folder">Folder</option>
+			</select>
+			<input placeHolder="Name of your file" />
 			
 			<button>Create</button>
 		</div>

@@ -2779,6 +2779,35 @@ function onSuccessfullPopupAction(opts) {
 	MyFancyPopup.hidePopup();
 }
 
+function onSuccessfullAddProject(opts) {
+	var filter_by_layout, bean_name, bean_file_name, project;
+	
+	if (opts) {
+		filter_by_layout = opts["new_filter_by_layout"];
+		bean_name = opts["new_bean_name"];
+		bean_file_name = opts["new_bean_file_name"];
+		project = opts["new_project"];
+	}
+	
+	if (filter_by_layout || (bean_name && bean_file_name && project)) {
+		var current_url = "" + document.location;
+		
+		current_url = current_url.indexOf("#") != -1 ? current_url.substr(0, current_url.indexOf("#")) : current_url; //remove # so it can refresh page
+		current_url = current_url.replace(/(bean_name|bean_file_name|project|filter_by_layout)=([^&]*)&?/g, ""); //erase previous bean_name|bean_file_name|project|filter_by_layout attributes
+		current_url += current_url.indexOf("?") != -1 ? "" : "?"; //add "?" if apply
+		current_url += "&bean_name=" + bean_name + "&bean_file_name=" + bean_file_name + "&project=" + project + "&filter_by_layout=" + filter_by_layout; //add new bean_name|bean_file_name|project|filter_by_layout
+		current_url = current_url.replace(/\?&+/, "?"); //replace "?&&&" with "?"
+		
+		//set cookie with default page
+		window.MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('default_page', ''); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+		
+		//refresh main window with new params
+		document.location = current_url;
+	}
+	else
+		refreshLastNodeParentChildsIfNotTreeLayoutAndMainTreeNode(opts);
+}
+
 function onSuccessfullEditProject(opts) {
 	if (opts && opts["is_rename_project"]) {
 		var selected_project_elm = $("#top_panel .filter_by_layout > ul li.selected a");
@@ -2881,6 +2910,15 @@ function onSuccessfullRemoveProject(a, attr_name, action, new_file_name, url, tr
 		current_filter_by_layout = current_filter_by_layout.replace(/^\/+/g, "").replace(/\/+$/g, "");
 		
 		var is_removed_project_selected = (bean_name == current_bean_name && bean_file_name == current_bean_file_name && project == current_project) || current_filter_by_layout.substr(- (project.length + 1)) == "/" + project;
+		
+		if (!is_removed_project_selected) {
+			current_bean_name = MyJSLib.CookieHandler.getCookie('bean_name');
+			current_bean_file_name = MyJSLib.CookieHandler.getCookie('bean_file_name');
+			current_project = MyJSLib.CookieHandler.getCookie('project');
+			current_filter_by_layout = MyJSLib.CookieHandler.getCookie('filter_by_layout');
+			
+			is_removed_project_selected = (bean_name == current_bean_name && bean_file_name == current_bean_file_name && project == current_project) || current_filter_by_layout.substr(- (project.length + 1)) == "/" + project;
+		}
 		
 		if (is_removed_project_selected) {
 			current_url = current_url.indexOf("#") != -1 ? current_url.substr(0, current_url.indexOf("#")) : current_url; //remove # so it can refresh page
@@ -3123,16 +3161,61 @@ function triggerFileNodeAfterCreateFile(a, attr_name, action, new_file_name, url
 					item = $(item);
 					
 					if (item.text().toLowerCase() == new_file_name.toLowerCase()) {
-						var a = item.parent();
+						var new_a = item.parent();
 						
-						if (a.attr("onClick")) {
+						if (new_a.attr("onClick")) {
 							try {
-								a.trigger("click");
+								new_a.trigger("click");
 							}
 							catch(e) {
 								if (console && console.log)
 									console.log(e);
 							}
+						}
+						
+						return false;
+					}
+				});
+			},
+		});
+}
+
+function triggerFileNodeAfterCreatePage(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated) {
+	var node = $("#" + tree_node_id_to_be_updated);
+	
+	//normalize new file name
+	var allow_upper_case = a.getAttribute("allow_upper_case") == 1; //in case of businesslogic services class
+	new_file_name = normalizeFileName(new_file_name, allow_upper_case);
+	
+	if (node[0])
+		mytree.refreshNodeChilds(node[0], {
+			ajax_callback_last: function(ul, data) {
+				$(ul).find(" > li > a > label").each(function(idx, item) {
+					item = $(item);
+					
+					if (item.text().toLowerCase() == new_file_name.toLowerCase()) {
+						var new_a = item.parent();
+						
+						try {
+							if (new_a.attr("add_url")) {
+								goToPopup(new_a[0], "add_url", window.event, 'with_iframe_title add_entity_popup big', function() {
+									if (new_a.attr("onClick")) {
+										try {
+											new_a.trigger("click");
+										}
+										catch(e) {
+											if (console && console.log)
+												console.log(e);
+										}
+									}
+								});
+							}
+							else if (new_a.attr("onClick"))
+								new_a.trigger("click");
+						}
+						catch(e) {
+							if (console && console.log)
+								console.log(e);
 						}
 						
 						return false;
@@ -3591,79 +3674,91 @@ function manageDBTableAction(a, attr_name, action, on_success_callback, on_error
 					on_error_callback(a, attr_name, action, new_name, url, tree_node_id_to_be_updated);
 			}
 			else {
-				StatusMessageHandler.showMessage("Saving...", "", "bottom_messages", 1500);
+				var duplicated = false;
 				
-				url = url.replace("#action#", action);
-				url = url.replace("#extra#", new_name);
+				//check for duplicates
+				if (is_new_name_action) {
+					duplicated = node_a.parent().children("ul").find(" > li > a[" + (action == "add_table" || action == "rename_table" ? "table_name" : "attribute_name") + "='" + new_name + "']").length > 0;
+					
+					if (duplicated)
+						alert("Error: Name cannot be duplicated");
+				}
 				
-				url = encodeUrlWeirdChars(url); //Note: Is very important to add the encodeUrlWeirdChars otherwise if a value has accents, won't work in IE.
-				
-				var str = action == "add_table" || action == "add_attribute" ? "add" : (
-					action == "rename_table" || action == "rename_attribute" ? "rename" : action.replace(/_/g, " ")
-				);
-				
-				$.ajax({
-					type : "get",
-					url : url,
-					success : function(data, textStatus, jqXHR) {
-						StatusMessageHandler.removeLastShownMessage("info", "bottom_messages", 1500);
-						
-						if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-							showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
-								StatusMessageHandler.removeLastShownMessage("error");
-								manageDBTableAction(a, attr_name, original_action, on_success_callback, on_error_callback, opts);
-							});
-						else if (data == "1") {
-							if (action == "add_table" || action == "add_attribute" || action == "add_fk_attribute")
-								refreshAndShowNodeChildsByNodeId(tree_node_id_to_be_updated);
-							else if (action != "remove_table" && action != "remove_attribute")
-								refreshNodeParentChildsByChildId(tree_node_id_to_be_updated);
+				if (!duplicated) {
+					StatusMessageHandler.showMessage("Saving...", "", "bottom_messages", 1500);
+					
+					url = url.replace("#action#", action);
+					url = url.replace("#extra#", new_name);
+					
+					url = encodeUrlWeirdChars(url); //Note: Is very important to add the encodeUrlWeirdChars otherwise if a value has accents, won't work in IE.
+					
+					var str = action == "add_table" || action == "add_attribute" ? "add" : (
+						action == "rename_table" || action == "rename_attribute" ? "rename" : action.replace(/_/g, " ")
+					);
+					
+					$.ajax({
+						type : "get",
+						url : url,
+						success : function(data, textStatus, jqXHR) {
+							StatusMessageHandler.removeLastShownMessage("info", "bottom_messages", 1500);
 							
-							StatusMessageHandler.showMessage(str + " correctly", "", "bottom_messages", 1500);
-							
-							if (typeof on_success_callback == "function")
-								on_success_callback(a, attr_name, action, new_name, url, tree_node_id_to_be_updated);
-							
-							if (action == "remove_table" || action == "remove_attribute") {
-								var li = $("#" + tree_node_id_to_be_updated);
-								
-								if (li.is(":last-child")) 
-									li.prev("li").addClass("jstree-last");
-								
-								li.remove();
-							}
-						}
-						else {
-							var json_data = data && ("" + data).substr(0, 1) == "{" ? JSON.parse(data) : null;
-							
-							if ($.isPlainObject(json_data) && json_data.hasOwnProperty("sql") && json_data["sql"] && a.getAttribute("execute_sql_url")) { //try to show sql and then execute it manually
+							if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+								showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
+									StatusMessageHandler.removeLastShownMessage("error");
+									manageDBTableAction(a, attr_name, original_action, on_success_callback, on_error_callback, opts);
+								});
+							else if (data == "1") {
 								if (action == "add_table" || action == "add_attribute" || action == "add_fk_attribute")
 									refreshAndShowNodeChildsByNodeId(tree_node_id_to_be_updated);
 								else if (action != "remove_table" && action != "remove_attribute")
 									refreshNodeParentChildsByChildId(tree_node_id_to_be_updated);
 								
-								showSQLToExecute(a, attr_name, action, on_success_callback, on_error_callback, opts, new_name, url, tree_node_id_to_be_updated, json_data);
+								StatusMessageHandler.showMessage(str + " correctly", "", "bottom_messages", 1500);
 								
-								StatusMessageHandler.showError("There was a problem trying to execute this action.\nPlease check the correspondent SQL and execute it manually." + (json_data["error"] ? "\n" + json_data["error"] : ""));
+								if (typeof on_success_callback == "function")
+									on_success_callback(a, attr_name, action, new_name, url, tree_node_id_to_be_updated);
+								
+								if (action == "remove_table" || action == "remove_attribute") {
+									var li = $("#" + tree_node_id_to_be_updated);
+									
+									if (li.is(":last-child")) 
+										li.prev("li").addClass("jstree-last");
+									
+									li.remove();
+								}
 							}
 							else {
-								StatusMessageHandler.showError("There was a problem trying to execute this action. Please try again..." + (data ? "\n" + data : ""));
+								var json_data = data && ("" + data).substr(0, 1) == "{" ? JSON.parse(data) : null;
 								
-								if (typeof on_error_callback == "function")
-									on_error_callback(a, attr_name, action, new_name, url, tree_node_id_to_be_updated);
+								if ($.isPlainObject(json_data) && json_data.hasOwnProperty("sql") && json_data["sql"] && a.getAttribute("execute_sql_url")) { //try to show sql and then execute it manually
+									if (action == "add_table" || action == "add_attribute" || action == "add_fk_attribute")
+										refreshAndShowNodeChildsByNodeId(tree_node_id_to_be_updated);
+									else if (action != "remove_table" && action != "remove_attribute")
+										refreshNodeParentChildsByChildId(tree_node_id_to_be_updated);
+									
+									showSQLToExecute(a, attr_name, action, on_success_callback, on_error_callback, opts, new_name, url, tree_node_id_to_be_updated, json_data);
+									
+									StatusMessageHandler.showError("There was a problem trying to execute this action.\nPlease check the correspondent SQL and execute it manually." + (json_data["error"] ? "\n" + json_data["error"] : ""));
+								}
+								else {
+									StatusMessageHandler.showError("There was a problem trying to execute this action. Please try again..." + (data ? "\n" + data : ""));
+									
+									if (typeof on_error_callback == "function")
+										on_error_callback(a, attr_name, action, new_name, url, tree_node_id_to_be_updated);
+								}
 							}
-						}
-					},
-					error : function(jqXHR, textStatus, errorThrown) { 
-						StatusMessageHandler.removeLastShownMessage("info", "bottom_messages", 1500);
-						
-						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-						StatusMessageHandler.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to execute this action.\nPlease try again..." + msg);
-						
-						if (typeof on_error_callback == "function")
-							on_error_callback(a, attr_name, action, new_name, url, tree_node_id_to_be_updated);
-					},
-				});
+						},
+						error : function(jqXHR, textStatus, errorThrown) { 
+							StatusMessageHandler.removeLastShownMessage("info", "bottom_messages", 1500);
+							
+							var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+							StatusMessageHandler.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to execute this action.\nPlease try again..." + msg);
+							
+							if (typeof on_error_callback == "function")
+								on_error_callback(a, attr_name, action, new_name, url, tree_node_id_to_be_updated);
+						},
+					});
+				}
 			}
 		}
 		else if (typeof on_error_callback == "function")

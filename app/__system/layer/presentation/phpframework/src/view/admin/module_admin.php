@@ -24,7 +24,7 @@ $head = '
 <!-- Add Local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/module_admin.css" type="text/css" charset="utf-8" />
 '; $main_content = '
-<div class="top_bar">
+<div class="top_bar' . ($popup ? ' in_popup' : '') . '">
 	<header>
 		<div class="title">"' . ucwords($group_module_id) . '" Module Admin Panel</div>
 	</header>

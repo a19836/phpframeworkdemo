@@ -6,13 +6,13 @@
 	z-index:4;
 }
 .top_bar header .title {
-	max-width:calc(100% - 480px);
+	max-width:calc(100% - 430px);
 }
 .top_bar.project_with_auto_view.view_file_exists header .title {
-	max-width:calc(100% - 530px);
+	max-width:calc(100% - 480px);
 }
 .top_bar.project_with_auto_view:not(.view_file_exists) header .title {
-	max-width:calc(100% - 550px);
+	max-width:calc(100% - 500px);
 }
 .top_bar header > ul {
 	right:183px;
@@ -23,6 +23,7 @@
 .top_bar.project_with_auto_view:not(.view_file_exists) header > ul {
 	right:246px;
 }
+
 .with_top_bar_tab > .tabs {
 	z-index:4;
 }
@@ -47,7 +48,7 @@
 	width:60px;
 }
 .entity_obj #add_view_tab .icon.add {
-	margin:0;
+	margin:0 4px 0 -2px;
 	font-size:14px;
 	color:#FC3C44;
 	color:var(--icon-hover-color);

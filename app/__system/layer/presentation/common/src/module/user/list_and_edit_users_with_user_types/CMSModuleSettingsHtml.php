@@ -123,6 +123,7 @@
 	 	"block_class" => true,
 		"fields" => $fields,
 	 	"is_list" => true,
+	 	"default_values" => true,
 	 	"css" => "
 .module_list_and_edit_users_with_user_types table .new_user input,
   .module_list_and_edit_users_with_user_types table .new_user select {

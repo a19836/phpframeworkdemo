@@ -3,10 +3,10 @@
 	margin-bottom:10px;
 }
 .top_bar header .title {
-	max-width:calc(100% - 170px);
+	max-width:calc(100% - 350px);
 }
 .top_bar.in_popup header .title {
-	max-width:calc(100% - 210px);
+	max-width:calc(100% - 360px);
 }
 .top_bar header > ul {
 	right:135px;

@@ -28,7 +28,7 @@ $main_content = '<div id="project_name">
 		</div>
 		<div class="setup_input name">
 			Project Name:
-			<input type="text" name="project_name" value="' . $project_name . '" placeHolder="default" allownull="false" validationmessage="Please insert the project name." />
+			<input type="text" name="project_name" value="' . $project_name . '" placeHolder="' . $default_project_name . '" allownull="false" validationmessage="Please insert the project name." />
 		</div>
 	</form>
 </div>'; $continue_function = "$('#project_name form').submit()"; ?>

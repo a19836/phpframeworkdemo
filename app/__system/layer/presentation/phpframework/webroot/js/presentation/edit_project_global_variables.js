@@ -235,13 +235,25 @@ function onChooseAvailableTemplate(elm) {
 	var available_projects_templates_props = {};
 	available_projects_templates_props[selected_project_id] = available_templates_props;
 	
+	var settings = getSimpleFormSettings();
+	var selected_template = null;
+	
+	for (var i = 0, l = settings["vars_name"].length; i < l; i++)
+		if (settings["vars_name"][i] == "project_default_template") {
+			selected_template = settings["vars_value"][i];
+			break;
+		}
+	
 	chooseAvailableTemplate( $(elm).parent().parent().find(" > .var_value select")[0], {
 		available_projects_templates_props: available_projects_templates_props,
 		get_available_templates_props_url: get_available_templates_props_url,
 		install_template_url: install_template_url,
+		chosen_template: selected_template,
 		show_templates_only: true,
 		hide_choose_different_editor: true,
 		hide_choose_different_project: true,
+		hide_template_options: true,
+		//hide_chosen_project_template: true,
 	} );
 }
 
@@ -295,10 +307,8 @@ function onClickGlobalVariablesSimpleFormTab(elm) {
 			var convert_code = (old_workflow_id != new_workflow_id) || (old_code_id != new_code_id);
 			
 			if (convert_code) {
-				StatusMessageHandler.showMessage("Generating code based in workflow... Loading...");
-				
 				//convert workflow in code, then parse code into vars based in regex and load new vars with addNewVariable
-				generateCodeFromTasksFlow(true, {
+				var options = {
 					do_not_change_to_code_tab: true, 
 					
 					success : function() {
@@ -309,7 +319,11 @@ function onClickGlobalVariablesSimpleFormTab(elm) {
 						StatusMessageHandler.removeMessages("info");
 						StatusMessageHandler.showError("Couldn't convert workflow to vars bc couldn't generate correspondent code! Please try again...");
 					},
-				});
+				};
+				generateCodeFromTasksFlow(true, options);
+				
+				if (options["generating"])
+					StatusMessageHandler.showMessage("Generating code based in workflow... Loading...", "", "bottom_messages", 1500);
 			}
 			else
 				convert_code_to_vars_func();
@@ -363,6 +377,7 @@ function loadSimpleFormWithNewVars(vars) {
 	}
 }
 
+//Note that if you change this function please check the code in choose_available_template.js bc is using this function.
 function convertCodeIntoList(code) {
 	var regex = new RegExp('([\\w\\$:\\-\\>]+)([ ]*)=([ ]*)([^;]+);', 'g');
 	var m;
@@ -457,6 +472,7 @@ function isGlobalVariablesCodeObjChanged() {
 	return saved_simple_form_settings_id != new_simple_form_settings_id;
 }
 
+//Note that if you change this function please check the code in choose_available_template.js bc is using this function.
 function getGlobalVariablesCodeObj() {
 	var global_vars_obj = $(".global_vars_obj");
 	

@@ -311,6 +311,7 @@
 .mycontextmenu .edit_init::before {content:"\f573";}
 .mycontextmenu .manage_users::before {content:"\f0c0";}
 .mycontextmenu .manage_references::before {content:"\f572";}
+.mycontextmenu .show_project_details::before {content:"\f06e";}
 .mycontextmenu .view_project::before {content:"\f06e";}
 .mycontextmenu .test_project::before {content:"\f06e";}
 .mycontextmenu .add_project::before {content:"\f65e";}
@@ -353,13 +354,24 @@
 .choose_available_tutorial_popup {
 	max-width:650px;
 }
-.edit_project_details_popup {
+.edit_project_details_popup,
+  .add_entity_popup {
 	top:auto;
 	left:auto;
 	right:auto;
 	bottom:auto;
 	width:535px;
-	height:390px;
+	height:345px;
+}
+.edit_project_details_popup.big,
+  .add_entity_popup.big {
+	position:fixed;
+	top:10px !important;
+	left:10px !important;
+	right:10px !important;
+	bottom:10px !important;
+	width:auto;
+	height:auto;
 }
 .execute_sql_popup {
 	top:auto;
@@ -378,6 +390,7 @@
   .choose_available_project_popup iframe,
   .choose_available_tutorial_popup iframe,
   .edit_project_details_popup iframe,
+  .add_entity_popup iframe,
   .execute_sql_popup iframe,
   .go_to_popup iframe,
   .log_console_popup iframe {

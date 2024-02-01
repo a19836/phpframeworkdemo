@@ -69,13 +69,24 @@
 
 /* POPUP */
 .edit_project_details_popup {
-	/*position:fixed !important;
-	top:5px !important;
-	left:5px !important;
-	right:5px !important;
-	bottom:5px !important;*/
-	width:580px;
-	height:430px;
+	width:535px;
+	height:345px;
+}
+.edit_project_details_popup.big {
+	position:fixed !important;
+	top:10px !important;
+	left:10px !important;
+	right:10px !important;
+	bottom:10px !important;
+	width:auto;
+	height:auto;
+}
+.edit_project_details_popup:not(.big) {
+	position:fixed !important;
+	top:calc(50% - (335px/2)) !important;
+	left:calc(50% - (535px/2)) !important;
+	right:10px !important;
+	bottom:10px !important;
 }
 .edit_project_details_popup iframe {
 	width:100%;

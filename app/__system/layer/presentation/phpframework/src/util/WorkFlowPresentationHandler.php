@@ -724,11 +724,11 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 			<li class="auto_save_activation" title="Is Auto Save Active" onClick="toggleAutoSaveCheckbox(this, onTogglePHPCodeAutoSave)"><i class="icon auto_save_activation"></i> <span>Enable Auto Save</span> <input type="checkbox" value="1" /></li>
 			<li class="auto_convert_activation" title="Is Auto Convert Active" onClick="toggleAutoConvertCheckbox(this, onTogglePHPCodeAutoConvert)"><i class="icon auto_convert_activation"></i> <span>Enable Auto Convert</span> <input type="checkbox" value="1" /></li>
 			<li class="save" title="Save"><a onClick="' . $v5d3813882f["save_func"] . '()"><i class="icon save"></i> Save</a></li>
-		</ul>'; } public static function getCodeEditorHtml($v067674f4e4, $v48e4e778a5, $pefdd2109, $v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v9b98e0e818, $pf7b73b3a, $pe6619ae3, $pd0054995, $v9106c07f80, $v5988353a93 = false, $v5d3813882f = null) { $v446c479876 = $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse"; $v318c0a296c = $v5d3813882f["layout_ui_editor_html"]; $pf8ed4912 = '
+		</ul>'; } public static function getCodeEditorHtml($v067674f4e4, $v48e4e778a5, $pefdd2109, $v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v9b98e0e818, $pf7b73b3a, $pe6619ae3, $pd0054995, $v9106c07f80, $v5988353a93 = false, $v5d3813882f = null) { $v446c479876 = $_COOKIE["main_navigator_side"] == "main_navigator_reverse" || $_COOKIE["admin_type"] == "simple" ? "" : "reverse"; $v318c0a296c = $v5d3813882f["layout_ui_editor_html"]; $pf04b670f = $v5d3813882f["layout_ui_editor_class"]; $pf8ed4912 = '
 			<div class="code_menu" onClick="openSubmenu(this)">
 				' . self::getCodeEditorMenuHtml($v48e4e778a5) . '
 			</div>
-			<div class="layout-ui-editor ' . $v446c479876 . ' fixed-side-properties hide-template-widgets-options">
+			<div class="layout-ui-editor ' . $v446c479876 . ' ' . $pf04b670f . ' fixed-side-properties hide-template-widgets-options">
 				<textarea' . ($v5988353a93 ? ' class="full-source"' : '') . '>' . htmlspecialchars($v067674f4e4, ENT_NOQUOTES) . '</textarea>
 				
 				' . $v318c0a296c . '

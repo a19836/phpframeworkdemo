@@ -119,7 +119,9 @@ body:not(.dark_theme) .global_vars_obj #form_global_vars {
 }
 
 /* choose_available_template_popup */
-.choose_available_template_popup li..back_to_type {
+.choose_available_template_popup li.back_to_type,
+  .choose_available_template_popup > .content > .selected_template,
+  .choose_available_template_popup > .content > .tabs > li:nth-child(2) {
 	display:none;
 }
 

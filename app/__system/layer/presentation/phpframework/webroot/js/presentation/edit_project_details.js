@@ -1,4 +1,5 @@
 var chooseProjectFolderUrlFromFileManagerTree = null;
+var MyFancyPopupEditProjectDetailsWithProgram = new MyFancyPopupClass();
 
 $(function () {
 	//init ui
@@ -79,6 +80,32 @@ function chooseProjectFolder(elm) {
 		else
 			alert("invalid selected project folder.\nPlease choose a valid project folder.");
 	}
+}
+
+function toggleAdvancedOptions(elm) {
+	elm = $(elm);
+	var edit_project_details = elm.parent().closest(".edit_project_details");
+	
+	edit_project_details.toggleClass("with_advanced_options");
+	
+	if (edit_project_details.hasClass("with_advanced_options"))
+		elm.html("Hide Advanced Mode");
+	else
+		elm.html("Show Advanced Mode");
+	
+	//scroll to the end of the page
+	$(window).scrollTop(1000);
+}
+
+function toggleDBAdvancedOptions(elm) {
+	toggleDBAdvancedFields(elm);
+	
+	elm = $(elm);
+	
+	if (elm.hasClass("can_be_shown"))
+		elm.html("Hide Advanced DB Options");
+	else
+		elm.html("Show Advanced DB Options");
 }
 
 function goToManageLayoutTypePermissions(elm) {

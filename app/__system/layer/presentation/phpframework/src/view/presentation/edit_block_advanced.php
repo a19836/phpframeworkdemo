@@ -129,7 +129,7 @@ if (typeof GetDBDriverTaskPropertyObj != "undefined" && GetDBDriverTaskPropertyO
 		<header>
 			<div class="title" title="' . $path . '">Edit Block (Code Workspace): ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $P) . '</div>
 			<ul>
-				<li class="show_simple_ui" data-title="Switch to Visual Workspace"><a href="?' . $query_string . '&edit_block_type=simple"><i class="icon show_simple_ui"></i> Switch to Visual Workspace</a></li>
+				<li class="show_simple_ui button" data-title="Switch to Visual Workspace"><a href="?' . $query_string . '&edit_block_type=simple"><i class="icon show_simple_ui"></i> Switch to Visual Workspace</a></li>
 				<li class="save" data-title="Save Block"><a onClick="saveBlock()"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>

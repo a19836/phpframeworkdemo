@@ -70,7 +70,10 @@ function deleteProject(elm, url) {
 							var tr = $(elm).parent().parent();
 							tr.remove();
 				
-							StatusMessageHandler.showMessage("Project successfully deleted!");
+							//StatusMessageHandler.showMessage("Project successfully deleted!");
+							alert("Project successfully deleted!");
+							
+							refreshPage();
 						}
 						else
 							StatusMessageHandler.showError("Error: Project not deleted! Please try again." + (data ? "\n" + data : ""));
@@ -87,7 +90,7 @@ function deleteProject(elm, url) {
 	}
 }
 
-function addProject(elm, url) {
+function addProject(elm, url, show_programs) {
 	var choose_available_project= $(".choose_available_project");
 	var option = choose_available_project.find(" > .layer select option:selected").first();
 	var folder_to_filter = choose_available_project.find(".current_project_folder").attr("folder_to_filter");
@@ -104,6 +107,11 @@ function addProject(elm, url) {
 		$(document.body).append(popup);
 	}
 	
+	if (show_programs)
+		popup.addClass("big");
+	else
+		popup.removeClass("big");
+	
 	popup.html('<iframe></iframe>'); //cleans the iframe so we don't see the previous html
 	
 	//prepare popup iframe
@@ -113,17 +121,66 @@ function addProject(elm, url) {
 	//open popup
 	MyFancyPopup.init({
 		elementToShow: popup,
-		parentElement: document,
+		parentElement: document
 	});
 	
 	MyFancyPopup.showPopup();
 }
 
 function editProject(elm, url) {
-	addProject(elm, url);
+	addProject(elm, url, false);
 }
 
-function onSuccessfullAddProject() {
+function onSuccessfullAddProject(opts) {
+	var filter_by_layout, bean_name, bean_file_name, project;
+	
+	if (opts) {
+		filter_by_layout = opts["new_filter_by_layout"];
+		bean_name = opts["new_bean_name"];
+		bean_file_name = opts["new_bean_file_name"];
+		project = opts["new_project"];
+	}
+	
+	if (filter_by_layout || (bean_name && bean_file_name && project)) {
+		if (window.parent && window.parent != window) {
+			var parent_url = window.parent.location;
+			
+			parent_url = "" + parent_url; //convert to string
+			parent_url = parent_url.indexOf("#") != -1 ? parent_url.substr(0, parent_url.indexOf("#")) : parent_url; //remove # so it can refresh parent page
+			parent_url = parent_url.replace(/(bean_name|bean_file_name|project|filter_by_layout)=([^&]*)&?/g, ""); //erase previous bean_name|bean_file_name|project|filter_by_layout attributes
+			parent_url += parent_url.indexOf("?") != -1 ? "" : "?"; //add "?" if apply
+			parent_url += "&bean_name=" + bean_name + "&bean_file_name=" + bean_file_name + "&project=" + project + "&filter_by_layout=" + filter_by_layout; //add new bean_name|bean_file_name|project|filter_by_layout
+			parent_url = parent_url.replace(/\?&+/, "?"); //replace "?&&&" with "?"
+			
+			if (filter_by_layout) {
+				var url = admin_home_project_page_url.replace("#filter_by_layout#", filter_by_layout);
+				
+				//set cookie with default page
+				window.MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('default_page', url); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+			}
+			
+			window.parent.location = parent_url;
+		}
+		else if (filter_by_layout) {
+			var url = admin_home_project_page_url.replace("#filter_by_layout#", filter_by_layout);
+			
+			//set cookie with default page
+			window.MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('default_page', url); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+			
+			document.location = url;
+		}
+		else //should not enter here, because opts should always exists
+			refreshPage();
+	}
+	else //should not enter here, because opts should always exists
+		refreshPage();
+}
+
+function onSuccessfullEditProject() {
+	refreshPage();
+}
+
+function refreshPage() {
 	var url = document.location;
 	
 	if (window.parent && window.parent != window) {
@@ -137,7 +194,7 @@ function onSuccessfullAddProject() {
 		document.location = url;
 }
 
-function goTo(elm, url) {
+function goToUrl(elm, url) {
 	document.location = url;
 }
 

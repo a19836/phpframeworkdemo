@@ -3,6 +3,12 @@ var MyFancyPopupViewModule = new MyFancyPopupClass();
 var loaded_modules = {};
 
 $(function () {
+	var install_module = $(".install_module");
+	install_module.tabs();
+	
+	onChangeProject( install_module.find(" > .project > select")[0] );
+	onChangeDBDriver( install_module.find(" > .db_driver > select")[0] );
+	
 	$(window).resize(function() {
 		MyFancyPopupInstallStoreModule.updatePopup();
 		MyFancyPopupViewModule.updatePopup();
@@ -11,9 +17,17 @@ $(function () {
 	initInstallStoreModule();
 });
 
+function onChangeProject(elm) {
+	$(".install_module form input[name=project]").val( $(elm).val() );
+}
+
+function onChangeDBDriver(elm) {
+	$(".install_module form input[name=db_driver]").val( $(elm).val() );
+}
+
 function addNewFile(elm) {
 	var html = '<div class="upload_file"><input type="file" name="zip_file[]" multiple> <span class="icon delete" onClick="$(this).parent().remove()"></span></div>';
-	var upload_files = $(elm).parent().children(".upload_file, .upload_url");
+	var upload_files = $(elm).parent().closest("form").children(".upload_file, .upload_url");
 	
 	if (upload_files.filter(".upload_file").length < 20)
 		upload_files.last().after(html);
@@ -86,15 +100,18 @@ function initInstallStoreModule() {
 				
 				var html = '';
 				
-				$.each(data, function(label, item) {
-					html += '<li class="module">'
-							+ (item["logo"] ? '<img src="' + item["logo"] + '" />' : '')
-							+ '<label>' + label + '</label>'
-							+ (item["description"] ? '<div>' + item["description"] + '</div>' : '')
-							+ (item["zip"] ? '<a class="choose_module' + (item["modules"] ? ' with_view_module' : '') + '" href="javascript:void(0)" onClick="chooseStoreModule(\'' + item["zip"] + '\')">Choose</a>' : '')
-							+ (item["modules"] ? '<a class="view_module" href="javascript:void(0)" onClick="viewStoreModule(\'' + label + '\')">View</a>' : '')
-						+ '</li>';
-				});
+				if (!data)
+					html += '<li class="empty">Unfortunately there are no modules available at this time...</li>';
+				else
+					$.each(data, function(label, item) {
+						html += '<li class="module' + (item["modules"] ? ' with_view_module' : '') + '" url="' + item["zip"] + '" ' + (item["modules"] ? 'onClick="viewStoreModule(\'' + label + '\')"' : '') + '>'
+								+ (item["logo"] ? '<img src="' + item["logo"] + '" />' : '<div class="photo"><span class="icon image"></span></div>')
+								+ '<label>' + label + '</label>'
+								+ (item["description"] ? '<div>' + item["description"] + '</div>' : '')
+								+ (item["modules"] ? '<button class="view_module" href="javascript:void(0)">View</button>' : '')
+								+ (item["zip"] ? '<button class="choose_module' + (item["modules"] ? ' with_view_module' : '') + '" href="javascript:void(0)" onClick="chooseStoreModule(this, \'' + item["zip"] + '\')">Select to install</button>' : '')
+							+ '</li>';
+					});
 				
 				$(".install_store_module > ul").html(html);
 			},
@@ -120,7 +137,7 @@ function viewStoreModule(module_label) {
 		if (sub_modules && $.isPlainObject(sub_modules) && !$.isEmptyObject(sub_modules)) {
 			$.each(sub_modules, function(label, item) {
 				html += '<li class="sub_module">'
-						+ (item["logo"] ? '<img src="' + item["logo"] + '" />' : '')
+						+ (item["logo"] ? '<img src="' + item["logo"] + '" />' : '<div class="photo"><span class="icon image"></span></div>')
 						+ '<label>' + label + '</label>'
 						+ (item["description"] ? '<div>' + item["description"] + '</div>' : '')
 					+ '</li>';
@@ -142,12 +159,32 @@ function viewStoreModule(module_label) {
 		alert("Error: You cannot view this module. Please contact the sysadmin.");
 }
 
-function chooseStoreModule(url) {
+function chooseStoreModule(elm, url) {
+	window.event.stopPropagation(); //prevent the event to fire in the parent "li" html element.
+	
 	if (url) {
-		var upload_url = $('<div class="upload_url"><label>Url:</label><input type="text" name="zip_url[]" value="' + url + '"><span class="icon delete" onClick="removeStoreModuleUrl(this);"></span></div>');
+		elm = $(elm);
+		var module = elm.parent().closest(".module");
+		module.toggleClass("selected");
 		
-		var upload_file = $(".file_upload").find(".upload_file, .upload_url").last();
-		upload_file.after(upload_url);
+		if (module.hasClass("selected")) {
+			elm.html("Unselect");
+			
+			var upload_url = $('<div class="upload_url"><label>Url:</label><input type="text" name="zip_url[]" value="' + url + '"><span class="icon delete" onClick="removeStoreModuleUrl(this);"></span></div>');
+			
+			var upload_file = $(".file_upload").find(".upload_file, .upload_url").last();
+			upload_file.after(upload_url);
+		}
+		else {
+			elm.html("Select to install");
+			
+			$(".file_upload .upload_url input").each(function(idx, input) {
+				input = $(input);
+				
+				if (input.val() == url)
+					input.parent().remove();
+			});
+		}
 		
 		MyFancyPopupInstallStoreModule.hidePopup();
 	}
@@ -157,5 +194,66 @@ function chooseStoreModule(url) {
 
 function removeStoreModuleUrl(elm) {
 	var upload_url = $(elm).parent();
+	var url = upload_url.children("input").val();
+	
 	upload_url.remove();
+	
+	$(".install_store_module li.module").each(function(idx, li) {
+		li = $(li);
+		
+		if (li.attr("url") == url) {
+			li.removeClass("selected");
+			li.find(".choose_module").html("Select to install");
+			
+			return false;
+		}
+	});
+}
+
+function searchModules(elm) {
+	if ($.isPlainObject(loaded_modules)) {
+		elm = $(elm);
+		var to_search = elm.val().toLowerCase().replace(/^\s*/, "").replace(/\s*$/, "");
+		var ul = elm.parent().parent().children("ul");
+		var lis = ul.children("li");
+		
+		if (to_search == "")
+			lis.removeClass("hidden");
+		else {
+			lis.addClass("hidden");
+			
+			$.each(loaded_modules, function(label, item) {
+				var matched = label.toLowerCase().indexOf(to_search) != -1 || ("" + item["description"]).toLowerCase().indexOf(to_search) != -1;
+				
+				if (!matched && $.isPlainObject(item["modules"]))
+					$.each(item["modules"], function(sub_label, sub_item) {
+						if (sub_label.toLowerCase().indexOf(to_search) != -1) {
+							matched = true;
+							return false;
+						}
+						else if (("" + sub_item["description"]).toLowerCase().indexOf(to_search) != -1) {
+							matched = true;
+							return false;
+						}
+					});
+				
+				if (matched) {
+					$.each(lis, function(label, li) {
+						li = $(li);
+						
+						if (li.attr("url") == item["zip"]) {
+							li.removeClass("hidden");
+							return false;
+						}
+					});
+				}
+			});
+		}
+	}
+}
+
+function resetSearchModules(elm) {
+	var input = $(elm).parent().children("input");
+	input.val("");
+	searchModules(input[0]);
 }

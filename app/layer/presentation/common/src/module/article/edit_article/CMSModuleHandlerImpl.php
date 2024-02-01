@@ -22,6 +22,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		//Getting Article Extra Details
 		if ($data) {
+			$data["tags"] = array_values(\TagUtil::convertTagsStringToArray($data["tags"]));
+			
 			$data_extra = $CommonModuleTableExtraAttributesUtil->getTableExtra(array("article_id" => $article_id), true);
 			$data = $data_extra ? array_merge($data, $data_extra) : $data;
 		}

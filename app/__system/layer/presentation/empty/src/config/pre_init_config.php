@@ -8,6 +8,6 @@ $presentation_id = substr($project_path, strlen($layer_path), -1);
 
 //session_start();//optional: only if you which to start a session, but if you DO, please do it here!
 
-$project_default_template = "default";
+$project_default_template = "blank";
 
 ?>

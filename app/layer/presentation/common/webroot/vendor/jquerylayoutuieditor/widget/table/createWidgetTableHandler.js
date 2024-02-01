@@ -106,7 +106,12 @@ function createWidgetTableHandler(ui_creator, menu_widget) {
 			var is_tr_widget = j_tr.hasClass("template-widget");
 			var tds = j_tr.children("td, th");
 			
-			new_tr.attr("data-node-index", idy);
+			var index = idy;
+			
+			if (type == "tr")
+				index = j_tr.parent().children("tr").index(tr);
+			
+			new_tr.attr("data-node-index", index);
 			
 			//load row attributes
 			if (tr.attributes) {
@@ -122,10 +127,10 @@ function createWidgetTableHandler(ui_creator, menu_widget) {
 						classes = classes.replace(/^\s+/g, "").replace(/\s+$/g, "").replace(/\s\s+/g, " ");
 						
 						if (classes)
-							attrs_html += attr.name + '="' + classes.replace(/"/g, '\\"') + '"';
+							attrs_html += attr.name + '="' + classes.replace(/"/g, '&quot;') + '"'; //replace by &quot; - not \" - bc the classes may contain json code and \" gives error
 					}
 					else
-						attrs_html += attr.name + '="' + attr.value.replace(/"/g, '\\"') + '" ';
+						attrs_html += attr.name + '="' + attr.value.replace(/"/g, '&quot;') + '" '; //replace by &quot; - not \" - bc the attr.value may contain json code and \" gives error
 				}
 				
 				new_tr.find(" > .actions > input").val(attrs_html);
@@ -154,10 +159,10 @@ function createWidgetTableHandler(ui_creator, menu_widget) {
 							classes = classes.replace(/^\s+/g, "").replace(/\s+$/g, "").replace(/\s\s+/g, " ");
 							
 							if (classes)
-								attrs_html += attr.name + '="' + classes.replace(/"/g, '\\"') + '"';
+								attrs_html += attr.name + '="' + classes.replace(/"/g, '&quot;') + '"'; //replace by &quot; - not \" - bc the classes may contain json code and \" gives error
 						}
 						else
-							attrs_html += attr.name + '="' + attr.value.replace(/"/g, '\\"') + '" ';
+							attrs_html += attr.name + '="' + attr.value.replace(/"/g, '&quot;') + '" '; //replace by &quot; - not \" - bc the attr.value may contain json code and \" gives error
 					}
 					
 					new_td.children("input").val(attrs_html);

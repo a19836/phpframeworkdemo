@@ -685,7 +685,8 @@ function goBack() {
 	
 	if (win) {
 		//get history url and set cookie
-		//TODO: MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('default_page', url);
+		//TODO: find a way to get the previous url
+		//MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('default_page', url);
 		
 		//loads new page
 		win.history.go(-1);
@@ -698,7 +699,8 @@ function goForward() {
 	
 	if (win) {
 		//get history url and set cookie
-		//TODO: MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('default_page', url);
+		//TODO: find a way to get the next url
+		//MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('default_page', url);
 		
 		//loads new page
 		win.history.go(1);

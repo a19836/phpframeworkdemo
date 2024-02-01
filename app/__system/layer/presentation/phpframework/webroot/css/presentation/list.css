@@ -10,7 +10,7 @@ body,
 	background:#fff !important;
 }
 ::-webkit-scrollbar-track {
-	background-color:#fff;
+	background-color:transparent;
 }
 
 /* TOP BAR */
@@ -30,6 +30,67 @@ body,
 	text-decoration:none;
 }
 
+/* list_type */
+.list_type {
+	margin:0 5px 0 0;
+	text-align:center;
+	display:inline-block;
+	float:right;
+}
+.list_type a {
+	color:inherit;
+}
+.list_type .icon {
+	margin:0 5px;
+	font-size:16px;
+}
+.list_type .icon.active {
+	color:var(--icon-active-color);
+}
+.list_type .icon:not(.active) {
+	opacity:.5;
+}
+.list_type .icon:hover {
+	color:var(--icon-hover-color);
+	opacity:1;
+}
+
+/* sort_files and search_file */
+.sort_files {
+	margin:-10px 10px 0;
+	padding:7px;
+	float:right !important;
+	border-radius:5px;
+	border-color:var(--icon-active-color) !important;
+	color:var(--icon-active-color) !important;
+}
+.search_file {
+	margin:-10px 10px 0 20px;
+	white-space:nowrap;
+	color:var(--icon-active-color);
+	float:right;
+}
+.search_file .icon.search {
+	cursor:default;
+	color:inherit;
+}
+.search_file input {
+	width:150px;
+	margin-left:-28px;
+	padding:7px 20px 8px 25px;
+	border-radius:5px;
+	border-color:var(--icon-active-color) !important;
+	color:inherit !important;
+}
+.search_file input::placeholder {
+	color:var(--icon-active-color);
+}
+.search_file .icon.close {
+	color:var(--icon-active-color);
+	position:absolute;
+	margin:12px 0 0 -18px;
+}
+
 /* GENERIC */
 body.no_scroll {
 	position: fixed;
@@ -43,28 +104,163 @@ body.no_scroll {
 #file_tree {
 	margin:0 auto;
 }
-#file_tree li > a:not(.jstree-clicked) {
-	background-color:#F0F1F5;
-}
-#file_tree li > ul > li > a:not(.jstree-clicked) {
-	background-color:#F8F9FC;
-}
-#file_tree li:nth-of-type(odd) > a:not(.jstree-clicked) {
-	background-color:#F8F9FC;
-}
-#file_tree li > ul > li:nth-of-type(odd) > a:not(.jstree-clicked) {
-	background-color:#F0F1F5;
-}
 #file_tree li > .sub_menu {
     display:none;
 }
-#file_tree li > a:hover {
+#file_tree > ul > li > ul li.hidden {
+	display:none !important;
+}
+#file_tree li.list_view > a:hover {
 	background-color:#eee;
 }
-#file_tree li > a {
+#file_tree.list_view > ul > li > ul li > a {
     width: calc(100% - 30px);
     display: inline-block;
 }
+#file_tree.list_view > ul > li > ul li:nth-of-type(even) > a:not(.jstree-clicked) {
+	background-color:#F0F1F5;
+}
+#file_tree.list_view > ul > li > ul li:nth-of-type(odd) > a:not(.jstree-clicked) {
+	background-color:#F8F9FC;
+}
+
+#file_tree.block_view > ul > li > ul {
+	padding:0 20px;
+}
+#file_tree.block_view > ul > li ul {
+	white-space:initial;
+}
+#file_tree.block_view > ul > li > ul li {
+	width:220px;
+	margin:20px;
+	padding:0;
+	display:inline-block;
+	vertical-align:top;
+	position:relative;
+	background:#F8F9FC;
+	border-radius:3px;
+	border:1px solid #F0F1F5;
+	text-align:left;
+}
+#file_tree.block_view > ul > li > ul li.jstree-open {
+	width:auto;
+	display:block;
+}
+#file_tree.block_view > ul > li > ul li > i.jstree-ocl {
+	position:absolute;
+	top:0;
+	right:0;
+	z-index:1;
+}
+#file_tree.block_view > ul > li > ul li.jstree-leaf > i.jstree-ocl {
+	display:none;
+}
+#file_tree.block_view > ul > li > ul li > a.jstree-anchor {
+	width:100%;
+	min-height:50px;
+	margin:0;
+	padding:10px;
+	box-sizing:border-box;
+	display:block;
+	cursor:default;
+	position:relative;
+}
+#file_tree.block_view > ul > li > ul li > a.jstree-anchor:hover,
+  #file_tree.block_view > ul > li > ul li > a.jstree-anchor.jstree-hovered {
+	background-color:#fff !important;
+}
+#file_tree.block_view > ul > li > ul li.jstree-open > a.jstree-anchor {
+	border-bottom:1px solid #F0F1F5;
+	background:#eee;
+}
+#file_tree.block_view > ul > li > ul li > a.jstree-anchor:before {
+	content:"";
+	width:50px;
+	position:absolute;
+	top:0;
+	left:0;
+	bottom:0;
+	background:#F0F1F5;
+}
+#file_tree.block_view > ul > li > ul li > a.jstree-anchor:after {
+	content:"";
+	display:block;
+	width:100%;
+	float:none;
+	clear:both;
+}
+
+#file_tree.block_view > ul > li > ul li > a.jstree-anchor > i {
+	width:30px;
+	height:30px;
+	margin:0px;
+	display:block;
+	box-sizing:border-box;
+	border-top-left-radius:3px;
+	border-top-right-radius:3px;
+	overflow:hidden;
+	cursor:pointer;
+	float:left;
+	position:relative;
+	font-size:25px;
+}
+#file_tree.block_view > ul > li > ul li > a.jstree-anchor > i::before {
+	font-size:inherit;
+}
+#file_tree.block_view > ul > li > ul li > a.jstree-anchor > label {
+	width:calc(100% - 60px);
+	line-height:12px;
+	margin-right:10px;
+	display:block;
+	text-align:left;
+	color:#585B69;
+	font-size:11px;
+	word-break:break-all;
+	white-space:break-spaces;
+	cursor:pointer;
+	float:right;
+}
+#file_tree.block_view > ul > li > ul li > a.jstree-anchor > .icons {
+	width:calc(100% - 50px);
+	margin-top:10px;
+	text-align:right;
+}
+#file_tree.block_view > ul > li > ul li > a.jstree-anchor > .icons > .icon {
+	margin-top:0;
+	opacity:.3;
+}
+#file_tree.block_view > ul > li > ul li > a.jstree-anchor:hover > .icons > .icon {
+	opacity:.7;
+}
+#file_tree.block_view > ul > li > ul li > a.jstree-anchor > .icons > .icon:last-child {
+	margin-right:0;
+}
+#file_tree.block_view > ul > li > ul li > a.jstree-anchor > .icons > .icon::before {
+	font-size:12px;
+}
+#file_tree.block_view > ul > li > ul li[data-jstree='{"icon":"entity_file"}']:hover::before,
+  #file_tree.block_view > ul > li > ul li[data-jstree='{"icon":"template_file"}']:hover::before,
+  #file_tree.block_view > ul > li > ul li[data-jstree='{"icon":"view_file"}']:hover::before,
+  #file_tree.block_view > ul > li > ul li[data-jstree='{"icon":"block_file"}']:hover::before,
+  #file_tree.block_view > ul > li > ul li[data-jstree='{"icon":"util_file"}']:hover::before,
+  #file_tree.block_view > ul > li > ul li[data-jstree='{"icon":"folder"}']:hover::before,
+  #file_tree.block_view > ul > li > ul li[data-jstree='{"icon":"template_folder"}']:hover::before {
+	width:80px;
+	content:"Click to edit";
+	position:absolute;
+	top:-17px;
+	left:5px;
+	font-size:8px;
+	color:#999;
+	text-align:left;
+	
+	/* display:none; /* This label causes too much noise, and we want to make the tool as simple as possible. */
+}
+#file_tree.block_view > ul > li > ul li[data-jstree='{"icon":"folder"}']:hover::before,
+  #file_tree.block_view > ul > li > ul li[data-jstree='{"icon":"template_folder"}']:hover::before {
+	content:"Click to open folder";
+}
+
 #file_tree li > a .icons {
 	float:right;
 }
@@ -87,11 +283,12 @@ body.no_scroll {
 	width:20px;
 }
 #file_tree li > a .icons .icon:hover {
-	opacity:.6;
+	opacity:1 !important;
 }
 #file_tree li > a .icons .icon::before {
 	font-size:14px;
 	display:block;
+	color:inherit !important;
 }
 #file_tree li > a .icons .icon::after {
 	font-size:10px;
@@ -133,9 +330,10 @@ body.no_scroll {
 #file_tree.mytree_filtered > ul > li:only-child > a {
 	width:auto;
 	margin-top:-30px;
-	position:absolute;
+	position:fixed;
 	right:0;
-	background:transparent;
+	background:#fff;
+	border-bottom-left-radius:5px;
 	z-index:1;
 }
 #file_tree.mytree_filtered > ul > li:only-child > a.jstree-clicked,
@@ -152,7 +350,7 @@ body.no_scroll {
   #file_tree.mytree_filtered > ul > li:only-child > a > .icons .icon:not(.create_folder):not(.create_file):not(.view_project):not(.install_template):not(.refresh):not(.sub_menu) {
 	display:none;
 }
-#file_tree.mytree_filtered > ul > li:only-child > ul > li {
+#file_tree.list_view.mytree_filtered > ul > li:only-child > ul > li {
 	margin-left:0;
 }
 

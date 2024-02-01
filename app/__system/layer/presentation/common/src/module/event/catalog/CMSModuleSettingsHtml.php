@@ -203,7 +203,7 @@
 		"map" => array("type" => "label", "label" => "", "class" => "catalog_event_map", "show" => 0),
 		"full_address" => array("type" => "label", "label" => "", "class" => "catalog_event_full_address", "show" => 0),
 		"location" => array("type" => "label", "label" => "", "class" => "catalog_event_location", "extra_attributes" => array(array("name" => "onClick", "value" => 'return false'))),
-		"description" => array("type" => "label", "label" => "", "class" => "catalog_event_description"),
+		"description" => array("type" => "label", "label" => "", "class" => "catalog_event_description", "show" => 0),
 		"user" => array("type" => "label", "label" => "", "class" => "catalog_event_user", "value" => "#[user][name]#"),
 		"created_date" => array("type" => "label", "label" => "", "class" => "catalog_event_created_date", "show" => 0),
 		"modified_date" => array("type" => "label", "label" => "", "class" => "catalog_event_modified_date", "show" => 0),
@@ -217,15 +217,35 @@
 	 	"search_values" => true,
 	 	"buttons" => false,
 	 	"css" => '
-.module_events_catalog .event .catalog_event_location {
-	cursor:auto;
-}
 .module_events_catalog .event {
 	display:inline-block;
 }
 .module_events_catalog .event .catalog_event_description * {
     margin:0;
     padding:0;
+}
+.module_events_catalog .event .catalog_event_location {
+	cursor:auto;
+	opacity:.5;
+}
+.module_events_catalog .event .catalog_event_location .map {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: \'Glyphicons Halflings\';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    font-size: 15px;
+    margin-left: 10px;
+    vertical-align: text-top;
+    cursor:pointer;
+}
+.module_events_catalog .event .catalog_event_location .map:before {
+    content: \'\\\\e062\';
 }',
 	 	"js" => '
 \$(function () {

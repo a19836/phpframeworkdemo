@@ -83,6 +83,10 @@ $(function () {
 					loadPageCodeEditorLayoutJSAndCSSFilesToSettings();
 				};
 				
+				luie.find(" > .options > .options-left").append('<i class="zmdi zmdi-view-compact option choose-template" title="Switch Template"></i>').children(".choose-template").click(function() {
+					onChooseAvailableTemplate(true);
+				});
+				
 				//DEPRECATED - waits until the load params and joinpoints gets loaded. No need this anymorebc the initPageAndTemplateLayout method already covers this case.
 				//setTimeout(function() {
 					//load js and css files
@@ -145,7 +149,7 @@ $(function () {
 		});
 		
 		if (!code_exists)
-			onChooseAvailableTemplate( entity_obj.find(".template .search")[0], show_templates_only, true ); //open template popup automatically if entity is new
+			onChooseAvailableTemplate(show_templates_only, true ); //open template popup automatically if entity is new
 	}
 });
 
@@ -258,9 +262,19 @@ function onChangeTemplateGenre(elm) {
 	}
 }
 
-function onChooseAvailableTemplate(elm, show_templates_only, include_template_samples) {
-	var template_elm = $(elm).parent();
-	var entity_obj = template_elm.parent();
+function onChooseAvailableTemplate(show_templates_only, include_template_samples) {
+	var entity_obj = $(".entity_obj");
+	var template_elm = entity_obj.children(".template").first();
+	var cat_select = template_elm.children("select[name=template]");
+	var chosen_template = cat_select.val(); //Do not use the getSelectedTemplate(entity_obj) bc we only want the selected template without the layer_default_template
+	var chosen_project = null;
+	
+	if (isExternalTemplate(entity_obj)) {
+		var external_template_params = entity_obj.children(".external_template_params");
+		chosen_template = external_template_params.find(" > .template_id input").val();
+		chosen_project = external_template_params.find(" > .external_project_id input").val();
+	}
+	
 	var func = function(selected_template) {
 		if (!code_exists) { //only if file is new
 			var iframe = getContentTemplateLayoutIframe(entity_obj);
@@ -281,7 +295,6 @@ function onChooseAvailableTemplate(elm, show_templates_only, include_template_sa
 	var available_projects_templates_props = {};
 	available_projects_templates_props[selected_project_id] = available_templates_props;
 	
-	var cat_select = template_elm.children("select[name=template]");
 	var cat_props = {
 		show_templates_only: show_templates_only,
 		include_template_samples: include_template_samples,
@@ -289,6 +302,9 @@ function onChooseAvailableTemplate(elm, show_templates_only, include_template_sa
 		available_projects_props: available_projects_props,
 		get_available_templates_props_url: get_available_templates_props_url,
 		install_template_url: install_template_url,
+		project_global_variables_url: project_global_variables_url,
+		chosen_template: chosen_template,
+		chosen_project: chosen_project,
 		
 		on_install: function(project_id, installed_templates) {
 			if (installed_templates && project_id == selected_project_id) {
@@ -313,7 +329,7 @@ function onChooseAvailableTemplate(elm, show_templates_only, include_template_sa
 		
 		on_select: function(selected_template, opts) {
 			//add template samples, if apply
-			if ($.isPlainObject(opts) && opts["include_template_samples"])
+			if ($.isPlainObject(opts) && opts["include_template_samples"] && selected_template)
 				addTemplateSamples(entity_obj, selected_template, opts["include_template_samples"], opts["include_template_samples_in_regions"]);
 			
 			//trigger change
@@ -322,6 +338,8 @@ function onChooseAvailableTemplate(elm, show_templates_only, include_template_sa
 			if (template_genre.val() != "") {
 				template_genre.val("");
 				template_genre.trigger("change");
+				
+				cat_select.trigger("change"); //must execute again this trigger bc when this trigger was executed in the chage_available_template.js, the template_genre was external type, and so the template was not correctly updated in the canvas. So we need to call it again
 			}
 			
 			//execute refresh template if new entity
@@ -750,6 +768,8 @@ function updateTemplateLayout(entity_obj) {
 			update_layout_iframe_field_html_value_from_settings_func = update_layout_iframe_field_html_value_from_settings_func_bkp;
 		}
 	};	
+	
+	//console.log("auto_convert_settings_from_layout:"+auto_convert_settings_from_layout);
 	
 	if (!auto_convert_settings_from_layout) {
 		enableAutoConvertSettingsFromLayout(function() {

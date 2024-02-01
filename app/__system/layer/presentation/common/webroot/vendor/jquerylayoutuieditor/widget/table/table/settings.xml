@@ -147,7 +147,8 @@
 				TableHandler.prepareTableSectionSettings(ul);
 				
 				//load table sections
-				widget.children("thead, tbody, tfoot, tr").each(function(idx, widget_table_section) {
+				var children = widget.children("thead, tbody, tfoot, tr");
+				$.each(children, function(idx, widget_table_section) { //must loop synchronously bc if the table contains only trs, then the trs should show by order.
 					TableHandler.loadTableSectionSettings(ul, $(widget_table_section));
 				});
 			};

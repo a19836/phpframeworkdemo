@@ -39,8 +39,17 @@ body,
 	right:15px;
 	z-index:2;
 }
+.modules_list.in_popup .install {
+	top:9px;
+	right:45px;
+}
 .modules_list .install button {
 	font-size:inherit;
+}
+.modules_list.in_popup .install button {
+	background:var(--main-popup-header-color); /* flip colors on purpose */
+	color:var(--main-popup-header-bg);
+	border:var(--main-popup-header-border);
 }
 .modules_list .layer_modules {
 	display:none;

@@ -1,6 +1,6 @@
 var pagesFromFileManagerTree = null;
 var templatesFromFileManagerTree = null;
-var default_available_templates = ["empty", "ajax", "blank", "default"];
+var default_available_templates = ["empty", "ajax", "blank"];
 
 $(function() {
 	var project_files = $(".admin_panel .project_files");
@@ -45,7 +45,7 @@ $(function() {
 		if (is_fresh_project) {
 			var msg = '<h1>Create your first page by clicking in the button below</h1>'
 					+ '<div>'
-						+ '<button onClick="showCreateFilePopupThroughMessage(this, \'' + project_id + '/src/entity/\')" title="Create a new folder or page">Add New</button>'
+						+ '<button onClick="showCreateFilePopupThroughMessage()" title="Create a new folder or page">Add New</button>'
 					+ '</div>';
 			StatusMessageHandler.showMessage(msg, "create_new_page_message", "", 60000 * 60 * 24); //1 day of expiration
 		}
@@ -58,10 +58,43 @@ function prepareProjectLayerNodes2(ul, data) {
 	prepareLayerNodes2(ul, data);
 	
 	ul = $(ul);
+	var main_parent = ul.parent().closest(".mytree").parent();
 	
-	if (ul.children().length == 0) 
-		ul.append('<li class="empty_files">No files availabes...</li>');
+	if (ul.children().length == 0) {
+		var is_page = main_parent.hasClass("pages");
+		var html = '<li class="empty_files">No files availabes...</li>';
+		
+		if (is_page)
+			html = '<li class="empty_files">'
+					+ '<span class="icon empty_page"></span>'
+					+ '<p>No pages/folders yet</p>'
+					+ '<p>When you have new pages/folders, you will see them here.</p>'
+					+ '<button onClick="showCreateFilePopup()"><span class="icon add"></span> Start to create a page</button>'
+				+ '</li>';
+		else if (ul.parent().parent().parent().is(main_parent)) //if pages or if templates root
+			html = '<li class="empty_files">'
+					+ '<span class="icon empty_template"></span>'
+					+ '<p>No templates yet</p>'
+					+ '<p>When you have new templates, you will see them here.</p>'
+					+ '<button onClick="importTemplates()"><span class="icon add"></span> Start to import a template</button>'
+				+ '</li>';
+		
+		ul.append(html);
+	}
 	else {
+		//prepare properties_by_file_path
+		var properties_by_file_path = {};
+		
+		if (data)
+			for (var key in data) {
+				if (key != "properties" && key != "aliases") {
+					var item = data[key];
+					var item_path = item["properties"]["path"];
+					
+					properties_by_file_path[item_path] = item;
+				}
+			}
+		
 		//only show pages and templates. All the other items should be removed
 		ul.find("li").each(function(idx, li) {
 			li = $(li);
@@ -83,8 +116,11 @@ function prepareProjectLayerNodes2(ul, data) {
 				var li = a.parent();
 				var file_path = a.attr("folder_path");
 				var is_template_folder = elm.is("i.template_folder");
+				var properties = properties_by_file_path[file_path];
+				var modified_date = properties && properties["properties"] && properties["properties"]["item_menu"] ? properties["properties"]["item_menu"]["modified_date"] : "";
 				
-				var html = '<div class="sub_menu" onClick="openProjectFileSubmenu(this)">'
+				var html = '<div class="modified_date">Last updated ' + modified_date + '</div>'
+						+ '<div class="sub_menu" onClick="openProjectFileSubmenu(this)">'
 							+ '<i class="icon sub_menu_vertical"></i>'
 							+ '<ul class="mycontextmenu with_top_right_triangle">'
 								+ '<li class="rename"><a onclick="return manageFile(this, \'folder\', \'rename\', \'' + file_path + '\', onSuccessfullRenameFile)">Rename Folder</a></li>'
@@ -107,11 +143,16 @@ function prepareProjectLayerNodes2(ul, data) {
 		entities.each(function(idx, elm) {
 			elm = $(elm);
 			var a = elm.parent();
+			var label = a.children("label");
 			var li = a.parent();
 			var file_path = a.attr("file_path");
 			var view_url = view_entity_url.replace(/#path#/g, file_path);
 			var edit_url = edit_entity_url.replace(/#path#/g, file_path);
-			var html = '<div class="sub_menu" onClick="openProjectFileSubmenu(this)">'
+			var properties = properties_by_file_path[file_path];
+			var modified_date = properties && properties["properties"] && properties["properties"]["item_menu"] ? properties["properties"]["item_menu"]["modified_date"] : "";
+			
+			var html = '<div class="modified_date">Last updated ' + modified_date + '</div>'
+					+ '<div class="sub_menu" onClick="openProjectFileSubmenu(this)">'
 						+ '<i class="icon sub_menu_vertical"></i>'
 						+ '<ul class="mycontextmenu with_top_right_triangle">'
 							+ '<li class="edit"><a href="' + edit_url + '">Edit Page</a></li>'
@@ -123,7 +164,8 @@ function prepareProjectLayerNodes2(ul, data) {
 						+ '</ul>'
 					+ '</div>';
 			
-			a.children("label").after(html);
+			label.before('<div class="first_letter">' + label.text().substr(0, 1).toUpperCase() + '</div>');
+			label.after(html);
 		});
 		
 		//prepare template files
@@ -138,7 +180,11 @@ function prepareProjectLayerNodes2(ul, data) {
 			var li = a.parent();
 			var file_path = a.attr("file_path");
 			var edit_url = edit_template_url.replace(/#path#/g, file_path);
-			var html = '<div class="sub_menu" onClick="openProjectFileSubmenu(this)">'
+			var properties = properties_by_file_path[file_path];
+			var modified_date = properties && properties["properties"] && properties["properties"]["item_menu"] ? properties["properties"]["item_menu"]["modified_date"] : "";
+			
+			var html = '<div class="modified_date">Last updated ' + modified_date + '</div>'
+					+ '<div class="sub_menu" onClick="openProjectFileSubmenu(this)">'
 						+ '<i class="icon sub_menu_vertical"></i>'
 						+ '<ul class="mycontextmenu with_top_right_triangle">'
 							+ '<li class="edit"><a href="' + edit_url + '">Edit Template</a></li>'
@@ -204,7 +250,8 @@ function prepareProjectLayerNodes2(ul, data) {
 		});
 		
 		//prepare searched files
-		searchFiles( ul.parent().closest(".mytree").parent().find(" > .search_file > input")[0] );
+		searchFiles( main_parent.find(" > .search_file > input")[0] );
+		sortFiles( main_parent.find(" > .sort_files")[0] );
 	}
 }
 
@@ -225,19 +272,36 @@ function selectMyTreeNode(node) {
 		if (path)
 			refreshTreeWithNewPath(node, path);
 	}
-	else if (i.is(".entity_file")) {
-		MyFancyPopup.showOverlay();
-		MyFancyPopup.showLoading();
+	else {
+		var url = null;
 		
-		var path = a.attr("file_path");
-		document.location = edit_entity_url.replace(/#path#/g, path);
-	}
-	else if (i.is(".template_file")) {
-		MyFancyPopup.showOverlay();
-		MyFancyPopup.showLoading();
+		if (i.is(".entity_file")) {
+			var path = a.attr("file_path");
+			url = edit_entity_url.replace(/#path#/g, path);
+		}
+		else if (i.is(".template_file")) {
+			var path = a.attr("file_path");
+			url = edit_template_url.replace(/#path#/g, path);
+		}
 		
-		var path = a.attr("file_path");
-		document.location = edit_template_url.replace(/#path#/g, path);
+		if (url) {
+			var is_new_win = window.event && (window.event.ctrlKey || window.event.keyCode == 65);
+			var win = null;
+			
+			if (is_new_win) {
+				var win_tab_name = "tab" + (Math.random() * 10000);
+				win = window.open(url, win_tab_name) ;
+			}
+			
+			if(win) //Browser has allowed it to be opened
+				win.focus();
+			else {
+				MyFancyPopup.showOverlay();
+				MyFancyPopup.showLoading();
+				
+				document.location = url;
+			}
+		}
 	}
 	
 	return false;
@@ -376,6 +440,17 @@ function onSuccessfullEditProject(opts) {
 	document.location = url;
 }
 
+function toggleProjectDetails(elm) {
+	elm = $(elm);
+	var project = $(".project");
+	project.toggleClass("with_details");
+	
+	if (project.hasClass("with_details"))
+		elm.html("Hide Project Details");
+	else
+		elm.html("Show Project Details");
+}
+
 function toggleProjectsListType(elm, type) {
 	elm = $(elm);
 	var p = elm.parent();
@@ -390,33 +465,77 @@ function searchFiles(elm) {
 	elm = $(elm);
 	var to_search = elm.val().toLowerCase().replace(/^\s*/, "").replace(/\s*$/, "");
 	var mytree = elm.parent().parent().children(".mytree");
-	var items = mytree.find("i.folder, i.entity_file, i.template_file, i.template_folder");
 	
-	items.each(function(idx, i) {
-		var a = $(i).parent();
-		var li = a.parent();
-		var file_name = a.children("label").text();
-		var matched = to_search != "" ? file_name.toLowerCase().indexOf(to_search) != -1 : true;
+	if (to_search == "")
+		mytree.find("li").removeClass("hidden");
+	else {
+		var items = mytree.find("i.folder, i.entity_file, i.template_file, i.template_folder");
 		
-		if (matched)
-			li.show();
-		else
-			li.hide();
-	});
+		items.each(function(idx, i) {
+			var a = $(i).parent();
+			var li = a.parent();
+			var file_name = a.children("label").text();
+			var matched = to_search != "" ? file_name.toLowerCase().indexOf(to_search) != -1 : true;
+			
+			if (matched)
+				li.removeClass("hidden");
+			else
+				li.addClass("hidden");
+		});
+	}
 }
 
-function showCreateFilePopupThroughMessage(elm, path_prefix) {
+function resetSearchFiles(elm) {
+	var input = $(elm).parent().children("input");
+	input.val("");
+	searchFiles(input[0]);
+}
+
+function sortFiles(elm) {
+	elm = $(elm);
+	var sort_type = elm.val();
+	var mytree = elm.parent().children(".mytree");
+	var ul = mytree.find(" > li > ul");
+	var lis = ul.children("li");
+	var selector = sort_type == "first_updated" || sort_type == "last_updated" ? " > a > .modified_date" : " > a > label";
+	
+	lis.sort(function(li_a, li_b) {
+		var a = $(li_a).find(selector).text();
+		var b = $(li_b).find(selector).text();
+		
+		if (sort_type == "a_z" || sort_type == "first_updated") {
+			if(a > b)
+				return 1;
+			if(a < b)
+				return -1;
+		}
+		else {
+			if(a > b)
+				return -1;
+			if(a < b)
+				return 1;
+		}
+		
+		return 0;
+	});
+	lis.detach().appendTo(ul);
+}
+
+function showCreateFilePopupThroughMessage() {
 	StatusMessageHandler.removeLastShownMessage("info");
 	
-	showCreateFilePopup(elm, path_prefix);
+	showCreateFilePopup();
 }
 
-function showCreateFilePopup(elm, path_prefix) {
+function showCreateFilePopup() {
 	//get popup
 	var popup = $(".admin_panel > .create_file_popup");
 	
 	popup.find("button").off().on("click", function() {
-		createFile(elm, path_prefix, popup);
+		var pages = $(".admin_panel .project_files > .pages");
+		var elm = pages.children("button");
+		
+		createFile(elm[0], popup);
 	});
 	
 	//open popup
@@ -428,9 +547,9 @@ function showCreateFilePopup(elm, path_prefix) {
 	MyFancyPopup.showPopup();
 }
 
-function createFile(elm, path_prefix, popup) {
-	var type = popup.find(".type > select").val();
-	var file_name = popup.find(".name > input").val();
+function createFile(elm, popup) {
+	var type = popup.find("select").val();
+	var file_name = popup.find("input").val();
 	var action = type == "page" ? "create_file" : "create_folder";
 	var handler = function(elm, type, action, path, new_file_name) {
 		if (type == "page") {
@@ -444,20 +563,11 @@ function createFile(elm, path_prefix, popup) {
 		MyFancyPopup.hidePopup();
 	};
 	
-	if (path_prefix) {
-		//get current opened folder and concatenate to path_prefix
-		var mytree_parent = $(elm).parent();
-		var root_path = mytree_parent.attr("root_path");
-		var current_path = mytree_parent.attr("current_path");
-		
-		root_path = ("" + root_path).replace(/\/+/g, "/").replace(/^\/+/g, "").replace(/\/+$/g, ""); //remove duplicates, start and end slash
-		current_path = current_path ? current_path : "";
-		
-		var relative_path = current_path.substr(root_path.length + 1);
-		path_prefix += relative_path;
-	}
+	//get current opened folder
+	var mytree_parent = $(elm).parent();
+	var current_path = mytree_parent.attr("current_path");
 	
-	manageFile(elm, type, action, path_prefix, handler, file_name);
+	manageFile(elm, type, action, current_path, handler, file_name);
 }
 
 function manageFile(elm, type, action, path, handler, new_file_name) {
@@ -480,8 +590,8 @@ function manageFile(elm, type, action, path, handler, new_file_name) {
 			dir_pos = dir_pos != -1 ? dir_pos + 1 : 0;
 			
 			var dir_name = path.substr(0, dir_pos);
-			var base_name = path.substr(dir_pos, pos - dir_pos);
-			var extension = pos + 1 < path.length ? path.substr(pos + 1) : "";
+			var base_name = type == "file" ? path.substr(dir_pos, pos - dir_pos) : path;
+			var extension = type == "file" && pos + 1 < path.length ? path.substr(pos + 1) : "";
 			
 			if (!new_file_name)
 				status = (new_file_name = prompt("Please write the new name:", base_name));
@@ -506,31 +616,47 @@ function manageFile(elm, type, action, path, handler, new_file_name) {
 		}
 		
 		if (status) {
-			var url = manage_file_url.replace("#action#", action).replace("#path#", path).replace("#extra#", new_file_name);
+			var is_file_new_name_action = action == "rename" || action == "create_folder" || action == "create_file";
 			
-			$.ajax({
-				type : "get",
-				url : url,
-				success : function(data, textStatus, jqXHR) {
-					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
-							StatusMessageHandler.removeLastShownMessage("error");
-							manageFile(elm, type, action, path, handler, new_file_name);
-						});
-					else if (data == "1") {
-						StatusMessageHandler.showMessage(type + " " + action_label + "d successfully!", "", "bottom_messages", 1500);
-						
-						if (typeof handler == "function")
-							handler(elm, type, action, path, new_file_name);
-					}
-					else
-						StatusMessageHandler.showError("There was a problem trying to " + action_label + " " + type + ". Please try again..." + (data ? "\n" + data : ""));
-				},
-				error : function(jqXHR, textStatus, errorThrown) { 
-					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-					StatusMessageHandler.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to " + action_label + " " + type + ".\nPlease try again..." + msg);
-				},
-			});
+			if (is_file_new_name_action && new_file_name) {
+				new_file_name = ("" + new_file_name).replace(/^\s+/g, "").replace(/\s+$/g, ""); //trim name
+				
+				//normalize new file name
+				var allow_upper_case = elm.getAttribute("allow_upper_case") == 1; //in case of businesslogic services class
+				new_file_name = normalizeFileName(new_file_name, allow_upper_case);
+			}
+			
+			if (is_file_new_name_action && !new_file_name)
+				alert("Error: File name cannot be empty");
+			else {
+				var url = manage_file_url.replace("#action#", action).replace("#path#", path).replace("#extra#", new_file_name);
+				
+				url = encodeUrlWeirdChars(url); //Note: Is very important to add the encodeUrlWeirdChars otherwise if a value has accents, won't work in IE.
+				
+				$.ajax({
+					type : "get",
+					url : url,
+					success : function(data, textStatus, jqXHR) {
+						if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+							showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
+								StatusMessageHandler.removeLastShownMessage("error");
+								manageFile(elm, type, action, path, handler, new_file_name);
+							});
+						else if (data == "1") {
+							StatusMessageHandler.showMessage(type + " " + action_label + "d successfully!", "", "bottom_messages", 1500);
+							
+							if (typeof handler == "function")
+								handler(elm, type, action, path, new_file_name, url);
+						}
+						else
+							StatusMessageHandler.showError("There was a problem trying to " + action_label + " " + type + ". Please try again..." + (data ? "\n" + data : ""));
+					},
+					error : function(jqXHR, textStatus, errorThrown) { 
+						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+						StatusMessageHandler.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to " + action_label + " " + type + ".\nPlease try again..." + msg);
+					},
+				});
+			}
 		}
 	}
 }
@@ -584,7 +710,7 @@ function refreshNodeParentChildsOnSuccessfullAction(elm) {
 	refreshNodeParentChildsByChildId(node_id);
 }
 
-function onSuccessfullRemoveProject(elm, type, action, path, new_file_name) {
+function onSuccessfullRemoveProject(elm, type, action, path, new_file_name, url) {
 	//refresh main window navigator files tree
 	refreshParentNavigatorFilesTree(path);
 	
@@ -603,15 +729,15 @@ function onSuccessfullRemoveProject(elm, type, action, path, new_file_name) {
 	else //show project list page
 		document.location = admin_home_page_url;
 }
-function onSuccessfullRemoveFile(elm, type, action, path, new_file_name) {
+function onSuccessfullRemoveFile(elm, type, action, path, new_file_name, url) {
 	refreshNodeParentChildsOnSuccessfullAction(elm);
 	
 	//refresh main window navigator files tree
 	var folder_path = path.substr(0, path.lastIndexOf("/"));
 	refreshParentNavigatorFilesTree(folder_path);
 }
-function onSuccessfullRemoveTemplateFolder(elm, type, action, path, new_file_name) {
-	onSuccessfullRemoveFile(elm, type, action, path, new_file_name);
+function onSuccessfullRemoveTemplateFolder(elm, type, action, path, new_file_name, url) {
+	onSuccessfullRemoveFile(elm, type, action, path, new_file_name, url);
 	
 	var url = manage_file_url.replace("#action#", action).replace("#path#", path).replace("#extra#", "");
 	url = url.replace("/src/template/", "/webroot/template/"); //does not need encodeUrlWeirdChars bc the url is already encoded
@@ -622,7 +748,7 @@ function onSuccessfullRemoveTemplateFolder(elm, type, action, path, new_file_nam
 			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, template_url, function() {
 					StatusMessageHandler.removeLastShownMessage("error");
-					onSuccessfullRemoveTemplateFolder(elm, type, action, path);
+					onSuccessfullRemoveTemplateFolder(elm, type, action, path, new_file_name, url);
 				});
 			else if (data == "1") 
 				StatusMessageHandler.showMessage("Template webroot deleted successfully", "", "bottom_messages", 1500);
@@ -635,14 +761,84 @@ function onSuccessfullRemoveTemplateFolder(elm, type, action, path, new_file_nam
 		},
 	});
 }
-function onSuccessfullRenameFile(elm, type, action, path, new_file_name) {
+function onSuccessfullRenameProject(elm, type, action, path, new_file_name, url) {
+	if (new_file_name) {
+		var file_path = getParameterByName(url, "path");
+		file_path = file_path ? file_path.replace(/\/$/g, "") : ""; //remove last /
+		
+		var file_name = file_path;
+		var folder_path = "";
+		
+		if (file_path.lastIndexOf("/") != -1) {
+			file_name = file_path.substr(file_path.lastIndexOf("/") + 1);
+			folder_path = file_path.substr(0, file_path.lastIndexOf("/") + 1);
+		}
+		
+		var new_file_path = folder_path + new_file_name;
+		new_file_path = new_file_path.replace(/\/+/g, "/"); //remove duplicates of /
+		
+		if (new_file_path != file_path) {
+			var doc_url = "" + (window.parent && window.parent != window ? window.parent.location : document.location);
+			doc_url = doc_url.indexOf("#") != -1 ? doc_url.substr(0, doc_url.indexOf("#")) : doc_url; //remove # so it can refresh page
+			
+			if (doc_url.match(/(&|\?)filter_by_layout\s*=([^&#]+)/)) { //check if doc_url has any filter_by_layout
+				var m = doc_url.match(/(&|\?)filter_by_layout\s*=\s*([^&#]*)/);
+				var old_filter_by_layout = m[2];
+				old_filter_by_layout = old_filter_by_layout.replace(/\/+/g, "/").replace(/\/$/g, ""); //remove duplicates and last /
+				var new_filter_by_layout = old_filter_by_layout.substr(0, old_filter_by_layout.length - file_path.length) + new_file_path;
+				
+				doc_url = doc_url.replace(/(&|\?)filter_by_layout\s*=\s*([^&#]*)/, "");
+				doc_url += (doc_url.indexOf("?") != -1 ? "&" : "?") + "filter_by_layout=" + new_filter_by_layout;
+			}
+			
+			if (window.parent && window.parent != window) {
+				if (doc_url.match(/(&|\?)project\s*=([^&#]+)/)) { //check if doc_url has any filter_by_layout
+					var m = doc_url.match(/(&|\?)project\s*=\s*([^&#]*)/);
+					var old_project = m[2];
+					old_project = old_project.replace(/\/+/g, "/").replace(/\/$/g, ""); //remove duplicates and last /
+					
+					doc_url = doc_url.replace(/(&|\?)project\s*=\s*([^&#]*)/, "");
+					doc_url += (doc_url.indexOf("?") != -1 ? "&" : "?") + "project=" + new_file_path;
+				}
+				
+				//set cookie with default page
+				window.parent.MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('default_page', ''); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+				
+				//refresh main window with new params
+				window.parent.location = doc_url;
+			}
+			else {
+				//get default_page url and check if contains filter_by_layout in the url and if so, replace it with new project name
+				var default_page = MyJSLib.CookieHandler.getCookie('default_page');
+				
+				if (default_page) {
+					if (default_page.match(/(&|\?)filter_by_layout\s*=([^&#]+)/)) { //check if default_page url has any filter_by_layout
+						var m = default_page.match(/(&|\?)filter_by_layout\s*=\s*([^&#]*)/);
+						var old_filter_by_layout = m[2];
+						old_filter_by_layout = old_filter_by_layout.replace(/\/+/g, "/").replace(/\/$/g, ""); //remove duplicates and last /
+						var new_filter_by_layout = old_filter_by_layout.substr(0, old_filter_by_layout.length - file_path.length) + new_file_path;
+						
+						default_page = default_page.replace(/(&|\?)filter_by_layout\s*=\s*([^&#]*)/, "");
+						default_page += (default_page.indexOf("?") != -1 ? "&" : "?") + "filter_by_layout=" + new_filter_by_layout;
+					}
+					
+					//set cookie with default page
+					MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('default_page', default_page); //save cookie with url, so when we refresh the browser, the right panel contains the latest opened url
+				}
+				
+				document.location = doc_url;
+			}
+		}
+	}
+}
+function onSuccessfullRenameFile(elm, type, action, path, new_file_name, url) {
 	refreshNodeParentChildsOnSuccessfullAction(elm);
 	
 	//refresh main window navigator files tree
 	var folder_path = path.substr(0, path.lastIndexOf("/"));
 	refreshParentNavigatorFilesTree(folder_path);
 }
-function onSuccessfullCreateFile(elm, type, action, path, new_file_name) {
+function onSuccessfullCreateFile(elm, type, action, path, new_file_name, url) {
 	var node = $(elm).parent().find(" > .mytree > li");
 	refreshAndShowNodeChilds(node);
 	
@@ -654,8 +850,12 @@ function onSuccessfullCreateFile(elm, type, action, path, new_file_name) {
 	var edit_url = edit_entity_url.replace(/#path#/g, path);
 	document.location = edit_url;
 }
-function onSuccessfullCreateFolder(elm, type, action, path, new_file_name) {
-	onSuccessfullCreateFile(elm, type, action, path, new_file_name);
+function onSuccessfullCreateFolder(elm, type, action, path, new_file_name, url) {
+	var node = $(elm).parent().find(" > .mytree > li");
+	refreshAndShowNodeChilds(node);
+	
+	//refresh main window navigator files tree
+	refreshParentNavigatorFilesTree(path);
 }
 
 function refreshParentNavigatorFilesTree(path) {
