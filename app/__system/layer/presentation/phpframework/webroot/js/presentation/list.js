@@ -650,3 +650,48 @@ function triggerFileNodeAfterCreateFile(a, attr_name, action, new_file_name, url
 			},
 		});
 }
+//overright this method from admin_menu.js
+function triggerFileNodeAfterCreatePage(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated) {
+	var node = $("#" + tree_node_id_to_be_updated);
+	
+	//normalize new file name
+	var allow_upper_case = a.getAttribute("allow_upper_case") == 1; //in case of businesslogic services class
+	new_file_name = normalizeFileName(new_file_name, allow_upper_case);
+	
+	if (node[0])
+		mytree.refreshNodeChilds(node[0], {
+			ajax_callback_last: function(ul, data) {
+				$(ul).find(" > li > a > label").each(function(idx, item) {
+					item = $(item);
+					
+					if (item.text().toLowerCase() == new_file_name.toLowerCase()) {
+						var new_a = item.parent();
+						
+						try {
+							if (new_a.attr("add_url")) {
+								goToPopup(new_a[0], "add_url", window.event, 'with_iframe_title add_entity_popup big', function() {
+									if (item.attr("onClick")) {
+										try {
+											item.trigger("click");
+										}
+										catch(e) {
+											if (console && console.log)
+												console.log(e);
+										}
+									}
+								});
+							}
+							else if (item.attr("onClick"))
+								item.trigger("click");
+						}
+						catch(e) {
+							if (console && console.log)
+								console.log(e);
+						}
+						
+						return false;
+					}
+				});
+			},
+		});
+}

@@ -1,15 +1,17 @@
 $(function () {
 	var create_project = $(".create_project");
 	
-	if (popup && on_success_js_func_name && window.parent != window) {
-		//hide the close button for the popup
-		window.parent.document.body.classList.add("popup_without_popup_close");
+	if (popup && window.parent != window) {
+		if (typeof is_existent_project != "undefined" && !is_existent_project) //fix error here when is the first time and the user clicks in cancel
+			window.parent.document.body.classList.add("popup_with_left_popup_close", "popup_with_popup_close_button", "popup_with_popup_close_transparent");
+		else	//hide the close button for the popup
+			window.parent.document.body.classList.add("popup_without_popup_close");
 		
 		create_project.addClass("popup_without_popup_close");
 	}
 	else if (window.parent != window) {
 		//show the close button for the popup
-		window.parent.document.body.classList.remove("popup_without_popup_close");
+		window.parent.document.body.classList.remove("popup_without_popup_close", "popup_with_left_popup_close", "popup_with_popup_close_button", "popup_with_popup_close_transparent");
 	}
 	
 	create_project.removeClass("changing_to_step");
@@ -18,8 +20,8 @@ $(function () {
 function cancel() { //This function is only used on a popup
 	var create_project = $(".create_project");
 	
-	if (popup && on_success_js_func_name && window.parent != window) {
-		window.parent.document.body.classList.remove("popup_without_popup_close");
+	if (popup && window.parent != window) {
+		window.parent.document.body.classList.remove("popup_without_popup_close", "popup_with_left_popup_close", "popup_with_popup_close_button", "popup_with_popup_close_transparent");
 		create_project.removeClass("popup_without_popup_close");
 	}
 	

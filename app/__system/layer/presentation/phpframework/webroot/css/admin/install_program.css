@@ -144,8 +144,8 @@ body:not(.in_popup),
 	right:0;
 	padding:20px;
 	text-align:center;
-	background:#f7f7f7;
-	border-bottom:1px solid #ccc;
+	background:var(--main-iframe-bg, #eee);
+	border-bottom:1px solid var(--resize-bar-border, #ccc);
 }
 .install_program .step_0 .warning {
 	padding:20px;
@@ -167,15 +167,15 @@ body:not(.in_popup),
 	margin:40px 0 20px;
 	padding:10px;
 	text-align:left;
-	background:#eee;
-	border:1px solid #ccc;
+	background:var(--main-iframe-bg, #eee);
+	border:1px solid var(--resize-bar-border, #ccc);
 	border-radius: 5px;
 	border-top-left-radius:0;
 }
 .install_program .step_1 .overwrite {
 	margin-top:20px;
 	padding-top:20px;
-	border-top:1px solid #ccc;
+	border-top:1px solid var(--resize-bar-border, #ccc);
 	text-align:left;
 }
 .install_program .step_1 .program_settings > label:first-child {
@@ -185,9 +185,9 @@ body:not(.in_popup),
 	font-weight:700;
 	background: #eee;
 	padding: 5px 10px;
-	border-top: 1px solid #ccc;
-	border-left: 1px solid #ccc;
-	border-right: 1px solid #ccc;
+	border-top: 1px solid var(--resize-bar-border, #ccc);
+	border-left: 1px solid var(--resize-bar-border, #ccc);
+	border-right: 1px solid var(--resize-bar-border, #ccc);
 	border-radius: 5px;
 	border-bottom-left-radius:0;
 	border-bottom-right-radius:0;
@@ -205,7 +205,7 @@ body:not(.in_popup),
 }
 .install_program .step_1 .db_drivers + .layers {
 	padding-top:20px;
-	border-top:1px solid #ccc;
+	border-top:1px solid var(--resize-bar-border, #ccc);
 }
 .install_program .step_1 .db_drivers > label,
   .install_program .step_1 .layers > label {
@@ -231,7 +231,7 @@ body:not(.in_popup),
 }
 .install_program .step_2 .db_drivers + .layers {
 	padding-top:20px;
-	border-top:1px solid #ccc;
+	border-top:1px solid var(--resize-bar-border, #ccc);
 }
 .install_program .step_2 > .db_drivers > label,
   .install_program .step_2 > .layers > label {
@@ -483,7 +483,7 @@ body:not(.in_popup),
 	padding: 10px;
 	display: inline-block;
 	background: #fff;
-	border: 1px solid #ccc;
+	border: 1px solid var(--resize-bar-border, #ccc);
 	border-radius: 5px;
 	font-size: 80%;
 	text-align:center;

@@ -11,8 +11,16 @@ var LogConsoleFancyPopup = new MyFancyPopupClass();
 $(function() {
 	$(document).keyup( function( e ) {
 		//on escape key, disable all draggable events
-		if (e.which=== 27 || e.keyCode === 27)
-			$('.ui-draggable-dragging').trigger('mouseup');
+		if (e.which=== 27 || e.keyCode === 27) {
+			var ui_obj_helper = $(".ui-draggable-dragging");
+			ui_obj_helper.data("escape_key_pressed", true).trigger('mouseup');
+			
+			//reset escape_key_pressed, just in case
+			setTimeout(function() {
+				if (ui_obj_helper.parent()[0] && ui_obj_helper.data("escape_key_pressed"))
+					ui_obj_helper.data("escape_key_pressed", null);
+			}, 2000);
+		}
 	});
 });
 
@@ -1494,6 +1502,9 @@ function initFilesDragAndDrop(elm) {
 				var helper = ui_obj.helper;
 				var helper_clone = $("body").children(".sortable_helper");
 				
+				var drag_cancelled = helper.data("escape_key_pressed");
+				helper.data("escape_key_pressed", null);
+				
 				helper.show();
 				//helper_clone.hide(); //Do not hide helper_clone bc right_panel_droppable_handler will use its position in PtlLayoutUIEditor
 				
@@ -1509,16 +1520,18 @@ function initFilesDragAndDrop(elm) {
 				if (iframe_droppable_elm) //remove droppable over class
 					$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
 				
-				if (is_in_right_panel) 
-					right_panel_droppable_handler(event, ui_obj, this, helper_clone);
-				
-				//disable classes in LayoutUIEditor's droppable, just in case the right_panel_droppable_handler did NOT do it already
-				if (PtlLayoutUIEditor) {
-					var new_event = {
-						clientX: event.clientX - iframe_offset.left,
-						clientY: event.clientY - iframe_offset.top,
-					};
-					PtlLayoutUIEditor.onWidgetDraggingStop(new_event, helper_clone, null);
+				if (!drag_cancelled) {
+					if (is_in_right_panel) 
+						right_panel_droppable_handler(event, ui_obj, this, helper_clone);
+					
+					//disable classes in LayoutUIEditor's droppable, just in case the right_panel_droppable_handler did NOT do it already
+					if (PtlLayoutUIEditor) {
+						var new_event = {
+							clientX: event.clientX - iframe_offset.left,
+							clientY: event.clientY - iframe_offset.top,
+						};
+						PtlLayoutUIEditor.onWidgetDraggingStop(new_event, helper_clone, null);
+					}
 				}
 				
 				helper.remove();
@@ -1873,6 +1886,9 @@ function initDBTablesSorting(elm) {
 				var helper = ui_obj.helper;
 				var helper_clone = $("body").children(".sortable_helper");
 				
+				var drag_cancelled = helper.data("escape_key_pressed");
+				helper.data("escape_key_pressed", null);
+				
 				helper.show();
 				//helper_clone.hide(); //Do not hide helper_clone bc right_panel_droppable_handler will use its position in PtlLayoutUIEditor
 				
@@ -1888,16 +1904,18 @@ function initDBTablesSorting(elm) {
 				if (iframe_droppable_elm) //remove droppable over class
 					$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
 				
-				if (is_in_right_panel) 
-					right_panel_droppable_handler(event, ui_obj, this, helper_clone);
-				
-				//disable classes in LayoutUIEditor's droppable, just in case the right_panel_droppable_handler did NOT do it already
-				if (PtlLayoutUIEditor) {
-					var new_event = {
-						clientX: event.clientX - iframe_offset.left,
-						clientY: event.clientY - iframe_offset.top,
-					};
-					PtlLayoutUIEditor.onWidgetDraggingStop(new_event, helper_clone, null);
+				if (!drag_cancelled) {
+					if (is_in_right_panel) 
+						right_panel_droppable_handler(event, ui_obj, this, helper_clone);
+					
+					//disable classes in LayoutUIEditor's droppable, just in case the right_panel_droppable_handler did NOT do it already
+					if (PtlLayoutUIEditor) {
+						var new_event = {
+							clientX: event.clientX - iframe_offset.left,
+							clientY: event.clientY - iframe_offset.top,
+						};
+						PtlLayoutUIEditor.onWidgetDraggingStop(new_event, helper_clone, null);
+					}
 				}
 				
 				helper.remove();
@@ -3199,6 +3217,9 @@ function triggerFileNodeAfterCreatePage(a, attr_name, action, new_file_name, url
 						try {
 							if (new_a.attr("add_url")) {
 								goToPopup(new_a[0], "add_url", window.event, 'with_iframe_title add_entity_popup big', function() {
+									console.log(new_a[0]);
+									console.log(new_a.attr("onClick"));
+									
 									if (new_a.attr("onClick")) {
 										try {
 											new_a.trigger("click");

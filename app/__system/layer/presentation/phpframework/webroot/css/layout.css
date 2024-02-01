@@ -1,3 +1,7 @@
+body.in_popup::-webkit-scrollbar-track {
+	background:transparent;
+}
+
 /* TOP BAR */
 .top_bar {
 	width:100%;
@@ -2683,6 +2687,37 @@ body:not(.dark_theme) .tabs.tabs_icons li#visual_editor_tab.ui-tabs-active a {
 body.popup_without_popup_close .myfancypopup > .popup_close {
 	display:none;
 }
+body.popup_with_left_popup_close .myfancypopup > .popup_close {
+	left:5px;
+	right:auto;
+}
+body.popup_with_popup_close_button .myfancypopup > .popup_close {
+	width:auto !important;
+	height:auto !important;
+	padding:7px 10px;
+	text-align:center;
+	font-family:inherit;
+	font-size:7pt;
+	box-sizing:border-box;
+	border-radius:5px;
+	background:var(--main-iframe-color);
+	color:var(--main-iframe-bg);
+}
+body.popup_with_popup_close_button.popup_with_popup_close_transparent .myfancypopup > .popup_close,
+  body.popup_with_popup_close_button.popup_with_popup_close_transparent .myfancypopup > .popup_close:hover {
+	opacity:0 !important;
+}
+body.popup_with_popup_close_button .myfancypopup > .popup_close:hover {
+	opacity:.9;
+}
+body.popup_with_popup_close_button .myfancypopup > .popup_close::before {
+	content:"Cancel";
+	width:auto;
+	margin:0;
+	display:inline;
+	font-family:inherit;
+	font-size:inherit;
+}
 .myfancypopup > .popup_close::before {
 	width:15px;
 	display:inline-block;
@@ -2707,6 +2742,21 @@ body.popup_without_popup_close .myfancypopup > .popup_close {
 	right:20px !important;
 	color:var(--main-popup-header-color);
 	font-size:20px;
+}
+body.popup_with_left_popup_close .myfancypopup.with_title > .popup_close,
+  body.popup_with_left_popup_close .myfancypopup.with_iframe_title > .popup_close {
+	left:15px !important;
+	right:auto !important;
+}
+body.popup_with_popup_close_button .myfancypopup.with_title > .popup_close,
+  body.popup_with_popup_close_button .myfancypopup.with_iframe_title > .popup_close {
+	top:10px !important;
+	background:var(--main-popup-header-color);
+	color:var(--main-popup-header-bg);
+}
+body.popup_with_popup_close_button:not(.popup_with_left_popup_close) .myfancypopup.with_title > .popup_close,
+  body.popup_with_popup_close_button:not(.popup_with_left_popup_close) .myfancypopup.with_iframe_title > .popup_close {
+	right:25px !important;
 }
 .myfancypopup.with_title > .title {
 	min-height:50px;

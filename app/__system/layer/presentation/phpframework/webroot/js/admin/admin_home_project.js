@@ -552,15 +552,13 @@ function createFile(elm, popup) {
 	var file_name = popup.find("input").val();
 	var action = type == "page" ? "create_file" : "create_folder";
 	var handler = function(elm, type, action, path, new_file_name) {
-		if (type == "page") {
+		//hide popup first because the onSuccessfullCreateFile will open it again
+		MyFancyPopup.hidePopup();
+		
+		if (type == "page")
 			onSuccessfullCreateFile(elm, type, action, path, new_file_name);
-			
-			StatusMessageHandler.showMessage("Wait a while... Page editor is loading");
-		}
 		else
 			onSuccessfullCreateFolder(elm, type, action, path, new_file_name);
-		
-		MyFancyPopup.hidePopup();
 	};
 	
 	//get current opened folder
@@ -847,8 +845,32 @@ function onSuccessfullCreateFile(elm, type, action, path, new_file_name, url) {
 	
 	//open file to edit
 	path += "/" + new_file_name + ".php";
+	var add_url = add_entity_url.replace(/#path#/g, path) + "&popup=1";
 	var edit_url = edit_entity_url.replace(/#path#/g, path);
-	document.location = edit_url;
+	
+	//open popup
+	var popup = $(".add_entity_popup");
+	
+	if (!popup[0]) {
+		popup = $('<div class="myfancypopup with_iframe_title add_entity_popup big"></div>');
+		$(document.body).append(popup);
+	}
+	
+	popup.html('<iframe src="' + add_url + '"></iframe>');
+	
+	MyFancyPopup.init({
+		elementToShow: popup,
+		//parentElement: document,
+		
+		onClose: function() { //just in case the user finds a way to close the popup.
+			StatusMessageHandler.showMessage("Wait a while... Page editor is loading");
+			
+			setTimeout(function() {
+				document.location = edit_url;
+			}, 300);
+		}
+	});
+	MyFancyPopup.showPopup();
 }
 function onSuccessfullCreateFolder(elm, type, action, path, new_file_name, url) {
 	var node = $(elm).parent().find(" > .mytree > li");

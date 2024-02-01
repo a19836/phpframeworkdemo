@@ -26,10 +26,13 @@ $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_q
 				<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>
 				<ul>
 					<li class="continue button" data-title="' . ($project_exists ? "Save project" : "Create project") . '"><a class="active" href="javascript:void(0)" onClick="createProject(this)">Continue</a></li>
-					<li class="cancel button" data-title="Cancel"><a class="active" href="javascript:void(0)" onClick="cancel()">Cancel</a></li>
+					<li class="cancel button" data-title="Cancel"><a class="active" href="javascript:void(0)"' . ($is_existent_project ? ' onClick="cancel()' : '') . '">Cancel</a></li>
 				</ul>
 			</header>
-		</div>' . $main_content; } } else { $project_post_data = array( "on_success_js_func" => $on_success_js_func, "on_success_js_func_opts" => $on_success_js_func_opts, "msg" => $msg ); if ($creation_step == 3) { include_once $EVC->getViewPath("admin/install_program"); if (!$step) { $main_content = '<div class="top_bar create_project_top_bar with_cancel install_program_step_0' . ($popup ? ' in_popup' : '') . '">
+		</div>' . $main_content . '
+		<script>
+			var is_existent_project = ' . ($is_existent_project ? "true" : "false") . ';
+		</script>'; } } else { $project_post_data = array( "on_success_js_func" => $on_success_js_func, "on_success_js_func_opts" => $on_success_js_func_opts, "msg" => $msg ); if ($creation_step == 3) { include_once $EVC->getViewPath("admin/install_program"); if (!$step) { $main_content = '<div class="top_bar create_project_top_bar with_cancel install_program_step_0' . ($popup ? ' in_popup' : '') . '">
 				<header>
 					<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>
 					<ul>

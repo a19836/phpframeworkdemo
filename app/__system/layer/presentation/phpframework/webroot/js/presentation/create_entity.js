@@ -1,7 +1,7 @@
 $(function () {
 	var create_entity = $(".create_entity");
 	
-	if (popup && on_success_js_func_name && window.parent != window) {
+	if (popup && window.parent != window) {
 		//hide the close button for the popup
 		window.parent.document.body.classList.add("popup_without_popup_close");
 		
@@ -18,7 +18,7 @@ $(function () {
 function cancel() { //This function is only used on a popup
 	var create_entity = $(".create_entity");
 	
-	if (popup && on_success_js_func_name && window.parent != window) {
+	if (popup && window.parent != window) {
 		window.parent.document.body.classList.remove("popup_without_popup_close");
 		create_entity.removeClass("popup_without_popup_close");
 	}
