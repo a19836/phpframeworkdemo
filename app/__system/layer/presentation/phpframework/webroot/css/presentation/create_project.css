@@ -151,13 +151,23 @@ body #main_column {
 
 /* STEP 3 - Finish */
 .create_project .creation_step_2 .message {
-	margin-top:40px;
+	max-width:500px;
+	margin:40px auto 0;
+	padding:0 20px 20px;
 	text-align:center;
 }
 .create_project .creation_step_2 .message .title {
 	font-size:14px;
 	font-weight:bold;
 	text-align:center;
+}
+.create_project .creation_step_2 .message .info {
+	margin-top:20px;
+	padding:10px;
+	color:var(--main-iframe-top-title-color, inherit);
+	background:var(--main-iframe-bg, #eee);
+	border:1px solid var(--resize-bar-border, #ccc);
+	border-radius:5px;
 }
 .create_project .creation_step_2 .message .sentence_1 {
 	margin-top:20px;

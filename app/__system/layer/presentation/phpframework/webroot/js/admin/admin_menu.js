@@ -3217,9 +3217,6 @@ function triggerFileNodeAfterCreatePage(a, attr_name, action, new_file_name, url
 						try {
 							if (new_a.attr("add_url")) {
 								goToPopup(new_a[0], "add_url", window.event, 'with_iframe_title add_entity_popup big', function() {
-									console.log(new_a[0]);
-									console.log(new_a.attr("onClick"));
-									
 									if (new_a.attr("onClick")) {
 										try {
 											new_a.trigger("click");

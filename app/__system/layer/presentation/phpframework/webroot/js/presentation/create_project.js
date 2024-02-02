@@ -1,21 +1,68 @@
 $(function () {
 	var create_project = $(".create_project");
 	
-	if (popup && window.parent != window) {
-		if (typeof is_existent_project != "undefined" && !is_existent_project) //fix error here when is the first time and the user clicks in cancel
-			window.parent.document.body.classList.add("popup_with_left_popup_close", "popup_with_popup_close_button", "popup_with_popup_close_transparent");
-		else	//hide the close button for the popup
-			window.parent.document.body.classList.add("popup_without_popup_close");
+	if (window.parent != window) {
+		prepareParentWindowPopup();
 		
-		create_project.addClass("popup_without_popup_close");
-	}
-	else if (window.parent != window) {
-		//show the close button for the popup
-		window.parent.document.body.classList.remove("popup_without_popup_close", "popup_with_left_popup_close", "popup_with_popup_close_button", "popup_with_popup_close_transparent");
+		if (popup)
+			create_project.addClass("popup_without_popup_close");
 	}
 	
 	create_project.removeClass("changing_to_step");
 });
+
+function prepareParentWindowPopup() {
+	var parent_popup = getParentWindowPopup();
+	
+	if (parent_popup && window.parent != window) {
+		if (popup) {
+			if (!project_exists) //fix error here when is the first time and the user clicks in cancel
+				parent_popup.addClass("popup_with_left_popup_close popup_with_popup_close_button popup_with_popup_close_transparent");
+			else {
+				//hide the close button for the popup
+				parent_popup.addClass("popup_without_popup_close");
+				
+				parent_popup.removeClass("popup_with_left_popup_close popup_with_popup_close_button popup_with_popup_close_transparent");
+			}
+			
+			//in case the popup gets closed without being from the cancel button, we must set the onClose handler from the parent popup.
+			if (typeof window.parent.MyFancyPopup == "object" && parent_popup.is(window.parent.MyFancyPopup.settings.elementToShow)) {
+				if (window.parent.MyFancyPopup.isPopupOpened()) {
+					var func = window.parent.MyFancyPopup.settings.onClose;
+					
+					window.parent.MyFancyPopup.settings.onClose = function() {
+						parent_popup.removeClass("popup_without_popup_close popup_with_left_popup_close popup_with_popup_close_button popup_with_popup_close_transparent");
+						
+						window.parent.MyFancyPopup.settings.onClose = func;
+					};
+				}
+				else //if was closed very fast
+					parent_popup.removeClass("popup_without_popup_close popup_with_left_popup_close popup_with_popup_close_button popup_with_popup_close_transparent");
+			}
+		}
+		else {
+			//show the close button for the popup
+			parent_popup.removeClass("popup_without_popup_close popup_with_left_popup_close popup_with_popup_close_button popup_with_popup_close_transparent");
+		}
+	}
+}
+
+function getParentWindowPopup() {
+	if (!window.parent_popup) {
+		var parent_iframe = null;
+		
+		$.each($(window.parent.document.body).find("iframe"), function(idx, iframe) {
+			if (iframe.contentWindow == window) {
+				parent_iframe = iframe;
+				return false;
+			}
+		});
+		
+		window.parent_popup = parent_iframe ? $(parent_iframe).parent().closest(".myfancypopup") : null;
+	}
+	
+	return window.parent_popup;
+}
 
 function cancel() { //This function is only used on a popup
 	var create_project = $(".create_project");

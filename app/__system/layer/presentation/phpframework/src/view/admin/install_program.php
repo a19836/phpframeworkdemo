@@ -46,8 +46,8 @@ var modules_admin_panel_url = \'' . $project_url_prefix . 'phpframework/admin/ma
 		<div class="program_info">
 			<div class="program_name">Installing program: "<span>' . ($program_label ? $program_label : $program_name) . '</span>"</div>
 		</div>'; if ($errors) { $main_content .= '<label class="error_title">There were some erros installing this program, this is:</label>
-		<ul class="errors_list">'; $files = $errors["files"]; unset($errors["files"]); foreach($errors as $k => $v) if (is_string($v)) $main_content .= '<li>' . $v . '</li>'; if ($files) { $main_content .= '<li>The following files could not be copied:</li>
-			<ul>'; foreach($files as $src_path => $dst_path) $main_content .= '<li>' . (is_numeric($src_path) ? "" : $src_path . ' => ') . $dst_path . '</li>'; $main_content .= '</ul>'; } $main_content .= '</ul>'; } else if ($error_message) { $main_content .= '<label class="error">' . $error_message . '</label>'; } else if ($next_step_html) { $main_content .= '
+		<ul class="errors_list">'; $dbs_errors = $errors["dbs"]; $files_errors = $errors["files"]; unset($errors["files"]); unset($errors["dbs"]); foreach($errors as $k => $v) if (is_string($v)) $main_content .= '<li>' . $v . '</li>'; foreach($dbs_errors as $k => $v) if (is_string($v)) $main_content .= '<li>' . htmlentities($v) . '</li>'; if ($files_errors) { $main_content .= '<li>The following files could not be copied:</li>
+			<ul>'; foreach($files_errors as $src_path => $dst_path) $main_content .= '<li>' . (is_numeric($src_path) ? "" : $src_path . ' => ') . $dst_path . '</li>'; $main_content .= '</ul>'; } $main_content .= '</ul>'; } else if ($error_message) { $main_content .= '<label class="error">' . $error_message . '</label>'; } else if ($next_step_html) { $main_content .= '
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="step" value="' . $next_step . '" />
 			<textarea class="hidden" name="post_data">' . json_encode($post_data) . '</textarea>

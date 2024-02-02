@@ -372,23 +372,26 @@ include_once get_lib("org.phpframework.util.xml.MyXML"); include_once get_lib("o
 			<item name="log_echo_active">&lt;?php echo $GLOBALS["log_echo_active"]; ?&gt;</item>
 			<item name="log_file_path">&lt;?php echo $GLOBALS["log_file_path"]; ?&gt;</item>
 			<item name="log_css"><![CDATA[
+				body {
+					overflow:overlay;
+					background-color:#F0F1F5;
+					font-family:verdana,arial,courier;
+					font-size:11px;
+				}
 				.log_handler {
-					font-family: verdana,arial,courier;
-					font-family: var(--main-font-family);
-					font-size: 11px;
-					color: #666;
-					font-style: italic;
-			
-					border: 1px outset #999;
-					background-color: #F7F7F7;
-					margin: 10px 10px 10px 10px;
-					padding: 5px 5px 5px 5px;
+					font-style:italic;
+					
+					color:#83889E;
+					/*background-color:#F8F9FC;
+					border:1px outset #BFC4DB;
+					border-radius:5px;*/
+					margin:10px;
+					padding:5px;
 				}
 				
 				.log_handler .message {
-					font-size: 12px;
-					font-weight: bold;
-					color: #333;
+					color:#333;
+					position:relative;
 				}
 				.log_handler .message .exception {
 					color:#FF0000;
@@ -405,8 +408,26 @@ include_once get_lib("org.phpframework.util.xml.MyXML"); include_once get_lib("o
 				.log_handler .message .message {
 					color:#009900;
 				}
+				.log_handler .message .toggle_trace {
+					margin-right:10px;
+					display:inline-block;
+					font-style:normal;
+					font-weight:bold;
+					cursor:pointer;
+				}
+				.log_handler .message p {
+					margin:0;
+					padding:0;
+				}
 				.log_handler .trace {
-		
+					margin-top:15px;
+					font-size:10px;
+				}
+				.log_handler .trace.hidden {
+					display:none;
+				}
+				.log_handler .trace .exception {
+					white-space:nowrap;
 				}
 			]]></item>
 		</list>

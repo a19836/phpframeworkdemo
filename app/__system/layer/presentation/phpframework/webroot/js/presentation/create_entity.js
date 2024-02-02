@@ -1,19 +1,59 @@
 $(function () {
 	var create_entity = $(".create_entity");
 	
-	if (popup && window.parent != window) {
-		//hide the close button for the popup
-		window.parent.document.body.classList.add("popup_without_popup_close");
+	if (window.parent != window) {
+		prepareParentWindowPopup();
 		
-		create_entity.addClass("popup_without_popup_close");
-	}
-	else if (window.parent != window) {
-		//show the close button for the popup
-		window.parent.document.body.classList.remove("popup_without_popup_close");
+		if (popup)
+			create_entity.addClass("popup_without_popup_close");
 	}
 	
 	create_entity.removeClass("changing_to_step");
 });
+
+function prepareParentWindowPopup() {
+	var parent_popup = getParentWindowPopup();
+	
+	if (parent_popup && window.parent != window) {
+		if (popup) { //hide the close button for the popup
+			parent_popup.addClass("popup_without_popup_close");
+			
+			//in case the popup gets closed without being from the cancel button, we must set the onClose handler from the parent popup.
+			if (typeof window.parent.MyFancyPopup == "object" && parent_popup.is(window.parent.MyFancyPopup.settings.elementToShow)) {
+				if (window.parent.MyFancyPopup.isPopupOpened()) {
+					var func = window.parent.MyFancyPopup.settings.onClose;
+					
+					window.parent.MyFancyPopup.settings.onClose = function() {
+						parent_popup.removeClass("popup_without_popup_close");
+						
+						window.parent.MyFancyPopup.settings.onClose = func;
+					};
+				}
+				else //if was closed very fast
+					parent_popup.removeClass("popup_without_popup_close");
+			}
+		}
+		else //show the close button for the popup
+			parent_popup.removeClass("popup_without_popup_close");
+	}
+}
+
+function getParentWindowPopup() {
+	if (!window.parent_popup) {
+		var parent_iframe = null;
+		
+		$.each($(window.parent.document.body).find("iframe"), function(idx, iframe) {
+			if (iframe.contentWindow == window) {
+				parent_iframe = iframe;
+				return false;
+			}
+		});
+		
+		window.parent_popup = parent_iframe ? $(parent_iframe).parent().closest(".myfancypopup") : null;
+	}
+	
+	return window.parent_popup;
+}
 
 function cancel() { //This function is only used on a popup
 	var create_entity = $(".create_entity");
