@@ -1295,7 +1295,7 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 					param_value = template_params_values_list_clone[param];
 				
 				if (defined_template_params_values && defined_template_params_values.hasOwnProperty(param))
-					default_value = defined_template_params_values[$param];
+					default_value = defined_template_params_values[param];
 				
 				var param_html = getTemplateParamHtml(param, param_value, default_value);
 				template_params.append(param_html);
