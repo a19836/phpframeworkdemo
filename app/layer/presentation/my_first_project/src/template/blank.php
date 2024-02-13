@@ -11,9 +11,11 @@
     
     	<title><?= translateProjectLabel($EVC, $EVC->getCMSLayer()->getCMSTemplateLayer()->getParam("Page Title")); ?></title>
     	
+	<? if (!$EVC->getCMSLayer()->getCMSTemplateLayer()->getParam("boostrap_lib_included_from_page_level")) { ?>
     	<link href="<?php echo $original_project_url_prefix; ?>vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	    <script src="<?php echo $original_project_url_prefix; ?>vendor/bootstrap/js/bootstrap.min.js"></script>
-		
+	<? } ?>
+
 		<?= $EVC->getCMSLayer()->getCMSTemplateLayer()->renderRegion("Head"); ?>
 	</head>
 	<body>
