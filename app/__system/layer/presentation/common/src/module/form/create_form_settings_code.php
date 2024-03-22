@@ -6,12 +6,12 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $settings = $_POST["settings"];
 
 if (is_array($settings)) {
-	MyArray::arrKeysToLowerCase($settings, true);
-	
 	$code = "";
 	
 	if ($settings)
 		foreach ($settings as $type => $value) {
+			$type = strtolower($type);
+			
 			switch ($type) {
 				case "actions":
 					if (is_array($value))

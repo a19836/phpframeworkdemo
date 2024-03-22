@@ -5,10 +5,18 @@ $(function () {
 		prepareParentWindowPopup();
 		
 		if (popup)
-			create_entity.addClass("popup_without_popup_close");
+			create_entity.find(".top_bar.create_entity_top_bar").addClass("popup_without_popup_close");
 	}
 	
 	create_entity.removeClass("changing_to_step");
+	
+	//if install page and post action of upload or remote url, show advanced features
+	if (create_entity.find(".install_page").length > 0 && (is_remote_url || is_zip_file)) {
+		var exists_remote_url = create_entity.find(".install_page .install_page_url input.remote_url").val().length > 0;
+		
+		if (exists_remote_url)
+			toggleLocalUpload( create_entity.find(".sub_title")[0] );
+	}
 });
 
 function prepareParentWindowPopup() {
@@ -58,9 +66,11 @@ function getParentWindowPopup() {
 function cancel() { //This function is only used on a popup
 	var create_entity = $(".create_entity");
 	
-	if (popup && window.parent != window) {
-		window.parent.document.body.classList.remove("popup_without_popup_close");
-		create_entity.removeClass("popup_without_popup_close");
+	var parent_popup = getParentWindowPopup();
+	
+	if (parent_popup && window.parent != window) {
+		parent_popup.removeClass("popup_without_popup_close");
+		create_entity.find(".top_bar.create_entity_top_bar").removeClass("popup_without_popup_close");
 	}
 	
 	create_entity.children(".creation_step").children().not(".top_bar").remove();
@@ -71,6 +81,7 @@ function cancel() { //This function is only used on a popup
 
 function onSucessfullPageCreation() {
 	var func = null;
+	var is_ctrl_key_pressed = window.event && (window.event.ctrlKey || window.event.keyCode == 65);
 	
 	if (on_success_js_func_name) {
 		eval("func = typeof window.parent." + on_success_js_func_name + " == 'function' ? window.parent." + on_success_js_func_name + " : null;");
@@ -78,11 +89,31 @@ function onSucessfullPageCreation() {
 		if (!func) //could be inside of the admin_home_project.php which is inside of the admin_advanced.php
 			eval("func = typeof window.parent.parent." + on_success_js_func_name + " == 'function' ? window.parent.parent." + on_success_js_func_name + " : null;");
 
-		if (func)
-			func();
+		if (func) {
+			var on_success_js_func_opts = {
+				"is_ctrl_key_pressed": is_ctrl_key_pressed
+			};
+			
+			func(on_success_js_func_opts);
+		}
 	}
 	
 	if (!func && edit_entity_url) {
+		if (is_ctrl_key_pressed) {
+			var rand = Math.random() * 10000;
+			var win = window.open(edit_entity_url, "tab" + rand);
+			
+			if (win) { //Browser has allowed it to be opened
+				win.focus();
+				
+				//refreshes parent window
+				if (window.parent != window)
+					window.parent.document.location = "" + window.parent.document.location;
+				
+				return true; //don't execute code below.
+			}
+		}
+		
 		if (typeof window.parent.parent.goToHandler == "function" && window.parent.parent != window.parent) //if inside of the admin_home_project.php which is inside of the admin_advanced.php
 			window.parent.parent.goToHandler(edit_entity_url);
 		else if (window.parent != window) { //if inside of the admin_advanced.php
@@ -132,6 +163,53 @@ function postToUrl(url, data) {
 	create_entity.append(oForm);
 	
 	oForm.submit();
+}
+
+function initInstallPages() {
+	initStorePages();
+	
+	var create_entity = $(".create_entity");
+	var install_page = create_entity.find(".install_page");
+	var a = create_entity.find(".top_bar.create_entity_top_bar header > ul > li.continue > a");
+	
+	//init input file upload
+	install_page.find(".file_upload form input.upload_file").on("change", function() {
+		if (this.files.length > 0)
+			a.addClass("active");
+		else
+			a.removeClass("active");
+	});
+	
+	//init install_store_page
+	install_page.find(" > ul > li > a").on("click", function() {
+		setTimeout(function() {
+			var active_tab = install_page.tabs("option", "active");
+			var exists_selection = false;
+			
+			if (active_tab == 0)
+				exists_selection = install_page.find(".install_store_page > ul > li.selected").length > 0;
+			else 
+				exists_selection = install_page.find(".file_upload form input.upload_file")[0].files.length > 0;
+			
+			if (exists_selection)
+				a.addClass("active");
+			else
+				a.removeClass("active");
+		}, 300);
+	});
+	
+	//init install_page_url
+	var input = install_page.find(".install_page_url form input.remote_url");
+	var check_value_func = function() {
+		var value = input.val();
+		value = ("" + value).replace(/(^\s+|\s+$)/g, ""); //trim
+		
+		if (value.length > 0)
+			a.addClass("active");
+		else
+			a.removeClass("active");
+	};
+	input.on("keyup", check_value_func).on("blur", check_value_func);
 }
 
 function initStorePages() {
@@ -230,17 +308,84 @@ function choosePage(elm, choose_url) {
 		goToUrl(current_url);
 	}
 	else {
-		var li = $(".create_entity ul > li.selected");
+		var install_page = $(".create_entity .install_page");
+		var active_tab = install_page.tabs("option", "active");
+		var status = true;
 		
-		if (!li[0])
-			StatusMessageHandler.showError("You must select a pre-built page first.\nOr go back and click in the 'Empty Page' button.");
-		else {
-			StatusMessageHandler.showMessage("Downloading selected pre-built page and installing it. Please wait a while...");
+		elm = $(elm);
+		var on_click = elm.attr("onClick");
+		elm.removeAttr("onClick").addClass("loading").prepend('<span class="icon loading"></span>');
+		
+		if (active_tab == 2) { //if remote url
+			var oForm = install_page.find(".install_page_url form");
+			var remote_url = oForm.find("input.remote_url").val();
 			
-			var post_data = {
-				page_url: li.attr("url")
-			};
-			postToUrl(choose_url, post_data);
+			if (remote_url.replace(/\s+/g, "").length > 0) {
+				StatusMessageHandler.showMessage("Parsing url '" + remote_url + "' and converting it to a page. Please wait a while...");
+				
+				oForm.attr("action", choose_url);
+				oForm.submit();
+			}
+			else {
+				StatusMessageHandler.showError("Please write an url for the page you wish to install!");
+				status = false;
+			}
 		}
+		else if (active_tab == 0) { //if store
+			var li = install_page.find(".install_store_page > ul > li.selected");
+			
+			if (!li[0]) {
+				StatusMessageHandler.showError("You must select a pre-built page first.\nOr go back and click in the 'Empty Page' button.");
+				status = false;
+			}
+			else {
+				StatusMessageHandler.showMessage("Downloading selected pre-built page and installing it. Please wait a while...");
+				
+				var post_data = {
+					zip_url: li.attr("url")
+				};
+				postToUrl(choose_url, post_data);
+			}
+		}
+		else { //if file_upload
+			var oForm = install_page.find(".file_upload form");
+			var zip_file = oForm.find("input.upload_file");
+			
+			if (zip_file[0] && zip_file[0].files.length > 0) {
+				StatusMessageHandler.showMessage("Uploading file and installing it. Please wait a while...");
+				
+				oForm.attr("action", choose_url);
+				oForm.find(".upload_url").remove();
+				oForm.submit();
+			}
+			else {
+				StatusMessageHandler.showError("You must upload a pre-built page first!");
+				status = false;
+			}
+		}
+		
+		if (!status)
+			elm.removeClass("loading").attr("onClick", on_click).children(".icon.loading").remove();
+		/*else
+			setTimeout(function() {
+				elm.removeClass("loading").attr("onClick", on_click).children(".icon.loading").remove();
+			}, 2000);*/
 	}
+}
+
+function toggleLocalUpload(elm) {
+	elm = $(elm);
+	var create_entity = $(".create_entity");
+	var install_page = create_entity.find(".install_page");
+	var active_tab = install_page.tabs("option", "active");
+	
+	create_entity.toggleClass("local_upload_shown");
+	
+	if (active_tab == 1)
+		install_page.find(" > ul > li:first-child > a").first().trigger("click");
+	
+	if (create_entity.hasClass("local_upload_shown"))
+		elm.html("Hide Advanced Features");
+	else
+		elm.html("Show Advanced Features");
 }

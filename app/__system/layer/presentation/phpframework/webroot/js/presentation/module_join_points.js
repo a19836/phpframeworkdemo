@@ -15,9 +15,10 @@ $(function () {
 	if (!chooseFileFromFileManagerTree) {
 		chooseFileFromFileManagerTree = new MyTree({
 			multiple_selection : false,
+			toggle_selection : false,
 			toggle_children_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
-			ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
+			ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTree,
 		});
 		chooseFileFromFileManagerTree.init("choose_file_from_file_manager");
 	}
@@ -25,6 +26,7 @@ $(function () {
 	if (!chooseFolderFromFileManagerTree) {
 		chooseFolderFromFileManagerTree = new MyTree({
 			multiple_selection : false,
+			toggle_selection : false,
 			toggle_children_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
 			ajax_callback_after : removeAllThatIsNotFoldersFromTree,
@@ -35,9 +37,10 @@ $(function () {
 	if (!chooseMethodFromFileManagerTree) {
 		chooseMethodFromFileManagerTree = new MyTree({
 			multiple_selection : false,
+			toggle_selection : false,
 			toggle_children_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
-			ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
+			ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForMethods,
 		});
 		chooseMethodFromFileManagerTree.init("choose_method_from_file_manager");
 	}
@@ -45,9 +48,10 @@ $(function () {
 	if (!chooseFunctionFromFileManagerTree) {
 		chooseFunctionFromFileManagerTree = new MyTree({
 			multiple_selection : false,
+			toggle_selection : false,
 			toggle_children_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
-			ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
+			ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForFunctions,
 		});
 		chooseFunctionFromFileManagerTree.init("choose_function_from_file_manager");
 	}
@@ -149,8 +153,9 @@ function onLoadRegionBlocksJoinPoints(region_blocks_elm) {
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
 		var item_obj = objs[i];
+		var is_html = $(item).children(".type").val() == 1;
 		
-		if (item_obj && $(item).children(".region_block_type").val() != "html") {
+		if (item_obj && !is_html) {
 			var region = getArgumentCode(item_obj["region"], item_obj["region_type"]);
 			var block = getArgumentCode(item_obj["block"], item_obj["block_type"]);
 			
@@ -167,61 +172,63 @@ function onLoadRegionBlockJoinPoints(item, region, block) {
 		if (region && block) {
 			var b = ("" + block).substr(0, 1) == '"' ? ("" + block).replace(/"/g, "") : block;
 			
-			var handler = function(data) {
-				if (data) {
-					item.append(data);
-					
-					resizeModuleHandlerImplFileContents();
-					
-					var join_points_elms = item.find(".module_join_points > .join_points > .join_point");
-					join_points_elms.children("select.join_point_active").remove();
-					join_points_elms.children(".icon").show();
-					
-					var rb_index = item.attr("rb_index");
-					var block_join_points_settings_objs = getRegionBlockJoinPoints(region, block, rb_index);
-					
-					if (block_join_points_settings_objs)
-						onLoadBlockJoinPoints(join_points_elms, block_join_points_settings_objs, null);
-				}
-			};
-			
-			if (page_blocks_join_points_htmls.hasOwnProperty(b))
-				handler( page_blocks_join_points_htmls[b] );
-			else if (page_blocks_join_points_htmls_loading[b]) { //Bc this function will get executed asynchronous, we need to be sure that we don't get multiple requests to the server of the same thing.
-				page_blocks_join_points_htmls_loading_interval_id[b] = setInterval(function() {
-					if (!page_blocks_join_points_htmls_loading[b]) {
-						clearInterval(page_blocks_join_points_htmls_loading_interval_id[b]);
+			if (b) {
+				var handler = function(data) {
+					if (data) {
+						item.append(data);
 						
-						page_blocks_join_points_htmls_loading_interval_id[b] = null;
-						delete page_blocks_join_points_htmls_loading_interval_id[b];
+						resizeModuleHandlerImplFileContents();
 						
-						handler( page_blocks_join_points_htmls[b] );
+						var join_points_elms = item.find(".module_join_points > .join_points > .join_point");
+						join_points_elms.children("select.join_point_active").remove();
+						join_points_elms.children(".icon").show();
+						
+						var rb_index = item.attr("rb_index");
+						var block_join_points_settings_objs = getRegionBlockJoinPoints(region, block, rb_index);
+						
+						if (block_join_points_settings_objs)
+							onLoadBlockJoinPoints(join_points_elms, block_join_points_settings_objs, null);
 					}
-				}, 500);
-			}
-			else {
-				page_blocks_join_points_htmls_loading[b] = true;
+				};
 				
-				$.ajax({
-					type : "get",
-					url : get_page_block_join_points_html_url.replace("#block#", b),
-					dataType : "text",
-					success : function(data, textStatus, jqXHR) {
-						page_blocks_join_points_htmls[b] = data;
+				if (page_blocks_join_points_htmls.hasOwnProperty(b))
+					handler( page_blocks_join_points_htmls[b] );
+				else if (page_blocks_join_points_htmls_loading[b]) { //Bc this function will get executed asynchronous, we need to be sure that we don't get multiple requests to the server of the same thing.
+					page_blocks_join_points_htmls_loading_interval_id[b] = setInterval(function() {
+						if (!page_blocks_join_points_htmls_loading[b]) {
+							clearInterval(page_blocks_join_points_htmls_loading_interval_id[b]);
+							
+							page_blocks_join_points_htmls_loading_interval_id[b] = null;
+							delete page_blocks_join_points_htmls_loading_interval_id[b];
+							
+							handler( page_blocks_join_points_htmls[b] );
+						}
+					}, 500);
+				}
+				else {
+					page_blocks_join_points_htmls_loading[b] = true;
 					
-						page_blocks_join_points_htmls_loading[b] = null;
-						delete page_blocks_join_points_htmls_loading[b];
+					$.ajax({
+						type : "get",
+						url : get_page_block_join_points_html_url.replace("#block#", b),
+						dataType : "text",
+						success : function(data, textStatus, jqXHR) {
+							page_blocks_join_points_htmls[b] = data;
 						
-						handler(data);
-					},
-					error : function(jqXHR, textStatus, errorThrown) { 
-						page_blocks_join_points_htmls_loading[b] = null;
-						delete page_blocks_join_points_htmls_loading[b];
-						
-						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-						StatusMessageHandler.showError("Error trying to get block join points.\nPlease try again..." + msg);
-					},
-				});
+							page_blocks_join_points_htmls_loading[b] = null;
+							delete page_blocks_join_points_htmls_loading[b];
+							
+							handler(data);
+						},
+						error : function(jqXHR, textStatus, errorThrown) { 
+							page_blocks_join_points_htmls_loading[b] = null;
+							delete page_blocks_join_points_htmls_loading[b];
+							
+							var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+							StatusMessageHandler.showError("Error trying to get block join points.\nPlease try again..." + msg);
+						},
+					});
+				}
 			}
 		}
 	}
@@ -730,10 +737,109 @@ function convertBlockSettingsValuesKeysToLowerCase(settings_values) {
 	return sv
 }
 
+/* This function inverts the arrays conversion done from the method CMSPresentationLayerJoinPointsUIHandler::convertBlockSettingsArrayToObj in PHP. This should be used for all the values that are arrays this is x["items"]. 
+Here is an example: 
+	The CMSPresentationLayerJoinPointsUIHandler::convertBlockSettingsArrayToObj will convert the php code:
+		"action_value" => array("name" => 12, "companies" => array("xxx" => "asd", "yyy"))
+	to the json:
+		action_value: {
+			"key" => "name", 
+			"key_type" => "string", 
+			"items": {
+				"name": {"key" => "name", "key_type" => "string", "value" => "12", "value_type" => ""},
+				"companies": {
+					"key" => "companies",
+					"key_type" => "string",
+					"items": {
+						"xxx": {"key" => "xxx", "key_type" => "string", "value" => "asd", "value_type" => "string"},
+						0: {"key" => "0", "key_type" => "string", "value" => "yyy", "value_type" => "string"}
+					}
+				},
+			}
+		}
+	So we need to convert it back to:
+			action_value: {
+			"key" => "name", 
+			"key_type" => "string", 
+			"items": {
+				"name": {"key" => "name", "key_type" => "string", "value" => "12", "value_type" => ""},
+				"companies": {
+					"key" => "companies",
+					"key_type" => "string",
+					"items": [
+						{"key" => "xxx", "key_type" => "string", "value" => "asd", "value_type" => "string"},
+						{"key" => "0", "key_type" => "string", "value" => "yyy", "value_type" => "string"}
+					]
+				},
+			}
+		}
+	by calling:
+		convertObjectIntoArray(obj["action_value"]["items"])
+
+This function receives one argument that can have multiple different values, this is:
+	{
+		"name": {"key" => "name", "key_type" => "string", "value" => "jp", "value_type" => "string"},
+		"age": {
+			"key" => "age",
+			"key_type" => "string",
+			"items": {
+				"age_1": {"key" => "age_1", "key_type" => "string", "value" => "jp", "value_type" => "string"},
+				"age_1": {"key" => "age_2", "key_type" => "string", "value" => "jp", "value_type" => "string"}
+			}
+		},
+		"height": {
+			"key" => "height",
+			"key_type" => "string",
+			"items": [
+				{"key" => "height_1", "key_type" => "string", "value" => "jp", "value_type" => "string"},
+				{"key" => "height_2", "key_type" => "string", "value" => "jp", "value_type" => "string"}
+			]
+		}
+	}
+or
+	[
+		{
+			"name": {"key" => "name", "key_type" => "string", "value" => "jp", "value_type" => "string"}
+		},
+		{
+			"name": {"key" => "name", "key_type" => "string", "value" => "jp", "value_type" => "string"},
+			"age": {
+				"key" => "age",
+				"key_type" => "string",
+				"items": {
+					"age_1": {"key" => "age_1", "key_type" => "string", "value" => "jp", "value_type" => "string"},
+					"age_2": {"key" => "age_2", "key_type" => "string", "value" => "jp", "value_type" => "string"}
+				}
+			}
+		}
+	]
+or 
+	[
+		{"key" => "name", "key_type" => "string", "value" => "jp", "value_type" => "string"},
+		{"key" => "age", "key_type" => "string", "value" => "23", "value_type" => "string"}
+	]
+*/
 function convertObjectIntoArray(obj) {
 	var arr = [];
 	
-	if (!$.isEmptyObject(obj)) {
+	//if this function is called directly from the SLA array action, the obj may be an array
+	if ($.isArray(obj)) {
+		for (var i = 0, t = obj.length; i < t; i++) {
+			var v = obj[i];
+			
+			if ($.isPlainObject(v))
+				for (var k in v) {
+					var vv = v[k];
+					
+					if ($.isPlainObject(vv) && vv.hasOwnProperty("items") && vv["items"])
+						v[k]["items"] = convertObjectIntoArray(vv["items"]);
+				}
+			
+			arr.push(v);
+		}
+	}
+	//otherwise is an object
+	else if (!$.isEmptyObject(obj)) {
 		for (var k in obj) {
 			var v = obj[k];
 			

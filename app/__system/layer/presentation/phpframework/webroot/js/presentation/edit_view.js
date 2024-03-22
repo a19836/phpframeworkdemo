@@ -20,38 +20,43 @@ $(function () {
 	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForVariables,
 	});
 	choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");
 	
 	chooseMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForMethods,
 	});
 	chooseMethodFromFileManagerTree.init("choose_method_from_file_manager");
 	
 	chooseFunctionFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForFunctions,
 	});
 	chooseFunctionFromFileManagerTree.init("choose_function_from_file_manager");
 	
 	chooseFileFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTree,
 	});
 	chooseFileFromFileManagerTree.init("choose_file_from_file_manager");
 	
 	chooseFolderFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotFoldersFromTree,
@@ -60,14 +65,25 @@ $(function () {
 	
 	choosePresentationFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
 	});
 	choosePresentationFromFileManagerTree.init("choose_presentation_from_file_manager");
 	
+	chooseViewFromFileManagerTree = new MyTree({
+		multiple_selection : false,
+		toggle_selection : false,
+		toggle_children_on_click : true,
+		ajax_callback_before : prepareLayerNodes1,
+		ajax_callback_after : removeAllThatIsNotViewsFromTree,
+	});
+	chooseViewFromFileManagerTree.init("choose_view_from_file_manager");
+	
 	choosePageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
@@ -76,6 +92,7 @@ $(function () {
 	
 	chooseImageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
@@ -84,6 +101,7 @@ $(function () {
 	
 	chooseWebrootFileUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotWebrootFileFromTree,
@@ -106,6 +124,7 @@ $(function () {
 		initCodeLayoutUIEditor(view_obj, {
 			save_func: saveView, 
 			ready_func: function() {
+				//prepare some PtlLayoutUIEditor options
 				var luie = view_obj.find("#code > .layout-ui-editor");
 				var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
 				
@@ -137,8 +156,12 @@ $(function () {
 				var lue_auto_convert_icon = $("#code > .code_menu li.auto_convert_activation").first().clone().removeClass("hidden");
 				sub_menu.children("ul").append(flip_layout_ui_panels_icon).append('<li class="separator"></li>').append(lue_full_screen_icon).append('<li class="separator"></li>').append(lue_auto_save_icon).append(lue_auto_convert_icon).append(lue_save_icon);
 				
+				//add top bar menu: Show/Hide Side Bar DBs Panel
+				addCodeLayoutUIEditorRightContainerDBsMenu( $(".code_layout_ui_editor .layout-ui-editor > .options .option.sub_menu ul li.editor_full_screen"), "without_padding", true);
+				
+				//bc the LayoutUIEditor is not inited at start, we need to hide this new icon. The others are already hidden by default.
 				if (!luie.find(" > .tabs > .tab.tab-active").is(".view-layout"))
-					sub_menu.addClass("hidden"); //bc the LayoutUIEditor is not inited at start, we need to hide this new icon. The others are already hidden by default.
+					sub_menu.addClass("hidden"); 
 				
 				//hide loading icon
 				MyFancyPopup.hidePopup();

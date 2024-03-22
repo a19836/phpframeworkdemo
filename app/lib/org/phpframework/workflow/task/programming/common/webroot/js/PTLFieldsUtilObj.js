@@ -1098,7 +1098,7 @@ var PTLFieldsUtilObj = {
 					matches_exists = true;
 					
 					//echo "m($value):$m<br>";
-					if (m.indexOf("[") != -1) { //if value == #[0]name# or #[$idx - 1][name]#, returns $input[0]["name"] or $input[$idx - 1]["name"]
+					if (m.indexOf("[") != -1 || m.indexOf("]") != -1) { //if value == #[0]name# or #[$idx - 1][name]#, returns $input[0]["name"] or $input[$idx - 1]["name"]
 						var sub_matches = m.match(/([^\[\]]+)/g);
 						m = "[" + sub_matches.join("][") + "]"; //fix the cases like: #articles[$idx - 1]name#
 						m = m.replace(/\[idx\]/gi, '[\\$' + this.idx_var_name + "]").replace(/\[\\\$?idx\]/gi, '[\\$' + this.idx_var_name + "]").replace(/\\\$?idx[^a-z\_]/gi, '\\$' + this.idx_var_name);

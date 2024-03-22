@@ -97,7 +97,8 @@ var FunctionUtilObj = {
 		var is_reverse = main_tasks_flow_parent.hasClass("reverse");
 		
 		//prepare html
-		var html = '	<div class="myfancypopup edit_function_code">'
+		var html = '	<div class="myfancypopup edit_function_code with_title">'
+				+ '		<div class="title">Edit Function Code</div>'
 				+ '		<ul class="tabs tabs_transparent tabs_right tabs_icons">'
 				+ '			<li id="code_editor_tab"><a href="#code" onClick="FunctionUtilObj.onClickCodeEditorTab(this);return false;"><i class="icon code_editor_tab"></i> Code Editor</a></li>'
 				+ '			<li id="tasks_flow_tab"><a href="#ui" onClick="FunctionUtilObj.onClickTaskWorkflowTab(this);return false;"><i class="icon tasks_flow_tab"></i> Diagram Editor</a></li>'
@@ -129,8 +130,14 @@ var FunctionUtilObj = {
 				+ '								<li class="sort_tasks"><a onclick="FunctionUtilObj.sortWorkflowTask(this, 4);return false;"><i class="icon sort"></i> Sort Type 4</a></li>'
 				+ '							</ul>'
 				+ '						</li>'
+				+ '						' + (
+											(this.create_workflow_file_from_code_url && this.get_tmp_workflow_file_url) || 
+											(this.create_code_from_workflow_file_url && this.set_tmp_workflow_file_url)
+											 ? '<li class="separator"></li>' : ''
+										)
 				+ '						' + (this.create_workflow_file_from_code_url && this.get_tmp_workflow_file_url ? '<li class="generate_tasks_flow_from_code" title="Generate Diagram from Code"><a onclick="FunctionUtilObj.generateTasksFlowFromCode(this);return false;"><i class="icon generate_tasks_flow_from_code"></i> Generate Diagram from Code</a></li>' : '')
 				+ '						' + (this.create_code_from_workflow_file_url && this.set_tmp_workflow_file_url ? '<li class="generate_code_from_tasks_flow" title="Generate Code From Diagram"><a onclick="FunctionUtilObj.generateCodeFromTasksFlow(this);return false;"><i class="icon generate_code_from_tasks_flow"></i> Generate Code From Diagram</a></li>' : '')
+				+ '						<li class="separator"></li>'
 				+ '						<li class="flip_tasks_flow_panels_side" title="Flip Panels Side"><a onclick="FunctionUtilObj.flipTasksFlowPanelsSide(this);return false;"><i class="icon flip_tasks_flow_panels_side"></i> Flip Panels Side</a></li>'
 				+ '					</ul>'
 				+ '				</div>'

@@ -60,7 +60,11 @@
   .layout-ui-editor > .menu-settings li.group.settings-widget .choose-widget-resource,
   .layout-ui-editor > .menu-settings li.group.settings-widget .choose-widget-resource-attribute,
   .layout-ui-editor > .menu-settings li.group.settings-widget .refresh-existent-data,
-  .layout-ui-editor > .menu-settings li.group.settings-widget .choose-event {
+  .layout-ui-editor > .menu-settings li.group.settings-widget .choose-event,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .add-extra-callback,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .remove-extra-callback,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .add-extra-event,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .remove-extra-event {
 	line-height:2.2em;
 	margin-right:10px;
 	font-weight:bold;
@@ -74,12 +78,23 @@
 	margin-right:0;
 	font-size:120%;
 }
+.layout-ui-editor > .menu-settings li.group.settings-widget .add-extra-callback,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .remove-extra-callback,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .add-extra-event,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .remove-extra-event {
+	line-height:2em;
+	font-size:120%;
+}
 .layout-ui-editor > .menu-settings li.group.settings-widget .swap-input-select,
   .layout-ui-editor > .menu-settings li.group.settings-widget .choose-table-attribute,
   .layout-ui-editor > .menu-settings li.group.settings-widget .choose-widget-resource,
   .layout-ui-editor > .menu-settings li.group.settings-widget .choose-widget-resource-attribute,
   .layout-ui-editor > .menu-settings li.group.settings-widget .refresh-existent-data,
-  .layout-ui-editor > .menu-settings li.group.settings-widget .choose-event {
+  .layout-ui-editor > .menu-settings li.group.settings-widget .choose-event,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .add-extra-callback,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .remove-extra-callback,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .add-extra-event,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .remove-extra-event {
 	float:right;
 }
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-item-remove {
@@ -108,6 +123,10 @@
 }
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-swap-field > label {
 	max-width:calc(100% - 160px);
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-swap-field.with-extra-callbacks > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-swap-field.with-extra-events > label {
+	max-width:calc(100% - 175px);
 }
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-swap-field.widget-resource-reference > input,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-swap-field.widget-resource-reference > select {
@@ -334,16 +353,73 @@
 	color:var(--main-iframe-top-title-color);
 }
 
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-parse-callback > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-validate-callback > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-success-callback > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-error-callback > label {
+	max-width: calc(100% - 140px);
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-parse-callback.with-extra-callbacks > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-validate-callback.with-extra-callbacks > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-success-callback.with-extra-callbacks > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-error-callback.with-extra-callbacks > label {
+	max-width: calc(100% - 155px);
+}
+
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions .widget-resource-conditions-table {
+	overflow-x:auto;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions table {
+	width:100%;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions table thead th {
+	font-weight:normal;
+	opacity:.5;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions table .name,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions table .value {
+	min-width:100px;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions table .type,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions table .case,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions table .operator {
+	width:60px;
+	min-width:60px;
+	max-width:60px;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions table .action {
+	width:10px;
+	min-width:10px;
+	max-width:10px;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions table .name input,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions table .value input,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions table .type select,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions table .case select,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions table .operator select {
+	width:100%;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions .remove-resource-condition {
+	font-size:120%;
+	cursor:pointer;
+}
+
 /* MENU SETTINGS - WIDGET - DISPLAY RESOURCE ATTRIBUTE */
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > .group-title > .widget-display-resource-value-toggle {
 	line-height:2.2em;
-	margin-left:10px;
+	margin:0 -5px 0 10px;
+	padding:5px;
+	display:inline-block;
 	font-weight:bold;
 	vertical-align:middle;
 	cursor:pointer;
 }
-.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value:not(.group-open) > .group-title > .widget-display-resource-value-toggle {
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value:not(.group-open) > .group-title > .widget-display-resource-value-toggle,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value.with-display-disabled > .group-title > .widget-display-resource-value-toggle {
 	display:none;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > .group-title > .widget-display-resource-value-toggle:hover {
+	opacity:.5;
 }
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul {
 	padding-bottom:0;
@@ -351,13 +427,34 @@
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value:not(.widget-advanced-options) > ul > li:not(.widget-display-resource-value-resource-reference):not(.widget-display-resource-value-resource-display):not(.widget-display-resource-value-resource-attribute) {
 	display:none;
 }
-.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value  > ul > li.widget-display-resource-value-resource-attribute > label {
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value.with-display-disabled > ul > li:not(.widget-display-resource-value-resource-display) {
+	display:none;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value.with-display-resource > ul > li.widget-display-resource-value-resource-attribute {
+	display:none;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-resource-attribute > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-display-callback > label {
 	max-width:calc(100% - 140px);
 }
-.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value  > ul > li.widget-display-resource-value-resource-attribute > input[readonly] {
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-display-handler > label {
+	max-width:calc(100% - 160px);
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-display-callback.with-extra-callbacks > label {
+	max-width:calc(100% - 155px);
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-display-handler.with-extra-callbacks > label {
+	max-width:calc(100% - 175px);
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-resource-attribute > input[readonly],
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-resource-index > input[readonly] {
 	cursor:not-allowed;
 }
-.layout-ui-editor > .menu-settings:not(.menu-settings-select) li.group.settings-widget .widget-display-resource-value  > ul > li.widget-display-resource-value-allow-new-options {
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-resource-attribute > input:focus,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-resource-attribute > input:active {
+	border-color:var(--menu-settings-button-bg, #796669);
+}
+.layout-ui-editor > .menu-settings:not(.menu-settings-select) li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-allow-new-options {
 	display:none;
 }
 
@@ -374,7 +471,7 @@
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-checkbox > label {
 	max-width:calc(100% - 70px);
 }
-.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties > ul > li:not(.widget-property-open):not(.widget-property-shown-attrs-names):not(.widget-property-pks-attrs-names):not(.widget-property-default-attrs-values):not(.widget-property-search-attrs-names) > ul {
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties > ul > li:not(.widget-property-open):not(.widget-property-shown-attrs-names):not(.widget-property-pks-attrs-names):not(.widget-property-default-attrs-values):not(.widget-property-search-attrs-names):not(.with-extra-callbacks):not(.with-extra-events) > ul {
 	display:none;
 }
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-widget-type label {
@@ -391,6 +488,37 @@
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-widget-type select option.widget_type_group {
 	margin-top:5px;
 	font-weight:bold;
+}
+
+/* MENU SETTINGS - WIDGET - PROPERTIES - EXTRA CALLBACKS/EVENTS */
+.layout-ui-editor > .menu-settings li.group.settings-widget .with-extra-callbacks .extra-callbacks,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .with-extra-events .extra-events {
+	padding:0;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .with-extra-callbacks .extra-callbacks:before,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .with-extra-events .extra-events:before {
+	content: " ";
+	height: 1px;
+	display: block;
+	float: none;
+	clear: both;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .with-extra-callbacks .extra-callbacks:empty,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .with-extra-events .extra-events:empty {
+	display:none;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .with-extra-callbacks .extra-callbacks li:last-child,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .with-extra-events .extra-events li:last-child {
+	margin-bottom:5px;
+}
+
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-check-callback > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-draw-callback > label {
+	max-width:calc(100% - 140px);
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-check-callback.with-extra-callbacks > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-draw-callback.with-extra-callbacks > label {
+	max-width:calc(100% - 160px);
 }
 
 /* MENU SETTINGS - WIDGET - PROPERTIES - SHOWN/PKS/SEARCH ATTRS NAMES */

@@ -269,28 +269,34 @@ body.in_popup .view_store_module_popup {
 	color:#999;
 }
 .install_store_module > .search_module {
-	margin:10px 0 0;
+	max-width:250px;
+	margin:10px auto 0;
 	color:#999;
+	position:relative;
+	display:inline-block;
 }
 .install_store_module > .search_module .icon.search {
 	cursor:default;
 	color:inherit;
 }
 .install_store_module > .search_module input {
-	width:200px;
+	width:100%;
 	margin-left:-28px;
 	padding:10px 20px 10px 25px;
 	color:inherit;
 	border-color:inherit;
 	border-radius:0.2rem;
 	font-size:8pt;
+	box-sizing:border-box;
 }
 .install_store_module > .search_module input::placeholder {
 	color:inherit;
 }
 .install_store_module > .search_module .icon.close {
+	margin:0;
 	position:absolute;
-	margin:15px 0 0 -18px;
+	top:13px;
+	right:7px;
 }
 .install_store_module ul,
   .view_store_module_popup ul {

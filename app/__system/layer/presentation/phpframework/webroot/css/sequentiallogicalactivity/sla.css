@@ -34,7 +34,7 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 }
 
 /* SLA GROUP ITEM */
-/* DO NOT USE THE .sla_groups_flow in css bc if the .sla_group_item is inside of the sla WorkFlow, it will loose these styles. */
+/* DO NOT USE THE .sla_groups_flow in css bc if the .sla_group_item is inside of the sla WorkFlow, it will loose these styles. This is used in the layout_ui_editor_widget_resource_options.js, so any change here, must be also updated there. */
 
 .sla_main_groups .deprecated_actions_message {
 	margin-bottom:15px;
@@ -764,6 +764,12 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .array_action_body.array_items .add_variable.inline {
 	margin-left:-22px !important;
 }
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .array_action_body.array_items > .items {
+	margin-left:0;
+}
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .array_action_body.array_items ul > li:not(.item) > .items {
+	margin-left:0;
+}
 
 /* VARIABLE AND STRING PANELS */
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .redirect_action_body,
@@ -772,6 +778,7 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .sanitize_variable_action_body,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .list_report_action_body,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_block_action_body,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_view_action_body,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .include_file_action_body,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .draw_graph_action_body,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .check_logged_user_permissions_action_body {
@@ -784,6 +791,7 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .sanitize_variable_action_body:after,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .list_report_action_body:after,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_block_action_body:after,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_view_action_body:after,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .include_file_action_body:after,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .draw_graph_action_body:after {
 	content:" ";
@@ -811,6 +819,10 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_block_action_body > div > input,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_block_action_body > div > span,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_block_action_body > div > select,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_view_action_body > div > label,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_view_action_body > div > input,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_view_action_body > div > span,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_view_action_body > div > select,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .include_file_action_body > div > label,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .include_file_action_body > div > input,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .draw_graph_action_body > .draw_graph_settings div > label,
@@ -827,6 +839,7 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .sanitize_variable_action_body > span,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .list_report_action_body > div > span,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_block_action_body > div > span,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_view_action_body > div > span,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .draw_graph_action_body > .draw_graph_settings div > span,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .draw_graph_action_body > .draw_graph_settings .graph_data_sets span {
 	vertical-align:middle;
@@ -890,6 +903,29 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 	margin-top:-3px;
 }
 
+/* CALL VIEW PANEL */
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_view_action_body > div {
+	text-align:left;
+	margin-top:5px;
+}
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_view_action_body > .view > input {
+	width:100%;
+	width:calc(100% - 170px);
+	padding-right:20px;
+}
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_view_action_body > .project > select {
+	width:100%;
+	width:calc(100% - 148px);
+	box-sizing:content-box;
+}
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_view_action_body > .view > label,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_view_action_body > .project > label {
+	width:120px;
+}
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .call_view_action_body > .view > .search {
+	margin-top:-3px;
+}
+
 /* INCLUDE FILE PANEL */
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .include_file_action_body > input.path {
 	width:100%;
@@ -932,9 +968,6 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .draw_graph_action_body > .draw_graph_settings input {
 	width:100%;
 	width:calc(100% - 203px);
-}
-.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .draw_graph_action_body > .draw_graph_settings .labels_and_values_type select {
-	max-width:calc(100% - 203px);
 }
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .draw_graph_action_body > .draw_graph_settings .graph_width input,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .draw_graph_action_body > .draw_graph_settings .graph_height input,

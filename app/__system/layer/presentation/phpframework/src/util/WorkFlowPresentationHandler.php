@@ -63,7 +63,25 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 			</script>
 			'; $pf8ed4912 .= $pcfdeae4e->getJS(false, false, array("is_droppable_connection" => true, "add_default_start_task" => true, "resizable_task_properties" => true, "resizable_connection_properties" => true)); } if ($pbd963c11) { $v08d9602741 = $GLOBALS["EVC"]; $v14989637e3 = $v08d9602741->getWebrootPath($v08d9602741->getCommonProjectName()) . "vendor/ckeditor/ckeditor.js"; if (file_exists($v14989637e3)) $pf8ed4912 .= '
 			<!-- Add CKEditor JS Files  -->
-			<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/ckeditor/ckeditor.js"></script>'; } return $pf8ed4912; } public static function getUIEditorWidgetsHtml($v0345b66144, $v37d269c4fa, $v4bf8d90f04, $pfce4d1b3, $v5d3813882f = null) { $v60968209dd = $v0345b66144 . "vendor/jquerylayoutuieditor/"; include_once $v60968209dd . "util.php"; $pae9f35af = "jquerylayoutuieditor/widget/"; $pcb902903 = $v4bf8d90f04 . $pae9f35af; $pf235b497 = $pfce4d1b3 . $pae9f35af; $v0e41af17ee = $v60968209dd . "widget/"; $pce3003cf = $v37d269c4fa . "vendor/jquerylayoutuieditor/widget/"; $pee3480c4 = scanWidgets($v0e41af17ee, array( "priority_files" => getDefaultWidgetsPriorityFiles() )); $pee3480c4 = filterWidgets($pee3480c4, $v0e41af17ee, $pce3003cf, $v5d3813882f); $pd3938a46 .= getMenuWidgetsHTML($pee3480c4, $v0e41af17ee, $pce3003cf, $pcb902903, $pf235b497); return $pd3938a46; } public static function getExtraUIEditorWidgetsHtml($v0345b66144, $v19b26a58a8, $v4bf8d90f04, $pfce4d1b3, $v5d3813882f = null) { $v60968209dd = $v0345b66144 . "vendor/jquerylayoutuieditor/"; include_once $v60968209dd . "util.php"; $pae9f35af = "jquerylayoutuieditor/widget/"; $pcb902903 = $v4bf8d90f04 . $pae9f35af; $pf235b497 = $pfce4d1b3 . $pae9f35af; $v4c778e26ea = $v4bf8d90f04 . $pae9f35af; $pd0c2309c = basename($v19b26a58a8); $pce3003cf = "$pfce4d1b3$pae9f35af$pd0c2309c/"; $pee3480c4 = scanWidgets($v19b26a58a8); $pee3480c4 = filterWidgets($pee3480c4, $v19b26a58a8, $pce3003cf, $v5d3813882f); self::f22be97f31f($pee3480c4, "$v4c778e26ea$pd0c2309c/"); $pd3938a46 = getMenuWidgetsHTML($pee3480c4, $v19b26a58a8, $pce3003cf, $pcb902903, $pf235b497); return $pd3938a46; } public static function getUserUIEditorWidgetsHtml($v0345b66144, $v0e41af17ee, $v4bf8d90f04, $pfce4d1b3, $v5d3813882f = null) { $pd3938a46 = ""; if ($v0e41af17ee) { $v60968209dd = $v0345b66144 . "vendor/jquerylayoutuieditor/"; include_once $v60968209dd . "util.php"; $pae9f35af = "jquerylayoutuieditor/widget/"; $pcb902903 = $v4bf8d90f04 . $pae9f35af; $pf235b497 = $pfce4d1b3 . $pae9f35af; $v4c778e26ea = $v4bf8d90f04 . $pae9f35af; $v0e41af17ee = is_array($v0e41af17ee) ? $v0e41af17ee : array($v0e41af17ee); foreach ($v0e41af17ee as $pe4619dcd) if (file_exists($pe4619dcd)) { $pe4619dcd = str_replace("//", "/", trim( realpath($pe4619dcd) )); $pe4619dcd .= substr($pe4619dcd, strlen($pe4619dcd) - 1) == "/" ? "" : "/"; $pd0c2309c = hash("crc32b", $pe4619dcd); $pce3003cf = "$pfce4d1b3$pae9f35af$pd0c2309c/"; $pee3480c4 = scanWidgets($pe4619dcd); $pee3480c4 = filterWidgets($pee3480c4, $pe4619dcd, $pce3003cf, $v5d3813882f); self::f22be97f31f($pee3480c4, "$v4c778e26ea$pd0c2309c/"); $pd3938a46 = getMenuWidgetsHTML($pee3480c4, $pe4619dcd, $pce3003cf, $pcb902903, $pf235b497); } } return $pd3938a46; } private static function f22be97f31f($pee3480c4, $pd520d615) { $v5c1c342594 = true; if ($pee3480c4 && !is_dir($pd520d615)) foreach ($pee3480c4 as $v5e813b295b => $v2cd5d67337) { if (is_array($v2cd5d67337)) self::f22be97f31f($v2cd5d67337, $pd520d615 . "$v5e813b295b/"); else { $pcec8b7cc = dirname($v2cd5d67337) . "/webroot/"; if (file_exists($pcec8b7cc) && !self::me1bfc9cf0775($pcec8b7cc, $pd520d615)) $v5c1c342594 = false; } } return $v5c1c342594; } private static function me1bfc9cf0775($v92dcc541a8, $pa5b0817e) { if ($v92dcc541a8 && $pa5b0817e && is_dir($v92dcc541a8)) { if (!is_dir($pa5b0817e)) @mkdir($pa5b0817e, 0755, true); if (is_dir($pa5b0817e)) { $v5c1c342594 = true; $v6ee393d9fb = scandir($v92dcc541a8); if ($v6ee393d9fb) foreach ($v6ee393d9fb as $v7dffdb5a5b) if ($v7dffdb5a5b != '.' && $v7dffdb5a5b != '..') { if (is_dir("$v92dcc541a8/$v7dffdb5a5b")) { if (!self::me1bfc9cf0775("$v92dcc541a8/$v7dffdb5a5b", "$pa5b0817e/$v7dffdb5a5b")) $v5c1c342594 = false; } else if (!copy("$v92dcc541a8/$v7dffdb5a5b", "$pa5b0817e/$v7dffdb5a5b")) $v5c1c342594 = false; } return $v5c1c342594; } } } public static function getPresentationBrokersHtml($pb0e92e25, $pf7b73b3a, $v46a478e94c, $pa40f0b2a = false) { $pf8ed4912 = ''; if ($pb0e92e25) { $pc37695cb = count($pb0e92e25); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $pb0e92e25[$v43dd7d0051]; if ($v7aeaf992f5[2]) { $v94a9c171e3 = str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pf7b73b3a)) . '&item_type=presentation&folder_type=#folder_type#'; $pa8347c39 = $pa40f0b2a ? str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pa40f0b2a)) . '&item_type=presentation' : ""; $pf8ed4912 .= 'main_layers_properties.' . $v7aeaf992f5[2] . ' = {ui: {
+			<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/ckeditor/ckeditor.js"></script>'; } return $pf8ed4912; } public static function getFileManagerTreePopupHeader($peb014cfd) { $v39f67c4679 = $peb014cfd . "phpframework/dataaccess/edit_hbn_obj?bean_name=#bean_name#&bean_file_name=#bean_file_name#&filter_by_layout=#filter_by_layout#&item_type=hibernate&path=#path#&obj=#obj#"; $pb86daf5b = $peb014cfd . "phpframework/dataaccess/edit_query?bean_name=#bean_name#&bean_file_name=#bean_file_name#&filter_by_layout=#filter_by_layout#&item_type=#item_type#&path=#path#&obj=#obj#&query_id=#query_id#&query_type=#query_type#&relationship_type=#relationship_type#"; $v36291eeb3a = $peb014cfd . "phpframework/businesslogic/edit_service?bean_name=#bean_name#&bean_file_name=#bean_file_name#&filter_by_layout=#filter_by_layout#&path=#path#&service=#service#"; $v9aa0870056 = $peb014cfd . "phpframework/businesslogic/save_service?bean_name=#bean_name#&bean_file_name=#bean_file_name#&filter_by_layout=#filter_by_layout#&path=#path#"; $pc5a40763 = $peb014cfd . "phpframework/businesslogic/edit_method?bean_name=#bean_name#&bean_file_name=#bean_file_name#&filter_by_layout=#filter_by_layout#&path=#path#&service=#service#&method=#method#"; $v97e728e265 = $peb014cfd . "phpframework/businesslogic/save_method?bean_name=#bean_name#&bean_file_name=#bean_file_name#&filter_by_layout=#filter_by_layout#&path=#path#&class=#service#"; $pf8937b6d = $peb014cfd . "phpframework/businesslogic/edit_function?bean_name=#bean_name#&bean_file_name=#bean_file_name#&filter_by_layout=#filter_by_layout#&path=#path#&function=#function#"; $v9430dab3ab = $peb014cfd . "phpframework/businesslogic/save_function?bean_name=#bean_name#&bean_file_name=#bean_file_name#&filter_by_layout=#filter_by_layout#&path=#path#"; $pa5fa1905 = $peb014cfd . "phpframework/admin/edit_file_class?bean_name=#bean_name#&bean_file_name=#bean_file_name#&filter_by_layout=#filter_by_layout#&item_type=#item_type#&path=#path#&class=#class#"; $pcca95213 = $peb014cfd . "phpframework/admin/save_file_class?bean_name=#bean_name#&bean_file_name=#bean_file_name#&filter_by_layout=#filter_by_layout#&item_type=#item_type#&path=#path#"; $v73d4a22b49 = $peb014cfd . "phpframework/admin/edit_file_class_method?bean_name=#bean_name#&bean_file_name=#bean_file_name#&filter_by_layout=#filter_by_layout#&item_type=#item_type#&path=#path#&class=#class#&method=#method#"; $v7fde70d240 = $peb014cfd . "phpframework/admin/save_file_class_method?bean_name=#bean_name#&bean_file_name=#bean_file_name#&filter_by_layout=#filter_by_layout#&item_type=#item_type#&path=#path#&class=#class#"; $pa87b0096 = $peb014cfd . "phpframework/admin/edit_file_function?bean_name=#bean_name#&bean_file_name=#bean_file_name#&filter_by_layout=#filter_by_layout#&item_type=#item_type#&path=#path#&function=#function#"; $v3d4207e17a = $peb014cfd . "phpframework/admin/save_file_function?bean_name=#bean_name#&bean_file_name=#bean_file_name#&filter_by_layout=#filter_by_layout#&item_type=#item_type#&path=#path#"; $pf8ed4912 = '<script>
+		//preparing file manager urls
+		var edit_file_manager_hbn_obj_url = \'' . $v39f67c4679 . '\';
+		var edit_file_manager_query_url = \'' . $pb86daf5b . '\';
+		
+		var edit_file_manager_service_obj_url = \'' . $v36291eeb3a . '\';
+		var save_file_manager_service_obj_url = \'' . $v9aa0870056 . '\';
+		var edit_file_manager_service_method_url = \'' . $pc5a40763 . '\';
+		var save_file_manager_service_method_url = \'' . $v97e728e265 . '\';
+		var edit_file_manager_service_function_url = \'' . $pf8937b6d . '\';
+		var save_file_manager_service_function_url = \'' . $v9430dab3ab . '\';
+		
+		var edit_file_manager_class_url = \'' . $pa5fa1905 . '\';
+		var save_file_manager_class_url = \'' . $pcca95213 . '\';
+		var edit_file_manager_class_method_url = \'' . $v73d4a22b49 . '\';
+		var save_file_manager_class_method_url = \'' . $v7fde70d240 . '\';
+		var edit_file_manager_function_url = \'' . $pa87b0096 . '\';
+		var save_file_manager_function_url = \'' . $v3d4207e17a . '\';
+		</script>'; return $pf8ed4912; } public static function getUIEditorWidgetsHtml($v0345b66144, $v37d269c4fa, $v4bf8d90f04, $pfce4d1b3, $v5d3813882f = null) { $v60968209dd = $v0345b66144 . "vendor/jquerylayoutuieditor/"; include_once $v60968209dd . "util.php"; $pae9f35af = "jquerylayoutuieditor/widget/"; $pcb902903 = $v4bf8d90f04 . $pae9f35af; $pf235b497 = $pfce4d1b3 . $pae9f35af; $v0e41af17ee = $v60968209dd . "widget/"; $pce3003cf = $v37d269c4fa . "vendor/jquerylayoutuieditor/widget/"; $pee3480c4 = scanWidgets($v0e41af17ee, array( "priority_files" => getDefaultWidgetsPriorityFiles() )); $pee3480c4 = filterWidgets($pee3480c4, $v0e41af17ee, $pce3003cf, $v5d3813882f); $pd3938a46 .= getMenuWidgetsHTML($pee3480c4, $v0e41af17ee, $pce3003cf, $pcb902903, $pf235b497); return $pd3938a46; } public static function getExtraUIEditorWidgetsHtml($v0345b66144, $v19b26a58a8, $v4bf8d90f04, $pfce4d1b3, $v5d3813882f = null) { $v60968209dd = $v0345b66144 . "vendor/jquerylayoutuieditor/"; include_once $v60968209dd . "util.php"; $pae9f35af = "jquerylayoutuieditor/widget/"; $pcb902903 = $v4bf8d90f04 . $pae9f35af; $pf235b497 = $pfce4d1b3 . $pae9f35af; $v4c778e26ea = $v4bf8d90f04 . $pae9f35af; $pd0c2309c = basename($v19b26a58a8); $pce3003cf = "$pfce4d1b3$pae9f35af$pd0c2309c/"; $pee3480c4 = scanWidgets($v19b26a58a8); $pee3480c4 = filterWidgets($pee3480c4, $v19b26a58a8, $pce3003cf, $v5d3813882f); self::f22be97f31f($pee3480c4, "$v4c778e26ea$pd0c2309c/"); $pd3938a46 = getMenuWidgetsHTML($pee3480c4, $v19b26a58a8, $pce3003cf, $pcb902903, $pf235b497); return $pd3938a46; } public static function getUserUIEditorWidgetsHtml($v0345b66144, $v0e41af17ee, $v4bf8d90f04, $pfce4d1b3, $v5d3813882f = null) { $pd3938a46 = ""; if ($v0e41af17ee) { $v60968209dd = $v0345b66144 . "vendor/jquerylayoutuieditor/"; include_once $v60968209dd . "util.php"; $pae9f35af = "jquerylayoutuieditor/widget/"; $pcb902903 = $v4bf8d90f04 . $pae9f35af; $pf235b497 = $pfce4d1b3 . $pae9f35af; $v4c778e26ea = $v4bf8d90f04 . $pae9f35af; $v0e41af17ee = is_array($v0e41af17ee) ? $v0e41af17ee : array($v0e41af17ee); foreach ($v0e41af17ee as $pe4619dcd) if (file_exists($pe4619dcd)) { $pe4619dcd = str_replace("//", "/", trim( realpath($pe4619dcd) )); $pe4619dcd .= substr($pe4619dcd, strlen($pe4619dcd) - 1) == "/" ? "" : "/"; $pd0c2309c = hash("crc32b", $pe4619dcd); $pce3003cf = "$pfce4d1b3$pae9f35af$pd0c2309c/"; $pee3480c4 = scanWidgets($pe4619dcd); $pee3480c4 = filterWidgets($pee3480c4, $pe4619dcd, $pce3003cf, $v5d3813882f); self::f22be97f31f($pee3480c4, "$v4c778e26ea$pd0c2309c/"); $pd3938a46 = getMenuWidgetsHTML($pee3480c4, $pe4619dcd, $pce3003cf, $pcb902903, $pf235b497); } } return $pd3938a46; } private static function f22be97f31f($pee3480c4, $pd520d615) { $v5c1c342594 = true; if ($pee3480c4 && !is_dir($pd520d615)) foreach ($pee3480c4 as $v5e813b295b => $v2cd5d67337) { if (is_array($v2cd5d67337)) self::f22be97f31f($v2cd5d67337, $pd520d615 . "$v5e813b295b/"); else { $pcec8b7cc = dirname($v2cd5d67337) . "/webroot/"; if (file_exists($pcec8b7cc) && !self::me1bfc9cf0775($pcec8b7cc, $pd520d615)) $v5c1c342594 = false; } } return $v5c1c342594; } private static function me1bfc9cf0775($v92dcc541a8, $pa5b0817e) { if ($v92dcc541a8 && $pa5b0817e && is_dir($v92dcc541a8)) { if (!is_dir($pa5b0817e)) @mkdir($pa5b0817e, 0755, true); if (is_dir($pa5b0817e)) { $v5c1c342594 = true; $v6ee393d9fb = scandir($v92dcc541a8); if ($v6ee393d9fb) foreach ($v6ee393d9fb as $v7dffdb5a5b) if ($v7dffdb5a5b != '.' && $v7dffdb5a5b != '..') { if (is_dir("$v92dcc541a8/$v7dffdb5a5b")) { if (!self::me1bfc9cf0775("$v92dcc541a8/$v7dffdb5a5b", "$pa5b0817e/$v7dffdb5a5b")) $v5c1c342594 = false; } else if (!copy("$v92dcc541a8/$v7dffdb5a5b", "$pa5b0817e/$v7dffdb5a5b")) $v5c1c342594 = false; } return $v5c1c342594; } } } public static function getPresentationBrokersHtml($pb0e92e25, $pf7b73b3a, $v46a478e94c, $pa40f0b2a = false) { $pf8ed4912 = ''; if ($pb0e92e25) { $pc37695cb = count($pb0e92e25); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $pb0e92e25[$v43dd7d0051]; if ($v7aeaf992f5[2]) { $v94a9c171e3 = str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pf7b73b3a)) . '&item_type=presentation&folder_type=#folder_type#'; $pa8347c39 = $pa40f0b2a ? str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pa40f0b2a)) . '&item_type=presentation' : ""; $pf8ed4912 .= 'main_layers_properties.' . $v7aeaf992f5[2] . ' = {ui: {
 						folder: {
 							get_sub_files_url: "' . $v94a9c171e3 . '",
 							attributes: {
@@ -318,7 +336,8 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 						referenced_folder: {
 							get_sub_files_url: "' . $v94a9c171e3 . '",
 						},
-					}};'; } } } return $pf8ed4912; } public static function getChooseFromFileManagerPopupHtml($v8ffce2a791, $pa0462a8e, $pf7b73b3a, $v54c4a1fbb7, $pe2f0f7f1, $v828ff69e5c, $v5483bfa973, $v9fda9fad47, $pf864769c, $paf75a67c, $v6e9af47944, $pb0e92e25) { $pf8ed4912 = ""; if ($v8ffce2a791 && $pa0462a8e) $pf8ed4912 = self::me4f1b76bfe10($v8ffce2a791, $pa0462a8e, $pf7b73b3a, $v54c4a1fbb7, $pe2f0f7f1, $v828ff69e5c, $v5483bfa973, $v9fda9fad47, $pf864769c, $paf75a67c, $v6e9af47944, $pb0e92e25); else $pf8ed4912 = self::f2ad93f0276($v8ffce2a791, $pa0462a8e, $pf7b73b3a, $v54c4a1fbb7, $pe2f0f7f1, $v828ff69e5c, $v5483bfa973, $v9fda9fad47, $pf864769c, $paf75a67c, $v6e9af47944, $pb0e92e25); if (isset($v5483bfa973) || isset($v9fda9fad47)) { $pfb662071 = $v5483bfa973 ? $v5483bfa973 : $v9fda9fad47; $pc37695cb = count($pfb662071); $pf8ed4912 .='<div id="choose_db_driver_table" class="myfancypopup">
+					}};'; } } } return $pf8ed4912; } public static function getChooseFromFileManagerPopupHtml($v8ffce2a791, $pa0462a8e, $pf7b73b3a, $v54c4a1fbb7, $pe2f0f7f1, $v828ff69e5c, $v5483bfa973, $v9fda9fad47, $pf864769c, $paf75a67c, $v6e9af47944, $pb0e92e25) { $pf8ed4912 = ""; if ($v8ffce2a791 && $pa0462a8e) $pf8ed4912 = self::me4f1b76bfe10($v8ffce2a791, $pa0462a8e, $pf7b73b3a, $v54c4a1fbb7, $pe2f0f7f1, $v828ff69e5c, $v5483bfa973, $v9fda9fad47, $pf864769c, $paf75a67c, $v6e9af47944, $pb0e92e25); else $pf8ed4912 = self::f2ad93f0276($pf7b73b3a, $v54c4a1fbb7, $pe2f0f7f1, $v828ff69e5c, $v6e9af47944, $pb0e92e25); if (isset($v5483bfa973) || isset($v9fda9fad47)) { $pfb662071 = $v5483bfa973 ? $v5483bfa973 : $v9fda9fad47; $pc37695cb = count($pfb662071); $pf8ed4912 .='<div id="choose_db_driver_table" class="myfancypopup with_title">
+				<div class="title">Choose a Table</div>
 				<div class="broker' . ($pc37695cb == 1 ? " single_broker" : "") . '">
 					<label>Broker:</label>
 					<select onChange="updateDBDriverOnBrokerNameChange(this)">'; for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $pfb662071[$v43dd7d0051]; $pf8ed4912 .= '<option bean_file_name="' . $v7aeaf992f5[1] . '" bean_name="' . $v7aeaf992f5[2] . '" value="' . $v7aeaf992f5[0] . '">' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</option>'; } $pf8ed4912 .= '
@@ -338,11 +357,13 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				<div class="db_table">
 					<label>DB Table:</label>
 					<select></select>
+					<span class="icon refresh" onClick="refreshDBTablesOnBrokerDBDriverChange(this)"></span>
 				</div>
 				<div class="button">
 					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
-			</div>'; } if (isset($v9fda9fad47)) { $pc37695cb = count($v9fda9fad47); $pf8ed4912 .='<div id="choose_db_driver" class="myfancypopup">
+			</div>'; } if (isset($v9fda9fad47)) { $pc37695cb = count($v9fda9fad47); $pf8ed4912 .='<div id="choose_db_driver" class="myfancypopup with_title">
+				<div class="title">Choose a Database Driver</div>
 				<div class="broker' . ($pc37695cb == 1 ? " single_broker" : "") . '">
 					<label>Data Access Broker:</label>
 					<select onChange="updateDBDriverOnBrokerNameChange(this)">'; for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $v9fda9fad47[$v43dd7d0051]; $pf8ed4912 .= '<option bean_file_name="' . $v7aeaf992f5[1] . '" bean_name="' . $v7aeaf992f5[2] . '" value="' . $v7aeaf992f5[0] . '">' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</option>'; } $pf8ed4912 .= '
@@ -355,7 +376,8 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				<div class="button">
 					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
-			</div>'; } if (isset($pf864769c)) { $pc37695cb = count($pf864769c); $pf8ed4912 .='<div id="choose_query_from_file_manager" class="myfancypopup choose_from_file_manager">
+			</div>'; } if (isset($pf864769c)) { $pc37695cb = count($pf864769c); $pf8ed4912 .='<div id="choose_query_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a Query</div>
 				<div class="broker' . ($pc37695cb == 1 ? " single_broker" : "") . '">
 					<label>Broker:</label>
 					<select onChange="updateDBDriverOnBrokerNameChange(this);updateLayerUrlFileManager(this)">'; for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $pf864769c[$v43dd7d0051]; $pf8ed4912 .= '<option bean_file_name="' . $v7aeaf992f5[1] . '" bean_name="' . $v7aeaf992f5[2] . '" value="' . $v7aeaf992f5[0] . '">' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</option>'; } $pf8ed4912 .= '
@@ -382,7 +404,8 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				<div class="button">
 					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
-			</div>'; } if (isset($paf75a67c)) { $pc37695cb = count($paf75a67c); $pf8ed4912 .='<div id="choose_hibernate_object_from_file_manager" class="myfancypopup choose_from_file_manager">
+			</div>'; } if (isset($paf75a67c)) { $pc37695cb = count($paf75a67c); $pf8ed4912 .='<div id="choose_hibernate_object_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a Hibernate Object</div>
 				<div class="broker' . ($pc37695cb == 1 ? " single_broker" : "") . '">
 					<label>Broker:</label>
 					<select onChange="updateDBDriverOnBrokerNameChange(this);updateLayerUrlFileManager(this)">'; for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $paf75a67c[$v43dd7d0051]; $pf8ed4912 .= '<option bean_file_name="' . $v7aeaf992f5[1] . '" bean_name="' . $v7aeaf992f5[2] . '" value="' . $v7aeaf992f5[0] . '">' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</option>'; } $pf8ed4912 .= '
@@ -403,7 +426,8 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				</div>
 			</div>
 			
-			<div id="choose_hibernate_object_method_from_file_manager" class="myfancypopup choose_from_file_manager">
+			<div id="choose_hibernate_object_method_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a Hibernate Object Method</div>
 				<div class="broker' . ($pc37695cb == 1 ? " single_broker" : "") . '">
 					<label>Broker:</label>
 					<select onChange="updateDBDriverOnBrokerNameChange(this);updateLayerUrlFileManager(this)">'; for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $paf75a67c[$v43dd7d0051]; $pf8ed4912 .= '<option bean_file_name="' . $v7aeaf992f5[1] . '" bean_name="' . $v7aeaf992f5[2] . '" value="' . $v7aeaf992f5[0] . '">' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</option>'; } $pf8ed4912 .= '
@@ -430,7 +454,8 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				<div class="button">
 					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
-			</div>'; } if (isset($v6e9af47944)) { $pc37695cb = count($v6e9af47944); $pf8ed4912 .='<div id="choose_business_logic_from_file_manager" class="myfancypopup choose_from_file_manager">
+			</div>'; } if (isset($v6e9af47944)) { $pc37695cb = count($v6e9af47944); $pf8ed4912 .='<div id="choose_business_logic_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a Business Logic Service</div>
 				<div class="broker' . ($pc37695cb == 1 ? " single_broker" : "") . '">
 					<label>Broker:</label>
 					<select onChange="updateLayerUrlFileManager(this)">'; for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $v6e9af47944[$v43dd7d0051]; $pf8ed4912 .= '<option bean_file_name="' . $v7aeaf992f5[1] . '" bean_name="' . $v7aeaf992f5[2] . '" value="' . $v7aeaf992f5[0] . '">' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</option>'; } $pf8ed4912 .= '
@@ -449,7 +474,8 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				<div class="button">
 					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
-			</div>'; } if (isset($pb0e92e25)) { $pc37695cb = count($pb0e92e25); $pf8ed4912 .='<div id="choose_presentation_from_file_manager" class="myfancypopup choose_from_file_manager">
+			</div>'; } if (isset($pb0e92e25)) { $pc37695cb = count($pb0e92e25); $pf8ed4912 .='<div id="choose_presentation_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a Page</div>
 				<div class="broker' . ($pc37695cb == 1 ? " single_broker" : "") . '">
 					<label>Broker:</label>
 					<select onChange="updateLayerUrlFileManager(this)">'; for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $pb0e92e25[$v43dd7d0051]; $pf8ed4912 .= '<option bean_file_name="' . $v7aeaf992f5[1] . '" bean_name="' . $v7aeaf992f5[2] . '" value="' . $v7aeaf992f5[0] . '">' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</option>'; } $pf8ed4912 .= '
@@ -484,7 +510,8 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				</li>
 			</ul>'; $pf8ed4912 = self::mb112bf1b7769($v195d5f6856) . '
 			
-			<div id="choose_method_from_file_manager" class="myfancypopup choose_from_file_manager">
+			<div id="choose_method_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a Method</div>
 				' . $v195d5f6856 . '
 				<div class="method">
 					<label>Method:</label>
@@ -495,7 +522,8 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				</div>
 			</div>
 	
-			<div id="choose_function_from_file_manager" class="myfancypopup choose_from_file_manager">
+			<div id="choose_function_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a Function</div>
 				' . $v195d5f6856 . '
 				<div class="function">
 					<label>Function:</label>
@@ -506,21 +534,24 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				</div>
 			</div>
 	
-			<div id="choose_file_from_file_manager" class="myfancypopup choose_from_file_manager">
+			<div id="choose_file_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a File</div>
 				' . $v195d5f6856 . '
 				<div class="button">
 					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 	
-			<div id="choose_folder_from_file_manager" class="myfancypopup choose_from_file_manager">
+			<div id="choose_folder_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a Folder</div>
 				' . $v195d5f6856 . '
 				<div class="button">
 					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 	
-			<div id="choose_block_from_file_manager" class="myfancypopup choose_from_file_manager">
+			<div id="choose_block_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a Block</div>
 				<ul class="mytree">
 					<li>
 						<label>' . $pdf10c8d2 . '</label>
@@ -530,7 +561,20 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				<div class="button">
 					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
-			</div>'; return $pf8ed4912; } private static function f2ad93f0276($v8ffce2a791, $pa0462a8e, $pf7b73b3a, $v54c4a1fbb7, $pe2f0f7f1, $v828ff69e5c, $v5483bfa973, $v9fda9fad47, $pf864769c, $paf75a67c, $v6e9af47944, $pb0e92e25) { $v195d5f6856 = '
+			</div>
+	
+			<div id="choose_view_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a View</div>
+				<ul class="mytree">
+					<li>
+						<label>' . $pdf10c8d2 . '</label>
+						<ul url="' . str_replace("#bean_file_name#", $pa0462a8e, str_replace("#bean_name#", $v8ffce2a791, $pf7b73b3a)) . '"></ul>
+					</li>
+				</ul>
+				<div class="button">
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
+				</div>
+			</div>'; return $pf8ed4912; } private static function f2ad93f0276($pf7b73b3a, $v54c4a1fbb7, $pe2f0f7f1, $v828ff69e5c, $v6e9af47944, $pb0e92e25) { $v195d5f6856 = '
 			<ul class="mytree">'; if (isset($v6e9af47944)) foreach ($v6e9af47944 as $v7aeaf992f5) { $v195d5f6856 .= '
 				<li>
 					<label>' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</label>
@@ -554,7 +598,8 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				</li>
 			</ul>'; $pf8ed4912 = self::mb112bf1b7769($v195d5f6856) . '
 			
-			<div id="choose_method_from_file_manager" class="myfancypopup choose_from_file_manager">
+			<div id="choose_method_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a Method</div>
 				' . $v195d5f6856 . '
 				<div class="method">
 					<label>Method:</label>
@@ -565,7 +610,8 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				</div>
 			</div>
 	
-			<div id="choose_function_from_file_manager" class="myfancypopup choose_from_file_manager">
+			<div id="choose_function_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a Function</div>
 				' . $v195d5f6856 . '
 				<div class="function">
 					<label>Function:</label>
@@ -576,21 +622,24 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				</div>
 			</div>
 	
-			<div id="choose_file_from_file_manager" class="myfancypopup choose_from_file_manager">
+			<div id="choose_file_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a File</div>
 				' . $v195d5f6856 . '
 				<div class="button">
 					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 	
-			<div id="choose_folder_from_file_manager" class="myfancypopup choose_from_file_manager">
+			<div id="choose_folder_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a Folder</div>
 				' . $v195d5f6856 . '
 				<div class="button">
 					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
 			</div>
 	
-			<div id="choose_block_from_file_manager" class="myfancypopup choose_from_file_manager">
+			<div id="choose_block_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a Block</div>
 				<ul class="mytree">'; if (isset($pb0e92e25)) foreach ($pb0e92e25 as $v7aeaf992f5) { $pf8ed4912 .= '
 					<li>
 						<label>' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</label>
@@ -600,7 +649,21 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				<div class="button">
 					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
-			</div>'; return $pf8ed4912; } private static function mb112bf1b7769($v195d5f6856) { return '<div id="choose_property_variable_from_file_manager" class="myfancypopup choose_from_file_manager">
+			</div>
+	
+			<div id="choose_view_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a View</div>
+				<ul class="mytree">'; if (isset($pb0e92e25)) foreach ($pb0e92e25 as $v7aeaf992f5) { $pf8ed4912 .= '
+					<li>
+						<label>' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</label>
+						<ul url="' . str_replace("#bean_file_name#", $v7aeaf992f5[1], str_replace("#bean_name#", $v7aeaf992f5[2], $pf7b73b3a)) . '"></ul>
+					</li>'; } $pf8ed4912 .= '
+				</ul>
+				<div class="button">
+					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
+				</div>
+			</div>'; return $pf8ed4912; } private static function mb112bf1b7769($v195d5f6856) { return '<div id="choose_property_variable_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a Variable</div>
 				<div class="type">
 					<label>Variable Type:</label>
 					<select onChange="onChangePropertyVariableType(this)">
@@ -612,7 +675,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				<div class="variable_type new_var">
 					<div class="scope">
 						<label>Scope:</label>
-						<select>
+						<select onChange="onChangePropertyVariableScope(this)">
 							<option value="">Local variable</option>
 							<option value="_GET">Variable from URL</option>
 							<option value="_POST">Variable from POST form</option>
@@ -623,6 +686,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 							<option value="_SERVER">Server variable</option>
 							<option value="_SESSION">Session variable</option>
 							<option value="GLOBALS">Global variable</option>
+							<option value="GLOBALS[logged_user_id]" is_final_var title="Note that you need to call previously the User Atuhentication Module, in order to use this variable properly." style="display:none">Logged User Id</option>
 						</select>
 					</div>
 					<div class="name">
@@ -656,7 +720,8 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				<div class="button">
 					<input type="button" value="Update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 				</div>
-			</div>'; } private static function f7b6f77050d($v8ffce2a791, $pa0462a8e, $v6e9af47944, $v9fda9fad47, $pf864769c, $paf75a67c, $pb0e92e25) { $pec746181 = array($v6e9af47944, $v9fda9fad47, $pf864769c, $paf75a67c, $pb0e92e25); foreach ($pec746181 as $pa8b0de28) if ($pa8b0de28) foreach ($pa8b0de28 as $v1e79db4422) { $v2b2cf4c0eb = $v1e79db4422[0]; $pf2073d1f = $v1e79db4422[1]; $pef1b7ad7 = $v1e79db4422[2]; if ($pf2073d1f == $pa0462a8e && $pef1b7ad7 == $v8ffce2a791) return $v2b2cf4c0eb; } return $v8ffce2a791; } private static function f15bc1b79f6($pf7b73b3a, $pb0e92e25) { $pf8ed4912 = ''; if (isset($pb0e92e25)) { $pc37695cb = count($pb0e92e25); $pf8ed4912 .='<div id="choose_page_url_from_file_manager" class="myfancypopup choose_from_file_manager">
+			</div>'; } private static function f7b6f77050d($v8ffce2a791, $pa0462a8e, $v6e9af47944, $v9fda9fad47, $pf864769c, $paf75a67c, $pb0e92e25) { $pec746181 = array($v6e9af47944, $v9fda9fad47, $pf864769c, $paf75a67c, $pb0e92e25); foreach ($pec746181 as $pa8b0de28) if ($pa8b0de28) foreach ($pa8b0de28 as $v1e79db4422) { $v2b2cf4c0eb = $v1e79db4422[0]; $pf2073d1f = $v1e79db4422[1]; $pef1b7ad7 = $v1e79db4422[2]; if ($pf2073d1f == $pa0462a8e && $pef1b7ad7 == $v8ffce2a791) return $v2b2cf4c0eb; } return $v8ffce2a791; } private static function f15bc1b79f6($pf7b73b3a, $pb0e92e25) { $pf8ed4912 = ''; if (isset($pb0e92e25)) { $pc37695cb = count($pb0e92e25); $pf8ed4912 .='<div id="choose_page_url_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a Page</div>
 				<div class="broker' . ($pc37695cb == 1 ? " single_broker" : "") . '">
 					<label>Broker:</label>
 					<select onChange="updateLayerUrlFileManager(this)">'; for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $pb0e92e25[$v43dd7d0051]; $pf8ed4912 .= '<option bean_file_name="' . $v7aeaf992f5[1] . '" bean_name="' . $v7aeaf992f5[2] . '" value="' . $v7aeaf992f5[0] . '">' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</option>'; } $pf8ed4912 .= '
@@ -679,7 +744,8 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				</div>
 			</div>
 			
-			<div id="choose_image_url_from_file_manager" class="myfancypopup choose_from_file_manager">
+			<div id="choose_image_url_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose an Image</div>
 				<div class="broker' . ($pc37695cb == 1 ? " single_broker" : "") . '">
 					<label>Broker:</label>
 					<select onChange="updateLayerUrlFileManager(this)">'; for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $pb0e92e25[$v43dd7d0051]; $pf8ed4912 .= '<option bean_file_name="' . $v7aeaf992f5[1] . '" bean_name="' . $v7aeaf992f5[2] . '" value="' . $v7aeaf992f5[0] . '">' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</option>'; } $pf8ed4912 .= '
@@ -696,7 +762,8 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				</div>
 			</div>
 			
-			<div id="choose_webroot_file_url_from_file_manager" class="myfancypopup choose_from_file_manager">
+			<div id="choose_webroot_file_url_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose a File</div>
 				<div class="broker' . ($pc37695cb == 1 ? " single_broker" : "") . '">
 					<label>Broker:</label>
 					<select onChange="updateLayerUrlFileManager(this)">'; for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v7aeaf992f5 = $pb0e92e25[$v43dd7d0051]; $pf8ed4912 .= '<option bean_file_name="' . $v7aeaf992f5[1] . '" bean_name="' . $v7aeaf992f5[2] . '" value="' . $v7aeaf992f5[0] . '">' . $v7aeaf992f5[0] . ($v7aeaf992f5[2] ? '' : ' (Rest)') . '</option>'; } $pf8ed4912 .= '
@@ -738,11 +805,12 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 				</div>
 			</div>
 			<div id="layout_ui_editor_right_container" class="layout_ui_editor_right_container">
-				' . self::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v9b98e0e818, $pf7b73b3a, $pe6619ae3, $v9106c07f80) . '
+				' . self::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $v9106c07f80) . self::getTabContentTemplateLayoutDBDriversTreeHtml($v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v9b98e0e818, $pf7b73b3a, $pe6619ae3, $v9106c07f80) . '
 			</div>
 			
-			<div id="choose_layout_ui_editor_module_block_from_file_manager" class="myfancypopup choose_from_file_manager">
-				' . self::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v9b98e0e818, $pf7b73b3a, $pe6619ae3, "chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree") . '
+			<div id="choose_layout_ui_editor_module_block_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+				<div class="title">Choose</div>
+				' . self::getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, "chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree") . '
 				
 				<div class="button">
 					<input type="button" value="Update" onClick="CodeLayoutUIEditorFancyPopup.settings.updateFunction(this)" />
@@ -751,7 +819,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 			
 			<div class="myfancypopup db_table_uis_diagram_block with_iframe_title" create_page_presentation_uis_diagram_block_url="' . $pd0054995 . '">
 				<iframe></iframe>
-			</div>'; return $pf8ed4912; } public static function getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v9b98e0e818, $pf7b73b3a, $pe6619ae3, $v9106c07f80) { $v9ab35f1f0d = $v08d9602741->getPresentationLayer(); $pe61ee068 = $v08d9602741->getCommonProjectName() . "/" . $v9ab35f1f0d->settings["presentation_modules_path"]; if (!$v9b98e0e818) { $v9b98e0e818 = WorkFlowBeansFileHandler::getLayerDBDrivers($v3d55458bcd, $v5039a77f9d, $v9ab35f1f0d, true); $v1eb9193558 = new LayoutTypeProjectHandler($pdf77ee66, $v3d55458bcd, $v5039a77f9d, $pa0462a8e, $v8ffce2a791); $v1eb9193558->filterLayerBrokersDBDriversPropsBasedInUrl($v9b98e0e818, $pf7b73b3a); } $pf8ed4912 = '<script>
+			</div>'; return $pf8ed4912; } public static function getTabContentTemplateLayoutTreeHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pf7b73b3a, $v9106c07f80) { $v9ab35f1f0d = $v08d9602741->getPresentationLayer(); $pe61ee068 = $v08d9602741->getCommonProjectName() . "/" . $v9ab35f1f0d->settings["presentation_modules_path"]; $pf8ed4912 = '<script>
 			//clones module_folder properties, bc is the same object that the ui["folder"] properties, this is, is the reference object of the ui["folder"] object.
 			main_layers_properties.' . $v8ffce2a791 . '.ui["module_folder"] = JSON.parse(JSON.stringify(main_layers_properties.' . $v8ffce2a791 . '.ui["module_folder"])); 
 			
@@ -759,44 +827,35 @@ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresen
 			main_layers_properties.' . $v8ffce2a791 . '.ui["module_folder"]["attributes"] = {
 				folder_path: "#path#",
 				module_info_func_name: "showModuleInfoWithSmartPosition",
-			};'; if ($v9b98e0e818) foreach ($v9b98e0e818 as $v5ba36af525 => $pa9b2090f) if ($pa9b2090f) $pf8ed4912 .= '
+			};
+		</script>
+		<ul class="mytree">
+			<li data-jstree="{\'icon\':\'cms_module\'}">
+				<label>Modules <i class="icon refresh" onClick="refreshFileManagerPopupTreeNodeFromInnerIcon(this, ' . $v9106c07f80 . ')">Refresh</i></label>
+				<ul url="' . str_replace("#path#", $pe61ee068, str_replace("#bean_file_name#", $pa0462a8e, str_replace("#bean_name#", $v8ffce2a791, $pf7b73b3a))) . '&item_type=presentation&folder_type=module"></ul>
+			</li>
+			<li data-jstree="{\'icon\':\'blocks_folder\'}">
+				<label>Blocks <i class="icon refresh" onClick="refreshFileManagerPopupTreeNodeFromInnerIcon(this, ' . $v9106c07f80 . ')">Refresh</i></label>
+				<ul url="' . str_replace("#bean_file_name#", $pa0462a8e, str_replace("#bean_name#", $v8ffce2a791, $pf7b73b3a)) . '"></ul>
+			</li>
+		</ul>'; return $pf8ed4912; } public static function getTabContentTemplateLayoutDBDriversTreeHtml($v3d55458bcd, $v5039a77f9d, $v08d9602741, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $v9b98e0e818, $pf7b73b3a, $pe6619ae3, $v9106c07f80) { $v9ab35f1f0d = $v08d9602741->getPresentationLayer(); if (!$v9b98e0e818) { $v9b98e0e818 = WorkFlowBeansFileHandler::getLayerDBDrivers($v3d55458bcd, $v5039a77f9d, $v9ab35f1f0d, true); $v1eb9193558 = new LayoutTypeProjectHandler($pdf77ee66, $v3d55458bcd, $v5039a77f9d, $pa0462a8e, $v8ffce2a791); $v1eb9193558->filterLayerBrokersDBDriversPropsBasedInUrl($v9b98e0e818, $pf7b73b3a); } if ($v9b98e0e818) { $pf8ed4912 = '<script>'; foreach ($v9b98e0e818 as $v5ba36af525 => $pa9b2090f) if ($pa9b2090f) $pf8ed4912 .= '
 			main_layers_properties["' . $pa9b2090f[2] . '"] = {
 				ui: {
 					table: {
 						attributes: {
 							table: "#name#",
 						},
+						get_sub_files_url: "' . str_replace("#type#", "", str_replace("#bean_file_name#", $pa9b2090f[1], str_replace("#bean_name#", $pa9b2090f[2], $pe6619ae3))) . '&table=#table#"
 					},
 				},
-			};'; $pf8ed4912 .= '</script>
-		<ul class="mytree">
-			<li data-jstree="{\'icon\':\'cms_module\'}">
-				<label>Modules <i class="icon refresh" onClick="refreshTreeBlocksOrModulesFolder(event, this, ' . $v9106c07f80 . ')">Refresh</i></label>
-				<ul url="' . str_replace("#path#", $pe61ee068, str_replace("#bean_file_name#", $pa0462a8e, str_replace("#bean_name#", $v8ffce2a791, $pf7b73b3a))) . '&item_type=presentation&folder_type=module"></ul>
-			</li>
-			<li data-jstree="{\'icon\':\'blocks_folder\'}">
-				<label>Blocks <i class="icon refresh" onClick="refreshTreeBlocksOrModulesFolder(event, this, ' . $v9106c07f80 . ')">Refresh</i></label>
-				<ul url="' . str_replace("#bean_file_name#", $pa0462a8e, str_replace("#bean_name#", $v8ffce2a791, $pf7b73b3a)) . '"></ul>
-			</li>
-			<li data-jstree="{\'icon\':\'main_node_db\'}">
-				<label>DB Drivers</label>
-				<ul>'; if ($v9b98e0e818) foreach ($v9b98e0e818 as $v5ba36af525 => $pa9b2090f) { if ($pa9b2090f) $pf8ed4912 .= '
-					<li data-jstree="{\'icon\':\'db_driver\'}" db_driver_name="' . $v5ba36af525 . '" db_driver_bean_name="' . $pa9b2090f[2] . '" db_driver_bean_file_name="' . $pa9b2090f[1] . '">
-						<label>' . ucwords(str_replace("_", " ", $v5ba36af525)) . '</label>
-						<ul>
-							<li data-jstree="{\'icon\':\'db_management\'}" db_type="db">
-								<label>DB Server Tables <i class="icon refresh" onClick="refreshTreeBlocksOrModulesFolder(event, this, ' . $v9106c07f80 . ')">Refresh</i></label>
-								<ul url="' . str_replace("#type#", "", str_replace("#bean_file_name#", $pa9b2090f[1], str_replace("#bean_name#", $pa9b2090f[2], $pe6619ae3))) . '"></ul>
-							</li>
-							<li data-jstree="{\'icon\':\'db_diagram\'}" db_type="diagram">
-								<label>DB Diagram Tables <i class="icon refresh" onClick="refreshTreeBlocksOrModulesFolder(event, this, ' . $v9106c07f80 . ')">Refresh</i></label>
-								<ul url="' . str_replace("#type#", "diagram", str_replace("#bean_file_name#", $pa9b2090f[1], str_replace("#bean_name#", $pa9b2090f[2], $pe6619ae3))) . '"></ul>
-							</li>
-						</ul>
-					</li>'; else $pf8ed4912 .= '
-					<li data-jstree="{\'icon\':\'db_driver\'}" db_driver_name="' . $v5ba36af525 . '">
-						<label>' . ucwords(str_replace("_", " ", $v5ba36af525)) . ' (Rest)</label>
-					</li>'; } $pf8ed4912 .= '</ul>
-			</li>
-		</ul>'; return $pf8ed4912; } public static function getTaskFlowContentHtml($pcfdeae4e, $v5d3813882f) { $pe7b2a888 = $v5d3813882f["generate_tasks_flow_from_code_label"] ? $v5d3813882f["generate_tasks_flow_from_code_label"] : "Generate Diagram from Code"; $pd880cf7e = $v5d3813882f["generate_tasks_flow_from_code_func"] ? $v5d3813882f["generate_tasks_flow_from_code_func"] : "generateTasksFlowFromCode"; $v13b5585fac = $v5d3813882f["generate_code_from_tasks_flow_label"] ? $v5d3813882f["generate_code_from_tasks_flow_label"] : "Generate Code From Diagram"; $v0fa2a905e0 = $v5d3813882f["generate_code_from_tasks_flow_func"] ? $v5d3813882f["generate_code_from_tasks_flow_func"] : "generateCodeFromTasksFlow"; $v243e50bc1d = array( "Sort Tasks" => array( "class" => "sort_tasks", "html" => '<a onClick="sortWorkflowTask();return false;"><i class="icon sort"></i> Sort Tasks</a>', "childs" => array( "Sort Type 1" => array( "class" => "sort_tasks", "click" => "sortWorkflowTask(1);return false;" ), "Sort Type 2" => array( "class" => "sort_tasks", "click" => "sortWorkflowTask(2);return false;" ), "Sort Type 3" => array( "class" => "sort_tasks", "click" => "sortWorkflowTask(3);return false;" ), "Sort Type 4" => array( "class" => "sort_tasks", "click" => "sortWorkflowTask(4);return false;" ), ) ), 1 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Flush Cache" => array( "class" => "flush_cache", "html" => '<a onClick="flushCache();return false;"><i class="icon flush_cache"></i> Flush Cache</a>', ), "Empty Diagram" => array( "class" => "empty_diagram", "html" => '<a onClick="emptyDiagam();return false;"><i class="icon empty_diagram"></i> Empty Diagram</a>', ), 2 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Zoom In" => array( "class" => "zoom_in", "html" => '<a onClick="zoomInDiagram(this);return false;"><i class="icon zoom_in"></i> Zoom In</a>', ), "Zoom Out" => array( "class" => "zoom_out", "html" => '<a onClick="zoomOutDiagram(this);return false;"><i class="icon zoom_out"></i> Zoom Out</a>', ), "Zoom" => array( "class" => "zoom", "html" => '
+			};'; $pf8ed4912 .= '
+			</script>
+			<ul class="mytree db_drivers_tree">'; $pa1695cdc = array(); $pe692de75 = array(); foreach ($v9b98e0e818 as $v5ba36af525 => $pa9b2090f) { if ($pa9b2090f) { $v2b2cf4c0eb = $pa1695cdc[$v5ba36af525]; if (!$v2b2cf4c0eb) { $v2b2cf4c0eb = WorkFlowBeansFileHandler::getLayerLocalDBBrokerNameForChildBrokerDBDriver($v3d55458bcd, $v5039a77f9d, $v9ab35f1f0d, $v5ba36af525, $pf9c71935, $v06c0ee02d0); if (is_a($pf9c71935, "IDBBrokerClient") && $v06c0ee02d0) { $pfac932fb = WorkFlowBeansFileHandler::getLocalBeanLayerFromBroker($v3d55458bcd, $v5039a77f9d, $pf9c71935); if ($pfac932fb) { $v00eea27878 = WorkFlowBeansFileHandler::getLayerObjFolderName($pfac932fb[2]); $pe692de75[$v2b2cf4c0eb] = $v00eea27878; $v7ec71c6538 = $pf9c71935->getDBDriversName(); foreach ($v7ec71c6538 as $v7df447afcb) $pa1695cdc[$v7df447afcb] = $v2b2cf4c0eb; } } } else $v00eea27878 = $pe692de75[$v2b2cf4c0eb]; $pf8ed4912 .= '
+						<li data-jstree="{\'icon\':\'db_driver\'}" db_driver_name="' . $v5ba36af525 . '" db_driver_bean_name="' . $pa9b2090f[2] . '" db_driver_bean_file_name="' . $pa9b2090f[1] . '" db_driver_type="db" db_driver_broker="' . $v2b2cf4c0eb . '" db_driver_broker_folder="' . $v00eea27878 . '">
+							<label>' . ucwords(str_replace("_", " ", $v5ba36af525)) . '</label>
+							<ul url="' . str_replace("#type#", "", str_replace("#bean_file_name#", $pa9b2090f[1], str_replace("#bean_name#", $pa9b2090f[2], $pe6619ae3))) . '"></ul>
+						</li>'; } else $pf8ed4912 .= '
+						<li data-jstree="{\'icon\':\'db_driver\'}" db_driver_name="' . $v5ba36af525 . '">
+							<label>' . ucwords(str_replace("_", " ", $v5ba36af525)) . ' (Rest)</label>
+						</li>'; } $pf8ed4912 .= '</ul>'; } return $pf8ed4912; } public static function getTaskFlowContentHtml($pcfdeae4e, $v5d3813882f) { $pe7b2a888 = $v5d3813882f["generate_tasks_flow_from_code_label"] ? $v5d3813882f["generate_tasks_flow_from_code_label"] : "Generate Diagram from Code"; $pd880cf7e = $v5d3813882f["generate_tasks_flow_from_code_func"] ? $v5d3813882f["generate_tasks_flow_from_code_func"] : "generateTasksFlowFromCode"; $v13b5585fac = $v5d3813882f["generate_code_from_tasks_flow_label"] ? $v5d3813882f["generate_code_from_tasks_flow_label"] : "Generate Code From Diagram"; $v0fa2a905e0 = $v5d3813882f["generate_code_from_tasks_flow_func"] ? $v5d3813882f["generate_code_from_tasks_flow_func"] : "generateCodeFromTasksFlow"; $v243e50bc1d = array( "Sort Tasks" => array( "class" => "sort_tasks", "html" => '<a onClick="sortWorkflowTask();return false;"><i class="icon sort"></i> Sort Tasks</a>', "childs" => array( "Sort Type 1" => array( "class" => "sort_tasks", "click" => "sortWorkflowTask(1);return false;" ), "Sort Type 2" => array( "class" => "sort_tasks", "click" => "sortWorkflowTask(2);return false;" ), "Sort Type 3" => array( "class" => "sort_tasks", "click" => "sortWorkflowTask(3);return false;" ), "Sort Type 4" => array( "class" => "sort_tasks", "click" => "sortWorkflowTask(4);return false;" ), ) ), 1 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Flush Cache" => array( "class" => "flush_cache", "html" => '<a onClick="flushCache();return false;"><i class="icon flush_cache"></i> Flush Cache</a>', ), "Empty Diagram" => array( "class" => "empty_diagram", "html" => '<a onClick="emptyDiagam();return false;"><i class="icon empty_diagram"></i> Empty Diagram</a>', ), 2 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Zoom In" => array( "class" => "zoom_in", "html" => '<a onClick="zoomInDiagram(this);return false;"><i class="icon zoom_in"></i> Zoom In</a>', ), "Zoom Out" => array( "class" => "zoom_out", "html" => '<a onClick="zoomOutDiagram(this);return false;"><i class="icon zoom_out"></i> Zoom Out</a>', ), "Zoom" => array( "class" => "zoom", "html" => '
 				<a onClick="zoomEventPropagationDiagram(this);return false;"><i class="icon zoom"></i> <input type="range" min="0.5" max="1.5" step=".02" value="1" onInput="zoomDiagram(this);return false;" /> <span>100%</span></a>', ), "Zoom Reset" => array( "class" => "zoom_reset", "html" => '<a onClick="zoomResetDiagram(this);return false;"><i class="icon zoom_reset"></i> Zoom Reset</a>', ), 3 => array( "class" => "separator", "title" => " ", "html" => " ", ), $pe7b2a888 => array( "class" => "generate_tasks_flow_from_code", "html" => '<a onClick="' . $pd880cf7e . '(true, {force: true});return false;"><i class="icon generate_tasks_flow_from_code"></i> ' . $pe7b2a888 . '</a>', ), $v13b5585fac => array( "class" => "generate_code_from_tasks_flow", "html" => '<a onClick="' . $v0fa2a905e0 . '(true, {force: true});return false;"><i class="icon generate_code_from_tasks_flow"></i> ' . $v13b5585fac . '</a>', ), 4 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Flip Panels Side" => array( "class" => "flip_tasks_flow_panels_side", "html" => '<a onClick="flipTasksFlowPanelsSide(this);return false;"><i class="icon flip_tasks_flow_panels_side"></i> Flip Panels Side</a>', ), "Maximize/Minimize Editor Screen" => array( "class" => "tasks_flow_full_screen", "html" => '<a onClick="toggleTaskFlowFullScreen(this);return false;"><i class="icon full_screen"></i> Maximize Editor Screen</a>', ), 5 => array( "class" => "separator", "title" => " ", "html" => " ", ), "Auto Save On" => array( "class" => "auto_save_activation", "title" => "Is Auto Save Active", "html" => '<a onClick="toggleAutoSaveCheckbox(this, onTogglePHPCodeAutoSave)"><i class="icon auto_save_activation"></i> <span>Enable Auto Save</span> <input type="checkbox" value="1" /></a>' ), "Auto Convert On" => array( "class" => "auto_convert_activation", "title" => "Is Auto Convert Active", "html" => '<a onClick="toggleAutoConvertCheckbox(this, onTogglePHPCodeAutoConvert)"><i class="icon auto_convert_activation"></i> <span>Enable Auto Convert</span> <input type="checkbox" value="1" /></a>' ), "Save" => array( "class" => "save", "html" => '<a onClick="' . $v5d3813882f["save_func"] . '();return false;"><i class="icon save"></i> Save</a>', ), ); $pcfdeae4e->setMenus($v243e50bc1d); return $pcfdeae4e->getContent(); } public static function validateHtmlTagsBeforeConvertingToCodeTags($v067674f4e4) { $v446afd1219 = true; preg_match_all("/(<style|<\/style|<script|<\/script|<\?|\?>)/i", $v067674f4e4, $pbae7526c); $pbae7526c = $pbae7526c[0]; $v664387d23c = $v7f8da6644e = $v226207be64 = false; $pc37695cb = count($pbae7526c); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v6107abf109 = $pbae7526c[$v43dd7d0051]; if (strpos($v6107abf109, "<?") !== false) { $v664387d23c = true; if ($v7f8da6644e || $v226207be64) { $v446afd1219 = false; break; } } else if (strpos($v6107abf109, "?>") !== false) { $v664387d23c = false; } else if (strpos($v6107abf109, "<style") !== false) { $v7f8da6644e = true; if ($v664387d23c || $v226207be64) { $v446afd1219 = false; break; } } else if (strpos($v6107abf109, "</style") !== false) { $v7f8da6644e = false; } else if (strpos($v6107abf109, "<script") !== false) { $v226207be64 = true; if ($v7f8da6644e || $v664387d23c) { $v446afd1219 = false; break; } } else if (strpos($v6107abf109, "</script") !== false) { $v226207be64 = false; } } if ($v446afd1219) { preg_match("/<([\w]+)([^>]*)(<\?)(.+)(\?>)([^>]*)>/u", $v067674f4e4, $pbae7526c); $v446afd1219 = count($pbae7526c) == 0; } return $v446afd1219; } public static function convertHtmlTagsToCodeTags($v067674f4e4) { $v067674f4e4 = preg_replace("/<([\w]+)([^>]*)(<\?)(.+)(\?>)([^>]*)>/u", "<$1$2&lt; ?$4? &gt;$6>", $v067674f4e4); $v067674f4e4 = preg_replace("/<script\s+([^>]*)src=(\"|')([^\"']+)(\"|')([^>]*)>(.*)<\/script>/iu", '<pre><code class="language-html">&lt; script $1src=$2$3$4$5&gt;$6&lt; /script&gt;</code></pre>', $v067674f4e4); $v067674f4e4 = str_replace("?>", '</code></pre>', str_replace(array("<? ", "<?php "), '<pre><code class="language-php">', str_replace("<?=", '<pre><code class="language-php">echo ', $v067674f4e4))); $v067674f4e4 = preg_replace("/<\/style>/i", '</code></pre>', preg_replace("/<style([^>]*)>/i", '<pre><code class="language-css">', $v067674f4e4)); $v067674f4e4 = preg_replace("/<\/script>/i", '</code></pre>', preg_replace("/<script([^>]*)>/i", '<pre><code class="language-javascript">', $v067674f4e4)); return $v067674f4e4; } public static function convertCodeTagsToHtmlTags($pf8ed4912) { $pf8ed4912 = preg_replace("/<pre>\s+<code\s+/i", "<pre><code ", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-html">(&lt;|<)(\s*)script\s+([^>]*)src=("|\')([^"\']+)("|\')([^>]*)(&gt;|>)(.*)(&lt;|<)(\s*)\/script(\s*)(&gt;|>)<\/code><\/pre>/iu', '<script $3src=$4$5$6$7>$9</script>', $pf8ed4912); $pf8ed4912 = preg_replace("/<([\w]+)([^>]*)((&lt;|<)(\s*)\?)(.+)(\?(\s*)(&gt;|>))([^>]*)>/u", "<$1$2<?$6?>$10>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-php">(.*)<\/code><\/pre>/iu', "<? $1 ?>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-css">(.*)<\/code><\/pre>/iu', "<style>\n$1\n</style>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-javascript">(.*)<\/code><\/pre>/iu', "<script>\n$1\n</script>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-php">([^<]+)/iu', "<? $1 ?>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-css">([^<]+)/iu', "<style>\n$1\n</style>", $pf8ed4912); $pf8ed4912 = preg_replace('/<pre><code\s+class="language-javascript">([^<]+)/iu', "<script>\n$1\n</script>", $pf8ed4912); $pf8ed4912 = str_replace('</code></pre>', "", $pf8ed4912); $pf8ed4912 = str_replace('&gt;', ">", $pf8ed4912); $pf8ed4912 = str_replace('&lt;', "<", $pf8ed4912); return $pf8ed4912; } public static function getHtmlTagProps($v067674f4e4, $pf4b9d8e6, $v5d3813882f = false) { $v9073377656 = array( "html_attributes" => "", "inline_code" => "", ); $v4430104888 = stripos($v067674f4e4, "<$pf4b9d8e6>"); if ($v4430104888 !== false) { $v7db54bb786 = ""; $pbaeb17fb = $v4430104888 + strlen($pf4b9d8e6) + 1; } else { $v4430104888 = stripos($v067674f4e4, "<$pf4b9d8e6 "); if ($v4430104888 === false) { $v7db54bb786 = ""; $pbaeb17fb = false; } else { $v619a1c0905 = $v4430104888 + strlen($pf4b9d8e6) + 2; $pbaeb17fb = strpos($v067674f4e4, ">", $v619a1c0905); $v95a4985a1d = strpos($v067674f4e4, "<?", $v619a1c0905); if ($v95a4985a1d !== false && $v95a4985a1d < $pbaeb17fb) { $pf33edf1c = strpos($v067674f4e4, "?>", $v95a4985a1d + 2); $pbaeb17fb = $pf33edf1c !== false ? strpos($v067674f4e4, ">", $pf33edf1c + 2) : false; } $v7db54bb786 = $pbaeb17fb !== false && $pbaeb17fb > $v619a1c0905 ? substr($v067674f4e4, $v619a1c0905, $pbaeb17fb - $v619a1c0905) : ""; $v9073377656["html_attributes"] = $v7db54bb786; } } if ($v5d3813882f["get_inline_code"]) { if ($v4430104888 !== false && $pbaeb17fb !== false) { $pacc959a1 = strripos($v067674f4e4, "</$pf4b9d8e6>", $pbaeb17fb + 1); if ($pacc959a1 !== false) { $pb757efe0 = substr($v067674f4e4, $pbaeb17fb + 1, $pacc959a1 - $pbaeb17fb - 1); $v9073377656["inline_code"] = $pb757efe0; } } } return $v9073377656; } } ?>

@@ -24,9 +24,10 @@ $(function () {
 	/* This is already done in the common/settings.js
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForVariables,
 	});
 	choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");*/
 	

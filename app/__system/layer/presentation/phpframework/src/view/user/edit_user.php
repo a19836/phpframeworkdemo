@@ -41,7 +41,7 @@ function deleteUser(elm, input_class) {
 	submitForm(elm, input_class);
 }
 </script>
-<div id="menu">' . UserAuthenticationUIHandler::getMenu($UserAuthenticationHandler, $project_url_prefix) . '</div>
+<div id="menu">' . UserAuthenticationUIHandler::getMenu($UserAuthenticationHandler, $project_url_prefix, $entity) . '</div>
 <div id="content">
 	<div class="edit_user">
 		<div class="top_bar">

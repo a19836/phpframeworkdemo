@@ -122,29 +122,35 @@ body,
 	font-size:8pt;
 }
 .choose_available_project > .projects_actions > .search_project {
+	max-width:200px;
 	margin:10px 0px 10px 10px;
 	white-space:nowrap;
+	position:relative;
+	display:inline-block;
 }
 .choose_available_project > .projects_actions > .search_project .icon.search {
 	cursor:default;
 	color:var(--icon-active-color);
 }
 .choose_available_project > .projects_actions > .search_project input {
-	width:150px;
+	width:100%;
 	margin-left:-28px;
 	padding:10px 20px 10px 25px;
 	color:var(--icon-active-color);
 	border-color:var(--icon-active-color);
 	border-radius:0.2rem;
 	font-size:8pt;
+	box-sizing:border-box;
 }
 .choose_available_project > .projects_actions > .search_project input::placeholder {
 	color:var(--icon-active-color);
 }
 .choose_available_project > .projects_actions > .search_project .icon.close {
+	margin:0;
 	color:var(--icon-active-color);
 	position:absolute;
-	margin:25px 0 0 -18px;
+	top:13px;
+	right:7px;
 }
 
 /* PROJECTS - loading_projects */

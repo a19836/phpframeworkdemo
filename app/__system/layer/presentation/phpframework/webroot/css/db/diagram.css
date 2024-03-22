@@ -2,6 +2,12 @@
 .top_bar header > ul {
 	right:27px;
 }
+.top_bar.in_popup header > ul {
+	right:63px;
+}
+.top_bar.in_popup header > ul li.save {
+	margin-top:2px;
+}
 
 /* ICONS */
 .icon.update_db_diagram_automatically::before {
@@ -18,6 +24,10 @@
 }
 
 /* TASKS FLOW CHART */
+.in_popup .taskflowchart .workflow_menu.top_bar_menu {
+	top:17px;
+	right:43px;
+}
 .taskflowchart .workflow_menu.top_bar_menu li.hidden {
 	display:none;
 }

@@ -60,12 +60,12 @@ $(function() {
 	});
 });
 </script>'; $main_content .= '
-<div class="top_bar">
+<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 	<header>
 		<div class="title" title="' . $path . '">Upload Files into  in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj) . '</div>
 	</header>
 </div>
 
-<div class="upload_files">
+<div class="upload_files' . ($popup ? " in_popup" : "") . '">
 	<form action="' . $upload_url . '" class="dropzone"></form>
 </div>'; ?>

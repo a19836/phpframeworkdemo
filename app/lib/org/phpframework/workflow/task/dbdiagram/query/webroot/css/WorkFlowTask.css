@@ -22,6 +22,11 @@
 	background-color:transparent;
 	box-sizing:border-box;
 	box-shadow:none;
+	opacity:.9 !important;
+}
+.taskflowchartdiagram .task.task_query:hover {
+	opacity:1 !important;
+	z-index:12;
 }
 .taskflowchartdiagram .task.task_query:hover {
 	box-shadow:none !important;
@@ -226,4 +231,11 @@
 }
 .selected_connection_properties .db_table_connection_html tbody td input {
 	width:135px;
+}
+.selected_connection_properties .db_table_connection_html .delete_connection_button {
+	margin-top:40px;
+	text-align:center;
+}
+.selected_connection_properties .db_table_connection_html .delete_connection_button button {
+	font-size:inherit;
 }

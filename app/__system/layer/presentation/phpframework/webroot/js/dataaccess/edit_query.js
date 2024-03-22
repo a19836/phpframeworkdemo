@@ -20,6 +20,7 @@ $(function () {
 	//init trees
 	includesTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeHbnObjectFromTree,
@@ -28,6 +29,7 @@ $(function () {
 	
 	daoObjsTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 	});
@@ -628,6 +630,30 @@ function updateDBTables(elm, rand_number, do_not_sync) {
 	updateDBAttributes(select[0], rand_number);
 }
 
+function refreshDBTables(elm) {
+	var p = $(elm).parent().parent();
+	var db_broker = p.find(".db_broker select").val();
+	var db_driver = p.find(".db_driver select").val();
+	var type = p.find(".type select").val();
+	
+	if (!db_broker)
+		StatusMessageHandler.showMessage("DB Broker cannot be undefined!", "", "bottom_messages", 2000);
+	else if (!db_driver)
+		StatusMessageHandler.showMessage("DB Driver cannot be undefined!", "", "bottom_messages", 2000);
+	else if (!type)
+		StatusMessageHandler.showMessage("DB Type cannot be undefined!", "", "bottom_messages", 2000);
+	else {
+		var select_with_trigger = p.find(".db_driver select[onChange], .type select[onChange]").first();
+		
+		if (select_with_trigger[0]) {
+			if (db_brokers_drivers_tables_attributes[db_broker] && db_brokers_drivers_tables_attributes[db_broker][db_driver] && db_brokers_drivers_tables_attributes[db_broker][db_driver][type])
+				db_brokers_drivers_tables_attributes[db_broker][db_driver][type] = null;
+			
+			select_with_trigger.trigger("change");
+		}
+	}
+}
+
 function updateDBAttributes(elm, rand_number, do_not_sync) {
 	var p = $(elm).parent().parent();
 	var db_broker = p.find(".db_broker select").val();
@@ -666,6 +692,33 @@ function updateDBAttributes(elm, rand_number, do_not_sync) {
 	
 	if (!do_not_sync)
 		syncChooseTableOrAttributePopups(elm);
+}
+
+function refreshDBAttributes(elm) {
+	var p = $(elm).parent().parent();
+	var db_broker = p.find(".db_broker select").val();
+	var db_driver = p.find(".db_driver select").val();
+	var type = p.find(".type select").val();
+	var db_table = p.find(".db_table select").val();
+	
+	if (!db_broker)
+		StatusMessageHandler.showMessage("DB Broker cannot be undefined!", "", "bottom_messages", 2000);
+	else if (!db_driver)
+		StatusMessageHandler.showMessage("DB Driver cannot be undefined!", "", "bottom_messages", 2000);
+	else if (!type)
+		StatusMessageHandler.showMessage("DB Type cannot be undefined!", "", "bottom_messages", 2000);
+	else if (!db_table)
+		StatusMessageHandler.showMessage("DB Table cannot be undefined!", "", "bottom_messages", 2000);
+	else {
+		var select_with_trigger = p.find(".db_table select[onChange]").first();
+		
+		if (select_with_trigger[0]) {
+			if (db_brokers_drivers_tables_attributes[db_broker] && db_brokers_drivers_tables_attributes[db_broker][db_driver] && db_brokers_drivers_tables_attributes[db_broker][db_driver][type] && db_brokers_drivers_tables_attributes[db_broker][db_driver][type][db_table])
+				db_brokers_drivers_tables_attributes[db_broker][db_driver][type][db_table] = null;
+			
+			select_with_trigger.trigger("change");
+		}
+	}
 }
 
 function syncChooseTableOrAttributePopups(elm) {

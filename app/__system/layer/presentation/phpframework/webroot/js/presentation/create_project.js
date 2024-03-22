@@ -5,7 +5,7 @@ $(function () {
 		prepareParentWindowPopup();
 		
 		if (popup)
-			create_project.addClass("popup_without_popup_close");
+			create_project.find(".top_bar.create_project_top_bar").addClass("popup_without_popup_close");
 	}
 	
 	create_project.removeClass("changing_to_step");
@@ -66,10 +66,11 @@ function getParentWindowPopup() {
 
 function cancel() { //This function is only used on a popup
 	var create_project = $(".create_project");
+	var parent_popup = getParentWindowPopup();
 	
-	if (popup && window.parent != window) {
-		window.parent.document.body.classList.remove("popup_without_popup_close", "popup_with_left_popup_close", "popup_with_popup_close_button", "popup_with_popup_close_transparent");
-		create_project.removeClass("popup_without_popup_close");
+	if (parent_popup && window.parent != window) {
+		parent_popup.removeClass("popup_without_popup_close popup_with_left_popup_close popup_with_popup_close_button popup_with_popup_close_transparent");
+		create_project.find(".top_bar.create_project_top_bar").removeClass("popup_without_popup_close");
 	}
 	
 	create_project.children(".creation_step").children().not(".top_bar").remove();
@@ -96,6 +97,7 @@ function goToProjectDashboard(url) {
 
 function onSucessfullProjectCreation(url) {
 	var func = null;
+	var is_ctrl_key_pressed = window.event && (window.event.ctrlKey || window.event.keyCode == 65);
 	
 	if (on_success_js_func_name) {
 		eval("func = typeof window.parent." + on_success_js_func_name + " == 'function' ? window.parent." + on_success_js_func_name + " : null;");
@@ -103,11 +105,34 @@ function onSucessfullProjectCreation(url) {
 		if (!func) //could be inside of the admin_home_project.php which is inside of the admin_advanced.php
 			eval("func = typeof window.parent.parent." + on_success_js_func_name + " == 'function' ? window.parent.parent." + on_success_js_func_name + " : null;");
 
-		if (func)
+		if (func) {
+			if (!$.isPlainObject(on_success_js_func_opts))
+				on_success_js_func_opts = {};
+			
+			on_success_js_func_opts["is_ctrl_key_pressed"] = is_ctrl_key_pressed;
+			
 			func(on_success_js_func_opts);
+		}
 	}
 	
 	if (!func && url) {
+		if (is_ctrl_key_pressed) {
+			var rand = Math.random() * 10000;
+			var win = window.open(url, "tab" + rand);
+			
+			if (win) { //Browser has allowed it to be opened
+				win.focus();
+				
+				//refreshes parent window
+				if (window.parent.parent != window.parent)
+					window.parent.parent.document.location = "" + window.parent.parent.document.location;
+				else if (window.parent != window)
+					window.parent.document.location = "" + window.parent.document.location;
+				
+				return true; //don't execute code below.
+			}
+		}
+		
 		if (typeof window.parent.parent.goToHandler == "function" && window.parent.parent != window.parent) //if inside of the admin_home_project.php which is inside of the admin_advanced.php
 			window.parent.document.location = url;
 		else if (window.parent != window) { //if inside of the admin_advanced.php
@@ -172,6 +197,39 @@ function createProject(elm) {
 	}, 1000);
 }
 
+function initInstallPrograms() {
+	initStorePrograms();
+	
+	var create_project = $(".create_project");
+	var install_program = create_project.find(".install_program .step_0 .install_program_step_0_with_tabs");
+	var a = create_project.find(".top_bar.create_project_top_bar header > ul > li.continue > a");
+	
+	//init input file upload
+	install_program.find(".file_upload form input.upload_file").on("change", function() {
+		if (this.files.length > 0)
+			a.addClass("active");
+		else
+			a.removeClass("active");
+	});
+	
+	install_program.find(" > ul > li > a").on("click", function() {
+		setTimeout(function() {
+			var active_tab = install_program.tabs("option", "active");
+			var exists_selection = false;
+			
+			if (active_tab == 0)
+				exists_selection = install_program.find(".install_store_program > ul > li.selected").length > 0;
+			else 
+				exists_selection = install_program.find(".file_upload form input.upload_file")[0].files.length > 0;
+			
+			if (exists_selection)
+				a.addClass("active");
+			else
+				a.removeClass("active");
+		}, 300);
+	});
+}
+
 function initStorePrograms() {
 	if (get_store_programs_url)
 		$.ajaxSetup({
@@ -218,19 +276,55 @@ function chooseProgram(elm, choose_url, post_data) {
 		choose_url += choose_url.indexOf("?") != -1 ? "" : "?"; //add "?" if apply
 		choose_url += "&creation_step=2"; //add creation_step to show successfull message
 		choose_url = choose_url.replace(/\?&+/, "?"); //replace "?&&&" with "?"
+		
+		postToUrl(choose_url, post_data);
 	}
 	else {
-		var li = $(".create_project .install_program .step_0 .install_program_step_0_with_tabs .install_store_program > ul > li.selected");
+		var install_program = $(".create_project .install_program .step_0 .install_program_step_0_with_tabs");
+		var active_tab = install_program.tabs("option", "active");
 		
-		if (!li[0])
-			StatusMessageHandler.showError("You must select a program first.\nOr go back and click in the 'Empty Project' button.");
-		else {
-			post_data["step"] = 1;
-			post_data["program_url"] = li.attr("url");
+		if (active_tab == 0) { //if store
+			var li = install_program.find(".install_store_program > ul > li.selected");
+			
+			if (!li[0])
+				StatusMessageHandler.showError("You must select a program first.\nOr go back and click in the 'Empty Project' button.");
+			else {
+				post_data["step"] = 1;
+				post_data["program_url"] = li.attr("url");
+				
+				postToUrl(choose_url, post_data);
+			}
+		}
+		else { //if file_upload
+			var oForm = install_program.find(".file_upload form");
+			var zip_file = oForm.find("input.upload_file");
+			
+			if (zip_file[0] && zip_file[0].files.length > 0) {
+				oForm.attr("action", choose_url);
+				oForm.find(".upload_url").remove();
+				oForm.submit();
+			}
+			else
+				StatusMessageHandler.showError("You must upload a program first!");
 		}
 	}
+}
+
+function toggleLocalUpload(elm) {
+	elm = $(elm);
+	var create_project = $(".create_project");
+	var install_program = create_project.find(".install_program .step_0 .install_program_step_0_with_tabs");
+	var active_tab = install_program.tabs("option", "active");
 	
-	postToUrl(choose_url, post_data);
+	create_project.toggleClass("local_upload_shown");
+	
+	if (active_tab == 1)
+		install_program.find(" > ul > li:first-child > a").first().trigger("click");
+	
+	if (create_project.hasClass("local_upload_shown"))
+		elm.html("Hide Advanced Features");
+	else
+		elm.html("Show Advanced Features");
 }
 
 function installProgramStep(elm, data) {

@@ -140,28 +140,34 @@ body,
 	color:#999;
 }
 .install_template > .install_store_template > .search_template {
-	margin:10px 0 0;
+	max-width:250px;
+	margin:10px auto 0;
 	color:#999;
+	position:relative;
+	display:inline-block;
 }
 .install_template > .install_store_template > .search_template .icon.search {
 	cursor:default;
 	color:inherit;
 }
 .install_template > .install_store_template > .search_template input {
-	width:200px;
+	width:100%;
 	margin-left:-28px;
 	padding:10px 20px 10px 25px;
 	color:inherit;
 	border-color:inherit;
 	border-radius:0.2rem;
 	font-size:8pt;
+	box-sizing:border-box;
 }
 .install_template > .install_store_template > .search_template input::placeholder {
 	color:inherit;
 }
 .install_template > .install_store_template > .search_template .icon.close {
+	margin:0;
 	position:absolute;
-	margin:15px 0 0 -18px;
+	top:13px;
+	right:7px;
 }
 .install_template > .install_store_template ul {
 	max-height: calc(100% - 90px);

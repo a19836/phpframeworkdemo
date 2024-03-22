@@ -51,7 +51,7 @@ include_once $EVC->getUtilPath("CMSPresentationLayerUIHandler"); $head = '
 					<div class="header"><input type="radio" name="template_region" value="1" />' . $sample_name . ' <span class="icon maximize" onClick="toggleContent(this)">Maximize</span></div>
 					
 					<div class="content">
-						<ul>
+						<ul class="tabs tabs_transparent tabs_right">
 							<li><a href="#view_ui">View UI</a></li>
 							<li><a href="#view_source">HTML Source</a></li>
 						</ul>

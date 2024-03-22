@@ -36,6 +36,7 @@ $(function() {
 	//init trees
 	chooseTemplateTaskLayerFileFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllInvalidTemplateTaskLayerFilesFromTree,
@@ -44,14 +45,26 @@ $(function() {
 	
 	chooseTestUnitsFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllInvalidTestUnitsFromTree,
 	});
 	chooseTestUnitsFromFileManagerTree.init("choose_test_units_from_file_manager");
 	
+	chooseFileFromFileManagerTree = new MyTree({
+		multiple_selection : false,
+		toggle_selection : false,
+		toggle_children_on_click : true,
+		ajax_callback_before : prepareLayerNodes1,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTree,
+	});
+	chooseFileFromFileManagerTree.init("choose_file_from_file_manager");
+	
 	$("#choose_template_task_layer_file_from_file_manager > .mytree > li:first-child > a").attr("file_path", "");
 	$("#choose_test_units_from_file_manager > .mytree > li:first-child > a").attr("file_path", "");
+	
+	MyFancyPopup.hidePopup();
 });
 
 function onToggleFullScreen(in_full_screen) {
@@ -118,6 +131,39 @@ function onChooseTemplateTaskLayerFile(elm, layer_name) {
 		
 		MyDeploymentUIFancyPopup.showPopup();
 	}
+}
+
+function onChooseTemplateFile(elm, layer_name) {
+	var popup = $("#choose_file_from_file_manager");
+	
+	MyFancyPopup.init({
+		elementToShow: popup,
+		parentElement: document,
+		
+		updateFunction: function(btn) {
+			var node = chooseFileFromFileManagerTree.getSelectedNodes();
+			node = node[0];
+			
+			if (node) {
+				var a = $(node).children("a");
+				var file_path = a.attr("file_path");
+				var bean_name = a.attr("bean_name");
+				var include_path_prefix = file_path && bean_name ? beans_folders_name[bean_name] : null;
+				
+				if (include_path_prefix) {
+					var input = $(elm).parent().find("input");
+					input.val(include_path_prefix + file_path);
+					
+					MyFancyPopup.hidePopup();
+				}
+				else {
+					alert("invalid selected file.\nPlease choose a valid file.");
+				}
+			}
+		}
+	});
+	
+	MyFancyPopup.showPopup();
 }
 
 function onGetLayerWordPressInstallationsUrl(layer_name) {

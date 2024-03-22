@@ -585,11 +585,17 @@ class MenuUtil {
 					return $status ? $broker->getInsertedId() : $status;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
+					$data["parent_id"] = is_numeric($data["parent_id"]) ? $data["parent_id"] : null;
+					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					
 					$MenuItem = $broker->callObject("module/menu", "MenuItem");
 					$status = $MenuItem->insert($data, $ids);
 					return $status ? $ids["item_id"] : $status;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
+					$data["parent_id"] = is_numeric($data["parent_id"]) ? $data["parent_id"] : null;
+					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					
 					$status = $broker->insertObject("mmenu_item", array(
 							"group_id" => $data["group_id"], 
 							"parent_id" => $data["parent_id"], 

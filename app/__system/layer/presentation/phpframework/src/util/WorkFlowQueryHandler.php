@@ -186,18 +186,18 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 			<div class="connections_properties hidden">
 				' . $this->pcfdeae4e->printConnectionsProperties() . '
 			</div>
-		</div>'; return $pf8ed4912; } public function getChooseQueryTableOrAttributeHtml($v1cbfbb49c5 = false, $v8aefdcedb9 = "MyFancyPopup") { $pf8ed4912 = '<div id="' . $v1cbfbb49c5 . '" class="myfancypopup choose_table_or_attribute">
-				<div class="title">DB Table/Attribute Selection</div>
+		</div>'; return $pf8ed4912; } public function getChooseQueryTableOrAttributeHtml($v1cbfbb49c5 = false, $v8aefdcedb9 = "MyFancyPopup") { $pf8ed4912 = '<div id="' . $v1cbfbb49c5 . '" class="myfancypopup choose_table_or_attribute with_title">
+				<div class="title">Choose a DB Table or Attribute</div>
 				<div class="contents">
 					<div class="db_broker' . (count($this->v9b98e0e818) == 1 ? " single_broker" : "") . '">
 						<label>DB Broker:</label>
 						<select onChange="updateDBDrivers(this)">
-							<option></option>'; foreach ($this->v9b98e0e818 as $pab752e34 => $v84bde5f80a) { $pf8ed4912 .= '			<option ' . ($this->v5e788adf08 == $pab752e34 ? 'selected' : '') . '>' . $pab752e34 . '</option>'; } $pf8ed4912 .= '			</select>
+							<option></option>'; foreach ($this->v9b98e0e818 as $pab752e34 => $v84bde5f80a) { $pf8ed4912 .= '		<option ' . ($this->v5e788adf08 == $pab752e34 ? 'selected' : '') . '>' . $pab752e34 . '</option>'; } $pf8ed4912 .= '		</select>
 					</div>
 					<div class="db_driver" ' . ($this->v5e788adf08 ? '' : 'style="display:none"') . '>
 						<label>DB Driver:</label>
 						<select onChange="updateDBTables(this)">
-							<option></option>'; if ($this->v9b98e0e818[$this->v5e788adf08]) { $pc37695cb = count($this->v9b98e0e818[$this->v5e788adf08]); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) $pf8ed4912 .= '			<option ' . ($this->pc66a0204 == $this->v9b98e0e818[$this->v5e788adf08][$v43dd7d0051] ? 'selected' : '') . '>' . $this->v9b98e0e818[$this->v5e788adf08][$v43dd7d0051] . '</option>'; } $pf8ed4912 .= '			</select>
+							<option></option>'; if ($this->v9b98e0e818[$this->v5e788adf08]) { $pc37695cb = count($this->v9b98e0e818[$this->v5e788adf08]); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) $pf8ed4912 .= '	<option ' . ($this->pc66a0204 == $this->v9b98e0e818[$this->v5e788adf08][$v43dd7d0051] ? 'selected' : '') . '>' . $this->v9b98e0e818[$this->v5e788adf08][$v43dd7d0051] . '</option>'; } $pf8ed4912 .= '		</select>
 					</div>
 					<div class="type" ' . ($this->v5e788adf08 ? '' : 'style="display:none"') . '>
 						<label>Type:</label>
@@ -208,17 +208,20 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 					</div>
 					<div class="db_table" ' . ($this->pc66a0204 ? '' : 'style="display:none"') . '>
 						<label>DB Table:</label>
-						<select onChange="updateDBAttributes(this)">'; if ($this->v5e4089f2c3) { $pc37695cb = count($this->v5e4089f2c3); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) $pf8ed4912 .= '			<option ' . ($this->v5e4089f2c3[$v43dd7d0051] == $this->pd76831fc ? 'selected' : '') . '>' . $this->v5e4089f2c3[$v43dd7d0051] . '</option>'; } $pf8ed4912 .= '			</select>
+						<select onChange="updateDBAttributes(this)">'; if ($this->v5e4089f2c3) { $pc37695cb = count($this->v5e4089f2c3); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) $pf8ed4912 .= '	<option ' . ($this->v5e4089f2c3[$v43dd7d0051] == $this->pd76831fc ? 'selected' : '') . '>' . $this->v5e4089f2c3[$v43dd7d0051] . '</option>'; } $pf8ed4912 .= '		</select>
+						<span class="icon refresh" onClick="refreshDBTables(this)"></span>
 					</div>
 					<div class="db_attribute" ' . ($this->pd76831fc ? '' : 'style="display:none"') . '>
 						<label>DB Attribute:</label>
-						<select onChange="syncChooseTableOrAttributePopups(this)">'; if ($this->v9d043dd3df) { $pc37695cb = count($this->v9d043dd3df); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) $pf8ed4912 .= '			<option>' . $this->v9d043dd3df[$v43dd7d0051] . '</option>'; } $pf8ed4912 .= '			</select>
+						<select onChange="syncChooseTableOrAttributePopups(this)">'; if ($this->v9d043dd3df) { $pc37695cb = count($this->v9d043dd3df); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) $pf8ed4912 .= '	<option>' . $this->v9d043dd3df[$v43dd7d0051] . '</option>'; } $pf8ed4912 .= '		</select>
+						<span class="icon refresh" onClick="refreshDBAttributes(this)"></span>
 					</div>
 				</div>
 				<div class="button">
 					<input type="button" value="update" onClick="' . $v8aefdcedb9 . '.settings.updateFunction(this)" />
 				</div>
-			</div>'; return $pf8ed4912; } public function getChooseIncludeFromFileManagerHtml($v94a9c171e3, $v1cbfbb49c5 = false) { $pf8ed4912 = '<div id="' . $v1cbfbb49c5 . '" class="myfancypopup">
+			</div>'; return $pf8ed4912; } public function getChooseIncludeFromFileManagerHtml($v94a9c171e3, $v1cbfbb49c5 = false) { $pf8ed4912 = '<div id="' . $v1cbfbb49c5 . '" class="myfancypopup choose_include_file with_title">
+			<div class="title">Choose a Include File</div>
 			<ul class="mytree">
 				<li>
 					<label>Root</label>
@@ -228,7 +231,8 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 			<div class="button">
 				<input type="button" value="update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 			</div>
-		</div>'; return $pf8ed4912; } public function getChooseDAOObjectFromFileManagerHtml($v1cbfbb49c5 = false) { $pf8ed4912 = '<div id="' . $v1cbfbb49c5 . '" class="myfancypopup">
+		</div>'; return $pf8ed4912; } public function getChooseDAOObjectFromFileManagerHtml($v1cbfbb49c5 = false) { $pf8ed4912 = '<div id="' . $v1cbfbb49c5 . '" class="myfancypopup choose_dao_object with_title">
+			<div class="title">Choose a DAO</div>
 			<ul class="mytree">
 				<li>
 					<label>External Lib - "dao" Folder</label>
@@ -238,8 +242,8 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 			<div class="button">
 				<input type="button" value="update" onClick="MyFancyPopup.settings.updateFunction(this)" />
 			</div>
-		</div>'; return $pf8ed4912; } public function getChooseAvailableMapIdHtml($v1cbfbb49c5 = false) { $pf8ed4912 = '<div id="' . $v1cbfbb49c5 . '" class="myfancypopup">
-			<div class="title">Map Selection</div>
+		</div>'; return $pf8ed4912; } public function getChooseAvailableMapIdHtml($v1cbfbb49c5 = false) { $pf8ed4912 = '<div id="' . $v1cbfbb49c5 . '" class="myfancypopup choose_map_id with_title">
+			<div class="title">Choose a Map</div>
 			<div class="contents">
 				<div class="map">
 					<label>Available Maps:</label>
@@ -383,7 +387,7 @@ include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->
 			</div>
 			<div class="rel_name">
 				<label>Name:</label>
-				<input type="text" value="' . $v5e813b295b . '" placeHolder="Name" onBlur="validateRelationshipName(this);" onFocus="disableTemporaryAutoSaveOnInputFocus(this)" onBlur="undoDisableTemporaryAutoSaveOnInputBlur(this)" />
+				<input type="text" value="' . $v5e813b295b . '" placeHolder="Name" onFocus="disableTemporaryAutoSaveOnInputFocus(this)" onBlur="undoDisableTemporaryAutoSaveOnInputBlur(this); validateRelationshipName(this);" />
 			</div>
 			<div style="float:none; clear:both;"></div>'; if ($v6d756b21eb) $pf8ed4912 .= '
 			<div class="settings collapsed">

@@ -18,7 +18,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_query($get_bkp); $edit_entity_url = $project_url_prefix . "phpframework/presentation/edit_entity?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$path"; $top_bar_title = "Create new Page"; if (!$creation_step) { $main_content = '
-		<div class="top_bar create_entity_top_bar with_cancel' . ($popup ? ' in_popup' : '') . '">
+		<div class="top_bar create_entity_top_bar popup_with_iframe_left_popup_close popup_with_iframe_popup_close_button' . ($popup ? ' in_popup' : '') . '">
 			<header>
 				<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>
 				<ul>
@@ -37,19 +37,20 @@ $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_q
 			<div class="description">Boost your development pace with a ready-made, customizable page, requiring just a few settings to be configured.</div>
 			<button onClick="$(this).parent().addClass(\'selected\');goToUrl(\'?' . $query_string . '&creation_step=1\')">Browse Pre-built Pages</button>
 		</div>'; } else if ($creation_step == 1) { include_once $EVC->getViewPath("presentation/install_page"); $main_content = '
-		<div class="top_bar create_entity_top_bar with_cancel' . ($popup ? ' in_popup' : '') . '">
+		<div class="top_bar create_entity_top_bar popup_with_iframe_left_popup_close popup_with_iframe_popup_close_button' . ($popup ? ' in_popup' : '') . '">
 			<header>
 				<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>
 				<ul>
-					<li class="continue button" data-title="Continue to next step after selecting a pre-built page"><a class="active" href="javascript:void(0)" onClick="choosePage(this, \'?' . $query_string . '&creation_step=1\')">Continue</a></li>
+					<li class="continue button" data-title="Continue to next step after selecting a pre-built page"><a' . ($_POST && $status ? ' class="active"' : '') . ' href="javascript:void(0)" onClick="choosePage(this, \'?' . $query_string . '&creation_step=1\')">Continue</a></li>
 					<li class="back button" data-title="Back to choose a new pre-built page"><a class="active" href="?' . $query_string . '&creation_step=0">Back</a></li>
 					<li class="cancel button" data-title="Cancel"><a class="active" href="javascript:void(0)" onClick="cancel()">Cancel</a></li>
 				</ul>
 			</header>
 		</div>
 		<div class="title">Please choose a pre-built page you wish to create:</div>
+		<div class="sub_title"><a href="javascript:void(0)" onClick="toggleLocalUpload(this)">Show Advanced Features</a></div>
 		' . $main_content . '
-		<script>initStorePages();</script>'; } else if ($creation_step == 2) { $main_content = '
+		<script>initInstallPages();</script>'; } else if ($creation_step == 2) { $main_content = '
 	<div class="top_bar create_entity_top_bar' . ($popup ? ' in_popup' : '') . '">
 		<header>
 			<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>

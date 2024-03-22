@@ -15,12 +15,13 @@ $(function () {
 	//prepare trees
 	chooseMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : function(ul, data) {
 			prepareLayerFileNodes1(ul, data, chooseMethodFromFileManagerTree);
 		},
 		ajax_callback_after : function(ul, data) {
-			prepareLayerFileNodes2(ul, data, chooseMethodFromFileManagerTree, removeObjectPropertiesAndMethodsFromTreeForMethods);
+			prepareLayerFileNodes2(ul, data, chooseMethodFromFileManagerTree, removeObjectPropertiesAndMethodsAndFunctionsFromTreeForMethods);
 		},
 		path_to_filter: path_to_filter,
 	});
@@ -28,12 +29,13 @@ $(function () {
 	
 	chooseFunctionFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : function(ul, data) {
 			prepareLayerFileNodes1(ul, data, chooseFunctionFromFileManagerTree);
 		},
 		ajax_callback_after : function(ul, data) {
-			prepareLayerFileNodes2(ul, data, chooseFunctionFromFileManagerTree, removeObjectPropertiesAndMethodsFromTreeForFunctions);
+			prepareLayerFileNodes2(ul, data, chooseFunctionFromFileManagerTree, removeObjectPropertiesAndMethodsAndFunctionsFromTreeForFunctions);
 		},
 		path_to_filter: path_to_filter,
 	});
@@ -41,12 +43,13 @@ $(function () {
 	
 	chooseFileFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : function(ul, data) {
 			prepareLayerFileNodes1(ul, data, chooseFileFromFileManagerTree);
 		},
 		ajax_callback_after : function(ul, data) {
-			prepareLayerFileNodes2(ul, data, chooseFileFromFileManagerTree, removeObjectPropertiesAndFunctionsFromTree);
+			prepareLayerFileNodes2(ul, data, chooseFileFromFileManagerTree, removeObjectPropertiesAndMethodsAndFunctionsFromTree);
 		},
 		path_to_filter: path_to_filter,
 	});

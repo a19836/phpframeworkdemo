@@ -211,6 +211,7 @@
 }
 
 /* POPUPS */
+/* POPUPS - choose_from_file_manager */
 .choose_from_file_manager {
 	min-width:400px;
 	height:auto !important;
@@ -221,7 +222,15 @@
 }
 .choose_from_file_manager .mytree {
 	margin-top:0;
+	margin-bottom:15px;
 	cursor:auto;
+}
+.choose_from_file_manager .variable_type .mytree {
+	margin-top:10px;
+}
+.choose_from_file_manager .mytree .jstree-node > .icon {
+	/* For the add and refresh icons after the jstree-anchor */
+	margin-left:5px;
 }
 .choose_from_file_manager .type,
    .choose_from_file_manager .new_var,
@@ -236,6 +245,9 @@
    .choose_from_file_manager .db_driver,
    .choose_from_file_manager .query_string_attributes {
    	
+}
+.choose_from_file_manager > .title + .type {
+	padding-top:5px;
 }
 .choose_from_file_manager .query_string_attributes {
    	margin:20px 0 10px;
@@ -324,26 +336,43 @@
 	margin-left:-15px;
 	margin-top:-4px;
 }
-.choose_from_file_manager .button, 
-  #choose_db_driver .button,
-  #choose_db_driver_table .button {
+.choose_from_file_manager .button {
 	padding-top:5px;
 	text-align:center;
 	width:100%;
 	clear:left;
 	float:none;
 }
-.choose_from_file_manager .button input, 
-  #choose_db_driver .button input,
-  #choose_db_driver_table .button input  {
+.choose_from_file_manager .button input  {
 	display:inline;
 	float:none;
 	font-size:inherit;
 }
 
-#choose_db_driver,
-  #choose_db_driver_table {
+/* POPUPS - choose_from_file_manager.with_title */
+.myfancypopup.choose_from_file_manager.with_title {
+	padding:15px;
+}
+.myfancypopup.choose_from_file_manager.with_title > .title {
+	margin:-15px -15px 15px;
+}
+
+/* POPUPS - choose_query_from_file_manager and choose_db_driver_table */
+#choose_query_from_file_manager.choose_from_file_manager > .mytree {
+	margin-top:10px;
+}
+
+/* POPUPS - choose_hibernate_object_method_from_file_manager and choose_db_driver_table */
+#choose_hibernate_object_method_from_file_manager.choose_from_file_manager > .mytree {
+	margin-top:10px;
+}
+
+/* POPUPS - choose_db_driver and choose_db_driver_table */
+#choose_db_driver {
 	width:325px;	
+}
+#choose_db_driver_table {
+	width:340px;	
 }
 #choose_db_driver .broker, 
   #choose_db_driver .db_driver,
@@ -362,6 +391,7 @@
 	display:inline-block;
 	width:110px;
 	overflow:hidden;
+	vertical-align:middle;
 }
 #choose_db_driver .broker select, 
   #choose_db_driver .db_driver select,
@@ -372,12 +402,41 @@
 	width:200px;
 	font-size:inherit;
 }
+#choose_db_driver_table .db_table .icon {
+	margin-left:5px;
+}
+#choose_db_driver .button,
+  #choose_db_driver_table .button {
+	padding-top:5px;
+	text-align:center;
+	width:100%;
+	clear:left;
+	float:none;
+}
+#choose_db_driver .button input,
+  #choose_db_driver_table .button input  {
+	display:inline;
+	float:none;
+	font-size:inherit;
+}
 
+/* POPUPS - choose_db_driver.with_title and choose_db_driver_table.with_title */
+#choose_db_driver.with_title,
+  #choose_db_driver_table.with_title {
+	padding:15px;
+}
+#choose_db_driver.with_title > .title,
+  #choose_db_driver_table.with_title > .title {
+	margin:-15px -15px 20px;
+}
+
+/* POPUPS - choose_image_url_from_file_manager and choose_webroot_file_url_from_file_manager */
 #choose_image_url_from_file_manager .mytree .jstree-anchor > label span.icon,
   #choose_webroot_file_url_from_file_manager .mytree .jstree-anchor > label span.icon {
 	margin-left:5px;
 }
 
+/* POPUPS - upload_from_file_manager */
 #upload_from_file_manager {
 	width:95vw;
 	height:95vh;
@@ -387,7 +446,7 @@
 	height:100%;
 }
 
-/* EDIT TASK SOURCE POPUP */
+/* POPUPS - edit_task_source_popup */
 .edit_task_source_popup {
 	position:absolute;
 	top:30px !important; /* If I have a edit_task_source_popup open inside of another edit_task_source_popup I need to have the close button from the first popup separated from the second popup. So I need a Top of 30px. Otherwise the user-experience will be weird. */
@@ -396,6 +455,21 @@
 	bottom:10px !important;
 }
 .edit_task_source_popup > iframe {
+	width:100%;
+	height:100%;
+}
+
+/* POPUPS - edit_obj_from_file_manager_tree_popup */
+.edit_obj_from_file_manager_tree_popup {
+	position:absolute;
+	top:5%;
+	left:5%;
+	right:5%;
+	bottom:5%;
+	width:90%;
+	height:90%;
+}
+.edit_obj_from_file_manager_tree_popup > iframe {
 	width:100%;
 	height:100%;
 }

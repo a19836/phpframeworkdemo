@@ -104,6 +104,20 @@ body.in_popup::-webkit-scrollbar-track {
 	font-size:12px;
 	color:inherit;
 }
+.top_bar.in_popup:not(.popup_without_popup_close).popup_with_left_popup_close header .title,
+  .top_bar.in_popup.popup_without_popup_close.popup_with_iframe_left_popup_close header .title {
+	margin-left:30px;
+}
+.top_bar.in_popup:not(.popup_without_popup_close).popup_with_left_popup_close.popup_with_popup_close_button header .title,
+  .top_bar.in_popup.popup_without_popup_close.popup_with_iframe_left_popup_close.popup_with_iframe_popup_close_button header .title {
+	margin-left:65px;
+}
+.top_bar.in_popup:not(.popup_without_popup_close).popup_with_iframe_left_popup_close header .title {
+	margin-left:60px;
+}
+.top_bar.in_popup:not(.popup_without_popup_close).popup_with_iframe_left_popup_close.popup_with_iframe_popup_close_button header .title {
+	margin-left:95px;
+}
 .top_bar .title .breadcrumbs {
 	display:inline; /* must be inline bc of the text-overflow in the .title */
 	padding:0;
@@ -152,6 +166,20 @@ body.in_popup::-webkit-scrollbar-track {
 .top_bar.in_popup header > ul {
 	top:17px;
 	right:43px;
+}
+.top_bar.in_popup.popup_without_popup_close header > ul,
+  .top_bar.in_popup:not(.popup_without_popup_close).popup_with_left_popup_close header > ul {
+	right:15px;
+}
+.top_bar.in_popup.popup_without_popup_close.popup_with_iframe_left_popup_close header > ul {
+	left:15px;
+	right:15px;
+}
+.top_bar.in_popup:not(.popup_without_popup_close).popup_with_iframe_left_popup_close header > ul {
+	left:45px;
+}
+.top_bar.in_popup:not(.popup_without_popup_close).popup_with_iframe_left_popup_close.popup_with_popup_close_button header > ul {
+	left:95px;
 }
 .top_bar.in_popup header > ul .icon:not(:hover) {
 	color:var(--main-popup-header-color);
@@ -223,6 +251,14 @@ body.in_popup::-webkit-scrollbar-track {
 }
 .top_bar.in_popup header > ul > li.button {
 	margin-top:-6px;
+}
+.top_bar.in_popup.popup_without_popup_close.popup_with_iframe_left_popup_close header > ul > li.cancel {
+	margin-left:0;
+	position:absolute;
+	left:0;
+}
+.top_bar.in_popup:not(.popup_without_popup_close) header > ul > li.cancel {
+	display:none;
 }
 
 .top_bar li a {
@@ -1488,6 +1524,15 @@ body .workflow_message .status span.close_message::before,
 	top:35px;
 	right:127px;
 }
+.with_top_bar_tab #ui > .taskflowchart .edit_function_code.with_title > #code .code_menu.top_bar_menu, 
+  .with_top_bar_tab #ui > .taskflowchart .edit_function_code.with_title > #ui .taskflowchart .workflow_menu.top_bar_menu {
+	top:70px;
+	right:115px;
+}
+.with_top_bar_tab #ui > .taskflowchart .edit_function_code.with_title > #code, 
+  .with_top_bar_tab #ui > .taskflowchart .edit_function_code.with_title > #ui {
+	height:calc(100% - 90px);
+}
 
 .with_top_bar_tab #ui > .taskflowchart #code > .ace_editor,
   .with_top_bar_tab #ui > .taskflowchart #code > textarea,
@@ -2057,7 +2102,6 @@ body .layout-ui-editor > .menu-settings li.group .settings-attributes > ul > li.
 }
 .layout-ui-editor.with_top_bar_menu.fixed-properties label,
   .layout-ui-editor.with_top_bar_menu.fixed-side-properties label {
-	line-height:20px;
 	color:var(--main-iframe-top-title-color);
 }
 .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings li.group {
@@ -2154,6 +2198,10 @@ body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widg
 body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-swap-field > label {
 	max-width:calc(100% - 165px);
 }
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-swap-field.with-extra-callbacks > label,
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-swap-field.with-extra-events > label {
+	max-width:calc(100% - 180px);
+}
 body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-swap-field.widget-resource-reference > label {
 	max-width:calc(100% - 185px);
 }
@@ -2248,8 +2296,9 @@ body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widg
 /* LAYOUT CODE EDITOR - SETTINGS - WIDGET - DISPLAY RESOURCE ATTRIBUTE */
 body .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings li.group.settings-widget .widget-display-resource-value > .group-title > .widget-display-resource-value-toggle {
 	line-height:unset;
-	margin:0;
-	float:right;
+	margin:-5px -5px 0 0;
+	position:absolute;
+	right:20px;
 }
 body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-display-resource-value .widget-swap-field.widget-resource-reference > input, 
   body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-display-resource-value .widget-swap-field.widget-resource-reference > select {
@@ -2488,8 +2537,19 @@ body .layout-ui-editor-bootstrap-widgets-popup > .buttons > button {
 	border-right: none;
 	border-radius: 0;
 }
+.tabs.tabs_left > li {
+	float:left; /* This is the default so it doesn't need to be used */
+}
 .tabs.tabs_right > li {
 	float:right;
+}
+.tabs.tabs_center {
+	text-align:center;
+}
+.tabs.tabs_center > li {
+	float:none;
+	clear:both;
+	display:inline-block;
 }
 .with_top_bar_tab {
 	margin-top:-10px !important;
@@ -2759,7 +2819,12 @@ body:not(.dark_theme) .tabs.tabs_icons li#visual_editor_tab.ui-tabs-active a {
 }
 .myfancypopup.with_title.popup_with_popup_close_button:not(.popup_with_left_popup_close) > .popup_close,
   .myfancypopup.with_iframe_title.popup_with_popup_close_button:not(.popup_with_left_popup_close) > .popup_close {
-	right:25px !important;
+	right:15px !important;
+}
+.myfancypopup.with_title.popup_with_popup_close_button.popup_with_left_popup_close > .popup_close,
+  .myfancypopup.with_iframe_title.popup_with_popup_close_button.popup_with_left_popup_close > .popup_close {
+	left:15px !important;
+	right:auto !important;
 }
 .myfancypopup.with_title > .title {
 	min-height:50px;
@@ -2772,6 +2837,9 @@ body:not(.dark_theme) .tabs.tabs_icons li#visual_editor_tab.ui-tabs-active a {
 	font-size:12px;
 	box-sizing:border-box;
 }
+.myfancypopup.with_title.popup_with_left_popup_close > .title {
+	padding-left:80px;
+}
 
 /* ajax_login_popup */
 .ajax_login_popup.myfancypopup {
@@ -2781,7 +2849,7 @@ body:not(.dark_theme) .tabs.tabs_icons li#visual_editor_tab.ui-tabs-active a {
 /* IN POPUP TITLE */
 .inside_popup_title {
 	width:auto !important;
-	line-height:20px;
+	line-height:18px;
 	margin:0 !important;
 	padding:15px !important;
 	background:var(--main-popup-header-bg) !important;

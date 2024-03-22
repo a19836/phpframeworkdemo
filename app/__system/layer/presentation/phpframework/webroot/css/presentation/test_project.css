@@ -1,26 +1,20 @@
 html, body, #main_column {
 	height:100%;
 }
+
+.top_bar > header > ul > .toggle_settings .icon {
+	margin-top:1px;
+	font-size:16px;
+}
+
 .test_project {
-	height:100%;
+	min-height:calc(100% - 50px);
 	text-align:center;
 	background:#fff;
+	position:relative;
 }
-.test_project.hide_settings > .title,
-  .test_project.hide_settings > .sub_title,
-  .test_project.hide_settings > form {
-	display:none;
-}
-.test_project > .icon {
-	padding:0px 2px;
-	position:absolute;
-	top:10px;
-	left:0;
-	z-index:1;
-}
-.test_project > .title {
-	margin-bottom:0;
-	padding-top:10px;
+.test_project.hide_settings {
+	height:calc(100% - 50px);
 }
 .test_project > iframe {
 	width:100%;
@@ -30,10 +24,19 @@ html, body, #main_column {
 .test_project.hide_settings > iframe {
 	height:100%;
 }
+
 .test_project form {
 	margin:20px 0 0;
 	padding-bottom:10px;
 	border-bottom:1px solid #ccc;
+	transition:ease-in-out .2s all;
+}
+.test_project.hide_settings form {
+	height:0;
+	margin:0;
+	padding:0;
+	overflow:hidden;
+	opacity:0;
 }
 .test_project form .vars {
 	width:450px;

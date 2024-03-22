@@ -41,7 +41,7 @@ include $EVC->getUtilPath("UserAuthenticationUIHandler"); $head = '
 var get_user_type_permissions_url = \'' . $project_url_prefix . 'user/get_user_type_permissions?user_type_id=#user_type_id#\';
 </script>
 '; $main_content = '
-<div id="menu">' . UserAuthenticationUIHandler::getMenu($UserAuthenticationHandler, $project_url_prefix) . '</div>
+<div id="menu">' . UserAuthenticationUIHandler::getMenu($UserAuthenticationHandler, $project_url_prefix, $entity) . '</div>
 <div id="content">
 	<div class="top_bar">
 		<header>

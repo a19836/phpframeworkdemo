@@ -64,24 +64,29 @@
 	margin:5px 0;
 }
 .server_task_html > .details_container > div > label {
-	width:210px;
+	width:120px;
 	display:inline-block;
 }
 .server_task_html > .details_container > div > input {
-	width:300px;
+	width:calc(100% - 135px);
+	min-width:100px;
 }
 .server_task_html > .details_container > div > select {
-	width:308px;
+	width:calc(100% - 128px);
+	min-width:100px;
 }
 .server_task_html > .details_container > div > textarea {
-	width:300px;
+	width:100%;
+	min-width:100px;
 	height:100px;
+	box-sizing:border-box;
 }
 .server_task_html > .details_container > .host > input.host {
-	width:228px;
+	width:calc(100% - 206px);
 }
 .server_task_html > .details_container > .host > input.port {
 	width:55px;
+	min-width:auto;
 }
 .server_task_html > .details_container > div > .info {
 	text-align:right;

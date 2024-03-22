@@ -30,38 +30,43 @@ $(function () {
 	//init trees
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForVariables,
 	});
 	choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");
 	
 	chooseMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForMethods,
 	});
 	chooseMethodFromFileManagerTree.init("choose_method_from_file_manager");
 	
 	chooseFunctionFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForFunctions,
 	});
 	chooseFunctionFromFileManagerTree.init("choose_function_from_file_manager");
 	
 	chooseFileFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTree,
 	});
 	chooseFileFromFileManagerTree.init("choose_file_from_file_manager");
 	
 	chooseFolderFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotFoldersFromTree,
@@ -70,22 +75,25 @@ $(function () {
 	
 	chooseBusinessLogicFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForBusinessLogic,
 	});
 	chooseBusinessLogicFromFileManagerTree.init("choose_business_logic_from_file_manager");
 	
 	chooseQueryFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeParametersAndResultMapsFromTree,
+		ajax_callback_after : removeMapsAndOtherIbatisNodesFromTree,
 	});
 	chooseQueryFromFileManagerTree.init("choose_query_from_file_manager");
 	
 	chooseHibernateObjectFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeQueriesAndMapsAndOtherHbnNodesFromTree,
@@ -94,14 +102,16 @@ $(function () {
 	
 	chooseHibernateObjectMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeParametersAndResultMapsFromTree,
+		ajax_callback_after : removeMapsAndOtherHbnNodesFromTree,
 	});
 	chooseHibernateObjectMethodFromFileManagerTree.init("choose_hibernate_object_method_from_file_manager");
 	
 	choosePresentationFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
@@ -110,14 +120,25 @@ $(function () {
 	
 	chooseBlockFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotBlocksFromTree,
 	});
 	chooseBlockFromFileManagerTree.init("choose_block_from_file_manager");
 	
+	chooseViewFromFileManagerTree = new MyTree({
+		multiple_selection : false,
+		toggle_selection : false,
+		toggle_children_on_click : true,
+		ajax_callback_before : prepareLayerNodes1,
+		ajax_callback_after : removeAllThatIsNotViewsFromTree,
+	});
+	chooseViewFromFileManagerTree.init("choose_view_from_file_manager");
+	
 	choosePageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
@@ -126,6 +147,7 @@ $(function () {
 	
 	chooseImageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
@@ -134,6 +156,7 @@ $(function () {
 	
 	chooseWebrootFileUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotWebrootFileFromTree,
@@ -156,6 +179,7 @@ $(function () {
 		initCodeLayoutUIEditor(entity_obj, {
 			save_func: saveEntity, 
 			ready_func: function() {
+				//prepare some PtlLayoutUIEditor options
 				var luie = layout_ui_editor;
 				var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
 				
@@ -192,8 +216,12 @@ $(function () {
 				
 				sub_menu_ul.prepend('<li class="separator"></li>').prepend( show_simple_ui.clone().addClass("without_padding") );
 				
+				//add top bar menu: Show/Hide Side Bar DBs Panel
+				addCodeLayoutUIEditorRightContainerDBsMenu( $(".code_layout_ui_editor .layout-ui-editor > .options .option.sub_menu ul li.editor_full_screen"), "without_padding", true);
+				
+				//bc the LayoutUIEditor is not inited at start, we need to hide this new icon. The others are already hidden by default.
 				if (!luie.find(" > .tabs > .tab.tab-active").is(".view-layout"))
-					sub_menu.addClass("hidden"); //bc the LayoutUIEditor is not inited at start, we need to hide this new icon. The others are already hidden by default.
+					sub_menu.addClass("hidden"); 
 				
 				//hide loading icon
 				MyFancyPopup.hidePopup();
@@ -300,7 +328,26 @@ function saveEntity() {
 		alert("No entity object to save! Please contact the sysadmin...");
 }
 
-/* VIEW TAB FUNCTIONS */
+/* TAB FUNCTIONS */
+function onClickEntityLayoutEditorUIVisualTab(elm) {
+	onClickLayoutEditorUIVisualTab(elm);
+	
+	$(".top_bar > header > ul .show_simple_ui").removeClass("button");
+}
+
+function onClickEntityLayoutEditorUICodeTab(elm) {
+	onClickLayoutEditorUICodeTab(elm);
+	
+	$(".top_bar > header > ul .show_simple_ui").addClass("button");
+}
+
+function onClickEntityLayoutEditorUITaskWorkflowTab(elm) {
+	onClickLayoutEditorUITaskWorkflowTab(elm);
+	
+	$(".top_bar > header > ul .show_simple_ui").addClass("button");
+}
+
+/* TAB FUNCTIONS - VIEW */
 function resizeViewTab() {
 	var view = $(".entity_obj #view");
 	var offset = view.offset();
@@ -312,6 +359,8 @@ function resizeViewTab() {
 }
 
 function onClickViewTab(elm, view_file_path) {
+	$(".top_bar > header > ul .show_simple_ui").addClass("button");
+	
 	if (!elm.hasAttribute("is_init")) {
 		MyFancyPopup.showOverlay();
 		MyFancyPopup.showLoading();
@@ -342,6 +391,8 @@ function onClickViewTab(elm, view_file_path) {
 }
 
 function onClickNewViewTab(elm, add_view_file_url) {
+	$(".top_bar > header > ul .show_simple_ui").addClass("button");
+	
 	var obj = {"code": ""};
 	
 	saveObjCode(add_view_file_url, obj, {

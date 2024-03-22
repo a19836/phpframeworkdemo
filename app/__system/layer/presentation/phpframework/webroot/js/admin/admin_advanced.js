@@ -1,4 +1,5 @@
 var iframe_overlay = null; //To be used by sub-pages
+var empty_layers_uls = [];
 
 $(function() {
 	var hide_panel = $("#hide_panel");
@@ -85,7 +86,16 @@ $(function() {
 		var is_left_panel_with_tabs = left_panel.is(".left_panel_with_tabs");
 		
 		if (!is_left_panel_with_tabs) {
-			initFileTreeMenu();	//prepare menu tree
+			//prepare menu tree
+			mytree.options.ajax_callback_after = function(ul, data) {
+				prepareLayerNodes2(ul, data);
+				
+				//prepare empty_layers_uls
+				if (empty_layers_uls.indexOf(ul) != -1)
+					prepareLayerEmptyContainers(ul);
+			};
+			
+			initFileTreeMenu();
 			
 			//open pages li for the filtered project
 			var file_tree_ul = $("#file_tree > ul");
@@ -109,10 +119,18 @@ $(function() {
 			lis.filter(":not(.presentation_layers)").each(function(idx, li) {
 				$(li).removeClass("jstree-open").addClass("jstree-closed");
 			});
+			
+			//prepare empty_layers_uls
+			lis.filter(".presentation_layers, .business_logic_layers, .data_access_layers, .db_layers").each(function(idx, li) {
+				li = $(li);
+				var ul = li.find(" > ul > li > ul")[0];
+				
+				empty_layers_uls.push(ul);
+				prepareLayerEmptyContainers(ul);
+			});
 		}
 		else { //change tree to be separated with tabs
 			//prepare menu tree
-			mytree.options.toggle_selection = false;
 			mytree.options.ajax_callback_before = prepareLayerFileNodes1;
 			mytree.options.ajax_callback_after = prepareLayerFileNodes2;
 			
@@ -218,11 +236,12 @@ $(function() {
 				else if (children.length == 1) {
 					var child = children.first();
 					var sub_children = child.find(" > ul > li");
+					var is_main_node = child.is(".main_node_presentation, .main_node_businesslogic, .main_node_ibatis, .main_node_hibernate, .main_node_db");
 					
 					item.removeClass("with_sub_groups");
 					child.removeClass("jstree-closed").addClass("jstree-open hide_tree_item");
 					
-					if (child.is(".main_node_presentation, .main_node_businesslogic, .main_node_ibatis, .main_node_hibernate, .main_node_db")) {
+					if (is_main_node) {
 						var child_label = child.find(" > a > label").text();
 						item.children(".title").attr("title", "Layer name: " + child_label);
 					}
@@ -234,10 +253,25 @@ $(function() {
 								iniSubMenu(child);
 								//console.log(child[0]);
 							}
+							
+							//prepare empty_layers_uls
+							if (is_main_node) {
+								empty_layers_uls.push(ul);
+								prepareLayerEmptyContainers(ul);
+							}
 						}});
-					else if (!child.is(".main_node_presentation") || !path_to_filter_exists) { //if path_to_filter exists and is main_node_presentation, the submenu is already inited with the right project node.
-						iniSubMenu(child);
-						//console.log(child[0]);
+					else {
+						//prepare empty_layers_uls
+						if (is_main_node) {
+							var ul = child.children("ul")[0];
+							empty_layers_uls.push(ul);
+							prepareLayerEmptyContainers(ul);
+						}
+						
+						if (!child.is(".main_node_presentation") || !path_to_filter_exists) { //if path_to_filter exists and is main_node_presentation, the submenu is already inited with the right project node, so we only need to init the sub menu for the others.
+							iniSubMenu(child);
+							//console.log(child[0]);
+						}
 					}
 				}
 				else 
@@ -521,6 +555,30 @@ function updatePanelsAccordingWithHidePanel() {
 	}
 }
 
+function prepareLayersEmptyContainers() {
+	//prepare empty class if no visible children
+	for (var i = 0, t = empty_layers_uls.length; i < t; i++)
+		prepareLayerEmptyContainers(empty_layers_uls[i]);
+}
+
+function prepareLayerEmptyContainers(ul) {
+	//prepare empty class if no visible children
+	ul = $(ul);
+	var children = ul.children("li");
+	var exists_visible_children = false;
+	
+	for (var i = 0, t = children.length; i < t; i++) 
+		if ($(children[i]).css("display") != "none") {
+			exists_visible_children = true;
+			break;
+		}
+	
+	if (!exists_visible_children)
+		ul.addClass("empty");
+	else
+		ul.removeClass("empty");
+}
+
 function toggleLeftPanel(elm) {
 	button = $(elm);
 	
@@ -553,6 +611,9 @@ function toggleAdvancedLevel(elm) {
 		
 		prepareLayerActiveTab(li);
 	}
+	
+	//prepare empty class if no visible children
+	prepareLayersEmptyContainers();
 }
 
 function toggleTreeLayout(elm) {
@@ -619,7 +680,7 @@ function initFilterByLayout() {
 	var selected_project_elm = $(".filter_by_layout  > ul > li.scroll li.selected");
 	
 	if (selected_project_elm[0])
-		selected_project_elm[0].scrollIntoView();
+		selected_project_elm[0].scrollIntoView({ behavior: "instant", block: "center", inline: "nearest" });
 }
 
 function filterByLayout(elm) {

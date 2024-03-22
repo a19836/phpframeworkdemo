@@ -46,7 +46,7 @@ function toggleHbnObjAdvancedSettings(elm) {
 	var simple_settings = $(".simple_settings");
 	var input = elm.children("input");
 	var span = elm.children("span");
-	var is_shown = advanced_settings.is(":visible");
+	var is_shown = advanced_settings.css("display") != "none";
 	
 	if (is_shown) {
 		input.removeAttr("checked").prop("checked", false);
@@ -512,6 +512,16 @@ function saveHibernateObject() {
 							window.parent.refreshLastNodeParentChilds();
 						
 						var url = "" + document.location;
+						url = url.indexOf("#") != -1 ? url.substr(0, url.indexOf("#")) : url;
+						var path = url.match(/(&|\?)path=([^&])*/g);
+						path = path ? path[0] : "";
+						
+						//if path is a folder, add the file based in the new_obj_id
+						if (path && !path.match(/\.xml$/)) {
+							path += (path.substr(path.length - 1) == "/" ? "" : "/") + new_obj_id + ".xml";
+							url = url.replace(/(&|\?)path=([^&])*/, "$1path=" + path);
+						}
+						
 						url = url.replace(/(&|\?)obj=[^&]*/g, "$1");
 						url += "&obj=" + new_obj_id;
 						

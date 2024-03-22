@@ -23,16 +23,24 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 					$data["args"] = addcslashes($data["args"], "\\'");
 					$data["thread_id"] = addcslashes($data["thread_id"], "\\'");
 					$data["description"] = addcslashes($data["description"], "\\'");
+					$data["status"] = is_numeric($data["status"]) ? $data["status"] : 0;
+					$data["failed_attempts"] = is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
 					
 					$status = $broker->callInsert("module/workerpool", "insert_worker", $data);
 					return $status ? $broker->getInsertedId() : $status;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
+					$data["status"] = is_numeric($data["status"]) ? $data["status"] : 0;
+					$data["failed_attempts"] = is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
+					
 					$Worker = $broker->callObject("module/workerpool", "Worker");
 					$status = $Worker->insert($data, $ids);
 					return $status ? $ids["worker_id"] : $status;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
+					$data["status"] = is_numeric($data["status"]) ? $data["status"] : 0;
+					$data["failed_attempts"] = is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
+					
 					$status = $broker->insertObject("mwp_worker", array(
 							"class" => $data["class"], 
 							"args" => $data["args"], 
@@ -67,14 +75,22 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 					$data["args"] = addcslashes($data["args"], "\\'");
 					$data["thread_id"] = addcslashes($data["thread_id"], "\\'");
 					$data["description"] = addcslashes($data["description"], "\\'");
+					$data["status"] = is_numeric($data["status"]) ? $data["status"] : 0;
+					$data["failed_attempts"] = is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
 					
 					return $broker->callUpdate("module/workerpool", "update_worker", $data);
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
+					$data["status"] = is_numeric($data["status"]) ? $data["status"] : 0;
+					$data["failed_attempts"] = is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
+					
 					$Worker = $broker->callObject("module/workerpool", "Worker");
 					return $Worker->update($data);
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
+					$data["status"] = is_numeric($data["status"]) ? $data["status"] : 0;
+					$data["failed_attempts"] = is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
+					
 					return $broker->updateObject("mwp_worker", array(
 							"class" => $data["class"], 
 							"args" => $data["args"], 

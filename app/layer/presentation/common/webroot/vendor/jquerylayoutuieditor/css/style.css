@@ -1231,14 +1231,6 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
   .layout-ui-editor > .menu-settings.menu-settings-html-tag .settings-properties .settings-property.html-tag select {
 	width:calc(100% - 80px);
 }
-.layout-ui-editor > .menu-settings.menu-settings-html-tag .settings-properties .settings-property.html-tag.select-shown input,
-  .layout-ui-editor > .menu-settings.menu-settings-html-tag .settings-properties .settings-property.html-tag:not(.select-shown) select {
-	display:none;
-}
-.layout-ui-editor > .menu-settings.menu-settings-html-tag .settings-properties .settings-property.html-tag .swap-fields {
-	margin-left:5px;
-	cursor:pointer
-}
 
 /* MENU WIDGETS - HTML TEXT */
 .layout-ui-editor > .menu-widgets .menu-widget.html-text:before,
@@ -1451,6 +1443,7 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	text-overflow:ellipsis;
 	overflow:hidden;
 	vertical-align:middle;
+	display:inline-block;
 }
 .layout-ui-editor > .menu-settings input:not([type="checkbox"]):not([type="radio"]),
   .layout-ui-editor > .menu-settings textarea,
@@ -1684,6 +1677,16 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	width:55%;
 	width:calc(100% - 80px);
 }
+
+.layout-ui-editor > .menu-settings li.group.settings-events > .group-title > .widget-group-item-add {
+	line-height:1em;
+	margin-left:10px;
+	float:right;
+	font-weight:bold;
+	cursor:pointer;
+	font-size:1.3em;
+	color:var(--main-template-color);
+}
 .layout-ui-editor > .menu-settings li.group.settings-events input {
 	width:40%;
 	width:calc(100% - 120px);
@@ -1691,7 +1694,16 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 .layout-ui-editor > .menu-settings li.group.settings-events .with-choose-event-icon input {
 	width:calc(100% - 130px);
 }
-.layout-ui-editor > .menu-settings li.group.settings-events .choose-event {
+.layout-ui-editor > .menu-settings li.group.settings-events .with-extra-events input {
+	width:calc(100% - 140px);
+}
+.layout-ui-editor > .menu-settings li.group.settings-events .with-choose-event-icon.with-extra-events input {
+	width:calc(100% - 150px);
+}
+.layout-ui-editor > .menu-settings li.group.settings-events .choose-event,
+  .layout-ui-editor > .menu-settings li.group.settings-events .add-extra-event,
+  .layout-ui-editor > .menu-settings li.group.settings-events .remove-extra-event,
+  .layout-ui-editor > .menu-settings li.group.settings-events .remove-other-event-type {
 	line-height:2.2em;
 	margin-right:10px;
 	font-weight:bold;
@@ -1700,9 +1712,35 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	float:right;
 	display:none;
 }
-.layout-ui-editor > .menu-settings li.group.settings-events .with-choose-event-icon .choose-event {
+.layout-ui-editor > .menu-settings li.group.settings-events .with-choose-event-icon .choose-event,
+  .layout-ui-editor > .menu-settings li.group.settings-events .with-extra-events .add-extra-event,
+  .layout-ui-editor > .menu-settings li.group.settings-events .with-extra-events .remove-extra-event,
+  .layout-ui-editor > .menu-settings li.group.settings-events .remove-other-event-type {
 	display:inline-block;
 }
+.layout-ui-editor > .menu-settings li.group.settings-events .with-extra-events .add-extra-event,
+  .layout-ui-editor > .menu-settings li.group.settings-events .with-extra-events .remove-extra-event,
+  .layout-ui-editor > .menu-settings li.group.settings-events .remove-other-event-type {
+	line-height:2em;
+	font-size:120%;
+}
+.layout-ui-editor > .menu-settings li.group.settings-events .with-extra-events .extra-events {
+	padding:0;
+}
+.layout-ui-editor > .menu-settings li.group.settings-events .with-extra-events .extra-events:before {
+	content: " ";
+	height: 1px;
+	display: block;
+	float: none;
+	clear: both;
+}
+.layout-ui-editor > .menu-settings li.group.settings-events .with-extra-events .extra-events:empty {
+	display:none;
+}
+.layout-ui-editor > .menu-settings li.group.settings-events .with-extra-events .extra-events li:last-child {
+	margin-bottom:0;
+}
+
 .layout-ui-editor > .menu-settings li.group li.settings-style > textarea {
 	width:100%;
 	height:10em;
@@ -1787,6 +1825,14 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	/*right:11px;
 	position:absolute;*/
 	display:none;
+}
+.layout-ui-editor > .menu-settings li.group.settings-properties > ul .settings-property.with-swap-fields.select-shown input,
+  .layout-ui-editor > .menu-settings li.group.settings-properties > ul .settings-property.with-swap-fields:not(.select-shown) select {
+	display:none;
+}
+.layout-ui-editor > .menu-settings li.group.settings-properties > ul .settings-property.with-swap-fields .swap-fields {
+	margin-left:5px;
+	cursor:pointer
 }
 
 .layout-ui-editor > .menu-settings li.group.settings-decorations > ul > li.border {

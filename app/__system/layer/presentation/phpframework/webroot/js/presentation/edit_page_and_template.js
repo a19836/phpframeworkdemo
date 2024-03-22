@@ -8,6 +8,7 @@ var TemplateSamplesFancyPopup = new MyFancyPopupClass();
 var TemplateRegionBlockHtmlEditorFancyPopup = new MyFancyPopupClass();
 var TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup = new MyFancyPopupClass();
 var DBTableWidgetOptionsFancyPopup = new MyFancyPopupClass();
+var DBTableWidgetOptionsCreateDBTableFancyPopup = new MyFancyPopupClass();
 var ReplaceExistingDBTableWidgetFancyPopup = new MyFancyPopupClass();
 
 var block_params_values_list = {};
@@ -73,93 +74,91 @@ function removeAllThatIsNotBlocksOrModulesFromTree(ul, data, tree_obj) {
 		$(elm).remove();
 	});
 	
+	ul.find("i.project_folder").each(function(idx, elm) {
+		//adding refresh button to folders
+		addRefreshIconToFileManagerPopupTreeNode(elm, tree_obj);
+	});
+	
 	ul.find("i.folder").each(function(idx, elm) {
 		elm = $(elm);
-		var p = elm.parent();
-		var label = p.children("label").text();
+		var a = elm.parent();
+		var li = a.parent();
+		var label = a.children("label").text();
 		
 		if (label == "pages (entities)" || label == "views" || label == "templates" || label == "utils" || label == "webroot" || label == "configs")
-			p.parent().remove();
+			li.remove();
 		else {
 			//adding refresh button to folders
-			var refresh_icon = $('<i class="icon refresh"></i>');
-			refresh_icon.on("click", function(event) {
-				refreshTreeBlocksOrModulesFolder(event, this, tree_obj);
-			});
-			p.append(refresh_icon);
+			addRefreshIconToFileManagerPopupTreeNode(elm, tree_obj);
 		}
-			
 	});
 	
 	ul.find("i.project, i.project_common").each(function(idx, elm) {
 		elm = $(elm);
-		var p = elm.parent();
-		var project_ul = p.parent().children("ul");
-	
+		var a = elm.parent();
+		var li = a.parent();
+		var project_ul = li.children("ul");
+		
 		project_ul.find("i.properties").each(function(idx, sub_elm) { //remove "others" folder
 			$(sub_elm).parent().parent().remove();
 		});
 		
 		//adding refresh button to folders
-		var refresh_icon = $('<i class="icon refresh"></i>');
-		refresh_icon.on("click", function(event) {
-			refreshTreeBlocksOrModulesFolder(event, this, tree_obj);
-		});
-		p.append(refresh_icon);
+		addRefreshIconToFileManagerPopupTreeNode(elm, tree_obj);
 	});
 	
 	ul.find("i.blocks_folder").each(function(idx, elm) {
 		elm = $(elm);
-		var p = elm.parent();
-		var blocks_folder_li = p.parent();
-		var blocks_folder_ul = blocks_folder_li.children("ul");
-		var project_li = blocks_folder_li.parent().parent();
+		var a = elm.parent();
+		var li = a.parent();
+		var blocks_folder_ul = li.children("ul");
+		var project_li = li.parent().parent();
 		
-		if (project_li.children("a").children("i.project, i.project_common")) {
+		if (project_li.children("a").children("i.project, i.project_common").length > 0) {
 			var project_ul = project_li.children("ul");
 			project_li.append(blocks_folder_ul);
 			project_ul.remove();
 		}
 		else {
-			elm.parent().parent().addClass("jstree-last");
+			li.addClass("jstree-last");
 			
 			//adding refresh button to folders
-			var refresh_icon = $('<i class="icon refresh"></i>');
-			refresh_icon.on("click", function(event) {
-				refreshTreeBlocksOrModulesFolder(event, this, tree_obj);
-			});
-			p.append(refresh_icon);
+			addRefreshIconToFileManagerPopupTreeNode(elm, tree_obj);
 		}
 	});
 	
 	//prepare block draggable items
 	ul.find("i.block_file").each(function(idx, elm) {
 		elm = $(elm);
-		var p = elm.parent();
+		var a = elm.parent();
+		var li = a.parent();
 		
 		//adding edit button to edit blocks
-		var edit_icon = $('<i class="icon edit"></i>');
-		edit_icon.on("click", function(event) {
-			event.preventDefault();
-			event.stopPropagation();
-			
-			var url = edit_block_url.replace("#path#", p.attr("file_path"));
-			openPretifyRegionBlockComboBoxImportModuleBlockOptionPopup(null, url);
-		});
-		p.append(edit_icon);
+		if (typeof edit_block_url != "undefined") {
+			var edit_icon = $('<i class="icon edit" title="Edit Block"></i>');
+			edit_icon.on("click", function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+				
+				var url = edit_block_url.replace("#path#", a.attr("file_path"));
+				openPretifyRegionBlockComboBoxImportModuleBlockOptionPopup(null, url);
+			});
+			a.after(edit_icon);
+		}
 		
-		initIframeModulesBlocksToolbarDraggableMenuItem( p.parent() );
+		initIframeModulesBlocksToolbarDraggableMenuItem(li);
 	});
 	
 	//prepare module draggable items
 	ul.find("li.module_folder_enabled").each(function(idx, elm) {
 		elm = $(elm);
-		elm.removeClass("jstree-close").addClass("jstree-leaf");
-		elm.children("ul").remove();
 		var a = elm.children("a");
 		
+		elm.removeClass("jstree-close").addClass("jstree-leaf");
+		elm.children("ul").remove();
+		
 		//adding edit button to edit blocks
-		var info_icon = $('<i class="icon info"></i>');
+		var info_icon = $('<i class="icon info" title="Module Info"></i>');
 		info_icon.on("click", function(event) {
 			event.preventDefault();
 			event.stopPropagation();
@@ -167,55 +166,114 @@ function removeAllThatIsNotBlocksOrModulesFromTree(ul, data, tree_obj) {
 			var func = a.attr("module_info_func_name");
 			eval(func + "(a[0])");
 		});
-		a.append(info_icon);
+		a.after(info_icon);
 		
 		initIframeModulesBlocksToolbarDraggableMenuItem(elm);
 	});
 	
 	//prepare table draggable items
-	ul.find("i.table").each(function(idx, elm) {
-		elm = $(elm);
-		var li = elm.parent().parent();
-		var li_ul = li.children("ul");
+	var tables = ul.find("i.table");
+	
+	if (tables.length > 0) {
+		var db_driver_node = tables.first().parent().closest("li[db_driver_bean_name]");
+		var db_driver_name = db_driver_node.attr("db_driver_name");
+		var db_driver_broker = db_driver_node.attr("db_driver_broker");
+		var add_table_to_db_brokers_drivers_tables_attributes = db_driver_broker && db_driver_name && $.isPlainObject(db_brokers_drivers_tables_attributes[db_driver_broker]) && $.isPlainObject(db_brokers_drivers_tables_attributes[db_driver_broker][db_driver_name]) && $.isPlainObject(db_brokers_drivers_tables_attributes[db_driver_broker][db_driver_name]["db"]);
 		
-		if (!li_ul[0]) {
-			li_ul = $('<ul></ul>');
-			li.append(li_ul);
+		//add tables diagram icon
+		if (typeof edit_db_driver_tables_diagram_url != "undefined" && db_driver_node.children(".sub_menu").length == 0) {
+			var sub_menu = $('<span class="sub_menu" onclick="openSubmenu(this)">'
+							+ '<i class="icon sub_menu active"></i>'
+							+ '<ul class="mycontextmenu with_top_right_triangle">'
+								+ '<li class="edit_diagram" title="Edit tables diagram">'
+									+ '<a><i class="icon diagram"></i> Edit Tables Diagram</a>'
+								+ '</li>'
+								+ '<li class="toggle_reserved_tables" title="Show or hide reserved tables">'
+									+ '<a><i class="icon enable"></i> <span>Show</span> Reserved Tables</a>'
+								+ '</li>'
+							+ '</ul>'
+						+ '</span>');
+			db_driver_node.children("a").after(sub_menu);
+			
+			sub_menu.find(" > ul > .edit_diagram a").on("click", function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+				
+				var url = edit_db_driver_tables_diagram_url
+					.replace("#bean_name#", db_driver_node.attr("db_driver_bean_name"))
+					.replace("#bean_file_name#", db_driver_node.attr("db_driver_bean_file_name"))
+					.replace("#layer_bean_folder_name#", db_driver_node.attr("db_driver_broker_folder"));
+				
+				openEditObjFromFileManagerTreePopup(db_driver_node, tree_obj, url);
+			});
+			
+			sub_menu.find(" > ul > .toggle_reserved_tables a").on("click", function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+				
+				db_driver_node.toggleClass("with_reserved_tables");
+				
+				if (db_driver_node.hasClass("with_reserved_tables"))
+					$(this).children("span").html("Hide");
+				else
+					$(this).children("span").html("Show");
+			});
 		}
 		
-		var list_items = $('<li data-jstree=\'{"icon":"table-list"}\'>'
-						+ '	<label title="List Items">List Items</label>'
-						+ '</li>');
-		var edit_item = $('<li data-jstree=\'{"icon":"table-edit"}\'>'
-						+ '	<label title="Edit Item">Edit Item</label>'
-						+ '</li>');
-		var add_item = $('<li data-jstree=\'{"icon":"table-add"}\'>'
-						+ '	<label title="Add Item">Add Item</label>'
-						+ '</li>');
-		var view_item = $('<li data-jstree=\'{"icon":"table-view"}\'>'
-						+ '	<label title="View Item">View Item</label>'
-						+ '</li>');
+		//add refresh icon
+		if (db_driver_node.children(".icon.refresh").length == 0)
+			addRefreshIconToFileManagerPopupTreeNode(db_driver_node, tree_obj);
 		
-		li_ul.append(list_items);
-		li_ul.append(edit_item);
-		li_ul.append(add_item);
-		li_ul.append(view_item);
+		//add insert new table icon
+		if (typeof create_db_driver_table_or_attribute_url != "undefined" && db_driver_node.children(".icon.add").length == 0) {
+			var add_icon = $('<i class="icon add" title="Add table"></i>');
+			add_icon.on("click", function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+				
+				var url = create_db_driver_table_or_attribute_url
+					.replace("#bean_name#", db_driver_node.attr("db_driver_bean_name"))
+					.replace("#bean_file_name#", db_driver_node.attr("db_driver_bean_file_name"))
+					.replace("#layer_bean_folder_name#", db_driver_node.attr("db_driver_broker_folder"))
+					.replace("#type#", db_driver_node.attr("db_driver_type"))
+					.replace("#table#", "");
+				
+				openEditObjFromFileManagerTreePopup(db_driver_node, tree_obj, url);
+			});
+			db_driver_node.children("a").after(add_icon);
+		}
 		
-		tree_obj.initNodeChilds(li);
-		
-		initIframeModulesBlocksToolbarDraggableMenuItem(list_items);
-		initIframeModulesBlocksToolbarDraggableMenuItem(edit_item);
-		initIframeModulesBlocksToolbarDraggableMenuItem(add_item);
-		initIframeModulesBlocksToolbarDraggableMenuItem(view_item);
-	});
-}
-
-function refreshTreeBlocksOrModulesFolder(event, icon, tree_obj) {
-	event.preventDefault();
-	event.stopPropagation();
-
-	var node = $(icon).parent().closest("li");
-	tree_obj.refreshNodeChilds(node);
+		tables.each(function(idx, elm) {
+			elm = $(elm);
+			var a = elm.parent();
+			var li = a.parent();
+			
+			//adding edit button to edit tables
+			if (typeof create_db_driver_table_or_attribute_url != "undefined" && db_driver_node.length > 0) {
+				var edit_icon = $('<i class="icon edit" title="Edit table"></i>');
+				edit_icon.on("click", function(event) {
+					event.preventDefault();
+					event.stopPropagation();
+					
+					var url = create_db_driver_table_or_attribute_url
+						.replace("#bean_name#", db_driver_node.attr("db_driver_bean_name"))
+						.replace("#bean_file_name#", db_driver_node.attr("db_driver_bean_file_name"))
+						.replace("#layer_bean_folder_name#", db_driver_node.attr("db_driver_broker_folder"))
+						.replace("#type#", db_driver_node.attr("db_driver_type"))
+						.replace("#table#", a.attr("table"));
+					
+					openEditObjFromFileManagerTreePopup(li.parent(), tree_obj, url);
+				});
+				a.after(edit_icon);
+			}
+			
+			initIframeModulesBlocksToolbarDraggableMenuItem(li);
+			
+			//add table to db_brokers_drivers_tables_attributes
+			if (add_table_to_db_brokers_drivers_tables_attributes)
+				db_brokers_drivers_tables_attributes[db_driver_broker][db_driver_name]["db"][ a.attr("table") ] = {};
+		});
+	}
 }
 
 function onPresentationIncludeTaskChoosePage(elm) {
@@ -434,13 +492,13 @@ function prepareRegionsBlocksHtmlValue(parent) {
 
 function createRegionsBlocksHtmlEditor(parent) {
 	parent = parent instanceof jQuery ? parent : $(parent);
-	var selects = parent ? (parent.hasClass("template_region_item") ? parent.find(".region_block_type") : parent.find(".template_region_item .region_block_type")) : $(".template_region_item .region_block_type");
+	var selects = parent ? (parent.hasClass("template_region_item") ? parent.find(".type") : parent.find(".template_region_item .type")) : $(".template_region_item .type");
 	
 	selects.each(function(idx, select) { 
 		select = $(select);
 		var type = select.val();
 		
-		if (type == "html")
+		if (type == 1) //is html
 			createRegionBlockHtmlEditor(select.parent().children(".block_html"));
 	});
 }
@@ -1021,7 +1079,10 @@ function openPretifyRegionBlockComboBoxImportModuleBlockOptionPopup(select_elm, 
 					item_elm.remove();
 				
 				//trigger change function so it can refresh the block simulated html. Basically this will call the prepareRegionBlockSimulatedHtml method inside of the edit_simple_template_layout.php
-				select_elm.trigger("change");
+				if (select_elm.is("select"))
+					select_elm.trigger("change");
+				else if (select_elm.is("input"))
+					select_elm.trigger("blur");
 			}
 		}
 	});
@@ -1048,34 +1109,44 @@ function refreshPretifyRegionBlockComboBox(select_elm) {
 	sm_text.html(value).attr("title", value);
 }
 
+//this function is used in this file and in the app/__system/layer/presentation/phpframework/src/view/presentation/view_editor_widget/advanced/others/view.xml
 function setRegionBlockOption(select_elm, block, project) {
 	var options = select_elm.find("option[value='" + block + "']");
+	var p = select_elm.parent();
+	var type = p.children(".type");
+	var region_block_type = p.children(".region_block_type");
+	var is_block = type == 2 || type == 3;
 	var exists = false;
 	
-	$.each(options, function(idx, option) {
-		option = $(option);
-		
-		if (option.attr("project") == project) {
-			option.attr("selected", "selected");
-			refreshPretifyRegionBlockComboBox(select_elm);
-			select_elm.trigger("change");
-			exists = true;
-			return false;
-		}
-	});
+	if (is_block)
+		$.each(options, function(idx, option) {
+			option = $(option);
+			
+			if (option.attr("project") == project) {
+				region_block_type.val("options");
+				region_block_type.trigger("change");
+				
+				option.attr("selected", "selected");
+				refreshPretifyRegionBlockComboBox(select_elm);
+				select_elm.trigger("change");
+				exists = true;
+				
+				return false;
+			}
+		});
 	
 	if (!exists) {
-		var p = select_elm.parent();
-		var region_block_type = p.children(".region_block_type");
 		region_block_type.val("string");
 		region_block_type.trigger("change");
 		
-		p.children(".block").val(block);
+		var input = p.children(".block");
+		input.val(block);
+		input.trigger("blur");
 	}
 }
 
 function addRegionBlockOption(select_elm, block, project) {
-	if (select_elm[0] && block) {
+	if (select_elm[0] && select_elm.is("select") && block) { //select_elm may be an input
 		project = project ? project : selected_project_id;
 		
 		//load new block id
@@ -1155,9 +1226,9 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 			var region = rbl[0];
 			var block = rbl[1];
 			var proj = rbl[2];
-			var is_html = rbl[3];
+			var type = rbl[3];
 			var rb_index = rbl[4];
-			var block_hash = is_html ? $.md5(block) : block;
+			var block_hash = type == 1 ? $.md5(block) : (type == 2 || type == 3 ? "block_" : "view_") + block; //if html set md5
 			var rm_index_key = region + "-" + block_hash + "-" + proj;
 			
 			if ($.isNumeric(rb_index) && (!$.isNumeric(rb_indexes[rm_index_key]) || rb_index > rb_indexes[rm_index_key]))
@@ -1174,9 +1245,9 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 				if (rbl[0] == region) {
 					var block = rbl[1];
 					var proj = rbl[2];
-					var is_html = rbl[3];
+					var type = rbl[3];
 					var rb_index = rbl[4];
-					var block_hash = is_html ? $.md5(block) : block;
+					var block_hash = type == 1 ? $.md5(block) : (type == 2 || type == 3 ? "block_" : "view_") + block; //if html set md5
 					var rm_index_key = region + "-" + block_hash + "-" + proj;
 					
 					if (!existent_regions_blocks.hasOwnProperty(region))
@@ -1196,7 +1267,7 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 						rb_index = rb_indexes[rm_index_key];
 					}
 					
-					var rb_html = getRegionBlockHtml(region, block, proj, is_html, rb_index);
+					var rb_html = getRegionBlockHtml(region, block, proj, type, rb_index);
 					region_blocks.append(rb_html);
 				}
 			}
@@ -1217,9 +1288,9 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 		var region = rbl[0];
 		var block = rbl[1];
 		var proj = rbl[2];
-		var is_html = rbl[3];
+		var type = rbl[3];
 		var rb_index = rbl[4];
-		var block_hash = is_html ? $.md5(block) : block;
+		var block_hash = type == 1 ? $.md5(block) : (type == 2 || type == 3 ? "block_" : "view_") + block; //if html set md5
 		
 		if (!existent_regions_blocks[region] || !existent_regions_blocks[region][block_hash] || !existent_regions_blocks[region][block_hash][proj]) {
 			var rm_index_key = region + "-" + block_hash + "-" + proj;
@@ -1233,7 +1304,7 @@ function updateSelectedTemplateRegionsBlocks(p, data) {
 				rb_index = rb_indexes[rm_index_key];
 			}
 			
-			var rb_html = getRegionBlockHtml(region, block, proj, is_html, rb_index);
+			var rb_html = getRegionBlockHtml(region, block, proj, type, rb_index);
 			other_region_blocks.append(rb_html);
 			
 			other_regions_exists = true;
@@ -1363,8 +1434,10 @@ function getDefinedRegionHtml(region) {
 	return $( defined_region_html.replace(/#region#/g, label) ); //replace #block# with empty strnig bc if block is an html string, it will break the javascript. So, the block value will be assigned in the code bellow.
 }
 
-function getRegionBlockHtml(region, block, block_project, is_html, rb_index) {
-	var select = null;
+function getRegionBlockHtml(region, block, block_project, type, rb_index) {
+	var is_html = type == 1;
+	var is_block = type == 2 || type == 3;
+	var is_view = type == 4 || type == 5;
 	
 	block = block ? block : "";
 	block_project = block_project ? block_project : "";
@@ -1373,27 +1446,36 @@ function getRegionBlockHtml(region, block, block_project, is_html, rb_index) {
 	var reg = region.replace(/"/g, "&quot;");
 	var rb_html = $( region_block_html.replace(/#region#/g, reg).replace(/#block#/g, "").replace(/#rb_index#/g, rb_index) ); //replace #block# with empty strnig bc if block is an html string, it will break the javascript. So, the block value will be assigned in the code bellow.
 	
+	var select = rb_html.children(".region_block_type");
+	var select_type = rb_html.children(".type");
+	select_type.val(is_html ? 1 : (is_view ? 4 : 2));
+	
 	//prepare new region_block_html item
-	if (!is_html) {
+	if (is_block || is_view) {
 		var b = block.substr(0, 1) == '"' ? block.replace(/"/g, "") : block;
 		var bt = block.substr(0, 1) == '"' && block.substr(block.length - 1) == '"' ? block.substr(1, block.length - 2) : block;
 		var bp = block_project.substr(0, 1) == '"' ? block_project.replace(/"/g, "") : block_project;
 		var is_text = b.indexOf("\n") != -1;
+		var exists_in_blocks = false;
 		
-		var apbl = available_blocks_list ? available_blocks_list[bp] : null;
-		var is_bp_html_or_text = is_text || /<\/?[a-z][\s\S]*>/i.test(b);
-		var exists_in_blocks = (apbl && !is_bp_html_or_text && $.inArray(b, apbl) != -1) ? true : false;
+		if (is_block) {
+			var apbl = available_blocks_list ? available_blocks_list[bp] : null;
+			var is_bp_html_or_text = is_text || /<\/?[a-z][\s\S]*>/i.test(b);
+			exists_in_blocks = (apbl && !is_bp_html_or_text && $.inArray(b, apbl) != -1) ? true : false;
+		}
 		
-		select = rb_html.children(".region_block_type");
 		var block_options = rb_html.children(".block_options");
 		var block_input = rb_html.children("input.block");
 		var block_text = rb_html.children(".block_text");
 		
 		if (!is_text) {
-			//cannot execute 'block_options.val(b);' bc if 2 projects have blocks with the same name, then it can select the block from the other project. 
-			//block_options.find("optgroup[label=\"" + bp + "\"] option[value=\"" + b + "\"]").attr("selected", "selected"); //or the line below. Both work!
-			block_options.find("option[value='" + b + "']").filter("[project='" + bp + "']").first().attr("selected", "selected");
 			block_input.val(b);
+			
+			if (is_block) {
+				//cannot execute 'block_options.val(b);' bc if 2 projects have blocks with the same name, then it can select the block from the other project. 
+				//block_options.find("optgroup[label=\"" + bp + "\"] option[value=\"" + b + "\"]").attr("selected", "selected"); //or the line below. Both work!
+				block_options.find("option[value='" + b + "']").filter("[project='" + bp + "']").first().attr("selected", "selected");
+			}
 		}
 		else
 			block_text.children("textarea").text( stripslashes(bt) );
@@ -1411,9 +1493,6 @@ function getRegionBlockHtml(region, block, block_project, is_html, rb_index) {
 		var block_html = rb_html.children(".block_html");
 		var textarea = block_html.children("textarea");
 		textarea.val(block);
-		
-		select = rb_html.children(".region_block_type");
-		select.val("html");
 		
 		rb_html.addClass("is_html");
 	}
@@ -1439,8 +1518,10 @@ function getRegionBlockHtml(region, block, block_project, is_html, rb_index) {
 	});
 	
 	//if change event was not triggered yet, trigger it.
-	if (!select.data("on_change_triggered"))
-		select.trigger("change");
+	if (!select.data("on_change_triggered")) {
+		select_type.trigger("change"); //this on change event alreay triggers the select.trigger("change");
+		//select.trigger("change");
+	}
 	
 	return rb_html;
 }
@@ -1529,19 +1610,13 @@ function addRepeatedRegionBlock(elm) {
 
 function editRegionBlock(elm, opts) {
 	var item = $(elm).parent();
-	var type = item.children(".region_block_type").val();
+	var type = item.children(".type").val();
+	var block_type = item.children(".region_block_type").val();
+	var is_html = type == 1;
+	var is_block = type == 2 || type == 3;
+	var is_view = type == 4 || type == 5;
 	
-	if (type == "options") {
-		var block_options = item.find(".block_options");
-		var opt = block_options.find("option:selected");
-		block = opt.attr("value");
-		project = opt.attr("project");
-		project = project ? project : selected_project_id;
-		
-		var url = edit_block_url.replace("#path#", project + "/src/block/" + block + ".php");
-		openPretifyRegionBlockComboBoxImportModuleBlockOptionPopup(block_options, url);
-	}
-	else if (type == "html") {
+	if (is_html) {
 		var block_html = item.children(".block_html");
 		var html = getRegionBlockHtmlEditorValue(block_html);
 		
@@ -1635,6 +1710,41 @@ function editRegionBlock(elm, opts) {
 		
 		TemplateRegionBlockHtmlEditorFancyPopup.showPopup();
 	}
+	else if (block_type == "options" || block_type == "string") {
+		var block_options = item.find(".block_options");
+		var block = "";
+		var project = "";
+		
+		if (is_block && block_type == "options") {
+			var opt = block_options.find("option:selected");
+			block = opt.attr("value");
+			project = opt.attr("project");
+			project = project ? project : selected_project_id;
+		}
+		else if (is_view) {
+			block_options = item.find(".block");
+			block = block_options.val();
+			project = selected_project_id;
+		}
+		
+		if (block) {
+			var url = null;
+			
+			if (is_block && typeof edit_block_url != "undefined")
+				url = edit_block_url.replace("#path#", project + "/src/block/" + block + ".php");
+			else if (is_view && typeof edit_view_url != "undefined")
+				url = edit_view_url.replace("#path#", project + "/src/view/" + block + ".php");
+			
+			if (url)
+				openPretifyRegionBlockComboBoxImportModuleBlockOptionPopup(block_options, url);
+			else
+				StatusMessageHandler.showError("Edit not possible!");
+		}
+		else
+			StatusMessageHandler.showError("Block is empty!");
+	}
+	else
+		StatusMessageHandler.showError("Edit not possible!");
 }
 
 function onChangeRegionBlockEditor(elm, html) {
@@ -1708,6 +1818,7 @@ function deleteRegionBlock(elm) {
 }
 
 function resetRegionBlock(item) {
+	var item_type = item.children(".type");
 	var region_block_type = item.children(".region_block_type");
 	var block_options = item.children(".block_options");
 	var block_input = item.children("input.block");
@@ -1716,14 +1827,19 @@ function resetRegionBlock(item) {
 	var block_params = item.children(".block_params");
 	var block_simulated_html = item.children(".block_simulated_html");
 	
-	var type = region_block_type.val();
+	var type = item_type.val();
+	var block_type = region_block_type.val();
+	var is_html = type == 1;
 	
 	//reset params and simulated html
 	block_params.html("");
 	block_simulated_html.remove();
 	
 	//reset selected field
-	if (type == "options") {
+	if (is_html) {
+		setRegionBlockHtmlEditorValue(block_html, "");
+	}
+	else if (block_type == "options") {
 		var pretty_select = item.children(".pretty_block_options_button");
 		
 		block_options.val("");
@@ -1733,18 +1849,60 @@ function resetRegionBlock(item) {
 		
 		block_options.trigger("change");
 	}
-	else if (type == "text") {
+	else if (block_type == "text") {
 		var text_textarea = block_text.children("textarea");
 		
 		text_textarea.val("");
 		text_textarea.trigger("blur");
 	}
-	else if (type == "html") {
-		setRegionBlockHtmlEditorValue(block_html, "");
-	}
 	else {
 		block_input.val("");
 		block_input.trigger("blur");
+	}
+}
+
+function onChangeTemplateRegionItemType(elm) {
+	elm = $(elm);
+	var type = elm.val();
+	var is_html = type == 1;
+	var is_block = type == 2 || type == 3;
+	var is_view = type == 4 || type == 5;
+	
+	var p = elm.parent();
+	var block_options_select = p.children(".block_options");
+	var pretty_select = p.children(".pretty_block_options_button");
+	var input = p.children("input.block");
+	var text = p.children(".block_text");
+	var text_textarea = text.children("textarea");
+	var block_html = p.children(".block_html");
+	var block_params = p.children(".block_params");
+	
+	if (is_html) {
+		block_options_select.hide().addClass("hidden");
+		pretty_select.hide().addClass("hidden");
+		input.hide().addClass("hidden");
+		text.hide().addClass("hidden");
+		block_html.show().removeClass("hidden");
+		block_params.hide().addClass("hidden");
+		
+		p.removeClass("is_input").removeClass("is_select").removeClass("is_text").addClass("is_html has_edit");
+		
+		if (!hasRegionBlockHtmlEditor(block_html))
+			createRegionBlockHtmlEditor(block_html, {ready_func : function() {
+				updateLayoutIframeFromSettingsField();
+			}});
+		else
+			updateLayoutIframeFromSettingsField();
+	}
+	else {
+		block_html.hide().addClass("hidden");
+		
+		if (is_block) 
+			block_params.show().removeClass("hidden");
+		else
+			block_params.hide().addClass("hidden");
+		
+		onChangeRegionBlockType( p.children(".region_block_type")[0] );
 	}
 }
 
@@ -1758,9 +1916,16 @@ function onChangeRegionBlockType(elm) {
 	var input = p.children("input.block");
 	var text = p.children(".block_text");
 	var text_textarea = text.children("textarea");
-	var block_html = p.children(".block_html");
+	var item_type_select = p.children(".type");
+	var is_block = item_type_select.val() == 2;
 	
 	p.removeClass("has_edit"); //hide edit icon. it will be shown by the onChangeRegionBlock function, if apply...
+	
+	//only allow options if is block
+	if (type == "options" && !is_block) {
+		type = "string";
+		elm.val(type);
+	}
 	
 	if (type == "options") {
 		var set_value = p.hasClass("is_text") || p.hasClass("is_input"); //if was already options no need to change value
@@ -1791,7 +1956,6 @@ function onChangeRegionBlockType(elm) {
 		
 		input.hide().addClass("hidden");
 		text.hide().addClass("hidden");
-		block_html.hide().addClass("hidden");
 		
 		p.removeClass("is_input").removeClass("is_text").removeClass("is_html").addClass("is_select");
 		select.trigger("change");
@@ -1804,36 +1968,18 @@ function onChangeRegionBlockType(elm) {
 		pretty_select.hide().addClass("hidden");
 		input.hide().addClass("hidden");
 		text.show().removeClass("hidden");
-		block_html.hide().addClass("hidden");
 		
 		p.removeClass("is_input").removeClass("is_select").removeClass("is_html").addClass("is_text");
 		text_textarea.trigger("blur");
 	}
-	else if (type == "html") {
-		select.hide().addClass("hidden");
-		pretty_select.hide().addClass("hidden");
-		input.hide().addClass("hidden");
-		text.hide().addClass("hidden");
-		block_html.show().removeClass("hidden");
-		
-		p.removeClass("is_input").removeClass("is_select").removeClass("is_text").addClass("is_html has_edit");
-		
-		if (!hasRegionBlockHtmlEditor(block_html))
-			createRegionBlockHtmlEditor(block_html, {ready_func : function() {
-				updateLayoutIframeFromSettingsField();
-			}});
-		else
-			updateLayoutIframeFromSettingsField();
-	}
 	else {
-		if (!p.hasClass("is_input") && !p.hasClass("is_html")) //very important bc the getRegionBlockHtml triggers this function with all the values already setted. if we don't do this check it will puty the fild in blank
+		if (!p.hasClass("is_input") && !p.hasClass("is_html")) //very important bc the getRegionBlockHtml triggers this function with all the values already set. if we don't do this check, it will put the field in blank
 			input.val( p.hasClass("is_text") ? text_textarea.val() : select.val() );
 		
 		select.hide().addClass("hidden");
 		pretty_select.hide().addClass("hidden");
 		input.show().removeClass("hidden");
 		text.hide().addClass("hidden");
-		block_html.hide().addClass("hidden");
 		
 		p.removeClass("is_text").removeClass("is_select").removeClass("is_html").addClass("is_input");
 		input.trigger("blur");
@@ -1845,8 +1991,9 @@ function onChangeRegionBlock(elm) {
 	var block = elm.val();
 	var parent = elm.parent();
 	var region = parent.children("input.region").val();
+	var block_type = parent.children("select.region_block_type").val();
 	
-	if (block != "") 
+	if (block != "" && (block_type == "options" || block_type == "string"))
 		parent.addClass("has_edit");
 	else
 		parent.removeClass("has_edit");
@@ -2055,16 +2202,14 @@ function getDefinedTemplateParamHtml(param) {
 }
 
 function getTemplateParamHtml(param, value, default_value) {
-	var is_inative = default_value !== null && default_value !== undefined && (value === null || value === undefined);
-	var is_default_value_overwrited = default_value !== null && default_value !== undefined && value !== null && value !== undefined;
-	//console.log(param+", "+value+", "+default_value+", "+is_inative+", "+is_default_value_overwrited);
-	
-	if (is_inative)
-		value = default_value;
+	var is_inactive = value === null || value === undefined;
+	var default_value_exists = default_value !== null && default_value !== undefined;
+	//console.log(param+", "+value+", "+default_value+", "+is_inactive+", "+default_value_exists);
 	
 	value = value || $.isNumeric(value) ? value : "";
 	var v = value.substr(0, 1) == '"' ? value.substr(1, value.length - 2).replace(/\\"/g, '"') : value;
 	var vt = value.substr(0, 1) == '"' && value.substr(value.length - 1) == '"' ? value.substr(1, value.length - 2) : value;
+	var p = param.substr(0, 1) == '"' ? param.substr(1, param.length - 2).replace(/\\"/g, '"') : param;
 	
 	var par = param.replace(/"/g, "&quot;");
 	var val = value.replace(/"/g, "&quot;");
@@ -2073,30 +2218,46 @@ function getTemplateParamHtml(param, value, default_value) {
 	
 	template_param_active.removeAttr("checked").prop("checked", false).removeAttr("disabled").prop("disabled", false);
 	
-	if (is_inative) {
+	if (is_inactive) {
 		tp_html.addClass("inactive");
 		tp_html.children(".template_param_name, .template_param_value, select, .template_param_text > textarea").attr("disabled", "").prop("disabled", true);
 	}
-	else {
+	else
 		template_param_active.attr("checked", "").prop("checked", true);
-		
-		if (!is_default_value_overwrited)
-			template_param_active.attr("disabled", "").prop("disabled", true);
-	}
 	
-	var label = tp_html.children("label").first();
-	label.html( label.text().replace(/"/g, "") );
+	var label_elm = tp_html.children("label").first();
+	var label_text = label_elm.text().replace(/"/g, "");
+	var probably_a_boolean = p.match(/^(is_|are_)/);
+	
+	if (probably_a_boolean)
+		label_text = p.replace(/_/g, " ").replace(/\b[a-z]/g, function(letter) {
+			return letter.toUpperCase();
+		});
+	
+	label_elm.html(label_text);
 	
 	tp_html.children("input.template_param_value").val(v);
 	tp_html.children(".template_param_text").children("textarea").val(stripslashes(vt));
 	
-	var param_value_type = value.length > 0 ? getArgumentType(value) : "string";
-	tp_html.children("select").val(param_value_type);
+	tp_html.children("input.template_param_value").attr("placeHolder", default_value_exists ? default_value : "");
 	
-	if (param_value_type == "text") {
-		tp_html.children("input.template_param_value").hide();
-		tp_html.children(".template_param_text").show();
-	}
+	var param_value_type = value.length > 0 ? getArgumentType(value) : "string";
+	var param_value_type_select = tp_html.children("select");
+	param_value_type_select.val(param_value_type);
+	
+	//if is boolean
+	if ((param_value_type == "string" || !param_value_type) && (
+		value === "true" || 
+		value === "false" || 
+		value === 1 || 
+		value === 0 || 
+		v === "1" || 
+		v === "0" || 
+		(!v && probably_a_boolean)
+	))
+		param_value_type_select.val("boolean");
+	
+	onChangeTemplateParamType(param_value_type_select[0], true);
 	
 	return tp_html;
 }
@@ -2125,9 +2286,9 @@ function addOtherTemplateParam(elm) {
 	}
 }
 
-function onChangeTemplateParamType(elm) {
+function onChangeTemplateParamType(elm, do_not_update) {
 	elm = $(elm);
-
+	
 	var type = elm.val();
 	var p = elm.parent();
 	
@@ -2141,9 +2302,35 @@ function onChangeTemplateParamType(elm) {
 	else {
 		input.show();
 		text.hide();
+		
+		if (type == "boolean") {
+			p.addClass("boolean");
+			input.attr("onChange", input.attr("onBlur"));
+			input.removeAttr("onBlur");
+			
+			var value = input.val();
+			input.attr("value", value ? 1 : 0);
+			input[0].type = "checkbox";
+			
+			if (value)
+				input.prop("checked", true).attr("checked", "checked");
+			else
+				input.prop("checked", false).removeAttr("checked");
+		}
+		else {
+			p.removeClass("boolean");
+			input.attr("onBlur", input.attr("onChange"));
+			input.removeAttr("onChange");
+			
+			input.prop("checked", false).removeAttr("checked");
+			//Do not set the value here, bc this input can come from the type text also.
+			
+			input[0].type = "text";
+		}
 	}
 	
-	updateLayoutIframeFromSettingsField();
+	if (!do_not_update)
+		updateLayoutIframeFromSettingsField();
 }
 
 function onActivateTemplateParam(elm) {
@@ -2162,6 +2349,9 @@ function onActivateTemplateParam(elm) {
 }
 
 function onBlurTemplateParam(elm) {
+	if (elm.type == "checkbox")
+		elm.value = elm.checked ? 1 : 0;
+	
 	updateLayoutIframeFromSettingsField();
 }
 
@@ -2227,10 +2417,11 @@ function getRegionBlockItems(region_blocks_elm) {
 		var region_type = getArgumentType(region);
 		region = region_type == "string" ? region.replace(/"/g, "") : region;
 		
+		var type = item.children(".type").val();
 		var block_type = item.children(".region_block_type").val();
 		var block = null;
 		var block_project = null;
-		var is_html = false;
+		var is_html = type == 1;
 		var rb_index = item.attr("rb_index");
 		
 		rb_index = $.isNumeric(rb_index) ? parseInt(rb_index) : null;
@@ -2243,13 +2434,12 @@ function getRegionBlockItems(region_blocks_elm) {
 			block_project = select[0].options[select[0].selectedIndex].getAttribute("project");
 			block_project = block_project ? block_project : selected_project_id;
 		}
-		else if (block_type == "html") {
+		else if (is_html) {
 			var block_html = item.children(".block_html");
 			block = getRegionBlockHtmlEditorValue(block_html);
 			block = block.replace(/\\/g, "\\\\"); //very important otherwise if we add a backslash it will be remove after the next time we reload the edit page (edit_entity_simple or edit_template_simple). Everytime that the edit page gets reloaded with the editor or textarea, it will show the backslashes unescaped. So when we save them, we must escape them, otherwise the next time we reload this page the backslashes will disappear.
 			
 			block_type = "string";
-			is_html = true;
 		}
 		else if (block_type == "text") 
 			block = item.children(".block_text").children("textarea").val();
@@ -2257,7 +2447,7 @@ function getRegionBlockItems(region_blocks_elm) {
 			block = item.children("input.block").val();
 		
 		regions_blocks.push({
-			"is_html": is_html ? 1 : 0,
+			"type": type,
 			"region": region,
 			"region_type": region_type == "text" ? "string" : region_type,
 			"block": block,
@@ -2364,7 +2554,7 @@ function getSettingsTemplateRegionsBlocks(ets) {
 			if (!$.isArray(template_regions[region]))
 				template_regions[region] = [];
 			
-			var data = [region, block, project, type == "html", rb_index];
+			var data = [region, block, project, type, rb_index];
 			template_regions[region].push(data);
 			regions_blocks.push(data);
 		}
@@ -2417,15 +2607,20 @@ function getSettingsTemplateRegionsBlocks(ets) {
 function getSettingsTemplateRegionBlockValues(item) {
 	item = $(item);
 	
+	var type = item.children(".type").val();
 	var region = item.find("input.region").attr("value");
-	var type = item.children(".region_block_type").val();
+	var block_type = item.children(".region_block_type").val();
 	var block = null;
 	var project = null;
 	var rb_index = item.attr("rb_index");
 	
 	rb_index = $.isNumeric(rb_index) ? parseInt(rb_index) : null;
 	
-	if (type == "options") {
+	if (type == 1) { //is html
+		var block_html = item.find(".block_html");
+		block = getRegionBlockHtmlEditorValue(block_html);
+	}
+	else if (block_type == "options") {
 		var opt = item.find(".block_options option:selected");
 		block = opt.attr("value");
 		project = opt.attr("project");
@@ -2433,24 +2628,21 @@ function getSettingsTemplateRegionBlockValues(item) {
 		block = block ? getArgumentCode(block, "string") : block;
 		project = project ? getArgumentCode(project, "string") : "";
 	}
-	else if (type == "text") {
+	else if (block_type == "text") {
 		block = item.find(".block_text textarea").val();
 		block = block ? getArgumentCode(block, "string") : "";
 	}
-	else if (type == "html") {
-		var block_html = item.find(".block_html");
-		block = getRegionBlockHtmlEditorValue(block_html);
-	}
 	else {
 		block = item.children("input.block").val();
-		block = block ? getArgumentCode(block, type) : "";
+		block = block ? getArgumentCode(block, block_type) : "";
 	}
 	
 	return {
+		type: type,
 		region: region, 
 		block: block, 
-		project: project, 
-		type: type,
+		block_type: block_type, //used in edit_simple_template_layout.js
+		project: project,
 		rb_index: rb_index
 	};
 }
@@ -2509,7 +2701,7 @@ function getIframeTemplateRegionsBlocksForSettings(iframe, settings_elm) {
 					
 					if (!region_exists) {
 						//console.log(rb);
-						new_regions_blocks_list.push([region, "", "", false]); //Do not add the rb object, otherwise the layout will not be synced with the settings. Must be empty values.
+						new_regions_blocks_list.push([region, "", "", 2]); //Do not add the rb object, otherwise the layout will not be synced with the settings. Must be empty values. 2 == block
 					}
 				}
 				else //if layout doesn't have this region or is hidden, we should add the correspondent region_block from settings. If there is more than one hidden region_block, we should add them all. Not only the first one. We should add all the hidden regions_blocks.
@@ -2532,7 +2724,7 @@ function getIframeTemplateRegionsBlocksForSettings(iframe, settings_elm) {
 			});
 			
 			if (!region_exists)
-				new_regions_blocks_list.push([region, "", "", false]);
+				new_regions_blocks_list.push([region, "", "", 2]); //2 == block
 		});
 		
 	//sort regions in new_regions_blocks_list according with settings["regions_blocks"]
@@ -2674,9 +2866,10 @@ function areLayoutAndSettingsDifferent(iframe, settings_elm, include_order) {
 					return false; //exit loop
 				}
 				
-				var is_html = region_block[3] ? true : false;
-				var is_item_html = region_block_item[3] ? true : false;
-				var is_different = region_block[0] != region_block_item[0] || region_block[1] != region_block_item[1] || (!is_html && region_block[2] != region_block_item[2]) || is_html != is_item_html;
+				var type = region_block[3] == 3 ? 2 : (region_block[3] == 5 ? 4 : region_block[3]);
+				var item_type = region_block_item[3] == 3 ? 2 : (region_block_item[3] == 5 ? 4 : region_block_item[3]);
+				var is_html = type == 1;
+				var is_different = region_block[0] != region_block_item[0] || region_block[1] != region_block_item[1] || (!is_html && region_block[2] != region_block_item[2]) || type != item_type;
 				
 				if (is_different) {
 					are_different = true;
@@ -2759,12 +2952,14 @@ function areRegionBlocksEqual(rb_1, rb_2, rb_json_1, rb_json_2) {
 	if (rb_json_1 == rb_json_2)
 		is_equal = true;
 	else { //check html by removing space characters
-		var is_html = rb_1[3] ? true : false;
-		var is_item_html = rb_2[3] ? true : false;
+		var type = rb_1[3] == 3 ? 2 : (rb_1[3] == 5 ? 4 : rb_1[3]);
+		var item_type = rb_2[3] == 3 ? 2 : (rb_2[3] == 5 ? 4 : rb_2[3]);
+		var is_html = type == 1;
+		var is_item_html = item_type == 1;
 		var block = is_html ? ("" + rb_1[1]).replace(/\s/g, "") : rb_1[1];
 		var item_block = is_item_html ? ("" + rb_2[1]).replace(/\s/g, "") : rb_2[1];
 		
-		if (rb_1[0] == rb_2[0] && block == item_block && (is_html || rb_1[2] == rb_2[2]) && is_html == is_item_html && rb_1[4] == rb_2[4])
+		if (rb_1[0] == rb_2[0] && block == item_block && (is_html || rb_1[2] == rb_2[2]) && type == item_type && rb_1[4] == rb_2[4])
 			is_equal = true;
 	}
 	
@@ -2830,14 +3025,16 @@ function updateRegionsBlocksRBIndexIfNotSet(regions_blocks_includes_settings) {
 		
 		if (!$.isNumeric(rb_index)) {
 			var item_data = getSettingsTemplateRegionBlockValues(item);
-			var block_hash = item_data["type"] == "html" ? $.md5(item_data["block"]) : item_data["block"];
+			var item_type = item_data["type"];
+			var block_hash = item_type == 1 ? $.md5(item_data["block"]) : (item_type == 2 || item_type == 3 ? "block_" : "view_") + item_data["block"]; //if html set md5
 			var item_rb_index_key = item_data["region"] + "-" + block_hash + "-" + item_data["project"];
 			var rb_index = 0;
 			
 			for (var j = 0; j < items.length; j++) {
 				if (j != i) {
 					var sub_item_data = getSettingsTemplateRegionBlockValues(items[j]);
-					var block_hash = sub_item_data["type"] == "html" ? $.md5(sub_item_data["block"]) : sub_item_data["block"];
+					var sub_item_type = sub_item_data["type"];
+					var block_hash = sub_item_type == 1 ? $.md5(sub_item_data["block"]) : (sub_item_type == 2 || sub_item_type == 3 ? "block_" : "view_") + sub_item_data["block"]; //if html set md5
 					var sub_item_rb_index_key = sub_item_data["region"] + "-" + block_hash + "-" + sub_item_data["project"];
 					
 					if (sub_item_rb_index_key == item_rb_index_key && $.isNumeric(sub_item_data["rb_index"]) && sub_item_data["rb_index"] >= rb_index)
@@ -2968,6 +3165,7 @@ function updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField(elm, html, ifram
 	var item = $(elm).parent().closest(".template_region_item");
 	var item_data = getSettingsTemplateRegionBlockValues(item);
 	var region = item_data["region"];
+	var is_item_html = item_data["type"] == 1;
 	var item_index = -1;
 	
 	var siblings = item.parent().find(".template_region_item");
@@ -2992,8 +3190,10 @@ function updateLayoutIframeRegionBlockHtmlFromSettingsHtmlField(elm, html, ifram
 			iframe_item = $(iframe_item);
 			
 			var iframe_item_data = getSettingsTemplateRegionBlockValues(iframe_item);
+			var iframe_item_type = iframe_item_data["type"];
+			var is_iframe_item_html = iframe_item_type == 1;
 			
-			if (iframe_item_data["type"] == "html" && iframe_item_data["type"] == item_data["type"] && iframe_item_data["project"] == item_data["project"] && iframe_item_data["block"] != item_data["block"]) {
+			if (is_iframe_item_html && is_item_html && iframe_item_data["project"] == item_data["project"] && iframe_item_data["block"] != item_data["block"]) {
 				//save synchronization functions
 				var update_settings_from_layout_iframe_func_bkp = update_settings_from_layout_iframe_func;
 				var update_layout_iframe_from_settings_func_bkp = update_layout_iframe_from_settings_func;
@@ -3099,7 +3299,8 @@ function updateLayoutIframeFromSettings(iframe, data, settings, iframe_html_to_p
 						$.each(region_items, function(idx, region_item) {
 							var iframe_region_item = iframe_region_items ? iframe_region_items[idx] : null;
 							var iframe_item = $(iframe_region_items_children[item_to_insert_index]); //get the iframe_item where the items will be inserted before...
-							var is_html = region_item[3];
+							var type = region_item[3];
+							var is_html = type == 1;
 							
 							if (!is_html)
 								item_to_insert_index++; //prepare the next index for iframe_item
@@ -3109,7 +3310,7 @@ function updateLayoutIframeFromSettings(iframe, data, settings, iframe_html_to_p
 								var block = region_item[1];
 								var project = region_item[2];
 								var rb_index = region_item[4];
-								var rb_html = getRegionBlockHtml(region_name, block, project, is_html, rb_index);
+								var rb_html = getRegionBlockHtml(region_name, block, project, type, rb_index);
 								
 								if (iframe_item[0]) {
 									//if previous iframe_item exists, insert new item after it
@@ -3213,9 +3414,11 @@ function checkIfReloadLayoutIframeFromSettings(iframe, iframe_data, settings_dat
 						return false;
 					}
 					
-					var is_html = region_block[3] ? true : false;
-					var is_item_html = region_block_item[3] ? true : false;
-					var is_different = region_block[0] != region_block_item[0] || region_block[1] != region_block_item[1] || (!is_html && region_block[2] != region_block_item[2]) || is_html != is_item_html;
+					var type = region_block[3] == 3 ? 2 : (region_block[3] == 5 ? 4 : region_block[3]);
+					var item_type = region_block_item[3] == 3 ? 2 : (region_block_item[3] == 5 ? 4 : region_block_item[3]);
+					var is_html = type == 1;
+					var is_item_html = item_type == 1;
+					var is_different = region_block[0] != region_block_item[0] || region_block[1] != region_block_item[1] || (!is_html && region_block[2] != region_block_item[2]) || type != item_type;
 					
 					if (is_different) {
 						//console.log(region_block);
@@ -3565,7 +3768,7 @@ function initPageAndTemplateLayout(main_parent_elm, opts) {
 		multiple_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForVariables,
 	});
 	choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");
 	
@@ -3573,7 +3776,7 @@ function initPageAndTemplateLayout(main_parent_elm, opts) {
 		multiple_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForMethods,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForMethods,
 	});
 	chooseMethodFromFileManagerTree.init("choose_method_from_file_manager");
 	
@@ -3581,7 +3784,7 @@ function initPageAndTemplateLayout(main_parent_elm, opts) {
 		multiple_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForFunctions,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForFunctions,
 	});
 	chooseFunctionFromFileManagerTree.init("choose_function_from_file_manager");
 	
@@ -3589,7 +3792,7 @@ function initPageAndTemplateLayout(main_parent_elm, opts) {
 		multiple_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTree,
 	});
 	chooseFileFromFileManagerTree.init("choose_file_from_file_manager");
 	
@@ -3747,10 +3950,7 @@ function initPageAndTemplateLayout(main_parent_elm, opts) {
 			view_layout.removeClass("do-not-confirm");
 			view_source.addClass("is-source-changed");
 			
-			//show php widgets, borders and background
-			//PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();
-			PtlLayoutUIEditor.showTemplateWidgetsBorders();
-			PtlLayoutUIEditor.showTemplatePHPWidgets();
+			prepareCodeLayoutUIEditorEditorUserDefinedToggles(PtlLayoutUIEditor);
 			
 			//prepare iframe
 			var iframe_unload_func = function () {
@@ -3839,6 +4039,7 @@ function changeRemoveSLAGroupItemFunctionToCheckUsedResources() {
 }
 
 function loadPageAndTemplateLayoutSLASettings(regions_blocks_includes_settings, asynchronous) {
+	//console.log(assignObjectRecursively({}, sla_settings_obj));
 	var actions_obj = {
 		actions: {
 			key: "actions",
@@ -3846,13 +4047,15 @@ function loadPageAndTemplateLayoutSLASettings(regions_blocks_includes_settings, 
 			items: sla_settings_obj
 		}
 	};
-	var tasks_values = convertSettingsToTasksValues(actions_obj);
+	var original_actions_obj = assignObjectRecursively({}, actions_obj); //Note that the convertSettingsToTasksValues changes the actions_obj so we need to call the assignObjectRecursively
+	var original_tasks_values = convertSettingsToTasksValues(original_actions_obj, false);
+	var tasks_values = convertSettingsToTasksValues(actions_obj, true);
 	//console.log(tasks_values);
 	
 	if (tasks_values && tasks_values.hasOwnProperty("actions")) {
 		var add_group_icon = regions_blocks_includes_settings.find(" > .resource_settings > .sla > .sla_groups_flow > nav > .add_sla_group");
 		
-		loadSLASettingsActions(add_group_icon[0], tasks_values["actions"], false, asynchronous); //set asynchronous argument to true so it can load the slas asynchrounously. This will make the system 3 to 5 secs faster.
+		loadSLASettingsActions(add_group_icon[0], tasks_values["actions"], false, asynchronous, original_tasks_values["actions"]); //set asynchronous argument to true so it can load the slas asynchrounously. This will make the system 3 to 5 secs faster.
 	}
 }
 
@@ -3976,7 +4179,7 @@ function initIframeModulesBlocksToolbarDraggableMenuItem(menu_item) {
 	
 	if (menu_item_icon.hasClass("block_file"))
 		menu_item.addClass("draggable_menu_item_block");
-	else if (menu_item_icon.is(".table-list, .table-edit, .table-add, .table-view"))
+	else if (menu_item_icon.is(".table"))
 		menu_item.addClass("draggable_menu_item_table");
 	else
 		menu_item.addClass("draggable_menu_item_module");
@@ -4167,22 +4370,11 @@ function updateCodeEditorLayoutFilesInSettings(files, ul, opts) {
 }
 
 function addCodeEditorLayoutFileInSettings(file, ul, opts) {
-	var li_id = $.md5(file);
-	var li = ul.children("li[data_file_id='" + li_id + "']");
-	var force = opts && opts["force"];
-	
-	if (li[0] && !force) 
-		return li;
-	
-	var path = null;
 	var inline_html = opts && opts["inline_html"];
-	
-	//prepare non https or http urls
-	var selected_project_url_prefix_aux = selected_project_url_prefix.match(/^http:/) ? selected_project_url_prefix.replace(/^http:/, "https:") : selected_project_url_prefix.replace(/^https:/, "http:");
-	var selected_project_common_url_prefix_aux = selected_project_common_url_prefix.match(/^http:/) ? selected_project_common_url_prefix.replace(/^http:/, "https:") : selected_project_common_url_prefix.replace(/^https:/, "http:");
 	
 	//prepare file if inline html
 	var parsed_file = file;
+	var file_name = file;
 	
 	if (inline_html) {
 		var m = /(\{\$|\$\{)(project_url_prefix|original_project_url_prefix|project_common_url_prefix|original_project_common_url_prefix)\}?/.exec(file);
@@ -4196,9 +4388,25 @@ function addCodeEditorLayoutFileInSettings(file, ul, opts) {
 			
 			parsed_file = file.replace(var_code, '<? echo \$' + var_name + ';?>');
 		}
+		
+		//if edit_entity, replace project_url_prefix with real url
+		file_name = file_name.replace(/(\$\{project_url_prefix\}|\$\{original_project_url_prefix\}|\{\$project_url_prefix\}|\{\$original_project_url_prefix\}|\$project_url_prefix\/|\$original_project_url_prefix\/)/g, selected_project_url_prefix).replace(/(\$\{project_common_url_prefix\}|\$\{original_project_common_url_prefix\}|\{\$project_common_url_prefix\}|\{\$original_project_common_url_prefix\}|\$project_common_url_prefix\/|\$original_project_common_url_prefix\/)/g, selected_project_common_url_prefix);
 	}
 	
+	var li_id = $.md5(file_name); //md5 of file_name which is already converted with the right url prefix.
+	var li = ul.children("li[data_file_id='" + li_id + "']");
+	var force = opts && opts["force"];
+	
+	if (li[0] && !force) 
+		return li;
+	
+	//prepare non https or http urls
+	var selected_project_url_prefix_aux = selected_project_url_prefix.match(/^http:/) ? selected_project_url_prefix.replace(/^http:/, "https:") : selected_project_url_prefix.replace(/^https:/, "http:");
+	var selected_project_common_url_prefix_aux = selected_project_common_url_prefix.match(/^http:/) ? selected_project_common_url_prefix.replace(/^http:/, "https:") : selected_project_common_url_prefix.replace(/^https:/, "http:");
+	
 	//prepare file path
+	var path = null;
+	
 	if (parsed_file.indexOf(selected_project_url_prefix) === 0) //checks if file starts with url in vars: selected_project_url_prefix
 		path = selected_project_id + "/webroot/" + parsed_file.substr(selected_project_url_prefix.length);
 	else if (parsed_file.indexOf(selected_project_common_url_prefix) === 0) //checks if file starts with url in vars: selected_project_common_url_prefix
@@ -4217,7 +4425,7 @@ function addCodeEditorLayoutFileInSettings(file, ul, opts) {
 		}
 	}
 	
-	var file_name = file.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+	file_name = file_name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	
 	if (path)
 		file_name = '<a href="javascript:void(0)" onClick="editWebrootFile(\'' + path + '\')" title="Click to edit file">' + file_name + '</a>';
@@ -4269,7 +4477,8 @@ function appendRegionsBlocksHtmlFileInSettings(filter_by_region_name, opts) {
 				for (var i = 0, t = regions.length; i < t; i++) {
 					var item = regions[i];
 					var block_html = item[1];
-					var is_html = item[3];
+					var type = item[3];
+					var is_html = type == 1;
 					
 					if (is_html && block_html)
 						regions_code += block_html;
@@ -4374,7 +4583,7 @@ function removeFileFromRegionBlockHtml(file, region_name) {
 		var item_data = getSettingsTemplateRegionBlockValues(item);
 		var region = item_data["region"];
 		var block_html = item_data["block"];
-		var is_html = item_data["type"] == "html";
+		var is_html = item_data["type"] == 1;
 		
 		var r = region.substr(0, 1) == '"' ? region.replace(/"/g, "") : region;
 		
@@ -4686,6 +4895,12 @@ function initCodeLayoutUIEditor(main_obj, opts) {
 	
 	var textarea = main_obj.find(".layout-ui-editor > textarea")[0];
 	createCodeLayoutUIEditorEditor(textarea, opts);
+	
+	//set event to escape the draggable_menu_item
+	$(document).bind("keyup", function(e) {
+		if (e.which === 27 || e.keyCode === 27) //if escape key
+			$(".dragging_menu_item.ui-draggable-dragging").data("escape_key_pressed", true).trigger('mouseup');
+	});
 }
 
 function setCodeLayoutUIEditorTreeItemsDraggableEvent(ul) {
@@ -4732,7 +4947,7 @@ function setCodeLayoutUIEditorTreeItemsDraggableEvent(ul) {
 }
 
 //To be used by the module_block.xml widget
-function onCodeLayoutUIEditorModuleBlockWidgetDragAndDrop(widget, tree_obj) {
+function onCodeLayoutUIEditorModuleBlockWidgetDragAndDrop(widget, tree_obj, do_not_delete_widget) {
 	var popup = $("#choose_layout_ui_editor_module_block_from_file_manager");
 	
 	CodeLayoutUIEditorFancyPopup.init({
@@ -4747,7 +4962,7 @@ function onCodeLayoutUIEditorModuleBlockWidgetDragAndDrop(widget, tree_obj) {
 			//update menu layer
 			var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 			
-			if (PtlLayoutUIEditor)
+			if (!do_not_delete_widget && PtlLayoutUIEditor)
 				PtlLayoutUIEditor.deleteTemplateWidget(widget); //update menu layer from layout ui editor
 		}
 	});
@@ -4784,60 +4999,41 @@ function chooseCodeLayoutUIEditorModuleBlock(tree_obj) {
 	    		
 	    		chooseCodeLayoutUIEditorImportModulePopup(url);
 		}
-	    	else if (node.hasClass("draggable_menu_item_table")) {
+		else if (node.hasClass("draggable_menu_item_table")) {
 	    		var i = node.find(" > a > i");
-	    		var table_li = node.parent().closest("li");
-	    		var db_type_li = table_li.parent().closest("li");
-	    		var db_driver_li = db_type_li.parent().closest("li");
-	    		var widget_group = null;
-	    		var widget_list_type = null;
-	    		var widget_action = null;
+	    		var db_driver_node = node.parent().closest("li");
 	    		
-	    		if (i.hasClass("table-list")) {
-	    			widget_group = "list";
-	    			widget_list_type = "table";
-	    			widget_action = "edit";
-	    		}
-	    		else if (i.hasClass("table-edit")) {
-	    			widget_group = "form";
-	    			widget_action = "edit";
-	    		}
-	    		else if (i.hasClass("table-add")) {
-	    			widget_group = "form";
-	    			widget_action = "add";
-	    		}
-	    		else if (i.hasClass("table-view")) {
-	    			widget_group = "form";
-	    			widget_action = "view";
-	    		}
-	    		
-	    		var db_driver = db_driver_li.attr("db_driver_name");
-	    		var db_type = db_type_li.attr("db_type");
-		    	var db_table = table_li.children("a").attr("table");
+	    		var db_broker = db_driver_node.attr("db_driver_broker");
+	    		var db_driver = db_driver_node.attr("db_driver_name");
+	    		var db_type = db_driver_node.attr("db_driver_type");
+	    		var db_table = node.children("a").attr("table");
 	    		var widget = CodeLayoutUIEditorFancyPopup.settings.targetField;
-	    		var opts = {
-	    			hide_widget_group: true,
-	    			hide_widget_action: widget_group == "form",
-	    			
-	    			widget_group: widget_group,
-		    		widget_list_type: widget_list_type,
-		    		widget_action: widget_action
-	    		};
 	    		
 	    		var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 	    		var elm_from_point = PtlLayoutUIEditor && window.event && window.event.target ? PtlLayoutUIEditor.getWidgetDroppedElement(window.event, $(window.event.target)) : null;
 	    		var widget_group = elm_from_point ? $(elm_from_point).closest("[data-widget-group-list], [data-widget-group-form]") : null;
 			var inside_of_widget_group = widget_group && widget_group.length > 0;
 			
+			var opts = {
+				hide_db_broker: true,
+				hide_db_driver: true,
+				hide_type: true,
+				find_best_type: true,
+				hide_db_table: true,
+				hide_table_alias: true,
+				hide_widget_type: true,
+				widget_type: "html"
+			};
+			
 			if (inside_of_widget_group)
-				onReplaceCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_table, widget, opts);
+				onReplaceCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, db_type, db_table, widget, opts);
 			else 
-				onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_table, widget, opts);
+				onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, db_type, db_table, widget, opts);
 		}
 	}
 }
 
-function onReplaceCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_table, widget, opts) {
+function onReplaceCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, db_type, db_table, widget, opts) {
 	//must have settimeout bc the widget doesn't have the right parent yet.
 	setTimeout(function() {
 		var widget_parent = widget.parent();
@@ -4880,11 +5076,11 @@ function onReplaceCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_
 				replaceTableNameFunction: function(btn) {
 					var table_alias = popup.find(".table_alias input").val();
 					
-					replaceCodeLayoutUIEditorDBTableWidgetSettings(db_driver, db_type, db_table, table_alias, widget_group, opts);
+					replaceCodeLayoutUIEditorDBTableWidgetSettings(db_broker, db_driver, db_type, db_table, table_alias, widget_group, opts);
 					ReplaceExistingDBTableWidgetFancyPopup.hidePopup();
 				},
 				createSubWidgetFunction: function(btn) {
-					onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_table, widget, opts);
+					onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, db_type, db_table, widget, opts);
 					
 					var table_alias = popup.find(".table_alias input").val();
 					$(".choose_db_table_widget_options_popup .table_alias input").val(table_alias);
@@ -4897,13 +5093,14 @@ function onReplaceCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_
 	}, 100);
 }
 
-function replaceCodeLayoutUIEditorDBTableWidgetSettings(db_driver, db_type, db_table, db_table_alias, widget_group, opts) {
+function replaceCodeLayoutUIEditorDBTableWidgetSettings(db_broker, db_driver, db_type, db_table, db_table_alias, widget_group, opts) {
 	var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 	
 	if (PtlLayoutUIEditor) {
 		MyFancyPopup.showLoading();
 		
 		var settings = {
+			db_broker: db_broker,
 			db_driver: db_driver,
 	    		db_type: db_type,
 			db_table: db_table,
@@ -4919,7 +5116,7 @@ function replaceCodeLayoutUIEditorDBTableWidgetSettings(db_driver, db_type, db_t
 	}
 }
 
-function onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_table, widget, opts) {
+function onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, db_type, db_table, widget, opts) {
 	//get existent popup
 	var popup = $(".choose_db_table_widget_options_popup");
 	
@@ -4935,8 +5132,29 @@ function onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_t
 	if (!popup[0]) {
 		popup = $('<div class="myfancypopup with_title choose_db_table_widget_options_popup">'
 				+ '<div class="title">Choose your options:</div>'
+				+ '<div class="toggle_advanced_options"><a href="javascript:void(0)">Show Advanced Options</a></div>'
+				+ '<div class="db_broker">'
+					+ '<label>DB Broker:</label>'
+					+ '<select onchange="updateDBDrivers(this)"></select>'
+				+ '</div>'
+				+ '<div class="db_driver">'
+					+ '<label>DB Driver:</label>'
+					+ '<select onchange="updateDBTablesOnChooseCodeLayoutUIEditorDBTableWidgetOptionsPopup(this)"></select>'
+				+ '</div>'
+				+ '<div class="type">'
+					+ '<label>Table Origin/Type:</label>'
+					+ '<select onchange="updateDBTablesOnChooseCodeLayoutUIEditorDBTableWidgetOptionsPopup(this)">'
+						+ '<option value="db">From DB Server</option>'
+						+ '<option value="diagram">From DB Diagram</option>'
+					+ '</select>'
+				+ '</div>'
+				+ '<div class="db_table">'
+					+ '<label>Table Name:</label>'
+					+ '<select></select>'
+					+ '<span class="icon refresh" onClick="refreshDBTables(this)"></span>'
+				+ '</div>'
 				+ '<div class="table_alias">'
-					+ '<label>Table alias:</label>'
+					+ '<label>Table Alias:</label>'
 					+ '<input placeHolder="Leave blank for default" />'
 				+ '</div>'
 				+ '<div class="widget_type">'
@@ -4976,6 +5194,18 @@ function onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_t
 			+ '</div>');
 		$(document.body).append(popup);
 		
+		popup.find(".toggle_advanced_options a").on("click", function(event) {
+			var elm = $(this);
+			popup.toggleClass("with_advanced_options");
+			
+			if (popup.hasClass("with_advanced_options"))
+				elm.html("Hide Advanced Options");
+			else
+				elm.html("Show Advanced Options");
+			
+			DBTableWidgetOptionsFancyPopup.updatePopup();
+		});
+		
 		popup.find(".widget_type select").on("change", function(event) {
 			var widget_type = $(this).val();
 			var widget_group = popup.find(".widget_group select").val();
@@ -4991,10 +5221,73 @@ function onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_t
 		});
 	}
 	
+	//get db_broker for selected db_driver
+	if (!db_broker) {
+		var aux = addDBBrokerToCodeLayoutUIEditorDBTableWidgetSettings({db_driver: db_driver})
+		db_broker = aux["db_broker"];
+	}
+	
+	//prepare db select fields html
+	var db_broker_options_html = '<option value="' + (default_dal_broker ? default_dal_broker : "") + '">-- default --</option>';
+	var db_driver_options_html = "";
+	var db_table_options_html = "";
+	var add_db_table_allowed = typeof create_db_table_or_attribute_url != "undefined" && create_db_table_or_attribute_url;
+	
+	if ($.isPlainObject(db_brokers_drivers_tables_attributes)) {
+		for (broker_name in db_brokers_drivers_tables_attributes)
+			db_broker_options_html += '<option>' + broker_name + '</option>';
+		
+		if (db_broker && $.isPlainObject(db_brokers_drivers_tables_attributes[db_broker])) {
+			for (driver_name in db_brokers_drivers_tables_attributes[db_broker])
+				db_driver_options_html += '<option>' + driver_name + '</option>';
+			
+			if (db_driver && $.isPlainObject(db_brokers_drivers_tables_attributes[db_broker][db_driver]) && $.isPlainObject(db_brokers_drivers_tables_attributes[db_broker][db_driver][db_type || "db"])) {
+				if (add_db_table_allowed)
+					db_table_options_html = '<option value="">-- Create a new Table --</option><option value="0" disabled></option>'; //value == 0, so it doesn't get never selected
+				
+				for (table_name in db_brokers_drivers_tables_attributes[db_broker][db_driver][db_type || "db"])
+					db_table_options_html += '<option>' + table_name + '</option>';
+			}
+		}
+	}
+	
+	if (db_driver && !db_driver_options_html)
+		db_driver_options_html = '<option>' + db_driver + '</option>';
+	
+	var update_db_tables = false;
+	
+	if (db_driver && db_table && !db_table_options_html) {
+		db_table_options_html = '<option>' + db_table + '</option>';
+		update_db_tables = true;
+	}
+	
+	popup.find(".db_broker select").html(db_broker_options_html).val(db_broker);
+	popup.find(".db_driver select").html(db_driver_options_html).val(db_driver);
+	popup.find(".type select").val(db_type || "db");
+	popup.find(".db_table select").html(db_table_options_html).val(db_table);
+	
+	if (update_db_tables)
+		updateDBTablesOnChooseCodeLayoutUIEditorDBTableWidgetOptionsPopup( popup.find(".db_driver select")[0] );
+	
 	//load some default values
 	popup.find(".widget_type, .widget_group, .widget_list_type, .widget_action").removeClass("hidden");
 	
 	if (opts) {
+		if (opts["find_best_type"])
+			setBestTableDBTypeOnChooseCodeLayoutUIEditorDBTableWidgetOptionsPopup(popup);
+		
+		if (opts["hide_db_broker"])
+			popup.find(".db_broker").addClass("hidden");
+		
+		if (opts["hide_db_driver"])
+			popup.find(".db_driver").addClass("hidden");
+		
+		if (opts["hide_type"])
+			popup.find(".type").addClass("hidden");
+		
+		if (opts["hide_db_table"])
+			popup.find(".db_table").addClass("hidden");
+		
 		if (opts["hide_table_alias"])
 			popup.find(".table_alias").addClass("hidden");
 		
@@ -5030,56 +5323,139 @@ function onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_t
 	
 	//set update func
 	var update_func = function(elm) {
+		var db_broker = popup.find(".db_broker select").val();
+		var db_driver = popup.find(".db_driver select").val();
+		var db_type = popup.find(".type select").val();
+		var db_table = popup.find(".db_table select").val();
 		var table_alias = popup.find(".table_alias input").val();
 		var widget_type = popup.find(".widget_type select").val();
 		var widget_group = popup.find(".widget_group select").val();
 		var widget_list_type = popup.find(".widget_list_type select").val();
 		var widget_action = popup.find(".widget_action select").val();
 		
-		//hide popup first
-		DBTableWidgetOptionsFancyPopup.hidePopup();
-		DBTableWidgetOptionsFancyPopup.setOption("onClose", null);
-		
-		//replace widget by real widget
-		if (widget_type == "html")
-			updateCodeLayoutUIEditorDBTableWidget(widget, {
-		    		widget_group: widget_group,
-		    		widget_list_type: widget_list_type,
-		    		widget_action: widget_action,
-		    		db_driver: db_driver,
-		    		db_type: db_type,
-				db_table: db_table,
-		    		db_table_alias: table_alias,
-			});
+		if (!db_table) {
+			if (add_db_table_allowed) {
+				//open new popup to add a new DB Table
+				var add_popup = $(".create_db_table_or_attribute_popup");
+				
+				if (!add_popup[0]) {
+					add_popup = $('<div class="myfancypopup create_db_table_or_attribute_popup with_iframe_title popup_with_popup_close_button popup_with_left_popup_close">'
+								+ '<div class="iframe_top_bar_bg"></div>'
+								+ '<button class="continue" onClick="DBTableWidgetOptionsCreateDBTableFancyPopup.settings.continueFunc(this)">Continue</button>'
+							+ '</div>');
+					$(document.body).append(add_popup);
+				}
+				
+				//remove and readd iframe so we don't see the previous loaded html
+				var url = create_db_table_or_attribute_url;
+				url += (url.indexOf("?") != -1 ? "&" : "?") + "db_broker=" + db_broker + "&db_driver=" + db_driver + "&db_type=" + db_type + "&popup=1";
+				add_popup.children("iframe").remove(); 
+				add_popup.prepend('<iframe src="' + url + '"></iframe>');
+				
+				var iframe = add_popup.children("iframe");
+				iframe.load(function() {
+					var iframe_body = iframe.contents().find("body");
+					var top_bar = iframe_body.find(".top_bar");
+					
+					if (top_bar.length > 0) {
+						top_bar.addClass("popup_with_left_popup_close popup_with_popup_close_button");
+						add_popup.children(".iframe_top_bar_bg").hide();
+					}
+					else { //it means some error happens
+						iframe_body[0].style.paddingTop="50px"; //Do not use .css function bc it doesn't work.
+						add_popup.children(".iframe_top_bar_bg").show();
+					}
+				});
+				
+				//backup db_tables
+				var old_db_tables = getDBTables(db_broker, db_driver, db_type);
+				
+				//open popup to add a new table
+				DBTableWidgetOptionsCreateDBTableFancyPopup.init({
+					elementToShow: add_popup,
+					parentElement: document,
+					
+					onClose: function() {
+						//open popup again but with new table selected and with_advanced_options active
+						onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, db_type, db_table, widget, opts);
+					},
+					continueFunc: function() {
+						//update new tables
+						popup.find(".db_table .icon.refresh").trigger("click");
+						
+						//get new table
+						var new_db_tables = getDBTables(db_broker, db_driver, db_type);
+						var new_db_tables_name = $.isPlainObject(new_db_tables) ? Object.keys(new_db_tables) : [];
+						var old_db_tables_name = $.isPlainObject(old_db_tables) ? Object.keys(old_db_tables) : [];
+						
+						var created_tables = new_db_tables_name.filter(function(table) {return !old_db_tables_name.includes(table); });
+						db_table = created_tables[0] ? created_tables[0] : "";
+						//console.log("created_table:"+db_table);
+						
+						DBTableWidgetOptionsCreateDBTableFancyPopup.hidePopup();
+					},
+				});
+				DBTableWidgetOptionsCreateDBTableFancyPopup.showPopup();
+				
+				DBTableWidgetOptionsFancyPopup.setOption("onClose", null);
+				DBTableWidgetOptionsFancyPopup.hidePopup();
+				
+				return null;
+			}
+			else {
+				StatusMessageHandler.showError("You must choose a DB Table first, in order to continue.");
+				
+				if (!popup.hasClass("with_advanced_options"))
+					popup.addClass("with_advanced_options");
+			}
+		}
 		else {
-			var task_tag = null;
-			var task_tag_action = null;
+			//hide popup first
+			DBTableWidgetOptionsFancyPopup.setOption("onClose", null);
+			DBTableWidgetOptionsFancyPopup.hidePopup();
 			
-			if (widget_group == "list")
-	    			task_tag = "listing";
-	    		else if (widget_group == "form") {
-	    			if (widget_action == "view")
-		    			task_tag = "view";
-		    		else 
-		    			task_tag = "form";
-	    		}
-    			
-			if (widget_action == "add")
-	    			task_tag_action = "insert";
-	    		else if (widget_action == "edit")
-	    			task_tag_action = "update,delete";
-	    		else if (widget_action == "remove")
-	    			task_tag_action = "delete";
-			
-			openCodeLayoutUIEditorDBTableUisDiagramBlockPopup(widget, {
-		    		task_tag: task_tag,
-		    		task_tag_action: task_tag_action,
-		    		db_driver: db_driver,
-		    		db_type: db_type,
-				db_table: db_table,
-		    		db_table_alias: table_alias,
-	    		});
-	    	}
+			if (widget_type == "html") //replace widget by real widget
+				updateCodeLayoutUIEditorDBTableWidget(widget, {
+			    		widget_group: widget_group,
+			    		widget_list_type: widget_list_type,
+			    		widget_action: widget_action,
+			    		db_broker: db_broker,
+			    		db_driver: db_driver,
+			    		db_type: db_type,
+					db_table: db_table,
+			    		db_table_alias: table_alias,
+				});
+			else {
+				var task_tag = null;
+				var task_tag_action = null;
+				
+				if (widget_group == "list")
+		    			task_tag = "listing";
+		    		else if (widget_group == "form") {
+		    			if (widget_action == "view")
+			    			task_tag = "view";
+			    		else 
+			    			task_tag = "form";
+		    		}
+	    			
+				if (widget_action == "add")
+		    			task_tag_action = "insert";
+		    		else if (widget_action == "edit")
+		    			task_tag_action = "update,delete";
+		    		else if (widget_action == "remove")
+		    			task_tag_action = "delete";
+				
+				openCodeLayoutUIEditorDBTableUisDiagramBlockPopup(widget, {
+			    		task_tag: task_tag,
+			    		task_tag_action: task_tag_action,
+			    		db_broker: db_broker,
+			    		db_driver: db_driver,
+			    		db_type: db_type,
+					db_table: db_table,
+			    		db_table_alias: table_alias,
+		    		});
+		    	}
+		}
 	};
 	
 	//init and show popup
@@ -5097,6 +5473,40 @@ function onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, db_type, db_t
 		updateFunction: update_func,
 	});
 	DBTableWidgetOptionsFancyPopup.showPopup();
+}
+
+function setBestTableDBTypeOnChooseCodeLayoutUIEditorDBTableWidgetOptionsPopup(popup) {
+	var db_broker = popup.find(".db_broker select").val();
+	var db_driver = popup.find(".db_driver select").val();
+	var type = popup.find(".type select").val();
+	var db_table = popup.find(".db_table select").val();
+	
+	//check if table exists in diagram, and if so, give priority to the diagram
+	if (db_broker && db_driver && type != "diagram" && db_table) {
+		var db_tables = getDBTables(db_broker, db_driver, "diagram");
+		
+		if ($.isPlainObject(db_tables) && db_tables.hasOwnProperty(db_table))
+			popup.find(".type select").val("diagram").trigger("change");
+	}
+}
+
+function updateDBTablesOnChooseCodeLayoutUIEditorDBTableWidgetOptionsPopup(elm) {
+	updateDBTables(elm);
+	
+	var add_db_table_allowed = typeof create_db_table_or_attribute_url != "undefined" && create_db_table_or_attribute_url;
+	
+	if (add_db_table_allowed) {
+		var select = $(elm).parent().parent().find(" > .db_table > select");
+		var option = select.children("option").first();
+		
+		if (option.val() == "") {
+			option.attr("value", ""); //set value attribute to empty, bc this option doesn't have the value and we must set it to empty string. IMPORTANT: if we do NOT do this, we get then a javascript error, after refresh
+			option.html("-- Create a new Table --");
+			option.after('<option value="0" disabled></option>'); //value == 0, so it doesn't get never selected
+		}
+		else
+			select.prepend('<option value="">-- Create a new Table --</option><option value="0" disabled></option>'); //value == 0, so it doesn't get never selected
+	}
 }
 
 function updateCodeLayoutUIEditorDBTableWidget(widget, settings) {
@@ -5309,17 +5719,19 @@ function updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block_id, 
 			 	for (var i = 0; i < blocks_options.length; i++) {
 			 		var block_options = $(blocks_options[i]);
 			 		var item = block_options.parent();
+			 		var type = item.children(".type").val();
 			 		var block_type = item.children(".region_block_type").val();
+			 		var is_html = type == 1;
 			 		var block = "";
 			 		
-			 		if (block_type == "options")
-			 			block = block_options.val();
-			 		else if (block_type == "text")
-			 			block = item.children(".block_text").children("textarea").val();
-					else if (block_type == "html") {
+			 		if (is_html) {
 						var block_html = item.children(".block_html");
 			 			block = getRegionBlockHtmlEditorValue(block_html);
 					}
+			 		else if (block_type == "options")
+			 			block = block_options.val();
+			 		else if (block_type == "text")
+			 			block = item.children(".block_text").children("textarea").val();
 					else 
 			 			block = item.children("input.block").val();
 					
@@ -5349,6 +5761,7 @@ function updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block_id, 
 		    		var block_options = new_item.children(".block_options");
 		    		setRegionBlockOption(block_options, block_id, project ? project : selected_project_id);
 				
+				//remove widget
 				widget.remove();
 			}
 		}, 100);
@@ -5428,8 +5841,8 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
         			luie.append(right_container);
         			right_container.hide();
         			
-        			var right_container_icon = $('<i class="zmdi zmdi-view-dashboard option show-right-container hidden" title="Show Modules, Blocks and DBs"></i>');
-        			right_container_icon.click(function() {
+        			var right_container_icon = $('<i class="zmdi zmdi-view-dashboard option show-right-container hidden" title="Show Modules and Blocks"></i>');
+        			var right_container_icon_click_handler = function(icon, is_dbs) {
 					luie.addClass("switching-panel");
 					menu_widgets.fadeOut("slow");
 					menu_layers.fadeOut("slow");
@@ -5438,23 +5851,71 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
 						luie.removeClass("switching-panel");
 					});
 					
-					options.find(".show-option-panel").val("show-right-container");
-					options.find(".show-widgets, .show-layers, .show-layout-options").removeClass("option-active");
-					$(this).addClass("option-active");
+					options.find(".show-option-panel").val(is_dbs ? "show-right-container-dbs" : "show-right-container");
+					options.find(".show-widgets, .show-layers, .show-layout-options, .show-right-container, .show-right-container-dbs").removeClass("option-active");
+					$(icon).addClass("option-active");
 					
 					if (!luie.hasClass("fixed-properties") && !luie.hasClass("fixed-side-properties")) {
 						menu_settings.fadeOut("slow");
 						options.find(".show-settings").removeClass("option-active");
 					}
+        			}; 
+        			right_container_icon.click(function() {
+        				right_container_icon_click_handler(this, false);
+        				
+					right_container.removeClass("only_dbs");
         			});
         			options.find(".show-widgets").before(right_container_icon);
+        			options.find(".show-option-panel").append('<option value="show-right-container">Modules, Blocks</option>');
         			
-        			options.find(".show-widgets, .show-layers, .show-layout-options" + (!luie.hasClass("fixed-properties") && !luie.hasClass("fixed-side-properties") ? ", .show-settings" : "")).click(function() {
-        				right_container_icon.removeClass("option-active");
-        				right_container.fadeOut("slow");
-        			});
-        			
-        			options.find(".show-option-panel").append('<option value="show-right-container">Modules, Blocks and DB Drivers</option>');
+        			var right_container_dbs_icon = $('<i class="zmdi zmdi-db option show-right-container-dbs hidden" title="Show DBs"></i>');
+	   			right_container_dbs_icon.click(function() {
+	   				right_container_icon_click_handler(this, true);
+	   				
+					right_container.addClass("only_dbs");
+	   			});
+	   			right_container_icon.after(right_container_dbs_icon);
+				options.find(".show-option-panel").append('<option value="show-right-container-dbs">Databases</option>');
+	   			
+	   			options.find(".show-widgets, .show-layers, .show-layout-options" + (!luie.hasClass("fixed-properties") && !luie.hasClass("fixed-side-properties") ? ", .show-settings" : "")).click(function() {
+	   				right_container_icon.removeClass("option-active");
+	   				right_container_dbs_icon.removeClass("option-active");
+	   				
+	   				right_container.fadeOut("slow");
+	   			});
+	   			
+	   			if (showCodeLayoutUIEditorSideBarRightContainerDBs())
+	   				luie.addClass("with_right_container_dbs");
+	   			else
+	   				options.find(".show-option-panel option[value='show-right-container-dbs']").hide();
+	   			
+	   			//add toggle_left_panel to layout ui editor
+				var toggle_left_panel = $('<i class="zmdi zmdi-swap-vertical-circle zmdi-hc-rotate-90 option toggle-left-options" title="Toggle Panel"></i>');
+				toggle_left_panel.click(function() {
+					luie.toggleClass("left-panel-collapsed");
+					
+					saveCodeLayoutUIEditorEditorUserDefinedToggle("collapse-left-options", luie.hasClass("left-panel-collapsed"));
+				});
+        			options.find(".show-layout-options").before(toggle_left_panel);
+				
+				//prepare template-widgets-options and options-right > .toggles
+				PtlLayoutUIEditor.getTemplateWidgetsOptions().find(" > .options > .show-option").click(function() {
+					var option = $(this);
+					var m = option.attr("class").replace("show-option", "").match(/show-(\w+)/);
+					var option_name = m ? m[1] : null;
+					
+					if (option_name)
+						saveCodeLayoutUIEditorEditorUserDefinedToggle("show-" + option_name, option.hasClass(option_name + "-shown"));
+				});
+				
+				options.find(" > .options-right > .toggles > ul > li.toggle-option").click(function() {
+					var option = $(this);
+					var m = option.attr("class").replace("toggle-option", "").match(/toggle-(\w+)/);
+					var option_name = m ? m[1] : null;
+					
+					if (option_name)
+						saveCodeLayoutUIEditorEditorUserDefinedToggle("show-" + option_name, option.hasClass(option_name + "-shown"));
+				});
 				
 				//prepare save button
         			var code_layout_ui_editor = $(".code_layout_ui_editor");
@@ -5531,6 +5992,122 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
 			parent.data("editor", editor);
 			parent.parent().closest(".code_layout_ui_editor").data("editor", editor);
 		}
+	}
+}
+
+function prepareCodeLayoutUIEditorEditorUserDefinedToggles(PtlLayoutUIEditor) {
+	//show php widgets, borders and background
+	var options = getCodeLayoutUIEditorEditorAvailableToggles();
+	var toggles = MyJSLib.CookieHandler.getCookie('luietoggles');
+	
+	for (var i = 0, t = options.length; i < t; i++) {
+		var value = i < toggles.length && $.isNumeric(toggles[i]) ? parseInt(toggles[i]) : 0;
+		
+		if (value == 1)
+			switch(options[i]) {
+				case "show-background": PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground(); break;
+				case "show-borders": PtlLayoutUIEditor.showTemplateWidgetsBorders(); break;
+				case "show-php": PtlLayoutUIEditor.showTemplatePHPWidgets(); break;
+				case "show-ptl": PtlLayoutUIEditor.showTemplatePTLWidgets(); break;
+				case "show-comments": PtlLayoutUIEditor.showTemplateCommentsWidgets(); break;
+				case "show-js": PtlLayoutUIEditor.showTemplateJSWidgets(); break;
+				case "show-css": PtlLayoutUIEditor.showTemplateCSSWidgets(); break;
+				case "collapse-left-options": PtlLayoutUIEditor.getUI().find(" > .options > .options-left .option.toggle-left-options").trigger("click"); break;
+			}
+	}
+}
+
+function getCodeLayoutUIEditorEditorAvailableToggles() {
+	return ["show-background", "show-borders", "show-php", "show-ptl", "show-comments", "show-js", "show-css", "collapse-left-options"];
+}
+
+function saveCodeLayoutUIEditorEditorUserDefinedToggle(option_name, option_value) {
+	//console.log(option_name+":"+option_value);
+	
+	if (option_name) {
+		var options = getCodeLayoutUIEditorEditorAvailableToggles();
+		var toggles = MyJSLib.CookieHandler.getCookie('luietoggles');
+		var new_toggles = "";
+		
+		option_value = option_value ? 1 : 0;
+		
+		for (var i = 0, t = options.length; i < t; i++)
+			new_toggles += option_name == options[i] ? option_value : (
+				i < toggles.length && $.isNumeric(toggles[i]) ? toggles[i] : 0
+			);
+		
+		if (new_toggles != toggles)
+			window.MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('luietoggles', new_toggles);
+	}
+}
+
+function showCodeLayoutUIEditorSideBarRightContainerDBs() {
+	//add show-right-container-dbs if not admin_advanced, bc the admin_advanced already contains the DB tab with all the DBs in a tree, which means this will be redundant and may confuse the user.
+	var show_right_container_dbs = window == window.parent || typeof window.parent.$ != "function" || window.parent.$.find("#left_panel .mytree .db_layers").length == 0;
+	
+	return show_right_container_dbs;
+}
+
+function addCodeLayoutUIEditorRightContainerDBsMenu(next_elm, class_name, with_separator) {
+	var PtlLayoutUIEditor = $(".code_layout_ui_editor > .layout-ui-editor").data("LayoutUIEditor");
+	var luie = PtlLayoutUIEditor.getUI();
+	var is_shown = luie.hasClass("with_right_container_dbs");
+	
+	var li = $('<li class="toggle_right_container_dbs ' + class_name + (is_shown ? ' active' : '') + '" title="Toggle Side Bar DBs Panel"><a onClick="toggleCodeLayoutUIEditorRightContainerDBsMenu(this)"><i class="icon toggle_ids"></i> <span>' + (is_shown ? 'Hide' : 'Show') + '</span> Side Bar DBs Panel <input type="checkbox"' + (is_shown ? ' checked' : '') + '/></a></li>');
+	next_elm.before(li);
+	
+	if (with_separator)
+		li.after('<li class="separator"></li>');
+}
+
+function toggleCodeLayoutUIEditorRightContainerDBsMenu(elm) {
+	elm = $(elm);
+	var li = elm.closest("li");
+	var input = elm.find("input");
+	var span = elm.find("span");
+	
+	li.toggleClass("active");
+	
+	if (li.hasClass("active")) {
+		input.attr("checked", "checked").prop("checked", true);
+		span.html("Hide");
+	}
+	else {
+		input.removeAttr("checked").prop("checked", false);
+		span.html("Show");
+	}
+	
+	var PtlLayoutUIEditor = $(".code_layout_ui_editor > .layout-ui-editor").data("LayoutUIEditor");
+	var luie = PtlLayoutUIEditor.getUI();
+	
+	if (
+		(luie.hasClass("with_right_container_dbs") && !li.hasClass("active")) || 
+		(!luie.hasClass("with_right_container_dbs") && li.hasClass("active"))
+	)
+		onToggleCodeLayoutUIEditorSideBarRightContainerDBs();
+}
+
+function onToggleCodeLayoutUIEditorSideBarRightContainerDBs() {
+	var PtlLayoutUIEditor = $(".code_layout_ui_editor > .layout-ui-editor").data("LayoutUIEditor");
+	var luie = PtlLayoutUIEditor.getUI();
+	var options = luie.children(".options");
+	var options_left = options.children(".options-left");
+	var current_selection = options_left.find("select.show-option-panel").val();
+	var select_opt = options_left.find("select.show-option-panel > option[value='show-right-container-dbs']");
+	var options_show_right_container_dbs = options_left.children(".option.show-right-container-dbs");
+	
+	luie.toggleClass("with_right_container_dbs");
+	
+	if (luie.hasClass("with_right_container_dbs")) {
+		select_opt.show();
+		//options_show_right_container_dbs.show(); //Done from css
+	}
+	else {
+		select_opt.hide();
+		//options_show_right_container_dbs.hide(); //Done from css
+		
+		if (current_selection == "show-right-container-dbs")
+			options_left.children(".option.show-widgets").trigger("click");
 	}
 }
 
@@ -5757,7 +6334,11 @@ function addWebrootFile(elm, type, is_str_html_base, add_handler, remove_handler
 						
 						var ul = $(elm).parent().closest(".css_files, .js_files").children("ul");
 						var template_file_url = is_str_html_base ? file_url : file_url.replace("{$" + var_name + "}", selected_project_url_prefix);
-						var li = addCodeEditorLayoutFileInSettings(template_file_url, ul, {remove: remove_handler});
+						var opts = {
+							inline_html: !is_str_html_base,
+							remove: remove_handler
+						};
+						var li = addCodeEditorLayoutFileInSettings(template_file_url, ul, opts);
 						
 						//call handler
 						if (typeof add_handler == "function")

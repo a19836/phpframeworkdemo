@@ -334,6 +334,10 @@ function saveTemplate() {
 	else {
 		var save_button = $(".top_bar ul li.save a");
 		var on_click = save_button.attr("onClick");
+		var save_icon = save_button.children(".icon");
+		
+		save_button.removeAttr("onClick");
+		save_icon.addClass("loading");
 		
 		//prepare iframe html - prepare regions and params
 		var iframe_contents = iframe.contents();
@@ -429,9 +433,11 @@ function saveTemplate() {
 					alert("Error saving template. Please try again...");
 				
 				save_button.attr("onClick", on_click);
+				save_icon.removeClass("loading");
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 				save_button.attr("onClick", on_click);
+				save_icon.removeClass("loading");
 				
 				var msg = "Error saving template. Please try again...";
 				alert(msg);

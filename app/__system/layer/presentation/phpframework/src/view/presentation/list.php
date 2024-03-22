@@ -53,6 +53,6 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); $head = AdminMenuUIHandler
 	main_layers_properties = ' . json_encode($main_layers_properties) . '; //this var is already created in the filemanage.js
 </script>
 
-<div class="myfancypopup auxiliar_popup">
+<div class="myfancypopup auxiliar_popup with_iframe_title">
 	<iframe></iframe>
 </div>'; ?>

@@ -10,14 +10,13 @@
 	text-align:center;
 	color:#999;
 }
-.template_region_obj li {
-	margin-bottom:20px;
-	border:1px solid #ccc;
-	border-radius:3px;
+.template_region_obj ul:not(.tabs) > li:not(:last-child) {
+	margin-bottom:10px;
+	padding-bottom:10px;
+	border-bottom:1px solid #ccc;
 }
 .template_region_obj li > .header {
 	padding:5px;
-	background:#eee;
 	text-transform:capitalize;
 }
 .template_region_obj li > .header .icon {
@@ -27,18 +26,16 @@
 	width:100%;
 	height:100%;
 	padding:0;
-	display:none;
 	border:0;
-	border-radius:0;
+	text-align:center;
 	box-sizing:border-box;
+	display:none;
 }
-.template_region_obj li .sample > ul {
-	background:none;
-	border-top: none;
-	border-left: none;
-	border-right: none;
-	border-radius: 0;
-	font-size:10px;
+.template_region_obj li .sample > #view_source {
+	padding:0;
+	border-left:1px solid #aaa;
+	border-right:1px solid #aaa;
+	border-bottom:1px solid #aaa;
 }
 .template_region_obj li .sample iframe,
   .template_region_obj li .sample textarea {
@@ -46,4 +43,16 @@
 	height:100%;
 	min-height:300px;
 	padding:0;
+	border:1px solid #ccc;
+}
+
+.template_region_obj li .sample .iframe_toolbar {
+	height:20px;
+	line-height:20px;
+	margin:5px;
+	padding:3px 10px;
+	border:0;
+	border-radius:5px;
+	background:var(--main-iframe-bg, #F0F1F5);
+	text-align:center;
 }

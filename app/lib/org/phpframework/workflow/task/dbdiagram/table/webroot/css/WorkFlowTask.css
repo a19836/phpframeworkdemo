@@ -30,6 +30,11 @@
 	background-color:transparent;
 	box-sizing:border-box;
 	box-shadow:none;
+	opacity:.9 !important;
+}
+.taskflowchartdiagram .task.task_table:hover {
+	opacity:1 !important;
+	z-index:12;
 }
 .taskflowchartdiagram .task.task_table.allow_sort {
 	width:320px !important;
@@ -694,4 +699,11 @@
 .selected_connection_properties .db_table_connection_html tbody .table_attr_icons {
 	padding-left:3px;
 	border:0;
+}
+.selected_connection_properties .db_table_connection_html .delete_connection_button {
+	margin-top:40px;
+	text-align:center;
+}
+.selected_connection_properties .db_table_connection_html .delete_connection_button button {
+	font-size:inherit;
 }

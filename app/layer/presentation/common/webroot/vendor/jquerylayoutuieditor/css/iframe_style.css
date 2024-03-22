@@ -1222,8 +1222,8 @@ body {
 	background:rgba(0,0,0,.1) !important;
 	opacity:1 !important;
 }
-.template-widget.d-none { /* very usefull to see the popups mainly the [data-widget-popup] elements */
-	display:unset !important;
-	opacity:.1 !important;
+.template-widget.d-none { /* very usefull to see the popups mainly the [data-widget-popup] elements - DEPRECATED - bc if there is an element with d-none, it should be hidden. Is the user that should remove this class in order to access it. */
+	/*display:unset !important;
+	opacity:.1 !important;*/
 }
 

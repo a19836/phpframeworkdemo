@@ -206,7 +206,7 @@ body.mobile_cursor,
 .template_region > .template_region_items .template_region_item:hover:before,
   .template_region > .template_region_items .template_region_item.item-hover:before {
 	content:" " !important;
-	width:225px !important;
+	width:295px !important;
 	height:30px !important;
 	display:block !important;
 	position:absolute !important;
@@ -224,7 +224,7 @@ body.mobile_cursor,
 }
 .template_region > .template_region_items .template_region_item.has_edit:hover:before,
   .template_region > .template_region_items .template_region_item.has_edit.item-hover:before {
-	width:250px !important;
+	width:320px !important;
 }
 .template_region > .template_region_items .template_region_item:after {
 	content:" " !important;
@@ -238,7 +238,8 @@ body.mobile_cursor,
   .template_region > .template_region_items .template_region_item > .block_params {
 	display:none !important;
 }
-.template_region > .template_region_items .template_region_item > select.region_block_type {
+.template_region > .template_region_items .template_region_item > select.type,
+  .template_region > .template_region_items .template_region_item > select.region_block_type {
 	width:70px !important;
 	min-width:auto !important;
 	height:20px !important;
@@ -252,14 +253,19 @@ body.mobile_cursor,
 	background:var(--selection-color) !important; /*#4070ff*/
 	border:0 !important;
 	display:none !important;
-	text-align:center !important;
+	text-align:left !important;
 	z-index:9999 !important;
 	cursor:pointer;
+}
+.template_region > .template_region_items .template_region_item > select.region_block_type {
+	left:73px !important;
 }
 .template_region > .template_region_items .template_region_item > select.region_block_type:focus {
 	box-shadow:none;
 }
-.template_region > .template_region_items .template_region_item:hover > select.region_block_type,
+.template_region > .template_region_items .template_region_item:hover > select.type,
+  .template_region > .template_region_items .template_region_item.item-hover > select.type,
+  .template_region > .template_region_items .template_region_item:hover > select.region_block_type,
   .template_region > .template_region_items .template_region_item.item-hover > select.region_block_type {
 	display:inline-block !important;
 	outline:none !important;
@@ -292,25 +298,25 @@ body:not(.mobile_cursor) .template_region .template_region_items .template_regio
 	display:none !important;
 }
 .template_region > .template_region_items .template_region_item > .icon.delete {
-	left:100px !important;
+	left:170px !important;
 }
 /*.template_region > .template_region_items .template_region_item:first-child > .icon.delete {
 	display:none !important;
 }*/
 .template_region > .template_region_items .template_region_item > .icon.add {
-	left:125px !important;
+	left:195px !important;
 }
 .template_region > .template_region_items .template_region_item > .icon.move {
-	left:150px !important;
+	left:220px !important;
 }
 .template_region > .template_region_items .template_region_item > .icon.up {
-	left:175px !important;
+	left:245px !important;
 }
 .template_region > .template_region_items .template_region_item > .icon.down {
-	left:200px !important;
+	left:270px !important;
 }
 .template_region > .template_region_items .template_region_item > .icon.edit {
-	left:225px !important;
+	left:295px !important;
 }
 .template_region > .template_region_items .template_region_item:not(.has_edit) > .icon.edit {
 	display:none !important;
@@ -387,7 +393,8 @@ body:not(.mobile_cursor) .template_region .template_region_items .template_regio
 	color:initial !important;
 }
 
-.template_region > .template_region_items .template_region_item > select.region_block_type.hidden,
+.template_region > .template_region_items .template_region_item > select.type.hidden,
+  .template_region > .template_region_items .template_region_item > select.region_block_type.hidden,
   .template_region > .template_region_items .template_region_item > select.block_options.hidden,
   .template_region > .template_region_items .template_region_item > .pretty_block_options_button.hidden,
   .template_region > .template_region_items .template_region_item > input.block.hidden,

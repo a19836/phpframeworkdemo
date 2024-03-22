@@ -905,6 +905,7 @@ if (!class_exists("AttachmentUtil")) {
 		public static function updateAttachment($brokers, $data) {
 			if (is_array($brokers) && is_numeric($data["attachment_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
+				$data["size"] = is_numeric($data["size"]) ? $data["size"] : 0;
 			
 				$status = $data["path"] ? self::isFileExtensionAllowed($data["path"]) : true;
 				
@@ -916,7 +917,6 @@ if (!class_exists("AttachmentUtil")) {
 						else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 							$data["name"] = addcslashes($data["name"], "\\'");
 							$data["type"] = addcslashes($data["type"], "\\'");
-							$data["size"] = is_numeric($data["size"]) ? $data["size"] : 0;
 							$data["path"] = addcslashes($data["path"], "\\'");
 					
 							return $broker->callUpdate("module/attachment", "update_attachment", $data);

@@ -59,6 +59,9 @@ $(function () {
 			ready_func: function() {
 				//console.log("initPageAndTemplateLayout ready_func");
 				
+				//add top bar menu: Show/Hide Side Bar DBs Panel
+				addCodeLayoutUIEditorRightContainerDBsMenu( $(".top_bar li.sub_menu li.toggle_main_settings") );
+				
 				//prepare some PtlLayoutUIEditor options
 				var luie = template_obj.find(".code_layout_ui_editor > .layout-ui-editor");
 				var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
@@ -123,7 +126,7 @@ $(function () {
 							addAutoSaveMenu(".top_bar li.sub_menu li.save");
 							//enableAutoSave(onToggleSLAAutoSave); //Do not enable auto save bc it gets a litte bit slow editing the template.
 							initAutoSave(".top_bar li.sub_menu li.save a");
-							StatusMessageHandler.showMessage("Auto save is disabled for a better user-experience...");
+							StatusMessageHandler.showMessage("Auto save is disabled for better user-experience...");
 							
 							//change the toggle Auto save handler bc the edit_query task
 							initSLAAutoSaveActivationMenu();

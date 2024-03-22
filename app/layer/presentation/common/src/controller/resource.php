@@ -282,7 +282,13 @@ function parseFileContents($EVC, $contents) {
 		$region_block = $regions_blocks[$i];
 		$region_code = WorkFlowTask::getVariableValueCode($region_block["region"], $region_block["region_type"]);
 		
-		if (!in_array($region_code, $repeated_region_code)) {
+		//if includeRegionBlockPathOutput or includeRegionViewPathOutput. Note that the addRegionBlock and addRegionView were already removed by the code above that called the getHardCodedRegionsBlocks method
+		if (!$include_blocks_when_calling_resources && ($region_block["type"] == 3 || $region_block["type"] == 5)) { 
+			$hard_coded_region_block_code = $region_block["match"];
+			$contents = str_replace($hard_coded_region_block_code, '""', $contents);
+		}
+		//if addRegionHtml, addRegionBlock and addRegionView.
+		else if (!in_array($region_code, $repeated_region_code)) {
 			$repeated_region_code[] = $region_code;
 			$reset_region_code .= "\$EVC->getCMSLayer()->getCMSTemplateLayer()->resetRegion($region_code);\n";
 		}

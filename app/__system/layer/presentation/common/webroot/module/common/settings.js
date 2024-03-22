@@ -18,9 +18,10 @@ $(function () {
 	
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForVariables,
 	});
 	choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");
 });
@@ -618,9 +619,10 @@ function importTemplatePTLCode(elm, module) {
 	var popup = $(".module_settings .settings .import_template_ptl_code_popup");
 	
 	if (!popup[0]) {
-		var html = '<div class="myfancypopup import_template_ptl_code_popup">'
+		var html = '<div class="myfancypopup import_template_ptl_code_popup with_title">'
+			+ '	<div class="title">Installed Templates with PTL</div>'
 			+ '	<div class="template">'
-			+ '		<label>Installed Templates with PTL:</label>'
+			+ '		<label>Templates:</label>'
 			+ '		<select onChange="onChangeAvailableTemplatePTL(this)">'
 			+ '			<option value="">Loading templates...</option>'
 			+ '		</select>'
@@ -630,7 +632,7 @@ function importTemplatePTLCode(elm, module) {
 			+ '		<select></select>'
 			+ '	</div>'
 			+ '	<div class="button">'
-			+ '		<input type="button" value="IMPORT" onClick="MyFancyPopup.settings.updateFunction(this)" />'
+			+ '		<input type="button" value="Import" onClick="MyFancyPopup.settings.updateFunction(this)" />'
 			+ '		<span class="info">Loading ptl code...</span>'
 			+ '	</div>'
 			+ '</div>';

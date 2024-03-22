@@ -20,6 +20,17 @@
 if (typeof is_global_db_diagram_common_file_already_included == "undefined") {
 	var is_global_db_diagram_common_file_already_included = 1;
 	
+	function removeTableConnectionFromConnectionProperties(btn) {
+		var WF = myWFObj.getTaskFlowChart();
+		var selected_connection_properties = $(btn).closest("#" + WF.Property.selected_connection_properties_id);
+		var connection_id = selected_connection_properties.attr("connection_id");
+		
+		WF.Property.hideSelectedConnectionProperties();
+		
+		if (connection_id)
+			WF.TaskFlow.deleteConnection(connection_id);
+	}
+	
 	function onTableConnectionDrop(conn) {
 		if (conn.sourceId == conn.targetId) {
 			var connector_type = conn.connection.connector.type;

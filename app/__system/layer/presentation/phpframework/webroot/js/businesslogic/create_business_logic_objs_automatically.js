@@ -3,9 +3,10 @@ var chooseQueriesFromFileManagerTree = null;
 $(function () {
 	chooseQueriesFromFileManagerTree = new MyTree({
 		multiple_selection : true,
+		toggle_selection : true,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeQueriesAndMapsAndOtherHbnNodesFromTree,
+		ajax_callback_after : removeQueriesAndMapsAndOtherHbnNodesFromTreeForBusinessLogicObjsAutomatically,
 		on_select_callback : checkIfIsFileOrHbnObj,
 	});
 	chooseQueriesFromFileManagerTree.init("choose_queries_from_file_manager");
@@ -35,7 +36,7 @@ function submitForm(elm, on_submit_func) {
 	return status;
 }
 
-function removeQueriesAndMapsAndOtherHbnNodesFromTree(ul, data, mytree_obj) {
+function removeQueriesAndMapsAndOtherHbnNodesFromTreeForBusinessLogicObjsAutomatically(ul, data, mytree_obj) {
 	$(ul).find("i.query, i.map, i.relationship, i.hbn_native, i.referenced_folder").each(function(idx, elm){
 		var li = $(elm).parent().parent();
 		

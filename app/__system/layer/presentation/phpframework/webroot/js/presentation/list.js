@@ -594,6 +594,8 @@ function openPopup(a, attr_name, originalEvent) {
 	else 
 		last_selected_node_id = j_a.parent().parent().attr("last_selected_node_id");
 	
+	url += (url.indexOf("?") != -1 ? "&" : "?") + "popup=1";
+	
 	MyFancyPopup.init({
 		elementToShow: ap,
 		parentElement: document,

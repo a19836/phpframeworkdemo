@@ -93,7 +93,7 @@ CREATE PROCEDURE dropTableForeignKey()
 BEGIN
   IF (SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE() AND table_name='$pc661dc6b') = 1
   THEN 
-  	IF (SELECT COUNT(*) FROM information_schema.key_column_usage WHERE referenced_table_name is not null AND table_schema = DATABASE() AND table_name='$pc661dc6b' AND constraint_name='$pa28639ac') = 1
+  	IF (SELECT COUNT(*) FROM information_schema.key_column_usage WHERE referenced_table_name is not null AND table_schema = DATABASE() AND table_name='$pc661dc6b' AND constraint_name='$pa28639ac') >= 1
   	THEN 
 	  	ALTER TABLE $v769bf5da97 DROP FOREIGN KEY `$pa28639ac`;
   	END IF;

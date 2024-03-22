@@ -9,35 +9,48 @@ var saved_sla_action_settings_php_code = null;
 function initSLA(main_elm) {
 	chooseBusinessLogicFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForBusinessLogic,
 	});
 	chooseBusinessLogicFromFileManagerTree.init("choose_business_logic_from_file_manager");
 	
 	chooseQueryFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeParametersAndResultMapsFromTree,
+		ajax_callback_after : removeMapsAndOtherIbatisNodesFromTree,
 	});
 	chooseQueryFromFileManagerTree.init("choose_query_from_file_manager");
 	
 	chooseHibernateObjectMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeParametersAndResultMapsFromTree,
+		ajax_callback_after : removeMapsAndOtherHbnNodesFromTree,
 	});
 	chooseHibernateObjectMethodFromFileManagerTree.init("choose_hibernate_object_method_from_file_manager");
 	
 	chooseBlockFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotBlocksFromTree,
 	});
 	chooseBlockFromFileManagerTree.init("choose_block_from_file_manager");
+	
+	chooseViewFromFileManagerTree = new MyTree({
+		multiple_selection : false,
+		toggle_selection : false,
+		toggle_children_on_click : true,
+		ajax_callback_before : prepareLayerNodes1,
+		ajax_callback_after : removeAllThatIsNotViewsFromTree,
+	});
+	chooseViewFromFileManagerTree.init("choose_view_from_file_manager");
 	
 	var sla = main_elm.find(".sla");
 	
@@ -81,17 +94,18 @@ function onToggleSLAAutoSave() {
 
 /* LOAD FUNCTIONS */
 
-function loadSLASettingsActions(add_group_icon, actions, is_sub_group, asynchronous) {
+function loadSLASettingsActions(add_group_icon, actions, is_sub_group, asynchronous, original_actions) {
 	if (actions) {
 		$.each(actions, function (i, action) {
 			var group_item = is_sub_group ? addNewSLASubGroup(add_group_icon) : addNewSLAGroup(add_group_icon);
+			var original_action = $.isPlainObject(original_actions) || $.isArray(original_actions) ? original_actions[i] : null;
 			
 			if (asynchronous)
 				setTimeout(function() {
-					loadSLASettingsAction(action, group_item, asynchronous);
+					loadSLASettingsAction(action, group_item, true, original_action);
 				}, 1);
 			else
-				loadSLASettingsAction(action, group_item);
+				loadSLASettingsAction(action, group_item, false, original_action);
 		});
 		
 		var sla_groups_flow = $(add_group_icon).parent().closest(".sla_groups_flow");
@@ -102,11 +116,12 @@ function loadSLASettingsActions(add_group_icon, actions, is_sub_group, asynchron
 	}
 }
 		
-function loadSLASettingsAction(action, group_item, asynchronous) {
+function loadSLASettingsAction(action, group_item, asynchronous, original_action) {
 	if ($.isPlainObject(action) && group_item[0]) {
 		var result_var_name = action["result_var_name"];
 		var action_type = ("" + action["action_type"]).toLowerCase();
 		var action_value = action["action_value"];
+		var original_action_value = $.isPlainObject(original_action) && original_action["action_value"] ? original_action["action_value"] : {};
 		var condition_type = action["condition_type"];
 		var condition_value = action["condition_value"];
 		var action_description = action["action_description"];
@@ -249,6 +264,19 @@ function loadSLASettingsAction(action, group_item, asynchronous) {
 						select.append('<option value="' + action_value["project"] + '" selected>' + action_value["project"] + ' - DOES NOT EXIST ANYMORE</option>');
 				}
 				break;
+				
+			case "call_view":
+				var call_view_elm = group_item.find(' > .sla_group_body > .call_view_action_body');
+				call_view_elm.find(' > .view > input').val( action_value["view"] );
+				
+				if (action_value["project"]) {
+					var select = call_view_elm.find(' > .project > select');
+					select.val( action_value["project"] );
+					
+					if (select.val() != action_value["project"])
+						select.append('<option value="' + action_value["project"] + '" selected>' + action_value["project"] + ' - DOES NOT EXIST ANYMORE</option>');
+				}
+				break;
 			
 			case "include_file":
 				var include_file_elm = group_item.find(' > .sla_group_body > .include_file_action_body');
@@ -271,7 +299,7 @@ function loadSLASettingsAction(action, group_item, asynchronous) {
 						draw_graph_js_elm.children("textarea").val(action_value["code"]);
 					}
 					else
-						loadDrawGraphSettings(draw_graph_settings_elm, action_value);
+						loadDrawGraphSettings(draw_graph_settings_elm, action_value, original_action_value);
 				}
 				break;
 				
@@ -285,7 +313,7 @@ function loadSLASettingsAction(action, group_item, asynchronous) {
 				loop_elm.find(' > header > .array_item_key_variable_name > input').val(action_value["array_item_key_variable_name"]);
 				loop_elm.find(' > header > .array_item_value_variable_name > input').val(action_value["array_item_value_variable_name"]);
 				
-				loadSLASettingsActions(sub_add_group_icon[0], action_value["actions"], true, asynchronous);
+				loadSLASettingsActions(sub_add_group_icon[0], action_value["actions"], true, asynchronous, original_action_value["actions"]);
 				
 				break;
 			
@@ -295,7 +323,7 @@ function loadSLASettingsAction(action, group_item, asynchronous) {
 				
 				group_elm.find(' > header > .group_name > input').val(action_value["group_name"]);
 				
-				loadSLASettingsActions(sub_add_group_icon[0], action_value["actions"], true, asynchronous);
+				loadSLASettingsActions(sub_add_group_icon[0], action_value["actions"], true, asynchronous, original_action_value["actions"]);
 				
 				break;
 		}
@@ -523,7 +551,7 @@ function convertActionValueToSQL(action_type, action_value) {
 	return sql;
 }
 
-function convertSettingsToTasksValues(settings_values) {
+function convertSettingsToTasksValues(settings_values, lower_case) {
 	var tasks_values = {};
 	
 	if (!$.isEmptyObject(settings_values) && settings_values["actions"]) {
@@ -551,7 +579,7 @@ function convertSettingsToTasksValues(settings_values) {
 				
 				if (!action_value)
 					action["action_value"] = "";
-				else if (action_value["value"] && (action_value["value_type"] == "method" || action_value["value_type"] == "function")) {
+				else if (action_value["value"] && get_input_data_method_settings_url && (action_value["value_type"] == "method" || action_value["value_type"] == "function")) {
 					$.ajax({
 						type : "post",
 						url : get_input_data_method_settings_url,
@@ -744,7 +772,7 @@ function convertSettingsToTasksValues(settings_values) {
 				//else if (action_type == "code" || action_type == "variable" || action_type == "string")
 				//	action["action_value"] = $.type(action_value["value"]) == "string" ? prepareFieldValueIfValueTypeIsString(action_value["value"]) : action_value["value"];
 				else if ((action_type == "loop" || action_type == "group") && action_value && action_value.hasOwnProperty("items") && action_value["items"]) {
-					var sub_task_values = convertSettingsToTasksValues(action_value["items"]);
+					var sub_task_values = convertSettingsToTasksValues(action_value["items"], lower_case);
 					action["action_value"]["actions"] = sub_task_values["actions"];
 				}
 				else if ($.type(action["action_value"]) == "string") //remove extra quotes that were added by the convertBlockSettingsValuesIntoBasicArray function. This will include the parse for the values with "code", "variable" and "string"
@@ -766,7 +794,8 @@ function convertSettingsToTasksValues(settings_values) {
 			});
 		}
 		
-		tasks_values = convertBlockSettingsValuesKeysToLowerCase(tasks_values);
+		if (lower_case)
+			tasks_values = convertBlockSettingsValuesKeysToLowerCase(tasks_values);
 	}
 	
 	//console.log(tasks_values);
@@ -1147,6 +1176,11 @@ function onChangeSLAInputType(elm) {
 			
 		case "call_block":
 			section = sections.filter(".call_block_action_body");
+			section.show();
+			break;
+			
+		case "call_view":
+			section = sections.filter(".call_view_action_body");
 			section.show();
 			break;
 			
@@ -1636,19 +1670,17 @@ function initDrawGraphCode(elm) {
 		createSLAItemCodeEditor( js_code.children("textarea")[0], "php", true);
 }
 
-function loadDrawGraphSettings(draw_graph_settings_elm, action_value) {
+function loadDrawGraphSettings(draw_graph_settings_elm, action_value, original_action_value) {
 	draw_graph_settings_elm.find('.include_graph_library select').val( action_value["include_graph_library"] );
 	draw_graph_settings_elm.find('.graph_width input').val( action_value["width"] );
 	draw_graph_settings_elm.find('.graph_height input').val( action_value["height"] );
 	draw_graph_settings_elm.find('.labels_variable input').val( action_value["labels_variable"] );
 	
-	var select = draw_graph_settings_elm.find('.labels_and_values_type select');
-	select.val( action_value["labels_and_values_type"] );
-	onDrawGraphSettingsLabelsAndValuesTypeChange( select[0] );
+	var data_sets = $.isPlainObject(original_action_value) && original_action_value["data_sets"] ? original_action_value["data_sets"] : action_value["data_sets"];
 	
-	if (action_value.hasOwnProperty("data_sets") && action_value["data_sets"]) {
-		if ($.isPlainObject(action_value["data_sets"]) && action_value["data_sets"].hasOwnProperty("values_variable"))
-			action_value["data_sets"] = [ action_value["data_sets"] ];
+	if (data_sets) {
+		if ($.isPlainObject(data_sets) && data_sets.hasOwnProperty("values_variable"))
+			data_sets = [ data_sets ];
 		
 		var graph_data_sets = draw_graph_settings_elm.find(".graph_data_sets");
 		var ul = graph_data_sets.children("ul");
@@ -1656,7 +1688,7 @@ function loadDrawGraphSettings(draw_graph_settings_elm, action_value) {
 		var static_options = ["type", "item_label", "values_variable", "background_colors", "border_colors", "border_width"];
 		var count = 1;
 		
-		$.each(action_value["data_sets"], function (idx, data_set) {
+		$.each(data_sets, function (idx, data_set) {
 			if (ul.children("li:not(.no_data_sets)").length < count)
 				li = addDrawGraphSettingsDataSet( graph_data_sets.find(" > label > .add")[0] );
 			
@@ -1665,7 +1697,7 @@ function loadDrawGraphSettings(draw_graph_settings_elm, action_value) {
 					li.find('.' + key).children('input, select, textarea').val(value);
 				else {
 					var sub_li = addDrawGraphSettingsDataSetOtherOption( li.find(".other_options > label > .add")[0] );
-					sub_li.find(".option_value").val(key);
+					sub_li.find(".option_name").val(key);
 					sub_li.find(".option_value").val(value);
 				}
 			});
@@ -1725,7 +1757,7 @@ function getDrawGraphSettingsDataSetHtml() {
 		+ '		<span class="icon add_variable" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>'
 		 + '	</div>'
 		 + '	<div class="values_variable">'
-		 + '		<label>Values Variable (Name): </label>'
+		 + '		<label>Data Variable: </label>'
 		 + '		<input class="task_property_field" />'
 		+ '		<span class="icon add_variable" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>'
 		 + '	</div>'
@@ -1769,7 +1801,7 @@ function addDrawGraphSettingsDataSetOtherOption(elm) {
 
 function getDrawGraphSettingsDataSetOtherOptionHtml() {
 	return '<li>'
-		 + '	<input class="task_property_field option_value" placeHolder="option name" />'
+		 + '	<input class="task_property_field option_name" placeHolder="option name" />'
 		 + '	<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>'
 		 + '	<input class="task_property_field option_value" placeHolder="option value" />'
 		 + '	<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>'
@@ -1805,7 +1837,6 @@ function onDrawGraphJSCodeTabClick(elm) {
 		var include_graph_library = draw_graph_settings_elm.find('.include_graph_library select').val();
 		var width = draw_graph_settings_elm.find('.graph_width input').val();
 		var height = draw_graph_settings_elm.find('.graph_height input').val();
-		var labels_and_values_type = draw_graph_settings_elm.find('.labels_and_values_type select').val();
 		var labels_variable = draw_graph_settings_elm.find('.labels_variable input').val();
 		var lis = draw_graph_settings_elm.find('.graph_data_sets > ul > li:not(.no_data_sets)');
 		
@@ -1816,7 +1847,6 @@ function onDrawGraphJSCodeTabClick(elm) {
 		var code = '';
 		var data_sets_code = '';
 		var default_type = null;
-		var count = 1;
 		
 		$.each(lis, function(idx, li) {
 			li = $(li);
@@ -1827,41 +1857,80 @@ function onDrawGraphJSCodeTabClick(elm) {
 			var background_colors = li.find('.background_colors input').val();
 			var border_colors = li.find('.border_colors input').val();
 			var border_width = li.find('.border_width input').val();
-			var other_options = li.find(".other_options > ul > li");
+			var other_options = li.find(".other_options > ul > li:not(.no_other_options)");
 			var data_set_options_code = '';
-			var order_exists = false;
+			var order = null;
 			
 			if (!default_type)
 				default_type = type;
 			
-			if (labels_and_values_type == "associative") {
-				var aux = getDrawGraphSettingValueToJSCode(values_variable, true, false, false);
-				labels_variable = '<?php echo json_encode(is_array(' + aux + ') ? array_keys(' + aux + ') : null); ?>';
-				labels_and_values_type = null;
-				
-				values_variable = '<?php echo json_encode(is_array(' + aux + ') ? array_values(' + aux + ') : null); ?>';
-			}
-			else
-				values_variable = getDrawGraphSettingValueToJSCode(values_variable, true, true, true);
-			
+			values_variable = getDrawGraphSettingValueToJSCode(values_variable, true, true, true);
 			item_label = getDrawGraphSettingValueToJSCode(item_label, false, false, true);
 			background_colors = getDrawGraphSettingValueToJSCode(background_colors, false, true, true);
 			border_colors = getDrawGraphSettingValueToJSCode(border_colors, false, true, true);
 			border_width = getDrawGraphSettingValueToJSCode(border_width, false, false, true);
 			
+			//parse other_options into an object
+			var parsed_other_options = {};
+			
 			$.each(other_options, function(idy, other_option) {
 				other_option = $(other_option);
-				var option_name = other_option.find(".option_value").val();
+				var option_name = other_option.find(".option_name").val();
+				option_name = option_name.replace(/\s*/g, "").replace(/(^\.+|\.+$)/g, ""); //remove all spaces and '.' at the begining and end of string
 				
-				if (option_name) {
-					if (option_name == "order")
-						order_exists = true;
-					
+				if (option_name || $.isNumeric(option_name)) {
 					var option_value = other_option.find(".option_value").val();
+					
+					if (option_name.indexOf(".") != -1) { //if is a composite option inside of an object
+						var parts = option_name.split(".");
+						var part_obj = parsed_other_options;
+						
+						for (var i = 0, t = parts.length; i < t; i++) {
+							var part = parts[i];
+							
+							if (part || $.isNumeric(part)) {
+								if (i + 1 == t)
+									part_obj[part] = option_value;
+								else {
+									if (!part_obj.hasOwnProperty(part) || !$.isPlainObject(part_obj[part]))
+										part_obj[part] = {};
+								
+									part_obj = part_obj[part];
+								}
+							}
+						}
+					}
+					else
+						parsed_other_options[option_name] = option_value;
+				}
+			});
+			
+			var parse_other_options_func = function(option_name, option_value, prefix) {
+				var code = "";
+				
+				if ($.isPlainObject(option_value)) {
+					code += prefix + option_name + ': {' + "\n";
+					
+					$.each(option_value, function(sub_option_name, sub_option_value) {
+						code += parse_other_options_func(sub_option_name, sub_option_value, prefix + "\t");
+					});
+					
+					code += prefix + '},' + "\n";
+				}
+				else {
 					option_value = getDrawGraphSettingValueToJSCode(option_value, false, true, true);
 					
-					data_set_options_code += "\t\t\t\t" + option_name + ': ' + option_value+ ',' + "\n";
+					code += prefix + option_name + ': ' + option_value+ ',' + "\n";
 				}
+				
+				return code;
+			};
+			
+			$.each(parsed_other_options, function(option_name, option_value) {
+				if (option_name == "order")
+					order = getDrawGraphSettingValueToJSCode(option_value, false, true, true);
+				else
+					data_set_options_code += parse_other_options_func(option_name, option_value, "\t\t\t\t");
 			});
 			
 			data_sets_code += ''
@@ -1872,42 +1941,31 @@ function onDrawGraphJSCodeTabClick(elm) {
 				 + (background_colors ? "\t\t\t\t" + 'backgroundColor: ' + background_colors + ',' + "\n" : '')
 				 + (border_colors ? "\t\t\t\t" + 'borderColor: ' + border_colors + ',' + "\n" : '')
 				 + (border_width || $.isNumeric(border_width) ? "\t\t\t\t" + 'borderWidth: ' + border_width + ',' + "\n" : '')
-				 + (!order_exists ? "\t\t\t\t" + 'order: ' + count + (data_set_options_code ? ',' : '') + "\n" : '')
+				 + (order !== null ? "\t\t\t\t" + 'order: ' + order + (data_set_options_code ? ',' : '') + "\n" : '')
 				 + data_set_options_code
 				 + "\t\t\t" + '},' + "\n";
-			
-			count++;
 		});
 		
 		if (include_graph_library == "cdn_even_if_exists")
-			code += '<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>' + "\n\n";
+			code += '<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>' + "\n\n";
 		else if (include_graph_library == "cdn_if_not_exists")
 			code += '<script>' + "\n"
 				+ 'if (typeof Chart != "function")' + "\n"
-				+ '	document.write(\'<scr\' + \'ipt src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></scr\' + \'ipt>\');' + "\n"
+				+ '	document.write(\'<scr\' + \'ipt src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></scr\' + \'ipt>\');' + "\n"
 				+ '</script>' + "\n\n";
 		
 		var rand = parseInt(Math.random() * 1000);
 		code += '<canvas id="my_chart_' + rand + '"' + (width || $.isNumeric(width) ? ' width="' + width + '"' : '') + (height || $.isNumeric(height) ? ' height="' + height + '"' : '') + '></canvas>' + "\n"
 			 + "\n"
 			 + '<script>' + "\n"
-			 + 'var ctx = document.getElementById("my_chart_' + rand + '").getContext("2d");' + "\n"
-			 + 'var myChart = new Chart(ctx, {' + "\n"
+			 + 'var canvas_' + rand + ' = document.getElementById("my_chart_' + rand + '");' + "\n"
+			 + 'var myChart_' + rand + ' = new Chart(canvas_' + rand + ', {' + "\n"
 			 + "\t" + 'type: "' + default_type + '",' + "\n"
 			 + "\t" + 'data: {' + "\n"
 			 + (labels_variable ? "\t\t" + 'labels: ' + labels_variable + ',' + "\n" : '')
 			 + "\t\t" + 'datasets: [' + "\n"
 			 + data_sets_code
 			 + "\t\t" + ']' + "\n"
-			 + "\t" + '},' + "\n"
-			 + "\t" + 'options: {' + "\n"
-			 + "\t\t" + 'scales: {' + "\n"
-			 + "\t\t\t" + 'yAxes: [{' + "\n"
-			 + "\t\t\t\t" + 'ticks: {' + "\n"
-			 + "\t\t\t\t\t" + 'beginAtZero: true' + "\n"
-			 + "\t\t\t\t" + '}' + "\n"
-			 + "\t\t\t" + '}]' + "\n"
-			 + "\t\t" + '}' + "\n"
 			 + "\t" + '}' + "\n"
 			 + '});' + "\n"
 			 + '</script>';
@@ -1946,17 +2004,6 @@ function getDrawGraphSettingValueToJSCode(value, is_variable_name, is_json_encod
 	}
 	
 	return "";
-}
-
-function onDrawGraphSettingsLabelsAndValuesTypeChange(elm) {
-	elm = $(elm);
-	var labels_and_values_type = elm.val();
-	var draw_graph_settings_elm = elm.parent().closest(".draw_graph_settings");
-	
-	if (labels_and_values_type == "associative") 
-		draw_graph_settings_elm.find(".labels_variable").hide();
-	else
-		draw_graph_settings_elm.find(".labels_variable").show();
 }
 
 /* GROUP ITEMS FUNCTIONS */
@@ -2028,6 +2075,13 @@ function onGroupConditionTypeChange(elm) {
 			condition_value.show().attr("placeHolder", "Button name");
 			break;
 			
+		case "execute_if_post_resource":
+		case "execute_if_not_post_resource":
+		case "execute_if_get_resource":
+		case "execute_if_not_get_resource":
+			condition_value.show().attr("placeHolder", "Resource name");
+			break;
+			
 		case "execute_if_condition":
 		case "execute_if_not_condition":
 			condition_value.show().attr("placeHolder", "Condition code");
@@ -2069,8 +2123,11 @@ function onSLAProgrammingTaskChooseCreatedVariable(elm) {
 		var class_prop_var_option = popup.find(" > .type > select > option[value=class_prop_var]");
 		class_prop_var_option.hide();
 		
+		//show GLOBALS[logged_user_id] option
+		popup.find(" > .new_var > .scope > select > option[is_final_var]").show();
+		
 		//add new list option
-		var option_get = popup.find(" > .new_var > .group > select > option[value=_GET]");
+		var option_get = popup.find(" > .new_var > .scope > select > option[value=_GET]");
 		var option_prev = option_get.prev("option");
 		
 		if (option_prev.attr("value") != "[\\$idx]")
@@ -2078,7 +2135,7 @@ function onSLAProgrammingTaskChooseCreatedVariable(elm) {
 		
 		//prepare type field
 		popup.children(".type").show();
-		onChangePropertyVariableType( popup.find(".type select")[0] );
+		onChangePropertyVariableType( popup.find(" > .type > select")[0] );
 		
 		//prepare popup
 		MyFancyPopup.init({
@@ -2098,20 +2155,28 @@ function onSLAProgrammingTaskChooseCreatedVariable(elm) {
 			
 			targetField: target_field[0],
 			updateFunction: function(other_elm) { //prepare update handler
-				var type = popup.find(".type select").val();
+				var type = popup.find(" > .type > select").val();
 				var type_elm = popup.find("." + type);
 				var value = null;
 				
 				if (type == "existent_var")
-					value = type_elm.find(".variable select").val();
+					value = type_elm.find(" > .variable > select").val();
 				else if (type) {
-					value = type_elm.find("input").val();
-					value = ("" + value).replace(/^\s+/g, "").replace(/\s+$/g, "");
+					var is_final_var = type == "new_var" && type_elm.find(" > .scope > select option:selected[is_final_var]").length;
+					
+					if (is_final_var) { //used for GLOBALS['logged_user_id']
+						value = type_elm.find(" > .scope > select").val();
+						value = value.replace(/\[(['"])/g, "[$1").replace(/(['"])\]/g, "$1]"); //replaces ['xxx'] with [xxx]
+					}
+					else {
+						value = type_elm.find(" > .name > input").val();
+						value = ("" + value).replace(/^\s+/g, "").replace(/\s+$/g, "");
+					}
 					
 					if (value) {
 						value = value[0] == '$' ? value.substr(1, value.length) : value; //remove $ if exists
 						
-						if (type == "new_var")
+						if (type == "new_var" && !is_final_var)
 							value = getNewVarWithSubGroupsInProgrammingTaskChooseCreatedVariablePopup(type_elm, value, false);
 					}
 				}
@@ -3083,6 +3148,15 @@ function getSLASettingsFromItemsToSave(items, options) {
 					};
 					break;
 					
+				case "call_view": //getting variable settings
+					var section = group_body.children(".call_view_action_body");
+					
+					item_settings["action_value"] = {
+						"view": section.find(".view > input").val(),
+						"project": section.find(".project > select").val(),
+					};
+					break;
+					
 				case "include_file": //getting include_file settings
 					var section = group_body.children(".include_file_action_body");
 					
@@ -3123,7 +3197,7 @@ function getSLASettingsFromItemsToSave(items, options) {
 							var other_options = li.find(".other_options > ul > li");
 							$.each(other_options, function(idy, other_option) {
 								other_option = $(other_option);
-								var option_name = other_option.find(".option_value").val();
+								var option_name = other_option.find(".option_name").val();
 								
 								if (option_name)
 									data_set_options[option_name] = other_option.find(".option_value").val();
@@ -3136,7 +3210,6 @@ function getSLASettingsFromItemsToSave(items, options) {
 							"include_graph_library": sub_section.find(".include_graph_library select").val(),
 							"width": sub_section.find(".graph_width input").val(),
 							"height": sub_section.find(".graph_height input").val(),
-							"labels_and_values_type": sub_section.find(".labels_and_values_type select").val(),
 							"labels_variable": sub_section.find(".labels_variable input").val(),
 							
 							"data_sets": data_sets

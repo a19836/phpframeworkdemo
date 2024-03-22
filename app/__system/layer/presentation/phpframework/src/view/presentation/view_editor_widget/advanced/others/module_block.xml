@@ -10,7 +10,7 @@
 	<template_widget><![CDATA[
 		<div class="template_block_item">
 			<div class="template_block_item_header">
-				Call block <span class="block_name"></span><span class="block_project"> in "<span></span>" project.</span>
+				Call block <span class="block_name"></span><span class="block_project"> in <span></span> project.</span>
 			</div>
 			
 			<input class="block hidden" type="text" value="" />
@@ -89,6 +89,11 @@
 			outline-offset:1px;
 			border-radius:1px;
 		}
+		.template-widget.template-widget-call-module-or-block > .template_block_item > .template_block_item_header > .block_name:empty {
+			width:100px;
+			display:inline-block;
+			background: linear-gradient(180deg, rgba(0,0,0,0) calc(100% - 1px), rgba(192,192,192,1) calc(100%), rgba(0,0,0,0) calc(100% + 1px));
+		}
 		.template-widget.template-widget-call-module-or-block > .template_block_item:not(.with_project) > .template_block_item_header > .block_project {
 			display:none;
 		}
@@ -125,7 +130,7 @@
 				var p = project.replace(/"/g, "");
 				var project_str = p && p != selected_project_id ? ', ' + project : '';
 				
-				var code = "&lt;? \n";
+				var code = "<? \n";
 				
 				//if in the onCreateTemplateWidget the html_element already exists, don't add the block_local_variables, bc it means they already exists or were removed on purpose by the user.
 				if (template_block_item.is(".with_block_local_variables"))
@@ -133,7 +138,8 @@
 				
 				code += 'include $EVC->getBlockPath(' + block_id_str + project_str + ');' + "\n"
 					+ 'echo $EVC->getCMSLayer()->getCMSBlockLayer()->getBlock(' + block_id_str + ');' + "\n"
-					+ "?&gt;";
+					+ "?>";
+				//console.log(code);
 				
 				return code;
 			};
@@ -194,13 +200,17 @@
 				  	me.updateBlockName(widget);
 				  })
 				  .click(function(e) {
-				  	var old_block_id = block_name.text();
-				  	var new_block_id = prompt("Block", old_block_id);
-				  	
-				  	if (new_block_id) {
-				  		block_name.text(new_block_id);
-				  		me.updateBlockName(widget);
-				  	}
+				  	if (typeof onCodeLayoutUIEditorModuleBlockWidgetDragAndDrop == "function")
+						onCodeLayoutUIEditorModuleBlockWidgetDragAndDrop(widget, chooseCodeLayoutUIEditorModuleBlockFromFileManagerTree, true);
+					else {
+					  	var old_block_id = block_name.text();
+					  	var new_block_id = prompt("Block", old_block_id);
+					  	
+					  	if (new_block_id) {
+					  		block_name.text(new_block_id);
+					  		me.updateBlockName(widget);
+					  	}
+					}
 				  });
 			};
 			
@@ -239,7 +249,9 @@
 						
 						if (block_id_type == "string") {
 							block_id = block_id.replace(/"/g, "");
-							block_id_str = '"' + block_id + '"';
+							
+							if (block_id)
+								block_id_str = '"' + block_id + '"';
 						}
 					}
 					
@@ -257,11 +269,17 @@
 						
 						span.text(block_id_str);
 						
-						var range = doc.createRange();
-						range.setStart(span[0].childNodes[0], offset);
-						range.collapse(true);
-						selection.removeAllRanges();
-						selection.addRange(range);
+						try {
+							var range = doc.createRange();
+							range.setStart(span[0].childNodes[0], offset);
+							range.collapse(true);
+							selection.removeAllRanges();
+							selection.addRange(range);
+						}
+						catch(e) {
+							if (console && console.log)
+								console.log(e);
+						}
 					}
 					
 					if (old_block_id != block_id || old_block_id_type != block_id_type)
@@ -293,7 +311,7 @@
 				template_block_item.children(".region_block_type").val("string");
 				
 				//call simulate block
-				me.simulateHtml(widget);
+				//me.simulateHtml(widget); //Doesn't make sense to call it here because this function is only called when the widget is code, this is, on edit_view_advanced and edit_entity_advanced.
 			};
 			
 			me.simulateHtml = function(widget) {

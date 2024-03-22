@@ -1403,7 +1403,7 @@ function initFilesDragAndDrop(elm) {
 				iframe_win = iframe[0].contentWindow;
 				iframe_doc = iframe_win ? iframe_win.document : null;
 				iframe_offset = iframe.offset();
-				PtlLayoutUIEditor = iframe[0].contentWindow.$(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+				PtlLayoutUIEditor = typeof iframe[0].contentWindow.$ != "undefined" ? iframe[0].contentWindow.$(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor") : null;
 				
 				is_in_right_panel = false;
 			},
@@ -1556,13 +1556,14 @@ function initDBTablesSorting(elm) {
 		var iframe_offset = iframe.offset();
 		var iframe_droppable_elm = null;
 		var iframe_droppable_over_class = "drop_hover dragging_task task_droppable_over";
+		var current_table_droppable_elm = null;
 		var available_iframe_droppables_selectors = ".droppable, .tasks_flow, .connector_overlay_add_icon"; //".droppable" is related with the LayoutUIEditor, ".tasks_flow" is related with workflows and ".connector_overlay_add_icon" is related with Logic workflows.
 		var PtlLayoutUIEditor = null;
 		var is_main_navigator_reverse = $("body").hasClass("main_navigator_reverse");
 		var is_in_right_panel = false;
 		
-		var left_panel_droppable_handler = function(event, ui_obj) {
-			var fk_table_li = $(this);
+		var left_panel_droppable_handler = function(event, ui_obj, fk_table_li) {
+			var fk_table_li = $(fk_table_li);
 			var is_fk_table_li_ul = fk_table_li.is("ul") && fk_table_li.parent().is("li");
 			
 			if (is_fk_table_li_ul)
@@ -1576,8 +1577,10 @@ function initDBTablesSorting(elm) {
 			fk_table_li.parents().removeClass("drop_hover");
 			
 			if (item.is(".jstree-node")) { //be sure that the draggable item is a jstree node, bc it can be the "div#hide_panel" from the left navigator.
-				if (fk_table_li_a.children("i.table").length == 1 && a.attr("table_name") != fk_table_li_a.attr("table_name")) { //if table is not it-self
-					if (a.children("i.attribute").length == 1) {
+				if (fk_table_li_a.children("i.table").length == 1) { 
+					var is_same_table = a.attr("table_name") == fk_table_li_a.attr("table_name"); //if table is it-self
+					
+					if (!is_same_table && a.children("i.attribute").length == 1) {
 						item.data("droppable_table_node", fk_table_li[0]);
 						
 						if (is_fk_table_li_ul)
@@ -1597,7 +1600,7 @@ function initDBTablesSorting(elm) {
 								//add clone attribute
 								var pk = item.find(" > ul > li.primary_key");
 								
-								if (pk[0]) {
+								if (pk.length > 0) {
 									var clone = pk.clone();
 									clone.removeClass("primary_key");
 									
@@ -1646,11 +1649,25 @@ function initDBTablesSorting(elm) {
 							var widget_group = j_iframe_droppable_elm.closest("[data-widget-group-list], [data-widget-group-form]");
 							var inside_of_widget_group = widget_group.length > 0;
 							
+							//get db broker
+							var db_broker = null;
+							
 							//prepare widget props
+							var opts = {
+								hide_db_broker: true,
+								hide_db_driver: true,
+								hide_type: true,
+								find_best_type: true,
+								hide_db_table: true,
+								hide_table_alias: true,
+								hide_widget_type: true,
+								widget_type: "html"
+							};
+							
 							if (inside_of_widget_group)
-								iframe_win.onReplaceCodeLayoutUIEditorDBTableWidgetOptions(db_driver, "db", table_name, widget);
+								iframe_win.onReplaceCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, "db", table_name, widget, opts);
 							else 
-								iframe_win.onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_driver, "db", table_name, widget);
+								iframe_win.onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, "db", table_name, widget, opts);
 						}
 						else
 							PtlLayoutUIEditor.showError("Please drop element inside of a droppable element in the design area.");
@@ -1739,6 +1756,43 @@ function initDBTablesSorting(elm) {
 			return inner_iframe_droppable_elm;
 		};
 		
+		var getSameTableElementFromPoint = function(current_table_elm, x, y, helper, helper_clone) {
+			var table_droppable_elm = null;
+			
+			if (current_table_elm) {
+				current_table_elm = $(current_table_elm);
+				
+				//hide helpers
+				var helper_visible = helper.css("display") != "none";
+				var helper_clone_visible = helper_clone.css("display") != "none";
+				
+				if (helper_visible)
+					helper.hide();
+				
+				if (helper_clone_visible)
+					helper_clone.hide();
+				
+				//get droppable element
+				table_droppable_elm = document.elementFromPoint(x, y);
+				
+				if (table_droppable_elm) {
+					table_droppable_elm = $(table_droppable_elm).closest("li[id='" + current_table_elm.attr("id") + "']"); //only if is the same table, otherwise it will fall into the droppable function
+					
+					if (!table_droppable_elm[0])
+						table_droppable_elm = null;
+				}
+				
+				//show helpers
+				if (helper_visible)
+					helper.show();
+				
+				if (helper_clone_visible)
+					helper_clone.show();
+			}
+			
+			return table_droppable_elm;
+		};
+		
 		var lis = elm.find(" > li > a > .table").parent().parent();
 		
 		lis.droppable({
@@ -1750,7 +1804,9 @@ function initDBTablesSorting(elm) {
 			out: function(event, ui_obj) {
 				$(this).removeClass("drop_hover");
 			},
-			drop: left_panel_droppable_handler,
+			drop: function(event, ui_obj) {
+				left_panel_droppable_handler(event, ui_obj, this);
+			}
 		})
 		.draggable({
 			//settings for the iframe droppable
@@ -1787,7 +1843,7 @@ function initDBTablesSorting(elm) {
 				iframe_win = iframe[0].contentWindow;
 				iframe_doc = iframe_win ? iframe_win.document : null;
 				iframe_offset = iframe.offset();
-				PtlLayoutUIEditor = iframe[0].contentWindow.$(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+				PtlLayoutUIEditor = typeof iframe[0].contentWindow.$ != "undefined" ? iframe[0].contentWindow.$(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor") : null;
 				
 				is_in_right_panel = false;
 			},
@@ -1880,6 +1936,21 @@ function initDBTablesSorting(elm) {
 					}
 					else if (iframe_droppable_elm) //remove droppable over class
 						$(iframe_droppable_elm).removeClass(iframe_droppable_over_class);
+					
+					//check if table was dropped into the same table, which means we need to create a sub attribute pointing to the primary key
+					if (current_table_droppable_elm) {
+						current_table_droppable_elm.removeClass("drop_hover");
+						current_table_droppable_elm = null;
+					}
+					
+					var table_droppable_elm = getSameTableElementFromPoint(this, event.clientX, event.clientY, helper, helper_clone);
+					
+					if (table_droppable_elm) {
+						if (navigator_droppables_active)
+							table_droppable_elm.addClass("drop_hover");
+						
+						current_table_droppable_elm = table_droppable_elm;
+					}
 				}
 			},
 			stop: function(event, ui_obj) {
@@ -1907,6 +1978,11 @@ function initDBTablesSorting(elm) {
 				if (!drag_cancelled) {
 					if (is_in_right_panel) 
 						right_panel_droppable_handler(event, ui_obj, this, helper_clone);
+					else if (current_table_droppable_elm) { //check if table was dropped into the same table, which means we need to create a sub attribute pointing to the primary key
+						current_table_droppable_elm.removeClass("drop_hover");
+						ui_obj.draggable = helper; //replicate droppable behaviour
+						left_panel_droppable_handler(event, ui_obj, current_table_droppable_elm[0]);
+					}
 					
 					//disable classes in LayoutUIEditor's droppable, just in case the right_panel_droppable_handler did NOT do it already
 					if (PtlLayoutUIEditor) {
@@ -1935,7 +2011,9 @@ function initDBTablesSorting(elm) {
 			out: function(event, ui_obj) {
 				$(this).parent().removeClass("drop_hover");
 			},
-			drop: left_panel_droppable_handler,
+			drop: function(event, ui_obj) {
+				left_panel_droppable_handler(event, ui_obj, this);
+			}
 		});
 	}
 }
@@ -2798,13 +2876,32 @@ function onSuccessfullPopupAction(opts) {
 }
 
 function onSuccessfullAddProject(opts) {
-	var filter_by_layout, bean_name, bean_file_name, project;
+	var filter_by_layout, bean_name, bean_file_name, project, is_ctrl_key_pressed;
 	
 	if (opts) {
 		filter_by_layout = opts["new_filter_by_layout"];
 		bean_name = opts["new_bean_name"];
 		bean_file_name = opts["new_bean_file_name"];
 		project = opts["new_project"];
+		is_ctrl_key_pressed = opts["is_ctrl_key_pressed"];
+	}
+	
+	if (is_ctrl_key_pressed && filter_by_layout && typeof admin_home_project_page_url != "undefined") {
+		url = admin_home_project_page_url.replace("#filter_by_layout#", filter_by_layout);
+		
+		var rand = Math.random() * 10000;
+		var win = window.open(url, "tab" + rand);
+		
+		if (win) { //Browser has allowed it to be opened
+			win.focus();
+			
+			MyFancyPopup.hidePopup();
+			
+			//refreshes window
+			window.document.location = "" + window.document.location;
+			
+			return true; //don't execute code below.
+		}
 	}
 	
 	if (filter_by_layout || (bean_name && bean_file_name && project)) {
@@ -3198,7 +3295,7 @@ function triggerFileNodeAfterCreateFile(a, attr_name, action, new_file_name, url
 		});
 }
 
-function triggerFileNodeAfterCreatePage(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated) {
+function triggerFileNodeAfterCreatePage(a, attr_name, action, new_file_name, url, tree_node_id_to_be_updated, ccc) {
 	var node = $("#" + tree_node_id_to_be_updated);
 	
 	//normalize new file name
@@ -3215,11 +3312,27 @@ function triggerFileNodeAfterCreatePage(a, attr_name, action, new_file_name, url
 						var new_a = item.parent();
 						
 						try {
+							var on_click = new_a.attr("onClick");
+							
 							if (new_a.attr("add_url")) {
-								goToPopup(new_a[0], "add_url", window.event, 'with_iframe_title add_entity_popup big', function() {
-									if (new_a.attr("onClick")) {
+								goToPopup(new_a[0], "add_url", window.event, 'with_iframe_title add_entity_popup big', function(opts) {
+									if (on_click) {
 										try {
+											//set ctr key into event so it can open a new window
+											var is_ctrl_key_pressed = opts && opts["is_ctrl_key_pressed"];
+											
+											if (is_ctrl_key_pressed) {
+												if (on_click.match(/^return goTo\(/))
+													new_a.attr("onClick", on_click.replace(/^return goTo\(/, "return goToNew("));
+												else if (on_click.match(/^goTo\(/))
+													new_a.attr("onClick", on_click.replace(/^goTo\(/, "return goToNew("));
+											}
+											
+											//trigger on click
 											new_a.trigger("click");
+											
+											if (is_ctrl_key_pressed)
+												new_a.attr("onClick", on_click);
 										}
 										catch(e) {
 											if (console && console.log)
@@ -3228,7 +3341,7 @@ function triggerFileNodeAfterCreatePage(a, attr_name, action, new_file_name, url
 									}
 								});
 							}
-							else if (new_a.attr("onClick"))
+							else if (on_click)
 								new_a.trigger("click");
 						}
 						catch(e) {
@@ -3367,6 +3480,7 @@ function manageBusinessLogicObject(a, attr_name, action) {
 	});
 }
 
+//Note that any change here, should be replicate in the edit_php_code.js:addIconToOpenBusinessLogicObjFromFileManagerTreePopup
 function createClassObjectOrMethodOrFunction(a, save_attr_name, edit_attr_name, type, on_success_callbacks, originalEvent) {
 	var save_url = a.getAttribute(save_attr_name);
 	//console.log(save_attr_name+":"+save_url);
@@ -3380,16 +3494,17 @@ function createClassObjectOrMethodOrFunction(a, save_attr_name, edit_attr_name, 
 		
 		if (status) {
 			if (new_file_name) {
-				new_file_name = ("" + new_file_name).replace(/\s+/g, ""); //trim name and remove spaces
+				new_file_name = ("" + new_file_name).replace(/(^\s+|\s+$)/g, ""); //trim name and remove spaces
 				
 				if (new_file_name) {
 					//normalize new file name
 					new_file_name = normalizeFileName(new_file_name, true);
+					new_file_name = new_file_name.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+						return letter.toUpperCase();
+					}).replace(/\s+/g, ""); //ucwords
 					
-					if (type == "service_object" || type == "class_object")
-						new_file_name = new_file_name[0].toUpperCase() + new_file_name.substr(1);
-					else
-						new_file_name = new_file_name[0].toLowerCase() + new_file_name.substr(1);
+					if (type == "service_method" || type == "class_method" || type == "function")
+						new_file_name = new_file_name[0].toLowerCase() + new_file_name.substr(1).replace(/\s+/g, "");
 				}
 			}
 			
@@ -3434,7 +3549,7 @@ function createClassObjectOrMethodOrFunction(a, save_attr_name, edit_attr_name, 
 								else
 									refreshAndShowNodeChildsByNodeId(tree_node_id_to_be_updated);
 								
-								StatusMessageHandler.showMessage(type_label + "created correctly", "", "bottom_messages", 1500);
+								StatusMessageHandler.showMessage(type_label + " created correctly", "", "bottom_messages", 1500);
 								
 								on_success_callbacks = $.isArray(on_success_callbacks) ? on_success_callbacks : [on_success_callbacks];
 								for (var i = 0; i < on_success_callbacks.length; i++)
@@ -3451,7 +3566,7 @@ function createClassObjectOrMethodOrFunction(a, save_attr_name, edit_attr_name, 
 								}
 							}
 							else
-								StatusMessageHandler.showError("There was a problem trying to create this " + type_label + ". Please try again..." + (data ? "\n" + data : ""));
+								StatusMessageHandler.showError("There was a problem trying to create this " + type_label + ". Please try again..." + (data && !json_data ? "\n" + data : ""));
 						}
 					},
 					error : function(jqXHR, textStatus, errorThrown) { 
@@ -3703,7 +3818,7 @@ function manageDBTableAction(a, attr_name, action, on_success_callback, on_error
 				}
 				
 				if (!duplicated) {
-					StatusMessageHandler.showMessage("Saving...", "", "bottom_messages", 1500);
+					StatusMessageHandler.showMessage("Saving... Wait a while...", "", "bottom_messages", 60000); //during 1 minute, but after the ajax finish, this message wil be removed.
 					
 					url = url.replace("#action#", action);
 					url = url.replace("#extra#", new_name);
@@ -3718,56 +3833,59 @@ function manageDBTableAction(a, attr_name, action, on_success_callback, on_error
 						type : "get",
 						url : url,
 						success : function(data, textStatus, jqXHR) {
-							StatusMessageHandler.removeLastShownMessage("info", "bottom_messages", 1500);
+							StatusMessageHandler.removeLastShownMessage("info", "bottom_messages");
 							
 							if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 								showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
 									StatusMessageHandler.removeLastShownMessage("error");
 									manageDBTableAction(a, attr_name, original_action, on_success_callback, on_error_callback, opts);
 								});
-							else if (data == "1") {
+							else {
+								//always refreshes the tree_node_id_to_be_updated
 								if (action == "add_table" || action == "add_attribute" || action == "add_fk_attribute")
 									refreshAndShowNodeChildsByNodeId(tree_node_id_to_be_updated);
 								else if (action != "remove_table" && action != "remove_attribute")
 									refreshNodeParentChildsByChildId(tree_node_id_to_be_updated);
 								
-								StatusMessageHandler.showMessage(str + " correctly", "", "bottom_messages", 1500);
-								
-								if (typeof on_success_callback == "function")
-									on_success_callback(a, attr_name, action, new_name, url, tree_node_id_to_be_updated);
-								
-								if (action == "remove_table" || action == "remove_attribute") {
-									var li = $("#" + tree_node_id_to_be_updated);
+								if (data == "1") {
+									StatusMessageHandler.showMessage(str + " correctly", "", "bottom_messages", 1500);
 									
-									if (li.is(":last-child")) 
-										li.prev("li").addClass("jstree-last");
+									if (typeof on_success_callback == "function")
+										on_success_callback(a, attr_name, action, new_name, url, tree_node_id_to_be_updated);
 									
-									li.remove();
-								}
-							}
-							else {
-								var json_data = data && ("" + data).substr(0, 1) == "{" ? JSON.parse(data) : null;
-								
-								if ($.isPlainObject(json_data) && json_data.hasOwnProperty("sql") && json_data["sql"] && a.getAttribute("execute_sql_url")) { //try to show sql and then execute it manually
-									if (action == "add_table" || action == "add_attribute" || action == "add_fk_attribute")
-										refreshAndShowNodeChildsByNodeId(tree_node_id_to_be_updated);
-									else if (action != "remove_table" && action != "remove_attribute")
-										refreshNodeParentChildsByChildId(tree_node_id_to_be_updated);
-									
-									showSQLToExecute(a, attr_name, action, on_success_callback, on_error_callback, opts, new_name, url, tree_node_id_to_be_updated, json_data);
-									
-									StatusMessageHandler.showError("There was a problem trying to execute this action.\nPlease check the correspondent SQL and execute it manually." + (json_data["error"] ? "\n" + json_data["error"] : ""));
+									if (action == "remove_table" || action == "remove_attribute") {
+										var li = $("#" + tree_node_id_to_be_updated);
+										
+										if (li.is(":last-child")) 
+											li.prev("li").addClass("jstree-last");
+										
+										li.remove();
+									}
 								}
 								else {
-									StatusMessageHandler.showError("There was a problem trying to execute this action. Please try again..." + (data ? "\n" + data : ""));
+									//always refreshes the tree_node_id_to_be_updated
+									if (action == "remove_table" || action == "remove_attribute")
+										refreshNodeParentChildsByChildId(tree_node_id_to_be_updated);
 									
-									if (typeof on_error_callback == "function")
-										on_error_callback(a, attr_name, action, new_name, url, tree_node_id_to_be_updated);
+									var json_data = data && ("" + data).substr(0, 1) == "{" ? JSON.parse(data) : null;
+									
+									if ($.isPlainObject(json_data) && json_data.hasOwnProperty("sql") && json_data["sql"] && a.getAttribute("execute_sql_url")) { //try to show sql and then execute it manually
+										
+										showSQLToExecute(a, attr_name, action, on_success_callback, on_error_callback, opts, new_name, url, tree_node_id_to_be_updated, json_data);
+										
+										StatusMessageHandler.showError("There was a problem trying to execute this action.\nPlease check the correspondent SQL and execute it manually." + (json_data["error"] ? "\n" + json_data["error"] : ""));
+									}
+									else {
+										StatusMessageHandler.showError("There was a problem trying to execute this action. Please try again..." + (data ? "\n" + data : ""));
+										
+										if (typeof on_error_callback == "function")
+											on_error_callback(a, attr_name, action, new_name, url, tree_node_id_to_be_updated);
+									}
 								}
 							}
 						},
 						error : function(jqXHR, textStatus, errorThrown) { 
-							StatusMessageHandler.removeLastShownMessage("info", "bottom_messages", 1500);
+							StatusMessageHandler.removeLastShownMessage("info", "bottom_messages");
 							
 							var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
 							StatusMessageHandler.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to execute this action.\nPlease try again..." + msg);

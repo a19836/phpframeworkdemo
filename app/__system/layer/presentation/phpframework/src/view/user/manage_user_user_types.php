@@ -30,7 +30,7 @@ include $EVC->getUtilPath("UserAuthenticationUIHandler"); $head = '
 <!-- Add Local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/user/user.css" type="text/css" charset="utf-8" />
 '; $main_content = '
-<div id="menu">' . UserAuthenticationUIHandler::getMenu($UserAuthenticationHandler, $project_url_prefix) . '</div>
+<div id="menu">' . UserAuthenticationUIHandler::getMenu($UserAuthenticationHandler, $project_url_prefix, $entity) . '</div>
 <div id="content">
 	<div class="top_bar">
 		<header>

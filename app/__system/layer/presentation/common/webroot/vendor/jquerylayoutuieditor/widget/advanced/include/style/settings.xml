@@ -256,6 +256,10 @@
 						e.stopPropagation();
 						
 						ui_creator.TextSelection.hideMenu(); //we need this in case the TextSelection menu is open.
+					})
+					.blur(function(e) {
+						if (typeof ui_creator.options.on_template_widgets_layout_changed_func == "function")
+							ui_creator.options.on_template_widgets_layout_changed_func(null);
 					});
 				
 				//only allows paste with text, discarding the html. Html is not allowed here.

@@ -74,7 +74,7 @@
 			
 			me.parseSettings = function(widget, widget_settings) {
 				var strings = widget.attr("data-strings");
-				strings = JSON.parse(strings);
+				strings = ui_creator.parseJson(strings);
 				
 				if (strings)
 					for (var i = 0; i < strings.length; i++)

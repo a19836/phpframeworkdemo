@@ -45,4 +45,8 @@
 			
 		</tbody>
 	</table>
+	
+	<div class="delete_connection_button">
+		<button onClick="removeTableConnectionFromConnectionProperties(this)">Delete Connection Between Tables</button>
+	</div>
 </div>

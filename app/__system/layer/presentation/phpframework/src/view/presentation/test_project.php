@@ -17,7 +17,7 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-function getVarsHtml($v3fb9f41470) { $v761f4d757f = $_POST ? $_POST[$v3fb9f41470 . '_vars'] : null; $v6c3cc118c9 = ""; if ($v761f4d757f) foreach ($v761f4d757f as $v43dd7d0051 => $v847e7d0a83) if ($v847e7d0a83["name"] || $v847e7d0a83["value"]) $v6c3cc118c9 .= getVarHtml($v3fb9f41470, $v43dd7d0051, $v847e7d0a83["name"], $v847e7d0a83["value"]); $pf8ed4912 = '<div class="vars ' . $v3fb9f41470 . '_vars">
+include $EVC->getUtilPath("BreadCrumbsUIHandler"); function getVarsHtml($v3fb9f41470) { $v761f4d757f = $_POST ? $_POST[$v3fb9f41470 . '_vars'] : null; $v6c3cc118c9 = ""; if ($v761f4d757f) foreach ($v761f4d757f as $v43dd7d0051 => $v847e7d0a83) if ($v847e7d0a83["name"] || $v847e7d0a83["value"]) $v6c3cc118c9 .= getVarHtml($v3fb9f41470, $v43dd7d0051, $v847e7d0a83["name"], $v847e7d0a83["value"]); $pf8ed4912 = '<div class="vars ' . $v3fb9f41470 . '_vars">
 		<label>' . ucfirst($v3fb9f41470) . ' Variables:</label>
 		<table>
 			<thead>
@@ -45,6 +45,9 @@ function getVarsHtml($v3fb9f41470) { $v761f4d757f = $_POST ? $_POST[$v3fb9f41470
 <!-- Add Icons CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/icons.css" type="text/css" charset="utf-8" />
 
+<!-- Add Layout CSS -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
+
 <!-- Add PHP CODE CSS -->
 <link rel="stylesheet" href="http://jplpinto.localhost/__system/css/edit_php_code.css" type="text/css" charset="utf-8" />
 
@@ -55,11 +58,15 @@ function getVarsHtml($v3fb9f41470) { $v761f4d757f = $_POST ? $_POST[$v3fb9f41470
 <script>
 	var vars_html = \'' . addcslashes(str_replace("\n", "", getVarHtml("#type#", "#index#", "#name#", "#value#")), "'") . '\';
 </script>'; $main_content = '
-<div class="test_project">
-	<div class="icon maximize" onClick="toggleSettings(this)"></div>
-	<div class="title">Test Project</div>
-	<div class="sub_title">(path: "' . $path . '")</div>
-	
+<div class="top_bar' . ($popup ? " in_popup" : "") . '">
+	<header>
+		<div class="title" title="' . $path . '">Test Page: <div class="breadcrumbs">' . BreadCrumbsUIHandler::getFilePathBreadCrumbsItemsHtml($path, null, true) . '</div></div>
+		<ul>
+			<li class="toggle_settings" data-title="Toggle Settings"><a onClick="toggleSettings(this)"><i class="icon maximize"></i></a></li>
+		</ul>
+	</header>
+</div>
+<div class="test_project' . ($popup ? " in_popup" : "") . '">
 	<form method="post">
 		' . getVarsHtml("get") . getVarsHtml("post") . '
 		

@@ -57,11 +57,12 @@ function removeVar(elm) {
 }
 
 function toggleSettings(elm) {
-	elm = $(elm);
-	elm.parent().toggleClass("hide_settings");
+	var icon = $(elm).children(".icon");
 	
-	if (elm.hasClass("maximize"))
-		elm.removeClass("maximize").addClass("minimize");
+	$(".test_project").toggleClass("hide_settings");
+	
+	if (icon.hasClass("maximize"))
+		icon.removeClass("maximize").addClass("minimize");
 	else
-		elm.removeClass("minimize").addClass("maximize");
+		icon.removeClass("minimize").addClass("maximize");
 }

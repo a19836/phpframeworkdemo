@@ -9,6 +9,7 @@ var chooseHibernateObjectFromFileManagerTree = null;
 var chooseHibernateObjectMethodFromFileManagerTree = null;
 var choosePresentationFromFileManagerTree = null;
 var chooseBlockFromFileManagerTree = null;
+var chooseViewFromFileManagerTree = null;
 var choosePageUrlFromFileManagerTree = null; //used by the create_presentation_uis_diagram.js and module/menu/show_menu/settings.js and others
 var chooseImageUrlFromFileManagerTree = null; //used by the create_presentation_uis_diagram.js and module/menu/show_menu/settings.js and others
 var chooseWebrootFileUrlFromFileManagerTree = null; //used by the create_presentation_uis_diagram.js and module/menu/show_menu/settings.js and others
@@ -16,6 +17,7 @@ var chooseWebrootFileUrlFromFileManagerTree = null; //used by the create_present
 var TaskEditSourceFancyPopup = new MyFancyPopupClass();
 var IncludePageUrlFancyPopup = new MyFancyPopupClass();
 var UploadFancyPopup = new MyFancyPopupClass();
+var EditObjFromFileManagerTreeFancyPopup = new MyFancyPopupClass();
 
 var brokers_db_drivers = {};
 var auto_scroll_active = true;
@@ -89,8 +91,8 @@ function onTogglePHPCodeAutoConvert() {
 
 /* TREE FUNCTIONS */
 
-function removeObjectPropertiesAndMethodsFromTreeForVariables(ul, data, mytree_obj) {
-	$(ul).find(".function, i.undefined_file, i.css_file, i.js_file, i.img_file, .webroot_folder").each(function(idx, elm){
+function removeObjectPropertiesAndMethodsAndFunctionsFromTreeForVariables(ul, data, mytree_obj) {
+	$(ul).find("i.function, i.method, i.undefined_file, i.css_file, i.js_file, i.img_file, .webroot_folder").each(function(idx, elm){
 		$(elm).parent().parent().remove();
 	});
 	
@@ -111,7 +113,7 @@ function removeObjectPropertiesAndMethodsFromTreeForVariables(ul, data, mytree_o
 		var bean_name = a.attr("bean_name");
 		var get_file_properties_url = a.attr("get_file_properties_url");
 		
-		if (elm.is(".file, i.util_file, i.module_file")) {
+		if (elm.is("i.file, i.util_file, i.module_file")) {
 			if (!file_path || !("" + file_path).match(/\.php([0-9]*)$/i)) { //is not a php file
 				li.remove();
 				class_name = null;
@@ -145,74 +147,44 @@ function removeObjectPropertiesAndMethodsFromTreeForVariables(ul, data, mytree_o
 	});
 }
 
-function removeObjectPropertiesAndMethodsFromTreeForMethods(ul, data, mytree_obj) {
-	$(ul).find(".function, i.undefined_file, i.css_file, i.js_file, i.img_file, .webroot_folder").each(function(idx, elm){
+function removeObjectPropertiesAndMethodsAndFunctionsFromTreeForFunctions(ul, data, mytree_obj) {
+	var function_select = $(MyFancyPopup.settings.elementToShow).find(".function select");
+	var is_presentation_layer = typeof layer_type == "string" && layer_type == "pres";
+	var is_business_logic_layer = typeof layer_type == "string" && layer_type == "bl";
+	var item_type = is_presentation_layer ? "presentation" : "businesslogic";
+	
+	var on_add_edit_icon_callback = function() {
+		//reset select field, since the parent node got refreshed and there is no selected node now.
+		function_select.html("");
+	};
+	
+	$(ul).find("i.service, i.class, i.test_unit_obj, i.function, i.method, i.undefined_file, i.css_file, i.js_file, i.img_file, .webroot_folder").each(function(idx, elm){
 		$(elm).parent().parent().remove();
 	});
 	
 	$(ul).find("i.folder").each(function(idx, elm){
 		var label = $(elm).parent().children("label").text();
 		
-		if (label == "webroot") {
+		if (label == "webroot")
 			$(elm).parent().parent().remove();
-		}
-	});
-	
-	$(ul).find("i.file, i.service, i.class, i.test_unit_obj, i.objtype, i.hibernatemodel, i.config_file, i.controller_file, i.entity_file, i.view_file, i.template_file, i.util_file, i.block_file, i.module_file").each(function(idx, elm) {
-		elm = $(elm);
-		var a = elm.parent();
-		var li = a.parent();
-		var class_name = a.children("label").text();
-		var file_path = a.attr("file_path");
-		var bean_name = a.attr("bean_name");
-		var get_file_properties_url = a.attr("get_file_properties_url");
-		
-		if (elm.is(".file, i.util_file, i.module_file")) {
-			if (!file_path || !("" + file_path).match(/\.php([0-9]*)$/i)) { //is not a php file
-				li.remove();
-				class_name = null;
-			}
-			else {
-				var children = li.find(" > ul > li > a").children("i.service, i.class, i.test_unit_obj");
-				
-				if (children.length == 1) {
-					class_name = $(children[0]).parent().children("label").text();
-					var regex = new RegExp("\/" + class_name + "\.php([0-9]*)$", "i");
-					
-					if (("" + file_path).match(regex))
-						li.children("ul").remove();
-				}
-			}
-		}
-		else
-			li.children("ul").remove();
-		
-		if (class_name)
-			a.click(function() {
-				var items = getClassMethods(get_file_properties_url, file_path, class_name);
-				var elm = $(MyFancyPopup.settings.elementToShow).find(".method select");
-				elm.attr("class_name", class_name);
-				elm.attr("file_path", file_path);
-				elm.attr("bean_name", bean_name);
-				elm.attr("get_file_properties_url", get_file_properties_url);
+		else if (is_business_logic_layer || (is_presentation_layer && $(elm).parent().closest('li[data-jstree=\'{"icon":"utils_folder"}\']').length > 0)) { //only if inside of presentation layer and folder belongs to utils_folder, or inside of business logic and is a folder
+			addRefreshIconToFileManagerPopupTreeNode(elm, mytree_obj);
 			
-				updateSelectElementWithFileItems(elm, items);
-			});
-	});
-}
-
-function removeObjectPropertiesAndMethodsFromTreeForFunctions(ul, data, mytree_obj) {
-	$(ul).find("i.service, i.class, i.test_unit_obj, i.undefined_file, i.css_file, i.js_file, i.img_file, .webroot_folder").each(function(idx, elm){
-		$(elm).parent().parent().remove();
-	});
-	
-	$(ul).find("i.folder").each(function(idx, elm){
-		var label = $(elm).parent().children("label").text();
-		
-		if (label == "webroot") {
-			$(elm).parent().parent().remove();
+			//add icon to create new function
+			if (is_business_logic_layer)
+				addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_service_function_url", null, "function", true, "save_file_manager_service_function_url", on_add_edit_icon_callback);
+			else
+				addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_function_url", {item_type: item_type}, "function", false, "save_file_manager_function_url", on_add_edit_icon_callback);
 		}
 	});
+	
+	if (is_presentation_layer)
+		$(ul).find("i.utils_folder").each(function(idx, elm){
+			addRefreshIconToFileManagerPopupTreeNode(elm, mytree_obj);
+			
+			//add icon to create new function
+			addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_function_url", {item_type: item_type}, "function", false, "save_file_manager_function_url", on_add_edit_icon_callback);
+		});
 	
 	$(ul).find("i.file, i.objtype, i.hibernatemodel, i.config_file, i.controller_file, i.entity_file, i.view_file, i.template_file, i.util_file, i.block_file, i.module_file").each(function(idx, elm){
 		elm = $(elm);
@@ -222,7 +194,7 @@ function removeObjectPropertiesAndMethodsFromTreeForFunctions(ul, data, mytree_o
 		var bean_name = a.attr("bean_name");
 		var get_file_properties_url = a.attr("get_file_properties_url");
 		
-		if (elm.is(".file, i.util_file, i.module_file")) {
+		if (elm.is("i.file, i.util_file, i.module_file")) {
 			if (!file_path || !("" + file_path).match(/\.php([0-9]*)$/i)) //is not a php file
 				li.remove();
 			else
@@ -233,70 +205,259 @@ function removeObjectPropertiesAndMethodsFromTreeForFunctions(ul, data, mytree_o
 		
 		a.click(function() {
 			var items = getFileFunctions(get_file_properties_url, file_path);
-			var elm = $(MyFancyPopup.settings.elementToShow).find(".function select");
-			elm.attr("file_path", file_path);
-			elm.attr("bean_name", bean_name);
-			elm.attr("get_file_properties_url", get_file_properties_url);
+			function_select.attr("file_path", file_path);
+			function_select.attr("bean_name", bean_name);
+			function_select.attr("get_file_properties_url", get_file_properties_url);
 			
-			updateSelectElementWithFileItems(elm, items);
+			updateSelectElementWithFileItems(function_select, items);
 		});
+		
+		//add icon to create new function
+		if (is_business_logic_layer && $(elm).is("i.file"))
+			addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_service_function_url", null, "function", true, "save_file_manager_service_function_url", on_add_edit_icon_callback);
+		else if (is_presentation_layer && $(elm).is("i.util_file"))
+			addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_function_url", {item_type: item_type}, "function", false, "save_file_manager_function_url", on_add_edit_icon_callback);
 	});
 }
 
-function removeObjectPropertiesAndFunctionsFromTree(ul, data, mytree_obj) {
-	$(ul).find("i.function").each(function(idx, elm){
+function removeObjectPropertiesAndMethodsAndFunctionsFromTreeForMethods(ul, data, mytree_obj) {
+	var method_select = $(MyFancyPopup.settings.elementToShow).find(".method select");
+	var is_presentation_layer = typeof layer_type == "string" && layer_type == "pres";
+	var is_business_logic_layer = typeof layer_type == "string" && layer_type == "bl";
+	var item_type = is_presentation_layer ? "presentation" : "businesslogic";
+	
+	var on_add_edit_icon_callback = function() {
+		//reset select field, since the parent node got refreshed and there is no selected node now.
+		method_select.html("");
+	};
+	
+	$(ul).find("i.function, i.method, i.undefined_file, i.css_file, i.js_file, i.img_file, .webroot_folder").each(function(idx, elm){
 		$(elm).parent().parent().remove();
 	});
 	
-	$(ul).find("i.file, i.objtype, i.hibernatemodel").each(function(idx, elm){
+	$(ul).find("i.folder").each(function(idx, elm){
+		var label = $(elm).parent().children("label").text();
+		
+		if (label == "webroot")
+			$(elm).parent().parent().remove();
+		else if (is_business_logic_layer || (is_presentation_layer && $(elm).parent().closest('li[data-jstree=\'{"icon":"utils_folder"}\']').length > 0)) { //only if inside of presentation layer and folder belongs to utils_folder, or inside of business logic and is a folder
+			addRefreshIconToFileManagerPopupTreeNode(elm, mytree_obj);
+			
+			//add icon to create new class
+			if (is_business_logic_layer)
+				addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_service_obj_url", null, "service_object", true, "save_file_manager_service_obj_url", on_add_edit_icon_callback);
+			else
+				addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_class_url", {item_type: item_type}, "class_object", false, "save_file_manager_class_url", on_add_edit_icon_callback);
+		}
+	});
+	
+	if (is_presentation_layer)
+		$(ul).find("i.utils_folder").each(function(idx, elm){
+			addRefreshIconToFileManagerPopupTreeNode(elm, mytree_obj);
+			
+			//add icon to create new class
+			addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_class_url", {item_type: item_type}, "class_object", false, "save_file_manager_class_url", on_add_edit_icon_callback);
+		});
+	
+	$(ul).find("i.file, i.service, i.class, i.test_unit_obj, i.objtype, i.hibernatemodel, i.config_file, i.controller_file, i.entity_file, i.view_file, i.template_file, i.util_file, i.block_file, i.module_file").each(function(idx, elm) {
 		elm = $(elm);
 		var a = elm.parent();
 		var li = a.parent();
 		var file_path = a.attr("file_path");
 		var bean_name = a.attr("bean_name");
 		var get_file_properties_url = a.attr("get_file_properties_url");
+		var class_name = a.children("label").text();
+		
+		if (elm.is("i.file, i.util_file, i.module_file")) {
+			if (!file_path || !("" + file_path).match(/\.php([0-9]*)$/i)) { //is not a php file
+				li.remove();
+				class_name = null;
+			}
+			else {
+				var children = li.find(" > ul > li > a").children("i.service, i.class, i.test_unit_obj");
+				
+				if (children.length == 1) {
+					var file_class_name = $(children[0]).parent().children("label").text();
+					var regex = new RegExp("\/" + file_class_name + "\.php([0-9]*)$", "i");
+					
+					if (("" + file_path).match(regex))
+						class_name = file_class_name;
+				}
+			}
+		}
+		else
+			li.children("ul").remove();
+		
+		if (class_name) {
+			a.click(function() {
+				var items = getClassMethods(get_file_properties_url, file_path, class_name);
+				method_select.attr("class_name", class_name);
+				method_select.attr("file_path", file_path);
+				method_select.attr("bean_name", bean_name);
+				method_select.attr("get_file_properties_url", get_file_properties_url);
+			
+				updateSelectElementWithFileItems(method_select, items);
+			});
+			
+			//add icon to create new class method or edit class
+			if (is_presentation_layer || is_business_logic_layer) {
+				if (is_business_logic_layer && $(elm).is("i.file"))
+					addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_service_obj_url", null, "service_object", true, "save_file_manager_service_obj_url", on_add_edit_icon_callback);
+				else if (is_presentation_layer && $(elm).is("i.util_file"))
+					addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_class_url", {item_type: item_type}, "class_object", false, "save_file_manager_class_url", on_add_edit_icon_callback);
+				else if ($(elm).is("i.class")) {
+					addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "edit", "edit_file_manager_class_url", {item_type: item_type}, "class_object", false, null, on_add_edit_icon_callback);
+					addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_class_method_url", {item_type: item_type}, "class_method", false, "save_file_manager_class_method_url", on_add_edit_icon_callback);
+				}
+				else if ($(elm).is("i.service")) { //add icon to create new class/service method and edit class/service
+					addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "edit", "edit_file_manager_service_obj_url", null, "service_object", true, null, on_add_edit_icon_callback);
+					addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_service_method_url", null, "service_method", true, "save_file_manager_service_method_url", on_add_edit_icon_callback);
+				}
+			}
+		}
+	});
+}
+
+function removeObjectPropertiesAndMethodsAndFunctionsFromTreeForBusinessLogic(ul, data, mytree_obj) {
+	var business_logic_select = $(MyFancyPopup.settings.elementToShow).find(".businesslogic select");
+	
+	var on_add_edit_icon_callback = function() {
+		//reset select field, since the parent node got refreshed and there is no selected node now.
+		business_logic_select.html("");
+	};
+	
+	$(ul).find("i.function, i.method").each(function(idx, elm){
+		$(elm).parent().parent().remove();
+	});
+	
+	$(ul).find("i.folder").each(function(idx, elm){
+		addRefreshIconToFileManagerPopupTreeNode(elm, mytree_obj);
+		
+		//add icon to create new class/service
+		addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_service_obj_url", null, "service_object", true, "save_file_manager_service_obj_url", on_add_edit_icon_callback);
+	});
+	
+	$(ul).find("i.file, i.service").each(function(idx, elm){
+		elm = $(elm);
+		var a = elm.parent();
+		var li = a.parent();
+		var file_path = a.attr("file_path");
+		var bean_name = a.attr("bean_name");
+		var get_file_properties_url = a.attr("get_file_properties_url");
+		var class_name = a.children("label").text();
+		
+		if (elm.is("i.file")) {
+			if (!file_path || !("" + file_path).match(/\.php([0-9]*)$/i)) { //is not a php file
+				li.remove();
+				class_name = null;
+			}
+			else {
+				var children = li.find(" > ul > li > a").children("i.service");
+				
+				if (children.length == 1) {
+					var service_class_name = $(children[0]).parent().children("label").text();
+					var regex = new RegExp("\/" + service_class_name + "\.php([0-9]*)$", "i");
+					
+					if (("" + file_path).match(regex))
+						class_name = service_class_name;
+				}
+			}
+		}
+		else
+			li.children("ul").remove();
+		
+		if (class_name) {
+			a.click(function() {
+				var items = getClassMethods(get_file_properties_url, file_path, class_name);
+				business_logic_select.attr("class_name", class_name);
+				business_logic_select.attr("file_path", file_path);
+				business_logic_select.attr("bean_name", bean_name);
+				business_logic_select.attr("get_file_properties_url", get_file_properties_url);
+				
+				updateSelectElementWithFileItems(business_logic_select, items);
+			});
+			
+			//add icon to create new class/service
+			if ($(elm).is("i.file")) {
+				addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_service_obj_url", null, "service_object", true, "save_file_manager_service_obj_url", on_add_edit_icon_callback);
+			}
+			else if ($(elm).is("i.service")) { //add icon to create new class/service method and edit class/service
+				addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "edit", "edit_file_manager_service_obj_url", null, "service_object", true, null, on_add_edit_icon_callback);
+				addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_service_method_url", null, "service_method", true, "save_file_manager_service_method_url", on_add_edit_icon_callback);
+			}
+		}
+	});
+}
+
+function removeObjectPropertiesAndMethodsAndFunctionsFromTree(ul, data, mytree_obj) {
+	$(ul).find("i.function, i.method").each(function(idx, elm){
+		$(elm).parent().parent().remove();
+	});
+	
+	$(ul).find("i.folder").each(function(idx, elm){
+		addRefreshIconToFileManagerPopupTreeNode(elm, mytree_obj);
+	});
+	
+	$(ul).find("i.file, i.objtype, i.hibernatemodel").each(function(idx, elm){
+		elm = $(elm);
+		var a = elm.parent();
+		var li = a.parent();
 		
 		if (!elm.hasClass("file"))
 			li.children("ul").remove();
-		
-		a.click(function() {
-			var items = getFileFunctions(get_file_properties_url, file_path);
-			var elm = $(MyFancyPopup.settings.elementToShow).find(".businesslogic select");
-			elm.attr("class_name", "");
-			elm.attr("file_path", file_path);
-			elm.attr("bean_name", bean_name);
-			elm.attr("get_file_properties_url", get_file_properties_url);
-			
-			updateSelectElementWithFileItems(elm, items);
-		});
 	});
 	
 	$(ul).find("i.service, i.class, i.test_unit_obj").each(function(idx, elm){
 		var a = $(elm).parent();
-		
 		a.parent().children("ul").remove();
-		
-		var class_name = a.children("label").text();
-		var file_path = a.attr("file_path");
-		var bean_name = a.attr("bean_name");
-		var get_file_properties_url = a.attr("get_file_properties_url");
-		
-		a.click(function() {
-			var items = getClassMethods(get_file_properties_url, file_path, class_name);
-			var elm = $(MyFancyPopup.settings.elementToShow).find(".businesslogic select");
-			elm.attr("class_name", class_name);
-			elm.attr("file_path", file_path);
-			elm.attr("bean_name", bean_name);
-			elm.attr("get_file_properties_url", get_file_properties_url);
-			
-			updateSelectElementWithFileItems(elm, items);
-		});
 	});
 }
 
-function removeParametersAndResultMapsFromTree(ul, data, mytree_obj) {
+function removeMapsAndOtherIbatisNodesFromTree(ul, data, mytree_obj) {
 	$(ul).find("i.map").each(function(idx, elm){
 		$(elm).parent().parent().remove();
+	});
+	
+	$(ul).find("i.folder, i.file").each(function(idx, elm){
+		//add refresh button
+		if ($(elm).hasClass("folder"))
+			addRefreshIconToFileManagerPopupTreeNode(elm, mytree_obj);
+		
+		//add icon to create new queries
+		addIconToOpenDataAccessObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_query_url", {item_type: "ibatis"}, "query");
+	});
+	
+	$(ul).find("i.query").each(function(idx, elm){
+		//add icon to edit query
+		addIconToOpenDataAccessObjFromFileManagerTreePopup(elm, mytree_obj, "edit", "edit_file_manager_query_url", {item_type: "ibatis"}, "query");
+	});
+}
+
+function removeMapsAndOtherHbnNodesFromTree(ul, data, mytree_obj) {
+	$(ul).find("i.map").each(function(idx, elm){
+		$(elm).parent().parent().remove();
+	});
+	
+	$(ul).find("i.folder, i.file").each(function(idx, elm){
+		//add refresh button
+		if ($(elm).hasClass("folder"))
+			addRefreshIconToFileManagerPopupTreeNode(elm, mytree_obj);
+		
+		//add icon to create new hbn objs
+		addIconToOpenDataAccessObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_hbn_obj_url", {item_type: "hibernate"}, "hibernate_object");
+	});
+	
+	$(ul).find("i.obj").each(function(idx, elm){
+		//add icon to edit obj
+		addIconToOpenDataAccessObjFromFileManagerTreePopup(elm, mytree_obj, "edit", "edit_file_manager_hbn_obj_url", {item_type: "hibernate"}, "hibernate_object");
+		
+		//add icon to create new queries
+		addIconToOpenDataAccessObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_query_url", {item_type: "hibernate"}, "query");
+	});
+	
+	$(ul).find("i.query").each(function(idx, elm){
+		//add icon to edit query
+		addIconToOpenDataAccessObjFromFileManagerTreePopup(elm, mytree_obj, "edit", "edit_file_manager_query_url", {item_type: "hibernate"}, "query");
 	});
 }
 
@@ -304,20 +465,26 @@ function removeQueriesAndMapsAndOtherHbnNodesFromTree(ul, data, mytree_obj) {
 	$(ul).find("i.query, i.map, i.relationship, i.hbn_native").each(function(idx, elm){
 		$(elm).parent().parent().remove();
 	});
-}
-
-function removeParametersAndResultMapsFromTree(ul, data, mytree_obj) {
-	$(ul).find("i.map").each(function(idx, elm){
-		$(elm).parent().parent().remove();
+	
+	$(ul).find("i.folder, i.file").each(function(idx, elm){
+		//add refresh button
+		if ($(elm).hasClass("folder"))
+			addRefreshIconToFileManagerPopupTreeNode(elm, mytree_obj);
+		
+		//add icon to create new hbn objs
+		addIconToOpenDataAccessObjFromFileManagerTreePopup(elm, mytree_obj, "add", "edit_file_manager_hbn_obj_url", {item_type: "hibernate"}, "hibernate_object");
+	});
+	
+	$(ul).find("i.obj").each(function(idx, elm){
+		//add icon to edit obj
+		addIconToOpenDataAccessObjFromFileManagerTreePopup(elm, mytree_obj, "edit", "edit_file_manager_hbn_obj_url", {item_type: "hibernate"}, "hibernate_object");
 	});
 }
 
 function removeAllThatIsNotFoldersFromTree(ul, data, mytree_obj) {
-	$(ul).find("i.file, i.objtype, i.hibernatemodel, i.service, i.class, i.test_unit_obj, i.undefined_file").each(function(idx, elm){
+	$(ul).find("i.file, i.objtype, i.hibernatemodel, i.service, i.class, i.test_unit_obj, i.undefined_file, i.function").each(function(idx, elm){
 		$(elm).parent().parent().remove();
 	});
-	
-	removeObjectPropertiesAndFunctionsFromTree(ul, data, mytree_obj);
 }
 
 function removeAllThatIsNotPagesFromTree(ul, data, mytree_obj) {
@@ -369,14 +536,8 @@ function removeAllThatIsNotAPossibleImageFromTree(ul, data, mytree_obj) {
 			$(elm).addClass("webroot_sub_folder");
 			
 			if (a.attr("upload_url")) {
-				var l = a.children("label");
-				l.append('<span class="icon refresh" title="Refresh">Refresh</span><span class="icon upload" title="Upload">Upload</span>');
-				l.children(".refresh").click(function() {
-					refreshFileManagerPopupTreeNodeFromInnerIcon(this, mytree_obj);
-				});
-				l.children(".upload").click(function() {
-					openUploadPopupFromFileManagerPopupTreeNodeInnerIcon(this, mytree_obj);
-				});
+				addUploadIconToFileManagerPopupTreeNode(elm, mytree_obj);
+				addRefreshIconToFileManagerPopupTreeNode(elm, mytree_obj);
 			}
 		}
 	});
@@ -386,14 +547,8 @@ function removeAllThatIsNotAPossibleImageFromTree(ul, data, mytree_obj) {
 		a.parent().addClass("jstree-last");
 		
 		if (a.attr("upload_url")) {
-			var l = a.children("label");
-			l.append('<span class="icon refresh" title="Refresh">Refresh</span><span class="icon upload" title="Upload">Upload</span>');
-			l.children(".refresh").click(function() {
-				refreshFileManagerPopupTreeNodeFromInnerIcon(this, mytree_obj);
-			});
-			l.children(".upload").click(function() {
-				openUploadPopupFromFileManagerPopupTreeNodeInnerIcon(this, mytree_obj);
-			});
+			addUploadIconToFileManagerPopupTreeNode(elm, mytree_obj);
+			addRefreshIconToFileManagerPopupTreeNode(elm, mytree_obj);
 		}
 	});
 }
@@ -419,14 +574,8 @@ function removeAllThatIsNotWebrootFileFromTree(ul, data, mytree_obj) {
 			$(elm).addClass("webroot_sub_folder");
 			
 			if (a.attr("upload_url")) {
-				var l = a.children("label");
-				l.append('<span class="icon refresh" title="Refresh">Refresh</span><span class="icon upload" title="Upload">Upload</span>');
-				l.children(".refresh").click(function() {
-					refreshFileManagerPopupTreeNodeFromInnerIcon(this, mytree_obj);
-				});
-				l.children(".upload").click(function() {
-					openUploadPopupFromFileManagerPopupTreeNodeInnerIcon(this, mytree_obj);
-				});
+				addUploadIconToFileManagerPopupTreeNode(elm, mytree_obj);
+				addRefreshIconToFileManagerPopupTreeNode(elm, mytree_obj);
 			}
 		}
 	});
@@ -436,14 +585,8 @@ function removeAllThatIsNotWebrootFileFromTree(ul, data, mytree_obj) {
 		a.parent().addClass("jstree-last");
 		
 		if (a.attr("upload_url")) {
-			var l = a.children("label");
-			l.append('<span class="icon refresh" title="Refresh">Refresh</span><span class="icon upload" title="Upload">Upload</span>');
-			l.children(".refresh").click(function() {
-				refreshFileManagerPopupTreeNodeFromInnerIcon(this, mytree_obj);
-			});
-			l.children(".upload").click(function() {
-				openUploadPopupFromFileManagerPopupTreeNodeInnerIcon(this, mytree_obj);
-			});
+			addUploadIconToFileManagerPopupTreeNode(elm, mytree_obj);
+			addRefreshIconToFileManagerPopupTreeNode(elm, mytree_obj);
 		}
 	});
 }
@@ -474,6 +617,374 @@ function removeAllThatIsNotBlocksFromTree(ul, data, mytree_obj) {
 		project_li.append(blocks_ul);
 		project_ul.remove();
 	});
+}
+
+function removeAllThatIsNotViewsFromTree(ul, data, mytree_obj) {
+	ul = $(ul);
+	
+	ul.find("i.file, i.block_file, i.entity_file, i.template_file, i.util_file, i.controller_file, i.config_file, i.undefined_file, i.js_file, i.css_file, i.img_file, i.properties, i.module_file, .entities_folder, .blocks_folder, .templates_folder, .template_folder, .utils_folder, .webroot_folder, .modules_folder, .configs_folder").each(function(idx, elm){
+		$(elm).parent().parent().remove();
+	});
+	
+	ul.find("i.folder").each(function(idx, elm){
+		var label = $(elm).parent().children("label").text();
+		
+		if (label == "pages (entities)" || label == "blocks" || label == "templates" || label == "utils" || label == "webroot" || label == "others" || label == "modules" || label == "configs")
+			$(elm).parent().parent().remove();
+		//else if (label == "views")
+		//	$(elm).parent().parent().addClass("jstree-last");
+	});
+	
+	//move views to project node
+	ul.find("i.views_folder").each(function(idx, elm) {
+		var views_li = $(elm).parent().parent();
+		var views_ul = views_li.children("ul");
+		var project_li = views_li.parent().parent();
+		var project_ul = project_li.children("ul");
+		
+		project_li.append(views_ul);
+		project_ul.remove();
+	});
+}
+
+/* POPUP FUNCTIONS */
+/* POPUP FUNCTIONS - refresh */
+
+function refreshFileManagerPopupTreeNodeFromInnerIcon(elm, mytree_obj) {
+	window.event && typeof window.event.stopPropagation == "function" && window.event.stopPropagation(); //this function gets called by an icon which is inside of a "a" element. This avoids the event from the "a" element to be executed.
+	
+	if (mytree_obj) {
+		var li = $(elm).closest("li");
+		var node = li.children("ul[url]").length > 0 ? li : li.parent().closest("ul[url]").parent(); //finds proper node
+		
+		if (node.length > 0) {
+			node.removeClass("jstree-closed").addClass("jstree-open"); //add in case it doesn't have, so we can then show the inner folder that was created.
+			mytree_obj.refreshNodeChilds(node);
+			
+			node.children("ul").show();
+		}
+	}
+}
+
+function addRefreshIconToFileManagerPopupTreeNode(elm, mytree_obj) {
+	if (mytree_obj) {
+		var node = $(elm).closest("li");
+		var icon = $('<span class="icon refresh" title="Refresh">Refresh</span>');
+		icon.on("click", function() {
+			refreshFileManagerPopupTreeNodeFromInnerIcon(this, mytree_obj);
+		});
+		node.children("a").after(icon);
+	}
+}
+
+/* POPUP FUNCTIONS - upload */
+
+function addUploadIconToFileManagerPopupTreeNode(elm, mytree_obj) {
+	if (mytree_obj) {
+		var node = $(elm).closest("li");
+		var icon = $('<span class="icon upload" title="Upload">Upload</span>');
+		icon.on("click", function() {
+			openUploadPopupFromFileManagerPopupTreeNodeInnerIcon(this, mytree_obj);
+		});
+		node.children("a").after(icon);
+	}
+}
+
+function openUploadPopupFromFileManagerPopupTreeNodeInnerIcon(elm, mytree_obj) {
+	window.event && typeof window.event.stopPropagation == "function" && window.event.stopPropagation(); //this function gets called by an icon which is inside of a "a" element. This avoids the event from the "a" element to be executed.
+	
+	var a = $(elm).closest("li").children("a");
+	var upload_url = a.attr("upload_url");
+	
+	if (upload_url) {
+		var popup = $("#upload_from_file_manager");
+		
+		if (!popup[0]) {
+			popup = $('<div id="upload_from_file_manager" class="myfancypopup with_iframe_title"></div>');
+			$(document.body).append(popup);
+		}
+		
+		upload_url += (upload_url.indexOf("?") != -1 ? "&" : "?") + "popup=1";
+		popup.html('<iframe src="' + upload_url + '"></iframe>');
+		
+		UploadFancyPopup.init({
+			elementToShow: popup,
+			parentElement: document,
+			onClose: function() {
+				refreshFileManagerPopupTreeNodeFromInnerIcon(elm, mytree_obj);
+			},
+		});
+		
+		UploadFancyPopup.showPopup();
+	}
+}
+
+/* POPUP FUNCTIONS - add and edit icons from FileManagerTree */
+
+function addClassObjFromFileManagerTree(elm, mytree_obj, save_url, edit_url, params_to_replace, type, is_business_logic, on_close_callback) {
+	//copied from the admin_menu.js:createClassObjectOrMethodOrFunction
+	var type_label = type.replace(/_/g, " ");
+	var new_file_name = prompt("Please write the " + type_label + " name:");
+	var status = new_file_name && typeof new_file_name == "string" && new_file_name.replace(/\s/g, "") != "";
+	
+	if (status) {
+		if (new_file_name) {
+			new_file_name = ("" + new_file_name).replace(/(^\s+|\s+$)/g, ""); //trim name and remove spaces
+			
+			if (new_file_name) {
+				//normalize new file name
+				new_file_name = typeof normalizeFileName == "function" ? normalizeFileName(new_file_name, true) : new_file_name;
+				new_file_name = new_file_name.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+					return letter.toUpperCase();
+				}).replace(/\s+/g, ""); //ucwords
+				
+				if (type == "service_method" || type == "class_method" || type == "function")
+					new_file_name = new_file_name[0].toLowerCase() + new_file_name.substr(1).replace(/\s+/g, "");
+				
+				//prepare save request
+				var post_data = {
+					object : {
+						name : new_file_name,
+						is_business_logic_service : is_business_logic ? 1 : null,
+					}
+				};
+				
+				$.ajax({
+					type : "post",
+					url : save_url,
+					data : post_data,
+					success : function(data, textStatus, jqXHR) {
+						if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+							showAjaxLoginPopup(jquery_native_xhr_object.responseURL, save_url, function() {
+								StatusMessageHandler.removeLastShownMessage("error");
+								addClassObjFromFileManagerTree(elm, mytree_obj, save_url, edit_url, params_to_replace, type, is_business_logic, on_close_callback);
+							});
+						else {
+							var data_status = data == "1";
+							var json_data = data && ("" + data).substr(0, 1) == "{" ? JSON.parse(data) : null;
+							
+							if ($.isPlainObject(json_data) && json_data.hasOwnProperty("status") && json_data["status"])
+								data_status = true;
+							
+							if (data_status) {
+								if (edit_url) {
+									//prepare edit_url
+									if (type == "service_method" || type == "class_method")
+										params_to_replace["method"] = new_file_name;
+									else if (type == "function") {
+										//if node is a folder
+										if (!params_to_replace["path"].match(/\.php$/))
+											params_to_replace["path"] += (params_to_replace["path"].substr(params_to_replace["path"].length - 1) == "/" ? "" : "/") + "functions.php";
+										
+										//set function
+										params_to_replace["function"] = new_file_name;
+									}
+									else {
+										//if node is a folder
+										if (!params_to_replace["path"].match(/\.php$/))
+											params_to_replace["path"] += (params_to_replace["path"].substr(params_to_replace["path"].length - 1) == "/" ? "" : "/") + new_file_name + ".php";
+										
+										//set service
+										if (type == "service_object")
+											params_to_replace["service"] = new_file_name;
+										else
+											params_to_replace["class"] = new_file_name;
+									}
+									
+									for (var k in params_to_replace)
+										edit_url = edit_url.replace("#" + k + "#", params_to_replace[k]);
+									
+									edit_url = edit_url.replace(/#\w+#/g, ""); //replace all other vars, like #item_type# if not passed through argument in this function.
+									
+									//open popup
+									openEditObjFromFileManagerTreePopup(elm, mytree_obj, edit_url, on_close_callback);
+								}
+								else {
+									//refresh mytree_obj
+									refreshFileManagerPopupTreeNodeFromInnerIcon(elm, mytree_obj);
+									
+									if (typeof on_close_callback == "function")
+										on_close_callback(elm, mytree_obj);
+								}
+							}
+							else
+								StatusMessageHandler.showError("There was a problem trying to create this " + type_label + ". Please try again..." + (data && !json_data ? "\n" + data : "")); 
+								StatusMessageHandler.getMessageHtmlObj()[0].style.setProperty("z-index", "99999999999", "important"); //move error to front of filemanager popup
+						}
+					},
+					error : function(jqXHR, textStatus, errorThrown) { 
+						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+						StatusMessageHandler.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to create this " + type_label + ".\nPlease try again..." + msg);
+						StatusMessageHandler.getMessageHtmlObj()[0].style.setProperty("z-index", "99999999999", "important"); //move error to front of filemanager popup
+					},
+				});
+			}
+		}
+		else
+			alert("Error: " + type_label + " name cannot be empty");
+	}
+}
+
+function addIconToOpenClassObjFromFileManagerTreePopup(elm, mytree_obj, icon_class, url_var_name, params_to_replace, type, is_business_logic, save_url_var_name, on_close_callback) {
+	if (icon_class) {
+		var edit_url, save_url;
+		
+		if (url_var_name)
+			eval('edit_url = typeof ' + url_var_name + ' != "undefined" ? ' + url_var_name + ' : null;');
+		
+		if (save_url_var_name)
+			eval('save_url = typeof ' + save_url_var_name + ' != "undefined" ? ' + save_url_var_name + ' : null;');
+		
+		if ((icon_class != "add" && edit_url) || (icon_class == "add" && save_url)) {
+			elm = $(elm);
+			params_to_replace = $.isPlainObject(params_to_replace) ? params_to_replace : {};
+			
+			var elm_a = elm.parent();
+			var elm_li = elm_a.parent();
+			var is_folder = elm_li.children("ul").attr("url") ? true : false; //Do not use elm.is("i.folder"), bc the elm can be utils_folder or other folder type
+			var ul_url = is_folder ? elm_li.children("ul").attr("url") : elm_li.closest("ul[url]").attr("url");
+			
+			if (ul_url) {
+				//prepare params
+				var params = getURLSearchParams(ul_url);
+				
+				params_to_replace["bean_name"] = params["bean_name"];
+				params_to_replace["bean_file_name"] = params["bean_file_name"];
+				params_to_replace["filter_by_layout"] = params["filter_by_layout"];
+				params_to_replace["path"] = is_folder ? params["path"] : elm_a.attr("file_path");
+				params_to_replace["service"] = elm.is("i.service") ? elm_a.children("label").text() : ""; //service, if apply
+				params_to_replace["class"] = elm.is("i.service, i.class") ? elm_a.children("label").text() : ""; //service or class, if apply. Note that the service needs the class for the save_url to create new methods
+				params_to_replace["method"] = elm.is("i.method") ? elm_a.children("label").text() : ""; //method, if apply
+				
+				if (elm.is("i.method") && !params_to_replace["path"]) {
+					var service_li = elm_li.parent().parent();
+					params_to_replace["path"] = service_li.children("a").attr("file_path");
+				}
+				
+				if (params_to_replace["bean_name"] && params_to_replace["bean_file_name"] && params_to_replace["path"]) {
+					//prepare icon
+					var type_label = type.replace(/_/g, " ").toLowerCase().replace(/\b[a-z]/g, function(letter) {
+						return letter.toUpperCase();
+					}); //ucwords;
+					var icon_label = icon_class.replace(/_/g, " ").toLowerCase().replace(/\b[a-z]/g, function(letter) {
+						return letter.toUpperCase();
+					}); //ucwords;
+					
+					var icon = $('<span class="icon ' + icon_class + '" title="' + icon_label + ' ' + type_label + '">' + icon_label + '</span>');
+					icon.on("click", function(ev) {
+						window.event && typeof window.event.stopPropagation == "function" && window.event.stopPropagation(); //this function gets called by an icon which is inside of a "a" element. This avoids the event from the "a" element to be executed.
+						
+						if (icon_class != "add") { //on edit action
+							//prepare edit_url
+							for (var k in params_to_replace)
+								edit_url = edit_url.replace("#" + k + "#", params_to_replace[k]);
+							
+							edit_url = edit_url.replace(/#\w+#/g, ""); //replace all other vars, like #item_type# if not passed through argument in this function.
+							
+							//open popup
+							openEditObjFromFileManagerTreePopup(this, mytree_obj, edit_url, on_close_callback);
+						}
+						else { //on add action
+							//prepare save_url
+							for (var k in params_to_replace)
+								save_url = save_url.replace("#" + k + "#", params_to_replace[k]);
+							
+							save_url = save_url.replace(/#\w+#/g, ""); //replace all other vars, like #item_type# if not passed through argument in this function.
+							
+							//save and open popup
+							addClassObjFromFileManagerTree(this, mytree_obj, save_url, edit_url, params_to_replace, type, is_business_logic, on_close_callback);
+						}
+					});
+					elm_a.after(icon);
+				}
+			}
+		}
+	}
+}
+
+function addIconToOpenDataAccessObjFromFileManagerTreePopup(elm, mytree_obj, icon_class, url_var_name, params_to_replace, type, on_close_callback) {
+	if (icon_class && url_var_name) {
+		eval('var url = typeof ' + url_var_name + ' != "undefined" ? ' + url_var_name + ' : null;');
+		
+		if (url) {
+			elm = $(elm);
+			params_to_replace = $.isPlainObject(params_to_replace) ? params_to_replace : {};
+			
+			var elm_a = elm.parent();
+			var elm_li = elm_a.parent();
+			var is_folder = elm_li.children("ul").attr("url") ? true : false; //Do not use elm.is("i.folder"), bc the elm can be utils_folder or other folder type
+			var ul_url = is_folder ? elm_a.parent().children("ul").attr("url") : elm_a.parent().closest("ul[url]").attr("url");
+			
+			if (ul_url) {
+				//prepare params
+				var params = getURLSearchParams(ul_url);
+				
+				params_to_replace["bean_name"] = params["bean_name"];
+				params_to_replace["bean_file_name"] = params["bean_file_name"];
+				params_to_replace["filter_by_layout"] = params["filter_by_layout"];
+				params_to_replace["path"] = is_folder ? params["path"] : elm_a.attr("file_path");
+				params_to_replace["obj"] = elm.is("i.obj") ? elm_a.children("label").text() : (elm.is("i.query") ? elm_a.attr("hbn_obj_id") : ""); //hbn obj id, if apply
+				params_to_replace["query_id"] = elm.is("i.query") ? elm_a.children("label").text() : ""; //query id, if apply
+				params_to_replace["query_type"] = elm.is("i.query") ? elm_a.attr("query_type") : ""; //query type, if apply
+				params_to_replace["relationship_type"] = elm.is("i.query") ? elm_a.attr("relationship_type") : ""; //relationship type, if apply
+				
+				if (params_to_replace["bean_name"] && params_to_replace["bean_file_name"] && params_to_replace["path"]) {
+					//prepare url
+					for (var k in params_to_replace)
+						url = url.replace("#" + k + "#", params_to_replace[k]);
+					
+					url = url.replace(/#\w+#/g, ""); //replace all other vars, like #item_type# if not passed through argument in this function.
+					
+					//prepare icon
+					var type_label = type.replace(/_/g, " ").toLowerCase().replace(/\b[a-z]/g, function(letter) {
+						return letter.toUpperCase();
+					}); //ucwords;
+					var icon_label = icon_class.replace(/_/g, " ").toLowerCase().replace(/\b[a-z]/g, function(letter) {
+						return letter.toUpperCase();
+					}); //ucwords;
+					
+					var icon = $('<span class="icon ' + icon_class + '" title="' + icon_label + ' ' + type_label + '">' + icon_label + '</span>');
+					icon.on("click", function(ev) {
+						window.event && typeof window.event.stopPropagation == "function" && window.event.stopPropagation(); //this function gets called by an icon which is inside of a "a" element. This avoids the event from the "a" element to be executed.
+						
+						openEditObjFromFileManagerTreePopup(this, mytree_obj, url, on_close_callback);
+					});
+					elm_a.after(icon);
+				}
+			}
+		}
+	}
+}
+
+function openEditObjFromFileManagerTreePopup(elm, mytree_obj, url, on_close_callback) {
+	if (url) {
+		var popup = $("#edit_obj_from_file_manager_tree_popup");
+		
+		if (!popup[0]) {
+			popup = $('<div id="edit_obj_from_file_manager_tree_popup" class="myfancypopup edit_obj_from_file_manager_tree_popup with_iframe_title"></div>');
+			$(document.body).append(popup);
+		}
+		
+		url += (url.indexOf("?") != -1 ? "&" : "?") + "popup=1";
+		popup.html('<iframe src="' + url + '"></iframe>');
+		
+		EditObjFromFileManagerTreeFancyPopup.init({
+			elementToShow: popup,
+			parentElement: document,
+			onClose: function() {
+				//refresh mytree_obj
+				refreshFileManagerPopupTreeNodeFromInnerIcon(elm, mytree_obj);
+				
+				if (typeof on_close_callback == "function")
+					on_close_callback(elm, mytree_obj);
+				
+				//remove iframe, bc if it contains auto_Save of a diagram, it will keep auto saving but incorrect data (wrong positions - since the iframe is closed.)
+				popup.children("iframe").remove();
+			},
+		});
+		
+		EditObjFromFileManagerTreeFancyPopup.showPopup();
+	}
 }
 
 /* UTIL FUNCTIONS */
@@ -565,52 +1076,32 @@ function getFileProperties(url) {
 	return props;
 }
 
-/* POPUP FUNCTIONS */
-
-function refreshFileManagerPopupTreeNodeFromInnerIcon(elm, mytree_obj) {
-	window.event && typeof window.event.stopPropagation == "function" && window.event.stopPropagation(); //this function gets called by an icon which is inside of a "a" element. This avoids the event from the "a" element to be executed.
+function getTargetFieldForProgrammingTaskChooseFromFileManager(elm) {
+	var target_field = null;
+	var p = elm.parent();
+	var input_selector = elm.attr("input_selector");
 	
-	if (mytree_obj) {
-		var node = $(elm).closest("li");
-		node.removeClass("jstree-closed").addClass("jstree-open"); //add in case it doesn't have, so we can then show the inner folder that was created.
-		mytree_obj.refreshNodeChilds(node);
-		
-		node.children("ul").show();
+	if (elm.is("input, textarea"))
+		target_field = elm;
+	else if (input_selector && p.find(input_selector).length > 0)
+		target_field = p.find(input_selector); //selectors can have multiple items. Is the selector that should define if is the 1 or more items.
+	else if (elm.prev("input").is("input"))
+		target_field = elm.prev();
+	else if (elm.next("input").is("input"))
+		target_field = elm.next();
+	else
+		target_field = p.find("input").first();
+	
+	if (!target_field[0]) {
+		if (elm.prev("textarea").is("textarea"))
+			target_field = elm.prev();
+		else if (elm.next("textarea").is("textarea"))
+			target_field = elm.next();
+		else
+			target_field = p.find("textarea").first();
 	}
-}
-
-function openUploadPopupFromFileManagerPopupTreeNodeInnerIcon(elm, mytree_obj) {
-	window.event.stopPropagation(); //this function gets called by an icon which is inside of a "a" element. This avoids the event from the "a" element to be executed.
 	
-	var a = $(elm).closest("a");
-	var upload_url = a.attr("upload_url");
-	
-	if (upload_url) {
-		var popup = $("#upload_from_file_manager");
-		
-		if (!popup[0]) {
-			popup = $('<div id="upload_from_file_manager" class="myfancypopup with_iframe_title"></div>');
-			$(document.body).append(popup);
-		}
-		
-		upload_url += (upload_url.indexOf("?") != -1 ? "&" : "?") + "popup=1";
-		popup.html('<iframe src="' + upload_url + '"></iframe>');
-		
-		UploadFancyPopup.init({
-			elementToShow: popup,
-			parentElement: document,
-			onClose: function() {
-				refreshFileManagerPopupTreeNodeFromInnerIcon(elm, mytree_obj);
-			},
-		});
-		
-		UploadFancyPopup.showPopup();
-	}
-}
-
-function onFunctionTaskEditMethodCode(elm, popup) {
-	if (typeof openSubmenu == "function") 
-		popup.find("#code > .code_menu, #ui > .taskflowchart > .workflow_menu").attr("onClick", "openSubmenu(this)");
+	return target_field;
 }
 
 function onProgrammingTaskEditSource(elm, data) {
@@ -665,32 +1156,9 @@ function onProgrammingTaskEditSource(elm, data) {
 		StatusMessageHandler.showError("Undefined edit_task_source_url variable in onProgrammingTaskEditSource method");
 }
 
-function getTargetFieldForProgrammingTaskChooseFromFileManager(elm) {
-	var target_field = null;
-	var p = elm.parent();
-	var input_selector = elm.attr("input_selector");
-	
-	if (elm.is("input, textarea"))
-		target_field = elm;
-	else if (input_selector && p.find(input_selector).length > 0)
-		target_field = p.find(input_selector); //selectors can have multiple items. Is the selector that should define if is the 1 or more items.
-	else if (elm.prev("input").is("input"))
-		target_field = elm.prev();
-	else if (elm.next("input").is("input"))
-		target_field = elm.next();
-	else
-		target_field = p.find("input").first();
-	
-	if (!target_field[0]) {
-		if (elm.prev("textarea").is("textarea"))
-			target_field = elm.prev();
-		else if (elm.next("textarea").is("textarea"))
-			target_field = elm.next();
-		else
-			target_field = p.find("textarea").first();
-	}
-	
-	return target_field;
+function onFunctionTaskEditMethodCode(elm, popup) {
+	if (typeof openSubmenu == "function") 
+		popup.find("#code > .code_menu, #ui > .taskflowchart > .workflow_menu").attr("onClick", "openSubmenu(this)");
 }
 
 function onChangePropertyVariableType(elm) {
@@ -702,7 +1170,43 @@ function onChangePropertyVariableType(elm) {
 	main_elm.children(".variable_type, .variable_settings").hide();
 	main_elm.children("." + type).show();
 	
+	if (type == "new_var")
+		onChangePropertyVariableScope( main_elm.find(" > .new_var > .scope > select")[0] );
+	
 	MyFancyPopup.updatePopup();
+}
+
+function onChangePropertyVariableScope(elm) {
+	elm = $(elm);
+	var selected_option = elm.find("option:selected[is_final_var]");
+	var main_elm = elm.parent().parent();
+	var name_elm = main_elm.children(".name");
+	var name_input = name_elm.children("input");
+	var name_icon_add = name_elm.children(".icon.add");
+	var name_sub_group = name_elm.children(".sub_group");
+	
+	if (selected_option.length > 0) {
+		if (selected_option.css("display") == "none") {
+			elm.val("");
+			name_input.val("").removeAttr("disabled");
+			name_icon_add.show();
+			name_sub_group.show();
+		}
+		else {
+			name_input.val( selected_option.val() ).attr("disabled", "disabled");
+			name_icon_add.hide();
+			name_sub_group.hide().html("");
+		}
+	}
+	else {
+		name_input.removeAttr("disabled");
+		
+		if (name_icon_add.css("display") == "none")
+			name_icon_add.show();
+		
+		if (name_sub_group.css("display") == "none")
+			name_sub_group.show();
+	}
 }
 
 function onProgrammingTaskChooseCreatedVariable(elm) {
@@ -713,14 +1217,14 @@ function onProgrammingTaskChooseCreatedVariable(elm) {
 	if (target_field[0]) {
 		popup.children(".type").show();
 		
-		var type_select = popup.find(".type select");
+		var type_select = popup.find(" > .type > select");
 		onChangePropertyVariableType(type_select[0]);
 		
 		MyFancyPopup.init({
 			elementToShow: popup,
 			parentElement: document,
 			onOpen: function() {
-				var select = popup.find(".existent_var .variable select");
+				var select = popup.find(" > .existent_var > .variable > select");
 				var total = populateVariablesOfTheWorkflowInSelectField(select);
 				
 				if (total == 0) {
@@ -732,7 +1236,7 @@ function onProgrammingTaskChooseCreatedVariable(elm) {
 					}
 				}
 				else
-					popup.find(".type select option[value=existent_var]").show();
+					popup.find(" > .type > select option[value=existent_var]").show();
 			},
 			
 			targetField: target_field[0],
@@ -767,14 +1271,14 @@ function populateVariablesOfTheWorkflowInSelectField(select) {
 
 function chooseCreatedVariable(elm) {
 	var popup = $("#choose_property_variable_from_file_manager");
-	var type = popup.find(".type select").val();
+	var type = popup.find(" > .type > select").val();
 	var type_elm = popup.find("." + type);
 	var value = null;
 	
 	if (type == "existent_var")
-		value = type_elm.find("select").val();
+		value = type_elm.find(" > .variable > select").val();
 	else if (type == "class_prop_var") {
-		var select = type_elm.find(".property select");
+		var select = type_elm.find(" > .property > select");
 		var option = select.find(":selected").first();
 		var class_name = option.attr("class_name");
 		value = select.val();
@@ -787,13 +1291,21 @@ function chooseCreatedVariable(elm) {
 		}
 	}
 	else if (type) {
-		value = type_elm.find("input").val();
-		value = ("" + value).replace(/^\s+/g, "").replace(/\s+$/g, "");
+		var is_final_var = type == "new_var" && type_elm.find(" > .scope > select option:selected[is_final_var]").length;
+		
+		if (is_final_var) { //used for GLOBALS['logged_user_id']
+			value = type_elm.find(" > .scope > select").val();
+			value = value.replace(/\[([^'"])/g, "['$1").replace(/([^'"])\]/g, "$1']"); //replaces [xxx] with ['xxx']
+		}
+		else {
+			value = type_elm.find(" > .name > input").val();
+			value = ("" + value).replace(/^\s+/g, "").replace(/\s+$/g, "");
+		}
 		
 		if (value) {
 			value = value[0] == '$' ? value.substr(1, value.length) : value; //remove $ if exists
 			
-			if (type == "new_var")
+			if (type == "new_var" && !is_final_var)
 				value = getNewVarWithSubGroupsInProgrammingTaskChooseCreatedVariablePopup(type_elm, value, true);
 			
 			value = '$' + value; //adds '$'
@@ -864,13 +1376,13 @@ function chooseCreatedVariable(elm) {
 	MyFancyPopup.hidePopup();
 }
 function getNewVarWithSubGroupsInProgrammingTaskChooseCreatedVariablePopup(type_elm, value, with_quotes) {
-	var group = type_elm.find("select").val();
+	var group = type_elm.find(" > .scope > select").val();
 	var quotes = with_quotes ? "'" : ""; //with or without single quotes
 	
 	if (group)
 		value = group + "[" + ($.isNumeric(value) ? value : quotes + value + quotes) + "]";
 	
-	var lis = type_elm.find(".sub_group > li");
+	var lis = type_elm.find(" > .name > .sub_group > li");
 	
 	for (var i = 0; i < lis.length; i++) {
 		var li = $(lis[i]);
@@ -895,7 +1407,7 @@ function onProgrammingTaskChooseObjectProperty(elm) {
 	elm = $(elm);
 	var popup = $("#choose_property_variable_from_file_manager");
 	
-	var select = popup.find(".type select");
+	var select = popup.find(" > .type > select");
 	select.val("class_prop_var");
 	onChangePropertyVariableType(select[0]);
 	
@@ -920,7 +1432,7 @@ function onProgrammingTaskChooseObjectProperty(elm) {
 
 function chooseObjectProperty(elm) {
 	var popup = $("#choose_property_variable_from_file_manager");
-	var select = popup.find(".class_prop_var .property select");
+	var select = popup.find(" > .class_prop_var > .property > select");
 	
 	var value = select.val();
 	
@@ -1048,7 +1560,7 @@ function chooseFunction(elm) {
 	//set method
 	$(MyFancyPopup.settings.targetField).val(value ? value : "");
 	
-	if (value && (auto_convert || confirm("Do you wish to update automatically this function arguments?"))) {
+	if (value/* && (auto_convert || confirm("Do you wish to update automatically this function arguments?"))*/) {
 		var args = getFunctionArguments( select.attr("get_file_properties_url"), select.attr("file_path"), value);
 		ProgrammingTaskUtil.setArgs(args, $(MyFancyPopup.settings.targetField).parent().parent().find(".func_args .args"));
 	}
@@ -1092,7 +1604,7 @@ function chooseClassName(elm, do_not_update_args) {
 		
 		$(MyFancyPopup.settings.targetField).val(class_name ? class_name : "");
 		
-		if (!do_not_update_args && (auto_convert || confirm("Do you wish to update automatically this class arguments?"))) {
+		if (!do_not_update_args/* && (auto_convert || confirm("Do you wish to update automatically this class arguments?"))*/) {
 			var select = $("#choose_method_from_file_manager .method select");
 			var file_path = select.attr("file_path");
 			var get_file_properties_url = select.attr("get_file_properties_url");
@@ -1251,9 +1763,9 @@ function getNodeIncludeFolderPath(node, folder_path, bean_name) {
 			include_path = "VENDOR_PATH";
 		else if (bean_name == "test_unit")
 			include_path = "TEST_UNIT_PATH";
-		else if (layer_type == "bl")
+		else if (typeof layer_type == "string" && layer_type == "bl")
 			include_path = "$vars['business_logic_path']";
-		else if (layer_type == "pres") {
+		else if (typeof layer_type == "string" && layer_type == "pres") {
 			var project_path = node ? getNodeProjectPath(node) : "";
 			project_path = project_path && project_path.substr(project_path.length - 1) == "/" ? project_path.substr(0, project_path.length - 1) : project_path;
 			
@@ -1304,7 +1816,7 @@ function getNodeIncludeFolderPath(node, folder_path, bean_name) {
 					include_path = "$EVC->getPresentationLayer()->getLayerPathSetting()";
 			}
 		}
-		else if (getBeanItemType(bean_name)) { //to be used by the testunit pages
+		else if (getBeanItemType(bean_name)) { //to be used by the testunit pages and deployment
 			var broker_name = getBeanBrokerName(bean_name);
 			
 			if (layer_brokers_settings["business_logic_brokers_obj"][broker_name])
@@ -1332,9 +1844,9 @@ function getNodeIncludePath(node, file_path, bean_name) {
 			include_path = "VENDOR_PATH . \"" + file_path + "\"";
 		else if (bean_name == "test_unit")
 			include_path = "TEST_UNIT_PATH . \"" + file_path + "\"";
-		else if (layer_type == "bl")
+		else if (typeof layer_type == "string" && layer_type == "bl")
 			include_path = "$vars['business_logic_path'] . \"" + file_path + "\"";
-		else if (layer_type == "pres") {
+		else if (typeof layer_type == "string" && layer_type == "pres") {
 			var project_path = node ? getNodeProjectPath(node) : "";
 			project_path = project_path && project_path.substr(project_path.length - 1) == "/" ? project_path.substr(0, project_path.length - 1) : project_path;
 			
@@ -1393,7 +1905,7 @@ function getNodeIncludePath(node, file_path, bean_name) {
 					include_path = "$EVC->getPresentationLayer()->getLayerPathSetting() . \"" + file_path + "\"";
 			}
 		}
-		else if (getBeanItemType(bean_name)) { //to be used by the testunit pages
+		else if (getBeanItemType(bean_name)) { //to be used by the testunit pages and deployment
 			var broker_name = getBeanBrokerName(bean_name);
 			
 			if (layer_brokers_settings["business_logic_brokers_obj"][broker_name])
@@ -1465,6 +1977,56 @@ function chooseIncludeBlock(elm) {
 			var block = MyFancyPopup.settings.targetField.children(".block");
 			block.children("input").val(block_path);
 			block.children("select").val("string");
+			
+			MyFancyPopup.hidePopup();
+		}
+		else {
+			alert("invalid selected file.\nPlease choose a valid file.");
+		}
+	}
+}
+
+function onIncludeViewTaskChooseFile(elm) {
+	var popup = $("#choose_view_from_file_manager");
+	
+	MyFancyPopup.init({
+		elementToShow: popup,
+		parentElement: document,
+		
+		targetField: $(elm).parent().parent(),
+		updateFunction: chooseIncludeView
+	});
+	
+	MyFancyPopup.showPopup();
+}
+
+function chooseIncludeView(elm) {
+	var node = chooseViewFromFileManagerTree.getSelectedNodes();
+	node = node[0];
+	
+	if (node) {
+		var a = $(node).children("a");
+		var file_path = a.attr("file_path");
+		var bean_name = a.attr("bean_name");
+		var pos = file_path ? file_path.indexOf("/src/view/") : -1;
+		
+		if (file_path && pos != -1) {
+			var project_path = getNodeProjectPath(node);
+			project_path = project_path && project_path.substr(project_path.length - 1) == "/" ? project_path.substr(0, project_path.length - 1) : project_path;
+			project_path = project_path == selected_project_id ? "" : project_path;
+			
+			var view_path = file_path.substr(pos + 10);//10 == /src/view/
+			view_path = view_path.substr(view_path.length - 4, 1) == "." ? view_path.substr(0, view_path.lastIndexOf(".")) : view_path;
+			
+			var project = MyFancyPopup.settings.targetField.children(".project");
+			project.children("input").hide();
+			project.children("select.project").show();
+			project.children("select.project").val(project_path);
+			project.children("select.type").val("options");
+			
+			var view = MyFancyPopup.settings.targetField.children(".view");
+			view.children("input").val(view_path);
+			view.children("select").val("string");
 			
 			MyFancyPopup.hidePopup();
 		}
@@ -2597,6 +3159,14 @@ function updateDBTablesOnBrokerDBDriverChange(elm) {
 	}
 	else
 		StatusMessageHandler.showError("Error: get_broker_db_data_url is not defined!");
+}
+
+function refreshDBTablesOnBrokerDBDriverChange(elm) {
+	var p = $(elm).parent().parent();
+	var select_with_trigger = p.find(".db_driver select[onChange], .type select[onChange]").first();
+	
+	if (select_with_trigger[0])
+		select_with_trigger.trigger("change");
 }
 
 //to be used by the testunit pages, bc the layer_brokers_settings is only set in the view/testunit/edit_test.php

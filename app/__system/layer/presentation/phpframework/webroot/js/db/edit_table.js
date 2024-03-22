@@ -12,8 +12,11 @@ $(function() {
 	 		heightStyle: "fill",
 		});
 	
-	//set auto convert to true for a better user experience
+	//set auto convert to true for better user experience
 	auto_convert = true;
+	
+	//init taskFlowChartObj.StatusMessage, otherwise in case any error, we get get a javascript error
+	myWFObj.getTaskFlowChart().StatusMessage.init();
 	
 	//load task
 	var properties_html_elm = edit_table.find(" > .table_settings > .selected_task_properties");
@@ -35,12 +38,44 @@ $(function() {
 	
 	//prepare step 1
 	if (step == 1) {
-		editors_inited = true;
-		edit_table.find(".table_sql_statements .sql_statement > textarea.editor").each(function(idx, textarea) {
-			createSqlEditor(textarea);
-		});
+		if (!with_advanced_options) {
+			edit_table.accordion("option", "active", 0);
+			edit_table.accordion("refresh"); //refreshes the height of the table_settings
+			edit_table.find(".table_sql_statements .save_button .execute").attr("do_not_confirm", 1).trigger("click");
+		}
+		else {
+			editors_inited = true;
+			edit_table.find(".table_sql_statements .sql_statement > textarea.editor").each(function(idx, textarea) {
+				createSqlEditor(textarea);
+			});
+		}
 	}
 });
+
+function toggleAdvancedOptions() {
+	var main_obj = $(".edit_table");
+	var top_bar = $(".top_bar");
+	var toggle_advanced_options = top_bar.find("li.toggle_advanced_options");
+	var input = toggle_advanced_options.find("input");
+	var span = toggle_advanced_options.find("span");
+	
+	toggle_advanced_options.toggleClass("active");
+	main_obj.toggleClass("with_advanced_options");
+	top_bar.toggleClass("with_advanced_options");
+	
+	if (toggle_advanced_options.hasClass("active")) {
+		input.attr("checked", "checked").prop("checked", true);
+		span.html("Hide Advanced Features");
+	}
+	else {
+		input.removeAttr("checked").prop("checked", false);
+		span.html("Show Advanced Features");
+	}
+	
+	//show simple ui
+	if (!main_obj.hasClass("with_advanced_options") && main_obj.find(" > .table_settings .selected_task_properties .db_table_task_html.advanced_ui_shown"))
+		main_obj.find(" > .table_settings .selected_task_properties .db_table_task_html.advanced_ui_shown > ul > li:nth-child(1) > a").trigger("click");
+}
 
 function loadTableTaskOldNameProperty(task_html_elm, task_property_values) {
 	if (task_property_values && task_property_values.table_attr_names) {
@@ -93,13 +128,14 @@ function onUpdateTableAttributesHtmlWithSimpleAttributes(elm) {
 }
 
 function onSaveButton(elm) {
-	var table_settings = $(".edit_table > .table_settings");
+	var edit_table = $(".edit_table");
+	var table_settings = edit_table.children(".table_settings");
 	var properties_html_elm = table_settings.children(".selected_task_properties");
 	
 	//prepare task_property_values
 	var task_property_values = {};
 	var fields = DBTableTaskPropertyObj.getParsedTaskPropertyFields(properties_html_elm, null);
-	
+		
 	if (fields) {
 		var query_string = taskFlowChartObj.Property.getPropertiesQueryStringFromHtmlElm(properties_html_elm, "task_property_field");
 		var table_attr_old_names = [];
@@ -124,6 +160,20 @@ function onSaveButton(elm) {
 				console.log("Error executing parse_str function with query_string: " + query_string);
 			}
 		}
+	}
+	else {
+		var error_exists = myWFObj.getTaskFlowChart().StatusMessage.getMessageHtmlObj().children(".error").last().text().length > 0;
+		
+		if (error_exists) {
+			var clone = myWFObj.getTaskFlowChart().StatusMessage.getMessageHtmlObj().children(".error").last().clone();
+			clone.find(".close_message").remove();
+			var error = clone.html();
+			
+			clone.remove();
+			StatusMessageHandler.showError(error);
+		}
+		
+		return false;
 	}
 	
 	//prepare data
@@ -152,6 +202,7 @@ function onSaveButton(elm) {
 	
 	var form = table_settings.children("form");
 	form.children("textarea").val( JSON.stringify(data) );
+	form.children("input[name=with_advanced_options]").val( edit_table.hasClass("with_advanced_options") ? 1 : 0);
 	
 	//show loading
 	MyFancyPopup.init();
@@ -161,13 +212,24 @@ function onSaveButton(elm) {
 }
 
 function onDeleteButton(elm) {
-	if (confirm("This table will be deleted and all it's data will be lost forever!\nDo you wish to continue?") && confirm("Do you really wish to continue?\nThere is no rollback for this action..."))
+	if (confirm("This table will be deleted and all it's data will be lost forever!\nDo you wish to continue?") && confirm("Do you really wish to continue?\nThere is no rollback for this action...")) {
+		var edit_table = $(".edit_table");
+		var table_settings = edit_table.children(".table_settings");
+		var form = table_settings.children("form");
+		form.children("input[name=with_advanced_options]").val( edit_table.hasClass("with_advanced_options") ? 1 : 0);
+		
 		return true;
+	}
 	return false;
 }
 
 function onExecuteButton(elm) {
-	if (confirm("You are about to execute this sql on the DB.\nDo you really wish to continue?")) {
+	if (elm.getAttribute("do_not_confirm") || confirm("You are about to execute this sql on the DB.\nDo you really wish to continue?")) {
+		var edit_table = $(".edit_table");
+		var table_sql_statements = edit_table.children(".table_sql_statements");
+		var form = table_sql_statements.children("form");
+		form.children("input[name=with_advanced_options]").val( edit_table.hasClass("with_advanced_options") ? 1 : 0);
+		
 		//show loading
 		MyFancyPopup.init();
 		MyFancyPopup.showLoading();
@@ -177,15 +239,17 @@ function onExecuteButton(elm) {
 	return false;
 }
 
-function onBackButton(elm, step) {
+function onBackButton(elm, new_step) {
 	var edit_table = $(elm).parent().closest(".edit_table");
-	edit_table.accordion("option", "active", step);
+	edit_table.accordion("option", "active", new_step);
 	
-	if (step == 1 && !editors_inited) {
+	if (new_step == 1 && !editors_inited) {
 		edit_table.find(".table_sql_statements .sql_statement > textarea.editor").each(function(idx, textarea) {
 			createSqlEditor(textarea);
 		});
 	}
+	
+	step = new_step;
 	
 	return false;
 }
@@ -218,4 +282,44 @@ function createSqlEditor(textarea) {
 		
 		p.data("editor", editor);
 	}
+}
+
+function goToTablePopup(url, originalEvent) {
+	if (url) {
+		//check if ctrlKey is pressed and if yes, open in a new window
+		originalEvent = originalEvent || window.event;
+		
+		if (originalEvent && (originalEvent.ctrlKey || originalEvent.keyCode == 65)) {
+			url = url.replace(/(\?|&)popup=1/i, ""); //remove popup parameter from url
+			
+			var rand = Math.random() * 10000;
+			var tab = "tab" + rand;
+			var win = window.open(url, tab);
+			
+			if(win) //Browser has allowed it to be opened
+				win.focus();
+			
+			return false;
+		}
+		
+		//prepare popup
+		var popup = $(".go_to_table_popup");
+		
+		if (!popup[0]) {
+			popup = $('<div class="myfancypopup go_to_table_popup with_iframe_title"></div>');
+			$(document.body).append(popup);
+		}
+		
+		url += (url.indexOf("?") != -1 ? "&" : "?") + "popup=1";
+		
+		popup.html('<iframe src="' + url + '"></iframe>');
+		
+		MyFancyPopup.init({
+			elementToShow: popup,
+			//parentElement: document,
+		});
+		MyFancyPopup.showPopup();
+	}
+	
+	return false;
 }

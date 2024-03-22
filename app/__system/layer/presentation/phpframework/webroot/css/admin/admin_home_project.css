@@ -32,6 +32,7 @@ body,
 	border-radius:3px;
 }*/
 .admin_panel .project .project_title .label {
+	margin-bottom:5px;
 	opacity:.7;
 }
 .admin_panel .project .project_title .name {
@@ -187,29 +188,35 @@ body,
 	font-size:8pt;
 }
 .admin_panel .project_files .ui-tabs-panel .search_file {
+	max-width:200px;
 	margin:10px 0px 10px 10px;
 	white-space:nowrap;
+	position:relative;
+	display:inline-block;
 }
 .admin_panel .project_files .ui-tabs-panel .search_file .icon.search {
 	cursor:default;
 	color:var(--icon-active-color);
 }
 .admin_panel .project_files .ui-tabs-panel .search_file input {
-	width:150px;
+	width:100%;
 	margin-left:-28px;
 	padding:10px 20px 10px 25px;
 	color:var(--icon-active-color);
 	border-color:var(--icon-active-color);
 	border-radius:0.2rem;
 	font-size:8pt;
+	box-sizing:border-box;
 }
 .admin_panel .project_files .ui-tabs-panel .search_file input::placeholder {
 	color:var(--icon-active-color);
 }
 .admin_panel .project_files .ui-tabs-panel .search_file .icon.close {
+	margin:0;
 	color:var(--icon-active-color);
 	position:absolute;
-	margin:25px 0 0 -18px;
+	top:13px;
+	right:7px;
 }
 
 /* PROJECT FILES PANELS - PROJECT DEFAULT TEMPLATE */

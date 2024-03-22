@@ -8,18 +8,21 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $settings = $_POST["settings"];
 
 if (is_array($settings)) {
-	MyArray::arrKeysToLowerCase($settings, true);
+	$lower_settings = array();
 	
-	$code = SequentialLogicalActivityCodeConverter::convertActionsSettingsToCode($EVC, $webroot_cache_folder_path, $webroot_cache_folder_url, $settings["actions"]);
+	foreach ($settings as $type => $value) //Do not lower all the settings inner keys. Only lower the main keys. Note that the "draw_graph" action can have uppercase and capitalized keys.
+		$lower_settings[ strtolower($type) ] = $value;
 	
-	if ($settings["css"] || $settings["js"]) {
+	$code = SequentialLogicalActivityCodeConverter::convertActionsSettingsToCode($EVC, $webroot_cache_folder_path, $webroot_cache_folder_url, $lower_settings["actions"]);
+	
+	if ($lower_settings["css"] || $lower_settings["js"]) {
 		$code = preg_replace("/\?>$/", "", $code);
 		
-		if ($settings["css"])
-			$code .= "\n/*** STYLE ***/\n" . 'echo "<style>" . ' . SequentialLogicalActivityCodeConverter::prepareStringValue($settings["css"]) . ' . "</style>";' . "\n";
+		if ($lower_settings["css"])
+			$code .= "\n/*** STYLE ***/\n" . 'echo "<style>" . ' . SequentialLogicalActivityCodeConverter::prepareStringValue($lower_settings["css"]) . ' . "</style>";' . "\n";
 		
-		if ($settings["js"]) 
-			$code .= "\n/*** SCRIPT ***/\n" . 'echo "<script>" . ' . SequentialLogicalActivityCodeConverter::prepareStringValue($settings["js"]) . ' . "</script>";' . "\n";
+		if ($lower_settings["js"]) 
+			$code .= "\n/*** SCRIPT ***/\n" . 'echo "<script>" . ' . SequentialLogicalActivityCodeConverter::prepareStringValue($lower_settings["js"]) . ' . "</script>";' . "\n";
 		
 		$code .= "\n?>";
 	}

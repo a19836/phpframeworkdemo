@@ -10,7 +10,7 @@
 }
 
 .soap_connector_task_html {
-	
+	min-width:500px;
 }
 .soap_connector_task_html > .info {
 	text-align:center;

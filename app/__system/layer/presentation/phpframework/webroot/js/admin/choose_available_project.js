@@ -251,6 +251,39 @@ function addProject() {
 }
 
 function onSuccessfullAddProject(opts) {
+	var filter_by_layout, bean_name, bean_file_name, project, is_ctrl_key_pressed;
+	
+	if (opts) {
+		filter_by_layout = opts["new_filter_by_layout"];
+		bean_name = opts["new_bean_name"];
+		bean_file_name = opts["new_bean_file_name"];
+		project = opts["new_project"];
+		is_ctrl_key_pressed = opts["is_ctrl_key_pressed"];
+	}
+	
+	if (is_ctrl_key_pressed && filter_by_layout) {
+		url = admin_home_project_page_url.replace("#filter_by_layout#", filter_by_layout);
+		
+		var rand = Math.random() * 10000;
+		var win = window.open(url, "tab" + rand);
+		
+		if (win) { //Browser has allowed it to be opened
+			win.focus();
+			
+			MyFancyPopup.hidePopup();
+			
+			//refreshes parent window
+			if (window.parent.parent != window.parent)
+				window.parent.parent.document.location = "" + window.parent.parent.document.location;
+			else if (window.parent != window)
+				window.parent.document.location = "" + window.parent.document.location;
+			else //refreshes window
+				window.document.location = "" + window.document.location;
+			
+			return true; //don't execute code below.
+		}
+	}
+	
 	var choose_available_project= $(".choose_available_project");
 	var folder_to_filter = choose_available_project.find(".top_bar .breadcrumbs").attr("folder_to_filter");
 	var url = "" + document.location;
@@ -262,12 +295,7 @@ function onSuccessfullAddProject(opts) {
 	if (window.parent && window.parent != window) {
 		var parent_url = window.parent.location;
 		
-		if (opts) {
-			var filter_by_layout = opts["new_filter_by_layout"];
-			var bean_name = opts["new_bean_name"];
-			var bean_file_name = opts["new_bean_file_name"];
-			var project = opts["new_project"];
-			
+		if (filter_by_layout || (bean_name && bean_file_name && project)) {
 			url = admin_home_project_page_url.replace("#filter_by_layout#", filter_by_layout);
 			
 			parent_url = "" + parent_url; //convert to string
@@ -285,10 +313,13 @@ function onSuccessfullAddProject(opts) {
 		window.parent.location = parent_url;
 	}
 	else {
-		if (opts && opts["new_filter_by_layout"])
-			url = admin_home_project_page_url.replace("#filter_by_layout#", opts["new_filter_by_layout"]);
+		selectAvailableProject(project, window.event);
 		
-		document.location = url;
+		/* Deprecated: if we are in the "choose project" from the simple workspace, we don't want to do this redirect, but intead, we want to call the selectAvailableProject. Basically the selectAvailableProject can be used for both simple and advanced workspace, bc it takes care of both cases.
+		if (filter_by_layout)
+			url = admin_home_project_page_url.replace("#filter_by_layout#", filter_by_layout);
+		
+		document.location = url;*/
 	}
 }
 

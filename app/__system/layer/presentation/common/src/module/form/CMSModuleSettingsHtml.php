@@ -69,7 +69,6 @@ if ($PEVC) {
 	$js_head .= $sla_js_head;
 	$js_head .= '
 	var get_form_wizard_settings_url = \'' . $project_url_prefix . "module/form/get_form_wizard_settings?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path" . '\';
-	var get_input_data_method_settings_url = \'' . $project_url_prefix . 'module/form/get_input_data_method_settings\';
 	var convert_form_settings_to_workflow_code_url = \'' . $project_url_prefix . "module/form/convert_form_settings_to_workflow_code?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$path" . '\';
 	var create_form_settings_code_url = \'' . $project_url_prefix . "module/form/create_form_settings_code" . '\';
 	
@@ -112,7 +111,7 @@ if ($PEVC) {
 			?>
 		</div>
 				
-		<div class="myfancypopup form_wizard">
+		<div class="myfancypopup form_wizard with_title">
 			<div class="title">Form Wizard</div>
 			<ul class="steps">
 				<li class="step panel_type_selection">

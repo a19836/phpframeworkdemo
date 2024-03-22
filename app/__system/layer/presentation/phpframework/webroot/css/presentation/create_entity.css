@@ -21,28 +21,16 @@ body #main_column {
 .create_entity .top_bar:not(.create_entity_top_bar) {
 	display:none !important;
 }
-.create_entity.popup_without_popup_close .top_bar.create_entity_top_bar.in_popup.with_cancel header .title {
-	margin-left:65px;
-}
-.create_entity.popup_without_popup_close .top_bar.create_entity_top_bar.in_popup header > ul {
-	left:15px;
-	right:15px;
-}
 .create_entity .top_bar.create_entity_top_bar header > ul > li.button {
 	margin-left:10px;
 	margin-right:10px;
 	float:right;
 }
-.create_entity .top_bar.create_entity_top_bar.in_popup header > ul > li.button:last-child {
+.create_entity .top_bar.create_entity_top_bar.in_popup header > ul > li.button.continue {
+	margin-right:0;
+}
+.create_entity .top_bar.create_entity_top_bar.in_popup header > ul > li.button.back {
 	margin-right:5px;
-}
-.create_entity.popup_without_popup_close .top_bar.create_entity_top_bar.in_popup.with_cancel header > ul > li.cancel {
-	margin-left:0;
-	position:absolute;
-	left:0;
-}
-.create_entity:not(.popup_without_popup_close) .top_bar.create_entity_top_bar header > ul > li.cancel {
-	display:none;
 }
 .create_entity .top_bar.create_entity_top_bar header > ul > li.button > a.active {
 	background:var(--main-popup-header-bg);
@@ -121,13 +109,22 @@ body #main_column {
 /* STEP 1 - Pages List */
 .create_entity .creation_step_1 > .title {
 	display:block;
-	margin:40px 0 20px;
+	margin:40px 0 0;
 	font-size:14px;
 	font-weight:bold;
 	text-align:center;
 }
+.create_entity .creation_step_1 > .sub_title {
+	margin:10px 0 20px;
+	font-size:10px;
+	text-align:center;
+	opacity:.5;
+}
+.create_entity .creation_step_1 > .sub_title a {
+	color:inherit;
+}
 
-.create_entity .creation_step_1 .install_page > ul {
+.create_entity:not(.local_upload_shown) .creation_step_1 .install_page > ul {
 	display:none;
 }
 .create_entity .creation_step_1 .install_page .install_store_page > .title {

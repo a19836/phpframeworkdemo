@@ -7,6 +7,7 @@
 	</settings>
 	<menu_widget></menu_widget>
 	<template_widget><![CDATA[]]></template_widget>
+	<properties></properties>
 	<menu_css><![CDATA[
 		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-import-template-region-html:before,
 		  body > .menu-widget.menu-widget-import-template-region-html.ui-draggable-dragging:before {

@@ -34,7 +34,7 @@ input, select, textarea {
 	padding-bottom:20px;
 }
 .in_popup .main_content .content {
-	margin-top:70px;
+	margin-top:50px;
 }
 
 /* GENERIC */
@@ -61,12 +61,9 @@ input, select, textarea {
 	background: -ms-linear-gradient(top, #eee 50%, #ffffff73 100%);
 	background: linear-gradient(to bottom, #eee 50%, #ffffff73 100%);*/
 }
-.in_popup .main_content .menu {
-	min-height:50px;
-	padding:15px 40px 15px 15px;
+.main_content .menu.inside_popup_title {
+	padding-right:40px !important;
 	box-sizing:border-box;
-	background:var(--main-popup-header-bg);
-	color:var(--main-popup-header-color);
 }
 .main_content .menu ul.dropdown li {
 	background:none;
@@ -93,7 +90,7 @@ input, select, textarea {
 	background:#DFE1ED;
 	min-width:150px;
 }
-.in_popup .main_content .menu ul.dropdown li ul {
+.main_content .menu.inside_popup_title ul.dropdown li ul {
 	background:var(--main-popup-header-bg);
 }
 .main_content .menu ul.dropdown li.large ul {

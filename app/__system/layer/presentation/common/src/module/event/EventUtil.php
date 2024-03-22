@@ -823,6 +823,13 @@ class EventUtil {
 					break;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
+					$data["published"] = is_numeric($data["published"]) ? $data["published"] : 0;
+					$data["photo_id"] = is_numeric($data["photo_id"]) ? $data["photo_id"] : 0;
+					$data["allow_comments"] = is_numeric($data["allow_comments"]) ? $data["allow_comments"] : 1;
+					$data["country_id"] = is_numeric($data["country_id"]) ? $data["country_id"] : 0;
+					$data["latitude"] = is_numeric($data["latitude"]) ? $data["latitude"] : 0;
+					$data["longitude"] = is_numeric($data["longitude"]) ? $data["longitude"] : 0;
+					
 					$data["end_date"] = empty($data["end_date"]) ? '0000-00-00 00:00:00' : $data["end_date"];
 			
 					$Event = $broker->callObject("module/event", "Event", array("no_cache" => true));
@@ -834,6 +841,15 @@ class EventUtil {
 					break;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
+					$data["published"] = is_numeric($data["published"]) ? $data["published"] : 0;
+					$data["photo_id"] = is_numeric($data["photo_id"]) ? $data["photo_id"] : 0;
+					$data["allow_comments"] = is_numeric($data["allow_comments"]) ? $data["allow_comments"] : 1;
+					$data["country_id"] = is_numeric($data["country_id"]) ? $data["country_id"] : 0;
+					$data["latitude"] = is_numeric($data["latitude"]) ? $data["latitude"] : 0;
+					$data["longitude"] = is_numeric($data["longitude"]) ? $data["longitude"] : 0;
+					
+					$data["end_date"] = empty($data["end_date"]) ? '0000-00-00 00:00:00' : $data["end_date"];
+					
 					$event_data = array(
 						"title" => $data["title"], 
 						"sub_title" => $data["sub_title"], 

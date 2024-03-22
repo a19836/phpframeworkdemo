@@ -11,7 +11,7 @@ $(function() {
 		pagesFromFileManagerTree = new MyTree({
 			multiple_selection : false,
 			toggle_selection : false,
-			toggle_children_on_click : false,
+			toggle_children_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
 			ajax_callback_after : prepareProjectLayerNodes2,
 			ajax_callback_error : validateLayerNodesRequest,
@@ -23,7 +23,7 @@ $(function() {
 		templatesFromFileManagerTree = new MyTree({
 			multiple_selection : false,
 			toggle_selection : false,
-			toggle_children_on_click : false,
+			toggle_children_on_click : true,
 			ajax_callback_before : prepareLayerNodes1,
 			ajax_callback_after : prepareProjectLayerNodes2,
 			ajax_callback_error : validateLayerNodesRequest,
@@ -250,7 +250,6 @@ function prepareProjectLayerNodes2(ul, data) {
 		});
 		
 		//prepare searched files
-		searchFiles( main_parent.find(" > .search_file > input")[0] );
 		sortFiles( main_parent.find(" > .sort_files")[0] );
 	}
 }
@@ -340,12 +339,11 @@ function updatePathBreadcrumbs(mytree, path) {
 	breadcrumbs.find(".breadcrumb-item:not(.fixed)").remove();
 	
 	var home_label = is_pages ? "pages" : "templates";
-	var breadcrumps_html = '<span class="breadcrumb-item"><a href="javascript:void(0)" onClick="refreshTreeWithNewPath(this, \'\', \'' + mytree_parent_class + '\')">' + home_label + '</a></span>';
+	var mytree_parent_class = is_pages ? "pages" : "templates";
+	var root_path = mytree_parent.attr("root_path");
+	var breadcrumps_html = '<span class="breadcrumb-item"><a href="javascript:void(0)" onClick="refreshTreeWithNewPath(this, \'' + root_path + '\', \'' + mytree_parent_class + '\')">' + home_label + '</a></span>';
 	
 	if (path) { //path could be undefined
-		var root_path = mytree_parent.attr("root_path");
-		var mytree_parent_class = is_pages ? "pages" : "templates";
-		
 		path = ("" + path).replace(/\/+/g, "/").replace(/^\/+/g, "").replace(/\/+$/g, ""); //remove duplicates, start and end slash
 		root_path = ("" + root_path).replace(/\/+/g, "/").replace(/^\/+/g, "").replace(/\/+$/g, ""); //remove duplicates, start and end slash
 		
@@ -377,7 +375,7 @@ function getProjectCurrentFolderHtml(current_path, prefix_path, mytree_parent_cl
 		if (dir) {
 			parent_folder += (parent_folder ? "/" : "") + dir;
 			
-			html += '<span class="breadcrumb-item"><a href="javascript:void(0)" onClick="refreshTreeWithNewPath(this, \'' + prefix_path + parent_folder + '\', \'' + mytree_parent_class + '\');">' + dir + '</a></span>';
+			html += '<span class="breadcrumb-item"><a href="javascript:void(0)" onClick="refreshTreeWithNewPath(this, \'' + prefix_path + parent_folder + '\', \'' + (mytree_parent_class ? mytree_parent_class : mytree_parent_class) + '\');">' + dir + '</a></span>';
 		}
 	}
 	
@@ -919,4 +917,3 @@ function onSuccessfullInstallTemplate() {
 	
 	document.location = url;
 }
-

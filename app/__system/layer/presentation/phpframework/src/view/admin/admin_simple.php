@@ -17,7 +17,7 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_simple_allowed) { echo '<script>
+include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtilPath("TourGuideUIHandler"); if (!$is_admin_ui_simple_allowed) { echo '<script>
 		alert("You don\'t have permission to access this Workspace!");
 		document.location="' . $project_url_prefix . 'auth/logout";
 	</script>'; die(); } $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $logged_name_initials = explode(" ", $logged_name); $logged_name_initials = strtoupper(substr($logged_name_initials[0], 0, 1) . substr($logged_name_initials[1], 0, 1)); $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $admin_home_project_page_url = "admin/admin_home_project?filter_by_layout=#filter_by_layout#"; $admin_home_projects_page_url = ""; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
@@ -70,7 +70,7 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 					<ul>
 						<li class="label"><a>Select a Project:</a></li>'; $selected_project_name = ""; $is_single_presentation_layer = count($presentation_projects_by_layer_label_and_folders) == 1; foreach ($presentation_projects_by_layer_label_and_folders as $layer_label => $projs) { if (!$is_single_presentation_layer) $main_content .= '<li class="projects_group">
 							<a><i class="icon project_folder"></i> <span>' . $layer_label . '</span></a>
-							<ul>'; $main_content .= getProjectsHtml($projs, $filter_by_layout); if (!$is_single_presentation_layer) $main_content .= '	</ul>
+							<ul>'; $layer_bean_folder_name = $presentation_bean_folder_name_by_layer_label[$layer_label]; $main_content .= getProjectsHtml($projs, $filter_by_layout, $layer_bean_folder_name . "/" . $EVC->getCommonProjectName()); if (!$is_single_presentation_layer) $main_content .= '	</ul>
 						</li>'; if ($filter_by_layout && $presentation_projects_by_layer_label[$layer_label][$filter_by_layout]) $selected_project_name = $presentation_projects_by_layer_label[$layer_label][$filter_by_layout]; } foreach ($non_projects_layout_types as $lname => $lid) $main_content .= '<li class="project' . ($filter_by_layout == $lname ? ' selected' : '') . '">
 							<a value="' . $lname . '" onClick="filterByLayout(this)"><i class="icon project"></i> <span>' . $lname . '</span></a>
 						</li>'; $main_content .= '	</ul>
@@ -139,11 +139,13 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 	<div class="iframe_overlay">
 		<div class="iframe_loading">Loading...</div>
 	</div>
-</div>'; if ($default_page) { $main_content .= '<script>$("iframe")[0].src = \'' . $default_page . '\';</script>'; } function getProjectsHtml($v12ed481092, $pb154d332) { $pf8ed4912 = ""; if (is_array($v12ed481092)) foreach ($v12ed481092 as $pcfd27d54 => $v5c37a7b23d) { if (is_array($v5c37a7b23d)) $pf8ed4912 .= '<li class="projects_group">
+</div>'; if ($default_page) { $main_content .= '<script>$("iframe")[0].src = \'' . $default_page . '\';</script>'; } $main_content .= TourGuideUIHandler::getHtml($entity, $project_common_url_prefix); function getProjectsHtml($v12ed481092, $pb154d332, $v02ea8e5737 = null) { $pf8ed4912 = ""; if (is_array($v12ed481092)) { if (isset($v12ed481092[$v02ea8e5737])) $pf8ed4912 .= '<li class="project project_common' . ($pb154d332 == $v02ea8e5737 ? ' selected' : '') . '">
+						<a value="' . $v02ea8e5737 . '" onClick="filterByLayout(this)"><i class="icon project"></i> <span>' . $v12ed481092[$v02ea8e5737] . '</span></a>
+					</li>'; foreach ($v12ed481092 as $pcfd27d54 => $v5c37a7b23d) { if (is_array($v5c37a7b23d)) $pf8ed4912 .= '<li class="projects_group">
 							<a><i class="icon project_folder"></i> <span>' . $pcfd27d54 . '</span></a>
 							<ul>
 							' . getProjectsHtml($v5c37a7b23d, $pb154d332) . '
 							</ul>
-						</li>'; else $pf8ed4912 .= '<li class="project' . ($pb154d332 == $pcfd27d54 ? ' selected' : '') . '">
+						</li>'; else if ($pcfd27d54 != $v02ea8e5737) $pf8ed4912 .= '<li class="project' . ($pb154d332 == $pcfd27d54 ? ' selected' : '') . '">
 							<a value="' . $pcfd27d54 . '" onClick="filterByLayout(this)"><i class="icon project"></i> <span>' . $v5c37a7b23d . '</span></a>
-						</li>'; } return $pf8ed4912; } ?>
+						</li>'; } } return $pf8ed4912; } ?>

@@ -56,7 +56,7 @@ var is_popup = ' . ($popup ? 1 : 0) . ';
 		</li>' : '') . '
 		' . ($is_manage_users_allowed ? '<li class="manage_users" onClick="return goTo(\'' . $project_url_prefix . 'user/manage_users\', event)">
 			<div class="photo"></div>
-			<label>Manage Users</label>
+			<label>Manage Permissions/Users</label>
 			<div class="description">Manage the framework\'s users</div>
 		</li>' : '') . '
 		' . ($is_testunits_allowed ? '<li class="manage_test_units" onClick="return goTo(\'' . $project_url_prefix . 'phpframework/testunit/\', event)">

@@ -24,8 +24,8 @@
 	<link rel="icon" href="data:;base64,=" />
 	<link rel="stylesheet" href="__system/common/css/global.css" type="text/css" charset="utf-8" />
 	<style>
-		body {width:100%; font-family:verdana,courier,arial; font-size:14px;}
-		h1 {text-align:center; width:100%; height:30px; font-size:20px; color:#333;}
+		body {width:100%; font-family:verdana,courier,arial; font-size:14px; overflow:overlay;}
+		h1 {text-align:center; width:100%; height:30px; font-size:20px; color:#333; margin-top:20px;}
 		ul {padding-left:0px !important;}
 		li {margin-top:10px; margin-left:20px !important;}
 		ol {margin-left:20px !important;}
@@ -38,6 +38,31 @@
 		.continue , .continue a {font-weight:bold; font-style:italic;}
 		.enjoy {width:100%; text-align:center; margin-top:50px; margin-bottom:20px;}
 		.disable, .disable .writeable, .disable .continue {color:#999;}
+		
+		/* SCROLLBARS */
+		::-webkit-scrollbar {
+			width:10px;
+			height:10px;
+			background:transparent;
+		}
+		::-webkit-scrollbar-track {
+			/*-webkit-border-radius:5px;
+			border-radius:5px;
+			-webkit-box-shadow:inset 0 0 6px rgba(0,0,0, 0);*/
+			background:transparent;
+		}
+		::-webkit-scrollbar-thumb {
+			background:#83889E;
+			/*-webkit-box-shadow:inset 0 0 6px rgba(250,250,250,0.8);*/
+			
+			background-clip:padding-box;
+			border:2px solid transparent;
+			border-radius:9999px;
+			/*-webkit-box-shadow:0 0px 1px var(--main-scrollbar-thumb-shadow-color);*/
+		}
+		::-webkit-scrollbar-thumb:window-inactive {
+			/*background:rgba(0,0,0,0.35);*/
+		}
 	</style>
 </head>
 <body>
@@ -75,7 +100,7 @@ $dir_path = str_replace(DIRECTORY_SEPARATOR, "/", __DIR__) . "/"; $installation_
 			<li>allow_url_fopen = Off</li>
 			<li>allow_url_include = Off</li>
 
-			<li>disable_functions = dl,pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wifcontinued,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,exec,shell_exec,passthru,system,proc_open,popen,parse_ini_file,show_source</li>	
+			<li style=\"overflow-wrap:break-word;\">disable_functions = dl,pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wifcontinued,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,exec,shell_exec,passthru,system,proc_open,popen,parse_ini_file,show_source</li>	
 		</ul>
 		<br/>
 		And if possible the following ones too (but only if you get request body limit exceed or something similar):
@@ -151,8 +176,8 @@ $dir_path = str_replace(DIRECTORY_SEPARATOR, "/", __DIR__) . "/"; $installation_
 		<br>
 		If some module is missing you need to execute the command bellow in Linux to install the following packages:
 		<ul>
-			<li>sudo apt-get/yum install php-common php-cli php-bcmath php-curl php-gd php-mbstring php-mysql/php-mysqlnd php-pgsql php-xml php-ssh2 php-json</li>
-			<li>and optionally: sudo apt-get/yum install php-soap php-opcache php-dbg php-process php-odbc php-pdo php-fpm php-dba php-dbg</li>
+			<li style=\"white-space:nowrap;\">sudo apt-get/yum install php-common php-cli php-bcmath php-curl php-gd php-mbstring php-mysql/php-mysqlnd php-pgsql php-xml php-ssh2 php-json</li>
+			<li style=\"white-space:nowrap;\">and optionally: sudo apt-get/yum install php-soap php-opcache php-dbg php-process php-odbc php-pdo php-fpm php-dba php-dbg</li>
 		</ul>
 		
 		<br>
@@ -165,7 +190,7 @@ $dir_path = str_replace(DIRECTORY_SEPARATOR, "/", __DIR__) . "/"; $installation_
 	</li>
 	<li>Go to your /etc/mysql/my.cnf and add the following line:
 		<ul>
-			<li>
+			<li style=\"white-space:nowrap;\">
 				[mysqld]<br>
 				#if mysql version < 8<br>
 				sql-mode=\"ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION\"<br>

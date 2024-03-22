@@ -22,7 +22,7 @@ $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_q
 		</script>'; } else if ($_POST && $status) { $call_edit_project_details = false; $msg = $extra_message ? $extra_message : ""; $on_success_js_func_opts = $on_success_js_func ? array( "layer_bean_folder_name" => $layer_bean_folder_name, "new_filter_by_layout" => $new_filter_by_layout, "new_bean_name" => $bean_name, "new_bean_file_name" => $bean_file_name, "new_project" => $path ) : null; $project_post_data = array( "on_success_js_func" => $on_success_js_func ? $on_success_js_func : "refreshLastNodeParentChilds", "on_success_js_func_opts" => $on_success_js_func_opts, "msg" => $msg ); unset($get_bkp["step"]); $get_bkp["bean_name"] = $bean_name; $get_bkp["bean_file_name"] = $bean_file_name; $get_bkp["path"] = $path; $get_bkp["filter_by_layout"] = $new_filter_by_layout; $query_string = http_build_query($get_bkp); $main_content = '<script>
 			' . ($msg ? 'alert("' . str_replace('"', '', $msg) . '");' : '') . '
 			postToUrl(\'?' . $query_string . '&creation_step=' . ($get_store_programs_url ? 1 : 2) . '\', ' . json_encode($project_post_data) . ');
-		</script>'; } if ($call_edit_project_details) { include_once $EVC->getViewPath("presentation/edit_project_details"); $project_exists = ($_POST && $is_previous_existent_project) || (!$_POST && $is_existent_project); $main_content = '<div class="top_bar create_project_top_bar with_cancel' . ($popup ? ' in_popup' : '') . '">
+		</script>'; } if ($call_edit_project_details) { include_once $EVC->getViewPath("presentation/edit_project_details"); $project_exists = ($_POST && $is_previous_existent_project) || (!$_POST && $is_existent_project); $main_content = '<div class="top_bar create_project_top_bar popup_with_iframe_left_popup_close popup_with_iframe_popup_close_button' . ($popup ? ' in_popup' : '') . '">
 			<header>
 				<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>
 				<ul>
@@ -30,7 +30,7 @@ $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_q
 					<li class="cancel button" data-title="Cancel"><a class="active" href="javascript:void(0)"' . ($is_existent_project ? ' onClick="cancel()' : '') . '">Cancel</a></li>
 				</ul>
 			</header>
-		</div>' . $main_content; } } else { $project_post_data = array( "on_success_js_func" => $on_success_js_func, "on_success_js_func_opts" => $on_success_js_func_opts, "msg" => $msg ); if ($creation_step == 3) { include_once $EVC->getViewPath("admin/install_program"); if (!$step) { $main_content = '<div class="top_bar create_project_top_bar with_cancel install_program_step_0' . ($popup ? ' in_popup' : '') . '">
+		</div>' . $main_content; } } else { $project_post_data = array( "on_success_js_func" => $on_success_js_func, "on_success_js_func_opts" => $on_success_js_func_opts, "msg" => $msg ); if ($creation_step == 3) { include_once $EVC->getViewPath("admin/install_program"); if (!$step) { $main_content = '<div class="top_bar create_project_top_bar popup_with_iframe_left_popup_close popup_with_iframe_popup_close_button install_program_step_0' . ($popup ? ' in_popup' : '') . '">
 				<header>
 					<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>
 					<ul>
@@ -41,9 +41,10 @@ $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_q
 				</header>
 			</div>
 			<div class="title">Please choose the type of project you wish to create:</div>
+			<div class="sub_title"><a href="javascript:void(0)" onClick="toggleLocalUpload(this)">Show Advanced Features</a></div>
 			' . $main_content . '
-			<script>initStorePrograms();</script>'; } else { $main_content = '
-			<div class="top_bar create_project_top_bar with_cancel' . ($popup ? ' in_popup' : '') . '">
+			<script>initInstallPrograms();</script>'; } else { $main_content = '
+			<div class="top_bar create_project_top_bar popup_with_iframe_left_popup_close popup_with_iframe_popup_close_button' . ($popup ? ' in_popup' : '') . '">
 				<header>
 					<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>
 					<ul>
@@ -88,7 +89,7 @@ $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_q
 
 		<!-- Add Layout CSS file -->
 		<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />'; $main_content = '
-		<div class="top_bar create_project_top_bar with_cancel' . ($popup ? ' in_popup' : '') . '">
+		<div class="top_bar create_project_top_bar popup_with_iframe_left_popup_close popup_with_iframe_popup_close_button' . ($popup ? ' in_popup' : '') . '">
 			<header>
 				<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>
 				<ul>

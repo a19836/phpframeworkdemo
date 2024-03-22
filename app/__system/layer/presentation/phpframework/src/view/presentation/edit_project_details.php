@@ -56,7 +56,8 @@ var is_popup = ' . ($popup ? "true" : "false") . ';
 	</header>
 </div>
 <div class="edit_project_details' . (count($layers_projects) == 1 ? ' single_presentation_layer' : '') . ($is_existent_project ? ' existent_project' : '') . '">'; $main_content .= '
-	<div id="choose_project_folder_url_from_file_manager" class="myfancypopup choose_from_file_manager">
+	<div id="choose_project_folder_url_from_file_manager" class="myfancypopup choose_from_file_manager with_title">
+		<div class="title">Choose a Folder</div>
 		<div class="broker">
 			<label>Broker:</label>
 			<select onChange="updateLayerUrlFileManager(this)">'; $t = count($presentation_brokers); for ($i = 0; $i < $t; $i++) { $b = $presentation_brokers[$i]; $main_content .= '<option bean_file_name="' . $b[1] . '" bean_name="' . $b[2] . '" value="' . $b[0] . '"' . ($bn == $bean_name && $bean_file_name == $layer_props["bean_file_name"] ? " selected" : "") . '>' . $b[0] . '</option>'; } $main_content .= '

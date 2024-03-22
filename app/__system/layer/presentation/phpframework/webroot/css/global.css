@@ -310,6 +310,7 @@ input[type=submit]:not(:disabled),
 	align-items:center;*/
 	z-index:99999 !important;
 	overflow-y:auto;
+	overflow-y:overlay;
 }
 .status_message:not(.bottom_messages) .status_message_info,
   .status_message:not(.bottom_messages) .status_message_error {
@@ -324,6 +325,7 @@ input[type=submit]:not(:disabled),
 	box-sizing:border-box;
 	overflow-x:hidden;
 	overflow-y:auto;
+	overflow-y:overlay;
 	position:relative;
 	border:1px solid #83889E;
 	border-radius:3px;

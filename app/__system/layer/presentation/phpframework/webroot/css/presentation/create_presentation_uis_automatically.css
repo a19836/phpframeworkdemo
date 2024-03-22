@@ -128,7 +128,7 @@ body,
 	text-align:center;
 	background:var(--main-iframe-bg);
 	color:var(--main-iframe-color);
-	border-radius:1rem;
+	border-radius:5px;
 }
 .select_tables .brokers .info {
 	display:block;
@@ -154,8 +154,9 @@ body,
 	margin:20px;
 	padding:20px;
 	text-align:center;
-	background:#eee;
-	border-radius:1rem;
+	background:var(--main-iframe-bg);
+	color:var(--main-iframe-color);
+	border-radius:5px;
 }
 .select_tables .users_permissions .info {
 	display:block;

@@ -189,7 +189,9 @@ class CommonModuleTableExtraAttributesUtil {
 				$db_attribute = $attr_settings["db_attribute"];
 				
 				if ($db_attribute) {
-					if (!$db_attribute["primary_key"] && $db_attribute["null"] && (ObjTypeHandler::isDBTypeDate($db_attribute["type"]) || ObjTypeHandler::isDBTypeNumeric($db_attribute["type"]))) {
+					$type = $db_attribute["type"];
+					
+					if (!$db_attribute["primary_key"] && $db_attribute["null"] && (ObjTypeHandler::isDBTypeDate($type) || ObjTypeHandler::isDBTypeNumeric($type))) {
 						$default = $db_attribute["default"];
 						
 						if (ObjTypeHandler::isDBAttributeValueACurrentTimestamp($default))
@@ -207,8 +209,8 @@ class CommonModuleTableExtraAttributesUtil {
 						}
 					}
 					
-					if (ObjTypeHandler::convertCompositeTypeIntoSimpleType($db_attribute["type"]) != "no_string" && !ObjTypeHandler::isPHPTypeNumeric($db_attribute["type"])) {
-						if ($data[$attr_name]) {
+					if (ObjTypeHandler::convertCompositeTypeIntoSimpleType($type) != "no_string" && !ObjTypeHandler::isPHPTypeNumeric($type)) {
+						if (!empty($data[$attr_name])) {
 							$sanitize_html = empty($attr_settings["allow_javascript"]);
 							
 							if ($sanitize_html) {
@@ -223,6 +225,11 @@ class CommonModuleTableExtraAttributesUtil {
 							$data[$attr_name] = addcslashes($data[$attr_name], "\\'");
 						}
 					}
+					
+					//convert string to real numeric value. This is very important, bc in the insert and update primitive actions of the DBSQLConverter, the sql must be created with numeric values and without quotes, otherwise the DB server gives a sql error.
+					//although this function gets called for hibernate broker also, we only need to do this check for the DB broker, although its ok to do it for the hibernate also. Note that the hibernate already has this check covered.
+					if (!$is_ibatis && isset($data[$attr_name]) && is_string($data[$attr_name]) && is_numeric($data[$attr_name]) && ObjTypeHandler::isDBTypeNumeric($type)) 
+						$data[$attr_name] += 0;
 				}
 			}
 		

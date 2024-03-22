@@ -74,7 +74,9 @@
 	border-top:0;
 }
 .taskflowchart .tasks_flow #layer_drivers {
+	border-top-style:solid;
 	border-bottom:0;
+	background:#f9f9f9;
 }
 .taskflowchart .tasks_flow .layer_title {
 	width:90vw; 

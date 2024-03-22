@@ -2,10 +2,32 @@ $(function () {
 	if (is_obj_valid) {
 		hideOrShowIsBusinessLogicService( $(".top_bar .title > select.is_business_logic_service")[0] );
 		
+		$("#ui .taskflowchart .workflow_menu > ul.dropdown, #code .code_menu > ul").find("li.toggle_main_settings").after(toggle_advanced_settings_html);
+		
 		//set saved_class_method_settings_id
 		saved_class_method_settings_id = getFileClassMethodSettingsId();
 	}
 });
+
+function toggleBLAdvancedSettings(elm) {
+	elm = $(elm);
+	var advanced_settings = $(".advanced_settings");
+	var menu = $("#ui .taskflowchart .workflow_menu > ul.dropdown, #code .code_menu > ul").find("li.toggle_advanced_settings");
+	var input = menu.find("input");
+	var span = menu.find("span");
+	var is_shown = advanced_settings.css("display") != "none";
+	
+	if (is_shown) {
+		input.removeAttr("checked").prop("checked", false);
+		span.html("Show Advanced Settings");
+		advanced_settings.hide();
+	}
+	else {
+		input.attr("checked", "checked").prop("checked", true);
+		span.html("Hide Advanced Settings");
+		advanced_settings.show();
+	}
+}
 
 function hideOrShowIsBusinessLogicService(elm) {
 	var is_business_logic_service = $(elm).val();

@@ -55,7 +55,7 @@ var table_extra_fks = ' . json_encode($extra_fks) . ';
 var new_row_html = \'' . addcslashes(str_replace("\n", "", getRowHtml("#idx#", $table_fields, $table_fields_types, $pks, $fks, $extra_fks, $manage_records_url)), "\\'") . '\';
 var new_condition_html = \'' . addcslashes(str_replace("\n", "", getConditionHtml("#field_name#")), "\\'") . '\';
 </script>'; $back_icon = strpos($_SERVER["HTTP_REFERER"], "/db/manage_records?") !== false ? '<li class="back" data-title="Back Page"><a class="icon go_back" onClick="goBackPage(this)">Go Back</a></li>' : ''; $main_content .= '
-<div class="top_bar">
+<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 	<header>
 		<div class="title">
 			Manage Records for table: \'' . $table . '\' in DB: \'' . $bean_name . '\'
@@ -71,7 +71,7 @@ var new_condition_html = \'' . addcslashes(str_replace("\n", "", getConditionHtm
 	</header>
 </div>
 
-<div class="manage_records with_top_bar_section">'; if (!$table_exists) $main_content .= '<div class="error">Table does not exist!</tr>'; else if (!$table_fields) $main_content .= '<div class="error">Table fields do not exist!</tr>'; else { $PaginationLayout->show_x_pages_at_once = 5; $data = $PaginationLayout->data; $data["style"] = "bootstrap1"; $pagination_html = $PaginationLayout->designWithStyle(1, $data); $head .= '<style>' . $PaginationLayout->getBootstrap1Css() . '</style>'; $main_content .= '<div class="conditions">
+<div class="manage_records with_top_bar_section' . ($popup ? " in_popup" : "") . '">'; if (!$table_exists) $main_content .= '<div class="error">Table does not exist!</tr>'; else if (!$table_fields) $main_content .= '<div class="error">Table fields do not exist!</tr>'; else { $PaginationLayout->show_x_pages_at_once = 5; $data = $PaginationLayout->data; $data["style"] = "bootstrap1"; $pagination_html = $PaginationLayout->designWithStyle(1, $data); $head .= '<style>' . $PaginationLayout->getBootstrap1Css() . '</style>'; $main_content .= '<div class="conditions">
 		<label>
 			Conditions: 
 			<select>'; foreach ($table_fields as $field_name => $field) { $label = ucwords(str_replace(array("_", "-"), " ", strtolower($field_name))); $main_content .= '<option value="' . $field_name . '">' . $label . '</option>'; } $main_content .= '			

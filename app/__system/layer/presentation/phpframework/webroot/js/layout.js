@@ -433,7 +433,10 @@ function onEscapeF11KeyPress(event) { //when exit full screen
 /* Submenu Functions */
 
 function openSubmenu(elm) {
-	if (window.event && window.event.target) { //must do this to be sure that the it was a manual click, otherwise it could be an automatic save that was executed by the system and we want to avoid this events!
+	var doc = elm ? (elm.ownerDocument || elm.document) : document;
+	var win = doc.defaultView || doc.parentWindow || window;
+	
+	if (win.event && win.event.target) { //must do this to be sure that the it was a manual click, otherwise it could be an automatic save that was executed by the system and we want to avoid this events!
 		elm = $(elm);
 		var sub_menu = elm.closest(".sub_menu, .top_bar_menu");
 		
@@ -443,22 +446,42 @@ function openSubmenu(elm) {
 			sub_menu.toggleClass("open");
 			
 			if (open_interval)
-				clearInterval(open_interval);
+				win.clearInterval(open_interval);
 			
 			if (sub_menu.hasClass("open")) {
-				var close_sub_menu = function() {
-					//console.log(window.sub_menu_open_interval);
-					var open_interval = sub_menu.data("open_interval");
+				var close_sub_menu = function(target) {
+					var is_out = true;
+					var sub_menu_elm = target ? $(target) : null;
+					var menu_parent = sub_menu_elm ? $(sub_menu_elm).closest(".sub_menu, .top_bar_menu") : null;
+					var sub_menu_ul = sub_menu.children("ul");
+					var sub_menu_ul_lis = sub_menu_ul.find("li");
 					
-					if (open_interval)
-						clearInterval(open_interval);
+					if (sub_menu.is(menu_parent)) 
+						is_out = false;
 					
-					sub_menu.removeClass("open");
+					try {
+						if (is_out && (sub_menu_ul.filter(":hover").length > 0 || sub_menu_ul_lis.filter(":hover").length > 0))
+							is_out = false;
+					}
+					catch (e) {
+						//this is always giving an exception bc :hover is giving an error on jquery. Only log to console for testing purposes
+						//if (console && console.log)
+						//	console.log(e);
+					}
+					
+					if (is_out) {
+						//console.log(window.sub_menu_open_interval);
+						var open_interval = sub_menu.data("open_interval");
+						
+						if (open_interval)
+							win.clearInterval(open_interval);
+						
+						sub_menu.removeClass("open");
+					}
 				};
 				
-				open_interval = setInterval(function() {
-					if (!sub_menu.is(":hover"))
-						close_sub_menu();
+				open_interval = win.setInterval(function() {
+					close_sub_menu(win.event ? win.event.target : null);
 				}, 5000);
 				
 				sub_menu.data("open_interval", open_interval);
@@ -471,7 +494,11 @@ function openSubmenu(elm) {
 							
 						},
 						function(ev) {
-							close_sub_menu();
+							close_sub_menu(ev.target);
+							
+							setTimeout(function() {
+								close_sub_menu(win.event ? win.event.target : null);
+							}, 500);
 						}
 					);
 				}

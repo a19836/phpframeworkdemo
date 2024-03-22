@@ -12,6 +12,9 @@ var replace_inline_project_url_php_vars = true; //set this to true so the method
 $(function () {
 	var init_finished = false;
 	
+	MyFancyPopup.init({
+		parentElement: window,
+	});
 	MyFancyPopup.showOverlay();
 	MyFancyPopup.showLoading();
 	
@@ -33,6 +36,7 @@ $(function () {
 	//init trees
 	chooseProjectTemplateUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotTemplatesFromTree,
@@ -73,6 +77,9 @@ $(function () {
 			ready_func: function() {
 				//console.log("initPageAndTemplateLayout ready_func");
 				
+				//add top bar menu: Show/Hide Side Bar DBs Panel
+				addCodeLayoutUIEditorRightContainerDBsMenu( $(".top_bar li.sub_menu li.toggle_main_settings") );
+				
 				//prepare some PtlLayoutUIEditor options
 				var luie = entity_obj.find(".code_layout_ui_editor > .layout-ui-editor");
 				var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
@@ -101,7 +108,7 @@ $(function () {
 							addAutoSaveMenu(".top_bar li.sub_menu li.save");
 							//enableAutoSave(onToggleSLAAutoSave); //Do not enable auto save bc it gets a litte bit slow editing the template.
 							initAutoSave(".top_bar li.sub_menu li.save a");
-							StatusMessageHandler.showMessage("Auto save is disabled for a better user-experience...");
+							StatusMessageHandler.showMessage("Auto save is disabled for better user-experience...");
 							
 							//change the toggle Auto save handler bc the edit_query task
 							initSLAAutoSaveActivationMenu();
@@ -460,16 +467,16 @@ function addTemplateSamples(entity_obj, template, include_template_samples, incl
 							//add new html to region
 							var block = sample_code;
 							var proj = null;
-							var is_html = true;
+							var type = 1; //is html
 							var rb_index = 0;
-							var rb_html = getRegionBlockHtml(region, block, proj, is_html, rb_index);
+							var rb_html = getRegionBlockHtml(region, block, proj, type, rb_index);
 							
 							if (template_regions.hasOwnProperty(region))
 								region_blocks.append(rb_html);
 							else
 								other_region_blocks.append(rb_html);
 							
-							regions_blocks_list.push([region, block, proj, is_html, rb_index]);
+							regions_blocks_list.push([region, block, proj, type, rb_index]);
 						}
 					}
 				}
@@ -1041,7 +1048,7 @@ function loadPageRegionsBlocksHtmlJSAndCSSFilesToSettings() {
 	appendRegionsBlocksHtmlFileInSettings(null, region_opts);
 }
 
-function addPageWebrootFile(elm, type, file_name, file_url, file_code) {
+function addPageWebrootFile(elm, file_type, file_name, file_url, file_code) {
 	var entity_obj= $(".entity_obj");
 	var regions_blocks_includes_settings = entity_obj.find(".regions_blocks_includes_settings");
 	var data = getSettingsTemplateRegionsBlocks(regions_blocks_includes_settings);
@@ -1066,14 +1073,14 @@ function addPageWebrootFile(elm, type, file_name, file_url, file_code) {
 			//add new html to region
 			var block = file_code;
 			var proj = null;
-			var is_html = true;
+			var type = 1; //is html
 			var rb_index = 0;
-			var rb_html = getRegionBlockHtml(selected_region, block, proj, is_html, rb_index);
+			var rb_html = getRegionBlockHtml(selected_region, block, proj, type, rb_index);
 			
 			var region_blocks = regions_blocks_includes_settings.find(".region_blocks .template_region_items");
 			region_blocks.append(rb_html);
 			
-			regions_blocks_list.push([selected_region, block, proj, is_html, rb_index]);
+			regions_blocks_list.push([selected_region, block, proj, type, rb_index]);
 			
 			updateLayoutFromSettings(entity_obj, true);
 		}
@@ -1450,12 +1457,14 @@ function testAndPreview(do_not_check_for_changes) {
 			var popup= $(".page_preview_popup");
 			
 			if (!popup[0]) {
-				popup = $('<div class="myfancypopup page_preview_popup"></div>');
+				popup = $('<div class="myfancypopup page_preview_popup with_iframe_title"></div>');
 				$(document.body).append(popup);
 			}
 			
+			var url = page_preview_url + (page_preview_url.indexOf("?") != -1 ? "&" : "?") + "popup=1";
+			
 			popup.html('<iframe></iframe>'); //cleans the iframe so we don't see the previous html
-			popup.children("iframe").attr("src", page_preview_url);
+			popup.children("iframe").attr("src", url);
 			
 			//open popup
 			MyFancyPopup.init({

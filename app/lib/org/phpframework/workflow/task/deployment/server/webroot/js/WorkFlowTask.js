@@ -26,6 +26,7 @@ var ServerTaskPropertyObj = {
 	deploy_template_to_server_url : "",
 	template_tasks_types_by_tag : null,
 	on_choose_test_units_callback : null,
+	on_choose_template_file_callback : null,
 	on_choose_template_flow_layer_file_callback : null,
 	on_get_layer_wordpress_installations_url_callback : null,
 	on_open_template_properties_popup_callback : null,
@@ -1123,6 +1124,11 @@ var ServerTaskPropertyObj = {
 		}
 	},
 	
+	chooseTemplateFile : function(elm) {
+		if (typeof this.on_choose_template_file_callback == "function")
+			this.on_choose_template_file_callback(elm);
+	},
+	
 	/* TEMPLATE WORKFLOW - WORKFLOW MENU FUNCTIONS */
 	
 	prepareTemplateGlobalVarsOrSettings : function(template_properties) {
@@ -1979,6 +1985,7 @@ var ServerTaskPropertyObj = {
 		
 		var html = '<li>'
 			+ '	<input type="text" class="task_property_field" name="actions[' + action_id + '][copy_files][files][]" value="' + file + '" />'
+			+ '	<i class="icon search" onclick="ServerTaskPropertyObj.chooseTemplateFile(this)" title="Choose file"></i>'
 			+ '	<i class="icon remove" onClick="ServerTaskPropertyObj.removeTemplateActionFile(this)" title="Remove this file"></i>'
 			+ '</li>';
 		

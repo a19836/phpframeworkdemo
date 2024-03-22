@@ -55,13 +55,15 @@ function openTemplateSamples(elm) {
 	var popup = $("body > .template_region_info_popup");
 	
 	if (!popup[0]) {
-		popup = $('<div class="myfancypopup template_region_info_popup"></div>');
+		popup = $('<div class="myfancypopup with_iframe_title template_region_info_popup"></div>');
 		$(document.body).append(popup);
 	}
 	
 	popup.html('<iframe></iframe>'); //cleans the iframe so we don't see the previous html
 	
 	//prepare popup iframe
+	url += (url.indexOf("?") == -1 ? "?" : "&") + "popup=1";
+	
 	var iframe = popup.children("iframe");
 	iframe.attr("src", url);
 	

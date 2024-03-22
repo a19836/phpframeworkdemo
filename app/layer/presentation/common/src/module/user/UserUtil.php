@@ -2078,11 +2078,21 @@ if (!class_exists("UserUtil")) {
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($data);
 						
+						$data["logged_status"] = is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
+						$data["login_time"] = is_numeric($data["login_time"]) ? $data["login_time"] : 0;
+						$data["failed_login_attempts"] = is_numeric($data["failed_login_attempts"]) ? $data["failed_login_attempts"] : 0;
+						$data["failed_login_time"] = is_numeric($data["failed_login_time"]) ? $data["failed_login_time"] : 0;
+						
 						$UserSession = $broker->callObject("module/user", "UserSession");
 						return $UserSession->insert($data);
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						self::encodeSensitiveUserData($data);
+						
+						$data["logged_status"] = is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
+						$data["login_time"] = is_numeric($data["login_time"]) ? $data["login_time"] : 0;
+						$data["failed_login_attempts"] = is_numeric($data["failed_login_attempts"]) ? $data["failed_login_attempts"] : 0;
+						$data["failed_login_time"] = is_numeric($data["failed_login_time"]) ? $data["failed_login_time"] : 0;
 						
 						return $broker->insertObject("mu_user_session", array(
 							"username" => $data["username"], 
@@ -2133,11 +2143,21 @@ if (!class_exists("UserUtil")) {
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($data);
 						
+						$data["logged_status"] = is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
+						$data["login_time"] = is_numeric($data["login_time"]) ? $data["login_time"] : 0;
+						$data["failed_login_attempts"] = is_numeric($data["failed_login_attempts"]) ? $data["failed_login_attempts"] : 0;
+						$data["failed_login_time"] = is_numeric($data["failed_login_time"]) ? $data["failed_login_time"] : 0;
+						
 						$UserSession = $broker->callObject("module/user", "UserSession");
 						return $UserSession->update($data);
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						self::encodeSensitiveUserData($data);
+						
+						$data["logged_status"] = is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
+						$data["login_time"] = is_numeric($data["login_time"]) ? $data["login_time"] : 0;
+						$data["failed_login_attempts"] = is_numeric($data["failed_login_attempts"]) ? $data["failed_login_attempts"] : 0;
+						$data["failed_login_time"] = is_numeric($data["failed_login_time"]) ? $data["failed_login_time"] : 0;
 						
 						return $broker->updateObject("mu_user_session", array(
 								"session_id" => $data["session_id"], 
@@ -2239,6 +2259,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$data["logout_time"] = is_numeric($data["logout_time"]) ? $data["logout_time"] : 0;
+						$data["logged_status"] = is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
 						
 						return $broker->updateObject("mu_user_session", array(
 								"logged_status" => $data["logged_status"], 

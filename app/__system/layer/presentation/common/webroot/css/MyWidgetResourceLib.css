@@ -188,6 +188,15 @@
   	margin-right:20px;
 }
 
+.status_message_error > iframe {
+	width:100%;
+	height:200px;
+	margin-top:20px;
+	display:block;
+	border:0;
+	overflow:auto;
+}
+
 @media (max-width: 250px) {
 	.status_message_info,
 	  .status_message_error {

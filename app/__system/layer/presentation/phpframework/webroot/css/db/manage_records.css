@@ -255,7 +255,7 @@
 	font-size:14px;
 }
 .manage_records .conditions input[type=button] {
-	font-size:8pt;
+	font-size:inherit;
 	margin-top:-10px;
 }
 .manage_records .conditions input:not([type=button]),
@@ -263,7 +263,7 @@
 	background:transparent;
 	border:1px solid #ccc;
 	border-radius:3px;
-	font-size:8pt;
+	font-size:inherit;
 }
 .manage_records .conditions > label select {
 	margin-left:5px;
@@ -304,6 +304,9 @@
 	margin:10px 0 0 0;
 	clear:both;
 }
+.manage_records .buttons input {
+	font-size:inherit;
+}
 
 /* ERROR */
 .manage_records .error {
@@ -319,6 +322,9 @@
 	left:10px !important;
 	right:10px;
 	bottom:10px;
+}
+.in_popup .manage_record_popup {
+	top:40px !important;
 }
 .manage_record_popup iframe {
 	width:100% !important;

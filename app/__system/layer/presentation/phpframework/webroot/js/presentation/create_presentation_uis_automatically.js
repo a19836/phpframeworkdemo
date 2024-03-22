@@ -16,33 +16,37 @@ function onChangeDBDriver(elm) {
 function onLoadTableSettings() {
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForVariables,
 	});
 	choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");
 	
 	chooseBusinessLogicFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndFunctionsFromTree,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForBusinessLogic,
 	});
 	chooseBusinessLogicFromFileManagerTree.init("choose_business_logic_from_file_manager");
 	
 	chooseQueryFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeParametersAndResultMapsFromTree,
+		ajax_callback_after : removeMapsAndOtherIbatisNodesFromTree,
 	});
 	chooseQueryFromFileManagerTree.init("choose_query_from_file_manager");
 	
 	chooseHibernateObjectMethodFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeParametersAndResultMapsFromTree,
+		ajax_callback_after : removeMapsAndOtherHbnNodesFromTree,
 	});
 	chooseHibernateObjectMethodFromFileManagerTree.init("choose_hibernate_object_method_from_file_manager");
 	

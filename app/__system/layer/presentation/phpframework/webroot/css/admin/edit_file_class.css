@@ -172,3 +172,12 @@
 	margin-top:5px;
 	font-size:1em;
 }
+
+/* POPUPS */
+/* POPUPS - choose_php_class */
+.choose_php_class.with_title {
+	padding:15px;
+}
+.choose_php_class.with_title > .title {
+	margin:-15px -15px 15px;
+}

@@ -806,6 +806,10 @@ class ArticleUtil {
 					break;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
+					$data["published"] = is_numeric($data["published"]) ? $data["published"] : 0;
+					$data["photo_id"] = is_numeric($data["photo_id"]) ? $data["photo_id"] : 0;
+					$data["allow_comments"] = is_numeric($data["allow_comments"]) ? $data["allow_comments"] : 1;
+					
 					$Article = $broker->callObject("module/article", "Article", array("no_cache" => true));
 					$status = $Article->insertOrUpdate($data, $ids);
 				
@@ -815,6 +819,10 @@ class ArticleUtil {
 					break;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
+					$data["published"] = is_numeric($data["published"]) ? $data["published"] : 0;
+					$data["photo_id"] = is_numeric($data["photo_id"]) ? $data["photo_id"] : 0;
+					$data["allow_comments"] = is_numeric($data["allow_comments"]) ? $data["allow_comments"] : 1;
+					
 					$article_data = array(
 						"title" => $data["title"], 
 						"sub_title" => $data["sub_title"], 

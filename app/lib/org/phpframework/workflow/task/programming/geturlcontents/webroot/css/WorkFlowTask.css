@@ -10,7 +10,7 @@
 }
 
 .get_url_contents_task_html {
-	min-width:420px;
+	min-width:500px;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .get_url_contents_task_html {
 	min-width:auto;

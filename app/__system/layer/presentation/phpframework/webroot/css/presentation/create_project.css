@@ -21,28 +21,16 @@ body #main_column {
 .create_project .top_bar:not(.create_project_top_bar) {
 	display:none !important;
 }
-.create_project.popup_without_popup_close .top_bar.create_project_top_bar.in_popup.with_cancel header .title {
-	margin-left:65px;
-}
-.create_project.popup_without_popup_close .top_bar.create_project_top_bar.in_popup header > ul {
-	left:15px;
-	right:15px;
-}
 .create_project .top_bar.create_project_top_bar header > ul > li.button {
 	margin-left:10px;
 	margin-right:10px;
 	float:right;
 }
-.create_project .top_bar.create_project_top_bar.in_popup header > ul > li.button:last-child {
+.create_project .top_bar.create_project_top_bar.in_popup header > ul > li.button.continue {
+	margin-right:0;
+}
+.create_project .top_bar.create_project_top_bar.in_popup header > ul > li.button.back {
 	margin-right:5px;
-}
-.create_project.popup_without_popup_close .top_bar.create_project_top_bar.in_popup.with_cancel header > ul > li.cancel {
-	margin-left:0;
-	position:absolute;
-	left:0;
-}
-.create_project:not(.popup_without_popup_close) .top_bar.create_project_top_bar header > ul > li.cancel {
-	display:none;
 }
 .create_project .top_bar.create_project_top_bar header > ul > li.button > a.active {
 	background:var(--main-popup-header-bg);
@@ -182,13 +170,22 @@ body #main_column {
 /* STEP 2 - Store Program List */
 .create_project .creation_step_3 > .title {
 	display:block;
-	margin:40px 0 20px;
+	margin:40px 0 0;
 	font-size:14px;
 	font-weight:bold;
 	text-align:center;
 }
+.create_project .creation_step_3 > .sub_title {
+	margin:10px 0 20px;
+	font-size:10px;
+	text-align:center;
+	opacity:.5;
+}
+.create_project .creation_step_3 > .sub_title a {
+	color:inherit;
+}
 
-.create_project .creation_step_3 .install_program .step_0 .install_program_step_0_with_tabs > ul {
+.create_project:not(.local_upload_shown) .creation_step_3 .install_program .step_0 .install_program_step_0_with_tabs > ul {
 	display:none;
 }
 .create_project .creation_step_3 .install_program .step_0 .install_program_step_0_with_tabs .install_store_program > .title {

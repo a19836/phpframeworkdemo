@@ -180,7 +180,7 @@ var SoapConnectorTaskPropertyObj = {
 			task_html_elm.find(".result_type select[name=result_type]").val("content");
 			select.val("options");
 		}
-		else if (task_property_values["result_type_type"] == "string" && (task_property_values["result_type"] == "content" || task_property_values["result_type"] == "settings")) {
+		else if (task_property_values["result_type_type"] == "string" && (task_property_values["result_type"] == "header" || task_property_values["result_type"] == "content" || task_property_values["result_type"] == "content_json" || task_property_values["result_type"] == "content_xml" || task_property_values["result_type"] == "content_xml_simple" || task_property_values["result_type"] == "content_serialized" || task_property_values["result_type"] == "settings")) {
 			task_html_elm.find(".result_type select[name=result_type]").val(task_property_values["result_type"]);
 			select.val("options");
 		}

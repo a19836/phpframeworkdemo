@@ -571,12 +571,19 @@
 	min-width:250px;
 	min-height:100px;
 }
+.module_settings .settings .import_template_ptl_code_popup.with_title {
+	padding:15px;
+}
+.module_settings .settings .import_template_ptl_code_popup.with_title > .title {
+	margin:-15px -15px 20px;
+}
 .module_settings .settings .import_template_ptl_code_popup .template {
 	margin:10px 0 0 0;
 }
 .module_settings .settings .import_template_ptl_code_popup .template label {
 	margin-bottom:5px;
 	display:block;
+	display:none;
 }
 .module_settings .settings .import_template_ptl_code_popup .template_module {
 	margin:10px 0 0 0;

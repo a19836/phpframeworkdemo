@@ -200,24 +200,6 @@
 	width:100%;
 	height:100%;
 }
-.page_preview_popup .popup_close {
-	width:auto;
-	height:auto;
-	top:7px;
-	left:auto;
-	right:7px;
-	background:none;
-	font-size:var(--icon-font-size);
-	color:#333;
-}
-.page_preview_popup .popup_close::before {
-	width:15px;
-	display:inline-block;
-	text-rendering:auto;
-	-webkit-font-smoothing: antialiased;
-	font:var(--fa-font-solid);
-	content:"\f057";
-}
 
 /* ENTITY/PAGE PROPERTIES */
 .advanced_settings .todo {

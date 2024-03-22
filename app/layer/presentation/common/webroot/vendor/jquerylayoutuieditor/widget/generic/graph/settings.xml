@@ -1,0 +1,766 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget>
+	<label>Graph</label>
+	<tag>graph</tag>
+	<settings>
+		<resizable>1</resizable>
+		<create_widget_class>GraphWidget</create_widget_class>
+	</settings>
+	<menu_widget></menu_widget>
+	<template_widget></template_widget>
+	<properties><![CDATA[
+		<div class="form-group row settings-property parse" title="Define a parse callback function for the chart main settings before the chart gets created">
+			<label class="col-md-4 col-sm-5 col-form-label">Parse Callback: </label>
+			<input class="col-md-8 col-sm-7 form-control" name="parse" placeHolder="function name" />
+		</div>
+		<div class="form-group row settings-property click" title="Define a on-click callback function for the chart">
+			<label class="col-md-4 col-sm-5 col-form-label">Click Callback: </label>
+			<input class="col-md-8 col-sm-7 form-control" name="click" placeHolder="function name" />
+		</div>
+		<div class="form-group row settings-property hover" title="Define a on-hover callback function for the chart">
+			<label class="col-md-4 col-sm-5 col-form-label">Hover Callback: </label>
+			<input class="col-md-8 col-sm-7 form-control" name="hover" placeHolder="function name" />
+		</div>
+		<div class="group legend">
+			<div class="group-title">
+				<i class="zmdi zmdi-caret-down toggle" title="Toggle sub-Options"></i>
+				<label class="col-md-4 col-sm-5 col-form-label">With Legend: </label>
+				<span class="settings-property display">
+					<input name="display" type="checkbox" title="Check if you wish to display the legend" />
+				</span>
+			</div>
+			<ul>
+				<li class="form-group row settings-property position">
+					<label class="col-md-4 col-sm-5 col-form-label">Position: </label>
+					<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>
+					<select class="col-md-7 col-sm-6 form-select" name="position">
+						<option value="">-- Default --</option>
+						<option value="top">Top</option>
+						<option value="left">Left</option>
+						<option value="right">Right</option>
+						<option value="bottom">Bottom</option>
+						<option value="chartArea">Chart Area</option>
+					</select>
+				</li>
+				<li class="form-group row settings-property align">
+					<label class="col-md-4 col-sm-5 col-form-label">Alignment: </label>
+					<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>
+					<select class="col-md-7 col-sm-6 form-select" name="align">
+						<option value="">-- Default --</option>
+						<option value="start">Start</option>
+						<option value="center">Center</option>
+						<option value="end">End</option>
+					</select>
+				</li>
+				<li class="form-group row settings-property text-align">
+					<label class="col-md-4 col-sm-5 col-form-label">Text Alignment: </label>
+					<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>
+					<select class="col-md-7 col-sm-6 form-select" name="text_align">
+						<option value="">-- Default --</option>
+						<option value="left">Left</option>
+						<option value="center">Center</option>
+						<option value="right">Right</option>
+					</select>
+				</li>
+			</ul>
+		</div>
+		<div class="group title">
+			<div class="group-title">
+				<i class="zmdi zmdi-caret-down toggle" title="Toggle sub-Options"></i>
+				<label class="col-md-4 col-sm-5 col-form-label">With Title: </label>
+				<span class="settings-property display">
+					<input name="display" type="checkbox" title="Check if you wish to display the title" />
+				</span>
+			</div>
+			<ul>
+				<li class="form-group row settings-property text">
+					<label class="col-md-4 col-sm-5 col-form-label">Text: </label>
+					<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>
+					<input class="col-md-7 col-sm-6 form-control" name="text" />
+				</li>
+				<li class="form-group row settings-property position">
+					<label class="col-md-4 col-sm-5 col-form-label">Position: </label>
+					<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>
+					<select class="col-md-7 col-sm-6 form-select" name="position">
+						<option value="">-- Default --</option>
+						<option value="top">Top</option>
+						<option value="left">Left</option>
+						<option value="right">Right</option>
+						<option value="bottom">Bottom</option>
+						<option value="chartArea">Chart Area</option>
+					</select>
+				</li>
+				<li class="form-group row settings-property align">
+					<label class="col-md-4 col-sm-5 col-form-label">Alignment: </label>
+					<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>
+					<select class="col-md-7 col-sm-6 form-select" name="align">
+						<option value="">-- Default --</option>
+						<option value="start">Start</option>
+						<option value="center">Center</option>
+						<option value="end">End</option>
+					</select>
+				</li>
+				<li class="form-group row settings-property color color-style">
+					<label class="col-md-4 col-sm-5 col-form-label">Color: </label>
+					<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>
+					<input class="color-selector" type="color">
+					<input class="color-code" name="color">
+				</li>
+				<li class="form-group row settings-property padding">
+					<label class="col-md-4 col-sm-5 col-form-label">Padding: </label>
+					<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>
+					<input class="col-md-7 col-sm-6 form-control" name="padding" />
+				</li>
+			</ul>
+		</div>
+		<div class="group sub_title">
+			<div class="group-title">
+				<i class="zmdi zmdi-caret-down toggle" title="Toggle sub-Options"></i>
+				<label class="col-md-4 col-sm-5 col-form-label">With Sub Title: </label>
+				<span class="settings-property display">
+					<input name="display" type="checkbox" title="Check if you wish to display the sub title" />
+				</span>
+			</div>
+			<ul>
+				<li class="form-group row settings-property text">
+					<label class="col-md-4 col-sm-5 col-form-label">Text: </label>
+					<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>
+					<input class="col-md-7 col-sm-6 form-control" name="text" />
+				</li>
+				<li class="form-group row settings-property position">
+					<label class="col-md-4 col-sm-5 col-form-label">Position: </label>
+					<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>
+					<select class="col-md-7 col-sm-6 form-select" name="position">
+						<option value="">-- Default --</option>
+						<option value="top">Top</option>
+						<option value="left">Left</option>
+						<option value="right">Right</option>
+						<option value="bottom">Bottom</option>
+						<option value="chartArea">Chart Area</option>
+					</select>
+				</li>
+				<li class="form-group row settings-property align">
+					<label class="col-md-4 col-sm-5 col-form-label">Alignment: </label>
+					<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>
+					<select class="col-md-7 col-sm-6 form-select" name="align">
+						<option value="">-- Default --</option>
+						<option value="start">Start</option>
+						<option value="center">Center</option>
+						<option value="end">End</option>
+					</select>
+				</li>
+				<li class="form-group row settings-property color color-style">
+					<label class="col-md-4 col-sm-5 col-form-label">Color: </label>
+					<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>
+					<input class="color-selector" type="color">
+					<input class="color-code" name="color">
+				</li>
+				<li class="form-group row settings-property padding">
+					<label class="col-md-4 col-sm-5 col-form-label">Padding: </label>
+					<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>
+					<input class="col-md-7 col-sm-6 form-control" name="padding" />
+				</li>
+			</ul>
+		</div>
+		<div class="group group-open data-sets">
+			<div class="group-title">
+				<i class="zmdi zmdi-caret-down toggle" title="Toggle sub-Options"></i>
+				Data-sets 
+				<span class="zmdi zmdi-hc-lg zmdi-info-outline info" title="Note that, although you can have mixed chart defined, there are some that don't work propertly together. For mixed charts, please only use the Line, Vertical-Bar and Scatter charts. For more information, please go to www.chartjs.org"></span>
+				<span class="zmdi zmdi-hc-lg zmdi-plus-square add" title="Add new data-set"></span>
+			</div>
+			<div class="information">Note that, although you can have mixed chart defined, there are some that don't work propertly together.<br/>For mixed charts, please only use the Line, Vertical-Bar and Scatter charts.<br/>For more information, please go to <a href="https://www.chartjs.org/" target="chartjs">www.chartjs.org</a></div>
+			<ul>
+				<li class="empty">No data-sets defined yet</li>
+			</ul>
+		</div>
+	]]></properties>
+	<menu_css><![CDATA[
+		.layout-ui-editor > .menu-widgets .menu-widget.menu-widget-graph:before,
+		  body > .menu-widget.menu-widget-graph.ui-draggable-dragging:before {
+			background-image:url('#widget_webroot_url#logo.svg');
+		}
+		
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-graph {
+			border-radius:0 5px 5px 0;
+		}
+		.layout-ui-editor > .template-widgets .widget-header.widget-header-graph .options .option.toggle {
+			display:none;
+		}
+		
+		.layout-ui-editor.fixed-side-properties > .menu-settings.menu-settings-graph > .settings-properties {
+			min-width:240px;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .group-title label {
+			cursor:pointer;
+		}
+		
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets {
+			margin-top:15px;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > .group-title .info {
+			margin-top:3px;
+			margin-left:5px;
+			cursor:pointer;
+			color:var(--menu-settings-group-color, #b9a5a6);
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > .group-title .add {
+			margin-top:4px;
+			margin-right:-6px;
+			cursor:pointer;
+			float:right;
+			font-size:140%;
+			color:var(--menu-settings-group-color, #b9a5a6);
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > .information {
+			margin:10px 0 0 5px;
+			opacity:.7;
+			text-align:justify;
+			display:none;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul {
+			padding-left:0;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.empty {
+			padding:10px;
+			text-align:center;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.data-set {
+			margin-right:-10px;
+			margin-bottom:15px;
+			padding:10px;
+			border:1px solid rgba(0,0,0,0.25);
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.data-set:not(:last-child) {
+			margin-bottom:10px;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.data-set:after {
+			content:"";
+			display:block;
+			clear:both;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.data-set > .data-order {
+			float:right;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.data-set > .data-order > input {
+			width:50px;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.data-set > .remove {
+			line-height:2em;
+			margin-left:10px;
+			font-size:120%;
+			float:right;
+			font-weight:bold;
+			cursor:pointer;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.data-set > .remove:before {
+			margin:0;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.data-set > ul {
+			margin-top:5px;
+			padding:0;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.data-set > ul:before {
+			content:"";
+			height:1px;
+			display:block;
+			float:none;
+			clear:both;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.data-set > ul > li:last-child {
+			margin-bottom:0;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.data-set > ul > li.border-width > input {
+			width:50px;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.data-set > ul > li.data-resource-name > input {
+			width:calc(100% - 160px);
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.data-set > ul > li.data-resource-name > select {
+			width:calc(100% - 180px);
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.data-set > ul > li.data-resource-name > .swap-fields,
+		  .layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.data-set > ul > li.data-resource-name > .refresh {
+			line-height:2.2em;
+			margin:0 10px 0 0;
+			float:right;
+			font-size:120%;
+			font-weight:bold;
+			cursor:pointer;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets > ul > li.data-set > ul > li.data-resource-name:not(.select-shown) > .refresh {
+			display:none;
+		}
+	]]></menu_css>
+	<template_css><![CDATA[
+		.template-widget.template-widget-graph[show-defaul-graph]::after {
+			content:"";
+			height:100%;
+			display:block;
+			background-image:url('#widget_webroot_url#default_chart.svg');
+			background-size: 90% 90%;
+			background-repeat: no-repeat;
+			background-position: center;
+		}
+	]]></template_css>
+	<menu_js><![CDATA[
+		function GraphWidget(ui_creator, menu_widget) {
+			var me = this;
+			
+			me.ignore_attributes = ["data-graph-props", "show-defaul-graph"];
+			
+			me.init = function() {
+				menu_widget.attr({
+					"data-on-parse-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.graph.parseHtml",
+					"data-on-clean-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.graph.cleanHtml",
+					"data-on-create-template-widget-func": ui_creator.obj_var_name + ".menu_widgets_objs.graph.onCreateTemplateWidget",
+				});
+				
+				menu_widget.children(".properties").attr({
+					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.graph.onOpenWidgetSettings",
+					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.graph.saveSettingsField",
+					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.graph.parseSettings",
+				});
+			};
+			
+			me.parseHtml = function(html_element) {
+				if (html_element && (html_element.hasAttribute("data-graph") || html_element.hasAttribute("data-graph-props")))
+					return true;
+			};
+			
+			me.cleanHtml = function(html_element) {
+				var is_show_defaul_graph = html_element.hasAttribute("show-defaul-graph");
+				
+				if (is_show_defaul_graph)
+					html_element.removeAttribute("show-defaul-graph");
+				
+				var html = ui_creator.getCleanedHtmlElement(html_element);
+				
+				if (is_show_defaul_graph)
+					elm.setAttribute("show-defaul-graph", "");
+				
+				return html;
+			};
+			
+			me.onOpenWidgetSettings = function(widget, menu_settings) {
+				var settings_properties = menu_settings.find(" > .settings-properties > ul");
+				
+				//prepare settings ui
+				var display_input = settings_properties.find(" > .legend > .group-title > .display > input,  > .title > .group-title > .display > input,  > .sub_title > .group-title > .display > input");
+				display_input.attr("onClick", ui_creator.obj_var_name + ".menu_widgets_objs.graph.onClickDisplay(this, event)");
+				display_input.attr("onChange", ui_creator.obj_var_name + ".menu_widgets_objs.graph.onChangeDisplay(this, event)");
+				
+				var info_icon = settings_properties.find(" > .data-sets > .group-title > .info");
+				info_icon.attr("onClick", ui_creator.obj_var_name + ".menu_widgets_objs.graph.toggleInformation(this, event)");
+				
+				var add_icon = settings_properties.find(" > .data-sets > .group-title > .add");
+				add_icon.attr("onClick", ui_creator.obj_var_name + ".menu_widgets_objs.graph.addDataSet(this, event)");
+				
+				ui_creator.addMenuSettingsContextMenu( settings_properties.find("input") );
+				
+				//load settings
+				var properties = me.getGraphProperties(widget);
+				var parse_prop = properties["parse"];
+				var click_prop = properties["click"];
+				var hover_prop = properties["hover"];
+				var legend_props = properties["legend"];
+				var title_props = properties["title"];
+				var sub_title_props = properties["sub_title"];
+				var data_sets_props = properties["data_sets"];
+				
+				//load event settings
+				settings_properties.find(" > .parse > input").val(parse_prop);
+				settings_properties.find(" > .click > input").val(click_prop);
+				settings_properties.find(" > .hover > input").val(hover_prop);
+				
+				//load legend settings
+				var legend_elm = settings_properties.children(".legend");
+				me.loadSettingsProperties(legend_elm, legend_props);
+				me.prepareHtmlFields(legend_elm);
+				me.onChangeDisplay(legend_elm.find(" > .group-title > .display > input")[0], window.event);
+				
+				//load title settings
+				var title_elm = settings_properties.children(".title");
+				me.loadSettingsProperties(title_elm, title_props);
+				me.prepareHtmlFields(title_elm);
+				me.onChangeDisplay(title_elm.find(" > .group-title > .display > input")[0], window.event);
+				
+				//load sub_title settings
+				var sub_title_elm = settings_properties.children(".sub_title");
+				me.loadSettingsProperties(sub_title_elm, sub_title_props);
+				me.prepareHtmlFields(sub_title_elm);
+				me.onChangeDisplay(sub_title_elm.find(" > .group-title > .display > input")[0], window.event);
+				
+				//load datasets settings
+				var data_sets_elm = settings_properties.children(".data-sets");
+				me.prepareHtmlFields(data_sets_elm);
+				
+				if (data_sets_props) {
+					if ($.isPlainObject(data_sets_props))
+						data_sets_props = [data_sets_props];
+					
+					$.each(data_sets_props, function(idx, data_set_props) {
+						if ($.isPlainObject(data_set_props) && !$.isEmptyObject(data_set_props)) {
+							var li = me.addDataSet(add_icon[0], window.event, true);
+							
+							//prepare chart_type
+							if (data_set_props["chart_type"] == "bar")
+								data_set_props["chart_type"] = "vertical_bar";
+							
+							//set properties
+							me.loadSettingsProperties(li, data_set_props);
+							
+							me.onChangeDataType( li.find(".data-type select")[0] );
+						}
+					});
+				}
+			};
+			
+			me.loadSettingsProperties = function(elm, props) {
+				if ($.isPlainObject(props))
+					for (var key in props) {
+						var value = props[key];
+						var field = elm.find(".settings-property").find('input[name="' + key + '"], textarea[name="' + key + '"], select[name="' + key + '"]');
+						var select = field.filter("select");
+						var field_parent = field.parent();
+						
+						field.val(value);
+						
+						//prepare swap fields
+						if (select.length > 0 && field_parent.is(".with-swap-fields.select-shown") && select.val() != value)
+							field_parent.removeClass("select-shown");
+						else if (field.filter("input[type=checkbox]").length > 0) {
+							if (value)
+								field.filter("input[type=checkbox]").prop("checked", true).attr("checked", "");
+							else
+								field.filter("input[type=checkbox]").prop("checked", false).removeAttr("checked");
+						}
+						
+						//prepare color field
+						if (field_parent.is(".color-style"))
+							field_parent.find(".color-selector").val(value);
+					}
+			};
+			
+			me.parseSettings = function(widget, widget_settings) {
+				var properties = me.getGraphProperties(widget);
+				
+				for (var key in properties)
+					widget_settings[key] = properties[key];
+			};
+			
+			me.onCreateTemplateWidget = function(widget, html_element) {
+				//show a graph icon by default
+				if (widget.children().not("canvas").length == 0)
+					widget.attr("show-defaul-graph", "");
+				
+				if (!html_element) {
+					widget.css({width: "200px", height: "200px"});
+					
+					var props = {load: "MyWidgetResourceLib.ChartHandler.loadChartResource"};
+					widget.attr("data-widget-props", JSON.stringify(props));
+				}
+			};
+			
+			me.saveSettingsField = function(field, widget, status) {
+				if (status) {
+					field = $(field);
+					var settings_properties = field.parent().closest(".settings-properties");
+					
+					if (settings_properties.length > 0) { //if not settings_properties, it means is another property already covered by the ui_creator
+						//save legend properties
+						var legend = settings_properties.find(".legend");
+						var legend_props = me.getSettingsProperties(legend);
+						
+						if (!legend_props["display"]) //remove all other props, because display is false
+							legend_props = {display: 0};
+						
+						//save title properties
+						var title = settings_properties.find(".title");
+						var title_props = me.getSettingsProperties(title);
+						
+						if (!title_props["display"]) //remove all other props, because display is false
+							title_props = {display: 0};
+						
+						//save sub_title properties
+						var sub_title = settings_properties.find(".sub_title");
+						var sub_title_props = me.getSettingsProperties(sub_title);
+						
+						if (!sub_title_props["display"]) //remove all other props, because display is false
+							sub_title_props = {display: 0};
+						
+						//save data_sets properties
+						var data_sets = settings_properties.find(".data-sets > ul > li.data-set");
+						var data_sets_props = [];
+						
+						$.each(data_sets, function(idx, data_sets) {
+							var data_set_props = me.getSettingsProperties(data_sets);
+							data_sets_props.push(data_set_props);
+						});
+						
+						//save graph properties
+						var graph_props = {
+							parse: settings_properties.find(" > ul > .parse > input").val(),
+							click: settings_properties.find(" > ul > .click > input").val(),
+							hover: settings_properties.find(" > ul > .hover > input").val(),
+							legend: legend_props,
+							title: title_props,
+							sub_title: sub_title_props,
+							data_sets: data_sets_props
+						};
+						//console.log(graph_props);
+						
+						me.setGraphProperties(widget, graph_props);
+					}
+				}
+				
+				return status;
+			};
+			
+			me.getSettingsProperties = function(elm) {
+				var items = $(elm).find(".settings-property");
+				var props = {};
+				
+				$.each(items, function(idx, item) {
+					item = $(item);
+					var prop_field = item.find("input[name], select[name], textarea[name]").not("[disabled]");
+					var prop_name = prop_field.first().attr("name");
+					
+					if (prop_name) {
+						var prop_value = prop_field.is("input[type=checkbox]") ? prop_field.is(":checked") : prop_field.val();
+						
+						if (item.is(".with-swap-fields"))
+							prop_value = item.is(".select-shown") ? prop_field.filter("select").val() : prop_field.filter("input").val();
+						else if (prop_field.filter("input[type=checkbox]").length > 0)
+							prop_value = prop_field.filter("input[type=checkbox]").is(":checked") ? 1 : 0;
+						
+						if (prop_value != "" || $.isNumeric(prop_value))
+							props[prop_name] = prop_value;
+					}
+				});
+				
+				return props;
+			};
+			
+			me.addDataSet = function(elm, event, do_not_update_widget) {
+				event && event.stopPropagation();
+				
+				elm = $(elm);
+				var p = elm.parent().closest(".data-sets");
+				var ul = p.children("ul");
+				var html = ''
+					+ '<li class="data-set">'
+						+ '<label>Data-set with order: </label>'
+						+ '<span class="zmdi zmdi-delete remove" onClick="' + ui_creator.obj_var_name + '.menu_widgets_objs.graph.removeDataSet(this)" title="Remove this data-set"></span>'
+						+ '<span class="settings-property data-order">'
+							+ '<input name="data_order" type="number" min="0" title="Set the data-sets order in the graph. Leave it blank for default." />'
+						+ '</span>'
+						+ '<ul>'
+							+ '<li class="form-group row settings-property chart-type">'
+								+ '<label class="col-md-4 col-sm-5 col-form-label">Chart Type: </label>'
+								+ '<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>'
+								+ '<select class="col-md-7 col-sm-6 form-select" name="chart_type">'
+									+ '<option value="vertical_bar">Vertical Bar Chart</option>'
+									+ '<option value="horizontal_bar">Horizontal Bar Chart</option>'
+									+ '<option value="line">Line Chart</option>'
+									+ '<option value="bubble">Bubble Chart</option>'
+									+ '<option value="pie">Pie Chart</option>'
+									+ '<option value="doughnut">Doughnut Chart</option>'
+									+ '<!--option value="area">Area Chart</option-->'
+									+ '<option value="polarArea">Polar Area Chart</option>'
+									+ '<option value="radar">Radar Chart</option>'
+									+ '<option value="scatter">Scatter Chart</option>'
+								+ '</select>'
+							+ '</li>'
+							+ '<li class="form-group row settings-property data-type">'
+								+ '<label class="col-md-4 col-sm-5 col-form-label">Data Type: </label>'
+								+ '<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>'
+								+ '<select class="col-md-7 col-sm-6 form-select" name="data_type" onChange="' + ui_creator.obj_var_name + '.menu_widgets_objs.graph.onChangeDataType(this)">'
+									+ '<option value="resource">Based in a Resource</option>'
+									+ '<option value="hardcoded" title="Values must be a valid JSON">Hard coded values in JSON</option>'
+								+ '</select>'
+							+ '</li>'
+							+ '<li class="form-group row settings-property data-resource-name with-swap-fields select-shown">'
+								+ '<label class="col-md-4 col-sm-5 col-form-label">Data Resource Name: </label>'
+								+ '<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>'
+								+ '<input class="col-md-5 col-sm-4 form-control" name="data_resource_name" placeholder="Resource name for the chart data">'
+								+ '<select class="col-md-5 col-sm-4 form-select" name="data_resource_name" title="Choose one of the existing resources">'
+									+ '<option value="">-- Parent Resource --</option>'
+								+ '</select>'
+								+ '<i class="zmdi zmdi-swap swap-fields" onClick="$(this).parent().toggleClass(\'select-shown\')" title="Swap between pre-defined options or open text option"></i>'
+								+ '<i class="zmdi zmdi-refresh refresh" title="Refresh existent resources references in dropdown box" onClick="' + ui_creator.obj_var_name + '.menu_widgets_objs.graph.refreshWidgetExistentResourcesReferences(this, event)"></i>'
+							+ '</li>'
+							+ '<li class="form-group row settings-property data-title">'
+								+ '<label class="col-md-4 col-sm-5 col-form-label">Data Title: </label>'
+								+ '<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>'
+								+ '<input class="col-md-7 col-sm-6 form-control" name="data_title" />'
+							+ '</li>'
+							+ '<li class="form-group row settings-property data-labels">'
+								+ '<label class="col-md-4 col-sm-5 col-form-label">Data Labels: </label>'
+								+ '<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>'
+								+ '<input class="col-md-7 col-sm-6 form-control" name="data_labels" placeHolder="Attribute name or strings divided by comma delimiter" title="Attribute name or strings divided by comma delimiter" />'
+							+ '</li>'
+							+ '<li class="form-group row settings-property data-values">'
+								+ '<label class="col-md-4 col-sm-5 col-form-label">Data Values: </label>'
+								+ '<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>'
+								+ '<input class="col-md-7 col-sm-6 form-control" name="data_values" placeHolder="Attribute name" title="Attribute name" />'
+							+ '</li>'
+							+ '<li class="form-group row settings-property background-color color-style">'
+								+ '<label class="col-md-4 col-sm-5 col-form-label">Background Color: </label>'
+								+ '<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>'
+								+ '<input class="color-selector" type="color">'
+								+ '<input class="color-code" name="background_color">'
+							+ '</li>'
+							+ '<li class="form-group row settings-property border-color color-style">'
+								+ '<label class="col-md-4 col-sm-5 col-form-label">Border Color: </label>'
+								+ '<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>'
+								+ '<input class="color-selector" type="color">'
+								+ '<input class="color-code" name="border_color">'
+							+ '</li>'
+							+ '<li class="form-group row settings-property border-width color-style">'
+								+ '<label class="col-md-4 col-sm-5 col-form-label">Border Width: </label>'
+								+ '<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>'
+								+ '<input class="col-md-7 col-sm-6 form-control" name="border_width" type="number" min="0" />'
+							+ '</li>'
+							+ '<li class="form-group row settings-property data-parse">'
+								+ '<label class="col-md-4 col-sm-5 col-form-label">Parse Callback: </label>'
+								+ '<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>'
+								+ '<input class="col-md-7 col-sm-6 form-control" name="data_parse" title="Define a parse callback function for this data settings before it gets added to the chart main settings" />'
+							+ '</li>'
+						+ '</ul>'
+					+ '</li>';
+				var li = $(html);
+				
+				me.prepareHtmlFields(li);
+				
+				ul.append(li);
+				ul.children(".empty").hide();
+				
+				if (!p.hasClass("group-open"))
+					p.addClass("group-open");
+				
+				//update resources in select
+				me.refreshWidgetExistentResourcesReferences( li.find(".data-resource-name > select")[0] );
+				
+				if (!do_not_update_widget)
+					ui_creator.saveMenuSettingsField(ul[0]);
+				
+				return li;
+			};
+			
+			me.prepareHtmlFields = function(elm) {
+				elm = $(elm);
+				
+				//copied from LayoutUIEDitor.js
+				elm.find(".group-title").click(function(event) {
+					var p = $(this).parent();
+					p.toggleClass("group-open");
+					
+					//if (!p.hasClass("settings-properties"))
+						$(this).children(".toggle").toggleClass("zmdi-caret-right zmdi-caret-down");
+				});
+				
+				//copied from LayoutUIEDitor.js
+				elm.find(".color-selector").on("input", function(event) {
+					var cc = $(this).parent().children(".color-code");
+					cc.val( this.value );
+					cc.blur();
+				});
+				
+				elm.find(".clear-user-input").click(function(ev) {
+					ui_creator.clearFieldsUserInput(this);
+				});
+				
+				elm.find("input, select, textarea").bind("blur", function(ev) {
+					ui_creator.saveMenuSettingsField(this);
+				});
+				
+				ui_creator.addMenuSettingsContextMenu( elm.find("input") );
+			};
+			
+			me.onClickDisplay = function(elm, event) {
+				event && event.stopPropagation();
+			};
+			
+			me.onChangeDisplay = function(elm, event) {
+				event && event.stopPropagation();
+				
+				elm = $(elm);
+				var p = elm.parent().closest(".legend, .title, .sub_title");
+				var ul  =p.children("ul");
+				
+				if (elm.is(":checked")) {
+					p.addClass("group-open");
+					ul.find("input, select, textarea").removeAttr("disabled");
+				}
+				else {
+					p.removeClass("group-open");
+					ul.find("input, select, textarea").attr("disabled", "");
+				}
+			};
+			
+			me.toggleInformation = function(elm, event) {
+				event && event.stopPropagation();
+				
+				$(elm).parent().closest(".data-sets").children(".information").toggle();
+			};
+			
+			me.refreshWidgetExistentResourcesReferences = function(elm, event) {
+				if (typeof ui_creator.LayoutUIEditorWidgetResource == "object" && typeof ui_creator.LayoutUIEditorWidgetResource.refreshWidgetExistentResourcesReferences == "function") {
+					var p = $(elm).parent();
+					var select = p.children("select");
+					p.addClass("settings-widget");
+					select.addClass("select-existent-widget-resources");
+					
+					ui_creator.LayoutUIEditorWidgetResource.refreshWidgetExistentResourcesReferences(elm, event);
+					
+					p.removeClass("settings-widget");
+					select.removeClass("select-existent-widget-resources");
+				}
+			};
+			
+			me.removeDataSet = function(elm) {
+				elm = $(elm);
+				var li = elm.parent().closest("li");
+				var ul = li.parent();
+				
+				li.remove();
+				
+				if (ul.children("li:not(.empty)").length == 0)
+					ul.children("li.empty").show();
+				
+				ui_creator.saveMenuSettingsField(ul[0]);
+			};
+			
+			me.onChangeDataType = function(elm) {
+				elm = $(elm);
+				var type = elm.val();
+				var p = elm.parent().closest("li").parent();
+				
+				if (type == "resource") {
+					p.children(".data-resource-name").show();
+					p.find(" > .data-labels > input").attr("placeHolder", "Attribute name or strings divided by comma delimiter").attr("title", "Attribute name or strings divided by comma delimiter");
+					p.find(" > .data-values > input").attr("placeHolder", "Attribute name").attr("title", "Attribute name");
+				}
+				else {
+					p.children(".data-resource-name").hide();
+					p.find(" > .data-labels > input").attr("placeHolder", "Strings divided by comma delimiter or JSON array with strings").attr("title", "Strings divided by comma delimiter or JSON array with strings");
+					p.find(" > .data-values > input").attr("placeHolder", "Values divided by comma delimiter or JSON array with values").attr("title", "Values divided by comma delimiter or JSON array with values");
+				}
+			};
+			
+			me.getGraphProperties = function(widget) {
+				var properties = widget.attr("data-graph-props");
+				properties = properties && properties.substr(0, 1) == "{" ? ui_creator.parseJson(properties) : {};
+				properties = $.isPlainObject(properties) ? properties : {};
+				
+				return properties;
+			};
+			
+			me.setGraphProperties = function(widget, properties) {
+				properties = JSON.stringify(properties);
+				widget.attr("data-graph-props", properties);
+			};
+		}
+	]]></menu_js>
+</widget>

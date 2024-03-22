@@ -37,6 +37,9 @@
 	<!-- Add Icons CSS files -->
 	<link rel="stylesheet" href="<?php echo $project_url_prefix; ?>css/icons.css" type="text/css" charset="utf-8" />
 	
+	<!-- Add Layout CSS -->
+	<link rel="stylesheet" href="<?php echo $project_url_prefix; ?>css/layout.css" type="text/css" charset="utf-8" />
+	
 	<!-- Local CSS and JS -->
 	<link rel="stylesheet" href="<?php echo $project_common_url_prefix; ?>module/common/module.css" type="text/css" charset="utf-8" />
 	<script type="text/javascript" src="<?php echo $project_common_url_prefix; ?>module/common/module.js"></script>

@@ -494,6 +494,22 @@ function refreshNodeParentChildsByChildId(node_id) {
 	}
 }
 
+function refreshOpenNodeChildsBasedInIconClass(class_name) {
+	if (class_name && mytree && mytree.tree_elm) {
+		var item = mytree.tree_elm.find(".jstree-node > .jstree-anchor > .jstree-icon." + class_name);
+		var node = item.parent().closest(".jstree-node");
+		mytree.refreshNodeChilds(node);
+	}
+}
+
+function refreshAndShowNodeChildsBasedInIconClass(class_name) {
+	if (class_name && mytree && mytree.tree_elm) {
+		var item = mytree.tree_elm.find(".jstree-node > .jstree-anchor > .jstree-icon." + class_name);
+		var node = item.parent().closest(".jstree-node");
+		refreshAndShowNodeChilds(node);
+	}
+}
+
 function refreshOpenNodeChildsBasedInPath(path) {
 	if (path && mytree && mytree.tree_elm) {
 		var items = mytree.tree_elm.find(".jstree-node.jstree-open > ul[url]");

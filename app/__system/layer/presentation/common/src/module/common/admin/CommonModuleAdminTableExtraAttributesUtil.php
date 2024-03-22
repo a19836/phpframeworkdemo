@@ -894,6 +894,7 @@ class ' . $service_name . ' extends \\CommonService {
 		
 		$insert_update_ibatis_prepare_vars_code = WorkFlowBusinessLogicHandler::prepareAttributesDefaultValueCode($attributes, true);
 		$insert_update_hibernate_prepare_vars_code = WorkFlowBusinessLogicHandler::prepareAttributesDefaultValueCode($attributes, false);
+		$insert_update_db_prepare_vars_code = WorkFlowBusinessLogicHandler::prepareNumericAttributesStringValueCode($attributes);
 		
 		$insert_update_annotations = WorkFlowBusinessLogicHandler::getAnnotationsFromParameters($attributes, true, true, true, true, true);
 		$delete_get_annotations = WorkFlowBusinessLogicHandler::getAnnotationsFromParameters($attributes, true, false, true, false, true);
@@ -938,7 +939,7 @@ class ' . $service_name . ' extends \\CommonService {
 			return $' . $service_name . '->insert($data, $ids, $options);
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			' . $insert_update_hibernate_prepare_vars_code . '
+			' . $insert_update_hibernate_prepare_vars_code . $insert_update_db_prepare_vars_code . '
 			
 			$attributes = array_filter($data, function($k) {
 				return $k && in_array($k, array("' . implode('", "', array_keys($attributes)) . '")); 
@@ -971,7 +972,7 @@ class ' . $service_name . ' extends \\CommonService {
 			return $' . $service_name . '->update($data, $options);
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			' . $insert_update_hibernate_prepare_vars_code . '
+			' . $insert_update_hibernate_prepare_vars_code . $insert_update_db_prepare_vars_code . '
 			
 			$attributes = array_filter($data, function($k) {
 				return $k && in_array($k, array("' . implode('", "', array_keys(array_diff_key($attributes, $this->extra_pks))) . '")); 

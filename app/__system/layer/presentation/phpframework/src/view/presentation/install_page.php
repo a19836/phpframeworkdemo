@@ -34,6 +34,8 @@
 <script>
 var get_store_pages_url = "' . $project_url_prefix . "phpframework/admin/get_store_type_content?type=pages" . '"; //This is a global var
 var is_popup = ' . ($popup ? 1 : 0) . ';
+var is_remote_url = ' . ($_POST["remote_url"] ? 1 : 0) . ';
+var is_zip_file = ' . ($_FILES["zip_file"] ? 1 : 0) . ';
 </script>'; $main_content = '
 	<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 		<header>
@@ -47,6 +49,7 @@ var is_popup = ' . ($popup ? 1 : 0) . ';
 	<ul>
 		' . ($get_store_pages_url ? '<li><a href="#store">Store Pages</a></li>' : '') . '
 		<li><a href="#local">Upload Local Pre-built Page</a></li>
+		<li><a href="#remote">Download Page From Web</a></li>
 	</ul>
 	<div id="local" class="file_upload">
 		<div class="title">Install a local pre-built page from your computer (.zip file)</div>
@@ -70,4 +73,14 @@ var is_popup = ' . ($popup ? 1 : 0) . ';
 			<li class="loading">Loading pre-built pages from store...</li>
 		</ul>
 	</div>' : '') . '
+	
+	<div id="remote" class="install_page_url">
+		<div class="title">Install a page based in an url from the web</div>
+		<form method="post" enctype="multipart/form-data">
+			<input type="hidden" name="dummy_for_post_var_exists" value="1">
+			<input class="remote_url" type="url" name="remote_url" value="' . $remote_url . '" placeHolder="Write an url for a web page">
+			<a class="icon refresh" href="javascript:void(0)" onClick="viewPageUrl(this)" title="Click to view the page correspondent to your url">Refresh</a>
+		</form>
+		<iframe></iframe>
+	</div>
 </div>'; } ?>

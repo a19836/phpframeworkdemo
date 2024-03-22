@@ -180,9 +180,10 @@ body.main_navigator_reverse.left_panel_hidden #right_panel {
 	margin-left:10px;
 	float:left;
 	text-align:left;
+	font-size:12px;
 }
 #top_panel ul.center {
-	margin-top:10px;
+	margin-top:7px;
 	display:inline-block;
 }
 #top_panel ul.right {
@@ -203,6 +204,10 @@ body.main_navigator_reverse.left_panel_hidden #right_panel {
 	color:var(--main-context-menu-border);
 	vertical-align:middle;
 	opacity:.3;
+}
+#top_panel > ul > li.link {
+	font-size:13px;
+	cursor:pointer;
 }
 #top_panel li.go_back {
 	margin:0;
@@ -238,8 +243,8 @@ body.main_navigator_reverse #top_panel li.toggle_main_navigator_side a::after {
 #top_panel .logo {
 	width:110px;
 	height:20px;
-	margin:0;
-	vertical-align:middle;
+	margin:0 20px 0 0;
+	vertical-align:sub;
 }
 #top_panel .logo a {
 	width:100%;
@@ -415,7 +420,7 @@ body.main_navigator_reverse #top_panel li.toggle_main_navigator_side a::after {
 	display:block;
 }
 #top_panel > ul > li.sub_menu > ul li a {
-	padding:4px 15px 4px 15px;
+	padding:4px 25px 4px 15px;
 	display:block;
 	color:inherit;
 	text-decoration:none;
@@ -428,6 +433,23 @@ body.main_navigator_reverse #top_panel li.toggle_main_navigator_side a::after {
 }
 #top_panel > ul > li.sub_menu > ul li:hover a .icon {
 	opacity:1;
+}
+
+#top_panel > ul > li.sub_menu > ul li.label {
+	margin:-10px 0 10px;
+	padding:10px 0;
+	cursor:auto;
+	position:sticky;
+	top:0;
+	border-bottom:1px solid var(--top-panel-sub-menu-item-color);
+	z-index:1; /* otherwise if there is a project selected the check icon will appear above this elm */
+}
+#top_panel > ul > li.sub_menu > ul li.label:hover {
+	background:var(--top-panel-sub-menu-item-bg);
+	color:var(--top-panel-sub-menu-item-color);
+}
+#top_panel > ul > li.sub_menu > ul li.label a {
+	text-transform: none;
 }
 
 #top_panel > ul > li.sub_menu.sub_menu_user {
@@ -505,7 +527,8 @@ body.main_navigator_reverse #top_panel li.toggle_main_navigator_side a::after {
 	margin-left:5px;
 }
 #top_panel > ul > li.sub_menu.filter_by_layout > ul {
-	margin-left:40px;
+	/*margin-left:40px;*/
+	margin-left:0px;
 	text-align:left;
 }
 #top_panel > ul > li.sub_menu.filter_by_layout.open > ul > .triangle_up {
@@ -514,10 +537,15 @@ body.main_navigator_reverse #top_panel li.toggle_main_navigator_side a::after {
 #top_panel > ul > li.sub_menu.filter_by_layout > ul > li.scroll {
 	max-height:calc(100vh - 70px);
 	overflow:auto;
+	overflow:overlay;
 	background:var(--top-panel-sub-menu-item-bg);
 }
 #top_panel > ul > li.sub_menu.filter_by_layout > ul > li.scroll > ul > li.all_projects {
-	font-size:13px;
+	opacity:.9;
+}
+#top_panel > ul > li.sub_menu.filter_by_layout > ul > li.scroll > ul > li.project_common {
+	margin-bottom:15px;
+	opacity:.9;
 }
 #top_panel > ul > li.sub_menu.filter_by_layout > ul > li.scroll > ul > li > ul li {
 	padding-left:20px;
@@ -1091,6 +1119,13 @@ body > .sortable_helper {
   #left_panel.advanced_level .mytree > ul > .presentation_layers > ul li[data-jstree='{"icon":"properties"}'] {
 	display:block;
 }
+#left_panel .mytree > ul > .presentation_layers > ul li[data-jstree='{"icon":"project_common"}'] {
+	display:none;
+}
+#left_panel.advanced_level .mytree > ul > .presentation_layers > ul li[data-jstree='{"icon":"project_common"}'],
+  #left_panel.common_project_selected .mytree > ul > .presentation_layers > ul li[data-jstree='{"icon":"project_common"}'] {
+	display:block;
+}
 #left_panel.left_panel_with_tabs .mytree > ul > .presentation_layers > ul li[data-jstree='{"icon":"entities_folder"}'] > a {
 	background-color:var(--left-panel-tree-entities-folder-bg);
 }
@@ -1103,6 +1138,13 @@ body > .sortable_helper {
 	content:"pages";
 	text-indent:0px;
 	float:left;
+}
+#left_panel .mytree > ul > .presentation_layers > ul > li > ul.empty:before {
+	content:"There are no visible projects.";
+	display:block;
+	padding:20px;
+	text-align:center;
+	opacity:.7;
 }
 
 /* LEFT PANEL - BUSINESS LOGIC LAYER */
@@ -1118,6 +1160,34 @@ body > .sortable_helper {
   #left_panel.advanced_level .mytree > ul > .business_logic_layers > ul li[data-jstree='{"icon":"cms_resource"}'] {
 	display:block;
 }
+#left_panel .mytree > ul > .business_logic_layers > ul > li > ul.empty:before {
+	content:"There are no visible services.";
+	display:block;
+	padding:20px;
+	text-align:center;
+	opacity:.7;
+}
+
+/* LEFT PANEL - DATA ACCESS LAYER */
+#left_panel .mytree > ul > .data_access_layers > ul li[data-jstree='{"icon":"cms_common"}'],
+  #left_panel .mytree > ul > .data_access_layers > ul li[data-jstree='{"icon":"cms_module"}'],
+  #left_panel .mytree > ul > .data_access_layers > ul li[data-jstree='{"icon":"cms_program"}'],
+  #left_panel .mytree > ul > .data_access_layers > ul li[data-jstree='{"icon":"cms_resource"}'] {
+	display:none;
+}
+#left_panel.advanced_level .mytree > ul > .data_access_layers > ul li[data-jstree='{"icon":"cms_common"}'],
+  #left_panel.advanced_level .mytree > ul > .data_access_layers > ul li[data-jstree='{"icon":"cms_module"}'],
+  #left_panel.advanced_level .mytree > ul > .data_access_layers > ul li[data-jstree='{"icon":"cms_program"}'],
+  #left_panel.advanced_level .mytree > ul > .data_access_layers > ul li[data-jstree='{"icon":"cms_resource"}'] {
+	display:block;
+}
+#left_panel .mytree > ul > .data_access_layers > ul > li > ul.empty:before {
+	content:"There are no visible queries.";
+	display:block;
+	padding:20px;
+	text-align:center;
+	opacity:.7;
+}
 
 /* LEFT PANEL - DB LAYER */
 #left_panel .mytree > ul > .db_layers > ul li.module_table {
@@ -1126,7 +1196,13 @@ body > .sortable_helper {
 #left_panel.advanced_level .mytree > ul > .db_layers > ul li.module_table {
 	display:block;
 }
-
+#left_panel .mytree > ul > .db_layers > ul > li > ul.empty:before {
+	content:"There are no visible databases.";
+	display:block;
+	padding:20px;
+	text-align:center;
+	opacity:.7;
+}
 
 /* LEFT PANEL - TREE ICONS */
 body.dark_theme #left_panel .mytree i.jstree-themeicon:not(.reserved_file):not(.reserved_folder):not(.undefined_file)::after, 

@@ -20,6 +20,7 @@ $(function () {
 	//init trees
 	choosePageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotPagesFromTree,
@@ -28,6 +29,7 @@ $(function () {
 	
 	chooseImageUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotAPossibleImageFromTree,
@@ -36,6 +38,7 @@ $(function () {
 	
 	chooseWebrootFileUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotWebrootFileFromTree,
@@ -89,7 +92,9 @@ function openModuleAdminPanelPopup() {
 	var popup = $(".module_admin_panel_popup");
 	
 	if (!popup[0]) {
-		popup = $('<div class="myfancypopup' + (is_popup ? " in_popup" : "") + ' module_admin_panel_popup"><iframe src="' + module_admin_panel_url + '"></iframe></div>');
+		var url = module_admin_panel_url + (module_admin_panel_url.indexOf("?") != -1 ? "&": "?") + "popup=1";
+		
+		popup = $('<div class="myfancypopup' + (is_popup ? " in_popup" : "") + ' module_admin_panel_popup with_iframe_title"><iframe src="' + url + '"></iframe></div>');
 		$(document.body).append(popup);
 	}
 	

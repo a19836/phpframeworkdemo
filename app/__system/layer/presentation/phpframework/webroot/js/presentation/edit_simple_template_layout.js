@@ -149,12 +149,12 @@ function preparePretifyRegionBlockComboBox(item) {
 }
 
 function prepareRegionBlockHtmlEditor(item) {
-	var select = item.querySelector(".region_block_type");
+	var select = item.querySelector(".type");
 	
 	if (select) {
 		var type = select.value;
 		
-		if (type == "html") {
+		if (type == 1) { //is html
 			var block_html = filterSelectorInNodes(item.childNodes, ".block_html");
 			
 			if (block_html && !parent.hasRegionBlockHtmlEditor(block_html))
@@ -175,9 +175,11 @@ function convertRegionBlocksToSimpleHtml(elms) {
 		for (var j = 0; j < items.length; j++) {
 			var item = items[j];
 			var values = parent.getSettingsTemplateRegionBlockValues(item);
+			var type = values["type"];
+			var is_html = type == 1;
 			
 			//prepare main html and remove this item
-			if (values && values["type"] == "html") {
+			if (values && is_html) {
 				var sub_html = values["block"];
 				
 				//add sub_html
@@ -422,11 +424,14 @@ function prepareRegionBlockSimulatedHtml(item) {
 		var type = values["type"];
 		var region = values["region"];
 		var block = values["block"];
+		var block_type = values["block_type"];
 		var rb_index = values["rb_index"];
+		var is_block = type == 2 || type == 3;
+		var is_view = type == 4 || type == 5;
 		
 		var b = ("" + block).charAt(0) == '"' ? ("" + block).substr(1, ("" + block).length - 2).replace(/\\"/g, '"') : block;
 		
-		if (b && (type == "options" || type == "string" || type == "text")) {
+		if ((is_block || is_view) && b && (block_type == "options" || block_type == "string" || block_type == "text")) {
 			//save synchronization functions
 			var update_settings_from_layout_iframe_func_bkp = parent.update_settings_from_layout_iframe_func;
 			var update_layout_iframe_from_settings_func_bkp = parent.update_layout_iframe_from_settings_func;
@@ -442,15 +447,17 @@ function prepareRegionBlockSimulatedHtml(item) {
 			
 			//preparing urls
 			var get_url = system_get_page_block_simulated_html_url.replace(/#project#/g, p).replace(/#block#/g, b);
-			var save_url = system_save_page_block_simulated_html_setting_url.replace(/#project#/g, p).replace(/#block#/g, b);
+			var save_url = is_block ? system_save_page_block_simulated_html_setting_url.replace(/#project#/g, p).replace(/#block#/g, b) : null;
   			var post_data = system_get_page_block_simulated_html_data;
-			post_data["page_region_block_params"] = post_data["page_region_block_join_points"] = null;
+			post_data["page_region_block_type"] = is_view ? "view" : "block";
+			post_data["page_region_block_params"] = null;
+			post_data["page_region_block_join_points"] = null;
 			
   			//preparing params and join points
-			if (typeof parent.getRegionBlockParamValues == "function")
+  			if (is_block && typeof parent.getRegionBlockParamValues == "function")
 				post_data["page_region_block_params"] = parent.getRegionBlockParamValues(region, block, rb_index);
 			
-			if (typeof parent.getRegionBlockJoinPoints == "function")
+			if (is_block && typeof parent.getRegionBlockJoinPoints == "function")
 				post_data["page_region_block_join_points"] = parent.getRegionBlockJoinPoints(region, block, rb_index);
 			
 			//sets back synchronization functions
@@ -487,7 +494,8 @@ function prepareRegionBlockSimulatedHtml(item) {
 				  			
 				  			block_simulated_html.innerHTML = simulated_html;
 					  		
-					  		convertBlockSimulatedHtmlIntoEditableContent(block_simulated_html, response_obj, save_url);
+					  		if (save_url)
+						  		convertBlockSimulatedHtmlIntoEditableContent(block_simulated_html, response_obj, save_url);
 				  			
 				  			if (typeof parent.disableLinksAndButtonClickEvent == "function")
 					  			parent.disableLinksAndButtonClickEvent(block_simulated_html);
@@ -748,17 +756,46 @@ function onBlurRegionBlock(elm) {
 	var block = elm.value;
 	var p = elm.parentNode
 	var item = p.closest(".template_region_item");
+	var block_type = item.querySelector("select.region_block_type").value;
 	
-	if (block) 
+	if (block != "") 
 		item.classList.add("active");
 	else
 		item.classList.remove("active");
+	
+	if (block != "" && block_type == "string")
+		item.classList.add("has_edit");
+	else
+		item.classList.remove("has_edit");
 	
 	//sync layout with settings
 	parent.updateSettingsFromLayoutIframeField();
 	
 	//simulate block html
 	prepareRegionBlockSimulatedHtml(item);
+}
+
+function onChangeTemplateRegionItemType(elm) {
+	//save synchronization function
+	var update_layout_iframe_from_settings_func_bkp = parent.update_layout_iframe_from_settings_func;
+	
+	//disable synchronization function
+	parent.update_layout_iframe_from_settings_func = null;
+	
+	//call parent onChangeTemplateRegionItemType
+	parent.onChangeTemplateRegionItemType(elm);
+	
+	var p = elm.parentNode.closest(".template_region_item");
+	prepareRegionBlockHtmlEditor(p);
+	
+	//sets back synchronization function
+	parent.update_layout_iframe_from_settings_func = update_layout_iframe_from_settings_func_bkp;
+	
+	//sync layout with settings
+	parent.updateSettingsFromLayoutIframeField();
+	
+	//simulate block
+	prepareRegionBlockSimulatedHtml(p);
 }
 
 function onChangeRegionBlockType(elm) {
@@ -840,6 +877,7 @@ function prepareNewRegion(new_region) {
 		var children = new_region.childNodes;
 		var block_text = filterSelectorInNodes(children, ".block_text");
 		
+		filterSelectorInNodes(children, ".type").setAttribute("onChange", "onChangeTemplateRegionItemType(this)");
 		filterSelectorInNodes(children, ".block_options").setAttribute("onChange", "onChangeRegionBlock(this)");
 		filterSelectorInNodes(block_text.childNodes, "textarea").setAttribute("onBlur", "onBlurRegionBlock(this)");
 		filterSelectorInNodes(children, ".block").setAttribute("onBlur", "onBlurRegionBlock(this)");
@@ -1031,7 +1069,7 @@ function getTemplateRegionsBlocks() {
 					regions.push(region);
 					
 					if (block != "")
-						regions_blocks.push([region, sub_html, null, true, 0]);
+						regions_blocks.push([region, sub_html, null, 1, 0]); //1 == html
 				}
 				
 				start = pos + to_search.length;
@@ -1052,7 +1090,7 @@ function getTemplateRegionsBlocks() {
 				regions.push(region);
 				
 				if (block != "")
-					regions_blocks.push([region, block, project, type == "html", rb_index]);
+					regions_blocks.push([region, block, project, type, rb_index]);
 			}
 		}
 		
@@ -1065,7 +1103,7 @@ function getTemplateRegionsBlocks() {
 				regions.push(region);
 				
 				if (block != "")
-					regions_blocks.push([region, sub_html, null, true, 0]);
+					regions_blocks.push([region, sub_html, null, 1, 0]); //1 == html
 			}
 		}
 	}

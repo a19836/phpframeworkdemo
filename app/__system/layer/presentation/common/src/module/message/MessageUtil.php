@@ -19,6 +19,8 @@ class MessageUtil {
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$data["subject"] = addcslashes($data["subject"], "\\'");
 					$data["content"] = addcslashes($data["content"], "\\'");
+					$data["from_user_status"] = is_numeric($data["from_user_status"]) ? $data["from_user_status"] : 1;
+					$data["to_user_status"] = is_numeric($data["to_user_status"]) ? $data["to_user_status"] : 1;
 					
 					if ($data["message_id"]) {
 						$options = array("hard_coded_ai_pk" => true);
@@ -30,6 +32,9 @@ class MessageUtil {
 					return $status ? $broker->getInsertedId($options) : $status;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
+					$data["from_user_status"] = is_numeric($data["from_user_status"]) ? $data["from_user_status"] : 1;
+					$data["to_user_status"] = is_numeric($data["to_user_status"]) ? $data["to_user_status"] : 1;
+					
 					if (!$data["message_id"]) {
 						unset($data["message_id"]);
 					}
@@ -39,6 +44,9 @@ class MessageUtil {
 					return $status ? $ids["message_id"] : $status;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
+					$data["from_user_status"] = is_numeric($data["from_user_status"]) ? $data["from_user_status"] : 1;
+					$data["to_user_status"] = is_numeric($data["to_user_status"]) ? $data["to_user_status"] : 1;
+					
 					$attributes = array(
 						"from_user_id" => $data["from_user_id"], 
 						"to_user_id" => $data["to_user_id"], 

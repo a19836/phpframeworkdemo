@@ -466,9 +466,9 @@ function getChooseAvailableTemplateHtml(project_id, folder_to_filter, fp, templa
 		html += '<label>' + label + '</label>';
 		
 		if (demo)
-			html += '<div class="show_demo" title="View Demo"><span class="icon view"></span>Preview</div>';
+			html += '<button class="show_demo" title="View Demo"><span class="icon view"></span>Preview</button>';
 		
-		html += '<div class="select_template" onClick="selectAvailableTemplate(\'' + project_id + '\', \'' + template_id + '\')" title="Select Template"><span class="icon download"></span>Select</div>';
+		html += '<button class="select_template" onClick="selectAvailableTemplate(\'' + project_id + '\', \'' + template_id + '\')" title="Select Template"><span class="icon download"></span>Select</button>';
 	}
 	else { //if is folder
 		var logos = getFolderFilesAvailableLogos(template_props);

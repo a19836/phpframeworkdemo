@@ -26,7 +26,7 @@ class Test extends TestUnit {
 		 * - $this->getErrors()
 		 */
 		 
-		 return false; //it must return something. If you would like to display something when this test gets executed, return a string with what you wish to display.
+		 return true; //it must return something. If you would like to display something when this test gets executed, return a string with what you wish to display.
 	}
 }
 ?>

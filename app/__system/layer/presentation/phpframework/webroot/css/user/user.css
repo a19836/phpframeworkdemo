@@ -33,6 +33,7 @@ body.main_navigator_reverse .top_bar header {
 	width:220px;
 	padding-top:0px;
 	overflow:auto;
+	overflow:overlay;
 	text-align:right;
 	z-index:1;
 	
@@ -60,6 +61,10 @@ body.main_navigator_reverse #menu {
 }
 #menu ul li:hover:not(.current_user) {
 	background-color:rgba(255, 255, 255, .5);
+}
+#menu ul li.active {
+	background-color:rgba(255, 255, 255);
+	font-weight:bold;
 }
 #menu ul li a {
 	color:var(--main-iframe-color);
@@ -111,6 +116,7 @@ body.main_navigator_reverse #menu li.current_user {
 	right:220px;
 	bottom:0;
 	overflow:auto;
+	overflow:overlay;
 }
 body.main_navigator_reverse #content {
 	left:220px;
@@ -249,7 +255,9 @@ body.main_navigator_reverse #content {
   #content .user_type_permissions_list .user_type_permissions_content #layers_permissions_list {
 	max-height:calc(100vh - 175px);
 	overflow:auto;
+	overflow:overlay;
 	position:relative;
+	box-sizing:border-box;
 }
 #content .user_type_permissions_list .user_type_permissions_content #layers_permissions_list table td {
 	padding:3px 0;
@@ -281,8 +289,10 @@ body.main_navigator_reverse #content {
   #content .layout_type_permissions_list .layout_type_permissions_content #referenced_in_layout {
 	max-height:calc(100vh - 165px);
 	overflow:auto;
+	overflow:overlay;
 	position:relative;
 	font-size:80%;
+	box-sizing:border-box;
 }
 #content .layout_type_permissions_list .layout_type_permissions_content .mytree {
 	margin-top:10px;

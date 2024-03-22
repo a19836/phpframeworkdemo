@@ -184,7 +184,7 @@ class CommonModuleAdminUtil {
 		$head = $this->head;
 		
 		$main_content = '
-		<div class="menu">
+		<div class="menu' . ($this->popup ? " inside_popup_title" : "") . '">
 			' . $this->getMenuHtml() . '
 		</div>
 		<div class="content">

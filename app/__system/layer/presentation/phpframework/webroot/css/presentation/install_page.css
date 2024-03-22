@@ -10,6 +10,16 @@ body,
 .top_bar {
 	margin-bottom:20px;
 }
+.top_bar header > ul > li.button > a > .loading {
+	height:16px;
+	margin-right:5px;
+}
+.top_bar header > ul > li.button > a.loading {
+	cursor:wait;
+}
+.top_bar header > ul > li.button > a.loading .icon {
+	cursor:inherit;
+}
 
 /* install_page */
 .install_page {
@@ -102,6 +112,41 @@ body,
 	color:#999;
 }
 
+/* install_page_url */
+
+.install_page > .install_page_url {
+	text-align:center;
+}
+.install_page > .install_page_url > .title {
+	margin:20px 0 0;
+	color:#999;
+}
+.install_page > .install_page_url .remote_url {
+	width:315px;
+	/*width:calc(100% - 57px);*/
+	margin:10px auto 0;
+	padding:10px 25px 10px 10px;
+	font-size:inherit;
+}
+.install_page > .install_page_url .icon.refresh {
+	margin:13px 0 0 -25px;
+}
+.install_page > .install_page_url .icon.refresh.loading {
+	cursor:wait;
+}
+.install_page > .install_page_url .icon.refresh.loading:before {
+	content:"";
+}
+.install_page > .install_page_url iframe {
+	width:100%;
+	height:calc(100vh - 260px);
+	min-height:300px;
+	margin:20px 0 0;
+	padding:0;
+	border:1px solid rgba(0,0,0, .1);
+	box-sizing:border-box;
+}
+
 /* install_store_page */
 
 .install_page > .install_store_page {
@@ -112,28 +157,34 @@ body,
 	color:#999;
 }
 .install_page > .install_store_page > .search_page {
-	margin:10px 0 0;
+	max-width:250px;
+	margin:10px auto 0;
 	color:#999;
+	position:relative;
+	display:inline-block;
 }
 .install_page > .install_store_page > .search_page .icon.search {
 	cursor:default;
 	color:inherit;
 }
 .install_page > .install_store_page > .search_page input {
-	width:200px;
+	width:100%;
 	margin-left:-28px;
 	padding:10px 20px 10px 25px;
 	color:inherit;
 	border-color:inherit;
 	border-radius:0.2rem;
 	font-size:8pt;
+	box-sizing:border-box;
 }
 .install_page > .install_store_page > .search_page input::placeholder {
 	color:inherit;
 }
 .install_page > .install_store_page > .search_page .icon.close {
+	margin:0;
 	position:absolute;
-	margin:15px 0 0 -18px;
+	top:13px;
+	right:7px;
 }
 .install_page > .install_store_page ul {
 	max-height: calc(100% - 90px);
@@ -180,8 +231,9 @@ body,
 	color:#999;
 }
 .install_page > .install_store_page ul li .photo {
-	width:100%;
+	width:auto;
 	height:180px;
+	margin:-10px;
 	display:inline-block;
 	overflow:overlay;
 }
@@ -211,13 +263,15 @@ body,
 	display: block;
 	text-align: center;
 	font-weight:normal;
-	color:#666;
 }
 .install_page > .install_store_page ul li img + label,
   .install_page > .install_store_page ul li .photo + label {
 	margin:10px -10px 10px;
-	padding:10px 10px 0;
+	padding:15px 10px 0;
 	border-top:1px solid var(--main-iframe-bg, #ddd);
+}
+.install_page > .install_store_page ul li .photo + label {
+	margin-top:0;
 }
 .install_page > .install_store_page ul li div {
 	margin:5px 0 10px;

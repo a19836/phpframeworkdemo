@@ -97,6 +97,9 @@
 	background:var(--main-popup-header-bg);
 	color:var(--main-popup-header-color);
 }
+.in_popup .edit_single_query .relationship .rel_name input::placeholder {
+	color:var(--main-popup-header-color);
+}
 
 /* RELATIONSHIP - QUERY */
 .edit_single_query .relationship .query {

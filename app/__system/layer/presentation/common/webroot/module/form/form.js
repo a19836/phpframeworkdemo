@@ -52,9 +52,10 @@ $(function () {
 	/* This is already executed in the common/settings.js, so we cannot executed again.
 	choosePropertyVariableFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeObjectPropertiesAndMethodsFromTreeForVariables,
+		ajax_callback_after : removeObjectPropertiesAndMethodsAndFunctionsFromTreeForVariables,
 	});
 	choosePropertyVariableFromFileManagerTree.init("choose_property_variable_from_file_manager .class_prop_var");*/
 	
@@ -80,7 +81,8 @@ function loadFormBlockSettings(settings_elm, settings_values) {
 	var module_form_settings = settings_elm.children(".module_form_settings");
 	var add_group_icon = module_form_settings.find(".sla_groups_flow > nav > .add_sla_group")[0];
 	
-	var tasks_values = convertFormSettingsToTasksValues(settings_values);
+	var original_tasks_values = convertFormSettingsToTasksValues(settings_values, false);
+	var tasks_values = convertFormSettingsToTasksValues(settings_values, true);
 	//console.log(settings_values);
 	//console.log(tasks_values);
 	
@@ -89,7 +91,7 @@ function loadFormBlockSettings(settings_elm, settings_values) {
 		if (tasks_values.hasOwnProperty("form_settings_data_type"))
 			loadFormBlockOldSettings(module_form_settings, add_group_icon, tasks_values);
 		else //load new form settings
-			loadFormBlockNewSettings(module_form_settings, add_group_icon, tasks_values);
+			loadFormBlockNewSettings(module_form_settings, add_group_icon, tasks_values, original_tasks_values);
 	}
 	else { 
 		//set default group
@@ -103,12 +105,12 @@ function loadFormBlockSettings(settings_elm, settings_values) {
 	MyFancyPopup.hidePopup();
 }
 
-function convertFormSettingsToTasksValues(settings_values) {
+function convertFormSettingsToTasksValues(settings_values, lower_case) {
 	var tasks_values = {};
 	
 	if (!$.isEmptyObject(settings_values)) {
 		//Preparing new settings
-		tasks_values = convertSettingsToTasksValues(settings_values);
+		tasks_values = convertSettingsToTasksValues(settings_values, lower_case);
 		
 		if ($.isEmptyObject(tasks_values) && (settings_values["css"] || settings_values["js"]))
 			tasks_values = convertBlockSettingsValuesIntoBasicArray(settings_values);
@@ -137,7 +139,7 @@ function convertFormSettingsToTasksValues(settings_values) {
 					tasks_values["form_input_data_type"] = settings_values[1]["value_type"];
 					tasks_values["form_input_data"] = settings_values[1]["value"];
 					
-					if (tasks_values["form_input_data_type"] == "method" || tasks_values["form_input_data_type"] == "function") {
+					if (get_input_data_method_settings_url && (tasks_values["form_input_data_type"] == "method" || tasks_values["form_input_data_type"] == "function")) {
 						$.ajax({
 							type : "post",
 							url : get_input_data_method_settings_url,
@@ -166,16 +168,17 @@ function convertFormSettingsToTasksValues(settings_values) {
 				}
 			}
 			
-			tasks_values = convertBlockSettingsValuesKeysToLowerCase(tasks_values);
+			if (lower_case)
+				tasks_values = convertBlockSettingsValuesKeysToLowerCase(tasks_values);
 		}
 	}
 	
 	return tasks_values;
 }
 
-function loadFormBlockNewSettings(module_form_settings, add_group_icon, tasks_values) {
+function loadFormBlockNewSettings(module_form_settings, add_group_icon, tasks_values, original_tasks_values) {
 	if (tasks_values.hasOwnProperty("actions"))
-		loadSLASettingsActions(add_group_icon, tasks_values["actions"], false);
+		loadSLASettingsActions(add_group_icon, tasks_values["actions"], false, false, original_tasks_values["actions"]);
 	
 	if (tasks_values.hasOwnProperty("css")) {
 		var block_css = module_form_settings.find(".block_css");

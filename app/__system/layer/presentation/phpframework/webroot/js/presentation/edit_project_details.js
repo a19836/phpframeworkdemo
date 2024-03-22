@@ -9,6 +9,7 @@ $(function () {
 	
 	chooseProjectFolderUrlFromFileManagerTree = new MyTree({
 		multiple_selection : false,
+		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
 		ajax_callback_after : removeAllThatIsNotProjectFolderFromTree,
@@ -117,8 +118,8 @@ function goToManageLayoutTypePermissions(elm) {
 			if (typeof window.parent.parent.goTo == "function" &&  window.parent.parent != window.parent) 
 				window.parent.document.location = url;
 			//if inside of the admin_advanced.php
-			else if (typeof window.parent.goTo == "function") {
-				window.parent.goTo(elm, "url");
+			else if (typeof window.parent.goToNew == "function") { //when this is the main parent window, it means we are in the choose project in the simple workspace, which means, we need to open a new window
+				window.parent.goToNew(elm, "url");
 				window.parent.MyFancyPopup.hidePopup();
 			}
 			//if in an independent window

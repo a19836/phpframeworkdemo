@@ -127,7 +127,7 @@ function viewStoreModule(module_label) {
 		var popup = $(".view_store_module_popup");
 		
 		if (!popup[0]) {
-			popup = $('<div class="myfancypopup view_store_module_popup"></div>');
+			popup = $('<div class="myfancypopup view_store_module_popup with_title"></div>');
 			$(document.body).append(popup);
 		}
 		

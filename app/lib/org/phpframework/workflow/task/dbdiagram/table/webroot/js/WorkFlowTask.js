@@ -2001,7 +2001,7 @@ var DBTableTaskPropertyObj = {
 				if (is_auto_increment)
 					simple_type = "simple_auto_primary_key";
 				else if ($.isArray(column_numeric_types) && $.inArray(type, column_numeric_types) != -1)
-					simple_type = "simple_fk_auto_primary_key";
+					simple_type = "simple_fk_primary_key";
 				
 				//update current_simple_props with simple props
 				if (simple_props) {
@@ -2202,43 +2202,91 @@ var DBTableTaskPropertyObj = {
 	isAttributeNameASimpleAttributeName : function(attribute_name, simple_prop_name) {
 		if (!simple_prop_name)
 			return true;
-		else {
+		else if (("" + attribute_name).length > 0) {
 			var anl = attribute_name.toLowerCase();
 			
 			if ($.isArray(simple_prop_name)) {
 				for (var i = 0, t = simple_prop_name.length; i < t; i++) {
 					var n = simple_prop_name[i];
 					
-					if (("" + n).toLowerCase().indexOf(anl) != -1)
+					if (anl.indexOf( ("" + n).toLowerCase() ) != -1)
 						return true;
 				}
 			}
-			else if (("" + simple_prop_name).toLowerCase().indexOf(anl) != -1)
+			else if (anl.indexOf( simple_prop_name.toLowerCase() ) != -1)
 				return true;
 		}
 		
 		return false;
 	},
 	
+	//get the props with bigger name, which means is the best fit. Example if the attribute_name=="id" it could appear in "idade", but what we want is only the "id" as an identifier.
 	getSimpleTypeBasedInAttributeName : function(attribute_name) {
-		var column_simple_types = $.isPlainObject(this.column_simple_types) ? this.column_simple_types : {};
-		var column_simple_custom_types = $.isPlainObject(this.column_simple_custom_types) ? this.column_simple_custom_types : {};
+		var choosen_type = null;
 		
-		for (var simple_type in column_simple_types) {
-			var simple_props = column_simple_types[simple_type];
+		if (("" + attribute_name).length > 0) {
+			var column_simple_types = $.isPlainObject(this.column_simple_types) ? this.column_simple_types : {};
+			var column_simple_custom_types = $.isPlainObject(this.column_simple_custom_types) ? this.column_simple_custom_types : {};
+			var anl = ("" + attribute_name).toLowerCase();
+			var an_length = ("" + attribute_name).length;
 			
-			if ($.isPlainObject(simple_props) && simple_props.hasOwnProperty("name") && simple_props["name"] && this.isAttributeNameASimpleAttributeName(attribute_name, simple_props["name"]))
-				return simple_type;
+			var get_length_func = function(simple_prop_name) {
+				if (!$.isArray(simple_prop_name))
+					simple_prop_name = [simple_prop_name];
+				
+				var max_prop_length = null;
+				
+				for (var i = 0, t = simple_prop_name.length; i < t; i++) {
+					var n = simple_prop_name[i];
+					
+					if (anl.indexOf( ("" + n).toLowerCase() ) != -1) {
+						var l = ("" + n).length;
+						
+						if (an_length == l)
+							return l;
+						else if (max_prop_length === null || l > max_prop_length)
+							max_prop_length = l;
+					}
+				}
+				
+				return max_prop_length;
+			};
+			var max_length = null;
+			
+			for (var simple_type in column_simple_types) {
+				var simple_props = column_simple_types[simple_type];
+				
+				if ($.isPlainObject(simple_props) && simple_props.hasOwnProperty("name") && simple_props["name"]) {
+					var length = get_length_func(simple_props["name"]);
+					
+					if ($.isNumeric(length) && (max_length === null || length > max_length || length == an_length)) {
+						max_length = length;
+						choosen_type = simple_type;
+						
+						if (length == an_length)
+							return choosen_type;
+					}
+				}
+			}
+			
+			for (var simple_type in column_simple_custom_types) {
+				var simple_props = column_simple_custom_types[simple_type];
+				
+				if ($.isPlainObject(simple_props) && simple_props.hasOwnProperty("name") && simple_props["name"]) {
+					var length = get_length_func(simple_props["name"]);
+					
+					if ($.isNumeric(length) && (max_length === null || length > max_length || length == an_length)) {
+						max_length = length;
+						choosen_type = simple_type;
+						
+						if (length == an_length)
+							return choosen_type;
+					}
+				}
+			}
 		}
 		
-		for (var simple_type in column_simple_custom_types) {
-			var simple_props = column_simple_custom_types[simple_type];
-			
-			if ($.isPlainObject(simple_props) && simple_props.hasOwnProperty("name") && simple_props["name"] && this.isAttributeNameASimpleAttributeName(attribute_name, simple_props["name"]))
-				return simple_type;
-		}
-		
-		return null;
+		return choosen_type;
 	},
 	
 	onBlurSimpleAttributeInputBox : function(elm) {
@@ -2309,7 +2357,7 @@ var DBTableTaskPropertyObj = {
 			}
 		}
 		
-		//reset all hidden props - This must happens before we load the simple type props, if apply, bc if we change from simple_auto_primary_key to manual_primary_key or to simple_fk_auto_primary_key, the auto_increment field will still be 1. So we must reset it before we load the simple type props!
+		//reset all hidden props - This must happens before we load the simple type props, if apply, bc if we change from simple_auto_primary_key to manual_primary_key or to simple_fk_primary_key, the auto_increment field will still be 1. So we must reset it before we load the simple type props!
 		li.find("input.simple_attr_primary_key[type=checkbox]").removeAttr("checked").prop("checked", false);
 		li.find("input.simple_attr_unique[type=checkbox]").removeAttr("checked").prop("checked", false);
 		li.find("input.simple_attr_unsigned[type=checkbox]").removeAttr("checked").prop("checked", false);
@@ -2355,10 +2403,14 @@ var DBTableTaskPropertyObj = {
 					else
 						input.removeAttr("checked").prop("checked", false);
 				}
+				else if (input_prop_name == "name") {
+					if (("" + input.val()).length == 0)
+						input.val(prop_value); //only replace attribute name if no name defined yet
+				}
 				else {
 					input.val(prop_value);
 					
-					if (prop_name == "default" && prop_value != null && typeof prop_value != "undefined" && !has_default_input.is(":checked"))
+					if (input_prop_name == "default" && prop_value != null && typeof prop_value != "undefined" && !has_default_input.is(":checked"))
 						has_default_input.attr("checked", "checked").prop("checked", true);
 				}
 			}

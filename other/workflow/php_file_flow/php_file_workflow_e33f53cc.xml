@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tasks>
+	<settings>
+		<code_id><![CDATA[21d3f4d66a7f07f40ff96cd575ae0bf1]]></code_id>
+	</settings>
 	<task start="1">
 		<label><![CDATA[Call insert_item in sample/test]]></label>
 		<id><![CDATA[43d36425_30be6e3f_834]]></id>
