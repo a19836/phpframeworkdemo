@@ -10,8 +10,8 @@
 		<tag><![CDATA[callfunction]]></tag>
 		<offset_left>100</offset_left>
 		<offset_top>50</offset_top>
-		<width>114</width>
-		<height>39</height>
+		<width>70</width>
+		<height>65</height>
 		<properties>
 			<result_var_name><![CDATA[parts]]></result_var_name>
 			<result_var_assignment></result_var_assignment>
@@ -50,8 +50,8 @@
 		<tag><![CDATA[if]]></tag>
 		<offset_left>100</offset_left>
 		<offset_top>190</offset_top>
-		<width>214</width>
-		<height>28</height>
+		<width>70</width>
+		<height>75</height>
 		<properties>
 			<group>
 				<join><![CDATA[and]]></join>
@@ -95,8 +95,8 @@
 		<tag><![CDATA[setvar]]></tag>
 		<offset_left>100</offset_left>
 		<offset_top>330</offset_top>
-		<width>184</width>
-		<height>39</height>
+		<width>70</width>
+		<height>65</height>
 		<properties>
 			<result_var_name><![CDATA[project_url_prefix]]></result_var_name>
 			<result_var_assignment></result_var_assignment>
@@ -125,8 +125,8 @@
 		<tag><![CDATA[setvar]]></tag>
 		<offset_left>100</offset_left>
 		<offset_top>470</offset_top>
-		<width>230</width>
-		<height>39</height>
+		<width>70</width>
+		<height>75</height>
 		<properties>
 			<result_var_name><![CDATA[project_common_url_prefix]]></result_var_name>
 			<result_var_assignment></result_var_assignment>
