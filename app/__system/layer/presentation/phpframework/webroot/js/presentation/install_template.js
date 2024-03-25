@@ -6,6 +6,11 @@ $(function () {
 	var install_template = $(".install_template");
 	install_template.tabs();
 	
+	if (is_zip_file) {
+		var tab_index = install_template.find(" > ul > li > a[href=#local]").parent().index();
+		install_template.tabs("option", "active", tab_index);
+	}
+	
 	onChangeLayer( install_template.find(" > .layer > select")[0] );
 	onChangeProject( install_template.find(" > .project > select")[0] );
 	

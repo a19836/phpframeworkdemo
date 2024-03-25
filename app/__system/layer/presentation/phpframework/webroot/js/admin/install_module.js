@@ -6,6 +6,11 @@ $(function () {
 	var install_module = $(".install_module");
 	install_module.tabs();
 	
+	if (is_zip_file) {
+		var tab_index = install_module.find(" > ul > li > a[href=#local]").parent().index();
+		install_module.tabs("option", "active", tab_index);
+	}
+	
 	onChangeProject( install_module.find(" > .project > select")[0] );
 	onChangeDBDriver( install_module.find(" > .db_driver > select")[0] );
 	
