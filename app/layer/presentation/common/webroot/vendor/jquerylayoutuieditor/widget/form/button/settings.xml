@@ -113,6 +113,8 @@
 				ui_creator.addMenuSettingsContextMenu(select);
 				ui_creator.addMenuSettingsContextMenu( menu_settings.find(" > .settings-properties input") );
 				
+				menu_settings.find(" > .settings-properties > ul > .value").show();
+				
 				if (widget.attr("type") == "image")
 					menu_settings.find(" > .settings-properties > ul > .value > label").html("Src: ");
 				else if (widget[0].nodeName.toLowerCase() == "button")
