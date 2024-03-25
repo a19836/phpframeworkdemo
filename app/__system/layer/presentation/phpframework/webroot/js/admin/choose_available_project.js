@@ -62,6 +62,8 @@ function prepareChooseAvailableProjectsHtml(layer_projects, folder_to_filter) {
 		choose_available_project.children(".new_project").addClass("hidden");
 		choose_available_project.children(".new_first_project").removeClass("hidden");
 		
+		projects_html += '<li class="no_projects">There are no projects created.<br/>Soon this space will be filled with your projects once you create your first one.</li>';
+		
 		//open popup to create new project, if root folder
 		if (!folder_to_filter)
 			addProject();

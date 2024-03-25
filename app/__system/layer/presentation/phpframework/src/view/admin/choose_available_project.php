@@ -62,7 +62,7 @@ $(function () {
 		<div class="button">
 			<button onClick="addProject();">Create Your First Project!</button>
 		</div>
-		<div class="description">Soon this space will be filled with your projects.<br/>Create a new project to get started.</div>
+		<div class="description">Create a new project to get started.</div>
 	</div>
 	<div class="new_project">
 		<div class="button">
