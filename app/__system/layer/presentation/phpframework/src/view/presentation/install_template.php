@@ -38,7 +38,7 @@ var is_zip_file = ' . ($_FILES["zip_file"] ? 1 : 0) . ';
 </script>'; $main_content = '
 	<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 		<header>
-			<div class="title" title="' . $path . '">Install New Template in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($selected_project, $P) . '</div>
+			<div class="title" title="' . $path . '">Install New Theme Template in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($selected_project, $P) . '</div>
 			<ul>
 				<li class="view_project" data-title="Click here to install a template in a different project"><a onClick="toggleLayerAndProject()"><i class="icon view"></i> Change Project</a></li>
 				<li class="continue" data-title="Install Template Now"><a onClick="installTemplate(this)"><i class="icon continue"></i> Install Template Now</a></li>

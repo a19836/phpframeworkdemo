@@ -14,7 +14,7 @@ function chooseAvailableTemplate(select, options) {
 	
 	if (!popup[0]) {
 		var html = '<div class="myfancypopup with_title choose_available_template_popup">'
-					+ '<label class="title">Choose a Template</label>'
+					+ '<label class="title">Choose a Theme Template</label>'
 					+ '<div class="content' + (options["hide_template_options"] ? " without_hide_template_options" : "") + '"></div>'
 				+ '</div>';
 		
@@ -121,7 +121,7 @@ function prepareChooseAvailableTemplateTypeHtml(project_id, folder_to_filter) {
 				+ '</div>'
 				+ '<div class="editor_type template_editor">'
 					+ '<div class="title">For citizen-developers</div>'
-					+ '<div class="description">Accelerate your design process by starting with a ready-made, customizable template.</div>'
+					+ '<div class="description">Accelerate your design process by starting with a ready-made, customizable theme template.</div>'
 					+ '<button onClick="prepareChooseAvailableTemplateMainProjectHtml(\'' + project_id + '\', \'' + folder_to_filter + '\')">Browse Templates</button>'
 				+ '</div>'
 				+ '<div class="editor_type ajax_template advanced_template" project_id="' + project_id + '" template_id="ajax">'
@@ -190,7 +190,7 @@ function prepareChooseAvailableTemplateMainProjectHtml(project_id, folder_to_fil
 			+ '<div id="installed_templates" class="installed_templates">'
 				+ '<div class="current_template_folder"></div>'
 				+ '<ul class="template_files">'
-					+ '<li class="loading_templates"><span class="icon loading"></span> Loading templates...</li>'
+					+ '<li class="loading_templates"><span class="icon loading"></span> Loading theme templates...</li>'
 				+ '</ul>'
 			+ '</div>';
 	
@@ -411,7 +411,7 @@ function prepareChooseAvailableTemplatesHtml(project_id, folder_to_filter) {
 		//is root of the selected project and if install_template_url exists 
 		if (is_selected_project_root_folder && MyFancyPopupAvailableTemplate.settings.install_template_url )
 			html += '<div class="title">There are no templates installed yet.</div>'
-				+ '<div class="description">Accelerate your design process by importing a customizable template from the online store.</div>'
+				+ '<div class="description">Accelerate your design process by importing a customizable theme template from the online store.</div>'
 				+ '<button onClick="installTemplatePopup(\'' + project_id + '\', \'' + folder_to_filter + '\')">Import Template</button>';
 		else
 			html += 'There are no available templates...';
@@ -570,7 +570,7 @@ function loadAvailableProjectTemplatesHtml(project_id, handler_func) {
 			var is_external_project = project_id && project_id != MyFancyPopupAvailableTemplate.settings.default_project_id;
 			var popup = $(".choose_available_template_popup");
 			var ul = popup.find(" > .content > " + (is_external_project ? ".projects_templates" : ".installed_templates") + " > ul");
-			ul.html('<li class="loading_templates"><span class="icon loading"></span> Loading templates...</li>');
+			ul.html('<li class="loading_templates"><span class="icon loading"></span> Loading theme templates...</li>');
 			
 			var url = MyFancyPopupAvailableTemplate.settings.get_available_templates_props_url.replace(/#path#/, project_id);
 			
