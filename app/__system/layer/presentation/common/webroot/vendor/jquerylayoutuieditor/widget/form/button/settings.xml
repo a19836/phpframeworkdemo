@@ -15,10 +15,11 @@
 			<label class="col-md-4 col-sm-5 col-form-label">Type: </label>
 			<select class="col-md-8 col-sm-7 form-control" name="type">
 				<option value="">Button</option>
-				<option value="submit">Submit</option>
+				<option value="button_image">Button Image</option>
 				<option value="button">Input Button</option>
-				<option value="image">Image</option>
-				<option value="reset">Reset</option>
+				<option value="image">Input Image</option>
+				<option value="submit">Input Submit</option>
+				<option value="reset">Input Reset</option>
 			</select>
 		</div>
 		<div class="form-group row settings-property name">
@@ -75,7 +76,7 @@
 				var node_name = widget[0] ? widget[0].nodeName.toLowerCase() : "";
 				var type = ("" + widget.attr("type")).toLowerCase();
 				
-				widget_settings["type"] = node_name == "button" ? "" : type;
+				widget_settings["type"] = node_name == "button" ? (type == "image" ? "button_image" : "") : type;
 				widget_settings["name"] = widget.attr("name");
 				widget_settings["value"] = type == "image" ? widget.attr("src") : widget.attr("value");
 			};
@@ -104,23 +105,43 @@
 			};
 			
 			me.onOpenWidgetSettings = function(widget, menu_settings) {
+				var value_elm = menu_settings.find(" > .settings-properties > ul > .value");
+				
 				//change the node name when type is changed
 				var select = menu_settings.find(" > .settings-properties > ul > .type select");
 				select.change(function() {
+					if (this.value == "image" || this.value == "button_image") {
+						value_elm.children("label").html("Src: ");
+						value_elm.show();
+					}
+					else {
+						value_elm.children("label").html("Value: ");
+						
+						if (!this.value) //button
+							value_elm.hide();
+						else
+							value_elm.show();
+					}
+					
 					ui_creator.saveMenuSettingsField(this);
 				});
 				
 				ui_creator.addMenuSettingsContextMenu(select);
 				ui_creator.addMenuSettingsContextMenu( menu_settings.find(" > .settings-properties input") );
 				
-				menu_settings.find(" > .settings-properties > ul > .value").show();
-				
-				if (widget.attr("type") == "image")
-					menu_settings.find(" > .settings-properties > ul > .value > label").html("Src: ");
-				else if (widget[0].nodeName.toLowerCase() == "button")
-					menu_settings.find(" > .settings-properties > ul > .value").hide();
-				else
-					menu_settings.find(" > .settings-properties > ul > .value > label").html("Value: ");
+				console.log(widget[0].nodeName +":"+widget.attr("type"));
+				if (widget.attr("type") == "image") {
+					value_elm.children("label").html("Src: ");
+					value_elm.show();
+				}
+				else {
+					value_elm.children("label").html("Value: ");
+					
+					if (widget[0].nodeName.toLowerCase() == "button")
+						value_elm.hide();
+					else
+						value_elm.show();
+				}
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {
@@ -131,7 +152,7 @@
 					var node_name = widget[0].nodeName.toLowerCase();
 					
 					if (sprop.hasClass("type")) {
-						var new_node_name = field_value != "" ? "input" : "button";
+						var new_node_name = field_value != "" && field_value != "button_image" ? "input" : "button";
 					
 						if (node_name != new_node_name) {
 							var input_value = null;
@@ -145,10 +166,8 @@
 								
 								widget.html("");
 							}
-							else {
-								if (widget[0].hasAttribute("value"))
-									input_value = widget.attr("value");
-							}
+							else if (widget[0].hasAttribute("value"))
+								input_value = widget.attr("value");
 							
 							widget = ui_creator.changeWidgetNodeName(widget, new_node_name);
 							
@@ -157,15 +176,17 @@
 									if (input_value)
 										widget.attr("value", input_value);
 								}
-								else {
+								else { //button
 									if (input_value)
 										widget.html(input_value);
 									else if (widget.text() == "")
 										widget.html("Button");
 									
 									//do not use widget.removeAttr bc gives an error
-									widget[0].removeAttribute("type");
 									widget[0].removeAttribute("value");
+									
+									if (field_value != "button_image")
+										widget[0].removeAttribute("type");
 								}
 							}
 						}
@@ -179,7 +200,7 @@
 					else if (sprop.hasClass("value")) {
 						var v = field_value != "" ? field_value : "";
 						
-						if (node_name == "input" && widget.attr("type") == "image")
+						if (widget.attr("type") == "image" || widget.attr("type") == "button_image")
 							widget.attr("src", v);
 						else if (node_name != "button")
 							widget.attr("value", v).val(v);
