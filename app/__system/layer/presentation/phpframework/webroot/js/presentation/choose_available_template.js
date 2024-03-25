@@ -122,7 +122,7 @@ function prepareChooseAvailableTemplateTypeHtml(project_id, folder_to_filter) {
 				+ '<div class="editor_type template_editor">'
 					+ '<div class="title">For citizen-developers</div>'
 					+ '<div class="description">Accelerate your design process by starting with a ready-made, customizable theme template.</div>'
-					+ '<button onClick="prepareChooseAvailableTemplateMainProjectHtml(\'' + project_id + '\', \'' + folder_to_filter + '\')">Browse Templates</button>'
+					+ '<button onClick="prepareChooseAvailableTemplateMainProjectHtml(\'' + project_id + '\', \'' + folder_to_filter + '\')">Browse Themes</button>'
 				+ '</div>'
 				+ '<div class="editor_type ajax_template advanced_template" project_id="' + project_id + '" template_id="ajax">'
 					+ '<div class="title">For apis</div>'
@@ -173,10 +173,10 @@ function prepareChooseAvailableTemplateMainProjectHtml(project_id, folder_to_fil
 	var include_template_samples_in_regions = MyFancyPopupAvailableTemplate.settings.include_template_samples_in_regions;
 	
 	if (!MyFancyPopupAvailableTemplate.settings.hide_choose_different_editor && !popup.children(".choose_different_editor")[0])
-		popup_content.before('<button class="choose_different_editor" onClick="prepareChooseAvailableTemplateTypeHtml(\'' + project_id + '\', \'' + folder_to_filter + '\');"><i class="icon palette"></i> Choose different editor</button>');
+		popup_content.before('<button class="choose_different_editor" onClick="prepareChooseAvailableTemplateTypeHtml(\'' + project_id + '\', \'' + folder_to_filter + '\');"><i class="icon go_back"></i> Back</button>');
 	
 	if (MyFancyPopupAvailableTemplate.settings.install_template_url && !popup.children(".install_template")[0])
-		popup_content.before('<button class="install_template" onClick="installTemplatePopup(\'' + project_id + '\', \'' + folder_to_filter + '\')">Import Template</button>');
+		popup_content.before('<button class="install_template" onClick="installTemplatePopup(\'' + project_id + '\', \'' + folder_to_filter + '\')">Import New Theme</button>');
 	
 	var html = '';
 	
@@ -412,7 +412,7 @@ function prepareChooseAvailableTemplatesHtml(project_id, folder_to_filter) {
 		if (is_selected_project_root_folder && MyFancyPopupAvailableTemplate.settings.install_template_url )
 			html += '<div class="title">There are no templates installed yet.</div>'
 				+ '<div class="description">Accelerate your design process by importing a customizable theme template from the online store.</div>'
-				+ '<button onClick="installTemplatePopup(\'' + project_id + '\', \'' + folder_to_filter + '\')">Import Template</button>';
+				+ '<button onClick="installTemplatePopup(\'' + project_id + '\', \'' + folder_to_filter + '\')">Import New Theme</button>';
 		else
 			html += 'There are no available templates...';
 		

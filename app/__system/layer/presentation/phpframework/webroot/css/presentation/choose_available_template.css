@@ -35,7 +35,7 @@
 }
 .choose_available_template_popup.with_title > .choose_different_editor {
 	left:auto;
-	right:190px;
+	right:200px;
 }
 .choose_available_template_popup.with_title .choose_different_editor:hover,
   .choose_available_template_popup.with_title .install_template:hover {
@@ -43,6 +43,7 @@
 }
 .choose_available_template_popup > .choose_different_editor .icon {
 	color:inherit;
+	vertical-align:bottom;
 }
 
 /* TEMPLATE POPUPS - choose_available_template_popup - options */
