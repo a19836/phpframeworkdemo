@@ -77,7 +77,7 @@
 				
 				widget_settings["type"] = node_name == "button" ? "" : type;
 				widget_settings["name"] = widget.attr("name");
-				widget_settings["value"] = widget.attr("value");
+				widget_settings["value"] = type == "image" ? widget.attr("src") : widget.attr("value");
 			};
 			
 			me.cleanHtml = function(html_element) {
@@ -113,11 +113,9 @@
 				ui_creator.addMenuSettingsContextMenu(select);
 				ui_creator.addMenuSettingsContextMenu( menu_settings.find(" > .settings-properties input") );
 				
-				var type = select.val();
-				
-				if (type == "image")
+				if (widget.attr("type") == "image")
 					menu_settings.find(" > .settings-properties > ul > .value > label").html("Src: ");
-				else if (type == "button")
+				else if (widget[0].nodeName.toLowerCase() == "button")
 					menu_settings.find(" > .settings-properties > ul > .value").hide();
 				else
 					menu_settings.find(" > .settings-properties > ul > .value > label").html("Value: ");
