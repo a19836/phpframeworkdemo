@@ -2130,8 +2130,8 @@ function onSLAProgrammingTaskChooseCreatedVariable(elm) {
 		var option_get = popup.find(" > .new_var > .scope > select > option[value=_GET]");
 		var option_prev = option_get.prev("option");
 		
-		if (option_prev.attr("value") != "[\\$idx]")
-			option_get.before('<option value="[\\$idx]">Local list variable</option>');
+		if (option_prev.attr("value") != "[idx]") //Note that the [\\$idx] doesn't work.
+			option_get.before('<option value="[idx]">Local list variable</option>');
 		
 		//prepare type field
 		popup.children(".type").show();

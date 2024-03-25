@@ -112,6 +112,15 @@
 				
 				ui_creator.addMenuSettingsContextMenu(select);
 				ui_creator.addMenuSettingsContextMenu( menu_settings.find(" > .settings-properties input") );
+				
+				var type = select.val();
+				
+				if (type == "image")
+					menu_settings.find(" > .settings-properties > ul > .value > label").html("Src: ");
+				else if (type == "button")
+					menu_settings.find(" > .settings-properties > ul > .value").hide();
+				else
+					menu_settings.find(" > .settings-properties > ul > .value > label").html("Value: ");
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {
@@ -170,11 +179,9 @@
 					else if (sprop.hasClass("value")) {
 						var v = field_value != "" ? field_value : "";
 						
-						if (node_name == "button")
-							widget.html(v);
-						else if (node_name == "image")
+						if (node_name == "input" && widget.attr("type") == "image")
 							widget.attr("src", v);
-						else
+						else if (node_name != "button")
 							widget.attr("value", v).val(v);
 					}
 				}
