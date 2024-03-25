@@ -17,7 +17,7 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-include_once $EVC->getUtilPath("AdminMenuUIHandler"); $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
+include_once $EVC->getUtilPath("AdminMenuUIHandler"); include $EVC->getUtilPath("TourGuideUIHandler"); $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/choose_available_tool.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/choose_available_tool.js"></script>
@@ -132,4 +132,4 @@ var is_popup = ' . ($popup ? 1 : 0) . ';
 				<div class="description">Manage the business logic services.</div>
 			</li>'; } } $main_content .= '
 	</ul>
-</div>'; ?>
+</div>'; $main_content .= TourGuideUIHandler::getHtml($entity, $project_common_url_prefix); ?>

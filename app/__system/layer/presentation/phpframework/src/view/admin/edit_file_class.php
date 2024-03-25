@@ -99,6 +99,11 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->get
 			<label>Is Abstract:</label>
 			<input type="checkbox" value="1" ' . ($obj_data["abstract"] ? "checked" : "") . ' />
 		</div>
+		<div class="visibility">
+			<label>Is Visible:</label>
+			<input type="checkbox" value="1" ' . (!$is_hidden ? "checked" : "") . ' />
+			<span class="icon info" title="Hide this class from other projects or direct access">Info</span>
+		</div>
 		<div class="namespace">
 			<label>Namespace:</label>
 			<input type="text" value="' . $obj_data["namespace"] . '" placeHolder="Some\Namespace\Here\If\Apply" />

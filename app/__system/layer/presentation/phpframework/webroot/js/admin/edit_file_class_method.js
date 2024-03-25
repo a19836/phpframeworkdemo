@@ -579,6 +579,7 @@ function getFileClassMethodSettingsObj() {
 	
 	var obj = {
 		"name": name,
+		"hidden": settings_elm.children(".visibility").children("input").prop("checked") ? 0 : 1, //if checked the hidden is 0, bc this field if is checked means it is visible. So we need to do the opposite.
 		"type": settings_elm.children(".type").children("select").val(),
 		"abstract": settings_elm.children(".abstract").children("input").prop("checked") ? 1 : 0,
 		"static": settings_elm.children(".static").children("input").prop("checked") ? 1 : 0,

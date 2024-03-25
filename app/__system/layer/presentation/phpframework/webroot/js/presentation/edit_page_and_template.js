@@ -3950,7 +3950,11 @@ function initPageAndTemplateLayout(main_parent_elm, opts) {
 			view_layout.removeClass("do-not-confirm");
 			view_source.addClass("is-source-changed");
 			
-			prepareCodeLayoutUIEditorEditorUserDefinedToggles(PtlLayoutUIEditor);
+			addCodeLayoutUIEditorAvailableToggle("with-advanced-options", function(PtlLayoutUIEditorObj, value) {
+				if (value == 1)
+					toggleAdvancedOptions();
+			});
+			prepareCodeLayoutUIEditorUserDefinedToggles(PtlLayoutUIEditor);
 			
 			//prepare iframe
 			var iframe_unload_func = function () {
@@ -4132,7 +4136,9 @@ function toggleAdvancedOptions() {
 	main_obj.toggleClass("with_advanced_options");
 	top_bar.toggleClass("with_advanced_options");
 	
-	if (toggle_advanced_options.hasClass("active")) {
+	var is_active = toggle_advanced_options.hasClass("active");
+	
+	if (is_active) {
 		input.attr("checked", "checked").prop("checked", true);
 		span.html("Hide Advanced Features");
 	}
@@ -4140,6 +4146,8 @@ function toggleAdvancedOptions() {
 		input.removeAttr("checked").prop("checked", false);
 		span.html("Show Advanced Features");
 	}
+	
+	saveCodeLayoutUIEditorUserDefinedToggle("with-advanced-options", is_active);
 }
 
 function enableAutoConvertSettingsFromLayout(on_complete) {
@@ -5884,8 +5892,12 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
 	   				right_container.fadeOut("slow");
 	   			});
 	   			
-	   			if (showCodeLayoutUIEditorSideBarRightContainerDBs())
-	   				luie.addClass("with_right_container_dbs");
+	   			if (showCodeLayoutUIEditorSideBarRightContainerDBs()) {
+	   				if (getCodeLayoutUIEditorUserDefinedToggle("show-right-container-dbs") === null) {
+	   					luie.addClass("with_right_container_dbs");
+		   				saveCodeLayoutUIEditorUserDefinedToggle("show-right-container-dbs", 2); //2 is the default
+		   			}
+	   			}
 	   			else
 	   				options.find(".show-option-panel option[value='show-right-container-dbs']").hide();
 	   			
@@ -5894,7 +5906,7 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
 				toggle_left_panel.click(function() {
 					luie.toggleClass("left-panel-collapsed");
 					
-					saveCodeLayoutUIEditorEditorUserDefinedToggle("collapse-left-options", luie.hasClass("left-panel-collapsed"));
+					saveCodeLayoutUIEditorUserDefinedToggle("collapse-left-options", luie.hasClass("left-panel-collapsed"));
 				});
         			options.find(".show-layout-options").before(toggle_left_panel);
 				
@@ -5905,7 +5917,7 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
 					var option_name = m ? m[1] : null;
 					
 					if (option_name)
-						saveCodeLayoutUIEditorEditorUserDefinedToggle("show-" + option_name, option.hasClass(option_name + "-shown"));
+						saveCodeLayoutUIEditorUserDefinedToggle("show-" + option_name, option.hasClass(option_name + "-shown"));
 				});
 				
 				options.find(" > .options-right > .toggles > ul > li.toggle-option").click(function() {
@@ -5914,7 +5926,7 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
 					var option_name = m ? m[1] : null;
 					
 					if (option_name)
-						saveCodeLayoutUIEditorEditorUserDefinedToggle("show-" + option_name, option.hasClass(option_name + "-shown"));
+						saveCodeLayoutUIEditorUserDefinedToggle("show-" + option_name, option.hasClass(option_name + "-shown"));
 				});
 				
 				//prepare save button
@@ -5995,49 +6007,126 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
 	}
 }
 
-function prepareCodeLayoutUIEditorEditorUserDefinedToggles(PtlLayoutUIEditor) {
-	//show php widgets, borders and background
-	var options = getCodeLayoutUIEditorEditorAvailableToggles();
-	var toggles = MyJSLib.CookieHandler.getCookie('luietoggles');
-	
-	for (var i = 0, t = options.length; i < t; i++) {
-		var value = i < toggles.length && $.isNumeric(toggles[i]) ? parseInt(toggles[i]) : 0;
-		
-		if (value == 1)
-			switch(options[i]) {
-				case "show-background": PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground(); break;
-				case "show-borders": PtlLayoutUIEditor.showTemplateWidgetsBorders(); break;
-				case "show-php": PtlLayoutUIEditor.showTemplatePHPWidgets(); break;
-				case "show-ptl": PtlLayoutUIEditor.showTemplatePTLWidgets(); break;
-				case "show-comments": PtlLayoutUIEditor.showTemplateCommentsWidgets(); break;
-				case "show-js": PtlLayoutUIEditor.showTemplateJSWidgets(); break;
-				case "show-css": PtlLayoutUIEditor.showTemplateCSSWidgets(); break;
-				case "collapse-left-options": PtlLayoutUIEditor.getUI().find(" > .options > .options-left .option.toggle-left-options").trigger("click"); break;
-			}
-	}
+function initCodeLayoutUIEditorAvailableToggles() {
+	window.layoutuieditor_available_toggles = ["show-background", "show-borders", "show-php", "show-ptl", "show-comments", "show-js", "show-css", "show-right-container-dbs", "collapse-left-options"];
+	window.layoutuieditor_available_toggles_handler = {
+		"show-background": function(PtlLayoutUIEditor, value) {
+			if (value == 1)
+				PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();
+		}, 
+		"show-borders": function(PtlLayoutUIEditor, value) {
+			if (value == 1)
+				PtlLayoutUIEditor.showTemplateWidgetsBorders();
+		}, 
+		"show-php": function(PtlLayoutUIEditor, value) {
+			if (value == 1)
+				PtlLayoutUIEditor.showTemplatePHPWidgets();
+		}, 
+		"show-ptl": function(PtlLayoutUIEditor, value) {
+			if (value == 1)
+				PtlLayoutUIEditor.showTemplatePTLWidgets();
+		}, 
+		"show-comments": function(PtlLayoutUIEditor, value) {
+			if (value == 1)
+				PtlLayoutUIEditor.showTemplateCommentsWidgets();
+		}, 
+		"show-js": function(PtlLayoutUIEditor, value) {
+			if (value == 1)
+				PtlLayoutUIEditor.showTemplateJSWidgets();
+		}, 
+		"show-css": function(PtlLayoutUIEditor, value) {
+			if (value == 1)
+				PtlLayoutUIEditor.showTemplateCSSWidgets();
+		},
+		"show-right-container-dbs": function(PtlLayoutUIEditor, value) {
+			var is_active = PtlLayoutUIEditor.getUI().hasClass("with_right_container_dbs");
+			
+			if ((is_active && value == 0) || (!is_active && value == 1))
+				onToggleCodeLayoutUIEditorSideBarRightContainerDBs();
+		},
+		"collapse-left-options": function(PtlLayoutUIEditor, value) {
+			if (value == 1)
+				PtlLayoutUIEditor.getUI().find(" > .options > .options-left .option.toggle-left-options").trigger("click");
+		}
+	};
 }
 
-function getCodeLayoutUIEditorEditorAvailableToggles() {
-	return ["show-background", "show-borders", "show-php", "show-ptl", "show-comments", "show-js", "show-css", "collapse-left-options"];
+function addCodeLayoutUIEditorAvailableToggle(toggle_name, handler) {
+	if (typeof window.layoutuieditor_available_toggles == "undefined")
+		initCodeLayoutUIEditorAvailableToggles();
+	
+	window.layoutuieditor_available_toggles.push(toggle_name);
+	window.layoutuieditor_available_toggles_handler[toggle_name] = handler;
 }
 
-function saveCodeLayoutUIEditorEditorUserDefinedToggle(option_name, option_value) {
-	//console.log(option_name+":"+option_value);
+function getCodeLayoutUIEditorAvailableToggles() {
+	if (typeof window.layoutuieditor_available_toggles == "undefined")
+		initCodeLayoutUIEditorAvailableToggles();
 	
+	return window.layoutuieditor_available_toggles;
+}
+
+function getCodeLayoutUIEditorAvailableTogglesHandler() {
+	if (typeof window.layoutuieditor_available_toggles_handler == "undefined")
+		initCodeLayoutUIEditorAvailableToggles();
+	
+	return window.layoutuieditor_available_toggles_handler;
+}
+
+function getCodeLayoutUIEditorUserDefinedToggle(option_name) {
 	if (option_name) {
-		var options = getCodeLayoutUIEditorEditorAvailableToggles();
+		var options = getCodeLayoutUIEditorAvailableToggles();
+		var toggles = MyJSLib.CookieHandler.getCookie('luietoggles');
+		var i = options.indexOf(option_name);
+		
+		if (i > 0)
+			return i < toggles.length && $.isNumeric(toggles[i]) ? toggles[i] : null;
+	}
+	
+	return null;
+}
+
+function getCodeLayoutUIEditorDefaultToggleValue(option_name) {
+	return option_name == "show-right-container-dbs" ? 2 : 0; //default value for show-right-container-dbs is 2 which means is defined dynamically from other code
+}
+
+function saveCodeLayoutUIEditorUserDefinedToggle(option_name, option_value) {
+	//console.log(option_name+":"+option_value);
+	if (option_name) {
+		var options = getCodeLayoutUIEditorAvailableToggles();
 		var toggles = MyJSLib.CookieHandler.getCookie('luietoggles');
 		var new_toggles = "";
 		
-		option_value = option_value ? 1 : 0;
+		option_value = $.isNumeric(option_value) && option_value > 0 && option_value <= 9 ? option_value : (
+			option_value ? 1 : 0 //option_value can be a boolean
+		);
 		
-		for (var i = 0, t = options.length; i < t; i++)
+		for (var i = 0, t = options.length; i < t; i++) {
+			var default_value = getCodeLayoutUIEditorDefaultToggleValue(options[i]);
 			new_toggles += option_name == options[i] ? option_value : (
-				i < toggles.length && $.isNumeric(toggles[i]) ? toggles[i] : 0
+				i < toggles.length && $.isNumeric(toggles[i]) ? toggles[i] : default_value
 			);
+		}
 		
 		if (new_toggles != toggles)
 			window.MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie('luietoggles', new_toggles);
+	}
+}
+
+function prepareCodeLayoutUIEditorUserDefinedToggles(PtlLayoutUIEditor) {
+	//show php widgets, borders and background
+	var options = getCodeLayoutUIEditorAvailableToggles();
+	var handlers = getCodeLayoutUIEditorAvailableTogglesHandler();
+	var toggles = MyJSLib.CookieHandler.getCookie('luietoggles');
+	
+	for (var i = 0, t = options.length; i < t; i++) {
+		var option_name = options[i];
+		var default_value = getCodeLayoutUIEditorDefaultToggleValue(option_name);
+		var value = i < toggles.length && $.isNumeric(toggles[i]) ? parseInt(toggles[i]) : default_value;
+		var handler = handlers[option_name];
+		
+		if (typeof handler == "function")
+			handler(PtlLayoutUIEditor, value);
 	}
 }
 
@@ -6098,7 +6187,9 @@ function onToggleCodeLayoutUIEditorSideBarRightContainerDBs() {
 	
 	luie.toggleClass("with_right_container_dbs");
 	
-	if (luie.hasClass("with_right_container_dbs")) {
+	var is_active = luie.hasClass("with_right_container_dbs");
+	
+	if (is_active) {
 		select_opt.show();
 		//options_show_right_container_dbs.show(); //Done from css
 	}
@@ -6109,6 +6200,8 @@ function onToggleCodeLayoutUIEditorSideBarRightContainerDBs() {
 		if (current_selection == "show-right-container-dbs")
 			options_left.children(".option.show-widgets").trigger("click");
 	}
+	
+	saveCodeLayoutUIEditorUserDefinedToggle("show-right-container-dbs", is_active);
 }
 
 //Note that when this function gets call from PtlLayoutUIEditor.options.on_template_widgets_layout_changed_func it may or may not pass a widget as first argument

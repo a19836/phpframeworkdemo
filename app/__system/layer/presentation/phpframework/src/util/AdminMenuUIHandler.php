@@ -479,6 +479,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 	<li class="service_obj"><a onClick="return createClassObjectOrMethodOrFunction(this, \'save_service_obj_url\', \'edit_service_obj_url\', \'service_object\', null, event)">Add Service Object Manually</a></li>
 	<!--li class="service_function"><a onClick="return goTo(this, \'add_service_func_url\', event)">Add Service Function Manually</a></li-->
 	<li class="service_function"><a onClick="return createClassObjectOrMethodOrFunction(this, \'save_service_func_url\', \'edit_service_func_url\', \'function\', null, event)">Add Service Function Manually</a></li>
+	<li class="toggle_all_children"><a onClick="return toggleAllChildren(this)">Toggle Hidden Objects/Functions</a></li>
 	<li class="line_break"></li>
 	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit File</a></li>
 	<li class="line_break"></li>
@@ -501,7 +502,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 <ul id="business_logic_object_context_menu" class="mycontextmenu">
 	<!--li class="service_method"><a onClick="return goTo(this, \'add_service_method_url\', event)">Add Service Method</a></li-->
 	<li class="service_method"><a onClick="return createClassObjectOrMethodOrFunction(this, \'save_service_method_url\', \'edit_service_method_url\', \'service_method\', null, event)">Add Service Method</a></li>
-	<li class="toggle_all_children"><a onClick="return toggleAllChildren(this)">Toggle Private Methods</a></li>
+	<li class="toggle_all_children"><a onClick="return toggleAllChildren(this)">Toggle Hidden Methods</a></li>
 	<li class="line_break"></li>
 	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit Visually</a></li>
 	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit Code</a></li>
@@ -818,6 +819,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 	<li class="class_obj"><a onClick="return createClassObjectOrMethodOrFunction(this, \'save_class_obj_url\', \'edit_class_obj_url\', \'class_object\', null, event)">Add Class</a></li>
 	<!--li class="class_function"><a onClick="return goTo(this, \'add_class_func_url\', event)">Add Function</a></li-->
 	<li class="class_function"><a onClick="return createClassObjectOrMethodOrFunction(this, \'save_class_func_url\', \'edit_class_func_url\', \'function\', null, event)">Add Function</a></li>
+	<li class="toggle_all_children"><a onClick="return toggleAllChildren(this)">Toggle Hidden Classes/Functions</a></li>
 	<li class="line_break"></li>
 	<li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit</a></li>
 	<li class="line_break"></li>
@@ -840,7 +842,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 <ul id="presentation_util_object_context_menu" class="mycontextmenu">
 	<!--li class="class_method"><a onClick="return goTo(this, \'add_class_method_url\', event)">Add Class Method</a></li-->
 	<li class="class_method"><a onClick="return createClassObjectOrMethodOrFunction(this, \'save_class_method_url\', \'edit_class_method_url\', \'class_method\', null, event)" static="1">Add Class Method</a></li>
-	<li class="toggle_all_children"><a onClick="return toggleAllChildren(this)">Toggle Private Methods</a></li>
+	<li class="toggle_all_children"><a onClick="return toggleAllChildren(this)">Toggle Hidden Methods</a></li>
 	<li class="line_break"></li>
 	<li class="edit"><a onClick="return goTo(this, \'edit_url\', event)">Edit Visually</a></li>
 	<!--li class="edit_raw_file"><a onClick="return goTo(this, \'edit_raw_file_url\', event)">Edit Code</a></li-->

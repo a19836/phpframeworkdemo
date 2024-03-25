@@ -36,6 +36,13 @@
 	left:77px;
   	color:var(--main-popup-header-color);
 }
+.file_class_obj .visibility,
+  .file_class_obj .abstract,
+  .file_class_obj .extend, 
+  .file_class_obj .implement {
+	width:100%;
+	margin-bottom:5px;
+}
 .file_class_obj > .name label {
 	display:none;
 }
@@ -45,20 +52,17 @@
 	background:transparent;
   	color:inherit;
 }
-.file_class_obj .abstract {
-	width:100%;
-	margin-bottom:5px;
-}
-.file_class_obj .abstract input {
+.file_class_obj .visibility input,
+  .file_class_obj .abstract input {
 	margin-left:0;
 }
-.file_class_obj .extend, .file_class_obj .implement {
-	width:100%;
-	margin-bottom:5px;
-}
-.file_class_obj .extend input, .file_class_obj .implement input {
+.file_class_obj .extend input, 
+  .file_class_obj .implement input {
 	width:calc(100% - 150px);
 	min-width:200px;
+}
+.file_class_obj .visibility .info {
+	font-size:12px;
 }
 
 .file_class_obj .properties {

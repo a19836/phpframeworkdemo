@@ -204,7 +204,8 @@ var is_obj_valid = ' . ($is_obj_valid ? "true" : "false") . ';
 			<div class="settings_header">
 				Main Settings
 				<div class="icon maximize" onClick="toggleSettingsPanel(this)">Toggle</div>
-			</div>'; if ($file_type == "edit_file_class_method") { $main_content .= '
+			</div>
+			'; if ($file_type == "edit_file_class_method") { $main_content .= '
 			<div class="type">
 				<label>Type:</label>
 				<select>'; $types = array("public", "private", "protected"); $t = count($types); for ($i = 0; $i < $t; $i++) $main_content .= '<option' . ($types[$i] == $obj_data["type"] ? " selected" : "") . '>' . $types[$i] . '</option>'; $main_content .= '
@@ -218,6 +219,11 @@ var is_obj_valid = ' . ($is_obj_valid ? "true" : "false") . ';
 				<label>Is Static:</label>
 				<input type="checkbox" value="1" ' . ($obj_data["static"] || (!$method_id && $_GET["static"]) ? "checked" : "") . ' />
 			</div>'; } $main_content .= '
+			<div class="visibility">
+				<label>Is Visible:</label>
+				<input type="checkbox" value="1" ' . (!$is_hidden ? "checked" : "") . ' />
+				<span class="icon info" title="Hide this ' . str_replace("_", " ", $ft) . ' from other projects or direct access">Info</span>
+			</div>
 			<div class="arguments">
 				<label>Arguments:</label>
 				<span class="icon add" onClick="addNewArgument(this)" title="Add Property">Add</span>

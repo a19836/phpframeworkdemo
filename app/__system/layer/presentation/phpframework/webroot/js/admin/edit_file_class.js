@@ -228,6 +228,7 @@ function getFileClassObj() {
 	var object = getIncludesObj();
 	var obj = {
 		"name": class_elm.children(".name").children("input").val(),
+		"hidden": class_elm.children(".visibility").children("input").prop("checked") ? 0 : 1, //if checked the hidden is 0, bc this field if is checked means it is visible. So we need to do the opposite.
 		"extends": extends_value,
 		"implements": implements_value,
 		"abstract": class_elm.children(".abstract").children("input").prop("checked") ? 1 : 0,

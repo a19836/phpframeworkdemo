@@ -160,23 +160,26 @@
 	margin-top:10px;
 }
 .file_class_method_obj #settings .name, 
-  .file_class_method_obj #settings .type {
+  .file_class_method_obj #settings .visibility, 
+  .file_class_method_obj #settings .type,
+  .file_class_method_obj #settings .abstract, 
+  .file_class_method_obj #settings .static {
 	width:100%;
 	margin-bottom:5px;
+}
+.file_class_method_obj #settings .visibility {
+	padding-bottom:20px;
 }
 .file_class_method_obj #settings .name input {
 	width:230px;
 }
-.file_class_method_obj #settings .abstract, 
-  .file_class_method_obj #settings .static {
-	width:100%;
-}
-.file_class_method_obj #settings .static {
-	padding-bottom:20px;
-}
-.file_class_method_obj #settings .abstract input, 
+.file_class_method_obj #settings .visibility input, 
+  .file_class_method_obj #settings .abstract input, 
   .file_class_method_obj #settings .static input {
 	margin-left:0;
+}
+.file_class_method_obj .visibility .info {
+	font-size:12px;
 }
 
 /* ARGUMENTS */
