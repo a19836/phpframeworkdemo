@@ -111,8 +111,8 @@ var access_activity_id = ' . (is_numeric($access_activity_id) ? $access_activity
 						<li class="toggle_main_settings" title="Toggle Main Settings"><a onClick="toggleSettingsPanel(this)"><i class="icon toggle_ids"></i> <span>Show Main Settings</span> <input type="checkbox"/></a></li>
 						<li class="update_layout_from_settings" title="Update Main Settings to Layout UI"><a onClick="updateLayoutFromSettings( $(\'.entity_obj\'), true )"><i class="icon update_layout_from_settings"></i> Update Main Settings to Layout Area</a></li>
 						<li class="separator"></li>
-						<li class="choose_template" title="Switch Template"><a onClick="onChooseAvailableTemplate(true)"><i class="icon choose_template"></i> Switch Template</a></li>
-						<li class="view_template_samples" title="View Template Samples"><a onClick="openTemplateSamples()"><i class="icon view_template_samples"></i> View Template Samples</a></li>
+						<li class="choose_template" title="Switch Theme Template"><a onClick="onChooseAvailableTemplate(true)"><i class="icon choose_template"></i> Switch Theme Template</a></li>
+						<li class="view_template_samples" title="View Chosen Template Samples"><a onClick="openTemplateSamples()"><i class="icon view_template_samples"></i> View Chosen Template Samples</a></li>
 						<li class="preview" title="Preview & Test Page"><a onClick="testAndPreviewWithDelay()"><i class="icon preview_file"></i> Preview & Test Page</a></li>
 						<li class="separator"></li>
 						<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>

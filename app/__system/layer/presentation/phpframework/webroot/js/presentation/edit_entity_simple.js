@@ -90,7 +90,7 @@ $(function () {
 					loadPageCodeEditorLayoutJSAndCSSFilesToSettings();
 				};
 				
-				luie.find(" > .options > .options-left").append('<i class="zmdi zmdi-view-compact option choose-template" title="Switch Template"></i>').children(".choose-template").click(function() {
+				luie.find(" > .options > .options-left").append('<i class="zmdi zmdi-view-compact option choose-template" title="Switch Theme Template"></i>').children(".choose-template").click(function() {
 					onChooseAvailableTemplate(true);
 				});
 				

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tasks>
+	<settings>
+		<code_id><![CDATA[3d8432d2a79f2b8b838af538bbbace3b]]></code_id>
+	</settings>
 	<task start="1">
 		<label><![CDATA[Init $options]]></label>
 		<id><![CDATA[b70dfcdb_00298922_597]]></id>

@@ -5893,7 +5893,9 @@ function createCodeLayoutUIEditorEditor(textarea, opts) {
 	   			});
 	   			
 	   			if (showCodeLayoutUIEditorSideBarRightContainerDBs()) {
-	   				if (getCodeLayoutUIEditorUserDefinedToggle("show-right-container-dbs") === null) {
+	   				var with_right_container_dbs = getCodeLayoutUIEditorUserDefinedToggle("show-right-container-dbs");
+	   				
+	   				if (with_right_container_dbs === null || with_right_container_dbs == 2) {
 	   					luie.addClass("with_right_container_dbs");
 		   				saveCodeLayoutUIEditorUserDefinedToggle("show-right-container-dbs", 2); //2 is the default
 		   			}
