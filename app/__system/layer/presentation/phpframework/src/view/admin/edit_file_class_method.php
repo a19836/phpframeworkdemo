@@ -231,7 +231,7 @@ var is_obj_valid = ' . ($is_obj_valid ? "true" : "false") . ';
 					<thead>
 						<tr>
 							<th class="name table_header">Name</th>
-							<th class="value table_header">Value</th>
+							<th class="value table_header">Default Value</th>
 							<th class="var_type table_header">Var Type</th>
 							<th class="icon_cell table_header"><span class="icon add" onClick="addNewArgument(this)" title="Add Property">Add</span></th>
 						</tr>
