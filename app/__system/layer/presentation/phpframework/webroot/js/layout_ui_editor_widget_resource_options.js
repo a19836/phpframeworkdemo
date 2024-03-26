@@ -36,6 +36,7 @@ function initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor) {
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_user_types_func = getLayoutUIEditorWidgetResourceUserTypes;
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_php_numeric_types_func = getLayoutUIEditorWidgetResourcePHPNumericTypes;
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_db_numeric_types_func = getLayoutUIEditorWidgetResourceDBNumericTypes;
+	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_db_blob_types_func = getLayoutUIEditorWidgetResourceDBBlobTypes;
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_internal_attribute_names_func = getLayoutUIEditorWidgetResourceInternalAttributeNames;
 	
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.add_sla_resource_func = addLayoutUIEditorWidgetResourceSLAResourceSyncBasedInResourceDBTable;
@@ -1385,6 +1386,10 @@ function getLayoutUIEditorWidgetResourcePHPNumericTypes() {
 
 function getLayoutUIEditorWidgetResourceDBNumericTypes() {
 	return typeof db_numeric_types != "undefined" ? db_numeric_types : null;
+}
+
+function getLayoutUIEditorWidgetResourceDBBlobTypes() {
+	return typeof db_blob_types != "undefined" ? db_blob_types : null;
 }
 
 function getLayoutUIEditorWidgetResourceInternalAttributeNames() {
