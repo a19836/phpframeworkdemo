@@ -129,7 +129,7 @@
 				ui_creator.addMenuSettingsContextMenu(select);
 				ui_creator.addMenuSettingsContextMenu( menu_settings.find(" > .settings-properties input") );
 				
-				console.log(widget[0].nodeName +":"+widget.attr("type"));
+				//console.log(widget[0].nodeName +":"+widget.attr("type"));
 				if (widget.attr("type") == "image") {
 					value_elm.children("label").html("Src: ");
 					value_elm.show();

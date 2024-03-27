@@ -3067,11 +3067,9 @@ function onChooseDBTableAndAttributes(elm, callback) { //This is used in the wor
 				var db_driver = popup.find(".db_driver select").val();
 				var type = popup.find(".type select").val();
 				
-				var url = get_broker_db_data_url.replace("#bean_name#", broker_bean_name).replace("#bean_file_name#", broker_bean_file_name); //to be used by the testunit pages
-				
 				$.ajax({
 					type : "post",
-					url : url,
+					url : get_broker_db_data_url,
 					data : {"db_broker" : broker, "db_driver" : db_driver, "type" : type, "db_table" : table_and_attributes["table"], "detailed_info" : 1},
 					dataType : "json",
 					success : function(data, textStatus, jqXHR) {
@@ -3132,11 +3130,9 @@ function updateDBTablesOnBrokerDBDriverChange(elm) {
 		var db_driver = p.find(".db_driver select").val();
 		var type = p.find(".type select").val();
 		
-		var url = get_broker_db_data_url.replace("#bean_name#", broker_bean_name).replace("#bean_file_name#", broker_bean_file_name); //to be used by the testunit pages
-		
 		$.ajax({
 			type : "post",
-			url : url,
+			url : get_broker_db_data_url,
 			data : {"db_broker" : broker, "db_driver" : db_driver, "type" : type},
 			dataType : "json",
 			success : function(data, textStatus, jqXHR) {
@@ -3972,9 +3968,12 @@ function generateCodeFromTasksFlow(do_not_confirm, options) {
 						StatusMessageHandler.showMessage("There is no startup task selected. The system tried to select a default one, but is more reliable if you define one manually...");
 				}
 				
+				var url = create_code_from_workflow_file_url;
+				url += (url.indexOf("?") != -1 ? "" : "?") + "&time=" + (new Date()).getTime();
+				
 				$.ajax({
 					type : "get",
-					url : create_code_from_workflow_file_url,
+					url : url,
 					dataType : "json",
 					success : function(data, textStatus, jqXHR) {
 						if (data && data.hasOwnProperty("code")) {

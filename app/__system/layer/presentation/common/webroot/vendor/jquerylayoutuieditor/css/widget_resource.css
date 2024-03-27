@@ -433,6 +433,9 @@
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value.with-display-resource > ul > li.widget-display-resource-value-resource-attribute {
 	display:none;
 }
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value:not(.with-display-target-attribute) > ul > li.widget-display-resource-value-display-target-attribute {
+	display:none;
+}
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-resource-attribute > label,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-display-callback > label {
 	max-width:calc(100% - 140px);
@@ -450,8 +453,8 @@
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-resource-index > input[readonly] {
 	cursor:not-allowed;
 }
-.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-resource-attribute > input:focus,
-  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-resource-attribute > input:active {
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-resource-attribute > input.highlight,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-resource-index > input.highlight {
 	border-color:var(--menu-settings-button-bg, #796669);
 }
 .layout-ui-editor > .menu-settings:not(.menu-settings-select) li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-allow-new-options {

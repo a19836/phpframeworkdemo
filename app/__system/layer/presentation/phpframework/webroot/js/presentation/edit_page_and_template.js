@@ -688,10 +688,13 @@ function loadAvailableBlocksList(parent, opts) {
 		else {
 			available_blocks_list_loading = true;
 			
+			var url = get_available_blocks_list_url;
+			url += (url.indexOf("?") != -1 ? "" : "?") + "&time=" + (new Date()).getTime();
+			
 			//ajax request: get_available_blocks_list_url
 			$.ajax({
 				type : "get",
-				url : get_available_blocks_list_url,
+				url : url,
 				dataType : "json",
 				success : function(data, textStatus, jqXHR) {
 					//set new data
@@ -2122,6 +2125,8 @@ function onLoadRegionBlockParams(region_block_item) {
 		}
 		else {
 			project_blocks_params_loading[md5] = true;
+			
+			url += (url.indexOf("?") != -1 ? "" : "?") + "&time=" + (new Date()).getTime();
 			
 			$.ajax({
 				type : "get",
@@ -4996,10 +5001,11 @@ function chooseCodeLayoutUIEditorModuleBlock(tree_obj) {
 	    		block = block.substr(0, block.length - 4);
 	    		
 	    		var widget = CodeLayoutUIEditorFancyPopup.settings.targetField;
-			updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block, project);
 	    		
 	    		CodeLayoutUIEditorFancyPopup.setOption("onClose", null);
 	    		CodeLayoutUIEditorFancyPopup.hidePopup();
+	    		
+			updateCodeLayoutUIEditorModuleBlockWidgetWithBlockId(widget, block, project);
 	    	}
 		else if (node.hasClass("draggable_menu_item_module")) {
 	    		var module_id = getMenuItemModuleId(node);
@@ -5045,8 +5051,6 @@ function onReplaceCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, d
 	//must have settimeout bc the widget doesn't have the right parent yet.
 	setTimeout(function() {
 		var widget_parent = widget.parent();
-		widget.remove();
-		
 		var widget_group = widget_parent.closest("[data-widget-group-list], [data-widget-group-form]");
 		
 		if (widget_group[0]) {
@@ -5093,10 +5097,18 @@ function onReplaceCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, d
 					var table_alias = popup.find(".table_alias input").val();
 					$(".choose_db_table_widget_options_popup .table_alias input").val(table_alias);
 					
+					ReplaceExistingDBTableWidgetFancyPopup.setOption("onClose", null);
 					ReplaceExistingDBTableWidgetFancyPopup.hidePopup();
 				},
 			});
 			ReplaceExistingDBTableWidgetFancyPopup.showPopup();
+		}
+		else {
+			//update menu layer
+			var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+			
+			if (PtlLayoutUIEditor)
+				PtlLayoutUIEditor.deleteTemplateWidget(widget); //update menu layer from layout ui editor
 		}
 	}, 100);
 }
@@ -5262,20 +5274,28 @@ function onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, db
 	if (db_driver && !db_driver_options_html)
 		db_driver_options_html = '<option>' + db_driver + '</option>';
 	
-	var update_db_tables = false;
+	var update_db_tables = true;
 	
-	if (db_driver && db_table && !db_table_options_html) {
+	if (db_driver && db_table && !db_table_options_html)
 		db_table_options_html = '<option>' + db_table + '</option>';
-		update_db_tables = true;
-	}
+	else if (db_driver)
+		update_db_tables = false;
 	
 	popup.find(".db_broker select").html(db_broker_options_html).val(db_broker);
 	popup.find(".db_driver select").html(db_driver_options_html).val(db_driver);
 	popup.find(".type select").val(db_type || "db");
 	popup.find(".db_table select").html(db_table_options_html).val(db_table);
 	
-	if (update_db_tables)
+	if (update_db_tables) {
+		var db_broker = popup.find(".db_broker select").val();
+		var db_driver = popup.find(".db_driver select").val();
+		var db_type = popup.find(".type select").val();
+		
+		if (db_broker && db_driver && db_brokers_drivers_tables_attributes[db_broker] && db_brokers_drivers_tables_attributes[db_broker][db_driver] && db_brokers_drivers_tables_attributes[db_broker][db_driver][db_type])
+			db_brokers_drivers_tables_attributes[db_broker][db_driver][db_type] = null;
+		
 		updateDBTablesOnChooseCodeLayoutUIEditorDBTableWidgetOptionsPopup( popup.find(".db_driver select")[0] );
+	}
 	
 	//load some default values
 	popup.find(".widget_type, .widget_group, .widget_list_type, .widget_action").removeClass("hidden");
@@ -5491,6 +5511,9 @@ function setBestTableDBTypeOnChooseCodeLayoutUIEditorDBTableWidgetOptionsPopup(p
 	
 	//check if table exists in diagram, and if so, give priority to the diagram
 	if (db_broker && db_driver && type != "diagram" && db_table) {
+		if (db_broker && db_driver && db_brokers_drivers_tables_attributes[db_broker] && db_brokers_drivers_tables_attributes[db_broker][db_driver] && db_brokers_drivers_tables_attributes[db_broker][db_driver]["diagram"])
+			db_brokers_drivers_tables_attributes[db_broker][db_driver]["diagram"] = null;
+		
 		var db_tables = getDBTables(db_broker, db_driver, "diagram");
 		
 		if ($.isPlainObject(db_tables) && db_tables.hasOwnProperty(db_table))
@@ -6408,6 +6431,7 @@ function addWebrootFile(elm, type, is_str_html_base, add_handler, remove_handler
 			var url = create_webroot_file_url.replace("#folder#", type).replace("#file_name#", file_name);
 			
 			url = encodeUrlWeirdChars(url); //Note: Is very important to add the encodeUrlWeirdChars otherwise if a value has accents, won't work in IE.
+			url += (url.indexOf("?") != -1 ? "" : "?") + "&time=" + (new Date()).getTime();
 			
 			$.ajax({
 				type : "get",
@@ -6463,10 +6487,12 @@ if (typeof flushCache != "function" && typeof flush_cache_url != "undefined" && 
 	function flushCache(opts) {
 		opts = $.isPlainObject(opts) ? opts : {};
 		var do_not_show_messages = opts["do_not_show_messages"];
+		var url = flush_cache_url;
+		url += (url.indexOf("?") != -1 ? "" : "?") + "&time=" + (new Date()).getTime();
 		
 		$.ajax({
 			type : "get",
-			url : flush_cache_url,
+			url : url,
 			success : function(data, textStatus, jqXHR) {
 				if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
 					showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {

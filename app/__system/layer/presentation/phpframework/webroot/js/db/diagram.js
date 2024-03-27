@@ -682,7 +682,7 @@ function showSyncWithDBServerSQL(workflow_data, statements) {
 			
 			if (sql_statements && sql_statements.length > 0) {
 				html += '<li table_name="' + table_name + '">'
-					+ '<div class="table_header">SQLs for table: ' + table_name + '</div>';
+					+ '<div class="table_header">Statements for table: ' + table_name + '<span class="icon maximize" onClick="toggleSyncWithDBServerSQLStatements(this)" title="Toggle SQL statements">Toggle</span></div>';
 				
 				for (var i = 0; i < sql_statements.length; i++) {
 					var sql = sql_statements[i];
@@ -706,9 +706,9 @@ function showSyncWithDBServerSQL(workflow_data, statements) {
 	
 	if (!popup[0]) {
 		popup = $('<div class="myfancypopup with_title show_sync_sql_popup">'
-				+ '<div class="title">Please confirm the following SQL</div>'
+				+ '<div class="title">Please confirm the following Statements</div>'
 				+ '<div class="button">'
-					+ '<button onClick="proceedToExecuteSyncSQL(this)">Execute SQL</button>'
+					+ '<button onClick="proceedToExecuteSyncSQL(this)">Execute and Proceed</button>'
 				+ '</div>'
 			+ '</div>');
 		$(document.body).append(popup);
@@ -747,6 +747,10 @@ function showSyncWithDBServerSQL(workflow_data, statements) {
 		workflow_data: workflow_data
 	});
 	MyFancyPopupSyncSQL.showPopup();
+}
+
+function toggleSyncWithDBServerSQLStatements(elm) {
+	$(elm).parent().closest("li").toggleClass("show_sql");
 }
 
 function proceedToExecuteSyncSQL(elm) {

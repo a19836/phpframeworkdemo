@@ -174,9 +174,27 @@ var DBTableTaskPropertyObj = {
 		var simple_attributes_html = "";
 		var advanced_attributes_html = "";
 		
-		if (!task_property_values || !task_property_values.table_attr_names || task_property_values.table_attr_names.length == 0)
-			advanced_attributes_html = DBTableTaskPropertyObj.getTableAttributeHtml();
-		else {
+		//set some default attributes when we are creating a new table
+		if (!task_property_values || !task_property_values.table_attr_names || task_property_values.table_attr_names.length == 0) {
+			//DEPRECATED bc now we have default attributes
+			//advanced_attributes_html = DBTableTaskPropertyObj.getTableAttributeHtml();
+			
+			if (!$.isPlainObject(task_property_values))
+				task_property_values = {};
+			
+			task_property_values.table_attr_names = ["id", "created_date", "created_user_id", "modified_date", "modified_user_id"];
+			task_property_values.table_attr_primary_keys = [true];
+			task_property_values.table_attr_types = ["bigint", "timestamp", "bigint", "timestamp", "bigint"];
+			task_property_values.table_attr_lengths = [20, null, 20, null, 20];
+			task_property_values.table_attr_nulls = [false, true, true, true, true];
+			task_property_values.table_attr_unsigneds = [true, false, true, false, true];
+			task_property_values.table_attr_uniques = [true];
+			task_property_values.table_attr_auto_increments = [true];
+			task_property_values.table_attr_has_defaults = [false, true, false, true, false];
+			task_property_values.table_attr_defaults = [null, "0000-00-00 00:00:00", null, "0000-00-00 00:00:00", null];
+		}
+		
+		if (task_property_values && task_property_values.table_attr_names && task_property_values.table_attr_names.length > 0) {
 			DBTableTaskPropertyObj.regularizeTaskPropertyValues(task_property_values);
 			
 			$.each(task_property_values.table_attr_names, function(i, table_attr_name) {

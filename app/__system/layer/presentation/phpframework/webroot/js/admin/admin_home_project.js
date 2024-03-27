@@ -536,6 +536,11 @@ function showCreateFilePopup() {
 		createFile(elm[0], popup);
 	});
 	
+	popup.find("input").off().on("keypress", function(event) {
+		if (event.which == 13) //if enter key pressed
+			popup.find("button").trigger("click");
+	});
+	
 	//open popup
 	MyFancyPopup.init({
 		elementToShow: popup,

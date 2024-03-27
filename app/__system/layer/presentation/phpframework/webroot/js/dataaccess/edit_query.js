@@ -306,10 +306,12 @@ function updateAvailableMapsOptions() {
 	var selected_option = $(MyFancyPopup.settings.targetField).val();
 	
 	var options = [];
+	var url = get_available_map_ids_url;
+	url += (url.indexOf("?") != -1 ? "" : "?") + "&time=" + (new Date()).getTime();
 	
 	$.ajax({
 		type : "get",
-		url : get_available_map_ids_url.replace("#map_type#", map_type).replace("#query_type#", query_type),
+		url : url.replace("#map_type#", map_type).replace("#query_type#", query_type),
 		dataType : "json",
 		success : function(data, textStatus, jqXHR) {
 			if(data && $.isArray(data)) {
@@ -432,10 +434,12 @@ function updateResultParameterMapFields(elm) {
 		MyFancyPopup.showLoading();
 		
 		var fields_elm = MyFancyPopup.settings.targetField;
+		var url = get_map_fields_url;
+		url += (url.indexOf("?") != -1 ? "" : "?") + "&time=" + (new Date()).getTime();
 		
 		$.ajax({
 			type : "post",
-			url : get_map_fields_url,
+			url : url,
 			data : {"db_broker" : db_broker, "db_driver" : db_driver, "type" : type, "db_table" : db_table, "map_type": map_type},
 			dataType : "json",
 			success : function(data, textStatus, jqXHR) {
@@ -2352,6 +2356,7 @@ function createSqlFromUI(ul, rand_number, do_not_confirm, do_not_focus_sql) {
 			var db_broker = popup.find(".db_broker select").val();
 			var db_driver = popup.find(".db_driver select").val();
 			var url = get_sql_from_query_obj.replace("#db_broker#", db_broker ? db_broker : "").replace("#db_driver#", db_driver ? db_driver : "");
+			url += (url.indexOf("?") != -1 ? "" : "?") + "&time=" + (new Date()).getTime();
 			
 			$.ajax({
 				type : "post",
@@ -2413,6 +2418,7 @@ function createUIFromSql(ul, rand_number, do_not_confirm) {
 				var db_broker = popup.find(".db_broker select").val();
 				var db_driver = popup.find(".db_driver select").val();
 				var url = get_query_obj_from_sql.replace("#db_broker#", db_broker ? db_broker : "").replace("#db_driver#", db_driver ? db_driver : "");
+				url += (url.indexOf("?") != -1 ? "" : "?") + "&time=" + (new Date()).getTime();
 				
 				//PREAPRING UI
 				$.ajax({
@@ -3411,10 +3417,13 @@ function addQueryKeyToConnectionsProperties(rand_number, source_table, source_co
 function getDBTables(db_broker, db_driver, type) {
 	var db_tables = db_brokers_drivers_tables_attributes[db_broker] && db_brokers_drivers_tables_attributes[db_broker][db_driver] ? db_brokers_drivers_tables_attributes[db_broker][db_driver][type] : null;
 	
-	if (jQuery.isEmptyObject(db_tables)) {
+	if (!db_tables || jQuery.isEmptyObject(db_tables)) {
+		var url = get_broker_db_data_url;
+		url += (url.indexOf("?") != -1 ? "" : "?") + "&time=" + (new Date()).getTime();
+		
 		$.ajax({
 			type : "post",
-			url : get_broker_db_data_url,
+			url : url,
 			data : {"db_broker" : db_broker, "db_driver" : db_driver, "type" : type},
 			dataType : "json",
 			success : function(data, textStatus, jqXHR) {
@@ -3450,10 +3459,13 @@ function getDBAttributes(db_broker, db_driver, type, db_table) {
 	
 	var db_attributes = db_brokers_drivers_tables_attributes[db_broker] && db_brokers_drivers_tables_attributes[db_broker][db_driver] && db_brokers_drivers_tables_attributes[db_broker][db_driver][type] ? db_brokers_drivers_tables_attributes[db_broker][db_driver][type][db_table] : null;
 
-	if (jQuery.isEmptyObject(db_attributes) || (db_attributes && !db_attributes.length)) {
+	if (!db_attributes || jQuery.isEmptyObject(db_attributes) || (db_attributes && !db_attributes.length)) {
+		var url = get_broker_db_data_url;
+		url += (url.indexOf("?") != -1 ? "" : "?") + "&time=" + (new Date()).getTime();
+		
 		$.ajax({
 			type : "post",
-			url : get_broker_db_data_url,
+			url : url,
 			data : {"db_broker" : db_broker, "db_driver" : db_driver, "type" : type, "db_table" : db_table},
 			dataType : "json",
 			success : function(data, textStatus, jqXHR) {
@@ -3487,9 +3499,12 @@ function getDBTableAttributesDetailedInfo(db_broker, db_driver, type, db_table) 
 	
 	var detailed_info;
 	
+	var url = get_broker_db_data_url;
+	url += (url.indexOf("?") != -1 ? "" : "?") + "&time=" + (new Date()).getTime();
+	
 	$.ajax({
 		type : "post",
-		url : get_broker_db_data_url,
+		url : url,
 		data : {"db_broker" : db_broker, "db_driver" : db_driver, "type" : type, "db_table" : db_table, "detailed_info" : 1},
 		dataType : "json",
 		success : function(data, textStatus, jqXHR) {
@@ -3529,9 +3544,12 @@ function getDBTableAttributesDetailedInfo(db_broker, db_driver, type, db_table) 
 function getBrokerHbnObjRelationships(db_broker, db_driver, type, db_table, with_maps, rel_type) {
 	var relationships = {};
 	
+	var url = create_hbn_object_relationships_automatically_url;
+	url += (url.indexOf("?") != -1 ? "" : "?") + "&time=" + (new Date()).getTime();
+	
 	$.ajax({
 		type : "post",
-		url : create_hbn_object_relationships_automatically_url,
+		url : url,
 		data : {"db_broker" : db_broker, "db_driver" : db_driver, "type" : type, "st" : [db_table], "with_maps" : with_maps, "rel_type" : rel_type},
 		dataType : "json",
 		success : function(data, textStatus, jqXHR) {
@@ -3986,10 +4004,12 @@ function saveDataAccessObject(obj, new_obj_id, options) {
 
 function removeDataAccessObject(obj_id) {
 	var status = false;
+	var url = remove_data_access_object_url;
+	url += (url.indexOf("?") != -1 ? "" : "?") + "&time=" + (new Date()).getTime();
 	
 	$.ajax({
 		type : "get",
-		url : remove_data_access_object_url.replace("#obj_id#", obj_id),
+		url : url.replace("#obj_id#", obj_id),
 		dataType : "json",
 		success : function(data, textStatus, jqXHR) {
 			status = data == 1;

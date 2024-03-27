@@ -191,6 +191,10 @@ body .task_context_menu .start_task:not(.is_start_task) a,
 .show_sync_sql_popup > ul > li:not(:last-child) {
 	padding-bottom:20px;
 }
+.show_sync_sql_popup > ul > li.show_sql:last-child {
+	padding-bottom:20px;
+	border-bottom:1px solid var(--main-iframe-bg);
+}
 .show_sync_sql_popup > ul > li > .table_header {
 	margin:0;
 	padding:10px;
@@ -199,11 +203,20 @@ body .task_context_menu .start_task:not(.is_start_task) a,
 	border:0;
 	border-radius:0;
 }
+.show_sync_sql_popup > ul > li > .table_header .icon {
+	float:right;
+}
+.show_sync_sql_popup > ul > li.show_sql > .table_header .icon:before {
+	content:"\f78c";
+}
 .show_sync_sql_popup > ul > li > .sql_statement {
 	padding:10px 20px;
 }
 .show_sync_sql_popup > ul > li:last-child > .sql_statement {
 	padding-bottom:0;
+}
+.show_sync_sql_popup > ul > li:not(.show_sql) > .sql_statement {
+	display:none;
 }
 .show_sync_sql_popup > .button {
 	padding:0 20px 20px;
