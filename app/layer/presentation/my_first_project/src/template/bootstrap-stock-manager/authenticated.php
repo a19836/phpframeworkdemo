@@ -37,8 +37,8 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Text Color", "#ff
 	<?php include_once $EVC->getTemplatePath("bootstrap-stock-manager/lib/head"); ?>
 	
 	<!-- Custom styles for this template-->
-	<link href="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/css/authenticated-1.css" rel="stylesheet">
 	<link href="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/css/authenticated.css" rel="stylesheet">
+	<link href="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/css/authenticated-style.css" rel="stylesheet">
 	
 	<style>
 	    :root {
@@ -190,7 +190,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Text Color", "#ff
 				<div class="container-fluid">
 					<div class="d-flex align-items-center justify-content-between small">
 						<div class="text-muted m-auto">Powered by<a href="//bloxtor.com" target="bloxtor">
-								<img class="bloxtor-logo" src="<?= $project_url_prefix; ?>template/bootstrap-stock-manager/img/bloxtor_logo_black.svg"/>
+								<img class="ml-1 bloxtor-logo" src="<?= $project_url_prefix; ?>template/bootstrap-stock-manager/img/bloxtor_logo_black.svg"/>
 							</a>
 						</div></div>
 				</div>
@@ -229,7 +229,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Text Color", "#ff
 	<?php include_once $EVC->getTemplatePath("bootstrap-stock-manager/lib/foot"); ?>
 	
 	<!-- Custom scripts for all pages-->
-	<script src="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/js/authenticated-1.js"></script>
+	<script src="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/js/authenticated.js"></script>
 	<!--script src="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/js/pos.js"></script-->
 </body>
 </html>

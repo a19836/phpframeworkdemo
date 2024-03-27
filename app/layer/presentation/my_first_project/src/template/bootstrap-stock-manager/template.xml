@@ -1,0 +1,8 @@
+<template>
+	<tag></tag>
+	<layouts>
+	    <layout>authenticated</layout>
+	    <layout>non-authenticated</layout>
+	    <layout>popup</layout>
+	</layouts>
+</template>

@@ -28,13 +28,6 @@ a:hover {
 	margin-top:1rem;
 }
 
-/* REGISTER */
-.register .form_fields .form_field.security_question_1 {
-	margin-top:2rem;
-	padding-top:2rem;
-	border-top:1px inset #eee;
-}
-
 /* MESSAGES */
 .error {
 	min-height:20px; 

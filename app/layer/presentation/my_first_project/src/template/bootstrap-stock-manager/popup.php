@@ -31,9 +31,9 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Header Title", "Admin Pane
 	<?php include_once $EVC->getTemplatePath("bootstrap-stock-manager/lib/head"); ?>
 	
 	<!-- Custom styles for this template-->
-	<link href="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/css/authenticated-1.css" rel="stylesheet">
-	<link href="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/css/popup-1.css" rel="stylesheet">
 	<link href="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/css/authenticated.css" rel="stylesheet">
+	<link href="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/css/authenticated-style.css" rel="stylesheet">
+	<link href="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/css/popup.css" rel="stylesheet">
 	
 	<?= $EVC->getCMSLayer()->getCMSTemplateLayer()->renderRegion("Head"); ?>
 </head>
@@ -54,7 +54,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Header Title", "Admin Pane
 	<?php include_once $EVC->getTemplatePath("bootstrap-stock-manager/lib/foot"); ?>
 	
 	<!-- Custom scripts for all pages-->
-	<script src="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/js/authenticated-1.js"></script>
+	<script src="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/js/authenticated.js"></script>
 	<!--script src="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/js/pos.js"></script-->
 </body>
 </html>

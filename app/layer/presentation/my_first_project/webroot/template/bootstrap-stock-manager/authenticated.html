@@ -29,8 +29,8 @@
 	<link href="vendor/fonts/google/google-fonts.css" rel="stylesheet">
 	
 	<!-- Custom styles for this template-->
-	<link href="css/authenticated-1.css" rel="stylesheet">
 	<link href="css/authenticated.css" rel="stylesheet">
+	<link href="css/authenticated-style.css" rel="stylesheet">
 </head>
 <body class="sb-nav-fixed">
 	<nav class="sb-topnav navbar navbar-expand navbar-light bg-white">
@@ -97,7 +97,7 @@
 					<ul class="nav">
 						<!-- Nav Item - Dashboard -->
 						<li class="nav-item">
-							<a class="nav-link" href="authenticated-1.html">
+							<a class="nav-link" href="authenticated.html">
 								<span class="sb-nav-link-icon">
 									<i class="fas fa-fw fa-tachometer-alt mr-1"></i>
 								</span>
@@ -122,13 +122,13 @@
 								</a>
 								<div class="collapse" id="collapseLayouts-0" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
 									<nav class="sb-sidenav-menu-nested nav">
-										<a class="nav-link entry-orders" href="authenticated-1-table-edit.html">
+										<a class="nav-link entry-orders" href="authenticated-table-edit.html">
 											<i class="fas fa-download mr-2"></i>
 											<span>
 											<small>Edit 1</small>
 											</span>
 										</a>
-										<a class="nav-link exit-orders" href="authenticated-1-table-edit.html">
+										<a class="nav-link exit-orders" href="authenticated-table-edit.html">
 											<i class="fas fa-upload mr-2"></i>
 											<span>
 											<small>Edit 2</small>
@@ -138,7 +138,7 @@
 								</div>
 							</li>
 							<li class="nav-item groups">
-								<a class="nav-link" href="authenticated-1-table-list.html">
+								<a class="nav-link" href="authenticated-table-list.html">
 								<i class="fas fa-layer-group mr-2"></i>
 								<span>
 								<small>Table</small>
@@ -163,31 +163,44 @@
 				</div>
 				<div class="container-fluid pt-4 pb-4 admin-page-content">
 					<h1 class="h4 font-weight-bold admin-page-content-title">
-						Edit Panel						
+						Admin Panel						
 					</h1>
 					<small>
 					    <ol class="breadcrumb mt-2 mb-4">
-					 	   <li class="breadcrumb-item active"><a class="text-danger" href="authenticated-1.html">Dashboard</a></li>
+					 	   <li class="breadcrumb-item active"><a class="text-danger" href="authenticated.html">Dashboard</a></li>
 						   <li class="breadcrumb-item active">path</li>
 						   <li class="breadcrumb-item active">to</li>
 						   <li class="breadcrumb-item active">current</li>
 						   <li class="breadcrumb-item active">page</li>
 					    </ol>
 				   	</small>
-					
-					<div class="card shadow-lg border-0 rounded-lg mb-5">
-						 <div class="card-header"><h3 class="text-center font-weight text-danger mt-2">Table Edit</h3></div>
-						 <div class="card-body">
-							<form>
-							    <div class="form-group"><label class="small mb-1 d-inline-block col-12 col-sm-4">Column 1</label><input class="form-control d-inline-block col-12 col-sm-8" type="text" placeholder="Enter something here" /></div>
-							    <div class="form-group"><label class="small mb-1 d-inline-block col-12 col-sm-4">Column 2</label><input class="form-control d-inline-block col-12 col-sm-8" type="text" placeholder="Enter something here" /></div>
-							    <div class="form-group"><label class="small mb-1 d-inline-block col-3 col-sm-4" style="min-width:80px">Column 3</label><input class="w-auto" type="checkbox" /></div>
-							    
-							    <div class="mt-4 mb-0 text-center">
-							    		<input type="button" class="btn btn-primary w-auto" value="Save" />
-							    </div>
-							</form>
-						 </div>
+					<div class="admin-panels align-items-center justify-content-between">
+						<div class="admin-panel admin-panel-groups col-xl-3 col-md-4 col-sm-6 float-left">
+							<a class="text-white stretched-link text-decoration-none" href="authenticated-table-edit.html" title="Edit">
+								<div class="card bg-danger mt-2 mb-2 ml-2 mr-2">
+									<div class="card-body">Edit</div>
+									<div class="card-footer d-flex align-items-center justify-content-between">
+										<span class="small text-white stretched-link">View Details</span>
+										<div class="small text-white">
+											<i class="fas fa-angle-right"></i>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+						<div class="admin-panel admin-panel-groups col-xl-3 col-md-4 col-sm-6 float-left">
+							<a class="text-white stretched-link text-decoration-none" href="authenticated-table-list.html" title="Table">
+								<div class="card bg-danger mt-2 mb-2 ml-2 mr-2">
+									<div class="card-body">Table</div>
+									<div class="card-footer d-flex align-items-center justify-content-between">
+										<span class="small text-white stretched-link">View Details</span>
+										<div class="small text-white">
+											<i class="fas fa-angle-right"></i>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
 					</div>
 				</div>
 			</main>
@@ -221,7 +234,7 @@
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
-					<a class="btn btn-danger" href="non-authenticated-1.html">Logout</a>
+					<a class="btn btn-danger" href="non-authenticated.html">Logout</a>
 				</div>
 			</div>
 		</div>
@@ -248,6 +261,6 @@
 	<script src="vendor/fonts/fontawesome-free/js/all.min.js"></script>
 	
 	<!-- Custom scripts for all pages-->
-	<script src="js/authenticated-1.js"></script>
+	<script src="js/authenticated.js"></script>
 </body>
 </html>

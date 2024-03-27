@@ -10,15 +10,21 @@ function prepareHtml(container) {
 			var table = tables[i];
 			var p = table.parentNode;
 			p.classList.add("table-responsive");
-			table.classList.add("table", "table-bordered", "table-striped", "table-hover", "table-sm");
 			
-			var inputs = container.querySelectorAll("input, select");
+			if (!table.classList.contains("table"))
+				table.classList.add("table", "table-striped", "table-hover", "table-sm");
+			
+			var inputs = table.querySelectorAll("input, select");
 			for (var j = 0, il = inputs.length; j < il; j++) {
 				var input = inputs[j];
 				
 				if (input.type != "checkbox" && input.type != "radio")
-					input.classList.add("h-100");
+					input.classList.add("h-100", "bg-transparent");
 			}
+			
+			var textareas = table.querySelectorAll("textarea");
+			for (var j = 0, il = textareas.length; j < il; j++)
+				textareas[j].classList.add("bg-transparent");
 		}
 		
 		//preparing fields-container inputs
@@ -27,6 +33,8 @@ function prepareHtml(container) {
 			var field = fields[i];
 			var label = field.querySelector("label");
 			var input = field.querySelector("input:not([type=hidden]), textarea, select, .field-value");
+			var label_contains_class_col = label && label.hasAttribute("class") && label.getAttribute("class").match(/(^col-|\scol-)/);
+			var input_contains_class_col = input && input.hasAttribute("class") && input.getAttribute("class").match(/(^col-|\scol-)/);
 			
 			field.classList.add("form-group", "row");
 			
@@ -34,16 +42,16 @@ function prepareHtml(container) {
 				var is_hidden_input = input.classList.contains("field-value");
 				
 				if (input.nodeName.toUpperCase() == "TEXTAREA") {
-					label && label.classList.add("col-12");
-					input.classList.add("col-12");
+					label && !label_contains_class_col && label.classList.add("col-12");
+					!input_contains_class_col && input.classList.add("col-12");
 				}
 				else {
-					label && label.classList.add((is_hidden_input ? "col-6" : "col-12"), "col-sm-4", "col-lg-2"); //if no input it means the value will be shown in a span
-					input.classList.add((is_hidden_input ? "col-6" : "col-12"), "col-sm-8", "col-lg-10");
+					label && !label_contains_class_col && label.classList.add((is_hidden_input ? "col-6" : "col-12"), "col-sm-4", "col-lg-2"); //if no input it means the value will be shown in a span
+					!input_contains_class_col && input.classList.add((is_hidden_input ? "col-6" : "col-12"), "col-sm-8", "col-lg-10");
 				}
 			}
-			else if (label)
-				label && label.classList.add("col-12", "col-sm-4", "col-lg-2");
+			else if (label && !label_contains_class_col)
+				label.classList.add("col-12", "col-sm-4", "col-lg-2");
 		}
 		
 		//preparing all inputs (from .fields-container and .list-container)
@@ -60,28 +68,32 @@ function prepareHtml(container) {
 		for (var i = 0, l = inputs.length; i < l; i++) {
 			var input = inputs[i];
 			var p = input.parentNode;
+			var input_contains_class = input.hasAttribute("class") && input.getAttribute("class").match(/(^|\s)btn(\s|\-|$)/);
 			input.classList.remove("form-control");
-			input.classList.add("btn");
 			
-			if (p.classList.contains("button-delete") || p.classList.contains("button_delete")) {
-				input.classList.add("btn-danger");
-				input.classList.add("bg-danger");
-			}
-			else if (p.classList.contains("button-save") || p.classList.contains("button-update") || p.classList.contains("button_save") || p.classList.contains("button_update")) {
-				input.classList.add("btn-primary");
-				input.classList.add("bg-primary");
-			}
-			else if (p.classList.contains("button-insert") || p.classList.contains("button_insert")) {
-				input.classList.add("btn-success");
-				input.classList.add("bg-success");
-			}
-			else if (p.classList.contains("submit_button")) {
-				input.classList.add("btn-primary");
-				input.classList.add("bg-primary");
-			}
-			else {
-				input.classList.add("btn-secondary");
-				input.classList.add("bg-secondary");
+			if (!input_contains_class) {
+				input.classList.add("btn");
+				
+				if (p.classList.contains("button-delete") || p.classList.contains("button_delete")) {
+					input.classList.add("btn-danger");
+					input.classList.add("bg-danger");
+				}
+				else if (p.classList.contains("button-save") || p.classList.contains("button-update") || p.classList.contains("button_save") || p.classList.contains("button_update")) {
+					input.classList.add("btn-primary");
+					input.classList.add("bg-primary");
+				}
+				else if (p.classList.contains("button-insert") || p.classList.contains("button_insert")) {
+					input.classList.add("btn-success");
+					input.classList.add("bg-success");
+				}
+				else if (p.classList.contains("submit_button")) {
+					input.classList.add("btn-primary");
+					input.classList.add("bg-primary");
+				}
+				else {
+					input.classList.add("btn-secondary");
+					input.classList.add("bg-secondary");
+				}
 			}
 			
 			if (p.classList.contains("submit_button") && !p.classList.contains("button"))

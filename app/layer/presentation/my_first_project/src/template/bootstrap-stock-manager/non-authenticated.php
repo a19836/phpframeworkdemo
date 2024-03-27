@@ -5,7 +5,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Page Keywords", "Admin Pan
 $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Page Description", "Company Name - Automatic Admin Panel Template");
 $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Icon Url", "{$original_project_url_prefix}template/bootstrap-stock-manager/img/favicon.png");
 $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Background Color", "#000");
-$EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Text Color", "#fff");
+$EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Text Color", "#343a40");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,8 +23,8 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->setParam("Template Text Color", "#ff
 	<?php include_once $EVC->getTemplatePath("bootstrap-stock-manager/lib/head"); ?>
 	
 	<!-- Custom styles for this template-->
-	<link href="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/css/non-authenticated-1.css" rel="stylesheet">
 	<link href="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/css/non-authenticated.css" rel="stylesheet">
+	<link href="<?php echo $original_project_url_prefix; ?>template/bootstrap-stock-manager/css/non-authenticated-style.css" rel="stylesheet">
 	
 	<style>
 	    :root {
