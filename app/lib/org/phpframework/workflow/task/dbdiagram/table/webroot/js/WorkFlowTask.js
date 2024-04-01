@@ -179,19 +179,7 @@ var DBTableTaskPropertyObj = {
 			//DEPRECATED bc now we have default attributes
 			//advanced_attributes_html = DBTableTaskPropertyObj.getTableAttributeHtml();
 			
-			if (!$.isPlainObject(task_property_values))
-				task_property_values = {};
-			
-			task_property_values.table_attr_names = ["id", "created_date", "created_user_id", "modified_date", "modified_user_id"];
-			task_property_values.table_attr_primary_keys = [true];
-			task_property_values.table_attr_types = ["bigint", "timestamp", "bigint", "timestamp", "bigint"];
-			task_property_values.table_attr_lengths = [20, null, 20, null, 20];
-			task_property_values.table_attr_nulls = [false, true, true, true, true];
-			task_property_values.table_attr_unsigneds = [true, false, true, false, true];
-			task_property_values.table_attr_uniques = [true];
-			task_property_values.table_attr_auto_increments = [true];
-			task_property_values.table_attr_has_defaults = [false, true, false, true, false];
-			task_property_values.table_attr_defaults = [null, "0000-00-00 00:00:00", null, "0000-00-00 00:00:00", null];
+			task_property_values = DBTableTaskPropertyObj.prepareTaskPropertyValuesWithDefaultAttributes(task_property_values);
 		}
 		
 		if (task_property_values && task_property_values.table_attr_names && task_property_values.table_attr_names.length > 0) {
@@ -2565,8 +2553,10 @@ var DBTableTaskPropertyObj = {
 		var target_table = WF.TaskFlow.getTaskLabelByTaskId(connection.targetId);
 		
 		var source_attributes = WF.TaskFlow.tasks_properties[connection.sourceId] && WF.TaskFlow.tasks_properties[connection.sourceId].table_attr_names ? WF.TaskFlow.tasks_properties[connection.sourceId].table_attr_names : [];
+		//console.log(source_attributes);
 		
 		var target_attributes = WF.TaskFlow.tasks_properties[connection.targetId] && WF.TaskFlow.tasks_properties[connection.targetId].table_attr_names ? WF.TaskFlow.tasks_properties[connection.targetId].table_attr_names : [];
+		//console.log(target_attributes);
 		
 		//the first time we load the task proeprties from a file, the source_attributes is an array, but when we save new properties from the selected_task_properties panel, the source_attributes becomes an object. So we need always to do the following:
 		var new_source_attributes = new Array();
@@ -3259,4 +3249,29 @@ var DBTableTaskPropertyObj = {
 		
 		return attribute_data;
 	},
+	
+	prepareTaskPropertyValuesWithDefaultAttributes : function(task_property_values, table_name) {
+		var id_attribute_name = (table_name ? table_name.toLowerCase().replace(/ /g, "_").replace(/_+/g, "_") + "_" : "") + "id";
+		id_attribute_name = normalizeTaskTableName(id_attribute_name);
+		
+		if (!$.isPlainObject(task_property_values))
+			task_property_values = {};
+		
+		task_property_values.table_attr_names = [id_attribute_name, "created_date", "created_user_id", "modified_date", "modified_user_id"];
+		task_property_values.table_attr_primary_keys = [true, null, null, null, null];
+		task_property_values.table_attr_types = ["bigint", "timestamp", "bigint", "timestamp", "bigint"];
+		task_property_values.table_attr_lengths = [20, null, 20, null, 20];
+		task_property_values.table_attr_nulls = [false, true, true, true, true];
+		task_property_values.table_attr_unsigneds = [true, false, true, false, true];
+		task_property_values.table_attr_uniques = [true, false, false, false, false];
+		task_property_values.table_attr_auto_increments = [true, false, false, false, false];
+		task_property_values.table_attr_has_defaults = [false, true, false, true, false];
+		task_property_values.table_attr_defaults = [null, "0000-00-00 00:00:00", null, "0000-00-00 00:00:00", null];
+		task_property_values.table_attr_extras = [null, null, null, null, null];
+		task_property_values.table_attr_charsets = [null, null, null, null, null];
+		task_property_values.table_attr_collations = [null, null, null, null, null];
+		task_property_values.table_attr_comments = [null, null, null, null, null];
+		
+		return task_property_values;
+	}
 };

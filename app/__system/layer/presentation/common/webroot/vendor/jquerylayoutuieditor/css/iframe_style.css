@@ -713,8 +713,8 @@ body {
 }
 
 
-.main-droppable.borders .template-widget:not(input):not(select):not(textarea):not(button):not(progress):not(img):not(image):not(iframe):not(table):not(tbody):not(tfoot):not(thead):not(tr):empty,
-  .main-droppable.borders .droppable:not(input):not(select):not(textarea):not(button):not(progress):not(img):not(image):not(iframe):not(table):not(tbody):not(tfoot):not(thead):not(tr):empty {
+.main-droppable.borders .template-widget:not(input):not(select):not(textarea):not(button):not(progress):not(img):not(image):not(iframe):not(table):not(tbody):not(tfoot):not(thead):not(tr):not(hr):empty,
+  .main-droppable.borders .droppable:not(input):not(select):not(textarea):not(button):not(progress):not(img):not(image):not(iframe):not(table):not(tbody):not(tfoot):not(thead):not(tr):not(hr):empty {
 	min-width:1em;
 	min-height:1em;
 }

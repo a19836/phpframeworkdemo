@@ -39,11 +39,10 @@ $head = '
 var is_popup = ' . ($popup ? 1 : 0) . ';
 </script>'; $main_content = '<div class="choose_available_tutorial ' . ($popup ? " in_popup" : "") . '">
 	<div class="title' . ($popup ? " inside_popup_title" : "") . '">Video Tutorials</div>
-	<ul>'; foreach ($tutorials as $tutorial) $main_content .= getTutorialHtml($tutorial); function getTutorialHtml($v20f9a15b0d) { if ($v20f9a15b0d["video"] || $v20f9a15b0d["items"]) { $ped0a6251 = ''; $pf9ed8697 = ''; if ($v20f9a15b0d["items"]) { $ped0a6251 = 'onClick="toggleSubTutorials(this)"'; $pf9ed8697 = '<span class="icon dropdown_arrow"></span>'; } else $ped0a6251 = 'onClick="openVideoPopup(this)" video_url="' . $v20f9a15b0d["video"] . '" image_url="' . $v20f9a15b0d["image"] . '"'; $pf8ed4912 = '<li' . ($v20f9a15b0d["items"] ? ' class="with_sub_tutorials"' : '') . '>
-					<div class="tutorial_header" ' . $ped0a6251 . '>
-						<div class="tutorial_title"' . ($v20f9a15b0d["description"] ? ' title="' . str_replace('"', '&quot;', strip_tags($v20f9a15b0d["description"])) . '"' : '') . '><span class="icon video"></span>' . $v20f9a15b0d["title"] . $pf9ed8697 . '</div>
-						' . ($v20f9a15b0d["description"] ? '<div class="tutorial_description">' . $v20f9a15b0d["description"] . '</div>' : '') . '
-					</div>'; if ($v20f9a15b0d["items"]) { $pf8ed4912 .= '<ul class="sub_tutorials">'; foreach ($v20f9a15b0d["items"] as $v83cf8e0027) $pf8ed4912 .= getTutorialHtml($v83cf8e0027); $pf8ed4912 .= '</ul>'; } $pf8ed4912 .= '</li>'; } return $pf8ed4912; } $main_content .= '
+	<div class="toggle_advanced_videos"><a href="javascript:void(0)" onClick="toggleAdvancedTutorials(this);">Show Advanced Videos</a></div>
+	<ul class="simple_tutorials">'; foreach ($simple_tutorials as $tutorial) $main_content .= getTutorialHtml($tutorial); $main_content .= '<li class="next"><a href="javascript:void(0)" onClick="toggleAdvancedTutorials(this);">Next you should watch the videos from the Advanced Tutorials</a>.</li>
+	</ul>
+	<ul class="advanced_tutorials">'; foreach ($advanced_tutorials as $tutorial) $main_content .= getTutorialHtml($tutorial); $main_content .= '
 	</ul>
 	
 	<div class="myfancypopup with_title show_video_popup">
@@ -59,4 +58,8 @@ var is_popup = ' . ($popup ? 1 : 0) . ';
 			</div>
 		</div>
 	</div>
-</div>'; ?>
+</div>'; function getTutorialHtml($v20f9a15b0d) { if ($v20f9a15b0d["video"] || $v20f9a15b0d["items"]) { $ped0a6251 = ''; $pf9ed8697 = ''; if ($v20f9a15b0d["items"]) { $ped0a6251 = 'onClick="toggleSubTutorials(this)"'; $pf9ed8697 = '<span class="icon dropdown_arrow"></span>'; } else $ped0a6251 = 'onClick="openVideoPopup(this)" video_url="' . $v20f9a15b0d["video"] . '" image_url="' . $v20f9a15b0d["image"] . '"'; $pf8ed4912 = '<li' . ($v20f9a15b0d["items"] ? ' class="with_sub_tutorials"' : '') . '>
+					<div class="tutorial_header" ' . $ped0a6251 . '>
+						<div class="tutorial_title"' . ($v20f9a15b0d["description"] ? ' title="' . str_replace('"', '&quot;', strip_tags($v20f9a15b0d["description"])) . '"' : '') . '><span class="icon video"></span>' . $v20f9a15b0d["title"] . $pf9ed8697 . '</div>
+						' . ($v20f9a15b0d["description"] ? '<div class="tutorial_description">' . $v20f9a15b0d["description"] . '</div>' : '') . '
+					</div>'; if ($v20f9a15b0d["items"]) { $pf8ed4912 .= '<ul class="sub_tutorials">'; foreach ($v20f9a15b0d["items"] as $v83cf8e0027) $pf8ed4912 .= getTutorialHtml($v83cf8e0027); $pf8ed4912 .= '</ul>'; } $pf8ed4912 .= '</li>'; } return $pf8ed4912; } ?>

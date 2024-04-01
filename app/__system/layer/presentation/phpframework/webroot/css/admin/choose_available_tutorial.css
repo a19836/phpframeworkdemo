@@ -34,6 +34,13 @@ body,
 	text-align:center;
 }
 
+.choose_available_tutorial > .toggle_advanced_videos {
+	text-align:center;
+}
+.choose_available_tutorial > .toggle_advanced_videos a {
+	color:#ccc;
+}
+
 .choose_available_tutorial > ul {
 	max-width:650px;
 	margin:0 auto;
@@ -44,11 +51,23 @@ body,
 	box-sizing:border-box;
 	overflow:auto;
 }
+.choose_available_tutorial.with_advanced_tutorials > ul.simple_tutorials,
+  .choose_available_tutorial:not(.with_advanced_tutorials) > ul.advanced_tutorials {
+	display:none;
+}
 .choose_available_tutorial > ul li {
 	text-align:left;
 }
 .choose_available_tutorial > ul > li:not(:last-child) {
 	border-bottom:1px solid #4070ff50;
+}
+.choose_available_tutorial > ul.simple_tutorials > li.next {
+	margin-top:20px;
+	text-align:center;
+	color:#ccc;
+}
+.choose_available_tutorial > ul.simple_tutorials > li.next a {
+	color:inherit;
 }
 .choose_available_tutorial > ul li > .tutorial_header {
 	padding:3px 0;

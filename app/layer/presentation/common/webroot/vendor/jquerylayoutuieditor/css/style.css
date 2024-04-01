@@ -1575,6 +1575,12 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	font-size:140%;
 	vertical-align:middle;
 }
+.layout-ui-editor > .menu-settings .settings-classes .user-classes .copy-classes {
+	margin:5px;
+	cursor:pointer;
+	font-weight:bold;
+	vertical-align:middle;
+}
 .layout-ui-editor > .menu-settings .settings-classes .user-classes .user-class {
 	margin:5px;
 	padding:5px;

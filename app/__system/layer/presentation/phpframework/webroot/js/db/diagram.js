@@ -200,27 +200,8 @@ function addNewTable() {
 			
 				//add id, created_date and modified_date attributes by default
 				var task_label = taskFlowChartObj.TaskFlow.getTaskLabelByTaskId(task_id);
-				var id_attribute_name = task_label.toLowerCase().replace(/ /g, "_").replace(/_/g, "_") + "_id";
-				id_attribute_name = normalizeTaskTableName(id_attribute_name);
-				
 				var task_property_values = taskFlowChartObj.TaskFlow.tasks_properties[task_id];
-				task_property_values = task_property_values ? task_property_values : {};
-				
-				task_property_values.table_attr_names = [id_attribute_name, "created_date", "created_user_id", "modified_date", "modified_user_id"];
-				task_property_values.table_attr_primary_keys = ["1", null, null, null, null];
-				task_property_values.table_attr_types = ["bigint", "timestamp", "bigint", "timestamp", "bigint"];
-				task_property_values.table_attr_lengths = ["20", null, "20", null, "20"];
-				task_property_values.table_attr_nulls = [null, "1", "1", "1", "1"];
-				task_property_values.table_attr_unsigneds = ["1", null, "1", null, "1"];
-				task_property_values.table_attr_uniques = ["1", null, null, null, null];
-				task_property_values.table_attr_auto_increments = ["1", null, null, null, null];
-				task_property_values.table_attr_has_defaults = [null, null, null, null, null];
-				task_property_values.table_attr_defaults = [null, null, null, null, null];
-				task_property_values.table_attr_extras = [null, null, null, null, null];
-				task_property_values.table_attr_charsets = [null, null, null, null, null];
-				task_property_values.table_attr_collations = [null, null, null, null, null];
-				task_property_values.table_attr_comments = [null, null, null, null, null];
-				
+				task_property_values = DBTableTaskPropertyObj.prepareTaskPropertyValuesWithDefaultAttributes(task_property_values, task_label);
 				taskFlowChartObj.TaskFlow.tasks_properties[task_id] = task_property_values;
 				
 				DBTableTaskPropertyObj.prepareShortTableAttributes(task_id, task_property_values);

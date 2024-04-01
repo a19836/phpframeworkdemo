@@ -1,3 +1,17 @@
+function toggleAdvancedTutorials(elm) {
+	var p = $(elm).parent().closest(".choose_available_tutorial");
+	var targets = p.find(".toggle_advanced_videos a, .next a");
+	
+	p.toggleClass("with_advanced_tutorials");
+	
+	if (p.hasClass("with_advanced_tutorials"))
+		targets.html("Hide Advanced Videos");
+	else
+		targets.html("Show Advanced Videos");
+	
+	$(window).scrollTop(0);
+}
+
 function toggleSubTutorials(elm) {
 	$(elm).parent().closest("li").toggleClass("open");
 }

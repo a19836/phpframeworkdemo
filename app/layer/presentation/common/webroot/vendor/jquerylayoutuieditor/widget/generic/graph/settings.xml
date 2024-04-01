@@ -9,6 +9,7 @@
 	<menu_widget></menu_widget>
 	<template_widget></template_widget>
 	<properties><![CDATA[
+		<div class="info">For more information or options about "Drawing a Graph" and how it works, please open the "<a href="https://www.chartjs.org/" target="chartjs">https://www.chartjs.org/</a>" web-page.</div>
 		<div class="form-group row settings-property parse" title="Define a parse callback function for the chart main settings before the chart gets created">
 			<label class="col-md-4 col-sm-5 col-form-label">Parse Callback: </label>
 			<input class="col-md-8 col-sm-7 form-control" name="parse" placeHolder="function name" />
@@ -190,6 +191,14 @@
 		
 		.layout-ui-editor.fixed-side-properties > .menu-settings.menu-settings-graph > .settings-properties {
 			min-width:240px;
+		}
+		.layout-ui-editor.fixed-side-properties > .menu-settings.menu-settings-graph > .settings-properties > ul > .info {
+			margin-botom:20px;
+			opacity:.5;
+		}
+		.layout-ui-editor.fixed-side-properties > .menu-settings.menu-settings-graph > .settings-properties > ul > .info:hover {
+			margin-bottom:20px;
+			opacity:1;
 		}
 		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .group-title label {
 			cursor:pointer;
