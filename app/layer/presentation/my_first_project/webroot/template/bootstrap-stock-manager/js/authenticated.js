@@ -4,7 +4,7 @@ showLoadingBar();
     "use strict";
     
     //bc of the LayoutUIEditor
-    if (!document.body.querySelector("[data-widget-list]") || document.body.querySelector("[data-widget-list-loading]"))
+    //if (!document.body.querySelector("[data-widget-list]") || document.body.querySelector("[data-widget-list-loading]"))
         hideLoadingBar();
     
     // Toggle the side navigation
