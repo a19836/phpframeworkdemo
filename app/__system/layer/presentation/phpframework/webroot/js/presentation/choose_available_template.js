@@ -131,7 +131,7 @@ function prepareChooseAvailableTemplateTypeHtml(project_id, folder_to_filter) {
 				+ '</div>'
 				+ '<div class="editor_type empty_template advanced_template" project_id="' + project_id + '" template_id="empty">'
 					+ '<div class="title">For non-standards pages</div>'
-					+ '<div class="description">Create and print html directly from your page without any template...</div>'
+					+ '<div class="description">Create and print html directly from your page without any template...<br/>To be used in reports.</div>'
 					+ '<button onClick="selectAvailableTemplate(\'' + project_id + '\', \'empty\')">No Template</button>'
 				+ '</div>';
 	
