@@ -144,14 +144,19 @@ if (typeof assignObjectRecursively != "function")
 			return (typeof Array.isArray == "function" && Array.isArray(obj)) || Object.prototype.toString.call(obj) === '[object Array]';
 		};
 		
+		var is_to_arr = is_array(to_obj);
+		
 		if (is_plain_object(from_obj)) { //if is plain object
 			for (var k in from_obj) {
 				var v = from_obj[k];
 				
 				if (is_plain_object(v))
-					to_obj[k] = assignObjectRecursively({}, v);
+					v = assignObjectRecursively({}, v);
 				else if (is_array(v))
-					to_obj[k] = assignObjectRecursively([], v);
+					v = assignObjectRecursively([], v);
+				
+				if (is_to_arr)
+					to_obj.push(v);
 				else
 					to_obj[k] = v;
 			}
@@ -163,9 +168,12 @@ if (typeof assignObjectRecursively != "function")
 				var v = from_obj[i];
 				
 				if (is_plain_object(v))
-					to_obj[i] = assignObjectRecursively({}, v);
+					v = assignObjectRecursively({}, v);
 				else if (is_array(v))
-					to_obj[i] = assignObjectRecursively([], v);
+					v = assignObjectRecursively([], v);
+				
+				if (is_to_arr)
+					to_obj.push(v);
 				else
 					to_obj[i] = v;
 			}

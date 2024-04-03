@@ -10,6 +10,14 @@
 	<template_widget></template_widget>
 	<properties><![CDATA[
 		<div class="info">For more information or options about "Drawing a Graph" and how it works, please open the "<a href="https://www.chartjs.org/" target="chartjs">https://www.chartjs.org/</a>" web-page.</div>
+		<div class="form-group row settings-property load-type" title="Define when will the chart be drawn">
+			<label class="col-md-4 col-sm-5 col-form-label">Load Chart: </label>
+			<select class="col-md-8 col-sm-7 form-select">
+				<option value="" selected="">-- None --</option>
+				<option value="data-widget-resources-load" title="Create chart when page loads">On page load</option>
+				<option value="data-widget-item-resources-load" title="Create chart when parent draws me">When parent draws chart</option>
+			</select>
+		</div>
 		<div class="form-group row settings-property parse" title="Define a parse callback function for the chart main settings before the chart gets created">
 			<label class="col-md-4 col-sm-5 col-form-label">Parse Callback: </label>
 			<input class="col-md-8 col-sm-7 form-control" name="parse" placeHolder="function name" />
@@ -193,15 +201,17 @@
 			min-width:240px;
 		}
 		.layout-ui-editor.fixed-side-properties > .menu-settings.menu-settings-graph > .settings-properties > ul > .info {
-			margin-botom:20px;
+			margin-bottom:20px;
 			opacity:.5;
 		}
 		.layout-ui-editor.fixed-side-properties > .menu-settings.menu-settings-graph > .settings-properties > ul > .info:hover {
-			margin-bottom:20px;
 			opacity:1;
 		}
 		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .group-title label {
 			cursor:pointer;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .group-title .settings-property.display input {
+			margin:0;
 		}
 		
 		.layout-ui-editor > .menu-settings.menu-settings-graph > .settings-properties .data-sets {
@@ -327,6 +337,7 @@
 				
 				menu_widget.children(".properties").attr({
 					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.graph.onOpenWidgetSettings",
+					"data-on-close-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.graph.onCloseWidgetSettings",
 					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.graph.saveSettingsField",
 					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.graph.parseSettings",
 				});
@@ -354,10 +365,20 @@
 			me.onOpenWidgetSettings = function(widget, menu_settings) {
 				var settings_properties = menu_settings.find(" > .settings-properties > ul");
 				
-				//prepare settings ui
+				//prepare settings ui - load type
+				var load_type_select = settings_properties.find(" > .load-type > select");
+				load_type_select.attr("onChange", ui_creator.obj_var_name + ".menu_widgets_objs.graph.onChangeLoadType(this, event)");
+				
+				var resource_load_type_select = menu_settings.find(" > .settings-widget .widget-resources .widget-resources-type.widget-resources-load > .widget-resources-type-properties > ul > .widget-property-load-type > select");
+				resource_load_type_select.bind("change", me.onChangeResourceLoadType);
+				
+				//prepare settings ui - toggles
 				var display_input = settings_properties.find(" > .legend > .group-title > .display > input,  > .title > .group-title > .display > input,  > .sub_title > .group-title > .display > input");
 				display_input.attr("onClick", ui_creator.obj_var_name + ".menu_widgets_objs.graph.onClickDisplay(this, event)");
 				display_input.attr("onChange", ui_creator.obj_var_name + ".menu_widgets_objs.graph.onChangeDisplay(this, event)");
+				
+				var toggle_group = settings_properties.find(" > .legend > .group-title,  > .title > .group-title,  > .sub_title > .group-title");
+				toggle_group.attr("onClick", ui_creator.obj_var_name + ".menu_widgets_objs.graph.toggleGroup(this, event)");
 				
 				var info_icon = settings_properties.find(" > .data-sets > .group-title > .info");
 				info_icon.attr("onClick", ui_creator.obj_var_name + ".menu_widgets_objs.graph.toggleInformation(this, event)");
@@ -376,6 +397,16 @@
 				var title_props = properties["title"];
 				var sub_title_props = properties["sub_title"];
 				var data_sets_props = properties["data_sets"];
+				
+				//load load-type setting
+				var load_type = "";
+				
+				if (widget[0].hasAttribute("data-widget-resources-load"))
+					load_type = "data-widget-resources-load";
+				else if (widget[0].hasAttribute("data-widget-item-resources-load"))
+					load_type = "data-widget-item-resources-load";
+				
+				settings_properties.find(" > .load-type > select").val(load_type);
 				
 				//load event settings
 				settings_properties.find(" > .parse > input").val(parse_prop);
@@ -425,6 +456,11 @@
 				}
 			};
 			
+			me.onCloseWidgetSettings = function(widget, menu_settings) {
+				var resource_load_type_select = menu_settings.find(" > .settings-widget .widget-resources .widget-resources-type.widget-resources-load > .widget-resources-type-properties > ul > .widget-property-load-type > select");
+				resource_load_type_select.unbind("change", me.onChangeResourceLoadType);
+			};
+			
 			me.loadSettingsProperties = function(elm, props) {
 				if ($.isPlainObject(props))
 					for (var key in props) {
@@ -455,7 +491,8 @@
 				var properties = me.getGraphProperties(widget);
 				
 				for (var key in properties)
-					widget_settings[key] = properties[key];
+					if (key != "title")
+						widget_settings[key] = properties[key];
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
@@ -468,6 +505,7 @@
 					
 					var props = {load: "MyWidgetResourceLib.ChartHandler.loadChartResource"};
 					widget.attr("data-widget-props", JSON.stringify(props));
+					widget.attr("data-widget-resources-load", "");
 				}
 			};
 			
@@ -687,6 +725,22 @@
 				ui_creator.addMenuSettingsContextMenu( elm.find("input") );
 			};
 			
+			me.onChangeLoadType = function(elm, event) {
+				elm = $(elm);
+				var load_type = elm.val();
+				var resource_load_type_select = elm.parent().closest(".menu-settings").find(" > .settings-widget .widget-resources .widget-resources-type.widget-resources-load > .widget-resources-type-properties > ul > .widget-property-load-type > select");
+				
+				resource_load_type_select.val(load_type);
+				resource_load_type_select.trigger("change");
+			};
+			
+			me.onChangeResourceLoadType = function(elm, event) {
+				var select = $(this);
+				var load_type_select = select.parent().closest(".menu-settings").find(" > .settings-properties > ul > .load-type > select");
+				
+				load_type_select.val( select.val() );
+			};
+			
 			me.onClickDisplay = function(elm, event) {
 				event && event.stopPropagation();
 			};
@@ -696,7 +750,7 @@
 				
 				elm = $(elm);
 				var p = elm.parent().closest(".legend, .title, .sub_title");
-				var ul  =p.children("ul");
+				var ul = p.children("ul");
 				
 				if (elm.is(":checked")) {
 					p.addClass("group-open");
@@ -705,6 +759,20 @@
 				else {
 					p.removeClass("group-open");
 					ul.find("input, select, textarea").attr("disabled", "");
+				}
+			};
+			
+			me.toggleGroup = function(elm, event) {
+				var elm = $(elm);
+				var p = elm.closest(".group");
+				var is_active = elm.find(" > .settings-property.display > input").is(":checked");
+				
+				if (!is_active) {
+					ui_creator.showMessage("You must enable this property first!");
+					
+					setTimeout(function() {
+						p.removeClass("group-open");
+					}, 300);
 				}
 			};
 			
