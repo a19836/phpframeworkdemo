@@ -61,6 +61,7 @@
   .layout-ui-editor > .menu-settings li.group.settings-widget .choose-widget-resource-attribute,
   .layout-ui-editor > .menu-settings li.group.settings-widget .refresh-existent-data,
   .layout-ui-editor > .menu-settings li.group.settings-widget .choose-event,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .choose-page,
   .layout-ui-editor > .menu-settings li.group.settings-widget .add-extra-callback,
   .layout-ui-editor > .menu-settings li.group.settings-widget .remove-extra-callback,
   .layout-ui-editor > .menu-settings li.group.settings-widget .add-extra-event,
@@ -91,6 +92,7 @@
   .layout-ui-editor > .menu-settings li.group.settings-widget .choose-widget-resource-attribute,
   .layout-ui-editor > .menu-settings li.group.settings-widget .refresh-existent-data,
   .layout-ui-editor > .menu-settings li.group.settings-widget .choose-event,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .choose-page,
   .layout-ui-editor > .menu-settings li.group.settings-widget .add-extra-callback,
   .layout-ui-editor > .menu-settings li.group.settings-widget .remove-extra-callback,
   .layout-ui-editor > .menu-settings li.group.settings-widget .add-extra-event,
@@ -353,7 +355,8 @@
 	color:var(--main-iframe-top-title-color);
 }
 
-.layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-parse-callback > label,
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-value > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-parse-callback > label,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-validate-callback > label,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-success-callback > label,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-error-callback > label {
