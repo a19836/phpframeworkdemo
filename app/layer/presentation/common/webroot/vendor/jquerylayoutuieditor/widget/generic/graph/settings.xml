@@ -624,7 +624,7 @@
 								+ '<i class="zmdi zmdi-close clear-user-input" title="Reset field"></i>'
 								+ '<select class="col-md-7 col-sm-6 form-select" name="data_type" onChange="' + ui_creator.obj_var_name + '.menu_widgets_objs.graph.onChangeDataType(this)">'
 									+ '<option value="resource">Based in a Resource</option>'
-									+ '<option value="hardcoded" title="Values must be a valid JSON">Hard coded values in JSON</option>'
+									+ '<option value="hardcoded" title="Values must be a valid JSON or comma delimiter string">Hard coded values</option>'
 								+ '</select>'
 							+ '</li>'
 							+ '<li class="form-group row settings-property data-resource-name with-swap-fields select-shown">'
