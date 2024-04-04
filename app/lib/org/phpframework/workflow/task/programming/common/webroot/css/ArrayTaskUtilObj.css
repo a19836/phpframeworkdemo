@@ -5,7 +5,7 @@
   .selected_task_properties .array_items li {
 	float:none;
 	clear:left;
-	min-width:380px;
+	min-width:390px;
 	background-color:#FFF;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .array_items ul, 
