@@ -57,10 +57,10 @@
   [data-widget-list]:not(.template-widget) [data-widget-item-add]:not([data-widget-item-loaded]):not(.template-widget) {
 	display:none;
 }
-/*[data-widget-list]:not(.template-widget) [data-widget-list-loading] {
+/*[data-widget-list]:not(.template-widget) [data-widget-loading] {
 	display:none;
 }*/
-[data-widget-list]:not(.template-widget) [data-widget-list-empty] {
+[data-widget-list]:not(.template-widget) [data-widget-empty] {
 	display:none;
 }
 

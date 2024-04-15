@@ -10305,7 +10305,7 @@ body {
     -webkit-animation: load8 1.1s infinite linear;
     animation: load8 1.1s infinite linear;
 }
-[data-widget-list] [data-widget-list-loading] td:after {
+[data-widget-list] [data-widget-loading] td:after {
     content:"";
     border-radius: 50%;
     width: 10em;

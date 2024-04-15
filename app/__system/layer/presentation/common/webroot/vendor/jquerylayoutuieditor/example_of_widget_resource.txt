@@ -77,8 +77,8 @@
 	Widget list properties (data-widget-props for list):
 		Load: MyWidgetResourceLib.TableHandler.loadListTableAndTreeResource
 		dependent_widgets_id: ['top_pagination_elm_id_1', 'bottom_pagination_elm_id_2'] //optional, this is only an example, if applies...
-		empty_message: "There are no items available" (only show this property if selector item: "[data-widget-list-empty]" does not exist)
-		loading_message: "Loading items..." (only show this property if selector item: "[data-widget-list-loading]" does not exist)
+		empty_message: "There are no items available" (only show this property if selector item: "[data-widget-empty]" does not exist)
+		loading_message: "Loading items..." (only show this property if selector item: "[data-widget-loading]" does not exist)
 		items_limit_per_page: 100 //records limit per page
 		starting_page_number: 0
 		pks_attrs_names (ul/li list): names of table's attributes that are PKs. (in array or string comma delimiter)
@@ -558,8 +558,8 @@
 	--Widget - Properties--
 		is widget list (checkbox): add or remove data-widget-list
 		
-		empty_message (input): "There are no items available" (only show this property if selector item: "[data-widget-list-empty]" does not exist)
-		loading_message (input): "Loading items..." (only show this property if selector item: "[data-widget-list-loading]" does not exist)
+		empty_message (input): "There are no items available" (only show this property if selector item: "[data-widget-empty]" does not exist)
+		loading_message (input): "Loading items..." (only show this property if selector item: "[data-widget-loading]" does not exist)
 		items_limit_per_page (input): 100 //records limit per page
 		starting_page_number (input): 0
 		pks_attrs_names (ul/li list): + icon (names of table's attributes that are PKs. (in array or string comma delimiter))
@@ -835,8 +835,8 @@
 							<span data-widget-item-button-toggle-inline-edit-view class="icon toggle" onClick="MyWidgetResourceLib.ItemHandler.toggleResourceAttributesEditing(this)" data-widget-props="{...}" data-widget-permissions="{json object with user permissions}">save</span>
 						</td>
 					</tr>
-					<tr data-widget-list-loading><td colspan="3">Loading new data... Please wait a while...</td></tr>
-					<tr data-widget-list-empty><td colspan="3">
+					<tr data-widget-loading><td colspan="3">Loading new data... Please wait a while...</td></tr>
+					<tr data-widget-empty><td colspan="3">
 						There are no records available.<br/>
 						Please click in the button below to add new records:
 						

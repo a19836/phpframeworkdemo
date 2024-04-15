@@ -420,11 +420,11 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->addRegionHtml("Content", "<div class
 								</div>
 							</td>
 						</tr>
-						<tr data-widget-list-loading>
+						<tr data-widget-loading>
 							<td class=\"border-0 text-center text-muted small p-3\" colspan=\"6\">Loading new data... Please wait a while...</td>
 						</tr>
-						<tr data-widget-list-empty>
-							<td class=\"border-0 text-center text-muted small p-3\" colspan=\"6\">There are no records available.<div data-widget-list-empty-add=\"\">Please click in the button below to add new records:<br/>
+						<tr data-widget-empty>
+							<td class=\"border-0 text-center text-muted small p-3\" colspan=\"6\">There are no records available.<div data-widget-empty-add=\"\">Please click in the button below to add new records:<br/>
 									<br/>
 									<button class=\"btn btn-sm btn-success text-nowrap m-1\" onclick=\"MyWidgetResourceLib.PopupHandler.openButtonAddPopup(this); return false;\" data-widget-button-add data-widget-popup-id=\"widget_popup_add_1\" title=\"Add\">
 										<i class=\"bi bi-plus-lg icon icon-add mr-1 me-1 overflow-visible\"></i>Add new Record</button>

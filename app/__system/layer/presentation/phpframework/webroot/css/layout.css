@@ -2192,7 +2192,7 @@ body .layout-ui-editor > .menu-settings li.group .settings-attributes > ul > li.
 }
 
 /* LAYOUT CODE EDITOR - SETTINGS - WIDGET */
-body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-group-info {
+body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-group-info:not(.widget-property-graph-info):not(.widget-property-calendar-info) {
 	margin-top:10px;
 }
 body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-swap-field > label {
@@ -2218,7 +2218,8 @@ body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widg
   body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-resource > .widget-resource-remove::before, 
   body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-resource > .widget-resource-toggle::before,
   body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-display-resource-value > .group-title > .widget-display-resource-value-toggle::before,
-  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .with-sub-options > .toggle::before {
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .with-sub-options > .toggle::before,
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .toggle-advanced-options::before {
 	text-rendering:auto;
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
@@ -2251,12 +2252,15 @@ body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widg
 	content:"\f2f1";
 }
 body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-resource > .widget-resource-toggle::before,
-  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-display-resource-value > .group-title > .widget-display-resource-value-toggle::before {
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-display-resource-value > .group-title > .widget-display-resource-value-toggle::before,
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .toggle-advanced-options::before {
 	content:"\f31e";
 	line-height:unset;
 }
 body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-resource.widget-advanced-options > .widget-resource-toggle::before,
-  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-display-resource-value.widget-advanced-options > .group-title > .widget-display-resource-value-toggle::before {
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-display-resource-value.widget-advanced-options > .group-title > .widget-display-resource-value-toggle::before,
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-advanced-options > .group-title > .toggle-advanced-options::before,
+  body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-advanced-options > .toggle-advanced-options::before {
 	content:"\f78c";
 }
 body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .with-sub-options > .toggle {
@@ -2303,6 +2307,20 @@ body .layout-ui-editor.with_top_bar_menu.fixed-side-properties > .menu-settings 
 body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-display-resource-value .widget-swap-field.widget-resource-reference > input, 
   body .layout-ui-editor.with_top_bar_menu > .menu-settings li.group.settings-widget .widget-display-resource-value .widget-swap-field.widget-resource-reference > select {
 	max-width:none;
+}
+
+/* MENU SETTINGS - WIDGET - PROPERTIES */
+body .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-calendar-data-sets-settings > .group-title > .toggle-advanced-options {
+	line-height:unset;
+	margin:-5px -5px 0 0;
+	position:absolute;
+	right:20px;
+}
+body .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > .toggle-advanced-options {
+	margin-left:10px;
+	margin-right:0;
+	padding:1px 0 0;
+	float:right;
 }
 
 /* MENU SETTINGS - WIDGET - PROPERTIES - ACTIONS */

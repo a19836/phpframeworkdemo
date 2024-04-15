@@ -4,7 +4,7 @@
 }*/
 
 /* MENU SETTINGS - WIDGET - GENERIC */
-.layout-ui-editor > .menu-settings li.group.settings-widget input:not([type=checkbox]):not([type=radio]),
+.layout-ui-editor > .menu-settings li.group.settings-widget input:not([type=checkbox]):not([type=radio]):not([type=color]),
   .layout-ui-editor > .menu-settings li.group.settings-widget select {
 	width:100px;
 }
@@ -49,6 +49,12 @@
 }
 .layout-ui-editor > .menu-settings li.group.settings-widget .group:not(.group-open) > .group-title > .widget-group-item-add {
 	display:none;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .group.group-disabled > ul input,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .group.group-disabled > ul select,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .group.group-disabled > ul textarea {
+	opacity:.5;
+	cursor:not-allowed;
 }
 
 /* MENU SETTINGS - WIDGET - ICONS */
@@ -496,6 +502,26 @@
 	font-weight:bold;
 }
 
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties :not(.widget-advanced-options) > ul > li.advanced-option {
+	display:none;
+}
+
+.layout-ui-editor > .menu-settings li.group.settings-widget .toggle-advanced-options {
+	line-height:2.2em;
+	margin:0 -5px 0 10px;
+	padding:5px;
+	display:inline-block;
+	font-weight:bold;
+	vertical-align:middle;
+	cursor:pointer;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .toggle-advanced-options:hover {
+	opacity:.5;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .group:not(.group-open) > .group-title > .toggle-advanced-options {
+	display:none;
+}
+
 /* MENU SETTINGS - WIDGET - PROPERTIES - EXTRA CALLBACKS/EVENTS */
 .layout-ui-editor > .menu-settings li.group.settings-widget .with-extra-callbacks .extra-callbacks,
   .layout-ui-editor > .menu-settings li.group.settings-widget .with-extra-events .extra-events {
@@ -642,4 +668,138 @@
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-action-permissions > .widget-permission > .group-block > li > ul > li input,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-action-permissions > .widget-permission > .group-block > li > ul > li select {
 	max-width:calc(100% - 60px);
+}
+
+/* MENU SETTINGS - WIDGET - PROPERTIES - GRAPH */
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-info {
+	margin-top:30px;
+	margin-bottom:20px;
+	opacity:.5;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-info:hover {
+	opacity:1;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-load-type {
+	margin-bottom:20px;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-legend > .group-title > input,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-title > .group-title > input,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-sub-title > .group-title > input {
+	margin:auto 0 auto 10px;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-title-padding input,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-sub-title-padding input {
+	width:50px !important;
+}
+
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-callbacks.group-open + .widget-property-graph-data-sets.group-open {
+	margin-top:15px;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-data-sets:not(.with-widget-group-info) > .widget-group-info {
+	display:none;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-data-sets > ul {
+	padding-left:0;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-data-sets > ul > li.empty-items {
+	text-align:center;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-data-sets > ul > li.widget-property-graph-data-set {
+	margin-right:-10px;
+	margin-bottom:15px;
+	padding:10px;
+	border:1px solid rgba(0,0,0,0.25);
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-data-sets > ul > li.widget-property-graph-data-set:not(:last-child) {
+	margin-bottom:10px;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-data-sets > ul > li.widget-property-graph-data-set:after {
+	content:"";
+	display:block;
+	clear:both;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-data-sets > ul > li.widget-property-graph-data-set > input {
+	float:right;
+	width:50px;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-data-sets > ul > li.widget-property-graph-data-set > ul {
+	margin-top:5px;
+	padding:0;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-data-sets > ul > li.widget-property-graph-data-set > ul:before {
+	content:"";
+	height:1px;
+	display:block;
+	float:none;
+	clear:both;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-data-sets > ul > li.widget-property-graph-data-set > ul > li:last-child {
+	margin-bottom:0;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-graph-data-sets > ul > li.widget-property-graph-data-set > ul > li.widget-property-graph-data-set-border-width > input {
+	width:50px;
+}
+
+/* MENU SETTINGS - WIDGET - PROPERTIES - CALENDAR */
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-info {
+	margin-top:30px;
+	margin-bottom:20px;
+	opacity:.5;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-info:hover {
+	opacity:1;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-load-type {
+	margin-bottom:20px;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-header-toolbar > .group-title > input,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-footer-toolbar > .group-title > input {
+	margin:auto 0 auto 10px;
+}
+
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-callbacks.group-open + .widget-property-calendar-data-sets.group-open {
+	margin-top:15px;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul {
+	padding-left:0;
+	padding-bottom:0;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.empty-items {
+	text-align:center;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set {
+	margin-right:-10px;
+	margin-bottom:15px;
+	padding:10px;
+	border:1px solid rgba(0,0,0,0.25);
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set:not(:last-child) {
+	margin-bottom:10px;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set:after {
+	content:"";
+	display:block;
+	clear:both;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul {
+	margin-top:5px;
+	padding:0;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul:before {
+	content:"";
+	height:1px;
+	display:block;
+	float:none;
+	clear:both;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li:last-child {
+	margin-bottom:0;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.data-pks-attrs-names,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.background-color {
+	margin-top:20px;
+}
+
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets.group-open + .widget-property-calendar-data-sets-settings.group-open {
+	margin-top:15px;
 }

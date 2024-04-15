@@ -1522,7 +1522,7 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
   .layout-ui-editor > .menu-settings button.convert-to-tag:not(.select-shown) select {
 	display:none;
 }
-.layout-ui-editor > .menu-settings button.convert-to-tag .swap-fields {
+.layout-ui-editor > .menu-settings button.convert-to-tag .swap-input-select {
 	padding-left:5px;
 	cursor:pointer
 }
@@ -1832,11 +1832,11 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	position:absolute;*/
 	display:none;
 }
-.layout-ui-editor > .menu-settings li.group.settings-properties > ul .settings-property.with-swap-fields.select-shown input,
-  .layout-ui-editor > .menu-settings li.group.settings-properties > ul .settings-property.with-swap-fields:not(.select-shown) select {
+.layout-ui-editor > .menu-settings li.group.settings-properties > ul .settings-property.with-swap-field.select-shown input,
+  .layout-ui-editor > .menu-settings li.group.settings-properties > ul .settings-property.with-swap-field:not(.select-shown) select {
 	display:none;
 }
-.layout-ui-editor > .menu-settings li.group.settings-properties > ul .settings-property.with-swap-fields .swap-fields {
+.layout-ui-editor > .menu-settings li.group.settings-properties > ul .settings-property.with-swap-field .swap-input-select {
 	margin-left:5px;
 	cursor:pointer
 }
