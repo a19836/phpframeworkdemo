@@ -29,6 +29,9 @@ var StatusMessageHandler = {
 			return this.other_message_html_objs[message_html_obj_class];
 		}
 		
+		if (!this.message_html_obj)
+			this.init();
+		
 		return this.message_html_obj;
 	},
 	
