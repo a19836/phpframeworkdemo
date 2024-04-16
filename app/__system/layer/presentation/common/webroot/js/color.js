@@ -144,10 +144,10 @@ if(typeof colorRgbToHex !== 'function') {
 		var m = color.match(/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
 		
 		if (!m)
-			m = color.match(/^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+			m = color.match(/^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(,\s*([0-9]+(\.[0-9]*)?|\.[0-9]+)\s*)?\)$/i);
 		
 		if (m)
-			return rgbToHex(m[1], m[2], m[3], m[4]);
+			return rgbToHex(m[1], m[2], m[3], m[5]);
 	}
 }
 

@@ -609,6 +609,31 @@ var FunctionUtilObj = {
 				setTimeout(function() {
 					var ace_settings_menu = $("#ace_settingsmenu").parent().parent();
 					ace_settings_menu.css("z-index", $(elm).closest(".edit_function_code").css("z-index"));
+					
+					//prepare font size option
+					var input = $("#ace_settingsmenu input#setFontSize");
+					
+					if (input[0]) {
+						var value = input.val();
+						var title = "eg: 12px, 12em, 12rem, 12pt or 120%";
+						
+						input.attr("title", title).attr("placeHolder", title);
+						input.after('<div style="text-align:right; opacity:.5;">' + title + '</div>');
+						
+						if ($.isNumeric(value))
+							input.val(value + "px");
+						
+						if (input.data("with_keyup_set") != 1) {
+							input.data("with_keyup_set", 1);
+							
+							input.on("keyup", function() {
+								var v = $(this).val();
+								
+								if (v.match(/([0-9]+(\.[0-9]*)?|\.[0-9]+)(px|em|rem|%|pt)/i))
+									$(this).trigger("blur").focus();
+							});
+						}
+					}
 				}, 500);
 		}
 		else

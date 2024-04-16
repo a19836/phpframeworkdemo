@@ -71,7 +71,13 @@
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
 				if (!html_element) {
-					widget.css({width: "100%", height: "calc(100vh - 20px)", "min-width": "200px", "min-height": "200px"});
+					widget.css({
+						width: "100%", 
+						height: "calc(100vh - 20px)", 
+						"min-width": "200px", 
+						"min-height": "200px", 
+						position: "relative"
+					});
 					
 					var props = {
 						load: "MyWidgetResourceLib.CalendarHandler.loadCalendarResource",
@@ -101,6 +107,12 @@
 					widget.attr("data-widget-props", JSON.stringify(props));
 					widget.attr("data-widget-resources-load", "");
 					widget.attr("data-widget-calendar", "");
+					
+					var loading_elm = $('<h2 class="border-0 rounded text-center text-white" data-widget-loading style="position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,.2); padding-top:30%; z-index:1;">Loading new data... Please wait a while...</h2>');
+					widget.append(loading_elm);
+					
+					//convert html to LayoutUIEditor widget
+					ui_creator.convertHtmlElementToWidget(loading_elm);
 				}
 			};
 			
