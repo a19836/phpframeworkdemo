@@ -27,8 +27,9 @@
 		<constructor_arg reference="IormIClient" />
 		<constructor_arg reference="iorm_ida_vars" />
 
-		<property name="PHPFrameWorkObjName" reference="phpframework_obj_name" />
+		<property name="isDefaultLayer" value="0" />
 		<property name="cacheLayer" reference="IormIDACacheLayer" />
+		<property name="PHPFrameWorkObjName" reference="phpframework_obj_name" />
 		
 		<function name="addBroker">
 			<parameter reference="IormDbdataDBBrokerClient" />

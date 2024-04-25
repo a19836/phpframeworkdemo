@@ -397,9 +397,10 @@
 	max-width:60px;
 }
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions table .action {
-	width:10px;
-	min-width:10px;
-	max-width:10px;
+	width:20px;
+	min-width:20px;
+	max-width:20px;
+	text-align:center;
 }
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions table .name input,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-conditions table .value input,
@@ -760,6 +761,12 @@
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-callbacks.group-open + .widget-property-calendar-data-sets.group-open {
 	margin-top:15px;
 }
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > .widget-property-calendar-include-all-load-resources {
+	margin:10px 0 0 25px;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > .widget-property-calendar-include-all-load-resources input {
+	margin:auto;
+}
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul {
 	padding-left:0;
 	padding-bottom:0;
@@ -799,7 +806,62 @@
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.background-color {
 	margin-top:20px;
 }
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.widget-property-calendar-data-set-data-title-attribute-name > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.widget-property-calendar-data-set-data-start-attribute-name > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.widget-property-calendar-data-set-data-end-attribute-name > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.widget-property-calendar-data-set-data-url-attribute-name > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.widget-property-calendar-data-set-data-group-id-attribute-name > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.widget-property-calendar-data-set-data-group-display-attribute-name > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.widget-property-calendar-data-set-data-color-attribute-name > label {
+	max-width:calc(100% - 140px);
+}
 
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets.group-open + .widget-property-calendar-data-sets-settings.group-open {
 	margin-top:15px;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets-settings > ul > li.widget-property-calendar-data-sets-data-title-attribute-name > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets-settings > ul > li.widget-property-calendar-data-sets-data-start-attribute-name > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets-settings > ul > li.widget-property-calendar-data-sets-data-end-attribute-name > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets-settings > ul > li.widget-property-calendar-data-sets-data-url-attribute-name > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets-settings > ul > li.widget-property-calendar-data-sets-data-group-id-attribute-name > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets-settings > ul > li.widget-property-calendar-data-sets-data-group-display-attribute-name > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets-settings > ul > li.widget-property-calendar-data-sets-data-color-attribute-name > label {
+	max-width:calc(100% - 140px);
+}
+
+/* MENU SETTINGS - WIDGET - PROPERTIES - MATRIX */
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-matrix-load-type {
+	margin-top:30px;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-matrix-fks-attrs-names table th {
+	font-weight:normal;
+	opacity:.5;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-matrix-fks-attrs-names table input,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-matrix-fks-attrs-names table select {
+	width:100%;
+	max-width:none;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-matrix-fks-attrs-names table .widget-attr-name,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-matrix-fks-attrs-names table .widget-fk-attr-name {
+	min-width:100px;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-matrix-fks-attrs-names table .widget-axis {
+	width:40px;
+	min-width:40px;
+	max-width:40px;
+	text-align:center;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-matrix-fks-attrs-names table .widget-axis select {
+	text-align:center;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-matrix-fks-attrs-names table .action {
+	width:20px;
+	min-width:20px;
+	max-width:20px;
+	text-align:center;
+}
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-matrix-fks-attrs-names table .action .remove-fk {
+	font-size:120%;
+	cursor:pointer;
 }

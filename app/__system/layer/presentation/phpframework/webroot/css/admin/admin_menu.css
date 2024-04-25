@@ -312,6 +312,7 @@
 .mycontextmenu .manage_users::before {content:"\f0c0";}
 .mycontextmenu .manage_references::before {content:"\f572";}
 .mycontextmenu .show_project_details::before {content:"\f06e";}
+.mycontextmenu .open_file::before {content:"\f06e";}
 .mycontextmenu .view_project::before {content:"\f06e";}
 .mycontextmenu .test_project::before {content:"\f06e";}
 .mycontextmenu .add_project::before {content:"\f65e";}

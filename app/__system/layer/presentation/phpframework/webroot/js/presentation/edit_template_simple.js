@@ -30,7 +30,7 @@ $(function () {
 	
 	if (template_obj[0]) {
 		//add choose_db_table_or_attribute popup before the LayouUIEditor gets inited otherwise the choose-widget-resource icons won't be shown.
-		if (choose_db_table_or_attribute_elm)
+		if (typeof choose_db_table_or_attribute_elm != "undefined" && choose_db_table_or_attribute_elm)
 			template_obj.append(choose_db_table_or_attribute_elm);
 		
 		//prepare main settings tab

@@ -3,6 +3,12 @@ var templatesFromFileManagerTree = null;
 var default_available_templates = ["empty", "ajax", "blank"];
 
 $(function() {
+	var name_elm = $(".admin_panel .project .project_title .name");
+	var ctxmenu = name_elm.parent().find(" > .sub_menu > .mycontextmenu");
+	
+	if (ctxmenu[0])
+		name_elm.addcontextmenu( ctxmenu.clone() );
+	
 	var project_files = $(".admin_panel .project_files");
 	
 	if (project_files[0]) {
@@ -130,6 +136,7 @@ function prepareProjectLayerNodes2(ul, data) {
 						+ '</div>';
 				
 				a.children("label").after(html);
+				a.addcontextmenu( a.find(".mycontextmenu").clone() );
 				
 				//ul.prepend(li);
 			};
@@ -166,6 +173,7 @@ function prepareProjectLayerNodes2(ul, data) {
 			
 			label.before('<div class="first_letter">' + label.text().substr(0, 1).toUpperCase() + '</div>');
 			label.after(html);
+			a.addcontextmenu( a.find(".mycontextmenu").clone() );
 		});
 		
 		//prepare template files
@@ -197,6 +205,7 @@ function prepareProjectLayerNodes2(ul, data) {
 					+ '</div>';
 			
 			a.children("label").after(html);
+			a.addcontextmenu( a.find(".mycontextmenu").clone() );
 			
 			var pos = file_path.indexOf("/src/template/");
 			

@@ -132,6 +132,8 @@
 			var me = this;
 			var update_menu_settings_timeout_id = null;
 			
+			me.ignore_attributes = ["contenteditable"];
+			
 			me.init = function() {
 				menu_widget.attr({
 					"data-on-parse-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.script.parseHtml",

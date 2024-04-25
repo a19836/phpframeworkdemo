@@ -50,7 +50,7 @@ $(function () {
 	<div class="title' . ($popup ? " inside_popup_title" : "") . '">Choose a Project</div>'; if ($layers_projects) { $main_content .= '
 	<div class="layer">
 		<label>Presentation Layer:</label>
-		<select onChange="updateLayerProjects(this)">'; foreach ($layers_projects as $bean_name => $layer_props) { $main_content .= '
+		<select onChange="updateLayerProjects(\'\')">'; foreach ($layers_projects as $bean_name => $layer_props) { $main_content .= '
 				<option bean_name="' . $bean_name . '" bean_file_name="' . $layer_props["bean_file_name"] . '" layer_bean_folder_name="' . $layer_props["layer_bean_folder_name"] . '">' . $layer_props["item_label"] . '</option>'; } $main_content .= '
 		</select>
 	</div>'; } $main_content .= '

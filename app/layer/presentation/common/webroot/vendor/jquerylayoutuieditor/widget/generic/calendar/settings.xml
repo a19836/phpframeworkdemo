@@ -94,6 +94,7 @@
 								center: "timeGridWeek,timeGridDay",
 								right: "listYear,listMonth,listWeek,listDay"
 							},
+							include_all_load_resources: 1,
 							nav_links: 1,
 							selectable: 1,
 							select_mirror: 1,

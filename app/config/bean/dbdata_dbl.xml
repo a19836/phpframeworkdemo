@@ -13,6 +13,7 @@
 	<bean name="DbdataDBLayer" path="lib.org.phpframework.layer.db.DBLayer">
 		<constructor_arg reference="dbdata_dbl_vars" />
 		
+		<property name="isDefaultLayer" value="0" />
 		<property name="cacheLayer" reference="DbdataDBCacheLayer" />
 		<property name="PHPFrameWorkObjName" reference="phpframework_obj_name" />
 		

@@ -132,10 +132,12 @@ $(function () {
 				enableAutoConvert(onTogglePHPCodeAutoConvert);
 				
 				//show view layout panel instead of code
-				var view_layout = luie.find(" > .tabs > .view-layout");
-				view_layout.addClass("do-not-confirm");
-				view_obj.find(" > .tabs #visual_editor_tab a").trigger("click");
-				view_layout.removeClass("do-not-confirm");
+				if (design_editor) {
+					var view_layout = luie.find(" > .tabs > .view-layout");
+					view_layout.addClass("do-not-confirm");
+					view_obj.find(" > .tabs #visual_editor_tab a").trigger("click");
+					view_layout.removeClass("do-not-confirm");
+				}
 				
 				//show php widgets, borders and background
 				PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();

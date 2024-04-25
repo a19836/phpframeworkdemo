@@ -58,6 +58,7 @@ body,
 
 /* PROJECTS - layer */
 .choose_available_project > .layer {
+	margin-top:20px;
 	text-align:center;
 	color:#666;
 }

@@ -29,7 +29,7 @@ var StatusMessageHandler = {
 			return this.other_message_html_objs[message_html_obj_class];
 		}
 		
-		if (!this.message_html_obj)
+		if (!this.message_html_obj) //This is very important bc we all the showMessage and showError without calling the init method before, which will make the message_html_obj null. So we need to call the init here to avoid the message_html_obj null.
 			this.init();
 		
 		return this.message_html_obj;

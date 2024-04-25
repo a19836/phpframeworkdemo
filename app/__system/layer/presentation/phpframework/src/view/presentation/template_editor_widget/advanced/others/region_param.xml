@@ -95,7 +95,7 @@
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
-				var value = prompt("What is the new region name?");
+				var value = prompt("What is the new param name?");
 				value = value ? value : "...";
 				
 				if (!html_element)

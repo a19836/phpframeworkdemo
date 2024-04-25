@@ -70,13 +70,20 @@ function prepareChooseAvailableProjectsHtml(layer_projects, folder_to_filter) {
 	}
 	
 	var group_projects = choose_available_project.children(".group.projects");
+	var ul = group_projects.children("ul");
 	
-	group_projects.children("ul").html(/*folders_html + */projects_html);
+	ul.html(/*folders_html + */projects_html);
 	
 	if (folder_to_filter)
 		choose_available_project.addClass("in_sub_folder");
 	else
 		choose_available_project.removeClass("in_sub_folder");
+	
+	//add contextmenu
+	ul.children("li.folder").each(function(idx, li) {
+		li = $(li);
+		li.addcontextmenu( li.find(".mycontextmenu").clone() );
+	});
 	
 	choose_available_project.find(".top_bar .breadcrumbs").attr("folder_to_filter", folder_to_filter).html(folder_to_filter ? '<span class="breadcrumb-item"><a href="javascript:void(0)" onClick="updateLayerProjects(\'\')">Home</a></span>' + getChooseAvailableProjectCurrentFolderHtml(folder_to_filter) : "");
 	

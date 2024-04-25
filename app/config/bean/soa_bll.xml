@@ -51,6 +51,7 @@
 	<bean name="SoaBLLayer" path="lib.org.phpframework.layer.businesslogic.BusinessLogicLayer">
 		<constructor_arg reference="soa_business_logic_vars" />
 
+		<property name="isDefaultLayer" value="0" />
 		<property name="cacheLayer" reference="SoaBLCacheLayer" />
 		<property name="PHPFrameWorkObjName" reference="phpframework_obj_name" />
 		<property name="docBlockParser" reference="SoaBLDocBlockParser" />

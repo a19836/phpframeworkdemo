@@ -103,6 +103,10 @@ var  DBDriverTaskPropertyObj = {
 		return status;
 	},
 	
+	onTaskCloning : function(task_id) {
+		onLayerTaskCloning(task_id, {do_not_show_task_properties : false}); //show properties on task cloning
+	},
+	
 	onCheckLabel : function(label_obj, task_id) {
 		return onCheckTaskLayerLabel(label_obj, task_id);
 	},

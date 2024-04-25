@@ -6,6 +6,5 @@ $layer_path = dirname($project_path) . "/";
 //Note that this project could be inside of folders and sub-folders
 $presentation_id = substr($project_path, strlen($layer_path), -1);
 
-$default_db_driver = "mysql";
 $project_default_template = "bootstrap-stock-manager/authenticated";
 ?>

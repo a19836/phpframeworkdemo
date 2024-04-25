@@ -293,8 +293,9 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 		task.addClass("layer_task");
 	}
 	
-	function onLayerTaskCloning(task_id) {
-		onTaskCloning(task_id, {do_not_show_task_properties : true});
+	function onLayerTaskCloning(task_id, opts) {
+		opts = opts ? opts : {do_not_show_task_properties : true};
+		onTaskCloning(task_id, opts);
 		
 		var WF = myWFObj.getTaskFlowChart();
 		var task = WF.TaskFlow.getTaskById(task_id);
@@ -446,16 +447,24 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 	}
 
 	function containsLayerGlobalVariables(label) {
-		//var vars = label.match(/\{?\$\{?([\p{L}\w]+)\}?/giu); //'\w' means all words with '_' and '/u' means with accents and ç too. Cannot use this bc it does not work in IE.
-		var vars = label.match(/\{?\$\{?([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC]+)\}?/gi); //'\w' means all words with '_' and 'u' means with accents and ç too.
+		//var vars = label.match(/\{?([\\]*)\$\{?([\p{L}\w]+)\}?/giu); //'\w' means all words with '_' and '/u' means with accents and ç too. Cannot use this bc it does not work in IE.
+		var vars = label.match(/\{?([\\]*)\$\{?([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC]+)\}?/gi); //'\w' means all words with '_' and 'u' means with accents and ç too.
 		
 		if (vars && vars.length > 0) {
 			var variables_not_defined = new Array();
+			
 			for (var i = 0; i < vars.length; i++) {
-				var variable = vars[i].replace(/[{}\$]+/g, "");
+				var variable = vars[i].replace(/[{}]+/g, "");
+				var slashes = variable.match(/^\\+\$/g) ? variable.substr(0, variable.indexOf("$")).match(/\\/g) : null;
+				var is_escaped = slashes && slashes.length % 2 !== 0; //check if the number of slashes is odd
 				
-				if (!workflow_global_variables.hasOwnProperty(variable)) 
-					variables_not_defined.push("'$" + variable + "'");
+				//check if is not escape
+				if (!is_escaped) {
+					variable = variable.replace(/^\\*\$/, "");
+					
+					if (!workflow_global_variables.hasOwnProperty(variable)) 
+						variables_not_defined.push("'$" + variable + "'");
+				}
 			}
 		
 			if (variables_not_defined.length > 0) {

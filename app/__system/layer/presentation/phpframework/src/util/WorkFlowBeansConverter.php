@@ -65,6 +65,7 @@ include_once get_lib("org.phpframework.util.xml.MyXML"); include_once get_lib("o
 	<bean name="' . $v49bdd49c66 . 'PLayer" path="lib.org.phpframework.layer.presentation.PresentationLayer">
 		<constructor_arg reference="' . $pb77a7e67 . '_p_vars" />
 
+		<property name="isDefaultLayer" value="' . ($v7f5911d32d["start"] ? 1 : 0) . '" />
 		<property name="cacheLayer" reference="' . $v49bdd49c66 . 'PCacheLayer" />
 		<property name="PHPFrameWorkObjName" reference="phpframework_obj_name" />
 		' . $v4bc43beec7 . '
@@ -178,6 +179,7 @@ include_once get_lib("org.phpframework.util.xml.MyXML"); include_once get_lib("o
 	<bean name="' . $v49bdd49c66 . 'BLLayer" path="lib.org.phpframework.layer.businesslogic.BusinessLogicLayer">
 		<constructor_arg reference="' . $pb77a7e67 . '_business_logic_vars" />
 
+		<property name="isDefaultLayer" value="' . ($v7f5911d32d["start"] ? 1 : 0) . '" />
 		<property name="cacheLayer" reference="' . $v49bdd49c66 . 'BLCacheLayer" />
 		<property name="PHPFrameWorkObjName" reference="phpframework_obj_name" />
 		<property name="docBlockParser" reference="' . $v49bdd49c66 . 'BLDocBlockParser" />
@@ -225,8 +227,9 @@ include_once get_lib("org.phpframework.util.xml.MyXML"); include_once get_lib("o
 		<constructor_arg reference="' . $v49bdd49c66 . 'IClient" />
 		<constructor_arg reference="' . $pb77a7e67 . '_ida_vars" />
 
-		<property name="PHPFrameWorkObjName" reference="phpframework_obj_name" />
+		<property name="isDefaultLayer" value="' . ($v7f5911d32d["start"] ? 1 : 0) . '" />
 		<property name="cacheLayer" reference="' . $v49bdd49c66 . 'IDACacheLayer" />
+		<property name="PHPFrameWorkObjName" reference="phpframework_obj_name" />
 		' . $v4bc43beec7 . '
 
 		<function name="setDefaultBrokerName">
@@ -263,8 +266,9 @@ include_once get_lib("org.phpframework.util.xml.MyXML"); include_once get_lib("o
 		<constructor_arg reference="' . $v49bdd49c66 . 'HClient" /> 
 		<constructor_arg reference="' . $pb77a7e67 . '_hda_vars" />
 
-		<property name="PHPFrameWorkObjName" reference="phpframework_obj_name" />
+		<property name="isDefaultLayer" value="' . ($v7f5911d32d["start"] ? 1 : 0) . '" />
 		<property name="cacheLayer" reference="' . $v49bdd49c66 . 'HDACacheLayer" />
+		<property name="PHPFrameWorkObjName" reference="phpframework_obj_name" />
 		' . $v4bc43beec7 . '
 
 		<function name="setDefaultBrokerName">
@@ -300,6 +304,7 @@ include_once get_lib("org.phpframework.util.xml.MyXML"); include_once get_lib("o
 	<bean name="' . $v49bdd49c66 . 'DBLayer" path="lib.org.phpframework.layer.db.DBLayer">
 		<constructor_arg reference="' . $pb77a7e67 . '_dbl_vars" />
 		
+		<property name="isDefaultLayer" value="' . ($v7f5911d32d["start"] ? 1 : 0) . '" />
 		<property name="cacheLayer" reference="' . $v49bdd49c66 . 'DBCacheLayer" />
 		<property name="PHPFrameWorkObjName" reference="phpframework_obj_name" />
 		' . $v4bc43beec7 . '
@@ -532,4 +537,4 @@ include_once get_lib("org.phpframework.util.xml.MyXML"); include_once get_lib("o
 			<list>"; foreach ($pf6de834c as $v1cfba8c105) $v241205aec6 .= "
 				" . '<item>' . self::mf73c700ed652($v1cfba8c105) . '</item>'; $v241205aec6 .= "
 			</list>
-		</constructor_arg>"; } } return $v241205aec6; } private static function f18f75624e4($v002556527f) { return $v002556527f ? self::mcb6114f75351($v002556527f) : ""; } private static function mea7bdac9ad9e($v9acc88059e) { if (strpos($v9acc88059e, "<?") === false && strpos($v9acc88059e, "&lt;?") === false && strpos($v9acc88059e, '$') === false) return str_replace(" ", "_", strtolower($v9acc88059e)); return $v9acc88059e; } private static function mcb6114f75351($v9acc88059e) { if (strpos($v9acc88059e, "<?") === false && strpos($v9acc88059e, "&lt;?") === false && strpos($v9acc88059e, '$') === false) return str_replace(" ", "_", ucwords(str_replace("_", " ", strtolower($v9acc88059e)))); return $v9acc88059e; } private static function f6c6524d3a5($v9acc88059e) { return self::mea7bdac9ad9e($v9acc88059e); } private static function f736d852839($v9acc88059e) { return self::mea7bdac9ad9e($v9acc88059e); } private static function mac0ace304e61(&$v9acc88059e) { self::mf73c700ed652($v9acc88059e); preg_match_all('/&lt;\?([^>]*)\?>/u', $v9acc88059e, $v62bf8bcb37, PREG_OFFSET_CAPTURE); $v761f4d757f = $v62bf8bcb37[0]; $v7e4b517c18 = 0; $pff4e506c = ""; if (!empty($v761f4d757f)) { $pc37695cb = count($v761f4d757f); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v1cfba8c105 = $v761f4d757f[$v43dd7d0051][0]; $pd69fb7d0 = $v761f4d757f[$v43dd7d0051][1]; $v342a134247 = substr($v9acc88059e, $v7e4b517c18, $pd69fb7d0 - $v7e4b517c18); if (!empty($v342a134247)) { $pff4e506c .= str_replace(array("-", " "), "_", $v342a134247); } $pff4e506c .= $v1cfba8c105; $v7e4b517c18 = $pd69fb7d0 + strlen($v1cfba8c105); } $v9acc88059e = $pff4e506c; } return $v9acc88059e; } private static function mf73c700ed652(&$v67db1bd535) { preg_match_all('/\{?\$\{?([\w]+)}?/u', $v67db1bd535, $v62bf8bcb37, PREG_PATTERN_ORDER); $v761f4d757f = $v62bf8bcb37[0]; usort($v761f4d757f, function($pbde5fb24, $v7aeaf992f5) { return strlen($v7aeaf992f5) - strlen($pbde5fb24); }); $pc37695cb = count($v761f4d757f); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v1cfba8c105 = $v761f4d757f[$v43dd7d0051]; $v67db1bd535 = str_replace($v1cfba8c105, '<?php echo $GLOBALS[\'' . str_replace(array('$', "{", "}"), "", $v1cfba8c105) . '\']; ?>', $v67db1bd535); } $v67db1bd535 = str_replace('<?', '&lt;?', $v67db1bd535); return $v67db1bd535; } public static function getVariableNameFromRawLabel($v9acc88059e) { self::mac0ace304e61($v9acc88059e); return self::mea7bdac9ad9e($v9acc88059e); } public static function getObjectNameFromRawLabel($v9acc88059e) { self::mac0ace304e61($v9acc88059e); return self::mcb6114f75351($v9acc88059e); } public static function getBrokerNameFromRawLabel($v9acc88059e) { self::mac0ace304e61($v9acc88059e); return self::f6c6524d3a5($v9acc88059e); } public static function getFileNameFromRawLabel($v9acc88059e) { self::mac0ace304e61($v9acc88059e); return self::f736d852839($v9acc88059e); } } ?>
+		</constructor_arg>"; } } return $v241205aec6; } private static function f18f75624e4($v002556527f) { return $v002556527f ? self::mcb6114f75351($v002556527f) : ""; } private static function mea7bdac9ad9e($v9acc88059e) { if (strpos($v9acc88059e, "<?") === false && strpos($v9acc88059e, "&lt;?") === false && strpos($v9acc88059e, '$') === false) return str_replace(" ", "_", strtolower($v9acc88059e)); return $v9acc88059e; } private static function mcb6114f75351($v9acc88059e) { if (strpos($v9acc88059e, "<?") === false && strpos($v9acc88059e, "&lt;?") === false && strpos($v9acc88059e, '$') === false) return str_replace(" ", "_", ucwords(str_replace("_", " ", strtolower($v9acc88059e)))); return $v9acc88059e; } private static function f6c6524d3a5($v9acc88059e) { return self::mea7bdac9ad9e($v9acc88059e); } private static function f736d852839($v9acc88059e) { return self::mea7bdac9ad9e($v9acc88059e); } private static function mac0ace304e61(&$v9acc88059e) { self::mf73c700ed652($v9acc88059e); preg_match_all('/&lt;\?([^>]*)\?>/u', $v9acc88059e, $v62bf8bcb37, PREG_OFFSET_CAPTURE); $v761f4d757f = $v62bf8bcb37[0]; $v7e4b517c18 = 0; $pff4e506c = ""; if (!empty($v761f4d757f)) { $pc37695cb = count($v761f4d757f); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v1cfba8c105 = $v761f4d757f[$v43dd7d0051][0]; $pd69fb7d0 = $v761f4d757f[$v43dd7d0051][1]; $v342a134247 = substr($v9acc88059e, $v7e4b517c18, $pd69fb7d0 - $v7e4b517c18); if (!empty($v342a134247)) { $pff4e506c .= str_replace(array("-", " "), "_", $v342a134247); } $pff4e506c .= $v1cfba8c105; $v7e4b517c18 = $pd69fb7d0 + strlen($v1cfba8c105); } $v9acc88059e = $pff4e506c; } return $v9acc88059e; } private static function mf73c700ed652(&$v67db1bd535) { preg_match_all('/\{?([\\\\]*)\$\{?([\w]+)}?/u', $v67db1bd535, $v62bf8bcb37, PREG_PATTERN_ORDER); $v761f4d757f = $v62bf8bcb37[0]; usort($v761f4d757f, function($pbde5fb24, $v7aeaf992f5) { return strlen($v7aeaf992f5) - strlen($pbde5fb24); }); $pc37695cb = count($v761f4d757f); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v1cfba8c105 = str_replace(array("{", "}"), "", $v761f4d757f[$v43dd7d0051]); $v20d8980aa8 = false; $v0ab629d038 = null; if (preg_match('/^\\\\+\$/', $v1cfba8c105)) { preg_match_all('/\\\\/', substr($v1cfba8c105, 0, strpos($v1cfba8c105, '$')), $v0ab629d038, PREG_PATTERN_ORDER); $v20d8980aa8 = $v0ab629d038[0] && count($v0ab629d038[0]) % 2 != 0; } if (!$v20d8980aa8) { $v1cfba8c105 = preg_replace('/^\\\\*\$/', '', $v1cfba8c105); $v67db1bd535 = str_replace($v761f4d757f[$v43dd7d0051], '<?php echo $GLOBALS[\'' . $v1cfba8c105 . '\']; ?>', $v67db1bd535); } } $v67db1bd535 = str_replace('<?', '&lt;?', $v67db1bd535); return $v67db1bd535; } public static function getVariableNameFromRawLabel($v9acc88059e) { self::mac0ace304e61($v9acc88059e); return self::mea7bdac9ad9e($v9acc88059e); } public static function getObjectNameFromRawLabel($v9acc88059e) { self::mac0ace304e61($v9acc88059e); return self::mcb6114f75351($v9acc88059e); } public static function getBrokerNameFromRawLabel($v9acc88059e) { self::mac0ace304e61($v9acc88059e); return self::f6c6524d3a5($v9acc88059e); } public static function getFileNameFromRawLabel($v9acc88059e) { self::mac0ace304e61($v9acc88059e); return self::f736d852839($v9acc88059e); } } ?>

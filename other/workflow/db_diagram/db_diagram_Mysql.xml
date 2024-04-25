@@ -10,8 +10,8 @@
 		<id><![CDATA[school]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>44</offset_left>
-		<offset_top>35</offset_top>
+		<offset_left>65</offset_left>
+		<offset_top>25</offset_top>
 		<width>320</width>
 		<height>90</height>
 		<properties>
@@ -60,8 +60,8 @@
 		<id><![CDATA[student]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>44</offset_left>
-		<offset_top>205</offset_top>
+		<offset_left>65</offset_left>
+		<offset_top>191</offset_top>
 		<width>320</width>
 		<height>114</height>
 		<properties>
@@ -137,8 +137,8 @@
 		<id><![CDATA[teacher]]></id>
 		<type><![CDATA[02466a6d]]></type>
 		<tag><![CDATA[table]]></tag>
-		<offset_left>445</offset_left>
-		<offset_top>114</offset_top>
+		<offset_left>451</offset_left>
+		<offset_top>107</offset_top>
 		<width>320</width>
 		<height>138</height>
 		<properties>

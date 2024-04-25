@@ -127,7 +127,7 @@
 				    
 				    	menu_widget.remove();
 				}
-				else if (!$.isPlainObject(db_brokers_drivers_tables_attributes) || $.isEmptyObject(db_brokers_drivers_tables_attributes)) {
+				else if (typeof db_brokers_drivers_tables_attributes == "undefined" || !$.isPlainObject(db_brokers_drivers_tables_attributes) || $.isEmptyObject(db_brokers_drivers_tables_attributes)) {
 					//alert("There are no DB Drivers available. 'data-structure' widget will be removed from the layout ui editor!"); //Do not show alert bc if we edit a stastic page without DB we simply delete this menu widget silently.
 					
 					menu_widget.remove();

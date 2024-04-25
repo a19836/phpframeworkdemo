@@ -87,6 +87,7 @@
 				if (!html_element) {
 					widget.css({width: "100%", "min-height": "20px"});
 					//Note that if the widget is empty the width and min-height will be ignored, but it's ok bc is the Browsers default behaviour. Only when we add a tbody or thead or tfoot with trs, the table uses the width and min-height. Do not add here "display: block", otherwise the children will not have 100% width and it will look weird after.
+					widget.attr("data-widget-list-table", "");
 					
 					var value = prompt("Please write the number of rows and columns that you wish? (space delimiter. eg: '2 3', means 2 rows with 3 columns)");
 					
@@ -103,14 +104,40 @@
 					if (rows) {
 						cols = cols ? cols : 1;
 						
+						//add table head
+						var thead = ui_creator.createTemplateWidgetFromMenuWidgetTag("table-head", widget, null);
+						var tr = ui_creator.createTemplateWidgetFromMenuWidgetTag("table-row", thead, null);
+						
+						for (var i = 0; i < cols; i++) {
+							var col = ui_creator.createTemplateWidgetFromMenuWidgetTag("table-column-head", tr, null);
+							col.html("col label");
+						}
+						
+						//add table body
 						var tbody = ui_creator.createTemplateWidgetFromMenuWidgetTag("table-body", widget, null);
 						
 						for (var i = 0; i < rows; i++) {
 							var tr = ui_creator.createTemplateWidgetFromMenuWidgetTag("table-row", tbody, null);
 							
-							for (var j = 0; j < cols; j++) 
-								ui_creator.createTemplateWidgetFromMenuWidgetTag("table-column", tr, null);
+							for (var j = 0; j < cols; j++) {
+								var col = ui_creator.createTemplateWidgetFromMenuWidgetTag("table-column", tr, null);
+								col.html("col value");
+							}
 						}
+						
+						//add loading row
+						var tr = ui_creator.createTemplateWidgetFromMenuWidgetTag("table-row", tbody, null);
+						tr.attr("data-widget-loading", "");
+						
+						var td = ui_creator.createTemplateWidgetFromMenuWidgetTag("table-column", tr, null);
+						td.attr("colspan", cols).attr("class", "border-0 text-center text-muted small p-3").html("Loading message");
+						
+						//add empty row
+						var tr = ui_creator.createTemplateWidgetFromMenuWidgetTag("table-row", tbody, null);
+						tr.attr("data-widget-empty", "");
+						
+						var td = ui_creator.createTemplateWidgetFromMenuWidgetTag("table-column", tr, null);
+						td.attr("colspan", cols).attr("class", "border-0 text-center text-muted small p-3").html("Empty message");
 					}
 				}
 			};

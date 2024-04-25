@@ -432,7 +432,7 @@ function initPresentationContextMenu(elm, request_data) {
 	addLiContextMenu(entity_files.parent(), "presentation_page_file_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(entities_folder.parent(), "presentation_main_pages_group_context_menu", {callback: onPresentationContextMenu});
 	is_entity_sub_folders && addLiContextMenu(entities_sub_folders.parent(), "presentation_pages_group_context_menu", {callback: onPresentationContextMenu});
-	addLiContextMenu(view_files.parent(), "presentation_file_context_menu", {callback: onPresentationContextMenu});
+	addLiContextMenu(view_files.parent(), "presentation_view_file_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(views_folder.parent(), "presentation_evc_group_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(template_files.parent(), "presentation_template_file_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(template_folders.parent(), "presentation_group_context_menu", {callback: onPresentationContextMenu});
@@ -445,12 +445,12 @@ function initPresentationContextMenu(elm, request_data) {
 	addLiContextMenu(controller_files.parent(), "presentation_file_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(controllers_folder.parent(), "presentation_evc_group_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(webroot_folder.parent(), "presentation_evc_group_context_menu", {callback: onPresentationContextMenu});
-	addLiContextMenu(webroot_files.parent(), "presentation_file_context_menu", {callback: onPresentationContextMenu});
-	addLiContextMenu(css_files.parent(), "presentation_file_context_menu", {callback: onPresentationContextMenu});
-	addLiContextMenu(js_files.parent(), "presentation_file_context_menu", {callback: onPresentationContextMenu});
+	addLiContextMenu(webroot_files.parent(), "presentation_webroot_file_context_menu", {callback: onPresentationContextMenu});
+	addLiContextMenu(css_files.parent(), "presentation_webroot_file_context_menu", {callback: onPresentationContextMenu});
+	addLiContextMenu(js_files.parent(), "presentation_webroot_file_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(zip_files.parent(), "zip_file_context_menu", {callback: onPresentationContextMenu});
-	addLiContextMenu(img_files.parent(), "undefined_file_context_menu", {callback: onPresentationContextMenu});
-	addLiContextMenu(undefined_files.parent(), "undefined_file_context_menu", {callback: onPresentationContextMenu});
+	addLiContextMenu(img_files.parent(), "presentation_webroot_file_context_menu", {callback: onPresentationContextMenu});
+	addLiContextMenu(undefined_files.parent(), "presentation_webroot_file_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(block_files.parent(), "presentation_block_file_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(blocks_folder.parent(), "presentation_evc_group_context_menu", {callback: onPresentationContextMenu});
 	addLiContextMenu(cms_modules_folder.parent(), "cms_module_context_menu", {callback: onPresentationContextMenu});
@@ -832,6 +832,12 @@ function onPresentationContextMenu(target, contextmenu, originalEvent) {
 	var a = $(originalEvent.target.parentNode);
 	var create_automatically_url = a.attr("create_automatically_url");
 	var create_uis_diagram_url = a.attr("create_uis_diagram_url");
+	var inside_webroot = a.parent().closest('[data-jstree=\'{"icon":"webroot_folder"}\'], .mytree').is('[data-jstree=\'{"icon":"webroot_folder"}\']');
+	
+	if (inside_webroot)
+		contextmenu.children(".open_file").show();
+	else
+		contextmenu.children(".open_file").hide();
 	
 	if (create_automatically_url)
 		contextmenu.children(".create_automatically").show();
@@ -858,6 +864,7 @@ function onPresentationContextMenu(target, contextmenu, originalEvent) {
 	contextmenu.find(".edit_init a").attr("edit_init_url", a.attr("edit_init_url"));
 	contextmenu.find(".manage_users a").attr("manage_users_url", a.attr("manage_users_url"));
 	contextmenu.find(".manage_references a").attr("manage_references_url", a.attr("manage_references_url"));
+	contextmenu.find(".open_file a").attr("open_url", a.attr("open_url"));
 	contextmenu.find(".view_project a").attr("view_project_url", a.attr("view_project_url"));
 	contextmenu.find(".test_project a").attr("test_project_url", a.attr("test_project_url"));
 	contextmenu.find(".install_program a").attr("install_program_url", a.attr("install_program_url"));
@@ -985,7 +992,7 @@ function initFilesDragAndDrop(elm) {
 		var is_main_navigator_reverse = $("body").hasClass("main_navigator_reverse");
 		var is_in_right_panel = false;
 		
-		var folders_selector = "i.folder";
+		var folders_selector = "i.folder, i.template_folder";
 		var files_selector = "i.file, i.objtype, i.hibernatemodel, i.config_file, i.controller_file, i.entity_file, i.view_file, i.template_file, i.util_file, i.block_file, i.module_file, i.undefined_file, i.js_file, i.css_file, i.img_file, i.zip_file";
 		var droppables_selector = "i.folder, i.entities_folder, i.views_folder, i.templates_folder, i.template_folder, i.utils_folder, i.webroot_folder, i.modules_folder, i.configs_folder, i.cms_common, i.cms_module, i.cms_program, i.cms_resource";
 		var draggables_selector = folders_selector + ", " + files_selector + ", .query, .relationship, .obj, .class, .method, .function";
@@ -4176,13 +4183,20 @@ function openConsole(url, originalEvent) {
 		var popup = $(".log_console_popup");
 		
 		if (!popup[0]) {
-			popup = $('<div class="myfancypopup with_iframe_title log_console_popup"><iframe src="' + url + '"></iframe></div>');
+			popup = $('<div class="myfancypopup with_iframe_title log_console_popup"></div>');
 			$(document.body).append(popup);
 		}
+		
+		popup.html('<iframe src="' + url + '"></iframe>');
 		
 		LogConsoleFancyPopup.init({
 			elementToShow: popup,
 			parentElement: document,
+			
+			onClose: function() {
+				//remove iframe so the ajax request to refresh the logs doesn't get executed anymore.
+				popup.children("iframe").remove();
+			}
 		});
 		LogConsoleFancyPopup.showPopup();
 	}

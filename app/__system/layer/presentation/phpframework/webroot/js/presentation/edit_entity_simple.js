@@ -48,7 +48,7 @@ $(function () {
 	
 	if (entity_obj[0]) {
 		//add choose_db_table_or_attribute popup before the LayouUIEditor gets inited otherwise the choose-widget-resource icons won't be shown.
-		if (choose_db_table_or_attribute_elm)
+		if (typeof choose_db_table_or_attribute_elm != "undefined" && choose_db_table_or_attribute_elm)
 			entity_obj.append(choose_db_table_or_attribute_elm);
 		
 		//prepare main settings tab
@@ -464,19 +464,26 @@ function addTemplateSamples(entity_obj, template, include_template_samples, incl
 						for (var i = 0, t = region_samples.length; i < t; i++) {
 							var sample_code = region_samples[i];
 							
-							//add new html to region
-							var block = sample_code;
-							var proj = null;
-							var type = 1; //is html
-							var rb_index = 0;
-							var rb_html = getRegionBlockHtml(region, block, proj, type, rb_index);
-							
-							if (template_regions.hasOwnProperty(region))
-								region_blocks.append(rb_html);
-							else
-								other_region_blocks.append(rb_html);
-							
-							regions_blocks_list.push([region, block, proj, type, rb_index]);
+							//prepare sample_code
+							if (sample_code) {
+								//replace urls with right urls
+								sample_code = sample_code.replace(/<\?((php)?\s+(echo|print)|=)\s+\$(original_project_url_prefix|project_url_prefix)\s*;?\s*\?>/g, '{$project_url_prefix}');
+								sample_code = sample_code.replace(/<\?((php)?\s+(echo|print)|=)\s+\$(original_project_common_url_prefix|project_common_url_prefix)\s*;?\s*\?>/g, '{$project_common_url_prefix}');
+								
+								//add new html to region
+								var block = sample_code;
+								var proj = null;
+								var type = 1; //is html
+								var rb_index = 0;
+								var rb_html = getRegionBlockHtml(region, block, proj, type, rb_index);
+								
+								if (template_regions.hasOwnProperty(region))
+									region_blocks.append(rb_html);
+								else
+									other_region_blocks.append(rb_html);
+								
+								regions_blocks_list.push([region, block, proj, type, rb_index]);
+							}
 						}
 					}
 				}

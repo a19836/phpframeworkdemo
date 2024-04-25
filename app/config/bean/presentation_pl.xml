@@ -86,6 +86,7 @@
 	<bean name="PresentationPLayer" path="lib.org.phpframework.layer.presentation.PresentationLayer">
 		<constructor_arg reference="presentation_p_vars" />
 
+		<property name="isDefaultLayer" value="1" />
 		<property name="cacheLayer" reference="PresentationPCacheLayer" />
 		<property name="PHPFrameWorkObjName" reference="phpframework_obj_name" />
 		

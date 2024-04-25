@@ -40,6 +40,10 @@
 		function CheckBoxWidget(ui_creator, menu_widget) {
 			var me = this;
 			
+			me.ignore_attributes = ["type", "checked"];
+			
+			//TODO: find a away to remove the value attribute
+			
 			me.init = function() {
 				menu_widget.attr({
 					"data-on-parse-template-widget-html-func": ui_creator.obj_var_name + ".menu_widgets_objs.checkbox.parseHtml",
@@ -58,7 +62,7 @@
 			};
 			
 			me.parseSettings = function(widget, widget_settings) {
-				widget_settings["is-checked"] = widget.is(":checked") ? 1 : 0;
+				widget_settings["is-checked"] = widget[0].hasAttribute("checked") ? 1 : 0;
 				widget_settings["name"] = widget.attr("name");
 				widget_settings["value"] = widget.attr("value");
 			};
@@ -83,11 +87,11 @@
 					if (sprop.hasClass("is-checked")) {
 						if (field.is(":checked")) {
 							widget.attr("checked", "checked").prop("checked", true);
-							widget.addClass("checked");
+							//widget.addClass("checked");
 						}
 						else {
 							widget.removeAttr("checked").prop("checked", false);
-							widget.removeClass("checked");
+							//widget.removeClass("checked");
 						}
 					}
 					else if (sprop.hasClass("name")) {

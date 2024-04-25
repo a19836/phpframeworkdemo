@@ -27,8 +27,9 @@
 		<constructor_arg reference="HormHClient" /> 
 		<constructor_arg reference="horm_hda_vars" />
 
-		<property name="PHPFrameWorkObjName" reference="phpframework_obj_name" />
+		<property name="isDefaultLayer" value="0" />
 		<property name="cacheLayer" reference="HormHDACacheLayer" />
+		<property name="PHPFrameWorkObjName" reference="phpframework_obj_name" />
 		
 		<function name="addBroker">
 			<parameter reference="HormDbdataDBBrokerClient" />

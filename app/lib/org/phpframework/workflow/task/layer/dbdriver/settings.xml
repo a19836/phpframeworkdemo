@@ -29,7 +29,7 @@
 			<on_check_task_label>DBDriverTaskPropertyObj.onCheckLabel</on_check_task_label>
 			<on_cancel_task_label>DBDriverTaskPropertyObj.onCancelLabel</on_cancel_task_label>
 			
-			<on_success_task_cloning>onLayerTaskCloning</on_success_task_cloning>
+			<on_success_task_cloning>DBDriverTaskPropertyObj.onTaskCloning</on_success_task_cloning>
 			<on_success_task_creation>onLayerTaskCreation</on_success_task_creation>
 			<on_success_connection_drop>onLayerConnectionDrop</on_success_connection_drop>
 			
