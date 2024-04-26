@@ -617,10 +617,11 @@ function updateDBTables(elm, rand_number, do_not_sync) {
 		var db_tables = getDBTables(db_broker, db_driver, type);
 		
 		var html = "<option></option>";
+		
 		for (var db_table in db_tables)
 			html += "<option>" + db_table + "</option>";
 		
-		if (!chosen_table || !db_tables.hasOwnProperty(chosen_table))
+		if (!chosen_table || !db_tables || !db_tables.hasOwnProperty(chosen_table))
 			chosen_table = default_db_table; //if no table selected before or doesn't exists in db_tables, set it to default table
 		
 		select.html(html);

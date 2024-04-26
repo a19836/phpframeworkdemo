@@ -28,10 +28,16 @@ function initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor) {
 		};
 	}
 	
-	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_db_brokers_func = getLayoutUIEditorWidgetResourceDBBrokers;
-	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_db_drivers_func = getLayoutUIEditorWidgetResourceDBDrivers;
-	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_db_tables_func = getLayoutUIEditorWidgetResourceDBTables;
-	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_db_attributes_func = getLayoutUIEditorWidgetResourceDBAttributes;
+	//only add handlers if db drivers exists
+	if (typeof db_brokers_drivers_tables_attributes != "undefined") {
+		PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_db_brokers_func = getLayoutUIEditorWidgetResourceDBBrokers;
+		PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_db_drivers_func = getLayoutUIEditorWidgetResourceDBDrivers;
+		PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_db_tables_func = getLayoutUIEditorWidgetResourceDBTables;
+		PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_db_attributes_func = getLayoutUIEditorWidgetResourceDBAttributes;
+	}
+	
+	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.user_module_installed = typeof user_module_installed != "undefined" && user_module_installed;
+	
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_resources_references_func = getLayoutUIEditorWidgetResourceResourcesReferences;
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_user_types_func = getLayoutUIEditorWidgetResourceUserTypes;
 	PtlLayoutUIEditor.LayoutUIEditorWidgetResource.options.get_php_numeric_types_func = getLayoutUIEditorWidgetResourcePHPNumericTypes;
@@ -170,9 +176,11 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 	
 	if (!popup[0]) {
 		var brokers_html = null;
+		var brokers_html_elms = null;
 		
 		if (typeof initSLAGroupItemTasks == "function" && typeof onChangeBrokersLayerType == "function") {
 			brokers_html = $(".regions_blocks_includes_settings > .resource_settings > .sla > .sla_groups_flow > .sla_main_groups > .sla_group_item.sla_group_default > .sla_group_body > section.broker_action_body").first().html();
+			brokers_html_elms = $(brokers_html);
 			
 			if (brokers_html)
 				brokers_html = '<div class="sla_main_groups hidden">'
@@ -203,15 +211,15 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 						+ '<select>'
 							+ '<option value="db_table_attribute">Resource based in DB Table Attribute</option>'
 							+ (brokers_html ?
-								'<option value="callbusinesslogic">Resource based in Business Logic Service</option>'
-								+ '<option value="callibatisquery">Resource based in Ibatis Rule</option>'
-								+ '<option value="callhibernatemethod">Resource based in Hibernate Rule</option>'
-								+ '<option value="getquerydata">Resource based in Get SQL Query Results</option>'
-								+ '<option value="setquerydata">Resource based in Set SQL Query</option>'
-								+ '<option value="callfunction">Resource based in Function</option>'
-								+ '<option value="callobjectmethod">Resource based in Object Method</option>'
-								+ '<option value="restconnector">Resource based in Rest Connector</option>'
-								+ '<option value="soapconnector">Resource based in SOAP Connector</option>'
+								(brokers_html_elms.filter(".call_business_logic_task_html").length ? '<option value="callbusinesslogic">Resource based in Business Logic Service</option>' : '')
+								+ (brokers_html_elms.filter(".call_ibatis_query_task_html").length ? '<option value="callibatisquery">Resource based in Ibatis Rule</option>' : '')
+								+ (brokers_html_elms.filter(".call_hibernate_method_task_html").length ? '<option value="callhibernatemethod">Resource based in Hibernate Rule</option>' : '')
+								+ (brokers_html_elms.filter(".get_query_data_task_html").length ? '<option value="getquerydata">Resource based in Get SQL Query Results</option>' : '')
+								+ (brokers_html_elms.filter(".set_query_data_task_html").length ? '<option value="setquerydata">Resource based in Set SQL Query</option>' : '')
+								+ (brokers_html_elms.filter(".call_function_task_html").length ? '<option value="callfunction">Resource based in Function</option>' : '')
+								+ (brokers_html_elms.filter(".call_object_method_task_html").length ? '<option value="callobjectmethod">Resource based in Object Method</option>' : '')
+								+ (brokers_html_elms.filter(".get_url_contents_task_html").length ? '<option value="restconnector">Resource based in Rest Connector</option>' : '')
+								+ (brokers_html_elms.filter(".soap_connector_task_html").length ? '<option value="soapconnector">Resource based in SOAP Connector</option>' : '')
 							  : '')
 						+ '</select>'
 					+ '</div>'
@@ -2118,7 +2126,7 @@ function createLayoutUIEditorWidgetResourceSLAResourceNamesBasedInResourceDBTabl
 
 if (typeof getDBTables != "function")
 	function getDBTables(db_broker, db_driver, type) {
-		var db_tables = db_brokers_drivers_tables_attributes[db_broker][db_driver][type];
+		var db_tables = db_brokers_drivers_tables_attributes[db_broker] && db_brokers_drivers_tables_attributes[db_broker][db_driver] ? db_brokers_drivers_tables_attributes[db_broker][db_driver][type] : null;
 		
 		if (jQuery.isEmptyObject(db_tables)) {
 			$.ajax({

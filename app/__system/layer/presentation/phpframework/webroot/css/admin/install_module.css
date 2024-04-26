@@ -328,7 +328,7 @@ body.in_popup .view_store_module_popup {
 	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 5%);
 }
 .install_store_module ul li:not(.loading):not(.empty) {
-	min-width:120px;
+	min-width:180px;
 	min-height:190px;
 	padding-bottom:50px;
 	position:relative;

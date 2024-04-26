@@ -88,42 +88,53 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 		//prepare brokers
 		var brokers_settings = ' . json_encode($pb7b19dbe) . ';
 		var brokers_name_by_obj_code = ' . json_encode($v1f410c3f6b) . ';
-		'; if ($v9b98e0e818) { $v546cf76c77 = new WorkFlowTaskHandler($v4bf8d90f04, $pfce4d1b3); $v546cf76c77->setCacheRootPath(LAYER_CACHE_PATH); $v546cf76c77->setAllowedTaskTags(array("query")); $pb692084d = new WorkFlowUIHandler($v546cf76c77, $peb014cfd, $v37d269c4fa, $pf3d7391b, $v3d55458bcd, $v4bf8d90f04, $pfce4d1b3); $v0a1f4a55aa = new WorkFlowQueryHandler($pb692084d, $peb014cfd, $v37d269c4fa, $v9b98e0e818, $pd7f46171, $pc66a0204, $v5a331eab7e, "", array(), array(), array(), array()); $pbb688020 .= $v0a1f4a55aa->getDataAccessJavascript($v8ffce2a791, $pa0462a8e, $pa32be502, "presentation", null, null); $pa8dedb03 .= str_replace('<script>', '', str_replace('</script>', '', $pbb688020)); $pa8dedb03 .= 'get_broker_db_data_url += "&global_default_db_driver_broker=' . $GLOBALS["default_db_broker"] . '";'; $pf8ed4912 = $v0a1f4a55aa->getGlobalTaskFlowChar(); $pf8ed4912 .= $v0a1f4a55aa->getQueryBlockHtml(); $pa8dedb03 .= 'var query_task_html = \'' . addcslashes(str_replace("\n", "", $pf8ed4912), "\\'") . '\';'; if ($v1fac4509df) { $pf8ed4912 = $v0a1f4a55aa->getChooseQueryTableOrAttributeHtml("choose_db_table_or_attribute"); $pa8dedb03 .= '
+		'; $v567e6991bf = false; if ($v9b98e0e818) { $v567e6991bf = true; $v546cf76c77 = new WorkFlowTaskHandler($v4bf8d90f04, $pfce4d1b3); $v546cf76c77->setCacheRootPath(LAYER_CACHE_PATH); $v546cf76c77->setAllowedTaskTags(array("query")); $pb692084d = new WorkFlowUIHandler($v546cf76c77, $peb014cfd, $v37d269c4fa, $pf3d7391b, $v3d55458bcd, $v4bf8d90f04, $pfce4d1b3); $v0a1f4a55aa = new WorkFlowQueryHandler($pb692084d, $peb014cfd, $v37d269c4fa, $v9b98e0e818, $pd7f46171, $pc66a0204, $v5a331eab7e, "", array(), array(), array(), array()); $pbb688020 .= $v0a1f4a55aa->getDataAccessJavascript($v8ffce2a791, $pa0462a8e, $pa32be502, "presentation", null, null); $pa8dedb03 .= str_replace('<script>', '', str_replace('</script>', '', $pbb688020)); $pa8dedb03 .= 'get_broker_db_data_url += "&global_default_db_driver_broker=' . $GLOBALS["default_db_broker"] . '";'; $pf8ed4912 = $v0a1f4a55aa->getGlobalTaskFlowChar(); $pf8ed4912 .= $v0a1f4a55aa->getQueryBlockHtml(); $pa8dedb03 .= 'var query_task_html = \'' . addcslashes(str_replace("\n", "", $pf8ed4912), "\\'") . '\';'; if ($v1fac4509df) { $pf8ed4912 = $v0a1f4a55aa->getChooseQueryTableOrAttributeHtml("choose_db_table_or_attribute"); $pa8dedb03 .= '
 				var choose_db_table_or_attribute_elm = $( \'' . addcslashes(str_replace("\n", "", $pf8ed4912), "\\'") . '\' );
 				
 				$(function() {
 					if ($("#choose_db_table_or_attribute").length == 0)
 						$("' . $v1fac4509df . '").append(choose_db_table_or_attribute_elm);
 				});
-				'; } $pa8dedb03 .= WorkFlowBrokersSelectedDBVarsHandler::printSelectedDBVarsJavascriptCode($peb014cfd, $v8ffce2a791, $pa0462a8e, null); $pa8dedb03 .= '
-			getDBTables("' . $pd7f46171 . '", "' . $pc66a0204 . '", "' . $v5a331eab7e . '");
-		
-			var db_tables = db_brokers_drivers_tables_attributes["' . $pd7f46171 . '"] && db_brokers_drivers_tables_attributes["' . $pd7f46171 . '"]["' . $pc66a0204 . '"] ? db_brokers_drivers_tables_attributes["' . $pd7f46171 . '"]["' . $pc66a0204 . '"]["' . $v5a331eab7e . '"] : null;
-			
-			if (db_tables) {
-				var html = "<option></option>";
-				for (var db_table in db_tables) {
-					html += "<option>" + db_table + "</option>";
+				'; } $pa8dedb03 .= WorkFlowBrokersSelectedDBVarsHandler::printSelectedDBVarsJavascriptCode($peb014cfd, $v8ffce2a791, $pa0462a8e, null); } else if ($v1fac4509df) { $v0a2a46479f = WorkFlowBeansFileHandler::getLocalBeanLayersFromBrokers($v3d55458bcd, $v5039a77f9d, $pc4223ce1, true, true, $v8b7470d48c, $pf8d1e53c); $pd7f46171 = ""; $pc66a0204 = ""; $v5a331eab7e = "db"; $pbfd2d1c4 = array(); foreach ($v0a2a46479f as $v14b72a9b5d => $v5ce4bd29b6) { if (is_a($v5ce4bd29b6, "DataAccessLayer") || is_a($v5ce4bd29b6, "DBLayer")) { $v3cf0cdca2d = $pf8d1e53c[$v14b72a9b5d]; $pb56484b3 = is_a($v5ce4bd29b6, "DBLayer") ? $v5ce4bd29b6->getDBDriversName() : $v5ce4bd29b6->getBrokersDBDriversName(); $v1eb9193558->filterLayerBrokersDBDriversNamesFromLayoutName($v9ab35f1f0d, $pb56484b3, $pb154d332); if ($pb56484b3) { $pd7f46171 = $v3cf0cdca2d[0]; $pc66a0204 = $pb56484b3[0]; foreach ($v3cf0cdca2d as $pe4f3a4ec) $pbfd2d1c4[$pe4f3a4ec] = $pb56484b3; } } } if ($pbfd2d1c4) { $v567e6991bf = true; $pe44aa1fe = array( "dal_broker" => $pd7f46171, "db_driver" => $pc66a0204, "type" => $v5a331eab7e, "db_table" => "", "db_brokers_drivers" => $pbfd2d1c4 ); $v0a1f4a55aa = new WorkFlowQueryHandler(null, $peb014cfd, $v37d269c4fa, $pe44aa1fe["db_brokers_drivers"], $pd7f46171, $pc66a0204, $v5a331eab7e, "", array(), array(), array(), array()); $pf8ed4912 = $v0a1f4a55aa->getChooseQueryTableOrAttributeHtml("choose_db_table_or_attribute"); $pa8dedb03 .= '
+				var choose_db_table_or_attribute_elm = $( \'' . addcslashes(str_replace("\n", "", $pf8ed4912), "\\'") . '\' );
+				
+				$(function() {
+					if ($("#choose_db_table_or_attribute").length == 0)
+						$("' . $v1fac4509df . '").append(choose_db_table_or_attribute_elm);
+				});
+				'; $pa8dedb03 .= WorkFlowBrokersSelectedDBVarsHandler::printSelectedDBVarsJavascriptCode($peb014cfd, $v8ffce2a791, $pa0462a8e, $pe44aa1fe); } } if ($v567e6991bf) { $pa8dedb03 .= '
+				if (typeof choose_db_table_or_attribute_elm != "undefined") {
+					getDBTables("' . $pd7f46171 . '", "' . $pc66a0204 . '", "' . $v5a331eab7e . '");
+				
+					var db_tables = db_brokers_drivers_tables_attributes["' . $pd7f46171 . '"] && db_brokers_drivers_tables_attributes["' . $pd7f46171 . '"]["' . $pc66a0204 . '"] ? db_brokers_drivers_tables_attributes["' . $pd7f46171 . '"]["' . $pc66a0204 . '"]["' . $v5a331eab7e . '"] : null;
+					
+					if (db_tables) {
+						var html = "<option></option>";
+						for (var db_table in db_tables) {
+							html += "<option>" + db_table + "</option>";
+						}
+						choose_db_table_or_attribute_elm.find(".db_table select").html(html);
+					}
+					
+					choose_db_table_or_attribute_elm.find(".db_broker > select").change(function() {
+						onChangePopupDBBrokers(this);
+					});
+					
+					choose_db_table_or_attribute_elm.find(".db_driver > select").change(function() {
+						onChangePopupDBDrivers(this);
+					});
+					
+					choose_db_table_or_attribute_elm.find(".type > select").change(function() {
+						onChangePopupDBTypes(this);
+					});
 				}
-				choose_db_table_or_attribute_elm.find(".db_table select").html(html);
-			}
-			
-			choose_db_table_or_attribute_elm.find(".db_broker > select").change(function() {
-				onChangePopupDBBrokers(this);
-			});
-			
-			choose_db_table_or_attribute_elm.find(".db_driver > select").change(function() {
-				onChangePopupDBDrivers(this);
-			});
-			
-			choose_db_table_or_attribute_elm.find(".type > select").change(function() {
-				onChangePopupDBTypes(this);
-			});
-			
-			on_new_html_callback = typeof addProgrammingTaskUtilInputsContextMenu == "function" ? addProgrammingTaskUtilInputsContextMenu : null;'; $v0a9dad1fe0 .= '
+				
+				on_new_html_callback = typeof addProgrammingTaskUtilInputsContextMenu == "function" ? addProgrammingTaskUtilInputsContextMenu : null;
+			'; $v0a9dad1fe0 .= '
 			<!-- DBQUERY TASK - Add Edit-Query JS and CSS files -->
 			<link rel="stylesheet" href="' . $peb014cfd . 'css/dataaccess/edit_query.css" type="text/css" charset="utf-8" />
-			<script language="javascript" type="text/javascript" src="' . $peb014cfd . 'js/dataaccess/edit_query.js"></script>'; } $v3ddc0d1bd3 = CMSPresentationUIAutomaticFilesHandler::isUserModuleInstalled($v188b4f5fa6); $v902a67f557 = $v18e8e0c60b = array(); if ($v3ddc0d1bd3) { $v902a67f557 = CMSPresentationUIAutomaticFilesHandler::getAvailableUserTypes($v188b4f5fa6); $v18e8e0c60b = CMSPresentationUIAutomaticFilesHandler::getAvailableActivities($v188b4f5fa6); } $pa8dedb03 .= '
+			<script language="javascript" type="text/javascript" src="' . $peb014cfd . 'js/dataaccess/edit_query.js"></script>'; } $v1cf81e6c0f = $v188b4f5fa6->getModulePath("user/UserUtil", $v188b4f5fa6->getCommonProjectName()); $v9ff7f1bef8 = file_exists($v1cf81e6c0f); $v3ddc0d1bd3 = CMSPresentationUIAutomaticFilesHandler::isUserModuleInstalled($v188b4f5fa6); $v902a67f557 = $v18e8e0c60b = array(); if ($v3ddc0d1bd3) { $v902a67f557 = CMSPresentationUIAutomaticFilesHandler::getAvailableUserTypes($v188b4f5fa6); $v18e8e0c60b = CMSPresentationUIAutomaticFilesHandler::getAvailableActivities($v188b4f5fa6); } $pa8dedb03 .= '
+		var user_module_installed = ' . ($v9ff7f1bef8 ? "true" : "false") . ';
 		var available_user_types = ' . json_encode($v902a67f557) . ';
 		var available_activities = ' . json_encode($v18e8e0c60b) . ';'; $v50890f6f30 = self::getWorkflowHeader($v188b4f5fa6, $pdf77ee66, $v8ffce2a791, $pa0462a8e, $pa32be502, $peb014cfd, $v37d269c4fa, $pf3d7391b, $v3d55458bcd, $v5039a77f9d, $v4bf8d90f04, $pfce4d1b3, $pb154d332, $pecad7cca, $pebb3f429); if ($v50890f6f30) { $pcb6a2cab = $v50890f6f30["js_head"]; $v8555f2f905 = $v50890f6f30["set_workflow_file_url"]; $v238161ae8d = $v50890f6f30["get_workflow_file_url"]; $pa8dedb03 .= $pcb6a2cab; } $pa8dedb03 .= '
 		var php_numeric_types = ' . json_encode(ObjTypeHandler::getPHPNumericTypes()) . ';
@@ -178,7 +189,7 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 					</li>
 					<li class="sla_group_empty_items">There are no groups available...</li>
 				</ul>
-			</div>'; return $pf8ed4912; } public static function getGroupItemHtml($v08d9602741, $peb014cfd, $v37d269c4fa, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3, $v6490ea3a15, $v9b98e0e818, $v6c1c99fc85) { $pefdd2109 .= self::getUIMenuWidgetsHTML($v08d9602741, $v37d269c4fa, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3); $pf8ed4912 = '
+			</div>'; return $pf8ed4912; } public static function getGroupItemHtml($v08d9602741, $peb014cfd, $v37d269c4fa, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3, $v6490ea3a15, $v9b98e0e818, $v6c1c99fc85) { $pefdd2109 .= self::getUIMenuWidgetsHTML($v08d9602741, $v37d269c4fa, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3); $pf77b4bb0 = $v08d9602741->getModulePath("common/CommonModuleUI", $v08d9602741->getCommonProjectName()); $v4bc3e85ad1 = file_exists($pf77b4bb0); $v1cf81e6c0f = $v08d9602741->getModulePath("user/UserUtil", $v08d9602741->getCommonProjectName()); $v9ff7f1bef8 = file_exists($v1cf81e6c0f); $pf8ed4912 = '
 		<header class="sla_group_header">
 			<i class="icon expand_content toggle" onClick="toggleGroupBody(this)"></i>
 			<input class="result_var_name result_var_name_output" type="text" placeHolder="Result Variable Name or leave it empty for direct output" title="This action will only appear in the output if this field is empty. If this \'Result Variable Name\' cotains a value, the output will be putted to this correspondent variable." />
@@ -212,14 +223,16 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 				<optgroup>
 				
 				<optgroup label="Message Actions">
-					<option value="show_ok_msg">Show OK message</option>
-					<option value="show_ok_msg_and_stop">Show OK message and stop</option>
-					<option value="show_ok_msg_and_die">Show OK message and die</option>
-					<option value="show_ok_msg_and_redirect">Show OK message and redirect</option>
-					<option value="show_error_msg">Show error message</option>
-					<option value="show_error_msg_and_stop">Show error message and stop</option>
-					<option value="show_error_msg_and_die">Show error message and die</option>
-					<option value="show_error_msg_and_redirect">Show error message and redirect</option>
+					' . ($v4bc3e85ad1 ? '
+						<option value="show_ok_msg">Show OK message</option>
+						<option value="show_ok_msg_and_stop">Show OK message and stop</option>
+						<option value="show_ok_msg_and_die">Show OK message and die</option>
+						<option value="show_ok_msg_and_redirect">Show OK message and redirect</option>
+						<option value="show_error_msg">Show error message</option>
+						<option value="show_error_msg_and_stop">Show error message and stop</option>
+						<option value="show_error_msg_and_die">Show error message and die</option>
+						<option value="show_error_msg_and_redirect">Show error message and redirect</option>
+					' : '') . '
 					<option value="alert_msg">Alert message</option>
 					<option value="alert_msg_and_stop">Alert message and stop</option>
 					<option value="alert_msg_and_redirect">Alert message and redirect</option>
@@ -245,7 +258,7 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 					<option value="sanitize_variable">Sanitize variable</option>
 					
 					<option disabled></option>
-					<option value="check_logged_user_permissions">Check Logged User Permissions</option>
+					' . ($v9ff7f1bef8 ? '<option value="check_logged_user_permissions">Check Logged User Permissions</option>' : '') . '
 					<option value="list_report">List Report</option>
 					<option value="call_block">Call Block</option>
 					<option value="call_view">Call View</option>
@@ -395,7 +408,7 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 				</div>
 			</section>
 			
-			<section class="check_logged_user_permissions_action_body">
+			' . ($v9ff7f1bef8 ? '<section class="check_logged_user_permissions_action_body">
 				<p>Please edit the users and their permissions that the logged user should have.</p>
 				<p>Note that the logged user only need to contain one of the added permissions bellow.</p>
 				<input class="entity_path_var_name" type="hidden" value="$entity_path" />
@@ -427,7 +440,7 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 						</tbody>
 					</table>
 				</div>
-			</section>
+			</section>' : '') . '
 			
 			<section class="code_action_body">
 				<textarea class="task_property_field">&lt;?

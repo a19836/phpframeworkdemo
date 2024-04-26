@@ -4972,11 +4972,11 @@ function onCodeLayoutUIEditorModuleBlockWidgetDragAndDrop(widget, tree_obj, do_n
 			chooseCodeLayoutUIEditorModuleBlock(tree_obj);
 		},
 		onClose: function() {
-			//update menu layer
+			//delete widget and update menu layer
 			var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 			
 			if (!do_not_delete_widget && PtlLayoutUIEditor)
-				PtlLayoutUIEditor.deleteTemplateWidget(widget); //update menu layer from layout ui editor
+				PtlLayoutUIEditor.deleteTemplateWidget(widget); //delete widget and update menu layer from layout ui editor
 		}
 	});
 	
@@ -5047,7 +5047,40 @@ function chooseCodeLayoutUIEditorModuleBlock(tree_obj) {
 	}
 }
 
+function onValidateCodeLayoutUIEditorDBTableWidget(db_broker, db_driver, db_type, db_table, widget) {
+	var validated = typeof db_brokers_drivers_tables_attributes != "undefined";
+	
+	//check if db_driver exists and only proceed if yes
+	if (validated && db_driver) {
+		var exists = false;
+		
+		for (var db_broker_aux in db_brokers_drivers_tables_attributes)
+			if (db_brokers_drivers_tables_attributes[db_broker_aux].hasOwnProperty(db_driver)) {
+				exists = true;
+				break;
+			}
+		
+		if (!exists)
+			validated = false;
+	}
+	
+	if (!validated) {
+		StatusMessageHandler.showError("Action not possible because there are no DB Drivers available or selected DB Driver cannot be used!");
+		
+		//delete widget and update menu layer from layout ui editor
+		var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+		
+		if (PtlLayoutUIEditor)
+			PtlLayoutUIEditor.deleteTemplateWidget(widget); //delete widget and update menu layer from layout ui editor
+	}
+	
+	return validated;
+}
+
 function onReplaceCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, db_type, db_table, widget, opts) {
+	if (!onValidateCodeLayoutUIEditorDBTableWidget(db_broker, db_driver, db_type, db_table, widget))
+		return;
+	
 	//must have settimeout bc the widget doesn't have the right parent yet.
 	setTimeout(function() {
 		var widget_parent = widget.parent();
@@ -5079,11 +5112,11 @@ function onReplaceCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, d
 				parentElement: document,
 				
 				onClose: function() {
-					//update menu layer
+					//delete widget and update menu layer
 					var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 					
 					if (PtlLayoutUIEditor)
-						PtlLayoutUIEditor.deleteTemplateWidget(widget); //update menu layer from layout ui editor
+						PtlLayoutUIEditor.deleteTemplateWidget(widget); //delete widget and update menu layer from layout ui editor
 				},
 				replaceTableNameFunction: function(btn) {
 					var table_alias = popup.find(".table_alias input").val();
@@ -5104,11 +5137,11 @@ function onReplaceCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, d
 			ReplaceExistingDBTableWidgetFancyPopup.showPopup();
 		}
 		else {
-			//update menu layer
+			//delete widget and update menu layer
 			var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 			
 			if (PtlLayoutUIEditor)
-				PtlLayoutUIEditor.deleteTemplateWidget(widget); //update menu layer from layout ui editor
+				PtlLayoutUIEditor.deleteTemplateWidget(widget); //delete widget and update menu layer from layout ui editor
 		}
 	}, 100);
 }
@@ -5137,6 +5170,9 @@ function replaceCodeLayoutUIEditorDBTableWidgetSettings(db_broker, db_driver, db
 }
 
 function onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, db_type, db_table, widget, opts) {
+	if (!onValidateCodeLayoutUIEditorDBTableWidget(db_broker, db_driver, db_type, db_table, widget))
+		return;
+	
 	//get existent popup
 	var popup = $(".choose_db_table_widget_options_popup");
 	
@@ -5224,6 +5260,10 @@ function onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, db
 				elm.html("Show Advanced Options");
 			
 			DBTableWidgetOptionsFancyPopup.updatePopup();
+			
+			setTimeout(function() {
+				DBTableWidgetOptionsFancyPopup.updatePopup();
+			}, 500);
 		});
 		
 		popup.find(".widget_type select").on("change", function(event) {
@@ -5492,11 +5532,11 @@ function onChooseCodeLayoutUIEditorDBTableWidgetOptions(db_broker, db_driver, db
 		parentElement: document,
 		
 		onClose: function() {
-			//update menu layer
+			//delete widget and update menu layer
 			var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 			
 			if (PtlLayoutUIEditor)
-				PtlLayoutUIEditor.deleteTemplateWidget(widget); //update menu layer from layout ui editor
+				PtlLayoutUIEditor.deleteTemplateWidget(widget);
 		},
 		updateFunction: update_func,
 	});
@@ -5682,7 +5722,7 @@ function chooseCodeLayoutUIEditorImportModulePopup(url) {
 							var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 							
 							if (PtlLayoutUIEditor)
-								PtlLayoutUIEditor.deleteTemplateWidget(widget); //update menu layer from layout ui editor
+								PtlLayoutUIEditor.deleteTemplateWidget(widget); //delete widget and update menu layer from layout ui editor
 						}
 						
 						TemplateRegionBlockComboBoxImportModuleBlockOptionFancyPopup.hidePopup();
@@ -5707,7 +5747,7 @@ function chooseCodeLayoutUIEditorImportModulePopup(url) {
 				var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
 				
 				if (PtlLayoutUIEditor)
-					PtlLayoutUIEditor.deleteTemplateWidget(widget); //update menu layer from layout ui editor
+					PtlLayoutUIEditor.deleteTemplateWidget(widget); //delete widget and update menu layer from layout ui editor
 			}
 		}
 	});

@@ -2816,12 +2816,19 @@ body:not(.dark_theme) .tabs.tabs_icons li#visual_editor_tab.ui-tabs-active a {
 	padding:0;
 	overflow:hidden;
 }
+.myfancypopup.with_title.with_scroll {
+	overflow:auto;
+	overflow:overlay;
+}
 .myfancypopup.with_title > .popup_close,
   .myfancypopup.with_iframe_title > .popup_close {
 	top:17px !important;
 	right:20px !important;
 	color:var(--main-popup-header-color);
 	font-size:20px;
+}
+.myfancypopup.with_title.with_scroll > .popup_close {
+	
 }
 .myfancypopup.with_title.popup_with_left_popup_close > .popup_close,
   .myfancypopup.with_iframe_title.popup_with_left_popup_close > .popup_close {
@@ -2854,6 +2861,10 @@ body:not(.dark_theme) .tabs.tabs_icons li#visual_editor_tab.ui-tabs-active a {
 	text-align:left;
 	font-size:12px;
 	box-sizing:border-box;
+}
+.myfancypopup.with_title.with_scroll > .title {
+	position:sticky;
+	top:0;
 }
 .myfancypopup.with_title.popup_with_left_popup_close > .title {
 	padding-left:80px;
