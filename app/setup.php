@@ -77,8 +77,8 @@ $dir_path = str_replace(DIRECTORY_SEPARATOR, "/", __DIR__) . "/"; $installation_
 			<li>short_open_tag = On</li>
 			<li>max_execution_time = 1000</li>
 			<li>variables_order = \"EGPCS\"</li>
-			<li>upload_max_filesize = 64M</li>
-			<li>post_max_size = 64M</li>
+			<li>upload_max_filesize = 150M</li>
+			<li>post_max_size = 150M</li>
 			<li>date.timezone = Europe/Lisbon</li>
 			
 			<li>open_basedir = \"" . $installation_dir . "\"</li>

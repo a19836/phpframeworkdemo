@@ -5,8 +5,8 @@
 	short_open_tag = On
 	max_execution_time = 1000
 	variables_order = "EGPCS"
-	upload_max_filesize = 50M
-	post_max_size = 50M
+	upload_max_filesize = 150M
+	post_max_size = 150M
 	date.timezone = Europe/Lisbon
 	
 	open_basedir = "<your cms installation dir>"

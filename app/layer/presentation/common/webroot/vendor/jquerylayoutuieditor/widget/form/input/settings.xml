@@ -30,6 +30,12 @@
 				<option value="hidden">Hidden</option>
 				<option value="color">Color</option>
 				<option value="range">Range</option>
+				<option disabled></option>
+				<option value="checkbox">Checkbox</option>
+				<option value="radio">Radio</option>
+				<option value="submit">Submit</option>
+				<option value="image">Image</option>
+				<option value="reset">Reset</option>
 			</select>
 		</div>
 		<div class="form-group row settings-property name">

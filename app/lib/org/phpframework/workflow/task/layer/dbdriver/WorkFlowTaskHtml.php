@@ -110,4 +110,9 @@ DBDriverTaskPropertyObj.ignore_options_by_extension = ' . json_encode($ignore_co
 		<label>Extra DSN:</label>
 		<input type="text" class="task_property_field" name="extra_dsn" value="" />
 	</div>
+
+	<div class="extra_settings" title="Other settings attributes. Each setting must be splitted by comma.">
+		<label>Extra Settings:</label>
+		<input type="text" class="task_property_field" name="extra_settings" value="" />
+	</div>
 </div>

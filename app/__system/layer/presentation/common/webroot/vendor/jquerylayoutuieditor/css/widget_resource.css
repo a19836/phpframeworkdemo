@@ -470,6 +470,9 @@
 .layout-ui-editor > .menu-settings:not(.menu-settings-select) li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-allow-new-options {
 	display:none;
 }
+.layout-ui-editor > .menu-settings:not(.menu-settings-checkbox):not(.menu-settings-radiobox):not(.menu-settings-select):not(.menu-settings-input):not(.menu-settings-textarea):not(.menu-settings-button) li.group.settings-widget .widget-display-resource-value > ul > li.widget-display-resource-value-ignore-field-name {
+	display:none;
+}
 
 /* MENU SETTINGS - WIDGET - PROPERTIES */
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-handler input:not(:focus),

@@ -18,6 +18,7 @@
 			<item name="odbc_data_source"><![CDATA[]]></item>
 			<item name="odbc_driver"><![CDATA[]]></item>
 			<item name="extra_dsn"><![CDATA[]]></item>
+			<item name="extra_settings"></item>
 		</list>
 	</var>
 	<bean name="Mysql" path="lib.org.phpframework.db.driver.MySqlDB" bean_group="dbdriver">

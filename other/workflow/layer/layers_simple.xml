@@ -12,28 +12,28 @@
 		<width>655</width>
 		<height>150</height>
 		<left>1</left>
-		<top>149</top>
+		<top>150</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dals]]></id>
 		<width>655</width>
 		<height>150</height>
 		<left>1</left>
-		<top>298</top>
+		<top>299</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dbs]]></id>
 		<width>655</width>
 		<height>150</height>
 		<left>1</left>
-		<top>448</top>
+		<top>449</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_drivers]]></id>
 		<width>655</width>
 		<height>121</height>
 		<left>1</left>
-		<top>598</top>
+		<top>599</top>
 	</container>
 	<task>
 		<label><![CDATA[mysql]]></label>
@@ -59,6 +59,7 @@
 			<odbc_data_source></odbc_data_source>
 			<odbc_driver></odbc_driver>
 			<extra_dsn></extra_dsn>
+			<extra_settings></extra_settings>
 			<active>1</active>
 		</properties>
 	</task>

@@ -135,11 +135,12 @@ var  DBDriverTaskPropertyObj = {
 		
 		this.toggleFields(task_html_elm);
 		
+		/* DEPRECATED: bc is already inside of the toggleFields which contains the ignore_options_by_extension
 		if (extension == "pdo" || extension == "odbc") {
-			task_html_elm.find(".odbc_data_source, .odbc_driver, .extra_dsn").show();
+			task_html_elm.find(".odbc_data_source, .odbc_driver, .extra_dsn").show(); 
 		}
 		else
-			task_html_elm.find(".odbc_data_source, .odbc_driver, .extra_dsn").hide();
+			task_html_elm.find(".odbc_data_source, .odbc_driver, .extra_dsn").hide();*/
 	},
 	
 	updateExtensionByType : function(task_html_elm, type) {

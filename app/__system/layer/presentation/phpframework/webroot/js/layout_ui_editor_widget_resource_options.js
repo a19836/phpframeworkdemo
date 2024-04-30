@@ -237,6 +237,8 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 								+ '<option value="insert">Add a record</option>'
 								+ '<option value="update">Update a record</option>'
 								+ '<option value="update_attribute">Update a record attribute</option>'
+								+ '<option value="insert_update_attribute">Insert or update a record attribute</option>'
+								+ '<option value="insert_delete_attribute" title="Insert or delete a record based if a value from an attribute exists or not">Insert or delete a record attribute</option>'
 								+ '<option value="multiple_save">Save multiple records (Add and Update)</option>'
 								+ '<option value="delete">Remove a record</option>'
 								+ '<option value="multiple_delete">Remove multiple records</option>'
@@ -360,11 +362,13 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 		var style = window.getComputedStyle(popup[0]);
 		
 		if (style.display === "none") {
+			popup.attr("show_resource_attributes", show_resource_attributes ? 1 : 0);
+			
 			//update popup class and toggle some fields
 			var new_resource_attribute = popup.children("#new_resource_attribute");
 			var db_table_attribute = new_resource_attribute.children(".db_table_attribute");
 			var query_type_select = db_table_attribute.find(" > .query_type > select");
-			var query_type_select_options = query_type_select.find("option[value=insert], option[value=update], option[value=update_attribute], option[value=multiple_save], option[value=delete], option[value=multiple_delete], option[value=get_all_options], option[value=]");
+			var query_type_select_options = query_type_select.find("option[value=insert], option[value=update], option[value=update_attribute], option[value=insert_update_attribute], option[value=insert_delete_attribute], option[value=multiple_save], option[value=delete], option[value=multiple_delete], option[value=get_all_options], option[value=]");
 			
 			if (show_resource_attributes) {
 				popup.addClass("show_resource_attributes");
@@ -737,7 +741,13 @@ function onChangeChooseLayoutUIEditorWidgetResourceValueDBTable(elm) {
 	updateDBAttributes(elm[0]);
 	
 	var p = elm.parent().parent();
-	var db_attribute_select = p.find(" > .db_attribute select");
+	var popup = p.closest(".myfancypopup");
+	var db_attribute = p.children(".db_attribute");
+	var db_attribute_select = db_attribute.children("select");
+	
+	if (popup[0] && popup[0].hasAttribute("show_resource_attributes") && popup[0].getAttribute("show_resource_attributes") == 0)
+		db_attribute.hide();
+	
 	addCreateAttributeOptionToChooseLayoutUIEditorWidgetResourceValueDBAttributes(db_attribute_select[0]);
 	
 	//prepare attributes ui
@@ -1997,12 +2007,6 @@ function createLayoutUIEditorWidgetResourceSLAResourceNamesBasedInResourceDBTabl
 			
 			resource_names.push("update_" + db_driver_table);
 			break;
-		case "update_attribute": 
-			if (is_default_db_driver)
-				resource_names.push("update_" + db_table + "_attribute");
-			
-			resource_names.push("update_" + db_driver_table + "_attribute");
-			break;
 		case "multiple_save": 
 			if (is_default_db_driver) {
 				resource_names.push("update_all_" + db_table_plural);
@@ -2015,6 +2019,24 @@ function createLayoutUIEditorWidgetResourceSLAResourceNamesBasedInResourceDBTabl
 			resource_names.push("update_all_" + db_driver_table + "_items");
 			resource_names.push("update_all_" + db_driver_table_plural);
 			resource_names.push("update_all_" + db_driver_table_plural + "_items");
+			break;
+		case "update_attribute": 
+			if (is_default_db_driver)
+				resource_names.push("update_" + db_table + "_attribute");
+			
+			resource_names.push("update_" + db_driver_table + "_attribute");
+			break;
+		case "insert_update_attribute": 
+			if (is_default_db_driver)
+				resource_names.push("insert_update_" + db_table + "_attribute");
+			
+			resource_names.push("insert_update_" + db_driver_table + "_attribute");
+			break;
+		case "insert_delete_attribute": 
+			if (is_default_db_driver)
+				resource_names.push("insert_delete_" + db_table + "_attribute");
+			
+			resource_names.push("insert_delete_" + db_driver_table + "_attribute");
 			break;
 		case "delete": 
 			if (is_default_db_driver)
