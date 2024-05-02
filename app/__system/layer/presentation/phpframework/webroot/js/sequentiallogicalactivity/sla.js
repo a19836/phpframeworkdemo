@@ -164,7 +164,19 @@ function loadSLASettingsAction(action, group_item, asynchronous, original_action
 				break;
 			
 			case "redirect":
-				group_item.find(' > .sla_group_body > .redirect_action_body > input').val(action_value);
+				var redirect_type = "";
+				var redirect_url = "";
+				
+				if ($.isPlainObject(action_value)) {
+					redirect_type = action_value["redirect_type"];
+					redirect_url = action_value["redirect_url"];
+				}
+				else
+					redirect_url = action_value;
+				
+				var redirect_elm = group_item.find(' > .sla_group_body > .redirect_action_body');
+				redirect_elm.find(' > .redirect_type > select').val(redirect_type);
+				redirect_elm.find(' > .redirect_url > input').val(redirect_url);
 				break;
 				
 			case "return_previous_record":
@@ -3062,7 +3074,8 @@ function getSLASettingsFromItemsToSave(items, options) {
 				case "redirect": //getting redirect settings
 					var section = group_body.children(".redirect_action_body");
 					
-					item_settings["action_value"] = section.children("input").val();
+					item_settings["action_value"]["redirect_type"] = section.find(" > .redirect_type > select").val();
+					item_settings["action_value"]["redirect_url"] = section.find(" > .redirect_url > input").val();
 					break;
 				
 				case "return_previous_record":

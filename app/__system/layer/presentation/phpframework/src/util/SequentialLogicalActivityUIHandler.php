@@ -390,9 +390,19 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 			</section>
 			
 			<section class="redirect_action_body" title="Redirect URL must be a string!!!">
-				<label>Redirect URL: </label>
-				<input class="task_property_field" />
-				<span class="icon search search_page_url" onclick="onIncludePageUrlTaskChooseFile(this)" title="Search Page">Search page</span>
+				<div class="redirect_type">
+					<label>Redirect Type: </label>
+					<select class="task_property_field">
+						<option value="server" title="Redirect will only be based on http header: Location">On server side</option>
+						<option value="client" title="Redirect will only be based on javascript code: document.location" selected>On client side</option>
+						<option value="server_client" title="Redirect will be based on http header and javascript code">On server and client side</option>
+					</select>
+				</div>
+				<div class="redirect_url">
+					<label>Redirect Url: </label>
+					<input class="task_property_field" />
+					<span class="icon search search_page_url" onclick="onIncludePageUrlTaskChooseFile(this)" title="Search Page">Search page</span>
+				</div>
 			</section>
 			
 			<section class="records_action_body">
