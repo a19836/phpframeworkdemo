@@ -187,6 +187,17 @@ $dir_path = str_replace(DIRECTORY_SEPARATOR, "/", __DIR__) . "/"; $installation_
 			<li><a href='https://www.easysoft.com/developer/languages/php/sql_server_unix_tutorial.html' target='_blank'>https://www.easysoft.com/developer/languages/php/sql_server_unix_tutorial.html</a></li>
 			<li><a href='https://www.easysoft.com/products/data_access/odbc-sql-server-driver/manual/installation.html#852113' target='_blank'>https://www.easysoft.com/products/data_access/odbc-sql-server-driver/manual/installation.html#852113</a></li>
 		</ul>
+		<br/>
+		After your odbc driver be installed, it should be present in the file: /etc/odbc.ini, otherwise add the following lines:
+		<ul>
+			<li style=\"white-space:nowrap;\">
+				[ODBC Driver 17 for SQL Server]<br>
+				Description=Microsoft ODBC Driver 17 for SQL Server<br>
+				Driver=/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.7.so.2.1<br>
+				UsageCount=1<br>
+			</li>
+		</ul>
+		Note that the Driver path should be to your driver.
 	</li>
 	<li>Go to your /etc/mysql/my.cnf and add the following line:
 		<ul>

@@ -1208,9 +1208,9 @@ body {
 	min-width:20px !important;
 	min-height:10px !important;
 }
-.template-widget[data-widget-item-attribute-field-view]:empty:after,
-  .template-widget[data-widget-item-attribute-link-view]:empty:after,
-  .template-widget[data-widget-item-attribute-link-edit]:empty:after,
+.template-widget[data-widget-item-attribute-field-view]:empty:not(input):not(textarea):not(select):after,
+  .template-widget[data-widget-item-attribute-link-view]:empty:not(input):not(textarea):not(select):after,
+  .template-widget[data-widget-item-attribute-link-edit]:empty:not(input):not(textarea):not(select):after,
   .template-widget[data-widget-item-attribute-field-edit]:empty:not(input):not(textarea):not(select):after {
 	content:"dummy data" !important;
 }

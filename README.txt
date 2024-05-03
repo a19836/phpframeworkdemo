@@ -102,6 +102,14 @@
 	- https://www.easysoft.com/developer/languages/php/sql_server_unix_tutorial.html
 	- https://www.easysoft.com/products/data_access/odbc-sql-server-driver/manual/installation.html#852113
 	
+	After your odbc driver be installed, it should be present in the file: /etc/odbc.ini, otherwise add the following lines:
+		[ODBC Driver 17 for SQL Server]
+		Description=Microsoft ODBC Driver 17 for SQL Server
+		Driver=/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.7.so.2.1
+		UsageCount=1
+	
+	Note that the Driver path should be to your driver.
+	
 - Then go to your /etc/mysql/my.cnf and add the following line:
 	[mysqld]
 	#if mysql version < 8

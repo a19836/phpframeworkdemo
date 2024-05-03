@@ -164,9 +164,9 @@ function updateDBTables(elm) {
 	var type = p.find(".type select").val();
 	var ul = p.find(".tables ul");
 	
-	ul.html("<li>No tables available...</li>");
+	ul.html("<li>Loading tables...</li>");
 	
-	if (db_broker && db_driver && type)
+	if (db_broker && db_driver && type) {
 		$.ajax({
 			type : "post",
 			url : get_broker_db_data_url,
@@ -193,12 +193,19 @@ function updateDBTables(elm) {
 					
 					ul.html(html);
 				}
+				else
+					ul.html("<li>No tables available...</li>");
 			},
 			error : function(jqXHR, textStatus, errorThrown) { 
 				if (jqXHR.responseText)
 					StatusMessageHandler.showError(jqXHR.responseText);
+				
+				ul.html("<li>No tables available...</li>");
 			},
 		});
+	}
+	else
+		ul.html("<li>No tables available...</li>");
 }
 
 function updateLayerUrlFileManager(elm) {
