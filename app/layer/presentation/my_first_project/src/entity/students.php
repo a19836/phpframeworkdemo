@@ -365,7 +365,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->addRegionHtml("Content", "<div class
 				<table class=\"table table-sm table-striped table-hover text-left text-start list-table mb-0 small\" data-widget-list-table>
 					<thead>
 						<tr>
-							<th class=\"border-0 pt-0 text-center text-muted fw-normal align-middle small\" data-widget-list-select-items-head=\"\">
+							<th class=\"border-0 pt-0 text-center text-muted fw-normal align-middle small\" data-widget-list-select-items-head>
 								<input value=\"on\" type=\"checkbox\" onclick=\"MyWidgetResourceLib.ListHandler.toggleListAttributeSelectCheckboxes(this); return true;\" data-widget-list-select-items-checkbox/>
 							</th>
 							<th class=\"border-0 pt-0 text-muted fw-normal align-middle small text-nowrap\" data-widget-item-head onclick=\"MyWidgetResourceLib.ListHandler.sortListResource(this, event); return false;\" data-widget-item-attribute-name=\"student_id\">Student Id<i class=\"bi bi-filter-left ml-1 ms-1 overflow-visible icon icon-sort text-center\"></i>
@@ -391,7 +391,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->addRegionHtml("Content", "<div class
 					</thead>
 					<tbody>
 						<tr data-widget-item>
-							<td class=\"border-0 text-center align-middle\" data-widget-item-selected-column=\"\">
+							<td class=\"border-0 text-center align-middle\" data-widget-item-selected-column>
 								<input value=\"on\" type=\"checkbox\" data-widget-item-selected-checkbox/>
 							</td>
 							<td class=\"border-0 align-middle\" data-widget-item-column data-widget-item-attribute-name=\"student_id\">
@@ -416,7 +416,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->addRegionHtml("Content", "<div class
 							<td class=\"border-0 text-center text-muted small p-3\" colspan=\"5\">Loading new data... Please wait a while...</td>
 						</tr>
 						<tr data-widget-empty>
-							<td class=\"border-0 text-center text-muted small p-3\" colspan=\"5\">There are no records available.<div data-widget-empty-add=\"\">Please click in the button below to add new records:<br/>
+							<td class=\"border-0 text-center text-muted small p-3\" colspan=\"5\">There are no records available.<div data-widget-empty-add>Please click in the button below to add new records:<br/>
 									<br/>
 									<button class=\"btn btn-sm btn-success text-nowrap m-1\" onclick=\"MyWidgetResourceLib.PopupHandler.openButtonAddPopup(this); return false;\" data-widget-button-add data-widget-popup-id=\"widget_popup_add_1\" title=\"Add\">
 										<i class=\"bi bi-plus-lg icon icon-add mr-1 me-1 overflow-visible\"></i>Add new Record</button>
