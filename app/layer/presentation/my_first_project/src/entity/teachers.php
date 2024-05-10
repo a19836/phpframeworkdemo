@@ -307,7 +307,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->addRegionHtml("Content", "<div class
 	<div class=\"card mb-4 text-left text-start\" id=\"widget_search_1_1\" data-widget-search data-widget-props=\"{&quot;dependent_widgets_id&quot;:[&quot;widget_list_1&quot;,&quot;widget_bottom_pagination_1_1&quot;]}\">
 		<div class=\"card-body\">
 			<label class=\"text-muted mb-1 small\">Filter by:</label>
-			<div class=\"input-group input-group-sm\" data-widget-search-input data-widget-props=\"{&quot;search_attrs&quot;:&quot;teacher_id,school_id,name,age&quot;, &quot;search_operator&quot;:&quot;or&quot;}\">
+			<div class=\"input-group input-group-sm\" data-widget-search-input data-widget-props=\"{&quot;search_attrs&quot;:&quot;teacher_id,school_id,name,age&quot;,&quot;search_case&quot;:&quot;insensitive&quot;,&quot;search_operator&quot;:&quot;or&quot;}\">
 				<input class=\"form-control border border-secondary\" placeholder=\"Type to search...\" onkeyup=\"MyWidgetResourceLib.SearchHandler.onKeyUpSearchWidgetThroughInput(this, 1); return false;\" onblur=\"MyWidgetResourceLib.SearchHandler.refreshSearchWidgetThroughInput(this); return false;\"/>
 				<button class=\"btn btn-sm btn-outline-secondary text-nowrap\" onclick=\"MyWidgetResourceLib.SearchHandler.refreshSearchWidgetThroughInput(this, true); return false;\" title=\"Search\">
 					<i class=\"bi bi-search icon icon-search overflow-visible\"></i>
