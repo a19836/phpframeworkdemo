@@ -1,3 +1,5 @@
+Premium features with MIT Licence can be found in: 
+
 # FullCalendar
 
 Full-sized drag & drop calendar in JavaScript

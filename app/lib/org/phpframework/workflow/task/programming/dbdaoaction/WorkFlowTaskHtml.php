@@ -38,6 +38,7 @@
 			<!-- In the future add the js and php code to have these methods too --> 
 			<!--option>findRelationshipObjects</option> 
 			<!--option>countRelationshipObjects</option-->
+			<!--option>findObjectsColumnMax</option-->
 		</select>
 	</div>
 	

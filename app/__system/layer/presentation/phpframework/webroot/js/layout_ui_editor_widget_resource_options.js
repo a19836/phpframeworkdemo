@@ -239,6 +239,7 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 								+ '<option value="update_attribute">Update a record attribute</option>'
 								+ '<option value="insert_update_attribute">Insert or update a record attribute</option>'
 								+ '<option value="insert_delete_attribute" title="Insert or delete a record based if a value from an attribute exists or not">Insert or delete a record attribute</option>'
+								+ '<option value="multiple_insert_delete_attribute" title="Delete all records and insert new ones, based in a attribute from table">Multiple Delete and Insert records attribute</option>'
 								+ '<option value="multiple_save">Save multiple records (Add and Update)</option>'
 								+ '<option value="delete">Remove a record</option>'
 								+ '<option value="multiple_delete">Remove multiple records</option>'
@@ -368,7 +369,7 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 			var new_resource_attribute = popup.children("#new_resource_attribute");
 			var db_table_attribute = new_resource_attribute.children(".db_table_attribute");
 			var query_type_select = db_table_attribute.find(" > .query_type > select");
-			var query_type_select_options = query_type_select.find("option[value=insert], option[value=update], option[value=update_attribute], option[value=insert_update_attribute], option[value=insert_delete_attribute], option[value=multiple_save], option[value=delete], option[value=multiple_delete], option[value=get_all_options], option[value=]");
+			var query_type_select_options = query_type_select.find("option[value=insert], option[value=update], option[value=update_attribute], option[value=insert_update_attribute], option[value=insert_delete_attribute], option[value=multiple_insert_delete_attribute], option[value=multiple_save], option[value=delete], option[value=multiple_delete], option[value=get_all_options], option[value=]");
 			
 			if (show_resource_attributes) {
 				popup.addClass("show_resource_attributes");
@@ -2037,6 +2038,12 @@ function createLayoutUIEditorWidgetResourceSLAResourceNamesBasedInResourceDBTabl
 				resource_names.push("insert_delete_" + db_table + "_attribute");
 			
 			resource_names.push("insert_delete_" + db_driver_table + "_attribute");
+			break;
+		case "multiple_insert_delete_attribute": 
+			if (is_default_db_driver)
+				resource_names.push("multiple_insert_delete_" + db_table + "_attribute");
+			
+			resource_names.push("multiple_insert_delete_" + db_driver_table + "_attribute");
 			break;
 		case "delete": 
 			if (is_default_db_driver)

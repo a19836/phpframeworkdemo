@@ -6467,53 +6467,69 @@ function addWebrootFile(elm, type, is_str_html_base, add_handler, remove_handler
 			if (file_name.toLowerCase().substr(- (type.length + 1)) != "." + type)
 				file_name += "." + type;
 			
-			//prepare url
-			var url = create_webroot_file_url.replace("#folder#", type).replace("#file_name#", file_name);
+			var is_create_file = !file_name.match(/^http(s?):\/\//);
+			var ul = $(elm).parent().closest(".css_files, .js_files").children("ul");
 			
-			url = encodeUrlWeirdChars(url); //Note: Is very important to add the encodeUrlWeirdChars otherwise if a value has accents, won't work in IE.
-			url += (url.indexOf("?") != -1 ? "" : "?") + "&time=" + (new Date()).getTime();
-			
-			$.ajax({
-				type : "get",
-				url : url,
-				success : function(data, textStatus, jqXHR) {
-					if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
-						showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
-							StatusMessageHandler.removeLastShownMessage("error");
-							addWebrootFile(elm, type);
-						});
-					else if (data == "1") {
-						StatusMessageHandler.showMessage("File created correctly", "", "bottom_messages", 1500);
-						
-						//add file based on selected_project_url_prefix
-						var var_name = typeof give_priority_to_original_project_url_prefix != "undefined" && give_priority_to_original_project_url_prefix ? "original_project_url_prefix" : "project_url_prefix";
-						var replacement = is_str_html_base ? "<? echo $" + var_name + " ?>" : "{$" + var_name + "}";
-						var file_url = replacement + type + "/" + file_name;
-						var file_code = type == "css" ? '<link rel="stylesheet" href="' + file_url + '" />' : '<script language="javascript" type="text/javascript" src="' + file_url + '"></script>';
-						
-						var ul = $(elm).parent().closest(".css_files, .js_files").children("ul");
-						var template_file_url = is_str_html_base ? file_url : file_url.replace("{$" + var_name + "}", selected_project_url_prefix);
-						var opts = {
-							inline_html: !is_str_html_base,
-							remove: remove_handler
-						};
-						var li = addCodeEditorLayoutFileInSettings(template_file_url, ul, opts);
-						
-						//call handler
-						if (typeof add_handler == "function")
-							add_handler(elm, type, file_name, file_url, file_code);
-						
-						//open edit popup
-						li.children("a").trigger("click");
-					}
-					else
-						StatusMessageHandler.showError("There was a problem trying to create file. Please try again..." + (data ? "\n" + data : ""));
-				},
-				error : function(jqXHR, textStatus, errorThrown) { 
-					var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
-					StatusMessageHandler.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to create file.\nPlease try again..." + msg);
-				},
-			});
+			if (is_create_file) {
+				//prepare url
+				var url = create_webroot_file_url.replace("#folder#", type).replace("#file_name#", file_name);
+				
+				url = encodeUrlWeirdChars(url); //Note: Is very important to add the encodeUrlWeirdChars otherwise if a value has accents, won't work in IE.
+				url += (url.indexOf("?") != -1 ? "" : "?") + "&time=" + (new Date()).getTime();
+				
+				$.ajax({
+					type : "get",
+					url : url,
+					success : function(data, textStatus, jqXHR) {
+						if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+							showAjaxLoginPopup(jquery_native_xhr_object.responseURL, url, function() {
+								StatusMessageHandler.removeLastShownMessage("error");
+								addWebrootFile(elm, type);
+							});
+						else if (data == "1") {
+							StatusMessageHandler.showMessage("File created correctly", "", "bottom_messages", 1500);
+							
+							//add file based on selected_project_url_prefix
+							var var_name = typeof give_priority_to_original_project_url_prefix != "undefined" && give_priority_to_original_project_url_prefix ? "original_project_url_prefix" : "project_url_prefix";
+							var replacement = is_str_html_base ? "<? echo $" + var_name + " ?>" : "{$" + var_name + "}";
+							var file_url = replacement + type + "/" + file_name;
+							var file_code = type == "css" ? '<link rel="stylesheet" href="' + file_url + '" />' : '<script language="javascript" type="text/javascript" src="' + file_url + '"></script>';
+							
+							var template_file_url = is_str_html_base ? file_url : file_url.replace("{$" + var_name + "}", selected_project_url_prefix);
+							var opts = {
+								inline_html: !is_str_html_base,
+								remove: remove_handler
+							};
+							var li = addCodeEditorLayoutFileInSettings(template_file_url, ul, opts);
+							
+							//call handler
+							if (typeof add_handler == "function")
+								add_handler(elm, type, file_name, file_url, file_code);
+							
+							//open edit popup
+							li.children("a").trigger("click");
+						}
+						else
+							StatusMessageHandler.showError("There was a problem trying to create file. Please try again..." + (data ? "\n" + data : ""));
+					},
+					error : function(jqXHR, textStatus, errorThrown) { 
+						var msg = jqXHR.responseText ? "\n" + jqXHR.responseText : "";
+						StatusMessageHandler.showError((errorThrown ? errorThrown + " error.\n" : "") + "Error trying to create file.\nPlease try again..." + msg);
+					},
+				});
+			}
+			else { //append file to html
+				var file_code = type == "css" ? '<link rel="stylesheet" href="' + file_name + '" />' : '<script language="javascript" type="text/javascript" src="' + file_name + '"></script>';
+				
+				var opts = {
+					remove: remove_handler
+				};
+				var li = addCodeEditorLayoutFileInSettings(file_name, ul, opts);
+				
+				//call handler
+				if (typeof add_handler == "function")
+					add_handler(elm, type, file_name, file_name, file_code);
+			}
 		}
 		else if (typeof file_name == "string")
 			StatusMessageHandler.showError("File name cannot be empty");

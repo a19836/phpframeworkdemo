@@ -1,6 +1,7 @@
 <?php
 include_once get_lib("org.phpframework.encryption.CryptoKeyHandler");
 include_once get_lib("org.phpframework.util.web.CookieHandler");
+include_once get_lib("org.phpframework.util.web.ClientRequestValidator");
 include_once get_lib("org.phpframework.util.MyArray");
 include_once get_lib("org.phpframework.util.HashCode");
 include_once get_lib("org.phpframework.util.text.TextShuffler");
@@ -1859,20 +1860,13 @@ if (!class_exists("UserUtil")) {
 			return $ip;
 		}
 		
-		public static function isSameReferer() {
-			$referer_domain = $_SERVER["HTTP_REFERER"] ? strtolower(parse_url($_SERVER["HTTP_REFERER"], PHP_URL_HOST)) : null;
-			$request_host = explode(":", $_SERVER["HTTP_HOST"]);
-			$request_host = $request_host[0];
-			return $referer_domain && $referer_domain == strtolower($request_host);
-		}
-		
 		public static function isLoggedIn($brokers, $session_id, $expired_time = false, $no_cache = false) {
 			if ($session_id) {
 				$status = true;
 				
 				//check HTTP Referrer bc of CSRF attacks
 				if (self::getConstantVariable("USER_SESSION_AUTHENTICATION_RESTRICTED_TO_SAME_REFERER_HOST"))
-					$status = self::isSameReferer();
+					$status = ClientRequestValidator::isSameReferer();
 				
 				if ($status) {
 					$user_session = self::getUserSessionsByConditions($brokers, array("session_id" => $session_id), null, null, $no_cache);

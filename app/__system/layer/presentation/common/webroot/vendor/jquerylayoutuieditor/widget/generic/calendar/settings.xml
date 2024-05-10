@@ -95,6 +95,7 @@
 								right: "listYear,listMonth,listWeek,listDay"
 							},
 							include_all_load_resources: 1,
+							include_lib: 1,
 							nav_links: 1,
 							selectable: 1,
 							select_mirror: 1,
@@ -102,7 +103,7 @@
 							editable: 1,
 							day_max_events: 1,
 							all_day_slot: 1,
-							week_numbers: 1,
+							week_numbers: 1
 						}
 					};
 					widget.attr("data-widget-props", JSON.stringify(props));

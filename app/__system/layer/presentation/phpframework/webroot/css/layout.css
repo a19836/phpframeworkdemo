@@ -2316,7 +2316,8 @@ body .layout-ui-editor > .menu-settings li.group.settings-widget .widget-propert
 	position:absolute;
 	right:20px;
 }
-body .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > .toggle-advanced-options {
+body .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > .toggle-advanced-options,
+  body .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties > ul > li.widget-property-calendar-resources-data-sets > ul > li.widget-property-calendar-resources-data-set > .toggle-advanced-options {
 	margin-left:10px;
 	margin-right:0;
 	padding:1px 0 0;

@@ -265,13 +265,25 @@ function toggleRow(elm, already_saved) {
 					html = '<select>';
 					var value_exists = false;
 					
-					if ($.isPlainObject(options) || $.isArray(options))
+					if ($.isPlainObject(options) || $.isArray(options)) {
+						//add empty value as the first value, otherwise it will be at the end
+						var exists_empty_option = $.isPlainObject(options) && options.hasOwnProperty("");
+						
+						if (exists_empty_option) {
+							value_exists = current_value == "";
+							html += '<option value=""' + (value_exists ? ' selected' : '') + '>' + options[""] + '</option>';
+						}
+						
+						//add other values
 						$.each(options, function(v, l) {
-							html += '<option value="' + v + '"' + (v == current_value ? ' selected' : '') + '>' + l + '</option>';
-							
-							if (v == current_value)
-								value_exists = true;
+							if (!exists_empty_option || v != "") {
+								html += '<option value="' + v + '"' + (v == current_value ? ' selected' : '') + '>' + l + '</option>';
+								
+								if (v == current_value)
+									value_exists = true;
+							}
 						});
+					}
 					
 					if (!value_exists)
 						html += '<option value="' + current_value + '" selected>' + current_value + '</option>';

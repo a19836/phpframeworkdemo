@@ -69,7 +69,12 @@
 				if (!html_element) {
 					widget.css({width: "200px", height: "200px"});
 					
-					var props = {load: "MyWidgetResourceLib.ChartHandler.loadChartResource"};
+					var props = {
+						load: "MyWidgetResourceLib.ChartHandler.loadChartResource",
+						graph: {
+							include_lib: 1
+						}
+					};
 					widget.attr("data-widget-props", JSON.stringify(props));
 					widget.attr("data-widget-resources-load", "");
 					widget.attr("data-widget-graph", "");

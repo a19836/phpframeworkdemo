@@ -33,6 +33,7 @@
 		<on_create_template_widget_func>someJSFunctionName</on_create_template_widget_func>
 		<on_open_settings_func>someJSFunctionName</on_open_settings_func>
 		<on_close_settings_func>someJSFunctionName</on_close_settings_func>
+		<on_resize_settings_func>someJSFunctionName</on_resize_settings_func>
 		<on_before_parse_widget_settings_func>someJSFunctionName</on_before_parse_widget_settings_func>
 		<on_after_parse_widget_settings_func>someJSFunctionName</on_after_parse_widget_settings_func>
 		<on_before_save_settings_field_func>someJSFunctionName</on_before_save_settings_field_func>

@@ -1231,6 +1231,18 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
   .layout-ui-editor > .menu-settings.menu-settings-html-tag .settings-properties .settings-property.html-tag select {
 	width:calc(100% - 80px);
 }
+.layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-id,
+   .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-classes,
+   .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-properties,
+   .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-widget,
+   .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-general,
+   .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-dimension,
+   .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-typography,
+   .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-decorations,
+   .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-events,
+   .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-extra {
+	display:none;
+}
 
 /* MENU WIDGETS - HTML TEXT */
 .layout-ui-editor > .menu-widgets .menu-widget.html-text:before,

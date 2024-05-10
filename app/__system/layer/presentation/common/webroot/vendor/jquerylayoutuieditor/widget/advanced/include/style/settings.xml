@@ -34,6 +34,11 @@
 			display:none;
 		}
 		
+		.layout-ui-editor > .menu-settings.menu-settings-style > .settings-properties .content .ace_editor {
+			width:100%;
+			height:200px;
+		}
+		
 		.layout-ui-editor > .menu-layers .group.group-style > ul {
 			display:none !important;
 		}
@@ -67,7 +72,7 @@
 			background-image:none !important; /* !important is bc of the css when .borders is active */
 			display:block;
 			color:inherit;
-			font-size:inherit;
+			font-size:12px;
 			font-family:inherit;
 			overflow:auto;
 			word-break:break-all;
@@ -100,6 +105,8 @@
 				
 				menu_widget.children(".properties").attr({
 					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.style.onOpenWidgetSettings",
+					"data-on-close-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.style.onCloseWidgetSettings",
+					"data-on-resize-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.style.onResizeWidgetSettings",
 					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.style.saveSettingsField",
 					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.style.parseSettings",
 				});
@@ -269,7 +276,30 @@
 			};
 			
 			me.onOpenWidgetSettings = function(widget, menu_settings) {
-				ui_creator.addMenuSettingsContextMenu( menu_settings.find(".settings-properties textarea") );
+				//ui_creator.addMenuSettingsContextMenu( menu_settings.find(".settings-properties textarea") );
+				
+				//convert content textarea to editor, but only after the code be loaded into the textarea. That why the createEditor method must be inside of the settimeout.
+				setTimeout(function() {
+					me.createEditor(widget, menu_settings.find(".settings-properties .settings-property.content textarea")[0]);
+				}, 300);
+			};
+			
+			me.onCloseWidgetSettings = function(widget, menu_settings) {
+				var editor = menu_settings.find(".settings-properties .settings-property.content").data("editor");
+				
+				if (editor) {
+					editor.destroy();
+					editor.container.remove();
+				}
+			};
+			
+			me.onResizeWidgetSettings = function(widget, menu_settings) {
+				if (ui_creator.isMenuSettingsOpened() && ui_creator.isMenuSettingsVisible()) {
+					var editor = menu_settings.find(".settings-properties .settings-property.content").data("editor");
+					
+					if (editor) 
+						editor.resize();
+				}
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {
@@ -281,6 +311,10 @@
 					if (sprop.hasClass("content")) {
 						var content = widget.children(".style-content");
 						var style = widget.children("style");
+						var editor = sprop.data("editor");
+						
+						if (editor)
+							field_value = editor.getValue();
 						
 						if (field_value != "") {
 							content.html( ("" + field_value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;").replace(/ /g, "&nbsp;") );
@@ -290,10 +324,81 @@
 							content.html("");
 							style.html("");
 						}
+						
+						if (editor)
+							ui_creator.saveMenuSettingsField(sprop);
 					}
 				}
 				
 				return status;
+			};
+			
+			me.createEditor = function(widget, textarea) {
+				if (ace) {
+					var parent = $(textarea).parent();
+					var editor = parent.data("editor");
+					
+					if (!editor) {
+						ace.require("ace/ext/language_tools");
+						var editor = ace.edit(textarea);
+						editor.setTheme("ace/theme/chrome");
+						editor.session.setMode("ace/mode/css");
+						editor.setAutoScrollEditorIntoView(true);
+						editor.setOption("minLines", 5);
+						editor.setOptions({
+							enableBasicAutocompletion: true,
+							enableSnippets: true,
+							enableLiveAutocompletion: false,
+						});
+						editor.setOption("wrap", true);
+						
+						var save = function() {
+							me.saveSettingsField(parent.parent().find(".settings-property.content").children()[0], widget, true);
+						};
+						
+						editor.commands.addCommand({
+							name: "saveFile",
+							bindKey: {
+								win: "Ctrl-S",
+								mac: "Command-S",
+								sender: "editor|cli"
+							},
+							exec: function(env, args, request) {
+								save();
+							},
+						});
+						
+						var on_change_timeout_id = null;
+						
+						//add on change event to disable auto save and convert when user is writing code.
+						editor.on("change", function(data, ed) {
+							if (on_change_timeout_id) {
+								clearTimeout(on_change_timeout_id);
+							}
+							
+							on_change_timeout_id = setTimeout(function() {
+								save();
+							}, 5000);
+						});
+						editor.on("blur", function(data, ed) {
+							if (on_change_timeout_id) {
+								clearTimeout(on_change_timeout_id);
+								
+								save();
+							}
+						});
+						
+						parent.find("textarea.ace_text-input").removeClass("ace_text-input"); //fixing problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.
+						/* If still this scrolling problem persists, please adds the following css:
+						.some_class textarea {
+							position:fixed !important;
+						}*/
+						
+						parent.data("editor", editor);
+					}
+						
+					return editor;
+				}
 			};
 			
 			function getCleanedHtmlCode(code) {

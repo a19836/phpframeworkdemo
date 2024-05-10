@@ -60,6 +60,10 @@
 			background:none;
 			cursor:pointer;
 		}
+		.layout-ui-editor > .menu-settings.menu-settings-script > .settings-properties .content .ace_editor {
+			width:100%;
+			height:200px;
+		}
 		
 		.layout-ui-editor > .menu-layers .group.group-script > ul {
 			display:none !important;
@@ -93,6 +97,7 @@
 			border:0 !important; /* !important is bc of the css when .borders is active */
 			background-image:none !important; /* !important is bc of the css when .borders is active */
 			background:rgba(255, 255, 255, .2);
+			font-size:12px;
 		}
 		.template-widget.template-widget-script > .script-file:empty:before {
 			content:"the javascript file if apply...";
@@ -110,7 +115,7 @@
 			background-image:none !important; /* !important is bc of the css when .borders is active */
 			display:block;
 			color:inherit;
-			font-size:inherit;
+			font-size:12px;
 			font-family:inherit;
 			overflow:auto;
 			word-break:break-all;
@@ -143,6 +148,8 @@
 				
 				menu_widget.children(".properties").attr({
 					"data-on-open-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.script.onOpenWidgetSettings",
+					"data-on-close-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.script.onCloseWidgetSettings",
+					"data-on-resize-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.script.onResizeWidgetSettings",
 					"data-on-after-save-settings-field-func": ui_creator.obj_var_name + ".menu_widgets_objs.script.saveSettingsField",
 					"data-on-before-parse-widget-settings-func": ui_creator.obj_var_name + ".menu_widgets_objs.script.parseSettings",
 				});
@@ -344,14 +351,42 @@
 					menu_settings.find(" > .settings-properties .settings-property.src").addClass("with-search-icon").append(icon);
 				}
 				
-				ui_creator.addMenuSettingsContextMenu( menu_settings.find(".settings-properties").find("input, textarea") );
+				ui_creator.addMenuSettingsContextMenu( menu_settings.find(".settings-properties").find("input") );
+				
+				//convert content textarea to editor, but only after the code be loaded into the textarea. That why the createEditor method must be inside of the settimeout.
+				setTimeout(function() {
+					me.createEditor(widget, menu_settings.find(".settings-properties .settings-property.content textarea")[0]);
+				}, 300);
+			};
+			
+			me.onCloseWidgetSettings = function(widget, menu_settings) {
+				var editor = menu_settings.find(".settings-properties .settings-property.content").data("editor");
+				
+				if (editor) {
+					editor.destroy();
+					editor.container.remove();
+				}
+			};
+			
+			me.onResizeWidgetSettings = function(widget, menu_settings) {
+				if (ui_creator.isMenuSettingsOpened() && ui_creator.isMenuSettingsVisible()) {
+					var editor = menu_settings.find(".settings-properties .settings-property.content").data("editor");
+					
+					if (editor) 
+						editor.resize();
+				}
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {
 				if (status) {
 					field = $(field);
 					var sprop = field.parent();
-					var props = ui_creator.getMenuSettingsProperties( sprop.parent().closest(".settings-properties") );
+					var settings_properties = sprop.parent().closest(".settings-properties");
+					var editor = settings_properties.find(".settings-property.content").data("editor");
+					var props = ui_creator.getMenuSettingsProperties(settings_properties);
+					
+					if (editor)
+						props["content"] = editor.getValue();
 					
 					var script_file = widget.children(".script-file");
 					var script_content = widget.children(".script-content");
@@ -385,6 +420,9 @@
 						}
 						else if (props["src"] != "" || props["content"] == "")
 							script_content.html("");
+						
+						if (editor)
+							ui_creator.saveMenuSettingsField(sprop);
 					}
 					else { //save the other props
 						widget.data("widget-props-" + field.attr("name"), field.val());
@@ -395,6 +433,74 @@
 				}
 				
 				return status;
+			};
+			
+			me.createEditor = function(widget, textarea) {
+				if (ace) {
+					var parent = $(textarea).parent();
+					var editor = parent.data("editor");
+					
+					if (!editor) {
+						ace.require("ace/ext/language_tools");
+						var editor = ace.edit(textarea);
+						editor.setTheme("ace/theme/chrome");
+						editor.session.setMode("ace/mode/javascript");
+						editor.setAutoScrollEditorIntoView(true);
+						editor.setOption("minLines", 5);
+						editor.setOptions({
+							enableBasicAutocompletion: true,
+							enableSnippets: true,
+							enableLiveAutocompletion: false,
+						});
+						editor.setOption("wrap", true);
+						
+						var save = function() {
+							me.saveSettingsField(parent.parent().find(".settings-property.content").children()[0], widget, true);
+						};
+						
+						editor.commands.addCommand({
+							name: "saveFile",
+							bindKey: {
+								win: "Ctrl-S",
+								mac: "Command-S",
+								sender: "editor|cli"
+							},
+							exec: function(env, args, request) {
+								save();
+							},
+						});
+						
+						var on_change_timeout_id = null;
+						
+						//add on change event to disable auto save and convert when user is writing code.
+						editor.on("change", function(data, ed) {
+							if (on_change_timeout_id) {
+								clearTimeout(on_change_timeout_id);
+							}
+							
+							on_change_timeout_id = setTimeout(function() {
+								save();
+							}, 5000);
+						});
+						editor.on("blur", function(data, ed) {
+							if (on_change_timeout_id) {
+								clearTimeout(on_change_timeout_id);
+								
+								save();
+							}
+						});
+						
+						parent.find("textarea.ace_text-input").removeClass("ace_text-input"); //fixing problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.
+						/* If still this scrolling problem persists, please adds the following css:
+						.some_class textarea {
+							position:fixed !important;
+						}*/
+						
+						parent.data("editor", editor);
+					}
+						
+					return editor;
+				}
 			};
 			
 			function getCleanedHtmlSrc(src) {

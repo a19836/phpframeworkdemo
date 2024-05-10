@@ -90,6 +90,7 @@
 			padding:0 !important; /* !important is bc of the css when .borders is active */
 			border:0 !important; /* !important is bc of the css when .borders is active */
 			background-image:none !important; /* !important is bc of the css when .borders is active */
+			font-size:12px;
 		}
 		.template-widget.template-widget-link > .link-file:empty:before {
 			content:"css file undefined";

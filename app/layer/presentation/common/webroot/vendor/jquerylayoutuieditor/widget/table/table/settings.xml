@@ -118,6 +118,7 @@
 						
 						for (var i = 0; i < rows; i++) {
 							var tr = ui_creator.createTemplateWidgetFromMenuWidgetTag("table-row", tbody, null);
+							tr.attr("data-widget-item", "");
 							
 							for (var j = 0; j < cols; j++) {
 								var col = ui_creator.createTemplateWidgetFromMenuWidgetTag("table-column", tr, null);
@@ -130,14 +131,14 @@
 						tr.attr("data-widget-loading", "");
 						
 						var td = ui_creator.createTemplateWidgetFromMenuWidgetTag("table-column", tr, null);
-						td.attr("colspan", cols).attr("class", "border-0 text-center text-muted small p-3").html("Loading message");
+						td.attr("colspan", cols).attr("class", td.attr("class") + " border-0 text-center text-muted small p-3").html("Loading message");
 						
 						//add empty row
 						var tr = ui_creator.createTemplateWidgetFromMenuWidgetTag("table-row", tbody, null);
 						tr.attr("data-widget-empty", "");
 						
 						var td = ui_creator.createTemplateWidgetFromMenuWidgetTag("table-column", tr, null);
-						td.attr("colspan", cols).attr("class", "border-0 text-center text-muted small p-3").html("Empty message");
+						td.attr("colspan", cols).attr("class", td.attr("class") + " border-0 text-center text-muted small p-3").html("Empty message");
 					}
 				}
 			};

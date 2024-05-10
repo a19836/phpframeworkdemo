@@ -35,7 +35,7 @@
 		}
 	]]></menu_css>
 	<template_css><![CDATA[
-		.template-widget[data-widget-matrix]::after {
+		.template-widget[data-widget-matrix]:empty::after {
 			content:"";
 			height:100%;
 			display:block;
