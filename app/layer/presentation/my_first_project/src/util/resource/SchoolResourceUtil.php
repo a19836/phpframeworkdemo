@@ -1,11 +1,11 @@
 <?php
 class SchoolResourceUtil {
-	
+
 	
 	/**
 	 * Get records from table: school.
 	 */
-	public static function getAll ($EVC, $limit = false, $start = false, $conditions = false, $conditions_type = false, $conditions_join = false, $sort = false, $no_cache = false) {
+	public static function getAll ($EVC, $limit = false, $start = false, $conditions = false, $conditions_type = false, $conditions_case = false, $conditions_join = false, $sort = false, $no_cache = false) {
 		$options = array(
 			"no_cache" => $no_cache,
 			"limit" => $limit,
@@ -15,6 +15,7 @@ class SchoolResourceUtil {
 		$data = array(
 			"conditions" => $conditions,
 			"conditions_type" => $conditions_type,
+			"conditions_case" => $conditions_case,
 			"conditions_join" => $conditions_join,
 		);
 		$result = $EVC->getBroker("soa")->callBusinessLogic("my_first_project", "SchoolResourceService.getAll", $data, $options);
@@ -51,13 +52,14 @@ class SchoolResourceUtil {
 	/**
 	 * Count records from table: school.
 	 */
-	public static function count ($EVC, $conditions = false, $conditions_type = false, $conditions_join = false, $no_cache = false) {
+	public static function count ($EVC, $conditions = false, $conditions_type = false, $conditions_case = false, $conditions_join = false, $no_cache = false) {
 		$options = array(
 			"no_cache" => $no_cache
 		);
 		$data = array(
 			"conditions" => $conditions,
 			"conditions_type" => $conditions_type,
+			"conditions_case" => $conditions_case,
 			"conditions_join" => $conditions_join,
 		);
 		$result = $EVC->getBroker("soa")->callBusinessLogic("my_first_project", "SchoolResourceService.count", $data, $options);
@@ -114,7 +116,7 @@ class SchoolResourceUtil {
 	/**
 	 * Get key-value pair list from table: school, where the key is the table primary key and the value is the table attribute label.
 	 */
-	public static function getAllOptions ($EVC, $limit = false, $start = false, $conditions = false, $conditions_type = false, $conditions_join = false, $sort = false, $no_cache = false) {
+	public static function getAllOptions ($EVC, $limit = false, $start = false, $conditions = false, $conditions_type = false, $conditions_case = false, $conditions_join = false, $sort = false, $no_cache = false) {
 		$options = array(
 			"no_cache" => $no_cache,
 			"limit" => $limit,
@@ -124,6 +126,7 @@ class SchoolResourceUtil {
 		$data = array(
 			"conditions" => $conditions,
 			"conditions_type" => $conditions_type,
+			"conditions_case" => $conditions_case,
 			"conditions_join" => $conditions_join,
 		);
 		$result = $EVC->getBroker("soa")->callBusinessLogic("my_first_project", "SchoolResourceService.getAllOptions", $data, $options);

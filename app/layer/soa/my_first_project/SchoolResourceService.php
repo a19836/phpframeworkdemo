@@ -13,6 +13,7 @@ class SchoolResourceService extends \soa\CommonService {
 		
 		$conditions = $data["conditions"];
 		$conditions_type = $data["conditions_type"];
+		$conditions_case = $data["conditions_case"];
 		$conditions_join = $data["conditions_join"];
 		
 		//prepare $conditions based in $conditions_type: starts_with or ends_with
@@ -20,6 +21,7 @@ class SchoolResourceService extends \soa\CommonService {
 			foreach ($conditions as $attribute_name => $attribute_value) {
 				$attribute_condition_type = is_array($conditions_type) ? $conditions_type[$attribute_name] : $conditions_type;
 				$attribute_operator = $attribute_condition_type == "starts_with" || $attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "like" : $attribute_condition_type;
+				$attribute_case = is_array($conditions_case) ? $conditions_case[$attribute_name] : $conditions_case;
 				$attribute_join = is_array($conditions_join) ? $conditions_join[$attribute_name] : $conditions_join;
 				
 				if ($attribute_operator && $attribute_operator != "=" && $attribute_operator != "equal") {
@@ -29,16 +31,28 @@ class SchoolResourceService extends \soa\CommonService {
 						foreach ($attribute_value as $v)
 							$conditions[$attribute_name][] = array(
 								"operator" => $attribute_operator,
-								"value" => ($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . $attribute_value . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : ""),
+								"value" => ($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . ($attribute_case == "insensitive" ? strtolower($v) : $v) . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : ""),
 							);
 					}
-					else
+					else {
+						if ($attribute_operator == "in" && $attribute_case == "insensitive" && is_array($attribute_value))
+							foreach ($attribute_value as $k => $v)
+								if (is_string($v))
+									$attribute_value[$k] = strtolower($v);
+						
 			    			$conditions[$attribute_name] = array(
 							"operator" => $attribute_operator,
 							"value" => $attribute_operator == "in" ? $attribute_value : (
-								($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . $attribute_value . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : "")
+								($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . ($attribute_case == "insensitive" ? strtolower($attribute_value) : $attribute_value) . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : "")
 							),
 						);
+					}
+					
+					if ($attribute_case == "insensitive") {
+						$conditions["lower($attribute_name)"] = $conditions[$attribute_name];
+						unset($conditions[$attribute_name]);
+						$attribute_name = "lower($attribute_name)";
+					}
 				}
 				
 				if (strtolower($attribute_join) == "or") {
@@ -110,6 +124,7 @@ class SchoolResourceService extends \soa\CommonService {
 		
 		$conditions = $data["conditions"];
 		$conditions_type = $data["conditions_type"];
+		$conditions_case = $data["conditions_case"];
 		$conditions_join = $data["conditions_join"];
 		
 		//prepare $conditions based in $conditions_type: starts_with or ends_with
@@ -117,6 +132,7 @@ class SchoolResourceService extends \soa\CommonService {
 			foreach ($conditions as $attribute_name => $attribute_value) {
 				$attribute_condition_type = is_array($conditions_type) ? $conditions_type[$attribute_name] : $conditions_type;
 				$attribute_operator = $attribute_condition_type == "starts_with" || $attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "like" : $attribute_condition_type;
+				$attribute_case = is_array($conditions_case) ? $conditions_case[$attribute_name] : $conditions_case;
 				$attribute_join = is_array($conditions_join) ? $conditions_join[$attribute_name] : $conditions_join;
 				
 				if ($attribute_operator && $attribute_operator != "=" && $attribute_operator != "equal") {
@@ -126,16 +142,28 @@ class SchoolResourceService extends \soa\CommonService {
 						foreach ($attribute_value as $v)
 							$conditions[$attribute_name][] = array(
 								"operator" => $attribute_operator,
-								"value" => ($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . $attribute_value . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : ""),
+								"value" => ($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . ($attribute_case == "insensitive" ? strtolower($v) : $v) . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : ""),
 							);
 					}
-					else
+					else {
+						if ($attribute_operator == "in" && $attribute_case == "insensitive" && is_array($attribute_value))
+							foreach ($attribute_value as $k => $v)
+								if (is_string($v))
+									$attribute_value[$k] = strtolower($v);
+						
 			    			$conditions[$attribute_name] = array(
 							"operator" => $attribute_operator,
 							"value" => $attribute_operator == "in" ? $attribute_value : (
-								($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . $attribute_value . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : "")
+								($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . ($attribute_case == "insensitive" ? strtolower($attribute_value) : $attribute_value) . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : "")
 							),
 						);
+					}
+					
+					if ($attribute_case == "insensitive") {
+						$conditions["lower($attribute_name)"] = $conditions[$attribute_name];
+						unset($conditions[$attribute_name]);
+						$attribute_name = "lower($attribute_name)";
+					}
 				}
 				
 				if (strtolower($attribute_join) == "or") {
@@ -249,6 +277,7 @@ class SchoolResourceService extends \soa\CommonService {
 						foreach ($filtered_attributes as $attr_name => $attr_value)
 							$data[$attr_name] = $attr_value;
 						
+						
 						$status = $this->getBusinessLogicLayer()->callBusinessLogic("my_first_project", "SchoolService.update", array(
 							"name" => $data['name'],
 							"school_id" => $data['school_id']
@@ -256,6 +285,7 @@ class SchoolResourceService extends \soa\CommonService {
 					}
 					
 					if ($status && $filtered_pks) {
+						
 						$status = $this->getBusinessLogicLayer()->callBusinessLogic("my_first_project", "SchoolService.updatePrimaryKeys", array(
 							"new_school_id" => $filtered_pks['new_school_id'],
 							"old_school_id" => $filtered_pks['old_school_id']
@@ -277,6 +307,7 @@ class SchoolResourceService extends \soa\CommonService {
 		
 		$conditions = $data["conditions"];
 		$conditions_type = $data["conditions_type"];
+		$conditions_case = $data["conditions_case"];
 		$conditions_join = $data["conditions_join"];
 		
 		//prepare $conditions based in $conditions_type: starts_with or ends_with
@@ -284,6 +315,7 @@ class SchoolResourceService extends \soa\CommonService {
 			foreach ($conditions as $attribute_name => $attribute_value) {
 				$attribute_condition_type = is_array($conditions_type) ? $conditions_type[$attribute_name] : $conditions_type;
 				$attribute_operator = $attribute_condition_type == "starts_with" || $attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "like" : $attribute_condition_type;
+				$attribute_case = is_array($conditions_case) ? $conditions_case[$attribute_name] : $conditions_case;
 				$attribute_join = is_array($conditions_join) ? $conditions_join[$attribute_name] : $conditions_join;
 				
 				if ($attribute_operator && $attribute_operator != "=" && $attribute_operator != "equal") {
@@ -293,16 +325,28 @@ class SchoolResourceService extends \soa\CommonService {
 						foreach ($attribute_value as $v)
 							$conditions[$attribute_name][] = array(
 								"operator" => $attribute_operator,
-								"value" => ($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . $attribute_value . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : ""),
+								"value" => ($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . ($attribute_case == "insensitive" ? strtolower($v) : $v) . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : ""),
 							);
 					}
-					else
+					else {
+						if ($attribute_operator == "in" && $attribute_case == "insensitive" && is_array($attribute_value))
+							foreach ($attribute_value as $k => $v)
+								if (is_string($v))
+									$attribute_value[$k] = strtolower($v);
+						
 			    			$conditions[$attribute_name] = array(
 							"operator" => $attribute_operator,
 							"value" => $attribute_operator == "in" ? $attribute_value : (
-								($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . $attribute_value . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : "")
+								($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . ($attribute_case == "insensitive" ? strtolower($attribute_value) : $attribute_value) . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : "")
 							),
 						);
+					}
+					
+					if ($attribute_case == "insensitive") {
+						$conditions["lower($attribute_name)"] = $conditions[$attribute_name];
+						unset($conditions[$attribute_name]);
+						$attribute_name = "lower($attribute_name)";
+					}
 				}
 				
 				if (strtolower($attribute_join) == "or") {

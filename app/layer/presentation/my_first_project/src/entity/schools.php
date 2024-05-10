@@ -10,8 +10,8 @@ $EVC->getCMSLayer()->getCMSSequentialLogicalActivityLayer()->addSequentialLogica
 	array(
 		"result_var_name" => "schools_group",
 		"action_type" => "group",
-		"condition_type" => "execute_if_condition",
-		"condition_value" => "\$_GET[\"resource\"] == \"schools\"",
+		"condition_type" => "execute_if_get_resource",
+		"condition_value" => "schools",
 		"action_description" => "Get records from table: school.",
 		"action_value" => array(
 			"group_name" => "",
@@ -32,6 +32,7 @@ $EVC->getCMSLayer()->getCMSSequentialLogicalActivityLayer()->addSequentialLogica
 							$_GET["page_items_start"],
 							$_GET["search_attrs"],
 							$_GET["search_types"],
+							$_GET["search_cases"],
 							$_GET["search_operators"],
 							$_GET["sort_attrs"]
 						),
@@ -83,8 +84,8 @@ $EVC->getCMSLayer()->getCMSSequentialLogicalActivityLayer()->addSequentialLogica
 	array(
 		"result_var_name" => "count_schools_group",
 		"action_type" => "group",
-		"condition_type" => "execute_if_condition",
-		"condition_value" => "\$_GET[\"resource\"] == \"count_schools\"",
+		"condition_type" => "execute_if_get_resource",
+		"condition_value" => "count_schools",
 		"action_description" => "Count records from table: school.",
 		"action_value" => array(
 			"group_name" => "",
@@ -103,6 +104,7 @@ $EVC->getCMSLayer()->getCMSSequentialLogicalActivityLayer()->addSequentialLogica
 							$EVC,
 							$_GET["search_attrs"],
 							$_GET["search_types"],
+							$_GET["search_cases"],
 							$_GET["search_operators"]
 						),
 						"include_file_path" => $EVC->getUtilPath("resource/SchoolResourceUtil"),
@@ -191,8 +193,8 @@ $EVC->getCMSLayer()->getCMSSequentialLogicalActivityLayer()->addSequentialLogica
 	array(
 		"result_var_name" => "school_group",
 		"action_type" => "group",
-		"condition_type" => "execute_if_condition",
-		"condition_value" => "\$_GET[\"resource\"] == \"school\"",
+		"condition_type" => "execute_if_get_resource",
+		"condition_value" => "school",
 		"action_description" => "Get a record from table: school.",
 		"action_value" => array(
 			"group_name" => "",
@@ -269,7 +271,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->addRegionHtml("Content", "<div class
 	<div class=\"card mb-4 text-left text-start\" id=\"widget_search_1_1\" data-widget-search data-widget-props=\"{&quot;dependent_widgets_id&quot;:[&quot;widget_list_1&quot;,&quot;widget_bottom_pagination_1_1&quot;]}\">
 		<div class=\"card-body\">
 			<label class=\"text-muted mb-1 small\">Filter by:</label>
-			<div class=\"input-group input-group-sm\" data-widget-search-input data-widget-props=\"{&quot;search_attrs&quot;:&quot;name&quot;,&quot;search_operator&quot;:&quot;or&quot;}\">
+			<div class=\"input-group input-group-sm\" data-widget-search-input data-widget-props=\"{&quot;search_attrs&quot;:&quot;school_id,name&quot;, &quot;search_operator&quot;:&quot;or&quot;}\">
 				<input class=\"form-control border border-secondary\" placeholder=\"Type to search...\" onkeyup=\"MyWidgetResourceLib.SearchHandler.onKeyUpSearchWidgetThroughInput(this, 1); return false;\" onblur=\"MyWidgetResourceLib.SearchHandler.refreshSearchWidgetThroughInput(this); return false;\"/>
 				<button class=\"btn btn-sm btn-outline-secondary text-nowrap\" onclick=\"MyWidgetResourceLib.SearchHandler.refreshSearchWidgetThroughInput(this, true); return false;\" title=\"Search\">
 					<i class=\"bi bi-search icon icon-search overflow-visible\"></i>
@@ -279,7 +281,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->addRegionHtml("Content", "<div class
 				</button>
 			</div></div>
 	</div>
-	<div class=\"mb-4 btn-group text-center\" id=\"widget_short_actions_1_1\" data-widget-short-actions>
+	<div class=\"mb-4 btn-group text-center mw-100\" id=\"widget_short_actions_1_1\" data-widget-short-actions style=\"overflow:auto;\">
 		<button class=\"btn btn-sm btn-outline-danger text-nowrap\" onclick=\"MyWidgetResourceLib.ShortActionHandler.executeResourceMultipleRemoveAction(this); return false;\" data-widget-button-multiple-remove data-widget-props=\"{&quot;empty_message&quot;:&quot;Please select some records first...&quot;,&quot;dependent_widgets_id&quot;:[&quot;widget_list_1&quot;]}\" data-widget-resources=\"{&quot;error_message&quot;:&quot;Error trying to remove. Please try again...&quot;,&quot;success_message&quot;:&quot;Removed successfully!&quot;,&quot;confirmation_message&quot;:&quot;Are you sure you want to continue?&quot;,&quot;name&quot;:&quot;delete_all_schools&quot;}\" title=\"Remove\">
 			<i class=\"bi bi-trash icon icon-remove mr-1 me-1 overflow-visible\"></i>Remove</button>
 		<button class=\"btn btn-sm btn-outline-success text-nowrap\" onclick=\"MyWidgetResourceLib.PopupHandler.openButtonAddPopup(this); return false;\" data-widget-button-add data-widget-popup-id=\"widget_popup_add_1\" title=\"Add\">
@@ -298,7 +300,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->addRegionHtml("Content", "<div class
 					<thead>
 						<tr>
 							<th class=\"border-0 pt-0 text-center text-muted fw-normal align-middle small\" data-widget-list-select-items-head>
-								<input value=\"on\" type=\"checkbox\" onclick=\"MyWidgetResourceLib.ListHandler.toggleListAttributeSelectCheckboxes(this); return true;\" data-widget-list-select-items-checkbox/>
+								<input type=\"checkbox\" onclick=\"MyWidgetResourceLib.ListHandler.toggleListAttributeSelectCheckboxes(this); return true;\" data-widget-list-select-items-checkbox/>
 							</th>
 							<th class=\"border-0 pt-0 text-muted fw-normal align-middle small text-nowrap\" data-widget-item-head onclick=\"MyWidgetResourceLib.ListHandler.sortListResource(this, event); return false;\" data-widget-item-attribute-name=\"school_id\">School Id<i class=\"bi bi-filter-left ml-1 ms-1 overflow-visible icon icon-sort text-center\"></i>
 								<i class=\"bi bi-sort-down-alt ml-1 ms-1 overflow-visible icon icon-sort-asc text-center\"></i>
@@ -319,7 +321,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->addRegionHtml("Content", "<div class
 					<tbody>
 						<tr data-widget-item>
 							<td class=\"border-0 text-center align-middle\" data-widget-item-selected-column>
-								<input value=\"on\" type=\"checkbox\" data-widget-item-selected-checkbox/>
+								<input type=\"checkbox\" data-widget-item-selected-checkbox/>
 							</td>
 							<td class=\"border-0 align-middle\" data-widget-item-column data-widget-item-attribute-name=\"school_id\">
 								<span class=\"form-control-plaintext\" data-widget-item-attribute-field-view data-widget-resource-value=\"{&quot;attribute&quot;:&quot;school_id&quot;}\"></span>
@@ -331,7 +333,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->addRegionHtml("Content", "<div class
 								<div class=\"btn-group justify-content-center align-items-center\">
 									<button class=\"btn btn-sm btn-primary text-nowrap\" data-widget-item-button-edit onclick=\"MyWidgetResourceLib.ItemHandler.openItemEditPopupById(this); return false;\" data-widget-popup-id=\"widget_popup_edit_1\" title=\"Edit\">
 										<i class=\"bi bi-pencil icon icon-edit mr-1 me-1 overflow-visible\"></i>Edit</button>
-									<button class=\"btn btn-sm btn-danger text-nowrap\" data-widget-item-button-remove onclick=\"MyWidgetResourceLib.ItemHandler.removeResourceItem(this); return false;\" title=\"Remove\">
+									<button class=\"btn btn-sm btn-danger text-nowrap float-left float-start\" data-widget-item-button-remove onclick=\"MyWidgetResourceLib.ItemHandler.removeResourceItem(this); return false;\" title=\"Remove\">
 										<i class=\"bi bi-trash icon icon-remove mr-1 me-1 overflow-visible\"></i>Remove</button>
 									<a class=\"btn btn-secondary btn-sm text-nowrap\" href=\"{$project_url_prefix}teachers?search_attrs[school_id]=#idx[school_id]#\">Teachers</a>
 									<a class=\"btn btn-secondary btn-sm text-nowrap\" href=\"{$project_url_prefix}students?search_attrs[school_id]=#idx[school_id]#\">Students</a>
@@ -379,7 +381,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->addRegionHtml("Content", "<div class
 					<button class=\"btn-close\" data-dismiss=\"modal\" data-bs-dismiss=\"modal\" aria-label=\"Close\" title=\"Close Popup\"></button>
 				</div>
 				<div class=\"modal-body\">
-					<form class=\"show-add-fields\" id=\"widget_popup_add_form_1\" method=\"post\" onsubmit=\"return false;\" data-widget-form data-widget-resources=\"{&quot;add&quot;:{&quot;error_message&quot;:&quot;Error trying to add. Please try again...&quot;,&quot;success_message&quot;:&quot;Added successfully!&quot;,&quot;name&quot;:&quot;insert_school&quot;}}\" data-widget-props=\"{&quot;pks_attrs_names&quot;:&quot;&quot;,&quot;dependent_widgets_id&quot;:[&quot;widget_list_1&quot;,&quot;widget_bottom_pagination_1_1&quot;],&quot;complete&quot;:{&quot;add&quot;:&quot;MyWidgetResourceLib.FormHandler.onAddPopupResourceItem&quot;}}\">
+					<form class=\"show-add-fields\" id=\"widget_popup_add_form_1\" method=\"post\" onsubmit=\"return false;\" data-widget-form data-widget-resources=\"{&quot;add&quot;:{&quot;error_message&quot;:&quot;Error trying to add. Please try again...&quot;,&quot;success_message&quot;:&quot;Added successfully!&quot;,&quot;name&quot;:&quot;insert_school&quot;}}\" data-widget-props=\"{&quot;pks_attrs_names&quot;:&quot;&quot;,&quot;dependent_widgets_id&quot;:[&quot;widget_list_1&quot;,&quot;widget_bottom_pagination_1_1&quot;],&quot;complete&quot;:{&quot;add&quot;:&quot;MyWidgetResourceLib.FormHandler.onAddPopupResourceItem&quot;},&quot;enter_key_press_button&quot;:&quot;[data-widget-item-button-add]&quot;}\">
 						<div class=\"row mb-3\" data-widget-item-column data-widget-item-attribute-name=\"name\">
 							<label class=\"col-sm-4 col-form-label\" data-widget-item-head>Name<span class=\"label-colon\">:</span>
 								<span class=\"text-danger label-mandatory\">*</span>
@@ -404,7 +406,7 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->addRegionHtml("Content", "<div class
 					<button class=\"btn-close\" data-dismiss=\"modal\" data-bs-dismiss=\"modal\" aria-label=\"Close\" title=\"Close Popup\"></button>
 				</div>
 				<div class=\"modal-body\">
-					<form id=\"widget_popup_edit_form_1\" method=\"post\" onsubmit=\"return false;\" data-widget-form data-widget-resources=\"{&quot;load&quot;:[{&quot;error_message&quot;:&quot;No record available...&quot;,&quot;name&quot;:&quot;school&quot;}],&quot;update&quot;:[{&quot;error_message&quot;:&quot;Error trying to update. Please try again...&quot;,&quot;success_message&quot;:&quot;Updated successfully!&quot;,&quot;name&quot;:&quot;update_school&quot;}],&quot;remove&quot;:[{&quot;error_message&quot;:&quot;Error trying to remove. Please try again...&quot;,&quot;success_message&quot;:&quot;Removed successfully!&quot;,&quot;confirmation_message&quot;:&quot;Are you sure you want to continue?&quot;,&quot;name&quot;:&quot;delete_school&quot;}]}\" data-widget-props=\"{&quot;pks_attrs_names&quot;:&quot;school_id&quot;,&quot;dependent_widgets_id&quot;:[&quot;widget_list_1&quot;],&quot;load&quot;:&quot;MyWidgetResourceLib.FormHandler.loadFormResource&quot;,&quot;complete&quot;:{&quot;update&quot;:&quot;MyWidgetResourceLib.FormHandler.onUpdatePopupResourceItem&quot;,&quot;remove&quot;:&quot;MyWidgetResourceLib.FormHandler.onRemovePopupResourceItem&quot;}}\">
+					<form id=\"widget_popup_edit_form_1\" method=\"post\" onsubmit=\"return false;\" data-widget-form data-widget-resources=\"{&quot;load&quot;:[{&quot;error_message&quot;:&quot;No record available...&quot;,&quot;name&quot;:&quot;school&quot;}],&quot;update&quot;:[{&quot;error_message&quot;:&quot;Error trying to update. Please try again...&quot;,&quot;success_message&quot;:&quot;Updated successfully!&quot;,&quot;name&quot;:&quot;update_school&quot;}],&quot;remove&quot;:[{&quot;error_message&quot;:&quot;Error trying to remove. Please try again...&quot;,&quot;success_message&quot;:&quot;Removed successfully!&quot;,&quot;confirmation_message&quot;:&quot;Are you sure you want to continue?&quot;,&quot;name&quot;:&quot;delete_school&quot;}]}\" data-widget-props=\"{&quot;pks_attrs_names&quot;:&quot;school_id&quot;,&quot;dependent_widgets_id&quot;:[&quot;widget_list_1&quot;],&quot;load&quot;:&quot;MyWidgetResourceLib.FormHandler.loadFormResource&quot;,&quot;complete&quot;:{&quot;update&quot;:&quot;MyWidgetResourceLib.FormHandler.onUpdatePopupResourceItem&quot;,&quot;remove&quot;:&quot;MyWidgetResourceLib.FormHandler.onRemovePopupResourceItem&quot;},&quot;enter_key_press_button&quot;:&quot;[data-widget-item-button-edit],[data-widget-item-button-update]&quot;}\">
 						<div class=\"row mb-3\" data-widget-item-column data-widget-item-attribute-name=\"school_id\">
 							<label class=\"col-sm-4 col-form-label\" data-widget-item-head>School Id<span class=\"label-colon\">:</span>
 							</label>
