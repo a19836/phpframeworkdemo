@@ -87,7 +87,7 @@ $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuth
 	</div>
 	<div class="license">
 		<label>License:</label>
-		<span>&lt;root path&gt;/' . basename($license_fp) . '</span>
+		<span>&lt;root path&gt;/' . basename($license_path) . '</span>
 		<div>' . $license_contents . '</div>
 	</div>
 </div>

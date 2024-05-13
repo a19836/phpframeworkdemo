@@ -102,7 +102,10 @@ body:not(.in_popup) #main_column {
 	color:#FC3C44;
 	font-style:normal;
 }
-.form_fields .form_field input { 
+.form_fields .form_field label a {
+	pointer-events:all;
+}
+.form_fields .form_field input:not([type=checkbox]) { 
 	width:100%; 
 	display:block;
 	font-family:inherit;
@@ -124,8 +127,8 @@ body:not(.in_popup) #main_column {
 	
 	--input-line-color:var(--link-color);
 }
-.form_fields .form_field input,
-  .form_fields .form_field input:focus {
+.form_fields .form_field input:not([type=checkbox]),
+  .form_fields .form_field input:not([type=checkbox]):focus {
 	/* Some IE browsers don't allow variables so we must hard coded the colors */
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#4070FF), to(#4070FF)), -webkit-gradient(linear, left top, left bottom, from(#e0e0e0), to(#e0e0e0));
 	background-image: -webkit-linear-gradient(#4070FF, #4070FF), -webkit-linear-gradient(#e0e0e0, #e0e0e0);
@@ -143,7 +146,7 @@ body:not(.in_popup) #main_column {
 	-webkit-box-shadow: none;
 	box-shadow: none;
 }
-.form_fields .form_field input:focus {
+.form_fields .form_field input:not([type=checkbox]):focus {
 	-webkit-background-size: 100% 2px, 100% 1px;
 	background-size: 100% 2px, 100% 1px;
 	outline: none;
@@ -152,48 +155,48 @@ body:not(.in_popup) #main_column {
 	transition-duration: .3s;
 }
 /* Must repeate this css otherwise the hover won't work in IE */
-.form_fields .form_field input:hover:not(:focus) {
+.form_fields .form_field input:not([type=checkbox]):hover:not(:focus) {
 	box-shadow:0 0 0.5rem 0.1rem #f7f7f7 inset;
 	box-shadow:0 0 0.5rem 0.1rem rgba(200, 200, 200, .2) inset;
 }
-.form_fields .form_field input:-webkit-autofill {
+.form_fields .form_field input:not([type=checkbox]):-webkit-autofill {
 	box-shadow:0 0 0 30px #fff inset, 0 0 0.5rem 0.2rem transparent !important; /* remove default shadow from Chrome browsers */
 	border-bottom: 2px solid #666;
 }
-.form_fields .form_field input:-webkit-autofill:focus {
+.form_fields .form_field input:not([type=checkbox]):-webkit-autofill:focus {
 	border-bottom: 2px solid var(--input-line-color);
 }
-.form_fields .form_field input ~ label {
+.form_fields .form_field input:not([type=checkbox]) ~ label {
 	top:.9rem;
 	left:.75rem;
 	font-size:inherit;
 	color:inherit;
 }
-.form_fields .form_field input:focus ~ label,
-  .form_fields .form_field input:not(:-ms-input-placeholder) ~ label {
+.form_fields .form_field input:not([type=checkbox]):focus ~ label,
+  .form_fields .form_field input:not([type=checkbox]):not(:-ms-input-placeholder) ~ label {
 	top:-.8rem;
 	left:0;
 	/*font-size:95%;*/
 	color:#aaa;
 }
 /* IE doesn't recognize this so we must repeat this in another line so it doesn't exclude the previous css statement */
-.form_fields .form_field input:not(:placeholder-shown) ~ label,
-  .form_fields .form_field input:-webkit-autofill ~ label { /* if empty value */
+.form_fields .form_field input:not([type=checkbox]):not(:placeholder-shown) ~ label,
+  .form_fields .form_field input:not([type=checkbox]):-webkit-autofill ~ label { /* if empty value */
 	top:-.8rem;
 	left:0;
 	/*font-size:95%;*/
 	color:#aaa;
 }
-/*.form_fields .form_field input:focus ~ label:after,
-  .form_fields .form_field input:not(:-ms-input-placeholder) ~ label:after {
+/*.form_fields .form_field input:not([type=checkbox]):focus ~ label:after,
+  .form_fields .form_field input:not([type=checkbox]):not(:-ms-input-placeholder) ~ label:after {
 	content:":";
 }
-.form_fields .form_field input:not(:placeholder-shown) ~ label:after,
-  .form_fields .form_field input:-webkit-autofill ~ label:after {
+.form_fields .form_field input:not([type=checkbox]):not(:placeholder-shown) ~ label:after,
+  .form_fields .form_field input:not([type=checkbox]):-webkit-autofill ~ label:after {
 	content:":";
 }*/
 
-.buttons { margin:50px auto 0; }
+.buttons { margin:20px auto 0; }
 .login.with_popup .buttons { margin-top:30px; text-align:center; }
 .buttons input { font-size:inherit; color:white; }
 .buttons input:hover { color:white; }

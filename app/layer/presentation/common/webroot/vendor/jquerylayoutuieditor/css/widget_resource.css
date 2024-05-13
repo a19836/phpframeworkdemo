@@ -832,10 +832,12 @@
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.widget-property-calendar-data-set-data-start-attribute-name > label,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.widget-property-calendar-data-set-data-end-attribute-name > label,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.widget-property-calendar-data-set-data-url-attribute-name > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.widget-property-calendar-data-set-data-resource-id-attribute-name > label,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.widget-property-calendar-data-set-data-group-id-attribute-name > label,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.widget-property-calendar-data-set-data-group-display-attribute-name > label,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul > li.widget-property-calendar-data-set-data-color-attribute-name > label,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-resources-data-sets > ul > li.widget-property-calendar-resources-data-set > ul > li.widget-property-calendar-resources-data-set-data-title-attribute-name > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-resources-data-sets > ul > li.widget-property-calendar-resources-data-set > ul > li.widget-property-calendar-resources-data-set-data-allow-events-attribute-name > label,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-resources-data-sets > ul > li.widget-property-calendar-resources-data-set > ul > li.widget-property-calendar-resources-data-set-data-color-attribute-name > label {
 	max-width:calc(100% - 140px);
 }
@@ -854,6 +856,7 @@
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets-settings > ul > li.widget-property-calendar-data-sets-data-start-attribute-name > label,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets-settings > ul > li.widget-property-calendar-data-sets-data-end-attribute-name > label,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets-settings > ul > li.widget-property-calendar-data-sets-data-url-attribute-name > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets-settings > ul > li.widget-property-calendar-data-sets-data-resource-id-attribute-name > label,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets-settings > ul > li.widget-property-calendar-data-sets-data-group-id-attribute-name > label,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets-settings > ul > li.widget-property-calendar-data-sets-data-group-display-attribute-name > label,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets-settings > ul > li.widget-property-calendar-data-sets-data-color-attribute-name > label {

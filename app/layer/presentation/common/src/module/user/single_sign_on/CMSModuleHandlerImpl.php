@@ -1,6 +1,8 @@
 <?php
 namespace CMSModule\user\single_sign_on;
 
+include_once get_lib("org.phpframework.util.web.CSRFValidator");
+
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
@@ -268,7 +270,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 									$session_id = $user_session["session_id"];
 									$show_captcha = false;
 									
-									$extra_flags = \UserUtil::getConstantVariable("USER_SESSION_COOKIES_EXTRA_FLAGS");
+									$extra_flags = \CSRFValidator::$COOKIES_EXTRA_FLAGS;
 									\CookieHandler::setSafeCookie($session_id_var_name, $session_id, 0, "/", $extra_flags); //this method already sets $_COOKIE[$session_id_var_name] = $session_id;
 									\CookieHandler::setSafeCookie($show_captcha_var_name, $show_captcha, 0, "/", $extra_flags);
 									

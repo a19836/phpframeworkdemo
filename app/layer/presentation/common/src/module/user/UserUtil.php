@@ -1,7 +1,7 @@
 <?php
 include_once get_lib("org.phpframework.encryption.CryptoKeyHandler");
 include_once get_lib("org.phpframework.util.web.CookieHandler");
-include_once get_lib("org.phpframework.util.web.ClientRequestValidator");
+include_once get_lib("org.phpframework.util.web.CSRFValidator");
 include_once get_lib("org.phpframework.util.MyArray");
 include_once get_lib("org.phpframework.util.HashCode");
 include_once get_lib("org.phpframework.util.text.TextShuffler");
@@ -1865,8 +1865,7 @@ if (!class_exists("UserUtil")) {
 				$status = true;
 				
 				//check HTTP Referrer bc of CSRF attacks
-				if (self::getConstantVariable("USER_SESSION_AUTHENTICATION_RESTRICTED_TO_SAME_REFERER_HOST"))
-					$status = ClientRequestValidator::isSameReferer();
+				$status = CSRFValidator::validateRequest();
 				
 				if ($status) {
 					$user_session = self::getUserSessionsByConditions($brokers, array("session_id" => $session_id), null, null, $no_cache);
@@ -1878,7 +1877,7 @@ if (!class_exists("UserUtil")) {
 						$user_session_control_var_name = self::getConstantVariable("USER_SESSION_CONTROL_VARIABLE_NAME");
 						$user_session_control_encryption_key = CryptoKeyHandler::hexToBin( self::getConstantVariable("USER_SESSION_CONTROL_ENCRYPTION_KEY_HEX") );
 						$user_session_control_expired_time = self::getConstantVariable("USER_SESSION_CONTROL_EXPIRED_TIME");
-						$extra_flags = self::getConstantVariable("USER_SESSION_COOKIES_EXTRA_FLAGS");
+						$extra_flags = CSRFValidator::$COOKIES_EXTRA_FLAGS;
 						
 						//code against xss and csfr attacks
 						if (in_array(strtolower($_SERVER['REQUEST_METHOD']), $user_session_control_methods)) {

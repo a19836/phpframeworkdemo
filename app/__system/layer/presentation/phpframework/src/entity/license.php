@@ -17,4 +17,4 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-class ClientRequestValidator { public static function isSameReferer() { $v06ba5136db = $_SERVER["HTTP_REFERER"] ? strtolower(parse_url($_SERVER["HTTP_REFERER"], PHP_URL_HOST)) : null; $v0e7ba85a30 = explode(":", $_SERVER["HTTP_HOST"]); $v0e7ba85a30 = $v0e7ba85a30[0]; return $v06ba5136db && $v06ba5136db == strtolower($v0e7ba85a30); } } ?>
+if (file_exists($license_path)) { header('Content-Type: text/txt'); readfile($license_path); } else { $msg = "No License found in '<root path>/" . (substr($license_path, strlen(CMS_PATH))) . "'!<br/>In order to use this software, you must get your license first! <br/>Otherwise you are not allowed to use this software!"; launch_exception(new Exception($msg)); } die(); ?>
