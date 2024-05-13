@@ -219,7 +219,7 @@ class CommonModuleTableExtraAttributesUtil {
 								
 								$this->xss_sanitize_lib_included = true;
 								
-								$data[$attr_name] = XssSanitizer::sanitizeHtml($data[$attr_name]);
+								$data[$attr_name] = XssSanitizer::sanitizeVariable($data[$attr_name]);
 							}
 							
 							$data[$attr_name] = addcslashes($data[$attr_name], "\\'");
