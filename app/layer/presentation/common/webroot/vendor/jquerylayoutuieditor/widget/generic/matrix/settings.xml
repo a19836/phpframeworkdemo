@@ -84,11 +84,26 @@
 					widget.attr("data-widget-resources-load", "");
 					widget.attr("data-widget-matrix", "");
 					
-					var loading_elm = $('<h2 class="border-0 rounded text-center text-white" data-widget-loading style="position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,.2); padding-top:30%; z-index:1;">Loading new data... Please wait a while...</h2>');
+					/*var loading_elm = $('<h2 class="border-0 rounded text-center text-white" data-widget-loading style="position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,.2); padding-top:30%; z-index:1;">Loading new data... Please wait a while...</h2>');
 					widget.append(loading_elm);
 					
 					//convert html to LayoutUIEditor widget
-					ui_creator.convertHtmlElementToWidget(loading_elm);
+					ui_creator.convertHtmlElementToWidget(loading_elm);*/
+					
+					var table_elm = $('<table style="width:100%;">'
+							+ '<thead>'
+								+ '<tr data-widget-matrix-head-row data-widget-props="{&quot;load&quot;:[&quot;MyWidgetResourceLib.MatrixHandler.loadMatrixHeadRowResource&quot;]}"><th class="border">Axis Y/Axis X</th><th class="border" data-widget-matrix-head-column>Axis X Column</th></tr>'
+							+ '</thead>'
+							+ '<tbody>'
+								+ '<tr data-widget-matrix-body-row data-widget-props="{&quot;load&quot;:[&quot;MyWidgetResourceLib.MatrixHandler.loadMatrixBodyRowResource&quot;]}"><th class="border" data-widget-matrix-head-column>Axis Y Column</th><td class="border" data-widget-matrix-body-column><div data-widget-item>Item Column</div></td></tr>'
+								+ '<tr data-widget-loading><td colspan="2" class="border-0 rounded text-center text-muted small p-3">Loading new data... Please wait a while...</td></tr>'
+								+ '<tr data-widget-empty style="display:none;"><td colspan="2" class="border-0 text-center text-muted small p-3">No elements available...</td></tr>'
+							+ '</tbody>'
+						+ '</table>');
+					widget.append(table_elm);
+					
+					//convert html to LayoutUIEditor widget
+					ui_creator.convertHtmlElementToWidget(table_elm);
 				}
 			};
 			
