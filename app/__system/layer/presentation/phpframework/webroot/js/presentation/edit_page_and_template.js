@@ -3457,6 +3457,12 @@ function reloadLayoutIframeFromSettings(iframe, data, iframe_html_to_parse) {
 	//console.log("inside reloadLayoutIframeFromSettings");
 	
 	try {
+		//close menu settings if open, otherwise we loose the reference for the selected widget
+		var PtlLayoutUIEditor = $(".code_layout_ui_editor .layout-ui-editor").data("LayoutUIEditor");
+		
+		if (PtlLayoutUIEditor && PtlLayoutUIEditor.isMenuSettingsOpened())
+			PtlLayoutUIEditor.getMenuSettings().find(" > .settings-info > .close").trigger("click");
+		
 		var iframe_parent = iframe.parent().closest(".code_layout_ui_editor");
 		var iframe_url = iframe.attr("edit_simple_template_layout_url");
 		//console.log(iframe);
