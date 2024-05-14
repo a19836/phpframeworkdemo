@@ -139,8 +139,13 @@
 			};
 			
 			me.onCreateTemplateWidget = function(widget, html_element) {
-				if (!html_element)
+				if (!html_element) {
 					widget.css({"min-height": "50px"});
+					
+					//This is because of the data-widget-popup-add popups (in the LayoutUIEditorWidgetResource) that hide by default all inputs, if don't have the "show-add-fields" class.
+					if (widget.parent().closest(".data-widget-popup-add").length > 0)
+						widget.addClass("show-add-fields");
+				}
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {

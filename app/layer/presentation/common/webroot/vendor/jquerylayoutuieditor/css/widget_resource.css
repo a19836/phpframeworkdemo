@@ -20,6 +20,10 @@
 	display:inline-block;
 }
 
+.layout-ui-editor > .menu-settings li.group.settings-widget .mandatory {
+	color:red;
+}
+
 /* MENU SETTINGS - WIDGET - GROUP */
 .layout-ui-editor > .menu-settings li.group.settings-widget li:last-child {
 	margin-bottom:0;
@@ -358,7 +362,6 @@
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-reference > .mandatory {
 	position:absolute;
 	margin:2px 0 0 2px;
-	color:var(--main-iframe-top-title-color);
 }
 
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-resource .widget-resource-value > label,
