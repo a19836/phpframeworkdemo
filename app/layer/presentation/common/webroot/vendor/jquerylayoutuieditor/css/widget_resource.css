@@ -808,6 +808,10 @@
 	display:block;
 	clear:both;
 }
+.layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > label,
+  .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-resources-data-sets > ul > li.widget-property-calendar-resources-data-set > label {
+	width:calc(100% - 60px);
+}
 .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-data-sets > ul > li.widget-property-calendar-data-set > ul,
   .layout-ui-editor > .menu-settings li.group.settings-widget .widget-properties .widget-property-calendar-resources-data-sets > ul > li.widget-property-calendar-resources-data-set > ul {
 	margin-top:5px;
