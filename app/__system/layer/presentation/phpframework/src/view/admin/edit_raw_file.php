@@ -32,7 +32,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 <!-- Layout UI Editor - Add Html/CSS/JS Beautify code -->
 <script src="' . $project_common_url_prefix . 'vendor/jsbeautify/js/lib/beautify.js"></script>
 <script src="' . $project_common_url_prefix . 'vendor/jsbeautify/js/lib/beautify-css.js"></script>
-<script src="' . $project_common_url_prefix . 'vendor/myhtmlbeautify/MyHtmlBeautify.js"></script>
+<script src="' . $project_url_prefix . 'lib/myhtmlbeautify/MyHtmlBeautify.js"></script>
 
 <!-- Add MD5 JS File -->
 <script src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>

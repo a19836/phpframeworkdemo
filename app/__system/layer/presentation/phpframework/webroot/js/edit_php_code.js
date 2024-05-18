@@ -487,7 +487,7 @@ function removeAllThatIsNotFoldersFromTree(ul, data, mytree_obj) {
 	});
 }
 
-function removeAllThatIsNotPagesFromTree(ul, data, mytree_obj) {
+function removeAllThatIsNotPresentationPagesFromTree(ul, data, mytree_obj) {
 	ul = $(ul);
 	
 	ul.find("i.file, i.view_file, i.template_file, i.util_file, i.controller_file, i.config_file, i.undefined_file, i.js_file, i.css_file, i.img_file, i.properties, i.block_file, i.module_file, .views_folder, .templates_folder, .template_folder, .utils_folder, .webroot_folder, .modules_folder, .blocks_folder, .configs_folder").each(function(idx, elm){
@@ -513,6 +513,26 @@ function removeAllThatIsNotPagesFromTree(ul, data, mytree_obj) {
 		project_li.append(entities_ul);
 		project_ul.remove();
 	});
+}
+
+function removeAllThatIsNotPagesFromTree(ul, data, mytree_obj) {
+	ul = $(ul);
+	var is_inside_of_webroot = ul.parent().closest('li[data-jstree=\'{"icon":"webroot_folder"}\']').length > 0;
+	
+	if (!is_inside_of_webroot) { //do not remove any webroot folders
+		ul.find("i.file, i.view_file, i.template_file, i.util_file, i.controller_file, i.config_file, i.undefined_file, i.js_file, i.css_file, i.img_file, i.properties, i.block_file, i.module_file, .views_folder, .templates_folder, .template_folder, .utils_folder, .modules_folder, .blocks_folder, .configs_folder").each(function(idx, elm){
+			$(elm).parent().parent().remove();
+		});
+		
+		ul.find("i.folder").each(function(idx, elm){
+			var label = $(elm).parent().children("label").text();
+			
+			if (label == "views" || label == "templates" || label == "utils" || label == "others" || label == "modules" || label == "blocks" || label == "configs") 
+				$(elm).parent().parent().remove();
+			//else if (label == "webroot") 
+			//	$(elm).parent().parent().addClass("jstree-last");
+		});
+	}
 }
 
 function removeAllThatIsNotAPossibleImageFromTree(ul, data, mytree_obj) {
@@ -2080,19 +2100,20 @@ function chooseIncludePageUrl(elm) {
 		
 		if (file_path) {
 			var bean_name = a.attr("bean_name");	
-			var pos = file_path.indexOf("/src/entity/");
-			var is_page = is_folder || i.hasClass("entity_file") || pos != -1;
+			var is_inside_of_webroot = file_path.indexOf("/webroot/") != -1;
+			var pos = file_path.indexOf(is_inside_of_webroot ? "/webroot/" : "/src/entity/");
+			var is_page = is_inside_of_webroot || is_folder || i.hasClass("entity_file") || pos != -1;
 			
-			if (!is_page || !file_path) 
-				alert("Selected item must be a valid page!\nPlease try again...");
+			if (!is_page) 
+				alert("Selected item must be a valid page or webroot file!\nPlease try again...");
 			else {
 				var project_path = getNodeProjectPath(node);
 				project_path = project_path && project_path.substr(project_path.length - 1) == "/" ? project_path.substr(0, project_path.length - 1) : project_path;
 				project_path = project_path == selected_project_id ? "" : project_path + "/";
 				
-				var entity_path = file_path.substr(pos + ("/src/entity/").length);//12 == /src/entity/
+				var entity_path = is_inside_of_webroot ? file_path.substr(pos + ("/webroot/").length) : file_path.substr(pos + ("/src/entity/").length);
 				
-				if (!is_folder) {
+				if (!is_folder && !is_inside_of_webroot) {
 					entity_path = entity_path.substr(entity_path.length - 4, 1) == "." ? entity_path.substr(0, entity_path.lastIndexOf(".")) : entity_path;
 					
 					var pos = entity_path.lastIndexOf("/");

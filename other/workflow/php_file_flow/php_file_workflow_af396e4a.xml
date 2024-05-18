@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tasks>
+	<settings>
+		<code_id><![CDATA[044c6445afc938fb9172c3460ecdc5f4]]></code_id>
+	</settings>
 	<task start="1">
 		<label><![CDATA[Define var de]]></label>
 		<id><![CDATA[6d1db313_21af4a96_724]]></id>

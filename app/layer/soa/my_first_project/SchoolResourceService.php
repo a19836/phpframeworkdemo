@@ -2,7 +2,7 @@
 include_once $vars["business_logic_modules_service_common_file_path"];
 
 class SchoolResourceService extends \soa\CommonService {
-
+	
 	
 	/**
 	 * Get parsed resource records from table: school.

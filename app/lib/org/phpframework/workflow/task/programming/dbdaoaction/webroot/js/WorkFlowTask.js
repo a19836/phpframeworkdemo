@@ -32,16 +32,42 @@ var DBDAOActionTaskPropertyObj = {
 		
 		LayerOptionsUtilObj.onLoadTaskProperties(task_html_elm, task_property_values);
 		
+		//console.log(task_property_values); 
 		task_property_values = assignObjectRecursively({}, task_property_values); //very important otherwise the convertArrayToSimpleSettings changes the attributes_type, conditions_type, xxx_type in myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id], which will then mess the convertion to code, bc we cannot types = options
+		
+		if (task_property_values["relations_type"] == "array" && (task_property_values["method_name"] == "findRelationshipObjects" || task_property_values["method_name"] == "countRelationshipObjects")) {
+			var new_relations = [];
+			var relations_to_export = ["attributes", "conditions", "keys"];
+			
+			$.each(task_property_values["relations"], function(idx, relation) {
+				var pos = relations_to_export.indexOf(relation["key"]);
+				
+				if (pos != -1 && relation["key_type"] == "string" && relation["items"]) {
+					var key = relations_to_export[pos];
+					task_property_values[key + "_type"] = "array";
+					
+					if ($.isPlainObject(relation["items"]) && relation["items"].hasOwnProperty("key"))
+						task_property_values[key] = [ relation["items"] ];
+					else
+						task_property_values[key] = relation["items"];
+				}
+				else
+					new_relations.push(relation);
+			});
+			task_property_values["relations"] = new_relations;
+		}
 		
 		task_property_values = DBDAOActionTaskPropertyObj.convertArrayToSimpleSettings(task_property_values, "attributes");
 		task_property_values = DBDAOActionTaskPropertyObj.convertArrayToSimpleSettings(task_property_values, "conditions");
-		task_property_values = DBDAOActionTaskPropertyObj.convertArrayToSimpleSettings(task_property_values, "relations");
+		task_property_values = DBDAOActionTaskPropertyObj.convertArrayToSimpleSettings(task_property_values, "keys");
 		task_property_values = DBDAOActionTaskPropertyObj.convertArrayToSimpleSettings(task_property_values, "parent_conditions");
+		
+		//console.log(task_property_values); 
 		
 		//PREPARE ATTRIBUTES
 		var attributes = task_property_values["attributes"];
 		var attributes_type_select = task_html_elm.find(".attrs > .attributes_type");
+		attributes_type_select.val(task_property_values["attributes_type"]); //must set this bc the attributes may be inited above
 		
 		if (task_property_values["attributes_type"] == "array") {
 			ArrayTaskUtilObj.onLoadArrayItems( task_html_elm.find(".attrs > .attributes").first(), attributes, "");
@@ -49,7 +75,7 @@ var DBDAOActionTaskPropertyObj = {
 		}
 		else if (task_property_values["attributes_type"] == "options") {
 			DBDAOActionTaskPropertyObj.loadSavedTableAttributesOptions( task_html_elm.find(".attrs > .attributes_options").first(), attributes);
-			attributes_type_select.val("options");
+			//attributes_type_select.val("options"); //this was set above
 		}
 		else {
 			attributes = attributes ? "" + attributes + "" : "";
@@ -61,6 +87,7 @@ var DBDAOActionTaskPropertyObj = {
 		//PREPARE CONDITIONS
 		var conditions = task_property_values["conditions"];
 		var conditions_type_select = task_html_elm.find(".conds > .conditions_type");
+		conditions_type_select.val(task_property_values["conditions_type"]); //must set this bc the conditions may be inited above
 		
 		if (task_property_values["conditions_type"] == "array") {
 			ArrayTaskUtilObj.onLoadArrayItems( task_html_elm.find(".conds > .conditions").first(), conditions, "");
@@ -68,7 +95,7 @@ var DBDAOActionTaskPropertyObj = {
 		}
 		else if (task_property_values["conditions_type"] == "options") {
 			DBDAOActionTaskPropertyObj.loadSavedTableAttributesOptions( task_html_elm.find(".conds > .conditions_options").first(), conditions);
-			conditions_type_select.val("options");
+			//conditions_type_select.val("options"); //this was set above
 		}
 		else {
 			conditions = conditions ? "" + conditions + "" : "";
@@ -77,17 +104,34 @@ var DBDAOActionTaskPropertyObj = {
 		}
 		DBDAOActionTaskPropertyObj.onChangeConditionsType(conditions_type_select[0]);
 		
+		//PREPARE KEYS
+		var keys = task_property_values["keys"];
+		var keys_type_select = task_html_elm.find(".kys > .keys_type");
+		keys_type_select.val(task_property_values["keys_type"]); //must set this bc the keys may be inited above
+		
+		if (task_property_values["keys_type"] == "array") {
+			ArrayTaskUtilObj.onLoadArrayItems( task_html_elm.find(".kys > .keys").first(), keys, "");
+			task_html_elm.find(".kys > .keys_code").val("");
+		}
+		else if (task_property_values["keys_type"] == "options") {
+			DBDAOActionTaskPropertyObj.loadSavedTableAttributesOptions( task_html_elm.find(".kys > .keys_options").first(), keys);
+			//keys_type_select.val("options"); //this was set above
+		}
+		else {
+			keys = keys ? "" + keys + "" : "";
+			keys = task_property_values["keys_type"] == "variable" && keys.trim().substr(0, 1) == '$' ? keys.trim().substr(1) : keys;
+			task_html_elm.find(".kys > .keys_code").val(keys);
+		}
+		DBDAOActionTaskPropertyObj.onChangeKeysType(task_html_elm.find(".kys > .keys_type")[0]);
+		
 		//PREPARE REL_ELM
 		var relations = task_property_values["relations"];
 		var relations_type_select = task_html_elm.find(".rels > .relations_type");
+		relations_type_select.val(task_property_values["relations_type"]); //must set this bc the relations may be changed above
 		
 		if (task_property_values["relations_type"] == "array") {
 			ArrayTaskUtilObj.onLoadArrayItems( task_html_elm.find(".rels > .relations").first(), relations, "");
 			task_html_elm.find(".rels > .relations_code").val("");
-		}
-		else if (task_property_values["relations_type"] == "options") {
-			DBDAOActionTaskPropertyObj.loadSavedTableAttributesOptions( task_html_elm.find(".rels > .relations_options").first(), relations);
-			relations_type_select.val("options");
 		}
 		else {
 			relations = relations ? "" + relations + "" : "";
@@ -155,6 +199,21 @@ var DBDAOActionTaskPropertyObj = {
 		else
 			task_html_elm.find(".conds > .conditions, .conds > .conditions_options").remove();
 		
+		//prepare keys
+		if (task_html_elm.find(".kys > .keys_type").val() == "array")
+			task_html_elm.find(".kys > .keys_code, .kys > .keys_options").remove();
+		else if (task_html_elm.find(".kys > .keys_type").val() == "options")  { 
+			task_html_elm.find(".kys > .keys_type").val("array");
+			
+			//convert .keys to array
+			var items = DBDAOActionTaskPropertyObj.convertSimpleSettingsToArray(task_html_elm, task_html_elm.find(".kys > .keys_options") );
+			ArrayTaskUtilObj.onLoadArrayItems( task_html_elm.find('.kys > .keys').first(), items, "");
+			
+			task_html_elm.find(".kys > .keys_code, .kys > .keys_options").remove();
+		}
+		else
+			task_html_elm.find(".kys > .keys, .kys > .keys_options").remove();
+		
 		//prepare relations
 		if (task_html_elm.find(".rels > .relations_type").val() == "array")
 			task_html_elm.find(".rels > .relations_code, .rels > .relations_options").remove();
@@ -201,6 +260,71 @@ var DBDAOActionTaskPropertyObj = {
 			var default_method_obj_str = BrokerOptionsUtilObj.getDefaultBroker(DBDAOActionTaskPropertyObj.brokers_options);
 			if (!task_property_values["method_obj"] && default_method_obj_str)
 				task_property_values["method_obj"] = default_method_obj_str;
+			
+			//prepare relations with attributes, conditions and keys attributes
+			if ((task_property_values["method_name"] == "findRelationshipObjects" || task_property_values["method_name"] == "countRelationshipObjects") && task_property_values["relations_type"] == "array") {
+				//prepare items to add
+				var items_to_add = [];
+				var items_names = ["attributes", "conditions", "keys"];
+				
+				for (var i = 0; i < items_names.length; i++) {
+					var key = items_names[i];
+					
+					if (task_property_values[key + "_type"] == "array")
+						items_to_add.push({
+							key: key,
+							key_type: "string",
+							items: task_property_values[key]
+						});
+					else if (task_property_values[key])
+						items_to_add.push({
+							key: key,
+							key_type: "string",
+							value: task_property_values[key],
+							value_type: task_property_values[key + "_type"]
+						});
+				}
+				
+				//prepare relations
+				if (!$.isArray(task_property_values["relations"]) && !$.isPlainObject(task_property_values["relations"])) {
+					task_property_values["relations_type"] = "array";
+					task_property_values["relations"] = {};
+				}
+				
+				//add items_to_add to relations
+				if (items_to_add.length > 0) {
+					if ($.isPlainObject(task_property_values["relations"])) {
+						var max_index = 0;
+						
+						for (var idx in task_property_values["relations"])
+							if (idx > max_index)
+								max_index = idx;
+						
+						max_index++;
+						
+						for (var i = 0; i < items_to_add.length; i++)
+							task_property_values["relations"][max_index + i] = items_to_add[i];
+						
+					}
+					else if ($.isArray(task_property_values["relations"])) {
+						for (var i = 0; i < items_to_add.length; i++)
+							task_property_values["relations"].push(items_to_add[i]);
+					}
+				}
+				
+				//remove items_names from task_property_values, since they were added to the relations
+				for (var i = 0; i < items_names.length; i++) {
+					var key = items_names[i];
+					
+					task_property_values[key] = null;
+					delete task_property_values[key];
+					
+					task_property_values[key + "_type"] = null;
+					delete task_property_values[key + "_type"];
+				}
+				
+				//console.log(task_property_values);
+			}
 		}
 	},
 	
@@ -280,12 +404,22 @@ var DBDAOActionTaskPropertyObj = {
 			if (method_name == "findObjectsColumnMax") //remove all checked boxes for attributes on findObjectsColumnMax, bc only 1 column can be selected.
 				$(checkboxes[i]).addClass("task_property_field");
 			else
-				$(checkboxes[i]).parent().find("input.attr_alias:visible, input.attr_value:visible").addClass("task_property_field");
+				$(checkboxes[i]).parent().find("input.attr_alias:visible, input.attr_value:visible, select.attr_operator:visible").addClass("task_property_field");
 		}
 		
 		//get html item to plain object
 		var obj = FormFieldsUtilObj.getFormSettingsDataSettings(html_elm);
-		//console.log(obj);
+		
+		//simplify conditions with operator "="
+		if (html_elm.is(".conditions_options, .parent_conditions_options") && $.isPlainObject(obj)) {
+			for (var attr_name in obj) {
+				var attr_obj = obj[attr_name];
+				
+				if ($.isPlainObject(attr_obj) && attr_obj.hasOwnProperty("value") && (!attr_obj.hasOwnProperty("operator") || !attr_obj["operator"] || attr_obj["operator"] == "="))
+					obj[attr_name] = attr_obj["value"];
+			}
+			//console.log(obj);
+		}
 		
 		//convert plain object to array
 		return FormFieldsUtilObj.convertFormSettingsObjectToArray(obj);
@@ -295,6 +429,29 @@ var DBDAOActionTaskPropertyObj = {
 		if (task_property_values[key + "_type"] == "array" && (
 			$.isPlainObject(task_property_values[key]) || $.isArray(task_property_values[key])
 		)) {
+			//convert simple array to an associative array, but only if is a simple array like: ["attr name x", "attr name y"]
+			if (key == "attributes") {
+				var obj = FormFieldsUtilObj.convertFormSettingsDataArrayToSettings(task_property_values[key]);
+				
+				if ($.isPlainObject(obj)) {
+					var new_values = {};
+					var changed = false;
+					
+					for (var k in obj) {
+						if ($.isNumeric(k) && typeof obj[k] == "string") {
+							k = obj[k];
+							obj[k] = "";
+							changed = true;
+						}
+						
+						new_values[k] = obj[k];
+					}
+					
+					if (changed)
+						task_property_values[key] = FormFieldsUtilObj.convertFormSettingsObjectToArray(new_values);
+				}
+			}
+			
 			var obj = FormFieldsUtilObj.convertFormSettingsDataArrayToSettings(task_property_values[key]);
 			var arr = FormFieldsUtilObj.convertFormSettingsObjectToArray(obj);
 			
@@ -303,6 +460,15 @@ var DBDAOActionTaskPropertyObj = {
 			$.each(task_property_values[key], function(i, item) {
 				if (item["value"] == null && item["value_type"] == "string") //uniform the value so we can compare it with the arr variable
 					item["value"] = "";
+				else if (item.hasOwnProperty("items") && $.isPlainObject(item["items"])) {
+					var new_items = [];
+					
+					$.each(item["items"], function(j, sub_item) {
+						new_items.push(sub_item);
+					});
+					
+					item["items"] = new_items;
+				}
 				
 				new_arr_data.push(item);
 			});
@@ -311,10 +477,12 @@ var DBDAOActionTaskPropertyObj = {
 				task_property_values[key + "_type"] = "options";
 				task_property_values[key] = obj;
 			}
-			/*else {
-				console.log(JSON.stringify(arr));
-				console.log(JSON.stringify(new_arr_data));
-			}*/
+			else {
+				//console.log(arr);
+				//console.log(new_arr_data);
+				//console.log(JSON.stringify(arr));
+				//console.log(JSON.stringify(new_arr_data));
+			}
 		}
 		
 		return task_property_values;
@@ -324,7 +492,7 @@ var DBDAOActionTaskPropertyObj = {
 		var method_name = $(elm).val();
 		var task_html_elm = $(elm).parent().parent();
 		
-		task_html_elm.children(".get_automatically, .table_name, .attrs, .conds, .rels, .parent_conds").hide();
+		task_html_elm.children(".get_automatically, .table_name, .attrs, .conds, .keys, .rels, .parent_conds").hide();
 		task_html_elm.removeClass("insertObject findObjectsColumnMax updateObject findObjects deleteObject countObjects findRelationshipObjects countRelationshipObjects");
 		
 		if (method_name) {
@@ -342,7 +510,7 @@ var DBDAOActionTaskPropertyObj = {
 			else if (method_name == "deleteObject" || method_name == "countObjects")
 				task_html_elm.children(".conds").show();
 			else if (method_name == "findRelationshipObjects" || method_name == "countRelationshipObjects")
-				task_html_elm.children(".rels, .parent_conds").show();
+				task_html_elm.children(".attrs, .conds, .keys, .rels, .parent_conds").show();
 		}
 	},
 	
@@ -354,8 +522,20 @@ var DBDAOActionTaskPropertyObj = {
 		this.onChangeParametersType(elm, "conditions");
 	},
 	
+	onChangeKeysType : function(elm) {
+		this.onChangeParametersType(elm, "keys");
+	},
+	
 	onChangeRelElmType : function(elm) {
 		this.onChangeParametersType(elm, "relations");
+		
+		elm = $(elm);
+		var task_html_elm = elm.parent().closest(".db_dao_action_task_html");
+		
+		if (elm.val() != "array")
+			task_html_elm.children(".attrs, .conds, .kys").hide();
+		else
+			task_html_elm.children(".attrs, .conds, .kys").show();
 	},
 	
 	onChangeParentConditionsType : function(elm) {
@@ -447,27 +627,32 @@ var DBDAOActionTaskPropertyObj = {
 			var method_name = task_html_elm.find(".method_name select").val();
 			var attributes_options = task_html_elm.find(".attrs > .attributes_options");
 			var conditions_options = task_html_elm.find(".conds > .conditions_options");
+			var keys_options = task_html_elm.find(".kys > .keys_options");
 			var relations_options = task_html_elm.find(".rels > .relations_options");
 			var parent_conditions_options = task_html_elm.find(".parent_conds > .parent_conditions_options");
 			
 			DBDAOActionTaskPropertyObj.loadNewTableAttributesOptions(attributes_options, attributes, method_name);
 			DBDAOActionTaskPropertyObj.loadNewTableAttributesOptions(conditions_options, attributes, method_name);
+			DBDAOActionTaskPropertyObj.loadNewTableAttributesOptions(keys_options, null, method_name);
 			DBDAOActionTaskPropertyObj.loadNewTableAttributesOptions(relations_options, null, method_name);
 			DBDAOActionTaskPropertyObj.loadNewTableAttributesOptions(parent_conditions_options, null, method_name);
 			
 			//prepare fields types
 			var attributes_type = task_html_elm.find(".attrs > .attributes_type");
 			var conditions_type = task_html_elm.find(".conds > .conditions_type");
+			var keys_type = task_html_elm.find(".kys > .keys_type");
 			var relations_type = task_html_elm.find(".rels > .relations_type");
 			var parent_conditions_type = task_html_elm.find(".parent_conds > .parent_conditions_type");
 			
 			attributes_type.val("options");
 			conditions_type.val("options");
+			keys_type.val("options");
 			relations_type.val("options");
 			parent_conditions_type.val("options");
 			
 			DBDAOActionTaskPropertyObj.onChangeAttributesType(attributes_type[0]);
 			DBDAOActionTaskPropertyObj.onChangeConditionsType(conditions_type[0]);
+			DBDAOActionTaskPropertyObj.onChangeKeysType(keys_type[0]);
 			DBDAOActionTaskPropertyObj.onChangeRelElmType(relations_type[0]);
 			DBDAOActionTaskPropertyObj.onChangeParentConditionsType(parent_conditions_type[0]);
 		}
@@ -526,6 +711,7 @@ var DBDAOActionTaskPropertyObj = {
 				
 				//prepare html
 				var add_icon = table_items_elm.children(".add");
+				var add_icon_parent = add_icon.parent();
 				
 				for (var item_name in table_items_options) {
 					var item_value = table_items_options[item_name];
@@ -536,6 +722,7 @@ var DBDAOActionTaskPropertyObj = {
 						value : item_value,
 						alias : item_value,
 					};
+					
 					this.addTableAttributeOption(add_icon[0], item_settings);
 				}
 			}
@@ -547,29 +734,99 @@ var DBDAOActionTaskPropertyObj = {
 	addTableAttributeOption : function(elm, settings) {
 		var name = settings["name"];
 		
-		if (name) {
+		if (name || $.isNumeric(name)) { //.keys will have the [name] with numeric fields from loadSavedTableAttributesOptions method.
 			elm = $(elm);
 			var p = elm.parent();
 			var checked = settings.hasOwnProperty("checked") ? settings["checked"] : false;
 			var value = settings.hasOwnProperty("value") ? settings["value"] : "";
 			var alias = settings.hasOwnProperty("alias") ? settings["alias"] : "";
+			var operator = null;
 			var html = '';
+			
+			if ($.isPlainObject(value)) {
+				operator = value["operator"];
+				value = value["value"];
+			}
 			
 			var n = name != null ? ("" + name).replace(/"/g, "&quot;") : "";
 			var v = value != null ? ("" + value).replace(/"/g, "&quot;") : "";
 			var a = alias != null ? ("" + alias).replace(/"/g, "&quot;") : "";
 			
+			var operators = ["=", "!=", ">", ">=", "<=", "like", "not like", "in", "not in", "is", "is not"];
+			var operator_options = "";
+			
+			for (var i = 0, t = operators.length; i < t; i++)
+				operator_options += '<option' + (operator && operator == operators[i] ? ' selected' : '') + '>' + operators[i] + '</option>';
+			
 			if (p.is(".conditions_options, .parent_conditions_options")) {
 				html = '<li ' + (checked ? ' class="attr_activated"' : '') + '>'
 					+ '	<input class="attr_active" type="checkbox" onclick="DBDAOActionTaskPropertyObj.activateDBActionTableAttributeOption(this)" ' + (checked ? 'checked' : '') + '>'
 					+ '	<label>' + name + '</label>'
-					+ '	<input class="attr_value" type="text" name="' + n + '" value="' + v + '" PlaceHolder="Write the value here">'
+					+ '	<select class="attr_operator" name="' + n + '[operator]">'
+					+ operator_options
+					+ '	</select>'
+					+ '	<input class="attr_value" type="text" name="' + n + '[value]" value="' + v + '" PlaceHolder="Write the value here">'
 					+ '	<span class="icon add_variable" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" input_selector=".attr_value">Add Variable</span>'
 					+ '	<span class="icon delete" title="Remove item" onClick="$(this).parent().remove();"></span>'
 					+ '</li>';
 			}
-			else if (p.is(".relations_options")) {
-				html = ''; //TODO
+			else if (p.is(".keys_options")) {
+				var idx = 0;
+				var lis = p.children("li[data-idx]");
+				
+				for (var i = 0, t = lis.length; i < t; i++) {
+					var li_idx = parseInt(lis[i].getAttribute("data-idx"));
+					
+					if (li_idx >= idx)
+						idx = li_idx + 1;
+				}
+				
+				settings = settings.hasOwnProperty("value") ? settings["value"] : {};
+				var code_exists = false;
+				
+				for (var sn in settings) {
+					var sv = settings[sn];
+					
+					if (sv.indexOf("<?") != -1) {
+						code_exists = true;
+						settings[sn] = settings[sn].replace(/<\?(=|php|)\s*/ig, "").replace(/\s*\?>/g, "");
+					}
+				}
+				
+				if (code_exists)
+					myWFObj.getTaskFlowChart().StatusMessage.showError("There was a problem converting some settings, since they contain pure programming code. Please choose the 'array' type instead.");
+				
+				var ptable = settings.hasOwnProperty("ptable") ? settings["ptable"] : "";
+				var pcolumn = settings.hasOwnProperty("pcolumn") ? settings["pcolumn"] : (name && !$.isNumeric(name) ? name : "");
+				var ftable = settings.hasOwnProperty("ftable") ? settings["ftable"] : "";
+				var fcolumn = settings.hasOwnProperty("fcolumn") ? settings["fcolumn"] : "";
+				var column_join = settings.hasOwnProperty("join") ? settings["join"].toLowerCase() : "";
+				
+				if (ptable)
+					pcolumn = ptable + "." + pcolumn;
+				
+				if (ftable)
+					fcolumn = ftable + "." + fcolumn;
+				
+				pcolumn = pcolumn != null ? ("" + pcolumn).replace(/"/g, "&quot;") : "";
+				fcolumn = fcolumn != null ? ("" + fcolumn).replace(/"/g, "&quot;") : "";
+				
+				html = '<li ' + (checked ? ' class="attr_activated"' : '') + ' data-idx="' + idx + '">'
+					+ '	<input class="attr_active" type="checkbox" onclick="DBDAOActionTaskPropertyObj.activateDBActionTableAttributeOption(this)" ' + (checked ? 'checked' : '') + '>'
+					+ '	<input class="attr_value" type="text" name="' + idx + '[pcolumn]" value="' + pcolumn + '" PlaceHolder="Parent table.column">'
+					+ '	<select class="attr_operator" name="' + idx + '[operator]">'
+					+ operator_options
+					+ '	</select>'
+					+ '	<input class="attr_value" type="text" name="' + idx + '[fcolumn]" value="' + fcolumn + '" PlaceHolder="Child table.column">'
+					+ '	<input class="attr_value column_value" type="text" name="' + idx + '[value]" value="' + v + '">'
+					+ '	<span class="icon add_variable" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" input_selector=".attr_value.column_value">Add Variable</span>'
+					+ '	<select class="attr_operator" name="' + idx + '[join]">'
+					+ '		<option' + (column_join == "inner" ? " selected" : "") + '>inner</option>'
+					+ '		<option' + (column_join == "left" ? " selected" : "") + '>left</option>'
+					+ '		<option' + (column_join == "right" ? " selected" : "") + '>right</option>'
+					+ '	</select>'
+					+ '	<span class="icon delete" title="Remove item" onClick="$(this).parent().remove();"></span>'
+					+ '</li>';
 			}
 			else {
 				html = '<li ' + (checked ? ' class="attr_activated"' : '') + '>'

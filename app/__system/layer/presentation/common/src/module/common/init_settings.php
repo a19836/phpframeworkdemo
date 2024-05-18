@@ -6,7 +6,9 @@ include_once $EVC->getModulePath("common/CommonModuleTableExtraAttributesSetting
 include $EVC->getConfigPath("config");
 
 //Set common webroot path for the ui editors in CommonModuleSettingsUI::getLayoutUIEditorMenuWidgetsHtml
+CommonModuleSettingsUI::$WEBROOT_PATH = $EVC->getWebrootPath();
 CommonModuleSettingsUI::$COMMON_WEBROOT_PATH = $EVC->getWebrootPath($common_project_name);
+CommonModuleSettingsUI::$WEBROOT_URL = $project_url_prefix;
 CommonModuleSettingsUI::$COMMON_WEBROOT_URL = $project_common_url_prefix;
 CommonModuleSettingsUI::$LAYOUT_UI_EDITOR_PRESENTATION_COMMON_WIDGETS_FOLDER_PATH = $EVC->getViewsPath() . "presentation/common_editor_widget/";
 CommonModuleSettingsUI::$LAYOUT_UI_EDITOR_USER_WIDGET_FOLDERS_PATH = $layout_ui_editor_user_widget_folders_path;
@@ -63,7 +65,7 @@ echo '<script>
 <!-- Add Html/CSS/JS Beautify code -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jsbeautify/js/lib/beautify.js"></script>
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jsbeautify/js/lib/beautify-css.js"></script>
-<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/myhtmlbeautify/MyHtmlBeautify.js"></script>
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'lib/myhtmlbeautify/MyHtmlBeautify.js"></script>
 
 <!-- Add Auto complete -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/myautocomplete/js/MyAutoComplete.js"></script>
@@ -75,38 +77,38 @@ echo '<script>
 <!-- Layout UI Editor - Jquery Tap-Hold Event JS file -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerytaphold/taphold.js"></script>
 
-<!-- Layout UI Editor - Material-design-iconic-font -->
-<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/vendor/materialdesigniconicfont/css/material-design-iconic-font.min.css">
-
-<!-- Layout UI Editor - JQuery Nestable2 -->
-<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/vendor/nestable2/jquery.nestable.min.css" type="text/css" charset="utf-8" />
-<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/vendor/nestable2/jquery.nestable.min.js"></script>
-
 <!-- Layout UI Editor - Html Entities Converter -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/he/he.js"></script>
 
+<!-- Layout UI Editor - Material-design-iconic-font -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'lib/jquerylayoutuieditor/vendor/materialdesigniconicfont/css/material-design-iconic-font.min.css">
+
+<!-- Layout UI Editor - JQuery Nestable2 -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'lib/jquerylayoutuieditor/vendor/nestable2/jquery.nestable.min.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/vendor/nestable2/jquery.nestable.min.js"></script>
+
 <!-- Layout UI Editor - HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
-	 <script src="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/html5_ie8/html5shiv.min.js"></script>
-	 <script src="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/html5_ie8/respond.min.js"></script>
+	 <script src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/html5_ie8/html5shiv.min.js"></script>
+	 <script src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/html5_ie8/respond.min.js"></script>
 <![endif]-->
 
 <!-- Layout UI Editor - Add Iframe droppable fix -->
-<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/jquery-ui-droppable-iframe-fix.js"></script>    
+<script type="text/javascript" src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/jquery-ui-droppable-iframe-fix.js"></script>    
 
 <!-- Layout UI Editor - Add Iframe droppable fix - IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/ie10-viewport-bug-workaround.js"></script>
+<script src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/ie10-viewport-bug-workaround.js"></script>
 
 <!-- Layout UI Editor - Add Layout UI Editor -->
-<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/css/some_bootstrap_style.css" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/css/style.css" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/css/widget_resource.css" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="' . $project_url_prefix . 'lib/jquerylayoutuieditor/css/some_bootstrap_style.css" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="' . $project_url_prefix . 'lib/jquerylayoutuieditor/css/style.css" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="' . $project_url_prefix . 'lib/jquerylayoutuieditor/css/widget_resource.css" type="text/css" charset="utf-8" />
 
-<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/js/TextSelection.js"></script>
-<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/js/LayoutUIEditor.js"></script>
-<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/js/CreateWidgetContainerClassObj.js"></script>
-<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/js/LayoutUIEditorFormField.js"></script>
-<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerylayoutuieditor/js/LayoutUIEditorWidgetResource.js"></script>
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/js/TextSelection.js"></script>
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/js/LayoutUIEditor.js"></script>
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/js/CreateWidgetContainerClassObj.js"></script>
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/js/LayoutUIEditorFormField.js"></script>
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/js/LayoutUIEditorWidgetResource.js"></script>
 
 <!-- Layout UI Editor - Add Layout UI Editor Widget Resource Options/Handlers -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/layout_ui_editor_widget_resource_options.css" type="text/css" charset="utf-8" />

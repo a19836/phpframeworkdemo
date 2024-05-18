@@ -34,11 +34,8 @@
 			<option>findObjects</option>
 			<option>countObjects</option>
 			<option>findObjectsColumnMax</option>
-			
-			<!-- In the future add the js and php code to have these methods too --> 
-			<!--option>findRelationshipObjects</option> 
-			<!--option>countRelationshipObjects</option-->
-			<!--option>findObjectsColumnMax</option-->
+			<option>findRelationshipObjects</option> 
+			<option>countRelationshipObjects</option>
 		</select>
 	</div>
 	
@@ -94,23 +91,34 @@
 		</ul>
 	</div>
 	
-	<!-- In the future add these html when the findRelationshipObjects and countRelationshipObjects methods be active in the method_name select html element. --> 
-	<!--div class="rels">
-		<label class="main_label">Rel Elms:</label>
-		<input type="text" class="task_property_field relations_code" name="relations" />
+	<div class="kys">
+		<label class="main_label">Keys:</label>
+		<input type="text" class="task_property_field keys_code" name="keys" />
 		<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
-		<select class="task_property_field relations_type" name="relations_type" onChange="DBDAOActionTaskPropertyObj.onChangeRelElmType(this)">
+		<select class="task_property_field keys_type" name="keys_type" onChange="DBDAOActionTaskPropertyObj.onChangeKeysType(this)">
 			<option></option>
 			<option>string</option>
 			<option>variable</option>
 			<option>array</option>
 			<option>options</option>
 		</select>
-		<div class="relations array_items"></div>
-		<ul class="relations_options">
+		<div class="keys array_items"></div>
+		<ul class="keys_options">
 			<a class="icon add" onclick="DBDAOActionTaskPropertyObj.onAddTableAttributeOption(this)" title="Add">add</a>
-			<li class="no_items">There are no loaded relations!</li>
+			<li class="no_items">There are no loaded keys!</li>
 		</ul>
+	</div>
+	
+	<div class="rels">
+		<label class="main_label">Extra Rel Elms:</label>
+		<input type="text" class="task_property_field relations_code" name="relations" />
+		<select class="task_property_field relations_type" name="relations_type" onChange="DBDAOActionTaskPropertyObj.onChangeRelElmType(this)">
+			<option></option>
+			<option>string</option>
+			<option>variable</option>
+			<option>array</option>
+		</select>
+		<div class="relations array_items"></div>
 	</div>
 	
 	<div class="parent_conds">
@@ -129,7 +137,7 @@
 			<a class="icon add" onclick="DBDAOActionTaskPropertyObj.onAddTableAttributeOption(this)" title="Add">add</a>
 			<li class="no_items">There are no loaded conditions!</li>
 		</ul>
-	</div-->
+	</div>
 	
 	<div class="opts">
 		<label class="main_label">Options:</label>

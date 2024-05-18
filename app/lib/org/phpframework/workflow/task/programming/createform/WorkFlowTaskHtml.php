@@ -95,7 +95,7 @@
 		</div>
 		<div class="form_on_submit">
 			<label>Form On Submit:</label>
-			<input type="text" class="task_property_field" name="form_on_submit" />
+			<input type="text" class="task_property_field" name="form_on_submit" title="return (typeof MyJSLib == 'undefined' || MyJSLib.FormHandler.formCheck(this));" />
 			<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
 		</div>
 		<div class="form_action">

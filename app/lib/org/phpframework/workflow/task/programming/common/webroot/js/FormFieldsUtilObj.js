@@ -49,8 +49,19 @@ var FormFieldsUtilObj = {
 				*/
 				if (items.hasOwnProperty("items")) //for the cases with [items=>[items=>[...]]]
 					items = [ items ];
-				else if (items.hasOwnProperty("value"))  //for the cases with [items=>[value=>"..."]]
-					items = [ items ];
+				else if (items.hasOwnProperty("value")) { //for the cases with [items=>[value=>"..."]]
+					//check if is a simple value and not an associative array with other keys where value is one of them. This means that we have a list of real items and not a single value. This avoids the issue where we have the createForm with "value" attriibute for the input fields. To be sure this function is working try to load a BLOCK with the "form" module with predefined values in a text-field.
+					var exists_other_keys = false;
+					
+					for (var k in items)
+						if (k != "value" && k != "value_type" && k != "key" && k != "key_type") {
+							exists_other_keys = true;
+							break;
+						}
+					
+					if (!exists_other_keys)
+						items = [ items ];
+				}
 				
 				var s = {};
 				$.each(items, function(i, item) {
@@ -501,6 +512,8 @@ var FormFieldsUtilObj = {
 		
 		//Preparing form fields to array
 		var fields = form_html_elm.find(".task_property_field");
+		var names_with_special_chars = {}; //Note that the parse_str replaces all dots and spaces by underscore, so we need to put the original names again with dots and spaces.
+		var rand = parseInt(Math.random() * 1000000000);
 		
 		var query_string = "";
 		for (var i = 0; i < fields.length; i++) {
@@ -511,6 +524,20 @@ var FormFieldsUtilObj = {
 				var type = field.attr("type");
 				var value = (type == "checkbox" || type == "radio") && !field.is(":checked") ? "" : field.val();
 				
+				if (name.match(/[\.\s]/)) {
+					var sub_matches = name.match(/([^\[\]]+)/g);
+					
+					for (var j = 0, tj = sub_matches.length; j < tj; j++) {
+						var sm = sub_matches[j];
+						var new_sm = sm.replace(/[\.\s]/g, "#secial_char_" + rand + "_#");
+						
+						if (sm != new_sm) {
+							names_with_special_chars[new_sm] = sm;
+							name = name.replace(sm, new_sm);
+						}
+					}
+				}
+				
 				//query_string += (i > 0 ? "&" : "") + escape(name) + "=" + escape(value);
 				query_string += (i > 0 ? "&" : "") + encodeURIComponent(name) + "=" + encodeURIComponent(value);
 			}
@@ -518,7 +545,26 @@ var FormFieldsUtilObj = {
 		
 		var form_settings = {};
 		parse_str(query_string, form_settings);
+		
+		//Note that the parse_str replaces all dots and spaces by underscore, so we need to put the original names again with dots and spaces.
+		if (!$.isEmptyObject(names_with_special_chars)) {
+			try {
+				var json = JSON.stringify(form_settings);
+				
+				for (var new_name in names_with_special_chars)
+					json = json.replace(new_name, names_with_special_chars[new_name]);
+				
+				form_settings = JSON.parse(json);
+			}
+			catch(e) {
+				if (console && console.log)
+					console.log(e);
+			}
+		}
+		
+		//console.log(query_string);
 		//console.log(form_settings);
+		//console.log(names_with_special_chars);
 		
 		//Re-Add class task_property_field again
 		for (var i = 0; i < items.length; i++) {
@@ -1072,6 +1118,7 @@ var FormFieldsUtilObj = {
 		var confirmation_message = data["confirmation_message"];
 		var validation_type = data["validation_type"];
 		var validation_regex = data["validation_regex"];
+		var validation_func = data["validation_func"];
 		var min_length = data["min_length"];
 		var max_length = data["max_length"];
 		var min_value = data["min_value"];
@@ -1116,6 +1163,7 @@ var FormFieldsUtilObj = {
 		validation_message = typeof validation_message != "undefined" && validation_message != null ? ("" + validation_message).replace(/"/g, "&quot;") : "";
 		validation_type = typeof validation_type != "undefined" && validation_type != null ? ("" + validation_type).replace(/"/g, "&quot;") : "";
 		validation_regex = typeof validation_regex != "undefined" && validation_regex != null ? ("" + validation_regex).replace(/"/g, "&quot;") : "";
+		validation_func = typeof validation_func != "undefined" && validation_func != null ? ("" + validation_func).replace(/"/g, "&quot;") : "";
 		min_length = $.isNumeric(min_length) ? parseInt(min_length) : "";
 		max_length = $.isNumeric(max_length) ? parseInt(max_length) : "";
 		min_value = $.isNumeric(min_value) ? parseInt(min_value) : "";
@@ -1370,6 +1418,11 @@ var FormFieldsUtilObj = {
 		'				<input type="text" class="task_property_field" name="' + prefix + '[validation_regex]" value="' + validation_regex + '" />' +
 		'				<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>' +
 		'			</div>' +
+		'			<div class="validation_func" ' + (!validation_type && (is_input || is_search || is_url || is_email || is_tel || is_number || is_range || is_date || is_color) ? '' : 'style="display:none;"') + ' title="Insert here the javascript func which will validate the user input value.">' +
+		'				<label>Validation Func:</label>' +
+		'				<input type="text" class="task_property_field" name="' + prefix + '[validation_func]" value="' + validation_func + '" />' +
+		'				<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>' +
+		'			</div>' +
 		'			<div class="min_length" ' + (is_input || is_search || is_url || is_email || is_tel ? '' : 'style="display:none;"') + ' title="Minimum user input length">' +
 		'				<label>Min Length:</label>' +
 		'				<input type="text" class="task_property_field" name="' + prefix + '[min_length]" value="' + min_length + '" />' +
@@ -1415,12 +1468,13 @@ var FormFieldsUtilObj = {
 	},
 	
 	onChangeInputFieldValidationType : function(elm) {
-		elm = $(elm);
+		/* DEPRECATED bc now we can have validation_type together with validation_regex and validation_func
+		 elm = $(elm);
 		
 		if (elm.val() == "")
-			elm.parent().parent().children(".validation_regex").show();
+			elm.parent().parent().children(".validation_regex, .validation_func").show();
 		else 
-			elm.parent().parent().children(".validation_regex").hide();
+			elm.parent().parent().children(".validation_regex, .validation_func").hide();*/
 	},
 	
 	onChangeInputFieldType : function(elm) {
@@ -1436,7 +1490,7 @@ var FormFieldsUtilObj = {
 			if (type == "select" || type == "checkbox" || type == "radio") {
 				input_div.children(".input_name, .input_value, .input_options").show();
 				input_div.children(".input_place_holder, .input_href, .input_target, .input_src").hide();
-				input_other_settings.children(".allow_javascript, .confirmation, .confirmation_message, .validation_type, .validation_regex, .min_length, .max_length, .min_value, .max_value, .min_words, .max_words").hide();
+				input_other_settings.children(".allow_javascript, .confirmation, .confirmation_message, .validation_type, .validation_regex, .validation_func, .min_length, .max_length, .min_value, .max_value, .min_words, .max_words").hide();
 				
 				if (are_input_setings_visible) {
 					input_div.children(".other_settings").show();
@@ -1456,7 +1510,7 @@ var FormFieldsUtilObj = {
 				if (are_input_setings_visible) {
 					input_div.children(".other_settings").show();
 					input_other_settings.children(".allow_null, .validation_label, .validation_message").show();
-					input_other_settings.children(".allow_javascript, .validation_type, .validation_regex, .min_length, .max_length, .min_value, .max_value, .min_words, .max_words").hide();
+					input_other_settings.children(".allow_javascript, .validation_type, .validation_regex, .validation_func, .min_length, .max_length, .min_value, .max_value, .min_words, .max_words").hide();
 				}
 				else
 					input_div.children(".other_settings").hide();
@@ -1464,7 +1518,7 @@ var FormFieldsUtilObj = {
 			else if (type == "submit" || type == "button" || type == "button_img") {
 				input_div.children(".input_name, .input_value").show();
 				input_div.children(".input_options, .input_href, .input_target, .input_place_holder").hide();
-				input_other_settings.children(".allow_null, .allow_javascript, .validation_label, .validation_message, .validation_type, .validation_regex, .min_length, .max_length, .min_value, .max_value, .min_words, .max_words").hide();
+				input_other_settings.children(".allow_null, .allow_javascript, .validation_label, .validation_message, .validation_type, .validation_regex, .validation_func, .min_length, .max_length, .min_value, .max_value, .min_words, .max_words").hide();
 				
 				if (are_input_setings_visible) {
 					input_div.children(".other_settings").show();
@@ -1530,7 +1584,7 @@ var FormFieldsUtilObj = {
 						}
 						
 						if (input_other_settings.find(".validation_type select").val() == "")
-							input_other_settings.find(".validation_regex").show();
+							input_other_settings.find(".validation_regex, .validation_func").show();
 					}
 					else
 						input_div.children(".other_settings").hide();

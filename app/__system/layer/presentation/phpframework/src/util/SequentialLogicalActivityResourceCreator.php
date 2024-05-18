@@ -388,7 +388,7 @@ if ($conditions && $conditions_type)
 		$attribute_join = is_array($conditions_join) ? $conditions_join[$attribute_name] : $conditions_join;
 		
 		if ($attribute_operator && $attribute_operator != "=" && $attribute_operator != "equal") {
-			if (is_array($attribute_value) && $attribute_operator != "in") {
+			if (is_array($attribute_value) && $attribute_operator != "in" && $attribute_operator != "not in") {
 				$conditions[$attribute_name] = array();
 				
 				foreach ($attribute_value as $v)
@@ -398,14 +398,14 @@ if ($conditions && $conditions_type)
 					);
 			}
 			else {
-				if ($attribute_operator == "in" && $attribute_case == "insensitive" && is_array($attribute_value))
+				if (($attribute_operator == "in" || $attribute_operator == "not in") && $attribute_case == "insensitive" && is_array($attribute_value))
 					foreach ($attribute_value as $k => $v)
 						if (is_string($v))
 							$attribute_value[$k] = strtolower($v);
 				
 	    			$conditions[$attribute_name] = array(
 					"operator" => $attribute_operator,
-					"value" => $attribute_operator == "in" ? $attribute_value : (
+					"value" => ($attribute_operator == "in" || $attribute_operator == "not in") ? $attribute_value : (
 						($attribute_condition_type == "starts_with" || $attribute_condition_type == "contains" ? "%" : "") . ($attribute_case == "insensitive" ? strtolower($attribute_value) : $attribute_value) . ($attribute_condition_type == "ends_with" || $attribute_condition_type == "contains" ? "%" : "")
 					),
 				);

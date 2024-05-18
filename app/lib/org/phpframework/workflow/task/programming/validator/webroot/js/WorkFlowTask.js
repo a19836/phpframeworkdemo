@@ -87,7 +87,7 @@ var ValidatorTaskPropertyObj = {
 		if (task_property_values["method"]) {
 			var offset = "";
 			
-			if (("" + task_property_values["method"]).indexOf("Validator::check") === 0)
+			if (("" + task_property_values["method"]).indexOf("TextValidator::check") === 0)
 				offset += ", " + ProgrammingTaskUtil.getValueString(task_property_values["offset"], task_property_values["offset_type"]);
 			
 			return ProgrammingTaskUtil.getResultVariableString(task_property_values) + task_property_values["method"] + "(" + ProgrammingTaskUtil.getValueString(task_property_values["value"], task_property_values["value_type"]) + offset + ")";
@@ -101,7 +101,7 @@ var ValidatorTaskPropertyObj = {
 		var method = elm.val();
 		var offset_div = task_html_elm.children(".offset");
 		
-		if (method.indexOf("Validator::check") === 0) {
+		if (method.indexOf("TextValidator::check") === 0) {
 			offset_div.show();
 			
 			var label = method.indexOf("Length") != -1 ? "Length" : (

@@ -492,7 +492,7 @@ var DBQueryTaskPropertyObj = {
 		}
 		
 		if (properties_source_attributes.length > 0 && properties_target_attributes.length > 0) {
-			var operators = ["=", "!=", ">", ">=", "<=", "like", "not like", "is", "not is"];
+			var operators = ["=", "!=", ">", ">=", "<=", "like", "not like", "in", "not in", "is", "is not"];
 			
 			var source_column = "", target_column = "", column_value = "", operator = "";
 		

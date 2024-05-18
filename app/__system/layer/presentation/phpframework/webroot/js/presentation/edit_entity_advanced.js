@@ -114,7 +114,7 @@ $(function () {
 		toggle_selection : false,
 		toggle_children_on_click : true,
 		ajax_callback_before : prepareLayerNodes1,
-		ajax_callback_after : removeAllThatIsNotPagesFromTree,
+		ajax_callback_after : removeAllThatIsNotPresentationPagesFromTree,
 	});
 	choosePresentationFromFileManagerTree.init("choose_presentation_from_file_manager");
 	

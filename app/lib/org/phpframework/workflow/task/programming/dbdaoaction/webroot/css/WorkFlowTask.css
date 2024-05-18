@@ -22,6 +22,7 @@
   .db_dao_action_task_html .table_name,
   .db_dao_action_task_html .attrs,
   .db_dao_action_task_html .conds,
+  .db_dao_action_task_html .kys,
   .db_dao_action_task_html .rels,
   .db_dao_action_task_html .parent_conds,
   .db_dao_action_task_html .opts {
@@ -37,6 +38,7 @@
   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .table_name,
   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs,
   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .conds,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .kys,
   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .rels,
   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .parent_conds,
   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .opts {
@@ -83,16 +85,34 @@
 }
 .db_dao_action_task_html .attrs .array_items .items,
   .db_dao_action_task_html .conds .array_items .items,
+  .db_dao_action_task_html .kys .array_items .items,
   .db_dao_action_task_html .rels .array_items .items,
   .db_dao_action_task_html .parent_conds .array_items .items {
 	position:absolute;
-	margin-top:-25px;
+	margin-top:-23px;
 	margin-left:195px;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs .array_items .items,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .conds .array_items .items,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .kys .array_items .items,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .rels .array_items .items,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .parent_conds .array_items .items {
+	margin-left:135px;
 }
 .db_dao_action_task_html .attrs .array_items ul .items,
   .db_dao_action_task_html .conds .array_items ul .items,
+  .db_dao_action_task_html .kys .array_items ul .items,
   .db_dao_action_task_html .rels .array_items ul .items,
   .db_dao_action_task_html .parent_conds .array_items ul .items {
+	position:static;
+	margin-top:0;
+	margin-left:0;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs .array_items ul .items,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .conds .array_items ul .items,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .kys .array_items ul .items,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .rels .array_items ul .items,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .parent_conds .array_items ul .items {
 	position:static;
 	margin-top:0;
 	margin-left:0;
@@ -102,6 +122,7 @@
   .db_dao_action_task_html .table_name label,
   .db_dao_action_task_html .attrs .main_label,
   .db_dao_action_task_html .conds .main_label,
+  .db_dao_action_task_html .kys .main_label,
   .db_dao_action_task_html .rels .main_label,
   .db_dao_action_task_html .parent_conds .main_label,
   .db_dao_action_task_html .opts .main_label {
@@ -112,14 +133,20 @@
   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .table_name label,
   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs .main_label,
   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .conds .main_label,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .kys .main_label,
   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .rels .main_label,
   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .parent_conds .main_label,
   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .opts .main_label {
 	width:70px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	vertical-align:middle;
 }
 .db_dao_action_task_html .table_name input,
   .db_dao_action_task_html .attrs .attributes_code,
   .db_dao_action_task_html .conds .conditions_code,
+  .db_dao_action_task_html .kys .keys_code,
   .db_dao_action_task_html .rels .relations_code,
   .db_dao_action_task_html .parent_conds .parent_conditions_code {
 	width:210px;
@@ -129,6 +156,7 @@
 .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .table_name input,
   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs .attributes_code,
   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .conds .conditions_code,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .kys .keys_code,
   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .rels .relations_code,
   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .parent_conds .parent_conditions_code {
 	width:calc(100% - 168px);
@@ -136,6 +164,7 @@
 .db_dao_action_task_html .table_name select,
   .db_dao_action_task_html .attrs .attributes_type,
   .db_dao_action_task_html .conds .conditions_type,
+  .db_dao_action_task_html .kys .keys_type,
   .db_dao_action_task_html .rels .relations_type,
   .db_dao_action_task_html .parent_conds .parent_conditions_type {
 	background-color:#FFF;
@@ -152,13 +181,13 @@
 
 .db_dao_action_task_html .attrs > .attributes_options,
    .db_dao_action_task_html .conds > .conditions_options,
-   .db_dao_action_task_html .rels > .relations_options,
+   .db_dao_action_task_html .kys > .keys_options,
    .db_dao_action_task_html .parent_conds > .parent_conditions_options {
 	padding:10px;
 }
 .db_dao_action_task_html .attrs > .attributes_options > .add,
    .db_dao_action_task_html .conds > .conditions_options > .add,
-   .db_dao_action_task_html .rels > .relations_options > .add,
+   .db_dao_action_task_html .kys > .keys_options > .add,
    .db_dao_action_task_html .parent_conds > .parent_conditions_options > .add {
 	position:absolute;
 	margin-top:-29px;
@@ -167,14 +196,14 @@
 }
 .db_dao_action_task_html .attrs > .attributes_options li,
    .db_dao_action_task_html .conds > .conditions_options li,
-   .db_dao_action_task_html .rels > .relations_options li,
+   .db_dao_action_task_html .kys > .keys_options li,
    .db_dao_action_task_html .parent_conds > .parent_conditions_options li {
-	display:inline-block;
+	display:block;
 	opacity:.5;
 }
 .db_dao_action_task_html .attrs > .attributes_options li:after,
    .db_dao_action_task_html .conds > .conditions_options li:after,
-   .db_dao_action_task_html .rels > .relations_options li:after,
+   .db_dao_action_task_html .kys > .keys_options li:after,
    .db_dao_action_task_html .parent_conds > .parent_conditions_options li:after {
 	content:" ";
 	height:1px;
@@ -184,73 +213,100 @@
 }
 .db_dao_action_task_html .attrs > .attributes_options li.attr_activated,
    .db_dao_action_task_html .conds > .conditions_options li.attr_activated,
-   .db_dao_action_task_html .rels > .relations_options li.attr_activated,
+   .db_dao_action_task_html .kys > .keys_options li.attr_activated,
    .db_dao_action_task_html .parent_conds > .parent_conditions_options li.attr_activated {
 	opacity:1;
 }
 .db_dao_action_task_html .attrs > .attributes_options li label,
    .db_dao_action_task_html .conds > .conditions_options li label,
-   .db_dao_action_task_html .rels > .relations_options li label,
+   .db_dao_action_task_html .kys > .keys_options li label,
    .db_dao_action_task_html .parent_conds > .parent_conditions_options li label {
 	width:150px;
 	margin-left:5px;
 	margin-right:5px;
 	font-weight:normal;
 	font-size:90%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	vertical-align: middle;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs > .attributes_options li,
    .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .conds > .conditions_options li,
-   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .rels > .relations_options li,
+   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .kys > .keys_options li,
    .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .parent_conds > .parent_conditions_options li {
 	width:100%;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs > .attributes_options li label,
-   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .conds > .conditions_options li label,
-   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .rels > .relations_options li label,
-   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .parent_conds > .parent_conditions_options li label {
+   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .kys > .keys_options li label {
 	width:calc((100% - 90px) / 2);
 }
+.taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .conds > .conditions_options li label,
+   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .parent_conds > .parent_conditions_options li label {
+	width:calc((100% - 150px) / 2);
+}
 .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html.findObjects .attrs > .attributes_options li label,
-  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html.findRelationshipObjects .attrs > .attributes_options li label {
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html.findRelationshipObjects .attrs > .attributes_options li label,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html.countRelationshipObjects .attrs > .attributes_options li label,
+  .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html.findRelationshipObjects .kys > .keys_options li label {
   	width:calc((100% - 50px) / 2);
 }
 .db_dao_action_task_html.findObjects .attrs > .attributes_options li label:after,
-  .db_dao_action_task_html.findRelationshipObjects .attrs > .attributes_options li label:after {
+  .db_dao_action_task_html.findRelationshipObjects .attrs > .attributes_options li label:after,
+  .db_dao_action_task_html.countRelationshipObjects .attrs > .attributes_options li label:after,
+  .db_dao_action_task_html.findRelationshipObjects .kys > .keys_options li label:after {
 	content:" with alias ";
 	color:#ccc;
 	float:right;
 }
 .db_dao_action_task_html.insertObject .attrs > .attributes_options li label:after,
-  .db_dao_action_task_html.updateObject .attrs > .attributes_options li label:after,
-  .db_dao_action_task_html .conds > .conditions_options li label:after,
-  .db_dao_action_task_html .parent_conds > .parent_conditions_options li label:after {
+  .db_dao_action_task_html.updateObject .attrs > .attributes_options li label:after {
 	content:" = ";
 	color:#ccc;
 	float:right;
 }
+.db_dao_action_task_html .conds > .conditions_options li .attr_operator,
+   .db_dao_action_task_html .parent_conds > .parent_conditions_options li .attr_operator,
+   .db_dao_action_task_html .kys > .keys_options li .attr_operator {
+	width:55px;
+	background:transparent;
+	text-align:center;
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs > .attributes_options li .attr_alias {
+	width:calc((100% - 130px) / 2);
+}
 .db_dao_action_task_html .attrs > .attributes_options li .attr_alias,
-   .db_dao_action_task_html .attrs > .attributes_options li .attr_value,
-   .db_dao_action_task_html .conds > .conditions_options li .attr_value,
-   .db_dao_action_task_html .rels > .relations_options li .attr_value,
-   .db_dao_action_task_html .parent_conds > .parent_conditions_options li .attr_value {
+   .db_dao_action_task_html .attrs > .attributes_options li .attr_value {
 	width:calc(100% - 240px);
+	background:#fff;
+}
+.db_dao_action_task_html .kys > .keys_options li .attr_value {
+	width:calc((100% - 215px) / 3);
+	background:#fff;
+}
+.db_dao_action_task_html .conds > .conditions_options li .attr_value,
+   .db_dao_action_task_html .parent_conds > .parent_conditions_options li .attr_value {
+	width:calc(100% - 300px);
 	background:#fff;
 }
 .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs > .attributes_options li .attr_alias {
 	width:calc((100% - 130px) / 2);
 }
-.taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs > .attributes_options li .attr_value,
-   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .conds > .conditions_options li .attr_value,
-   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .rels > .relations_options li .attr_value,
-   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .parent_conds > .parent_conditions_options li .attr_value {
+.taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .attrs > .attributes_options li .attr_value {
 	width:calc((100% - 90px) / 2);
+}
+.taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .conds > .conditions_options li .attr_value,
+   .taskflowchart.fixed_side_properties .selected_task_properties .db_dao_action_task_html .parent_conds > .parent_conditions_options li .attr_value {
+	width:calc((100% - 150px) / 2);
 }
 .db_dao_action_task_html.insertObject .attrs > .attributes_options li .attr_alias,
    .db_dao_action_task_html.findObjectsColumnMax .attrs > .attributes_options li .attr_alias,
    .db_dao_action_task_html.findObjectsColumnMax .attrs > .attributes_options li .attr_value,
    .db_dao_action_task_html.findObjectsColumnMax .attrs > .attributes_options li .add_variable,
    .db_dao_action_task_html.updateObject .attrs > .attributes_options li .attr_alias,
-   .db_dao_action_task_html.findObjects .attrs > .attributes_options li .attr_value {
+   .db_dao_action_task_html.findObjects .attrs > .attributes_options li .attr_value,
+   .db_dao_action_task_html.findRelationshipObjects .attrs > .attributes_options li .attr_value,
+   .db_dao_action_task_html.countRelationshipObjects .attrs > .attributes_options li .attr_value {
 	display:none !important;
 }
 

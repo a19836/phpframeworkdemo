@@ -630,7 +630,7 @@ class CommonModuleTableExtraAttributesUtil {
 						$input_settings["type"] = "text"; //Do not add hidden here, otherwise the parent div will be hidden too
 						$input_settings["extra_attributes"] = array( array("name" => "style", "value" => "display:none") );
 						$input_settings["validation_type"] = $attr_settings["validation_type"];
-						$input_settings["class"] = $input_settings["title"] = $input_settings["allow_null"] = $input_settings["validation_label"] = $input_settings["validation_message"] = $input_settings["validation_regex"] = $input_settings["min_length"] = $input_settings["max_length"] = $input_settings["min_value"] = $input_settings["max_value"] = $input_settings["min_words"] = $input_settings["max_words"] = null;
+						$input_settings["class"] = $input_settings["title"] = $input_settings["allow_null"] = $input_settings["validation_label"] = $input_settings["validation_message"] = $input_settings["validation_regex"] = $input_settings["validation_func"] = $input_settings["min_length"] = $input_settings["max_length"] = $input_settings["min_value"] = $input_settings["max_value"] = $input_settings["min_words"] = $input_settings["max_words"] = null;
 						
 						//set input file field
 						if (!$validation_label)

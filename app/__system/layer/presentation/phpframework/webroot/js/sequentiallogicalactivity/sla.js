@@ -252,6 +252,22 @@ function loadSLASettingsAction(action, group_item, asynchronous, original_action
 				
 				break;
 				
+			case "validate_variable":
+				var method = action_value["method"];
+				var variable = action_value["variable"];
+				var offset = action_value["offset"];
+				
+				variable = variable.trim().substr(0, 1) == '$' ? variable.trim().substr(1) : variable;
+				
+				var validate_variable_elm = group_item.find(' > .sla_group_body > .validate_variable_action_body');
+				validate_variable_elm.find(' > .method > select').val(method);
+				validate_variable_elm.find(' > .variable > input').val(variable);
+				validate_variable_elm.find(' > .offset > input').val(offset);
+				
+				validate_variable_elm.find(' > .method > select').trigger("change");
+				
+				break;
+				
 			case "list_report":
 				var list_report_elm = group_item.find(' > .sla_group_body > .list_report_action_body');
 				list_report_elm.find(' > .type > select').val( action_value["type"] );
@@ -1181,6 +1197,11 @@ function onChangeSLAInputType(elm) {
 			section.show();
 			break;
 			
+		case "validate_variable":
+			section = sections.filter(".validate_variable_action_body");
+			section.show();
+			break;
+			
 		case "list_report":
 			section = sections.filter(".list_report_action_body");
 			section.show();
@@ -2016,6 +2037,28 @@ function getDrawGraphSettingValueToJSCode(value, is_variable_name, is_json_encod
 	}
 	
 	return "";
+}
+
+/* VARIABLE VALIDATOR FUNCTIONS */
+
+function onChangeVariableValidatorMethodName(elm) {
+	var elm = $(elm);
+	var task_html_elm = elm.parent().closest(".validate_variable_action_body");
+	var method = elm.val();
+	var offset_div = task_html_elm.children(".offset");
+	
+	if (method.indexOf("TextValidator::check") === 0) {
+		offset_div.show();
+		
+		var label = method.indexOf("Length") != -1 ? "Length" : (
+			method.indexOf("Min") != -1 ? "Min" : (
+				method.indexOf("Max") != -1 ? "Max" : "Offset"
+			)
+		);
+		offset_div.children("label").html(label + ":");
+	}
+	else
+		offset_div.hide();
 }
 
 /* GROUP ITEMS FUNCTIONS */
@@ -3139,6 +3182,16 @@ function getSLASettingsFromItemsToSave(items, options) {
 					var section = group_body.children(".sanitize_variable_action_body");
 					
 					item_settings["action_value"] = section.children("input").val();
+					break;
+					
+				case "validate_variable": //getting variable settings
+					var section = group_body.children(".validate_variable_action_body");
+					
+					item_settings["action_value"] = {
+						"method": section.find(".method > select").val(),
+						"variable": section.find(".variable > input").val(),
+						"offset": section.find(".offset > input").val(),
+					};
 					break;
 					
 				case "list_report": //getting variable settings

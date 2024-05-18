@@ -548,6 +548,7 @@ var PTLFieldsUtilObj = {
 				attrs.push("validation_message");
 				attrs.push("validation_type");
 				attrs.push("validation_regex");
+				attrs.push("validation_func");
 				attrs.push("min_length");
 				attrs.push("max_length");
 				attrs.push("min_value");
@@ -712,7 +713,7 @@ var PTLFieldsUtilObj = {
 		if (input_field) {
 			var code = '<textarea class="' + this.getSettingsClass(input_field) + '"';
 			
-			var attrs = ["extra_attributes", "name", "title", "allow_null", "allow_javascript", "validation_label", "validation_message", "validation_type", "validation_regex", "min_length", "max_length", "min_value", "max_value", "min_words", "max_words", "place_holder"];
+			var attrs = ["extra_attributes", "name", "title", "allow_null", "allow_javascript", "validation_label", "validation_message", "validation_type", "validation_regex", "validation_func", "min_length", "max_length", "min_value", "max_value", "min_words", "max_words", "place_holder"];
 			code += this.getFieldAttributes(input_field, attrs);
 			
 			var available_values = this.isPropNotEmpty(input_field, "available_values") ? input_field["available_values"] : null;
@@ -855,6 +856,9 @@ var PTLFieldsUtilObj = {
 							break;
 						case "validation_regex":
 							code += field["validation_regex"] ? ' data-validation-regex="' + field["validation_regex"] + '"' : '';
+							break;
+						case "validation_func":
+							code += field["validation_func"] ? ' data-validation-func="' + field["validation_func"] + '"' : '';
 							break;
 						case "validation_label":
 						case "validation_message":

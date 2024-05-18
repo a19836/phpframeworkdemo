@@ -233,6 +233,7 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 							+ '<label>Query Type:</label>'
 							+ '<select>' //options must be the same than the action_type in LayoutUIEditorWidgetResource.js
 								+ '<option value="get_all">Get multiple records list</option>'
+								+ '<option value="count">Count multiple records list</option>'
 								+ '<option value="get">Get a specific record</option>'
 								+ '<option value="insert">Add a record</option>'
 								+ '<option value="update">Update a record</option>'
@@ -331,7 +332,7 @@ function toggleChooseLayoutUIEditorWidgetResourceValueAttributePopup(elm, widget
 			var query_conditions = db_table_attribute.children(".query_conditions");
 			var query_conditions_attributes = query_conditions.find(" > ul > li:not(.empty_items):not(.primary_key)");
 			
-			if (this.value == "get_all" || this.value == "get_all_options") {
+			if (this.value == "get_all" || this.value == "count" || this.value == "get_all_options") {
 				row_index.show();
 				query_conditions.show();
 				query_conditions_attributes.show();

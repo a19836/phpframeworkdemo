@@ -147,7 +147,7 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 			var set_tmp_workflow_file_url = \'' . $paa9d13a1 . '\';
 			var create_sla_workflow_file_from_settings_url = \'' . $pc8fa5eaa . '\';
 			var create_sla_settings_from_workflow_file_url = \'' . $v5335d566a3 . '\';
-			'; return array( "js_head" => $pa8dedb03, "set_workflow_file_url" => $v8555f2f905, "get_workflow_file_url" => $v238161ae8d, ); } return null; } public static function getUIMenuWidgetsHTML($v08d9602741, $v37d269c4fa, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3) { $v0345b66144 = $v08d9602741->getWebrootPath($v08d9602741->getCommonProjectName()); $pefdd2109 = WorkFlowPresentationHandler::getUIEditorWidgetsHtml($v0345b66144, $v37d269c4fa, $v4bf8d90f04, $pfce4d1b3, array("avoided_widgets" => array("php"))); $pefdd2109 .= WorkFlowPresentationHandler::getExtraUIEditorWidgetsHtml($v0345b66144, $v08d9602741->getViewsPath() . "presentation/common_editor_widget/", $v4bf8d90f04, $pfce4d1b3); $pefdd2109 .= WorkFlowPresentationHandler::getUserUIEditorWidgetsHtml($v0345b66144, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3); return $pefdd2109; } public static function getSLAHtml($v08d9602741, $peb014cfd, $v37d269c4fa, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3, $v6490ea3a15, $v9b98e0e818, $v6c1c99fc85, $pcfdeae4e, $pebb3f429 = null) { $v79d9dffbb9 = self::getGroupsFlowHtml($v08d9602741, $peb014cfd, $v37d269c4fa, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3, $v6490ea3a15, $v9b98e0e818, $v6c1c99fc85, $pebb3f429); $v166b6fac8f = self::getTasksFlowHtml($v08d9602741, $peb014cfd, $v37d269c4fa, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3, $v6490ea3a15, $v9b98e0e818, $v6c1c99fc85, $pcfdeae4e, $pebb3f429); $pf8ed4912 = '
+			'; return array( "js_head" => $pa8dedb03, "set_workflow_file_url" => $v8555f2f905, "get_workflow_file_url" => $v238161ae8d, ); } return null; } public static function getUIMenuWidgetsHTML($v08d9602741, $peb014cfd, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3) { $v5c398c2c28 = $v08d9602741->getWebrootPath(); $pefdd2109 = WorkFlowPresentationHandler::getUIEditorWidgetsHtml($v5c398c2c28, $peb014cfd, $v4bf8d90f04, $pfce4d1b3, array("avoided_widgets" => array("php"))); $pefdd2109 .= WorkFlowPresentationHandler::getExtraUIEditorWidgetsHtml($v5c398c2c28, $v08d9602741->getViewsPath() . "presentation/common_editor_widget/", $v4bf8d90f04, $pfce4d1b3); $pefdd2109 .= WorkFlowPresentationHandler::getUserUIEditorWidgetsHtml($v5c398c2c28, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3); return $pefdd2109; } public static function getSLAHtml($v08d9602741, $peb014cfd, $v37d269c4fa, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3, $v6490ea3a15, $v9b98e0e818, $v6c1c99fc85, $pcfdeae4e, $pebb3f429 = null) { $v79d9dffbb9 = self::getGroupsFlowHtml($v08d9602741, $peb014cfd, $v37d269c4fa, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3, $v6490ea3a15, $v9b98e0e818, $v6c1c99fc85, $pebb3f429); $v166b6fac8f = self::getTasksFlowHtml($v08d9602741, $peb014cfd, $v37d269c4fa, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3, $v6490ea3a15, $v9b98e0e818, $v6c1c99fc85, $pcfdeae4e, $pebb3f429); $pf8ed4912 = '
 			<div class="sla">
 				<ul class="tabs tabs_transparent tabs_right tabs_icons">
 					<li id="sla_groups_flow_tab"><a href="#sla_groups_flow" onClick="onClickSLAGroupsFlowTab(this);return false;"><i class="icon sla_tab"></i> By Sequential Actions</a></li>
@@ -160,7 +160,7 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 			<div id="ui">
 				' . WorkFlowPresentationHandler::getTaskFlowContentHtml($pcfdeae4e, array( "save_func" => $pb085e184, "generate_code_from_tasks_flow_label" => "Generate Groups from Diagram", "generate_code_from_tasks_flow_func" => "generateSLAGroupsFromTasksFlow", "generate_tasks_flow_from_code_label" => "Generate Diagram from Groups/Actions", "generate_tasks_flow_from_code_func" => "generateSLATasksFlowFromGroups", )) . '
 				<div class="sla_tasks_flow_ui_menu_widgets_backup hidden">
-					' . self::getUIMenuWidgetsHTML($v08d9602741, $v37d269c4fa, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3) . '
+					' . self::getUIMenuWidgetsHTML($v08d9602741, $peb014cfd, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3) . '
 				</div>
 				
 				<script>
@@ -189,7 +189,7 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 					</li>
 					<li class="sla_group_empty_items">There are no groups available...</li>
 				</ul>
-			</div>'; return $pf8ed4912; } public static function getGroupItemHtml($v08d9602741, $peb014cfd, $v37d269c4fa, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3, $v6490ea3a15, $v9b98e0e818, $v6c1c99fc85) { $pefdd2109 .= self::getUIMenuWidgetsHTML($v08d9602741, $v37d269c4fa, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3); $pf77b4bb0 = $v08d9602741->getModulePath("common/CommonModuleUI", $v08d9602741->getCommonProjectName()); $v4bc3e85ad1 = file_exists($pf77b4bb0); $v1cf81e6c0f = $v08d9602741->getModulePath("user/UserUtil", $v08d9602741->getCommonProjectName()); $v9ff7f1bef8 = file_exists($v1cf81e6c0f); $pf8ed4912 = '
+			</div>'; return $pf8ed4912; } public static function getGroupItemHtml($v08d9602741, $peb014cfd, $v37d269c4fa, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3, $v6490ea3a15, $v9b98e0e818, $v6c1c99fc85) { $pefdd2109 .= self::getUIMenuWidgetsHTML($v08d9602741, $peb014cfd, $v3e187ca1b8, $v4bf8d90f04, $pfce4d1b3); $pf77b4bb0 = $v08d9602741->getModulePath("common/CommonModuleUI", $v08d9602741->getCommonProjectName()); $v4bc3e85ad1 = file_exists($pf77b4bb0); $v1cf81e6c0f = $v08d9602741->getModulePath("user/UserUtil", $v08d9602741->getCommonProjectName()); $v9ff7f1bef8 = file_exists($v1cf81e6c0f); $pf8ed4912 = '
 		<header class="sla_group_header">
 			<i class="icon expand_content toggle" onClick="toggleGroupBody(this)"></i>
 			<input class="result_var_name result_var_name_output" type="text" placeHolder="Result Variable Name or leave it empty for direct output" title="This action will only appear in the output if this field is empty. If this \'Result Variable Name\' cotains a value, the output will be putted to this correspondent variable." />
@@ -256,6 +256,7 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 					<option value="string">Result from string/value</option>
 					<option value="variable">Result from variable</option>
 					<option value="sanitize_variable">Sanitize variable</option>
+					<option value="validate_variable">Validate variable</option>
 					
 					<option disabled></option>
 					' . ($v9ff7f1bef8 ? '<option value="check_logged_user_permissions">Check Logged User Permissions</option>' : '') . '
@@ -476,6 +477,59 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 				<label>Variable: </label>
 				<input class="task_property_field" />
 				<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+			</section>
+			
+			<section class="validate_variable_action_body" title="Variable input could be a PHP variable name (like $foo[\'bar\']) or something like #foo[bar]#">
+				<div class="method">
+					<label>Method: </label>
+					<select class="task_property_field" onChange="onChangeVariableValidatorMethodName(this)">
+						<optgroup label="Value Validations">
+							<option value="TextValidator::isEmail">value is an email</option>
+							<option value="TextValidator::isDomain">value is a domain</option>
+							<option value="TextValidator::isPhone">value is a phone number</option>
+							<option value="TextValidator::isNumber">value is a number</option>
+							<option value="TextValidator::isDecimal">value is decimal</option>
+							<option value="TextValidator::isSmallInt">value is a small int</option>
+							<option value="TextValidator::isDate">value is a date</option>
+							<option value="TextValidator::isDateTime">value is a date time</option>
+							<option value="TextValidator::isTime">value is a time</option>
+							<option value="TextValidator::isIPAddress">value is an ip address</option>
+							<option value="TextValidator::isFileName">value is a file name</option>
+							
+							<option value="TextValidator::checkMinLength">value has min length</option>
+							<option value="TextValidator::checkMaxLength">value has max length</option>
+							<option value="TextValidator::checkMinValue">value has min value</option>
+							<option value="TextValidator::checkMaxValue">value has max value</option>
+							<option value="TextValidator::checkMinWords">value has min words</option>
+							<option value="TextValidator::checkMaxWords">value has max words</option>
+							<option value="TextValidator::checkMinDate">value has min date</option>
+							<option value="TextValidator::checkMaxDate">value has max date</option>
+						</optgroup>
+						
+						<option value="" disabled></option>
+						
+						<optgroup label="Other Validations">
+							<option value="ObjTypeHandler::isPHPTypeNumeric">type is php numeric</option>
+							<option value="ObjTypeHandler::isDBTypeNumeric">type is db numeric</option>
+							<option value="ObjTypeHandler::isDBTypeDate">type is db date</option>
+							<option value="ObjTypeHandler::isDBTypeText">type is db text</option>
+							<option value="ObjTypeHandler::isDBTypeBoolean">type is db boolean</option>
+							<option value="ObjTypeHandler::isDBAttributeNameATitle">attribute name is a db title</option>
+							<option value="ObjTypeHandler::isDBAttributeNameACreatedDate">attribute name is a db created date</option>
+							<option value="ObjTypeHandler::isDBAttributeNameAModifiedDate">attribute name is a db modified date</option>
+							<option value="ObjTypeHandler::isDBAttributeValueACurrentTimestamp">attribute value is a db current timestamp</option>
+						</optgroup>
+					</select>
+				</div>
+				<div class="variable">
+					<label>Variable: </label>
+					<input class="task_property_field" />
+					<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+				</div>
+				<div class="offset">
+					<label>Offset: </label>
+					<input class="task_property_field" type="number" />
+				</div>
 			</section>
 			
 			<section class="list_report_action_body" title="Variable input could be a PHP variable name (like $foo[\'bar\']) or something like #foo[bar]#">

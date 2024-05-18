@@ -58,7 +58,7 @@ if ($PEVC) {
 	$head .= WorkFlowPresentationHandler::getHeader($project_url_prefix, $project_common_url_prefix, $WorkFlowUIHandler, $set_workflow_file_url, true, true);
 	$head .= LayoutTypeProjectUIHandler::getHeader();
 	
-	//must have the layout after this, bc the WorkFlowPresentationHandler::getHeader method loads the common/vendor/jquerytaskflowchart/css/style.css which will overwrite the previous loaded layout.css styles. So we must re-add it here again.
+	//must have the layout after this, bc the WorkFlowPresentationHandler::getHeader method loads the lib/jquerytaskflowchart/css/style.css which will overwrite the previous loaded layout.css styles. So we must re-add it here again.
 	$head .= '
 <!-- Layout CSS file -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />

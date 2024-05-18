@@ -76,44 +76,44 @@ include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); i
 <!-- Layout UI Editor - Add Html/CSS/JS Beautify code -->
 <script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jsbeautify/js/lib/beautify.js"></script>
 <script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jsbeautify/js/lib/beautify-css.js"></script>
-<script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/myhtmlbeautify/MyHtmlBeautify.js"></script>
+<script language="javascript" type="text/javascript" src="' . $this->pcd2aca48 . 'lib/myhtmlbeautify/MyHtmlBeautify.js"></script>
 
 <!-- Add Auto complete -->
 <script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/myautocomplete/js/MyAutoComplete.js"></script>
 <link rel="stylesheet" href="' . $this->v00161f0c07 . 'vendor/myautocomplete/css/style.css">
 
-<!-- Layout UI Editor - Material-design-iconic-font -->
-<link rel="stylesheet" href="' . $this->v00161f0c07 . 'vendor/jquerylayoutuieditor/vendor/materialdesigniconicfont/css/material-design-iconic-font.min.css">
-
-<!-- Layout UI Editor - JQuery Nestable2 -->
-<link rel="stylesheet" href="' . $this->v00161f0c07 . 'vendor/jquerylayoutuieditor/vendor/nestable2/jquery.nestable.min.css" type="text/css" charset="utf-8" />
-<script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jquerylayoutuieditor/vendor/nestable2/jquery.nestable.min.js"></script>
-
 <!-- Layout UI Editor - Html Entities Converter -->
 <script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/he/he.js"></script>
 
+<!-- Layout UI Editor - Material-design-iconic-font -->
+<link rel="stylesheet" href="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/vendor/materialdesigniconicfont/css/material-design-iconic-font.min.css">
+
+<!-- Layout UI Editor - JQuery Nestable2 -->
+<link rel="stylesheet" href="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/vendor/nestable2/jquery.nestable.min.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/vendor/nestable2/jquery.nestable.min.js"></script>
+
 <!-- Layout UI Editor - HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
-	 <script src="' . $this->v00161f0c07 . 'vendor/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/html5_ie8/html5shiv.min.js"></script>
-	 <script src="' . $this->v00161f0c07 . 'vendor/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/html5_ie8/respond.min.js"></script>
+	 <script src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/html5_ie8/html5shiv.min.js"></script>
+	 <script src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/html5_ie8/respond.min.js"></script>
 <![endif]-->
 
 <!-- Layout UI Editor - Add Iframe droppable fix -->
-<script type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/jquery-ui-droppable-iframe-fix.js"></script>    
+<script type="text/javascript" src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/jquery-ui-droppable-iframe-fix.js"></script>    
 
 <!-- Layout UI Editor - Add Iframe droppable fix - IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="' . $this->v00161f0c07 . 'vendor/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/ie10-viewport-bug-workaround.js"></script>
+<script src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/ie10-viewport-bug-workaround.js"></script>
 
 <!-- Layout UI Editor - Add Layout UI Editor -->
-<link rel="stylesheet" href="' . $this->v00161f0c07 . 'vendor/jquerylayoutuieditor/css/some_bootstrap_style.css" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="' . $this->v00161f0c07 . 'vendor/jquerylayoutuieditor/css/style.css" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="' . $this->v00161f0c07 . 'vendor/jquerylayoutuieditor/css/widget_resource.css" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/css/some_bootstrap_style.css" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/css/style.css" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/css/widget_resource.css" type="text/css" charset="utf-8" />
 
-<script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jquerylayoutuieditor/js/TextSelection.js"></script>
-<script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jquerylayoutuieditor/js/LayoutUIEditor.js"></script>
-<script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jquerylayoutuieditor/js/CreateWidgetContainerClassObj.js"></script>
-<script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jquerylayoutuieditor/js/LayoutUIEditorFormField.js"></script>
-<script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/jquerylayoutuieditor/js/LayoutUIEditorWidgetResource.js"></script>
+<script language="javascript" type="text/javascript" src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/js/TextSelection.js"></script>
+<script language="javascript" type="text/javascript" src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/js/LayoutUIEditor.js"></script>
+<script language="javascript" type="text/javascript" src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/js/CreateWidgetContainerClassObj.js"></script>
+<script language="javascript" type="text/javascript" src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/js/LayoutUIEditorFormField.js"></script>
+<script language="javascript" type="text/javascript" src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/js/LayoutUIEditorWidgetResource.js"></script>
 
 <!-- Layout UI Editor - Add Layout UI Editor Widget Resource Options/Handlers -->
 <link rel="stylesheet" href="' . $this->pcd2aca48 . 'css/layout_ui_editor_widget_resource_options.css" type="text/css" charset="utf-8" />

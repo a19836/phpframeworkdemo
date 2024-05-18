@@ -30,7 +30,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 <!-- Layout UI Editor - Add Html/CSS/JS Beautify code -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jsbeautify/js/lib/beautify.js"></script>
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jsbeautify/js/lib/beautify-css.js"></script>
-<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/myhtmlbeautify/MyHtmlBeautify.js"></script>
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'lib/myhtmlbeautify/MyHtmlBeautify.js"></script>
 
 <!-- Add Local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/convert_url_to_template.css" type="text/css" charset="utf-8" />

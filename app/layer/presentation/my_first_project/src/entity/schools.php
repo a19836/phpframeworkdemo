@@ -354,8 +354,10 @@ $EVC->getCMSLayer()->getCMSTemplateLayer()->addRegionHtml("Content", "<div class
 					</tbody>
 				</table>
 			</div>
-			<div class=\"text-muted small mt-3\" id=\"widget_list_caption_1\" data-widget-list-caption data-widget-props=\"{&quot;load&quot;:&quot;MyWidgetResourceLib.ListHandler.loadListCaptionResource&quot;}\" data-widget-resources=\"{&quot;load&quot;:&quot;count_schools&quot;}\"></div>
-		</div></div>
+			<div class=\"text-muted small mt-3\" id=\"widget_list_caption_1\" data-widget-list-caption data-widget-props=\"{&quot;load&quot;:&quot;MyWidgetResourceLib.ListHandler.loadListCaptionResource&quot;}\" data-widget-resources=\"{&quot;load&quot;:&quot;count_schools&quot;}\">
+				<div data-widget-list-caption-info></div>
+			</div></div>
+	</div>
 	<div class=\"btn-toolbar justify-content-between text-left text-start mb-3\" id=\"widget_bottom_pagination_1_1\" data-widget-pagination data-widget-props=\"{&quot;number_of_pages_to_show_at_once&quot;:10,&quot;load&quot;:&quot;MyWidgetResourceLib.PaginationHandler.loadPaginationResource&quot;,&quot;dependent_widgets_id&quot;:[&quot;widget_list_1&quot;]}\" data-widget-resources=\"count_schools\" data-widget-resources-load=\"\">
 		<div class=\"input-group input-group-sm col-6 col-sm-4 col-md-3 col-lg-3 col-xl-1 align-items-start p-0\" data-widget-pagination-go-to-page style=\"min-width:150px;\">
 			<select class=\"form-control custom-select form-select border-secondary text-muted\" data-widget-pagination-go-to-page-dropdown onchange=\"MyWidgetResourceLib.PaginationHandler.goToDropdownPage(this); return false;\"></select>

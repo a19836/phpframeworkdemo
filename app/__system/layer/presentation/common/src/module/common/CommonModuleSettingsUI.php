@@ -3,7 +3,9 @@ include_once $EVC->getUtilPath("WorkFlowPresentationHandler");
 
 class CommonModuleSettingsUI {
 	
+	public static $WEBROOT_PATH;
 	public static $COMMON_WEBROOT_PATH;
+	public static $WEBROOT_URL;
 	public static $COMMON_WEBROOT_URL;
 	public static $LAYOUT_UI_EDITOR_PRESENTATION_COMMON_WIDGETS_FOLDER_PATH;
 	public static $LAYOUT_UI_EDITOR_USER_WIDGET_FOLDERS_PATH;
@@ -224,9 +226,9 @@ class CommonModuleSettingsUI {
 		</li>';
 		
 		//prepare default widgets
-		$menu_widgets_html .= WorkFlowPresentationHandler::getUIEditorWidgetsHtml(self::$COMMON_WEBROOT_PATH, self::$COMMON_WEBROOT_URL, self::$WEBROOT_CACHE_FOLDER_PATH, self::$WEBROOT_CACHE_FOLDER_URL, array("avoided_widgets" => array("php")));
-		$menu_widgets_html .= WorkFlowPresentationHandler::getExtraUIEditorWidgetsHtml(self::$COMMON_WEBROOT_PATH, self::$LAYOUT_UI_EDITOR_PRESENTATION_COMMON_WIDGETS_FOLDER_PATH, self::$WEBROOT_CACHE_FOLDER_PATH, self::$WEBROOT_CACHE_FOLDER_URL);
-		$menu_widgets_html .= WorkFlowPresentationHandler::getUserUIEditorWidgetsHtml(self::$COMMON_WEBROOT_PATH, self::$LAYOUT_UI_EDITOR_USER_WIDGET_FOLDERS_PATH, self::$WEBROOT_CACHE_FOLDER_PATH, self::$WEBROOT_CACHE_FOLDER_URL);
+		$menu_widgets_html .= WorkFlowPresentationHandler::getUIEditorWidgetsHtml(self::$WEBROOT_PATH, self::$WEBROOT_URL, self::$WEBROOT_CACHE_FOLDER_PATH, self::$WEBROOT_CACHE_FOLDER_URL, array("avoided_widgets" => array("php")));
+		$menu_widgets_html .= WorkFlowPresentationHandler::getExtraUIEditorWidgetsHtml(self::$WEBROOT_PATH, self::$LAYOUT_UI_EDITOR_PRESENTATION_COMMON_WIDGETS_FOLDER_PATH, self::$WEBROOT_CACHE_FOLDER_PATH, self::$WEBROOT_CACHE_FOLDER_URL);
+		$menu_widgets_html .= WorkFlowPresentationHandler::getUserUIEditorWidgetsHtml(self::$WEBROOT_PATH, self::$LAYOUT_UI_EDITOR_USER_WIDGET_FOLDERS_PATH, self::$WEBROOT_CACHE_FOLDER_PATH, self::$WEBROOT_CACHE_FOLDER_URL);
 		
 		return $menu_widgets_html;
 	}

@@ -387,6 +387,7 @@
    .selected_task_properties .form_containers .fields .field .other_settings .validation_message,
    .selected_task_properties .form_containers .fields .field .other_settings .validation_type,
    .selected_task_properties .form_containers .fields .field .other_settings .validation_regex,
+   .selected_task_properties .form_containers .fields .field .other_settings .validation_func,
    .selected_task_properties .form_containers .fields .field .other_settings .min_length,
    .selected_task_properties .form_containers .fields .field .other_settings .max_length,
    .selected_task_properties .form_containers .fields .field .other_settings .min_value,
@@ -405,6 +406,7 @@
    .taskflowchart.fixed_side_properties .selected_task_properties .form_containers .fields .field .other_settings .validation_message,
    .taskflowchart.fixed_side_properties .selected_task_properties .form_containers .fields .field .other_settings .validation_type,
    .taskflowchart.fixed_side_properties .selected_task_properties .form_containers .fields .field .other_settings .validation_regex,
+   .taskflowchart.fixed_side_properties .selected_task_properties .form_containers .fields .field .other_settings .validation_func,
    .taskflowchart.fixed_side_properties .selected_task_properties .form_containers .fields .field .other_settings .min_length,
    .taskflowchart.fixed_side_properties .selected_task_properties .form_containers .fields .field .other_settings .max_length,
    .taskflowchart.fixed_side_properties .selected_task_properties .form_containers .fields .field .other_settings .min_value,
@@ -421,6 +423,7 @@
    .selected_task_properties .form_containers .fields .field .other_settings .validation_label label,
    .selected_task_properties .form_containers .fields .field .other_settings .validation_message label,
    .selected_task_properties .form_containers .fields .field .other_settings .validation_regex label,
+   .selected_task_properties .form_containers .fields .field .other_settings .validation_func label,
    .selected_task_properties .form_containers .fields .field .other_settings .min_length label,
    .selected_task_properties .form_containers .fields .field .other_settings .max_length label,
    .selected_task_properties .form_containers .fields .field .other_settings .min_value label,
@@ -436,7 +439,8 @@
 .selected_task_properties .form_containers .fields .field .other_settings .confirmation_message input,
    .selected_task_properties .form_containers .fields .field .other_settings .validation_label input,
    .selected_task_properties .form_containers .fields .field .other_settings .validation_message input,
-   .selected_task_properties .form_containers .fields .field .other_settings .validation_regex input {
+   .selected_task_properties .form_containers .fields .field .other_settings .validation_regex input,
+   .selected_task_properties .form_containers .fields .field .other_settings .validation_func input {
 	width:380px;
 	padding-right:20px;
 	background-color:#fff;

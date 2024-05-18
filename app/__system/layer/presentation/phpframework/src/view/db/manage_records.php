@@ -122,7 +122,11 @@ var new_condition_html = \'' . addcslashes(str_replace("\n", "", getConditionHtm
 			<option value="&gt;="' . ($v19a7745bc6 == '>=' ? ' selected' : '') . '>bigger or equal</option>
 			<option value="&lt;="' . ($v19a7745bc6 == '<=' ? ' selected' : '') . '>smaller or equal</option>
 			<option value="like"' . ($v19a7745bc6 == 'like' ? ' selected' : '') . '>contains</option>
+			<option value="not like"' . ($v19a7745bc6 == 'not like' ? ' selected' : '') . '>not contains</option>
 			<option value="in"' . ($v19a7745bc6 == 'in' ? ' selected' : '') . '>in ("," delimiter)</option>
+			<option value="not in"' . ($v19a7745bc6 == 'not in' ? ' selected' : '') . '>not in ("," delimiter)</option>
+			<option value="is"' . ($v19a7745bc6 == 'is' ? ' selected' : '') . '>is null|true|false</option>
+			<option value="not is"' . ($v19a7745bc6 == 'is not' ? ' selected' : '') . '>not is null|true|false</option>
 		</select>
 		<input type="text" name="' . $v4ef49e289c . '" value="' . $v90963767ae . '" />
 		<span class="icon delete" onClick="deleteCondition(this)" title="Delete">Remove</span>
