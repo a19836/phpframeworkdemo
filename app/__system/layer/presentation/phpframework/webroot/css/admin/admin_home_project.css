@@ -2,9 +2,9 @@ body,
   #main_column {
 	background:#fff !important;
 }
-::-webkit-scrollbar-track {
+/*::-webkit-scrollbar-track {
 	background-color:#fff;
-}
+}*/
 
 /* TOP BAR */
 .admin_panel .top_bar header {

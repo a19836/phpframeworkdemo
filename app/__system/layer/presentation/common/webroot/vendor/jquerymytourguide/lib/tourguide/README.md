@@ -2,7 +2,7 @@
 
 example: https://github.com/LikaloLLC/tourguide.js?tab=readme-ov-file
 github: https://jsfiddle.net/eugenetrue/q465gb7L/
-examples: http://jplpinto.localhost/__system/common/vendor/jquerytourguide/index.html
+examples: http://jplpinto.localhost/__system/common/vendor/jquerymytourguide/index.html
 
 ######  Simple, lightweight library for creating guided tours for your web, apps and more.
 

@@ -132,4 +132,4 @@ var is_popup = ' . ($popup ? 1 : 0) . ';
 				<div class="description">Manage the business logic services.</div>
 			</li>'; } } $main_content .= '
 	</ul>
-</div>'; $main_content .= TourGuideUIHandler::getHtml($entity, $project_common_url_prefix); ?>
+</div>'; $main_content .= TourGuideUIHandler::getHtml($entity, $project_url_prefix, $project_common_url_prefix, $online_tutorials_url_prefix); ?>

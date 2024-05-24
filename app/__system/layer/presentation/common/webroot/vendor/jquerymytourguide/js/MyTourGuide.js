@@ -60,6 +60,8 @@ function MyTourGuideClass() {
 			
 			if (status !== false)
 				opts_complete();
+			
+			return status; //if is false the system doesn't close the tour.
 		} : me.onComplete;
 		
 		me.options.steps = me.prepareSteps(opts ? opts.steps : null);
@@ -69,7 +71,7 @@ function MyTourGuideClass() {
 		me.options.onComplete = on_complete;
 		
 		//console.log(me.options);
-		return me.prepareTourguide(opts["step_index"] >= 0 ? opts["step_index"] : 0);
+		return me.prepareTourguide();
 	};
 	
 	//handlers
@@ -78,6 +80,9 @@ function MyTourGuideClass() {
 	};
 	me.stop = function() {
 		me.tourguide && me.tourguide.stop();
+	};
+	me.complete = function() {
+		me.tourguide && me.tourguide.complete();
 	};
 	me.restart = function() {
 		me.stop();
@@ -100,15 +105,20 @@ function MyTourGuideClass() {
 	};
 	
 	me.onStop = function(options) {
+		//console.log("onStop");
+		//console.log(options);
+		
 		//empty - currently, do nothing
 	};
 	
 	me.onComplete = function() {
+		//console.log("onComplete");
+		
 		//empty - currently, do nothing
 	};
 	
 	//utils
-	me.prepareTourguide = function(step_index) {
+	me.prepareTourguide = function() {
 		//stop previous tourguide if exists
 		me.stop();
 		
@@ -125,12 +135,21 @@ function MyTourGuideClass() {
 				shadow_root.append(style);
 			}
 			
+			//overwrite the complete handler
+			me.tourguide.complete = function() {
+				if (me.tourguide._active) {
+					var status = typeof me.options.onBeforeComplete != "function" || me.options.onBeforeComplete();
+					
+					if (status !== false) {
+						me.tourguide.stop();
+						me.tourguide._options.onComplete();
+					}
+				}
+			};
+			
 			//console.log(me.tourguide);
 			//console.log(me.tourguide._shadowRoot);
 			//console.log($(me.tourguide._shadowRoot).children("style"));
-			
-			//start tourguide
-			me.start(step_index);
 			
 			return true;
 		}
@@ -189,13 +208,15 @@ function MyTourGuideClass() {
 					for (var i = 0, t = parts.length; i < t; i++) {
 						var step_selector = parts[i];
 						node = $(step_selector)[0];
+						//console.log(node);
 						
 						if (node) {
 							parts[i] = current_step_options.selector;
 							me.options.steps[current_step_index].step_selector = parts.join(",");
 							me.options.steps[current_step_index].selector = step_selector;
 							
-							me.prepareTourguide(current_step_index);
+							if (me.prepareTourguide(current_step_index))
+								me.start(current_step_index);
 							
 							return false;
 						}
@@ -206,10 +227,11 @@ function MyTourGuideClass() {
 					var elm = $(current_step_options.selector);
 					node = elm[0];
 					
-					if (node && !elm.data("tourguide_refreshed")) {
-						elm.data("tourguide_refreshed", 1);
+					if (node && !$(node).data("tourguide_refreshed")) {
+						$(node).data("tourguide_refreshed", 1);
 						
-						me.prepareTourguide(current_step_index);
+						if (me.prepareTourguide(current_step_index))
+							me.start(current_step_index);
 						
 						return false;
 					}
@@ -323,6 +345,11 @@ function MyTourGuideClass() {
 				+ '--tourguide-step-title-color: #fff;'
 				+ '--tourguide-step-button-close-color: #fff;'
 				+ '--tourguide-bullet-inactive-color:#eee;'
+			+ '}'
+			+ '.guided-tour-step.active .guided-tour-step-tooltip .guided-tour-step-tooltip-inner .guided-tour-step-content {'
+				+ 'overflow:auto;'
+				+ 'max-height:calc(100vh - 200px);'
+				+ 'max-width:calc(100vh - 50px);'
 			+ '}'
 			+ '.guided-tour-step.active .guided-tour-step-tooltip .guided-tour-step-tooltip-inner .guided-tour-step-content-wrapper {'
 				+ 'margin:1.5em 2em;'

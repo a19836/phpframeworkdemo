@@ -102,8 +102,14 @@
 .icon.logs_console::before {
 	content:"\f26c";
 }
+.icon.tutorials::before {
+	content:"\f5da";
+}
 .icon.question::before {
 	content:"\f059";
+}
+.icon.help::before {
+	content:"\f47e";
 }
 .icon.logout::before {
 	content:"\f2f5";

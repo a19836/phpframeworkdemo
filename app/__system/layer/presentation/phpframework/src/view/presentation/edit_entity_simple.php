@@ -199,7 +199,9 @@ var access_activity_id = ' . (is_numeric($access_activity_id) ? $access_activity
 		</div>
 	</div>
 	
-	<div class="current_entity_code hidden">' . str_replace(">", "&gt;", str_replace("<", "&lt;", $obj_data["code"])) . '</div>'; if (!$code_exists) $main_content .= TourGuideUIHandler::getHtml($entity, $project_common_url_prefix); } else $main_content .= '<div class="error">Error: The system couldn\'t detect the selected file. Please refresh and try again...</div>'; function getAdvancedSettingsHtml($v08d9602741, $v4859640498) { $v1763debff9 = $v4859640498["parse_full_html"] || $v4859640498["parse_regions_html"]; $pb662dff7 = $v1763debff9 ? '' : ' style="display:none;"'; $pc7e8340a = $v1763debff9 ? '' : ' disabled'; $pf8ed4912 = '
+	<div class="current_entity_code hidden">' . str_replace(">", "&gt;", str_replace("<", "&lt;", $obj_data["code"])) . '</div>'; $main_content .= TourGuideUIHandler::getHtml($entity, $project_url_prefix, $project_common_url_prefix, $online_tutorials_url_prefix, array( "css" => ':host {
+			--tourguide-tooltip-width:400px;
+		}' )); } else $main_content .= '<div class="error">Error: The system couldn\'t detect the selected file. Please refresh and try again...</div>'; function getAdvancedSettingsHtml($v08d9602741, $v4859640498) { $v1763debff9 = $v4859640498["parse_full_html"] || $v4859640498["parse_regions_html"]; $pb662dff7 = $v1763debff9 ? '' : ' style="display:none;"'; $pc7e8340a = $v1763debff9 ? '' : ' disabled'; $pf8ed4912 = '
 	<div class="parser">
 		<label>Parser:</label>
 		<span class="info">If active, parses the generated html according with the options below.</span>

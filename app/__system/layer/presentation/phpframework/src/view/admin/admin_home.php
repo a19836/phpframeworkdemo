@@ -31,7 +31,7 @@ var is_popup = 1; //must be 1 so when we choose the project, it refresh the main
 	
 	<ul>
 		<li><a href="#projs">All Projects</a></li>
-		<li><a href="#tutorials">Tutorials</a></li>
+		<li><a href="#tutorials">Video Tutorials</a></li>
 		<li><a onClick="openOnlineTutorialsPopup(\'' . $online_tutorials_url_prefix . '\')">How it works?</a></li>
 	</ul>
 	

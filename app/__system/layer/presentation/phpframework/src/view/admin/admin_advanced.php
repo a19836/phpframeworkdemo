@@ -94,8 +94,9 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 					<li class="toggle_main_navigator_side" title="Toggle Navigator Side"><a onClick="toggleNavigatorSide(this)"><i class="icon toggle_main_navigator_side"></i> <span>Show navigator on right side</span></a></li>
 					<li class="separator"></li>
 					<li class="console" title="Logs Console"><a onClick="openConsole(\'' . $project_url_prefix . 'admin/logs_console?popup=1\', event);"><i class="icon logs_console"></i> Logs Console</a></li>
-					<!--li class="question" title="Tutorials - How To?"><a onClick="chooseAvailableTutorial(\'' . $project_url_prefix . 'admin/choose_available_tutorial?popup=1\', event);"><i class="icon question"></i> Tutorials - How To?</a></li-->
-					<li class="question" title="Tutorials - How To?"><a onClick="openOnlineTutorialsPopup(\'' . $online_tutorials_url_prefix . '\', event);"><i class="icon question"></i> Tutorials - How To?</a></li>
+					<!--li class="question" title="Tutorials - How To?"><a onClick="chooseAvailableTutorial(\'' . $project_url_prefix . 'admin/choose_available_tutorial?popup=1\', event);"><i class="icon tutorials"></i> Tutorials - How To?</a></li-->
+					<li class="question" title="Tutorials - How To?"><a onClick="openOnlineTutorialsPopup(\'' . $online_tutorials_url_prefix . '\', event);"><i class="icon tutorials"></i> Tutorials - How To?</a></li>
+					<li class="question" title="Open Tour Guide"><a onClick="MyTourGuide.restart()"><i class="icon question"></i> Open Tour Guide</a></li>
 					<li class="info" title="About"><a onClick="goTo(this, \'url\', event)" url="' . $project_url_prefix . 'admin/about"><i class="icon info"></i> About</a></li>
 					<li class="feedback" title="Feedback"><a onClick="goToPopup(this, \'url\', event, \'with_title\')" url="' . $project_url_prefix . 'admin/feedback?popup=1"><i class="icon chat"></i> Feedback</a></li>
 					<li class="separator"></li>
@@ -137,7 +138,7 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 		<div class="iframe_overlay">
 			<div class="iframe_loading">Loading...</div>
 		</div>
-	</div>'; $main_content .= TourGuideUIHandler::getHtml($entity, $project_common_url_prefix); function getProjectsHtml($v12ed481092, $pb154d332, $v02ea8e5737 = null) { $pf8ed4912 = ""; if (is_array($v12ed481092)) { if (isset($v12ed481092[$v02ea8e5737])) $pf8ed4912 .= '<li class="project project_common' . ($pb154d332 == $v02ea8e5737 ? ' selected' : '') . '">
+	</div>'; $main_content .= TourGuideUIHandler::getHtml($entity, $project_url_prefix, $project_common_url_prefix, $online_tutorials_url_prefix, array("restart_allow" => false)); function getProjectsHtml($v12ed481092, $pb154d332, $v02ea8e5737 = null) { $pf8ed4912 = ""; if (is_array($v12ed481092)) { if (isset($v12ed481092[$v02ea8e5737])) $pf8ed4912 .= '<li class="project project_common' . ($pb154d332 == $v02ea8e5737 ? ' selected' : '') . '">
 						<a value="' . $v02ea8e5737 . '" onClick="filterByLayout(this)"><i class="icon project"></i> <span>' . $v12ed481092[$v02ea8e5737] . '</span></a>
 					</li>'; foreach ($v12ed481092 as $pcfd27d54 => $v5c37a7b23d) { if (is_array($v5c37a7b23d)) $pf8ed4912 .= '<li class="projects_group">
 							<a><i class="icon project_folder"></i> <span>' . $pcfd27d54 . '</span></a>

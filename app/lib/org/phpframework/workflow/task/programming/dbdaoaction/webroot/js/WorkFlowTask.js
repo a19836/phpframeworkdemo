@@ -40,16 +40,23 @@ var DBDAOActionTaskPropertyObj = {
 			var relations_to_export = ["attributes", "conditions", "keys"];
 			
 			$.each(task_property_values["relations"], function(idx, relation) {
-				var pos = relations_to_export.indexOf(relation["key"]);
+				var pos = relation["key_type"] == "string" ? relations_to_export.indexOf(relation["key"]) : -1;
 				
-				if (pos != -1 && relation["key_type"] == "string" && relation["items"]) {
+				if (pos != -1) {
 					var key = relations_to_export[pos];
-					task_property_values[key + "_type"] = "array";
 					
-					if ($.isPlainObject(relation["items"]) && relation["items"].hasOwnProperty("key"))
-						task_property_values[key] = [ relation["items"] ];
-					else
-						task_property_values[key] = relation["items"];
+					if (relation["items"]) {
+						task_property_values[key + "_type"] = "array";
+						
+						if ($.isPlainObject(relation["items"]) && relation["items"].hasOwnProperty("key"))
+							task_property_values[key] = [ relation["items"] ];
+						else
+							task_property_values[key] = relation["items"];
+					}
+					else if (relation["value"]) { //in case one of the elements be null, ignores it
+						task_property_values[key + "_type"] = relation["value_type"];
+						task_property_values[key] = relation["value"];
+					}
 				}
 				else
 					new_relations.push(relation);
@@ -262,68 +269,72 @@ var DBDAOActionTaskPropertyObj = {
 				task_property_values["method_obj"] = default_method_obj_str;
 			
 			//prepare relations with attributes, conditions and keys attributes
-			if ((task_property_values["method_name"] == "findRelationshipObjects" || task_property_values["method_name"] == "countRelationshipObjects") && task_property_values["relations_type"] == "array") {
-				//prepare items to add
-				var items_to_add = [];
-				var items_names = ["attributes", "conditions", "keys"];
+			if ((task_property_values["method_name"] == "findRelationshipObjects" || task_property_values["method_name"] == "countRelationshipObjects")) {
+				var is_rels_ok = task_property_values["relations_type"] == "array" || !task_property_values["relations"];
 				
-				for (var i = 0; i < items_names.length; i++) {
-					var key = items_names[i];
+				if (is_rels_ok) {
+					//prepare items to add
+					var items_to_add = [];
+					var items_names = ["attributes", "conditions", "keys"];
 					
-					if (task_property_values[key + "_type"] == "array")
-						items_to_add.push({
-							key: key,
-							key_type: "string",
-							items: task_property_values[key]
-						});
-					else if (task_property_values[key])
-						items_to_add.push({
-							key: key,
-							key_type: "string",
-							value: task_property_values[key],
-							value_type: task_property_values[key + "_type"]
-						});
-				}
-				
-				//prepare relations
-				if (!$.isArray(task_property_values["relations"]) && !$.isPlainObject(task_property_values["relations"])) {
-					task_property_values["relations_type"] = "array";
-					task_property_values["relations"] = {};
-				}
-				
-				//add items_to_add to relations
-				if (items_to_add.length > 0) {
-					if ($.isPlainObject(task_property_values["relations"])) {
-						var max_index = 0;
+					for (var i = 0; i < items_names.length; i++) {
+						var key = items_names[i];
 						
-						for (var idx in task_property_values["relations"])
-							if (idx > max_index)
-								max_index = idx;
-						
-						max_index++;
-						
-						for (var i = 0; i < items_to_add.length; i++)
-							task_property_values["relations"][max_index + i] = items_to_add[i];
-						
+						if (task_property_values[key + "_type"] == "array")
+							items_to_add.push({
+								key: key,
+								key_type: "string",
+								items: task_property_values[key]
+							});
+						else if (task_property_values[key])
+							items_to_add.push({
+								key: key,
+								key_type: "string",
+								value: task_property_values[key],
+								value_type: task_property_values[key + "_type"]
+							});
 					}
-					else if ($.isArray(task_property_values["relations"])) {
-						for (var i = 0; i < items_to_add.length; i++)
-							task_property_values["relations"].push(items_to_add[i]);
+					
+					//prepare relations
+					if (!$.isArray(task_property_values["relations"]) && !$.isPlainObject(task_property_values["relations"])) {
+						task_property_values["relations_type"] = "array";
+						task_property_values["relations"] = {};
 					}
-				}
-				
-				//remove items_names from task_property_values, since they were added to the relations
-				for (var i = 0; i < items_names.length; i++) {
-					var key = items_names[i];
 					
-					task_property_values[key] = null;
-					delete task_property_values[key];
+					//add items_to_add to relations
+					if (items_to_add.length > 0) {
+						if ($.isPlainObject(task_property_values["relations"])) {
+							var max_index = 0;
+							
+							for (var idx in task_property_values["relations"])
+								if (idx > max_index)
+									max_index = idx;
+							
+							max_index++;
+							
+							for (var i = 0; i < items_to_add.length; i++)
+								task_property_values["relations"][max_index + i] = items_to_add[i];
+							
+						}
+						else if ($.isArray(task_property_values["relations"])) {
+							for (var i = 0; i < items_to_add.length; i++)
+								task_property_values["relations"].push(items_to_add[i]);
+						}
+					}
 					
-					task_property_values[key + "_type"] = null;
-					delete task_property_values[key + "_type"];
+					//remove items_names from task_property_values, since they were added to the relations
+					for (var i = 0; i < items_names.length; i++) {
+						var key = items_names[i];
+						
+						task_property_values[key] = null;
+						delete task_property_values[key];
+						
+						task_property_values[key + "_type"] = null;
+						delete task_property_values[key + "_type"];
+					}
+					
+					//console.log(task_property_values);
 				}
-				
-				//console.log(task_property_values);
 			}
 		}
 	},
@@ -492,7 +503,7 @@ var DBDAOActionTaskPropertyObj = {
 		var method_name = $(elm).val();
 		var task_html_elm = $(elm).parent().parent();
 		
-		task_html_elm.children(".get_automatically, .table_name, .attrs, .conds, .keys, .rels, .parent_conds").hide();
+		task_html_elm.children(".get_automatically, .table_name, .attrs, .conds, .kys, .rels, .parent_conds").hide();
 		task_html_elm.removeClass("insertObject findObjectsColumnMax updateObject findObjects deleteObject countObjects findRelationshipObjects countRelationshipObjects");
 		
 		if (method_name) {
@@ -510,7 +521,7 @@ var DBDAOActionTaskPropertyObj = {
 			else if (method_name == "deleteObject" || method_name == "countObjects")
 				task_html_elm.children(".conds").show();
 			else if (method_name == "findRelationshipObjects" || method_name == "countRelationshipObjects")
-				task_html_elm.children(".attrs, .conds, .keys, .rels, .parent_conds").show();
+				task_html_elm.children(".attrs, .conds, .kys, .rels, .parent_conds").show();
 		}
 	},
 	

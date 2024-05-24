@@ -180,4 +180,4 @@ var project_id = \'' . $project_details["project_id"] . '\';
 			<button>Create</button>
 		</div>
 	</div>'; } else $main_content .= '<div class="no_project">The project "' . $filter_by_layout . '" doesn\'t exists anymore...</div>'; $main_content .= '
-</div>'; $main_content .= TourGuideUIHandler::getHtml($entity, $project_common_url_prefix); ?>
+</div>'; $main_content .= TourGuideUIHandler::getHtml($entity, $project_url_prefix, $project_common_url_prefix, $online_tutorials_url_prefix); ?>

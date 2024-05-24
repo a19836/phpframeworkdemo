@@ -92,4 +92,4 @@ $(function () {
 		</div>
 		<ul></ul>
 	</div>
-</div>'; $main_content .= TourGuideUIHandler::getHtml($entity, $project_common_url_prefix); ?>
+</div>'; $main_content .= TourGuideUIHandler::getHtml($entity, $project_url_prefix, $project_common_url_prefix, $online_tutorials_url_prefix); ?>
