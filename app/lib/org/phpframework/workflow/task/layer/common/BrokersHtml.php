@@ -23,7 +23,7 @@
 	
 	<div class="url">
 		<label>URL: </label>
-		<input class="task_property_field" type="text" name="layer_brokers[rest][url]" placeHolder="http://..." />
+		<input class="task_property_field" type="text" name="layer_brokers[rest][url]" placeHolder="http://..." autocomplete="new-password" />
 		<div class="info">Url of this layer web-server.</div>
 	</div>
 	
@@ -38,7 +38,7 @@
 	
 	<div class="user_pwd">
 		<label>Http User And Pwd: </label>
-		<input class="task_property_field" type="text" name="layer_brokers[rest][user_pwd]" placeHolder="empty or username:password" />
+		<input class="task_property_field" type="text" name="layer_brokers[rest][user_pwd]" placeHolder="empty or username:password" autocomplete="new-password" />
 		<div class="info">Http Access authentication username and password configured in the web-server. Usually this is done in the htaccess file.</div>
 	</div>
 	
@@ -54,26 +54,26 @@
 	
 	<div class="rest_auth_user">
 		<label>Rest Authentication Username: </label>
-		<input class="task_property_field" type="text" name="layer_brokers[rest][rest_auth_user]" />
+		<input class="task_property_field" type="text" name="layer_brokers[rest][rest_auth_user]" autocomplete="new-password" />
 		<div class="info">Username that wil be authenticated in the server side</div>
 	</div>
 	
 	<div class="rest_auth_pass with_toggle_icon">
 		<label>Rest Authentication Password: </label>
-		<input class="task_property_field" type="password" name="layer_brokers[rest][rest_auth_pass]" />
+		<input class="task_property_field" type="password" name="layer_brokers[rest][rest_auth_pass]" autocomplete="new-password" />
 		<a class="icon toggle_password" onClick="toggleLayerRestConnectionPropertiesSettingPasswordField(this)">Toggle Password</a>
 		<div class="info">Password that wil be authenticated in the server side</div>
 	</div>
 	
 	<div class="request_encryption_key">
 		<label>Encryption Key for Request: </label>
-		<input class="task_property_field" type="text" name="layer_brokers[rest][request_encryption_key]" />
+		<input class="task_property_field" type="text" name="layer_brokers[rest][request_encryption_key]" autocomplete="new-password" />
 		<div class="info">Empty or hexadecimal encryption key to encrypt the request sent data. This key should be created by the CryptoKeyHandler class.</div>
 	</div>
 	
 	<div class="response_encryption_key">
 		<label>Encryption Key for Response: </label>
-		<input class="task_property_field" type="text" name="layer_brokers[rest][response_encryption_key]" />
+		<input class="task_property_field" type="text" name="layer_brokers[rest][response_encryption_key]" autocomplete="new-password" />
 		<div class="info">Empty or hexadecimal encryption key to encrypt the request response. This key should be created by the CryptoKeyHandler class.</div>
 	</div>
 	

@@ -60,7 +60,7 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHan
 			DBTableTaskPropertyObj.table_storage_engines = ' . json_encode($DBDriver->getStorageEngines()) . ';
 			DBTableTaskPropertyObj.column_charsets = ' . json_encode($DBDriver->getColumnCharsets()) . ';
 			DBTableTaskPropertyObj.column_collations = ' . json_encode($DBDriver->getColumnCollations()) . ';
-			DBTableTaskPropertyObj.allow_column_sorting = ' . $DBDriver->allowTableAttributeSorting() . ';
+			DBTableTaskPropertyObj.allow_column_sorting = ' . ($DBDriver->allowTableAttributeSorting() ? "true" : "false") . ';
 			
 			DBTableTaskPropertyObj.on_load_task_properties_callback = onLoadDBTableTaskProperties;
 			DBTableTaskPropertyObj.on_submit_task_properties_callback = onSubmitDBTableTaskProperties;

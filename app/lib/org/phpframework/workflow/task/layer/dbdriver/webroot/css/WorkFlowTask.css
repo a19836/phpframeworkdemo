@@ -15,7 +15,7 @@
 	width:140px;
 	display:inline-block;
 }
-.db_driver_task_html input {
+.db_driver_task_html input:not([type=checkbox]) {
 	width:200px;
 }
 .db_driver_task_html select {

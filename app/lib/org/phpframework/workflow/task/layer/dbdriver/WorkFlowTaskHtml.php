@@ -42,27 +42,27 @@ DBDriverTaskPropertyObj.ignore_options_by_extension = ' . json_encode($ignore_co
 
 	<div class="host">
 		<label>Host:</label>
-		<input type="text" class="task_property_field" name="host" value="" />
+		<input type="text" class="task_property_field" name="host" value="" autocomplete="new-password" />
 	</div>
 
 	<div class="port">
 		<label>Port:</label>
-		<input type="text" class="task_property_field" name="port" value="" />
+		<input type="text" class="task_property_field" name="port" value="" autocomplete="new-password" />
 	</div>
 
 	<div class="db_name">
 		<label>DB Name:</label>
-		<input type="text" class="task_property_field" name="db_name" value="" />
+		<input type="text" class="task_property_field" name="db_name" value="" autocomplete="new-password" />
 	</div>
 
 	<div class="user">
 		<label>User:</label>
-		<input type="text" class="task_property_field" name="username" value="" />
+		<input type="text" class="task_property_field" name="username" value="" autocomplete="new-password" />
 	</div>
 
 	<div class="password">
 		<label>Password:</label>
-		<input type="password" class="task_property_field" name="password" value="" />
+		<input type="password" class="task_property_field" name="password" value="" autocomplete="new-password" />
 		<span class="icon toggle_password" onClick="DBDriverTaskPropertyObj.togglePasswordField(this)"></span>
 	</div>
 
@@ -82,6 +82,14 @@ DBDriverTaskPropertyObj.ignore_options_by_extension = ' . json_encode($ignore_co
 		</select>
 	</div>
 
+	<div class="reconnect" title="Automatically reconnect if connection becomes stale.">
+		<label>Reconnect:</label>
+		<select class="task_property_field" name="reconnect">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</select>
+	</div>
+
 	<div class="encoding">
 		<label>Encoding:</label>
 		<select class="task_property_field" name="encoding">
@@ -93,26 +101,26 @@ DBDriverTaskPropertyObj.ignore_options_by_extension = ' . json_encode($ignore_co
 	
 	<div class="schema">
 		<label>Schema:</label>
-		<input type="text" class="task_property_field" name="schema" value="" />
+		<input type="text" class="task_property_field" name="schema" value="" autocomplete="new-password" />
 	</div>
 
 	<div class="odbc_data_source" title="A Data Source Name (DSN) is the logical name that is used by Open Database Connectivity (ODBC) to refer to the driver and other information that is required to access data from a data source. Data sources are usually defined in /etc/odbc.ini">
 		<label>ODBC Data Source:</label>
-		<input type="text" class="task_property_field" name="odbc_data_source" value="" />
+		<input type="text" class="task_property_field" name="odbc_data_source" value="" autocomplete="new-password" />
 	</div>
 
 	<div class="odbc_driver" title="Is the file path of the installed driver that connects to a data-base from ODBC protocol. Or the name of an ODBC instance that was defined in /etc/odbcinst.ini">
 		<label>ODBC Driver:</label>
-		<input type="text" class="task_property_field" name="odbc_driver" value="" />
+		<input type="text" class="task_property_field" name="odbc_driver" value="" autocomplete="new-password" />
 	</div>
 
 	<div class="extra_dsn" title="Other DSN attributes. Each attribute must be splitted by comma.">
 		<label>Extra DSN:</label>
-		<input type="text" class="task_property_field" name="extra_dsn" value="" />
+		<input type="text" class="task_property_field" name="extra_dsn" value="" autocomplete="new-password" />
 	</div>
 
 	<div class="extra_settings" title="Other settings attributes. Each setting must be splitted by comma.">
 		<label>Extra Settings:</label>
-		<input type="text" class="task_property_field" name="extra_settings" value="" />
+		<input type="text" class="task_property_field" name="extra_settings" value="" autocomplete="new-password" />
 	</div>
 </div>

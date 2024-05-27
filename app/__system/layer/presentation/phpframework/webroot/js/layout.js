@@ -509,7 +509,7 @@ function openSubmenu(elm) {
 
 /* Utils Functions */
 
-function normalizeFileName(new_file_name, allow_upper_case) {
+function normalizeFileName(new_file_name, allow_upper_case, confirmed) {
 	//normalize new file name
 	if (new_file_name) {
 		var has_accents = new_file_name.match(/([\x7f-\xff\u1EBD\u1EBC]+)/gi);
@@ -519,7 +519,7 @@ function normalizeFileName(new_file_name, allow_upper_case) {
 		var has_weird_chars = new_file_name.match(/([\w\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\u1EBD\u1EBC\.]+)/gi);
 		has_weird_chars = has_weird_chars && has_weird_chars.join("") != new_file_name; // \. is very important bc the new_file_name is the complete filename with the extension. '\w' means all words with '_' and 'u' means with accents and ç too.
 		
-		if ((has_accents || has_spaces || has_upper_case || has_weird_chars) && confirm("Is NOT advisable to have file names with spaces, dashes, letters with accents, upper case letters or weird characters.\nYou should only use the following letters: A-Z, 0-9 and '_'.\nCan I normalize this name and convert it to a proper name?")) {
+		if ((has_accents || has_spaces || has_upper_case || has_weird_chars) && (confirmed || confirm("Is NOT advisable to have file names with spaces, dashes, letters with accents, upper case letters or weird characters.\nYou should only use the following letters: A-Z, 0-9 and '_'.\nCan I normalize this name and convert it to a proper name?"))) {
 			if (typeof new_file_name.normalize == "function") //This doesn't work in IE11
 				new_file_name = new_file_name.normalize("NFD");
 			

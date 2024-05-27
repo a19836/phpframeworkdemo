@@ -3274,7 +3274,7 @@ function triggerFileNodeAfterCreateFile(a, attr_name, action, new_file_name, url
 	
 	//normalize new file name
 	var allow_upper_case = a.getAttribute("allow_upper_case") == 1; //in case of businesslogic services class
-	new_file_name = normalizeFileName(new_file_name, allow_upper_case);
+	var new_file_name_normalized = normalizeFileName(new_file_name, allow_upper_case, true);
 	
 	if (node[0])
 		mytree.refreshNodeChilds(node[0], {
@@ -3282,7 +3282,7 @@ function triggerFileNodeAfterCreateFile(a, attr_name, action, new_file_name, url
 				$(ul).find(" > li > a > label").each(function(idx, item) {
 					item = $(item);
 					
-					if (item.text().toLowerCase() == new_file_name.toLowerCase()) {
+					if (item.text().toLowerCase() == new_file_name.toLowerCase() || item.text().toLowerCase() == new_file_name_normalized.toLowerCase()) {
 						var new_a = item.parent();
 						
 						if (new_a.attr("onClick")) {
@@ -3307,7 +3307,7 @@ function triggerFileNodeAfterCreatePage(a, attr_name, action, new_file_name, url
 	
 	//normalize new file name
 	var allow_upper_case = a.getAttribute("allow_upper_case") == 1; //in case of businesslogic services class
-	new_file_name = normalizeFileName(new_file_name, allow_upper_case);
+	var new_file_name_normalized = normalizeFileName(new_file_name, allow_upper_case, true);
 	
 	if (node[0])
 		mytree.refreshNodeChilds(node[0], {
@@ -3315,7 +3315,7 @@ function triggerFileNodeAfterCreatePage(a, attr_name, action, new_file_name, url
 				$(ul).find(" > li > a > label").each(function(idx, item) {
 					item = $(item);
 					
-					if (item.text().toLowerCase() == new_file_name.toLowerCase()) {
+					if (item.text().toLowerCase() == new_file_name.toLowerCase() || item.text().toLowerCase() == new_file_name_normalized.toLowerCase()) {
 						var new_a = item.parent();
 						
 						try {

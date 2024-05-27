@@ -440,6 +440,9 @@ var DBDAOActionTaskPropertyObj = {
 		if (task_property_values[key + "_type"] == "array" && (
 			$.isPlainObject(task_property_values[key]) || $.isArray(task_property_values[key])
 		)) {
+			if ($.isPlainObject(task_property_values[key]) && task_property_values[key].hasOwnProperty("key"))
+				task_property_values[key] = [ task_property_values[key] ];
+			
 			//convert simple array to an associative array, but only if is a simple array like: ["attr name x", "attr name y"]
 			if (key == "attributes") {
 				var obj = FormFieldsUtilObj.convertFormSettingsDataArrayToSettings(task_property_values[key]);

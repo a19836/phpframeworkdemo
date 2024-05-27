@@ -405,6 +405,5 @@ class SchoolService extends \soa\CommonService {
 		
 		return $result;
 	}
-	
 }
 ?>

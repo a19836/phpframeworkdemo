@@ -13,6 +13,7 @@
 			<item name="password"><![CDATA[&lt;?php echo $GLOBALS['default_db_pass']; ?>]]></item>
 			<item name="persistent">1</item>
 			<item name="new_link">0</item>
+			<item name="reconnect">0</item>
 			<item name="encoding">utf8</item>
 			<item name="schema"><![CDATA[]]></item>
 			<item name="odbc_data_source"><![CDATA[]]></item>
