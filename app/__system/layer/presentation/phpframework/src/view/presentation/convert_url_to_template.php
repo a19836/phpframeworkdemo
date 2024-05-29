@@ -41,7 +41,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 		<header>
 			<div class="title" title="' . $path . '">
 				Convert 
-				<input type="text" name="page_url" placeHolder="Page Url" onBlur="loadUrl();" />
+				<input type="text" name="page_url" placeHolder="Page Url" onBlur="loadUrlIfNotYetLoaded();" />
 				<a class="icon refresh" onClick="loadUrl();" title="Load Url">Load</a>
 				To
 				<input type="text" name="template_name" placeHolder="Template name" />

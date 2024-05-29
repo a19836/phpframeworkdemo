@@ -164,6 +164,16 @@ function loadUrl() {
 		alert("Please write a valid url...");
 }
 
+function loadUrlIfNotYetLoaded() {
+	var input = $(".top_bar .title input[name=page_url]");
+	
+	if (!input.data("loaded")) {
+		input.data("loaded", true);
+		
+		loadUrl();
+	}
+}
+
 function getIframeExtraStyle() {
 	return '<style data-reserved="1">'
 		+ '::-webkit-scrollbar { width:10px; height:10px; background:transparent; }'
