@@ -22,143 +22,147 @@ $(function () {
 });
 
 function loadUrl() {
-	var url = $(".top_bar .title input[name=page_url]").val();
 	var icon = $(".top_bar .title .icon.refresh");
+	var input = $(".top_bar .title input[name=page_url]");
+	var url = input.val();
 	
 	if (url) {
-		var iframe_doc = iframe[0].contentWindow.document;
-		var iframe_contents = iframe.contents();
-		var iframe_html = iframe_contents.find("html");
-		var iframe_head = iframe_contents.find("head");
-		var iframe_body = iframe_contents.find("body");
-		
-		icon.addClass("loading");
-		
-		iframe_head.html("");
-		iframe_body.html("");
-		iframe_layers.html("");
-		
-		//remove body attributes
-		if (iframe_body[0].attributes)
-			for (var i = iframe_body[0].attributes.length - 1; i >= 0; i--)
-				iframe_body[0].removeAttribute( iframe_body[0].attributes[i].name );
-		
-		//remove html attributes
-		if (iframe_html[0].attributes)
-			for (var i = iframe_html[0].attributes.length - 1; i >= 0; i--)
-				iframe_html[0].removeAttribute( iframe_html[0].attributes[i].name );
-		
-		//set elements selection
-		if (!events_set) {
-			events_set = true;
+		if (!icon.hasClass("loading")) {
+			var iframe_doc = iframe[0].contentWindow.document;
+			var iframe_contents = iframe.contents();
+			var iframe_html = iframe_contents.find("html");
+			var iframe_head = iframe_contents.find("head");
+			var iframe_body = iframe_contents.find("body");
 			
-			iframe_body.bind("mousemove", function(event) {
-				unsetIframeHoveredElement();
-				setIframeHoveredElement(event.target);
-			});
+			icon.addClass("loading");
+			input.data("loaded", true);
 			
-			iframe_body.bind("click", function(event) {
-				setIframeClickedElement(event.target);
+			iframe_head.html("");
+			iframe_body.html("");
+			iframe_layers.html("");
+			
+			//remove body attributes
+			if (iframe_body[0].attributes)
+				for (var i = iframe_body[0].attributes.length - 1; i >= 0; i--)
+					iframe_body[0].removeAttribute( iframe_body[0].attributes[i].name );
+			
+			//remove html attributes
+			if (iframe_html[0].attributes)
+				for (var i = iframe_html[0].attributes.length - 1; i >= 0; i--)
+					iframe_html[0].removeAttribute( iframe_html[0].attributes[i].name );
+			
+			//set elements selection
+			if (!events_set) {
+				events_set = true;
 				
-				openIframeLayerNode( $(event.target) );
-			});
-			
-			//catch iframe errors
-			iframe[0].contentWindow.onerror = function(msg, url, lineNo, columnNo, error) {
-				//alert("Javascript Error was found!");
+				iframe_body.bind("mousemove", function(event) {
+					unsetIframeHoveredElement();
+					setIframeHoveredElement(event.target);
+				});
 				
-				return true; //return true, avoids the error to be shown and other scripts to stop.
+				iframe_body.bind("click", function(event) {
+					setIframeClickedElement(event.target);
+					
+					openIframeLayerNode( $(event.target) );
+				});
+				
+				//catch iframe errors
+				iframe[0].contentWindow.onerror = function(msg, url, lineNo, columnNo, error) {
+					//alert("Javascript Error was found!");
+					
+					return true; //return true, avoids the error to be shown and other scripts to stop.
+				}
 			}
-		}
-		
-		$.ajax({
-			type : "post",
-			url : current_url,
-			data : {
-				url: url,
-				load: "load",
-			},
-			dataType : "text",
-			success : function(parsed_html, textStatus, jqXHR) {
-				if (parsed_html) {
-					var pos = parsed_html.indexOf("\n");
-					url = parsed_html.substr(0, pos);
-					parsed_html = parsed_html.substr(pos + 1);
-					//console.log(url);
-					//console.log(parsed_html);
-					
-					var doc_type = "";
-					var head_html = "";
-					var body_html = "";
-					var body_attributes = [];
-					var html_attributes = [];
-					//console.log(parsed_html);
-					
+			
+			$.ajax({
+				type : "post",
+				url : current_url,
+				data : {
+					url: url,
+					load: "load",
+				},
+				dataType : "text",
+				success : function(parsed_html, textStatus, jqXHR) {
 					if (parsed_html) {
-						var phl = parsed_html.toLowerCase();
+						var pos = parsed_html.indexOf("\n");
+						url = parsed_html.substr(0, pos);
+						parsed_html = parsed_html.substr(pos + 1);
+						//console.log(url);
+						//console.log(parsed_html);
 						
-						if (phl.indexOf("<head") == -1 && phl.indexOf("<body") == -1)
-							body_html = parsed_html;
-						else {
-							head_html = getTemplateHtmlTagContent(parsed_html, "head");
-							body_html = getTemplateHtmlTagContent(parsed_html, "body");
+						var doc_type = "";
+						var head_html = "";
+						var body_html = "";
+						var body_attributes = [];
+						var html_attributes = [];
+						//console.log(parsed_html);
+						
+						if (parsed_html) {
+							var phl = parsed_html.toLowerCase();
 							
-							body_attributes = getTemplateHtmlTagAttributes(parsed_html, "body");
+							if (phl.indexOf("<head") == -1 && phl.indexOf("<body") == -1)
+								body_html = parsed_html;
+							else {
+								head_html = getTemplateHtmlTagContent(parsed_html, "head");
+								body_html = getTemplateHtmlTagContent(parsed_html, "body");
+								
+								body_attributes = getTemplateHtmlTagAttributes(parsed_html, "body");
+							}
+							
+							if (phl.indexOf("<html") != -1)
+								html_attributes = getTemplateHtmlTagAttributes(parsed_html, "html");
+							
+							var doc_type_pos = phl.indexOf("<!doctype");
+							if (doc_type_pos != -1)
+								doc_type = parsed_html.substr(doc_type_pos, parsed_html.indexOf(">", doc_type_pos + 1) + 1);
 						}
 						
-						if (phl.indexOf("<html") != -1)
-							html_attributes = getTemplateHtmlTagAttributes(parsed_html, "html");
+						head_html += getIframeExtraStyle();
 						
-						var doc_type_pos = phl.indexOf("<!doctype");
-						if (doc_type_pos != -1)
-							doc_type = parsed_html.substr(doc_type_pos, parsed_html.indexOf(">", doc_type_pos + 1) + 1);
+						//console.log(head_html);
+						iframe_head[0].innerHTML = head_html; //Do not use .html(head_html), bc in some cases it breaks
+						iframe_body[0].innerHTML = body_html; //Do not use .html(body_html), bc in some cases it breaks
+						
+						//set body attributes
+						if (body_attributes)
+							$.each(body_attributes, function(idx, attr) {
+								iframe_body.attr(attr["name"], attr["value"]);
+							});
+						
+						//set html attributes
+						if (html_attributes)
+							$.each(html_attributes, function(idx, attr) {
+								iframe_html.attr(attr["name"], attr["value"]);
+							});
+						
+						//save doctype
+						iframe.data("doc_type", doc_type).data("url", url);
+						
+						prepareIframeBodyHtml(iframe_body);
+						prepareIframeLayersHtml(iframe_html, iframe_layers);
+						
+						//reset regions and params
+						regions = {};
+						params = {};
+						
+						is_page_url_loaded = true;
 					}
+					else
+						alert("Error loading url. Please try again...");
 					
-					head_html += getIframeExtraStyle();
+					icon.removeClass("loading");
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					icon.removeClass("loading");
 					
-					//console.log(head_html);
-					iframe_head[0].innerHTML = head_html; //Do not use .html(head_html), bc in some cases it breaks
-					iframe_body[0].innerHTML = body_html; //Do not use .html(body_html), bc in some cases it breaks
+					var msg = "Error loading url. Please try again...";
+					alert(msg);
 					
-					//set body attributes
-					if (body_attributes)
-						$.each(body_attributes, function(idx, attr) {
-							iframe_body.attr(attr["name"], attr["value"]);
-						});
-					
-					//set html attributes
-					if (html_attributes)
-						$.each(html_attributes, function(idx, attr) {
-							iframe_html.attr(attr["name"], attr["value"]);
-						});
-					
-					//save doctype
-					iframe.data("doc_type", doc_type).data("url", url);
-					
-					prepareIframeBodyHtml(iframe_body);
-					prepareIframeLayersHtml(iframe_html, iframe_layers);
-					
-					//reset regions and params
-					regions = {};
-					params = {};
-					
-					is_page_url_loaded = true;
-				}
-				else
-					alert("Error loading url. Please try again...");
-				
-				icon.removeClass("loading");
-			},
-			error: function (jqXHR, textStatus, errorThrown) {
-				icon.removeClass("loading");
-				
-				var msg = "Error loading url. Please try again...";
-				alert(msg);
-				
-				if (jqXHR.responseText)
-					StatusMessageHandler.showError(msg + "\n" + jqXHR.responseText);
-			},
-		});
+					if (jqXHR.responseText)
+						StatusMessageHandler.showError(msg + "\n" + jqXHR.responseText);
+				},
+			});
+		}
 	}
 	else 
 		alert("Please write a valid url...");
@@ -167,11 +171,8 @@ function loadUrl() {
 function loadUrlIfNotYetLoaded() {
 	var input = $(".top_bar .title input[name=page_url]");
 	
-	if (!input.data("loaded")) {
-		input.data("loaded", true);
-		
+	if (!input.data("loaded"))
 		loadUrl();
-	}
 }
 
 function getIframeExtraStyle() {
@@ -820,7 +821,7 @@ function saveTemplate() {
 		});
 		
 		//remove some temporary classes
-		clone_body.find(".template-region-element-to-be-converted, .template-param-element-to-be-converted").removeClass("template-region-element-to-be-converted, template-param-element-to-be-converted").removeAttr("data-template-region-name").removeAttr("data-template-param-name");
+		clone_body.find(".template-region-element-to-be-converted, .template-param-element-to-be-converted").removeClass("template-region-element-to-be-converted template-param-element-to-be-converted").removeAttr("data-template-region-name").removeAttr("data-template-param-name");
 		
 		//get html
 		var html = clone[0].outerHTML; //get html with the html tag
