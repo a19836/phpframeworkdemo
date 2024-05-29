@@ -41,8 +41,8 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 		<header>
 			<div class="title" title="' . $path . '">
 				Convert 
-				<input type="text" name="page_url" placeHolder="Page Url" />
-				<a class="icon refresh" onClick="loadUrl(this);" title="Load Url">Load</a>
+				<input type="text" name="page_url" placeHolder="Page Url" onBlur="loadUrl();" />
+				<a class="icon refresh" onClick="loadUrl();" title="Load Url">Load</a>
 				To
 				<input type="text" name="template_name" placeHolder="Template name" />
 				<input type="text" name="layout_name" placeHolder="Layout name: index" title="If this field is empty, the default layout name will be: index. Please do not add any file extension. This field corresponds to the name of layout and only the file name without extension." />

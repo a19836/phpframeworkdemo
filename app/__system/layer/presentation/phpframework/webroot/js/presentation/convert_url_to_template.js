@@ -21,9 +21,9 @@ $(function () {
 	});
 });
 
-function loadUrl(elm) {
-	elm = $(elm);
+function loadUrl() {
 	var url = $(".top_bar .title input[name=page_url]").val();
+	var icon = $(".top_bar .title .icon.refresh");
 	
 	if (url) {
 		var iframe_doc = iframe[0].contentWindow.document;
@@ -32,7 +32,7 @@ function loadUrl(elm) {
 		var iframe_head = iframe_contents.find("head");
 		var iframe_body = iframe_contents.find("body");
 		
-		elm.addClass("loading");
+		icon.addClass("loading");
 		
 		iframe_head.html("");
 		iframe_body.html("");
@@ -147,10 +147,10 @@ function loadUrl(elm) {
 				else
 					alert("Error loading url. Please try again...");
 				
-				elm.removeClass("loading");
+				icon.removeClass("loading");
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
-				elm.removeClass("loading");
+				icon.removeClass("loading");
 				
 				var msg = "Error loading url. Please try again...";
 				alert(msg);
@@ -412,13 +412,18 @@ function prepareIframeLayersHtml(iframe_node, layers_node) {
 							var name = prompt("Please type the name of the param:");
 							
 							if (name) {
+								name = name ? ("" + name).replace(/(\/|\\|..\/|.\/|\s)/g, "") : "";
+								
+								var attr_li = $(this).parent().closest("li");
+								var attr_name = attr_li.attr("attribute_name");
+								
 								attribute_params[name] = {
 									node: iframe_node[0],
-									attribute_name: attribute_name,
+									attribute_name: attr_name,
 								};
 								
-								attribute_li.attr("conversion_name", name);
-								attribute_li.addClass("converted");
+								attr_li.attr("conversion_name", name);
+								attr_li.addClass("converted");
 							}
 						});
 						
@@ -427,15 +432,16 @@ function prepareIframeLayersHtml(iframe_node, layers_node) {
 							ev.preventDefault();
 							
 							if ($(this).data("do_not_confirm") || confirm("You are about to unconvert this node. Do you wish to continue?")) {
-								var name = item.attr("conversion_name");
+								var attr_li = $(this).parent().closest("li");
+								var name = attr_li.attr("conversion_name");
 								
 								if (name) {
 									attribute_params[name] = null;
 									delete attribute_params[name];
 								}
 								
-								attribute_li.removeAttr("conversion_name");
-								attribute_li.removeClass("converted");
+								attr_li.removeAttr("conversion_name");
+								attr_li.removeClass("converted");
 							}
 						});
 						
@@ -444,12 +450,12 @@ function prepareIframeLayersHtml(iframe_node, layers_node) {
 							ev.preventDefault();
 							
 							if (confirm("You are about to delete this attribute. Do you really wish to continue?")) {
-								var attribute_li = $(this).parent().closest("li");
-								var attribute_name = attribute_li.attr("attribute_name");
+								var attr_li = $(this).parent().closest("li");
+								var attr_name = attr_li.attr("attribute_name");
 								
-								if (iframe_node[0].hasAttribute(attribute_name)) {
-									iframe_node[0].removeAttribute(attribute_name);
-									attribute_li.remove();
+								if (iframe_node[0].hasAttribute(attr_name)) {
+									iframe_node[0].removeAttribute(attr_name);
+									attr_li.remove();
 									
 									if (attributes_ul.children("li").length == 0) {
 										attributes_ul.remove();
@@ -494,6 +500,8 @@ function prepareIframeLayersHtml(iframe_node, layers_node) {
 					var name = prompt("Please type the name of the param:");
 					
 					if (name) {
+						name = name ? ("" + name).replace(/(\/|\\|..\/|.\/|\s)/g, "") : "";
+						
 						item.attr("conversion_name", name);
 						item.attr("conversion_type", "param");
 						item.addClass("converted");
@@ -510,6 +518,8 @@ function prepareIframeLayersHtml(iframe_node, layers_node) {
 					var name = prompt("Please type the name of the region:");
 					
 					if (name) {
+						name = name ? ("" + name).replace(/(\/|\\|..\/|.\/|\s)/g, "") : "";
+						
 						item.attr("conversion_name", name);
 						item.attr("conversion_type", "region");
 						item.addClass("converted");
@@ -587,7 +597,7 @@ function convertToType(type) {
 		if (name == null)
 			return;
 		
-		name = name ? name.replace(/\s+/g, "") : "";
+		name = name ? ("" + name).replace(/(\/|\\|..\/|.\/|\s)/g, "") : "";
 		
 		if (name != "") {
 			var items = type == "region" ? regions : params;
@@ -736,7 +746,7 @@ function saveTemplate() {
 					
 					props["attribute_value"] = attribute_value;
 					params_html[name] = attribute_value;
-					elm.setAttribute(attribute_name, '&lt;? echo $EVC-&gt;getCMSLayer()-&gt;getCMSTemplateLayer()-&gt;getParam("' + name + '"); ?&gt;');
+					elm.setAttribute(attribute_name, '<? echo $EVC->getCMSLayer()->getCMSTemplateLayer()->getParam("' + name + '"); ?>');
 				}
 			}
 		
@@ -805,6 +815,15 @@ function saveTemplate() {
 		//get html
 		var html = clone[0].outerHTML; //get html with the html tag
 		html = MyHtmlBeautify.beautify(html);
+		
+		//prepare html that were not converted correctly in the attributes - Basically replace &quot; by ".
+		if (attribute_params)
+			for (var name in attribute_params) {
+				if (params_html.hasOwnProperty(name)) {
+					var regex = new RegExp('<\\? echo \\$EVC->getCMSLayer\\(\\)->getCMSTemplateLayer\\(\\)->getParam\\(&quot;' + name + '&quot;\\); \\?>', "g");
+					html = html.replace(regex, '<? echo $EVC->getCMSLayer()->getCMSTemplateLayer()->getParam("' + name + '"); ?>');
+				}
+			}
 		
 		//put back the previous changes on the regions, params and attributes
 		iframe_contents.find("body").find(".template-region-element-to-be-converted, .template-param-element-to-be-converted").removeClass("template-region-element-to-be-converted template-param-element-to-be-converted").removeAttr("data-template-region-name").removeAttr("data-template-param-name");

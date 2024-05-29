@@ -395,8 +395,16 @@ var ArrayTaskUtilObj = {
 			var l = ("" + value).length;
 			var key_type = field.parent().children(".key_type");
 			
-			if (l > 0 && key_type.val() == "null")
-				key_type.val( $.isNumeric(value) ? "" : (("" + value).substr(0, 1) == "$" ? "variable" : "string") );
+			if (l > 0) {
+				var is_code = $.isNumeric(value) || value == "true" || value == "false" || value == "TRUE" || value == "FALSE" || value == "null" || value == "NULL";
+				
+				if (key_type.val() == "null" || key_type.val() == "")
+					key_type.val(is_code ? "" : (("" + value).substr(0, 1) == "$" ? "variable" : "string") );
+				else if (key_type.val() != "" && is_code)
+					key_type.val("");
+				else if (key_type.val() == "string" && !is_code && ("" + value).substr(0, 1) == "$")
+					key_type.val("variable");
+			}
 			else if (l == 0 && key_type.val() != "null")
 				key_type.val("null");
 		}
