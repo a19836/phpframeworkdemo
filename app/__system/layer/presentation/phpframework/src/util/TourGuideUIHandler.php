@@ -239,21 +239,22 @@ include_once get_lib("org.phpframework.util.HashCode"); include_once get_lib("or
 	.tourguide_restart_btn .icon {
 		width:auto;
 		border-radius:100%;
-		opacity:.3;
+		opacity:1;
 		transition:opacity .5s ease-in-out;
+		color:var(--link-color);
 	}
 	.tourguide_restart_btn .icon:hover {
-		opacity:1;
+		opacity:.8;
 	}
 	.tourguide_restart_btn .icon::before {
 		margin:0;
 	}
 	@keyframes tourguide_restart_btn_glow {
 		from {
-			box-shadow: 0 0 30px -5px #2C2D34;
+			box-shadow: 0 0 30px -5px var(--link-color);
 		}
 		to {
-			box-shadow: 0 0 30px 5px #2C2D34;
+			box-shadow: 0 0 30px 5px var(--link-color);
 		}
 	}
 	

@@ -45,6 +45,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 				<a class="icon refresh" onClick="loadUrl(this);" title="Load Url">Load</a>
 				To
 				<input type="text" name="template_name" placeHolder="Template name" />
+				<input type="text" name="layout_name" placeHolder="Layout name: index" title="If this field is empty, the default layout name will be: index. Please do not add any file extension. This field corresponds to the name of layout and only the file name without extension." />
 				in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($selected_project, $P) . '
 			</div>
 			<ul>
@@ -56,6 +57,7 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 	</div>'; $main_content .= '
 	<div class="page_html">
 		<iframe></iframe>
+		<ul class="page_layers"></ul>
 		<div class="buttons">
 			<button class="convert_to_region" title="Convert to Region" onClick="convertToRegion()">Convert to Region</button>
 			<button class="convert_to_param" title="Convert to Param" onClick="convertToParam()">Convert to Param</button>

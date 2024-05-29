@@ -182,30 +182,42 @@
 }
 
 .selected_task_properties .layer_rest_server_html .other_settings,
-  .selected_task_properties .layer_soap_server_html .other_settings {
+  .selected_task_properties .layer_soap_server_html .other_settings,
+  .selected_task_properties .layer_rest_server_html .global_variables,
+  .selected_task_properties .layer_soap_server_html .global_variables {
 	margin-top:20px;
 	display:none;
 }
 .selected_task_properties .layer_rest_server_html .other_settings table,
-  .selected_task_properties .layer_soap_server_html .other_settings table {
+  .selected_task_properties .layer_soap_server_html .other_settings table,
+  .selected_task_properties .layer_rest_server_html .global_variables table,
+  .selected_task_properties .layer_soap_server_html .global_variables table {
 	width:100%;
 }
 .selected_task_properties .layer_rest_server_html .other_settings table tr td,
-  .selected_task_properties .layer_soap_server_html .other_settings table tr td {
+  .selected_task_properties .layer_soap_server_html .other_settings table tr td,
+  .selected_task_properties .layer_rest_server_html .global_variables table tr td,
+  .selected_task_properties .layer_soap_server_html .global_variables table tr td {
 	padding-bottom:5px;
 	border-top:1px solid #eee;
 	border-right:1px solid #eee;
 }
 .selected_task_properties .layer_rest_server_html .other_settings .setting_name,
-  .selected_task_properties .layer_soap_server_html .other_settings .setting_name {
+  .selected_task_properties .layer_soap_server_html .other_settings .setting_name,
+  .selected_task_properties .layer_rest_server_html .global_variables .var_name,
+  .selected_task_properties .layer_soap_server_html .global_variables .var_name {
 	width:230px;
 }
 .selected_task_properties .layer_rest_server_html .other_settings .setting_value,
-  .selected_task_properties .layer_soap_server_html .other_settings .setting_value {
+  .selected_task_properties .layer_soap_server_html .other_settings .setting_value,
+  .selected_task_properties .layer_rest_server_html .global_variables .var_value,
+  .selected_task_properties .layer_soap_server_html .global_variables .var_value {
 	width:250px;
 }
 .selected_task_properties .layer_rest_server_html .other_settings .table_attr_icons,
-  .selected_task_properties .layer_soap_server_html .other_settings .table_attr_icons {
+  .selected_task_properties .layer_soap_server_html .other_settings .table_attr_icons,
+  .selected_task_properties .layer_rest_server_html .global_variables .table_attr_icons,
+  .selected_task_properties .layer_soap_server_html .global_variables .table_attr_icons {
 	width:50px;
 	border:0;
 	text-align:center;
@@ -213,7 +225,11 @@
 .selected_task_properties .layer_rest_server_html .other_settings input,
   .selected_task_properties .layer_rest_server_html .other_settings select,
   .selected_task_properties .layer_soap_server_html .other_settings input,
-  .selected_task_properties .layer_soap_server_html .other_settings select {
+  .selected_task_properties .layer_soap_server_html .other_settings select,
+  .selected_task_properties .layer_rest_server_html .global_variables input,
+  .selected_task_properties .layer_rest_server_html .global_variables select,
+  .selected_task_properties .layer_soap_server_html .global_variables input,
+  .selected_task_properties .layer_soap_server_html .global_variables select {
 	width:100%;
 	box-sizing:border-box;
 	border:0;

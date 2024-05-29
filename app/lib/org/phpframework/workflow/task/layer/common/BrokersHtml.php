@@ -92,6 +92,22 @@
 			<tbody class="table_attrs"></tbody>
 		</table>
 	</div>
+	
+	<div class="global_variables">
+		<label>Global Variables: </label>
+		<table>
+			<thead>
+				<tr>
+					<th class="var_name table_header">Var Name</th>
+					<th class="var_value table_header">Var Value</th>
+					<th class="table_attr_icons">
+						<a class="icon add" onClick="addLayerTypeServerPropertiesGlobalVariable(this, 'rest')" title="Add">Add</a>
+					</th>
+				</tr>
+			</thead>
+			<tbody class="table_attrs"></tbody>
+		</table>
+	</div>
 </div>
 
 <!--div class="layer_soap_server_html">
@@ -105,6 +121,22 @@
 				<tr>
 					<th class="setting_name table_header">Setting Name</th>
 					<th class="setting_value table_header">Setting Value</th>
+					<th class="table_attr_icons">
+						<a class="icon add" onClick="addLayerTypeServerPropertiesOtherSetting(this, 'soap')" title="Add">Add</a>
+					</th>
+				</tr>
+			</thead>
+			<tbody class="table_attrs"></tbody>
+		</table>
+	</div>
+	
+	<div class="global_variables">
+		<label>Global Variables: </label>
+		<table>
+			<thead>
+				<tr>
+					<th class="var_name table_header">Var Name</th>
+					<th class="var_value table_header">Var Value</th>
 					<th class="table_attr_icons">
 						<a class="icon add" onClick="addLayerTypeServerPropertiesOtherSetting(this, 'soap')" title="Add">Add</a>
 					</th>

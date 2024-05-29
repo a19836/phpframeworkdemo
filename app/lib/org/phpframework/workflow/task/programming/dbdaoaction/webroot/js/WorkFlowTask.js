@@ -779,7 +779,7 @@ var DBDAOActionTaskPropertyObj = {
 					+ '	<select class="attr_operator" name="' + n + '[operator]">'
 					+ operator_options
 					+ '	</select>'
-					+ '	<input class="attr_value" type="text" name="' + n + '[value]" value="' + v + '" PlaceHolder="Write the value here">'
+					+ '	<input class="attr_value" type="text" name="' + n + '[value]" value="' + v + '" placeHolder="Write the value here">'
 					+ '	<span class="icon add_variable" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" input_selector=".attr_value">Add Variable</span>'
 					+ '	<span class="icon delete" title="Remove item" onClick="$(this).parent().remove();"></span>'
 					+ '</li>';
@@ -832,7 +832,7 @@ var DBDAOActionTaskPropertyObj = {
 					+ operator_options
 					+ '	</select>'
 					+ '	<input class="attr_value" type="text" name="' + idx + '[fcolumn]" value="' + fcolumn + '" PlaceHolder="Child table.column">'
-					+ '	<input class="attr_value column_value" type="text" name="' + idx + '[value]" value="' + v + '">'
+					+ '	<input class="attr_value column_value" type="text" name="' + idx + '[value]" value="' + v + '" placeHolder="Value if apply">'
 					+ '	<span class="icon add_variable" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" input_selector=".attr_value.column_value">Add Variable</span>'
 					+ '	<select class="attr_operator" name="' + idx + '[join]">'
 					+ '		<option' + (column_join == "inner" ? " selected" : "") + '>inner</option>'

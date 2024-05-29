@@ -50,7 +50,7 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 						var value = type_values[k];
 						var prop_elm = layer_type_server_html_elm.children("." + k);
 						
-						if (k == "other_settings") {
+						if (k == "other_settings" || k == "global_variables") {
 							if ($.isPlainObject(value) && value["vars_name"]) {
 								var add_icon = prop_elm.find("> table > thead .table_attr_icons > .add")[0];
 								var vars_name = value["vars_name"];
@@ -63,10 +63,10 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 								
 								$.each (vars_name, function(idx, n) {
 									var v = vars_value[idx];
-									var item = addLayerTypeServerPropertiesOtherSetting(add_icon, type);
+									var item = k == "other_settings" ? addLayerTypeServerPropertiesOtherSetting(add_icon, type) : addLayerTypeServerPropertiesGlobalVariable(add_icon, type);
 									
-									item.children(".setting_name").children("input").val(n);
-									item.children(".setting_value").children("input").val(v);
+									item.children(".setting_name, .var_name").children("input").val(n);
+									item.children(".setting_value, .var_value").children("input").val(v);
 								});
 							}
 						}
@@ -498,7 +498,7 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 	function activateLayerRestServer(elm) {
 		elm = $(elm);
 		var is_active = elm.is(":checked");
-		var elms = elm.parent().closest(".layer_rest_server_html").children(".url, .http_auth, .user_pwd, .response_type, .rest_auth_user, .rest_auth_pass, .request_encryption_key, .response_encryption_key, .other_settings");
+		var elms = elm.parent().closest(".layer_rest_server_html").children(".url, .http_auth, .user_pwd, .response_type, .rest_auth_user, .rest_auth_pass, .request_encryption_key, .response_encryption_key, .other_settings, .global_variables");
 		
 		if (is_active)
 			elms.show();
@@ -512,7 +512,7 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 	function activateLayerSoapServer(elm) {
 		elm = $(elm);
 		var is_active = elm.is(":checked");
-		var elms = elm.parent().closest(".layer_soap_server_html").children(".other_settings");
+		var elms = elm.parent().closest(".layer_soap_server_html").children(".other_settings, .global_variables");
 		
 		if (is_active)
 			elms.show();
@@ -525,6 +525,20 @@ if (typeof is_global_layer_common_file_already_included == "undefined") {
 		'<tr>'
 			+ '<td class="setting_name"><input class="task_property_field" type="text" name="layer_brokers[' + type + '][other_settings][vars_name][]" /></td>'
 			+ '<td class="setting_value"><input class="task_property_field" type="text" name="layer_brokers[' + type + '][other_settings][vars_value][]" /></td>'
+			+ '<td class="table_attr_icons"><a class="icon remove" onClick="$(this).parent().closest(\'tr\').remove()">Remove</a></td>'
+		+ '</tr>';
+		
+		html = $(html);
+		$(elm).parent().closest("table").children("tbody").append(html);
+		
+		return html;
+	}
+	
+	function addLayerTypeServerPropertiesGlobalVariable(elm, type) {
+		var html = 
+		'<tr>'
+			+ '<td class="var_name"><input class="task_property_field" type="text" name="layer_brokers[' + type + '][global_variables][vars_name][]" /></td>'
+			+ '<td class="var_value"><input class="task_property_field" type="text" name="layer_brokers[' + type + '][global_variables][vars_value][]" /></td>'
 			+ '<td class="table_attr_icons"><a class="icon remove" onClick="$(this).parent().closest(\'tr\').remove()">Remove</a></td>'
 		+ '</tr>';
 		

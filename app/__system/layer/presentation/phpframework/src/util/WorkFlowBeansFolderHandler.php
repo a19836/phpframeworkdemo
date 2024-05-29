@@ -69,7 +69,7 @@ catch(Exception $e) {
 <modules>
 	<module id="COMMON">' . $pce434ca7 . '</module>
 	' . ($this->v69bff92632 ? '<module id="' . strtoupper($this->v69bff92632) . '">' . $this->v69bff92632 . '</module>' : '') . '
-</modules>'; if (!file_exists($v7d0332245c . "modules.xml")) file_put_contents($v7d0332245c . "modules.xml", $pae77d38c); $pa0462a8e = substr($pce995d72, strlen($this->v73fec76b27["BEAN_PATH"])); $v31199c28eb = $this->f55c5fd3b20($v1e9dc98c41, $v30857f7eca, "BusinessLogicBrokerServer", $pfd44460b, $v1f4bcb3ebf, $pc5c85d51); if (!$v1f4bcb3ebf) $pae77d38c = '<?php
+</modules>'; if (!file_exists($v7d0332245c . "modules.xml")) file_put_contents($v7d0332245c . "modules.xml", $pae77d38c); $pa0462a8e = substr($pce995d72, strlen($this->v73fec76b27["BEAN_PATH"])); $v31199c28eb = $this->f55c5fd3b20($v1e9dc98c41, $v30857f7eca, "BusinessLogicBrokerServer", $pfd44460b, $v1f4bcb3ebf, $pc5c85d51, $v796be992c6); if (!$v1f4bcb3ebf) $pae77d38c = '<?php
 //no remote broker server defined!
 ?>'; else $pae77d38c = '<?php
 try {
@@ -83,9 +83,10 @@ try {
 	
 	$broker_server_bean_name = \'' . $v1f4bcb3ebf . '\';
 	$broker_server_request_encryption_key = \'' . $pc5c85d51 . '\';
+	' . $v796be992c6 . '
 	' . $v31199c28eb . '
 	define(\'BUSINESS_LOGIC_BROKER_SERVER_BEAN_NAME\', $broker_server_bean_name);
-
+	
 	echo call_business_logic_layer_web_service(array("global_variables" => $_POST["gv"], "request_encryption_key" => $broker_server_request_encryption_key));
 }
 catch(Exception $e) {
@@ -100,7 +101,7 @@ catch(Exception $e) {
 </IfModule>'; file_put_contents($v7d0332245c . ".htaccess", $pae77d38c); $pae77d38c = '<?xml version="1.0" encoding="UTF-8"?>
 <modules>
 	' . ($this->v69bff92632 ? '<module id="' . strtoupper($this->v69bff92632) . '">' . $this->v69bff92632 . '</module>' : '') . '
-</modules>'; if (!file_exists($v7d0332245c . "modules.xml")) file_put_contents($v7d0332245c . "modules.xml", $pae77d38c); $pa0462a8e = substr($pce995d72, strlen($this->v73fec76b27["BEAN_PATH"])); if ($v3fb9f41470 == "ibatis") { $v31199c28eb = $this->f55c5fd3b20($v1e9dc98c41, $v30857f7eca, "IbatisDataAccessBrokerServer", $pfd44460b, $v1f4bcb3ebf, $pc5c85d51); if (!$v1f4bcb3ebf) $pae77d38c = '<?php
+</modules>'; if (!file_exists($v7d0332245c . "modules.xml")) file_put_contents($v7d0332245c . "modules.xml", $pae77d38c); $pa0462a8e = substr($pce995d72, strlen($this->v73fec76b27["BEAN_PATH"])); if ($v3fb9f41470 == "ibatis") { $v31199c28eb = $this->f55c5fd3b20($v1e9dc98c41, $v30857f7eca, "IbatisDataAccessBrokerServer", $pfd44460b, $v1f4bcb3ebf, $pc5c85d51, $v796be992c6); if (!$v1f4bcb3ebf) $pae77d38c = '<?php
 //no remote broker server defined!
 ?>'; else $pae77d38c = '<?php
 try {
@@ -114,6 +115,7 @@ try {
 	
 	$broker_server_bean_name = \'' . $v1f4bcb3ebf . '\';
 	$broker_server_request_encryption_key = \'' . $pc5c85d51 . '\';
+	' . $v796be992c6 . '
 	' . $v31199c28eb . '
 	define(\'IBATIS_DATA_ACCESS_BROKER_SERVER_BEAN_NAME\', $broker_server_bean_name);
 
@@ -122,7 +124,7 @@ try {
 catch(Exception $e) {
 	$GlobalExceptionLogHandler->log($e);
 }
-?>'; } else { $v31199c28eb = $this->f55c5fd3b20($v1e9dc98c41, $v30857f7eca, "HibernateDataAccessBrokerServer", $pfd44460b, $v1f4bcb3ebf, $pc5c85d51); if (!$v1f4bcb3ebf) $pae77d38c = '<?php
+?>'; } else { $v31199c28eb = $this->f55c5fd3b20($v1e9dc98c41, $v30857f7eca, "HibernateDataAccessBrokerServer", $pfd44460b, $v1f4bcb3ebf, $pc5c85d51, $v796be992c6); if (!$v1f4bcb3ebf) $pae77d38c = '<?php
 //no remote broker server defined!
 ?>'; else $pae77d38c = '<?php
 try {
@@ -136,6 +138,7 @@ try {
 	
 	$broker_server_bean_name = \'' . $v1f4bcb3ebf . '\';
 	$broker_server_request_encryption_key = \'' . $pc5c85d51 . '\';
+	' . $v796be992c6 . '
 	' . $v31199c28eb . '
 	define(\'HIBERNATE_DATA_ACCESS_BROKER_SERVER_BEAN_NAME\', $broker_server_bean_name);
 
@@ -165,7 +168,7 @@ catch(Exception $e) {
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ init.php?url=$1 [QSA,L,NC]
-</IfModule>'; file_put_contents($v7d0332245c . ".htaccess", $pae77d38c); $pa0462a8e = substr($pce995d72, strlen($this->v73fec76b27["BEAN_PATH"])); $v31199c28eb = $this->f55c5fd3b20($v1e9dc98c41, $v30857f7eca, "DBBrokerServer", $pfd44460b, $v1f4bcb3ebf, $pc5c85d51); if (!$v1f4bcb3ebf) $pae77d38c = '<?php
+</IfModule>'; file_put_contents($v7d0332245c . ".htaccess", $pae77d38c); $pa0462a8e = substr($pce995d72, strlen($this->v73fec76b27["BEAN_PATH"])); $v31199c28eb = $this->f55c5fd3b20($v1e9dc98c41, $v30857f7eca, "DBBrokerServer", $pfd44460b, $v1f4bcb3ebf, $pc5c85d51, $v796be992c6); if (!$v1f4bcb3ebf) $pae77d38c = '<?php
 //no remote broker server defined!
 ?>'; else $pae77d38c = '<?php
 try {
@@ -179,6 +182,7 @@ try {
 	
 	$broker_server_bean_name = \'' . $v1f4bcb3ebf . '\';
 	$broker_server_request_encryption_key = \'' . $pc5c85d51 . '\';
+	' . $v796be992c6 . '
 	' . $v31199c28eb . '
 	define(\'DB_BROKER_SERVER_BEAN_NAME\', $broker_server_bean_name);
 
@@ -197,15 +201,16 @@ catch(Exception $e) {
 		<property name="defaultTTL"><?php echo $vars["dbl_default_cache_ttl"]; ?></property>
 	</bean>
 	<!-- END FILE SYSTEM HANDLER --> 
-</beans>'; if (!file_exists($v7d0332245c . "cache_handler.xml")) file_put_contents($v7d0332245c . "cache_handler.xml", $pae77d38c); } private function f55c5fd3b20($v1e9dc98c41, $v30857f7eca, $pa3e0d5e0, &$pfd44460b, &$v1f4bcb3ebf, &$pc5c85d51) { $pc86aa511 = array(); foreach($v1e9dc98c41 as $v5e813b295b => $pdec569fb) { $v972f1a5c2b = $this->pddfc29cd->getObject($v5e813b295b); if (is_a($v972f1a5c2b, "BrokerServer") && !is_a($v972f1a5c2b, "LocalDBBrokerServer") && $v30857f7eca["layer_brokers"]) { foreach ($v30857f7eca["layer_brokers"] as $v676be2c810 => $v56db643248) if (is_a($v972f1a5c2b, strtoupper($v676be2c810) . $pa3e0d5e0)) { $pc86aa511[$v676be2c810] = $v5e813b295b; break; } } } if ($pc86aa511) { $pfd44460b = key($pc86aa511); $v1f4bcb3ebf = $pc86aa511[$pfd44460b]; $pc5c85d51 = $v30857f7eca["layer_brokers"][$pfd44460b]["request_encryption_key"]; $v31199c28eb = ''; if (count($pc86aa511) > 1) { $v31199c28eb .= '
+</beans>'; if (!file_exists($v7d0332245c . "cache_handler.xml")) file_put_contents($v7d0332245c . "cache_handler.xml", $pae77d38c); } private function f55c5fd3b20($v1e9dc98c41, $v30857f7eca, $pa3e0d5e0, &$pfd44460b, &$v1f4bcb3ebf, &$pc5c85d51, &$v796be992c6) { $pc86aa511 = array(); if (!empty($v30857f7eca["layer_brokers"])) foreach($v1e9dc98c41 as $v5e813b295b => $pdec569fb) { $v972f1a5c2b = $this->pddfc29cd->getObject($v5e813b295b); if (is_a($v972f1a5c2b, "BrokerServer") && !is_a($v972f1a5c2b, "LocalDBBrokerServer")) foreach ($v30857f7eca["layer_brokers"] as $v676be2c810 => $v56db643248) if (is_a($v972f1a5c2b, strtoupper($v676be2c810) . $pa3e0d5e0)) $pc86aa511[$v676be2c810] = $v5e813b295b; } if ($pc86aa511) { $pfd44460b = key($pc86aa511); $v1f4bcb3ebf = $pc86aa511[$pfd44460b]; $pc5c85d51 = $v30857f7eca["layer_brokers"][$pfd44460b]["request_encryption_key"]; $v796be992c6 = $this->f913fad247a($v30857f7eca["layer_brokers"][$pfd44460b]["global_variables"]); $v31199c28eb = ''; if (count($pc86aa511) > 1) { $v31199c28eb .= '
 	$headers = getallheaders();
 
-	switch ($headers["layer_broker_server_type"]) {'; foreach ($pc86aa511 as $v676be2c810 => $pb9794db4) if ($v676be2c810 != $pfd44460b) $v31199c28eb .= '
+	switch ($headers["layer_broker_server_type"]) {'; foreach ($pc86aa511 as $v676be2c810 => $pb9794db4) if ($v676be2c810 != $pfd44460b) { $v796be992c6 .= $this->f913fad247a($v30857f7eca["layer_brokers"][$v676be2c810]["global_variables"]); $v31199c28eb .= '
 		case "' . $v676be2c810 . '":
 			$broker_server_bean_name = \'' . $pb9794db4 . '\';
 			$broker_server_request_encryption_key = \'' . $v30857f7eca["layer_brokers"][$v676be2c810]["request_encryption_key"] . '\';
-			break;'; $v31199c28eb .= '
+			' . str_replace("\n", "\n\t\t", $v796be992c6) . '
+			break;'; } $v31199c28eb .= '
 	}
 	
 	unset($headers);
-	'; } } return $v31199c28eb; } public static function getDefaultLayerFolder($pbfb7ee27) { $v1c28a1be9d = null; if (file_exists($pbfb7ee27)) { $v6490ea3a15 = file_get_contents($pbfb7ee27); preg_match("/RewriteRule\s*\\^\\$\s*([\w\-\+]+)\\//iu", $v6490ea3a15, $pb7f9502b); preg_match("/RewriteRule\s*\\(\\.\\*\\)\s*([\w\-\+]+)\\/\\$1/iu", $v6490ea3a15, $v01929c58f3); if ($pb7f9502b) $v1c28a1be9d = $pb7f9502b[1]; else if ($v01929c58f3) $v1c28a1be9d = $v01929c58f3[1]; } return $v1c28a1be9d; } public static function getPresentationLayerDefaultproject($pbfb7ee27) { $v1bb6c0775d = null; if (file_exists($pbfb7ee27)) { $v6490ea3a15 = file_get_contents($pbfb7ee27); preg_match("/RewriteRule\s*\\^\\$\s*([\w\-\+\/]+)\\/webroot\\//iu", $v6490ea3a15, $pb7f9502b); preg_match("/RewriteRule\s*\\(\\.\\*\\)\s*([\w\-\+\/]+)\\/webroot\\/\\$1/iu", $v6490ea3a15, $v01929c58f3); if ($pb7f9502b) $v1bb6c0775d = $pb7f9502b[1]; else if ($v01929c58f3) $v1bb6c0775d = $v01929c58f3[1]; $v1bb6c0775d = preg_replace("/\/+/", "/", $v1bb6c0775d); } return $v1bb6c0775d; } public static function copyFolder($v92dcc541a8, $pa5b0817e) { $v5c1c342594 = (file_exists($pa5b0817e) && !is_dir($pa5b0817e)) || (!file_exists($pa5b0817e) && !mkdir($pa5b0817e, 0775, true)) ? false : true; if($v5c1c342594) { if (is_dir($v92dcc541a8)) { $v6ee393d9fb = scandir($v92dcc541a8); if ($v6ee393d9fb) foreach ($v6ee393d9fb as $v7dffdb5a5b) if ($v7dffdb5a5b != "." && $v7dffdb5a5b != "..") { if(is_dir($v92dcc541a8 . $v7dffdb5a5b)) { if (!self::copyFolder($v92dcc541a8 . $v7dffdb5a5b . "/", $pa5b0817e . $v7dffdb5a5b . "/")) $v5c1c342594 = false; } else if (!copy($v92dcc541a8 . $v7dffdb5a5b, $pa5b0817e . $v7dffdb5a5b)) $v5c1c342594 = false; } } else $v5c1c342594 = false; } return $v5c1c342594; } } ?>
+	'; } } return $v31199c28eb; } private function f913fad247a($pd7a36e35) { $v067674f4e4 = ""; if (is_array($pd7a36e35) && !empty($pd7a36e35["vars_name"])) { $v45de354860 = $pd7a36e35["vars_name"]; $v61fc24eb6d = $pd7a36e35["vars_value"]; if (!is_array($v45de354860)) { $v45de354860 = array($v45de354860); $v61fc24eb6d = array($v61fc24eb6d); } foreach ($v45de354860 as $pd69fb7d0 => $v5e813b295b) if ($v5e813b295b) { $v67db1bd535 = $v61fc24eb6d[$pd69fb7d0]; $v067674f4e4 .= ($v067674f4e4 ? "\n\t" : "") . "\$$v5e813b295b = '" . $v67db1bd535 . "';"; } } return $v067674f4e4; } public static function getDefaultLayerFolder($pbfb7ee27) { $v1c28a1be9d = null; if (file_exists($pbfb7ee27)) { $v6490ea3a15 = file_get_contents($pbfb7ee27); preg_match("/RewriteRule\s*\\^\\$\s*([\w\-\+]+)\\//iu", $v6490ea3a15, $pb7f9502b); preg_match("/RewriteRule\s*\\(\\.\\*\\)\s*([\w\-\+]+)\\/\\$1/iu", $v6490ea3a15, $v01929c58f3); if ($pb7f9502b) $v1c28a1be9d = $pb7f9502b[1]; else if ($v01929c58f3) $v1c28a1be9d = $v01929c58f3[1]; } return $v1c28a1be9d; } public static function getPresentationLayerDefaultproject($pbfb7ee27) { $v1bb6c0775d = null; if (file_exists($pbfb7ee27)) { $v6490ea3a15 = file_get_contents($pbfb7ee27); preg_match("/RewriteRule\s*\\^\\$\s*([\w\-\+\/]+)\\/webroot\\//iu", $v6490ea3a15, $pb7f9502b); preg_match("/RewriteRule\s*\\(\\.\\*\\)\s*([\w\-\+\/]+)\\/webroot\\/\\$1/iu", $v6490ea3a15, $v01929c58f3); if ($pb7f9502b) $v1bb6c0775d = $pb7f9502b[1]; else if ($v01929c58f3) $v1bb6c0775d = $v01929c58f3[1]; $v1bb6c0775d = preg_replace("/\/+/", "/", $v1bb6c0775d); } return $v1bb6c0775d; } public static function copyFolder($v92dcc541a8, $pa5b0817e) { $v5c1c342594 = (file_exists($pa5b0817e) && !is_dir($pa5b0817e)) || (!file_exists($pa5b0817e) && !mkdir($pa5b0817e, 0775, true)) ? false : true; if($v5c1c342594) { if (is_dir($v92dcc541a8)) { $v6ee393d9fb = scandir($v92dcc541a8); if ($v6ee393d9fb) foreach ($v6ee393d9fb as $v7dffdb5a5b) if ($v7dffdb5a5b != "." && $v7dffdb5a5b != "..") { if(is_dir($v92dcc541a8 . $v7dffdb5a5b)) { if (!self::copyFolder($v92dcc541a8 . $v7dffdb5a5b . "/", $pa5b0817e . $v7dffdb5a5b . "/")) $v5c1c342594 = false; } else if (!copy($v92dcc541a8 . $v7dffdb5a5b, $pa5b0817e . $v7dffdb5a5b)) $v5c1c342594 = false; } } else $v5c1c342594 = false; } return $v5c1c342594; } } ?>
