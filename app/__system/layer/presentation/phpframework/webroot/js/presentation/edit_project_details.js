@@ -137,19 +137,6 @@ function goToHandler(url, a, attr_name, originalEvent) {
 	document.location = url;
 }
 
-function updateLayerFileManagers(elm) {
-	var selected_opt = $(elm).find("option:selected");
-	var bean_name = selected_opt.attr("bean_name");
-	var bean_file_name = selected_opt.attr("bean_file_name");
-	
-	var select = $(".choose_project_folder_url_from_file_manager > .broker > select");
-	var option = select.find("option[bean_name='" + bean_name + "'][bean_file_name='" + bean_file_name + "']");
-	var option_value = option.val();
-	
-	select.val(option_value);
-	select.trigger("change");
-}
-
 function submitForm(elm) {
 	elm = $(elm);
 	var oForm = elm.parent().closest(".top_bar").parent().find(".edit_project_details form");
@@ -182,9 +169,6 @@ function addProject(oForm) {
 		
 		var old_project_folder = oForm.find(".project_folder input[name=old_project_folder]").val();
 		var project_folder = oForm.find(".project_folder input[name=project_folder]").val();
-		var option = oForm.find(".layer select option:selected").first();
-		var bean_name = option.attr("bean_name");
-		var bean_file_name = option.attr("bean_file_name");
 		var old_project_name = oForm.find(".name input[name=old_name]").val();
 		var rename_project = is_project_created && old_project_name != project_name;
 		var move_project = is_project_created && old_project_folder != project_folder;
