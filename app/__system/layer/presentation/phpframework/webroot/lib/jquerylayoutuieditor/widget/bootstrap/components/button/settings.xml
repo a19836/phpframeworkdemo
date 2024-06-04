@@ -181,17 +181,17 @@
 			obj.available_items["5.3"].push({
 				image: '#widget_webroot_url#button_radio_group.png',
 				name: 'Radio buttons',
-				html: '<div class="btn-group" role="group" aria-label="Basic radio toggle button group"><input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked><label class="btn btn-outline-secondary" for="btnradio1">Radio 1</label><input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"><label class="btn btn-outline-secondary" for="btnradio2">Radio 2</label><input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"><label class="btn btn-outline-secondary" for="btnradio3">Radio 3</label></div>'
+				html: '<div class="btn-group" role="group" aria-label="Basic radio toggle button group"><input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="new-password" checked><label class="btn btn-outline-secondary" for="btnradio1">Radio 1</label><input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="new-password"><label class="btn btn-outline-secondary" for="btnradio2">Radio 2</label><input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="new-password"><label class="btn btn-outline-secondary" for="btnradio3">Radio 3</label></div>'
 			});
 			obj.available_items["5.3"].push({
 				image: '#widget_webroot_url#button_checkbox.png',
 				name: 'Checkbox button',
-				html: '<div class="btn-group" role="group" aria-label="Basic checkbox toggle button group"><input type="checkbox" class="btn-check" id="btncheck" autocomplete="off"><label class="btn btn-outline-primary" for="btncheck">Checkbox 1</label></div>'
+				html: '<div class="btn-group" role="group" aria-label="Basic checkbox toggle button group"><input type="checkbox" class="btn-check" id="btncheck" autocomplete="new-password"><label class="btn btn-outline-primary" for="btncheck">Checkbox 1</label></div>'
 			});
 			obj.available_items["5.3"].push({
 				image: '#widget_webroot_url#button_checkbox_group.png',
 				name: 'Checkbox buttons',
-				html: '<div class="btn-group" role="group" aria-label="Basic checkbox toggle button group"><input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"><label class="btn btn-outline-primary" for="btncheck1">Checkbox 1</label><input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off"><label class="btn btn-outline-primary" for="btncheck2">Checkbox 2</label><input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off"><label class="btn btn-outline-primary" for="btncheck3">Checkbox 3</label></div>'
+				html: '<div class="btn-group" role="group" aria-label="Basic checkbox toggle button group"><input type="checkbox" class="btn-check" id="btncheck1" autocomplete="new-password"><label class="btn btn-outline-primary" for="btncheck1">Checkbox 1</label><input type="checkbox" class="btn-check" id="btncheck2" autocomplete="new-password"><label class="btn btn-outline-primary" for="btncheck2">Checkbox 2</label><input type="checkbox" class="btn-check" id="btncheck3" autocomplete="new-password"><label class="btn btn-outline-primary" for="btncheck3">Checkbox 3</label></div>'
 			});
 			obj.available_items["5.3"].push({
 				image: '#widget_webroot_url#button_toolbar.png',
@@ -221,7 +221,7 @@
 			obj.available_items["5.3"].push({
 				image: '#widget_webroot_url#button_group_vertical.png',
 				name: 'Buttons group vertical',
-				html: '<div class="btn-group-vertical" role="group" aria-label="Vertical radio toggle button group"><input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio1" autocomplete="off" checked=""><label class="btn btn-outline-danger" for="vbtn-radio1">Radio 1</label><input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio2" autocomplete="off"><label class="btn btn-outline-danger" for="vbtn-radio2">Radio 2</label><input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio3" autocomplete="off"><label class="btn btn-outline-danger" for="vbtn-radio3">Radio 3</label></div>'
+				html: '<div class="btn-group-vertical" role="group" aria-label="Vertical radio toggle button group"><input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio1" autocomplete="new-password" checked=""><label class="btn btn-outline-danger" for="vbtn-radio1">Radio 1</label><input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio2" autocomplete="new-password"><label class="btn btn-outline-danger" for="vbtn-radio2">Radio 2</label><input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio3" autocomplete="new-password"><label class="btn btn-outline-danger" for="vbtn-radio3">Radio 3</label></div>'
 			});
 			
 			obj.available_items[4].push({

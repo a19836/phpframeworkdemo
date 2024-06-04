@@ -92,7 +92,7 @@ if (!class_exists("\__system\businesslogic\CommonService")) {
 		/**
 		 * @hidden
 		 */
-		protected static function prepareInputData(&$data) {
+		protected static function prepareInputData(&$data, $default_table_name = "") {
 			self::prepareSearch($data);
 			
 			if ($data && !empty($data["conditions"])) {
@@ -102,7 +102,7 @@ if (!class_exists("\__system\businesslogic\CommonService")) {
 				self::$db_lib_included = true;
 				
 				$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
-				$cond = \DB::getSQLConditions($data["conditions"], $conditions_join);
+				$cond = \DB::getSQLConditions($data["conditions"], $conditions_join, $default_table_name);
 				
 				if ($cond)
 					$data["searching_condition"] = (!empty($data["searching_condition"]) ? $data["searching_condition"] : "") . " and (" . $cond . ")";

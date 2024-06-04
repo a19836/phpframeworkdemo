@@ -124,7 +124,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="dao_group_context_menu" class="mycontextmenu">
-	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Sub-Group</a></li>
+	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Folder</a></li>
 	<li class="hbnt_obj"><a onClick="return manageFile(this, \'create_dao_hibernate_model_url\', \'create_file\', triggerFileNodeAfterCreateFile)" allow_upper_case="1">Add Hibernate DAO Object</a></li>
 	<li class="objt_obj"><a onClick="return manageFile(this, \'create_dao_obj_type_url\', \'create_file\', triggerFileNodeAfterCreateFile)" allow_upper_case="1">Add ObjectType DAO Object</a></li>
 	<li class="line_break"></li>
@@ -242,7 +242,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="ibatis_group_context_menu" class="mycontextmenu">
-	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Sub-Group</a></li>
+	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Folder</a></li>
 	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\')">Add File</a></li>
 	<li class="line_break"></li>
 	<li class="create_automatically"><a onClick="return goTo(this, \'create_automatically_url\', event)">Create Queries Automatically</a></li>
@@ -263,7 +263,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="ibatis_group_common_context_menu" class="mycontextmenu">
-	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Sub-Group</a></li>
+	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Folder</a></li>
 	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\')">Add File</a></li>
 	<li class="line_break"></li>
 	<li class="create_automatically"><a onClick="return goTo(this, \'create_automatically_url\', event)">Create Queries Automatically</a></li>
@@ -317,7 +317,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="hibernate_group_context_menu" class="mycontextmenu">
-	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Sub-Group</a></li>
+	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Folder</a></li>
 	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\')">Add File</a></li>
 	<li class="line_break"></li>
 	<li class="obj"><a onClick="return goTo(this, \'add_obj_url\', event)">Add Object Manually</a></li>
@@ -339,7 +339,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="hibernate_group_common_context_menu" class="mycontextmenu">
-	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Sub-Group</a></li>
+	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Folder</a></li>
 	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\')">Add File</a></li>
 	<li class="line_break"></li>
 	<li class="obj"><a onClick="return goTo(this, \'add_obj_url\', event)">Add Object Manually</a></li>
@@ -427,7 +427,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="business_logic_group_context_menu" class="mycontextmenu">
-	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Sub-Group</a></li>
+	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Folder</a></li>
 	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\')" allow_upper_case="1">Add File</a></li>
 	<li class="line_break"></li>
 	<!--li class="service_obj"><a onClick="return goTo(this, \'add_service_obj_url\', event)">Add Service Object Manually</a></li-->
@@ -452,7 +452,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="business_logic_group_common_context_menu" class="mycontextmenu">
-	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Sub-Group</a></li>
+	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Folder</a></li>
 	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\')" allow_upper_case="1">Add File</a></li>
 	<li class="line_break"></li>
 	<!--li class="service_obj"><a onClick="return goTo(this, \'add_service_obj_url\', event)">Add Service Object Manually</a></li-->
@@ -521,7 +521,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="main_presentation_group_context_menu" class="mycontextmenu">
-	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Sub-Group</a></li>
+	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Folder</a></li>
 	<li class="add_project"><a onClick="return goToPopup(this, \'create_project_url\', event, \'with_iframe_title edit_project_details_popup' . ($pcc05179c ? " big" : "") . '\', onSuccessfullAddProject)">Add New Project</a></li>
 	<li class="line_break"></li>
 	<li class="manage_wordpress"><a onClick="return goTo(this, \'manage_wordpress_url\', event)">Manage WordPress</a></li>
@@ -535,7 +535,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="presentation_project_group_context_menu" class="mycontextmenu">
-	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Sub-Group</a></li>
+	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Folder</a></li>
 	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', triggerFileNodeAfterCreateFile)">Add File</a></li>
 	<li class="add_project"><a onClick="return goToPopup(this, \'create_project_url\', event, \'with_iframe_title edit_project_details_popup' . ($pcc05179c ? " big" : "") . '\', onSuccessfullAddProject)">Add New Project</a></li>
 	<li class="line_break"></li>
@@ -566,7 +566,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="presentation_project_common_wordpress_group_context_menu" class="mycontextmenu">
-	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\', managePresentationFile)">Add Sub-Group</a></li>
+	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\', managePresentationFile)">Add Folder</a></li>
 	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', [managePresentationFile, triggerFileNodeAfterCreateFile])">Add File</a></li>
 	<li class="line_break"></li>
 	<li class="manage_wordpress"><a onClick="return goTo(this, \'manage_wordpress_url\', event)">Manage WordPress</a></li>
@@ -611,7 +611,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="presentation_group_context_menu" class="mycontextmenu">
-	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\', managePresentationFile)">Add Sub-Group</a></li>
+	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\', managePresentationFile)">Add Folder</a></li>
 	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', [managePresentationFile, triggerFileNodeAfterCreateFile])">Add File</a></li>
 	<li class="line_break"></li>
 	<li class="cut"><a onClick="return cutFile(this)">Cut</a></li>
@@ -675,7 +675,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="presentation_pages_group_context_menu" class="mycontextmenu">
-	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\', managePresentationFile)">Add Sub-Group</a></li>
+	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\', managePresentationFile)">Add Folder</a></li>
 	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', [managePresentationFile, triggerFileNodeAfterCreatePage])">Add Page</a></li>
 	' . ($pe847b157 ? '<li class="line_break"></li>
 	<li class="create_automatically"><a onClick="return goTo(this, \'create_automatically_url\', event)">Create UIs Automatically</a></li>
@@ -717,7 +717,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="presentation_utils_group_context_menu" class="mycontextmenu">
-	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\', managePresentationFile)">Add Sub-Group</a></li>
+	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\', managePresentationFile)">Add Folder</a></li>
 	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', [managePresentationFile, triggerFileNodeAfterCreateFile])" allow_upper_case="1">Add File</a></li>
 	<li class="line_break"></li>
 	<!--li class="class_obj"><a onClick="return goTo(this, \'add_class_obj_url\', event)">Add Class</a></li-->
@@ -929,7 +929,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="vendor_group_context_menu" class="mycontextmenu">
-	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Sub-Group</a></li>
+	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Folder</a></li>
 	<li class="create_file"><a onClick="return manageFile(this, \'create_url\', \'create_file\', triggerFileNodeAfterCreateFile)">Add File</a></li>
 	<li class="line_break"></li>
 	<li class="cut"><a onClick="return cutFile(this)">Cut</a></li>
@@ -979,7 +979,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 </ul>
 
 <ul id="test_unit_group_context_menu" class="mycontextmenu">
-	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Sub-Group</a></li>
+	<li class="create_folder"><a onClick="return manageFile(this, \'create_url\', \'create_folder\')">Add Folder</a></li>
 	<li class="test_unit_obj"><a onClick="return manageFile(this, \'create_test_unit_obj_url\', \'create_file\', triggerFileNodeAfterCreateFile)">Add Test-Unit</a></li>
 	<li class="line_break"></li>
 	<li class="cut"><a onClick="return cutFile(this)">Cut</a></li>

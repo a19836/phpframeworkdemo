@@ -150,7 +150,7 @@ function addTestUnitAction(ul, data) {
 		});
 		p.append(icon);
 		
-		var icon = $('<i class="icon add_folder" title="Add Sub-Group"></i>');
+		var icon = $('<i class="icon add_folder" title="Add Folder"></i>');
 		icon.on("click", function(event) {
 			event.preventDefault();
 			event.stopPropagation();

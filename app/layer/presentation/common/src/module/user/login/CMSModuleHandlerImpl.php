@@ -201,7 +201,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 											),
 											2 => array(
 												"name" => "autocomplete",
-												"value" => "off"
+												"value" => "new-password"
 											)
 										),
 									)

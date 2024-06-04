@@ -31,7 +31,7 @@
 		</div>
 		<div class="username">
 			<label>Username:</label>
-			<input class="task_property_field" type="text" name="username" value="" placeHolder="server username" autocomplete="off" />
+			<input class="task_property_field" type="text" name="username" value="" placeHolder="server username" autocomplete="new-password" />
 		</div>
 		<div class="authentication_type">
 			<label>Authentication Type:</label>
@@ -43,7 +43,7 @@
 		</div>
 		<div class="password">
 			<label>Password:</label>
-			<input class="task_property_field" type="password" name="password" value="" placeHolder="server password" autocomplete="off" />
+			<input class="task_property_field" type="password" name="password" value="" placeHolder="server password" autocomplete="new-password" />
 		</div>
 		<div class="ssh_auth_pub">
 			<label>SSH Auth Public:</label>
