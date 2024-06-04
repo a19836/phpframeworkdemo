@@ -864,6 +864,8 @@ function editCurrentTemplateFile(elm) {
 			
 			onClose: function() {
 				updateTemplateLayout(entity_obj);
+				
+				popup.children("iframe").remove();
 			},
 		});
 		
