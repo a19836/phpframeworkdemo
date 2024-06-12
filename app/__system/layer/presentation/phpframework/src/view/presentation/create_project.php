@@ -36,7 +36,7 @@ $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_q
 					<ul>
 						<li class="continue button" data-title="Continue to next step after selecting a program"><a href="javascript:void(0)" onClick="chooseProgram(this, \'?' . $query_string . '&creation_step=3\', project_post_data)">Continue</a></li>
 						<li class="back button" data-title="Choose an empty project instead"><a class="active" href="javascript:void(0)" onClick="postToUrl(\'?' . $query_string . '&creation_step=1\', project_post_data)">Back</a></li>
-						<li class="cancel button" data-title="Cancel"><a class="active" href="javascript:void(0)" onClick="cancel()">Cancel</a></li>
+						<li class="cancel button" data-title="Close"><a class="active" href="javascript:void(0)" onClick="cancel()">Close</a></li>
 					</ul>
 				</header>
 			</div>
@@ -54,7 +54,7 @@ $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_q
 						<li class="continue button" data-title="Continue to the final step"><a class="active" href="javascript:void(0)" onClick="postToUrl(\'?' . $query_string . '&creation_step=2\', project_post_data)">Continue</a></li>
 					') . '
 						<li class="back button" data-title="Back is not possible anymore"><a href="javascript:void(0)">Back</a></li>
-						<li class="cancel button" data-title="Cancel"><a class="active" href="javascript:void(0)" onClick="cancel()">Cancel</a></li>
+						<li class="cancel button" data-title="Close"><a class="active" href="javascript:void(0)" onClick="cancel()">Close</a></li>
 					</ul>
 				</header>
 			</div>' . $main_content; if ($is_last_step_successfull) $status_message = ""; } } else if ($creation_step == 2) { $admin_home_project_page_url = $project_url_prefix . "admin/admin_home_project?filter_by_layout=$filter_by_layout"; $head = '
@@ -94,7 +94,7 @@ $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_q
 				<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>
 				<ul>
 					<li class="back button" data-title="Back to edit project details"><a class="active" href="javascript:void(0)" onClick="goToUrl(\'?' . $query_string . '&creation_step=0\')">Back</a></li>
-					<li class="cancel button" data-title="Cancel"><a class="active" href="javascript:void(0)" onClick="cancel()">Cancel</a></li>
+					<li class="cancel button" data-title="Close"><a class="active" href="javascript:void(0)" onClick="cancel()">Close</a></li>
 				</ul>
 			</header>
 		</div>

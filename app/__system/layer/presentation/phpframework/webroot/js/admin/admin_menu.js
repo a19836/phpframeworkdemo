@@ -3506,7 +3506,7 @@ function createClassObjectOrMethodOrFunction(a, save_attr_name, edit_attr_name, 
 				if (new_file_name) {
 					//normalize new file name
 					new_file_name = normalizeFileName(new_file_name, true);
-					new_file_name = new_file_name.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+					new_file_name = new_file_name.replace(/\b[a-z]/g, function(letter) { //Do not call .toLowerCase() otherwise when we create a new object service, it will put all letters lower case.
 						return letter.toUpperCase();
 					}).replace(/\s+/g, ""); //ucwords
 					

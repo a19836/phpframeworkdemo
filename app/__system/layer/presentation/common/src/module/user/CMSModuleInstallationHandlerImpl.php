@@ -10,6 +10,10 @@ class CMSModuleInstallationHandlerImpl extends \CMSModuleInstallationHandler {
 		if (!is_dir($object_module_path))
 			launch_exception(new \Exception("You must install the Object Module first!"));
 		
+		$attachment_module_path = dirname($this->system_presentation_settings_module_path) . "/attachment";
+		if (!is_dir($attachment_module_path)) 
+			launch_exception(new \Exception("You must install the Attachment Module first!"));
+		
 		if (parent::install() && $this->copyUnzippedFileToPresentationModuleFolder("system_settings/UserUtil.php", "UserUtil.php") && $this->copyUnzippedFileToPresentationModuleFolder("system_settings/UserSettings.php", "UserSettings.php") && $this->copyUnzippedFileToPresentationModuleFolder("system_settings/ManageUserTypeActivityObjectsUtil.php", "ManageUserTypeActivityObjectsUtil.php") && $this->createModuleDBDAOUtilFilesFromHibernateFile(array("user", "user_type_activity_object"))) {
 			//Preparing DB Tables
 			$tables_data = array();

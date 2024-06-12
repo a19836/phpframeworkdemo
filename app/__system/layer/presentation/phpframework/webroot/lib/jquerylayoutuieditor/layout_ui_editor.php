@@ -18,54 +18,54 @@ $menu_widgets_html = getMenuWidgetsHTML($widgets, $widgets_root_path, "widget/")
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	
 	<!-- JQuery -->
-	<script language="javascript" type="text/javascript" src="../jquery/js/jquery-1.8.1.min.js"></script>
-	<script language="javascript" type="text/javascript" src="../jqueryui/js/jquery-ui-1.11.4.min.js"></script>
-	<link rel="stylesheet" href="../jqueryui/css/jquery-ui-1.11.4.css">
+	<script language="javascript" type="text/javascript" src="../../common/vendor/jquery/js/jquery-1.8.1.min.js"></script>
+	<script language="javascript" type="text/javascript" src="../../common/vendor/jqueryui/js/jquery-ui-1.11.4.min.js"></script>
+	<link rel="stylesheet" href="../../common/vendor/jqueryui/css/jquery-ui-1.11.4.css">
 	
 	<!-- To work on mobile devices with touch -->
-	<script language="javascript" type="text/javascript" src="../jqueryuitouchpunch/jquery.ui.touch-punch.min.js"></script>
+	<script language="javascript" type="text/javascript" src="../../common/vendor/jqueryuitouchpunch/jquery.ui.touch-punch.min.js"></script>
 	
 	<!-- Layout UI Editor - Jquery Tap-Hold Event JS file -->
-	<script language="javascript" type="text/javascript" src="../jquerytaphold/taphold.js"></script>
+	<script language="javascript" type="text/javascript" src="../../common/vendor/jquerytaphold/taphold.js"></script>
 
 	<!-- Material-design-iconic-font -->
 	<link rel="stylesheet" href="vendor/materialdesigniconicfont/css/material-design-iconic-font.min.css">
 	
 	<!-- Color -->
-	<script language="javascript" type="text/javascript" src="../../js/color.js"></script>
+	<script language="javascript" type="text/javascript" src="../../../common/js/color.js"></script>
 	
 	<!-- MyJSLib -->
-	<script language="javascript" type="text/javascript" src="../../js/MyJSLib.js"></script>
+	<script language="javascript" type="text/javascript" src="../../../common/js/MyJSLib.js"></script>
 	
 	<!-- Parse_Str -->
-	<script type="text/javascript" src="../phpjs/functions/strings/parse_str.js"></script>
+	<script type="text/javascript" src="../../common/vendor/phpjs/functions/strings/parse_str.js"></script>
 	
 	<!-- MD5 -->
-	<script language="javascript" type="text/javascript" src="../jquery/js/jquery.md5.js"></script>
+	<script language="javascript" type="text/javascript" src="../../common/vendor/jquery/js/jquery.md5.js"></script>
 	
 	<!-- JQuery Nestable2 -->
 	<link rel="stylesheet" href="vendor/nestable2/jquery.nestable.min.css" type="text/css" charset="utf-8" />
 	<script language="javascript" type="text/javascript" src="vendor/nestable2/jquery.nestable.min.js"></script>
 	
 	<!-- Add Code Editor JS files -->
-	<script language="javascript" type="text/javascript" src="../acecodeeditor/src-min-noconflict/ace.js"></script>
-	<script language="javascript" type="text/javascript" src="../acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
+	<script language="javascript" type="text/javascript" src="../../common/vendor/acecodeeditor/src-min-noconflict/ace.js"></script>
+	<script language="javascript" type="text/javascript" src="../../common/vendor/acecodeeditor/src-min-noconflict/ext-language_tools.js"></script>
 	
 	<!-- Add Code Beautifier -->
-	<script language="javascript" type="text/javascript" src="../mycodebeautifier/js/MyCodeBeautifier.js"></script>
+	<script language="javascript" type="text/javascript" src="../../common/vendor/mycodebeautifier/js/MyCodeBeautifier.js"></script>
 
 	<!-- Add Html/CSS/JS Beautify code -->
-	<script language="javascript" type="text/javascript" src="../jsbeautify/js/lib/beautify.js"></script>
-	<script language="javascript" type="text/javascript" src="../jsbeautify/js/lib/beautify-css.js"></script>
+	<script language="javascript" type="text/javascript" src="../../common/vendor/jsbeautify/js/lib/beautify.js"></script>
+	<script language="javascript" type="text/javascript" src="../../common/vendor/jsbeautify/js/lib/beautify-css.js"></script>
 	<script language="javascript" type="text/javascript" src="../myhtmlbeautify/MyHtmlBeautify.js"></script>
 	
 	<!-- Add Auto complete -->
-	<script language="javascript" type="text/javascript" src="../myautocomplete/js/MyAutoComplete.js"></script>
-	<link rel="stylesheet" href="../myautocomplete/css/style.css">
+	<script language="javascript" type="text/javascript" src="../../common/vendor/myautocomplete/js/MyAutoComplete.js"></script>
+	<link rel="stylesheet" href="../../common/vendor/myautocomplete/css/style.css">
 	
 	<!-- CONTEXT MENU -->
-		<link rel="stylesheet" href="../jquerymycontextmenu/css/style.css" type="text/css" charset="utf-8" />
-	<script language="javascript" type="text/javascript" src="../jquerymycontextmenu/js/jquery.mycontextmenu.js"></script>
+		<link rel="stylesheet" href="../../common/vendor/jquerymycontextmenu/css/style.css" type="text/css" charset="utf-8" />
+	<script language="javascript" type="text/javascript" src="../../common/vendor/jquerymycontextmenu/js/jquery.mycontextmenu.js"></script>
     	
 	<!-- Layout UI Editor -->
 		<!-- Layout UI Editor - HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

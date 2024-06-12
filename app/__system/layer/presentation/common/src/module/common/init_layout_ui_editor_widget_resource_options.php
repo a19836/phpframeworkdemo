@@ -4,8 +4,16 @@ include_once $EVC->getUtilPath("CMSPresentationUIAutomaticFilesHandler");
 $layout_ui_editor_widget_resource_options_js = "";
 
 //prepare available activities and user types
-$available_user_types = CMSPresentationUIAutomaticFilesHandler::getAvailableUserTypes($PEVC);
-$available_activities = CMSPresentationUIAutomaticFilesHandler::getAvailableActivities($PEVC);
+$available_user_types = $available_activities = null;
+
+try {
+	$available_user_types = CMSPresentationUIAutomaticFilesHandler::getAvailableUserTypes($PEVC);
+	$available_activities = CMSPresentationUIAutomaticFilesHandler::getAvailableActivities($PEVC);
+}
+catch(Exception $e) {
+	//note that the DB may not be installed, so in this case we need to ignore the exception and continue the code
+}
+
 $layout_ui_editor_widget_resource_options_js .= '
 var available_user_types = ' . json_encode($available_user_types) . ';
 var available_activities = ' . json_encode($available_activities) . ';';

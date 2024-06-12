@@ -2341,7 +2341,7 @@ function onChangeTemplateParamType(elm, do_not_update) {
 function onActivateTemplateParam(elm) {
 	elm = $(elm);
 	var p = elm.parent();
-	var inputs = p.find("input:not([type=checkbox]), select, textarea");
+	var inputs = p.find("input:not([type=checkbox]), input[type=checkbox].template_param_value, select, textarea"); //note that there are some checkboxes which are template_param_value. for the cases "Are Main Head Tags Included In Page Level?" and "Is Bootstrap Lib Included In Page Level?"
 	
 	if (elm[0].checked) {
 		p.removeClass("inactive");
@@ -6469,8 +6469,8 @@ function addWebrootFile(elm, type, is_str_html_base, add_handler, remove_handler
 			//normalize new file name
 			file_name = normalizeFileName(file_name, true);
 			
-			//set extension
-			if (file_name.toLowerCase().substr(- (type.length + 1)) != "." + type)
+			//set extension, but only if local file
+			if (file_name.toLowerCase().substr(0, 4) != "http" && file_name.toLowerCase().substr(0, 2) != "//" && file_name.toLowerCase().substr(- (type.length + 1)) != "." + type)
 				file_name += "." + type;
 			
 			var is_create_file = !file_name.match(/^http(s?):\/\//);

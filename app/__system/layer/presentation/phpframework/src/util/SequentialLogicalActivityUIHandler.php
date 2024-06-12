@@ -462,15 +462,35 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler"); include_o
 			<section class="array_action_body array_items"></section>
 			
 			<section class="string_action_body">
-				<label>String: </label>
-				<input class="task_property_field" />
-				<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+				<div class="string">
+					<label>String: </label>
+					<input class="task_property_field" />
+					<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+				</div>
+				<div class="operator">
+					<label>Operator: </label>
+					<select class="task_property_field">
+						<option value="">Assign/Equal</option>
+						<option value="+=">Increment</option>
+						<option value="-=">Decrement</option>
+					</select>
+				</div>
 			</section>
 			
 			<section class="variable_action_body" title="Variable input could be a PHP variable name (like $foo[\'bar\']) or something like #foo[bar]#">
-				<label>Variable: </label>
-				<input class="task_property_field" />
-				<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+				<div class="variable">
+					<label>Variable: </label>
+					<input class="task_property_field" />
+					<span class="icon add_variable inline" onClick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)">Add Variable</span>
+				</div>
+				<div class="operator">
+					<label>Operator: </label>
+					<select class="task_property_field">
+						<option value="">Assign/Equal</option>
+						<option value="+=">Increment</option>
+						<option value="-=">Decrement</option>
+					</select>
+				</div>
 			</section>
 			
 			<section class="sanitize_variable_action_body" title="Variable input could be a PHP variable name (like $foo[\'bar\']) or something like #foo[bar]#">

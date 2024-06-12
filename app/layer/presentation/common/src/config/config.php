@@ -38,6 +38,9 @@ else {
 	$project_common_relative_url_prefix = "/" . ($layer_folder_name ? "$layer_folder_name/" : "") . $EVC->getCommonProjectName() . "/"; //if is a direct domain to the project, the vhosts need to have the /common/ path defined to the right folder, otherwise this won't work correctly.
 }
 
+$project_relative_url_prefix = preg_replace("/\/+/", "/", $project_relative_url_prefix);
+$project_common_relative_url_prefix = preg_replace("/\/+/", "/", $project_common_relative_url_prefix);
+
 //prepare url_prefix
 $project_url_prefix = $project_protocol . $_SERVER["HTTP_HOST"] . $project_relative_url_prefix;
 $project_common_url_prefix = $project_protocol . $_SERVER["HTTP_HOST"] . $project_common_relative_url_prefix;

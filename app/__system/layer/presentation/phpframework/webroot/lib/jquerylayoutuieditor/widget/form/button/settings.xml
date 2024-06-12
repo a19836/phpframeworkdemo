@@ -102,6 +102,12 @@
 				
 				if (!html_element) 
 					widget.append("Button");
+				
+				//if submit input inside of a form, disable previous click events
+				if (widget.is("input[type=submit]") && widget.parent().closest("form").length > 0) {
+					widget.off("click");
+					ui_creator.setTemplateWidgetOnClickEvent(widget);
+				}
 			};
 			
 			me.onOpenWidgetSettings = function(widget, menu_settings) {
@@ -175,6 +181,12 @@
 								if (new_node_name == "input") {
 									if (input_value)
 										widget.attr("value", input_value);
+									
+									//if submit input inside of a form, disable previous click events
+									if (widget.is("input[type=submit]") && widget.parent().closest("form").length > 0) {
+										widget.off("click");
+										ui_creator.setTemplateWidgetOnClickEvent(widget);
+									}
 								}
 								else { //button
 									if (input_value)

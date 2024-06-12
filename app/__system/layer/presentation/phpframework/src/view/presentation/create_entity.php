@@ -17,12 +17,12 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-$get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_query($get_bkp); $edit_entity_url = $project_url_prefix . "phpframework/presentation/edit_entity?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$path"; $top_bar_title = "Create new Page"; if (!$creation_step) { $main_content = '
+include_once $EVC->getUtilPath("HeatMapHandler"); $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_query($get_bkp); $edit_entity_url = $project_url_prefix . "phpframework/presentation/edit_entity?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$path"; $top_bar_title = "Create new Page"; if (!$creation_step) { $main_content = '
 		<div class="top_bar create_entity_top_bar popup_with_iframe_left_popup_close popup_with_iframe_popup_close_button' . ($popup ? ' in_popup' : '') . '">
 			<header>
 				<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>
 				<ul>
-					<li class="cancel button" data-title="Cancel"><a class="active" href="javascript:void(0)" onClick="cancel()">Cancel</a></li>
+					<li class="cancel button" data-title="Close"><a class="active" href="javascript:void(0)" onClick="cancel()">Close</a></li>
 				</ul>
 			</header>
 		</div>
@@ -43,7 +43,7 @@ $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_q
 				<ul>
 					<li class="continue button" data-title="Continue to next step after selecting a pre-built page"><a' . ($_POST && $status ? ' class="active"' : '') . ' href="javascript:void(0)" onClick="choosePage(this, \'?' . $query_string . '&creation_step=1\')">Continue</a></li>
 					<li class="back button" data-title="Back to choose a new pre-built page"><a class="active" href="?' . $query_string . '&creation_step=0">Back</a></li>
-					<li class="cancel button" data-title="Cancel"><a class="active" href="javascript:void(0)" onClick="cancel()">Cancel</a></li>
+					<li class="cancel button" data-title="Close"><a class="active" href="javascript:void(0)" onClick="cancel()">Close</a></li>
 				</ul>
 			</header>
 		</div>
@@ -88,7 +88,7 @@ var on_success_js_func_name = "' . $on_success_js_func . '";
 var popup = ' . ($popup ? "true" : "false") . ';
 
 var edit_entity_url = \'' . $edit_entity_url . '\';
-</script>'; $main_content = '
+</script>'; $head .= HeatMapHandler::getHtml($project_url_prefix); $main_content = '
 <div class="create_entity changing_to_step">
 	<div class="creation_step creation_step_' . $creation_step . '">
 		' . $main_content . '

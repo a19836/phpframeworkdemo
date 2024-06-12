@@ -24,7 +24,7 @@
 			<input class="col-md-8 col-sm-8 form-control" name="type" value="text/javascript" />
 		</div>
 		<div class="form-group row settings-property content">
-			<label class="col-md-12 col-form-label">Script: </label>
+			<label class="col-md-12 col-form-label">Script: <a class="pretty_print">Pretty Print Code</a></label>
 			<textarea class="col-md-12 form-control" name="content" rows="10"></textarea>
 		</div>
 	]]></properties>
@@ -58,6 +58,10 @@
 			right:10px;
 			margin:8px 0 0;
 			background:none;
+			cursor:pointer;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-script > .settings-properties .content .pretty_print {
+			float:right;
 			cursor:pointer;
 		}
 		.layout-ui-editor > .menu-settings.menu-settings-script > .settings-properties .content .ace_editor {
@@ -337,19 +341,38 @@
 			};
 			
 			me.onOpenWidgetSettings = function(widget, menu_settings) {
+				var settings_properties = menu_settings.children(".settings-properties");
+				
 				if (typeof ui_creator.options.on_choose_webroot_file_url_func == "function") {
 					var icon = $('<span class="zmdi zmdi-search-in-file search"></span>');
 					icon.on("click", function() {
 						ui_creator.options.on_choose_webroot_file_url_func(this);
 					});
-					menu_settings.find(" > .settings-properties .settings-property.src").addClass("with-search-icon").append(icon);
+					settings_properties.find(".settings-property.src").addClass("with-search-icon").append(icon);
 				}
 				
-				ui_creator.addMenuSettingsContextMenu( menu_settings.find(".settings-properties").find("input") );
+				ui_creator.addMenuSettingsContextMenu( settings_properties.find("input") );
+				
+				settings_properties.find(".settings-property.content .pretty_print").on("click", function(ev) {
+					var p = $(this).parent().closest(".settings-property.content");
+					var editor = p.data("editor");
+					var code = editor ? editor.getValue() : p.children("textarea").val();
+					
+					code = MyHtmlBeautify.beautify('<' + 'script>' + code + '</' + 'script>');
+					code = code.substr(('<' + 'script>').length);
+					code = code.substr(0, code.length - ('</' + 'script>').length);
+					
+					if (editor) {
+						editor.setValue(code, -1);
+						editor.focus();
+					}
+					else
+						p.children("textarea").val(code).focus();
+				});
 				
 				//convert content textarea to editor, but only after the code be loaded into the textarea. That why the createEditor method must be inside of the settimeout.
 				setTimeout(function() {
-					me.createEditor(widget, menu_settings.find(".settings-properties .settings-property.content textarea")[0]);
+					me.createEditor(widget, settings_properties.find(".settings-property.content textarea")[0]);
 				}, 300);
 			};
 			

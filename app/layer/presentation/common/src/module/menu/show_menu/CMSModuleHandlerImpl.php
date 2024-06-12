@@ -424,28 +424,34 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	private static function prepareMenus($EVC, &$menus) {
 		if ($menus) {
-			$t = count($menus);
-			for ($i = 0; $i < $t; $i++) {
-				if ($menus[$i]["parent_id"]) //to be used by the ptl
-					$menus[$i]["parent-id"] = $menus[$i]["parent_id"];
-				
-				if ($menus[$i]["previous_html"]) //to be used by the ptl
-					$menus[$i]["previous-html"] = $menus[$i]["previous_html"];
-				
-				if ($menus[$i]["next_html"]) //to be used by the ptl
-					$menus[$i]["next-html"] = $menus[$i]["next_html"];
-					
-				if ($menus[$i]["title"])
-					$menus[$i]["title"] = translateProjectText($EVC, $menus[$i]["title"]);
+			$new_menus = array();
 			
-				if ($menus[$i]["label"])
-					$menus[$i]["label"] = translateProjectText($EVC, $menus[$i]["label"]);
+			//for ($i = 0, $t = count($menus); $i < $t; $i++) { //cannot use 'for' bc the menus item maybe an associative array with numeric keys floped.
+			foreach ($menus as $menu) {
+				if ($menu["parent_id"]) //to be used by the ptl
+					$menu["parent-id"] = $menu["parent_id"];
 				
-				$menus[$i]["class"] = trim("module_menu_li " . $menus[$i]["class"]);
+				if ($menu["previous_html"]) //to be used by the ptl
+					$menu["previous-html"] = $menu["previous_html"];
 				
-				if ($menus[$i]["menus"])
-					self::prepareMenus($EVC, $menus[$i]["menus"]);
+				if ($menu["next_html"]) //to be used by the ptl
+					$menu["next-html"] = $menu["next_html"];
+					
+				if ($menu["title"])
+					$menu["title"] = translateProjectText($EVC, $menu["title"]);
+			
+				if ($menu["label"])
+					$menu["label"] = translateProjectText($EVC, $menu["label"]);
+				
+				$menu["class"] = trim("module_menu_li " . $menu["class"]);
+				
+				if ($menu["menus"])
+					self::prepareMenus($EVC, $menu["menus"]);
+				
+				$new_menus[] = $menu;
 			}
+			
+			$menus = $new_menus;
 		}
 	}
 }

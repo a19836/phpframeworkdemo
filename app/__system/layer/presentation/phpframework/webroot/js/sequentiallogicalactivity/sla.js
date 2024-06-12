@@ -235,13 +235,26 @@ function loadSLASettingsAction(action, group_item, asynchronous, original_action
 				break;
 				
 			case "string":
-				group_item.find(' > .sla_group_body > .string_action_body > input').val(action_value);
+				if ($.isPlainObject(action_value)) {
+					group_item.find(' > .sla_group_body > .string_action_body > .string > input').val(action_value["string"]);
+					group_item.find(' > .sla_group_body > .string_action_body > .operator > select').val(action_value["operator"]);
+				}
+				else
+					group_item.find(' > .sla_group_body > .string_action_body > .string > input').val(action_value);
 				break;
 				
 			case "variable":
-				action_value = "" + action_value;
-				action_value = action_value.trim().substr(0, 1) == '$' ? action_value.trim().substr(1) : action_value;
-				group_item.find(' > .sla_group_body > .variable_action_body > input').val(action_value);
+				if ($.isPlainObject(action_value)) {
+					var variable = "" + action_value["variable"];
+					variable = variable.trim().substr(0, 1) == '$' ? variable.trim().substr(1) : variable;
+					group_item.find(' > .sla_group_body > .variable_action_body > .variable > input').val(variable);
+					group_item.find(' > .sla_group_body > .variable_action_body > .operator > select').val(action_value["operator"]);
+				}
+				else {
+					action_value = "" + action_value;
+					action_value = action_value.trim().substr(0, 1) == '$' ? action_value.trim().substr(1) : action_value;
+					group_item.find(' > .sla_group_body > .variable_action_body > .variable > input').val(action_value);
+				}
 				
 				break;
 				
@@ -641,9 +654,20 @@ function convertSettingsToTasksValues(settings_values, lower_case) {
 					
 					action["action_value"] = av;
 				}
-				else if (action_value["items"] && (action_type == "array" || action_type == "code" || action_type == "variable" || action_type == "string")) { //fix some wrong hard coded values
+				else if ((action_type == "array" || action_type == "code") && action_value && action_value.hasOwnProperty("items") && action_value["items"]) { //fix some wrong hard coded values
 					action["action_value"] = convertObjectIntoArray(action_value["items"]);
 					action["action_type"] = "array";
+				}
+				else if ((action_type == "string" || action_type == "variable") && action_value && action_value.hasOwnProperty("items") && action_value["items"]) {
+					var basic_action_value = convertBlockSettingsValuesIntoBasicArray(action_value);
+					action["action_value"] = basic_action_value["items"];
+				}
+				//Is already done bellow
+				//else if (action_type == "code" || action_type == "variable" || action_type == "string")
+				//	action["action_value"] = $.type(action_value["value"]) == "string" ? prepareFieldValueIfValueTypeIsString(action_value["value"]) : action_value["value"];
+				else if ((action_type == "loop" || action_type == "group") && action_value && action_value.hasOwnProperty("items") && action_value["items"]) {
+					var sub_task_values = convertSettingsToTasksValues(action_value["items"], lower_case);
+					action["action_value"]["actions"] = sub_task_values["actions"];
 				}
 				else if (action_type == "callbusinesslogic" || action_type == "callibatisquery" || action_type == "callhibernatemethod" || action_type == "getquerydata" || action_type == "setquerydata" || action_type == "callfunction" || action_type == "callobjectmethod" || action_type == "restconnector") {
 					//Preparing new broker settings
@@ -796,16 +820,9 @@ function convertSettingsToTasksValues(settings_values, lower_case) {
 						}
 					//console.log(action_value);
 				}
-				//Is already done bellow
-				//else if (action_type == "code" || action_type == "variable" || action_type == "string")
-				//	action["action_value"] = $.type(action_value["value"]) == "string" ? prepareFieldValueIfValueTypeIsString(action_value["value"]) : action_value["value"];
-				else if ((action_type == "loop" || action_type == "group") && action_value && action_value.hasOwnProperty("items") && action_value["items"]) {
-					var sub_task_values = convertSettingsToTasksValues(action_value["items"], lower_case);
-					action["action_value"]["actions"] = sub_task_values["actions"];
-				}
 				else if ($.type(action["action_value"]) == "string") //remove extra quotes that were added by the convertBlockSettingsValuesIntoBasicArray function. This will include the parse for the values with "code", "variable" and "string"
 					action["action_value"] = prepareFieldValueIfValueTypeIsString(action["action_value"]); 
-				else if ($.isPlainObject(action["action_value"])) { //for the messages and database/sql cases
+				else if ($.isPlainObject(action["action_value"])) { //for the messages and database/sql cases and also the string and variable cases (in case they have the operator attribute).
 				
 					for (var k in action["action_value"]) {
 						var v = action["action_value"][k];
@@ -3169,13 +3186,19 @@ function getSLASettingsFromItemsToSave(items, options) {
 				case "string": //getting string settings
 					var section = group_body.children(".string_action_body");
 					
-					item_settings["action_value"] = section.children("input").val();
+					item_settings["action_value"] = {
+						"string": section.find(".string input").val(),
+						"operator": section.find(".operator select").val()
+					};
 					break;
 					
 				case "variable": //getting variable settings
 					var section = group_body.children(".variable_action_body");
 					
-					item_settings["action_value"] = section.children("input").val();
+					item_settings["action_value"] = {
+						"variable": section.find(".variable input").val(),
+						"operator": section.find(".operator select").val()
+					};
 					break;
 					
 				case "sanitize_variable": //getting variable settings

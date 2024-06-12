@@ -165,6 +165,12 @@
 						else {
 							widget[0].type = field_value; //change type even if type is empty
 							widget.removeClass("is-input-hidden");
+							
+							//if submit input inside of a form, disable previous click events
+							if (widget.is("input[type=submit]") && widget.parent().closest("form").length > 0) {
+								widget.off("click");
+								ui_creator.setTemplateWidgetOnClickEvent(widget);
+							}
 						}
 					}
 					else if (sprop.hasClass("name")) {

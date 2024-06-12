@@ -17,7 +17,7 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtilPath("TourGuideUIHandler"); if (!$is_admin_ui_simple_allowed) { echo '<script>
+include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtilPath("TourGuideUIHandler"); include_once $EVC->getUtilPath("HeatMapHandler"); if (!$is_admin_ui_simple_allowed) { echo '<script>
 		alert("You don\'t have permission to access this Workspace!");
 		document.location="' . $project_url_prefix . 'auth/logout";
 	</script>'; die(); } $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $logged_name_initials = explode(" ", $logged_name); $logged_name_initials = strtoupper(substr($logged_name_initials[0], 0, 1) . substr($logged_name_initials[1], 0, 1)); $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $admin_home_project_page_url = "admin/admin_home_project?filter_by_layout=#filter_by_layout#"; $admin_home_projects_page_url = ""; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
@@ -33,7 +33,7 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtil
 var admin_home_project_page_url = "' . $admin_home_project_page_url . '";
 var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 </script>
-'; $main_content = '
+'; $head .= HeatMapHandler::getHtml($project_url_prefix); $main_content = '
 <div id="top_panel">
 	<ul class="left">
 		<li class="logo"><a href="' . $bloxtor_home_page_url . '" target="bloxtor_homepage"></a></li>

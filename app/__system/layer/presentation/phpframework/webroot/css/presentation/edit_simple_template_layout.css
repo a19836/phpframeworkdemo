@@ -185,6 +185,10 @@ body.mobile_cursor,
 	border-radius:4px;
 	text-align:left !important;
 	position:relative !important;
+	
+	/* define a container so I can use the css: @container template-region-container (inline-size < 320px) { ... } */
+	container-name:template-region-container;
+	container-type:inline-size;
 }
 .template_region > .template_region_items .template_region_item:first-child {
 	margin-top:0 !important;
@@ -225,6 +229,18 @@ body.mobile_cursor,
 .template_region > .template_region_items .template_region_item.has_edit:hover:before,
   .template_region > .template_region_items .template_region_item.has_edit.item-hover:before {
 	width:320px !important;
+}
+@container template-region-container (inline-size < 320px) {
+	.template_region > .template_region_items .template_region_item:hover:before,
+	  .template_region > .template_region_items .template_region_item.item-hover:before {
+		width:150px !important;
+		height:60px !important;
+		top:-60px !important;
+	}
+	.template_region > .template_region_items .template_region_item.has_edit:hover:before,
+	  .template_region > .template_region_items .template_region_item.has_edit.item-hover:before {
+		width:150px !important;
+	}
 }
 .template_region > .template_region_items .template_region_item:after {
 	content:" " !important;
@@ -320,6 +336,32 @@ body:not(.mobile_cursor) .template_region .template_region_items .template_regio
 }
 .template_region > .template_region_items .template_region_item:not(.has_edit) > .icon.edit {
 	display:none !important;
+}
+@container template-region-container (inline-size < 320px) {
+	.template_region > .template_region_items .template_region_item > .icon.delete {
+		top:-53px !important;
+		left:5px !important;
+	}
+	.template_region > .template_region_items .template_region_item > .icon.add {
+		top:-53px !important;
+		left:30px !important;
+	}
+	.template_region > .template_region_items .template_region_item > .icon.move {
+		top:-53px !important;
+		left:55px !important;
+	}
+	.template_region > .template_region_items .template_region_item > .icon.up {
+		top:-53px !important;
+		left:80px !important;
+	}
+	.template_region > .template_region_items .template_region_item > .icon.down {
+		top:-53px !important;
+		left:105px !important;
+	}
+	.template_region > .template_region_items .template_region_item > .icon.edit {
+		top:-53px !important;
+		left:130px !important;
+	}
 }
 
 .template_region > .template_region_items .template_region_item.invalid > .pretty_block_options_button,

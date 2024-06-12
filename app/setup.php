@@ -210,7 +210,7 @@ $dir_path = str_replace(DIRECTORY_SEPARATOR, "/", __DIR__) . "/"; $installation_
 				sql-mode=\"ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION\"<br>
 				<br>
 				max_allowed_packet=250M<br>
-				wait_timeout=28800
+				wait_timeout=28800<br>
 				max_allowed_packet=100M
 			</li>
 			<li>

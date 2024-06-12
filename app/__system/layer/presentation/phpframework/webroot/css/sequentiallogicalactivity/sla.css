@@ -827,12 +827,14 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 	float:none;
 	clear:both;
 }
-.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .string_action_body > label,
-  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .string_action_body > input,
-  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .string_action_body > span,
-  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .variable_action_body > label,
-  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .variable_action_body > input,
-  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .variable_action_body > span,
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .string_action_body > div > label,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .string_action_body > div > input,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .string_action_body > div > select,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .string_action_body > div > span,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .variable_action_body > div > label,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .variable_action_body > div > input,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .variable_action_body > div > select,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .variable_action_body > div > span,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .sanitize_variable_action_body > label,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .sanitize_variable_action_body > input,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .sanitize_variable_action_body > span,
@@ -862,8 +864,8 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 	float:none;
 	clear:both;
 }
-.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .string_action_body > span,
-  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .variable_action_body > span,
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .string_action_body > div > span,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .variable_action_body > div > span,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .sanitize_variable_action_body > span,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .validate_variable_action_body > div > span,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .list_report_action_body > div > span,
@@ -874,18 +876,22 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 	vertical-align:middle;
 }
 
-.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .string_action_body > input,
-  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .variable_action_body > input,
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .string_action_body > div > input,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .variable_action_body > div > input,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .sanitize_variable_action_body > input,
   .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .validate_variable_action_body > div.variable > input {
 	padding-right:20px;
 }
-.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .validate_variable_action_body > div {
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .string_action_body > div,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .variable_action_body > div,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .validate_variable_action_body > div {
 	margin:5px auto 0;
 	text-align:left;
 	width:300px;
 }
-.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .validate_variable_action_body > div > label {
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .string_action_body > div > label,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .variable_action_body > div > label,
+  .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .validate_variable_action_body > div > label {
 	width:60px;
 	text-align:left;
 }

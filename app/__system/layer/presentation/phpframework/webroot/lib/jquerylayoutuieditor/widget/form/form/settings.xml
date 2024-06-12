@@ -146,6 +146,14 @@
 					if (widget.parent().closest(".data-widget-popup-add").length > 0)
 						widget.addClass("show-add-fields");
 				}
+				
+				//avoid the form to be submited when the user is editing the layout
+				widget[0].addEventListener("submit", function(ev) {
+					ev.preventDefault();
+					ev.stopPropagation();
+					
+					return false;
+				});
 			};
 			
 			me.saveSettingsField = function(field, widget, status) {

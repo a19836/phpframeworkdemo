@@ -1,4 +1,4 @@
-a:1:{s:53:"\WorkFlowTask\programming\createform\WorkFlowTaskImpl";a:1:{s:7:"methods";a:3:{s:32:"createTaskPropertiesFromCodeStmt";a:20:{s:4:"name";s:32:"createTaskPropertiesFromCodeStmt";s:16:"start_line_index";i:317;s:17:"start_token_index";i:39;s:4:"type";s:6:"public";s:8:"abstract";b:0;s:6:"static";b:0;s:8:"comments";a:1:{i:0;s:7963:"/*
+a:1:{s:53:"\WorkFlowTask\programming\createform\WorkFlowTaskImpl";a:1:{s:7:"methods";a:3:{s:32:"createTaskPropertiesFromCodeStmt";a:20:{s:4:"name";s:32:"createTaskPropertiesFromCodeStmt";s:16:"start_line_index";i:322;s:17:"start_token_index";i:39;s:4:"type";s:6:"public";s:8:"abstract";b:0;s:6:"static";b:0;s:8:"comments";a:1:{i:0;s:8133:"/*
 	<?php
 	//START: task[createform][Call HtmlFormHandler::createHtmlForm()]
 	$x = HtmlFormHandler::createHtmlForm(array(
@@ -56,6 +56,7 @@ a:1:{s:53:"\WorkFlowTask\programming\createform\WorkFlowTaskImpl";a:1:{s:7:"meth
 									"validation_message" => "",
 									"validation_type" => "",
 									"validation_regex" => "",
+									"validation_func" => "",
 									"min_length" => "",
 									"max_length" => "",
 									"min_value" => "",
@@ -112,6 +113,7 @@ a:1:{s:53:"\WorkFlowTask\programming\createform\WorkFlowTaskImpl";a:1:{s:7:"meth
 									"validation_message" => "",
 									"validation_type" => "",
 									"validation_regex" => "",
+									"validation_func" => "",
 									"min_length" => "",
 									"max_length" => "",
 									"min_value" => "",
@@ -168,6 +170,7 @@ a:1:{s:53:"\WorkFlowTask\programming\createform\WorkFlowTaskImpl";a:1:{s:7:"meth
 									"validation_message" => "",
 									"validation_type" => "",
 									"validation_regex" => "",
+									"validation_func" => "",
 									"min_length" => "",
 									"max_length" => "",
 									"min_value" => "",
@@ -224,6 +227,7 @@ a:1:{s:53:"\WorkFlowTask\programming\createform\WorkFlowTaskImpl";a:1:{s:7:"meth
 									"validation_message" => "",
 									"validation_type" => "",
 									"validation_regex" => "",
+									"validation_func" => "",
 									"min_length" => "",
 									"max_length" => "",
 									"min_value" => "",
@@ -280,6 +284,7 @@ a:1:{s:53:"\WorkFlowTask\programming\createform\WorkFlowTaskImpl";a:1:{s:7:"meth
 									"validation_message" => "",
 									"validation_type" => "",
 									"validation_regex" => "",
+									"validation_func" => "",
 									"min_length" => "",
 									"max_length" => "",
 									"min_value" => "",
@@ -305,4 +310,4 @@ a:1:{s:53:"\WorkFlowTask\programming\createform\WorkFlowTaskImpl";a:1:{s:7:"meth
 			)
 		), $input);
 	?>
-	*/";}s:25:"start_comments_line_index";i:9;s:26:"start_comments_token_index";i:37;s:23:"end_comments_line_index";i:316;s:24:"end_comments_token_index";i:37;s:22:"start_args_token_index";i:44;s:20:"end_args_token_index";i:65;s:9:"arguments";a:4:{s:5:"$stmt";N;s:23:"$WorkFlowTaskCodeParser";N;s:7:"&$exits";s:4:"null";s:13:"&$inner_tasks";s:4:"null";}s:25:"start_brackets_line_index";i:317;s:26:"start_brackets_token_index";i:67;s:23:"end_brackets_line_index";i:367;s:24:"end_brackets_token_index";i:488;s:14:"end_line_index";i:367;s:15:"end_token_index";i:488;}s:15:"parseProperties";a:15:{s:4:"name";s:15:"parseProperties";s:16:"start_line_index";i:369;s:17:"start_token_index";i:490;s:4:"type";s:6:"public";s:8:"abstract";b:0;s:6:"static";b:0;s:22:"start_args_token_index";i:495;s:20:"end_args_token_index";i:498;s:9:"arguments";a:1:{s:6:"&$task";N;}s:25:"start_brackets_line_index";i:369;s:26:"start_brackets_token_index";i:500;s:23:"end_brackets_line_index";i:423;s:24:"end_brackets_token_index";i:1034;s:14:"end_line_index";i:423;s:15:"end_token_index";i:1034;}s:9:"printCode";a:15:{s:4:"name";s:9:"printCode";s:16:"start_line_index";i:425;s:17:"start_token_index";i:1036;s:4:"type";s:6:"public";s:8:"abstract";b:0;s:6:"static";b:0;s:22:"start_args_token_index";i:1041;s:20:"end_args_token_index";i:1060;s:9:"arguments";a:4:{s:6:"$tasks";N;s:13:"$stop_task_id";N;s:11:"$prefix_tab";s:2:"""";s:8:"$options";s:4:"null";}s:25:"start_brackets_line_index";i:425;s:26:"start_brackets_token_index";i:1062;s:23:"end_brackets_line_index";i:462;s:24:"end_brackets_token_index";i:1451;s:14:"end_line_index";i:462;s:15:"end_token_index";i:1451;}}}}
+	*/";}s:25:"start_comments_line_index";i:9;s:26:"start_comments_token_index";i:37;s:23:"end_comments_line_index";i:321;s:24:"end_comments_token_index";i:37;s:22:"start_args_token_index";i:44;s:20:"end_args_token_index";i:65;s:9:"arguments";a:4:{s:5:"$stmt";N;s:23:"$WorkFlowTaskCodeParser";N;s:7:"&$exits";s:4:"null";s:13:"&$inner_tasks";s:4:"null";}s:25:"start_brackets_line_index";i:322;s:26:"start_brackets_token_index";i:67;s:23:"end_brackets_line_index";i:372;s:24:"end_brackets_token_index";i:488;s:14:"end_line_index";i:372;s:15:"end_token_index";i:488;}s:15:"parseProperties";a:15:{s:4:"name";s:15:"parseProperties";s:16:"start_line_index";i:374;s:17:"start_token_index";i:490;s:4:"type";s:6:"public";s:8:"abstract";b:0;s:6:"static";b:0;s:22:"start_args_token_index";i:495;s:20:"end_args_token_index";i:498;s:9:"arguments";a:1:{s:6:"&$task";N;}s:25:"start_brackets_line_index";i:374;s:26:"start_brackets_token_index";i:500;s:23:"end_brackets_line_index";i:428;s:24:"end_brackets_token_index";i:1034;s:14:"end_line_index";i:428;s:15:"end_token_index";i:1034;}s:9:"printCode";a:15:{s:4:"name";s:9:"printCode";s:16:"start_line_index";i:430;s:17:"start_token_index";i:1036;s:4:"type";s:6:"public";s:8:"abstract";b:0;s:6:"static";b:0;s:22:"start_args_token_index";i:1041;s:20:"end_args_token_index";i:1060;s:9:"arguments";a:4:{s:6:"$tasks";N;s:13:"$stop_task_id";N;s:11:"$prefix_tab";s:2:"""";s:8:"$options";s:4:"null";}s:25:"start_brackets_line_index";i:430;s:26:"start_brackets_token_index";i:1062;s:23:"end_brackets_line_index";i:467;s:24:"end_brackets_token_index";i:1451;s:14:"end_line_index";i:467;s:15:"end_token_index";i:1451;}}}}

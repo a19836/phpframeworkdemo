@@ -11,7 +11,7 @@
 	]]></template_widget>
 	<properties><![CDATA[
 		<div class="form-group row settings-property content">
-			<label class="col-md-12 col-form-label">Style: </label>
+			<label class="col-md-12 col-form-label">Style: <a class="pretty_print">Pretty Print Code</a></label>
 			<textarea class="col-md-12 form-control" name="content" rows="10"></textarea>
 		</div>
 	]]></properties>
@@ -34,6 +34,10 @@
 			display:none;
 		}
 		
+		.layout-ui-editor > .menu-settings.menu-settings-style > .settings-properties .content .pretty_print {
+			float:right;
+			cursor:pointer;
+		}
 		.layout-ui-editor > .menu-settings.menu-settings-style > .settings-properties .content .ace_editor {
 			width:100%;
 			height:200px;
@@ -268,11 +272,30 @@
 			};
 			
 			me.onOpenWidgetSettings = function(widget, menu_settings) {
-				//ui_creator.addMenuSettingsContextMenu( menu_settings.find(".settings-properties textarea") );
+				var settings_properties = menu_settings.children(".settings-properties");
+				
+				//ui_creator.addMenuSettingsContextMenu( settings_properties.find("textarea") );
+				
+				settings_properties.find(".settings-property.content .pretty_print").on("click", function(ev) {
+					var p = $(this).parent().closest(".settings-property.content");
+					var editor = p.data("editor");
+					var code = editor ? editor.getValue() : p.children("textarea").val();
+					
+					code = MyHtmlBeautify.beautify('<' + 'style>' + code + '</' + 'style>');
+					code = code.substr(('<' + 'style>').length);
+					code = code.substr(0, code.length - ('</' + 'style>').length);
+					
+					if (editor) {
+						editor.setValue(code, -1);
+						editor.focus();
+					}
+					else
+						p.children("textarea").val(code).focus();
+				});
 				
 				//convert content textarea to editor, but only after the code be loaded into the textarea. That why the createEditor method must be inside of the settimeout.
 				setTimeout(function() {
-					me.createEditor(widget, menu_settings.find(".settings-properties .settings-property.content textarea")[0]);
+					me.createEditor(widget, settings_properties.find(".settings-property.content textarea")[0]);
 				}, 300);
 			};
 			
