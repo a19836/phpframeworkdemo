@@ -120,10 +120,10 @@ body,
 	padding:0;
 	color:var(--link-color);
 }
-#terms_and_conditions .info {
+#terms_and_conditions .license {
 	width:100%;
 	height:300px;
-	height:calc(100vh - 200px);
+	height:calc(100vh - 210px);
 	overflow:auto;
 	border:1px inset #CCC;
 	text-align:left;

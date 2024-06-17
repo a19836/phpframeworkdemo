@@ -152,7 +152,7 @@ input:not([type]),
   textarea {
 	/* bc of firefox that has a different style for select fields */
 	background-color:#fff;
-	border:1px solid #eee;
+	border:1px solid #ddd;
 	border-radius:2px;
 }
 input:not([type]),
@@ -200,7 +200,7 @@ input:not([type]):focus,
   input[type=datetime-local]:focus,
   select:focus, 
   textarea:focus {
-	border-color:#eee;
+	border-color:#ddd;
 	box-shadow:0 0 .5rem 0.2rem rgba(200, 200, 200, .25);
 }
 input:not([type]):hover:not(:focus),
