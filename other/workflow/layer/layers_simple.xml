@@ -2,38 +2,38 @@
 <tasks>
 	<container>
 		<id><![CDATA[layer_presentations]]></id>
-		<width>655</width>
+		<width>650</width>
 		<height>150</height>
 		<left>1</left>
 		<top>0</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_bls]]></id>
-		<width>655</width>
+		<width>650</width>
 		<height>150</height>
 		<left>1</left>
-		<top>150</top>
+		<top>144</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dals]]></id>
-		<width>655</width>
+		<width>650</width>
 		<height>150</height>
 		<left>1</left>
-		<top>298</top>
+		<top>291</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dbs]]></id>
-		<width>655</width>
+		<width>650</width>
 		<height>150</height>
 		<left>1</left>
-		<top>448</top>
+		<top>441</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_drivers]]></id>
-		<width>655</width>
-		<height>121</height>
+		<width>650</width>
+		<height>126</height>
 		<left>1</left>
-		<top>598</top>
+		<top>591</top>
 	</container>
 	<task>
 		<label><![CDATA[mysql]]></label>
@@ -41,7 +41,7 @@
 		<type><![CDATA[f99a69c9]]></type>
 		<tag><![CDATA[dbdriver]]></tag>
 		<offset_left>279</offset_left>
-		<offset_top>639</offset_top>
+		<offset_top>637</offset_top>
 		<width>100</width>
 		<height>70</height>
 		<properties>
@@ -70,7 +70,7 @@
 		<type><![CDATA[14b5bd7e]]></type>
 		<tag><![CDATA[db]]></tag>
 		<offset_left>279</offset_left>
-		<offset_top>481</offset_top>
+		<offset_top>479</offset_top>
 		<width>100</width>
 		<height>70</height>
 		<properties>
@@ -99,7 +99,7 @@
 		<type><![CDATA[c9c0af26]]></type>
 		<tag><![CDATA[dataaccess]]></tag>
 		<offset_left>120</offset_left>
-		<offset_top>325</offset_top>
+		<offset_top>323</offset_top>
 		<width>100</width>
 		<height>70</height>
 		<properties>
@@ -134,7 +134,7 @@
 		<type><![CDATA[c9c0af26]]></type>
 		<tag><![CDATA[dataaccess]]></tag>
 		<offset_left>395</offset_left>
-		<offset_top>325</offset_top>
+		<offset_top>323</offset_top>
 		<width>100</width>
 		<height>70</height>
 		<properties>

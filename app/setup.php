@@ -211,23 +211,31 @@ $dir_path = str_replace(DIRECTORY_SEPARATOR, "/", __DIR__) . "/"; $installation_
 				<br>
 				max_allowed_packet=250M<br>
 				wait_timeout=28800<br>
-				max_allowed_packet=100M
+				max_allowed_packet=100M<br>
+				<br>
+				# Enable mysql_native_password plugin if mysql version is 8 or bigger<br>
+				mysql_native_password=ON<br>
+				<br>
 			</li>
 			<li>
 				[mysqld_safe]<br>
-				max_allowed_packet=100M
+				max_allowed_packet=100M<br>
+				<br>
 			</li>
 			<li>
 				[client]<br>
-				max_allowed_packet=100M
+				max_allowed_packet=100M<br>
+				<br>
 			</li>
 			<li>
 				[mysql]<br>
-				max_allowed_packet=100M
+				max_allowed_packet=100M<br>
+				<br>
 			</li>
 			<li>
 				[mysqldump]<br>
-				max_allowed_packet=100M
+				max_allowed_packet=100M<br>
+				<br>
 			</li>
 		</ul>
 	</li>

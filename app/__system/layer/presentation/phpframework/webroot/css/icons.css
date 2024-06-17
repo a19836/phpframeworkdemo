@@ -677,6 +677,7 @@
 	background-image:url("../common/img/loading.gif");
 	background-position-x: 0px;
 	background-position-y: 0px;
+	background-repeat: no-repeat;
 	background-repeat-x: no-repeat;
 	background-repeat-y: no-repeat;
 	background-attachment: scroll;

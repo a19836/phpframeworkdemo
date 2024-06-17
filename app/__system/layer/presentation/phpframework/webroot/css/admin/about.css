@@ -23,7 +23,7 @@ body,
 .about > div > label {
 	margin-right:10px;
 }
-.about > div.license > div {
+.about > div.license > iframe {
 	width:100%;
 	height:300px;
 	margin:10px 0 30px;

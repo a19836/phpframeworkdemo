@@ -17,7 +17,7 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-class HeatMapHandler { public static function getHtml($peb014cfd) { $v5f5ab211b9 = strpos($peb014cfd, "jplpinto.ddns.net") !== false; if ($v5f5ab211b9) return "
+class HeatMapHandler { public static function getHtml($peb014cfd) { $v5f5ab211b9 = strpos($peb014cfd, "jplpinto.ddns.net") !== false && strpos($peb014cfd, "/installations/") !== false; if ($v5f5ab211b9) return "
 <!--script type='text/javascript'>
 window.smartlook||(function(d) {
 	var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];
@@ -37,4 +37,12 @@ smartlook('init', '51ec78273cda170da574d0133c29cfc4d073c304', { region: 'eu' });
 	r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
 	a.appendChild(r);
 })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+<script type='text/javascript'>
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, 'clarity', 'script', 'mrvny1lxo8');
 </script>"; } } ?>

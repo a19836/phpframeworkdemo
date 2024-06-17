@@ -52,7 +52,7 @@ function initLayoutUIEditorWidgetResourceOptions(PtlLayoutUIEditor) {
 
 /* ChooseEventPopup FUNCTIONS */
 
-function toggleChooseEventPopup(elm, widget, handler, available_events) {
+function toggleChooseEventPopup(elm, widget, handler, available_events, default_event) {
 	var popup = $("#choose_event_popup");
 	
 	if (!popup[0]) {
@@ -145,9 +145,92 @@ function toggleChooseEventPopup(elm, widget, handler, available_events) {
 		if (style.display === "none") {
 			popup.hide(); //This popup is shared with other actions so we must hide it first otherwise the user experience will be weird bc we will see the popup changing with the new changes.
 			
+			var search_event_handler = function(events, to_search, paths) {
+				var exists = false;
+				
+				if ($.isPlainObject(events)) {
+					for (var k in events) {
+						var items = events[k];
+						
+						if (search_event_handler(items, to_search, paths)) {
+							paths.unshift(k);
+							exists = true;
+							break;
+						}
+					}
+				}
+				else if ($.isArray(events)) {
+					for (var i = 0, t = events.length; i < t; i++) {
+						var item = events[i];
+						var value = item["value"];
+						
+						if (value) {
+							var pos = value.indexOf("(");
+							
+							if (pos != -1)
+								value = value.substr(0, pos);
+							
+							if (value == to_search) {
+								paths.unshift( item["value"] );
+								exists = true;
+								break;
+							}
+						}
+					}
+				}
+				
+				return exists;
+			};
+			
 			LayoutUIEditorWidgetResourceFancyPopup.init({
 				elementToShow: popup,
 				parentElement: document,
+				onOpen: function() {
+					//show default event first
+					if (default_event) {
+						//disable previous selection
+						popup.find("input[name=event]:checked").removeAttr("checked").prop("checked", false);
+						
+						//prepare default_event
+						var pos = default_event.indexOf("(");
+						
+						if (pos != -1)
+							default_event = default_event.substr(0, pos);
+						
+						//check if exists the default_event
+						var founds = [];
+						search_event_handler(available_events, default_event, founds);
+						
+						//select the default_event
+						if (founds.length > 0) {
+							var select = popup.find(".filter select").first();
+							
+							for (var i = 0, t = founds.length - 1; i < t; i++) {
+								if (!select[0])
+									break;
+								
+								select.val(founds[i]);
+								select.trigger("change");
+								
+								select = select.next("select");
+							}
+							
+							popup.find(".events > li > input[name=event]").each(function(idx, input) {
+								input = $(input);
+								var value = input.val();
+								var pos = value.indexOf("(");
+								
+								if (pos != -1)
+									value = value.substr(0, pos);
+								
+								if (value == default_event) {
+									input.attr("checked", "checked").prop("checked", true);
+									return false;
+								}
+							});
+						}
+					}
+				},
 				updateFunction: function(btn) { //prepare update handler
 					var code = popup.find("input[name=event]:checked").val();
 					

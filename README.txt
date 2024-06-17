@@ -165,7 +165,7 @@ To check if this is OFF please type the following commands:
 	
 - configure apache document root to the trunk/app/ folder
 
-- restart apache and open the setup.php file in your browser and follow instructions... The setup.php file is in the trunk/app/ folder.
+- restart apache and open the setup.php (htttp://<your installation domain>/setup.php) file in your browser and follow instructions... The setup.php file is in the trunk/app/ folder.
 
 - Note that if you wish to have a local TMP folder, you can create a TMP folder inside of the dirname of the app/ folder and the system will detect it automatically, or you can always set another TMP folder in the global variables.
 

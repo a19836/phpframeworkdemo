@@ -51,6 +51,16 @@
 	});
 	</script>
 	
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-9SW8102J7B"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'G-9SW8102J7B');
+	</script>
+	
 	<? echo $head; ?>
 </head>
 <body<?= ' class="' . (isset($_COOKIE["theme_layout"]) ? $_COOKIE["theme_layout"] : "") . ' ' . (isset($_COOKIE["main_navigator_side"]) ? $_COOKIE["main_navigator_side"] : "") . (!empty($_GET["popup"]) ? " in_popup" : "") . '"'; ?>>
