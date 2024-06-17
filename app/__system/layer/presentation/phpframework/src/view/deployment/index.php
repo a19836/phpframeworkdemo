@@ -1,21 +1,9 @@
 <?php
 /*
- * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
- * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * Copyright (c) 2024 Bloxtor - http://bloxtor.com
  * 
- * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
- * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
+ * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
 include_once get_lib("org.phpframework.cms.wordpress.WordPressUrlsParser"); include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("WorkFlowPresentationHandler"); $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $external_libs_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $SubWorkFlowUIHandler = new WorkFlowUIHandler($SubWorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $external_libs_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $template_tasks_types_by_tag = array( "server" => $WorkFlowTaskHandler->getTasksByTag("server")[0]["type"], "presentation" => $WorkFlowTaskHandler->getTasksByTag("presentation")[0]["type"], "businesslogic" => $WorkFlowTaskHandler->getTasksByTag("businesslogic")[0]["type"], "dataaccess" => $WorkFlowTaskHandler->getTasksByTag("dataaccess")[0]["type"], "db" => $WorkFlowTaskHandler->getTasksByTag("db")[0]["type"], "dbdriver" => $WorkFlowTaskHandler->getTasksByTag("dbdriver")[0]["type"], ); $choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#"; $upload_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/upload_file?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#"; $choose_dao_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=dao&path=#path#"; $choose_lib_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=lib&path=#path#"; $choose_vendor_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=vendor&path=#path#"; $choose_test_units_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=test_unit&path=#path#"; $validate_template_properties_url = $project_url_prefix . "deployment/validate_template?server=#server#&template_id=#template_id#"; $deploy_template_to_server_url = $project_url_prefix . "deployment/deploy_template_to_server?server=#server#&template_id=#template_id#&deployment_id=#deployment_id#&action=#action#"; $head = $WorkFlowUIHandler->getHeader(); $head .= '
 <!-- Add MyTree main JS and CSS files -->

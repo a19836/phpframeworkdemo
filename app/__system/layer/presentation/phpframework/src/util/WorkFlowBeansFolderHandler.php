@@ -1,21 +1,9 @@
 <?php
 /*
- * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
- * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * Copyright (c) 2024 Bloxtor - http://bloxtor.com
  * 
- * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
- * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
+ * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
 include_once get_lib("org.phpframework.bean.BeanFactory"); include_once $EVC->getUtilPath("PHPVariablesFileHandler"); class WorkFlowBeansFolderHandler { private $pddfc29cd; private $v69bff92632; private $v5039a77f9d; private $v3d55458bcd; private $pc0fc7d17; private $v73fec76b27; private $v39c8cc4726 = array(); public function __construct($v5039a77f9d, $v3d55458bcd, $pc0fc7d17, $v73fec76b27 = array()) { $this->pddfc29cd = new BeanFactory(); $this->v5039a77f9d = $v5039a77f9d; $this->v3d55458bcd = $v3d55458bcd; $this->pc0fc7d17 = $pc0fc7d17; $this->v73fec76b27 = $v73fec76b27; $this->v73fec76b27 = $this->v73fec76b27 ? $this->v73fec76b27 : array(); $this->v73fec76b27["LAYER_CACHE_PATH"] = $this->v73fec76b27["LAYER_CACHE_PATH"] ? $this->v73fec76b27["LAYER_CACHE_PATH"] : LAYER_CACHE_PATH; $this->v73fec76b27["LAYER_PATH"] = $this->v73fec76b27["LAYER_PATH"] ? $this->v73fec76b27["LAYER_PATH"] : LAYER_PATH; $this->v73fec76b27["BEAN_PATH"] = $this->v73fec76b27["BEAN_PATH"] ? $this->v73fec76b27["BEAN_PATH"] : BEAN_PATH; $this->v73fec76b27["SYSTEM_LAYER_PATH"] = $this->v73fec76b27["SYSTEM_LAYER_PATH"] ? $this->v73fec76b27["SYSTEM_LAYER_PATH"] : SYSTEM_LAYER_PATH; } public function getGlobalPaths() { return $this->v73fec76b27; } public function createDefaultFiles() { $v5c1c342594 = true; $pe8ba831e = '<?php 
 //The contents of these files cannot be "" (empty string), otherwise it will output an empty line and if we set headers in some other files, the headers will not be set, bc it already echoes an empty line. So we must add the open and close php tags.

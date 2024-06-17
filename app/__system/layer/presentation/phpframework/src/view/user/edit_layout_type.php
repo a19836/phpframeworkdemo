@@ -1,21 +1,9 @@
 <?php
 /*
- * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
- * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * Copyright (c) 2024 Bloxtor - http://bloxtor.com
  * 
- * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
- * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
+ * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
 include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler"); include $EVC->getUtilPath("UserAuthenticationUIHandler"); $extra_html = '<select name="choose_project" onChange="onChooseProject(this)">
 				<option value="">- Choose a project -</option>'; foreach ($presentation_projects_by_folders as $layer_label => $projs) { $extra_html .= '<optgroup label="' . $layer_label . '">'; $extra_html .= getProjectsHtml($projs, $layout_type_data ? $layout_type_data["name"] : null); $extra_html .= '</optgroup>'; } function getProjectsHtml($v12ed481092, $v1a222c94d4, $pdcf670f6 = "") { $pf8ed4912 = ""; if (is_array($v12ed481092)) foreach ($v12ed481092 as $pcfd27d54 => $v5c37a7b23d) { if (is_array($v5c37a7b23d)) $pf8ed4912 .= '<option disabled>' . $pdcf670f6 . $pcfd27d54 . '</option>' . getProjectsHtml($v5c37a7b23d, $v1a222c94d4, $pdcf670f6 . "&nbsp;&nbsp;&nbsp;"); else $pf8ed4912 .= '<option value="' . $pcfd27d54 . '" ' . ($v1a222c94d4 == $pcfd27d54 ? ' selected' : '') . '>' . $pdcf670f6 . $v5c37a7b23d . '</option>'; } return $pf8ed4912; } $extra_html .= '</select>'; $head = '

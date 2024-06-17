@@ -1,21 +1,9 @@
 <?php
 /*
- * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
- * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * Copyright (c) 2024 Bloxtor - http://bloxtor.com
  * 
- * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
- * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
+ * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
 include_once get_lib("org.phpframework.util.xml.MyXML"); include_once get_lib("org.phpframework.util.xml.MyXMLArray"); class CMSModuleInstallationDBDAOHandler { public static function createModuleDBDAOUtilFilesFromHibernateFile($pa58b0566, $v676bb8b56c, $pcd8c70bc, &$v9ff9df9b4e = array()) { $v5c1c342594 = true; if ($pa58b0566) foreach ($pa58b0566 as $pe28a9b21) foreach ($v676bb8b56c as $pfd248cca => $pe0cb6cb3) { if ($pfd248cca == "businesslogic" && !self::createBusinessLogicModuleDBDAOUtilFileFromHibernateFile($pe28a9b21, $pe0cb6cb3, $pcd8c70bc, $v9ff9df9b4e)) $v5c1c342594 = false; else if (($pfd248cca == "presentation" || $pfd248cca == "system_settings") && !self::createPresentationModuleDBDAOUtilFileFromHibernateFile($pe28a9b21, $pe0cb6cb3, $v9ff9df9b4e)) $v5c1c342594 = false; } return $v5c1c342594; } public static function createBusinessLogicModuleDBDAOUtilFileFromHibernateFile($pe28a9b21, $v57a9807e67, $pcd8c70bc, &$v9ff9df9b4e = array()) { $v5c1c342594 = true; if ($v57a9807e67) { $v250a1176c9 = pathinfo($pe28a9b21, PATHINFO_FILENAME); $v8e37641528 = str_replace(" ", "", ucwords(str_replace(array("_", "-"), " ", strtolower($v250a1176c9)))); $v4a2fedb8f0 = str_replace(" ", "", ucwords(str_replace(array("_", "-"), " ", strtolower($pcd8c70bc)))); $v1335217393 = "{$v8e37641528}DBDAOServiceUtil"; $v067674f4e4 = self::mfdc7db5ae937($pe28a9b21, $v1335217393, "Module\\$v4a2fedb8f0"); foreach ($v57a9807e67 as $pa32be502) { $v9a84a79e2e = "$pa32be502/$v1335217393.php"; if (file_put_contents($v9a84a79e2e, $v067674f4e4) === false) { $v9ff9df9b4e[] = "Error trying to create file: " . str_replace(LAYER_PATH, "", $v9a84a79e2e); $v5c1c342594 = false; } } } return $v5c1c342594; } public static function createPresentationModuleDBDAOUtilFileFromHibernateFile($pe28a9b21, $v57a9807e67, &$v9ff9df9b4e = array()) { $v5c1c342594 = true; if ($v57a9807e67) { $v250a1176c9 = pathinfo($pe28a9b21, PATHINFO_FILENAME); $v8e37641528 = str_replace(" ", "", ucwords(str_replace(array("_", "-"), " ", strtolower($v250a1176c9)))); $v1335217393 = "{$v8e37641528}DBDAOUtil"; $v067674f4e4 = self::mfdc7db5ae937($pe28a9b21, $v1335217393); foreach ($v57a9807e67 as $pa32be502) { $v9a84a79e2e = "$pa32be502/$v1335217393.php"; if (file_put_contents($v9a84a79e2e, $v067674f4e4) === false) { $v9ff9df9b4e[] = "Error trying to create file: " . str_replace(LAYER_PATH, "", $v9a84a79e2e); $v5c1c342594 = false; } } } return $v5c1c342594; } private static function mfdc7db5ae937($pe28a9b21, $v1335217393, $v1efaf06c58 = null) { $v1612a5ddce = self::f9f730fe064($pe28a9b21); $v067674f4e4 = '<?php'; if ($v1efaf06c58) $v067674f4e4 .= '
 namespace ' . $v1efaf06c58 . ';

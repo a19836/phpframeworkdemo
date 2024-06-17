@@ -190,6 +190,7 @@ function toggleChooseEventPopup(elm, widget, handler, available_events, default_
 					if (default_event) {
 						//disable previous selection
 						popup.find("input[name=event]:checked").removeAttr("checked").prop("checked", false);
+						popup.children(".content").scrollTop(0);
 						
 						//prepare default_event
 						var pos = default_event.indexOf("(");
@@ -225,6 +226,8 @@ function toggleChooseEventPopup(elm, widget, handler, available_events, default_
 								
 								if (value == default_event) {
 									input.attr("checked", "checked").prop("checked", true);
+									
+									popup.children(".content").scrollTop( input.offset().top - 200 );
 									return false;
 								}
 							});

@@ -1,21 +1,9 @@
 <?php
 /*
- * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
- * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * Copyright (c) 2024 Bloxtor - http://bloxtor.com
  * 
- * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
- * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
+ * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */ include_once get_lib("org.phpframework.db.DB"); include $EVC->getUtilPath("WorkFlowUIHandler"); $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $external_libs_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $tasks_settings = $WorkFlowTaskHandler->getLoadedTasksSettings(); $task_contents = array(); foreach ($tasks_settings as $group_id => $group_tasks) foreach ($group_tasks as $task_type => $task_settings) if (is_array($task_settings)) $task_contents = $task_settings["task_properties_html"]; $charsets = $obj ? $obj->getTableCharsets() : array(); $collations = $obj ? $obj->getTableCollations() : array(); $storage_engines = $obj ? $obj->getStorageEngines() : array(); $column_charsets = $obj ? $obj->getColumnCharsets() : array(); $column_collations = $obj ? $obj->getColumnCollations() : array(); $column_column_types = $obj ? $obj->getDBColumnTypes() : DB::getAllColumnTypesByType(); $column_column_simple_types = $obj ? $obj->getDBColumnSimpleTypes() : DB::getAllColumnSimpleTypesByType(); $column_numeric_types = $obj ? $obj->getDBColumnNumericTypes() : DB::getAllSharedColumnNumericTypes(); $column_mandatory_length_types = $obj ? $obj->getDBColumnMandatoryLengthTypes() : DB::getAllSharedColumnMandatoryLengthTypes(); $column_types_ignored_props = $obj ? $obj->getDBColumnTypesIgnoredProps() : DB::getAllSharedColumnTypesIgnoredProps(); $column_types_hidden_props = $obj ? $obj->getDBColumnTypesHiddenProps() : DB::getAllSharedColumnTypesHiddenProps(); $charsets = is_array($charsets) ? $charsets : array(); $collations = is_array($collations) ? $collations : array(); $storage_engines = is_array($storage_engines) ? $storage_engines : array(); $column_charsets = is_array($column_charsets) ? $column_charsets : array(); $column_collations = is_array($column_collations) ? $column_collations : array(); $column_column_types = is_array($column_column_types) ? $column_column_types : array(); $column_column_simple_types = is_array($column_column_simple_types) ? $column_column_simple_types : array(); $column_numeric_types = is_array($column_numeric_types) ? $column_numeric_types : array(); $column_mandatory_length_types = is_array($column_mandatory_length_types) ? $column_mandatory_length_types : array(); $column_types_ignored_props = is_array($column_types_ignored_props) ? $column_types_ignored_props : array(); $manage_records_url = $project_url_prefix . "db/manage_records?layer_bean_folder_name=$layer_bean_folder_name&bean_name=$bean_name&bean_file_name=$bean_file_name&table=$table"; $execute_sql_url = $project_url_prefix . "db/execute_sql?layer_bean_folder_name=$layer_bean_folder_name&bean_name=$bean_name&bean_file_name=$bean_file_name&table=$table"; $head = '
 <!-- Add ACE Editor JS files -->
 <script src="' . $project_common_url_prefix . 'vendor/acecodeeditor/src-min-noconflict/ace.js"></script>

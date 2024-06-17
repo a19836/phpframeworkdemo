@@ -1,21 +1,9 @@
 <?php
 /*
- * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
- * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * Copyright (c) 2024 Bloxtor - http://bloxtor.com
  * 
- * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
- * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
+ * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
 include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler"); class SimpleHtmlFormHandler { public function getListHtml($v30857f7eca) { $pb8c0935b = isset($v30857f7eca["title"]) ? $v30857f7eca["title"] : null; $v3ae55a9a2e = isset($v30857f7eca["class"]) ? $v30857f7eca["class"] : null; $v21853a7741 = !empty($v30857f7eca["title_class"]) ? $v30857f7eca["title_class"] : "title"; $v539082ff30 = isset($v30857f7eca["data"]) ? $v30857f7eca["data"] : null; $v7318c82bdf = !empty($v30857f7eca["empty_list_message"]) ? $v30857f7eca["empty_list_message"] : "There are no available items..."; $v30d38c7973 = self::getListSettings($v30857f7eca); $pf8ed4912 = '<div class="' . $v3ae55a9a2e . '">
 				<div class="' . $v21853a7741 . '">' . $pb8c0935b . '</div>'; $pf8ed4912 .= HtmlFormHandler::createHtmlForm($v30d38c7973, $v539082ff30); $pf8ed4912 .= empty($v539082ff30) ? '<div class="empty_table">' . $v7318c82bdf . '</div>' : ''; $pf8ed4912 .= '</div>'; return $pf8ed4912; } public function getFormHtml($v30857f7eca) { $pb8c0935b = isset($v30857f7eca["title"]) ? $v30857f7eca["title"] : null; $v3ae55a9a2e = isset($v30857f7eca["class"]) ? $v30857f7eca["class"] : null; $v21853a7741 = !empty($v30857f7eca["title_class"]) ? $v30857f7eca["title_class"] : "title"; $v1f2559b2d2 = !empty($v30857f7eca["status_message_class"]) ? $v30857f7eca["status_message_class"] : "status_message"; $v0cb559b093 = !empty($v30857f7eca["error_message_class"]) ? $v30857f7eca["error_message_class"] : "error_message"; $v539082ff30 = isset($v30857f7eca["data"]) ? $v30857f7eca["data"] : null; $v5755f5d954 = isset($v30857f7eca["status_message"]) ? $v30857f7eca["status_message"] : null; $pef612b9d = isset($v30857f7eca["error_message"]) ? $v30857f7eca["error_message"] : null; $v30d38c7973 = self::getFormSettings($v30857f7eca); $pf8ed4912 = '<div class="' . $v3ae55a9a2e . '">

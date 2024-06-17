@@ -1,20 +1,8 @@
 <?php
 /*
- * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
- * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * Copyright (c) 2024 Bloxtor - http://bloxtor.com
  * 
- * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
- * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
+ * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
 include_once get_lib("org.phpframework.cache.CacheHandlerUtil"); include_once get_lib("org.phpframework.cache.service.IServiceCacheHandler"); abstract class ServiceCacheHandler implements IServiceCacheHandler { protected $root_path; protected $default_ttl = 9999999999; protected $default_type = "php"; public function getServicePath($pdcf670f6, $pbfa01ed1, $v3fb9f41470 = false) { return $this->getServiceDirPath($pdcf670f6, $v3fb9f41470) . $this->f5db6349e72($pbfa01ed1); } public function getServiceDirPath($pdcf670f6, $v3fb9f41470 = false) { if(!$v3fb9f41470) $v3fb9f41470 = $this->default_type; if ($pdcf670f6) { $pbd1bc7b0 = strpos($pdcf670f6, "/"); if ($pbd1bc7b0 > 0 && $pbd1bc7b0 < strlen($pdcf670f6)) { $pfae508b5 = $pe9715da5 = ""; $v9cd205cadb = explode("/", $pdcf670f6); foreach ($v9cd205cadb as $v1d2d80ed32) if (trim($v1d2d80ed32)) { if (!$pfae508b5) $pfae508b5 = trim($v1d2d80ed32); else $pe9715da5 .= "_" . trim($v1d2d80ed32); } $pdcf670f6 = $pfae508b5 . ($pe9715da5 ? "_" . md5($pe9715da5) : ""); } } CacheHandlerUtil::configureFolderPath($pdcf670f6); $v4ab372da3a = $this->getRootPath(); if (empty($v4ab372da3a)) { echo "TODO/TESTING: ROOT PATH IS UNDEFINED in app/lib/org/phpframework/cache/service/ServiceCacheHandler.php:43"; echo "\nprefix$pdcf670f6\ntype:$v3fb9f41470\n"; die(); } return $v4ab372da3a . $pdcf670f6 . $v3fb9f41470 . "/"; } private function f5db6349e72($pbfa01ed1) { return $pbfa01ed1 ? CacheHandlerUtil::getCacheFilePath( $this->mca5ea947e941($pbfa01ed1) ) : $pf3dc0762; } private function mca5ea947e941($pbfa01ed1) { $v258de04f2e = hash("md4", $pbfa01ed1); $v258de04f2e = substr($v258de04f2e, strlen($v258de04f2e) - 15); $pa32be502 = substr($v258de04f2e, 0, 1) . "/" . substr($v258de04f2e, 1, 1) . "/" . substr($v258de04f2e, 2, 1) . "/"; return $pa32be502 . $pbfa01ed1; } public function setRootPath($v4ab372da3a) { $v4ab372da3a = preg_replace('/([\/]+)/', '/', $v4ab372da3a); $v4ab372da3a .= substr($v4ab372da3a, strlen($v4ab372da3a) - 1) != "/" ? "/" : ""; $this->root_path = $v4ab372da3a; } public function getRootPath() {return $this->root_path;} public function setDefaultTTL($pa6536f4f) {$this->default_ttl = $pa6536f4f;} public function getDefaultTTL() {return $this->default_ttl;} public function setDefaultType($v260dc30551) {$this->default_type = $v260dc30551;} public function getDefaultType() {return $this->default_type;} protected function prepareContentToInsert($v9ad1385268, $v3fb9f41470) { if(!$v3fb9f41470) { $v3fb9f41470 = $this->default_type; } switch(strtolower($v3fb9f41470)) { case "text": $v57b4b0200b = $v9ad1385268; break; case "php": $v57b4b0200b = serialize($v9ad1385268); break; default: $v57b4b0200b = $v9ad1385268; } return $v57b4b0200b; } protected function prepareContentFromGet($v9ad1385268, $v3fb9f41470) { if(!$v3fb9f41470) { $v3fb9f41470 = $this->default_type; } switch(strtolower($v3fb9f41470)) { case "text": $v57b4b0200b = $v9ad1385268; break; case "php": $v57b4b0200b = unserialize($v9ad1385268); break; default: $v57b4b0200b = $v9ad1385268; } return $v57b4b0200b; } } ?>

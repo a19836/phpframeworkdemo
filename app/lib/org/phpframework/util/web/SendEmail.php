@@ -1,21 +1,9 @@
 <?php
 /*
- * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
- * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * Copyright (c) 2024 Bloxtor - http://bloxtor.com
  * 
- * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
- * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
+ * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
 class SendEmail { private $v7633a72607; private $v565a00eace; private $pbebc8cef; public function __construct($v7633a72607, $v565a00eace = false, $v8d1f503e9f = "UTF8") { $pd74a39f0 = ""; $v9cd205cadb = explode(",", $v7633a72607); foreach ($v9cd205cadb as $v1d2d80ed32) $pd74a39f0 .= ($pd74a39f0 ? ", " : "") . (strpos($v7633a72607, "<") !== false ? $v1d2d80ed32 : "$v1d2d80ed32 <$v1d2d80ed32>"); $this->v7633a72607 = $pd74a39f0; $this->v565a00eace = $v565a00eace ? $v565a00eace : "NextPart00A_000_1951044531D"; $pee65d1cf = strtoupper($v8d1f503e9f); if ($pee65d1cf == "UTF8" || $pee65d1cf == "UTF-8") $this->pbebc8cef = array("utf-8", "8"); else $this->pbebc8cef = array("iso-8859-1", "7"); } public function send($pbb0bffd6, $pe4c7aeda, $pffa799aa, $pc0dcc212 = false) { $v2df37fdc6e = $pffa799aa; $pc3d17c95 = str_replace(array("<br>", "<br >", "<br/>", "<br />"), "\n", $pffa799aa); $pc3d17c95 = strip_tags($pc3d17c95); $v15493e4c60 = $this->getMultiPartHeader($this->v7633a72607, $pe4c7aeda, $pc0dcc212); $pae77d38c = $this->getMultiPartContent($pc3d17c95, $v2df37fdc6e); $v5c1c342594 = mail($pbb0bffd6, $pe4c7aeda, $pae77d38c, $v15493e4c60); return $v5c1c342594; } public function getMultiPartContent($v39e1347c93, $pf8ed4912) { $pba11a122 = isset($this->pbebc8cef[0]) ? $this->pbebc8cef[0] : null; $v0e3d8f53e0 = isset($this->pbebc8cef[1]) ? $this->pbebc8cef[1] : null; return '------='.$this->v565a00eace.'
 Content-Type: text/plain;

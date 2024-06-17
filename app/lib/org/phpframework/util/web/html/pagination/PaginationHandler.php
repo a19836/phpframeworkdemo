@@ -1,20 +1,8 @@
 <?php
 /*
- * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
- * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * Copyright (c) 2024 Bloxtor - http://bloxtor.com
  * 
- * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
- * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
+ * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
  class PaginationHandler { public $data; public $show_x_pages_at_once = 5; public $with_post = false; public $default_style = "design1"; public function __construct($pa5a94d32, $v7fb279fc66, $v30857f7eca = array(), $v8ed660d4a1 = 'pg', $v33751cd2d7 = false) { $this->mcdfff12f30fd($pa5a94d32, $v7fb279fc66, $v30857f7eca, $v8ed660d4a1, $v33751cd2d7); } private function mcdfff12f30fd($pa5a94d32, $v7fb279fc66, $v30857f7eca, $v8ed660d4a1 = 'pg', $v33751cd2d7 = false) { $pa5a94d32 = is_numeric($pa5a94d32) ? $pa5a94d32 : 0; $v7fb279fc66 = is_numeric($v7fb279fc66) ? $v7fb279fc66 : 0; $v1620249212 = isset($v30857f7eca[ $v8ed660d4a1 ]) && is_numeric($v30857f7eca[ $v8ed660d4a1 ]) ? $v30857f7eca[ $v8ed660d4a1 ] : 1; $v552b831ecd = isset($v30857f7eca['limit']) ? $v30857f7eca['limit'] : $v7fb279fc66; if ($v552b831ecd > $v7fb279fc66) $v552b831ecd = $v7fb279fc66; if ($v552b831ecd < 1) $v552b831ecd = 1; $pf3e7b0af = ceil($pa5a94d32 / $v552b831ecd); $v7e4b517c18 = max($v1620249212 - 1, 0) * $v552b831ecd; $v27e200bd34 = min($v7e4b517c18 + $v552b831ecd, $pa5a94d32); $this->data = array( "total_items" => $pa5a94d32, "max_items_page" => $v7fb279fc66, "cur_page" => $v1620249212, "start" => $v7e4b517c18, "end" => $v27e200bd34, "limit" => $v552b831ecd, "num_pages" => $pf3e7b0af, "page_attr_name" => $v8ed660d4a1, "on_click_js_func" => $v33751cd2d7 ); } public static function getStartValue($v8c3a6f7f08, $v552b831ecd) { if ($v8c3a6f7f08 > 0 && $v552b831ecd > 0) { $pe24136aa = ($v8c3a6f7f08 - 1) * $v552b831ecd; return $pe24136aa >= 0 ? $pe24136aa : 0; } return 0; } public function designWithStyle($v6f3a2700dd = 1, $v539082ff30 = array()) { $v7a0d01cd51 = isset($v539082ff30["with_post"]) ? $v539082ff30["with_post"] : $this->with_post; $v6a9f910316 = isset($v539082ff30["style"]) ? $v539082ff30["style"] : $this->default_style; $v86e5d83e26 = $this->f9f47c081aa($v6f3a2700dd, $v7a0d01cd51); $v539082ff30["url"] = isset($v86e5d83e26["url"]) ? $v86e5d83e26["url"] : null; $v539082ff30["post"] = isset($v86e5d83e26["post"]) ? $v86e5d83e26["post"] : null; return $this->$v6a9f910316($v539082ff30); } private function f9f47c081aa($v6f3a2700dd, $v7a0d01cd51) { $v401491fc94 = ""; $v1598b4cc2b = ""; if($v6f3a2700dd === 1) { $pd1b51d4f = $_GET; $v8ed660d4a1 = isset($this->data['page_attr_name']) ? $this->data['page_attr_name'] : null; if (isset($v8ed660d4a1)) unset($pd1b51d4f[$v8ed660d4a1]); $v401491fc94 = "?" . http_build_query($pd1b51d4f); } else $v401491fc94 = strpos($v6f3a2700dd,"?") === false ? $v6f3a2700dd . "?" : $v6f3a2700dd; if($v7a0d01cd51) $v1598b4cc2b = $this->mb499467c861e($_POST); return array("url" => $v401491fc94, "post" => $v1598b4cc2b); } private function mb499467c861e($pfb662071, $pdcf670f6 = "") { $pf8ed4912 = ""; if ($pfb662071) foreach ($pfb662071 as $pe5c5e2fe => $v956913c90f) { if (is_array($v956913c90f)) $pf8ed4912 .= $this->mb499467c861e($v956913c90f, $pdcf670f6 . $pe5c5e2fe . ($pdcf670f6 ? "]" : "") . "["); else $pf8ed4912 .= "<input type=\"hidden\" name=\"$pdcf670f6$pe5c5e2fe" . ($pdcf670f6 ? "]" : "") . "\" value=\"$v956913c90f\" />"; } return $pf8ed4912; } } ?>

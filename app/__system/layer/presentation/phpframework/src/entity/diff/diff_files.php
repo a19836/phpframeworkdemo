@@ -1,20 +1,8 @@
 <?php
 /*
- * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
- * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * Copyright (c) 2024 Bloxtor - http://bloxtor.com
  * 
- * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
- * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
+ * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
 include_once get_lib("lib.vendor.phpdiff.Differ"); include_once $EVC->getUtilPath("WorkFlowBeansFileHandler"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $src_bean_name = $_GET["src_bean_name"]; $src_bean_file_name = $_GET["src_bean_file_name"]; $src_item_type = $_GET["src_item_type"]; $src_path = $_GET["src_path"]; $dst_bean_name = $_GET["dst_bean_name"]; $dst_bean_file_name = $_GET["dst_bean_file_name"]; $dst_item_type = $_GET["dst_item_type"]; $dst_path = $_GET["dst_path"]; $src_path = str_replace("../", "", $src_path);$dst_path = str_replace("../", "", $dst_path); $src_root_path = getRootPath($src_bean_name, $src_bean_file_name, $src_item_type, $src_path, $user_beans_folder_path, $user_global_variables_file_path, $src_obj); $dst_root_path = getRootPath($dst_bean_name, $dst_bean_file_name, $dst_item_type, $dst_path, $user_beans_folder_path, $user_global_variables_file_path, $dst_obj); if ($src_root_path && $dst_root_path) { $orig_src_path = $src_path; $orig_dst_path = $dst_path; $src_path = $src_root_path . $src_path; $dst_path = $dst_root_path . $dst_path; if ($orig_src_path && $orig_dst_path && file_exists($src_path) && file_exists($dst_path)) { $src_layer_object_id = $src_item_type == "dao" ? "vendor/dao/$orig_src_path" : ($src_item_type == "vendor" || $src_item_type == "other" ? "$src_item_type/$orig_src_path" : ($src_item_type == "test_unit" ? "vendor/testunit/$orig_src_path" : $src_path)); $dst_layer_object_id = $dst_item_type == "dao" ? "vendor/dao/$orig_dst_path" : ($dst_item_type == "vendor" || $dst_item_type == "other" ? "$dst_item_type/$orig_dst_path" : ($dst_item_type == "test_unit" ? "vendor/testunit/$orig_dst_path" : $dst_path)); $UserAuthenticationHandler->checkInnerFilePermissionAuthentication($src_layer_object_id, "layer", "access"); $UserAuthenticationHandler->checkInnerFilePermissionAuthentication($dst_layer_object_id, "layer", "access"); $diffs = \Diff\Differ::compareFiles($src_path, $dst_path); $html = \Diff\Differ::toTable($diffs); } } function getRootPath($v8ffce2a791, $pa0462a8e, $v8773b3a63a, $pa32be502, $v5039a77f9d, $v3d55458bcd, &$v972f1a5c2b = false) { $v4ab372da3a = null; if ($v8773b3a63a == "lib") $v4ab372da3a = LIB_PATH; else if ($v8773b3a63a == "dao") $v4ab372da3a = DAO_PATH; else if ($v8773b3a63a == "vendor") $v4ab372da3a = VENDOR_PATH; else if ($v8773b3a63a == "other") $v4ab372da3a = OTHER_PATH; else if ($v8773b3a63a == "test_unit") $v4ab372da3a = TEST_UNIT_PATH; else { $pb512d021 = new WorkFlowBeansFileHandler($v5039a77f9d . $pa0462a8e, $v3d55458bcd); if ($v8773b3a63a != "presentation") $v972f1a5c2b = $pb512d021->getBeanObject($v8ffce2a791); else { $v188b4f5fa6 = $pb512d021->getEVCBeanObject($v8ffce2a791, $pa32be502); $v972f1a5c2b = $v188b4f5fa6 ? $v188b4f5fa6->getPresentationLayer() : null; } if ($v972f1a5c2b) $v4ab372da3a = $v972f1a5c2b->getLayerPathSetting(); } return $v4ab372da3a; } ?>

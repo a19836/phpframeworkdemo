@@ -1,21 +1,9 @@
 <?php
 /*
- * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
- * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * Copyright (c) 2024 Bloxtor - http://bloxtor.com
  * 
- * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
- * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
+ * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
 include_once get_lib("org.phpframework.util.web.html.CssAndJSFilesOptimizer"); include_once $EVC->getUtilPath("PHPVariablesFileHandler", "phpframework"); class WorkFlowUIHandler { private $pecad7cca; private $pcd2aca48; private $v00161f0c07; private $pf3d7391b; private $v3d55458bcd; private $v4bf8d90f04; private $pfce4d1b3; private $v524bbc0f84; private $v85ea3272a0; private $v4c6473be39; private $v521be90a09; private $v243e50bc1d; public function __construct($pecad7cca, $pcd2aca48, $v00161f0c07, $pf3d7391b, $v3d55458bcd, $v4bf8d90f04, $pfce4d1b3) { $this->pecad7cca = $pecad7cca; $this->pcd2aca48 = $pcd2aca48; $this->v00161f0c07 = $v00161f0c07; $this->pf3d7391b = $pf3d7391b; $this->v3d55458bcd = $v3d55458bcd; $this->v4bf8d90f04 = $v4bf8d90f04; $this->pfce4d1b3 = $pfce4d1b3; $this->mcdfff12f30fd(); } private function mcdfff12f30fd() { $this->pecad7cca->initWorkFlowTasks(); $this->v524bbc0f84 = $this->pecad7cca->getLoadedTasksSettings(); $this->v85ea3272a0 = $this->pecad7cca->getParsedTasksContainers(); $this->v4c6473be39 = array(); $this->v521be90a09 = array(); } public function setTasksOrderByTag($v4c6473be39) { $this->v4c6473be39 = $v4c6473be39; } public function setTasksGroupsByTag($v521be90a09) { $this->v521be90a09 = $v521be90a09; } public function getDefaultTasksGroupsByTag() { $v521be90a09 = array(); foreach ($this->v524bbc0f84 as $v93feab0020 => $pcbf3c2f0) foreach ($pcbf3c2f0 as $pc8421459 => $v003bc751fd) $v521be90a09[$v93feab0020][] = $v003bc751fd["tag"]; return $v521be90a09; } public function addFoldersTasksToTasksGroups($v8f31bfcb8e) { if ($v8f31bfcb8e) foreach ($v8f31bfcb8e as $pd016d02f) $this->addFolderTasksToTasksGroups($pd016d02f); } public function addFolderTasksToTasksGroups($pd016d02f) { $pd016d02f = WorkFlowTaskHandler::prepareFolderPath($pd016d02f); $v6b3fa373ec = $this->pecad7cca->getFolderId($pd016d02f); $v58bdbebd81 = $this->pecad7cca->getLoadedTasks(); $pca82c260 = $v58bdbebd81[$v6b3fa373ec]; $pb6283403 = $this->v524bbc0f84[$v6b3fa373ec]; if ($pb6283403) foreach ($pb6283403 as $v8282c7dd58 => $v003bc751fd) { $pc1ded554 = $pca82c260[$v8282c7dd58]; $v730d5c80a0 = str_replace($pd016d02f, "", dirname(dirname($pc1ded554["path"]))); $v730d5c80a0 = substr($v730d5c80a0, 0, 1) == "/" ? substr($v730d5c80a0, 1) : $v730d5c80a0; $pbd1bc7b0 = strpos($v730d5c80a0, "/"); $v7ede7ac560 = $pbd1bc7b0 ? substr($v730d5c80a0, 0, $pbd1bc7b0) : $v730d5c80a0; if ($v7ede7ac560) { $v4fb7a0e86f = ucwords(strtolower(str_replace(array("_", "-"), " ", $v7ede7ac560))); if (isset($this->v521be90a09[$v4fb7a0e86f])) $this->v521be90a09[$v4fb7a0e86f][] = $v003bc751fd["tag"]; else $this->v521be90a09[$v4fb7a0e86f] = array($v003bc751fd["tag"]); } } } public function getHeader($v5d3813882f = array("tasks_css_and_js" => true)) { $v0a9dad1fe0 = '
 <!-- Add Jquery Tap-Hold Event JS file -->

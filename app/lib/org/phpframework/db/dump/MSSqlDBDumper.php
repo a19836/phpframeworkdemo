@@ -1,21 +1,9 @@
 <?php
 /*
- * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
- * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * Copyright (c) 2024 Bloxtor - http://bloxtor.com
  * 
- * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
- * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
+ * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
 include_once get_lib("org.phpframework.db.dump.DBDumper"); class MSSqlDBDumper extends DBDumper { public function __construct($v834e515e94) { $this->DBDumperHandler = $v834e515e94; } public function databases($pb67a2609) { $v3c76382d93 = "SELECT SERVERPROPERTY('collation') as 'collation';"; $v3dd67d635b = $this->DBDumperHandler->getDBDriver()->getSQL($v3c76382d93); $pf6d213c3 = isset($v3dd67d635b[0]["collation"]) ? $v3dd67d635b[0]["collation"] : null; $v50890f6f30 = ""; $v50890f6f30 .= "/* IF DB_ID ('{$pb67a2609}') IS NULL */". " CREATE DATABASE {$pb67a2609}". " /* COLLATE {$pf6d213c3} */;".PHP_EOL.PHP_EOL. "USE {$pb67a2609};".PHP_EOL.PHP_EOL; return $v50890f6f30; } public function createTable($pba23d78c, $v8c5df8072b, $v11f9d89738 = false) { $pff59654a = isset($pba23d78c[0]) ? $pba23d78c[0] : null; if (!$pff59654a || !isset($pff59654a['Create Table'])) { return "/* Error getting table code, unknown output. */".PHP_EOL .PHP_EOL; } $v813853251a = $pff59654a['Create Table'] . ";"; $v3c76382d93 = ""; $pb4eb2d6f = array(); $v9d1bf2c12a = array(); if ($v11f9d89738) foreach ($v11f9d89738 as $pa7c14731) { if (isset($pa7c14731["child_column"]) && isset($pa7c14731["parent_table"]) && isset($pa7c14731["parent_column"])) $v9d1bf2c12a[ $pa7c14731["child_column"] ][ $pa7c14731["parent_table"] ][ $pa7c14731["parent_column"] ] = $pa7c14731; if (isset($pa7c14731["constraint_name"])) $v9d1bf2c12a[ $pa7c14731["constraint_name"] ] = $pa7c14731; } $v5faa4b8a01 = $this->getShowForeignKeysStmt($v8c5df8072b); $v3dd67d635b = $this->DBDumperHandler->getDBDriver()->getSQL($v5faa4b8a01); foreach ($v3dd67d635b as $v7a1b9c07b3) { $pe04f136f = isset($v7a1b9c07b3["constraint_name"]) ? $v7a1b9c07b3["constraint_name"] : null; $v114ab04c01 = isset($v7a1b9c07b3["child_column"]) ? $v7a1b9c07b3["child_column"] : null; $v0e97b0c60d = isset($v7a1b9c07b3["parent_table"]) ? $v7a1b9c07b3["parent_table"] : null; $v3beaa307d1 = isset($v7a1b9c07b3["parent_column"]) ? $v7a1b9c07b3["parent_column"] : null; $v6912eee73f = !empty($v7a1b9c07b3["on_delete"]) ? " ON DELETE " . $v7a1b9c07b3["on_delete"] : ""; $pd7c78775 = !empty($v7a1b9c07b3["on_update"]) ? " ON UPDATE " . $v7a1b9c07b3["on_update"] : ""; $v13aa5fbc76 = !empty($v7a1b9c07b3["replication_code"]) ? $v7a1b9c07b3["replication_code"] : ""; $v2343c84346 = ($pe04f136f ? "CONSTRAINT [" . $pe04f136f . "] " : "") . " FOREIGN KEY ([" . $v114ab04c01 . "]) REFERENCES [" . $v0e97b0c60d . "] ([" . $v3beaa307d1 . "]) $v6912eee73f $pd7c78775 $v13aa5fbc76 $pf64b5abc"; if ( ($pe04f136f && $v9d1bf2c12a[$pe04f136f]) || ( $v9d1bf2c12a[$v114ab04c01] && $v9d1bf2c12a[$v114ab04c01][$v0e97b0c60d] && $v9d1bf2c12a[$v114ab04c01][$v0e97b0c60d][$v3beaa307d1] )) { $pa7c14731 = $v9d1bf2c12a[$pe04f136f] ? $v9d1bf2c12a[$pe04f136f] : $v9d1bf2c12a[$v114ab04c01][$v0e97b0c60d][$v3beaa307d1]; $this->DBDumperHandler->setTableExtraSql($pa7c14731["parent_table"], "ALTER TABLE [$v8c5df8072b] ADD $v2343c84346;" . PHP_EOL); } else $v3c76382d93 .= "," . PHP_EOL . "    " . $v2343c84346; $pb4eb2d6f[] = $pe04f136f; } $v5faa4b8a01 = str_replace("\t", "", "SELECT c.name as 'constraint_name', col.name as 'col_name', t.name as 'table_name'
 				FROM sys.objects t

@@ -1,21 +1,9 @@
 <?php
 /*
- * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
- * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * Copyright (c) 2024 Bloxtor - http://bloxtor.com
  * 
- * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
- * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
+ * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
 include $EVC->getUtilPath("CMSPresentationUIAutomaticFilesHandler"); include $EVC->getUtilPath("CMSPresentationFormSettingsUIHandler"); class CMSPresentationUIDiagramFilesHandler { private static $v6a5af55cf8 = null; private static $v9ddaebbf03 = null; private static $v4a8e028ce8 = null; private static $v4a8c422aa6 = null; private static $pec316626 = null; private static $pa82053f1 = null; private static $v35727ff744 = null; private static $v058a242493 = null; private static $v79b4f08546 = null; private static $v86098bc5f1 = null; private static $v3b4cb56c97 = null; private static $v7444124b34 = null; private static $v6b8ab5a551 = null; private static $v552676fb3d = null; private static $v2b9248d393 = null; private static $v298bc3731e = null; private static $v5f60005f1d = null; private static $v50e29b88ec = null; private static $v1d5dafbccf = null; private static $pff4c8506 = null; private static $pf9a2cdcb = null; public static function getAuthPageAndBlockIds() { return array( "auth_validation_block_id" => self::$v6a5af55cf8, "access_id" => self::$v9ddaebbf03, "object_type_page_id" => self::$v4a8e028ce8, "logout_block_id" => self::$v4a8c422aa6, "logout_page_id" => self::$pec316626, "login_block_id" => self::$pa82053f1, "login_page_id" => self::$v35727ff744, "register_block_id" => self::$v058a242493, "register_page_id" => self::$v79b4f08546, "forgot_credentials_block_id" => self::$v86098bc5f1, "forgot_credentials_page_id" => self::$v3b4cb56c97, "edit_profile_block_id" => self::$v7444124b34, "edit_profile_page_id" => self::$v6b8ab5a551, "list_and_edit_users_block_id" => self::$v552676fb3d, "list_and_edit_users_page_id" => self::$v2b9248d393, "list_users_block_id" => self::$v298bc3731e, "list_users_page_id" => self::$v5f60005f1d, "edit_user_block_id" => self::$v50e29b88ec, "edit_user_page_id" => self::$v1d5dafbccf, "add_user_block_id" => self::$pff4c8506, "add_user_page_id" => self::$pf9a2cdcb, ); } public static function addUserAccessControlToVarsFile($v188b4f5fa6, $pd763cc84, $pfe8f3da7, $v761f4d757f) { $pf3dc0762 = $v188b4f5fa6->getConfigPath($pd763cc84); $v17be587282 = dirname($pf3dc0762); $v444c0a588f = ""; if (is_array($pfe8f3da7)) { $v327f72fb62 = ""; foreach ($pfe8f3da7 as $pcb71a4d9) { $pcb71a4d9 = trim($pcb71a4d9); if ($pcb71a4d9 && is_numeric($pcb71a4d9)) $v327f72fb62 .= ($v327f72fb62 ? "," : "") . $pcb71a4d9; } $v444c0a588f = $v327f72fb62; } else $v444c0a588f = trim($pfe8f3da7); $pfe5fee27 = '<?php
 $allowed_list_and_edit_users_types = array(' . $v444c0a588f . ');'; if ($v761f4d757f) $pfe5fee27 .= '

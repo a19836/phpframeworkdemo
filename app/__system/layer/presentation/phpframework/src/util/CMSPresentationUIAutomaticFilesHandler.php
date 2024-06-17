@@ -1,21 +1,9 @@
 <?php
 /*
- * Copyright (c) 2007 PHPMyFrameWork - Joao Pinto
- * AUTHOR: Joao Paulo Lopes Pinto -- http://jplpinto.com
+ * Copyright (c) 2024 Bloxtor - http://bloxtor.com
  * 
- * The use of this code must be allowed first by the creator Joao Pinto, since this is a private and proprietary code.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS 
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
- * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN NO EVENT SHALL 
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
+ * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
 include_once get_lib("org.phpframework.phpscript.PHPUICodeExpressionHandler"); include_once $EVC->getUtilPath("CMSPresentationLayerHandler"); include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); $common_project_name = $EVC->getCommonProjectName(); $modules_path = $EVC->getModulesPath($common_project_name); $object_module_path = $modules_path . "object/"; $user_module_path = $modules_path . "user/"; if (!file_exists($object_module_path) || !file_exists($user_module_path)) die("You must install the 'object' and 'user' module in order to proceed!"); include_once $EVC->getModulePath("object/ObjectUtil", $common_project_name); include_once $EVC->getModulePath("user/UserUtil", $common_project_name); class CMSPresentationUIAutomaticFilesHandler { public static function getTableGroupHtml($v8c5df8072b, $pba9184cd, $v830c74e006, $v64e98269be, $v06d89caf4f, $v09bdc7fd3a, $pec1f6eeb, $v96e120d9d5, $v610214e838, $v3b6d7c67a8 = false) { $v566db8f5a9 = ""; $v31199c28eb = ""; $v6cea3cefa2 = $v3b6d7c67a8 ? WorkFlowDBHandler::getTableFromTables($v3b6d7c67a8, $v8c5df8072b) : null; if ($v3b6d7c67a8 && $v6cea3cefa2) { $v31199c28eb = " with alias: '" . $v6cea3cefa2 . "'"; $v566db8f5a9 = ' table_alias="' . $v6cea3cefa2 . '"'; } $pf8ed4912 = '<div class="table_group" table_name="' . $v8c5df8072b . '"' . $v566db8f5a9 . '>
 			<div class="table_header">
