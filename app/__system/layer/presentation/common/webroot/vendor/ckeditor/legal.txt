@@ -1,1 +1,0 @@
-GNU Lesser General Public License Version 2.1 (the "LGPL") defined in LICENSE.md

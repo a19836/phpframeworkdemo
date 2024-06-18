@@ -1,3 +1,0 @@
-This library is used in the following file:
-- app/lib/org/phpframework/util/web/html/XssSanitizer.php
-
