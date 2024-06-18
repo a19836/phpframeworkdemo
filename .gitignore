@@ -1,3 +1,34 @@
-tmp/*
 app/__system/layer/presentation/phpframework/webroot/__system/*
 app/__system/layer/presentation/test/webroot/__system/*
+#other/workflow/db_diagram/*
+#other/workflow/presentation_ui/*
+other/workflow/business_logic_flow/*
+other/workflow/php_file_flow/*
+other/workflow/presentation_block_flow/*
+other/workflow/presentation_block_form/*
+other/workflow/presentation_block_form_sla/*
+other/workflow/presentation_flow/*
+other/workflow/presentation_template_sla/*
+other/workflow/test_unit_flow/*
+tmp/*
+
+#sensitive info
+#other/workflow/deployment/*
+#other/workflow/layer/*
+#app/config/bean/*
+#app/config/global_variables.php
+#app/__system/config/global_variables.php
+
+#GPL libraries
+app/layer/presentation/common/webroot/cms/*
+app/__system/layer/presentation/phpframework/webroot/vendor/wordpress.zip
+
+#LGPL libraries
+app/lib/vendor/phpjavascriptpacker
+app/lib/vendor/phpmailer
+app/lib/vendor/xsssanitizer
+app/__system/layer/presentation/common/webroot/vendor/tinymce
+app/__system/layer/presentation/common/webroot/vendor/ckeditor
+app/layer/presentation/common/webroot/vendor/tinymce
+app/layer/presentation/common/webroot/vendor/ckeditor
+
