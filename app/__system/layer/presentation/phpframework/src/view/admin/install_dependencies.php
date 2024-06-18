@@ -20,7 +20,8 @@ $head = '
 	<form method="post">
 		<div class="title">Install Dependencies</div>
 		<div class="info">
-			This framework utilizes external libraries with GPL and LGPL licenses. To access its full functionality, you should install them. Please make your choice by clicking one of the buttons below.<br/>
+			This framework utilizes external libraries with GPL and LGPL licenses. To access its full functionality, you should install them.<br/>
+			Please make your choice by clicking one of the buttons below.<br/>
 			We strongly recommend installing the dependencies.
 		</div>
 		

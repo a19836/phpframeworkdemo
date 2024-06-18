@@ -106,6 +106,7 @@ li > .photo:hover,
 	color:#fff;
 }
 li > .photo::before {
+	line-height:normal;
 	margin:0;
 }
 li.simple_admin_ui > .photo::before {
