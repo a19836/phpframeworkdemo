@@ -67,7 +67,7 @@
    .upload_task_html .dst_folder select {
 	background-color:#FFF;
 	color:#AAA;
-	border:1px solid #ECECEC;
+	border:1px solid #ddd;
 	text-align:center;
 	font-size:9px;
 	width:60px;
@@ -94,7 +94,7 @@
 .upload_task_html .vldt_type .validation_type {
 	background-color:#FFF;
 	color:#AAA;
-	border:1px solid #ECECEC;
+	border:1px solid #ddd;
 	text-align:center;
 	font-size:9px;
 	width:60px;

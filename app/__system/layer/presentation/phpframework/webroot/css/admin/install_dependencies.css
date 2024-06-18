@@ -1,0 +1,21 @@
+.install_dependencies {
+	padding:60px 20px 40px;
+	border:0;
+	font-size:12px;
+	font-family:inherit;
+}
+.install_dependencies form {
+	text-align:center;
+}
+.install_dependencies form .title {
+	margin:0 0 35px;
+	font-size:21px;
+	color:var(--icon-active-color);
+}
+.install_dependencies form .info {
+	margin:0 0 35px;
+}
+.install_dependencies form input[type=submit] {
+	margin:0 10px;
+	font-size:inherit;
+}

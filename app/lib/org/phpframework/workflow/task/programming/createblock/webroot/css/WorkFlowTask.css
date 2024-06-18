@@ -61,7 +61,7 @@
    .create_block_task_html .block_settings select {
 	background-color:#FFF;
 	color:#AAA;
-	border:1px solid #ECECEC;
+	border:1px solid #ddd;
 	text-align:center;
 	font-size:9px;
 	width:60px;

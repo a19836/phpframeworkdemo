@@ -122,7 +122,7 @@
 .selected_task_properties .include_file select {
 	background-color:#FFF;
 	color:#AAA;
-	border:1px solid #ECECEC;
+	border:1px solid #ddd;
 	text-align:center;
 	font-size:9px;
 	width:60px;

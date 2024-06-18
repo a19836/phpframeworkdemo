@@ -397,7 +397,7 @@
 }
 .data_access_obj .relationships .results_maps .map, 
    .data_access_obj .relationships .parameters_maps .map {
-   	border:1px solid #eee;
+   	border:1px solid #ddd;
    	background:#fff;
 	padding:10px 10px 20px;
 	width:625px;

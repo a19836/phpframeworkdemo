@@ -41,7 +41,7 @@ body,
 	height:100px;
 	margin:20px auto 18px;
 	display:inline-block;
-	border:1px solid #eee;
+	border:1px solid #ddd;
 	border-radius:100%;
 	overflow:hidden;
 }
@@ -136,7 +136,7 @@ body,
 	width:505px;
 	margin:0 auto 20px;
 	padding:20px;
-	border:1px solid #eee;
+	border:1px solid #ddd;
 	border-radius:2px;
 	box-sizing:border-box;
 	text-align:left;

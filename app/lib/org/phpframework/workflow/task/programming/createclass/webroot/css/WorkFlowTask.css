@@ -118,7 +118,7 @@
 	margin:auto 0 auto 5px;
 }
 .create_class_task_html > .properties table input {
-	border:1px solid #eee;
+	border:1px solid #ddd;
 }
 .create_class_task_html > .properties table select {
 	border:0;
@@ -145,14 +145,14 @@
 .create_class_task_html > .methods li {
 	margin:10px auto 0;
 	padding:5px;
-	border:1px solid #eee;
+	border:1px solid #ddd;
 }
 .create_class_task_html > .methods li > .name,
   .create_class_task_html > .methods li > .type,
   .create_class_task_html > .methods li > .abstract,
   .create_class_task_html > .methods li > .static {
 	background:none;
-	border:1px solid #eee;
+	border:1px solid #ddd;
 	margin-bottom:10px;
 }
 .create_class_task_html > .methods li > .icon.update,

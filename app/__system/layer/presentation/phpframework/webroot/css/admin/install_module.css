@@ -101,7 +101,7 @@ body,
 	width:calc(100% - 80px);
 	margin:auto 0 auto 35px;
 	display:inline-block;
-	border:1px solid #eee;
+	border:1px solid #ddd;
 	font-size:inherit;
 }
 .install_module .file_upload .upload_file input::file-selector-button {
@@ -139,7 +139,7 @@ body,
 	width:calc(100% - 73px);
 	padding:10px;
 	box-sizing:border-box;
-	border:1px solid #eee;
+	border:1px solid #ddd;
 	border-radius:3px;
 	font-size:inherit;
 }

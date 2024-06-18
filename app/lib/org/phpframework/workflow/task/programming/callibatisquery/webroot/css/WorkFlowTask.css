@@ -140,7 +140,7 @@
    .call_ibatis_query_task_html .opts .options_type {
 	background-color:#FFF;
 	color:#AAA;
-	border:1px solid #ECECEC;
+	border:1px solid #ddd;
 	text-align:center;
 	font-size:9px;
 	width:60px;

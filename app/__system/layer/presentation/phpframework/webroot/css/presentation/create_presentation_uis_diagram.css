@@ -419,7 +419,7 @@
 	height:20px;
 	padding:0 5px;
 	background:#eee;
-	border:1px outset #eee;
+	border:1px outset #ddd;
 }
 .create_uis_files .existent_tasks ul .services_and_rules .services_and_rules_body .table_ui .table_header .icon {
 	float:right;

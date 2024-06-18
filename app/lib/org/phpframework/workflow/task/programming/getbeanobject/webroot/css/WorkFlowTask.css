@@ -93,7 +93,7 @@
 .get_bean_object_task_html .bean_name select[name=bean_name_type] {
 	background-color:#FFF;
 	color:#AAA;
-	border:1px solid #ECECEC;
+	border:1px solid #ddd;
 	text-align:center;
 	font-size:9px;
 	width:70px;

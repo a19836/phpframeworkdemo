@@ -127,7 +127,7 @@
 	left:55px;
 	clear:both;
 	background:#f7f7f7;
-	border:1px solid #eee;
+	border:1px solid #ddd;
 }
 .loop_task_html .init_counters .fields li.variable label.var_name, .loop_task_html .increment_counters .fields li.variable label.var_name {
 	width:80px;
@@ -156,7 +156,7 @@
 .loop_task_html .init_counters .fields li.variable select {
 	background-color:#FFF;
 	color:#AAA;
-	border:1px solid #ECECEC;
+	border:1px solid #ddd;
 	text-align:center;
 	font-size:9px;
 	width:60px;

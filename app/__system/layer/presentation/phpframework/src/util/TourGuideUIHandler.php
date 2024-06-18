@@ -284,7 +284,7 @@ include_once get_lib("org.phpframework.util.HashCode"); include_once get_lib("or
 		max-height:100px;
 		margin-right:10px;
 		margin-bottom:10px;
-		border:1px solid #eee;
+		border:1px solid #ddd;
 		border-radius:3px;
 		float:left;
 	}

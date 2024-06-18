@@ -40,7 +40,7 @@
 	top:-28px;
 	left:0;
 	background:#f7f7f7;
-	border:1px solid #eee;
+	border:1px solid #ddd;
 }
 .selected_task_properties .conditions li.item input {
 	margin-right:5px;
@@ -58,7 +58,7 @@
 .selected_task_properties .conditions li.item select.var_type {
 	background-color:#FFF;
 	color:#AAA;
-	border:1px solid #ECECEC;
+	border:1px solid #ddd;
 	text-align:center;
 	font-size:9px;
 	width:60px;

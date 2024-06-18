@@ -39,6 +39,7 @@
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
 	margin-right:16px;
+	line-height:16px; /* must be before the font, otherwise this will get overwritten */
 }
 .icon::after {
 	text-rendering:auto;

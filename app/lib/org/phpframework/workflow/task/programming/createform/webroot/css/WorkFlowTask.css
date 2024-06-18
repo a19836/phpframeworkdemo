@@ -308,7 +308,7 @@
 
 /* UI EDITOR */
 .create_form_task_html .ptl_settings > .layout-ui-editor {
-	border:1px solid #eee;
+	border:1px solid #ddd;
 	z-index:9999;
 }
 .create_form_task_html .ptl_settings > .layout-ui-editor > .menu-widgets, 

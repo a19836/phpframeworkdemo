@@ -123,8 +123,8 @@
   .regions_blocks_includes_settings textarea {
 	font-family:var(--main-font-family);
 	font-size: 0.9em;
-	/*background:#eee;
-	border: 1px inset #eee;*/
+	/*background:#ddd;
+	border: 1px inset #ddd;*/
 	color: #555555;
 }
 
@@ -263,7 +263,7 @@
 	height:26px;
 	font-size:10px;
 	background-color:#FFF;
-	border:1px solid #eee;
+	border:1px solid #ddd;
 	border-radius:4px;
 	box-sizing:border-box;
 }
@@ -412,7 +412,7 @@
 	height:auto;
 	min-height:100px;
 	background-color:#FFF;
-	border:1px solid #eee;
+	border:1px solid #ddd;
 	border-radius:4px;
 	box-sizing:border-box;
 }
@@ -434,7 +434,7 @@
 	height:auto;
 	min-height:200px;
 	background:#fff;
-	border:1px solid #eee;
+	border:1px solid #ddd;
 	border-radius:2px;
 }
 .regions_blocks_includes_settings .template_region_items .template_region_item > .block_params > .block_param select, 

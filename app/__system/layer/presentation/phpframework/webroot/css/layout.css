@@ -1642,15 +1642,15 @@ body .layout-ui-editor {
 	--menu-widgets-group-color:var(--main-template-color);
 	
 	/* template-source */
-	--template-source-border:#eee;
+	--template-source-border:#ddd;
 	--template-source-bg:#fff;
 	
 	/* template-preview */
-	--template-preview-border:#eee;
+	--template-preview-border:#ddd;
 	--template-preview-bg:#fff;
 	
 	/* template-widgets-droppable */
-	--template-widgets-droppable-border:#eee;
+	--template-widgets-droppable-border:#ddd;
 	--template-widgets-droppable-bg:#fff;
 	
 	/* menu-settings */
@@ -1726,7 +1726,7 @@ body .layout-ui-editor {
 	/* option */
 	--option-active-color:#555;
 	--option-hover-color:#777;
-	--option-input-border:#eee;
+	--option-input-border:#ddd;
 	--option-input-bg:#fff;
 	--option-input-color:#000;
 	--option-label-color:#000;
@@ -1748,7 +1748,7 @@ body .layout-ui-editor {
 	--text-selection-menu-item-active-border:#4070ff;
 	--text-selection-menu-item-active-color:#4070ff;
 	
-	--text-selection-menu-input-border:#eee;
+	--text-selection-menu-input-border:#ddd;
 	--text-selection-menu-input-bg:#fff;
 	--text-selection-menu-input-color:#333;
 	--text-selection-menu-input-size:8px;
@@ -1756,15 +1756,15 @@ body .layout-ui-editor {
 	--text-selection-menu-select-option-disabled-color:#999;
 	--text-selection-menu-icon-color:#555;
 	
-	--text-selection-menu-popup-border:#eee;
-	--text-selection-menu-popup-button-border:#eee;
+	--text-selection-menu-popup-border:#ddd;
+	--text-selection-menu-popup-button-border:#ddd;
 	--text-selection-menu-popup-button-bg:#4070ff;
 	--text-selection-menu-popup-button-color:#eee;
-	--text-selection-menu-popup-input-border:#eee;
+	--text-selection-menu-popup-input-border:#ddd;
 	--text-selection-menu-popup-input-bg:#fff;
 	--text-selection-menu-popup-input-color:#333;
 	
-	--text-selection-menu-table-border:#eee;
+	--text-selection-menu-table-border:#ddd;
 	--text-selection-menu-table-bg:#fff;
 	
 	--text-selection-menu-tooltip-bg:var(--text-selection-menu-bg);
@@ -1775,13 +1775,13 @@ body .layout-ui-editor {
 	--text-selection-menu-info-msg-bg:rgba(0, 0, 0, 0.1);
 	
 	/* add-widget-popup */
-	--add-widget-popup-border:#eee;
+	--add-widget-popup-border:#ddd;
 	--add-widget-popup-bg:#fff;
 	--add-widget-popup-color:#999;
-	--add-widget-popup-button-border:#eee;
+	--add-widget-popup-button-border:#ddd;
 	--add-widget-popup-button-bg:#4070ff;
 	--add-widget-popup-button-color:#eee;
-	--add-widget-popup-input-border:#eee;
+	--add-widget-popup-input-border:#ddd;
 	--add-widget-popup-input-bg:#fff;
 	--add-widget-popup-input-color:#333;
 	

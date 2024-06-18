@@ -159,7 +159,7 @@
 }
 .selected_connection_properties .db_table_connection_html .header select {
 	width:65px;
-	border:1px solid #eee;
+	border:1px solid #ddd;
 	background:transparent;
 }
 .selected_connection_properties .db_table_connection_html .header .source_table,

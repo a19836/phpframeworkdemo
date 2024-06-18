@@ -42,7 +42,7 @@
 	left:0;
 	clear:both;
 	background:#f7f7f7;
-	border:1px solid #eee;
+	border:1px solid #ddd;
 }
 .selected_task_properties .array_items li.item:after {
 	content:" ";
@@ -84,7 +84,7 @@
 	width:60px;
 	background-color:#FFF;
 	color:#AAA;
-	border:1px solid #ECECEC;
+	border:1px solid #ddd;
 	text-align:center;
 	font-size:9px;
 }

@@ -115,7 +115,7 @@
 .get_url_contents_task_html .dts .data_type {
 	background-color:#FFF;
 	color:#AAA;
-	border:1px solid #ECECEC;
+	border:1px solid #ddd;
 	text-align:center;
 	font-size:9px;
 	width:60px;
@@ -157,7 +157,7 @@
   .get_url_contents_task_html .result_type select[name=result_type_type] {
 	background-color:#FFF;
 	color:#AAA;
-	border:1px solid #ECECEC;
+	border:1px solid #ddd;
 	text-align:center;
 	font-size:9px;
 	width:60px;

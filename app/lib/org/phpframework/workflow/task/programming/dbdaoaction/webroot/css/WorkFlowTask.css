@@ -169,7 +169,7 @@
   .db_dao_action_task_html .parent_conds .parent_conditions_type {
 	background-color:#FFF;
 	color:#AAA;
-	border:1px solid #ECECEC;
+	border:1px solid #ddd;
 	text-align:center;
 	font-size:9px;
 	width:60px;
