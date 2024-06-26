@@ -120,7 +120,7 @@ function prepareChooseAvailableTemplateTypeHtml(project_id, folder_to_filter) {
 					+ '<button onClick="selectAvailableTemplate(\'' + project_id + '\', \'blank\')">Empty Canvas</button>'
 				+ '</div>'
 				+ '<div class="editor_type template_editor">'
-					+ '<div class="title">For citizen-developers</div>'
+					+ '<div class="title">For all developers</div>'
 					+ '<div class="description">Accelerate your design process by starting with a ready-made, customizable theme template.</div>'
 					+ '<button onClick="prepareChooseAvailableTemplateMainProjectHtml(\'' + project_id + '\', \'' + folder_to_filter + '\')">Browse Themes</button>'
 				+ '</div>'

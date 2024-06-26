@@ -812,7 +812,13 @@ var Tourguide = (function () {
             }).join(""), "</ul>\n                  </div>") : "", "\n              </div>"));
             footer.find(".guided-tour-step-button-prev").on("click", this.context.previous);
             footer.find(".guided-tour-step-button-next").on("click", this.context.next);
-            footer.find(".guided-tour-step-button-close").on("click", this.context.stop);
+            footer.find(".guided-tour-step-button-close").on("click", function(e) {
+            	_this2.close_event = e;
+            	_this2.context.stop();
+            	
+            	_this2.close_event = null;
+            	delete _this2.close_event;
+            });
             footer.find(".guided-tour-step-button-complete").on("click", this.context.complete);
             footer.find(".guided-tour-step-bullets button").on("click", function (e) {
               return _this2.context.go(parseInt(u$2(e.target).data("index")));

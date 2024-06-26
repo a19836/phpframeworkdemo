@@ -86,6 +86,10 @@ var is_popup = ' . ($popup ? "true" : "false") . ';
 				<label>Name your project:</label>
 				<input type="hidden" name="old_name" value="' . $old_project . '" />
 				<input name="name" placeHolder="Type a name" value="' . $project . '" required autocomplete="new-password" />
+				
+				<div class="auto_normalize">
+					<input type="checkbox" checked /> Normalize name automatically
+				</div>
 			</div>
 			<div class="description">
 				<label>Description:</label>

@@ -23,7 +23,8 @@ include_once get_lib("org.phpframework.util.HashCode"); include_once get_lib("or
 	border-radius:0.2rem;
 }
 .guided-tour-step.active .guided-tour-step-tooltip .guided-tour-step-tooltip-inner {
-	padding-bottom:3.5em;
+	/* padding-bottom:3.5em; *//* with guided-tour-step-actions shown */
+	padding-bottom:1em; /* with guided-tour-step-actions hidden */
 }
 .guided-tour-step.active .guided-tour-step-tooltip .guided-tour-step-tooltip-inner .guided-tour-step-content::-webkit-scrollbar {
 	width:10px;
@@ -77,6 +78,8 @@ include_once get_lib("org.phpframework.util.HashCode"); include_once get_lib("or
 	right:1.5em;
 	left:1.5em;
 	bottom:1.5em;
+	
+	display:none;
 }
 .guided-tour-step.active .guided-tour-step-tooltip .guided-tour-step-tooltip-inner .guided-tour-step-actions .button.complete_tour {
 	margin:0 auto;
@@ -405,9 +408,46 @@ include_once get_lib("org.phpframework.util.HashCode"); include_once get_lib("or
 					restart_btn.hide();
 			};
 			var on_stop_func = function () {
-				//console.log("on_start_func");
-				if (restart_btn)
+				//console.log("on_stop_func");
+				var is_close = false;
+				
+				if (window.event && window.event instanceof KeyboardEvent && window.event.keyCode == 27) //27: Escape
+					is_close = true;
+				else if (MyTourGuide.tourguide.currentstep && MyTourGuide.tourguide.currentstep.close_event)
+					is_close = true;
+				
+				if (is_close) {
+					//set cookie so next time does not load this anymore
+					var tourguide_cookie = MyJSLib.CookieHandler.getCookie("tourguide"); //must get cookie again, bc if this tour is open in an iframe and the parent window changes the cookie, we must get it again, otherwise we will loose the changes done from the parent window.
+					tourguide_cookie = (tourguide_cookie ? tourguide_cookie : "|") + tourguide_id + "|";
+					MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie("tourguide", tourguide_cookie);
+				}
+				
+				if (restart_btn) {
 					restart_btn.show();
+					
+					var move = MyTourGuide.tourguide.currentstep && MyTourGuide.tourguide.currentstep.tooltip && MyTourGuide.tourguide.currentstep.tooltip.first();
+					var o = restart_btn.offset();
+					
+					if (move) {
+						if (MyTourGuide.tourguide.currentstep.target) {
+							var target = $(MyTourGuide.tourguide.currentstep.target);
+							var to = target.offset();
+							var left = to.left + parseInt(target.width() / 2);
+							var top = to.top + parseInt(target.height() / 2);
+							
+							restart_btn.css({left: left + "px", top: top + "px", right: "auto", bottom: "auto"});
+						}
+						else {
+							var tooltip = MyTourGuide.tourguide.currentstep.tooltip.first();
+							restart_btn.css({left: tooltip.style.left, top: tooltip.style.top, right: "auto", bottom: "auto"});
+						}
+						
+						restart_btn.animate(o, 500, "swing", function() {
+							restart_btn.css({left: "", top: "", right: "", bottom: ""});
+						});
+					}
+				}
 			};
 			var on_before_complete_func = function () {
 				//console.log("on_before_complete_func");
@@ -427,8 +467,9 @@ include_once get_lib("org.phpframework.util.HashCode"); include_once get_lib("or
 						if (restart_btn)
 							restart_btn.addClass("completed");
 					}
-					else //show message warning user that he did not watch all videos
-						status = confirm("You have not watched the videos on the last slide of this Tour! We strongly recommend watching them all to better understand how to work with the framework. Are you sure you want to close this Tour?");
+					else { //show message warning user that he did not watch all videos
+						//status = confirm("You have not watched the videos on the last slide of this Tour! We strongly recommend watching them all to better understand how to work with the framework. Are you sure you want to close this Tour?"); //disable prompt bc it is annoying
+					}
 				}
 				
 				return status;
@@ -437,6 +478,7 @@ include_once get_lib("org.phpframework.util.HashCode"); include_once get_lib("or
 				//console.log("on_complete_func");
 				
 				//set cookie so next time does not load this anymore
+				var tourguide_cookie = MyJSLib.CookieHandler.getCookie("tourguide"); //must get cookie again, bc if this tour is open in an iframe and the parent window changes the cookie, we must get it again, otherwise we will loose the changes done from the parent window.
 				tourguide_cookie = (tourguide_cookie ? tourguide_cookie : "|") + tourguide_id + "|";
 				MyJSLib.CookieHandler.setCurrentDomainEternalRootSafeCookie("tourguide", tourguide_cookie);
 			};

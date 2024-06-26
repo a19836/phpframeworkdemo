@@ -108,7 +108,7 @@ $(function () {
 							addAutoSaveMenu(".top_bar li.sub_menu li.save");
 							//enableAutoSave(onToggleSLAAutoSave); //Do not enable auto save bc it gets a litte bit slow editing the template.
 							initAutoSave(".top_bar li.sub_menu li.save a");
-							StatusMessageHandler.showMessage("Auto save is disabled for better user-experience...");
+							StatusMessageHandler.showMessage("Auto save is disabled for better user-experience...", "", "bottom_messages", 10000);
 							
 							//change the toggle Auto save handler bc the edit_query task
 							initSLAAutoSaveActivationMenu();
@@ -136,6 +136,9 @@ $(function () {
 							
 							if (!droppables_exist)
 								StatusMessageHandler.showMessage("Looks like this template has no droppables to drag widgets. We recommend you to choose another template.", "", "bottom_messages", 10000);
+							
+							if (invalid_msg)
+								StatusMessageHandler.showMessage(invalid_msg, "warning", "bottom_messages", 10000);
 							
 							//hide loading icon
 							MyFancyPopup.hidePopup();

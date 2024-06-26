@@ -89,6 +89,10 @@ var project_id = \'' . $project_details["project_id"] . '\';
 		<div class="project_description" onClick="editProject()">' . str_replace("\n", "<br/>", $project_details["description"]) . '</div>
 	</div>
 	
+	<div class="preview_project">
+		<button onClick="previewProject(this)" href="' . str_replace("#path#", $project_details["project_id"], $view_entity_url) . '" target="project">Preview Project</button>
+	</div>
+	
 	<div class="project_files">
 		<ul class="tabs tabs_transparent project_tabs">
 			<li><a href="#pages" onClick="onClickPagesTab()">Pages</a></li>
@@ -164,6 +168,10 @@ var project_id = \'' . $project_details["project_id"] . '\';
 				<option value="folder">Folder</option>
 			</select>
 			<input placeHolder="Name of your file" />
+			
+			<div class="auto_normalize">
+				<input type="checkbox" checked /> Normalize name automatically
+			</div>
 			
 			<button>Create</button>
 		</div>

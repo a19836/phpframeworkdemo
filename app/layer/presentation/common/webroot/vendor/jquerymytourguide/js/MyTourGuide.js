@@ -88,9 +88,13 @@ function MyTourGuideClass() {
 		me.stop();
 		me.start();
 	};
+	me.isActive = function() {
+		return me.tourguide && me.tourguide._active;
+	};
 	
 	//callbacks
 	me.onStart = function(options) {
+		//console.log("onStart");
 		//console.log(options);
 		
 		var current_index = me.tourguide._current ? me.tourguide._current : 0;
@@ -119,8 +123,9 @@ function MyTourGuideClass() {
 	
 	//utils
 	me.prepareTourguide = function() {
-		//stop previous tourguide if exists
-		me.stop();
+		//stop previous tourguide if started before
+		if (me.isActive())
+			me.stop();
 		
 		//init me.tourguide
 		if (me.options.steps.length > 0) {
@@ -137,7 +142,7 @@ function MyTourGuideClass() {
 			
 			//overwrite the complete handler
 			me.tourguide.complete = function() {
-				if (me.tourguide._active) {
+				if (me.isActive()) {
 					var status = typeof me.options.onBeforeComplete != "function" || me.options.onBeforeComplete();
 					
 					if (status !== false) {

@@ -24,7 +24,7 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 '; $head .= HeatMapHandler::getHtml($project_url_prefix); $main_content = '
 <div id="top_panel">
 	<ul class="left">
-		<li class="logo"><a href="' . $bloxtor_home_page_url . '" target="bloxtor_homepage"></a></li>
+		<li class="logo"><a href="' . $project_url_prefix . '"></a></li>
 		' . ($layers["presentation_layers"] ? '
 			<!--li class="pages link" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=entity&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">Pages</li>
 			<li class="sub_menu templates" data-title="Template Options" onClick="openSubmenu(this)">

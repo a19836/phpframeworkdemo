@@ -20,7 +20,7 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 </script>'; $head .= HeatMapHandler::getHtml($project_url_prefix); $main_content = AdminMenuUIHandler::getContextMenus($exists_db_drivers, $get_store_programs_url); $main_content .= '
 	<div id="top_panel">
 		<ul class="left">
-			<li class="logo"><a href="' . $bloxtor_home_page_url . '" target="bloxtor_homepage"></a></li>
+			<li class="logo"><a href="' . $project_url_prefix . '"></a></li>
 		</ul>
 		<ul class="center">
 			<li class="sub_menu filter_by_layout" data-title="Filter by project" current_selected_project="' . $filter_by_layout . '">

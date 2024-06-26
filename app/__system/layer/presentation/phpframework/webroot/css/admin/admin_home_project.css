@@ -21,7 +21,7 @@ body,
 	text-align:center;
 }
 .admin_panel .project {
-	margin:10px 20px 40px;
+	margin:10px 20px 20px;
 	text-align:center;
 }
 .admin_panel .project.with_details {
@@ -109,6 +109,15 @@ body,
 	color:#2C2D34;
 }
 
+
+/* PREVIEW PROJECT */
+.admin_panel .preview_project {
+	margin:0 0 40px 0;
+	text-align:center;
+}
+.admin_panel .preview_project button {
+	font-size:8pt;
+}
 
 /* PROJECT TABS */
 .admin_panel .project_files {
@@ -668,6 +677,12 @@ body,
 .create_file_popup .create_file_popup_content select,
   .create_file_popup .create_file_popup_content input {
 	font-size:inherit;
+}
+.create_file_popup .create_file_popup_content .auto_normalize {
+	margin:10px 0 0 0;
+	text-align:left;
+	font-size:90%;
+	opacity:.8;
 }
 .create_file_popup .create_file_popup_content button {
 	margin:20px auto 0;

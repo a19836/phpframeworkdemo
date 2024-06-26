@@ -161,7 +161,8 @@ function addProject(oForm) {
 	project_name = project_name ? ("" + project_name).replace(/^\s+/g, "").replace(/\s+$/g, "") : "";
 	
 	if (project_name) {
-		project_name = normalizeFileName(project_name, false);
+		var normalize = oForm.find(".name .auto_normalize input[type=checkbox]").is(":checked");
+		project_name = normalizeFileName(project_name, false, normalize);
 		oForm.find(".name input[name=name]").val(project_name);
 		
 		MyFancyPopup.showOverlay();

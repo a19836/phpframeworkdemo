@@ -4,6 +4,17 @@
 	--mytree-dragged-widget-color:var(--main-popup-header-color);
 }
 
+.status_message.bottom_messages .status_message_info.warning {
+	padding-left:20px;
+	padding-right:20px;
+	background:#ffc107;
+	color:#2C2D34;
+	box-sizing:border-box;
+}
+.status_message.bottom_messages .status_message_info.warning span.close_message {
+	margin-right:0;
+}
+
 /* regions_blocks_includes_settings_overlay */
 .regions_blocks_includes_settings_overlay {
 	content:"";

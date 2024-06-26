@@ -269,6 +269,17 @@ function openProjectFileSubmenu(elm) {
 	openSubmenu(elm);
 }
 
+function previewProject(elm) {
+	elm = $(elm);
+	var href = elm.attr("href");
+	var tab = elm.attr("target");
+	
+	var win = window.open(href, tab);
+	
+	if(win) //Browser has allowed it to be opened
+		win.focus();
+}
+
 function selectMyTreeNode(node) {
 	node = $(node);
 	var a = node.children("a");
@@ -562,6 +573,7 @@ function showCreateFilePopup() {
 function createFile(elm, popup) {
 	var type = popup.find("select").val();
 	var file_name = popup.find("input").val();
+	var normalize = popup.find(".auto_normalize input").is(":checked");
 	var action = type == "page" ? "create_file" : "create_folder";
 	var handler = function(elm, type, action, path, new_file_name) {
 		//hide popup first because the onSuccessfullCreateFile will open it again
@@ -572,6 +584,9 @@ function createFile(elm, popup) {
 		else
 			onSuccessfullCreateFolder(elm, type, action, path, new_file_name);
 	};
+	
+	if (normalize && file_name)
+		file_name = normalizeFileName(file_name, false, true);
 	
 	//get current opened folder
 	var mytree_parent = $(elm).parent();

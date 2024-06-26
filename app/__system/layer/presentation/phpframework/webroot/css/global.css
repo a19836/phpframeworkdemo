@@ -343,7 +343,7 @@ input[type=submit]:not(:disabled),
 	font-size:13px;
 }
 .status_message.bottom_messages .status_message_info {
-	background:#51D87A;
+	background:#198754;
 }
 .status_message.bottom_messages .status_message_error {
 	background:#FF4D4D;
@@ -364,11 +364,11 @@ input[type=submit]:not(:disabled),
 }
 .status_message:not(.bottom_messages) .status_message_info::before {
 	content:"Info";
-	background:#51D87A;
+	background:#198754;
 }
 .status_message:not(.bottom_messages) .status_message_error::before {
 	content:"Error";
-	background:#FF4D4D;
+	background:#dc3545;
 }
 .status_message:not(.bottom_messages) .status_message_info span.close_message, 
   .status_message:not(.bottom_messages) .status_message_error span.close_message {

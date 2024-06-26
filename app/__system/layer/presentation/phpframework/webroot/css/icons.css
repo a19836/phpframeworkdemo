@@ -39,7 +39,6 @@
 	-webkit-font-smoothing:antialiased;
 	font:var(--fa-font-solid);
 	margin-right:16px;
-	line-height:16px; /* must be before the font, otherwise this will get overwritten */
 }
 .icon::after {
 	text-rendering:auto;
@@ -279,6 +278,7 @@
 }
 .icon.home::before {
 	content:"\f015";
+	line-height:16px;
 }
 .icon.docbook::before {
 	content:"\f02d";
@@ -307,6 +307,7 @@
 }
 .icon.tools::before {
 	content:"\f013";
+	line-height:16px;
 }
 .icon.close::before {
 	content:"\f057";
