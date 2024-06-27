@@ -1728,6 +1728,9 @@ function addLayoutUIEditorWidgetResourceSLAResourceSyncBasedInResourceBroker(bro
 		var popup = $("#choose_property_variable_from_file_manager");
 		updateSLAProgrammingTaskVariablesInWorkflow(popup);
 		
+		//check main settings, if parse html is disable, and if so, enable it
+		enableMainSettingsParseHtml();
+		
 		//prepare messages
 		StatusMessageHandler.showMessage("Resource '" + resource_name + "' created successfully!");
 		
@@ -1831,6 +1834,9 @@ function addLayoutUIEditorWidgetResourceSLAResourceAsyncBasedInResourceDBTable(d
 							
 							//add vars with resource_name to ProgrammingTaskUtil.variables_in_workflow
 							addSLAProgrammingTaskVariablesBasedInResourceDBTable(db_broker, db_driver, db_type, db_table, resource_name);
+							
+							//check main settings, if parse html is disable, and if so, enable it
+							enableMainSettingsParseHtml();
 							
 							//prepare messages
 							StatusMessageHandler.showMessage("Resource '" + resource_name + "' created successfully!");
@@ -2236,6 +2242,24 @@ function createLayoutUIEditorWidgetResourceSLAResourceNamesBasedInResourceDBTabl
 	}
 	
 	return resource_names;
+}
+
+function enableMainSettingsParseHtml() {
+	var parser = $(".regions_blocks_includes_settings > .advanced_settings > .parser");
+	var select = parser.find(" > .parse_html > select");
+	
+	if (select.val() == 0) {
+		select.val(1);
+		select.trigger("change");
+		
+		parser.find(" > .execute_sla > select").val("");
+		parser.find(" > .parse_hash_tags > select").val("");
+		parser.find(" > .parse_ptl > select").val("");
+		parser.find(" > .add_my_js_lib > select").val("");
+		parser.find(" > .add_widget_resource_lib > select").val("");
+		parser.find(" > .filter_by_permission > select").val("");
+		parser.find(" > .init_user_data > select").val("");
+	}
 }
 
 /* edit_query.js FUNCTIONS - if not exit */
