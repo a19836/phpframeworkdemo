@@ -137,7 +137,7 @@ $(function () {
 							if (!droppables_exist)
 								StatusMessageHandler.showMessage("Looks like this template has no droppables to drag widgets. We recommend you to choose another template.", "", "bottom_messages", 10000);
 							
-							if (invalid_msg)
+							if (typeof invalid_msg != "undefined" && invalid_msg)
 								StatusMessageHandler.showMessage(invalid_msg, "warning", "bottom_messages", 10000);
 							
 							//hide loading icon

@@ -150,7 +150,7 @@ $(function () {
 								loadTemplateRegionsBlocksHtmlJSAndCSSFilesToSettings();
 							};
 							
-							if (invalid_msg)
+							if (typeof invalid_msg != "undefined" && invalid_msg)
 								StatusMessageHandler.showMessage(invalid_msg, "warning", "bottom_messages", 10000);
 							
 							//hide loading icon
