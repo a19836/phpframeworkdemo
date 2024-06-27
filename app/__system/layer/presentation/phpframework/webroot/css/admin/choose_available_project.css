@@ -100,13 +100,13 @@ body,
 }
 .choose_available_project > .new_first_project .button,
   .choose_available_project > .new_project .button {
-	font-size:8pt;
+	font-size:10pt;
 }
 .choose_available_project > .new_first_project .description,
   .choose_available_project > .new_project .description {
 	margin-top:15px;
 	color:#585B69;
-	font-size:11px;
+	font-size:10pt;
 }
 
 /* PROJECTS - sort_projects and search_project */
@@ -120,7 +120,7 @@ body,
 	color:var(--icon-active-color);
 	border-color:var(--icon-active-color);
 	border-radius:0.2rem;
-	font-size:8pt;
+	font-size:10pt;
 }
 .choose_available_project > .projects_actions > .search_project {
 	max-width:200px;
@@ -133,6 +133,9 @@ body,
 	cursor:default;
 	color:var(--icon-active-color);
 }
+.choose_available_project > .projects_actions > .search_project .icon.search::before {
+	line-height:normal;
+}
 .choose_available_project > .projects_actions > .search_project input {
 	width:100%;
 	margin-left:-28px;
@@ -140,7 +143,7 @@ body,
 	color:var(--icon-active-color);
 	border-color:var(--icon-active-color);
 	border-radius:0.2rem;
-	font-size:8pt;
+	font-size:10pt;
 	box-sizing:border-box;
 }
 .choose_available_project > .projects_actions > .search_project input::placeholder {
@@ -152,6 +155,9 @@ body,
 	position:absolute;
 	top:13px;
 	right:7px;
+}
+.choose_available_project > .projects_actions > .search_project .icon.close::before {
+	line-height:normal;
 }
 
 /* PROJECTS - loading_projects */
@@ -245,7 +251,7 @@ body,
 .choose_available_project .group.list_view li.project.selected_project::before {
 	left:auto;
 	right:90px;
-	bottom:13px;
+	bottom:10px;
 }
 .choose_available_project .group.block_view li.project:nth-child(odd) {
 	/*background:var(--main-template-bg);
@@ -278,9 +284,12 @@ body,
 }
 .choose_available_project .group li:not(.sub_menu_item) > label {
 	line-height:12px;
-	font-size:11px;
+	font-size:12px;
 	cursor:pointer;
 	color:#585B69;
+}
+.choose_available_project .group.list_view li:not(.sub_menu_item) > label {
+	font-size:10pt;
 }
 .choose_available_project .group.list_view li:not(.no_projects):not(.sub_menu_item):not(.project_common):nth-child(odd) > label {
 	color:var(--main-template-color);
@@ -381,13 +390,12 @@ body,
 	height:20px;
 	margin:0 -10px 0 0;
 	display:inline-block;
-	font-size:10px;
+	font-size:10pt;
 	color:#ccc;
 	vertical-align:top;
 	position:absolute;
 	top:35px;
 	right:0;
-	font-size:14px;
 }
 .choose_available_project .list_view li > div.sub_menu {
 	top:13px;

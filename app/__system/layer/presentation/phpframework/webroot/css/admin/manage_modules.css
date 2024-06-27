@@ -15,7 +15,7 @@ body,
 .modules_list .layer {
 	position:fixed;
 	top:15px;
-	left:155px;
+	left:195px;
 	z-index:2;
 }
 .modules_list .layer label {
@@ -31,7 +31,7 @@ body,
 	border:1px solid #ccc;
 	color:#000;
 	background:transparent;
-	font-size:8pt;
+	font-size:10pt;
 }
 .modules_list .install {
 	position:fixed;

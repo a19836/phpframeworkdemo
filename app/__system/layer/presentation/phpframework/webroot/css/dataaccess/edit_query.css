@@ -83,7 +83,7 @@
 	padding:5px 5px;
 	background-color:#F2F2F2;
 	border:1px solid #D7D7D7;
-	font-size:8pt;
+	font-size:10pt;
 	font-style:italic;
 }
 
@@ -180,7 +180,7 @@
 .data_access_obj .includes .include label.include_path {
 	margin-right:10px;
 	margin-bottom:0px;
-	font-size:8pt;
+	font-size:10pt;
 }
 .data_access_obj .includes .include input.include_path {
 	width:200px;
@@ -189,7 +189,7 @@
 .data_access_obj .includes .include label.is_include_relative {
 	margin:0px 0px 0px 30px;
 	margin-bottom:0px;
-	font-size:8pt;
+	font-size:10pt;
 }
 .data_access_obj .includes .include input.is_include_relative {
 	margin:auto 25px auto 5px;
@@ -266,7 +266,7 @@
 }
 .data_access_obj .parameters .map_id label, .data_access_obj .parameters .map_class label {
 	width:50px;
-	font-size:10px;
+	font-size:10pt;
 	color: #666;
 }
 .data_access_obj .parameters .map_id input, .data_access_obj .parameters .map_class input {
@@ -309,7 +309,7 @@
 /* RESULTS MAP */
 .data_access_obj .results .type label, .data_access_obj .results .class label, .data_access_obj .results .map label {
 	width:100px;
-	font-size:8pt;
+	font-size:10pt;
 }
 .data_access_obj .results .type select, .data_access_obj .results .class input {
 	margin-top:3px;
@@ -325,7 +325,7 @@
 }
 .data_access_obj .results .map_id label, .data_access_obj .results .map_class label {
 	width:50px;
-	font-size:10px;
+	font-size:10pt;
 	color: #666;
 }
 .data_access_obj .results .map_id input, .data_access_obj .results .map_class input {
@@ -382,7 +382,7 @@
 	margin-top:0;
 }
 .data_access_obj .relationships div label {
-	/*font-size:13px;*/
+	/*font-size:10pt;*/
 }
 .data_access_obj .relationships .map label {
 	margin-bottom:7px;
@@ -645,7 +645,7 @@
 	border-top: 1px solid #aaaaaa;
 }
 .relationship .query .query_settings .ui-tabs-nav { 
-	height:28px;
+	height:30px;
 	position: absolute; 
 	left: 0.25em; 
 	right: 0.25em; 
@@ -704,11 +704,12 @@
 .relationship .keys .join select {
 	width:60px;
 	text-align:center;
+	font-size:10pt;
 }
 .relationship .keys .operator select {
 	width:60px;
 	text-align:center;
-	font-size:10px;
+	font-size:10pt;
 }
 
 /** RELATIONSHIPS RELS: CONDITIONS **/
@@ -769,7 +770,7 @@
 }
 .relationship .limit_start .limit label, .relationship .limit_start .start label {
 	margin-right:5px;
-	font-size:11px;
+	font-size:10pt;
 }
 .relationship .limit_start .limit input, .relationship .limit_start .start input {
 	width:30px;
@@ -902,7 +903,7 @@
 	z-index:1050;
 	color:var(--main-settings-color);
 	background:var(--main-settings-bg);
-	font-size:8pt;
+	font-size:10pt;
 }
 .relationship .settings:not(.resizing) {
 	transition:.2s all;
@@ -991,7 +992,7 @@
 .choose_table_or_attribute {
 	width:340px;
 	height:auto !important; /* This is very important bc we toggle from javascript the field .attribute and, when we call this popup the first time, if this field is hidden, the MyFancyPopup will set the a height and then when we show it from javascript that height will not be changedm which means the popup will appear weird and short. So we need to set the height as automatically. */
-	font-size:8pt;
+	font-size:10pt;
 	border:1px solid #999;
 }
 .choose_table_or_attribute .contents div {

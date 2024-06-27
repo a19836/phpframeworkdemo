@@ -20,6 +20,9 @@ body,
 	vertical-align:middle;
 	font-size:16px;
 }
+.test_units .test_units_tree .icon.info {
+	width:18px;
+}
 .test_units .test_units_tree .icon.add_folder::before {
 	content:"\f65e";
 }
@@ -48,6 +51,7 @@ body,
 .test_units .test_units_tree .select_test_unit {
 	position:absolute;
 	left:10px;
+	margin-top:7px;
 }
 
 .test_units .test_units_tree li:before {

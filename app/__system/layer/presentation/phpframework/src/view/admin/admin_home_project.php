@@ -17,6 +17,7 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtil
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/presentation/choose_available_template.js"></script>
 
 <!-- Add Local JS and CSS files -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/featured_tutorials.css" type="text/css" charset="utf-8" />
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_home_project.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_home_project.js"></script>
 '; $head .= '<script>
@@ -35,7 +36,18 @@ var install_template_url = \'' . $install_template_url . '\';
 var available_templates_props = ' . json_encode($available_templates_props) . ';
 var is_fresh_project = ' . ($is_fresh_project ? "true" : "false") . ';
 var project_id = \'' . $project_details["project_id"] . '\';
-'; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url, $upload_bean_layer_files_from_file_manager_url); $head .= '</script>'; $head .= HeatMapHandler::getHtml($project_url_prefix); $main_content = '
+'; $head .= WorkFlowPresentationHandler::getPresentationBrokersHtml($presentation_brokers, $choose_bean_layer_files_from_file_manager_url, $get_file_properties_url, $upload_bean_layer_files_from_file_manager_url); $head .= '</script>'; $head .= HeatMapHandler::getHtml($project_url_prefix); $videos_main_content = VideoTutorialHandler::getFeaturedTutorialsHtml($filtered_tutorials); if ($videos_main_content) $videos_main_content = '<div class="featured_tutorials">
+										<div class="featured_header">
+											<div class="featured_header_tip">Start here</div>
+											<div class="featured_header_title">Build your app with confidence</div>
+											<div class="featured_header_sub_title">Unlock your potential with these essential tools and guides for beginners.</div>
+										</div>
+										' . $videos_main_content . '
+										<div class="featured_buttons">
+											<button onClick="openWindow(this, \'url\', \'videos\')" url="' . $online_tutorials_url_prefix . 'video/simple"><span class="icon video"></span> Click here to watch more videos</button>
+											<button onClick="openWindow(this, \'url\', \'documentation\')" url="' . $online_tutorials_url_prefix . '"><span class="icon tutorials"></span> Click here to read our documentation</button>
+										</div>
+									</div>'; $main_content = '
 <div class="admin_panel">
 	<div class="top_bar">
 		<header>
@@ -158,6 +170,8 @@ var project_id = \'' . $project_details["project_id"] . '\';
 			</ul>
 		</div>
 	</div>
+	
+	' . $videos_main_content . '
 	
 	<div class="myfancypopup with_title create_file_popup">
 		<div class="title">Create new</div>

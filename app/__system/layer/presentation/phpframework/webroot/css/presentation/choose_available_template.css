@@ -92,6 +92,9 @@
 	background:var(--info-label-tooltip-bg);
 	color:var(--info-label-tooltip-color);
 }
+.choose_available_template_popup > .options > .include_template_samples > .info .icon::before {
+	line-height: normal;
+}
 
 /* TEMPLATE POPUPS - choose_available_template_popup - content */
 .choose_available_template_popup > .content {

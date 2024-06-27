@@ -286,7 +286,7 @@ body.in_popup .view_store_module_popup {
 	color:inherit;
 	border-color:inherit;
 	border-radius:0.2rem;
-	font-size:8pt;
+	font-size:10pt;
 	box-sizing:border-box;
 }
 .install_store_module > .search_module input::placeholder {

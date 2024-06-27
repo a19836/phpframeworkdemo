@@ -30,11 +30,11 @@
 }
 #status_message::before {
 	content:"Info";
-	background:#51D87A;
+	background:#198754;
 }
 #error_message::before {
 	content:"Error";
-	background:#FF4D4D;
+	background:#dc3545;
 }
 #status_message span.close_message, 
   #error_message span.close_message {

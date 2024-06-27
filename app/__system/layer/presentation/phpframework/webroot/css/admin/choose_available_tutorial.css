@@ -7,7 +7,7 @@ body,
 }
 
 .choose_available_tutorial {
-	font-size:11px;
+	font-size:10pt;
 	color:#2C2D34;
 }
 .choose_available_tutorial:not(.in_popup) {

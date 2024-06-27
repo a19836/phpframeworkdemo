@@ -1,6 +1,6 @@
 /* TOP BAR */
 .top_bar .title .class_name {
-	width:110px;
+	width:200px;
 	display:inline-block;
 }
 
@@ -13,7 +13,7 @@
 
 /* FILE CLASS */
 .file_class_obj {
-	font-size:8pt;
+	font-size:10pt;
 }
 .file_class_obj div .add {
 	margin:3px 0 0 0;
@@ -25,10 +25,10 @@
 }
 
 .file_class_obj > .name {
-	width:110px;
+	width:200px;
 	position:fixed;
-	top:18px;
-	left:70px;
+	top:14px;
+	left:85px;
 	z-index:2;
 }
 .file_class_obj.in_popup > .name {
@@ -47,7 +47,7 @@
 	display:none;
 }
 .file_class_obj > .name input {
-	width:100px;
+	width:190px;
 	border:1px solid #ccc;
 	background:transparent;
   	color:inherit;
@@ -174,7 +174,7 @@
 	min-width:200px;
 	height:60px;
 	margin-top:5px;
-	font-size:1em;
+	font-size:10pt;
 }
 
 /* POPUPS */

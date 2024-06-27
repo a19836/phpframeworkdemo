@@ -32,6 +32,11 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 	font-size:var(--icon-font-size);
 	vertical-align:top;
 }
+.sla .sla_groups_flow > nav > a .icon::before {
+	display:inline-block;
+	margin-top:2px;
+	margin-left:1px;
+}
 
 /* SLA GROUP ITEM */
 /* DO NOT USE THE .sla_groups_flow in css bc if the .sla_group_item is inside of the sla WorkFlow, it will loose these styles. This is used in the layout_ui_editor_widget_resource_options.js, so any change here, must be also updated there. */
@@ -151,6 +156,14 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
   .sla_main_groups .sla_group_item > .sla_group_header > .move_up:hover,
   .sla_main_groups .sla_group_item > .sla_group_header > .move_down:hover {
 	/*color:#000;*/
+}
+
+.sla_main_groups .sla_group_item > .sla_group_header > .toggle::before,
+  .sla_main_groups .sla_group_item > .sla_group_header > .remove::before,
+  .sla_main_groups .sla_group_item > .sla_group_header > .move_up::before,
+  .sla_main_groups .sla_group_item > .sla_group_header > .move_down::before {
+	display:inline-block;
+	margin-top:2px;
 }
 .sla_main_groups .sla_group_item > .sla_group_header > .sla_group_sub_header {
 	min-height:20px;
@@ -517,6 +530,9 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 }
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .database_action_table > .table {
 	display:inline-block;
+}
+.sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .database_action_table > .table > select {
+	margin-left:10px;
 }
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .database_action_table > .attributes,
    .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .database_action_body .database_action_table > .conditions {
@@ -910,7 +926,7 @@ body:not(.dark_theme) .sla .tabs.tabs_icons li.ui-tabs-active a {
 
 /* LIST REPORT PANEL */
 .sla_main_groups .sla_group_item > .sla_group_body.selected_task_properties .list_report_action_body > div:not(.info) {
-	width:350px;
+	width:370px;
 	margin:0 auto 5px auto;
 	text-align:left;
 }

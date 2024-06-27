@@ -10,6 +10,10 @@ body:not(.in_popup),
 .top_bar {
 	margin-bottom:20px;
 }
+.top_bar .icon.info::before {
+	margin-top:2px;
+	display:inline-block;
+}
 
 /* INSTALL PROGRAM */
 .install_program {
@@ -369,7 +373,7 @@ body:not(.in_popup),
 	color:inherit;
 	border-color:inherit;
 	border-radius:0.2rem;
-	font-size:8pt;
+	font-size:10pt;
 	box-sizing:border-box;
 }
 .install_store_program > .search_program input::placeholder {

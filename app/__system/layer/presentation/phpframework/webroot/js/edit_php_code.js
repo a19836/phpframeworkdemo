@@ -3588,7 +3588,7 @@ function getCodeId(code) {
 	if (code == undefined)
 		code = getEditorCodeRawValue();
 	
-	return $.md5(code.replace(/\s/g)); //remove white spaces to be sure that the code is not different bc of simple spaces
+	return code == undefined ? 0 : $.md5(code.replace(/\s/g)); //remove white spaces to be sure that the code is not different bc of simple spaces
 }
 
 function setEditorCodeRawValue(code) {

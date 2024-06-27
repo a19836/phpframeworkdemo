@@ -110,7 +110,7 @@ body {
 	background: #fff repeat-x 0 0;
 	font-family:var(--main-font-family);
 	color: #666;
-	font-size:8pt;
+	font-size:10pt;
 	margin: 0;
 	height:100%;
 	
@@ -346,7 +346,7 @@ input[type=submit]:not(:disabled),
 	background:#198754;
 }
 .status_message.bottom_messages .status_message_error {
-	background:#FF4D4D;
+	background:#dc3545;
 }
 .status_message:not(.bottom_messages) .status_message_info:only-child,
   .status_message:not(.bottom_messages) .status_message_error:only-child {

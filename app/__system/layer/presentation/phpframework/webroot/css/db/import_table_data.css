@@ -32,7 +32,7 @@
 .import_table_data input, .import_table_data select {
 	display:inline-block;
 	float:none;
-	font-size:11px;
+	font-size:inherit;
 }
 .import_table_data input {
 	width:170px;

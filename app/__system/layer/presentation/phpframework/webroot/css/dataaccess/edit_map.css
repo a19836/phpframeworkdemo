@@ -3,7 +3,7 @@
 	max-width:calc(100% - 60px);
 }
 .edit_map > .top_bar .title .map_name {
-	width:160px;
+	width:175px;
 	display:inline-block;
 }
 
@@ -33,25 +33,25 @@
 	display:none;
 }
 .edit_map .map .map_id {
-	width:160px;
+	width:170px;
 	margin:0;
 	position:fixed;
-	top:18px;
-	left:125px;
+	top:14px;
+	left:160px;
 	z-index:2;
-}
+}/*
 .in_popup .edit_map .map .map_id {
 	top:16px;
 	left:140px;
-}
+}*/
 .edit_map .results_maps.map .map_id {
-	left:102px;
+	left:130px;
 }
 .edit_map .map .map_id label {
 	display:none;
 }
 .edit_map .map .map_id input {
-	width:150px;
+	width:160px;
 	border:1px solid #ccc;
 	color:var(--main-iframe-color);
 	background:transparent;

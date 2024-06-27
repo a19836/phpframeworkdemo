@@ -142,7 +142,7 @@
 .regions_blocks_includes_settings:not(.collapsed) > ul.tabs {
 	position:fixed;
 	right:10px;
-	margin-top:-37px;
+	margin-top:-42px;
 	z-index:1052; /* bigger than .regions_blocks_includes_settings .settings_header in edit_page_and_template.css */
 	border:0;
 }
@@ -272,7 +272,7 @@
 .regions_blocks_includes_settings input:not([type=button]):not([type=submit]),
   .regions_blocks_includes_settings select {
 	height:26px;
-	font-size:10px;
+	font-size:inherit;
 	background-color:#FFF;
 	border:1px solid #ddd;
 	border-radius:4px;
@@ -486,8 +486,8 @@
 }
 .regions_blocks_includes_settings .sla input:not([type=button]):not([type=submit]), 
   .regions_blocks_includes_settings .sla select {
-	height:auto;
-	font-size:inherit;
+	height:auto !important;
+	font-size:inherit !important;
 	box-sizing:content-box;
 }
 .regions_blocks_includes_settings .sla .relationship .query_insert_update_delete .attributes .column input,
@@ -593,14 +593,14 @@
 	margin:10px 0;
 }
 .regions_blocks_includes_settings .design_settings > div > label {
-	width:120px;
+	width:150px;
 	display:inline-block;
 }
 .regions_blocks_includes_settings .design_settings > div > input {
-	width:calc(100% - 125px);
+	width:calc(100% - 155px);
 }
 .regions_blocks_includes_settings .design_settings > div.special_body_attributes > input {
-	width:calc(100% - 160px);
+	width:calc(100% - 190px);
 }
 
 .regions_blocks_includes_settings .css_files {
@@ -1111,10 +1111,10 @@ body > .dragging_menu_item {
 }
 
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center {
-	width:185px;
+	width:200px;
 	padding:0 50px 0 0;
 	position:fixed;
-	top:19px;
+	top:16px;
 	left:auto;
 	right:285px;
 	bottom:auto;
@@ -1127,22 +1127,30 @@ body > .dragging_menu_item {
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center .layout-in-desktop {
 	position:absolute;
+	top:4px;
 	right:0px;
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center .layout-in-mobile {
 	position:absolute;
+	top:4px;
 	right:28px;
 	padding-right:10px;
 }
 .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center .option.option-screen-width, 
   .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center .option.option-screen-height {
-	padding-right:15px;
-	font-size:10px;
+	width:55px;
+	padding-right:20px;
+	font-size:10pt;
 	color:#999 !important; /* so the color doesn't change to red */
 }
-.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center .option.option-px,
-  .code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center .option.option-x {
-	font-size:10px;
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center .option.option-px {
+	margin-left:-20px;
+	font-size:10pt;
+	color:#999 !important; /* so the color doesn't change to red */
+	cursor:not-allowed;
+}
+.code_layout_ui_editor .layout-ui-editor.with_top_bar_menu > .options > .options-center .option.option-x {
+	font-size:10pt;
 	color:#999 !important; /* so the color doesn't change to red */
 	cursor:not-allowed;
 }
@@ -1188,7 +1196,7 @@ body > .dragging_menu_item {
 	min-width:140px;
 	padding-top:10px;
 	background:var(--main-iframe-bg);
-	font-size:8pt;
+	font-size:10pt;
 	direction:ltr;
 	border-bottom:1px solid var(--main-context-menu-border);
 	border-bottom-left-radius:3px;
@@ -1407,7 +1415,7 @@ body > .dragging_menu_item {
 	background:var(--main-context-menu-bg);
 	color:var(--main-context-menu-color);
 	font-style:normal;
-	font-size:8pt;
+	font-size:10pt;
 	border-left:1px solid var(--main-context-menu-border);
 	border-right:1px solid var(--main-context-menu-border);
 	cursor:pointer;

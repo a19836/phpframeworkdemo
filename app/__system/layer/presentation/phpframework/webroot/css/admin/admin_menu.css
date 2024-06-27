@@ -216,7 +216,7 @@
 /* lis */
 .mycontextmenu li {background-color:var(--main-context-menu-bg, #f7f7f7); font-size:0;} /* font-size:0: must set the font-size to 0, bc the child "a" is a display inline-block which means that all spaces between the html tags (inside of the LI), will be seen in the browser and show a weird spacing. So we need to set this spaces to 0 and set back the font-size in the child "a" and "::before" */
 .mycontextmenu li:not(.line_break):hover {background-color:var(--main-context-menu-hover-bg, #f7f7f7); color:var(--main-context-menu-hover-color);}
-.mycontextmenu li a {min-width:auto; margin-left:0; padding:4px 15px 4px 40px; cursor:pointer; background-color:var(--main-context-menu-bg, #f7f7f7); color:var(--main-context-menu-color, #999); display:block; font-size:11px;}
+.mycontextmenu li a {min-width:auto; margin-left:0; padding:4px 15px 4px 40px; cursor:pointer; background-color:var(--main-context-menu-bg, #f7f7f7); color:var(--main-context-menu-color, #999); display:block; font-size:10pt;}
 .mycontextmenu li:not(.line_break):hover a, .mycontextmenu li:not(.line_break) a:hover {text-decoration:none; background-color:var(--main-context-menu-hover-bg, #f7f7f7); color:var(--main-context-menu-hover-color);}
 .mycontextmenu .line_break {margin:0; padding:10px 0;}
 .mycontextmenu .line_break::before {content:""; width:100%; height:0; margin:0; padding:0; border-top:1px solid var(--main-context-menu-border, #ccc); display:block;}
@@ -228,7 +228,7 @@
 	font-size:14px;
 	
 	width:15px;
-	margin-top:4px;
+	margin-top:8px;
 	margin-left:15px;
 	display:inline-block;
 	color:inherit;
@@ -362,7 +362,7 @@
 	right:auto;
 	bottom:auto;
 	width:535px;
-	height:345px;
+	height:375px;
 }
 .edit_project_details_popup.big,
   .add_entity_popup.big {

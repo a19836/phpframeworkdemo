@@ -157,7 +157,7 @@ body,
 	color:inherit;
 	border-color:inherit;
 	border-radius:0.2rem;
-	font-size:8pt;
+	font-size:10pt;
 	box-sizing:border-box;
 }
 .install_template > .install_store_template > .search_template input::placeholder {

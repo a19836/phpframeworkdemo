@@ -174,7 +174,7 @@ body,
 	color:inherit;
 	border-color:inherit;
 	border-radius:0.2rem;
-	font-size:8pt;
+	font-size:10pt;
 	box-sizing:border-box;
 }
 .install_page > .install_store_page > .search_page input::placeholder {

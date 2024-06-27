@@ -8,11 +8,11 @@
 	position:absolute;
 }
 .edit_single_query > .top_bar .title .query_type {
-	width:85px;
+	width:95px;
 	display:inline-block;
 }
 .edit_single_query > .top_bar .title .query_name {
-	width:210px;
+	width:220px;
 	display:inline-block;
 }
 .edit_single_query:not(.covertable_sql) .top_bar li.add_new_table,
@@ -51,14 +51,14 @@
 	width:80px;
 	margin:0;
 	position:fixed;
-	top:18px;
-	left:40px;
+	top:14px;
+	left:50px;
 	z-index:9999;
 }
-.in_popup .edit_single_query .relationship .rel_type {
+/*.in_popup .edit_single_query .relationship .rel_type {
 	top:16px;
-	left:43px;
-}
+	left:53px;
+}*/
 .edit_single_query .relationship .rel_type label {
 	display:none;
 }
@@ -73,17 +73,17 @@
 	color:var(--main-popup-header-color);
 }
 .edit_single_query .relationship .rel_name {
-	width:210px;
+	width:220px;
 	margin:0;
 	position:fixed;
-	top:18px;
-	left:185px;
+	top:14px;
+	left:220px;
 	z-index:9999;
 }
-.in_popup .edit_single_query .relationship .rel_name {
+/*.in_popup .edit_single_query .relationship .rel_name {
 	top:16px;
-	left:195px;
-}
+	left:230px;
+}*/
 .edit_single_query .relationship .rel_name label {
 	display:none;
 }

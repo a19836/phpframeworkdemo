@@ -271,7 +271,8 @@
 	font-style:normal;
 }
 .choose_from_file_manager .businesslogic label {
-	font-size:10px;
+	font-size:10pt;
+	width:160px;
 }
 .choose_from_file_manager .query_string_attributes label {
 	display:block;
@@ -292,6 +293,9 @@
 	width:250px;
 	margin-bottom:5px;
 	font-size:inherit;
+}
+.choose_from_file_manager .businesslogic select {
+	margin-bottom:0;
 }
 .choose_from_file_manager .new_var input:not([type=checkbox]) {
 	box-sizing: border-box;

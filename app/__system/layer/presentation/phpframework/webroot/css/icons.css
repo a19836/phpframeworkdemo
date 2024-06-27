@@ -117,6 +117,8 @@
 .icon.search::before {
 	content:"\f002";
 	margin-left:1px;
+	margin-top:1px;
+	display:inline-block;
 }
 .icon.search_page {
 	margin-right:5px;
@@ -311,6 +313,9 @@
 }
 .icon.close::before {
 	content:"\f057";
+	margin-top:1px;
+	display:inline-block;
+	
 }
 .icon.full_screen::before {
 	content:"\f065";

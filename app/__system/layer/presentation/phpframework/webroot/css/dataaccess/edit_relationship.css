@@ -3,11 +3,11 @@
 	max-width:calc(100% - 60px);
 }
 .edit_relationship > .top_bar .title .query_type {
-	width:120px;
+	width:145px;
 	display:inline-block;
 }
 .edit_relationship > .top_bar .title .query_name {
-	width:210px;
+	width:225px;
 	display:inline-block;
 }
 .edit_relationship > .top_bar li.auto_convert_activation {
@@ -31,22 +31,22 @@
 	display:none;
 }
 .edit_relationship .relationship .rel_type {
-	width:90px;
+	width:140px;
 	margin:0;
 	position:fixed;
-	top:18px;
-	left:40px;
+	top:14px;
+	left:50px;
 	z-index:1503;
 }
-.in_popup .edit_relationship .relationship .rel_type {
+/*.in_popup .edit_relationship .relationship .rel_type {
 	top:16px;
 	left:43px;
-}
+}*/
 .edit_relationship .relationship .rel_type label {
 	display:none;
 }
 .edit_relationship .relationship .rel_type select {
-	width:115px;
+	width:135px;
 	border:1px solid #ccc;
 	color:var(--main-iframe-color);
 	background:var(--main-iframe-bg);
@@ -56,22 +56,22 @@
 	color:var(--main-popup-header-color);
 }
 .edit_relationship .relationship .rel_name {
-	width:210px;
+	width:220px;
 	margin:0;
 	position:fixed;
-	top:18px;
-	left:230px;
+	top:14px;
+	left:285px;
 	z-index:1503;
 }
-.in_popup .edit_relationship .relationship .rel_name {
+/*.in_popup .edit_relationship .relationship .rel_name {
 	top:16px;
 	left:240px;
-}
+}*/
 .edit_relationship .relationship .rel_name label {
 	display:none;
 }
 .edit_relationship .relationship .rel_name input {
-	width:200px;
+	width:210px;
 	border:1px solid #ccc;
 	color:var(--main-iframe-color);
 	background:transparent;

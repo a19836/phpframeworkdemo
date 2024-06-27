@@ -42,10 +42,10 @@
 	text-align:center;
 }
 .sql_results table td.message.success {
-	color:#51D87A;
+	color:#198754;
 }
 .sql_results table td.message.error {
-	color:#FF4D4D;
+	color:#dc3545;
 }
 .sql_results table td.empty.error:before {
 	content:"Error: ";

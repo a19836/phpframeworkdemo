@@ -55,7 +55,7 @@ body,
 	color:inherit;
 }
 .admin_panel .project .project_title .sub_menu.open > ul {
-	width:210px;
+	width:250px;
 	display:block !important;
 	visibility:visible;
 	top:auto;
@@ -116,14 +116,15 @@ body,
 	text-align:center;
 }
 .admin_panel .preview_project button {
-	font-size:8pt;
+	font-size:10pt;
+	font-family:var(--main-font-family);
 }
 
 /* PROJECT TABS */
 .admin_panel .project_files {
 	margin:20px;
 	border:0;
-	font-size:10px;
+	font-size:10pt;
 	background:transparent;
 }
 .admin_panel .project_files > ul {
@@ -186,7 +187,7 @@ body,
 /* PROJECT FILES PANELS - BUTTON AND SEARCH FIELD */
 .admin_panel .project_files .ui-tabs-panel button {
 	margin:10px 30px 10px 0;
-	font-size:8pt;
+	font-size:10pt;
 }
 .admin_panel .project_files .ui-tabs-panel .sort_files {
 	margin:10px 30px 10px 0;
@@ -194,7 +195,7 @@ body,
 	color:var(--icon-active-color);
 	border-color:var(--icon-active-color);
 	border-radius:0.2rem;
-	font-size:8pt;
+	font-size:10pt;
 }
 .admin_panel .project_files .ui-tabs-panel .search_file {
 	max-width:200px;
@@ -207,6 +208,9 @@ body,
 	cursor:default;
 	color:var(--icon-active-color);
 }
+.admin_panel .project_files .ui-tabs-panel .search_file .icon.search::before {
+	line-height:normal;
+}
 .admin_panel .project_files .ui-tabs-panel .search_file input {
 	width:100%;
 	margin-left:-28px;
@@ -214,7 +218,7 @@ body,
 	color:var(--icon-active-color);
 	border-color:var(--icon-active-color);
 	border-radius:0.2rem;
-	font-size:8pt;
+	font-size:10pt;
 	box-sizing:border-box;
 }
 .admin_panel .project_files .ui-tabs-panel .search_file input::placeholder {
@@ -226,6 +230,9 @@ body,
 	position:absolute;
 	top:13px;
 	right:7px;
+}
+.admin_panel .project_files .ui-tabs-panel .search_file .icon.close::before {
+	line-height:normal;
 }
 
 /* PROJECT FILES PANELS - PROJECT DEFAULT TEMPLATE */
@@ -571,7 +578,7 @@ body,
 	display:block;
 	text-align:left;
 	color:#585B69;
-	font-size:11px;
+	font-size:10pt;
 	word-break:break-all;
 	white-space:break-spaces;
 	cursor:pointer;
@@ -579,7 +586,7 @@ body,
 }
 .admin_panel .project_files .mytree.list_view > li > ul > li > a.jstree-anchor > label {
 	line-height:12px;
-	font-size:11px;
+	font-size:10pt;
 	cursor:pointer;
 }
 .admin_panel .project_files .mytree > li > ul > li.default_template > a.jstree-anchor > label {

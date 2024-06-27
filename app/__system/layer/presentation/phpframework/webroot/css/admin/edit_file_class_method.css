@@ -54,7 +54,7 @@
 	z-index:1050;
 	color:var(--main-settings-color);
 	background:var(--main-settings-bg);
-	font-size:8pt;
+	font-size:10pt;
 }
 .file_class_method_obj #settings:not(.resizing) {
 	transition:.2s all;

@@ -393,7 +393,8 @@
 }
 .taskflowchartdiagram .task.logic_task:before {
 	width:180px;
-	left:-55px !important;
+	left:-50% !important;
+	left:calc(-50% - 5px) !important;
 	right:auto !important;
 	bottom:-15px !important;
 	border-radius:2px;
@@ -406,7 +407,8 @@
 }
 .taskflowchartdiagram .task.logic_task:hover:after {
 	background:none !important;
-	left:-55px !important;
+	left:-50% !important;
+	left:calc(-50% - 5px) !important;
 	bottom:-36px !important;
 	
 	display:none !important; /* reduce noise in UI */
@@ -417,7 +419,8 @@
 .taskflowchartdiagram .task.logic_task .task_info {
 	width:182px; /*bc box-sizing is border-box, we need to add the borderleft and right widths. */
 	padding-left:10px;
-	left:-55px;
+	left:-50%;
+	left:calc(-50% - 5px);
 	background:#426efa;
 	color:#fff;
 	box-sizing:border-box;
@@ -431,12 +434,12 @@
 .taskflowchartdiagram .task.logic_task.is_start_task:not(:hover):not(.dragActive) .task_info:before {
 	content:"Start Task";
 	line-height:15px;
-	font-size:9px;
+	font-size:10px;
 }
 .taskflowchart .task.logic_task .task_info .task_info_tag, 
   .taskflowchart .task.logic_task .task_info .task_info_label {
 	line-height:15px;
-	font-size:9px;
+	font-size:10px;
 }
 .taskflowchart .task.logic_task.is_start_task:not(:hover):not(.dragActive) .task_info .task_info_tag, 
   .taskflowchart .task.logic_task.is_start_task:not(:hover):not(.dragActive) .task_info .task_info_label {
@@ -447,7 +450,8 @@
 	min-height:20px;
 	line-height:15px;
 	margin-top:10px;
-	margin-left:-55px;
+	margin-left:-50%;
+	margin-left:calc(-50% - 5px);
 	padding-left:5px;
 	padding-right:5px;
 	box-sizing:border-box;
@@ -500,7 +504,8 @@
 	content:"Drag the icon to link to another box";
 	position:absolute;
 	bottom:-15px;
-	left:-55px;
+	left:-50%;
+	left:calc(-50% - 5px);
 	font-size:80%;
 	color:#999;
 	text-align:center;

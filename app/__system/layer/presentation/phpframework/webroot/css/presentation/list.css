@@ -74,6 +74,9 @@ body,
 	cursor:default;
 	color:inherit;
 }
+.search_file .icon.search::before {
+	line-height:normal;
+}
 .search_file input {
 	width:150px;
 	margin-left:-28px;
@@ -89,6 +92,9 @@ body,
 	color:var(--icon-active-color);
 	position:absolute;
 	margin:12px 0 0 -18px;
+}
+.search_file .icon.close::before {
+	line-height:normal;
 }
 
 /* GENERIC */

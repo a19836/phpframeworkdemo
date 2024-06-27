@@ -2,11 +2,11 @@
 	max-width:calc(100% - 45px) !important;
 }
 .top_bar .title .export_type {
-	width:220px;
+	width:230px;
 	display:inline-block;
 }
 .top_bar .title .doc_name {
-	width:150px;
+	width:160px;
 	display:inline-block;
 }
 
@@ -15,10 +15,10 @@
 	text-align:center;
 }
 .export_form select[name=export_type] {
-  	width:220px;
+  	width:230px;
   	position:absolute;
-  	top:15px;
-  	left:50px;
+  	top:14px;
+  	left:60px;
   	z-index:9999;
   	border:1px solid #ccc;
   	background:var(--main-iframe-bg);
@@ -26,10 +26,10 @@
   	box-sizing:border-box;
 }
 .export_form input[name=doc_name] {
-	width:150px;
+	width:160px;
   	position:absolute;
-  	top:15px;
-  	left:345px;
+  	top:14px;
+  	left:380px;
   	z-index:9999;
   	border:1px solid #ccc;
   	background:transparent;

@@ -21,7 +21,7 @@ $logged_user = $UserAuthenticationHandler->auth["user_data"]["username"]; $logge
 '; $main_content = '
 <div class="top_bar' . ($popup ? " in_popup" : "") . '">
 	<header>
-		<div class="title">Feedback</div>
+		<div class="title">Feedback - Send us your questions</div>
 	</header>
 </div>
 <div class="feedback">

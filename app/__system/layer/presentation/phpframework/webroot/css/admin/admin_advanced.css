@@ -384,7 +384,7 @@ body.main_navigator_reverse #top_panel li.toggle_main_navigator_side a::after {
 #top_panel > ul > li.sub_menu > ul li {
 	margin:0;
 	padding:0;
-	font-size:11px;
+	font-size:10pt;
 	background:var(--top-panel-sub-menu-item-bg);
 	color:var(--top-panel-sub-menu-item-color);
 	display:block;
@@ -497,6 +497,13 @@ body.main_navigator_reverse #top_panel li.toggle_main_navigator_side a::after {
 	color:inherit;
 	cursor:default;
 	opacity:.8;
+}
+#top_panel > ul > li.sub_menu.sub_menu_user > ul li .icon.logs_console:before,
+  #top_panel > ul > li.sub_menu.sub_menu_user > ul li .icon.tutorials:before,
+  #top_panel > ul > li.sub_menu.sub_menu_user > ul li .icon.question:before,
+  #top_panel > ul > li.sub_menu.sub_menu_user > ul li .icon.info:before {
+	margin-top:1px;
+	display:inline-block;
 }
 
 #top_panel > ul > li.sub_menu.filter_by_layout {
@@ -1315,7 +1322,7 @@ body.dark_theme #left_panel .mytree i.jstree-themeicon.template_file::before {
 	border-right:1px solid var(--menu-panel-sub-menu-border);
 	background:var(--menu-panel-sub-menu-item-bg);
 	color:var(--menu-panel-sub-menu-item-color);
-	font-size:12px;
+	font-size:10pt;
 	display:block;
 	overflow:hidden;
 }
@@ -1352,7 +1359,7 @@ body.dark_theme #left_panel .mytree i.jstree-themeicon.template_file::before {
 	display:block;
 	color:inherit;
 	text-decoration:none;
-	font-size:8pt;
+	font-size:10pt;
 }
 #left_panel > .sub_menu ul li a .icon {
 	margin-right:7px;
