@@ -105,6 +105,16 @@ body {
 	border:2px dashed #000 !important;
 	vertical-align:middle;
 }
+.ui-sortable {
+	cursor:row-resize;
+}
+.ui-draggable {
+	cursor:move;
+	cursor:grab;
+}
+.ui-draggable.ui-draggable-dragging {
+	cursor:grabbing;
+}
 
 /* SCROLLBARS */
 

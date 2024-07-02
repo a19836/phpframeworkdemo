@@ -68,7 +68,11 @@ $(function () {
 				PtlLayoutUIEditor.showTemplateWidgetsDroppableBackground();
 				
 				//check if is dragged widget is PTL, and if yes, be sure that the droppable belongs to a template_region
+				var on_drag_stop_func = PtlLayoutUIEditor.options.on_drag_stop_func;
 				PtlLayoutUIEditor.options.on_drag_stop_func = function(menu_widget, widget, event, ui_obj) {
+					if (typeof on_drag_stop_func == "function")
+						on_drag_stop_func(menu_widget, widget, event, ui_obj);
+					
 					if ($(menu_widget).is(".menu-widget-ptl")) {
 						var template_region = widget.parent().closest(".template_region");
 						

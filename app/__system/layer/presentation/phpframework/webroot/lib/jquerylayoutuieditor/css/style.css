@@ -192,6 +192,7 @@
 	display:block;
 	background:rgba(0, 0, 0, .1);
 	border:2px dashed rgba(0, 0, 0, .1);
+	cursor:grabbing;
 }
 
 /* UI */
@@ -2260,7 +2261,7 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	height:auto;
 	padding:2px 5px;
 	display:inline-block;
-	cursor:pointer;
+	cursor:grab;
 	vertical-align:baseline;
 	text-align:center;
   	color:var(--widget-header-option-color, #b9a5a6);

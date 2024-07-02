@@ -3952,6 +3952,18 @@ function initPageAndTemplateLayout(main_parent_elm, opts) {
 			var luie = code_layout_ui_editor.children(".layout-ui-editor");
 			var PtlLayoutUIEditor = luie.data("LayoutUIEditor");
 			
+			//set on_drag_stop_func event to set the position absolute to the elements that are dropped to body
+			PtlLayoutUIEditor.options.on_drag_stop_func = function(menu_widget, widget, event, ui_obj) {
+				if (widget.parent().is(".template_region_items.main-droppable") && widget.parent().parent().closest(".template_region").is(".full_body")) {
+					var parent_offset = PtlLayoutUIEditor.getTemplateWidgetsIframe().offset();
+					var dragged_elm_offset = ui_obj ? ui_obj.offset : ui_obj.helper.offset();
+					var top = parseInt(dragged_elm_offset.top - parent_offset.top);
+					var left = parseInt(dragged_elm_offset.left - parent_offset.left);
+					
+					widget.css({position: "absolute", top: top + "px", left: left + "px"});
+				}
+			};
+			
 			//show view layout panel instead of code
 			var view_layout = luie.find(" > .tabs > .view-layout");
 			var view_source = luie.find(" > .tabs > .view-source");
