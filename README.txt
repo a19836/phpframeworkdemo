@@ -1,4 +1,4 @@
-- install apache, php 5.6 or higher (test) 
+- install apache, php 5.6 or higher (test 2)
 
 - Please be sure that your WebServer has the mod_rewrite enable and the php.ini files are well configured, this is, for security and performance reasons, please update your php.ini files with:
 	
