@@ -34,8 +34,17 @@
 		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-typography,
 		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-decorations,
 		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-events,
-		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-extra {
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-others,
+		   .layout-ui-editor > .menu-settings.menu-settings-ptl .settings-extra,
+			.layout-ui-editor > .menu-settings.menu-settings-ptl li.settings-tabs > ul > li.settings-tab-properties,
+			.layout-ui-editor > .menu-settings.menu-settings-ptl li.settings-tabs > ul > li.settings-tab-widget,
+			.layout-ui-editor > .menu-settings.menu-settings-ptl li.settings-tabs > ul > li.settings-tab-style,
+			.layout-ui-editor > .menu-settings.menu-settings-ptl li.settings-tabs > ul > li.settings-tab-events,
+			.layout-ui-editor > .menu-settings.menu-settings-ptl li.settings-tabs > ul > li.settings-tab-extra {
 			display:none;
+		}
+		.layout-ui-editor > .menu-settings.menu-settings-ptl li.settings-tabs {
+			margin-top:35px;
 		}
 		
 		.layout-ui-editor > .menu-layers .group.group-ptl > ul {

@@ -4,6 +4,13 @@
 }*/
 
 /* MENU SETTINGS - WIDGET - GENERIC */
+.layout-ui-editor > .menu-settings.menu-settings-html-singular-tag li.group.settings-widget {
+	display:none;
+}
+.layout-ui-editor > .menu-settings.menu-settings-html-comment li.group.settings-widget {
+	display:none;
+}
+
 .layout-ui-editor > .menu-settings li.group.settings-widget input:not([type=checkbox]):not([type=radio]):not([type=color]),
   .layout-ui-editor > .menu-settings li.group.settings-widget select {
 	width:100px;
@@ -22,6 +29,23 @@
 
 .layout-ui-editor > .menu-settings li.group.settings-widget .mandatory {
 	color:red;
+}
+
+/* MENU SETTINGS - WIDGET - TAB */
+.layout-ui-editor > .menu-settings .settings-widget.settings-tabs-container.settings-tabs-container-first > .group-title {
+	display:none
+}
+.layout-ui-editor > .menu-settings .settings-widget.settings-tabs-container.settings-tabs-container-first > ul {
+	padding-top:0;
+	padding-left:0;
+	padding-right:0;
+}
+.layout-ui-editor > .menu-settings .settings-widget.settings-tabs-container.settings-tabs-container-first > ul > li:first-child {
+	margin-top:0;
+}
+.layout-ui-editor > .menu-settings .settings-widget.settings-tabs-container.settings-tabs-container-first > ul > li:first-child > .group-title {
+	padding-top:0;
+	border-top:0;
 }
 
 /* MENU SETTINGS - WIDGET - GROUP */

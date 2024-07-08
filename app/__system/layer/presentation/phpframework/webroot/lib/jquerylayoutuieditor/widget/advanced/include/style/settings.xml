@@ -30,7 +30,10 @@
 		  .layout-ui-editor > .menu-settings.menu-settings-style li.group.settings-typography,
 		  .layout-ui-editor > .menu-settings.menu-settings-style li.group.settings-decorations,
 		  .layout-ui-editor > .menu-settings.menu-settings-style li.group.settings-events,
-		  .layout-ui-editor > .menu-settings.menu-settings-style li.group.settings-extra .settings-style {
+		  .layout-ui-editor > .menu-settings.menu-settings-style li.group.settings-others,
+		  .layout-ui-editor > .menu-settings.menu-settings-style li.settings-tabs > ul > li.settings-tab-widget,
+		  .layout-ui-editor > .menu-settings.menu-settings-style li.settings-tabs > ul > li.settings-tab-style,
+		  .layout-ui-editor > .menu-settings.menu-settings-style li.settings-tabs > ul > li.settings-tab-events {
 			display:none;
 		}
 		
@@ -41,6 +44,7 @@
 		.layout-ui-editor > .menu-settings.menu-settings-style > .settings-properties .content .ace_editor {
 			width:100%;
 			height:200px;
+			border:1px solid var(--menu-settings-input-border, transparent);
 		}
 		
 		.layout-ui-editor > .menu-layers .group.group-style > ul {

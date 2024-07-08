@@ -42,7 +42,10 @@
 		  .layout-ui-editor > .menu-settings.menu-settings-link li.group.settings-typography,
 		  .layout-ui-editor > .menu-settings.menu-settings-link li.group.settings-decorations,
 		  .layout-ui-editor > .menu-settings.menu-settings-link li.group.settings-events,
-		  .layout-ui-editor > .menu-settings.menu-settings-link li.group.settings-extra .settings-style {
+		  .layout-ui-editor > .menu-settings.menu-settings-link li.group.settings-others,
+		  .layout-ui-editor > .menu-settings.menu-settings-link li.settings-tabs > ul > li.settings-tab-widget,
+		  .layout-ui-editor > .menu-settings.menu-settings-link li.settings-tabs > ul > li.settings-tab-style,
+		  .layout-ui-editor > .menu-settings.menu-settings-link li.settings-tabs > ul > li.settings-tab-events {
 			display:none;
 		}
 		

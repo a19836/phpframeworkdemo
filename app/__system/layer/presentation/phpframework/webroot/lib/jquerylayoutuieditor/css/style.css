@@ -1235,13 +1235,14 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-id,
    .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-classes,
    .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-properties,
-   .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-widget,
    .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-general,
    .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-dimension,
    .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-typography,
    .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-decorations,
    .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-events,
-   .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-extra {
+   .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-others,
+   .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-extra,
+   .layout-ui-editor > .menu-settings.menu-settings-html-singular-tag .settings-tabs {
 	display:none;
 }
 
@@ -1265,13 +1266,14 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-id,
    .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-classes,
    .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-properties,
-   .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-widget,
    .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-general,
    .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-dimension,
    .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-typography,
    .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-decorations,
    .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-events,
-   .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-extra {
+   .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-others,
+   .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-extra,
+   .layout-ui-editor > .menu-settings.menu-settings-html-comment .settings-tabs {
 	display:none;
 }
 .layout-ui-editor > .menu-layers .group.group-html-comment > ul {
@@ -1609,6 +1611,54 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	cursor:pointer;
 	vertical-align:middle;
 }
+
+.layout-ui-editor > .menu-settings .settings-tabs {
+	padding:0;
+	border:0;
+}
+.layout-ui-editor > .menu-settings .settings-tabs ul {
+	background:transparent;
+	border:0;
+	border-bottom:1px solid #aaa;
+}
+.layout-ui-editor > .menu-settings .settings-tabs ul li {
+	/*float:right;*/
+}
+.layout-ui-editor > .menu-settings .settings-tabs ul li.ui-state-active {
+	background:var(--menu-settings-bg, #fff);
+}
+.layout-ui-editor > .menu-settings .settings-tabs #settings-tabs-dummy-container {
+	height:0;
+	padding:0;
+}
+.layout-ui-editor > .menu-settings .settings-tabs-container:not(.settings-tabs-container-active) {
+	display:none;
+}
+.layout-ui-editor > .menu-settings .settings-tabs-container.settings-tabs-container-first {
+	padding-top:15px;
+}
+.layout-ui-editor > .menu-settings .settings-tabs-container.settings-tabs-container-first > .group-title {
+	border-top:0;
+}
+.layout-ui-editor > .menu-settings .settings-properties.settings-tabs-container.settings-tabs-container-first > .group-title,
+  .layout-ui-editor > .menu-settings .settings-extra.settings-tabs-container.settings-tabs-container-first > .group-title,
+  .layout-ui-editor > .menu-settings .settings-actions.settings-tabs-container.settings-tabs-container-first > .group-title {
+	display:none
+}
+.layout-ui-editor > .menu-settings .settings-properties.settings-tabs-container.settings-tabs-container-first > ul,
+  .layout-ui-editor > .menu-settings .settings-extra.settings-tabs-container.settings-tabs-container-first > ul,
+  .layout-ui-editor > .menu-settings .settings-actions.settings-tabs-container.settings-tabs-container-first > ul {
+	padding-top:0;
+}
+.layout-ui-editor > .menu-settings .settings-properties.settings-tabs-container.settings-tabs-container-first > ul > li:first-child,
+  .layout-ui-editor > .menu-settings .settings-extra.settings-tabs-container.settings-tabs-container-first > ul > li:first-child,
+  .layout-ui-editor > .menu-settings .settings-actions.settings-tabs-container.settings-tabs-container-first > ul > li:first-child {
+	margin-top:0;
+}
+.layout-ui-editor > .menu-settings .settings-events.settings-tabs-container.settings-tabs-container-first > .group-title > .toggle {
+	display:none;
+}
+
 .layout-ui-editor > .menu-settings li {
 	list-style-type:none;
 }
@@ -1622,6 +1672,13 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	margin:0 5px;
 	border-top:1px solid rgba(0,0,0,0.25);
 	cursor:pointer;
+}
+.layout-ui-editor > .menu-settings li.group.settings-actions > .group-title {
+	margin-left:0;
+	margin-right:0;
+	padding-left:5px;
+	padding-right:5px;
+	border-top-color:#aaa;
 }
 .layout-ui-editor > .menu-settings li.settings-classes + li.group > .group-title {
 	border-top:0;
@@ -1896,6 +1953,7 @@ body > .menu-widget.ui-draggable-dragging > span:first-child {
 	clear:both;
 }
 .layout-ui-editor > .menu-settings li.group .settings-attributes > ul > li.settings-empty-attributes {
+	width:100%;
 	text-align:center;
 	color:inherit;
 }

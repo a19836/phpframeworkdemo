@@ -2067,6 +2067,10 @@ body .layout-ui-editor.fixed-properties > .menu-settings .group > .group-title,
 	font-size:11px;
 	color:var(--main-iframe-top-title-color);
 }
+body .layout-ui-editor.fixed-properties > .menu-settings .group.settings-tabs-container.settings-tabs-container-first > .group-title,
+  body .layout-ui-editor.fixed-side-properties > .menu-settings .group.settings-tabs-container.settings-tabs-container-first > .group-title {
+	padding-top:0;
+}
 body .layout-ui-editor.fixed-properties > .menu-settings .group > ul > .group > .group-title,
   body .layout-ui-editor.fixed-side-properties > .menu-settings .group > ul > .group > .group-title {
 	font-size:10px;
