@@ -7,6 +7,7 @@
  */
 include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtilPath("TourGuideUIHandler"); include_once $EVC->getUtilPath("HeatMapHandler"); $admin_home_project_page_url = $project_url_prefix . "admin/admin_home_project?filter_by_layout=#filter_by_layout#"; $add_project_url = $project_url_prefix . "phpframework/presentation/create_project?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&popup=1&on_success_js_func=onSuccessfullAddProject"; $manage_file_url = $project_url_prefix . "phpframework/presentation/manage_file?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&action=#action#&item_type=presentation&extra=#extra#"; $get_available_projects_props_url = $project_url_prefix . "phpframework/presentation/get_available_projects_props?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&include_empty_project_folders=1"; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add Local JS and CSS files -->
+<link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/featured_tutorials.css" type="text/css" charset="utf-8" />
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/choose_available_project.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/choose_available_project.js"></script>
 
@@ -80,4 +81,15 @@ $(function () {
 		</div>
 		<ul></ul>
 	</div>
-</div>'; $main_content .= TourGuideUIHandler::getHtml($entity, $project_url_prefix, $project_common_url_prefix, $online_tutorials_url_prefix); ?>
+</div>'; $videos_main_content = VideoTutorialHandler::getFeaturedTutorialsHtml($filtered_tutorials); if ($videos_main_content) $main_content .= '<div class="featured_tutorials">
+								<div class="featured_header">
+									<div class="featured_header_tip">Start here</div>
+									<div class="featured_header_title">Build your app with confidence</div>
+									<div class="featured_header_sub_title">Unlock your potential with these essential tools and guides for beginners.</div>
+								</div>
+								' . $videos_main_content . '
+								<div class="featured_buttons">
+									<button onClick="openWindow(this, \'url\', \'videos\')" url="' . $online_tutorials_url_prefix . 'video/simple"><span class="icon video"></span> Click here to watch more videos</button>
+									<button onClick="openWindow(this, \'url\', \'documentation\')" url="' . $online_tutorials_url_prefix . '"><span class="icon tutorials"></span> Click here to read our documentation</button>
+								</div>
+							</div>'; $main_content .= TourGuideUIHandler::getHtml($entity, $project_url_prefix, $project_common_url_prefix, $online_tutorials_url_prefix); ?>
