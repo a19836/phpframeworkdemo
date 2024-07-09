@@ -358,6 +358,26 @@ include_once get_lib("org.phpframework.util.HashCode"); include_once get_lib("or
 		MyFancyPopup.init({
 			elementToShow: popup,
 			parentElement: document,
+			onOpen: function() {
+				//set z-index again, bc when we open the popup it will change the z-index assynchronously.
+				var z_index = parseInt(MyTourGuide.tourguide._containerElement.style.zIndex) + 1;
+				
+				if (parseInt(popup.css("z-index")) < z_index) {
+					popup.css("z-index", z_index);
+					
+					setTimeout(function() {
+						popup.css("z-index", z_index);
+						
+						setTimeout(function() {
+							popup.css("z-index", z_index);
+							
+							setTimeout(function() {
+								popup.css("z-index", z_index);
+							}, 500);
+						}, 500);
+					}, 500);
+				}
+			},
 			onClose: function() {
 				popup.find("iframe").removeAttr("src"); //remove src attribute so the video stops playing, in case is playing already...
 			},
