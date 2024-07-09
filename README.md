@@ -11,10 +11,10 @@ All installations steps are in INSTALL.md
 
 ## License
 
-Please read the Bloxtor terms and conditions at LICENSE.md
+Please read the Bloxtor terms and conditions at [LICENSE.md]
 
 ## Contributions
 
-Please read our conde of conduct and contributions rules at CONTRIBUTING.md and CODE_OF_CONDUCT.md
+Please read our conde of conduct and contributions rules at [CONTRIBUTING.md] and [CODE_OF_CONDUCT.md]
 
 
