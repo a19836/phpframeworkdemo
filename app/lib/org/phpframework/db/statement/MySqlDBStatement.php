@@ -38,7 +38,7 @@ trait MySqlDBStatement { public static function getCreateDBStatement($pb67a2609,
 				kcu.column_name AS 'child_column', 
 				kcu.referenced_table_name AS 'parent_table', 
 				kcu.referenced_column_name AS 'parent_column',
-				kcu.constraint_name,
+				kcu.constraint_name AS 'constraint_name',
 				rc.UPDATE_RULE AS 'on_update',
 				rc.DELETE_RULE AS 'on_delete'
 		from information_schema.key_column_usage kcu

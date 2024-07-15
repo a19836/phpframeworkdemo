@@ -104,7 +104,7 @@ trait PostgresDBStatement { public static function getCreateDBStatement($pb67a26
 			  att2.attname AS child_column, 
 			  cl.relname AS parent_table, 
 			  att.attname AS parent_column,
-			  tc.constraint_name,
+			  tc.constraint_name AS constraint_name,
 			  con.confupdtype,
 			  CASE con.confupdtype
 		            WHEN 'a' THEN 'NO ACTION '
@@ -342,7 +342,7 @@ DECLARE myvar varchar = '';
 DECLARE t_row record;
 BEGIN
 	FOR t_row in 
-		SELECT tc.table_name, tc.constraint_name 
+		SELECT tc.table_name AS 'table_name', tc.constraint_name AS 'constraint_name' 
 		FROM information_schema.table_constraints tc
 		INNER JOIN pg_namespace nsp on nsp.nspname = tc.constraint_schema
 		INNER JOIN pg_constraint pgc on pgc.conname = tc.constraint_name and pgc.connamespace = nsp.oid and pgc.contype = 'f'
