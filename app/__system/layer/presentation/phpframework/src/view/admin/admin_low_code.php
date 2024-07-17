@@ -15,7 +15,7 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_low_code
 
 <script>
 menu_item_properties = ' . json_encode($menu_item_properties) . ';
-</script>'; $main_content = AdminMenuUIHandler::getContextMenus($exists_db_drivers, $get_store_programs_url); if (!$projects) $main_content .= '<script>alert("Error: No projects available! Please contact your sysadmin...");</script>'; $main_content .= '
+</script>'; $main_content = AdminMenuUIHandler::getContextMenus($exists_db_drivers, $get_store_programs_url, $is_module_user_installed); if (!$projects) $main_content .= '<script>alert("Error: No projects available! Please contact your sysadmin...");</script>'; $main_content .= '
 <div id="selected_menu_properties" class="myfancypopup">
 	<div class="title">Properties</div>
 	<p class="content"></p>

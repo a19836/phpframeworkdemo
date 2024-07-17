@@ -17,7 +17,7 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtil
 var path_to_filter = "' . $filter_by_layout . '";
 var admin_home_project_page_url = "' . $admin_home_project_page_url . '";
 var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
-</script>'; $head .= HeatMapHandler::getHtml($project_url_prefix); $main_content = AdminMenuUIHandler::getContextMenus($exists_db_drivers, $get_store_programs_url); $main_content .= '
+</script>'; $head .= HeatMapHandler::getHtml($project_url_prefix); $main_content = AdminMenuUIHandler::getContextMenus($exists_db_drivers, $get_store_programs_url, $is_module_user_installed); $main_content .= '
 	<div id="top_panel">
 		<ul class="left">
 			<li class="logo"><a href="' . $project_url_prefix . '"></a></li>

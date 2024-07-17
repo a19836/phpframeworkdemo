@@ -34,7 +34,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 <!-- Add Admin Menu JS and CSS files -->
 <link rel="stylesheet" href="' . $peb014cfd . 'css/admin/admin_menu.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $peb014cfd . 'js/admin/admin_menu.js"></script>
-'; } public static function getContextMenus($pe847b157, $pcc05179c) { return '
+'; } public static function getContextMenus($pe847b157, $pcc05179c, $pf2237784 = false) { return '
 <div id="selected_menu_properties" class="myfancypopup with_title">
 	<div class="title">Properties</div>
 	<p class="content"></p>
@@ -580,7 +580,7 @@ class AdminMenuUIHandler { public static function getHeader($peb014cfd, $v37d269
 	<li class="edit_config"><a onClick="return goTo(this, \'edit_config_url\', event)">Edit Config</a></li>
 	<li class="edit_init"><a onClick="return goTo(this, \'edit_init_url\', event)">Edit Init - Advanced</a></li>
 	<li class="line_break"></li>
-	<li class="manage_users"><a onClick="return goToPopup(this, \'manage_users_url\', event, \'with_iframe_title\')">Manage Users</a></li>
+	' . ($pf2237784 ? '<li class="manage_users"><a onClick="return goToPopup(this, \'manage_users_url\', event, \'with_iframe_title\')">Manage Users</a></li>' : '') . '
 	<li class="manage_references"><a onClick="return goToPopup(this, \'manage_references_url\', event, \'with_iframe_title\', refreshLastNodeParentChilds)">Manage References</a></li>
 	<li class="manage_wordpress"><a onClick="return goTo(this, \'manage_wordpress_url\', event)">Manage WordPress</a></li>
 	<li class="line_break"></li>
