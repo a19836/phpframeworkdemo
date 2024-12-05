@@ -1076,13 +1076,13 @@ function showCodeEditorChatBot(editor) {
 		if (selected_code)
 			system_message += "\n\nCode of user selection:\n" + selected_code;
 		
-		if (selected_range && selected_range.start)
+		if (selected_range && selected_range.start && (selected_range.start.row != selected_range.end.row || selected_range.start.column != selected_range.end.column))
 			system_message += "\n\nRange of user selection:"
-						+ "\n- start row" + selected_range.start.row + ";"
-						+ "\n- start column" + selected_range.start.column + ";"
+						+ "\n- start row: " + selected_range.start.row + ";"
+						+ "\n- start column: " + selected_range.start.column + ";"
 						+ (selected_range.end ? 
-							  "\n- end row" + selected_range.end.row + ";"
-							+ "\n- end column" + selected_range.end.column + ";"
+							  "\n- end row: " + selected_range.end.row + ";"
+							+ "\n- end column: " + selected_range.end.column + ";"
 						: "");
 		
 		if (all_code)
