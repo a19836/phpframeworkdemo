@@ -165,7 +165,7 @@ class EncodingFactory
 					self::ENDOFTEXT => 50256,
 				);
 
-				return new Encoding('gpt2', $mergeableRanks, $pattenRegex, $specialTokens, explicitNVocab: 50257);
+				return new Encoding('gpt2', $mergeableRanks, $pattenRegex, $specialTokens, 50257);
 			},
 			'r50k_base' => function () {
 				$mergeableRanks = self::loadTiktokenBpe(__DIR__ . '/../../assets/r50k_base.tiktoken');
@@ -174,7 +174,7 @@ class EncodingFactory
 					self::ENDOFTEXT => 50256,
 				);
 
-				return new Encoding('r50k_base', $mergeableRanks, $pattenRegex, $specialTokens, explicitNVocab: 50257);
+				return new Encoding('r50k_base', $mergeableRanks, $pattenRegex, $specialTokens, 50257);
 			},
 			'p50k_base' => function () {
 				$mergeableRanks = self::loadTiktokenBpe(__DIR__ . '/../../assets/p50k_base.tiktoken');
@@ -183,7 +183,7 @@ class EncodingFactory
 					self::ENDOFTEXT => 50256,
 				);
 
-				return new Encoding('p50k_base', $mergeableRanks, $pattenRegex, $specialTokens, explicitNVocab: 50281);
+				return new Encoding('p50k_base', $mergeableRanks, $pattenRegex, $specialTokens, 50281);
 			},
 			'p50k_edit' => function () {
 				$mergeableRanks = self::loadTiktokenBpe(__DIR__ . '/../../assets/p50k_base.tiktoken');
