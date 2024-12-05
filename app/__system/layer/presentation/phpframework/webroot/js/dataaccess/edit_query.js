@@ -4140,7 +4140,7 @@ function openCodeChatBot() {
 
 function getAISystemMessage() {
 	var tables = {};
-	var system_message = null;
+	var system_message = "";
 		
 	$.each(db_brokers_drivers_tables_attributes, function(db_broker, broker_drivers) {
 		$.each(broker_drivers, function(db_driver, driver_types) {
@@ -4160,8 +4160,13 @@ function getAISystemMessage() {
 		});
 	});
 	
+	var query_type = $(".data_access_obj .relationships .rel_type select").val();
+	
+	if (query_type)
+		system_message += "Query type to be generated: `" + query_type + "`";
+	
 	if (!$.isEmptyObject(tables)) {
-		system_message = "Tables:";
+		system_message += "\nTables:";
 		
 		$.each(tables, function(table_name, table_attributes) {
 			system_message += "\n- `" + table_name + (table_attributes.length > 0 ? "` with attributes: `" + table_attributes.join("`, `") + "`" : "");
