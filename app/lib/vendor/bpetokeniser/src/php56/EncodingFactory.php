@@ -200,7 +200,7 @@ class EncodingFactory
 			'cl100k_base' => function () {
 				$mergeableRanks = self::loadTiktokenBpe(__DIR__ . '/../../assets/cl100k_base.tiktoken');
 				$pattenRegex = "/(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\r\n\p{L}\p{N}]?\p{L}+|\p{N}{1,3}| ?[^\s\p{L}\p{N}]+[\r\n]*|\s*[\r\n]+|\s+(?!\S)|\s+/";
-				$specialTokens = (
+				$specialTokens = array(
 					self::ENDOFTEXT => 100257,
 					self::FIM_PREFIX => 100258,
 					self::FIM_MIDDLE => 100259,
