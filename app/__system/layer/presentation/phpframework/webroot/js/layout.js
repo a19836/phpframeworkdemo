@@ -1065,7 +1065,7 @@ function getCodeEditorChatBotDefaultSystemMessage(editor) {
 		system_message = "You are an expert in " + mode + (mode == "php" ? " and html" : "") + ".";
 		
 		if (selected_code)
-			system_message += "\n\nCode of user selection:\n" + selected_code;
+			system_message += "\n\nCode of user selection:\n```" + mode + "\n" + selected_code + "\n```";
 		
 		if (selected_range && selected_range.start && (selected_range.start.row != selected_range.end.row || selected_range.start.column != selected_range.end.column))
 			system_message += "\n\nRange of user selection:"
@@ -1077,7 +1077,7 @@ function getCodeEditorChatBotDefaultSystemMessage(editor) {
 						: "");
 		
 		if (all_code)
-			system_message += "\n\nAll code in the editor:\n" + all_code; 
+			system_message += "\n\nAll code in the editor:\n```" + mode + "\n" + all_code + "\n```"; 
 	}
 	
 	return system_message;
