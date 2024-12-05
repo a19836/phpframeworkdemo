@@ -1086,7 +1086,7 @@ function showCodeEditorChatBot(editor) {
 						: "");
 		
 		if (all_code)
-			system_message += "\n\nCode of user selection:\n" + all_code; 
+			system_message += "\n\nAll code in the editor:\n" + all_code; 
 		
 		var popup = MyFancyPopup.settings.elementToShow;
 		var chat_bot_elm = popup.children(".chat_bot");
