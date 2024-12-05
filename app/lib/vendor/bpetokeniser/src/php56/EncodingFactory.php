@@ -13,7 +13,7 @@ class EncodingFactory
 	const FIM_SUFFIX = "<|fim_suffix|>";
 	const ENDOFPROMPT = "<|endofprompt|>";
 
-	protected static $modelToEncoding = [
+	protected static $modelToEncoding = array(
 		// chat
 		"gpt-4o" => "o200k_base",
 		"gpt-4" => "cl100k_base",
@@ -55,9 +55,9 @@ class EncodingFactory
 		"code-search-ada-code-001" => "r50k_base",
 		// open source
 		"gpt2" => "gpt2",
-	];
+	);
 
-	protected static $modelPrefixToEncoding = [
+	protected static $modelPrefixToEncoding = array(
 		// chat
 		"gpt-4o-" => "o200k_base",		  // e.g., gpt-4o-2024-05-13
 		"gpt-4-" => "cl100k_base",		  // e.g., gpt-4-0314, etc., plus gpt-4-32k
@@ -68,11 +68,11 @@ class EncodingFactory
 		"ft:gpt-3.5-turbo" => "cl100k_base",
 		"ft:davinci-002" => "cl100k_base",
 		"ft:babbage-002" => "cl100k_base",
-	];
+	);
 
 	protected static $encodingConstructors = null;
 
-	protected static $encodingInstance = [];
+	protected static $encodingInstance = array();
 
 	public static function registerModelToEncoding($modelName, $encodingName)
 	{
@@ -157,70 +157,70 @@ class EncodingFactory
 			return;
 		}
 
-		self::$encodingConstructors = [
+		self::$encodingConstructors = array(
 			'gpt2' => function () {
 				$mergeableRanks = self::loadTiktokenBpe(dirname(__DIR__) . '/../assets/gpt2.tiktoken');
 				$pattenRegex = "/'s|'t|'re|'ve|'m|'ll|'d| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+/";
-				$specialTokens = [
+				$specialTokens = array(
 					self::ENDOFTEXT => 50256,
-				];
+				);
 
 				return new Encoding('gpt2', $mergeableRanks, $pattenRegex, $specialTokens, explicitNVocab: 50257);
 			},
 			'r50k_base' => function () {
 				$mergeableRanks = self::loadTiktokenBpe(__DIR__ . '/../../assets/r50k_base.tiktoken');
 				$pattenRegex = "/'s|'t|'re|'ve|'m|'ll|'d| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+/";
-				$specialTokens = [
+				$specialTokens = array(
 					self::ENDOFTEXT => 50256,
-				];
+				);
 
 				return new Encoding('r50k_base', $mergeableRanks, $pattenRegex, $specialTokens, explicitNVocab: 50257);
 			},
 			'p50k_base' => function () {
 				$mergeableRanks = self::loadTiktokenBpe(__DIR__ . '/../../assets/p50k_base.tiktoken');
 				$pattenRegex = "/'s|'t|'re|'ve|'m|'ll|'d| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+/";
-				$specialTokens = [
+				$specialTokens = array(
 					self::ENDOFTEXT => 50256,
-				];
+				);
 
 				return new Encoding('p50k_base', $mergeableRanks, $pattenRegex, $specialTokens, explicitNVocab: 50281);
 			},
 			'p50k_edit' => function () {
 				$mergeableRanks = self::loadTiktokenBpe(__DIR__ . '/../../assets/p50k_base.tiktoken');
 				$pattenRegex = "/'s|'t|'re|'ve|'m|'ll|'d| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+/";
-				$specialTokens = [
+				$specialTokens = array(
 					self::ENDOFTEXT => 50256,
 					self::FIM_PREFIX => 50281,
 					self::FIM_MIDDLE => 50282,
 					self::FIM_SUFFIX => 50283,
-				];
+				);
 
 				return new Encoding('p50k_edit', $mergeableRanks, $pattenRegex, $specialTokens);
 			},
 			'cl100k_base' => function () {
 				$mergeableRanks = self::loadTiktokenBpe(__DIR__ . '/../../assets/cl100k_base.tiktoken');
 				$pattenRegex = "/(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\r\n\p{L}\p{N}]?\p{L}+|\p{N}{1,3}| ?[^\s\p{L}\p{N}]+[\r\n]*|\s*[\r\n]+|\s+(?!\S)|\s+/";
-				$specialTokens = [
+				$specialTokens = (
 					self::ENDOFTEXT => 100257,
 					self::FIM_PREFIX => 100258,
 					self::FIM_MIDDLE => 100259,
 					self::FIM_SUFFIX => 100260,
 					self::ENDOFPROMPT => 100276,
-				];
+				);
 
 				return new Encoding('cl100k_base', $mergeableRanks, $pattenRegex, $specialTokens);
 			},
 			'o200k_base' => function () {
 				$mergeableRanks = self::loadTiktokenBpe(__DIR__ . '/../../assets/o200k_base.tiktoken');
 				$pattenRegex = "/[^\r\n\p{L}\p{N}]?[\p{Lu}\p{Lt}\p{Lm}\p{Lo}\p{M}]*[\p{Ll}\p{Lm}\p{Lo}\p{M}]+(?i:'s|'t|'re|'ve|'m|'ll|'d)?|[^\r\n\p{L}\p{N}]?[\p{Lu}\p{Lt}\p{Lm}\p{Lo}\p{M}]+[\p{Ll}\p{Lm}\p{Lo}\p{M}]*(?i:'s|'t|'re|'ve|'m|'ll|'d)?|\p{N}{1,3}| ?[^\s\p{L}\p{N}]+[\r\n\/]*|\s*[\r\n]+|\s+(?!\S)|\s+/";
-				$specialTokens = [
+				$specialTokens = array(
 					self::ENDOFTEXT => 199999,
 					self::ENDOFPROMPT => 200018,
-				];
+				);
 
 				return new Encoding('o200k_base', $mergeableRanks, $pattenRegex, $specialTokens);
 			},
-		];
+		);
 	}
 
 	protected static function loadTiktokenBpe($filename)
@@ -228,7 +228,7 @@ class EncodingFactory
 		$file = new SplFileObject($filename);
 		$file->setFlags(SplFileObject::DROP_NEW_LINE);
 
-		$mergeableRanks = [];
+		$mergeableRanks = array();
 		while (!$file->eof()) {
 			$line = trim($file->fgets());
 			if (empty($line)) {
