@@ -292,7 +292,7 @@ $(function() {
 });
 
 function getNotifications() {
-	$.ajax({
+	var ajax_options = {
 		type : "get",
 		url : notifications_url,
 		dataType : "json",
@@ -336,17 +336,28 @@ function getNotifications() {
 			
 			if (html)
 				ul.append(html);
-		},
-		error : function(jqXHR, textStatus, errorThrown) { 
-			if (console && console.log)
-				console.log("Error trying to get notifications." + (jqXHR.responseText ? "\n" + jqXHR.responseText : ""));
-		},
-		complete : function(jqXHR, textStatus) { 
+			
 			setTimeout(function() {
 				getNotifications();
 			}, 300000); //every 5 minutes
-		}
-	});
+		},
+		error : function(jqXHR, textStatus, errorThrown) { 
+			//shows login popup
+			if (jquery_native_xhr_object && isAjaxReturnedResponseLogin(jquery_native_xhr_object.responseURL))
+				showAjaxLoginPopup(jquery_native_xhr_object.responseURL, notifications_url, function() {
+					$.ajax(ajax_options);
+				});
+			else if (console && console.log) {
+				console.log("Error trying to get notifications." + (jqXHR.responseText ? "\n" + jqXHR.responseText : ""));
+				
+				setTimeout(function() {
+					getNotifications();
+				}, 300000); //every 5 minutes
+			}
+		},
+	};
+	
+	$.ajax(ajax_options);
 }
 
 function prepareLayerActiveTab(li) {
