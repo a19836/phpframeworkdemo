@@ -1059,20 +1059,9 @@ function showCodeEditorChatBot(editor) {
 		mode = mode ? mode.replace("ace/mode/", "") : "";
 		
 		var system_message = "You are an expert in " + mode + (mode == "php" ? " and html" : "") + ".";
+		var all_code = editor.getValue();
 		var selected_code = editor.getSelectedText();
 		var selected_range = editor.getSelectionRange();
-		
-		if (selected_code)
-			system_message += "\nCode of user selection:\n" + selected_code 
-		
-		if (selected_range && selected_range.start)
-			system_message += "\n\nRange of user selection:"
-						+ "\n- start row" + selected_range.start.row + ";"
-						+ "\n- start column" + selected_range.start.column + ";"
-						+ (selected_range.end ? 
-							  "\n- end row" + selected_range.end.row + ";"
-							+ "\n- end column" + selected_range.end.column + ";"
-						: "");
 		
 		var extra_system_message = "";
 		
@@ -1083,6 +1072,21 @@ function showCodeEditorChatBot(editor) {
 		
 		if (extra_system_message)
 			system_message += "\n\n" + extra_system_message;
+		
+		if (selected_code)
+			system_message += "\n\nCode of user selection:\n" + selected_code;
+		
+		if (selected_range && selected_range.start)
+			system_message += "\n\nRange of user selection:"
+						+ "\n- start row" + selected_range.start.row + ";"
+						+ "\n- start column" + selected_range.start.column + ";"
+						+ (selected_range.end ? 
+							  "\n- end row" + selected_range.end.row + ";"
+							+ "\n- end column" + selected_range.end.column + ";"
+						: "");
+		
+		if (all_code)
+			system_message += "\n\nCode of user selection:\n" + all_code; 
 		
 		var popup = MyFancyPopup.settings.elementToShow;
 		var chat_bot_elm = popup.children(".chat_bot");
