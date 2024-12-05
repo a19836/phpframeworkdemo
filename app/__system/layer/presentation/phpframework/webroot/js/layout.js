@@ -905,6 +905,12 @@ function setCodeEditorInlineAI(editor) {
 									var selected_code = editor.getSelectedText();
 									var selected_range = editor.getSelectionRange();
 									var ghost_text_feature_exists = typeof editor.showGhostText == "function";
+									var system_instructions = "";
+									
+									if (typeof editor.system_message == "function")
+										system_instructions = editor.system_message();
+									else if (typeof editor.system_message == "string")
+										system_instructions = editor.system_message;
 									
 									var msg = StatusMessageHandler.showMessage("AI loading. Wait a while...", "", "bottom_messages", 60000);
 									ghost_text_feature_exists && editor.showGhostText("//AI loading. Wait a while...", "ace-editor-marker-ghost-text-ai");
@@ -914,6 +920,7 @@ function setCodeEditorInlineAI(editor) {
 									var post_data = {
 										lang: mode,
 										instructions: instructions,
+										system_instructions: system_instructions,
 										code: code,
 										selected_code: selected_code,
 										selected_range: selected_range,
@@ -1066,8 +1073,15 @@ function showCodeEditorChatBot(editor) {
 							+ "\n- end column" + selected_range.end.column + ";"
 						: "");
 		
-		if (editor.extra_system_message)
-			system_message += "\n\n" + editor.extra_system_message;
+		var extra_system_message = "";
+		
+		if (typeof editor.system_message == "function")
+			extra_system_message = editor.system_message();
+		else if (typeof editor.system_message == "string")
+			extra_system_message = editor.system_message;
+		
+		if (extra_system_message)
+			system_message += "\n\n" + extra_system_message;
 		
 		var popup = MyFancyPopup.settings.elementToShow;
 		var chat_bot_elm = popup.children(".chat_bot");

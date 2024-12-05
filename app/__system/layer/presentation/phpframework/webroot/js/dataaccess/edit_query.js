@@ -3045,6 +3045,7 @@ function setQuerySqlEditor(selector) {
 			});
 			
 			//prepare chatbot
+			editor.system_message = getAISystemMessage;
 			editor.showCodeEditorChatBot = openCodeChatBot;
 			
 			//set blur function for sql editor
@@ -4130,40 +4131,42 @@ function openCodeChatBot() {
 		var query_sql_elm = $(query_sql_elm_selector);
 		var editor = getQuerySqlEditor(query_sql_elm_selector);
 		
-		if (editor) {
-			var tables = {};
-			var extra_system_message = null;
-				
-			$.each(db_brokers_drivers_tables_attributes, function(db_broker, broker_drivers) {
-				$.each(broker_drivers, function(db_driver, driver_types) {
-					$.each(driver_types, function(db_type, db_tables) {
-						$.each(db_tables, function(db_table, db_attributes) {
-							if (db_table) {
-								if (!tables.hasOwnProperty(db_table))
-									tables[db_table] = $.isArray(db_attributes) ? db_attributes : [];
-								else
-									$.each(db_attributes, function(idx, attr_name) {
-										if ($.inArray(attr_name, tables[db_table]) == -1)
-											tables[db_table].push(attr_name);
-									});
-							}
-						});
-					});
+		if (editor)
+			showCodeEditorChatBot(editor);
+	}
+}
+
+function getAISystemMessage() {
+	var tables = {};
+	var system_message = null;
+		
+	$.each(db_brokers_drivers_tables_attributes, function(db_broker, broker_drivers) {
+		$.each(broker_drivers, function(db_driver, driver_types) {
+			$.each(driver_types, function(db_type, db_tables) {
+				$.each(db_tables, function(db_table, db_attributes) {
+					if (db_table) {
+						if (!tables.hasOwnProperty(db_table))
+							tables[db_table] = $.isArray(db_attributes) ? db_attributes : [];
+						else
+							$.each(db_attributes, function(idx, attr_name) {
+								if ($.inArray(attr_name, tables[db_table]) == -1)
+									tables[db_table].push(attr_name);
+							});
+					}
 				});
 			});
-			
-			if (!$.isEmptyObject(tables)) {
-				extra_system_message = "Tables:";
-				
-				$.each(tables, function(table_name, table_attributes) {
-					extra_system_message += "\n- `" + table_name + (table_attributes.length > 0 ? "` with attributes: `" + table_attributes.join("`, `") + "`" : "");
-				});
-			}
-			
-			editor.extra_system_message = extra_system_message;
-			showCodeEditorChatBot(editor);
-		}
+		});
+	});
+	
+	if (!$.isEmptyObject(tables)) {
+		system_message = "Tables:";
+		
+		$.each(tables, function(table_name, table_attributes) {
+			system_message += "\n- `" + table_name + (table_attributes.length > 0 ? "` with attributes: `" + table_attributes.join("`, `") + "`" : "");
+		});
 	}
+	
+	return system_message;
 }
 /* END: AI */
 

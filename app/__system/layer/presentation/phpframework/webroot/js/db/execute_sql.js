@@ -117,6 +117,7 @@ function createSQLEditor() {
 	}
 	
 	//prepare chatbot
+	editor.system_message = getAISystemMessage;
 	editor.showCodeEditorChatBot = openCodeChatBot;
 	
 	sql_text_area.find("textarea.ace_text-input").removeClass("ace_text-input"); //fixing problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.
@@ -282,20 +283,22 @@ function openCodeChatBot() {
 	else {
 		var editor = $(".sql_text_area").data("editor");
 		
-		if (editor) {
-			var extra_system_message = "Current selected table: `" + table + "`";
-			
-			if (table_attrs) {
-				extra_system_message += ", with following attributes:"
-				
-				$.each(table_attrs, function(attr_name, attr_props) {
-					extra_system_message += "\n- `" + attr_name + "`";
-				});
-			}
-			
-			editor.extra_system_message = extra_system_message
+		if (editor)
 			showCodeEditorChatBot(editor);
-		}
 	}
+}
+
+function getAISystemMessage() {
+	var system_message = "Current selected table: `" + table + "`";
+	
+	if (table_attrs) {
+		system_message += ", with following attributes:"
+		
+		$.each(table_attrs, function(attr_name, attr_props) {
+			system_message += "\n- `" + attr_name + "`";
+		});
+	}
+	
+	return system_message;
 }
 /* END: AI */

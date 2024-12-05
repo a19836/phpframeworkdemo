@@ -15,7 +15,7 @@ declare(strict_types=1);
  * Eg:
  * 	php -r "echo bin2hex(random_bytes(32)) . PHP_EOL;"
  */
-$cfg["blowfish_secret"] = hex2bin("b6b39526dae8d7c523826a9f32c70eae8090953fb8f4e710871ea541f2f5633f");
+$cfg["blowfish_secret"] = hex2bin("f86a4098d014ec4555b7c41af498c5cc53c4308b6982b8267d0395907d1ca4c0");
 
 /**
  * Servers configuration
